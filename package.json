@@ -27,6 +27,7 @@
     "@nestjs/passport": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/serve-static": "^2.1.1",
+    "@nestjsplus/cookies": "^1.1.1",
     "@types/cookie-parser": "^1.4.2",
     "@types/dotenv": "^8.2.0",
     "@types/passport": "^1.0.3",
@@ -45,7 +46,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
     "sanitize-html": "^1.26.0",
-    "shortid": "^2.2.15"
+    "shortid": "^2.2.15",
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",

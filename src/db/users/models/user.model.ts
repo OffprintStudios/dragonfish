@@ -17,7 +17,10 @@ export interface User {
     };
     readonly audit: {
         readonly roles: string[];
-        readonly sessions: string[] | null;
+        readonly sessions: {
+            readonly sessionId: string;
+            readonly expiresAt: Date;
+        }[] | null;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;

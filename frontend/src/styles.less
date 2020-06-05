@@ -1,1 +1,240 @@
 /* You can add global styles to this file, and also import other style files */
+@import (css) url("https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700");
+@import (css) url("https://fonts.googleapis.com/css?family=Raleway:300,400,500,700");
+
+:root {
+    --site-accent: #DD4C4F;
+    --site-accent-hover: #933235;
+
+    --site-background: #fbfbfb;
+    --site-controls-background: lightgrey;
+    --site-dropshadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    --site-borders: grey;
+    
+    --site-text-color: black;
+
+    --site-max-width: 2000px;
+
+    --site-code-background: #f0f0f0;
+
+    // Other things
+    --dark-theme-background: rgb(39,39,39);
+    --alt-blue: rgb(80,154,233);
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+div.main-stage {
+    max-width: var(--site-max-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.container {
+    @media (max-width: 1000px) {
+        width: 90%;
+        padding: 0;
+    }
+}
+
+div.container, div.row {
+    max-width: var(--site-max-width);
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--site-accent);
+}
+
+a {
+    text-decoration: none;
+    color: var(--site-accent);
+
+    &:hover {
+        color: var(--site-accent-hover);
+    }
+}
+
+.messages(@border-color) {
+    text-align: center;
+    border: 1px solid @border-color;
+    padding: 10px;
+}
+
+.avatar(@width, @height, @border) {
+    object-fit: cover;
+    border: 2px solid @border;
+    max-width: @width;
+    max-height: @height;
+    border-radius: 50%;
+    box-shadow: var(--site-dropshadow);
+}
+
+div.error-message {
+    .messages(rgb(163,73,62));
+}
+
+div.success-message {
+    .messages(rgb(101,211,110));
+}
+
+pre {
+    code {
+        background-color: var(--site-controls-background);
+        border: 1px solid var(--site-borders);
+        border-radius: 0;
+    }
+}
+
+blockquote {
+    border-left: 2px solid var(--site-borders);
+    padding-left: 10px;
+}
+
+/* Buttons and Inputs */
+a.button, button,
+input[type=text], input[type=password], 
+input[type=email], input[type=submit], select {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-background);
+    border-radius: 0;
+    color: var(--site-text-color);
+    box-shadow: var(--site-dropshadow);
+}
+
+a.button-primary, button.button-primary,
+input[type=submit].button-primary {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    border-radius: 0px;
+    color: whitesmoke;
+}
+
+a.button:hover, button:hover,
+input[type=submit]:hover {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+a.button-primary:hover, button.button-primary:hover,
+input[type=submit].button-primary:hover {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent-hover);
+}
+
+button:disabled {
+    background-color: darkgrey;
+    color: black;
+}
+
+input[type=text]:focus, input[type=password]:focus,
+input[type=email]:focus, select:focus {
+    border: 1px solid var(--site-accent);
+}
+
+textarea {
+    border: 1px solid var(--site-borders);
+    border-radius: 0px;
+    background-color: var(--site-background);
+    box-shadow: var(--site-dropshadow);
+
+    &:focus {
+        border: 1px solid var(--site-accent);
+    }
+}
+
+div.meta-container {
+    max-width: 60%;
+    margin: 0 auto;
+    border: 1px solid var(--site-borders);
+    padding: 20px;
+    box-shadow: var(--site-dropshadow);
+}
+
+span.label-body {
+    display: inline;
+    i-feather {
+        position: relative;
+        margin-left: 0.5rem;
+        width: 20px;
+        height: 20px;
+        color: var(--site-accent);
+        top: 0.30rem;
+    }
+}
+
+/* Loading animation */
+.lds-dual-ring {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-right: 3rem;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    border-color: var(--site-accent) transparent var(--site-accent) transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+.lds-dual-ring-big {
+    display: block;
+    width: 68px;
+    height: 68px;
+
+    &:after {
+        content: " ";
+        display: block;
+        width: 68px;
+        height: 68px;
+        margin: 1px;
+        border-radius: 50%;
+        border-color: var(--site-accent) transparent var(--site-accent) transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+}
+
+.lds-dual-ring-button {
+    display: block;
+    width: 25px;
+    height: 25px;
+
+    &:after {
+        content: " ";
+        display: block;
+        width: 25px;
+        height: 25px;
+        margin: 1px;
+        border-radius: 50%;
+        border-color: whitesmoke transparent whitesmoke transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+}
+
+/* Button with Feather */
+button, a.button, input[type=submit] {
+    i-feather {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        top: 0.25rem;
+    }
+}
