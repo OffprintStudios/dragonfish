@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~9.1.9",
     "@angular/platform-browser-dynamic": "~9.1.9",
     "@angular/router": "~9.1.9",
+    "@auth0/angular-jwt": "^4.1.2",
     "angular-feather": "^6.0.10",
     "rxjs": "~6.5.4",
     "toppy": "^2.3.4",

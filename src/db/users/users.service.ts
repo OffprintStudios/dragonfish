@@ -9,7 +9,7 @@ import * as models from './models';
 @Injectable()
 export class UsersService {
     async createUser(newUserInfo: models.CreateUser): Promise<models.User> {
-        const existingUsername = await r.table<models.User>('users').getAll(newUserInfo.username, {type: 'username'}).run();
+        const existingUsername = await r.table<models.User>('users').getAll(newUserInfo.username, {index: 'username'}).run();
         const existingEmail = await r.table<models.User>('users').getAll(newUserInfo.email, {index: 'email'}).run();
 
         if (existingUsername.length !== 0 || existingEmail.length !== 0) {

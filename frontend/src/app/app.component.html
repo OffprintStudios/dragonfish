@@ -3,7 +3,7 @@
     <header>
       <div class="row">
         <div class="four columns" style="text-align: left;">
-          <button class="login">Join now!</button>
+          <button class="login" [routerLink]="['/register']">Join now!</button>
         </div>
         <div class="four columns">
           <h1><a>offprint</a></h1>
@@ -15,15 +15,15 @@
     </header>
     <nav>
       <div class="nav-items">
-        <a>HOME</a>
-        <a class="inner-left">BROWSE</a>
-        <a class="inner-right">GROUPS</a>
-        <a>NEWS</a>
+        <a [routerLink]="['/home']" routerLinkActive="router-link-active" class="">HOME</a>
+        <a [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left">BROWSE</a>
+        <a [routerLink]="['/groups']" routerLinkActive="router-link-active" class="inner-right">GROUPS</a>
+        <a [routerLink]="['/news']" routerLinkActive="router-link-active" class="">NEWS</a>
       </div>
     </nav>
   </div>
 
-  <!--<alert></alert>-->
+  <alert></alert>
 
   <div class="container">
     <router-outlet></router-outlet>
