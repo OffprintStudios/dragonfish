@@ -3,13 +3,18 @@
     <header>
       <div class="row">
         <div class="four columns" style="text-align: left;">
-          <button class="login" [routerLink]="['/register']">Join now!</button>
+          <div *ngIf="currentUser; else signUp">
+            <button class="login" (click)="openUserMenu()" #userMenu>Menu</button>
+          </div>
+          <ng-template #signUp>
+            <button class="login" [routerLink]="['/register']" #userMenu>Join</button>
+          </ng-template>
         </div>
         <div class="four columns">
           <h1><a>offprint</a></h1>
         </div>
         <div class="four columns">
-          <button class="search">Search</button>
+          <button class="search" (click)="openSearchMenu()" #searchMenu>Search</button>
         </div>
       </div>
     </header>

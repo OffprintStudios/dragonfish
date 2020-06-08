@@ -20,4 +20,10 @@ export class AuthController {
         const user = await this.usersService.createUser(newUser);
         return this.authService.login(user);
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('logout')
+    async logout() {
+        // do nothing yet
+    }
 }

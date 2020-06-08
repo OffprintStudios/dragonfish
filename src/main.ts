@@ -26,6 +26,6 @@ async function bootstrap() {
   await connectDb();
   const app = await NestFactory.create(AppModule);
   app.use(cookieParser(process.env.COOKIE_SECRET));
-  await app.listen(4000);
+  await app.listen(8000);
 }
 bootstrap();

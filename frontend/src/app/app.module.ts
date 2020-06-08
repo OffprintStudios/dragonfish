@@ -18,11 +18,13 @@ import { HomeComponent, LatestComponent, SubscriptionsComponent, CollectionsComp
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
+import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
+
 @NgModule({
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, SubscriptionsComponent,
-    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent,
+    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent, SearchMenuComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
