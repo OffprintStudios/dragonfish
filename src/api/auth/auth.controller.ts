@@ -26,4 +26,10 @@ export class AuthController {
     async logout() {
         // do nothing yet
     }
+
+    @UseGuards(AuthGuard('jwt'))
+    @Post('check-status')
+    async checkStatus() {
+        // does nothing yet
+    }
 }
