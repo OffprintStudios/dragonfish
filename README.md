@@ -14,15 +14,13 @@ You must have the following packages installed globally on your system:
 * TypeScript 3.8.3
 * Angular 9.1.7
 * NestJS 7.1.5
-* RethinkDB 2.4
+* MongoDB 4.2.0
 
 Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
 
 In order to achieve successful compilation of the backend code, you must create a `.env` file in the root project directory containing the following information:
 ```
-DATABASE_HOST={hostname for db server}
-DATABASE_PORT={port for db server}
-DATABASE_NAME={name of specific db}
+DATABASE_URL={URL for MongoDB database}
 JWT_SECRET={256-bit randomly generated key}
 COOKIE_SECRET={256-bit randomly generated key}
 ```
