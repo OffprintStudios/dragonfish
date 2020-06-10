@@ -1,5 +1,7 @@
-export interface User {
-    readonly id: string;
+import { Document } from 'mongoose';
+
+export interface User extends Document {
+    readonly _id: string;
     readonly email: string;
     readonly username: string;
     readonly password: string;
@@ -17,10 +19,7 @@ export interface User {
     };
     readonly audit: {
         readonly roles: string[];
-        readonly sessions: {
-            readonly sessionId: string;
-            readonly expiresAt: Date;
-        }[] | null;
+        readonly sessions: string[] | null;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;

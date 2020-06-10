@@ -12,13 +12,13 @@ export class AuthController {
     constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
     @UseGuards(AuthGuard('local'))
-    @SetCookies({httpOnly: true, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
+    @SetCookies({httpOnly: false, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
     @Post('login')
     async login(@Request() req: any): Promise<models.FrontendUser> {
         return this.authService.login(req.user);
     }
 
-    @SetCookies({httpOnly: true, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
+    @SetCookies({httpOnly: false, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
     @Post('register')
     async register(@Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
         const user = await this.usersService.createUser(newUser);
