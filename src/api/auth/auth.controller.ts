@@ -12,13 +12,13 @@ export class AuthController {
     constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
     @UseGuards(AuthGuard('local'))
-    @SetCookies({httpOnly: false, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
+    @SetCookies({httpOnly: true, secure: false, path: '/', signed: true, expires: new Date(Date.now() + 2_592_000_000)}, {name: 'refreshToken', value: uuidv4()})
     @Post('login')
     async login(@Request() req: any): Promise<models.FrontendUser> {
         return this.authService.login(req.user);
     }
 
-    @SetCookies({httpOnly: false, secure: true, path: '/'}, {name: 'refreshToken', value: uuidv4()})
+    @SetCookies({httpOnly: true, secure: false, path: '/', signed: true, expires: new Date(Date.now() + 2_592_000_000)}, {name: 'refreshToken', value: uuidv4()})
     @Post('register')
     async register(@Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
         const user = await this.usersService.createUser(newUser);
@@ -33,7 +33,7 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard('jwt'))
-    @Post('check-status')
+    @Get('check-status')
     async checkStatus(@SignedCookies('refreshToken') refreshToken: any) {
         console.log('refreshToken Value: ', refreshToken);
     }
