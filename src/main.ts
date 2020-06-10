@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { config, DotenvConfigOutput } from 'dotenv';
-import { r } from 'rethinkdb-ts';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
