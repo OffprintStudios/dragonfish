@@ -31,6 +31,10 @@ export class UsersService {
         return await this.userModel.findOne({username: sanitize(potUsername)});
     }
 
+    async fetchUserRefreshToken(userId: string): Promise<string> {
+        return 'false';
+    }
+
     public buildFrontendUser(user: models.User, newToken?: string): models.FrontendUser {
         const frontendUser: models.FrontendUser = {
             _id: user._id,

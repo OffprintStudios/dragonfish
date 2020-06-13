@@ -5,6 +5,7 @@ import { verify, argon2id } from 'argon2';
 
 import { User, FrontendUser } from 'src/db/users/models';
 import { UsersService } from 'src/db/users/users.service';
+import { JwtPayload } from './models';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +27,11 @@ export class AuthService {
     }
 
     async login(user: User): Promise<FrontendUser> {
-        const payload = {username: user.username, roles: user.audit.roles, sub: user.id};
+        const payload: JwtPayload = {
+            username: user.username,
+            roles: user.audit.roles,
+            sub: user.id
+        };
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 }
