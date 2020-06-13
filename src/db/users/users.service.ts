@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { isNullOrUndefined } from 'util';
@@ -31,8 +31,14 @@ export class UsersService {
         return await this.userModel.findOne({username: sanitize(potUsername)});
     }
 
-    async fetchUserRefreshToken(userId: string): Promise<string> {
-        return 'false';
+    async fetchUserRefreshToken(userId: string, potToken: string): Promise<string> {
+        const user = await this.userModel.findById(userId);
+
+        if (isNullOrUndefined(user)) {
+            throw new ForbiddenException('You do not have permission to access this resource.');
+        } else {
+            return user.audit.roles.find(item => { return item === potToken });
+        }
     }
 
     public buildFrontendUser(user: models.User, newToken?: string): models.FrontendUser {

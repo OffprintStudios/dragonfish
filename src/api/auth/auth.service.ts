@@ -34,4 +34,13 @@ export class AuthService {
         };
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
+
+    async getNewToken(user: User): Promise<FrontendUser> {
+        const payload: JwtPayload = {
+            username: user.username,
+            roles: user.audit.roles,
+            sub: user.id
+        };
+        return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
+    }
 }

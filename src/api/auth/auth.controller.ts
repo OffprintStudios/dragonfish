@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import * as models from 'src/db/users/models';
+import { RefreshGuard } from './auth.guard';
 
 @Controller('')
 export class AuthController {
@@ -32,7 +33,7 @@ export class AuthController {
         // do nothing yet
     }
 
-    @UseGuards(AuthGuard('jwt'))
+    @UseGuards(RefreshGuard)
     @Get('check-status')
     async checkStatus(@SignedCookies('refreshToken') refreshToken: any) {
         console.log('refreshToken Value: ', refreshToken);
