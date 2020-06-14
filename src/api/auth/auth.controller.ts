@@ -33,7 +33,7 @@ export class AuthController {
         // do nothing yet
     }
 
-    @UseGuards(RefreshGuard)
+    @UseGuards(AuthGuard('jwt'))
     @Get('check-status')
     async checkStatus(@SignedCookies('refreshToken') refreshToken: any) {
         console.log('refreshToken Value: ', refreshToken);

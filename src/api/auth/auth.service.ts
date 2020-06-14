@@ -30,7 +30,7 @@ export class AuthService {
         const payload: JwtPayload = {
             username: user.username,
             roles: user.audit.roles,
-            sub: user.id
+            sub: user._id
         };
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
