@@ -1,1 +1,18 @@
-<p>home works!</p>
+<div *ngIf="currentUser; else justLatest">
+    <div class="home-nav">
+        <div class="home-nav-items">
+            <a [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="rss"></i-feather></span>Latest</a>
+            <a [routerLink]="['/home/collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="book"></i-feather></span>Collections</a>
+            <a [routerLink]="['/home/watching']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="eye"></i-feather></span>Watching</a>
+            <a [routerLink]="['/home/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="feather"></i-feather></span>My Works</a>
+            <a [routerLink]="['/home/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>My Blogs</a>
+            <a [routerLink]="['/home/inbox']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="inbox"></i-feather></span>Inbox</a>
+            <a [routerLink]="['/home/settings']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="settings"></i-feather></span>Settings</a>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>
+
+<ng-template #justLatest>
+    <router-outlet></router-outlet>
+</ng-template>

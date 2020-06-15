@@ -1,6 +1,6 @@
 export { HomeComponent } from './home.component';
 export { LatestComponent } from './latest/latest.component';
-export { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+export { WatchingComponent } from './watching/watching.component';
 export { CollectionsComponent } from './collections/collections.component';
 export { BlogsComponent } from './blogs/blogs.component';
 export { WorksComponent } from './works/works.component';

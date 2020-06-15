@@ -36,6 +36,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
+        console.log(err);
         return throwError(err);
       }));
   }

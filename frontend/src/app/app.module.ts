@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 
 import { AuthInterceptor } from './services/auth';
 
-import { HomeComponent, LatestComponent, SubscriptionsComponent, CollectionsComponent, BlogsComponent,
+import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, BlogsComponent,
   WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
@@ -23,7 +23,7 @@ import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 @NgModule({
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
-    NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, SubscriptionsComponent,
+    NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent, SearchMenuComponent,
   ],
   imports: [
