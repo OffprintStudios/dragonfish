@@ -11,8 +11,8 @@ export interface FrontendUser {
     readonly stats: {
         readonly works: number;
         readonly blogs: number;
-        readonly subscribers: number;
-        readonly subscriptions: number;
+        readonly followers: number;
+        readonly following: number;
     };
     readonly roles: string[];
     readonly createdAt: Date;

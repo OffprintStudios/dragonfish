@@ -55,8 +55,8 @@ export class UsersService {
             stats: {
                 works: user.stats.works,
                 blogs: user.stats.blogs,
-                subscribers: user.stats.subscribers,
-                subscriptions: user.stats.subscriptions,
+                followers: user.stats.followers,
+                following: user.stats.following,
             },
             roles: user.audit.roles,
             createdAt: user.createdAt,
