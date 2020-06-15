@@ -5,7 +5,6 @@ This is the backend repository for the Offprint fiction website.
 It's still very much a work in progress.
 
 ## Setting Up The Dev Environment
----
 
 You must have the following packages installed globally on your system:
 
@@ -19,6 +18,7 @@ You must have the following packages installed globally on your system:
 Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
 
 In order to achieve successful compilation of the backend code, you must create a `.env` file in the root project directory containing the following information:
+
 ```
 DATABASE_URL={URL for MongoDB database}
 JWT_SECRET={256-bit randomly generated key}
@@ -26,6 +26,5 @@ COOKIE_SECRET={256-bit randomly generated key}
 ```
 
 ## Contributing
----
 
 TODO: Flesh this section out.
