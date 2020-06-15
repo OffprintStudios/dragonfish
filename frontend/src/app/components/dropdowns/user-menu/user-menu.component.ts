@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
@@ -6,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-menu.component.less']
 })
 export class UserMenuComponent implements OnInit {
+  close: any;
 
-  constructor() { }
+  constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        this.close();
+      }
+    });
   }
 
+  logout() {
+    this.authService.logout();
+    location.reload();
+    this.close();
+  }
 }

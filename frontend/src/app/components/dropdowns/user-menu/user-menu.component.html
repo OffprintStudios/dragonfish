@@ -1,1 +1,9 @@
-<p>user-menu works!</p>
+<div class="user-menu">
+    <ul>
+        <li class="item"><a [routerLink]="['/home/works']"><i-feather name="feather"></i-feather>My Works</a></li>
+        <li class="item"><a [routerLink]="['/home/blogs']"><i-feather name="coffee"></i-feather>My Blogs</a></li>
+        <li class="item"><a [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather>Settings</a></li>
+        <li class="divider"></li>
+        <li class="item" (click)="logout()"><a><i-feather name="log-out"></i-feather>Log Out</a></li>
+    </ul>
+</div>
