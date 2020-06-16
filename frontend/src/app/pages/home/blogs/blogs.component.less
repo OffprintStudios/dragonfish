@@ -1,0 +1,56 @@
+div.blogs-list-container {
+    div.blogs-list-header {
+        max-width: 100%;
+        border-bottom: 1px solid var(--site-borders);
+        margin-bottom: 4rem;
+        h2 {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+
+        button.add-blog {
+            float: right;
+            i-feather {
+                width: 15px;
+                height: 15px;
+                position: relative;
+                top: 0.3rem;
+            }
+        }
+
+        form.search-blogs {
+            float: right;
+            margin-bottom: 0;
+            margin-left: 2rem;
+
+            div.blogs-search {
+                position: relative;
+                box-shadow: var(--site-dropshadow);
+                input.search-input {
+                    display: inline-block;
+                    box-shadow: none;
+                    border-right: 0;
+                    margin-bottom: 0;
+                }
+
+                button.submit-blog-search {
+                    float: right;
+                    box-shadow: none;
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                    margin-bottom: 0;
+
+                    i-feather {
+                        height: 16px;
+                        width: 16px;
+                    }
+                }
+            }
+        }
+    }
+
+    div.loader {
+        text-align: center;
+        margin-top: 2rem;
+    }
+}
