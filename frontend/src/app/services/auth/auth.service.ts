@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { User, CreateUser, LoginUser } from 'src/app/models/users';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
+import { User, CreateUser, LoginUser } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
 
 @Injectable({
