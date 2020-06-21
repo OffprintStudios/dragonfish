@@ -8,56 +8,68 @@ div.blogs-list-container {
             margin-bottom: 0;
         }
 
-        button.add-blog {
+        div.blog-controls {
             float: right;
-            i-feather {
-                width: 15px;
-                height: 15px;
-                position: relative;
-                top: 0.3rem;
-            }
-        }
-
-        button.blog-filter {
-            float: right;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            margin-left: 2rem;
-            i-feather {
-                width: 16px;
-                height: 16px;
-            }
-        }
-
-        form.search-blogs {
-            float: right;
-            margin-bottom: 0;
-            margin-left: 2rem;
-
-            div.blogs-search {
-                position: relative;
-                box-shadow: var(--site-dropshadow);
-                input.search-input {
-                    display: inline-block;
-                    box-shadow: none;
-                    border-right: 0;
-                    margin-bottom: 0;
+            box-shadow: var(--site-dropshadow);
+            button.add-blog {
+                float: right;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-bottom: 0;
+                box-shadow: none;
+                i-feather {
+                    width: 16px;
+                    height: 16px;
+                    position: relative;
+                    top: 0.3rem;
                 }
-
-                button.submit-blog-search {
-                    float: right;
-                    box-shadow: none;
-                    padding-left: 1rem;
-                    padding-right: 1rem;
-                    margin-bottom: 0;
-
-                    i-feather {
-                        height: 16px;
-                        width: 16px;
+            }
+    
+            button.blog-filter {
+                float: right;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                //margin-left: 2rem;
+                border-left: 0;
+                border-right: 0;
+                box-shadow: none;
+                margin-bottom: 0;
+                i-feather {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+    
+            form.search-blogs {
+                float: right;
+                margin-bottom: 0;
+                //margin-left: 2rem;
+    
+                div.blogs-search {
+                    position: relative;
+                    input.search-input {
+                        display: inline-block;
+                        box-shadow: none;
+                        border-right: 0;
+                        margin-bottom: 0;
+                    }
+    
+                    button.submit-blog-search {
+                        float: right;
+                        box-shadow: none;
+                        padding-left: 1rem;
+                        padding-right: 1rem;
+                        margin-bottom: 0;
+    
+                        i-feather {
+                            height: 16px;
+                            width: 16px;
+                        }
                     }
                 }
             }
         }
+
     }
 
     div.loader {

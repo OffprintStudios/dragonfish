@@ -1,14 +1,16 @@
 <div class="blogs-list-container">
     <div class="blogs-list-header">
         <h2>My Blogs</h2>
-        <form [formGroup]="searchBlogs" class="search-blogs">
-            <div class="blogs-search">
-                <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
-                <button class="submit-blog-search" type="submit"><i-feather name="search"></i-feather></button>
-            </div>
-        </form>
-        <button class="blog-filter"><i-feather name="filter"></i-feather></button>
-        <button class="add-blog"><i-feather name="plus"></i-feather> Blog</button>
+        <div class="blog-controls">
+            <form [formGroup]="searchBlogs" class="search-blogs">
+                <div class="blogs-search">
+                    <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
+                    <button class="submit-blog-search" type="submit"><i-feather name="search"></i-feather></button>
+                </div>
+            </form>
+            <button class="blog-filter"><i-feather name="filter"></i-feather></button>
+            <button class="add-blog"><i-feather name="plus"></i-feather></button>
+        </div>
     </div>
     <h3 style="text-align: center;">Still a work in progress!</h3>
 </div>
