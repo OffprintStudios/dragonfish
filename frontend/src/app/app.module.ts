@@ -19,12 +19,15 @@ import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
+import { FilterOptionsComponent } from './components/dropdowns/filter-options/filter-options.component';
+import { CreateBlogComponent } from './components/modals/create-blog/create-blog.component';
+import { PreviewBlogComponent } from './components/modals/preview-blog/preview-blog.component';
 
 @NgModule({
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent, SearchMenuComponent,
+    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent, SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

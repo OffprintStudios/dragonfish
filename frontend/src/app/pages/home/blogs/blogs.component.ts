@@ -5,6 +5,7 @@ import { Toppy, ToppyControl } from 'toppy';
 import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
 import { User } from 'src/app/models/users';
+import { Blog } from 'src/app/models/blogs';
 
 @Component({
   selector: 'app-blogs',
@@ -13,6 +14,7 @@ import { User } from 'src/app/models/users';
 })
 export class BlogsComponent implements OnInit {
   currentUser: User;
+  blogs: Blog[];
   searchBlogs = new FormGroup({
     query: new FormControl('', Validators.required),
   });
@@ -25,4 +27,5 @@ export class BlogsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  
 }
