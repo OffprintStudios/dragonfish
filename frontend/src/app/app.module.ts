@@ -18,10 +18,8 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
-import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
-import { FilterOptionsComponent } from './components/dropdowns/filter-options/filter-options.component';
-import { CreateBlogComponent } from './components/modals/create-blog/create-blog.component';
-import { PreviewBlogComponent } from './components/modals/preview-blog/preview-blog.component';
+import { UserMenuComponent, SearchMenuComponent, FilterOptionsComponent } from './components/dropdowns';
+import { CreateBlogComponent, PreviewBlogComponent } from './components/modals';
 
 @NgModule({
   declarations: [
