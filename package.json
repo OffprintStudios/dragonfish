@@ -45,6 +45,7 @@
     "graphql-tools": "^6.0.9",
     "mongoose": "^5.9.18",
     "mongoose-autopopulate": "^0.12.2",
+    "mongoose-delete": "^0.5.2",
     "nest-router": "^1.0.9",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
