@@ -1,0 +1,38 @@
+div.new-blog-modal {
+    background-color: var(--site-background);
+    width: 700px;
+    height: 700px;
+    padding: 20px;
+    border: 1px solid var(--site-borders);
+    overflow: auto;
+    h1 {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    hr {
+        margin-top: 0;
+    }
+
+    div.warning-message {
+        font-size: 14px;
+        font-style: italic;
+        color: var(--site-accent);
+    }
+
+    form {
+        margin-bottom: 0;
+
+        button.blog-modal-button {
+            width: 100%;
+            background-color: var(--site-background);
+            color: var(--site-text-color);
+
+            &:hover {
+                background-color: var(--site-accent);
+                color: whitesmoke;
+            }
+        }
+    }
+}
