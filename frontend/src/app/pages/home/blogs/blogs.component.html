@@ -12,27 +12,29 @@
             <button class="add-blog" (click)="openNewBlogForm()"><i-feather name="plus"></i-feather></button>
         </div>
     </div>
-    <div class="loader" *ngIf="loading">
-        <div class="lds-dual-ring"></div>
-    </div>
-    <h4 style="text-align: center;" *ngIf="isBlogsEmpty(); else blogsList">You haven't created any blogs yet.</h4>
-    <ng-template #blogsList>
-        <ul class="u-full-width the-actual-list">
-            <li class="blog-entry" *ngFor="let blog of blogs">
-                <div class="row">
-                    <div class="nine columns">
-                        <h3><a>{{ blog.title }}</a></h3>
-                        <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span><h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span><h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span><h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
-                    </div>
-                    <div class="three columns">
-                        <div class="blog-control-buttons">
-                            <button class="blog-controls"><i-feather name="eye"></i-feather></button>
-                            <button class="blog-controls mid"><i-feather name="edit-3"></i-feather></button>
-                            <button class="blog-controls"><i-feather name="trash-2"></i-feather></button>
+    <div class="blogs-list">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="isBlogsEmpty(); else blogsList">You haven't created any blogs yet.</h4>
+        <ng-template #blogsList>
+            <ul class="u-full-width the-actual-list">
+                <li class="blog-entry" *ngFor="let blog of blogs">
+                    <div class="row">
+                        <div class="nine columns">
+                            <h3><a>{{ blog.title }}</a></h3>
+                            <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span><h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span><h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span><h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                        </div>
+                        <div class="three columns">
+                            <div class="blog-control-buttons">
+                                <button class="blog-controls"><i-feather name="eye"></i-feather></button>
+                                <button class="blog-controls mid"><i-feather name="edit-3"></i-feather></button>
+                                <button class="blog-controls"><i-feather name="trash-2"></i-feather></button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
-    </ng-template>
+                </li>
+            </ul>
+        </ng-template>
+    </div>
 </div>

@@ -69,11 +69,73 @@ div.blogs-list-container {
                 }
             }
         }
-
     }
 
     div.loader {
         text-align: center;
         margin-top: 2rem;
+    }
+
+    div.blogs-list {
+        max-width: 80%;
+        margin: 0 auto 0 auto;
+
+        ul.the-actual-list {
+            list-style: none;
+
+            li.blog-entry {
+                border: 1px solid var(--site-borders);
+                padding: 10px;
+                box-shadow: var(--site-dropshadow);
+                margin-bottom: 2rem;
+
+                h3 {
+                    font-size: 28px;
+                    margin-bottom: 0;
+                    
+                    i-feather {
+                        margin-right: 2rem;
+                    }
+                }
+
+                h4 {
+                    color: var(--site-text-color);
+                    display: inline-block;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                    margin-top: 0;
+                }
+                
+                span {
+                    margin-left: 0.25rem;
+                    margin-right: 0.25rem;
+                }
+
+                div.blog-control-buttons {
+                    float: right;
+                    box-shadow: var(--site-dropshadow);
+                    button.blog-controls {
+                        padding-left: 10px;
+                        padding-right: 10px;
+                        box-shadow: none;
+                        margin-bottom: 0;
+                        i-feather {
+                            position: relative;
+                            top: 0.5rem;
+                        }
+                        &:hover {
+                            color: whitesmoke;
+                            background-color: var(--site-accent);
+                        }
+                    }
+                    button.mid {
+                        border-left: 0;
+                        border-right: 0;
+                        box-shadow: none;
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
     }
 }

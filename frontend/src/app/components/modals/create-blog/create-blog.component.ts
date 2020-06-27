@@ -45,6 +45,6 @@ export class CreateBlogComponent implements OnInit {
   }
 
   askCancel() {
-    return;
+    this.close();
   }
 }

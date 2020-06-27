@@ -17,7 +17,7 @@ export class BlogsService {
      */
     async createNewBlog(user: any, newBlogInfo: models.CreateBlog): Promise<models.Blog> {
         const newBlog = new this.blogModel({
-            userId: user.userId,
+            author: user.userId,
             title: newBlogInfo.title,
             body: newBlogInfo.body,
             published: newBlogInfo.published});
@@ -40,6 +40,6 @@ export class BlogsService {
      * @param user The user whose blogs are being requested.
      */
     async fetchUserBlogs(user: any): Promise<models.Blog[]> {
-        return await this.blogModel.find().where('userId', user.userId);
+        return await this.blogModel.find().where('author', user.userId);
     }
 }

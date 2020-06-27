@@ -20,7 +20,7 @@ export class BlogsService {
    * @param info The blog's information.
    */
   public createBlog(info: models.CreateBlog) {
-    return this.http.put<models.Blog>(`/api/blogs/create-blog`, info, {observe: 'response', withCredentials: true})
+    return this.http.put<models.Blog>(`/api/content/blogs/create-blog`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success('Blog successfully created.');
@@ -35,7 +35,7 @@ export class BlogsService {
    * of the home page.
    */
   public fetchUserBlogs() {
-    return this.http.get<models.Blog[]>(`/api/blogs/fetch-user-blogs`, {observe: 'response', withCredentials: true})
+    return this.http.get<models.Blog[]>(`/api/content/blogs/fetch-user-blogs`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           return res.body;
