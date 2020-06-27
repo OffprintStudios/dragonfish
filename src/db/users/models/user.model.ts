@@ -14,8 +14,8 @@ export interface User extends Document {
     readonly stats: {
         readonly works: number;
         readonly blogs: number;
-        readonly followers: number;
-        readonly following: number;
+        readonly watchers: number;
+        readonly watching: number;
     };
     readonly audit: {
         readonly roles: string[];

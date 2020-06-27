@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, WorksComponent, BlogsComponent, InboxComponent, SettingsComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, WorksComponent,
+  BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent } from './pages/home';
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './services/auth';
@@ -12,6 +13,7 @@ const routes: Routes = [
       {path: 'latest', component: LatestComponent},
       {path: 'watching', canActivate: [AuthGuard], component: WatchingComponent},
       {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent},
+      {path: 'history', canActivate: [AuthGuard], component: HistoryComponent},
       {path: 'works', canActivate: [AuthGuard], component: WorksComponent},
       {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent},
       {path: 'inbox', canActivate: [AuthGuard], component: InboxComponent},

@@ -16,8 +16,8 @@ import { AppComponent } from './app.component';
 
 import { AuthInterceptor } from './services/auth';
 
-import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, BlogsComponent,
-  WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
+  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -61,7 +61,7 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent,
+    SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

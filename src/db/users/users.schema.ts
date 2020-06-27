@@ -20,8 +20,8 @@ export const UsersSchema = new Schema({
     stats: {
         works: {type: Number, default: 0},
         blogs: {type: Number, default: 0},
-        followers: {type: Number, default: 0},
-        following: {type: Number, default: 0},
+        watchers: {type: Number, default: 0},
+        watching: {type: Number, default: 0},
     },
     audit: {
         roles: {type: [String], default: ['user']},
