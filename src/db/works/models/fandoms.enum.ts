@@ -1,0 +1,23 @@
+export enum Fandoms {
+    MyLittlePony = 'My Little Pony',
+    LittleWitchAcademia = 'Little Witch Academia',
+    StarTrek = 'Star Trek',
+    DoctorWho = 'Doctor Who',
+    StarWars = 'Star Wars', 
+    Marvel = 'Marvel',
+    Dc = 'DC',
+    HarryPotter = 'Harry Potter',
+    NarutoBoruto = 'Naruto/Boruto',
+    Rwby = 'RWBY',
+    Pokemon = 'Pokémon',
+    MyHeroAcademia = 'My Hero Academia',
+    AdventureTime = 'Adventure Time',
+    StevenUniverse = 'Steven Universe',
+    TwilightSaga = 'Twilight Saga',
+    Undertale = 'Undertale',
+    Supernatural = 'Supernatural',
+    HungerGames = 'Hunger Games',
+    Voltron = 'Voltron',
+    DragonAge = 'Dragon Age',
+    TheGoodPlace = 'The Good Place'
+}
