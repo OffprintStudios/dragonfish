@@ -52,7 +52,7 @@ export class BlogsComponent implements OnInit {
   private fetchData() {
     this.loading = true;
     this.blogsService.fetchUserBlogs().subscribe(blogs => {
-      this.blogs = blogs;
+      this.blogs = blogs.reverse();
       this.loading = false;
     });
   }
