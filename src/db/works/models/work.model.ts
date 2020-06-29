@@ -5,6 +5,7 @@ import { Fandoms } from './fandoms.enum';
 import { Genres } from './genres.enum';
 import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
+import { Section } from './section.model';
 
 export interface Work extends Document {
     readonly _id: string;
@@ -32,6 +33,7 @@ export interface Work extends Document {
         readonly views: number;
         readonly comments: number;
     };
+    readonly sections: string[] | Section[];
     readonly audit: {
         readonly threadId: string;
         readonly published: boolean;
