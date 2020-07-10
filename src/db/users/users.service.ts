@@ -6,6 +6,7 @@ import * as sanitize from 'sanitize-html';
 import validator from 'validator';
 
 import * as models from './models';
+import { Stats } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -39,6 +40,14 @@ export class UsersService {
         } else {
             return user.audit.roles.find(item => { return item === potToken });
         }
+    }
+
+    async updateBlogCount(userId: string, blogCount: number): Promise<void> {
+        await this.userModel.updateOne({"_id": userId}, {"stats.blogs": blogCount});
+    }
+
+    async updateWorkCount(userId: string, workCount: number): Promise<void> {
+        await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
     }
 
     public buildFrontendUser(user: models.User, newToken?: string): models.FrontendUser {
