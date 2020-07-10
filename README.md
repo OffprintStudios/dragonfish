@@ -28,3 +28,7 @@ COOKIE_SECRET={256-bit randomly generated key}
 ## Contributing
 
 TODO: Flesh this section out.
+
+## Want to hang out and discuss the project?
+
+Look no further. [We have a Discord channel!](https://discord.gg/MEbDAqn)
