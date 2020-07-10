@@ -5,7 +5,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { AppRoutingModule } from './app-routing.module';
-import { RefreshGuard } from './api/auth/auth.guard';
 
 @Module({
   imports: [

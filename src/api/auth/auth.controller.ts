@@ -1,41 +1,37 @@
 import { Controller, UseGuards, Post, Body, Request, Get } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { SignedCookies, SetCookies, ClearCookies } from '@nestjsplus/cookies';
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidV4 } from 'uuid';
 
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import * as models from 'src/db/users/models';
-import { RefreshGuard } from './auth.guard';
 
 @Controller('')
 export class AuthController {
     constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
-    @UseGuards(AuthGuard('local'))
-    @SetCookies({httpOnly: true, secure: false, path: '/', signed: true, expires: new Date(Date.now() + 2_592_000_000)}, {name: 'refreshToken', value: uuidv4()})
-    @Post('login')
-    async login(@Request() req: any): Promise<models.FrontendUser> {
-        return this.authService.login(req.user);
-    }
-
-    @SetCookies({httpOnly: true, secure: false, path: '/', signed: true, expires: new Date(Date.now() + 2_592_000_000)}, {name: 'refreshToken', value: uuidv4()})
+    @SetCookies()
     @Post('register')
-    async register(@Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
-        const user = await this.usersService.createUser(newUser);
-        return this.authService.login(user);
+    async register(@Request() req: any, @Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
+        const addedUser = await this.usersService.createUser(newUser);
+        const sessionId = uuidV4();
+        await this.usersService.addRefreshToken(addedUser._id, sessionId);
+        return this.authService.login(addedUser, req, sessionId);
     }
 
-    @UseGuards(AuthGuard('jwt'))
-    @ClearCookies('refreshToken')
+    @SetCookies()
+    @Post('login')
+    async login(@Request() req: any, @Body() loginUser: models.LoginUser): Promise<models.FrontendUser> {
+        const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
+        const sessionId = uuidV4();
+        await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+        return this.authService.login(verifiedUser, req, sessionId);
+    }
+
+    @UseGuards(AuthGuard)
     @Get('logout')
     async logout() {
-        // do nothing yet
-    }
-
-    @UseGuards(AuthGuard('jwt'))
-    @Get('check-status')
-    async checkStatus(@SignedCookies('refreshToken') refreshToken: any) {
-        console.log('refreshToken Value: ', refreshToken);
+        return "yo there";
     }
 }

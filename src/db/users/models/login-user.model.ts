@@ -1,4 +1,4 @@
 export interface LoginUser {
-    readonly username: string;
+    readonly email: string;
     readonly password: string;
 }

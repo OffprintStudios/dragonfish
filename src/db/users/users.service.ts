@@ -28,28 +28,14 @@ export class UsersService {
         }
     }
 
-    async findOneByUsername(potUsername: string): Promise<models.User> {
-        return await this.userModel.findOne({username: sanitize(potUsername)});
+    async findOneByEmail(potEmail: string): Promise<models.User> {
+        return await this.userModel.findOne({email: sanitize(potEmail)});
     }
 
-    async fetchUserRefreshToken(userId: string, potToken: string): Promise<string> {
-        const user = await this.userModel.findById(userId);
-
-        if (isNullOrUndefined(user)) {
-            throw new ForbiddenException('You do not have permission to access this resource.');
-        } else {
-            return user.audit.roles.find(item => { return item === potToken });
-        }
+    async addRefreshToken(userId: string, sessionId: string): Promise<void> {
+        return await this.userModel.updateOne({"_id": userId}, {$push: {"audit.sessions": sessionId}});
     }
-
-    async updateBlogCount(userId: string, blogCount: number): Promise<void> {
-        await this.userModel.updateOne({"_id": userId}, {"stats.blogs": blogCount});
-    }
-
-    async updateWorkCount(userId: string, workCount: number): Promise<void> {
-        await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
-    }
-
+    
     public buildFrontendUser(user: models.User, newToken?: string): models.FrontendUser {
         const frontendUser: models.FrontendUser = {
             _id: user._id,
@@ -72,5 +58,14 @@ export class UsersService {
             token: newToken,
         };
         return frontendUser;
+    }
+
+    /* Stat counters */
+    async updateBlogCount(userId: string, blogCount: number): Promise<void> {
+        await this.userModel.updateOne({"_id": userId}, {"stats.blogs": blogCount});
+    }
+
+    async updateWorkCount(userId: string, workCount: number): Promise<void> {
+        await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
     }
 }
