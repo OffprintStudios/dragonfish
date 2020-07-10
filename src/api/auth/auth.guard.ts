@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
 
     // const refreshToken = request.cookie['refreshToken'];
 
-    console.log(request.cookie);
+    // console.log(request.cookie);
     
     return true;
   }
