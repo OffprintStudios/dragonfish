@@ -1,11 +1,11 @@
 import { Controller, UseGuards, Post, Body, Request, Get } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { SignedCookies, SetCookies, ClearCookies } from '@nestjsplus/cookies';
+import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
 import { AuthService } from './auth.service';
-import { UsersService } from 'src/db/users/users.service';
-import * as models from 'src/db/users/models';
+import { UsersService } from 'src/mongo/users/users.service';
+import * as models from 'src/mongo/users/models';
+import { AuthGuard } from './auth.guard';
 
 @Controller('')
 export class AuthController {

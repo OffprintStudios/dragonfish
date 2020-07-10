@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/db/users/users.module';
+import { UsersModule } from 'src/mongo/users/users.module';
 
 @Module({
   imports: [
@@ -11,14 +11,11 @@ import { UsersModule } from 'src/db/users/users.module';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: '2628000s' },
+        signOptions: {expiresIn: '3600s'},
       }),
     }),
   ],
-  providers: [
-    AuthService
-  ],
-  controllers: [AuthController],
-  exports: [AuthService],
+  providers: [AuthService],
+  controllers: [AuthController]
 })
 export class AuthModule {}

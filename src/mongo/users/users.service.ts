@@ -6,7 +6,6 @@ import * as sanitize from 'sanitize-html';
 import validator from 'validator';
 
 import * as models from './models';
-import { Stats } from 'fs';
 
 @Injectable()
 export class UsersService {

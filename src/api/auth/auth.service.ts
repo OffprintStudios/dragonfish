@@ -1,10 +1,9 @@
-  
 import { Injectable, UnauthorizedException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser } from 'src/db/users/models';
-import { UsersService } from 'src/db/users/users.service';
+import { User, FrontendUser } from 'src/mongo/users/models';
+import { UsersService } from 'src/mongo/users/users.service';
 import { JwtPayload } from './models';
 
 @Injectable()

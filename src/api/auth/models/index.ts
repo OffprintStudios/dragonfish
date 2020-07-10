@@ -1,1 +1,1 @@
-export { JwtPayload } from './jwt.model';
+export { JwtPayload } from './jwt-payload';

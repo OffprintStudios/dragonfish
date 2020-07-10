@@ -6,12 +6,12 @@ import { AppModule } from './app.module';
 
 const results: DotenvConfigOutput = config();
 if (results.error) {
-  throw new Error(`` + results.error);
+  throw new Error(`You don't have the .env file set up!` + results.error);
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(cookieParser(process.env.COOKIE_SECRET));
-  await app.listen(8000);
+  app.use(cookieParser());
+  await app.listen(3000);
 }
 bootstrap();
