@@ -59,6 +59,15 @@ export class UsersService {
         return frontendUser;
     }
 
+    async checkRefreshToken(userId: string, refreshToken: string) {
+        const validUser = await this.userModel.findById({"_id": userId,"audit.sessions": refreshToken});
+        if (validUser) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /* Stat counters */
     async updateBlogCount(userId: string, blogCount: number): Promise<void> {
         await this.userModel.updateOne({"_id": userId}, {"stats.blogs": blogCount});
