@@ -23,8 +23,8 @@ export class BlogsService {
             body: newBlogInfo.body,
             published: newBlogInfo.published});
         return await newBlog.save().then(async blog => {
-            const blogCount = await this.blogModel.countDocuments({author: user.userId});
-            await this.usersService.updateBlogCount(user.userId, blogCount);
+            const blogCount = await this.blogModel.countDocuments({author: user.sub});
+            await this.usersService.updateBlogCount(user.sub, blogCount);
             return blog;
         });
     }
