@@ -1,8 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersService } from 'src/db/users/users.service';
-import { JwtPayload } from './models';
+import { JwtPayload } from '../api/auth/models';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -26,8 +25,8 @@ export class AuthGuard implements CanActivate {
     }
     
     // Verifying that the token is legitimate.
-    const verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: true});
-    if (verifiedToken.exp < new Date().getSeconds()) {
+    const verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken);
+    if (verifiedToken) {
       // If the token is legitimate and active, let them pass.
       request.user = verifiedToken;
       return true;

@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
   });
 
   loginForm = new FormGroup({
-    username: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
     rememberMe: new FormControl(false),
   });
@@ -74,7 +74,7 @@ export class RegisterComponent implements OnInit {
       return;
     } else {
       this.loadingLogin = true;
-      const credentials: LoginUser = {username: this.loginFields.username.value, password: this.loginFields.password.value};
+      const credentials: LoginUser = {email: this.loginFields.email.value, password: this.loginFields.password.value};
       this.authService.login(credentials).pipe(first()).subscribe(data => {
         this.loadingLogin = false;
         console.log(data); // temporary, remove if works
