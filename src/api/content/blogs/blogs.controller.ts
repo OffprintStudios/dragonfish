@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Request, Get, Put, Body } from '@nestjs/common';
 
-import * as models from 'src/mongo/blogs/models';
-import { BlogsService } from 'src/mongo/blogs/blogs.service';
+import * as models from 'src/db/blogs/models';
+import { BlogsService } from 'src/db/blogs/blogs.service';
 
 @Controller('blogs')
 export class BlogsController {

@@ -4,7 +4,7 @@ import { APP_GUARD } from '@nestjs/core';
 
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UsersModule } from 'src/mongo/users/users.module';
+import { UsersModule } from 'src/db/users/users.module';
 import { AuthGuard } from './auth.guard';
 
 @Module({

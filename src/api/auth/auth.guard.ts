@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersService } from 'src/mongo/users/users.service';
+import { UsersService } from 'src/db/users/users.service';
 import { JwtPayload } from './models';
 
 @Injectable()

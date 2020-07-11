@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
-import { BlogsModule } from 'src/mongo/blogs/blogs.module';
+import { BlogsModule } from 'src/db/blogs/blogs.module';
 
 @Module({
   imports: [

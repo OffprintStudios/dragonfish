@@ -3,8 +3,8 @@ import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/co
 import { v4 as uuidV4 } from 'uuid';
 
 import { AuthService } from './auth.service';
-import { UsersService } from 'src/mongo/users/users.service';
-import * as models from 'src/mongo/users/models';
+import { UsersService } from 'src/db/users/users.service';
+import * as models from 'src/db/users/models';
 import { AuthGuard } from './auth.guard';
 
 @Controller('')
