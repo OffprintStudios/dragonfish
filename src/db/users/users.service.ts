@@ -9,7 +9,7 @@ import * as models from './models';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel('User') private readonly userModel: Model<models.User>) {}
+    constructor(@InjectModel('User') private readonly userModel: Model<models.User>, @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<models.InviteCodes>) {}
 
     async createUser(newUserInfo: models.CreateUser): Promise<models.User> {
         if (validator.isEmail(newUserInfo.email)) {
@@ -80,4 +80,7 @@ export class UsersService {
     async updateWorkCount(userId: string, workCount: number): Promise<void> {
         await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
     }
+
+    /* Invite codes, only used for Origins, pt. 1 */
+    // TODO: Write those damn invite code functions
 }
