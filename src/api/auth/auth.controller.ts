@@ -33,13 +33,16 @@ export class AuthController {
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
     async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<models.FrontendUser> {
+        console.log(`Attempting to refresh token...`);
         const refreshToken = cookies['refreshToken'];
         if (refreshToken) {
             if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
                 // If the refresh token is valid, let's generate a new JWT.
+                console.log(`Refresh successful!`);
                 return this.authService.refreshLogin(req.user);
             }
         } else {
+            console.log(`Refresh failed!`);
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
     }
