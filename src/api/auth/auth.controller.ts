@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Request, Get } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException } from '@nestjs/common';
 import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import * as models from 'src/db/users/models';
 import { AuthGuard } from './auth.guard';
+import { RefreshGuard } from './refresh.guard';
 
 @Controller('')
 export class AuthController {
@@ -29,7 +30,20 @@ export class AuthController {
         return this.authService.login(verifiedUser, req, sessionId);
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(RefreshGuard)
+    @Get('refresh-token')
+    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<models.FrontendUser> {
+        const refreshToken = cookies['refreshToken'];
+        if (refreshToken) {
+            if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
+                // If the refresh token is valid, let's generate a new JWT.
+                return this.authService.refreshLogin(req.user);
+            }
+        } else {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        }
+    }
+
     @Get('logout')
     async logout() {
         return "yo there";

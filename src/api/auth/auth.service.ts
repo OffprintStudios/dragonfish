@@ -38,4 +38,14 @@ export class AuthService {
         ]
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
+
+    async refreshLogin(user: JwtPayload): Promise<FrontendUser> {
+        const validatedUser = await this.usersService.findOneById(user.sub);
+        const newPayload: JwtPayload = {
+            username: validatedUser.username,
+            roles: validatedUser.audit.roles,
+            sub: validatedUser._id
+        };
+        return this.usersService.buildFrontendUser(validatedUser, this.jwtService.sign(newPayload));
+    }
 }

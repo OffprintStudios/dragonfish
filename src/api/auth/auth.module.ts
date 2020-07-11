@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/db/users/users.module';
 import { AuthGuard } from './auth.guard';
+import { RefreshGuard } from './refresh.guard';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthGuard } from './auth.guard';
   providers: [
     AuthService,
     {provide: APP_GUARD, useClass: AuthGuard},
+    {provide: APP_GUARD, useClass: RefreshGuard},
   ],
   controllers: [AuthController]
 })

@@ -1,11 +1,10 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsersService } from 'src/db/users/users.service';
 import { JwtPayload } from './models';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class RefreshGuard implements CanActivate {
   constructor(private readonly jwtService: JwtService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -24,16 +23,16 @@ export class AuthGuard implements CanActivate {
     } else {
       throw new UnauthorizedException(`You don't have permission to do that.`);
     }
-    
+
     // Verifying that the token is legitimate.
     const verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: true});
-    if (verifiedToken.exp < new Date().getSeconds()) {
-      // If the token is legitimate and active, let them pass.
+    if (verifiedToken) {
+      // If the token is legitimate, then pass it straight along to the request.
       request.user = verifiedToken;
       return true;
     } else {
       // Otherwise, throw an Unauthorized exception.
-      throw new UnauthorizedException(`You don't have permission to do that.`)
+      throw new UnauthorizedException(`You don't have permission to do that.`);
     }
   }
 }

@@ -31,6 +31,10 @@ export class UsersService {
         return await this.userModel.findOne({email: sanitize(potEmail)});
     }
 
+    async findOneById(userId: string): Promise<models.User> {
+        return await this.userModel.findById(userId);
+    }
+
     async addRefreshToken(userId: string, sessionId: string): Promise<void> {
         return await this.userModel.updateOne({"_id": userId}, {$push: {"audit.sessions": sessionId}});
     }
@@ -59,7 +63,7 @@ export class UsersService {
         return frontendUser;
     }
 
-    async checkRefreshToken(userId: string, refreshToken: string) {
+    async checkRefreshToken(userId: string, refreshToken: string): Promise<boolean> {
         const validUser = await this.userModel.findById({"_id": userId,"audit.sessions": refreshToken});
         if (validUser) {
             return true;
