@@ -1,6 +1,6 @@
 // This schema is temporary and only applicable to the Closed Alpha (aka, Origins, pt. 1)
 
-import { Schema, HookNextFunction } from 'mongoose';
+import { Schema } from 'mongoose';
 
 export const InviteCodesSchema = new Schema({
     _id: {type: String, required: true},
