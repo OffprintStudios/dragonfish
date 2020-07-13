@@ -20,5 +20,7 @@ export enum Fandoms {
     Voltron = 'Voltron',
     DragonAge = 'Dragon Age',
     TheGoodPlace = 'The Good Place',
-    SheRa = 'She-Ra and the Princesses of Power'
+    SheRa = 'She-Ra and the Princesses of Power',
+    Beastars = 'Beastars',
+    BNA = 'BNA: Brand New Animal'
 }
