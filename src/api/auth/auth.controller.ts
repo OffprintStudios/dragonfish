@@ -5,8 +5,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import * as models from 'src/db/users/models';
-import { AuthGuard } from '../../guards/auth.guard';
-import { RefreshGuard } from '../../guards/refresh.guard';
+import { AuthGuard, RefreshGuard } from 'src/guards';
 
 @Controller('')
 export class AuthController {
