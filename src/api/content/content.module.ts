@@ -4,10 +4,11 @@ import { JwtModule } from '@nestjs/jwt';
 import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
 import { BlogsModule } from 'src/db/blogs/blogs.module';
+import { WorksModule } from 'src/db/works/works.module';
 
 @Module({
   imports: [
-    BlogsModule,
+    BlogsModule, WorksModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
