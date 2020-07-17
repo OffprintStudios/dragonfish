@@ -33,7 +33,7 @@ export interface Work extends Document {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections: string[] | Section[];
+    readonly sections: string[] | Section[] | null;
     readonly audit: {
         readonly threadId: string;
         readonly published: boolean;
