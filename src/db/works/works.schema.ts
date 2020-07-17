@@ -19,11 +19,11 @@ export const WorksSchema = new Schema({
     shortDesc: {type: String, trim: true, required: true},
     longDesc: {type: String, trim: true, required: true},
     meta: {
-        category: {type: models.Categories, required: true},
-        fandoms: {type: [models.Fandoms]},
-        genres: {type: [models.Genres], required: true},
-        rating: {type: models.ContentRating, required: true},
-        status: {type: models.WorkStatus, required: true},
+        category: {type: String, enum: Object.keys(models.Categories), required: true},
+        fandoms: {type: [String], enum: Object.keys(models.Fandoms)},
+        genres: {type: [String], enum: Object.keys(models.Genres), required: true},
+        rating: {type: [String], enum: Object.keys(models.ContentRating), required: true},
+        status: {type: [String], enum: Object.keys(models.WorkStatus), required: true},
     },
     stats: {
         totWords: {type: Number, default: 0},
