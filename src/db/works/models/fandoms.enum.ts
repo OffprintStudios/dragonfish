@@ -22,5 +22,8 @@ export enum Fandoms {
     TheGoodPlace = 'The Good Place',
     SheRa = 'She-Ra and the Princesses of Power',
     Beastars = 'Beastars',
-    BNA = 'BNA: Brand New Animal'
+    BNA = 'BNA: Brand New Animal',
+    TheOwlHouse = 'The Owl House',
+    DuckTales = 'DuckTales',
+    Other = 'Other' // placeholder for fandoms that haven't been added yet
 }

@@ -7,7 +7,8 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class BlogsService {
-    constructor(@InjectModel('Blog') private readonly blogModel: Model<models.Blog>, private readonly usersService: UsersService) {}
+    constructor(@InjectModel('Blog') private readonly blogModel: Model<models.Blog>,
+        private readonly usersService: UsersService) {}
 
     /**
      * Creates a new blogpost and saves it to the database. Returns the newly
