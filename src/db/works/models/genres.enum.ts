@@ -5,6 +5,7 @@ export enum Genres {
     Comedy = 'Comedy',
     Romance = 'Romance',
     ScienceFiction = 'Science Fiction',
+    SpeculativeFiction = 'Speculative Fiction',
     Fantasy = 'Fantasy',
     Horror = 'Horror',
     Thriller = 'Thriller',
