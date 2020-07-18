@@ -8,7 +8,7 @@ It's still very much a work in progress.
 
 You must have the following packages installed globally on your system:
 
-* NodeJS 13.3.0
+* NodeJS 12.17.0
 * Yarn 1.21.1
 * TypeScript 3.7.2
 * Angular 8.3.21
