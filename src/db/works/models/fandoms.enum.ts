@@ -25,5 +25,8 @@ export enum Fandoms {
     BNA = 'BNA: Brand New Animal',
     TheOwlHouse = 'The Owl House',
     DuckTales = 'DuckTales',
+    AvatarTheLastAirbender = 'Avatar: The Last Airbender',
+    PercyJackson = 'Percy Jackson',
+    FullMetalAlchemist = 'Full Metal Alchemist',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
