@@ -16,10 +16,9 @@ steps:
       versionSpec: '12.17.0'
     displayName: 'Install Node.js 12.17.0'
 
-  - script: |
-      yarn global add @angular/cli@8.3.21
-      yarn global add @nestjs/cli@6.12.6
-      yarn global add typescript@3.7.2 
+  - script: |      
+      yarn global add @nestjs/cli@7.1.5
+      yarn global add typescript@3.8.3
     displayName: 'Install global tools'
 
   - script: |

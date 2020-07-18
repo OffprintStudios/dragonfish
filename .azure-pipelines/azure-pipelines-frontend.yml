@@ -19,8 +19,8 @@ steps:
   displayName: 'Install Node.js 12.17.0'
 
 - script: |
-    yarn global add @angular/cli@8.3.21    
-    yarn global add typescript@3.7.2 
+    yarn global add @angular/cli@9.1.5    
+    yarn global add typescript@3.8.3 
   displayName: 'Install global tools'
 
 - task: Cache@2
