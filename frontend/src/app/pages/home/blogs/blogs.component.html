@@ -20,10 +20,15 @@
         <ng-template #blogsList>
             <ul class="u-full-width the-actual-list">
                 <li class="blog-entry" *ngFor="let blog of blogs">
+                    <button class="check-published">
+                        <i-feather name="circle"></i-feather>
+                    </button>
                     <div class="row">
                         <div class="nine columns">
-                            <h3><a>{{ blog.title }}</a></h3>
-                            <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span><h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span><h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span><h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                            <div class="blog-info">
+                                <h3><a>{{ blog.title }}</a></h3>
+                                <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span><h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span><h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span><h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                            </div>
                         </div>
                         <div class="three columns">
                             <div class="blog-control-buttons">

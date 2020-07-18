@@ -84,31 +84,43 @@ div.blogs-list-container {
             list-style: none;
 
             li.blog-entry {
+                position: relative;
                 border: 1px solid var(--site-borders);
                 padding: 10px;
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
 
-                h3 {
-                    font-size: 28px;
-                    margin-bottom: 0;
-                    
+                button.check-published {
+                    position: absolute;
+                    box-shadow: none;
                     i-feather {
-                        margin-right: 2rem;
+
                     }
                 }
 
-                h4 {
-                    color: var(--site-text-color);
-                    display: inline-block;
-                    font-size: 18px;
-                    margin-bottom: 0;
-                    margin-top: 0;
-                }
+                div.blog-info {
+                    position: absolute;
+                    h3 {
+                        font-size: 28px;
+                        margin-bottom: 0;
+                    
+                        i-feather {
+                            margin-right: 2rem;
+                        }
+                    }
+
+                    h4 {
+                        color: var(--site-text-color);
+                        display: inline-block;
+                        font-size: 18px;
+                        margin-bottom: 0;
+                        margin-top: 0;
+                    }
                 
-                span {
-                    margin-left: 0.25rem;
-                    margin-right: 0.25rem;
+                    span {
+                        margin-left: 0.25rem;
+                        margin-right: 0.25rem;
+                    }
                 }
 
                 div.blog-control-buttons {
