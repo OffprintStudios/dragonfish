@@ -1,0 +1,48 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude: 
+      - /
+    include: 
+      - /frontend/*
+      - /.azure-pipelines/azure-pipelines-frontend.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.17.0'
+  displayName: 'Install Node.js 12.17.0'
+
+- script: |
+    yarn global add @angular/cli@8.3.21    
+    yarn global add typescript@3.7.2 
+  displayName: 'Install global tools'
+
+- task: Cache@2
+  inputs:
+  # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
+    key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/frontend/yarn.lock'
+    path: '$(Build.SourcesDirectory)/frontend/node_modules'
+    cacheHitVar: 'CacheRestored'
+  displayName: "Cache node_modules"
+
+- script: |
+    cd frontend
+    yarn install
+  displayName: "Yarn install"
+  condition: ne(variables['CacheRestored'], 'true')
+
+- script: |
+    cd frontend
+    yarn build
+  displayName: "Build"
+
+- script: |
+    cd frontend
+    yarn test-headless
+  displayName: "Test"
