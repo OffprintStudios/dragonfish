@@ -10,9 +10,9 @@ You must have the following packages installed globally on your system:
 
 * NodeJS 12.17.0
 * Yarn 1.21.1
-* TypeScript 3.7.2
-* Angular 8.3.21
-* NestJS 6.12.6
+* TypeScript 3.8.3
+* Angular 9.1.5
+* NestJS 7.1.5
 * MongoDB 4.2.1
 
 Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
