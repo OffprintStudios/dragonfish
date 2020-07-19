@@ -19,6 +19,15 @@ Once you have installed and verified that these dependencies are working as expe
 
 In order to achieve successful compilation of the backend code, you must create a `.env` file in the root project directory containing both a `DATABASE_URL` pointing to a valid MongoDB server along with a database, e.g. `mongodb://localhost:27017/my_database`, and a `JWT_SECRET` with any development key you want.
 
+### Developing in Docker
+If you just want to use `docker-compose`, you can follow these steps.
+
+- Edit `sample.env` to use an *actual* secret.
+- Copy `sample.env` to `.env`
+- Run `docker-compose up`
+
+After following these steps, you should have your very own copy of Offprint running on port 3000.
+
 ## Contributing
 
 TODO: Flesh this section out.
