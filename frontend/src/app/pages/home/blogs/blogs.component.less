@@ -80,6 +80,70 @@ div.blogs-list-container {
         max-width: 80%;
         margin: 0 auto 0 auto;
 
+        // Testing new blog list layout
+        div.blog-list {
+            div.blog-item {
+                position: relative;
+                border: 1px solid var(--site-borders);
+                box-shadow: var(--site-dropshadow);
+                margin-bottom: 2rem;
+                div.blog-check {
+                    position: relative;
+                    display: inline-block;
+                    width: auto;
+                    height: auto;
+                    text-align: center;
+                    a.check-published {
+                        color: var(--site-text-color);
+                        box-shadow: none;
+                        display: block;
+                        height: 100%;
+                        width: 100%;
+                        box-sizing: border-box;
+                        border: none;
+
+                        &:hover {
+                            color: whitesmoke;
+                            background-color: var(--site-accent);
+                        }
+                    }
+                }
+
+                div.divider {
+                    position: relative;
+                    display: inline-block;
+                    border-left: 1px solid var(--site-borders);
+                }
+
+                div.blog-info {
+                    position: relative;
+                    display: inline-block;
+                    padding: 10px;
+                    h3 {
+                        font-size: 28px;
+                        margin-bottom: 0;
+                    
+                        i-feather {
+                            margin-right: 2rem;
+                        }
+                    }
+
+                    h4 {
+                        color: var(--site-text-color);
+                        display: inline-block;
+                        font-size: 18px;
+                        margin-bottom: 0;
+                        margin-top: 0;
+                    }
+                
+                    span {
+                        margin-left: 0.25rem;
+                        margin-right: 0.25rem;
+                    }
+                }
+            }
+        }
+
         ul.the-actual-list {
             list-style: none;
 
@@ -90,16 +154,20 @@ div.blogs-list-container {
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
 
-                button.check-published {
-                    position: absolute;
-                    box-shadow: none;
-                    i-feather {
+                div.check-published-box {
+                    display: inline;
+                    button.check-published {
+                        //position: absolute;
+                        box-shadow: none;
+                        i-feather {
                         
+                        }
                     }
                 }
 
                 div.blog-info {
-                    position: absolute;
+                    display: inline;
+                    position: relative;
                     h3 {
                         font-size: 28px;
                         margin-bottom: 0;
@@ -124,7 +192,8 @@ div.blogs-list-container {
                 }
 
                 div.blog-control-buttons {
-                    float: right;
+                    //float: right;
+                    display: inline;
                     box-shadow: var(--site-dropshadow);
                     button.blog-controls {
                         padding-left: 10px;

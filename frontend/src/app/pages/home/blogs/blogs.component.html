@@ -18,16 +18,37 @@
         </div>
         <h4 style="text-align: center;" *ngIf="isBlogsEmpty(); else blogsList">You haven't created any blogs yet.</h4>
         <ng-template #blogsList>
+            <div class="blog-list">
+                <div class="blog-item" *ngFor="let blog of blogs">
+                    <div class="blog-check">
+                        <a class="check-published">
+                            <i-feather name="circle"></i-feather>
+                        </a>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="blog-info">
+                        <h3><a>{{ blog.title }}</a></h3>
+                        <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                        <h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                        <h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                        <h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span>
+                        <h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <h4>Old style</h4>
             <ul class="u-full-width the-actual-list">
                 <li class="blog-entry" *ngFor="let blog of blogs">
-                    <button class="check-published">
-                        <i-feather name="circle"></i-feather>
-                    </button>
-                    <div class="row">
+                    <div class="row" style="max-width: 100%; width: 75%;">
                         <div class="nine columns">
                             <div class="blog-info">
                                 <h3><a>{{ blog.title }}</a></h3>
-                                <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span><h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span><h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span><h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                                <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                                <h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                                <h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                                <h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span>
+                                <h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
                             </div>
                         </div>
                         <div class="three columns">
