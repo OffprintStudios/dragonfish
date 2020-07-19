@@ -34,5 +34,6 @@ export enum Fandoms {
     GravityFalls = 'Gravity Falls',
     TheWitcher = 'The Witcher',
     Persona = 'Persona',
+    SailorMoon = 'Sailor Moon',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
