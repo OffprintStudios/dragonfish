@@ -29,5 +29,10 @@ export enum Fandoms {
     PercyJackson = 'Percy Jackson',
     FullMetalAlchemist = 'Full Metal Alchemist',
     Warhammer40K = 'Warhammer 40K',
+    Borderlands = 'Borderlands',
+    WarriorCats = 'Warrior Cats',
+    GravityFalls = 'Gravity Falls',
+    TheWitcher = 'The Witcher',
+    Persona = 'Persona',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
