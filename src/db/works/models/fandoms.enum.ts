@@ -28,5 +28,6 @@ export enum Fandoms {
     AvatarTheLastAirbender = 'Avatar: The Last Airbender',
     PercyJackson = 'Percy Jackson',
     FullMetalAlchemist = 'Full Metal Alchemist',
+    Warhammer40K = 'Warhammer 40K',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
