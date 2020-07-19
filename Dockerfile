@@ -18,5 +18,4 @@ WORKDIR /opt/pulpd
 
 EXPOSE 3000
 
-CMD ["./build.sh"]
 CMD ["nest", "start"]
