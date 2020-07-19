@@ -1,0 +1,15 @@
+[package]
+name = "word_counter"
+version = "0.1.0"
+authors = ["pingzing <mcalistern@outlook.com>"]
+edition = "2018"
+
+[dependencies]
+libc = "0.2.72"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+voca_rs = "1.10.1"
+
+[lib]
+crate-type = ["cdylib"]
+
