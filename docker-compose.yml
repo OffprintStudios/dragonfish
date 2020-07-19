@@ -1,0 +1,10 @@
+version: '3'
+services:
+  pulpd:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+    - .:/opt/pulpd
+  mongo:
+    image: "mongo:4.2.1"
