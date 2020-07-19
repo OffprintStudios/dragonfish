@@ -24,7 +24,7 @@ pub struct DeltaOps {
 }
 
 #[no_mangle]
-pub extern "C" fn count_words(work_content: *const c_char, ) -> u32 {
+pub extern "C" fn count_words(work_content: *const c_char) -> u32 {
     let c_str = unsafe { CStr::from_ptr(work_content) };
     match try_count_words(c_str) {
         Ok(count) => count,
