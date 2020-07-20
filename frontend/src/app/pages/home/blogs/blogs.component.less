@@ -79,45 +79,69 @@ div.blogs-list-container {
     div.blogs-list {
         max-width: 80%;
         margin: 0 auto 0 auto;
-
-        // Testing new blog list layout
         div.blog-list {
             div.blog-item {
                 position: relative;
                 border: 1px solid var(--site-borders);
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
+                max-height: 12rem;
                 div.blog-check {
                     position: relative;
                     display: inline-block;
-                    width: auto;
-                    height: auto;
                     text-align: center;
-                    a.check-published {
-                        color: var(--site-text-color);
+                    button.check-unpublished {
+                        color: var(--site-borders);
                         box-shadow: none;
-                        display: block;
-                        height: 100%;
-                        width: 100%;
-                        box-sizing: border-box;
-                        border: none;
+                        border-top: none;
+                        border-bottom: none;
+                        border-left: none;
+                        height: 12rem;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        margin-bottom: 0;
 
                         &:hover {
                             color: whitesmoke;
-                            background-color: var(--site-accent);
+                        }
+
+                        i-feather {
+                            width: 35px;
+                            height: 35px;
+                            top: 0.75rem;
+                            stroke-width: 1;
                         }
                     }
-                }
 
-                div.divider {
-                    position: relative;
-                    display: inline-block;
-                    border-left: 1px solid var(--site-borders);
+                    button.check-published {
+                        color: whitesmoke;
+                        box-shadow: none;
+                        border-top: none;
+                        border-bottom: none;
+                        border-left: none;
+                        height: 12rem;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        margin-bottom: 0;
+                        background-color: var(--site-accent);
+
+                        &:hover {
+                            background-color: var(--site-accent-hover);
+                        }
+
+                        i-feather {
+                            width: 35px;
+                            height: 35px;
+                            top: 0.75rem;
+                            stroke-width: 1;
+                        }
+                    }
                 }
 
                 div.blog-info {
                     position: relative;
                     display: inline-block;
+                    top: 1.25rem;
                     padding: 10px;
                     h3 {
                         font-size: 28px;
@@ -141,79 +165,39 @@ div.blogs-list-container {
                         margin-right: 0.25rem;
                     }
                 }
-            }
-        }
 
-        ul.the-actual-list {
-            list-style: none;
-
-            li.blog-entry {
-                position: relative;
-                border: 1px solid var(--site-borders);
-                padding: 10px;
-                box-shadow: var(--site-dropshadow);
-                margin-bottom: 2rem;
-
-                div.check-published-box {
-                    display: inline;
-                    button.check-published {
-                        //position: absolute;
-                        box-shadow: none;
-                        i-feather {
-                        
+                div.controls {
+                    float: right;
+                    div.blog-control-buttons {
+                        button.blog-controls {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            height: 12rem;
+                            box-shadow: none;
+                            margin-bottom: 0;
+                            border-top: none;
+                            border-bottom: none;
+                            color: var(--site-borders);
+                            i-feather {
+                                position: relative;
+                                top: 0.75rem;
+                                stroke-width: 1;
+                            }
+                            &:hover {
+                                color: whitesmoke;
+                                background-color: var(--site-accent);
+                            }
                         }
-                    }
-                }
-
-                div.blog-info {
-                    display: inline;
-                    position: relative;
-                    h3 {
-                        font-size: 28px;
-                        margin-bottom: 0;
-                    
-                        i-feather {
-                            margin-right: 2rem;
+                        button.mid {
+                            border-left: 0;
+                            border-right: 0;
+                            box-shadow: none;
+                            margin-bottom: 0;
                         }
-                    }
 
-                    h4 {
-                        color: var(--site-text-color);
-                        display: inline-block;
-                        font-size: 18px;
-                        margin-bottom: 0;
-                        margin-top: 0;
-                    }
-                
-                    span {
-                        margin-left: 0.25rem;
-                        margin-right: 0.25rem;
-                    }
-                }
-
-                div.blog-control-buttons {
-                    //float: right;
-                    display: inline;
-                    box-shadow: var(--site-dropshadow);
-                    button.blog-controls {
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        box-shadow: none;
-                        margin-bottom: 0;
-                        i-feather {
-                            position: relative;
-                            top: 0.5rem;
+                        button.right {
+                            border-right: none;
                         }
-                        &:hover {
-                            color: whitesmoke;
-                            background-color: var(--site-accent);
-                        }
-                    }
-                    button.mid {
-                        border-left: 0;
-                        border-right: 0;
-                        box-shadow: none;
-                        margin-bottom: 0;
                     }
                 }
             }
