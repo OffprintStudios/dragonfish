@@ -1,1 +1,17 @@
-<p>preview-blog works!</p>
+<div class="preview-blog-modal">
+    <div class="blog-preview">
+        <div class="blog-header">
+            <img class="user-avatar" src="{{ blogData.author.profile.avatar }}">
+            <div class="headings">
+                <h2 class="blog-header">{{ blogData.title }}</h2>
+                <h5 class="blog-author">by <a>{{ blogData.author.username}}</a></h5>
+            </div>
+        </div>
+        <div class="blog-dates">
+            <div style="display: inline-block;"><i-feather name="clock"></i-feather>{{ blogData.createdAt | date:'short' }}</div>
+        </div>
+        <div class="blog-body">
+            <quill-view [content]="blogData.body" format="json"></quill-view>
+        </div>
+    </div>
+</div>

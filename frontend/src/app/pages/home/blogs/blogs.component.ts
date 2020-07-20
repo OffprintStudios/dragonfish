@@ -4,7 +4,7 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
-import { CreateBlogComponent } from 'src/app/components/modals';
+import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from 'src/app/components/modals';
 import { User } from 'src/app/models/users';
 import { Blog, SetPublishStatus } from 'src/app/models/blogs';
 import { AlertsService } from 'src/app/modules/alerts';
@@ -27,9 +27,9 @@ export class BlogsComponent implements OnInit {
     query: new FormControl('', Validators.required),
   });
 
-  filterOptions: ToppyControl;
   createBlog: ToppyControl;
   previewBlog: ToppyControl;
+  editBlog: ToppyControl;
 
   constructor(private blogsService: BlogsService, private authService: AuthService, private toppy: Toppy, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
@@ -37,14 +37,15 @@ export class BlogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const position = new GlobalPosition({
+    // Creates the createBlog modal
+    const createPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
       width: 'auto',
       height: 'auto',
     });
 
     this.createBlog = this.toppy
-      .position(position)
+      .position(createPosition)
       .config({backdrop: true, closeOnEsc: true})
       .content(CreateBlogComponent)
       .create();
@@ -52,6 +53,36 @@ export class BlogsComponent implements OnInit {
     this.createBlog.listen('t_close').subscribe(() => {
       this.fetchData();
     });
+
+    // Creates the previewBlog modal
+    const previewPosition = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto',
+    });
+
+    this.previewBlog = this.toppy
+      .position(previewPosition)
+      .config({backdrop: true, closeOnEsc: true, closeOnDocClick: true})
+      .content(PreviewBlogComponent)
+      .create();
+    
+    this.previewBlog.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
+
+    // Creates the editBlog modal
+    const editPosition = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto',
+    });
+
+    this.editBlog = this.toppy
+      .position(editPosition)
+      .config({backdrop: true, closeOnEsc: true})
+      .content(EditBlogComponent)
+      .create();
   }
 
   /**
@@ -88,6 +119,22 @@ export class BlogsComponent implements OnInit {
    */
   openNewBlogForm() {
     this.createBlog.open();
+  }
+
+  /**
+   * Opens the edit blog form.
+   */
+  openEditForm(blog: Blog) {
+    this.editBlog.updateContent(EditBlogComponent, {blogData: blog});
+    this.editBlog.open();
+  }
+
+  /**
+   * Opens the blog preview.
+   */
+  openPreview(blog: Blog) {
+    this.previewBlog.updateContent(PreviewBlogComponent, {blogData: blog});
+    this.previewBlog.open();
   }
 
   /**

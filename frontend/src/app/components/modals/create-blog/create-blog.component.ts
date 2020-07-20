@@ -26,12 +26,21 @@ export class CreateBlogComponent implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * Required for QuillJS validators
+   */
   triggerChangeDetection() {
     this.cdr.detectChanges();
   }
 
+  /**
+   * Create form getters
+   */
   get fields() { return this.newBlogForm.controls; }
 
+  /**
+   * Submits the form as a new blog to the backend
+   */
   submitForm() {
     const newBlogInfo: models.CreateBlog = {
       title: this.fields.title.value,
@@ -44,7 +53,21 @@ export class CreateBlogComponent implements OnInit {
     });
   }
 
+    /**
+   * Asks if the users actually wants to close the form if its contents have already been changed.
+   * 
+   * Otherwise, it closes the form immediately.
+   */
   askCancel() {
-    this.close();
+    if (this.newBlogForm.dirty) {
+      if (confirm('Are you sure? Any unsaved changes will be lost.')) {
+        this.close();
+      } else {
+        return;
+      }
+    } else {
+      this.close();
+      return;
+    }
   }
 }

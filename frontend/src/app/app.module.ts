@@ -22,8 +22,8 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
-import { UserMenuComponent, SearchMenuComponent, FilterOptionsComponent } from './components/dropdowns';
-import { CreateBlogComponent, PreviewBlogComponent } from './components/modals';
+import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
+import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals';
 
 const Quill: any = QuillNamespace;
 const MDS: any = MarkdownShortcuts;
@@ -61,7 +61,7 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent,
+    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -77,7 +77,7 @@ const toolbarOptions = [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent,
+    UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent
   ],
   bootstrap: [AppComponent]
 })
