@@ -75,7 +75,7 @@ export class WorksService {
      * @param workId The work you're trying to find.
      */
     async findOneWorkById(workId: string): Promise<models.Work> {
-        return await this.workModel.findById(workId);
+        return await this.workModel.findById(workId).where('audit.isDeleted', false);
     }
 
     /**
@@ -85,6 +85,6 @@ export class WorksService {
      * @param user The user whose works we're fetching.
      */
     async fetchUserWorks(user: any): Promise<models.Work[]> {
-        return await this.workModel.find().where('author', user.sub);
+        return await this.workModel.find().where('author', user.sub).where('audit.isDeleted', false);
     }
 }

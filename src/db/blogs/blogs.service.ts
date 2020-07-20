@@ -50,12 +50,12 @@ export class BlogsService {
     }
 
     /**
-     * Deletes a specific blog belonging to the specified user.
+     * Soft deletes a specific blog belonging to the specified user.
      * 
      * @param user The author of the blog
      * @param blogId The blog's ID
      */
     async deleteBlog(user: any, blogId: string): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {});
+        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true});
     }
 }

@@ -2,7 +2,6 @@ import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
-import * as MongooseDelete from 'mongoose-delete';
 import * as sanitize from 'sanitize-html';
 
 import * as models from './models';
@@ -36,13 +35,13 @@ export const WorksSchema = new Schema({
     audit: {
         threadId: {type: String, default: generate()},
         published: {type: Boolean, default: false},
+        isDeleted: {type: Boolean, default: false}
     },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'works'});
 
 WorksSchema.plugin(MongooseAutopopulate);
-WorksSchema.plugin(MongooseDelete, {deletedAt: true, overrideMethods: true});
 
 WorksSchema.pre<models.Work>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
