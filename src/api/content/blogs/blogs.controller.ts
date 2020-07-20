@@ -22,8 +22,8 @@ export class BlogsController {
 
     @UseGuards(AuthGuard)
     @Patch('delete-blog')
-    async deleteBlog(@Request() req: any, @Body() blogId: string) {
-        return await this.blogsService.deleteBlog(req.user, blogId);
+    async deleteBlog(@Request() req: any, @Body() blogId: {blogId: string}) {
+        return await this.blogsService.deleteBlog(req.user, blogId.blogId);
     }
 
     @UseGuards(AuthGuard)

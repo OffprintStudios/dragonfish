@@ -51,7 +51,7 @@ export class BlogsService {
    * @param blogId The ID of the blog we're deleting
    */
   public deleteBlog(blogId: string) {
-    return this.http.patch(`/api/content/blogs/delete-blog`, blogId, {observe: 'response', withCredentials: true})
+    return this.http.patch(`/api/content/blogs/delete-blog`, {blogId}, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Blog successfully deleted.');
