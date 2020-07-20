@@ -2,7 +2,7 @@
     <div class="blogs-list-header">
         <h2>My Blogs</h2>
         <div class="blog-controls">
-            <form [formGroup]="searchBlogs" class="search-blogs">
+            <form [formGroup]="searchBlogs" class="search-blogs" (ngSubmit)="searchFor()">
                 <div class="blogs-search">
                     <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
                     <button class="submit-blog-search" type="submit"><i-feather name="search"></i-feather></button>

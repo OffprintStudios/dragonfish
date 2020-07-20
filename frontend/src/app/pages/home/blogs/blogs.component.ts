@@ -55,6 +55,11 @@ export class BlogsComponent implements OnInit {
   }
 
   /**
+   * Search bar getter.
+   */
+  get searchField() { return this.searchBlogs.controls; }
+
+  /**
    * Fetches the list of blogs from the backend.
    */
   private fetchData() {
@@ -162,5 +167,29 @@ export class BlogsComponent implements OnInit {
     this.isPubFiltered = false;
     this.isUnpubFiltered = false;
     this.blogs = this.unfilteredList;
+  }
+
+  /**
+   * Takes the inputted search value and filters the blogs list to contain any matching
+   * search terms.
+   * 
+   * TODO: Make this check for equivalent text regardless of capitalization.
+   */
+  searchFor() {
+    const query: string = this.searchField.query.value;
+    if (this.isPubFiltered) {
+      this.blogs = this.blogs.filter(blog => {
+        return blog.title.includes(query);
+      });
+    } else if (this.isUnpubFiltered) {
+      this.blogs = this.blogs.filter(blog => {
+        return blog.title.includes(query);
+      });
+    } else {
+      this.unfilteredList = this.blogs;
+      this.blogs = this.unfilteredList.filter(blog => {
+        return blog.title.includes(query);
+      });
+    }
   }
 }
