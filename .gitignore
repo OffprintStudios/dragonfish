@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+# Rust & native
+/target
+
 # Logs
 logs
 *.log

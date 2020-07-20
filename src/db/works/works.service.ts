@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Library, types } from 'ffi-napi';
-
 import * as models from './models';
 import { UsersService } from '../users/users.service';
+import * as wordCounter from 'native/compiled/export'
 
 @Injectable()
 export class WorksService {
-    
-    private wordCounterLib: any;
+        
 
     constructor(
         @InjectModel('Work') private readonly workModel: Model<models.Work>,
         @InjectModel('Section') private readonly sectionModel: Model<models.Section>,
         private readonly usersService: UsersService) {
-            this.wordCounterLib = new Library("../../native/compiled/word_counter", {
-                'count_words': ['uint32', ['string']]
-            })
+            
         }
     
     /* Work and Section creation*/
@@ -48,8 +44,9 @@ export class WorksService {
         });
         
         // TODO: Something like this for word count
-        //const wordCount = this.wordCounterLib.count_words(newWorkInfo.body);
+        const wordCount = wordCounter.count("{ \"ops\": [ {\"insert\": \"gandalf\"}, {\"insert\": \" the\"} ] }");
         //newWork.stats.totWords = wordCount;
+        console.log(`Counted ${wordCount} words.`);
 
         return await newWork.save().then(async work => {
             const workCount = await this.workModel.countDocuments({author: user.sub});

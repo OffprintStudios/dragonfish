@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "native/word_counter",
+    # Future native modules get added here
+]
