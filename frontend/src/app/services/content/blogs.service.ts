@@ -44,4 +44,36 @@ export class BlogsService {
         return throwError(err);
       }));
   }
+
+  /**
+   * Deletes a user's blog based on the specified Blog ID.
+   * 
+   * @param blogId The ID of the blog we're deleting
+   */
+  public deleteBlog(blogId: string) {
+    return this.http.patch(`/api/content/blogs/delete-blog`, blogId, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        if (res.status === 200) {
+          this.alertsService.success('Blog successfully deleted.');
+        }
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Changes the publishing status of the specified blog.
+   * 
+   * @param blogId The ID of the blog we're changing status on
+   */
+  public setPublishStatus(publishStatus: models.SetPublishStatus) {
+    return this.http.patch(`/api/content/blogs/set-publish-status`, publishStatus, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        if (res.status === 200) {
+          this.alertsService.success('Blog status updated.');
+        }
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }

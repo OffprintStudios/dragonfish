@@ -6,7 +6,8 @@ import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
 import { CreateBlogComponent } from 'src/app/components/modals';
 import { User } from 'src/app/models/users';
-import { Blog } from 'src/app/models/blogs';
+import { Blog, SetPublishStatus } from 'src/app/models/blogs';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-blogs',
@@ -26,7 +27,7 @@ export class BlogsComponent implements OnInit {
   createBlog: ToppyControl;
   previewBlog: ToppyControl;
 
-  constructor(private blogsService: BlogsService, private authService: AuthService, private toppy: Toppy) {
+  constructor(private blogsService: BlogsService, private authService: AuthService, private toppy: Toppy, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
     this.fetchData();
   }
@@ -49,6 +50,9 @@ export class BlogsComponent implements OnInit {
     });
   }
 
+  /**
+   * Fetches the list of blogs from the backend.
+   */
   private fetchData() {
     this.loading = true;
     this.blogsService.fetchUserBlogs().subscribe(blogs => {
@@ -56,7 +60,10 @@ export class BlogsComponent implements OnInit {
       this.loading = false;
     });
   }
-
+  
+  /**
+   * Checks to see if the blogs array is empty.
+   */
   isBlogsEmpty() {
     if (this.blogs) {
       if (this.blogs.length === 0) {
@@ -67,14 +74,50 @@ export class BlogsComponent implements OnInit {
     }
   }
 
+  /**
+   * Opens the new blog form.
+   */
   openNewBlogForm() {
     this.createBlog.open();
   }
 
+  /**
+   * Asks a user if they'd like to delete the specified blog. If yes, delete the blog.
+   * If no, cancel the action.
+   * 
+   * @param blogId The blog we're deleting
+   */
   askDelete(blogId: string) {
     if (confirm('Are you sure you want to delete this blog? This action is irreversible.')) {
-      // TODO: Implement blog deletion both server side and client side.
+      this.blogsService.deleteBlog(blogId).subscribe(_ => {
+        this.fetchData();
+        return;
+      }, err => {
+        console.log(err);
+        this.alertsService.error('Something went wrong! Try again in a little bit.');
+        return;
+      });
+    } else {
       return;
     }
+  }
+
+  /**
+   * Sets the published status of a blog to its direct opposite. 
+   * 
+   * @param blogId The ID of the requisite blog
+   * @param publishStatus Its publish status
+   */
+  setPublishStatus(blogId: string, publishStatus: boolean) {
+    const pubStatus: SetPublishStatus = {blogId: blogId, publishStatus: !publishStatus};
+
+    this.blogsService.setPublishStatus(pubStatus).subscribe(_ => {
+      this.fetchData();
+      return;
+    }, err => {
+      console.log(err);
+      this.alertsService.error('Something went wrong! Try again in a little bit.');
+      return;
+    });
   }
 }

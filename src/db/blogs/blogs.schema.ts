@@ -1,6 +1,5 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
-import * as MongooseDelete from 'mongoose-delete';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 
@@ -30,7 +29,6 @@ export const BlogsSchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'blogs'});
 
 BlogsSchema.plugin(MongooseAutopopulate);
-BlogsSchema.plugin(MongooseDelete, {deletedAt: true, overrideMethods: true});
 
 BlogsSchema.pre<Blog>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());

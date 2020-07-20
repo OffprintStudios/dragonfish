@@ -31,6 +31,7 @@
     "@nestjsplus/cookies": "^1.1.1",
     "@types/dotenv": "^8.2.0",
     "@types/mongoose": "^5.7.30",
+    "@types/mongoose-delete": "^0.5.1",
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.0.0",
     "argon2": "^0.26.2",
