@@ -1,5 +1,4 @@
 import { Schema, HookNextFunction } from 'mongoose';
-import * as MongooseDelete from 'mongoose-delete';
 import { generate } from 'shortid';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
@@ -26,12 +25,11 @@ export const UsersSchema = new Schema({
     audit: {
         roles: {type: [String], default: ['user']},
         sessions: {type: [String], default: null},
+        isDeleted: {type: String, default: false},
     },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'users'});
-
-UsersSchema.plugin(MongooseDelete, {deletedAt: true, overrideMethods: true});
 
 UsersSchema.pre<User>('save', async function(next: HookNextFunction) {
     const user = this;
