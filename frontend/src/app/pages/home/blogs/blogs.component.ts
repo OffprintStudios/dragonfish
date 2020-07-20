@@ -17,7 +17,11 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class BlogsComponent implements OnInit {
   currentUser: User;
   blogs: Blog[];
+  unfilteredList: Blog[];
+
   loading = false;
+  isPubFiltered = false;
+  isUnpubFiltered = false;
 
   searchBlogs = new FormGroup({
     query: new FormControl('', Validators.required),
@@ -119,5 +123,44 @@ export class BlogsComponent implements OnInit {
       this.alertsService.error('Something went wrong! Try again in a little bit.');
       return;
     });
+  }
+
+  /**
+   * Filters the blogs list by published content.
+   */
+  filterByPublished() {
+    if (this.isUnpubFiltered) {
+      this.isPubFiltered = true;
+      this.isUnpubFiltered = false;
+      this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
+    } else {
+      this.unfilteredList = this.blogs;
+      this.isPubFiltered = true;
+      this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
+    }
+  }
+
+  /**
+   * Filters the blogs list by unpublished content.
+   */
+  filterByUnpublished() {
+    if (this.isPubFiltered) {
+      this.isUnpubFiltered = true;
+      this.isPubFiltered = false;
+      this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
+    } else {
+      this.unfilteredList = this.blogs;
+      this.isUnpubFiltered = true;
+      this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
+    }
+  }
+
+  /**
+   * Clears all filters.
+   */
+  clearFilter() {
+    this.isPubFiltered = false;
+    this.isUnpubFiltered = false;
+    this.blogs = this.unfilteredList;
   }
 }
