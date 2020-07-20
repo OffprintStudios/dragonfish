@@ -29,6 +29,6 @@ export class BlogsController {
     @UseGuards(AuthGuard)
     @Patch('set-publish-status')
     async setPublishStatus(@Request() req: any, @Body() pubStatus: models.SetPublishStatus) {
-        
+        return await this.blogsService.setPublishStatus(req.user, pubStatus);
     }
 }

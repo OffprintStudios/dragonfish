@@ -86,18 +86,20 @@ div.blogs-list-container {
     }
 
     div.blogs-list {
-        max-width: 80%;
+        width: 80%;
         margin: 0 auto 0 auto;
         div.blog-list {
             div.blog-item {
                 position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
                 border: 1px solid var(--site-borders);
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
                 max-height: 12rem;
                 div.blog-check {
                     position: relative;
-                    display: inline-block;
                     text-align: center;
                     button.check-unpublished {
                         color: var(--site-borders);
@@ -149,34 +151,36 @@ div.blogs-list-container {
 
                 div.blog-info {
                     position: relative;
-                    display: inline-block;
-                    top: 1.25rem;
+                    margin: 0 auto;
+                    top: 2rem;
                     padding: 10px;
-                    h3 {
-                        font-size: 28px;
-                        margin-bottom: 0;
+                    width: 75%;
+                    div.info {
+                        h3 {
+                            font-size: 28px;
+                            margin-bottom: 0;
                     
-                        i-feather {
-                            margin-right: 2rem;
+                            i-feather {
+                                margin-right: 2rem;
+                            }
                         }
-                    }
 
-                    h4 {
-                        color: var(--site-text-color);
-                        display: inline-block;
-                        font-size: 18px;
-                        margin-bottom: 0;
-                        margin-top: 0;
-                    }
+                        h4 {
+                            color: var(--site-text-color);
+                            display: inline-block;
+                            font-size: 18px;
+                            margin-bottom: 0;
+                            margin-top: 0;
+                        }
                 
-                    span {
-                        margin-left: 0.25rem;
-                        margin-right: 0.25rem;
+                        span {
+                            margin-left: 0.25rem;
+                            margin-right: 0.25rem;
+                        }
                     }
                 }
 
                 div.controls {
-                    float: right;
                     div.blog-control-buttons {
                         button.blog-controls {
                             padding-left: 15px;

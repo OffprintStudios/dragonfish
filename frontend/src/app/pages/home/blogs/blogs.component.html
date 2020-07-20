@@ -28,22 +28,24 @@
             <div class="blog-list">
                 <div class="blog-item" *ngFor="let blog of blogs">
                     <div class="blog-check">
-                        <button class="check-published" *ngIf="blog.published; else blogUnpublished">
+                        <button class="check-published" (click)="setPublishStatus(blog._id, blog.published)" *ngIf="blog.published; else blogUnpublished">
                             <i-feather name="check-circle"></i-feather>
                         </button>
                         <ng-template #blogUnpublished>
-                            <button class="check-unpublished">
+                            <button class="check-unpublished" (click)="setPublishStatus(blog._id, blog.published)">
                                 <i-feather name="circle"></i-feather>
                             </button>
                         </ng-template>
                     </div>
                     <div class="blog-info">
-                        <h3><a>{{ blog.title }}</a></h3>
-                        <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
-                        <h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
-                        <h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
-                        <h4>Created: {{ blog.createdAt | date:'mediumDate' }}</h4><div *ngIf="blog.updatedAt !== blog.createdAt"><span>//</span>
-                        <h4>Updated: {{ blog.updatedAt | date:'medium'}}</h4></div>
+                        <div class="info">
+                            <h3><a>{{ blog.title }}</a></h3>
+                            <h4>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                            <h4>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                            <h4>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                            <h4>Created: {{ blog.createdAt | date:'shortDate' }}</h4>
+                            <div *ngIf="blog.updatedAt !== blog.createdAt" style="display: inline-block;"><span>//</span><h4>Updated: {{ blog.updatedAt | date:'short'}}</h4></div>
+                        </div>
                     </div>
                     <div class="controls">
                         <div class="blog-control-buttons">

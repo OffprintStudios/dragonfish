@@ -58,4 +58,15 @@ export class BlogsService {
     async deleteBlog(user: any, blogId: string): Promise<void> {
         await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true});
     }
+
+    /**
+     * Changes the publishing status of a specific blog belonging to the
+     * specified user.
+     * 
+     * @param user The author of the blog
+     * @param pubStatus The blog's ID and new publishing status
+     */
+    async setPublishStatus(user: any, pubStatus: models.SetPublishStatus): Promise<void> {
+        await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus});
+    }
 }
