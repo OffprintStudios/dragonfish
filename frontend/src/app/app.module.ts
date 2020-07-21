@@ -25,6 +25,8 @@ import { RegisterComponent } from './pages/account';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals';
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
+  PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
 
 const Quill: any = QuillNamespace;
 const MDS: any = MarkdownShortcuts;
@@ -63,6 +65,8 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
+    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
+    PortBlogPageComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

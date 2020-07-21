@@ -1,9 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, WorksComponent,
   BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent } from './pages/home';
+
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
+  PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
+
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
+
 import { RegisterComponent } from './pages/account';
+
 import { AuthGuard } from './services/auth';
 
 const routes: Routes = [
@@ -25,6 +32,13 @@ const routes: Routes = [
   {path: 'groups', component: GroupsComponent},
   {path: 'news', component: NewsComponent},
   {path: 'register', component: RegisterComponent},
+  {path: 'portfolio/:id/:username', component: PortfolioComponent, children: [
+    { path: '', component: PortHomeComponent },
+    { path: 'blogs', component: PortBlogComponent },
+    { path: 'blog/:blogId', component: PortBlogPageComponent },
+    { path: 'works', component: PortWorksComponent },
+    { path: 'collections', component: PortCollectionsComponent },
+  ]}
 ];
 
 @NgModule({
