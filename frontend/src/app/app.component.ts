@@ -30,9 +30,9 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (this.currentUser.profile.themePref === 'dark-crimson') {
         this.changeTheme('#DD4C4F', '#933235', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
       } else if (this.currentUser.profile.themePref === 'aqua') {
-        this.changeTheme('rgb(80,154,233)', 'rgb(49,99,153)', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
+        this.changeTheme('rgb(80,152,214)', 'rgb(49,99,153)', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
       } else if (this.currentUser.profile.themePref === 'dark-aqua') {
-        this.changeTheme('rgb(80,154,233)', 'rgb(49,99,153)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
+        this.changeTheme('rgb(80,152,214)', 'rgb(49,99,153)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
       } else if (this.currentUser.profile.themePref === 'royal') {
         this.changeTheme('#9A4EAE', '#4E2A84', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
       } else if (this.currentUser.profile.themePref === 'dark-royal') {
