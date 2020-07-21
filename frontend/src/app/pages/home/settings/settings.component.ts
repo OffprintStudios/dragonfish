@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { User } from 'src/app/models/users';
+import * as models from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth';
   styleUrls: ['./settings.component.less']
 })
 export class SettingsComponent implements OnInit {
-  currentUser: User;
+  currentUser: models.User;
   uploading = false;
 
   themePrefOptions = [
@@ -103,18 +103,45 @@ export class SettingsComponent implements OnInit {
   get changeProfileFields() { return this.changeProfileForm.controls; }
 
   submitUsernameAndEmailForm() {
+    const newNameAndEmail: models.ChangeNameAndEmail = {
+      username: this.usernameAndEmailFields.username.value,
+      email: this.usernameAndEmailFields.email.value,
+      currentPassword: this.usernameAndEmailFields.currPassword.value,
+    };
 
+    this.authService.changeNameAndEmail(newNameAndEmail).subscribe(() => {
+      location.reload();
+    });
   }
 
   submitChangePasswordForm() {
+    if (this.passwordFields.newPassword.value !== this.passwordFields.confirmNewPassword.value) {
+      alert('Your new password doesn\'t match.');
+      return;
+    }
 
+    const newPasswordInfo: models.ChangePassword = {
+      currentPassword: this.passwordFields.currPassword.value,
+      newPassword: this.passwordFields.newPassword.value,
+    };
+
+    this.authService.changePassword(newPasswordInfo).subscribe(() => {
+        location.reload();
+      });
   }
 
   submitProfileForm() {
+    const newProfileInfo: models.ChangeProfile = {
+      themePref: this.changeProfileFields.newThemePref.value,
+      bio: this.changeProfileFields.newBio.value,
+    };
 
+    this.authService.changeProfile(newProfileInfo).subscribe(() => {
+      location.reload();
+    });
   }
 
   changeAvatar() {
-    
+
   }
 }

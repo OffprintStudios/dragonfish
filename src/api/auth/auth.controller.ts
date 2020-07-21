@@ -1,4 +1,5 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -68,5 +69,12 @@ export class AuthController {
     @Patch('update-profile')
     async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
         return await this.authService.updateProfile(req.user, newProfile);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post('upload-avatar')
+    @UseInterceptors(FileInterceptor('avatar'))
+    async uploadAvatar(@UploadedFile() avatar: any) {
+        
     }
 }
