@@ -10,6 +10,13 @@ import { JwtPayload } from './models';
 export class AuthService {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
 
+    /**
+     * Validates the incoming email and password of a login request. Returns a User
+     * if validation success, but otherwise errors out.
+     * 
+     * @param email A potential user's email
+     * @param password A potential user's password
+     */
     async validateUser(email: string, password: string): Promise<User> {
         const potentialUser = await this.usersService.findOneByEmail(email);
         if (potentialUser) {
@@ -27,6 +34,15 @@ export class AuthService {
         }
     }
 
+    /**
+     * Logs a user in by generating a JWT payload and setting the httpOnly refresh token
+     * in the request cookies header. Then, constructs a specialized FrontendUser object
+     * to send to the frontend.
+     * 
+     * @param user The incoming user
+     * @param req The incoming login request
+     * @param sessionId A new session ID
+     */
     async login(user: User, req: any, sessionId: string): Promise<FrontendUser> {
         const payload: JwtPayload = {
             username: user.username,
@@ -39,6 +55,12 @@ export class AuthService {
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 
+    /**
+     * Refreshes the login of a given user by generating a new JWT payload and reconstructing
+     * the FrontendUser object of the requisite user.
+     * 
+     * @param user A user's JWT payload
+     */
     async refreshLogin(user: JwtPayload): Promise<FrontendUser> {
         const validatedUser = await this.usersService.findOneById(user.sub);
         const newPayload: JwtPayload = {
