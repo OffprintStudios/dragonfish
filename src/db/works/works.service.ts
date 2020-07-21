@@ -12,9 +12,7 @@ export class WorksService {
     constructor(
         @InjectModel('Work') private readonly workModel: Model<models.Work>,
         @InjectModel('Section') private readonly sectionModel: Model<models.Section>,
-        private readonly usersService: UsersService) {
-            
-        }
+        private readonly usersService: UsersService) {}
     
     /* Work and Section creation*/
     

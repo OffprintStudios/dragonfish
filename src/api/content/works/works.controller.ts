@@ -3,10 +3,6 @@ import { Controller, UseGuards, Request, Get, Post, Body } from '@nestjs/common'
 import * as models from 'src/db/works/models';
 import { WorksService } from 'src/db/works/works.service';
 import { AuthGuard } from 'src/guards';
-import { countQuillWords } from 'native/word_counter/wordCounter';
-
-//debug deleteme
-import * as rawbody from 'raw-body';
 
 @Controller('works')
 export class WorksController {
