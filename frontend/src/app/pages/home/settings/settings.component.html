@@ -1,1 +1,65 @@
-<p>settings works!</p>
+<div class="settings-container">
+    <div class="settings-header">
+        <h2>Settings</h2>
+    </div>
+    <hr class="header-divider">
+    <div class="settings-cardrow">
+        <div class="settings-card">
+            <form [formGroup]="changeUsernameAndEmailForm" (ngSubmit)="submitUsernameAndEmailForm()">
+                <div class="settings-card-content">
+                    <h1>Change Username/Email</h1>
+                    <input class="u-full-width" type="email" formControlName="email" placeholder="New Email">
+                    <input class="u-full-width" type="text" formControlName="username" placeholder="New Username">
+                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <form [formGroup]="changePasswordForm" (ngSubmit)="submitChangePasswordForm()">
+                <div class="settings-card-content">
+                    <h1>Change Password</h1>
+                    <input class="u-full-width" type="password" formControlName="newPassword" placeholder="New Password">
+                    <input class="u-full-width" type="password" formControlName="confirmNewPassword" placeholder="Confirm New Password">
+                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <form [formGroup]="changeProfileForm" (ngSubmit)="submitProfileForm()">
+                <div class="settings-card-content">
+                    <h1>Personal Settings</h1>
+                    <label>Theme Preference</label>
+                    <select class="u-full-width" formControlName="newThemePref">
+                        <option *ngFor="let themePref of themePrefOptions" [ngValue]="themePref">
+                            {{ themePref.displayName }}
+                        </option>
+                    </select>
+                    <label for="newDescription">Account Bio</label>
+                    <textarea class="u-full-width" style="max-width: 100%;" id="newDescription" formControlName="newBio"></textarea>
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <div class="settings-card-content">
+                <h1>Avatar</h1>
+                <img [src]="currentUser.profile.avatar">
+                <input type="file" style="display: none;" (change)="changeAvatar()" #avatarInput>
+                <div style="text-align: center;">
+                    <button type="button" style="margin-top: 2rem;" (click)="avatarInput.click()" *ngIf="!uploading">Choose Image</button>
+                    <div class="loader" *ngIf="uploading">
+                        <div class="lds-dual-ring"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
