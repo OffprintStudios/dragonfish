@@ -13,6 +13,7 @@ export class OptionalAuthGuard implements CanActivate {
 
     // Getting the JSON Web Token from the authorization header.
     if (request.headers['authorization']) {
+      // If there's an authorization header, begin the process of verifying the JWT
       const jwtToken: string = request.headers['authorization'];
 
       // Checking to see if the token matches the correct format.
@@ -35,6 +36,7 @@ export class OptionalAuthGuard implements CanActivate {
         throw new UnauthorizedException(`You don't have permission to do that.`)
       }
     } else {
+      // If there's no authorization header, let the request pass unhindered
       return true;
     }
   }
