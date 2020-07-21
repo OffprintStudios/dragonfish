@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FileUploader } from 'ng2-file-upload';
 
 import * as models from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-settings',
@@ -12,6 +14,7 @@ import { AuthService } from 'src/app/services/auth';
 export class SettingsComponent implements OnInit {
   currentUser: models.User;
   uploading = false;
+  uploader: FileUploader = new FileUploader({url: '/api/auth/upload-avatar', itemAlias: 'file'});
 
   themePrefOptions = [
     {name: 'crimson', displayName: 'Crimson' },
@@ -43,7 +46,7 @@ export class SettingsComponent implements OnInit {
     newBio: new FormControl('')
   });
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => {
       let themePrefIndex = 0;
 
@@ -96,6 +99,10 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = true; };
+    this.uploader.onCompleteItem = (item, response, status, headers) => {
+      this.alertsService.success('Avatar uploaded successfully!');
+    };
   }
 
   get usernameAndEmailFields() { return this.changeUsernameAndEmailForm.controls; }
@@ -132,7 +139,7 @@ export class SettingsComponent implements OnInit {
 
   submitProfileForm() {
     const newProfileInfo: models.ChangeProfile = {
-      themePref: this.changeProfileFields.newThemePref.value,
+      themePref: this.changeProfileFields.newThemePref.value.name,
       bio: this.changeProfileFields.newBio.value,
     };
 

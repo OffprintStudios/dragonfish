@@ -52,12 +52,10 @@
             <div class="settings-card-content">
                 <h1>Avatar</h1>
                 <img [src]="currentUser.profile.avatar">
-                <input type="file" style="display: none;" (change)="changeAvatar()" #avatarInput>
+                <input type="file" style="display: none;" ng2FileSelect [uploader]="uploader" #avatarInput>
                 <div style="text-align: center;">
-                    <button type="button" style="margin-top: 2rem;" (click)="avatarInput.click()" *ngIf="!uploading">Choose Image</button>
-                    <div class="loader" *ngIf="uploading">
-                        <div class="lds-dual-ring"></div>
-                    </div>
+                    <button type="button" style="margin-top: 2rem;" (click)="avatarInput.click()">Choose Image</button>
+                    <button type="button" style="margin-top: 2rem;" (click)="uploader.uploadAll()">Upload</button>
                 </div>
             </div>
         </div>

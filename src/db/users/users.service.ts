@@ -145,7 +145,7 @@ export class UsersService {
         const existingUsername = await this.userModel.findOne({username: sanitize(newNameAndEmail.username)});
         const existingEmail = await this.userModel.findOne({email: sanitize(newNameAndEmail.email)});
 
-        if (isNullOrUndefined(existingUsername) && isNullOrUndefined(existingEmail)) {
+        if (isNullOrUndefined(existingUsername) || isNullOrUndefined(existingEmail)) {
             return await this.userModel.findOneAndUpdate({"_id": userId}, {"email": newNameAndEmail.email,"username": newNameAndEmail.username});
         } else {
             throw new ConflictException('Someone already has your username or email. Try another combination.');

@@ -18,7 +18,7 @@ const s3 = new AWS.S3({
 @Module({
   imports: [
     UsersModule,
-    /*MulterModule.registerAsync({
+    MulterModule.registerAsync({
       useFactory: () => ({
         storage: multerS3({
           s3: s3,
@@ -42,7 +42,7 @@ const s3 = new AWS.S3({
           fileSize: 1024 * 1024
         }
       }),
-    }),*/
+    }),
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,

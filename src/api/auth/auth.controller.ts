@@ -75,6 +75,6 @@ export class AuthController {
     @Post('upload-avatar')
     @UseInterceptors(FileInterceptor('avatar'))
     async uploadAvatar(@UploadedFile() avatar: any) {
-        
+        console.log(avatar);
     }
 }

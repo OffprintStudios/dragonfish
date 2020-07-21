@@ -8,6 +8,7 @@ import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
 import * as MarkdownShortcuts from 'quill-markdown-shortcuts';
+import { FileUploadModule } from 'ng2-file-upload';
 import { SlugifyPipe, PluralizePipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
@@ -65,7 +66,7 @@ const toolbarOptions = [
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule,
+    IconsModule, AlertsModule, FileUploadModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {

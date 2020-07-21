@@ -85,11 +85,17 @@ export class AuthService {
             try {
                 if (await verify(potentialUser.password, newNameAndEmail.currentPassword, {type: argon2id})) {
                     const newUserInfo = await this.usersService.changeNameAndEmail(potentialUser._id, newNameAndEmail);
-                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user)); // Probably want to not do this for potential security concerns
+                    const newUserPayload: JwtPayload = {
+                        sub: newUserInfo._id,
+                        username: newUserInfo.username,
+                        roles: newUserInfo.audit.roles,
+                    };
+                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(newUserPayload)); // Probably want to not do this for potential security concerns
                 } else {
                     throw new UnauthorizedException(`You don't have permission to do that.`);
                 }
             } catch (err) {
+                console.log(err);
                 throw new InternalServerErrorException('Something went wrong verifying your credentials. Try again in a little bit.');
             }
         } else {
@@ -111,7 +117,12 @@ export class AuthService {
             try {
                 if (await verify(potentialUser.password, newPassword.currentPassword, {type: argon2id})) {
                     const newUserInfo = await this.usersService.changePassword(potentialUser._id, newPassword);
-                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user)); // Probably want to not do this for potential security concerns
+                    const newUserPayload: JwtPayload = {
+                        sub: newUserInfo._id,
+                        username: newUserInfo.username,
+                        roles: newUserInfo.audit.roles,
+                    };
+                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(newUserPayload)); // Probably want to not do this for potential security concerns
                 } else {
                     throw new UnauthorizedException(`You don't have permission to do that.`);
                 }
@@ -134,6 +145,11 @@ export class AuthService {
      */
     async updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile) {
         const newUserInfo = await this.usersService.updateProfile(user.sub, newProfileInfo);
-        return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user));
+        const newUserPayload: JwtPayload = {
+            sub: user.sub,
+            username: user.username,
+            roles: user.roles,
+        };
+        return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(newUserPayload));
     }
 }

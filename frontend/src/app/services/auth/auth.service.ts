@@ -135,7 +135,7 @@ export class AuthService {
    * @param newProfileInfo The new profile info requested
    */
   public changeProfile(newProfileInfo: ChangeProfile) {
-    return this.http.patch<User>(`/api/auth/change-profile`, newProfileInfo, {observe: 'response', withCredentials: true})
+    return this.http.patch<User>(`/api/auth/update-profile`, newProfileInfo, {observe: 'response', withCredentials: true})
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
