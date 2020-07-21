@@ -11,6 +11,8 @@ import { AuthGuard, RefreshGuard } from 'src/guards';
 export class AuthController {
     constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
 
+    /* Login and Registration*/
+
     @SetCookies()
     @Post('register')
     async register(@Request() req: any, @Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
