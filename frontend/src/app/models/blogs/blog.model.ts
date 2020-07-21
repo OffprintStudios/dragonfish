@@ -1,6 +1,6 @@
 export interface Blog {
     readonly _id: string;
-    readonly author: string | {
+    readonly author: {
         readonly _id: string;
         readonly username: string;
         readonly profile: {

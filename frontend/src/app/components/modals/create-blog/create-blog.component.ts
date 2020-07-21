@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/blogs';
 import { BlogsService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-create-blog',
@@ -22,16 +23,25 @@ export class CreateBlogComponent implements OnInit {
 
   };
 
-  constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef) {}
+  constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) {}
 
   ngOnInit() {}
 
+  /**
+   * Required for QuillJS validators
+   */
   triggerChangeDetection() {
     this.cdr.detectChanges();
   }
 
+  /**
+   * Create form getters
+   */
   get fields() { return this.newBlogForm.controls; }
 
+  /**
+   * Submits the form as a new blog to the backend
+   */
   submitForm() {
     const newBlogInfo: models.CreateBlog = {
       title: this.fields.title.value,
@@ -41,10 +51,26 @@ export class CreateBlogComponent implements OnInit {
 
     this.blogsService.createBlog(newBlogInfo).subscribe(() => {
       this.close();
+    }, err => {
+      this.alertsService.error(err);
     });
   }
 
+    /**
+   * Asks if the users actually wants to close the form if its contents have already been changed.
+   * 
+   * Otherwise, it closes the form immediately.
+   */
   askCancel() {
-    this.close();
+    if (this.newBlogForm.dirty) {
+      if (confirm('Are you sure? Any unsaved changes will be lost.')) {
+        this.close();
+      } else {
+        return;
+      }
+    } else {
+      this.close();
+      return;
+    }
   }
 }

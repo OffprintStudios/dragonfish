@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { User, CreateUser, LoginUser } from 'src/app/models/users';
+import { User, CreateUser, LoginUser, ChangeNameAndEmail, ChangePassword, ChangeProfile } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
 
 @Injectable({
@@ -19,9 +19,14 @@ export class AuthService {
     this.currUser = this.currUserSubject.asObservable();
   }
 
+  /**
+   * Gets the current user value from the user subject.
+   */
   public getCurrUserValue(): User {
     return this.currUserSubject.value;
   }
+
+  /* Authorization */
 
   /**
    * Sends a new user's info to the backend. If the response is successful,
@@ -77,10 +82,67 @@ export class AuthService {
       }));
   }
 
+  /**
+   * Logs the user out, sets the user object to null, removes their info from localStorage, and
+   * navigates to home.
+   */
   public logout(): void {
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');
     this.router.navigate(['/home/latest']);
+  }
+
+  /* Account settings */
+
+  /**
+   * Sends a request to change a user's username and email.
+   * 
+   * @param newNameAndEmail The new name and email requested
+   */
+  public changeNameAndEmail(newNameAndEmail: ChangeNameAndEmail) {
+    return this.http.patch<User>(`/api/auth/change-name-and-email`, newNameAndEmail, {observe: 'response', withCredentials: true})
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sends a request to change a user's password.
+   * 
+   * @param newPasswordInfo The new password requested
+   */
+  public changePassword(newPasswordInfo: ChangePassword) {
+    return this.http.patch<User>(`/api/auth/change-password`, newPasswordInfo, {observe: 'response', withCredentials: true})
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sends a request to change a user's profile.
+   * 
+   * @param newProfileInfo The new profile info requested
+   */
+  public changeProfile(newProfileInfo: ChangeProfile) {
+    return this.http.patch<User>(`/api/auth/update-profile`, newProfileInfo, {observe: 'response', withCredentials: true})
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
   }
 }

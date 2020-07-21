@@ -39,6 +39,15 @@ div.blogs-list-container {
                     height: 16px;
                 }
             }
+
+            button.active {
+                color: whitesmoke;
+                background-color: var(--site-accent);
+
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
     
             form.search-blogs {
                 float: right;
@@ -77,74 +86,131 @@ div.blogs-list-container {
     }
 
     div.blogs-list {
-        max-width: 80%;
+        width: 80%;
         margin: 0 auto 0 auto;
-
-        ul.the-actual-list {
-            list-style: none;
-
-            li.blog-entry {
+        div.blog-list {
+            div.blog-item {
                 position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
                 border: 1px solid var(--site-borders);
-                padding: 10px;
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
+                max-height: 12rem;
+                div.blog-check {
+                    position: relative;
+                    text-align: center;
+                    button.check-unpublished {
+                        color: var(--site-borders);
+                        box-shadow: none;
+                        border-top: none;
+                        border-bottom: none;
+                        border-left: none;
+                        height: 12rem;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        margin-bottom: 0;
 
-                button.check-published {
-                    position: absolute;
-                    box-shadow: none;
-                    i-feather {
-                        
+                        &:hover {
+                            color: whitesmoke;
+                        }
+
+                        i-feather {
+                            width: 35px;
+                            height: 35px;
+                            top: 0.75rem;
+                            stroke-width: 1;
+                        }
+                    }
+
+                    button.check-published {
+                        color: whitesmoke;
+                        box-shadow: none;
+                        border-top: none;
+                        border-bottom: none;
+                        border-left: none;
+                        height: 12rem;
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        margin-bottom: 0;
+                        background-color: var(--site-accent);
+
+                        &:hover {
+                            background-color: var(--site-accent-hover);
+                        }
+
+                        i-feather {
+                            width: 35px;
+                            height: 35px;
+                            top: 0.75rem;
+                            stroke-width: 1;
+                        }
                     }
                 }
 
                 div.blog-info {
-                    position: absolute;
-                    h3 {
-                        font-size: 28px;
-                        margin-bottom: 0;
+                    position: relative;
+                    margin: 0 auto;
+                    top: 2rem;
+                    padding: 10px;
+                    width: 75%;
+                    div.info {
+                        h3 {
+                            font-size: 28px;
+                            margin-bottom: 0;
                     
-                        i-feather {
-                            margin-right: 2rem;
+                            i-feather {
+                                margin-right: 2rem;
+                            }
                         }
-                    }
 
-                    h4 {
-                        color: var(--site-text-color);
-                        display: inline-block;
-                        font-size: 18px;
-                        margin-bottom: 0;
-                        margin-top: 0;
-                    }
+                        h4 {
+                            color: var(--site-text-color);
+                            display: inline-block;
+                            font-size: 18px;
+                            margin-bottom: 0;
+                            margin-top: 0;
+                        }
                 
-                    span {
-                        margin-left: 0.25rem;
-                        margin-right: 0.25rem;
+                        span {
+                            margin-left: 0.25rem;
+                            margin-right: 0.25rem;
+                        }
                     }
                 }
 
-                div.blog-control-buttons {
-                    float: right;
-                    box-shadow: var(--site-dropshadow);
-                    button.blog-controls {
-                        padding-left: 10px;
-                        padding-right: 10px;
-                        box-shadow: none;
-                        margin-bottom: 0;
-                        i-feather {
-                            position: relative;
-                            top: 0.5rem;
+                div.controls {
+                    div.blog-control-buttons {
+                        button.blog-controls {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            height: 12rem;
+                            box-shadow: none;
+                            margin-bottom: 0;
+                            border-top: none;
+                            border-bottom: none;
+                            color: var(--site-borders);
+                            i-feather {
+                                position: relative;
+                                top: 0.75rem;
+                                stroke-width: 1;
+                            }
+                            &:hover {
+                                color: whitesmoke;
+                                background-color: var(--site-accent);
+                            }
                         }
-                        &:hover {
-                            color: whitesmoke;
-                            background-color: var(--site-accent);
+                        button.mid {
+                            border-left: 0;
+                            border-right: 0;
+                            box-shadow: none;
+                            margin-bottom: 0;
                         }
-                    }
-                    button.mid {
-                        border-left: 0;
-                        border-right: 0;
-                        box-shadow: none;
-                        margin-bottom: 0;
+
+                        button.right {
+                            border-right: none;
+                        }
                     }
                 }
             }

@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Get, Put, Body } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Put, Body, Patch } from '@nestjs/common';
 
 import * as models from 'src/db/blogs/models';
 import { BlogsService } from 'src/db/blogs/blogs.service';
@@ -19,4 +19,23 @@ export class BlogsController {
     async createBlog(@Request() req: any, @Body() newBlog: models.CreateBlog) {
         return await this.blogsService.createNewBlog(req.user, newBlog);
     }
+
+    @UseGuards(AuthGuard)
+    @Patch('delete-blog')
+    async deleteBlog(@Request() req: any, @Body() blogId: {blogId: string}) {
+        return await this.blogsService.deleteBlog(req.user, blogId.blogId);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('set-publish-status')
+    async setPublishStatus(@Request() req: any, @Body() pubStatus: models.SetPublishStatus) {
+        return await this.blogsService.setPublishStatus(req.user, pubStatus);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('edit-blog')
+    async editBlog(@Request() req: any, @Body() editBlog: models.EditBlog) {
+        return await this.blogsService.editBlog(req.user, editBlog);
+    }
+
 }

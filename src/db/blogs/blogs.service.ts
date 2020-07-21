@@ -24,7 +24,7 @@ export class BlogsService {
             body: newBlogInfo.body,
             published: newBlogInfo.published});
         return await newBlog.save().then(async blog => {
-            const blogCount = await this.blogModel.countDocuments({author: user.sub});
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false);
             await this.usersService.updateBlogCount(user.sub, blogCount);
             return blog;
         });
@@ -36,7 +36,7 @@ export class BlogsService {
      * @param blogId The incoming blog ID.
      */
     async findOneById(blogId: string): Promise<models.Blog> {
-        return await this.blogModel.findById(blogId);
+        return await this.blogModel.findById(blogId).where('audit.isDeleted', false);
     }
 
     /**
@@ -46,6 +46,38 @@ export class BlogsService {
      * @param user The user whose blogs are being requested.
      */
     async fetchUserBlogs(user: any): Promise<models.Blog[]> {
-        return await this.blogModel.find().where('author', user.sub);
+        return await this.blogModel.find().where('author', user.sub).where('audit.isDeleted', false);
+    }
+
+    /**
+     * Soft deletes a specific blog belonging to the specified user.
+     * 
+     * @param user The author of the blog
+     * @param blogId The blog's ID
+     */
+    async deleteBlog(user: any, blogId: string): Promise<void> {
+        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true});
+    }
+
+    /**
+     * Changes the publishing status of a specific blog belonging to the
+     * specified user.
+     * 
+     * @param user The author of the blog
+     * @param pubStatus The blog's ID and new publishing status
+     */
+    async setPublishStatus(user: any, pubStatus: models.SetPublishStatus): Promise<void> {
+        await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus});
+    }
+
+    /**
+     * Edits a given user's blog using the provided information in the EditBlog
+     * model.
+     * 
+     * @param user The author of the blog
+     * @param blogInfo The blog info for the update
+     */
+    async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
+        await this.blogModel.findOneAndUpdate({"_id": blogInfo._id, "author": user.sub}, {"title": blogInfo.title, "body": blogInfo.body, "published": blogInfo.published});
     }
 }

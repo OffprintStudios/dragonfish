@@ -8,6 +8,7 @@ import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
 import * as MarkdownShortcuts from 'quill-markdown-shortcuts';
+import { FileUploadModule } from 'ng2-file-upload';
 import { SlugifyPipe, PluralizePipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
@@ -22,8 +23,8 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
-import { UserMenuComponent, SearchMenuComponent, FilterOptionsComponent } from './components/dropdowns';
-import { CreateBlogComponent, PreviewBlogComponent } from './components/modals';
+import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
+import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals';
 
 const Quill: any = QuillNamespace;
 const MDS: any = MarkdownShortcuts;
@@ -61,11 +62,11 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent,
+    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule,
+    IconsModule, AlertsModule, FileUploadModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
@@ -77,7 +78,7 @@ const toolbarOptions = [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, FilterOptionsComponent, CreateBlogComponent, PreviewBlogComponent,
+    UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent
   ],
   bootstrap: [AppComponent]
 })

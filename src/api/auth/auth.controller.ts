@@ -1,4 +1,5 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -10,6 +11,8 @@ import { AuthGuard, RefreshGuard } from 'src/guards';
 @Controller('')
 export class AuthController {
     constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
+
+    /* Login and Registration*/
 
     @SetCookies()
     @Post('register')
@@ -45,6 +48,33 @@ export class AuthController {
 
     @Get('logout')
     async logout() {
-        return "yo there";
+        return "yo there"; // This needs to remove a session ID from a user's document.
+    }
+
+    /* Account settings */
+
+    @UseGuards(AuthGuard)
+    @Patch('change-name-and-email')
+    async changeNameAndEmail(@Request() req: any, @Body() newNameAndEmail: models.ChangeNameAndEmail) {
+        return await this.authService.changeNameAndEmail(req.user, newNameAndEmail);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('change-password')
+    async changePassword(@Request() req: any, @Body() newPassword: models.ChangePassword) {
+        return await this.authService.changePassword(req.user, newPassword);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('update-profile')
+    async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
+        return await this.authService.updateProfile(req.user, newProfile);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post('upload-avatar')
+    @UseInterceptors(FileInterceptor('avatar'))
+    async uploadAvatar(@UploadedFile() avatar: any) {
+        console.log(avatar);
     }
 }

@@ -1,6 +1,5 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
-import * as MongooseDelete from 'mongoose-delete';
 import * as sanitize from 'sanitize-html';
 
 import { Section } from './models';
@@ -20,8 +19,6 @@ export const SectionsSchema = new Schema({
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'sections'});
-
-SectionsSchema.plugin(MongooseDelete, {deletedAt: true, overrideMethods: true});
 
 SectionsSchema.pre<Section>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());
