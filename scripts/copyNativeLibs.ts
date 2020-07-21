@@ -1,6 +1,15 @@
 // Heavily inspired by napi-rs's "napi" script, (https://github.com/napi-rs/napi-rs/blob/master/scripts/napi.js) 
 // but capable of handling Cargo.toml files with workspaces.
 
+/* Usage:
+     copyNativeLibs [--release] [output path]
+    
+     If --release is specified, looks in the '/target/release/' directory of the Rust crate
+     instead of '/target/debug'.
+
+     If 'output path' is specified, produced native modules will be copied to it.
+*/
+
 import * as parseArgs from 'minimist';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -45,7 +54,7 @@ function copyLibraryToDotNode(tomlContent: any) {
 
     const moduleName = tomlContent.package.name.replace(/-/g, '_');
     const argv = parseArgs(process.argv.slice(2), {
-        boolean: ['release', 'platform'],
+        boolean: ['release'],
     });
     const userPlatform = os.platform();
     let libExtension;
@@ -62,38 +71,38 @@ function copyLibraryToDotNode(tomlContent: any) {
     } else {
         console.error("Operating system unrecognized, or unsupported by this build script.");
         process.exit(1);
-    }
-
-    const targetDir = argv.release ? "release" : "debug";
-    const platformName = argv.platform ? `.${userPlatform}` : "";
+    }    
 
     let distModulePath;
     if (argv._[0]) {
         // Check to see if user-input destination both a) exists and b) is a folder
         if (fs.existsSync(argv._[0]) && fs.lstatSync(argv._[0]).isDirectory()) {
-            distModulePath = `${argv._[0]}${moduleName}.node`;
+            distModulePath = `${argv._[0]}${moduleName}.node`;        
         } else {
-            distModulePath = argv._[0];
+            throw new TypeError(`The output folder '${argv._[0]}' does not exist, or is not a directory.`);
         }
     } else {
-        distModulePath = path.join("target", targetDir, `${moduleName}${platformName}.node`);
+        distModulePath = path.join(process.cwd(), "native", "compiled", `${moduleName}.node`);
     }
     const parsedDist = path.parse(distModulePath);
 
+    // Set output path to just <cwd>/moduleName
     if (!parsedDist.name || parsedDist.name === ".") {
         distModulePath = moduleName;
     }
-
+    
+    // Tack on the .node extension if it hasn't been added yet
     if (!parsedDist.ext) {
-        distModulePath = `${distModulePath}${platformName}.node`;
+        distModulePath = `${distModulePath}.node`;
     }
 
-    const pos = __dirname.indexOf("node_modules");    
+    const nodeModulesPos = __dirname.indexOf("node_modules");    
+    const rustTargetDir = argv.release ? "release" : "debug";    
     const libContent = fs.readFileSync(
         path.join(
-            __dirname.substring(0, pos),
+            __dirname.substring(0, nodeModulesPos),
             "target",
-            targetDir,
+            rustTargetDir,
             `${libName}${libExtension}`,
         ),
     );

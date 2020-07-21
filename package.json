@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "buildNativeModules": "cargo build --release && ts-node ./native/copyNativeLibs.ts --release ./native/compiled/",
+    "buildNativeModules": "cargo build --release && ts-node ./scripts/copyNativeLibs.ts --release",
+    "postbuild": "mkdir ./dist/native/compiled && cp ./native/compiled/* ./dist/native/compiled/",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -70,7 +71,6 @@
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
     "minimist": "^1.2.5",
-    "napi-rs": "^0.2.4",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "toml": "^3.0.0",

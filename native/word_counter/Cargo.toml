@@ -1,15 +1,16 @@
 [package]
 name = "word_counter"
 version = "0.1.0"
-authors = ["pingzing <mcalistern@outlook.com>"]
 edition = "2018"
+dedscription = "A native module for determining word count."
 
 [dependencies]
+napi = "0.4"
+napi-derive = "0.4"
+
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 voca_rs = "1.10.1"
-napi = "0.4"
-napi-derive = "0.4"
 
 [build-dependencies]
 napi-build = "0.2"

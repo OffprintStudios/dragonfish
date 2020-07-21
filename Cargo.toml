@@ -1,6 +1,8 @@
 [workspace]
 
+# Each native module gets declared here.
+# Add the path to the folder containing the module's
+# Cargo.toml file.
 members = [
     "native/word_counter",
-    # Future native modules get added here
 ]

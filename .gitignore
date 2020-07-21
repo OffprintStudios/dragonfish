@@ -3,6 +3,7 @@
 /node_modules
 
 # Rust & native
+/native/compiled/*
 /target
 
 # Logs
@@ -37,3 +38,4 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .vscode
+.devcontainer/*

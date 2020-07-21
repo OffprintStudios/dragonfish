@@ -6862,14 +6862,6 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-napi-rs@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/napi-rs/-/napi-rs-0.2.4.tgz#81efcbb04ccc43e4e2713bfb9d1bad79b4ee8a7e"
-  integrity sha512-xJtETX+08wI0eQdvZRqumOxYlW5dyALCrK12N5h2UaiNMrVXlNDGTmpq274SotP8WZFVc/FB/uewtwGv58oa7Q==
-  dependencies:
-    minimist "^1.2.5"
-    toml "^3.0.0"
-
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
