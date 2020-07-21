@@ -21,9 +21,9 @@
             <form [formGroup]="changePasswordForm" (ngSubmit)="submitChangePasswordForm()">
                 <div class="settings-card-content">
                     <h1>Change Password</h1>
+                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
                     <input class="u-full-width" type="password" formControlName="newPassword" placeholder="New Password">
                     <input class="u-full-width" type="password" formControlName="confirmNewPassword" placeholder="Confirm New Password">
-                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
                 </div>
                 <div class="settings-card-footer">
                     <button type="submit" class="button-primary">Save Changes</button>
