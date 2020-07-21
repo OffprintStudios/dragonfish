@@ -31,4 +31,11 @@ export class BlogsController {
     async setPublishStatus(@Request() req: any, @Body() pubStatus: models.SetPublishStatus) {
         return await this.blogsService.setPublishStatus(req.user, pubStatus);
     }
+
+    @UseGuards(AuthGuard)
+    @Patch('edit-blog')
+    async editBlog(@Request() req: any, @Body() editBlog: models.EditBlog) {
+        return await this.blogsService.editBlog(req.user, editBlog);
+    }
+
 }

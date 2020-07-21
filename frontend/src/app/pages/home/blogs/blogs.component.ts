@@ -83,6 +83,10 @@ export class BlogsComponent implements OnInit {
       .config({backdrop: true, closeOnEsc: true})
       .content(EditBlogComponent)
       .create();
+
+    this.editBlog.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**

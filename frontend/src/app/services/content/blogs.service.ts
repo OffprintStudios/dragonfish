@@ -76,4 +76,20 @@ export class BlogsService {
         return throwError(err);
       }));
   }
+
+  /**
+   * Sends information to the backend so the requisite blog can be updated.
+   * 
+   * @param blogInfo The updated blog info
+   */
+  public editBlog(blogInfo: models.EditBlog) {
+    return this.http.patch(`/api/content/blogs/edit-blog`, blogInfo, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        if (res.status === 200) {
+          this.alertsService.success('Changes saved successfully.');
+        }
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }

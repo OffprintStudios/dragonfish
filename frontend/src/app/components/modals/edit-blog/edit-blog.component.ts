@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Blog } from 'src/app/models/blogs';
+import { Blog, EditBlog } from 'src/app/models/blogs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-edit-blog',
@@ -18,7 +19,7 @@ export class EditBlogComponent implements OnInit {
     published: new FormControl(false)
   });
 
-  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef) { }
+  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) { }
 
   ngOnInit(): void {
     this.editBlogForm.setValue({
@@ -46,7 +47,18 @@ export class EditBlogComponent implements OnInit {
    * @param blogId The blog we're editing
    */
   submitEdits(blogId: string) {
+    const updatedBlogInfo: EditBlog = {
+      _id: blogId,
+      title: this.fields.title.value,
+      body: this.fields.body.value,
+      published: this.fields.published.value,
+    };
 
+    this.blogService.editBlog(updatedBlogInfo).subscribe(() => {
+      this.close();
+    }, err => {
+      this.alertsService.error(err);
+    });
   }
 
   /**

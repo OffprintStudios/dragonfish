@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/blogs';
 import { BlogsService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-create-blog',
@@ -22,7 +23,7 @@ export class CreateBlogComponent implements OnInit {
 
   };
 
-  constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef) {}
+  constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) {}
 
   ngOnInit() {}
 
@@ -50,6 +51,8 @@ export class CreateBlogComponent implements OnInit {
 
     this.blogsService.createBlog(newBlogInfo).subscribe(() => {
       this.close();
+    }, err => {
+      this.alertsService.error(err);
     });
   }
 

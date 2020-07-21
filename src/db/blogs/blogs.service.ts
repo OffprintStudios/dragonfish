@@ -69,4 +69,15 @@ export class BlogsService {
     async setPublishStatus(user: any, pubStatus: models.SetPublishStatus): Promise<void> {
         await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus});
     }
+
+    /**
+     * Edits a given user's blog using the provided information in the EditBlog
+     * model.
+     * 
+     * @param user The author of the blog
+     * @param blogInfo The blog info for the update
+     */
+    async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
+        await this.blogModel.findOneAndUpdate({"_id": blogInfo._id, "author": user.sub}, {"title": blogInfo.title, "body": blogInfo.body, "published": blogInfo.published});
+    }
 }
