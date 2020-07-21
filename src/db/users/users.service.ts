@@ -1,7 +1,8 @@
-import { Injectable, ConflictException, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
+import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { isNullOrUndefined } from 'util';
+import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 import validator from 'validator';
 
@@ -131,6 +132,52 @@ export class UsersService {
      */
     async updateWorkCount(userId: string, workCount: number): Promise<void> {
         await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
+    }
+
+    /**
+     * Updates a user's username and email, first by making sure the new username and email aren't
+     * already taken. To be used only after the current password has been verified in the AuthService.
+     * 
+     * @param userId A user's ID
+     * @param newNameAndEmail Their new name and email address
+     */
+    async changeNameAndEmail(userId: string, newNameAndEmail: models.ChangeNameAndEmail): Promise<models.User> {
+        const existingUsername = await this.userModel.findOne({username: sanitize(newNameAndEmail.username)});
+        const existingEmail = await this.userModel.findOne({email: sanitize(newNameAndEmail.email)});
+
+        if (isNullOrUndefined(existingUsername) && isNullOrUndefined(existingEmail)) {
+            return await this.userModel.findOneAndUpdate({"_id": userId}, {"email": newNameAndEmail.email,"username": newNameAndEmail.username});
+        } else {
+            throw new ConflictException('Someone already has your username or email. Try another combination.');
+        }
+    }
+
+    /**
+     * Updates a user's password with a hash of their new password. To be used only after
+     * the current password has been verified in the AuthService.
+     * 
+     * @param userId A user's ID
+     * @param newPasswordInfo Their new password
+     */
+    async changePassword(userId: string, newPasswordInfo: models.ChangePassword): Promise<models.User> {
+        try {
+            const newHashedPw = await hash(newPasswordInfo.newPassword, {type: argon2id});
+            return await this.userModel.findOneAndUpdate({"_id": userId}, {"password": newHashedPw});
+        } catch (err) {
+            console.log(err); // we definitely want better error reporting for stuff like this
+            throw new InternalServerErrorException(`Something went wrong! Try again in a little bit.`);
+        }
+    }
+
+    /**
+     * Updates a user's profile with their requested information. Does not require a password
+     * because this information is not account sensitive.
+     * 
+     * @param userId A user's ID
+     * @param newProfileInfo Their new profile info
+     */
+    async updateProfile(userId: string, newProfileInfo: models.ChangeProfile) {
+        return await this.userModel.findOneAndUpdate({"_id": userId}, {"profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio});
     }
 
     /* Invite codes, only used for Origins, pt. 1 */

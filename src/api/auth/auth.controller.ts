@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch } from '@nestjs/common';
 import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -45,6 +45,26 @@ export class AuthController {
 
     @Get('logout')
     async logout() {
-        return "yo there";
+        return "yo there"; // This needs to remove a session ID from a user's document.
+    }
+
+    /* Account settings */
+
+    @UseGuards(AuthGuard)
+    @Patch('change-name-and-email')
+    async changeNameAndEmail(@Request() req: any, @Body() newNameAndEmail: models.ChangeNameAndEmail) {
+        return await this.authService.changeNameAndEmail(req.user, newNameAndEmail);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('change-password')
+    async changePassword(@Request() req: any, @Body() newPassword: models.ChangePassword) {
+        return await this.authService.changePassword(req.user, newPassword);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('update-profile')
+    async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
+        return await this.authService.updateProfile(req.user, newProfile);
     }
 }

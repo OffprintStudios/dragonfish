@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser } from 'src/db/users/models';
+import { User, FrontendUser, ChangeNameAndEmail, ChangePassword, ChangeProfile } from 'src/db/users/models';
 import { UsersService } from 'src/db/users/users.service';
 import { JwtPayload } from './models';
 
@@ -69,5 +69,71 @@ export class AuthService {
             sub: validatedUser._id
         };
         return this.usersService.buildFrontendUser(validatedUser, this.jwtService.sign(newPayload));
+    }
+
+    /**
+     * Checks to see if the user making a username and email change request is actually
+     * allowed by checking the password hash. If they are, then their new username and email
+     * are accepted for processing. If not, then this errors out.
+     * 
+     * @param user The user making the request
+     * @param newNameAndEmail Their new username and email
+     */
+    async changeNameAndEmail(user: JwtPayload, newNameAndEmail: ChangeNameAndEmail): Promise<FrontendUser> {
+        const potentialUser = await this.usersService.findOneById(user.sub);
+        if (potentialUser) {
+            try {
+                if (await verify(potentialUser.password, newNameAndEmail.currentPassword, {type: argon2id})) {
+                    const newUserInfo = await this.usersService.changeNameAndEmail(potentialUser._id, newNameAndEmail);
+                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user)); // Probably want to not do this for potential security concerns
+                } else {
+                    throw new UnauthorizedException(`You don't have permission to do that.`);
+                }
+            } catch (err) {
+                throw new InternalServerErrorException('Something went wrong verifying your credentials. Try again in a little bit.');
+            }
+        } else {
+            throw new NotFoundException(`It doesn't look like you exist! Try again in a little bit, or create an account.`);
+        }
+    }
+
+    /**
+     * Checks to see if the user making a password change request is actually
+     * allowed by checking the password hash. If they are, then their new password is accepted
+     * for processing. If not, then this errors out.
+     * 
+     * @param user The user making the request
+     * @param newPassword Their new password
+     */
+    async changePassword(user: JwtPayload, newPassword: ChangePassword) {
+        const potentialUser = await this.usersService.findOneById(user.sub);
+        if (potentialUser) {
+            try {
+                if (await verify(potentialUser.password, newPassword.currentPassword, {type: argon2id})) {
+                    const newUserInfo = await this.usersService.changePassword(potentialUser._id, newPassword);
+                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user)); // Probably want to not do this for potential security concerns
+                } else {
+                    throw new UnauthorizedException(`You don't have permission to do that.`);
+                }
+            } catch (err) {
+                throw new InternalServerErrorException(`Something went wrong verifying your credentials. Try again in a little bit.`);
+            }
+        } else {
+            throw new NotFoundException(`It doesn't look like you exist! Try again in a little bit, or create an account.`);
+        }
+    }
+
+    /**
+     * Since profile information is not account sensitive, the new information is passed
+     * directly along to the requisite usersService function. A new FrontendUser is returned.
+     * 
+     * This shouldn't error out.
+     * 
+     * @param user The user making the request
+     * @param newProfileInfo Their new profile info
+     */
+    async updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile) {
+        const newUserInfo = await this.usersService.updateProfile(user.sub, newProfileInfo);
+        return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(user));
     }
 }
