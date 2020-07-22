@@ -4,6 +4,7 @@ import * as path from 'path';
 /**
  * Takes a JSON string containing Quill deltas, and returns a word count.
  * @param bodyContent A JSON string containing a set of Quill deltas.
+ * @throws If the native module cannot be loaded, or the native module panics, or returns an Err().
  */
 export async function countQuillWords(bodyContent: string): Promise<number> {        
     try {        
@@ -11,6 +12,7 @@ export async function countQuillWords(bodyContent: string): Promise<number> {
         return word_counter.countWords(bodyContent);
     } catch(e) {
         console.log(`Failed to count words: ${e}`);
+        throw e;
     }
 }
 
