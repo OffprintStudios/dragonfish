@@ -69,7 +69,7 @@ export class UsersService {
      * @param user A user
      * @param newToken A new JSON web token
      */
-    public buildFrontendUser(user: models.User, newToken?: string): models.FrontendUser {
+    async buildFrontendUser(user: models.User, newToken?: string): Promise<models.FrontendUser> {
         const frontendUser: models.FrontendUser = {
             _id: user._id,
             email: user.email,
@@ -176,8 +176,19 @@ export class UsersService {
      * @param userId A user's ID
      * @param newProfileInfo Their new profile info
      */
-    async updateProfile(userId: string, newProfileInfo: models.ChangeProfile) {
+    async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
         return await this.userModel.findOneAndUpdate({"_id": userId}, {"profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio});
+    }
+
+    /**
+     * Fetches a user from the database and returns the FrontendUser object using their
+     * data.
+     * 
+     * @param userId The user ID for the lookup
+     */
+    async getOneUser(userId: string): Promise<models.FrontendUser> {
+        const user = await this.userModel.findById(userId);
+        return await this.buildFrontendUser(user);
     }
 
     /* Invite codes, only used for Origins, pt. 1 */

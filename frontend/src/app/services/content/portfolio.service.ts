@@ -19,7 +19,7 @@ export class PortfolioService {
    * @param userId The user ID of a requested portfolio
    */
   public getUserInfo(userId: string) {
-    return this.http.get<User>(`/api/content/portfolio/get-user-info/id?id=` + userId, {observe: 'response', withCredentials: true})
+    return this.http.get<User>(`/api/content/portfolio/get-user-info/` + userId, {observe: 'response', withCredentials: true})
       .pipe(map(user => {
         return user.body;
       }), catchError(err => {
@@ -33,7 +33,7 @@ export class PortfolioService {
    * @param userId The user ID of the requested portfolio
    */
   public getBlogList(userId: string) {
-    return this.http.get<Blog[]>(`/api/content/portfolio/get-blogs-list/id?id=` + userId, {observe: 'response', withCredentials: true})
+    return this.http.get<Blog[]>(`/api/content/portfolio/get-blogs-list/` + userId, {observe: 'response', withCredentials: true})
     .pipe(map(blogs => {
       return blogs.body;
     }), catchError(err => {

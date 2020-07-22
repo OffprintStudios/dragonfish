@@ -15,6 +15,7 @@ export class PortfolioComponent implements OnInit {
   portUserId: string; // Their ID, fetched from the route parameters
 
   currentUser: User;
+  loading = false;
 
   constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private portService: PortfolioService) {
     this.authService.currUser.subscribe(x => {
@@ -27,17 +28,18 @@ export class PortfolioComponent implements OnInit {
   }
 
   private fetchData() {
+    this.loading = true;
     this.route.paramMap.subscribe(params => {
       this.portUserId = params.get('id');
+      this.portService.getUserInfo(this.portUserId).subscribe(x => {
+        this.portUser = x;
+      })
     });
-    this.portService.getUserInfo(this.portUserId).subscribe(x => {
-      this.portUser = x;
-    })
   }
 
   currentUserIsSame() {
     if (this.currentUser) {
-      if (this.currentUser._id == this.portUser._id) {
+      if (this.currentUser._id === this.portUser._id) {
         return true;
       } else {
         return false;
