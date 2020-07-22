@@ -34,7 +34,7 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'portfolio/:id/:username', component: PortfolioComponent, children: [
     { path: '', component: PortHomeComponent },
-    { path: 'blogs', component: PortBlogComponent },
+    { path: 'blog', component: PortBlogComponent },
     { path: 'blog/:blogId', component: PortBlogPageComponent },
     { path: 'works', component: PortWorksComponent },
     { path: 'collections', component: PortCollectionsComponent },

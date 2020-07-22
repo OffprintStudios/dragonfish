@@ -24,7 +24,7 @@ export class BlogsService {
             body: newBlogInfo.body,
             published: newBlogInfo.published});
         return await newBlog.save().then(async blog => {
-            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false);
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
             await this.usersService.updateBlogCount(user.sub, blogCount);
             return blog;
         });
@@ -67,7 +67,10 @@ export class BlogsService {
      * @param pubStatus The blog's ID and new publishing status
      */
     async setPublishStatus(user: any, pubStatus: models.SetPublishStatus): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus});
+        await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus}).then(async blog => {
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            await this.usersService.updateBlogCount(user.sub, blogCount);
+        });
     }
 
     /**
@@ -78,6 +81,18 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": blogInfo._id, "author": user.sub}, {"title": blogInfo.title, "body": blogInfo.body, "published": blogInfo.published});
+        await this.blogModel.findOneAndUpdate({"_id": blogInfo._id, "author": user.sub}, {"title": blogInfo.title, "body": blogInfo.body, "published": blogInfo.published}).then(async blog => {
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            await this.usersService.updateBlogCount(user.sub, blogCount);
+        });
+    }
+
+    /**
+     * Fetching a user's published blogs for display in their portfolio.
+     * 
+     * @param userId The ID of the user whose blogs we're fetching
+     */
+    async getPubBlogList(userId: string): Promise<models.Blog[]> {
+        return await this.blogModel.find().where('author', userId).where('published', true).where('audit.isDeleted', false);
     }
 }
