@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as wordCounter from 'native/word_counter/word-counter';
+import * as sanitize from 'sanitize-html';
 
 import * as models from './models';
 import { UsersService } from '../users/users.service';
@@ -81,10 +83,14 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": blogInfo._id, "author": user.sub}, {"title": blogInfo.title, "body": blogInfo.body, "published": blogInfo.published}).then(async blog => {
-            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
-            await this.usersService.updateBlogCount(user.sub, blogCount);
-        });
+        const wordcount = await wordCounter.countQuillWords(sanitize(blogInfo.body));
+        await this.blogModel.findOneAndUpdate(
+            {"_id": blogInfo._id, "author": user.sub},
+            {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
+            ).then(async blog => {
+                const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+                await this.usersService.updateBlogCount(user.sub, blogCount);
+            });
     }
 
     /**
