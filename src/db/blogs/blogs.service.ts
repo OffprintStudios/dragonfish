@@ -95,4 +95,13 @@ export class BlogsService {
     async getPubBlogList(userId: string): Promise<models.Blog[]> {
         return await this.blogModel.find().where('author', userId).where('published', true).where('audit.isDeleted', false);
     }
+
+    /**
+     * Queries the database for a blog matching the provided blog ID and returns it.
+     * 
+     * @param blogId The blog we're fetching
+     */
+    async getOneBlog(blogId: string): Promise<models.Blog> {
+        return await this.blogModel.findById(blogId).where('published', true).where('audit.isDeleted', false);
+    }
 }

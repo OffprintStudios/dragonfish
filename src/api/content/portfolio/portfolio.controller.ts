@@ -19,4 +19,9 @@ export class PortfolioController {
     async getBlogsList(@Param('userId') userId: string) {
         return await this.blogsService.getPubBlogList(userId);
     }
+
+    @Get('get-blog/:blogId')
+    async getBlog(@Param('blogId') blogId: string) {
+        return await this.blogsService.getOneBlog(blogId);
+    }
 }

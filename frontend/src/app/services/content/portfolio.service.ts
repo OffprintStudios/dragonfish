@@ -35,7 +35,7 @@ export class PortfolioService {
   public getBlogList(userId: string) {
     return this.http.get<Blog[]>(`/api/content/portfolio/get-blogs-list/` + userId, {observe: 'response', withCredentials: true})
     .pipe(map(blogs => {
-      return blogs.body;
+      return blogs.body.reverse();
     }), catchError(err => {
       return throwError(err);
     }));
@@ -49,4 +49,18 @@ export class PortfolioService {
         return throwError(err);
       }))
   }*/
+
+  /**
+   * Fetches a published blog from the database given its ID.
+   * 
+   * @param blogId The blog we're fetching
+   */
+  public getBlog(blogId: string) {
+    return this.http.get<Blog>(`/api/content/portfolio/get-blog/` + blogId, {observe: 'response', withCredentials: true})
+      .pipe(map(blog => {
+        return blog.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }
