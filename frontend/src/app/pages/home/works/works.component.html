@@ -1,1 +1,63 @@
-<p>works works!</p>
+<div class="works-list-container">
+    <div class="works-list-header">
+        <h2>My works</h2>
+        <div class="work-controls">
+            <form [formGroup]="searchWorks" class="search-works" (ngSubmit)="searchFor()">
+                <div class="works-search">
+                    <input type="text" formControlName="query" class="search-input" placeholder="Search works...">
+                    <button class="submit-work-search" type="submit"><i-feather name="search"></i-feather></button>
+                </div>
+            </form>
+            <button class="work-filter" style="border-left: 1px solid var(--site-borders)" (click)="filterByUnpublished()" *ngIf="!isUnpubFiltered; else unpubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
+            <ng-template #unpubFiltered>
+                <button class="work-filter active" style="border-left: 1px solid var(--site-borders)" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
+            </ng-template>
+            <button class="work-filter" (click)="filterByPublished()" *ngIf="!isPubFiltered; else pubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
+            <ng-template #pubFiltered>
+                <button class="work-filter active" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
+            </ng-template>
+            <button class="add-work" (click)="openNewWorkForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Work</button>
+        </div>
+    </div>
+    <div class="works-list">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="isWorksEmpty(); else worksList">You haven't created any works yet.</h4>
+        <ng-template #worksList>
+            <div class="work-list">
+                <div class="work-item" *ngFor="let work of works">
+                    <div class="work-check">
+                        <button class="check-published" *ngIf="work.audit.published; else workUnpublished">
+                            <i-feather name="check-circle"></i-feather>
+                        </button>
+                        <ng-template #workUnpublished>
+                            <button class="check-unpublished">
+                                <i-feather name="circle"></i-feather>
+                            </button>
+                        </ng-template>
+                    </div>
+                    <div class="work-info">
+                        <div class="info">
+                            <h3 *ngIf="work.audit.published; else unpubTitle"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'work', work._id]">{{ work.title }}</a></h3>
+                            <ng-template #unpubTitle>
+                                <h3><a>{{ work.title }}</a></h3>
+                            </ng-template>
+                            <h4>{{ work.stats.totWords }} word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
+                            <h4>{{ work.stats.views }} view{{ work.stats.views | pluralize }}</h4><span>//</span>
+                            <h4>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
+                            <h4>Created: {{ work.createdAt | date:'shortDate' }}</h4>
+                            <div *ngIf="work.updatedAt !== work.createdAt" style="display: inline-block;"><span>//</span><h4>Updated: {{ work.updatedAt | date:'short'}}</h4></div>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <div class="work-control-buttons">
+                            <button class="work-controls mid" (click)="openEditForm(work)"><i-feather name="edit-3"></i-feather></button>
+                            <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

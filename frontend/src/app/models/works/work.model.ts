@@ -1,14 +1,12 @@
-import { Document } from 'mongoose';
-
 import { Categories } from './categories.enum';
 import { Fandoms } from './fandoms.enum';
 import { Genres } from './genres.enum';
 import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
 
-export interface Work extends Document {
+export interface Work {
     readonly _id: string;
-    readonly author: string | {
+    readonly author: {
         readonly _id: string;
         readonly username: string;
         readonly profile: {
@@ -32,12 +30,7 @@ export interface Work extends Document {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections: string[] | null | {
-        readonly _id: string;
-        readonly title: string;
-        readonly stats: {
-            readonly words: number;
-        }[];
+    readonly sections: { readonly _id: string; readonly title: string; readonly stats: { readonly words: number; }[];
     };
     readonly audit: {
         readonly threadId: string;
