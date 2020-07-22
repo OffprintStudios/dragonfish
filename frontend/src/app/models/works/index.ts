@@ -9,3 +9,4 @@ export { WorkStatus } from './work-status.enum';
 /* Data transfer objects */
 export { CreateWork } from './create-work.model';
 export { CreateSection } from './create-section.model';
+export { EditWork } from './edit-work.model';
