@@ -83,10 +83,10 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        const wordcount = await wordCounter.countQuillWords(blogInfo.body);
+        // const wordcount = await wordCounter.countQuillWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
             {"_id": blogInfo._id, "author": user.sub},
-            {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
+            {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published}
             ).then(async blog => {
                 const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
                 await this.usersService.updateBlogCount(user.sub, blogCount);

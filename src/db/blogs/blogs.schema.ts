@@ -37,8 +37,8 @@ BlogsSchema.pre<Blog>('save', async function(next: HookNextFunction) {
     this.set('body', sanitize(this.body));
     this.set('published', this.published);
 
-    const wordCount = await wordCounter.countQuillWords(sanitize(this.body));
-    this.set('stats.words', wordCount);
+    // const wordCount = await wordCounter.countQuillWords(sanitize(this.body));
+    // this.set('stats.words', wordCount);
     
     return next();
 });
