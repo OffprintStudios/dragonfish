@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as models from './models';
 import { UsersService } from '../users/users.service';
-import * as wordCounter from 'native/word_counter/word-counter';
 
 @Injectable()
 export class WorksService {
