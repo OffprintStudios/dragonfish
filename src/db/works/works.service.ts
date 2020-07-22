@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-
 import * as models from './models';
 import { UsersService } from '../users/users.service';
+import * as wordCounter from 'native/word_counter/word-counter';
 
 @Injectable()
 export class WorksService {
+        
+
     constructor(
         @InjectModel('Work') private readonly workModel: Model<models.Work>,
         @InjectModel('Section') private readonly sectionModel: Model<models.Section>,
@@ -36,8 +38,12 @@ export class WorksService {
             },
             audit: {
                 published: newWorkInfo.published,
-            },
+            }            
         });
+        
+        // TODO: Something like this for word count
+        //const wordCount = wordCounter.countQuillWords("{ \"ops\": [ {\"insert\": \"gandalf\"}, {\"insert\": \" the\"} ] }");
+        //newWork.stats.totWords = wordCount;        
 
         return await newWork.save().then(async work => {
             const workCount = await this.workModel.countDocuments({author: user.sub});
