@@ -14,6 +14,14 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
   constructor(private http: HttpClient, private router: Router, private authService: AuthService, private alertsService: AlertsService) {}
 
+  /**
+   * Verifies that a user can access a protected route. If their JWT is expired, it makes a request to the backend to
+   * verify that an active session is still present. If one is, the route request is approved. If one isn't, then the
+   * request is denied.
+   * 
+   * @param next The next route requested
+   * @param state Current state of the router
+   */
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authService.getCurrUserValue();
     if (currentUser && currentUser.token) {
@@ -33,6 +41,13 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
   }
 
+  /**
+   * Does the same thing as the above, but on any child routes that must be protected. This one is declared on
+   * the route parent.
+   * 
+   * @param next The next route requested
+   * @param state Current state of the router
+   */
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authService.getCurrUserValue();
     if (currentUser && currentUser.token) {

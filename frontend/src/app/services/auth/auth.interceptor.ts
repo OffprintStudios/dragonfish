@@ -8,6 +8,13 @@ import { AuthService } from './auth.service';
 export class AuthInterceptor implements HttpInterceptor {
     constructor(private authService: AuthService) {}
 
+    /**
+     * Intercepts all outgoing requests to the backend and sets an Authorization header
+     * on each one.
+     * 
+     * @param req The outgoing request
+     * @param next Passes the request along to the next handler
+     */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const currentUser = this.authService.getCurrUserValue();
         if (currentUser && currentUser.token) {
