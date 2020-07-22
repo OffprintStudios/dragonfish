@@ -1,6 +1,6 @@
 # Native Modules 
 
-Some portions of the pulp-fiction backend are written in native code for the sake of performance. The source code for thoe native modules can be found here.
+Some portions of the pulp-fiction backend are written in native code for the sake of performance. The source code for those native modules can be found here.
 
 #### Table of contents
 * [Creating a new native module](#creating-a-new-native-module)  
@@ -22,7 +22,7 @@ First, **from the root folder of the repository**, create a new home for your mo
 cargo new ./native/your_module_name
 ```
 
-Cargo will complain about the package beliieving it's in a workspace, when it's not. It is correct! We need to go add our new module to the topmost `Cargo.toml`, at the repository root. 
+Cargo will complain about the package believing it's in a workspace, when it's not. It is correct! We need to go add our new module to the topmost `Cargo.toml`, at the repository root. 
 
 Open it, and find the section that looks like this:
 ```toml
@@ -84,11 +84,18 @@ And that's it! Now, when you run `yarn buildNativeModules`, `cargo` will attempt
 
 Any function that needs to be exposed to Javascript should 1) be marked with the `#[js_function()]` attribute, and 2) declared in your `init()` function using `module.create_named_method()`.
 
-### Delcaring functions
+### Declaring functions
 
 Functions should be marked with `#[js_function(n)]`, where `n` is the number of arguments your function takes. If it takes 0 arguments, it can be omitted: `#[js_function]`.
 
 All functions must accept a single argument of type `napi::CallContext`, and return a `napi::Result<T>`, where `T` should be a `napi::Js(something)` i.e. `JsNumber` or `JsString`.
+
+```rust
+#[js_function(0)]
+fn do_the_thing(context: CallContext) -> Result<JsNumber> {
+    // ...
+}
+```
 
 ### Parameters
 
