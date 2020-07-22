@@ -4,8 +4,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AuthModule } from './api/auth/auth.module';
-import { ContentModule } from './api/content/content.module';
 
 @Module({
   imports: [
