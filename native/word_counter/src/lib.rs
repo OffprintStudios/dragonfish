@@ -36,7 +36,8 @@ fn count_words(context: CallContext) -> Result<JsNumber> {
     }
 }
 
-fn try_count_words(json_string: &str) -> MultiResult<u32> {    
+#[inline]
+fn try_count_words(json_string: &str) -> MultiResult<u32> {
     let work_content: Delta = serde_json::from_str(json_string)?;
     let all_text = work_content
         .ops

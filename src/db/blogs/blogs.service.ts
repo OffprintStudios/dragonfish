@@ -83,7 +83,7 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        const wordcount = await wordCounter.countQuillWords(sanitize(blogInfo.body));
+        const wordcount = await wordCounter.countQuillWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
             {"_id": blogInfo._id, "author": user.sub},
             {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
