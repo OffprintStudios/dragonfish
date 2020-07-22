@@ -1,0 +1,163 @@
+div.portfolio-header-container {
+    position: relative;
+    margin-top: 0;
+    width: 100%;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    color: whitesmoke;
+    box-shadow: var(--site-dropshadow);
+
+    div.portfolio-header {
+        position: relative;
+        margin: 2rem;
+
+        div.port-nav-avatar {
+            img {
+                object-fit: cover;
+                border: 2px solid whitesmoke;
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 50%;
+                box-shadow: var(--site-dropshadow);
+            }
+        }
+
+        div.port-nav-header {
+            margin-top: 4.5rem;
+
+            h1 {
+                margin-bottom: 0;
+                font-size: 50px;
+                font-weight: 700;
+                padding-bottom: 0;
+                color: whitesmoke;
+            }
+
+            h2 {
+                margin-top: 1.5rem;
+                font-weight: 400;
+                font-size: 24px;
+                font-style: italic;
+                color: whitesmoke;
+            }
+        }
+
+        div.port-nav {
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid whitesmoke;
+            width: 100%;
+            font-size: 0;
+
+            a.port-nav-button {
+                display: inline-block;
+                font-size: 20px;
+                padding: 5px 10px;
+                color: whitesmoke;
+
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                    color: whitesmoke;
+                }
+            }
+        }
+    }
+
+    div.stats {
+        text-align: right;
+        padding-top: 0;
+
+        p {
+            font-size: 14px;
+
+            a {
+                text-decoration: none;
+                color: whitesmoke;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+div.portfolio-user-controls {
+    position: relative;
+    width: 100%;
+    max-width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    padding: 10px 0px 0px 0px;
+    background-color: var(--site-controls-background);
+    border-left: 1px solid var(--site-borders);
+    border-right: 1px solid var(--site-borders);
+    border-bottom: 1px solid var(--site-borders);
+    display: flexbox;
+
+    span.control-left {
+        margin-left: 0.75rem;
+    }
+
+    span.control-right {
+        float: right;
+        padding-right: 0.75rem;
+    }
+}
+
+div.portfolio-container {
+    position: relative;
+    max-width: 1040px;
+    margin: 3rem auto 0 auto;
+
+    div.sub-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 1rem;
+        
+        div.sub-box {
+            border: 1px solid var(--site-borders);
+            padding: 10px;
+            box-shadow: var(--site-dropshadow);
+
+            div.sub-image {
+                justify-content: center;
+
+                img {
+                    max-width: 100px;
+                    max-height: 100px;
+                    border: 1px solid var(--site-borders);
+                    object-fit: cover;
+                    border-radius: 50%;
+                }
+            }
+
+            div.sub-desc {
+                text-align: center;
+                margin-bottom: 0;
+
+                h4 {
+                    margin-bottom: 0;
+                }
+
+                hr {
+                    margin: 0 auto 0 auto;
+                }
+            }
+
+            h5.sub-stats-header {
+                color: var(--site-text-color);
+                margin-bottom: 0;
+            }
+
+            h6 {
+                margin: 0;
+                font-size: 20px;
+            }
+        }
+    }
+}

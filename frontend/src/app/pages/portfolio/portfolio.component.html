@@ -1,0 +1,58 @@
+<div class="portfolio-header-container">
+    <div class="portfolio-header">
+        <div class="row">
+            <div class="three columns">
+                <div class="port-nav-avatar" *ngIf="portUser.profile.avatar;else noAvatar">
+                    <img src="{{ portUser.profile.avatar }}">
+                </div>
+                <ng-template #noAvatar>
+                    <div class="port-nav-avatar">
+                        <img src="assets/img/avatar.png">
+                    </div>
+                </ng-template>
+            </div>
+            <div class="nine columns">
+                <div class="port-nav-header">
+                    <h1>{{ portUser.username }}</h1>
+                    <h2 *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h2>
+                </div>
+                <div class="port-nav">
+                    <span>
+                        <a class="port-nav-button button-left" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]">Home</a>
+                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blogs']">{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
+                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'works']">{{ portUser.stats.works }} Work{{ portUser.stats.works | pluralize }}</a>
+                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'collections']">Collections</a>
+                    </span>
+                </div>
+                <div class="stats">
+                    <p>
+                        <a>{{ portUser.stats.watchers }} watcher{{ portUser.stats.watchers | pluralize }}</a> // 
+                        <a>{{ portUser.stats.watching }} watching</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="portfolio-user-controls" *ngIf="currentUserIsSame();else notPortUser">
+    <span class="control-left">
+        <a class="button" [routerLink]="['/home/settings']">Manage</a>
+    </span>
+</div>
+
+<ng-template #notPortUser>
+    <div class="portfolio-user-controls" *ngIf="currentUser">
+        <span class="control-left">
+            <a class="button">Unsubscribe</a>
+            <ng-template #notSubbed>
+                <a class="button">Subscribe</a>
+            </ng-template>
+        </span>
+        <span class="control-right">
+            <a class="button">Report</a>
+        </span>
+    </div>
+</ng-template>
+
+<router-outlet></router-outlet>

@@ -22,6 +22,7 @@
       <div class="nav-items">
         <a [routerLink]="['/home']" routerLinkActive="router-link-active" class="">HOME</a>
         <a [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left">BROWSE</a>
+        <a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active" *ngIf="currentUser" class="mid">PORTFOLIO</a>
         <a [routerLink]="['/groups']" routerLinkActive="router-link-active" class="inner-right">GROUPS</a>
         <a [routerLink]="['/news']" routerLinkActive="router-link-active" class="">NEWS</a>
       </div>

@@ -5,6 +5,7 @@ import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
 import { BlogsModule } from 'src/db/blogs/blogs.module';
 import { WorksModule } from 'src/db/works/works.module';
+import { PortfolioController } from './portfolio/portfolio.controller';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { WorksModule } from 'src/db/works/works.module';
       }),
     }),
   ],
-  controllers: [BlogsController, WorksController]
+  controllers: [BlogsController, WorksController, PortfolioController]
 })
 export class ContentModule {}
