@@ -2,6 +2,7 @@ import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
+import * as wordCounter from 'native/word_counter/word-counter';
 
 import { Blog } from './models';
 
@@ -35,5 +36,9 @@ BlogsSchema.pre<Blog>('save', async function(next: HookNextFunction) {
     this.set('title', sanitize(this.title));
     this.set('body', sanitize(this.body));
     this.set('published', this.published);
+
+    const wordCount = await wordCounter.countQuillWords(sanitize(this.body));
+    this.set('stats.words', wordCount);
+    
     return next();
 });
