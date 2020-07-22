@@ -8,6 +8,7 @@
      instead of '/target/debug'.
 
      If 'output path' is specified, produced native modules will be copied to it.
+     No output path is specified, produced native modules will be copied to /usr/local/lib/pulpfiction.
 */
 
 import * as parseArgs from 'minimist';
@@ -82,7 +83,7 @@ function copyLibraryToDotNode(tomlContent: any) {
             throw new TypeError(`The output folder '${argv._[0]}' does not exist, or is not a directory.`);
         }
     } else {
-        distModulePath = path.join(process.cwd(), "native", "compiled", `${moduleName}.node`);
+        distModulePath = path.join("/usr/local/lib/pulpfiction", `${moduleName}.node`);
     }
     const parsedDist = path.parse(distModulePath);
 
@@ -105,9 +106,13 @@ function copyLibraryToDotNode(tomlContent: any) {
             rustTargetDir,
             `${libName}${libExtension}`,
         ),
-    );
-    console.log(`Native module ${moduleName} copied to ${distModulePath}`);
+    );    
+    
+    if (!fs.existsSync(path.dirname(distModulePath))){
+        fs.mkdirSync(path.dirname(distModulePath));
+    }    
     fs.writeFileSync(distModulePath, libContent);
+    console.log(`Native module ${moduleName} copied to ${distModulePath}`);
 }
 
 let tomlContent = getTomlContent(path.join(process.cwd(), "Cargo.toml"));

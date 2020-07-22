@@ -2,7 +2,6 @@
 name = "word_counter"
 version = "0.1.0"
 edition = "2018"
-dedscription = "A native module for determining word count."
 
 [dependencies]
 napi = "0.4"

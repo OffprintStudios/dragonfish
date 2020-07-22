@@ -5,6 +5,10 @@
 # Rust & native
 /native/compiled/*
 /target
+.node
+.dll
+.dylib
+.so
 
 # Logs
 logs
