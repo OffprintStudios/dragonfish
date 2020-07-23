@@ -67,9 +67,9 @@ export class WorksService {
         });
 
         return await newSection.save().then(async section => {
-            await this.workModel.updateOne({"_id": workId}, {$push: {"sections": section._id}});
+            await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}});
             return section;
-        })
+        });
     }
 
     /* Work and Section retrieval */

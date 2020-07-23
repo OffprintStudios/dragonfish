@@ -31,9 +31,9 @@ export const WorksSchema = new Schema({
         views: {type: Number, default: 0},
         comments: {type: Number, default: 0},
     },
-    sections: {type: [String], ref: 'Section', default: null, autopopulate: {
-        select: '_id title stats.words'
-    }},
+    sections: [{type: String, ref: 'Section', autopopulate: {
+        select: '_id title stats.words',
+    }}],
     audit: {
         threadId: {type: String, default: generate()},
         published: {type: Boolean, default: false},

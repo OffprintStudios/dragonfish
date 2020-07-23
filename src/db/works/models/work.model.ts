@@ -32,17 +32,19 @@ export interface Work extends Document {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections: string[] | null | {
-        readonly _id: string;
-        readonly title: string;
-        readonly stats: {
-            readonly words: number;
-        }[];
-    };
+    readonly sections?: SectionInfo[] | string[];
     readonly audit: {
         readonly threadId: string;
         readonly published: boolean;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+}
+
+interface SectionInfo {
+    readonly _id: string;
+    readonly title: string;
+    readonly stats: {
+        readonly words: number;
+    };
 }
