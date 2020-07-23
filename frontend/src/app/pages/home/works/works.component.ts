@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Toppy, ToppyControl } from 'toppy';
+import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { User } from 'src/app/models/users';
 import * as models from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { NewWorkComponent, EditWorkComponent } from 'src/app/components/modals/works';
 
 @Component({
   selector: 'app-works',
@@ -18,6 +19,7 @@ export class WorksComponent implements OnInit {
   works: models.Work[];
   unfilteredList: models.Work[];
   newWorkForm: ToppyControl;
+  editWorkForm: ToppyControl;
 
   loading = false;
   isUnpubFiltered = false;
@@ -34,6 +36,39 @@ export class WorksComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    // Initializing the new work form modal
+    const newWorkPosition = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto',
+    });
+
+    this.newWorkForm = this.toppy
+      .position(newWorkPosition)
+      .config({backdrop: true, closeOnEsc: true})
+      .content(NewWorkComponent)
+      .create();
+
+    this.newWorkForm.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
+
+    // Initializing the edit work form modal
+    const editWorkPosition = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto',
+    });
+
+    this.editWorkForm = this.toppy
+      .position(editWorkPosition)
+      .config({backdrop: true, closeOnEsc: true})
+      .content(EditWorkComponent)
+      .create();
+    
+    this.editWorkForm.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
@@ -91,8 +126,21 @@ export class WorksComponent implements OnInit {
     this.works = this.unfilteredList;
   }
 
+  /**
+   * Opens the new work form modal.
+   */
   openNewWorkForm() {
-    
+    this.newWorkForm.open();
+  }
+
+  /**
+   * Opens the edit work form modal.
+   * 
+   * @param work The work to edit
+   */
+  openEditWorkForm(work: models.Work) {
+    this.editWorkForm.updateContent(EditWorkComponent, {workData: work});
+    this.editWorkForm.open();
   }
 
   /**
@@ -105,15 +153,15 @@ export class WorksComponent implements OnInit {
       } else {
         return false;
       }
-    } else {
-      return true;
     }
   }
 
-  openEditForm(work: models.Work) {
-
-  }
-
+  /**
+   * Confirms that the user really wants to delete their work. If true, send the request
+   * to the backend. If false, do nothing.
+   * 
+   * @param workId The ID of the work we're deleting
+   */
   askDelete(workId: string) {
 
   }

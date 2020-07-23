@@ -1,6 +1,6 @@
 <div class="works-list-container">
     <div class="works-list-header">
-        <h2>My works</h2>
+        <h2>My Works</h2>
         <div class="work-controls">
             <form [formGroup]="searchWorks" class="search-works" (ngSubmit)="searchFor()">
                 <div class="works-search">
@@ -52,7 +52,7 @@
                     </div>
                     <div class="controls">
                         <div class="work-control-buttons">
-                            <button class="work-controls mid" (click)="openEditForm(work)"><i-feather name="edit-3"></i-feather></button>
+                            <button class="work-controls mid" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
                             <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
                         </div>
                     </div>

@@ -115,8 +115,6 @@ export class BlogsComponent implements OnInit {
       } else {
         return false;
       }
-    } else {
-      return true;
     }
   }
 
