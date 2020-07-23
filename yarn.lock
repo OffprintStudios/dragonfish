@@ -1254,10 +1254,10 @@
     consola "^2.3.0"
     node-fetch "^2.3.0"
 
-"@offprintstudios/word-counter@^1.1.1":
+"@offprintstudios/word-counter@^1.1.5":
   version "1.1.5"
-  resolved "https://npm.pkg.github.com/download/@offprintstudios/word-counter/1.1.5/f7738183c2c7e7fdd5b3df799ceafd723e6ef1937c41318bc8525c6096493e83#68e2979505ed776d7202843c2c663fd2f50126b7"
-  integrity sha512-4q4Rd8An249iHXrRTHTzJhUMkf0IckYaaz+NW5bVj27L0f6HUnBow534WB8tIGc/XpC62ZWqXIPEEaiqlmxRKw==
+  resolved "https://registry.yarnpkg.com/@offprintstudios/word-counter/-/word-counter-1.1.5.tgz#32ae4d66ac1654c8d565ca1acb04aa6e80badac8"
+  integrity sha512-RXV0pIaqzFHUgqoEThuwouqkcyOxJesm7UBZ/P8FROjGAnWFIeBTKb82u+CQ2jdJLLmqzHGsStX/f8pYM0altg==
   dependencies:
     neon-cli "^0.4.0"
 
@@ -1589,11 +1589,6 @@
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
-
-"@types/minimist@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
-  integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
 "@types/mongodb@*":
   version "3.5.25"
