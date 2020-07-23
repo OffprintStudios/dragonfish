@@ -1255,9 +1255,9 @@
     node-fetch "^2.3.0"
 
 "@offprintstudios/word-counter@^1.1.1":
-  version "1.1.3"
-  resolved "https://npm.pkg.github.com/download/@offprintstudios/word-counter/1.1.3/413b0324145bb19914c839013238b18fca27460fe96107499bb74006bd2e45a5#15e1770d5029f8059be718327cc9f985498dd56f"
-  integrity sha512-fbP4nmOp73cjLppSnkQQKRjcwDWMKA1bgq/6js4CRLLSrGQJEglr5EtzoWOGzu6GkwZZIJefo4Gftz4taJ3b6w==
+  version "1.1.5"
+  resolved "https://npm.pkg.github.com/download/@offprintstudios/word-counter/1.1.5/f7738183c2c7e7fdd5b3df799ceafd723e6ef1937c41318bc8525c6096493e83#68e2979505ed776d7202843c2c663fd2f50126b7"
+  integrity sha512-4q4Rd8An249iHXrRTHTzJhUMkf0IckYaaz+NW5bVj27L0f6HUnBow534WB8tIGc/XpC62ZWqXIPEEaiqlmxRKw==
   dependencies:
     neon-cli "^0.4.0"
 
