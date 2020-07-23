@@ -18,6 +18,9 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# NPM
+.npmrc
+
 # OS
 .DS_Store
 .env
