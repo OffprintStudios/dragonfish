@@ -8,7 +8,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "buildNativeModules": "cargo build --release && ts-node ./scripts/copyNativeLibs.ts --release",    
+    "buildNativeModules": "cargo build --release && ts-node ./scripts/copyNativeLibs.ts --release",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -31,6 +31,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/serve-static": "^2.1.3",
     "@nestjsplus/cookies": "^1.1.1",
+    "@offprintstudios/word-counter": "^1.1.1",
     "@types/dotenv": "^8.2.0",
     "@types/mongoose": "^5.7.30",
     "@types/multer-s3": "^2.7.7",
