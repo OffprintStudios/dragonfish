@@ -28,7 +28,7 @@ import { RegisterComponent } from './pages/account';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
-import { NewWorkComponent } from './components/modals/works';
+import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
 
 
 
@@ -72,6 +72,7 @@ const toolbarOptions = [
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent,
     NewWorkComponent,
+    EditWorkComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -88,7 +89,7 @@ const toolbarOptions = [
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
-    NewWorkComponent
+    NewWorkComponent, EditWorkComponent
   ],
   bootstrap: [AppComponent]
 })
