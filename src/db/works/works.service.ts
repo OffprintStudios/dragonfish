@@ -6,8 +6,6 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class WorksService {
-        
-
     constructor(
         @InjectModel('Work') private readonly workModel: Model<models.Work>,
         @InjectModel('Section') private readonly sectionModel: Model<models.Section>,
@@ -37,12 +35,8 @@ export class WorksService {
             },
             audit: {
                 published: newWorkInfo.published,
-            }            
+            }
         });
-        
-        // TODO: Something like this for word count
-        //const wordCount = wordCounter.countQuillWords("{ \"ops\": [ {\"insert\": \"gandalf\"}, {\"insert\": \" the\"} ] }");
-        //newWork.stats.totWords = wordCount;        
 
         return await newWork.save().then(async work => {
             const workCount = await this.workModel.countDocuments({author: user.sub});

@@ -4,7 +4,7 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
-import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from 'src/app/components/modals';
+import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from 'src/app/components/modals/blogs';
 import { User } from 'src/app/models/users';
 import { Blog, SetPublishStatus } from 'src/app/models/blogs';
 import { AlertsService } from 'src/app/modules/alerts';
@@ -115,6 +115,8 @@ export class BlogsComponent implements OnInit {
       } else {
         return false;
       }
+    } else {
+      return true;
     }
   }
 

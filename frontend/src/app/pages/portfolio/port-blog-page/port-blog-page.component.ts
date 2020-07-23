@@ -6,7 +6,7 @@ import { User } from 'src/app/models/users';
 import { Blog } from 'src/app/models/blogs';
 import { AuthService } from 'src/app/services/auth';
 import { BlogsService, PortfolioService } from 'src/app/services/content';
-import { EditBlogComponent } from 'src/app/components/modals';
+import { EditBlogComponent } from 'src/app/components/modals/blogs';
 
 @Component({
   selector: 'app-port-blog-page',

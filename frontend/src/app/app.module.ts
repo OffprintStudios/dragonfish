@@ -20,13 +20,17 @@ import { AuthInterceptor } from './services/auth';
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
   BlogsComponent, WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
 
+  import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
+    PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
+
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
-import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals';
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
-  PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
+import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
+import { NewWorkComponent } from './components/modals/works';
+
+
 
 const Quill: any = QuillNamespace;
 const MDS: any = MarkdownShortcuts;
@@ -67,6 +71,7 @@ const toolbarOptions = [
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent,
+    NewWorkComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -82,7 +87,8 @@ const toolbarOptions = [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent
+    UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
+    NewWorkComponent
   ],
   bootstrap: [AppComponent]
 })
