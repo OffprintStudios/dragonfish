@@ -87,6 +87,10 @@ export class AuthService {
    * navigates to home.
    */
   public logout(): void {
+    // Fire and forget. If this fails, it doesn't matter to the user, 
+    // and we don't want to leak that fact anyway.
+    this.http.get(`/api/auth/logout`, {withCredentials: true}).subscribe();
+    
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');

@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { SignedCookies, SetCookies, ClearCookies, Cookies } from '@nestjsplus/cookies';
+import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
 import { AuthService } from './auth.service';
@@ -25,10 +25,16 @@ export class AuthController {
 
     @SetCookies()
     @Post('login')
-    async login(@Request() req: any, @Body() loginUser: models.LoginUser): Promise<models.FrontendUser> {
+    async login(@Request() req: any, @Body() loginUser: models.LoginUser, @Cookies() cookies: any): Promise<models.FrontendUser> {
+        // Check for stray sessions from previous logout attempts that the server never received
+        let oldSessionId: string | null = cookies['refreshToken'];        
+
         const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
         const sessionId = uuidV4();
         await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+        if (oldSessionId) {
+            await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
+        }
         return this.authService.login(verifiedUser, req, sessionId);
     }
 
@@ -46,9 +52,13 @@ export class AuthController {
         }
     }
 
+    @UseGuards(AuthGuard)    
+    @SetCookies()
     @Get('logout')
-    async logout() {
-        return "yo there"; // This needs to remove a session ID from a user's document.
+    async logout(@Request() req: any, @Cookies() cookies: any) : Promise<void> {        
+        const refreshToken = cookies['refreshToken'];
+        await this.usersService.clearRefreshToken(req.user.sub, refreshToken);
+        this.authService.logout(req);        
     }
 
     /* Account settings */
