@@ -56,6 +56,17 @@ export class AuthService {
     }
 
     /**
+     * Logs a user out by deleting their HTTP-only refresh token cookie. The rest of the logout process
+     * takes place in the user service, or client-side.
+     * @param req The incoming logout request     
+     */
+    logout(req: any) {
+        req._cookies = [
+            {name: 'refreshToken', value: "", options: {httpOnly: true, expires: new Date(Date.now())}}
+        ];
+    }
+
+    /**
      * Refreshes the login of a given user by generating a new JWT payload and reconstructing
      * the FrontendUser object of the requisite user.
      * 

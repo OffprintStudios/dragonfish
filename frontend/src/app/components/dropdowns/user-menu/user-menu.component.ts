@@ -22,7 +22,6 @@ export class UserMenuComponent implements OnInit {
 
   logout() {
     this.authService.logout();
-    location.reload();
     this.close();
   }
 }

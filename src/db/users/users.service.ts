@@ -62,6 +62,15 @@ export class UsersService {
     async addRefreshToken(userId: string, sessionId: string): Promise<void> {
         return await this.userModel.updateOne({"_id": userId}, {$push: {"audit.sessions": sessionId}});
     }
+
+    /**
+     * Removes the given session ID from a user's sessions array on their document.
+     * @param userId A user's ID
+     * @param sessionId The session ID to remove
+     */
+    async clearRefreshToken(userId: string, sessionId: string) {
+        return await this.userModel.updateOne({"_id": userId}, {$pull: {"audit.sessions": sessionId}});
+    }
     
     /**
      * Builds a new FrontendUser object, including any available JSON web token.

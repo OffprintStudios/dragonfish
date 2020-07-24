@@ -8,3 +8,5 @@ services:
     - .:/opt/pulpd
   mongo:
     image: "mongo:4.2.1"
+    ports:
+      - "27017:27017"
