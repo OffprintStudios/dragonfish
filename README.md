@@ -19,7 +19,9 @@ You must have the following packages installed globally on your system:
 
 Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
 
-In order to achieve successful compilation of the backend code, you must create a `.env` file in the root project directory containing both a `DATABASE_URL` pointing to a valid MongoDB server along with a database, e.g. `mongodb://localhost:27017/my_database`, and a `JWT_SECRET` with any development key you want.
+Once you've installed and verified that these dependencies are working as expected, run `./build_dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries.
+
+When you're starting the development server with `nest start`, make sure to include a `.env` file in the root project directory. A sample `.env` file can be found in the root of this repository.
 
 ### Developing in Docker
 If you just want to use `docker-compose`, you can follow these steps.

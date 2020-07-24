@@ -4,9 +4,11 @@ import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
 
-const results: DotenvConfigOutput = config();
-if (results.error) {
-  throw new Error(`You don't have the .env file set up!` + results.error);
+if (process.env.NODE_ENV === 'development') {
+  const results: DotenvConfigOutput = config();
+  if (results.error) {
+    throw new Error(`You don't have the .env file set up!` + results.error);
+  }
 }
 
 async function bootstrap() {
