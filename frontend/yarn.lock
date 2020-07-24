@@ -1006,6 +1006,13 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.6.4"
 
+"@ng-select/ng-select@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@ng-select/ng-select/-/ng-select-4.0.4.tgz#fe4ba82f4ab6110627fefb072e81bfb3eb79fafb"
+  integrity sha512-KaVlVdt7DWZBfmL6nc16i80l1dDx0cO3eGjW+grQPnhZ9KurapioQUYVf6dSmYyWyBXihvt4I3SWkCzqSWFJbQ==
+  dependencies:
+    tslib "^1.10.0"
+
 "@ngtools/webpack@9.1.7":
   version "9.1.7"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-9.1.7.tgz#4322757b029e1175a3361183c06b31d0576538d8"

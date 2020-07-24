@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ToppyModule } from 'toppy';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
@@ -76,7 +77,7 @@ const toolbarOptions = [
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule, FileUploadModule,
+    IconsModule, AlertsModule, FileUploadModule, NgSelectModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
