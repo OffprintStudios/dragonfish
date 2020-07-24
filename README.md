@@ -17,8 +17,6 @@ You must have the following packages installed globally on your system:
 * Rust 1.34 (or later) and the Cargo toolchain
     * If not on Ubuntu 16.10 or later, you will also need LLVM, as native module compilation relies on LLVM's `libclang`. You will also need to set the `LIBCLANG_PATH` environment variable to LLVM's `/bin` directory.
 
-Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
-
 Once you've installed and verified that these dependencies are working as expected, run `./build_dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries.
 
 When you're starting the development server with `nest start`, make sure to include a `.env` file in the root project directory. A sample `.env` file can be found in the root of this repository.
