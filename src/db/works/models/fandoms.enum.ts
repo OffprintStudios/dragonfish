@@ -35,5 +35,7 @@ export enum Fandoms {
     TheWitcher = 'The Witcher',
     Persona = 'Persona',
     SailorMoon = 'Sailor Moon',
+    MiraculousLadybug = 'Miraculous Ladybug',
+    StarVs = 'Star Vs. the Forces of Evil',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
