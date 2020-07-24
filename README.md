@@ -14,6 +14,9 @@ You must have the following packages installed globally on your system:
 * Angular 9.1.5
 * NestJS 7.1.5
 * MongoDB 4.2.1
+* (Optionally) If you wish to contribute to, or author a native module, you will also need [Neon](https://neon-bindings.com/docs/getting-started) and the [Rust 1.15 (or later)toolchain](https://rustup.rs/).
+    * (Double optionally) If not on Ubuntu 16.10 or later, you will also need [LLVM](https://releases.llvm.org/download.html), as native module 
+    compilation relies on LLVM's `libclang`. You will also need to set the `LIBCLANG_PATH` environment variable to LLVM's `/bin` directory.
 
 Once you have installed and verified that these dependencies are working as expected, run `yarn install` in both the root project directory and in `/frontend` to install all project-related dependencies.
 
