@@ -2,12 +2,17 @@ FROM ubuntu:focal
 
 RUN apt-get update && apt-get install -y curl wget gnupg
 
-RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
+# This is the only way to pin to Node 12.17.0, the nodesource repository removes
+# old point versions whenever they do a minor update (which breaks our attempt to 
+# pin to a specific version with apt-get)
+RUN wget --quiet --output-document=node-lts.deb 'https://deb.nodesource.com/node_12.x/pool/main/n/nodejs/nodejs_12.17.0-deb-1nodesource1_amd64.deb' \
+    && apt install -y ./node-lts.deb \
+    && rm node-lts.deb
+    
 RUN apt-get update && apt-get install -y \
-    nodejs=12.18.2-deb-1nodesource1 \
     yarn=1.22.1-1
 
 RUN npm install -g typescript@3.8.3 \
