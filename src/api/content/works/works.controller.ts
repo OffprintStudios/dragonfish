@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Get, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Post, Body, Put } from '@nestjs/common';
 
 import * as models from 'src/db/works/models';
 import { WorksService } from 'src/db/works/works.service';
@@ -15,7 +15,7 @@ export class WorksController {
     }
 
     @UseGuards(AuthGuard)
-    @Post('create-work')
+    @Put('create-work')
     async createWork(@Request() req: any, @Body() newWork: models.CreateWork) {
         return await this.worksService.createNewWork(req.user, newWork);
     }

@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 
 import * as models from 'src/app/models/works';
 import { WorksService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-new-work',
@@ -31,7 +32,7 @@ export class NewWorkComponent implements OnInit {
     status: new FormControl(null, Validators.required)
   });
 
-  constructor(private worksService: WorksService, private cdr: ChangeDetectorRef) { }
+  constructor(private worksService: WorksService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) { }
 
   ngOnInit(): void {
   }
@@ -105,16 +106,24 @@ export class NewWorkComponent implements OnInit {
    */
   submitWork() {
     console.log(JSON.stringify(this.newWorkForm.value));
-
+    this.loading = true;
     const newWork: models.CreateWork = {
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,
       longDesc: this.fields.longDesc.value,
       category: this.fields.thisCategory.value,
-      fandoms: this.fields.fandoms.value,
+      fandoms: this.fields.theseFandoms.value,
       genres: this.fields.theseGenres.value,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
     };
+
+    this.worksService.createWork(newWork).subscribe(() => {
+      this.loading = false;
+      this.close();
+    }, err => {
+      this.loading = false;
+      this.alertsService.error('Something went wrong! Try again in a little bit.');
+    });
   }
 }
