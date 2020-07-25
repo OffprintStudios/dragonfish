@@ -3,7 +3,7 @@ export { Section } from './section.model';
 export { Categories } from './categories.enum';
 export { Fandoms } from './fandoms.enum';
 export { ContentRating } from './content-rating.enum';
-export { Genres } from './genres.enum';
+export { GenresFiction, GenresPoetry } from './genres.enum';
 export { WorkStatus } from './work-status.enum';
 
 /* Data transfer objects */

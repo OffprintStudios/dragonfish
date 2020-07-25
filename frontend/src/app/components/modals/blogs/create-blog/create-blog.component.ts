@@ -56,7 +56,7 @@ export class CreateBlogComponent implements OnInit {
     });
   }
 
-    /**
+  /**
    * Asks if the users actually wants to close the form if its contents have already been changed.
    * 
    * Otherwise, it closes the form immediately.

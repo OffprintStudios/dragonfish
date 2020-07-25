@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { NgSelectConfig } from '@ng-select/ng-select';
 import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
 
 import { User } from './models/users';
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   userMenuDropdown: ToppyControl;
   searchMenuDropdown: ToppyControl;
 
-  constructor(private router: Router, private toppy: Toppy, private authService: AuthService) {
+  constructor(private router: Router, private toppy: Toppy, private authService: AuthService, private selectConfig: NgSelectConfig) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -47,6 +48,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.changeTheme('rgb(209,109,43)', 'rgb(172,71,49)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
       }
     }
+
+    this.selectConfig.appendTo = 'body';
   }
 
   /**
