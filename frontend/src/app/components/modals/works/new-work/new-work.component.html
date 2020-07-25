@@ -110,7 +110,10 @@
             </div>
         </div>
 
-        <button class="work-modal-button" type="submit">Create Work</button>
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <button class="work-modal-button" type="submit" *ngIf="!loading">Create Work</button>
         <button class="work-modal-button-cancel" type="button" (click)="askCancel()">Cancel</button>
     </form>
 </div>

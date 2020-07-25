@@ -40,7 +40,10 @@
             NOTE: All unpublished work is submitted as a draft. You can publish a blog&mdash;or revoke it&mdash;at any time.
         </p>
 
-        <button type="submit" class="blog-modal-button">Create Blog</button>
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <button type="submit" class="blog-modal-button" *ngIf="!loading">Create Blog</button>
         <button type="button" class="blog-modal-button" (click)="askCancel()">Cancel</button>
     </form>
 </div>

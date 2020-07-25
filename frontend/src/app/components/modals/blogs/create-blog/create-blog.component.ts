@@ -11,7 +11,8 @@ import { AlertsService } from 'src/app/modules/alerts';
   styleUrls: ['./create-blog.component.less']
 })
 export class CreateBlogComponent implements OnInit {
-  close: any;
+  close: any; // Alias for Toppy
+  loading = false; // Loading check for submission
 
   newBlogForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -43,6 +44,7 @@ export class CreateBlogComponent implements OnInit {
    * Submits the form as a new blog to the backend
    */
   submitForm() {
+    this.loading = true;
     const newBlogInfo: models.CreateBlog = {
       title: this.fields.title.value,
       body: this.fields.body.value,
@@ -50,8 +52,10 @@ export class CreateBlogComponent implements OnInit {
     };
 
     this.blogsService.createBlog(newBlogInfo).subscribe(() => {
+      this.loading = false;
       this.close();
     }, err => {
+      this.loading = false;
       this.alertsService.error(err);
     });
   }
