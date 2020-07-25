@@ -45,9 +45,9 @@
                             </ng-template>
                             <h4>{{ work.meta.category }}</h4><span>//</span>
                             <h4>{{ work.meta.genres }}</h4><span>//</span>
-                            <h4>{{ work.stats.views }} view{{ work.stats.views | pluralize }}</h4><span>//</span>
-                            <h4>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
-                            <h4>Updated {{ work.updatedAt | date:'short' }}</h4>
+                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views }}</h4><span>//</span>
+                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments }}</h4><span>//</span>
+                            <h4 title="Last Updated"><i-feather name="clock"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
                         </div>
                     </div>
                     <div class="controls">
