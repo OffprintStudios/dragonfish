@@ -105,7 +105,6 @@ export class NewWorkComponent implements OnInit {
    * Submits the work to the backend.
    */
   submitWork() {
-    console.log(JSON.stringify(this.newWorkForm.value));
     this.loading = true;
     const newWork: models.CreateWork = {
       title: this.fields.title.value,
