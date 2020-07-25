@@ -43,8 +43,9 @@
                             <ng-template #unpubTitle>
                                 <h3><a>{{ work.title }}</a></h3>
                             </ng-template>
-                            <h4>{{ work.meta.category }}</h4><span>//</span>
-                            <h4>{{ work.meta.genres }}</h4><span>//</span>
+                            <h4>{{ fixCategory(work.meta.category) }}</h4><span>//</span>
+                            <div style="display: inline-block;" *ngIf="work.meta.fandoms.length > 0"><h4>{{ separateFandoms(work.meta.fandoms) }}</h4><span>//</span></div>
+                            <h4>{{ separateGenres(work.meta.category, work.meta.genres) }}</h4><span>//</span>
                             <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views }}</h4><span>//</span>
                             <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments }}</h4><span>//</span>
                             <h4 title="Last Updated"><i-feather name="clock"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
