@@ -43,16 +43,16 @@
                             <ng-template #unpubTitle>
                                 <h3><a>{{ work.title }}</a></h3>
                             </ng-template>
-                            <h4>{{ work.stats.totWords }} word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
+                            <h4>{{ work.meta.category }}</h4><span>//</span>
+                            <h4>{{ work.meta.genres }}</h4><span>//</span>
                             <h4>{{ work.stats.views }} view{{ work.stats.views | pluralize }}</h4><span>//</span>
                             <h4>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
-                            <h4>Created: {{ work.createdAt | date:'shortDate' }}</h4>
-                            <div *ngIf="work.updatedAt !== work.createdAt" style="display: inline-block;"><span>//</span><h4>Updated: {{ work.updatedAt | date:'short'}}</h4></div>
+                            <h4>Updated {{ work.updatedAt | date:'short' }}</h4>
                         </div>
                     </div>
                     <div class="controls">
                         <div class="work-control-buttons">
-                            <button class="work-controls mid" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
+                            <button class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
                             <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
                         </div>
                     </div>
