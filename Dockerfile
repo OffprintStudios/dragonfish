@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN npm install -g typescript@3.8.3 \
     @angular/cli@9.1.5 \
-    @nestjs/cli@7.1.5
+    @nestjs/cli@7.1.5 \
+    neon-cli@0.4.0
 
 # Download rust and add it to the PATH
 RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
@@ -30,5 +31,6 @@ RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 WORKDIR /opt/pulpd
 
 EXPOSE 3000
+EXPOSE 9229
 
 CMD ["nest", "start"]
