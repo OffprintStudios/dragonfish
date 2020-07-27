@@ -28,7 +28,7 @@
             <div class="work-list">
                 <div class="work-item" *ngFor="let work of works">
                     <div class="work-check">
-                        <button title="Revoke submission" class="check-published" *ngIf="!work.audit.published; else workUnpublished">
+                        <button title="Revoke submission" class="check-published" *ngIf="work.audit.published; else workUnpublished">
                             <i-feather name="book-open"></i-feather>
                         </button>
                         <ng-template #workUnpublished>
