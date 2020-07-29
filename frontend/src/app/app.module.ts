@@ -8,7 +8,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
-import * as MarkdownShortcuts from 'quill-markdown-shortcuts';
 import { FileUploadModule } from 'ng2-file-upload';
 import { SlugifyPipe, PluralizePipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
@@ -33,7 +32,6 @@ import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
 import { WorkPageComponent, SectionPageComponent, UnpublishedSectionPageComponent } from './pages/work-page';
 
 const Quill: any = QuillNamespace;
-const MDS: any = MarkdownShortcuts;
 const MagicUrlModule: any = MagicUrl;
 const icons = Quill.import('ui/icons');
 icons.bold = '<i class="fas fa-bold"></i>';
@@ -50,7 +48,6 @@ icons.justify = '<i class="fas fa-align-justify"></i>';
 icons.video = '<i class="fas fa-video"></i>';
 icons.image = '<i class="fas fa-image"></i>';
 
-Quill.register('modules/markdownShortcuts', MDS);
 Quill.register('modules/magicUrl', MagicUrlModule);
 
 const toolbarOptions = [
