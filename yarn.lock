@@ -1255,9 +1255,9 @@
     node-fetch "^2.3.0"
 
 "@offprintstudios/word-counter@^1.1.5":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@offprintstudios/word-counter/-/word-counter-1.1.6.tgz#f6c167c884a088e083125fafe321fccffabf1f5a"
-  integrity sha512-NZ/I5ur5xjo2iDpGeVj4ZbDQF36rI73KobhELL3PzRCO0eyfVAl1kmwSsCQiTjO5tdEg8RDPcS6vSiCG4Sr1rA==
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@offprintstudios/word-counter/-/word-counter-1.1.7.tgz#d95bd68945af8c78383c4a155d63fc2156473631"
+  integrity sha512-fkTkYphO27Vn1zfqu7hYezB8VPgMR0Li+q2IsShpslKqXgq9/mz0rNBACwLHaRfuKd4UlwlKR0tIzNGFDmSoEg==
   dependencies:
     neon-cli "^0.4.0"
 
