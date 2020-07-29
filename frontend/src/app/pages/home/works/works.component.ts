@@ -199,14 +199,12 @@ export class WorksComponent implements OnInit {
    * 
    * @param fandoms The fandoms to fix
    */
-  separateFandoms(fandoms: string[]) {
+  separateFandoms(fandoms: models.Fandoms[]) {
     if (fandoms.length === 1) {
       return models.Fandoms[fandoms[0]];
     } else {
-      let theseFandoms: string[];
-      for (let i = 0; i < 2; i++) {
-        theseFandoms[i] = models.Fandoms[fandoms[i]];
-      }
+      let theseFandoms: string[] = new Array();
+      fandoms.forEach(fandom => { theseFandoms.push(models.Fandoms[fandom]) });
       return theseFandoms.join(', ');
     }
   }
