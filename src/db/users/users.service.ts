@@ -1,38 +1,59 @@
 import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { isNullOrUndefined } from 'util';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 import validator from 'validator';
-
 import * as models from './models';
+import { isNullOrUndefined } from '../../util/validation';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel('User') private readonly userModel: Model<models.User>, @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<models.InviteCodes>) {}
+    constructor(@InjectModel('User') private readonly userModel: Model<models.User>,
+        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<models.InviteCodes>) { }
 
     /**
-     * Creates a user and adds them to the database. First, it checks to see if
-     * a user with the requested username and/or email already exist. If true,
+     * Creates a user and adds them to the database. First, it ensures the 
+     * invite code is valid, and hasn't been used yet. Then, it checks to see if
+     * a user with the requested username and/or email already exists. If they do,
      * then the creation is rejected. Otherwise, the creation proceeds.
      * 
      * @param newUserInfo A new user's information
      */
     async createUser(newUserInfo: models.CreateUser): Promise<models.User> {
-        if (validator.isEmail(newUserInfo.email)) {
-            const existingUsername = await this.userModel.findOne({username: sanitize(newUserInfo.username)});
-            const existingEmail = await this.userModel.findOne({email: sanitize(newUserInfo.email)});
+        if (!newUserInfo.inviteCode) {
+            throw new BadRequestException('An invite code is required while Offprint is in its Origins phase.')
+        }
 
-            if (isNullOrUndefined(existingUsername) && isNullOrUndefined(existingEmail)) {
-                const newUser = new this.userModel(newUserInfo);
-                return await newUser.save();         
-            } else {
-                throw new ConflictException('Someone already has your username or email. Try another combination.');
-            }
-        } else {
+        const storedInviteCode = await this.findOneInviteCode(newUserInfo.inviteCode);
+        if (storedInviteCode === null || storedInviteCode === undefined) {
+            throw new BadRequestException('That is not a valid invite code.');
+        }
+
+        if (storedInviteCode.used) {
+            throw new BadRequestException('This invite code has already been used.');
+        }
+
+        if (!validator.isEmail(newUserInfo.email)) {
             throw new BadRequestException('That is not a valid email address.');
         }
+
+        if (newUserInfo.username.length < 3 || newUserInfo.username.length > 50) {
+            throw new BadRequestException('Your username must be between 3 and 50 characters.');
+        }
+
+        const existingUsername = await this.userModel.findOne({ username: sanitize(newUserInfo.username) });
+        const existingEmail = await this.userModel.findOne({ email: sanitize(newUserInfo.email) });
+        if (!isNullOrUndefined(existingUsername) || !isNullOrUndefined(existingEmail)) {            
+            throw new ConflictException('Someone already has your username or email. Try another combination.');            
+        }
+        
+        const newUser = new this.userModel(newUserInfo);        
+        
+        const savedUser = await newUser.save();
+        await this.useInviteCode(storedInviteCode._id, savedUser._id);
+
+        return savedUser;
     }
 
     /**
@@ -41,7 +62,7 @@ export class UsersService {
      * @param potEmail A potential user's email
      */
     async findOneByEmail(potEmail: string): Promise<models.User> {
-        return await this.userModel.findOne({email: sanitize(potEmail)});
+        return await this.userModel.findOne({ email: sanitize(potEmail) });
     }
 
     /**
@@ -60,7 +81,7 @@ export class UsersService {
      * @param sessionId A user's session ID
      */
     async addRefreshToken(userId: string, sessionId: string): Promise<void> {
-        return await this.userModel.updateOne({"_id": userId}, {$push: {"audit.sessions": sessionId}});
+        return await this.userModel.updateOne({ "_id": userId }, { $push: { "audit.sessions": sessionId } });
     }
 
     /**
@@ -69,9 +90,9 @@ export class UsersService {
      * @param sessionId The session ID to remove
      */
     async clearRefreshToken(userId: string, sessionId: string) {
-        return await this.userModel.updateOne({"_id": userId}, {$pull: {"audit.sessions": sessionId}});
+        return await this.userModel.updateOne({ "_id": userId }, { $pull: { "audit.sessions": sessionId } });
     }
-    
+
     /**
      * Builds a new FrontendUser object, including any available JSON web token.
      * 
@@ -111,7 +132,7 @@ export class UsersService {
      * @param refreshToken An available refresh token
      */
     async checkRefreshToken(userId: string, refreshToken: string): Promise<boolean> {
-        const validUser = await this.userModel.findById({"_id": userId,"audit.sessions": refreshToken});
+        const validUser = await this.userModel.findById({ "_id": userId, "audit.sessions": refreshToken });
         if (validUser) {
             return true;
         } else {
@@ -129,7 +150,7 @@ export class UsersService {
      * @param blogCount The number of blogs tied to that user
      */
     async updateBlogCount(userId: string, blogCount: number): Promise<void> {
-        await this.userModel.updateOne({"_id": userId}, {"stats.blogs": blogCount});
+        await this.userModel.updateOne({ "_id": userId }, { "stats.blogs": blogCount });
     }
 
     /**
@@ -140,7 +161,7 @@ export class UsersService {
      * @param workCount The number of works tied to that user
      */
     async updateWorkCount(userId: string, workCount: number): Promise<void> {
-        await this.userModel.updateOne({"_id": userId}, {"stats.works": workCount});
+        await this.userModel.updateOne({ "_id": userId }, { "stats.works": workCount });
     }
 
     /**
@@ -151,11 +172,11 @@ export class UsersService {
      * @param newNameAndEmail Their new name and email address
      */
     async changeNameAndEmail(userId: string, newNameAndEmail: models.ChangeNameAndEmail): Promise<models.User> {
-        const existingUsername = await this.userModel.findOne({username: sanitize(newNameAndEmail.username)});
-        const existingEmail = await this.userModel.findOne({email: sanitize(newNameAndEmail.email)});
+        const existingUsername = await this.userModel.findOne({ username: sanitize(newNameAndEmail.username) });
+        const existingEmail = await this.userModel.findOne({ email: sanitize(newNameAndEmail.email) });
 
-        if (isNullOrUndefined(existingUsername) || isNullOrUndefined(existingEmail)) {
-            return await this.userModel.findOneAndUpdate({"_id": userId}, {"email": newNameAndEmail.email,"username": newNameAndEmail.username});
+        if (isNullOrUndefined(existingUsername) && isNullOrUndefined(existingEmail)) {
+            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "email": newNameAndEmail.email, "username": newNameAndEmail.username });
         } else {
             throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
@@ -170,8 +191,8 @@ export class UsersService {
      */
     async changePassword(userId: string, newPasswordInfo: models.ChangePassword): Promise<models.User> {
         try {
-            const newHashedPw = await hash(newPasswordInfo.newPassword, {type: argon2id});
-            return await this.userModel.findOneAndUpdate({"_id": userId}, {"password": newHashedPw});
+            const newHashedPw = await hash(newPasswordInfo.newPassword, { type: argon2id });
+            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "password": newHashedPw });
         } catch (err) {
             console.log(err); // we definitely want better error reporting for stuff like this
             throw new InternalServerErrorException(`Something went wrong! Try again in a little bit.`);
@@ -186,7 +207,7 @@ export class UsersService {
      * @param newProfileInfo Their new profile info
      */
     async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({"_id": userId}, {"profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio});
+        return await this.userModel.findOneAndUpdate({ "_id": userId }, { "profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio });
     }
 
     /**
@@ -201,5 +222,20 @@ export class UsersService {
     }
 
     /* Invite codes, only used for Origins, pt. 1 */
-    // TODO: Write those damn invite code functions
+
+    /**
+     * Return the invite code with the given ID.
+     * @param codeId The ID of the invite code to look for.
+     */
+    async findOneInviteCode(codeId: string): Promise<models.InviteCodes> {
+        return await this.inviteCodesModel.findById(sanitize(codeId));
+    }
+
+    /**
+     * Marks the code with the given ID as used, preventing it from being used by anyone else.
+     * @param codeId The ID of the code to mark as used.
+     */
+    async useInviteCode(codeId: string, usedById: string): Promise<void> {
+        await this.inviteCodesModel.findOneAndUpdate({ "_id": codeId}, {"byWho": usedById, "used": true});
+    }
 }

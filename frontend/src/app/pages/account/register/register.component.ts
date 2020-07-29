@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
     username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
     password: new FormControl('', Validators.required),
     repeatPassword: new FormControl('', Validators.required),
+    inviteCode: new FormControl('', Validators.required),
     tosCheck: new FormControl(false, Validators.requiredTrue),
     ageCheck: new FormControl(false, Validators.requiredTrue),
   });
@@ -60,12 +61,13 @@ export class RegisterComponent implements OnInit {
       email: this.registerFields.email.value,
       username: this.registerFields.username.value,
       password: this.registerFields.password.value,
+      inviteCode: this.registerFields.inviteCode.value,
     };
     this.authService.register(credentials).pipe(first()).subscribe(() => {
       this.router.navigate(['/home']);
     }, err => {
       this.loadingRegister = false;
-      this.alertsService.error(err.body.message);
+      this.alertsService.error(err.error.message);
     });
   }
 
@@ -76,12 +78,11 @@ export class RegisterComponent implements OnInit {
       this.loadingLogin = true;
       const credentials: LoginUser = {email: this.loginFields.email.value, password: this.loginFields.password.value};
       this.authService.login(credentials).pipe(first()).subscribe(data => {
-        this.loadingLogin = false;
-        console.log(data); // temporary, remove if works
+        this.loadingLogin = false;        
         this.refreshAfterLogin();
       }, err => {
         this.loadingLogin = false;
-        console.log(err.error);
+        this.alertsService.error(err.error.message);
       })
     }
   }
