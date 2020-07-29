@@ -94,11 +94,11 @@ export class WorksComponent implements OnInit {
     if (this.isUnpubFiltered) {
       this.isPubFiltered = true;
       this.isUnpubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === true});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
     } else {
       this.unfilteredList = this.works;
       this.isPubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === true});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
     }
   }
 
@@ -109,11 +109,11 @@ export class WorksComponent implements OnInit {
     if (this.isPubFiltered) {
       this.isUnpubFiltered = true;
       this.isPubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === false});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
     } else {
       this.unfilteredList = this.works;
       this.isUnpubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === false});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
     }
   }
 

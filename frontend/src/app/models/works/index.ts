@@ -5,6 +5,7 @@ export { Fandoms } from './fandoms.enum';
 export { ContentRating } from './content-rating.enum';
 export { GenresFiction, GenresPoetry } from './genres.enum';
 export { WorkStatus } from './work-status.enum';
+export { ApprovalStatus } from './approval-status.enum';
 
 /* Data transfer objects */
 export { CreateWork } from './create-work.model';

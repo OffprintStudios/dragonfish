@@ -58,7 +58,10 @@ export class BlogsService {
      * @param blogId The blog's ID
      */
     async deleteBlog(user: any, blogId: string): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true});
+        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true}).then(async () => {
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            await this.usersService.updateBlogCount(user.sub, blogCount);
+        });
     }
 
     /**
@@ -87,7 +90,7 @@ export class BlogsService {
         await this.blogModel.findOneAndUpdate(
             {"_id": blogInfo._id, "author": user.sub},
             {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
-            ).then(async blog => {
+            ).where('audit.isDeleted', false).then(async () => {
                 const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
                 await this.usersService.updateBlogCount(user.sub, blogCount);
             });

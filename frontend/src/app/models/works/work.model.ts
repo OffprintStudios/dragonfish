@@ -3,6 +3,7 @@ import { Fandoms } from './fandoms.enum';
 import { GenresFiction, GenresPoetry } from './genres.enum';
 import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
+import { ApprovalStatus } from './approval-status.enum';
 
 export interface Work {
     readonly _id: string;
@@ -34,7 +35,7 @@ export interface Work {
     };
     readonly audit: {
         readonly threadId: string;
-        readonly published: boolean;
+        readonly published: ApprovalStatus;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;

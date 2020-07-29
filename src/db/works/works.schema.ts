@@ -21,8 +21,8 @@ export const WorksSchema = new Schema({
         category: {type: String, enum: Object.keys(models.Categories), required: true},
         fandoms: {type: [String], enum: Object.keys(models.Fandoms)},
         genres: {type: [String], enum: Object.keys(models.Genres), required: true},
-        rating: {type: [String], enum: Object.keys(models.ContentRating), required: true},
-        status: {type: [String], enum: Object.keys(models.WorkStatus), required: true},
+        rating: {type: String, enum: Object.keys(models.ContentRating), required: true},
+        status: {type: String, enum: Object.keys(models.WorkStatus), required: true},
     },
     stats: {
         totWords: {type: Number, default: 0},
@@ -36,7 +36,7 @@ export const WorksSchema = new Schema({
     }}],
     audit: {
         threadId: {type: String, default: generate()},
-        published: {type: Boolean, default: false},
+        published: {type: String, enum: Object.keys(models.ApprovalStatus), default: 'NotSubmitted'},
         isDeleted: {type: Boolean, default: false}
     },
     createdAt: {type: Date, default: Date.now()},
@@ -58,4 +58,6 @@ WorksSchema.pre<models.Work>('save', async function (next: HookNextFunction) {
     this.set('meta.rating', this.meta.rating);
     this.set('meta.status', this.meta.status);
     this.set('audit.threadId', uuidV4());
+    
+    return next();
 });

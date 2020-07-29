@@ -5,6 +5,7 @@ import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
 
 export interface EditWork {
+    readonly _id: string;
     readonly title: string;
     readonly shortDesc: string;
     readonly longDesc: string;
