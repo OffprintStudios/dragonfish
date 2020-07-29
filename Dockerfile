@@ -28,6 +28,9 @@ RUN npm install -g typescript@3.9.7 \
 RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
+# Install all build dependencies
+RUN ./build_dev.sh
+
 WORKDIR /opt/pulpd
 
 EXPOSE 3000
