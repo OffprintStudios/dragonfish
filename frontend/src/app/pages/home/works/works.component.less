@@ -97,7 +97,7 @@ div.works-list-container {
                 border: 1px solid var(--site-borders);
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
-                max-height: 12rem;
+                min-height: 12rem;
                 div.work-check {
                     position: relative;
                     text-align: center;
@@ -107,7 +107,7 @@ div.works-list-container {
                         border-top: none;
                         border-bottom: none;
                         border-left: none;
-                        height: 12rem;
+                        height: 100%;
                         padding-left: 15px;
                         padding-right: 15px;
                         margin-bottom: 0;
@@ -130,7 +130,7 @@ div.works-list-container {
                         border-top: none;
                         border-bottom: none;
                         border-left: none;
-                        height: 12rem;
+                        height: 100%;
                         padding-left: 15px;
                         padding-right: 15px;
                         margin-bottom: 0;
@@ -153,7 +153,7 @@ div.works-list-container {
                     position: relative;
                     margin: 0 auto;
                     padding: 10px;
-                    top: 0.75rem;
+                    top: 50%;
                     width: 75%;
                     div.info {
                         h3 {
@@ -185,41 +185,39 @@ div.works-list-container {
                         span {
                             margin-left: 0.25rem;
                             margin-right: 0.25rem;
+                            display: inline-block;
                         }
                     }
                 }
 
-                div.controls {
-                    div.work-control-buttons {
-                        button.work-controls {
-                            padding-left: 15px;
-                            padding-right: 15px;
-                            height: 12rem;
-                            box-shadow: none;
-                            margin-bottom: 0;
-                            border-top: none;
-                            border-bottom: none;
-                            color: var(--site-borders);
-                            i-feather {
-                                position: relative;
-                                top: 0.75rem;
-                                stroke-width: 1;
-                            }
-                            &:hover {
-                                color: whitesmoke;
-                                background-color: var(--site-accent);
-                            }
+                div.work-control-buttons {
+                    button.work-controls {
+                        padding-left: 15px;
+                        padding-right: 15px;
+                        height: 100%;
+                        box-shadow: none;
+                        margin-bottom: 0;
+                        border-top: none;
+                        border-bottom: none;
+                        color: var(--site-borders);
+                        i-feather {
+                            position: relative;
+                            top: 0.75rem;
+                            stroke-width: 1;
                         }
-                        button.mid {
-                            border-left: 0;
-                            border-right: 0;
-                            box-shadow: none;
-                            margin-bottom: 0;
+                        &:hover {
+                            color: whitesmoke;
+                            background-color: var(--site-accent);
                         }
-
-                        button.right {
-                            border-right: none;
-                        }
+                    }
+                    button.mid {
+                        border-left: 0;
+                        border-right: 0;
+                        box-shadow: none;
+                        margin-bottom: 0;
+                    }
+                    button.right {
+                        border-right: none;
                     }
                 }
             }
