@@ -12,6 +12,7 @@ import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 
 import { AuthGuard } from './services/auth';
+import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent } from './pages/work-page';
 
 const routes: Routes = [
   {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -38,6 +39,10 @@ const routes: Routes = [
     { path: 'blog/:blogId', component: PortBlogPageComponent },
     { path: 'works', component: PortWorksComponent },
     { path: 'collections', component: PortCollectionsComponent },
+  ]},
+  {path: 'work/:workId/:title', component: WorkPageComponent, children: [
+    {path: 'section/:sectionId', canActivate: [AuthGuard], component: UnpublishedSectionPageComponent},
+    {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
   ]}
 ];
 

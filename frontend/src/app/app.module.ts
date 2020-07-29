@@ -30,8 +30,7 @@ import { RegisterComponent } from './pages/account';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
-
-
+import { WorkPageComponent, SectionPageComponent, UnpublishedSectionPageComponent } from './pages/work-page';
 
 const Quill: any = QuillNamespace;
 const MDS: any = MarkdownShortcuts;
@@ -74,6 +73,9 @@ const toolbarOptions = [
     PortBlogPageComponent,
     NewWorkComponent,
     EditWorkComponent,
+    WorkPageComponent,
+    SectionPageComponent,
+    UnpublishedSectionPageComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
