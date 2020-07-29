@@ -32,6 +32,8 @@ After following these steps, you should have your very own copy of Offprint runn
 
 ## Contributing
 
+Check out the Contribution guides in the wiki!
+
 TODO: Flesh this section out.
 
 ## Want to talk about the project?
