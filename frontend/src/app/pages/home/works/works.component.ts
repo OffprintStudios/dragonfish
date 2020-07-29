@@ -163,7 +163,32 @@ export class WorksComponent implements OnInit {
    * @param workId The ID of the work we're deleting
    */
   askDelete(workId: string) {
+    if (confirm('Are you sure you want to delete this work? This action is irreversible.')) {
+      this.worksService.deleteWork(workId).subscribe(() => {
+        this.fetchData();
+        return;
+      }, err => {
+        console.log(err);
+        return;
+      });
+    } else {
+      return;
+    }
+  }
 
+  /**
+   * Returns true if the approval status of a work is Approved. Otherwise, returns false.
+   * 
+   * TEMPORARY FUNCTION ONLY. FUTURE UPDATE WILL INCLUDE MULTIPLE STATUS SUPPORT.
+   * 
+   * @param approvalStatus The work's approval status
+   */
+  checkStatus(approvalStatus: models.ApprovalStatus) {
+    if (models.ApprovalStatus[approvalStatus] === models.ApprovalStatus.Approved) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**

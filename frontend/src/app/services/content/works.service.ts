@@ -45,15 +45,37 @@ export class WorksService {
       }));
   }
 
+  /**
+   * Sends a request to the backend to delete the specified work using its ID.
+   * 
+   * @param workId The work we're deleting
+   */
   public deleteWork(workId: string) {
-    
+    return this.http.patch(`/api/content/works/delete-work/` + workId, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        this.alertsService.success(`Work successfully deleted.`);
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
   }
 
   public submitForPublishing() {
 
   }
 
+  /**
+   * Sends a request to the backend to update work with the specified new information.
+   * 
+   * @param workInfo The work we're editing
+   */
   public editWork(workInfo: models.EditWork) {
-
+    return this.http.patch(`/api/content/works/edit-work`, workInfo, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        this.alertsService.success(`Changes saved successfully.`);
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
   }
 }
