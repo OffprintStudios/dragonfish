@@ -3,7 +3,7 @@ import { generate } from 'shortid';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 
-import { User } from './models';
+import { User, Roles } from './models';
 
 export const UsersSchema = new Schema({
     _id: {type: String, default: generate()},
@@ -23,7 +23,7 @@ export const UsersSchema = new Schema({
         watching: {type: Number, default: 0},
     },
     audit: {
-        roles: {type: [String], default: ['user']},
+        roles: {type: [String], enum: Object.keys(Roles), default: ['User']},
         sessions: {type: [String], default: null},
         isDeleted: {type: String, default: false},
     },

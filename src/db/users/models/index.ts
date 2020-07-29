@@ -5,6 +5,7 @@ export { LoginUser } from './login-user.model';
 export { ChangeNameAndEmail } from './change-name-and-email.model';
 export { ChangePassword } from './change-password.model';
 export { ChangeProfile } from './change-profile.model';
+export { Roles } from './roles.enum';
 
 // Delete after the Offprint Alpha ends
 export { InviteCodes } from './invite-codes.model';
