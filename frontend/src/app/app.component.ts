@@ -49,7 +49,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     }
 
-    this.selectConfig.appendTo = 'body';
   }
 
   /**
