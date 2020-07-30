@@ -1,12 +1,15 @@
 import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import {FilterQuery, Model} from 'mongoose';
 import { isNullOrUndefined } from 'util';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 import validator from 'validator';
+import escapeRegExp from 'lodash.escaperegexp';
 
 import * as models from './models';
+import {SearchParameters} from '../../api/search/models/search-parameters';
+import {SearchResults} from '../../api/search/models/search-results';
 
 @Injectable()
 export class UsersService {
@@ -198,6 +201,35 @@ export class UsersService {
     async getOneUser(userId: string): Promise<models.FrontendUser> {
         const user = await this.userModel.findById(userId);
         return await this.buildFrontendUser(user);
+    }
+
+    async findRelatedUsers(searchParameters: SearchParameters): Promise<SearchResults<models.SearchUser> | null> {
+        const p = searchParameters.pagination;
+        const filter: FilterQuery<models.User> = {
+            $text: {$search: searchParameters.text}
+        };
+
+        const results = await this.userModel.find(filter,
+            {
+                searchScore: {$meta: 'textScore'}
+            }).sort({score: {$meta: 'textScore'}})
+            .sort({'stats.views': -1})
+            .select('username profile.avatar stats.works stats.blogs stats.watchers stats.watching')
+            .skip((p.page - 1) * p.pageSize)
+            .limit(p.pageSize);
+
+        if (results.length === 0 && p.page !== 1) {
+            return null;
+        } else {
+            const totalPages = Math.ceil(
+                await this.userModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
+            );
+            return {
+                matches: results,
+                totalPages: totalPages,
+                pagination: searchParameters.pagination
+            };
+        }
     }
 
     /* Invite codes, only used for Origins, pt. 1 */
