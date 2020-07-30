@@ -8,11 +8,11 @@ It's still very much a work in progress.
 
 You must have the following packages installed globally on your system:
 
-* NodeJS 12.17.0
-* Yarn 1.21.1
-* TypeScript 3.8.3
-* Angular 9.1.5
-* NestJS 7.1.5
+* NodeJS 14.6.0
+* Yarn 1.22.4
+* TypeScript 3.9.7
+* Angular 10.0.4
+* NestJS 7.4.1
 * MongoDB 4.2.1
 * [Neon](https://neon-bindings.com/docs/getting-started) and the [Rust 1.15 (or later)toolchain](https://rustup.rs/).
     * (Optionally) If not on Ubuntu 16.10 or later, you will also need [LLVM](https://releases.llvm.org/download.html), as native module compilation relies on LLVM's `libclang`. You will also need to set the `LIBCLANG_PATH` environment variable to LLVM's `/bin` directory.
@@ -31,6 +31,8 @@ If you just want to use `docker-compose`, you can follow these steps.
 After following these steps, you should have your very own copy of Offprint running on port 3000.
 
 ## Contributing
+
+Check out the Contribution guides in the wiki!
 
 TODO: Flesh this section out.
 

@@ -35,9 +35,6 @@ export class WorksService {
                 rating: newWorkInfo.rating,
                 status: newWorkInfo.status,
             },
-            audit: {
-                published: newWorkInfo.published,
-            }
         });
 
         return await newWork.save().then(async work => {
@@ -89,6 +86,11 @@ export class WorksService {
         return await this.workModel.find().where('author', user.sub).where('audit.isDeleted', false);
     }
 
+    /**
+     * Finds any related works related to a user's query.
+     * 
+     * @param searchParameters The user's search query
+     */
     async findRelatedWorks(searchParameters: SearchParameters): Promise<SearchResults<models.Work> | null> {
         const p = searchParameters.pagination;
         const filter: FilterQuery<models.Work> = {
@@ -116,5 +118,39 @@ export class WorksService {
                 pagination: searchParameters.pagination
             };
         }
+
+    /**
+     * Sets the isDeleted flag of a work to true to perform a soft deletion. Then, updates
+     * the count of published works on the user's document.
+     * 
+     * @param user The author of the work
+     * @param workId The work we're deleting
+     */
+    async deleteWork(user: any, workId: string): Promise<void> {
+        await this.workModel.findOneAndUpdate({"_id": workId, "author": user.sub}, {"audit.isDeleted": true}).then(async () => {
+            const workCount = await this.workModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            await this.usersService.updateWorkCount(user.sub, workCount);
+        });
+    }
+
+    /**
+     * Edit's a given user's work with the provided work information.
+     * 
+     * @param user The author of the work
+     * @param workInfo The work we're modifying
+     */
+    async editWork(user: any, workInfo: models.EditWork): Promise<void> {
+        await this.workModel.findOneAndUpdate({"_id": workInfo._id, "author": user.sub}, {
+            title: workInfo.title,
+            shortDesc: workInfo.shortDesc,
+            longDesc: workInfo.longDesc,
+            meta: {
+                category: workInfo.category,
+                fandoms: workInfo.fandoms,
+                genres: workInfo.genres,
+                rating: workInfo.rating,
+                status: workInfo.status,
+            },
+        });
     }
 }

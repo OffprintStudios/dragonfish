@@ -94,11 +94,11 @@ export class WorksComponent implements OnInit {
     if (this.isUnpubFiltered) {
       this.isPubFiltered = true;
       this.isUnpubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === true});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
     } else {
       this.unfilteredList = this.works;
       this.isPubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === true});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
     }
   }
 
@@ -109,11 +109,11 @@ export class WorksComponent implements OnInit {
     if (this.isPubFiltered) {
       this.isUnpubFiltered = true;
       this.isPubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === false});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
     } else {
       this.unfilteredList = this.works;
       this.isUnpubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === false});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
     }
   }
 
@@ -163,49 +163,31 @@ export class WorksComponent implements OnInit {
    * @param workId The ID of the work we're deleting
    */
   askDelete(workId: string) {
-
-  }
-
-  /**
-   * Fixes the display of category.
-   * 
-   * @param category The category to fix
-   */
-  fixCategory(category: models.Categories) {
-    return models.Categories[category];
-  }
-
-  /**
-   * Fixes the display of genres depending on category.
-   * 
-   * @param category To check which category it is
-   * @param genres The list of genres
-   */
-  separateGenres(category: models.Categories, genres: string[]) {
-    if (models.Categories[category] === 'Original Fiction' || models.Categories[category] === 'Fanfiction') {
-      if (genres.length === 1) {
-        return models.GenresFiction[genres[0]];
-      } else {
-        const theseGenres: string[] = [models.GenresFiction[genres[0]], models.GenresFiction[genres[1]]];
-        return theseGenres.join(', ');
-      }
-    } else if (models.Categories[category] === 'Poetry') {
-      return models.GenresPoetry[genres[0]];
+    if (confirm('Are you sure you want to delete this work? This action is irreversible.')) {
+      this.worksService.deleteWork(workId).subscribe(() => {
+        this.fetchData();
+        return;
+      }, err => {
+        console.log(err);
+        return;
+      });
+    } else {
+      return;
     }
   }
 
   /**
-   * Fixes the display of fandoms.
+   * Returns true if the approval status of a work is Approved. Otherwise, returns false.
    * 
-   * @param fandoms The fandoms to fix
+   * TEMPORARY FUNCTION ONLY. FUTURE UPDATE WILL INCLUDE MULTIPLE STATUS SUPPORT.
+   * 
+   * @param approvalStatus The work's approval status
    */
-  separateFandoms(fandoms: models.Fandoms[]) {
-    if (fandoms.length === 1) {
-      return models.Fandoms[fandoms[0]];
+  checkStatus(approvalStatus: models.ApprovalStatus) {
+    if (models.ApprovalStatus[approvalStatus] === models.ApprovalStatus.Approved) {
+      return true;
     } else {
-      let theseFandoms: string[] = new Array();
-      fandoms.forEach(fandom => { theseFandoms.push(models.Fandoms[fandom]) });
-      return theseFandoms.join(', ');
+      return false;
     }
   }
 

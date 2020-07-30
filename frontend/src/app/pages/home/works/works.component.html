@@ -28,7 +28,7 @@
             <div class="work-list">
                 <div class="work-item" *ngFor="let work of works">
                     <div class="work-check">
-                        <button title="Revoke submission" class="check-published" *ngIf="work.audit.published; else workUnpublished">
+                        <button title="Revoke submission" class="check-published" *ngIf="checkStatus(work.audit.published); else workUnpublished">
                             <i-feather name="book-open"></i-feather>
                         </button>
                         <ng-template #workUnpublished>
@@ -39,25 +39,21 @@
                     </div>
                     <div class="work-info">
                         <div class="info">
-                            <h3 *ngIf="work.audit.published; else unpubTitle"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'work', work._id]">{{ work.title }}</a></h3>
-                            <ng-template #unpubTitle>
-                                <h3><a>{{ work.title }}</a></h3>
-                            </ng-template>
-                            <h4>{{ fixCategory(work.meta.category) }}</h4><span>//</span>
-                            <div style="display: inline-block;" *ngIf="work.meta.fandoms.length > 0"><h4>{{ separateFandoms(work.meta.fandoms) }}</h4><span>//</span></div>
-                            <h4>{{ separateGenres(work.meta.category, work.meta.genres) }}</h4>
+                            <h3><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h3>
+                            <h4>{{ work.meta.category | fixCategories }}</h4><span>//</span>
+                            <h4>{{ work.meta.genres | separateEntities:work.meta.category }}</h4><span *ngIf="work.meta.fandoms.length > 0">//</span>
+                            <h4 *ngIf="work.meta.fandoms.length > 0">{{ work.meta.fandoms | separateEntities }}</h4>
                             <div class="stats">
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords }} total word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views }} view{{ work.stats.views | pluralize}}</h4><span>//</span>
                                 <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
                                 <h4 title="Last Updated"><i-feather name="clock"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
                             </div>
                         </div>
                     </div>
-                    <div class="controls">
-                        <div class="work-control-buttons">
-                            <button class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
-                            <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
-                        </div>
+                    <div class="work-control-buttons">
+                        <button class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
+                        <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
                     </div>
                 </div>
             </div>

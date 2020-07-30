@@ -30,7 +30,12 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "url",
+              "querystring",
+              "punycode"
+            ]
           },
           "configurations": {
             "production": {

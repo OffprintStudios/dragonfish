@@ -8,9 +8,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
-import * as MarkdownShortcuts from 'quill-markdown-shortcuts';
 import { FileUploadModule } from 'ng2-file-upload';
-import { SlugifyPipe, PluralizePipe } from './pipes';
+import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,11 +29,9 @@ import { RegisterComponent } from './pages/account';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
-
-
+import { WorkPageComponent, SectionPageComponent, UnpublishedSectionPageComponent } from './pages/work-page';
 
 const Quill: any = QuillNamespace;
-const MDS: any = MarkdownShortcuts;
 const MagicUrlModule: any = MagicUrl;
 const icons = Quill.import('ui/icons');
 icons.bold = '<i class="fas fa-bold"></i>';
@@ -51,7 +48,6 @@ icons.justify = '<i class="fas fa-align-justify"></i>';
 icons.video = '<i class="fas fa-video"></i>';
 icons.image = '<i class="fas fa-image"></i>';
 
-Quill.register('modules/markdownShortcuts', MDS);
 Quill.register('modules/magicUrl', MagicUrlModule);
 
 const toolbarOptions = [
@@ -71,9 +67,8 @@ const toolbarOptions = [
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
-    PortBlogPageComponent,
-    NewWorkComponent,
-    EditWorkComponent,
+    PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
+    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
