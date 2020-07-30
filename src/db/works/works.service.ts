@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import {FilterQuery, Model} from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import * as models from './models';
 import { UsersService } from '../users/users.service';
-import {SearchParameters} from '../../api/search/models/search-parameters';
-import {SearchResults} from '../../api/search/models/search-results';
+import { SearchParameters } from '../../api/search/models/search-parameters';
+import { SearchResults } from '../../api/search/models/search-results';
 
 @Injectable()
 export class WorksService {
@@ -118,6 +118,7 @@ export class WorksService {
                 pagination: searchParameters.pagination
             };
         }
+    }
 
     /**
      * Sets the isDeleted flag of a work to true to perform a soft deletion. Then, updates
