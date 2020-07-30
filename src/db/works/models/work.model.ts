@@ -44,6 +44,7 @@ export interface Work extends Document {
 interface SectionInfo {
     readonly _id: string;
     readonly title: string;
+    readonly published: boolean;
     readonly stats: {
         readonly words: number;
     };

@@ -24,8 +24,33 @@
             </div>
 
             <!--Sections-->
-            <div *ngIf="route.children.length === 0">
-                
+            <div *ngIf="route.children.length === 0 && workData.sections.length > 0">
+                <div class="section-list" *ngIf="workData.author._id === currentUser._id; else notSameUser">
+                    <ul>
+                        <li *ngFor="let section of workData.sections">
+                            <div *ngIf="section.published === true">
+                                <span class="pub-unpub"><i-feather name="check-circle"></i-feather></span>
+                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">{{ section.title }}</a></span>
+                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>
+                            </div>
+                            <div *ngIf="section.published === false">
+                                <span class="pub-unpub"><i-feather name="circle"></i-feather></span>
+                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">{{ section.title }}</a></span>
+                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <ng-template #notSameUser>
+                    <div class="section-list">
+                        <ul>
+                            <li *ngFor="let section of pubSections; let i = index">
+                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, i, section.title | slugify]"></a></span>
+                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
             </div>
 
             <!--Work stats-->
@@ -35,3 +60,17 @@
         </div>
     </ng-template>
 </div>
+
+<div class="work-controls" *ngIf="workData.author._id === currentUser._id; else notThisUserControls">
+    <span class="controls-left">
+        <a class="button">New Section</a>
+        <a class="button">Edit</a>
+    </span>
+    <span class="controls-right">
+        <a class="button" style="margin-right: 0;" (click)="askDelete(workData._id)">Delete</a>
+    </span>
+</div>
+
+<ng-template #notThisUserControls>
+
+</ng-template>

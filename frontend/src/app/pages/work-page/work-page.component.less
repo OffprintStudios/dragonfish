@@ -61,6 +61,48 @@ div.work-box {
         }
     }
 
+    div.section-list {
+        width: 90%;
+        margin: 0 auto 0 auto;
+        color: whitesmoke;
+        box-shadow: var(--site-dropshadow);
+        ul {
+            list-style: none;
+            border: 1px solid whitesmoke;
+            li {
+                padding: 5px 5px 5px 8px;
+                margin: 0;
+                span.pub-unpub {
+                    margin: 0 0.4rem 0 0.25rem;
+                    i-feather {
+                        position: relative;
+                        width: 20px;
+                        height: 20px;
+                        top: 0.35rem;
+                    }
+                }
+                span.section-name {
+                    a {
+                        color: whitesmoke;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                span.section-stats {
+                    float: right;
+                    padding-right: 8px;
+                }
+               &:nth-child(odd) {
+                    background-color: var(--site-accent-hover);
+                }
+                &:nth-child(even) {
+                    background-color: var(--site-accent);
+                }
+            }
+        }
+    }
+
     div.work-long-description {
         width: 90%;
         margin: 1.25rem auto 0 auto;
@@ -93,6 +135,47 @@ div.work-box {
         }
         span {
             margin: 0 0.5rem 0 0.5rem;
+        }
+    }
+}
+
+div.work-controls {
+    text-align: right;
+    width: 90%;
+    margin: 0 auto 0 auto;
+    padding: 10px 0 0 0;
+    background-color: var(--site-controls-background);
+    border-bottom: 1px solid var(--site-borders);
+    border-left: 1px solid var(--site-borders);
+    border-right: 1px solid var(--site-borders);
+
+    span.controls-left {
+        float: left;
+        margin-left: 1.2rem;
+    }
+
+    span.controls-right {
+        text-align: right;
+        margin-right: 1.2rem;
+    }
+
+    a.button {
+        margin-right: 1.2rem;
+    }
+    a.user-button {
+        margin-right: 0;
+        font-size: 18px;
+    }
+    a.user-button-middle {
+        border-left: 0;
+        border-right: 0;
+    }
+    a.selected {
+        background-color: var(--site-accent);
+        color: whitesmoke;
+
+        &:hover {
+            background-color: var(--site-accent-hover);
         }
     }
 }

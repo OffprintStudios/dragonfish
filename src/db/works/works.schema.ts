@@ -32,7 +32,7 @@ export const WorksSchema = new Schema({
         comments: {type: Number, default: 0},
     },
     sections: [{type: String, ref: 'Section', autopopulate: {
-        select: '_id title stats.words',
+        select: '_id title published stats.words',
     }}],
     audit: {
         threadId: {type: String, default: generate()},

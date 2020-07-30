@@ -32,12 +32,20 @@ export interface Work {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections: { readonly _id: string; readonly title: string; readonly stats: { readonly words: number; }[];
-    };
+    readonly sections: SectionInfo[];
     readonly audit: {
         readonly threadId: string;
         readonly published: ApprovalStatus;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+}
+
+export interface SectionInfo {
+    readonly _id: string;
+    readonly title: string;
+    readonly published: boolean;
+    readonly stats: {
+        readonly words: number;
+    };
 }
