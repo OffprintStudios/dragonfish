@@ -154,7 +154,7 @@ div.blogs-list-container {
                     margin: 0 auto;
                     top: 2rem;
                     padding: 10px;
-                    max-width: 75%;
+                    width: 75%;
                     div.info {
                         h3 {
                             font-size: 28px;
@@ -194,7 +194,8 @@ div.blogs-list-container {
                     button.blog-controls {
                         padding-left: 15px;
                         padding-right: 15px;
-                        height: 100%;
+                        height: 33%;
+                        display: block;
                         box-shadow: none;
                         margin-bottom: 0;
                         border-top: none;
@@ -210,15 +211,19 @@ div.blogs-list-container {
                             background-color: var(--site-accent);
                         }
                     }
+                    button.top {
+                        border-right: 0;
+                    }
                     button.mid {
-                        border-left: 0;
+                        border-top: 1px solid var(--site-borders);
                         border-right: 0;
                         box-shadow: none;
                         margin-bottom: 0;
                     }
 
-                    button.right {
+                    button.bottom {
                         border-right: none;
+                        border-top: 1px solid var(--site-borders);
                     }
                 }
             }
