@@ -72,5 +72,22 @@
 </div>
 
 <ng-template #notThisUserControls>
-
+    <div class="work-controls" *ngIf="currentUser && workData.audit.published === 'Approved'">
+        <span class="controls-left">
+            <a class="button user-button"><i-feather name="thumbs-up"></i-feather></a>
+            <ng-template #alreadyLiked>
+                <a class="button user-button selected"><i-feather name="thumbs-up"></i-feather></a>
+            </ng-template>
+            <a class="button user-button user-button-middle"><i-feather name="thumbs-down"></i-feather></a>
+            <ng-template #alreadyDisliked>
+                <a class="button user-button user-button-middle selected"><i-feather name="thumbs-down"></i-feather></a>
+            </ng-template>
+            <a class="button user-button"><i-feather name="folder-plus"></i-feather></a>
+        </span>
+        <span class="controls-right">
+            <a class="button user-button"><i-feather name="flag"></i-feather></a>
+        </span>
+    </div>
 </ng-template>
+
+<router-outlet></router-outlet>
