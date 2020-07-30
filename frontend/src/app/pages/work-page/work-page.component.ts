@@ -20,7 +20,7 @@ export class WorkPageComponent implements OnInit {
   workData: workModels.Work;
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    private route: ActivatedRoute, private router: Router, private toppy: Toppy) {
+    public route: ActivatedRoute, private router: Router, private toppy: Toppy) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -34,6 +34,8 @@ export class WorkPageComponent implements OnInit {
       this.workId = params.get('workId');
       this.worksService.fetchWork(this.workId).subscribe(work => {
         this.workData = work;
+        console.log(work.meta.status);
+        console.log(work.meta.rating);
         this.loading = false;
       }, () => {
         this.loading = false;

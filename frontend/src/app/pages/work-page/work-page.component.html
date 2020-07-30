@@ -9,12 +9,28 @@
 
     <ng-template #noCoverArt>
         <div class="no-cover-art-work-container">
+            <!--Work title 'n such-->
             <div class="work-header">
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                 <div class="category-genre">
                     {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
                 </div>
+            </div>
+
+            <!--Long description box-->
+            <div class="long-description">
+                <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+            </div>
+
+            <!--Sections-->
+            <div *ngIf="route.children.length === 0">
+                
+            </div>
+
+            <!--Work stats-->
+            <div class="work-stats">
+                Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
             </div>
         </div>
     </ng-template>
