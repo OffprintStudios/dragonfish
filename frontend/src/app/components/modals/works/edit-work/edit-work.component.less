@@ -1,0 +1,77 @@
+div.edit-work-modal {
+    background-color: var(--site-background);
+    width: 800px;
+    height: 800px;
+    padding: 20px;
+    border: 1px solid var(--site-borders);
+    overflow: auto;
+    h1 {
+        font-size: 48px;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    hr {
+        margin-top: 0;
+    }
+
+    form {
+        margin-bottom: 0;
+    }
+
+    div.warning-message {
+        font-size: 14px;
+        font-style: italic;
+        color: var(--site-accent);
+    }
+
+    div.loader {
+        display: inline-block;
+    }
+
+    button.work-modal-button {
+        width: 100%;
+        max-height: 75px;
+        background-color: var(--site-accent);
+        color: whitesmoke;
+
+        &:hover {
+            background-color: var(--site-accent-hover);
+            color: whitesmoke;
+        }
+    }
+
+    button.work-modal-button-cancel {
+        width: 100%;
+        background-color: var(--site-background);
+        color: var(--site-text-color);
+
+        &:hover {
+            background-color: var(--site-accent-hover);
+            color: whitesmoke;
+        }
+    }
+
+    quill-editor {
+        div {
+            button {
+                margin-bottom: 0;
+            }
+        }
+
+        div.ql-editor {
+            font-family: 'Raleway';
+        }
+    }
+
+    div.loader {
+        position: relative;
+        margin-bottom: 1rem;
+        margin-right: 0;
+        text-align: center;
+    
+        .lds-dual-ring {
+            margin-right: 0.5rem;
+        }
+    }    
+}
