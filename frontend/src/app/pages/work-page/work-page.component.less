@@ -18,5 +18,46 @@ div.work-box {
 
     div.work-header {
         margin-bottom: 0;
+        h1 {
+            display: inline-block;
+            font-weight: 700;
+            color: whitesmoke;
+            margin-bottom: 0;
+            a {
+                color: whitesmoke;
+                padding: 10px 5px 0 5px;
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+        }
+
+        h2 {
+            display: inline-block;
+            margin: 0 0 0 1rem;
+            font-size: 20px;
+            font-style: italic;
+            color: whitesmoke;
+            a {
+                color: whitesmoke;
+                padding: 5px 5px 2px 2px;
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+            span {
+                margin: 0 0.5rem 0 0.5rem;
+            }
+        }
+
+        div.category-genre {
+            padding:5px 0 5px 5px;
+            border-top: 1px solid whitesmoke;
+            border-bottom: 1px solid whitesmoke;
+            color: whitesmoke;
+            span {
+                margin: 0 0.75rem 0 0.75rem;
+            }
+        }
     }
 }

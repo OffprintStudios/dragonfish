@@ -192,49 +192,6 @@ export class WorksComponent implements OnInit {
   }
 
   /**
-   * Fixes the display of category.
-   * 
-   * @param category The category to fix
-   */
-  fixCategory(category: models.Categories) {
-    return models.Categories[category];
-  }
-
-  /**
-   * Fixes the display of genres depending on category.
-   * 
-   * @param category To check which category it is
-   * @param genres The list of genres
-   */
-  separateGenres(category: models.Categories, genres: string[]) {
-    if (models.Categories[category] === 'Original Fiction' || models.Categories[category] === 'Fanfiction') {
-      if (genres.length === 1) {
-        return models.GenresFiction[genres[0]];
-      } else {
-        const theseGenres: string[] = [models.GenresFiction[genres[0]], models.GenresFiction[genres[1]]];
-        return theseGenres.join(', ');
-      }
-    } else if (models.Categories[category] === 'Poetry') {
-      return models.GenresPoetry[genres[0]];
-    }
-  }
-
-  /**
-   * Fixes the display of fandoms.
-   * 
-   * @param fandoms The fandoms to fix
-   */
-  separateFandoms(fandoms: models.Fandoms[]) {
-    if (fandoms.length === 1) {
-      return models.Fandoms[fandoms[0]];
-    } else {
-      let theseFandoms: string[] = new Array();
-      fandoms.forEach(fandom => { theseFandoms.push(models.Fandoms[fandom]) });
-      return theseFandoms.join(', ');
-    }
-  }
-
-  /**
    * Takes the inputted search value and filters the works list to contain any matching
    * search terms.
    * 

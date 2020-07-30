@@ -10,7 +10,11 @@
     <ng-template #noCoverArt>
         <div class="no-cover-art-work-container">
             <div class="work-header">
-                
+                <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
+                <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
+                <div class="category-genre">
+                    {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
+                </div>
             </div>
         </div>
     </ng-template>
