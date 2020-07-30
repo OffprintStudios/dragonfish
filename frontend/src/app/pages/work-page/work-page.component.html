@@ -1,1 +1,17 @@
-<p>work-page works!</p>
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>
+
+<div class="work-box" *ngIf="!loading">
+    <div class="row" *ngIf="workData.meta.coverart; else noCoverArt">
+        <!--For coverart-->
+    </div>
+
+    <ng-template #noCoverArt>
+        <div class="no-cover-art-work-container">
+            <div class="work-header">
+                
+            </div>
+        </div>
+    </ng-template>
+</div>
