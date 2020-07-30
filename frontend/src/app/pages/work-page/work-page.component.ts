@@ -34,8 +34,6 @@ export class WorkPageComponent implements OnInit {
       this.workId = params.get('workId');
       this.worksService.fetchWork(this.workId).subscribe(work => {
         this.workData = work;
-        console.log(work.meta.status);
-        console.log(work.meta.rating);
         this.loading = false;
       }, () => {
         this.loading = false;
