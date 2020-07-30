@@ -3,7 +3,6 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
-
 import { Blog } from './models';
 
 /**

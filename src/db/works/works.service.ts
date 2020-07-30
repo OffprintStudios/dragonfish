@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import {FilterQuery, Model} from 'mongoose';
 import * as models from './models';
 import { UsersService } from '../users/users.service';
+import {SearchParameters} from '../../api/search/models/search-parameters';
+import {SearchResults} from '../../api/search/models/search-results';
 
 @Injectable()
 export class WorksService {
@@ -85,5 +87,34 @@ export class WorksService {
      */
     async fetchUserWorks(user: any): Promise<models.Work[]> {
         return await this.workModel.find().where('author', user.sub).where('audit.isDeleted', false);
+    }
+
+    async findRelatedWorks(searchParameters: SearchParameters): Promise<SearchResults<models.Work> | null> {
+        const p = searchParameters.pagination;
+        const filter: FilterQuery<models.Work> = {
+            $text: {$search: searchParameters.text},
+            'audit.published': true,
+        };
+
+        const results = await this.workModel.find(filter,
+            {
+                searchScore: {$meta: 'textScore'}
+            }).sort({score: {$meta: 'textScore'}})
+            .sort({'stats.views': -1})
+            .skip((p.page - 1) * p.pageSize)
+            .limit(p.pageSize);
+
+        if (results.length === 0 && p.page !== 1) {
+            return null;
+        } else {
+            const totalPages = Math.ceil(
+                await this.workModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
+            );
+            return {
+                matches: results,
+                totalPages: totalPages,
+                pagination: searchParameters.pagination
+            };
+        }
     }
 }

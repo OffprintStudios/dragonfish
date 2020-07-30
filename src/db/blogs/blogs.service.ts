@@ -1,16 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import {Injectable} from '@nestjs/common';
+import {InjectModel} from '@nestjs/mongoose';
+import {Model, PaginateModel} from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
 
 import * as models from './models';
-import { UsersService } from '../users/users.service';
+import {UsersService} from '../users/users.service';
+import {SearchParameters} from '../../api/search/models/search-parameters';
+import {SearchResults} from '../../api/search/models/search-results';
 
 @Injectable()
 export class BlogsService {
     constructor(@InjectModel('Blog') private readonly blogModel: Model<models.Blog>,
-        private readonly usersService: UsersService) {}
+                private readonly usersService: UsersService) {
+    }
 
     /**
      * Creates a new blogpost and saves it to the database. Returns the newly
@@ -24,7 +27,8 @@ export class BlogsService {
             author: user.sub,
             title: newBlogInfo.title,
             body: newBlogInfo.body,
-            published: newBlogInfo.published});
+            published: newBlogInfo.published
+        });
         return await newBlog.save().then(async blog => {
             const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
             await this.usersService.updateBlogCount(user.sub, blogCount);
@@ -53,23 +57,26 @@ export class BlogsService {
 
     /**
      * Soft deletes a specific blog belonging to the specified user.
-     * 
+     *
      * @param user The author of the blog
      * @param blogId The blog's ID
      */
     async deleteBlog(user: any, blogId: string): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": blogId, "author": user.sub}, {"audit.isDeleted": true});
+        await this.blogModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {'audit.isDeleted': true});
     }
 
     /**
      * Changes the publishing status of a specific blog belonging to the
      * specified user.
-     * 
+     *
      * @param user The author of the blog
      * @param pubStatus The blog's ID and new publishing status
      */
     async setPublishStatus(user: any, pubStatus: models.SetPublishStatus): Promise<void> {
-        await this.blogModel.findOneAndUpdate({"_id": pubStatus.blogId, "author": user.sub}, {"published": pubStatus.publishStatus}).then(async blog => {
+        await this.blogModel.findOneAndUpdate({
+            '_id': pubStatus.blogId,
+            'author': user.sub
+        }, {'published': pubStatus.publishStatus}).then(async blog => {
             const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
             await this.usersService.updateBlogCount(user.sub, blogCount);
         });
@@ -78,24 +85,24 @@ export class BlogsService {
     /**
      * Edits a given user's blog using the provided information in the EditBlog
      * model.
-     * 
+     *
      * @param user The author of the blog
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
         const wordcount = await wordCounter.countWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
-            {"_id": blogInfo._id, "author": user.sub},
-            {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
-            ).then(async blog => {
-                const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
-                await this.usersService.updateBlogCount(user.sub, blogCount);
-            });
+            {'_id': blogInfo._id, 'author': user.sub},
+            {'title': sanitize(blogInfo.title), 'body': sanitize(blogInfo.body), 'published': blogInfo.published, 'stats.words': wordcount}
+        ).then(async blog => {
+            const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            await this.usersService.updateBlogCount(user.sub, blogCount);
+        });
     }
 
     /**
      * Fetching a user's published blogs for display in their portfolio.
-     * 
+     *
      * @param userId The ID of the user whose blogs we're fetching
      */
     async getPubBlogList(userId: string): Promise<models.Blog[]> {
@@ -104,10 +111,45 @@ export class BlogsService {
 
     /**
      * Queries the database for a blog matching the provided blog ID and returns it.
-     * 
+     *
      * @param blogId The blog we're fetching
      */
     async getOneBlog(blogId: string): Promise<models.Blog> {
         return await this.blogModel.findById(blogId).where('published', true).where('audit.isDeleted', false);
+    }
+
+    /**
+     * Returns blogs matching the full text search parameter given and obeys the pagination associated with it.
+     * @param searchParameters
+     * @returns a SearchResults object containing the first page of matches and pagination info if there are results.
+     * If there are no results and the page != 1, returns null (and the API should either 404 or 400).
+     */
+    async findRelatedBlogs(searchParameters: SearchParameters): Promise<SearchResults<models.Blog> | null> {
+        const p = searchParameters.pagination;
+        const filter = {
+            $text: {$search: searchParameters.text},
+            published: true,
+            'audit.isDeleted': false
+        };
+        const results = await this.blogModel.find(filter,
+            {
+                searchScore: {$meta: 'textScore'}
+            }).sort({score: {$meta: 'textScore'}})
+            .sort({'stats.views': -1})
+            .skip((p.page - 1) * p.pageSize)
+            .limit(p.pageSize);
+
+        if (results.length === 0 && p.page !== 1) {
+            return null;
+        } else {
+            const totalPages = Math.ceil(
+                await this.blogModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
+            );
+            return {
+                matches: results,
+                totalPages: totalPages,
+                pagination: searchParameters.pagination
+            };
+        }
     }
 }
