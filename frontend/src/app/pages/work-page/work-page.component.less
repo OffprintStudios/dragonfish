@@ -1,0 +1,98 @@
+div.loader {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+div.work-box {
+    position: relative;
+    margin-top: 0;
+    width: 90%;
+    margin: 0 auto 0 auto;
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    box-shadow: var(--site-dropshadow);
+
+    div.no-cover-art-work-container {
+        padding: 3rem 3rem 1rem 3rem;
+    }
+
+    div.work-header {
+        margin-bottom: 0;
+        h1 {
+            display: inline-block;
+            font-weight: 700;
+            color: whitesmoke;
+            margin-bottom: 0;
+            a {
+                color: whitesmoke;
+                padding: 10px 5px 0 5px;
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+        }
+
+        h2 {
+            display: inline-block;
+            margin: 0 0 0 1rem;
+            font-size: 20px;
+            font-style: italic;
+            color: whitesmoke;
+            a {
+                color: whitesmoke;
+                padding: 5px 5px 2px 2px;
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+            span {
+                margin: 0 0.5rem 0 0.5rem;
+            }
+        }
+
+        div.category-genre {
+            padding:5px 0 5px 5px;
+            border-top: 1px solid whitesmoke;
+            border-bottom: 1px solid whitesmoke;
+            color: whitesmoke;
+            span {
+                margin: 0 0.75rem 0 0.75rem;
+            }
+        }
+    }
+
+    div.work-long-description {
+        width: 90%;
+        margin: 1.25rem auto 0 auto;
+        text-align: justify;
+        padding: 0 3rem 3rem 3rem;
+        color: whitesmoke;
+        a {
+            color: whitesmoke;
+            text-decoration: underline;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    div.work-stats {
+        margin: 0 auto 0 auto;
+        padding: 10px;
+        border-top: 1px solid whitesmoke;
+        text-align: right;
+        font-size: 14px;
+        color: whitesmoke;
+        a.work-stat-button {
+            color: whitesmoke;
+            text-decoration: none;
+            padding: 2px;
+            &:hover {
+                background-color: var(--site-accent-hover);
+            }
+        }
+        span {
+            margin: 0 0.5rem 0 0.5rem;
+        }
+    }
+}

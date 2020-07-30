@@ -1,11 +1,14 @@
 import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 import validator from 'validator';
+
 import * as models from './models';
 import { isNullOrUndefined } from '../../util/validation';
+import { SearchParameters } from '../../api/search/models/search-parameters';
+import { SearchResults } from '../../api/search/models/search-results';
 
 @Injectable()
 export class UsersService {
@@ -44,12 +47,12 @@ export class UsersService {
 
         const existingUsername = await this.userModel.findOne({ username: sanitize(newUserInfo.username) });
         const existingEmail = await this.userModel.findOne({ email: sanitize(newUserInfo.email) });
-        if (!isNullOrUndefined(existingUsername) || !isNullOrUndefined(existingEmail)) {            
-            throw new ConflictException('Someone already has your username or email. Try another combination.');            
+        if (!isNullOrUndefined(existingUsername) || !isNullOrUndefined(existingEmail)) {
+            throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
-        
-        const newUser = new this.userModel(newUserInfo);        
-        
+
+        const newUser = new this.userModel(newUserInfo);
+
         const savedUser = await newUser.save();
         await this.useInviteCode(storedInviteCode._id, savedUser._id);
 
@@ -221,6 +224,35 @@ export class UsersService {
         return await this.buildFrontendUser(user);
     }
 
+    async findRelatedUsers(searchParameters: SearchParameters): Promise<SearchResults<models.SearchUser> | null> {
+        const p = searchParameters.pagination;
+        const filter: FilterQuery<models.User> = {
+            $text: { $search: searchParameters.text }
+        };
+
+        const results = await this.userModel.find(filter,
+            {
+                searchScore: { $meta: 'textScore' }
+            }).sort({ score: { $meta: 'textScore' } })
+            .sort({ 'stats.views': -1 })
+            .select('username profile.avatar stats.works stats.blogs stats.watchers stats.watching')
+            .skip((p.page - 1) * p.pageSize)
+            .limit(p.pageSize);
+
+        if (results.length === 0 && p.page !== 1) {
+            return null;
+        } else {
+            const totalPages = Math.ceil(
+                await this.userModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
+            );
+            return {
+                matches: results,
+                totalPages: totalPages,
+                pagination: searchParameters.pagination
+            };
+        }
+    }
+
     /* Invite codes, only used for Origins, pt. 1 */
 
     /**
@@ -236,6 +268,6 @@ export class UsersService {
      * @param codeId The ID of the code to mark as used.
      */
     async useInviteCode(codeId: string, usedById: string): Promise<void> {
-        await this.inviteCodesModel.findOneAndUpdate({ "_id": codeId}, {"byWho": usedById, "used": true});
+        await this.inviteCodesModel.findOneAndUpdate({ "_id": codeId }, { "byWho": usedById, "used": true });
     }
 }

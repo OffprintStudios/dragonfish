@@ -23,6 +23,7 @@ export interface Work {
         readonly genres: GenresFiction[] | GenresPoetry[];
         readonly rating: ContentRating;
         readonly status: WorkStatus;
+        readonly coverart: string;
     };
     readonly stats: {
         readonly totWords: number;

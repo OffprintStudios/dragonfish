@@ -391,6 +391,49 @@ quill-editor {
 .ng-dropdown-panel.custom .ng-dropdown-panel-items {
     background-color: var(--site-background);
 }
+
+.ng-dropdown-panel.ng-select-top {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border: 1px solid var(--site-borders);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border: 1px solid var(--site-borders);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
+    border-radius: 0;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+    background-color: var(--site-accent-hover);
+    color: whitesmoke;
+}
  
 .ng-dropdown-panel.custom .ng-dropdown-panel-items .ng-option {
     background-color: var(--site-background);

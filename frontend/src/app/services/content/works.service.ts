@@ -78,4 +78,19 @@ export class WorksService {
         return throwError(err);
       }));
   }
+
+  /**
+   * Fetches a work from the database using its ID.
+   * 
+   * @param workId The work we're fetching
+   */
+  public fetchWork(workId: string) {
+    return this.http.get<models.Work>(`/api/content/works/get-work/` + workId, {observe: 'response', withCredentials: true})
+      .pipe(map(work => {
+        return work.body;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
 }
