@@ -1,4 +1,8 @@
-<div class="portfolio-header-container">
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>
+
+<div class="portfolio-header-container" *ngIf="!loading">
     <div class="portfolio-header">
         <div class="row">
             <div class="three columns">

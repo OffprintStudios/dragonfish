@@ -47,6 +47,21 @@ export class WorkPageComponent implements OnInit {
   }
 
   /**
+   * Checks to see if the current user is the author of this work.
+   */
+  currentUserIsSame() {
+    if (this.currentUser) {
+      if (this.workData.author._id === this.currentUser._id) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Confirms that the user really wants to delete their work. If true, send the request
    * to the backend. If false, do nothing.
    * 

@@ -25,7 +25,7 @@
 
             <!--Sections-->
             <div *ngIf="route.children.length === 0 && workData.sections.length > 0">
-                <div class="section-list" *ngIf="workData.author._id === currentUser._id; else notSameUser">
+                <div class="section-list" *ngIf="currentUserIsSame(); else notSameUser">
                     <ul>
                         <li *ngFor="let section of workData.sections">
                             <div *ngIf="section.published === true">
@@ -61,7 +61,7 @@
     </ng-template>
 </div>
 
-<div class="work-controls" *ngIf="workData.author._id === currentUser._id; else notThisUserControls">
+<div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
     <span class="controls-left">
         <a class="button">New Section</a>
         <a class="button">Edit</a>
