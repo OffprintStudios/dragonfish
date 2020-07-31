@@ -29,7 +29,8 @@ import { RegisterComponent } from './pages/account';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
-import { WorkPageComponent, SectionPageComponent, UnpublishedSectionPageComponent } from './pages/work-page';
+import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
+  UnpublishedSectionPageComponent } from './pages/work-page';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -68,7 +69,7 @@ const toolbarOptions = [
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe
+    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import * as models from './models';
 import { UsersService } from '../users/users.service';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class WorksService {
@@ -51,21 +52,24 @@ export class WorksService {
      * @param workId The work this section is being added to.
      * @param newSectionInfo The section's information.
      */
-    async createNewSection(workId: string, newSectionInfo: models.CreateSection): Promise<models.Section> {
-        const newSection = new this.sectionModel({
-            title: newSectionInfo.title,
-            body: newSectionInfo.body,
-            authorsNote: newSectionInfo.authorsNote,
-            published: newSectionInfo.published,
-        });
+    async createNewSection(user: any, workId: string, newSectionInfo: models.CreateSection): Promise<models.Section> {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub });
 
-        return await newSection.save().then(async section => {
-            await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}});
-            return section;
-        });
+        if (isNullOrUndefined(thisWork)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            const newSection = new this.sectionModel({
+                title: newSectionInfo.title,
+                body: newSectionInfo.body,
+                authorsNote: newSectionInfo.authorsNote,
+            });
+
+            return await newSection.save().then(async section => {
+                await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}});
+                return section;
+            });
+        }
     }
-
-    /* Work and Section retrieval */
 
     /**
      * Looks up a work by its ID and returns it.
@@ -117,6 +121,23 @@ export class WorksService {
                 totalPages: totalPages,
                 pagination: searchParameters.pagination
             };
+        }
+    }
+
+    /**
+     * Retrieves a section of a work owned by the specified author.
+     * 
+     * @param user The author of the work
+     * @param workId The section this work belongs to
+     * @param sectionId The section ID
+     */
+    async getSectionForUser(user: any, workId: string, sectionId: string): Promise<models.Section> {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub });
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else if (thisWork.sections.includes(sectionId)) {
+            return await this.sectionModel.findById(sectionId);
         }
     }
 

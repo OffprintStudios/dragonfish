@@ -32,6 +32,39 @@ export class WorksService {
   }
 
   /**
+   * Creates a section belonging to the specified work.
+   * 
+   * @param workId The work the section belongs to
+   * @param info The new section's information
+   */
+  public createSection(workId: string, info: models.CreateSection) {
+    return this.http.put<models.Section>(`/api/content/works/create-section/` + workId, info, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        this.alertsService.success(`Section successfully created.`);
+        return res.body._id;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches a section belonging to the specified work for an author to view it.
+   * 
+   * @param workId The work the section belongs to
+   * @param sectionId The section itself
+   */
+  public getSectionForUser(workId: string, sectionId: string) {
+    return this.http.get<models.Section>(`/api/content/works/get-section-for-user/` + workId + `/` + sectionId, {observe: 'response', withCredentials: true})
+      .pipe(map(section => {
+        return section.body;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+  /**
    * Fetches a user's works for display in the work management section of
    * the homepage.
    */

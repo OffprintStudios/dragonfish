@@ -63,7 +63,7 @@
 
 <div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
     <span class="controls-left">
-        <a class="button">New Section</a>
+        <a class="button" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']">New Section</a>
         <a class="button" (click)="openEditForm()">Edit</a>
     </span>
     <span class="controls-right">

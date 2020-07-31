@@ -38,4 +38,15 @@ export class WorksController {
         return await this.worksService.deleteWork(req.user, workId);
     }
 
+    @UseGuards(AuthGuard)
+    @Put('create-section/:workId')
+    async createSection(@Request() req: any, @Param('workId') workId: string, @Body() newSection: models.CreateSection) {
+        return await this.worksService.createNewSection(req.user, workId, newSection);
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('get-section-for-user/:workId/:sectionId')
+    async getSectionForUser(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
+        return await this.worksService.getSectionForUser(req.user, workId, sectionId);
+    }
 }

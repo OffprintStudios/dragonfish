@@ -1,0 +1,70 @@
+<div class="section-container">
+    <form [formGroup]="newSectionForm" (ngSubmit)="submitSection()">
+        <div class="section-content">
+            <div class="section-header">
+                <label for="title">Title:</label>
+                <div class="warning-message" *ngIf="fields.title.invalid && (fields.title.dirty || fields.title.touched)">Titles must be between 3 and 100 characters</div>
+                <input type="text" class="u-full-width" formControlName="title" placeholder="Title">
+            </div>
+            <div class="section-body">
+                <label for="body">Body:</label>
+                <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
+                <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()">
+                    <div quill-editor-toolbar>
+                        <span class="ql-formats">
+                            <button class="ql-bold" [title]="'Bold'"></button>
+                            <button class="ql-italic" [title]="'Italic'"></button>
+                            <button class="ql-underline" [title]="'Underline'"></button>
+                            <button class="ql-strike" [title]="'Strikethrough'"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link" [title]="'Link'"></button>
+                            <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                            <button class="ql-code" [title]="'Code'"></button>
+                            <button class="ql-clean" [title]="'Remove formatting'"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-align ql-center" value="center"></button>
+                            <button class="ql-align ql-right" value="right"></button>
+                            <button class="ql-align ql-justify" value="justify"></button>
+                        </span>
+                        <select class="ql-header"></select>
+                    </div>
+                </quill-editor>
+            </div>
+        </div>
+        <div class="authors-note">
+            <h3>A word from the author...</h3>
+            <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
+            <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()">
+                <div quill-editor-toolbar>
+                    <span class="ql-formats">
+                        <button class="ql-bold" [title]="'Bold'"></button>
+                        <button class="ql-italic" [title]="'Italic'"></button>
+                        <button class="ql-underline" [title]="'Underline'"></button>
+                        <button class="ql-strike" [title]="'Strikethrough'"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-link" [title]="'Link'"></button>
+                        <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                        <button class="ql-code" [title]="'Code'"></button>
+                        <button class="ql-clean" [title]="'Remove formatting'"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-align ql-center" value="center"></button>
+                        <button class="ql-align ql-right" value="right"></button>
+                        <button class="ql-align ql-justify" value="justify"></button>
+                    </span>
+                    <select class="ql-header"></select>
+                </div>
+            </quill-editor>
+        </div>
+        <hr style="width: 70%;">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <div style="text-align: center;">
+            <button type="submit" class="button-primary" style="width: 70%;" *ngIf="!loading">Save Section</button>
+        </div>
+    </form>
+</div>
