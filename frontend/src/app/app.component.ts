@@ -5,6 +5,7 @@ import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
 
 import { User } from './models/users';
 import { AuthService } from './services/auth';
+import { slogans } from './models/site';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 
 @Component({
@@ -16,10 +17,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('userMenu', {static: false}) userMenu: ElementRef;
   @ViewChild('searchMenu', {static: false}) searchMenu: ElementRef;  
 
-  title = 'frontend';
+  title = 'offprint';
   currentUser: User;
   userMenuDropdown: ToppyControl;
   searchMenuDropdown: ToppyControl;
+
+  rotatingSlogan: string;
 
   constructor(private router: Router, private toppy: Toppy, private authService: AuthService, private selectConfig: NgSelectConfig) {
     this.authService.currUser.subscribe(x => {
@@ -49,6 +52,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
     }
 
+    this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
   }
 
   /**

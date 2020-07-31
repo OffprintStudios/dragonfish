@@ -1,0 +1,1 @@
+export { slogans } from './slogan.array';
