@@ -64,7 +64,7 @@
 <div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
     <span class="controls-left">
         <a class="button">New Section</a>
-        <a class="button">Edit</a>
+        <a class="button" (click)="openEditForm()">Edit</a>
     </span>
     <span class="controls-right">
         <a class="button" style="margin-right: 0;" (click)="askDelete(workData._id)">Delete</a>

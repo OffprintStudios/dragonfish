@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Toppy } from 'toppy';
+import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { User } from 'src/app/models/users';
 import * as workModels from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
+import { EditWorkComponent } from 'src/app/components/modals/works';
 
 @Component({
   selector: 'app-work-page',
@@ -18,7 +19,8 @@ export class WorkPageComponent implements OnInit {
 
   workId: string; // This work's ID
   workData: workModels.Work; // This work's data
-  pubSections: workModels.SectionInfo[];
+  pubSections: workModels.SectionInfo[]; // This work's published sections
+  editWork: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy) {
@@ -27,6 +29,22 @@ export class WorkPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    // Set up the edit work modal
+    const position = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto'
+    });
+
+    this.editWork = this.toppy
+      .position(position)
+      .config({ closeOnEsc: true, backdrop: true})
+      .content(EditWorkComponent)
+      .create();
+
+    this.editWork.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
@@ -79,5 +97,13 @@ export class WorkPageComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+ /**
+  * Opens the edit form.
+  */ 
+  openEditForm() {
+    this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
+    this.editWork.open();
   }
 }
