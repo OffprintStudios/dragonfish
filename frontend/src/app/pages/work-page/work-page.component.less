@@ -70,30 +70,54 @@ div.work-box {
             list-style: none;
             border: 1px solid whitesmoke;
             li {
-                padding: 5px 5px 5px 8px;
+                //padding: 5px 5px 5px 8px;
                 margin: 0;
-                span.pub-unpub {
-                    margin: 0 0.4rem 0 0.25rem;
-                    i-feather {
-                        position: relative;
-                        width: 20px;
-                        height: 20px;
-                        top: 0.35rem;
+                div.section-box {
+                    width: 100%;
+                    font-size: 0;
+                    display: flex;
+                    align-items: center;
+                    button.pub-unpub {
+                        padding: 2px 10px 2px 10px;
+                        height: 100%;
+                        margin: 0;
+                        border: none;
+                        border-right: 1px solid transparent;
+                        background-color: transparent;
+                        box-shadow: none;
+
+                        &:hover {
+                            border-right: 1px solid whitesmoke;
+                        }
+    
+                        i-feather {
+                            position: relative;
+                            width: 20px;
+                            height: 20px;
+                            top: 0.6rem;
+                        }
                     }
-                }
-                span.section-name {
-                    a {
+    
+                    a.section-info {
                         color: whitesmoke;
+                        margin: 0;
+                        margin-left: 1rem;
+                        font-size: 16px;
+                        vertical-align: middle;
+
                         &:hover {
                             text-decoration: underline;
                         }
                     }
+
+                    div.section-stats {
+                        position: static;
+                        font-size: 16px;
+                        vertical-align: middle;
+                        margin-right: 1rem;
+                    }
                 }
-                span.section-stats {
-                    float: right;
-                    padding-right: 8px;
-                }
-               &:nth-child(odd) {
+                &:nth-child(odd) {
                     background-color: var(--site-accent-hover);
                 }
                 &:nth-child(even) {
