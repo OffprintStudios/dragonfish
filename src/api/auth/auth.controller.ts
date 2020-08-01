@@ -8,6 +8,7 @@ import { UsersService } from 'src/db/users/users.service';
 import { ImagesService } from '../images/images.service';
 import { AuthGuard, RefreshGuard } from 'src/guards';
 import * as models from 'src/db/users/models';
+import { FolderTypes } from 'src/api/images/models';
 
 @Controller('')
 export class AuthController {
@@ -88,7 +89,8 @@ export class AuthController {
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
     async uploadAvatar(@UploadedFile() avatarImage: Express.Multer.File, @Req() req: any) {        
-        const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub);        
-        return await this.authService.updateAvatar(req.user, avatarUrl);
+        const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub, 'avatars');
+        const avatar = `https://images.offprint.net/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
+        return await this.authService.updateAvatar(req.user, avatar);
     }
 }

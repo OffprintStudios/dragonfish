@@ -1,7 +1,8 @@
 import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { v4 as uuidV4 } from 'uuid';
-import  * as multer from 'multer';
+
+import { FolderTypes } from './models';
 
 const ONE_MEGABYTE: number = 1024 * 1024;
 const JPEG_MIME_TYPE = 'image/jpeg';
@@ -23,13 +24,13 @@ export class ImagesService {
      * @throws(InternalServerException) if the upload to Spaces fails.
      * @returns The full URL of the uploaded image. 
      */
-    async upload(imageFile: Express.Multer.File, userId: string): Promise<string> {
+    async upload(imageFile: Express.Multer.File, userId: string, folder: string): Promise<string> {
         this.validateImageFile(imageFile);
 
         const extension = this.getExtension(imageFile);
 
         const uploadOptions: AWS.S3.PutObjectRequest = {
-            Bucket: process.env.DIGITALOCEAN_SPACES_NAME,
+            Bucket: `${process.env.DIGITALOCEAN_SPACES_NAME}/${folder}`,
             Key: `${userId}-${uuidV4()}.${extension}`, // Note: Keys must be unique per-Space
             Body: imageFile.buffer,
             ACL: 'public-read',

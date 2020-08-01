@@ -195,7 +195,7 @@ export class UsersService {
     async changePassword(userId: string, newPasswordInfo: models.ChangePassword): Promise<models.User> {
         try {
             const newHashedPw = await hash(newPasswordInfo.newPassword, { type: argon2id });
-            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "password": newHashedPw });
+            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "password": newHashedPw }, {new: true});
         } catch (err) {
             console.log(err); // we definitely want better error reporting for stuff like this
             throw new InternalServerErrorException(`Something went wrong! Try again in a little bit.`);
