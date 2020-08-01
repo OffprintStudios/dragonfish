@@ -39,12 +39,15 @@
                                         <button class="pub-unpub"><i-feather name="circle"></i-feather></button>
                                     </div>
                                     <div style="flex: 1;">
-                                        <a class="section-info">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
                                             {{ section.title }}
                                         </a>
                                     </div>
                                     <div>
                                         <div class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</div>
+                                    </div>
+                                    <div>
+                                        <button class="delete-section"><i-feather name="trash-2"></i-feather></button>
                                     </div>
                                 </div>
 

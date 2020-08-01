@@ -32,7 +32,7 @@ export interface Work extends Document {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections?: string[];
+    readonly sections?: (string|SectionInfo)[];
     readonly audit: {
         readonly threadId: string;
         readonly published: boolean;

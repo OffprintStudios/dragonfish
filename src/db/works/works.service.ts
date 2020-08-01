@@ -132,12 +132,13 @@ export class WorksService {
      * @param sectionId The section ID
      */
     async getSectionForUser(user: any, workId: string, sectionId: string): Promise<models.Section> {
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub });
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId });
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else if (thisWork.sections.includes(sectionId)) {
-            return await this.sectionModel.findById(sectionId);
+        } else {
+            const section = await this.sectionModel.findById(sectionId);
+            return section;
         }
     }
 
