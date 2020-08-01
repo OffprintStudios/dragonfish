@@ -49,4 +49,16 @@ export class WorksController {
     async getSectionForUser(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
         return await this.worksService.getSectionForUser(req.user, workId, sectionId);
     }
+
+    @UseGuards(AuthGuard)
+    @Patch('edit-section/:workId/:sectionId')
+    async editSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() someEdits: models.EditSection) {
+        return await this.worksService.editSection(req.user, workId, sectionId, someEdits);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('set-publishing-status/:workId/:sectionId')
+    async setPubStatus(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() pubStatus: models.PublishSection) {
+        return await this.worksService.publishSection(req.user, workId, sectionId, pubStatus);
+    }
 }

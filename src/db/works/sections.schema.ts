@@ -35,3 +35,10 @@ SectionsSchema.pre<Section>('save', async function(next: HookNextFunction) {
     
     return next();
 });
+
+SectionsSchema.pre<Section>('findOneAndUpdate', async function(next: HookNextFunction) {
+    const wordCount = wordCounter.countWords(sanitize(this.body));
+    this.set('stats.words', wordCount);
+    
+    return next();
+});

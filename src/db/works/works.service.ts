@@ -143,6 +143,67 @@ export class WorksService {
     }
 
     /**
+     * Updates a section with the provided edits.
+     * 
+     * @param user The author of the work
+     * @param workId The work the section belongs to
+     * @param sectionId The section itself
+     * @param sectionInfo The new section information
+     */
+    async editSection(user: any, workId: string, sectionId: string, sectionInfo: models.EditSection): Promise<models.Section> {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId});
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            const updatedSection = {
+                title: sectionInfo.title,
+                body: sectionInfo.body,
+                authorsNote: sectionInfo.authorsNote,
+                published: sectionInfo.published
+            };
+
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, updatedSection).then(async sec => {
+                if (sec.published === true && sectionInfo.oldPublished === false) { // if newly published
+                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
+                } else if (sec.published === false && sectionInfo.oldPublished === true) { // if unpublished
+                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sectionInfo.oldWords}});
+                } else if (sec.published === true && sectionInfo.oldPublished === true) { // publish status didn't change
+                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
+                        await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
+                    });
+                }
+                return sec;
+            });
+        }
+    }
+
+    /**
+     * Sets the status of a section to the specified publishing status.
+     * 
+     * @param user The author of the work
+     * @param workId The work the section belongs to
+     * @param sectionId The section itself
+     * @param pubStatus The new section publishing status
+     */
+    async publishSection(user: any, workId: string, sectionId: string, pubStatus: models.PublishSection) {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId});
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }).then(async sec => {
+                if (sec.published === true && pubStatus.oldPub === false) { // if newly published
+                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
+                } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
+                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sec.stats.words}});
+                }
+                return sec;
+            });
+        }
+    }
+
+    /**
      * Sets the isDeleted flag of a work to true to perform a soft deletion. Then, updates
      * the count of published works on the user's document.
      * 
