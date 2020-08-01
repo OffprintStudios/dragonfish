@@ -64,7 +64,8 @@ export class RegisterComponent implements OnInit {
       inviteCode: this.registerFields.inviteCode.value,
     };
     this.authService.register(credentials).pipe(first()).subscribe(() => {
-      this.router.navigate(['/home']);
+      this.loadingRegister = false;
+      this.router.navigate(['/home/latest']);
     }, err => {
       this.loadingRegister = false;
       this.alertsService.error(err.error.message);
@@ -77,17 +78,13 @@ export class RegisterComponent implements OnInit {
     } else {
       this.loadingLogin = true;
       const credentials: LoginUser = {email: this.loginFields.email.value, password: this.loginFields.password.value};
-      this.authService.login(credentials).pipe(first()).subscribe(data => {
+      this.authService.login(credentials).pipe(first()).subscribe(() => {
         this.loadingLogin = false;        
-        this.refreshAfterLogin();
+        this.router.navigate(['/home/latest']);
       }, err => {
         this.loadingLogin = false;
         this.alertsService.error(err.error.message);
       })
     }
-  }
-
-  private refreshAfterLogin(): void {
-    this.router.navigate(['/home']);
   }
 }

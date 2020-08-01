@@ -42,6 +42,9 @@ export class AuthService {
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
+        this.router.navigate(['/home']).then(() => {
+          location.reload();
+        });
         return user.body;
       }), catchError(err => {
         console.log(err);
@@ -62,6 +65,9 @@ export class AuthService {
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
+        this.router.navigate(['/home']).then(() => {
+          location.reload();
+        });
         return user.body;
       }), catchError(err => {
         this.alertsService.error(err.error.message);
@@ -97,6 +103,7 @@ export class AuthService {
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');
     this.router.navigate(['/home/latest']);
+    location.reload();
   }
 
   /* Account settings */
