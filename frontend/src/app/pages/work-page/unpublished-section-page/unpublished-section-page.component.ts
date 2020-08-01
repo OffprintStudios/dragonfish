@@ -68,19 +68,53 @@ export class UnpublishedSectionPageComponent implements OnInit {
     });
   }
 
+  /**
+   * Switches between the edit form and preview pane.
+   */
   toggleEditForm() {
+    if (this.editing === true) {
+      this.editing = false;
+    } else {
+      this.editSection.setValue({
+        title: this.sectionData.title,
+        body: this.sectionData.body,
+        authorsNote: this.sectionData.authorsNote,
+        published: this.sectionData.published
+      });
 
+      this.editing = true;
+    }
   }
 
   submitEdits() {
 
   }
 
+  /**
+   * Asks the user if they want to go back to preview mode without saving any changes.
+   */
   askExit() {
-
+    if (this.editSection.dirty || this.editSection.touched) {
+      if (confirm('Are you sure? All unsaved changes will be discarded.')) {
+        this.toggleEditForm();
+      } else {
+        console.log('Action cancelled.');
+      }
+    } else {
+      this.toggleEditForm();
+    }
   }
 
+  /**
+   * Asks the user if they would actually want to delete this section. Deletes if true.
+   */
   askDelete() {
-
+    if (confirm('Are you sure you want to delete this section? This action is irreversible.')) {
+      /*this.worksService.deleteSection(workId, secId).subscribe(() => {
+        this.router.navigate(['/home/works']);
+      })*/
+    } else {
+      return;
+    }
   }
 }
