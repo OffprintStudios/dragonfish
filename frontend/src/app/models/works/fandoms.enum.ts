@@ -35,5 +35,9 @@ export enum Fandoms {
     TheWitcher = 'The Witcher',
     Persona = 'Persona',
     SailorMoon = 'Sailor Moon',
+    KimPossible = 'Kim Possible',
+    Hack = '.hack//',
+    DeusEx = 'Deus Ex',
+    ChroniclesOfNarnia = 'Chronicles of Narnia',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
