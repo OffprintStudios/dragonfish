@@ -84,9 +84,9 @@ export class AuthController {
         return await this.authService.updateProfile(req.user, newProfile);
     }
 
-    @Post('upload-avatar')
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('avatar'))
+    @Post('upload-avatar')
     async uploadAvatar(@UploadedFile() avatarImage: Express.Multer.File, @Req() req: any) {        
         const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub);        
         return await this.authService.updateAvatar(req.user, avatarUrl);

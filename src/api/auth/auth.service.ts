@@ -165,7 +165,7 @@ export class AuthService {
     }
 
     /**
-     * Updates the user's avatar. Not account-sensitive, so doesnt'require a password.
+     * Updates the user's avatar. Not account-sensitive, so doesn't require a password.
      * A new FrontendUser is returned.
      * @param user The user making the request
      * @param newAvatarUrl Their new avatar URL
