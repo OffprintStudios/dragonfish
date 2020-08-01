@@ -47,12 +47,13 @@ div.settings-container {
                         margin-bottom: 1.5rem;
                     }
                     img {
-                        max-width: 130px;
-                        max-height: 130px;
+                        width: 130px;
+                        height: 130px;
                         margin: 0 auto;
                         border-radius: 50%;
                         border: 1px solid var(--site-borders);
                         object-fit: cover;
+                        object-position: 50% 50%; // Determines the viewport position
                         display: block;
                         text-align: center;
                     }
@@ -70,4 +71,15 @@ div.settings-container {
                 }
             }
         }
+
+    div.loader {
+        position: relative;        
+        margin-right: 0;
+        margin-top: 1rem;
+        text-align: center;
+    
+        .lds-dual-ring {
+            margin-right: 0.5rem;
+        }
+    }
 }

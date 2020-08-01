@@ -4,11 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/db/users/users.module';
+import { ImagesModule } from '../images/images.module';
 
 
 @Module({
   imports: [
-    UsersModule,
+    UsersModule, ImagesModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,

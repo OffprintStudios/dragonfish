@@ -1,16 +1,19 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
-import * as models from 'src/db/users/models';
+import { ImagesService } from '../images/images.service';
 import { AuthGuard, RefreshGuard } from 'src/guards';
+import * as models from 'src/db/users/models';
 
 @Controller('')
 export class AuthController {
-    constructor(private readonly authService: AuthService, private readonly usersService: UsersService) {}
+    constructor(private readonly authService: AuthService, 
+        private readonly usersService: UsersService,
+        private readonly imagesService: ImagesService) {}
 
     /* Login and Registration*/
 
@@ -82,9 +85,10 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
-    @Post('upload-avatar')
     @UseInterceptors(FileInterceptor('avatar'))
-    async uploadAvatar(@UploadedFile() avatar: any) {
-        console.log(avatar);
+    @Post('upload-avatar')
+    async uploadAvatar(@UploadedFile() avatarImage: Express.Multer.File, @Req() req: any) {        
+        const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub);        
+        return await this.authService.updateAvatar(req.user, avatarUrl);
     }
 }

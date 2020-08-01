@@ -42,6 +42,10 @@ export class ImagesService {
                     throw new InternalServerErrorException(err);
                 }
 
+                if (!data?.Location) {
+                    throw new InternalServerErrorException(null, "Image upload did not return a URL.");
+                }
+
                 resolve(data.Location);
             })
         });
