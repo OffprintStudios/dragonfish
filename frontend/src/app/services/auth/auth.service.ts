@@ -152,6 +152,11 @@ export class AuthService {
       }));
   }
 
+  /**
+   * Uploads a user's avatar to the server for processing.
+   * 
+   * @param uploader the file uploader
+   */
   public changeAvatar(uploader: FileUploader): Observable<User> {
     return new Observable<User>(observer => {
       uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
