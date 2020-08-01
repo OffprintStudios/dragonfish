@@ -37,5 +37,9 @@ export enum Fandoms {
     SailorMoon = 'Sailor Moon',
     MiraculousLadybug = 'Miraculous Ladybug',
     StarVs = 'Star Vs. the Forces of Evil',
+    KimPossible = 'Kim Possible',
+    Hack = '.hack//',
+    DeusEx = 'Deus Ex',
+    ChroniclesOfNarnia = 'Chronicles of Narnia',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
