@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { ImagesController } from './images.controller';
 import { ImagesService } from './images.service';
 
 
@@ -13,8 +12,7 @@ import { ImagesService } from './images.service';
         signOptions: { expiresIn: '3600s' },
       }),
     }),
-  ],
-  controllers: [ImagesController],
+  ],  
   providers: [ImagesService],
   exports: [ImagesService]
 })

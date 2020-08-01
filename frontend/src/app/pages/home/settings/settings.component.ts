@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FileUploader } from 'ng2-file-upload';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import * as models from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth';
 import { AlertsService } from 'src/app/modules/alerts';
+import { ThrowStmt } from '@angular/compiler';
+import { HttpError } from 'src/app/models/site';
 
 @Component({
   selector: 'app-settings',
@@ -14,19 +16,22 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class SettingsComponent implements OnInit {
   currentUser: models.User;
   uploading = false;
-  uploader: FileUploader = new FileUploader({url: '/api/auth/upload-avatar', itemAlias: 'file'});
+  uploader: FileUploader = new FileUploader({
+    url: '/api/auth/upload-avatar',
+    itemAlias: 'avatar'
+  });
 
   themePrefOptions = [
-    {name: 'crimson', displayName: 'Crimson' },
-    {name: 'dark-crimson', displayName: 'Dark Crimson' },
-    {name: 'aqua', displayName: 'Aqua'},
-    {name: 'dark-aqua', displayName: 'Dark Aqua'},
-    {name: 'royal', displayName: 'Royal'},
-    {name: 'dark-royal', displayName: 'Dark Royal'},
-    {name: 'steel', displayName: 'Steel'},
-    {name: 'midnight-field', displayName: 'Midnight Field'},
-    {name: 'autumn', displayName: 'Autumn'},
-    {name: 'dusk-autumn', displayName: 'Autumn at Dusk'}
+    { name: 'crimson', displayName: 'Crimson' },
+    { name: 'dark-crimson', displayName: 'Dark Crimson' },
+    { name: 'aqua', displayName: 'Aqua' },
+    { name: 'dark-aqua', displayName: 'Dark Aqua' },
+    { name: 'royal', displayName: 'Royal' },
+    { name: 'dark-royal', displayName: 'Dark Royal' },
+    { name: 'steel', displayName: 'Steel' },
+    { name: 'midnight-field', displayName: 'Midnight Field' },
+    { name: 'autumn', displayName: 'Autumn' },
+    { name: 'dusk-autumn', displayName: 'Autumn at Dusk' }
   ];
 
   changeUsernameAndEmailForm = new FormGroup({
@@ -99,10 +104,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = true; };
-    this.uploader.onCompleteItem = (item, response, status, headers) => {
-      this.alertsService.success('Avatar uploaded successfully!');
-    };
+    this.uploader.onAfterAddingFile = () => this.changeAvatar();
   }
 
   get usernameAndEmailFields() { return this.changeUsernameAndEmailForm.controls; }
@@ -133,8 +135,8 @@ export class SettingsComponent implements OnInit {
     };
 
     this.authService.changePassword(newPasswordInfo).subscribe(() => {
-        location.reload();
-      });
+      location.reload();
+    });
   }
 
   submitProfileForm() {
@@ -149,6 +151,18 @@ export class SettingsComponent implements OnInit {
   }
 
   changeAvatar() {
-
+    this.uploader.authToken = `Bearer ${this.currentUser.token}`;
+    this.uploading = true;
+    this.authService.changeAvatar(this.uploader).subscribe(
+      (newUser: models.User) => {
+        this.uploading = false;
+        this.alertsService.success('Avatar uploaded successfully!');
+      },
+      (error: HttpError) => {
+        this.uploading = false;
+        this.alertsService.error(`Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
+      },
+    );
   }
+
 }

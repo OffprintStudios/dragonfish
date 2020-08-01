@@ -210,7 +210,17 @@ export class UsersService {
      * @param newProfileInfo Their new profile info
      */
     async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({ "_id": userId }, { "profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio });
+        return await this.userModel.findOneAndUpdate({ "_id": userId }, { "profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio }, {new: true});
+    }
+
+    /**
+     * Updates a user's avatar with the new URL. Does not require a password, because
+     * this information is not account sensitive.
+     * @param userId The ID of the user to update.
+     * @param avatarUrl The full URL of the new avatar
+     */
+    async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
+        return await this.userModel.findOneAndUpdate({ _id: userId}, {"profile.avatar": avatarUrl}, {new: true});
     }
 
     /**

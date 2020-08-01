@@ -1,14 +1,14 @@
-import { Controller, UseGuards, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { BlogsService } from 'src/db/blogs/blogs.service';
 import { WorksService } from 'src/db/works/works.service';
 
-import { FrontendUser } from 'src/db/users/models';
-import { Blog } from 'src/db/blogs/models';
 import { UsersService } from 'src/db/users/users.service';
 
 @Controller('portfolio')
 export class PortfolioController {
-    constructor(private readonly usersService: UsersService, private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
+    constructor(private readonly usersService: UsersService, 
+        private readonly blogsService: BlogsService, 
+        private readonly worksService: WorksService) {}
 
     @Get('get-user-info/:userId')
     async getUserInfo(@Param('userId') userId: string) {

@@ -163,4 +163,20 @@ export class AuthService {
         };
         return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(newUserPayload));
     }
+
+    /**
+     * Updates the user's avatar. Not account-sensitive, so doesnt'require a password.
+     * A new FrontendUser is returned.
+     * @param user The user making the request
+     * @param newAvatarUrl Their new avatar URL
+     */
+    async updateAvatar(user: JwtPayload, newAvatarUrl: string): Promise<FrontendUser> {
+        const updatedUser = await this.usersService.updateAvatar(user.sub, newAvatarUrl);
+        const newUserPayload: JwtPayload = {
+            sub: user.sub,
+            username: user.username,
+            roles: user.roles
+        };
+        return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(newUserPayload));
+    }
 }
