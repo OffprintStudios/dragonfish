@@ -41,5 +41,8 @@ export enum Fandoms {
     Hack = '.hack//',
     DeusEx = 'Deus Ex',
     ChroniclesOfNarnia = 'Chronicles of Narnia',
+    MadokaMagica = 'Madoka Magica',
+    TheOffice = 'The Office',
+    StephenKingsIt = `Stephen King's It`,
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
