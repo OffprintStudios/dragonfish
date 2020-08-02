@@ -49,5 +49,6 @@ export enum Fandoms {
     TheLegendofZelda = 'The Legend of Zelda',
     Digimon = 'Digimon',
     Parahumans = 'Parahumans',
+    KSBD = 'KSBD',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
