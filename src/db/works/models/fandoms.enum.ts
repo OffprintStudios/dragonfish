@@ -27,7 +27,7 @@ export enum Fandoms {
     DuckTales = 'DuckTales',
     AvatarTheLastAirbender = 'Avatar: The Last Airbender',
     PercyJackson = 'Percy Jackson',
-    FullMetalAlchemist = 'Full Metal Alchemist',
+    FullmetalAlchemist = 'Fullmetal Alchemist',
     Warhammer40K = 'Warhammer 40K',
     Borderlands = 'Borderlands',
     WarriorCats = 'Warrior Cats',
@@ -44,5 +44,9 @@ export enum Fandoms {
     MadokaMagica = 'Madoka Magica',
     TheOffice = 'The Office',
     StephenKingsIt = `Stephen King's It`,
+    Homestuck = 'Homestuck',
+    FinalFantasy = 'Final Fantasy',
+    TheLegendofZelda = 'The Legend of Zelda',
+    Digimon = 'Digimon',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }

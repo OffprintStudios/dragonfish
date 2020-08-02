@@ -44,5 +44,9 @@ export enum Fandoms {
     MadokaMagica = 'Madoka Magica',
     TheOffice = 'The Office',
     StephenKingsIt = `Stephen King's It`,
+    Homestuck = 'Homestuck',
+    FinalFantasy = 'Final Fantasy',
+    TheLegendofZelda = 'The Legend of Zelda',
+    Digimon = 'Digimon',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
