@@ -57,14 +57,14 @@ steps:
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
-      archiveType: 'tar'
-      tarCompression: none    
-      archiveFile: '$(Build.SourcesDirectory)/node_modules.tar'  
+      archiveType: tar
+      tarCompression: xz
+      archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'  
 
     # Publish the built /node_modules folder to make it available for release
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/node_modules.tar'
+      PathtoPublish: '$(Build.SourcesDirectory)/node_modules.tar.xz'
       ArtifactName: 'backend-node_modules'
       publishLocation: 'Container'
     displayName: "Publish tarred /node_modules folder"
