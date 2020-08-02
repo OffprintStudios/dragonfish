@@ -2,7 +2,6 @@ import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException,
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
-import * as multer from 'multer';
 
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
@@ -88,7 +87,7 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
-    async uploadAvatar(@UploadedFile() avatarImage: Express.Multer.File, @Req() req: any) {        
+    async uploadAvatar(@UploadedFile() avatarImage: any, @Req() req: any) {        
         const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub, 'avatars');
         const avatar = `https://images.offprint.net/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
         return await this.authService.updateAvatar(req.user, avatar);
