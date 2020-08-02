@@ -4,7 +4,7 @@ trigger:
       - master
   paths:
     exclude: 
-      - '/frontend'
+      - /frontend
       - /.azure-pipelines/azure-pipelines-frontend.yml
 
 pool:
