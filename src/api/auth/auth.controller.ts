@@ -2,13 +2,13 @@ import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException,
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
+import * as multer from 'multer';
 
 import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import { ImagesService } from '../images/images.service';
 import { AuthGuard, RefreshGuard } from 'src/guards';
 import * as models from 'src/db/users/models';
-import { FolderTypes } from 'src/api/images/models';
 
 @Controller('')
 export class AuthController {

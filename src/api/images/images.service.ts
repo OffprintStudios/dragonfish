@@ -1,8 +1,7 @@
 import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { v4 as uuidV4 } from 'uuid';
-
-import { FolderTypes } from './models';
+import * as multer from 'multer';
 
 const ONE_MEGABYTE: number = 1024 * 1024;
 const JPEG_MIME_TYPE = 'image/jpeg';
