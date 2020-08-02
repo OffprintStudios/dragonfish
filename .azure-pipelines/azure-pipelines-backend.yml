@@ -37,9 +37,9 @@ steps:
     displayName: "Cache node_modules"
 
     # Install production-only packages if the cache doesn't exist, or is out of date.
-  - script: yarn install --production=true
+  - script: yarn install --production=true --non-interactive --frozen-lockfile
     displayName: "Yarn install"
-    #condition: ne(variables['CacheRestored'], 'true')
+    condition: ne(variables['CacheRestored'], 'true')
 
     # Build the project
   - script: yarn build
@@ -51,6 +51,7 @@ steps:
       PathtoPublish: '$(Build.SourcesDirectory)/dist'
       ArtifactName: 'backend-dist'
       publishLocation: 'Container'
+    displayName: "Publish /dist folder"
 
     # Publish the built /node_modules folder to make it available for release
   - task: PublishBuildArtifacts@1
@@ -58,5 +59,6 @@ steps:
       PathtoPublish: '$(Build.SourcesDirectory)/node_modules'
       ArtifactName: 'backend-node_modules'
       publishLocation: 'Container'
+    displayName: "Publish /node_modules folder"
     
 
