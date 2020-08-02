@@ -48,7 +48,7 @@ export class SettingsComponent implements OnInit {
 
   changeProfileForm = new FormGroup({
     newThemePref: new FormControl(this.themePrefOptions[0]),
-    newBio: new FormControl('')
+    newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(50)])
   });
 
   constructor(private authService: AuthService, private alertsService: AlertsService) {
