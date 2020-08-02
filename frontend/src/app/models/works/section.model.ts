@@ -1,6 +1,4 @@
-import { Document } from 'mongoose';
-
-export interface Section extends Document {
+export interface Section {
     readonly _id: string;
     readonly title: string;
     readonly body: string;
