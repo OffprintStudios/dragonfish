@@ -23,11 +23,6 @@ steps:
       yarn global add neon-cli@0.4.0
     displayName: 'Install global tools'
 
-    # Create .env file. TODO: Pull from secret variables.
-  - script: |
-      printf "%s\n" "DATABASE_URL=mongodb://localhost:27017/my_database" "JWT_SECRET=whatever" > .env
-    displayName: 'Create .env file'
-
   - task: Cache@2
     inputs:
     # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
