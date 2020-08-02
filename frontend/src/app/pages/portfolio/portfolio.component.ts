@@ -17,7 +17,7 @@ export class PortfolioComponent implements OnInit {
   currentUser: User; // The currently logged-in user
   loading = false; // Loading check for fetching data
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private portService: PortfolioService) {
+  constructor(private authService: AuthService, private router: Router, public route: ActivatedRoute, private portService: PortfolioService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
