@@ -33,7 +33,7 @@ steps:
 
 - script: |
     cd frontend
-    yarn install --production=true --non-interactive --frozen-lockfile
+    yarn install --production=false --non-interactive --frozen-lockfile
   displayName: "Yarn install"
   condition: ne(variables['CacheRestored'], 'true')
 
