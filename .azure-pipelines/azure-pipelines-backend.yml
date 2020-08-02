@@ -4,7 +4,7 @@ trigger:
       - master
   paths:
     exclude: 
-      - /frontend
+      - '/frontend'
       - /.azure-pipelines/azure-pipelines-frontend.yml
 
 pool:
@@ -27,14 +27,6 @@ steps:
   - script: |
       printf "%s\n" "DATABASE_URL=mongodb://localhost:27017/my_database" "JWT_SECRET=whatever" > .env
     displayName: 'Create .env file'
-  
-    # Install components Rust needs to do native building with bindgen
-  # - script: |
-  #     apt-get install -y build-essential \
-  #       llvm-dev \
-  #       libclang-dev \
-  #       clang
-  #   displayName: 'Install Rust native build requirements'
 
   - task: Cache@2
     inputs:
@@ -44,8 +36,8 @@ steps:
       cacheHitVar: 'CacheRestored'
     displayName: "Cache node_modules"
 
-    # Install packages if the cache doesn't exist, or is out of date.
-  - script: yarn install
+    # Install production-only packages if the cache doesn't exist, or is out of date.
+  - script: yarn install --production=true
     displayName: "Yarn install"
     condition: ne(variables['CacheRestored'], 'true')
 
@@ -56,8 +48,15 @@ steps:
   # Publish the built /dist folder to make it available for release
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.Repository.LocalPath)/dist'
-      ArtifactName: 'backend'
+      PathtoPublish: '$(Build.SourcesDirectory)/dist'
+      ArtifactName: 'backend-dist'
+      publishLocation: 'Container'
+
+    # Publish the built /node_modules folder to make it available for release
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/node_modules'
+      ArtifactName: 'backend-node_modules'
       publishLocation: 'Container'
     
 
