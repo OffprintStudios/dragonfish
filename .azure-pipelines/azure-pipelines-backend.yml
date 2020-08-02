@@ -13,22 +13,34 @@ pool:
 steps: 
   - task: NodeTool@0
     inputs:
-      versionSpec: '12.17.0'
-    displayName: 'Install Node.js 12.17.0'
+      versionSpec: '14.6.0'
+    displayName: 'Install Node.js 14.6.0'
 
+  # Add NPM/Yarn global tools
   - script: |      
-      yarn global add @nestjs/cli@7.1.5
-      yarn global add typescript@3.8.3
+      yarn global add @nestjs/cli@7.4.1
+      yarn global add typescript@3.9.7
+      yarn global add neon-cli@0.4.0
     displayName: 'Install global tools'
 
-  - script: |
-      docker pull mongo:4.2
-      docker run -p 27017:27017 --name pulp-fiction-mongo-db -d mongo:4.2
-    displayName: 'Set up MongoDB'
-
+    # Create .env file. TODO: Pull from secret variables.
   - script: |
       printf "%s\n" "DATABASE_URL=mongodb://localhost:27017/my_database" "JWT_SECRET=whatever" > .env
     displayName: 'Create .env file'
+  
+    # Install components Rust needs to do native building with bindgen
+  - script: |
+      apt-get install -y build-essential \
+        llvm-dev \
+        libclang-dev \
+        clang
+    displayName: 'Install Rust native build requirements'
+  
+    # Install Rust
+  - script: |
+      curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain stable
+      echo "##vso[task.setvariable variable=PATH;]$PATH:$HOME/.cargo/bin"
+    displayName: Install Rust
 
   - task: Cache@2
     inputs:
@@ -38,12 +50,20 @@ steps:
       cacheHitVar: 'CacheRestored'
     displayName: "Cache node_modules"
 
+    # Install packages if the cache doesn't exist, or is out of date.
   - script: yarn install
     displayName: "Yarn install"
     condition: ne(variables['CacheRestored'], 'true')
 
+    # Build the project
   - script: yarn build
     displayName: "Build"
 
-  - script: yarn test
-    displayName: "Test"
+  # Publish the built /dist folder to make it available for release
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.Repository.LocalPath)/dist'
+      ArtifactName: 'backend'
+      publishLocation: 'Container'
+    
+
