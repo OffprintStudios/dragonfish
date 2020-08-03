@@ -10,6 +10,7 @@ import { Blog } from 'src/app/models/blogs';
   providedIn: 'root'
 })
 export class PortfolioService {
+  private url: string = `/api/content/portfolio`;
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +20,7 @@ export class PortfolioService {
    * @param userId The user ID of a requested portfolio
    */
   public getUserInfo(userId: string) {
-    return this.http.get<User>(`/api/content/portfolio/get-user-info/` + userId, {observe: 'response', withCredentials: true})
+    return this.http.get<User>(`${this.url}/get-user-info/${userId}`, {observe: 'response', withCredentials: true})
       .pipe(map(user => {
         return user.body;
       }), catchError(err => {
@@ -33,7 +34,7 @@ export class PortfolioService {
    * @param userId The user ID of the requested portfolio
    */
   public getBlogList(userId: string) {
-    return this.http.get<Blog[]>(`/api/content/portfolio/get-blogs-list/` + userId, {observe: 'response', withCredentials: true})
+    return this.http.get<Blog[]>(`${this.url}/get-blogs-list/${userId}`, {observe: 'response', withCredentials: true})
     .pipe(map(blogs => {
       return blogs.body.reverse();
     }), catchError(err => {
@@ -56,7 +57,7 @@ export class PortfolioService {
    * @param blogId The blog we're fetching
    */
   public getBlog(blogId: string) {
-    return this.http.get<Blog>(`/api/content/portfolio/get-blog/` + blogId, {observe: 'response', withCredentials: true})
+    return this.http.get<Blog>(`${this.url}/get-blog/${blogId}`, {observe: 'response', withCredentials: true})
       .pipe(map(blog => {
         return blog.body;
       }), catchError(err => {

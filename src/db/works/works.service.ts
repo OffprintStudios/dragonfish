@@ -6,7 +6,8 @@ import { UsersService } from '../users/users.service';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
-import { truncate } from 'fs';
+import * as wordCounter from '@offprintstudios/word-counter';
+import * as sanitize from 'sanitize-html';
 
 @Injectable()
 export class WorksService {
@@ -27,9 +28,9 @@ export class WorksService {
     async createNewWork(user: any, newWorkInfo: models.CreateWork): Promise<models.Work> {
         const newWork = new this.workModel({
             author: user.sub,
-            title: newWorkInfo.title,
-            shortDesc: newWorkInfo.shortDesc,
-            longDesc: newWorkInfo.longDesc,
+            title: sanitize(newWorkInfo.title),
+            shortDesc: sanitize(newWorkInfo.shortDesc),
+            longDesc: sanitize(newWorkInfo.longDesc),
             meta: {
                 category: newWorkInfo.category,
                 fandoms: newWorkInfo.fandoms,
@@ -60,9 +61,9 @@ export class WorksService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             const newSection = new this.sectionModel({
-                title: newSectionInfo.title,
-                body: newSectionInfo.body,
-                authorsNote: newSectionInfo.authorsNote,
+                title: sanitize(newSectionInfo.title),
+                body: sanitize(newSectionInfo.body),
+                authorsNote: sanitize(newSectionInfo.authorsNote),
             });
 
             return await newSection.save().then(async section => {
@@ -157,16 +158,15 @@ export class WorksService {
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const updatedSection = {
-                title: sectionInfo.title,
-                body: sectionInfo.body,
-                authorsNote: sectionInfo.authorsNote,
-            };
-
-            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, updatedSection, {new: true}).then(async sec => {
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
+                "title": sanitize(sectionInfo.title),
+                "body": sanitize(sectionInfo.body),
+                "authorsNote": sanitize(sectionInfo.authorsNote),
+                "stats.words": wordCounter.countWords(sanitize(sectionInfo.body))
+            }, {new: true}).then(async sec => {
                 if (sec.published === true) {
-                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
-                        await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
+                    await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
+                        await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": sec.stats.words}});
                     });
                 }
                 return sec;
