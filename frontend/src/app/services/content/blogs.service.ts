@@ -11,6 +11,8 @@ import { AlertsService } from 'src/app/modules/alerts';
   providedIn: 'root'
 })
 export class BlogsService {
+  private url: string = `/api/content/blogs`;
+
   constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) {}
 
   /**
@@ -20,7 +22,7 @@ export class BlogsService {
    * @param info The blog's information.
    */
   public createBlog(info: models.CreateBlog) {
-    return this.http.put<models.Blog>(`/api/content/blogs/create-blog`, info, {observe: 'response', withCredentials: true})
+    return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success('Blog successfully created.');
@@ -35,7 +37,7 @@ export class BlogsService {
    * of the home page.
    */
   public fetchUserBlogs() {
-    return this.http.get<models.Blog[]>(`/api/content/blogs/fetch-user-blogs`, {observe: 'response', withCredentials: true})
+    return this.http.get<models.Blog[]>(`${this.url}/fetch-user-blogs`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           return res.body;
@@ -51,7 +53,7 @@ export class BlogsService {
    * @param blogId The ID of the blog we're deleting
    */
   public deleteBlog(blogId: string) {
-    return this.http.patch(`/api/content/blogs/delete-blog`, {blogId}, {observe: 'response', withCredentials: true})
+    return this.http.patch(`${this.url}/delete-blog`, {blogId}, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Blog successfully deleted.');
@@ -67,7 +69,7 @@ export class BlogsService {
    * @param blogId The ID of the blog we're changing status on
    */
   public setPublishStatus(publishStatus: models.SetPublishStatus) {
-    return this.http.patch(`/api/content/blogs/set-publish-status`, publishStatus, {observe: 'response', withCredentials: true})
+    return this.http.patch(`${this.url}/set-publish-status`, publishStatus, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Blog status updated.');
@@ -83,7 +85,7 @@ export class BlogsService {
    * @param blogInfo The updated blog info
    */
   public editBlog(blogInfo: models.EditBlog) {
-    return this.http.patch(`/api/content/blogs/edit-blog`, blogInfo, {observe: 'response', withCredentials: true})
+    return this.http.patch(`${this.url}/edit-blog`, blogInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Changes saved successfully.');

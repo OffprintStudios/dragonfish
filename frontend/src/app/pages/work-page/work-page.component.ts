@@ -99,9 +99,28 @@ export class WorkPageComponent implements OnInit {
     }
   }
 
- /**
-  * Opens the edit form.
-  */ 
+  /**
+   * Sends a request to publish or unpublish the specify section.
+   * 
+   * @param sectionId The section we're publishing or unpublishing
+   * @param pubStatus The current publishing status of this section
+   */
+  publishSection(sectionId: string, pubStatus: boolean) {
+    const newPubStatus: workModels.PublishSection = {
+      oldPub: pubStatus,
+      newPub: !pubStatus
+    };
+
+    this.worksService.setPublishStatusSection(this.workId, sectionId, newPubStatus).subscribe(() => {
+      this.fetchData();
+    }, () => {
+      console.log(`An error has occurred.`);
+    });
+  }
+
+  /**
+   * Opens the edit form.
+   */ 
   openEditForm() {
     this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
     this.editWork.open();

@@ -31,7 +31,7 @@
                             <div *ngIf="section.published === true">
                                 <div class="section-box">
                                     <div>
-                                        <button class="pub-unpub"><i-feather name="check-circle"></i-feather></button>
+                                        <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="check-circle"></i-feather></button>
                                     </div>
                                     <div style="flex: 1;">
                                         <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
@@ -49,7 +49,7 @@
                             <div *ngIf="section.published === false">
                                 <div class="section-box">
                                     <div>
-                                        <button class="pub-unpub"><i-feather name="circle"></i-feather></button>
+                                        <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
                                     </div>
                                     <div style="flex: 1;">
                                         <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">

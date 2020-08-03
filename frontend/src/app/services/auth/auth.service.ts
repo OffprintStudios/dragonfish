@@ -15,6 +15,7 @@ import { HttpError } from 'src/app/models/site';
 export class AuthService {
   private currUserSubject: BehaviorSubject<User>;
   public currUser: Observable<User>;
+  private url: string = `/api/auth`;
 
   constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService) {
     this.currUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -38,7 +39,7 @@ export class AuthService {
    * @param credentials A user's credentials.
    */
   public register(credentials: CreateUser): Observable<User> {
-    return this.http.post<User>(`/api/auth/register`, credentials, { observe: 'response', withCredentials: true })
+    return this.http.post<User>(`${this.url}/register`, credentials, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
@@ -61,7 +62,7 @@ export class AuthService {
    * @param credentials A user's credentials.
    */
   public login(credentials: LoginUser): Observable<User> {
-    return this.http.post<User>(`/api/auth/login`, credentials, { withCredentials: true, observe: 'response' })
+    return this.http.post<User>(`${this.url}/login`, credentials, { withCredentials: true, observe: 'response' })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
@@ -79,7 +80,7 @@ export class AuthService {
    * Refreshes the current user token with new User info.
    */
   public refreshToken(): Observable<boolean> {
-    return this.http.get<User>(`/api/auth/refresh-token`, { observe: 'response', withCredentials: true })
+    return this.http.get<User>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
@@ -97,7 +98,7 @@ export class AuthService {
   public logout(): void {
     // Fire and forget. If this fails, it doesn't matter to the user, 
     // and we don't want to leak that fact anyway.
-    this.http.get(`/api/auth/logout`, { withCredentials: true }).subscribe();
+    this.http.get(`${this.url}/logout`, { withCredentials: true }).subscribe();
 
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
@@ -114,7 +115,7 @@ export class AuthService {
    * @param newNameAndEmail The new name and email requested
    */
   public changeNameAndEmail(newNameAndEmail: ChangeNameAndEmail) {
-    return this.http.patch<User>(`/api/auth/change-name-and-email`, newNameAndEmail, { observe: 'response', withCredentials: true })
+    return this.http.patch<User>(`${this.url}/change-name-and-email`, newNameAndEmail, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
@@ -131,7 +132,7 @@ export class AuthService {
    * @param newPasswordInfo The new password requested
    */
   public changePassword(newPasswordInfo: ChangePassword) {
-    return this.http.patch<User>(`/api/auth/change-password`, newPasswordInfo, { observe: 'response', withCredentials: true })
+    return this.http.patch<User>(`${this.url}/change-password`, newPasswordInfo, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
@@ -148,7 +149,7 @@ export class AuthService {
    * @param newProfileInfo The new profile info requested
    */
   public changeProfile(newProfileInfo: ChangeProfile) {
-    return this.http.patch<User>(`/api/auth/update-profile`, newProfileInfo, { observe: 'response', withCredentials: true })
+    return this.http.patch<User>(`${this.url}/update-profile`, newProfileInfo, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
