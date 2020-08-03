@@ -1,7 +1,7 @@
 <div class="upload-avatar-modal">
     <h1>Change Avatar</h1>
     <hr>
-    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" ng2FileSelect [uploader]="uploader" #avatarInput/>
+    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" ng2FileSelect [uploader]="uploader" #avatarInput/>
     
     <div style="text-align: center;" *ngIf="!uploading; else isUploading">
         <button (click)="avatarInput.click()">Select Avatar</button>
