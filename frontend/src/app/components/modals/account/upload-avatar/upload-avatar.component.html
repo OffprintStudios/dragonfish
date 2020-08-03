@@ -1,0 +1,22 @@
+<div class="upload-avatar-modal">
+    <h1>Change Avatar</h1>
+    <hr>
+    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" ng2FileSelect [uploader]="uploader" #avatarInput/>
+    
+    <div style="text-align: center;">
+        <button (click)="avatarInput.click()">Select Avatar</button>
+        <button style="margin-left: 2rem;" class="button-primary" *ngIf="croppedImage !== ''">Upload</button>
+    </div>
+
+    <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [containWithinAspectRatio]="true"
+        [aspectRatio]="4 / 4"
+        [roundCropper]="true"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady($event)"
+        (loadImageFailed)="loadImageFailed()"></image-cropper>
+</div>
