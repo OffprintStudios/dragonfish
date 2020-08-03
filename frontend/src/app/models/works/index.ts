@@ -11,3 +11,5 @@ export { ApprovalStatus } from './approval-status.enum';
 export { CreateWork } from './create-work.model';
 export { CreateSection } from './create-section.model';
 export { EditWork } from './edit-work.model';
+export { EditSection } from './edit-section.model';
+export { PublishSection } from './publish-section.model';

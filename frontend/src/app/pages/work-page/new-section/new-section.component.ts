@@ -18,7 +18,7 @@ export class NewSectionComponent implements OnInit {
   newSectionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     body: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    authorsNote: new FormControl('', Validators.minLength(3)),
+    authorsNote: new FormControl('', [Validators.minLength(3), Validators.maxLength(2000)]),
   });
 
   constructor(private worksService: WorksService, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {

@@ -29,9 +29,22 @@
                     <ul>
                         <li *ngFor="let section of workData.sections">
                             <div *ngIf="section.published === true">
-                                <button class="pub-unpub"><i-feather name="check-circle"></i-feather></button>
-                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">{{ section.title }}</a></span>
-                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>
+                                <div class="section-box">
+                                    <div>
+                                        <button class="pub-unpub"><i-feather name="check-circle"></i-feather></button>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
+                                            {{ section.title }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</div>
+                                    </div>
+                                    <div>
+                                        <button class="delete-section"><i-feather name="trash-2"></i-feather></button>
+                                    </div>
+                                </div>
                             </div>
                             <div *ngIf="section.published === false">
                                 <div class="section-box">
@@ -50,10 +63,6 @@
                                         <button class="delete-section"><i-feather name="trash-2"></i-feather></button>
                                     </div>
                                 </div>
-
-                                <!--<button class="pub-unpub"><i-feather name="circle"></i-feather></button>
-                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">{{ section.title }}</a></span>
-                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>-->
                             </div>
                         </li>
                     </ul>
