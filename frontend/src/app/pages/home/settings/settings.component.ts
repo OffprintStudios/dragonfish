@@ -18,11 +18,6 @@ import { UploadAvatarComponent } from 'src/app/components/modals/account';
 })
 export class SettingsComponent implements OnInit {
   currentUser: models.User;
-  uploading = false;
-  uploader: FileUploader = new FileUploader({
-    url: '/api/auth/upload-avatar',
-    itemAlias: 'avatar'
-  });
 
   themePrefOptions = [
     { name: 'crimson', displayName: 'Crimson' },
@@ -109,8 +104,6 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.uploader.onAfterAddingFile = () => this.changeAvatar();
-
     // Settings for the changeAvatar modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
@@ -120,7 +113,7 @@ export class SettingsComponent implements OnInit {
 
     this.changeAvatarModal = this.toppy
       .position(position)
-      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
+      .config({closeOnEsc: true, backdrop: true})
       .content(UploadAvatarComponent)
       .create();
   }
@@ -170,18 +163,5 @@ export class SettingsComponent implements OnInit {
 
   changeAvatar() {
     this.changeAvatarModal.open();
-    /*this.uploader.authToken = `Bearer ${this.currentUser.token}`;
-    this.uploading = true;
-    this.authService.changeAvatar(this.uploader).subscribe(
-      (newUser: models.User) => {
-        this.uploading = false;
-        this.alertsService.success('Avatar uploaded successfully!');
-      },
-      (error: HttpError) => {
-        this.uploading = false;
-        this.alertsService.error(`Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
-      },
-    );*/
   }
-
 }

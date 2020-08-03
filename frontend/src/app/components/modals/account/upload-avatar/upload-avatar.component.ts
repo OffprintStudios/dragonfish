@@ -17,8 +17,10 @@ export class UploadAvatarComponent implements OnInit {
 
   currentUser: User;
 
-  imageChangedEvent: any = '';
+  imageChangedEvent: Event;
   croppedImage: any = '';
+
+  fileToReturn: File;
 
   showCropper = false;
   
@@ -39,29 +41,55 @@ export class UploadAvatarComponent implements OnInit {
     this.imageChangedEvent = event;
   }
 
-  imageCropped(event: ImageCroppedEvent) {
+  imageCropped(event: ImageCroppedEvent): File {
     this.croppedImage = event.base64;
+
+    this.fileToReturn = this.base64ToFile(event.base64, 'avatar');
+
+    console.log(this.fileToReturn);
+    return this.fileToReturn;
   }
 
-  imageLoaded() {
+  imageLoaded(): void {
     this.showCropper = true;
   }
 
-  cropperReady(sourceImageDimensions: Dimensions) {
+  cropperReady(sourceImageDimensions: Dimensions): void {
     console.log('Cropper Ready!', sourceImageDimensions);
   }
 
-  loadImageFailed() {
+  loadImageFailed(): void {
     this.alertsService.error(`Seems like we can't load the image. Is something wrong with it?`);
+  }
+
+  base64ToFile(data: any, filename: string): File {
+    const arr = data.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  cancel() {
+    this.close();
   }
 
   uploadAvatar() {
     this.uploader.authToken = `Bearer ${this.currentUser.token}`;
     this.uploading = true;
+    this.uploader.clearQueue();
+    this.uploader.addToQueue([this.fileToReturn]);
     this.authService.changeAvatar(this.uploader).subscribe(
       () => {
         this.uploading = false;
         this.alertsService.success('Avatar uploaded successfully!');
+        this.close();
       },
       (error: HttpError) => {
         this.uploading = false;
