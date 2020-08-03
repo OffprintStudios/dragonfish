@@ -23,6 +23,7 @@ export const WorksSchema = new Schema({
         genres: {type: [String], enum: Object.keys(models.Genres), required: true},
         rating: {type: String, enum: Object.keys(models.ContentRating), required: true},
         status: {type: String, enum: Object.keys(models.WorkStatus), required: true},
+        coverArt: {type: String},
     },
     stats: {
         totWords: {type: Number, default: 0},

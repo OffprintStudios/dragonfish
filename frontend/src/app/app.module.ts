@@ -9,6 +9,7 @@ import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
@@ -25,12 +26,13 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
+import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
+  UnpublishedSectionPageComponent } from './pages/work-page';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
-import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
-  UnpublishedSectionPageComponent } from './pages/work-page';
+import { UploadAvatarComponent } from './components/modals/account';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -69,11 +71,11 @@ const toolbarOptions = [
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent
+    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule, FileUploadModule, NgSelectModule,
+    IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
@@ -86,7 +88,7 @@ const toolbarOptions = [
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
-    NewWorkComponent, EditWorkComponent
+    NewWorkComponent, EditWorkComponent, UploadAvatarComponent
   ],
   bootstrap: [AppComponent]
 })

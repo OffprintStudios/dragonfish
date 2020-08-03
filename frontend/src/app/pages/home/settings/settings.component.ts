@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { ToppyControl, Toppy, GlobalPosition, InsidePlacement } from 'toppy';
 
 import * as models from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth';
 import { AlertsService } from 'src/app/modules/alerts';
 import { ThrowStmt } from '@angular/compiler';
 import { HttpError } from 'src/app/models/site';
+import { UploadAvatarComponent } from 'src/app/components/modals/account';
+
 
 @Component({
   selector: 'app-settings',
@@ -15,11 +18,6 @@ import { HttpError } from 'src/app/models/site';
 })
 export class SettingsComponent implements OnInit {
   currentUser: models.User;
-  uploading = false;
-  uploader: FileUploader = new FileUploader({
-    url: '/api/auth/upload-avatar',
-    itemAlias: 'avatar'
-  });
 
   themePrefOptions = [
     { name: 'crimson', displayName: 'Crimson' },
@@ -36,7 +34,7 @@ export class SettingsComponent implements OnInit {
 
   changeUsernameAndEmailForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    username: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
     currPassword: new FormControl('', [Validators.required])
   });
 
@@ -51,7 +49,9 @@ export class SettingsComponent implements OnInit {
     newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(50)])
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService) {
+  changeAvatarModal: ToppyControl;
+
+  constructor(private authService: AuthService, private alertsService: AlertsService, private toppy: Toppy) {
     this.authService.currUser.subscribe(x => {
       let themePrefIndex = 0;
 
@@ -104,7 +104,18 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.uploader.onAfterAddingFile = () => this.changeAvatar();
+    // Settings for the changeAvatar modal
+    const position = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto',
+    });
+
+    this.changeAvatarModal = this.toppy
+      .position(position)
+      .config({closeOnEsc: true, backdrop: true})
+      .content(UploadAvatarComponent)
+      .create();
   }
 
   get usernameAndEmailFields() { return this.changeUsernameAndEmailForm.controls; }
@@ -151,18 +162,6 @@ export class SettingsComponent implements OnInit {
   }
 
   changeAvatar() {
-    this.uploader.authToken = `Bearer ${this.currentUser.token}`;
-    this.uploading = true;
-    this.authService.changeAvatar(this.uploader).subscribe(
-      (newUser: models.User) => {
-        this.uploading = false;
-        this.alertsService.success('Avatar uploaded successfully!');
-      },
-      (error: HttpError) => {
-        this.uploading = false;
-        this.alertsService.error(`Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
-      },
-    );
+    this.changeAvatarModal.open();
   }
-
 }

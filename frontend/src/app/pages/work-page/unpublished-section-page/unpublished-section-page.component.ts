@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { User } from 'src/app/models/users';
-import { Section } from 'src/app/models/works';
+import { Section, EditSection } from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 
@@ -26,8 +26,7 @@ export class UnpublishedSectionPageComponent implements OnInit {
   editSection = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     body: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    authorsNote: new FormControl('', Validators.minLength(3)),
-    published: new FormControl(false),
+    authorsNote: new FormControl('', [Validators.minLength(3), Validators.maxLength(2000)]),
   });
 
   constructor(private authService: AuthService, private worksService: WorksService, private cdr: ChangeDetectorRef,
@@ -78,16 +77,33 @@ export class UnpublishedSectionPageComponent implements OnInit {
       this.editSection.setValue({
         title: this.sectionData.title,
         body: this.sectionData.body,
-        authorsNote: this.sectionData.authorsNote,
-        published: this.sectionData.published
+        authorsNote: this.sectionData.authorsNote
       });
 
       this.editing = true;
     }
   }
 
+  /**
+   * Submits the section's edits to the backend.
+   */
   submitEdits() {
+    this.submitting = true;
+    const newEdits: EditSection = {
+      title: this.fields.title.value,
+      body: this.fields.body.value,
+      authorsNote: this.fields.authorsNote.value,
+      oldWords: this.sectionData.stats.words,
+    };
 
+    this.worksService.editSection(this.workId, this.sectionId, newEdits).subscribe(() => {
+      this.editing = false;
+      this.submitting = false;
+      this.fetchData();
+    }, () => {
+      this.editing = false;
+      this.submitting = false;
+    });
   }
 
   /**

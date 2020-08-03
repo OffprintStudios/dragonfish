@@ -24,6 +24,7 @@ export interface Work extends Document {
         readonly genres: Genres[];
         readonly rating: ContentRating;
         readonly status: WorkStatus;
+        readonly coverArt?: string;
     };
     readonly stats: {
         readonly totWords: number;

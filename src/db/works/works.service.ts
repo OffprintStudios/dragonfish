@@ -6,6 +6,7 @@ import { UsersService } from '../users/users.service';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
+import { truncate } from 'fs';
 
 @Injectable()
 export class WorksService {
@@ -160,15 +161,10 @@ export class WorksService {
                 title: sectionInfo.title,
                 body: sectionInfo.body,
                 authorsNote: sectionInfo.authorsNote,
-                published: sectionInfo.published
             };
 
-            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, updatedSection).then(async sec => {
-                if (sec.published === true && sectionInfo.oldPublished === false) { // if newly published
-                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
-                } else if (sec.published === false && sectionInfo.oldPublished === true) { // if unpublished
-                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sectionInfo.oldWords}});
-                } else if (sec.published === true && sectionInfo.oldPublished === true) { // publish status didn't change
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, updatedSection, {new: true}).then(async sec => {
+                if (sec.published === true) {
                     await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
                         await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
                     });
@@ -192,7 +188,7 @@ export class WorksService {
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }).then(async sec => {
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }, {new: true}).then(async sec => {
                 if (sec.published === true && pubStatus.oldPub === false) { // if newly published
                     await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
                 } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
@@ -236,5 +232,16 @@ export class WorksService {
                 status: workInfo.status,
             },
         });
+    }
+
+    /**
+     * Updates the coverart of the specified work.
+     * 
+     * @param user The author of the work
+     * @param coverArt The new cover art
+     * @param workId The work's ID
+     */
+    async updateCoverArt(user: any, coverArt: string, workId: string) {
+        return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true});
     }
 }

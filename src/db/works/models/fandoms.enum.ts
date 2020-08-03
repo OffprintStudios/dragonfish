@@ -50,5 +50,7 @@ export enum Fandoms {
     Digimon = 'Digimon',
     Parahumans = 'Parahumans',
     KSBD = 'KSBD',
+    DeadByDaylight = 'Dead by Daylight',
+    WingsOfFire = 'Wings of Fire',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }

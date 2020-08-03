@@ -31,16 +31,11 @@
             <div class="section-content">
                 <div class="section-controls">
                     <span class="control-left">
-                        <a class="button" (click)="askExit()">Exit</a>
-                        <a class="button" style="border-left: 0;" (click)="askDelete()"><i-feather name="trash-2"></i-feather></a>
-                        <label style="display: inline-block; position: relative; left: 2rem;">
-                            <input type="checkbox" formControlName="published">
-                            <span class="label-body">Published</span>
-                        </label>
+                        <a class="button"><i-feather name="type"></i-feather></a>
                     </span>
                     <span class="control-right">
-                        <a class="button"><i-feather name="type"></i-feather></a>
-                        <a class="button button-right"><i-feather name="download-cloud"></i-feather></a>
+                        <a class="button" (click)="askDelete()"><i-feather name="trash-2"></i-feather></a>
+                        <a class="button" style="border-left: 0;" (click)="askExit()">Exit</a>
                     </span>
                 </div>
                 <div class="section-header">
