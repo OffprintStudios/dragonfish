@@ -1,12 +1,14 @@
-import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, UploadedFile, UseInterceptors } from '@nestjs/common';
 
 import * as models from 'src/db/works/models';
 import { WorksService } from 'src/db/works/works.service';
 import { AuthGuard, OptionalAuthGuard } from 'src/guards';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImagesService } from 'src/api/images/images.service';
 
 @Controller('works')
 export class WorksController {
-    constructor (private readonly worksService: WorksService) {}
+    constructor (private readonly worksService: WorksService, private readonly imagesService: ImagesService) {}
 
     @UseGuards(AuthGuard)
     @Get('fetch-user-works')
@@ -60,5 +62,14 @@ export class WorksController {
     @Patch('set-publishing-status/:workId/:sectionId')
     async setPubStatus(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() pubStatus: models.PublishSection) {
         return await this.worksService.publishSection(req.user, workId, sectionId, pubStatus);
+    }
+
+    @UseGuards(AuthGuard)
+    @UseInterceptors(FileInterceptor('coverart'))
+    @Patch('upload-coverart/:workId')
+    async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {
+        const coverArtUrl = await this.imagesService.upload(coverArtImage, req.user.sub, 'coverart');
+        const coverArt = `https://images.offprint.net/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
+        return await this.worksService.updateCoverArt(req.user, coverArt, workId);
     }
 }

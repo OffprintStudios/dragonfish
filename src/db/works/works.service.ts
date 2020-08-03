@@ -237,4 +237,15 @@ export class WorksService {
             },
         });
     }
+
+    /**
+     * Updates the coverart of the specified work.
+     * 
+     * @param user The author of the work
+     * @param coverArt The new cover art
+     * @param workId The work's ID
+     */
+    async updateCoverArt(user: any, coverArt: string, workId: string) {
+        return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true});
+    }
 }
