@@ -66,7 +66,7 @@ export class WorksController {
 
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('coverart'))
-    @Patch('upload-coverart/:workId')
+    @Post('upload-coverart/:workId')
     async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {
         const coverArtUrl = await this.imagesService.upload(coverArtImage, req.user.sub, 'coverart');
         const coverArt = `https://images.offprint.net/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
