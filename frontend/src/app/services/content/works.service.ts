@@ -13,6 +13,8 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class WorksService {
   private url: string = `/api/content/works`;
 
+  public thisWorksPublishedSections: models.SectionInfo[];
+
   constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) { }
 
   /**
@@ -162,5 +164,31 @@ export class WorksService {
         this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
       }));
+  }
+
+  /**
+   * Fetches a published section from the backend.
+   * 
+   * @param workId The work this section belongs to
+   * @param sectionId The section itself
+   */
+  public getPublishedSection(workId: string, sectionId: string) {
+    return this.http.get<models.Section>(`${this.url}/fetch-section/${workId}/${sectionId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(section => {
+        return section.body;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Used to share a work's published sections with the section page.
+   * 
+   * @param sections The list of published sections of a work
+   */
+  public setSectionsList(sections: models.SectionInfo[]) {
+    this.thisWorksPublishedSections = sections;
+    console.log(sections);
   }
 }

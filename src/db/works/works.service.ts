@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import * as models from './models';
@@ -55,7 +55,7 @@ export class WorksService {
      * @param newSectionInfo The section's information.
      */
     async createNewSection(user: any, workId: string, newSectionInfo: models.CreateSection): Promise<models.Section> {
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub });
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub }).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
@@ -67,7 +67,7 @@ export class WorksService {
             });
 
             return await newSection.save().then(async section => {
-                await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}});
+                await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}}).where("audit.isDeleted", false);
                 return section;
             });
         }
@@ -79,7 +79,25 @@ export class WorksService {
      * @param workId The work you're trying to find.
      */
     async findOneWorkById(workId: string): Promise<models.Work> {
-        return await this.workModel.findById(workId).where('audit.isDeleted', false);
+        return await this.workModel
+            .findById(workId)
+            .where('audit.isDeleted', false);
+    }
+
+    /**
+     * Fetches a section belonging to the specified work.
+     * 
+     * @param workId The work this section belongs to
+     * @param sectionId The section itself
+     */
+    async findOneSectionById(workId: string, sectionId: string): Promise<models.Section> {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "sections": sectionId }).where("audit.isDeleted", false);
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new NotFoundException(`Doesn't look like the work you requested exists.`);
+        } else {
+            return await this.sectionModel.findById(sectionId).where("audit.isDeleted", false).where("published", true);
+        }
     }
 
     /**
@@ -134,13 +152,12 @@ export class WorksService {
      * @param sectionId The section ID
      */
     async getSectionForUser(user: any, workId: string, sectionId: string): Promise<models.Section> {
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId });
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId }).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const section = await this.sectionModel.findById(sectionId);
-            return section;
+            return await this.sectionModel.findById(sectionId).where("audit.isDeleted", false);
         }
     }
 
@@ -153,7 +170,7 @@ export class WorksService {
      * @param sectionInfo The new section information
      */
     async editSection(user: any, workId: string, sectionId: string, sectionInfo: models.EditSection): Promise<models.Section> {
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId});
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
@@ -183,12 +200,12 @@ export class WorksService {
      * @param pubStatus The new section publishing status
      */
     async publishSection(user: any, workId: string, sectionId: string, pubStatus: models.PublishSection) {
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId});
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }, {new: true}).then(async sec => {
+            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }, {new: true}).where("audit.isDeleted", false).then(async sec => {
                 if (sec.published === true && pubStatus.oldPub === false) { // if newly published
                     await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
                 } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
@@ -231,7 +248,7 @@ export class WorksService {
                 rating: workInfo.rating,
                 status: workInfo.status,
             },
-        });
+        }).where("audit.isDeleted", false);
     }
 
     /**
@@ -242,6 +259,6 @@ export class WorksService {
      * @param workId The work's ID
      */
     async updateCoverArt(user: any, coverArt: string, workId: string) {
-        return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true});
+        return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true}).where("audit.isDeleted", false);
     }
 }

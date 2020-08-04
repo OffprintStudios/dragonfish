@@ -48,4 +48,5 @@ export interface SectionInfo {
     readonly stats: {
         readonly words: number;
     };
+    readonly createdAt: Date;
 }

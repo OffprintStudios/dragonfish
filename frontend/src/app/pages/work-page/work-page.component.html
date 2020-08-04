@@ -39,7 +39,9 @@
                                         </a>
                                     </div>
                                     <div>
-                                        <div class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</div>
+                                        <div class="section-stats">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
                                     </div>
                                     <div>
                                         <button class="delete-section"><i-feather name="trash-2"></i-feather></button>
@@ -57,7 +59,9 @@
                                         </a>
                                     </div>
                                     <div>
-                                        <div class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize }}</div>
+                                        <div class="section-stats">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
                                     </div>
                                     <div>
                                         <button class="delete-section"><i-feather name="trash-2"></i-feather></button>
@@ -71,8 +75,16 @@
                     <div class="section-list">
                         <ul>
                             <li *ngFor="let section of pubSections; let i = index">
-                                <span class="section-name"><a [routerLink]="['/work', workData._id, workData.title | slugify, i, section.title | slugify]"></a></span>
-                                <span class="section-stats">{{ section.stats.words }} word{{ section.stats.words | pluralize}}</span>
+                                <div class="section-box" style="padding: 10px;">
+                                    <div style="flex: 1;">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">{{ section.title }}</a>
+                                    </div>
+                                    <div>
+                                        <div class="section-stats" style="margin-right: 2rem;">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -116,4 +128,6 @@
     </div>
 </ng-template>
 
-<router-outlet></router-outlet>
+<div *ngIf="workData">
+    <router-outlet></router-outlet>
+</div>
