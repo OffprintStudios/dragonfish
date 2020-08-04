@@ -89,7 +89,7 @@ export class AuthController {
     @Post('upload-avatar')
     async uploadAvatar(@UploadedFile() avatarImage: any, @Req() req: any) {        
         const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub, 'avatars');
-        const avatar = `https://images.offprint.net/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
+        const avatar = `${process.env.IMAGES_HOSTNAME}/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
         return await this.authService.updateAvatar(req.user, avatar);
     }
 }
