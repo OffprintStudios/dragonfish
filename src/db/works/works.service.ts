@@ -40,11 +40,7 @@ export class WorksService {
             },
         });
 
-        return await newWork.save().then(async work => {
-            const workCount = await this.workModel.countDocuments({author: user.sub});
-            await this.usersService.updateWorkCount(user.sub, workCount);
-            return work;
-        });
+        return await newWork.save();
     }
 
     /**
