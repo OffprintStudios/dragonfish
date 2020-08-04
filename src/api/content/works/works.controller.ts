@@ -64,6 +64,12 @@ export class WorksController {
         return await this.worksService.publishSection(req.user, workId, sectionId, pubStatus);
     }
 
+    @UseGuards(OptionalAuthGuard)
+    @Get('fetch-section/:workId/:sectionId')
+    async fetchSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
+        return await this.worksService.findOneSectionById(workId, sectionId);
+    }
+
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('upload-coverart/:workId')

@@ -17,6 +17,9 @@ export const SectionsSchema = new Schema({
     stats: {
         words: {type: Number, default: 0},
     },
+    audit: {
+        isDeleted: {type: Boolean, default: false},
+    },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'sections'});

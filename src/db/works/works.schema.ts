@@ -33,7 +33,8 @@ export const WorksSchema = new Schema({
         comments: {type: Number, default: 0},
     },
     sections: [{type: String, ref: 'Section', autopopulate: {
-        select: '_id title published stats.words',
+        select: '_id title published stats.words createdAt',
+        match: {'audit.isDeleted': false},
     }}],
     audit: {
         threadId: {type: String, default: generate()},

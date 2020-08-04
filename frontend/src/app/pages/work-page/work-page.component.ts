@@ -57,6 +57,7 @@ export class WorkPageComponent implements OnInit {
       this.worksService.fetchWork(this.workId).subscribe(work => {
         this.workData = work;
         this.pubSections = work.sections.filter(section => { return section.published === true; });
+        this.worksService.setSectionsList(this.pubSections);
         this.loading = false;
       }, () => {
         this.loading = false;

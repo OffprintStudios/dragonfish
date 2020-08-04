@@ -1,1 +1,105 @@
-<p>section-page works!</p>
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>  
+
+<div *ngIf="!editing; else editForm">
+    <div class="section-container">
+        <div class="section-content">
+            <div class="section-controls">
+                <span class="control-right" style="text-align: right;">
+                    <a class="button" (click)="toggleEditForm()"><i-feather name="edit-3"></i-feather></a>
+                    <a class="button button-right"><i-feather name="trash-2" (click)="askDelete()"></i-feather></a>
+                </span>
+            </div>
+            <div class="section-header">
+                <h1>{{ sectionData.title }}</h1>
+            </div>
+            <div class="section-body">
+                <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
+            </div>
+        </div>
+        <div class="authors-note" *ngIf="sectionData.authorsNote">
+            <h3>A word from the author...</h3>
+            <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
+        </div>
+    </div>
+</div>
+
+<ng-template #editForm>
+    <div class="section-container">
+        <form [formGroup]="editSection" (ngSubmit)="submitEdits()">
+            <div class="section-content">
+                <div class="section-controls">
+                    <span class="control-left">
+                        <a class="button"><i-feather name="type"></i-feather></a>
+                    </span>
+                    <span class="control-right">
+                        <a class="button" (click)="askDelete()"><i-feather name="trash-2"></i-feather></a>
+                        <a class="button" style="border-left: 0;" (click)="askExit()">Exit</a>
+                    </span>
+                </div>
+                <div class="section-header">
+                    <label for="title">Title:</label>
+                    <div class="warning-message" *ngIf="fields.title.invalid && (fields.title.dirty || fields.title.touched)">Titles must be between 3 and 100 characters.</div>
+                    <input type="text" class="u-full-width" formControlName="title" placeholder="Title">
+                </div>
+                <div class="section-body">
+                    <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
+                    <quill-editor [styles]="{height: '500px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()">
+                        <div quill-editor-toolbar>
+                            <span class="ql-formats">
+                                <button class="ql-bold" [title]="'Bold'"></button>
+                                <button class="ql-italic" [title]="'Italic'"></button>
+                                <button class="ql-underline" [title]="'Underline'"></button>
+                                <button class="ql-strike" [title]="'Strikethrough'"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link" [title]="'Link'"></button>
+                                <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                                <button class="ql-code" [title]="'Code'"></button>
+                                <button class="ql-clean" [title]="'Remove formatting'"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-align ql-center" value="center"></button>
+                                <button class="ql-align ql-right" value="right"></button>
+                                <button class="ql-align ql-justify" value="justify"></button>
+                            </span>
+                            <select class="ql-header"></select>
+                        </div>
+                    </quill-editor>
+                </div>
+            </div>
+            <div class="authors-note" *ngIf="sectionData.authorsNote">
+                <h3>A word from the author...</h3>
+                <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
+                <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()">
+                    <div quill-editor-toolbar>
+                        <span class="ql-formats">
+                            <button class="ql-bold" [title]="'Bold'"></button>
+                            <button class="ql-italic" [title]="'Italic'"></button>
+                            <button class="ql-underline" [title]="'Underline'"></button>
+                            <button class="ql-strike" [title]="'Strikethrough'"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-link" [title]="'Link'"></button>
+                            <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                            <button class="ql-code" [title]="'Code'"></button>
+                            <button class="ql-clean" [title]="'Remove formatting'"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-align ql-center" value="center"></button>
+                            <button class="ql-align ql-right" value="right"></button>
+                            <button class="ql-align ql-justify" value="justify"></button>
+                        </span>
+                        <select class="ql-header"></select>
+                    </div>
+                </quill-editor>
+            </div>
+            <hr style="width: 70%;">
+            <div class="loader" *ngIf="submitting">
+                <div class="lds-dual-ring"></div>
+            </div>
+            <button type="submit" class="button-primary" style="width: 70%; margin: 0 auto;" *ngIf="!submitting">Save Changes</button>
+        </form>
+    </div>
+</ng-template>
