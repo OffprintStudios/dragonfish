@@ -189,6 +189,5 @@ export class WorksService {
    */
   public setSectionsList(sections: models.SectionInfo[]) {
     this.thisWorksPublishedSections = sections;
-    console.log(sections);
   }
 }
