@@ -39,7 +39,7 @@ steps:
 
 - script: |
     cd frontend
-    yarn build
+    yarn build:prod
   displayName: "Build"
 
 - task: PublishBuildArtifacts@1
