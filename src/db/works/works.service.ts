@@ -245,7 +245,9 @@ export class WorksService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             await this.sectionModel.findOneAndUpdate({"_id": sectionId}, {"audit.isDeleted": true}, {new: true}).then(async sec => {
-                await this.workModel.updateOne({"_id": workId}, {$inc: {"stats.totWords": -sec.stats.words}}).where("audit.isDeleted", false);
+                if (sec.published === true) {
+                    await this.workModel.updateOne({"_id": workId}, {$inc: {"stats.totWords": -sec.stats.words}}).where("audit.isDeleted", false);
+                }
             });
         }
     }
