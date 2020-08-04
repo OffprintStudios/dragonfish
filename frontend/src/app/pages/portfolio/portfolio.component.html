@@ -17,13 +17,12 @@
             </div>
             <div class="nine columns">
                 <div class="port-nav-header">
-                    <h1>{{ portUser.username }}</h1>
+                    <h1><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]">{{ portUser.username }}</a></h1>
                     <h2 *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h2>
                 </div>
                 <div class="port-nav">
                     <span>
-                        <a class="port-nav-button button-left" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]" routerLinkActive="router-link-active">Home</a>
-                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog']" routerLinkActive="router-link-active">{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
+                        <a class="port-nav-button button-left" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog']" routerLinkActive="router-link-active">{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
                         <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'works']" routerLinkActive="router-link-active">{{ portUser.stats.works }} Work{{ portUser.stats.works | pluralize }}</a>
                         <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'collections']" routerLinkActive="router-link-active">Collections</a>
                     </span>
