@@ -101,6 +101,24 @@ export class WorkPageComponent implements OnInit {
   }
 
   /**
+   * Sends a request to delete a section associated with this work from the database.
+   * 
+   * @param workId The work the section belongs to
+   * @param sectionId The section itself
+   */
+  askDeleteSection(sectionId: string) {
+    if (confirm(`Are you sure you want to delete this section? This action is irreversible.`)) {
+      this.worksService.deleteSection(this.workId, sectionId).subscribe(() => {
+        this.fetchData();
+        return;
+      }, err => {
+        console.log(err);
+        return;
+      });
+    }
+  }
+
+  /**
    * Sends a request to publish or unpublish the specify section.
    * 
    * @param sectionId The section we're publishing or unpublishing
