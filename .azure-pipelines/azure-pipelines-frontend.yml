@@ -15,12 +15,12 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '12.17.0'
-  displayName: 'Install Node.js 12.17.0'
+    versionSpec: '14.6.0'
+  displayName: 'Install Node.js 14.6.0'
 
 - script: |
     yarn global add @angular/cli@9.1.5    
-    yarn global add typescript@3.8.3 
+    yarn global add typescript@3.9.7 
   displayName: 'Install global tools'
 
 - task: Cache@2
@@ -33,16 +33,18 @@ steps:
 
 - script: |
     cd frontend
-    yarn install
+    yarn install --production=false --non-interactive --frozen-lockfile
   displayName: "Yarn install"
   condition: ne(variables['CacheRestored'], 'true')
 
 - script: |
     cd frontend
-    yarn build
+    yarn build:prod
   displayName: "Build"
 
-- script: |
-    cd frontend
-    yarn test-headless
-  displayName: "Test"
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/dist/static'
+    ArtifactName: 'frontend-dist-static'
+    publishLocation: 'Container'
+  displayName: 'Publish /dist/static'
