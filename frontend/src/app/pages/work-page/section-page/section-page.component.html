@@ -3,6 +3,19 @@
 </div>  
 
 <div *ngIf="!editing; else editForm">
+    <div class="section-selector">
+        <button style="border-right: 0;" *ngIf="indexPrev !== 0" [routerLink]="['/work', workId, workTitle | slugify, indexPrev, sectionsList[indexPrev].title | slugify]"><i-feather name="chevron-left"></i-feather></button>
+        <ng-select [items]="sectionsList"
+                    bindLabel="title"
+                    bindValue="_id"
+                    [compareWith]="compareSections"
+                    [(ngModel)]="currSection"
+                    (change)="onSelectChange($event)"
+                    [clearable]="false"
+                    style="display: inline-block; width: 20%; margin-bottom: 0;"
+                    class="custom"></ng-select>
+        <button style="border-left: 0;" *ngIf="indexNext < sectionsList.length + 1" [routerLink]="['/work', workId, workTitle | slugify, indexNext, sectionsList[indexNext - 1].title | slugify]"><i-feather name="chevron-right"></i-feather></button>
+    </div>
     <div class="section-container">
         <div class="section-content">
             <div class="section-controls">
@@ -22,6 +35,19 @@
             <h3>A word from the author...</h3>
             <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
         </div>
+    </div>
+    <div class="section-selector">
+        <button style="border-right: 0;" *ngIf="indexPrev !== 0" [routerLink]="['/work', workId, workTitle | slugify, indexPrev, sectionsList[indexPrev].title | slugify]"><i-feather name="chevron-left"></i-feather></button>
+        <ng-select [items]="sectionsList"
+                    bindLabel="title"
+                    bindValue="_id"
+                    [compareWith]="compareSections"
+                    [(ngModel)]="currSection"
+                    (change)="onSelectChange($event)"
+                    [clearable]="false"
+                    style="display: inline-block; width: 20%;"
+                    class="custom"></ng-select>
+        <button style="border-left: 0;" *ngIf="indexNext < sectionsList.length + 1" [routerLink]="['/work', workId, workTitle | slugify, indexNext, sectionsList[indexNext - 1].title | slugify]"><i-feather name="chevron-right"></i-feather></button>
     </div>
 </div>
 

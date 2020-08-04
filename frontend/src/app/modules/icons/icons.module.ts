@@ -10,7 +10,7 @@ import { Rss, BookOpen, Archive, Book, Coffee, Inbox, Settings, Feather,
          RefreshCw, PlusSquare, UploadCloud, Check, X, ArrowDownCircle,
          ArrowUpCircle, ArrowLeftCircle, ArrowRightCircle, Square, Circle,
          HelpCircle, LogOut, Key, Menu, Filter, RotateCcw, Bookmark, Edit,
-         BarChart2, MessageCircle, PenTool, Cloud, Layers } from 'angular-feather/icons';
+         BarChart2, MessageCircle, PenTool, Cloud, Layers, ChevronLeft } from 'angular-feather/icons';
 
 const icons = {
   Rss, BookOpen, Archive, Book, Coffee, Inbox, Settings,
@@ -22,7 +22,7 @@ const icons = {
   UploadCloud, Check, X, ArrowDownCircle, ArrowUpCircle, ArrowLeftCircle,
   ArrowRightCircle, Square, Circle, HelpCircle, LogOut, Key, Menu, Filter,
   RotateCcw, Bookmark, Edit, BarChart2, MessageCircle, PenTool, Cloud,
-  Layers
+  Layers, ChevronLeft
 };
 
 @NgModule({
