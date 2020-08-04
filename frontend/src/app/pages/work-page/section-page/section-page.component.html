@@ -12,6 +12,7 @@
                     [(ngModel)]="currSection"
                     (change)="onSelectChange($event)"
                     [clearable]="false"
+                    [searchable]="false"
                     style="display: inline-block; width: 20%; margin-bottom: 0;"
                     class="custom"></ng-select>
         <button style="border-left: 0;" *ngIf="indexNext < sectionsList.length + 1" [routerLink]="['/work', workId, workTitle | slugify, indexNext, sectionsList[indexNext - 1].title | slugify]"><i-feather name="chevron-right"></i-feather></button>
@@ -45,6 +46,7 @@
                     [(ngModel)]="currSection"
                     (change)="onSelectChange($event)"
                     [clearable]="false"
+                    [searchable]="false"
                     style="display: inline-block; width: 20%;"
                     class="custom"></ng-select>
         <button style="border-left: 0;" *ngIf="indexNext < sectionsList.length + 1" [routerLink]="['/work', workId, workTitle | slugify, indexNext, sectionsList[indexNext - 1].title | slugify]"><i-feather name="chevron-right"></i-feather></button>
