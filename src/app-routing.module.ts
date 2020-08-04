@@ -6,6 +6,7 @@ import { ContentModule } from './api/content/content.module';
 import { AdminModule } from './api/admin/admin.module';
 import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
+import { ContribModule } from './db/contrib/contrib.module';
 
 const routes: Routes = [
     {path: 'api', children: [
@@ -24,6 +25,7 @@ const routes: Routes = [
         ContentModule,
         AdminModule,
         ImagesModule,
+        ContribModule,
     ],
     exports: [RouterModule],
 })
