@@ -71,6 +71,12 @@ export class WorksController {
     }
 
     @UseGuards(AuthGuard)
+    @Patch('delete-section/:workId/:sectionId')
+    async deleteSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
+        return await this.worksService.deleteSection(req.user, workId, sectionId);
+    }
+
+    @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('upload-coverart/:workId')
     async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {

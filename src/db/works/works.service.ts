@@ -231,6 +231,26 @@ export class WorksService {
     }
 
     /**
+     * Sets the isDeleted flag of a section to true to perform a soft deletion. Then, updates the
+     * total word count of the work it beloged to.
+     * 
+     * @param user The author of the work
+     * @param workId The work the section belongs to
+     * @param sectionId The section itself
+     */
+    async deleteSection(user: any, workId: string, sectionId: string): Promise<void> {
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            await this.sectionModel.findOneAndUpdate({"_id": sectionId}, {"audit.isDeleted": true}, {new: true}).then(async sec => {
+                await this.workModel.updateOne({"_id": workId}, {$inc: {"stats.totWords": -sec.stats.words}}).where("audit.isDeleted", false);
+            });
+        }
+    }
+
+    /**
      * Edit's a given user's work with the provided work information.
      * 
      * @param user The author of the work
