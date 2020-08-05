@@ -34,14 +34,11 @@ const routes: Routes = [
   {path: 'news', component: NewsComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'portfolio/:id/:username', component: PortfolioComponent, children: [
-    {path: '', children: [
-      {path: 'home', component: PortHomeComponent},
-      {path: 'blog', component: PortBlogComponent},
-      {path: 'blog/:blogId', component: PortBlogPageComponent},
-      {path: 'works', component: PortWorksComponent },
-      {path: 'collections', component: PortCollectionsComponent},
-      {path: '', redirectTo: 'home', pathMatch: 'full'},
-    ]},
+    {path: 'blog', component: PortBlogComponent},
+    {path: 'blog/:blogId', component: PortBlogPageComponent},
+    {path: 'works', component: PortWorksComponent },
+    {path: 'collections', component: PortCollectionsComponent},
+    {path: '', component: PortHomeComponent},
   ]},
   {path: 'work/:workId/:title', component: WorkPageComponent, children: [
     {path: 'section/:sectionId', canActivate: [AuthGuard], component: UnpublishedSectionPageComponent},

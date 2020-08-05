@@ -22,6 +22,7 @@ export class UnpublishedSectionPageComponent implements OnInit {
   sectionData: Section;
   sectionId: string;
   workId: string;
+  workTitle: string;
 
   editSection = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -57,6 +58,7 @@ export class UnpublishedSectionPageComponent implements OnInit {
     this.loading = true;
     this.route.parent.paramMap.subscribe(params => {
       this.workId = params.get('workId');
+      this.workTitle = params.get('title');
       this.route.paramMap.subscribe(routeParams => {
         this.sectionId = routeParams.get('sectionId');
         this.worksService.getSectionForUser(this.workId, this.sectionId).subscribe(section => {
@@ -125,12 +127,14 @@ export class UnpublishedSectionPageComponent implements OnInit {
    * Asks the user if they would actually want to delete this section. Deletes if true.
    */
   askDelete() {
-    if (confirm('Are you sure you want to delete this section? This action is irreversible.')) {
-      /*this.worksService.deleteSection(workId, secId).subscribe(() => {
-        this.router.navigate(['/home/works']);
-      })*/
-    } else {
-      return;
+    if (confirm(`Are you sure you want to delete this section? This action is irreversible.`)) {
+      this.worksService.deleteSection(this.workId, this.sectionId).subscribe(() => {
+        this.router.navigate([`/work/${this.workId}/${this.workTitle}`]);
+        return;
+      }, err => {
+        console.log(err);
+        return;
+      });
     }
   }
 }

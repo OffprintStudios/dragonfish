@@ -97,6 +97,22 @@ export class WorksService {
       }));
   }
 
+  /**
+   * Sends a request to delete the specified section from the database.
+   * 
+   * @param workId The work the section belongs to
+   * @param sectionId The section itself
+   */
+  public deleteSection(workId: string, sectionId: string) {
+    return this.http.patch(`${this.url}/delete-section/${workId}/${sectionId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        this.alertsService.success(`Section successfully deleted.`);
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
   public submitForPublishing() {
 
   }
