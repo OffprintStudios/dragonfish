@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (currentUser && currentUser.token) {
       if (this.helper.isTokenExpired(currentUser.token)) {
         this.authService.refreshToken().pipe(first()).subscribe(isValid => {
-          return isValid;
+          return isValid !== null;
         }, err => {
           this.alertsService.error(`Your session has expired! ${err}`);
           this.authService.logout();
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     if (currentUser && currentUser.token) {
       if (this.helper.isTokenExpired(currentUser.token)) {
         this.authService.refreshToken().pipe(first()).subscribe(isValid => {
-          return isValid;
+          return isValid !== null;
         }, err => {
           this.alertsService.error(`Your session has expired! ${err}`);
           this.authService.logout();
