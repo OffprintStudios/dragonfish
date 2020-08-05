@@ -1,5 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import {TokenExpiredError} from 'jsonwebtoken';
 
 import { JwtPayload } from '../api/auth/models';
 
@@ -23,9 +24,19 @@ export class RefreshGuard implements CanActivate {
     } else {
       throw new UnauthorizedException(`You don't have permission to do that.`);
     }
-
+    
     // Verifying that the token is legitimate.
-    const verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: true});
+    let verifiedToken; 
+    try {
+      verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: true});
+    } catch(err) {
+      if (err instanceof TokenExpiredError) {
+        throw new UnauthorizedException("Your token has expired.");
+      } else {
+        throw err;
+      }
+    }
+
     if (verifiedToken) {
       // If the token is legitimate, then pass it straight along to the request.
       request.user = verifiedToken;

@@ -78,13 +78,14 @@ export class AuthService {
 
   /**
    * Refreshes the current user token with new User info.
+   * If refresh fails, 
    */
-  public refreshToken(): Observable<boolean> {
+  public refreshToken(): Observable<string | null> {
     return this.http.get<User>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
-        return true;
+        return user.body.token;
       }), catchError(err => {
         this.alertsService.error(err.error.message);
         return throwError(err);
