@@ -33,6 +33,10 @@ export const RolesGuard = (requiredRoles: Roles[]) => {
         throw new UnauthorizedException(`You don't have permission to do that.`);
       }
 
+      console.log(bearerToken);
+      console.log(this.usersService); // undefined
+      console.log(this.jwtService); // undefined
+
       // Verifying that the token is legitimate.
       let verifiedToken: JwtPayload; 
       try {
