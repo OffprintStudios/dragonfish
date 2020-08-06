@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import * as lodash from 'lodash';
+
 import { AuthService } from './auth.service';
+import { JwtPayload } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
-import { first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,8 @@ import { first } from 'rxjs/operators';
 export class AuthGuard implements CanActivate, CanActivateChild {
   helper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService, private alertsService: AlertsService) {}
+  constructor(private http: HttpClient, private router: Router,
+    private authService: AuthService, private alertsService: AlertsService) {}
 
   /**
    * Verifies that a user can access a protected route. If their JWT is expired, it makes a request to the backend to
@@ -24,19 +27,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
    */
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authService.getCurrUserValue();
+
     if (currentUser && currentUser.token) {
-      if (this.helper.isTokenExpired(currentUser.token)) {
-        this.authService.refreshToken().pipe(first()).subscribe(isValid => {
-          return isValid !== null;
-        }, err => {
-          this.alertsService.error(`Your session has expired! ${err}`);
-          this.authService.logout();
-        });
-      } else {
-        return true;
+      const token: JwtPayload = this.helper.decodeToken(currentUser.token);
+      if (next.data.roles) {
+        const hasRoles = lodash.intersection(next.data.roles, token.roles);
+        
+        if (hasRoles.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
       }
     } else {
-      this.router.navigate(['/register'], {queryParams: {returnUrl: state.url}});
       return false;
     }
   }
@@ -50,19 +53,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
    */
   canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const currentUser = this.authService.getCurrUserValue();
+    
     if (currentUser && currentUser.token) {
-      if (this.helper.isTokenExpired(currentUser.token)) {
-        this.authService.refreshToken().pipe(first()).subscribe(isValid => {
-          return isValid !== null;
-        }, err => {
-          this.alertsService.error(`Your session has expired! ${err}`);
-          this.authService.logout();
-        });
-      } else {
-        return true;
+      const token: JwtPayload = this.helper.decodeToken(currentUser.token);
+      if (next.data.roles) {
+        const hasRoles = lodash.intersection(next.data.roles, token.roles);
+        
+        if (hasRoles.length === 0) {
+          return false;
+        } else {
+          return true;
+        }
       }
     } else {
-      this.router.navigate(['/home'], {queryParams: { returnUrl: state.url }});
       return false;
     }
   }
