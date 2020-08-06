@@ -38,6 +38,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else {
           return true;
         }
+      } else {
+        return true;
       }
     } else {
       return false;
@@ -64,6 +66,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         } else {
           return true;
         }
+      } else {
+        return true;
       }
     } else {
       return false;
