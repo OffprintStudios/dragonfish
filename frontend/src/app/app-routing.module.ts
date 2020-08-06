@@ -51,7 +51,7 @@ const routes: Routes = [
     {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
   ]},
-  {path: 'contrib', component: ContribComponent, children: [
+  {path: 'contrib', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: ContribComponent, children: [
     {path: 'approval-queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
   ]},
 ];

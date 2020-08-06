@@ -5,7 +5,6 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import * as lodash from 'lodash';
 
 import { AuthService } from './auth.service';
-import { JwtPayload } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
 
 @Injectable({
@@ -14,8 +13,7 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class AuthGuard implements CanActivate, CanActivateChild {
   helper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private router: Router,
-    private authService: AuthService, private alertsService: AlertsService) {}
+  constructor(private authService: AuthService, private alertsService: AlertsService) {}
 
   /**
    * Verifies that a user can access a protected route. If their JWT is expired, it makes a request to the backend to
@@ -29,11 +27,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const currentUser = this.authService.getCurrUserValue();
 
     if (currentUser && currentUser.token) {
-      const token: JwtPayload = this.helper.decodeToken(currentUser.token);
       if (next.data.roles) {
-        const hasRoles = lodash.intersection(next.data.roles, token.roles);
-        
+        const hasRoles = lodash.intersection(next.data.roles, currentUser.roles);
         if (hasRoles.length === 0) {
+          this.alertsService.error(`You don't have permission to do that.`);
           return false;
         } else {
           return true;
@@ -42,6 +39,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return true;
       }
     } else {
+      this.alertsService.error(`You don't have permission to do that.`);
       return false;
     }
   }
@@ -57,11 +55,11 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     const currentUser = this.authService.getCurrUserValue();
     
     if (currentUser && currentUser.token) {
-      const token: JwtPayload = this.helper.decodeToken(currentUser.token);
       if (next.data.roles) {
-        const hasRoles = lodash.intersection(next.data.roles, token.roles);
+        const hasRoles = lodash.intersection(next.data.roles, currentUser.roles);
         
         if (hasRoles.length === 0) {
+          this.alertsService.error(`You don't have permission to do that.`);
           return false;
         } else {
           return true;
@@ -70,6 +68,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
         return true;
       }
     } else {
+      this.alertsService.error(`You don't have permission to do that.`);
       return false;
     }
   }
