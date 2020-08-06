@@ -20,6 +20,8 @@ export const BlogsSchema = new Schema({
         comments: {type: Number, default: 0},
         views: {type: Number, default: 0},
         words: {type: Number, default: 0},
+        likes: {type: Number, default: 0},
+        dislikes: {type: Number, default: 0}
     },
     audit: {
         isDeleted: {type: Boolean, default: false},
