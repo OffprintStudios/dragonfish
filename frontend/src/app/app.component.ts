@@ -85,7 +85,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   /**
    * Changes the site's theme based on user preference by manipulating CSS variables declared
    * in styles.less.
-   * @param(newTheme) The theme to change to.
+   * @param newTheme The theme to change to.
    */
   changeTheme(newTheme: Theme){
     document.documentElement.style.setProperty('--site-accent', newTheme.accent);
