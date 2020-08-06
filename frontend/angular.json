@@ -34,7 +34,8 @@
             "allowedCommonJsDependencies": [
               "url",
               "querystring",
-              "punycode"
+              "punycode",
+              "lodash"
             ]
           },
           "configurations": {
