@@ -107,6 +107,16 @@ export class WorksService {
     }
 
     /**
+     * Fetches one work for the Approval Queue.
+     * 
+     * @param user The author of the work
+     * @param workId The work's ID
+     */
+    async fetchOneUserWorkForQueue(user: any, workId: string) {
+        return await this.workModel.findOne({"_id": workId, "author": user.sub}).where("audit.isDeleted", false);
+    }
+
+    /**
      * Finds any related works related to a user's query.
      * 
      * @param searchParameters The user's search query
@@ -115,7 +125,7 @@ export class WorksService {
         const p = searchParameters.pagination;
         const filter: FilterQuery<models.Work> = {
             $text: {$search: searchParameters.text},
-            'audit.published': true,
+            'audit.published': models.ApprovalStatus.Approved,
         };
 
         const results = await this.workModel.find(filter,
@@ -221,7 +231,7 @@ export class WorksService {
      */
     async deleteWork(user: any, workId: string): Promise<void> {
         await this.workModel.findOneAndUpdate({"_id": workId, "author": user.sub}, {"audit.isDeleted": true}).then(async () => {
-            const workCount = await this.workModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
+            const workCount = await this.workModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
             await this.usersService.updateWorkCount(user.sub, workCount);
         });
     }
@@ -267,6 +277,40 @@ export class WorksService {
                 status: workInfo.status,
             },
         }).where("audit.isDeleted", false);
+    }
+
+    /**
+     * Sets the approval status of a work to Approved.
+     * 
+     * @param workId The work to approve
+     * @param authorId The author of the work
+     */
+    async approveWork(workId: string, authorId: string) {
+        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved}).where("audit.isDeleted", false)
+            .then(async () => {
+                const workCount = await this.workModel.countDocuments({author: authorId}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
+                await this.usersService.updateWorkCount(authorId, workCount);
+            });
+    }
+
+    /**
+     * Sets the approval status of a work to Rejected.
+     * 
+     * @param workId The work to reject
+     * @param authorId The author of the work
+     */
+    async rejectWork(workId: string, authorId: string) {
+        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Rejected}).where("audit.isDeleted", false);
+    }
+
+    /**
+     * Sets the approval status of a work to Pending.
+     * 
+     * @param workId The work to set to pending
+     * @param authorId The author of the work
+     */
+    async pendingWork(workId: string, authorId: string) {
+        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Pending}).where("audit.isDeleted", false);
     }
 
     /**

@@ -14,6 +14,8 @@ export interface Blog {
         readonly comments: number;
         readonly views: number;
         readonly words: number;
+        readonly likes: number;
+        readonly dislikes: number;
     };
     readonly audit: {
         readonly isDeleted: boolean;

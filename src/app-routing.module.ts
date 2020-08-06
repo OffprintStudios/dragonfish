@@ -6,7 +6,7 @@ import { ContentModule } from './api/content/content.module';
 import { AdminModule } from './api/admin/admin.module';
 import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
-import { ContribModule } from './db/contrib/contrib.module';
+import { ContribModule } from './api/contrib/contrib.module';
 
 const routes: Routes = [
     {path: 'api', children: [
@@ -14,7 +14,8 @@ const routes: Routes = [
         {path: 'content', module: ContentModule},
         {path: 'admin', module: AdminModule},
         {path: 'search', module: SearchModule},
-        {path: 'images', module: ImagesModule}
+        {path: 'images', module: ImagesModule},
+        {path: 'contrib', module: ContribModule}
     ]}
 ];
 

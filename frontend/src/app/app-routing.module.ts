@@ -7,12 +7,18 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
   PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
 
+import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent,
+  NewSectionComponent } from './pages/work-page';
+  
+import { ApprovalQueueComponent, ContribComponent } from './pages/contrib';
+
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 
 import { RegisterComponent } from './pages/account';
 
 import { AuthGuard } from './services/auth';
-import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
+import { Roles } from './models/users';
+
 
 const routes: Routes = [
   {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -44,7 +50,10 @@ const routes: Routes = [
     {path: 'section/:sectionId', canActivate: [AuthGuard], component: UnpublishedSectionPageComponent},
     {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
-  ]}
+  ]},
+  {path: 'contrib', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: ContribComponent, children: [
+    {path: 'approval-queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+  ]},
 ];
 
 @NgModule({

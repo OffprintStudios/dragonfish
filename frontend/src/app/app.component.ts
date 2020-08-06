@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
 
-import { User } from './models/users';
+import { User, Roles } from './models/users';
 import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';

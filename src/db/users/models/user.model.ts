@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+import { Roles } from './roles.enum';
 
 export interface User extends Document {
     readonly _id: string;
@@ -18,7 +19,7 @@ export interface User extends Document {
         readonly watching: number;
     };
     readonly audit: {
-        readonly roles: string[];
+        readonly roles: Roles[];
         readonly sessions: string[] | null;
     };
     readonly createdAt: Date;

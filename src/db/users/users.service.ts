@@ -285,4 +285,14 @@ export class UsersService {
     async useInviteCode(codeId: string, usedById: string): Promise<void> {
         await this.inviteCodesModel.findOneAndUpdate({ "_id": codeId }, { "byWho": usedById, "used": true });
     }
+
+    /**
+     * Fetches this user's roles.
+     * 
+     * @param userId The user we're looking up
+     */
+    async fetchRoles(userId: string): Promise<models.Roles[]> {
+        const thisUser = await this.userModel.findById(userId);
+        return thisUser.audit.roles;
+    }
 }
