@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, UnauthorizedException, mixin } from '@nestjs/common';
+import { CanActivate, ExecutionContext, UnauthorizedException, mixin, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
@@ -13,6 +13,7 @@ import { JwtPayload } from 'src/api/auth/models';
  * @param roles The roles required to activate the associated route
  */
 export const RolesGuard = (requiredRoles: Roles[]) => {
+  @Injectable()
   class RolesGuardMixin implements CanActivate {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
 
@@ -33,10 +34,6 @@ export const RolesGuard = (requiredRoles: Roles[]) => {
         throw new UnauthorizedException(`You don't have permission to do that.`);
       }
 
-      console.log(bearerToken);
-      console.log(this.usersService); // undefined
-      console.log(this.jwtService); // undefined
-
       // Verifying that the token is legitimate.
       let verifiedToken: JwtPayload; 
       try {
@@ -52,7 +49,6 @@ export const RolesGuard = (requiredRoles: Roles[]) => {
       if (verifiedToken) {
         const userRoles = await this.usersService.fetchRoles(verifiedToken.sub);
         const hasRoles = lodash.intersection(userRoles, requiredRoles);
-        console.log(hasRoles);
 
         if (hasRoles.length !== 0) {
           request.user = verifiedToken;
