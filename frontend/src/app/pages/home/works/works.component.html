@@ -48,6 +48,8 @@
                             <h4>{{ work.meta.genres | separateEntities:work.meta.category }}</h4><span *ngIf="work.meta.fandoms.length > 0">//</span>
                             <h4 *ngIf="work.meta.fandoms.length > 0">{{ work.meta.fandoms | separateEntities }}</h4>
                             <div class="stats">
+                                <h4>{{ work.meta.rating }}</h4><span>//</span>
+                                <h4>{{ work.meta.status }}</h4><span>//</span>
                                 <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords }} total word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views }} view{{ work.stats.views | pluralize}}</h4><span>//</span>
                                 <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
