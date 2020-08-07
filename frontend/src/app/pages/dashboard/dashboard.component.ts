@@ -13,43 +13,10 @@ import { QueueService } from 'src/app/services/admin';
 export class DashboardComponent implements OnInit {
   currentUser: User; // the currently logged-in user
 
-  loading = false; // loading check
-  queue: ApprovalQueue[]; // the approval queue
-  queueForMod: ApprovalQueue[]; // the 
-
-  forMe = false; // for switching views
-
-  constructor(private authService: AuthService, private queueService: QueueService) {
+  constructor(private authService: AuthService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData();
   }
 
   ngOnInit(): void {
-  }
-
-  /**
-   * Fetches entries based on which setting it is.
-   * 
-   * @param which Which entries to fetch
-   */
-  private fetchData() {
-    this.queueService.getQueue().subscribe(entries => {
-      this.queue = entries.reverse();
-    });
-
-    this.queueService.getQueueForMod().subscribe(entries => {
-      this.queueForMod = entries.reverse();
-    });
-  }
-
-  /**
-   * Changes the queue view from all to personal.
-   */
-  changeQueueView() {
-    if (this.forMe === true) {
-      this.forMe = false;
-    } else {
-      this.forMe = true;
-    }
   }
 }
