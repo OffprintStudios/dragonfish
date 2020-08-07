@@ -5,8 +5,9 @@ import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
 
 import { User, Roles } from './models/users';
 import { AuthService } from './services/auth';
-import { slogans } from './models/site';
+import { slogans, Theme } from './models/site';
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
+import { DarkCrimson, Aqua, DarkAqua, Royal, DarkRoyal, Steel, MidnightField, Autumn, DuskAutumn, PredefinedThemes } from './models/site/theme';
 
 @Component({
   selector: 'app-root',
@@ -31,25 +32,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     // Sets the current site theme based on user preference
     if (this.currentUser) {
-      if (this.currentUser.profile.themePref === 'dark-crimson') {
-        this.changeTheme('#DD4C4F', '#933235', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
-      } else if (this.currentUser.profile.themePref === 'aqua') {
-        this.changeTheme('rgb(80,152,214)', 'rgb(49,99,153)', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
-      } else if (this.currentUser.profile.themePref === 'dark-aqua') {
-        this.changeTheme('rgb(80,152,214)', 'rgb(49,99,153)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
-      } else if (this.currentUser.profile.themePref === 'royal') {
-        this.changeTheme('#9A4EAE', '#4E2A84', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
-      } else if (this.currentUser.profile.themePref === 'dark-royal') {
-        this.changeTheme('#9A4EAE', '#4E2A84', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)');
-      } else if (this.currentUser.profile.themePref === 'steel') {
-        this.changeTheme('rgb(59,63,68)', 'rgb(60,128,40)', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
-      } else if (this.currentUser.profile.themePref === 'midnight-field') {
-        this.changeTheme('rgb(60,128,40)', 'rgb(59,63,68)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
-      } else if (this.currentUser.profile.themePref === 'autumn') {
-        this.changeTheme('rgb(209,109,43)', 'rgb(172,71,49)', '#fbfbfb', 'black', 'grey', 'lightgrey', '#f0f0f0');
-      } else if (this.currentUser.profile.themePref === 'dusk-autumn') {
-        this.changeTheme('rgb(209,109,43)', 'rgb(172,71,49)', 'rgb(39,39,39)', 'whitesmoke', 'white', 'rgb(58,58,58)', 'rgb(58,58,58)')
-      }
+        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
     }
 
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
@@ -102,22 +85,16 @@ export class AppComponent implements OnInit, AfterViewInit {
   /**
    * Changes the site's theme based on user preference by manipulating CSS variables declared
    * in styles.less.
-   * 
-   * @param accent The site accent
-   * @param accentHover The hover color for buttons and links
-   * @param background The background color
-   * @param textColor The text color
-   * @param borders The border color for divs and containers
-   * @param controls The background color for any control bars
-   * @param code The background color for code blocks
+   * @param newTheme The theme to change to.
    */
-  changeTheme(accent: string, accentHover: string, background: string, textColor: string, borders: string, controls: string, code: string){
-    document.documentElement.style.setProperty('--site-accent', accent);
-    document.documentElement.style.setProperty('--site-accent-hover', accentHover);
-    document.documentElement.style.setProperty('--site-background', background);
-    document.documentElement.style.setProperty('--site-text-color', textColor);
-    document.documentElement.style.setProperty('--site-borders', borders);
-    document.documentElement.style.setProperty('--site-controls-background', controls);
-    document.documentElement.style.setProperty('--site-code-background', code);
+  changeTheme(newTheme: Theme){
+    document.documentElement.style.setProperty('--site-accent', newTheme.accent);
+    document.documentElement.style.setProperty('--site-accent-hover', newTheme.accentHover);
+    document.documentElement.style.setProperty('--site-accent-light', newTheme.accentLight);
+    document.documentElement.style.setProperty('--site-background', newTheme.background);
+    document.documentElement.style.setProperty('--site-text-color', newTheme.textColor);
+    document.documentElement.style.setProperty('--site-borders', newTheme.borders);
+    document.documentElement.style.setProperty('--site-controls-background', newTheme.controlsBackground);
+    document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
   }
 }
