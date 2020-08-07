@@ -32,9 +32,12 @@
                             <i-feather name="book-open"></i-feather>
                         </button>
                         <ng-template #workUnpublished>
-                            <button title="Submit" class="check-unpublished">
+                            <button title="Submit" class="check-unpublished" *ngIf="">
                                 <i-feather name="book"></i-feather>
                             </button>
+                        </ng-template>
+                        <ng-template #workPending>
+
                         </ng-template>
                     </div>
                     <div class="work-info">
