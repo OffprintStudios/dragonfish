@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -48,13 +48,19 @@ export class ApprovalQueueService {
     }
 
     /**
-     * Claims a queue item for a user
+     * Claims a queue item for a user, throwing if only there's a conflict.
      * 
      * @param user The user claiming this work for review
      * @param docId The document ID of the queue entry
      */
     async claimWork(user: any, docId: string): Promise<void> {
-        await this.approvalQueue.updateOne({'_id': docId}, {'claimedBy': user.sub});
+        const thisEntry = await this.approvalQueue.findById(docId);
+
+        if (thisEntry.claimedBy === null) {
+            await this.approvalQueue.updateOne({'_id': docId}, {'claimedBy': user.sub});
+        } else {
+            throw new ConflictException(`Someone has already claimed this work!`);
+        }
     }
 
     /**
