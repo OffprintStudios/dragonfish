@@ -13,7 +13,7 @@ import { ImagesModule } from '../images/images.module';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: {expiresIn: '10800s'}, // 3 hours, temporary until problems with auth tokens fixed.
+        signOptions: {expiresIn: '3600s'}, // 3 hours, temporary until problems with auth tokens fixed.
       }),
     }),
   ],
