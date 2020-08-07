@@ -129,11 +129,11 @@ export class ApprovalQueueComponent implements OnInit {
    * @param entry The entry to approve
    * @param work The work to approve
    */
-  approveWork(entry: ApprovalQueue, work: Work) {
+  approveWork(entry: ApprovalQueue) {
     const decision: Decision = {
       docId: entry._id,
-      workId: work._id,
-      authorId: work.author._id
+      workId: entry.workToApprove._id,
+      authorId: entry.workToApprove.author._id
     };
 
     this.queueService.approveWork(decision).subscribe(() => {
@@ -147,11 +147,11 @@ export class ApprovalQueueComponent implements OnInit {
    * @param entry The entry to reject
    * @param work The work to reject
    */
-  rejectWork(entry: ApprovalQueue, work: Work) {
+  rejectWork(entry: ApprovalQueue) {
     const decision: Decision = {
       docId: entry._id,
-      workId: work._id,
-      authorId: work.author._id
+      workId: entry.workToApprove._id,
+      authorId: entry.workToApprove.author._id
     };
 
     this.queueService.rejectWork(decision).subscribe(() => {

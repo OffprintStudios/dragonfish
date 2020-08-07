@@ -28,7 +28,7 @@
             <div class="work-list">
                 <div class="work-item" *ngFor="let work of works">
                     <div class="work-check" [ngSwitch]="work.audit.published">
-                        <button title="Revoke submission" class="check-published" *ngSwitchCase="'Published'">
+                        <button title="Revoke submission" class="check-published" *ngSwitchCase="'Approved'">
                             <i-feather name="book-open"></i-feather>
                         </button>
                         <button title="Pending" class="check-unpublished" *ngSwitchCase="'Pending'">

@@ -34,8 +34,8 @@
                         <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
                     </div>
                     <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
-                        <button class="work-controls" style="border-right: 0;"><i-feather name="check"></i-feather></button>
-                        <button class="work-controls right"><i-feather name="x"></i-feather></button>
+                        <button class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                        <button class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
                     </div>
                 </div>
             </div>
