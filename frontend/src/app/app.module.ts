@@ -34,7 +34,8 @@ import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
-import { DashboardComponent, ApprovalQueueComponent } from './pages/dashboard';
+import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
+  UsersComponent, AuditComponent } from './pages/dashboard';
 
 
 const Quill: any = QuillNamespace;
@@ -75,7 +76,8 @@ const toolbarOptions = [
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
-    ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent
+    ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
+    NewsManagementComponent
 
   ],
   imports: [

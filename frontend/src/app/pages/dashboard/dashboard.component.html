@@ -1,11 +1,11 @@
 <div *ngIf="currentUser; else justLatest">
     <div class="dash-nav">
         <div class="dash-nav-items">
-            <a><span class="link-icon"><i-feather name="list"></i-feather></span>Queue</a>
-            <a><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
-            <a><span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>Reports</a>
-            <a><span class="link-icon"><i-feather name="users"></i-feather></span>Users</a>
-            <a><span class="link-icon"><i-feather name="clipboard"></i-feather></span>Audit</a>
+            <a [routerLink]="['/dashboard/queue']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="list"></i-feather></span>Queue</a>
+            <a [routerLink]="['/dashboard/news-management']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
+            <a [routerLink]="['/dashboard/reports']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>Reports</a>
+            <a [routerLink]="['/dashboard/users']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Users</a>
+            <a [routerLink]="['/dashboard/audit-log']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="clipboard"></i-feather></span>Audit</a>
         </div>
     </div>
     <router-outlet></router-outlet>
