@@ -27,18 +27,19 @@
         <ng-template #worksList>
             <div class="work-list">
                 <div class="work-item" *ngFor="let work of works">
-                    <div class="work-check">
-                        <button title="Revoke submission" class="check-published" *ngIf="checkStatus(work.audit.published); else workUnpublished">
+                    <div class="work-check" [ngSwitch]="work.audit.published">
+                        <button title="Revoke submission" class="check-published" *ngSwitchCase="'Published'">
                             <i-feather name="book-open"></i-feather>
                         </button>
-                        <ng-template #workUnpublished>
-                            <button title="Submit" class="check-unpublished" *ngIf="">
-                                <i-feather name="book"></i-feather>
-                            </button>
-                        </ng-template>
-                        <ng-template #workPending>
-
-                        </ng-template>
+                        <button title="Pending" class="check-unpublished" *ngSwitchCase="'Pending'">
+                            <i-feather name="clock"></i-feather>
+                        </button>
+                        <button title="Rejected" class="check-unpublished" *ngSwitchCase="'Rejected'">
+                            <i-feather name="x"></i-feather>
+                        </button>
+                        <button title="Submit" class="check-unpublished" (click)="submitWorkToQueue(work)" *ngSwitchDefault>
+                            <i-feather name="book"></i-feather>
+                        </button>
                     </div>
                     <div class="work-info">
                         <div class="info">
@@ -50,7 +51,7 @@
                                 <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords }} total word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views }} view{{ work.stats.views | pluralize}}</h4><span>//</span>
                                 <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
-                                <h4 title="Last Updated"><i-feather name="clock"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
+                                <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
                             </div>
                         </div>
                     </div>

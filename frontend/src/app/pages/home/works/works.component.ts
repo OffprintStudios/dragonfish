@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 import { NewWorkComponent, EditWorkComponent } from 'src/app/components/modals/works';
+import { QueueService } from 'src/app/services/admin';
 
 @Component({
   selector: 'app-works',
@@ -30,7 +31,7 @@ export class WorksComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    private alertsService: AlertsService, private toppy: Toppy) {
+    private alertsService: AlertsService, private toppy: Toppy, private queueService: QueueService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -189,6 +190,22 @@ export class WorksComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Submits a work to the queue.
+   * 
+   * @param work The work we're submitting.
+   */
+  submitWorkToQueue(work: models.Work) {
+    if (work.stats.totWords < 750) {
+      alert(`Works must have a total published word count of at least 750 words.`);
+      return;
+    }
+
+    this.queueService.submitWork(work._id).subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
