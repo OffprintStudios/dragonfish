@@ -34,11 +34,18 @@ export class AuthController {
 
         const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
         const sessionId = uuidV4();
-        await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+        
         if (oldSessionId) {
             await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
         }
-        return this.authService.login(verifiedUser, req, sessionId);
+
+        if (loginUser.rememberMe) {
+            await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+            return this.authService.login(verifiedUser, req, sessionId);
+        } else {
+            return this.authService.login(verifiedUser, req);
+        }
+
     }
 
     @UseGuards(RefreshGuard)
