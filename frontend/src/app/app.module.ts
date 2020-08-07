@@ -21,7 +21,7 @@ import { AuthInterceptor } from './services/auth';
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
   BlogsComponent, WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
 
-  import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
     PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
@@ -33,7 +33,9 @@ import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
+import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { ContribComponent, ApprovalQueueComponent } from './pages/contrib';
+
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -72,7 +74,9 @@ const toolbarOptions = [
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, ApprovalQueueComponent, ContribComponent,
+    UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
+    ApprovalQueueComponent, ContribComponent, BeatrizHeroComponent
+
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
