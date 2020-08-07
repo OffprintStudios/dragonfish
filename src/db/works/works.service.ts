@@ -8,6 +8,7 @@ import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
+import { isNull } from 'lodash';
 
 @Injectable()
 export class WorksService {
@@ -75,9 +76,22 @@ export class WorksService {
      * @param workId The work you're trying to find.
      */
     async findOneWorkById(workId: string): Promise<models.Work> {
-        return await this.workModel
+        const thisWork = await this.workModel
             .findById(workId)
             .where('audit.isDeleted', false);
+
+        if (isNullOrUndefined(thisWork)) {
+            throw new NotFoundException(`The work you're looking for doesn't seem to exist.`);
+        } else if (thisWork.audit.published === models.ApprovalStatus.Approved) {
+
+        }
+
+        if (thisWork.audit.published === models.ApprovalStatus.Approved) {
+            await this.workModel.updateOne({'_id': thisWork._id}, {$inc: {'stats.views': 1}});
+            return thisWork;
+        } else {
+            return thisWork;
+        }
     }
 
     /**
