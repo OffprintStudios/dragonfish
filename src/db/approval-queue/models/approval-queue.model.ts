@@ -5,7 +5,7 @@ import { Work } from 'src/db/works/models';
 
 export interface ApprovalQueue extends Document {
     readonly _id: string;
-    readonly workToApprove: (string | Work)[];
+    readonly workToApprove: string | Work;
     readonly claimedBy: string | UserInfo;
     readonly createdAt: Date;
     readonly updatedAt: Date;

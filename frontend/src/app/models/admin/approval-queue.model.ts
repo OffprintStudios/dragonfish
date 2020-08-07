@@ -2,7 +2,7 @@ import { Work } from '../works';
 
 export interface ApprovalQueue {
     readonly _id: string;
-    readonly workToApprove: Work[];
+    readonly workToApprove: Work;
     readonly claimedBy: UserInfo;
     readonly createdAt: Date;
     readonly updatedAt: Date;
