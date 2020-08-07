@@ -4,10 +4,10 @@ import { AuthService } from 'src/app/services/auth';
 
 @Component({
   selector: 'app-contrib',
-  templateUrl: './contrib.component.html',
-  styleUrls: ['./contrib.component.less']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.less']
 })
-export class ContribComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   currentUser: User;
 
   constructor(private authService: AuthService) {

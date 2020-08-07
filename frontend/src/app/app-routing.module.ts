@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageC
 import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent,
   NewSectionComponent } from './pages/work-page';
   
-import { ApprovalQueueComponent, ContribComponent } from './pages/contrib';
+import { ApprovalQueueComponent, DashboardComponent } from './pages/dashboard';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 
@@ -51,7 +51,7 @@ const routes: Routes = [
     {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
   ]},
-  {path: 'contrib', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: ContribComponent, children: [
+  {path: 'dashboard', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: DashboardComponent, children: [
     {path: 'approval-queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
   ]},
 ];
