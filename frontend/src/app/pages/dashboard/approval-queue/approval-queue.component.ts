@@ -73,4 +73,34 @@ export class ApprovalQueueComponent implements OnInit {
       return false;
     }
   }
+
+  /**
+   * Checks if a queue item is claimed.
+   * 
+   * @param entry The queue item
+   */
+  checkIfClaimed(entry: ApprovalQueue) {
+    if (entry.claimedBy === null) {
+      return false;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Checks if a queue item is claimed by the currently signed in user.
+   * 
+   * @param entry The queue item
+   */
+  checkIfClaimedByThisUser(entry: ApprovalQueue) {
+    if (entry.claimedBy !== null) {
+      if (entry.claimedBy._id === this.currentUser._id) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
 }

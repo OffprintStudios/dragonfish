@@ -27,10 +27,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="work-control-buttons">
+                    <div class="work-control-buttons" *ngIf="checkIfClaimed(); then unclaimed else claimedByYou">
                         <button class="work-controls" style="border-right: 0;"><i-feather name="check"></i-feather></button>
                         <button class="work-controls right"><i-feather name="x"></i-feather></button>
                     </div>
+                    <ng-template #unclaimed>
+
+                    </ng-template>
+                    <ng-template #claimedByYou>
+                        
+                    </ng-template>
                 </div>
             </div>
         </ng-template>
