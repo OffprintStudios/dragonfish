@@ -15,7 +15,7 @@ import { ImagesModule } from '../images/images.module';
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: process.env.JWT_SECRET,
-        signOptions: {expiresIn: '3600s'},
+        signOptions: {expiresIn: '10800s'}, // 3 hours, temporary until problems with auth tokens fixed.
       }),
     }),
   ],

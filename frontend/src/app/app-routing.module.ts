@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageC
 import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent,
   NewSectionComponent } from './pages/work-page';
   
-import { ApprovalQueueComponent, ContribComponent } from './pages/contrib';
+import { ApprovalQueueComponent, DashboardComponent, NewsManagementComponent, ReportsComponent, UsersComponent, AuditComponent } from './pages/dashboard';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 
@@ -51,8 +51,12 @@ const routes: Routes = [
     {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
   ]},
-  {path: 'contrib', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: ContribComponent, children: [
-    {path: 'approval-queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+  {path: 'dashboard', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: DashboardComponent, children: [
+    {path: 'queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+    {path: 'news-management', canActivate: [AuthGuard], component: NewsManagementComponent, data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
+    {path: 'reports', canActivate: [AuthGuard], component: ReportsComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
+    {path: 'users', canActivate: [AuthGuard], component: UsersComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
+    {path: 'audit-log', canActivate: [AuthGuard], component: AuditComponent, data: {roles: [Roles.Moderator, Roles.Admin]}}
   ]},
 ];
 
