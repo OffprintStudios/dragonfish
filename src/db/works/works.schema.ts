@@ -60,6 +60,9 @@ WorksSchema.pre<models.Work>('save', async function (next: HookNextFunction) {
     this.set('meta.rating', this.meta.rating);
     this.set('meta.status', this.meta.status);
     this.set('audit.threadId', uuidV4());
+
+    this.set('createdAt', Date.now());
+    this.set('updatedAt', Date.now());
     
     return next();
 });

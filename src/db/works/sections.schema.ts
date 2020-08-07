@@ -35,6 +35,9 @@ SectionsSchema.pre<Section>('save', async function(next: HookNextFunction) {
 
     const wordCount = wordCounter.countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
+
+    this.set('createdAt', Date.now());
+    this.set('updatedAt', Date.now());
     
     return next();
 });

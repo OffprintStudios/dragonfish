@@ -17,4 +17,8 @@ ApprovalQueueSchema.plugin(MongooseAutpopulate);
 
 ApprovalQueueSchema.pre<ApprovalQueue>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
+    this.set('createdAt', Date.now());
+    this.set('updatedAt', Date.now());
+
+    return next();
 });
