@@ -104,8 +104,7 @@ export class AuthService {
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');
-    this.router.navigate(['/home/latest']);
-    location.reload();
+    this.router.navigate(['/home/latest']);    
   }
 
   /* Account settings */

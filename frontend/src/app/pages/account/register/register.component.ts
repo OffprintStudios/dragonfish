@@ -77,7 +77,11 @@ export class RegisterComponent implements OnInit {
       return;
     } else {
       this.loadingLogin = true;
-      const credentials: LoginUser = {email: this.loginFields.email.value, password: this.loginFields.password.value};
+      const credentials: LoginUser = {
+        email: this.loginFields.email.value, 
+        password: this.loginFields.password.value, 
+        rememberMe: this.loginFields.rememberMe.value
+      };
       this.authService.login(credentials).pipe(first()).subscribe(() => {
         this.loadingLogin = false;        
         this.router.navigate(['/home/latest']);

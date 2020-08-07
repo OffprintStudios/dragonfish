@@ -41,17 +41,20 @@ export class AuthService {
      * 
      * @param user The incoming user
      * @param req The incoming login request
-     * @param sessionId A new session ID
+     * @param sessionId (Optional) A new session ID. If included, will set a 'refreshToken' httpOnly cookie.
+     * Otherwise, the cookie will not be set, and the user's session will only last an hour.
      */
-    async login(user: User, req: any, sessionId: string): Promise<FrontendUser> {
+    async login(user: User, req: any, sessionId?: string): Promise<FrontendUser> {
         const payload: JwtPayload = {
             username: user.username,
             roles: user.audit.roles,
             sub: user._id
         };
-        req._cookies = [
-            {name: 'refreshToken', value: sessionId, options: {httpOnly: true, expires: new Date(Date.now() + 2_592_000_000)}}
-        ]
+        if (sessionId) {
+            req._cookies = [
+                {name: 'refreshToken', value: sessionId, options: {httpOnly: true, expires: new Date(Date.now() + 2_592_000_000)}}
+            ]
+        }
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 
