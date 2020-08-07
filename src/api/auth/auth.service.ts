@@ -5,7 +5,6 @@ import { verify, argon2id } from 'argon2';
 import { User, FrontendUser, ChangeNameAndEmail, ChangePassword, ChangeProfile } from 'src/db/users/models';
 import { UsersService } from 'src/db/users/users.service';
 import { JwtPayload } from './models';
-import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
