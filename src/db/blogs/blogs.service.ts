@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectModel} from '@nestjs/mongoose';
 import {Model, PaginateModel} from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
@@ -8,6 +8,7 @@ import * as models from './models';
 import {UsersService} from '../users/users.service';
 import {SearchParameters} from '../../api/search/models/search-parameters';
 import {SearchResults} from '../../api/search/models/search-results';
+import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class BlogsService {
@@ -118,7 +119,14 @@ export class BlogsService {
      * @param blogId The blog we're fetching
      */
     async getOneBlog(blogId: string): Promise<models.Blog> {
-        return await this.blogModel.findById(blogId).where('published', true).where('audit.isDeleted', false);
+        const thisBlog =  await this.blogModel.findById(blogId).where('published', true).where('audit.isDeleted', false);
+
+        if (isNullOrUndefined(thisBlog)) {
+            throw new NotFoundException(`The blog you're looking for doesn't seem to exist.`);
+        } else {
+            await this.blogModel.updateOne({'_id': thisBlog._id}, {$inc: {'stats.views': 1}});
+            return thisBlog;
+        }
     }
 
     /**
