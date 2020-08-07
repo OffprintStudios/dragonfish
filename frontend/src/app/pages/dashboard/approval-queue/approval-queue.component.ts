@@ -51,4 +51,26 @@ export class ApprovalQueueComponent implements OnInit {
       this.forMe = true;
     }
   }
+
+  /**
+   * Checks to see if the queue is empty.
+   */
+  queueIsEmpty() {
+    if (this.queue.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Checks to see if the mod queue is empty.
+   */
+  myQueueIsEmpty() {
+    if (this.queueForMod.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

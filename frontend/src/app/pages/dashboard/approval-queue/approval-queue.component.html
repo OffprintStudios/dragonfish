@@ -3,4 +3,13 @@
         <h2>Approval Queue</h2>
     </div>
     <hr class="header-divider">
+    <div class="queue-list" *ngIf="queue">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="queueIsEmpty(); else theQueue">Surprisingly, no one's submitted anything yet.</h4>
+        <ng-template #theQueue>
+
+        </ng-template>
+    </div>
 </div>
