@@ -1,1 +1,16 @@
-<p>contrib works!</p>
+<div *ngIf="currentUser; else justLatest">
+    <div class="dash-nav">
+        <div class="dash-nav-items">
+            <a><span class="link-icon"><i-feather name="list"></i-feather></span>Queue</a>
+            <a><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
+            <a><span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>Reports</a>
+            <a><span class="link-icon"><i-feather name="users"></i-feather></span>Users</a>
+            <a><span class="link-icon"><i-feather name="clipboard"></i-feather></span>Audit</a>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>
+
+<ng-template #justLatest>
+    <router-outlet></router-outlet>
+</ng-template>

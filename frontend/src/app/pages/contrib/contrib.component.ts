@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/users';
+import { AuthService } from 'src/app/services/auth';
 
 @Component({
   selector: 'app-contrib',
@@ -6,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contrib.component.less']
 })
 export class ContribComponent implements OnInit {
+  currentUser: User;
 
-  constructor() { }
+  constructor(private authService: AuthService) {
+    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+  }
 
   ngOnInit(): void {
   }
