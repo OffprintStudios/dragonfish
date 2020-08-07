@@ -22,28 +22,20 @@ export class AuthInterceptor implements HttpInterceptor {
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const currentUser = this.authService.getCurrUserValue();
-        if (currentUser && currentUser.token) {
-            if (currentUser.token === null) {
-                return next.handle(req);
-            } else {
-                req = this.addToken(req, currentUser.token);
-            }
-        }
-
-        if (!currentUser?.token) {
-            return next.handle(req)                
-                .pipe(catchError(error => {
-                    // If this was a 401, refresh and try again before failing out.
-                    if (error instanceof HttpErrorResponse && error.status == 401) {
-                        return this.tryRefresh(req, next);
-                    } else {
-                        return throwError(error);
-                    }
-                }));
-        } else {
+        if (!(currentUser?.token)) {
             return next.handle(req);
         }
 
+        req = this.addToken(req, currentUser.token);        
+        return next.handle(req)                
+            .pipe(catchError(error => {
+                // If this was a 401, refresh and try again before failing out.
+                if (error instanceof HttpErrorResponse && error.status == 401) {
+                    return this.tryRefresh(req, next);
+                } else {
+                    return throwError(error);
+                }
+            }));
     }
 
     private tryRefresh(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
