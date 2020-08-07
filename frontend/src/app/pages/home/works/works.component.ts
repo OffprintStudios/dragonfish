@@ -198,7 +198,7 @@ export class WorksComponent implements OnInit {
    * @param work The work we're submitting.
    */
   submitWorkToQueue(work: models.Work) {
-    if (work.stats.totWords < 750) {
+    if (work.meta.category !== models.Categories.Poetry && work.stats.totWords < 750) {
       alert(`Works must have a total published word count of at least 750 words.`);
       return;
     }

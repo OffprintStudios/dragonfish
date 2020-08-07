@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 import { User } from 'src/app/models/users';
-import { ApprovalQueue } from 'src/app/models/admin';
+import { ApprovalQueue, Decision } from 'src/app/models/admin';
 import { AuthService } from 'src/app/services/auth';
 import { QueueService } from 'src/app/services/admin';
+import { Work } from 'src/app/models/works';
 
 @Component({
   selector: 'app-approval-queue',
@@ -120,5 +121,41 @@ export class ApprovalQueueComponent implements OnInit {
     this.queueService.claimWork(entry._id).subscribe(() => {
       this.fetchData();
     });
+  }
+  
+  /**
+   * Approves a work.
+   * 
+   * @param entry The entry to approve
+   * @param work The work to approve
+   */
+  approveWork(entry: ApprovalQueue, work: Work) {
+    const decision: Decision = {
+      docId: entry._id,
+      workId: work._id,
+      authorId: work.author._id
+    };
+
+    this.queueService.approveWork(decision).subscribe(() => {
+      this.fetchData();
+    })
+  }
+
+  /**
+   * Rejects a work.
+   * 
+   * @param entry The entry to reject
+   * @param work The work to reject
+   */
+  rejectWork(entry: ApprovalQueue, work: Work) {
+    const decision: Decision = {
+      docId: entry._id,
+      workId: work._id,
+      authorId: work.author._id
+    };
+
+    this.queueService.rejectWork(decision).subscribe(() => {
+      this.fetchData();
+    })
   }
 }

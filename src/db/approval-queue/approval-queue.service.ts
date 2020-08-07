@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { ApprovalQueue } from './models';
 import { WorksService } from '../works/works.service';
-
+import { Categories } from '../works/models';
 
 @Injectable()
 export class ApprovalQueueService {
@@ -19,7 +19,7 @@ export class ApprovalQueueService {
      */
     async addOneWork(user: any, workId: string): Promise<ApprovalQueue> {
         const verifiedWork = await this.worksService.fetchOneUserWorkForQueue(user, workId);
-        if (verifiedWork.stats.totWords < 750) {
+        if (verifiedWork.meta.category !== Categories.Poetry && verifiedWork.stats.totWords < 750) {
             throw new BadRequestException(`Works need to have a minimum published word count of 750.`);
         } else {
             const newQueueEntry = new this.approvalQueue({
