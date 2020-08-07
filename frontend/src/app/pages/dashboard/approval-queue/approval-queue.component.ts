@@ -33,12 +33,19 @@ export class ApprovalQueueComponent implements OnInit {
    */
   private fetchData() {
     this.queueService.getQueue().subscribe(entries => {
-      this.queue = entries.reverse();
+      this.queue = entries;
     });
 
     this.queueService.getQueueForMod().subscribe(entries => {
-      this.queueForMod = entries.reverse();
+      this.queueForMod = entries;
     });
+  }
+
+  /**
+   * Forces a refresh of the queue.
+   */
+  forceRefresh() {
+    this.fetchData();
   }
 
   /**
@@ -83,7 +90,7 @@ export class ApprovalQueueComponent implements OnInit {
     if (entry.claimedBy === null) {
       return false;
     } else {
-      return false;
+      return true;
     }
   }
 
@@ -102,5 +109,16 @@ export class ApprovalQueueComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Claims a queue entry.
+   * 
+   * @param entry The document to claim
+   */
+  claimWork(entry: ApprovalQueue) {
+    this.queueService.claimWork(entry._id).subscribe(() => {
+      this.fetchData();
+    });
   }
 }

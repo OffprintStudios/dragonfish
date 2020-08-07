@@ -124,6 +124,19 @@ div.approval-queue-container {
                             }
                         }
                     }
+
+                    div.claimed-by {
+                        align-self: center;
+                        margin-right: 2rem;
+                        img.claimed-avatar {
+                            object-fit: cover;
+                            border: 1px solid var(--site-borders);
+                            width: 50px;
+                            height: 50px;
+                            border-radius: 50%;
+                            box-shadow: var(--site-dropshadow);
+                        }
+                    }
     
                     div.work-control-buttons {
                         button.work-controls {
@@ -155,6 +168,27 @@ div.approval-queue-container {
                         button.right {
                             border-right: none;
                             border-top: 1px solid var(--site-borders);
+                        }
+                        button.work-controls-single {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                            height: 100%;
+                            display: block;
+                            box-shadow: none;
+                            margin-bottom: 0;
+                            border-top: none;
+                            border-bottom: none;
+                            border-right: none;
+                            color: var(--site-borders);
+                            i-feather {
+                                position: relative;
+                                top: 0.75rem;
+                                stroke-width: 1;
+                            }
+                            &:hover {
+                                color: whitesmoke;
+                                background-color: var(--site-accent);
+                            }
                         }
                     }
                 }
