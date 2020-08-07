@@ -9,7 +9,30 @@
         </div>
         <h4 style="text-align: center;" *ngIf="queueIsEmpty(); else theQueue">Surprisingly, no one's submitted anything yet.</h4>
         <ng-template #theQueue>
-
+            <div class="work-list">
+                <div class="work-item" *ngFor="let entry of queue">
+                    <div class="work-info">
+                        <div class="info">
+                            <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
+                            <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
+                            <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
+                            <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                            <div class="stats">
+                                <h4>{{ entry.workToApprove.meta.rating }}</h4><span>//</span>
+                                <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords }} total word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
+                                <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="work-control-buttons">
+                        <button class="work-controls" style="border-right: 0;"><i-feather name="check"></i-feather></button>
+                        <button class="work-controls right"><i-feather name="x"></i-feather></button>
+                    </div>
+                </div>
+            </div>
         </ng-template>
     </div>
 </div>
