@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { BrowseService } from './browse.service';
 
-@Controller('browse')
-export class BrowseController {}
+@Controller()
+export class BrowseController {
+    constructor(private readonly browseService: BrowseService) {}
+
+    @Get('all-pub-works') 
+    async getAllPutWorks() {
+        return await this.browseService.getAllNewPublishedWorks();
+    }
+}

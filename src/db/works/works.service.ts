@@ -309,7 +309,7 @@ export class WorksService {
      * @param workId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(workId: string, authorId: string) {
+    async approveWork(workId: string, authorId: string): Promise<void> {
         await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved}).where("audit.isDeleted", false)
             .then(async () => {
                 const workCount = await this.workModel.countDocuments({author: authorId}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
@@ -323,7 +323,7 @@ export class WorksService {
      * @param workId The work to reject
      * @param authorId The author of the work
      */
-    async rejectWork(workId: string, authorId: string) {
+    async rejectWork(workId: string, authorId: string): Promise<void> {
         await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Rejected}).where("audit.isDeleted", false);
     }
 
@@ -333,7 +333,7 @@ export class WorksService {
      * @param workId The work to set to pending
      * @param authorId The author of the work
      */
-    async pendingWork(workId: string, authorId: string) {
+    async pendingWork(workId: string, authorId: string): Promise<void> {
         await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Pending}).where("audit.isDeleted", false);
     }
 
@@ -344,11 +344,14 @@ export class WorksService {
      * @param coverArt The new cover art
      * @param workId The work's ID
      */
-    async updateCoverArt(user: any, coverArt: string, workId: string) {
+    async updateCoverArt(user: any, coverArt: string, workId: string): Promise<models.Work> {
         return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true}).where("audit.isDeleted", false);
     }
 
-    async fetchNewPublishedWorks() {
+    /**
+     * Fetches all new published works by newest first.
+     */
+    async fetchNewPublishedWorks(): Promise<models.Work[]> {
         return await this.workModel.find().where('audit.published').equals(models.ApprovalStatus.Approved).sort({ 'createdAt': -1 });
     }
 }
