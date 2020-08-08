@@ -75,21 +75,31 @@ export class WorksService {
      * 
      * @param workId The work you're trying to find.
      */
-    async findOneWorkById(workId: string): Promise<models.Work> {
-        const thisWork = await this.workModel
-            .findById(workId)
-            .where('audit.isDeleted', false);
+    async findOneWorkById(workId: string, user?: any): Promise<models.Work> {
+        const thisWork = await this.workModel.findById(workId).where('audit.isDeleted', false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new NotFoundException(`The work you're looking for doesn't seem to exist.`);
         } else if (thisWork.audit.published === models.ApprovalStatus.Approved) {
-
-        }
-
-        if (thisWork.audit.published === models.ApprovalStatus.Approved) {
-            await this.workModel.updateOne({'_id': thisWork._id}, {$inc: {'stats.views': 1}});
-            return thisWork;
+            // If approved
+            if (user) {
+                // If a user is viewing this
+                const authorInfo = thisWork.author as models.AuthorInfo;
+                if (authorInfo._id === user.sub) {
+                    // If the user is the author of this work
+                    return thisWork;
+                } else {
+                    // If the user isn't the author
+                    await this.workModel.updateOne({'_id': thisWork._id}, {$inc: {'stats.views': 1}});
+                    return thisWork;
+                }
+            } else {
+                // If there is no user viewing this
+                await this.workModel.updateOne({'_id': thisWork._id}, {$inc: {'stats.views': 1}});
+                return thisWork;
+            }
         } else {
+            // If the work exists but is not approved
             return thisWork;
         }
     }

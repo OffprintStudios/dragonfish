@@ -2,13 +2,7 @@ import { Document } from 'mongoose';
 
 export interface Blog extends Document {
     readonly _id: string;
-    readonly author: string | {
-        readonly _id: string;
-        readonly username: string;
-        readonly profile: {
-            readonly avatar: string;
-        };
-    };
+    readonly author: string | UserInfo;
     readonly title: string;
     readonly body: string;
     readonly published: boolean;
@@ -24,4 +18,12 @@ export interface Blog extends Document {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+}
+
+export interface UserInfo {
+    readonly _id: string;
+    readonly username: string;
+    readonly profile: {
+        readonly avatar: string;
+    };
 }

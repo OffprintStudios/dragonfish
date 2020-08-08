@@ -1,4 +1,5 @@
 export { Work } from './work.model';
+export { AuthorInfo } from './work.model';
 export { Section } from './section.model';
 export { Categories } from './categories.enum';
 export { Fandoms } from './fandoms.enum';

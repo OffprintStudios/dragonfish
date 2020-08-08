@@ -9,13 +9,7 @@ import { ApprovalStatus } from './approval-status.enum';
 
 export interface Work extends Document {
     readonly _id: string;
-    readonly author: string | {
-        readonly _id: string;
-        readonly username: string;
-        readonly profile: {
-            readonly avatar: string;
-        };
-    };
+    readonly author: string | AuthorInfo;
     readonly title: string;
     readonly shortDesc: string;
     readonly longDesc: string;
@@ -41,6 +35,14 @@ export interface Work extends Document {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+}
+
+export interface AuthorInfo {
+    readonly _id: string;
+    readonly username: string;
+    readonly profile: {
+        readonly avatar: string;
+    };
 }
 
 interface SectionInfo {

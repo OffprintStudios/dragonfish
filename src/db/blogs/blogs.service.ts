@@ -118,14 +118,29 @@ export class BlogsService {
      *
      * @param blogId The blog we're fetching
      */
-    async getOneBlog(blogId: string): Promise<models.Blog> {
+    async getOneBlog(blogId: string, user?: any): Promise<models.Blog> {
         const thisBlog =  await this.blogModel.findById(blogId).where('published', true).where('audit.isDeleted', false);
 
         if (isNullOrUndefined(thisBlog)) {
             throw new NotFoundException(`The blog you're looking for doesn't seem to exist.`);
         } else {
-            await this.blogModel.updateOne({'_id': thisBlog._id}, {$inc: {'stats.views': 1}});
-            return thisBlog;
+            // If the blog exists
+            if (user) {
+                // If a user is viewing
+                const authorInfo = thisBlog.author as models.UserInfo;
+                if (authorInfo._id === user.sub) {
+                    // If the user is the author
+                    return thisBlog;
+                } else {
+                    // If the user isn't the author
+                    await this.blogModel.updateOne({'_id': thisBlog._id}, {$inc: {'stats.views': 1}});
+                    return thisBlog;
+                }
+            } else {
+                // If there is no user
+                await this.blogModel.updateOne({'_id': thisBlog._id}, {$inc: {'stats.views': 1}});
+                return thisBlog;
+            }
         }
     }
 

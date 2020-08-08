@@ -1,8 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
 import { BlogsService } from 'src/db/blogs/blogs.service';
 import { WorksService } from 'src/db/works/works.service';
 
 import { UsersService } from 'src/db/users/users.service';
+import { OptionalAuthGuard } from 'src/guards';
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -20,8 +21,9 @@ export class PortfolioController {
         return await this.blogsService.getPubBlogList(userId);
     }
 
+    @UseGuards(OptionalAuthGuard)
     @Get('get-blog/:blogId')
-    async getBlog(@Param('blogId') blogId: string) {
+    async getBlog(@Request() req: any, @Param('blogId') blogId: string) {
         return await this.blogsService.getOneBlog(blogId);
     }
 }
