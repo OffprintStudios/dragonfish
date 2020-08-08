@@ -31,8 +31,8 @@ export class PortBlogPageComponent implements OnInit {
   ngOnInit(): void {
     let position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto'
+      width: '90%',
+      height: '90%'
     });
 
     this.editBlog = this.toppy

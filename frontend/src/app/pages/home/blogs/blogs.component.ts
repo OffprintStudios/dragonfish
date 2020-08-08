@@ -40,8 +40,8 @@ export class BlogsComponent implements OnInit {
     // Creates the createBlog modal
     const createPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.createBlog = this.toppy
@@ -57,8 +57,8 @@ export class BlogsComponent implements OnInit {
     // Creates the previewBlog modal
     const previewPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.previewBlog = this.toppy
@@ -74,8 +74,8 @@ export class BlogsComponent implements OnInit {
     // Creates the editBlog modal
     const editPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.editBlog = this.toppy

@@ -33,8 +33,8 @@ export class WorkPageComponent implements OnInit {
     // Set up the edit work modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto'
+      width: '90%',
+      height: '90%'
     });
 
     this.editWork = this.toppy
@@ -50,12 +50,12 @@ export class WorkPageComponent implements OnInit {
     // Set up the upload cover art modal
     const coverArtPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto'
+      width: '90%',
+      height: '90%'
     });
 
     this.updateCoverArt = this.toppy
-      .position(position)
+      .position(coverArtPosition)
       .config({closeOnEsc: true, backdrop: true})
       .content(UploadCoverartComponent)
       .create();

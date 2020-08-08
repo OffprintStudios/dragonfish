@@ -107,8 +107,8 @@ export class SettingsComponent implements OnInit {
     // Settings for the changeAvatar modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.changeAvatarModal = this.toppy
