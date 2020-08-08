@@ -347,4 +347,8 @@ export class WorksService {
     async updateCoverArt(user: any, coverArt: string, workId: string) {
         return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true}).where("audit.isDeleted", false);
     }
+
+    async fetchNewPublishedWorks() {
+        return await this.workModel.find().where('audit.published').equals(models.ApprovalStatus.Approved).sort({ 'createdAt': -1 });
+    }
 }

@@ -24,6 +24,6 @@ export class PortfolioController {
     @UseGuards(OptionalAuthGuard)
     @Get('get-blog/:blogId')
     async getBlog(@Request() req: any, @Param('blogId') blogId: string) {
-        return await this.blogsService.getOneBlog(blogId);
+        return await this.blogsService.getOneBlog(blogId, req.user);
     }
 }
