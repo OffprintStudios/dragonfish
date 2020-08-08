@@ -25,7 +25,7 @@ export class WorksController {
     @UseGuards(OptionalAuthGuard)
     @Get('get-work/:workId')
     async getWork(@Request() req: any, @Param('workId') workId: string) {
-        return await this.worksService.findOneWorkById(workId);
+        return await this.worksService.findOneWorkById(workId, req.user);
     }
 
     @UseGuards(AuthGuard)
