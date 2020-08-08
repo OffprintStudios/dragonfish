@@ -6,7 +6,7 @@ import { User } from 'src/app/models/users';
 import * as workModels from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
-import { EditWorkComponent } from 'src/app/components/modals/works';
+import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 
 @Component({
   selector: 'app-work-page',
@@ -21,6 +21,7 @@ export class WorkPageComponent implements OnInit {
   workData: workModels.Work; // This work's data
   pubSections: workModels.SectionInfo[]; // This work's published sections
   editWork: ToppyControl;
+  updateCoverArt: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy) {
@@ -43,6 +44,23 @@ export class WorkPageComponent implements OnInit {
       .create();
 
     this.editWork.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
+
+    // Set up the upload cover art modal
+    const coverArtPosition = new GlobalPosition({
+      placement: InsidePlacement.CENTER,
+      width: 'auto',
+      height: 'auto'
+    });
+
+    this.updateCoverArt = this.toppy
+      .position(position)
+      .config({closeOnEsc: true, backdrop: true})
+      .content(UploadCoverartComponent)
+      .create();
+
+    this.updateCoverArt.listen('t_close').subscribe(() => {
       this.fetchData();
     });
   }
@@ -143,5 +161,13 @@ export class WorkPageComponent implements OnInit {
   openEditForm() {
     this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
     this.editWork.open();
+  }
+
+  /**
+   * Opens the cover art uploader.
+   */
+  openCoverArtUpload() {
+    this.updateCoverArt.updateContent(UploadCoverartComponent, { workId: this.workId });
+    this.updateCoverArt.open();
   }
 }

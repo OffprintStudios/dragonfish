@@ -101,11 +101,12 @@
 
 <div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
     <span class="controls-left">
-        <a class="button" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']">New Section</a>
-        <a class="button" (click)="openEditForm()">Edit</a>
+        <button class="add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']"><i-feather class="plus-section" name="plus"></i-feather>Section</button>
+        <button class="user-buttons" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
+        <button class="user-buttons right" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
     </span>
     <span class="controls-right">
-        <a class="button" style="margin-right: 0;" (click)="askDelete(workData._id)">Delete</a>
+        <button class="user-buttons delete" style="margin-right: 0;" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
     </span>
 </div>
 

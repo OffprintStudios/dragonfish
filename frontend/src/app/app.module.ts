@@ -31,7 +31,7 @@ import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
-import { NewWorkComponent, EditWorkComponent } from './components/modals/works';
+import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
@@ -76,7 +76,7 @@ const toolbarOptions = [
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
-    NewsManagementComponent, DocsComponent
+    NewsManagementComponent, DocsComponent, UploadCoverartComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -94,7 +94,7 @@ const toolbarOptions = [
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
-    NewWorkComponent, EditWorkComponent, UploadAvatarComponent
+    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent
   ],
   bootstrap: [AppComponent]
 })
