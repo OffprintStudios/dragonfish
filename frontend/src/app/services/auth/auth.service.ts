@@ -187,6 +187,7 @@ export class AuthService {
         localStorage.setItem('currentUser', response);
         this.currUserSubject.next(newUser);
         observer.next(newUser);
+        observer.complete();
       };
 
       uploader.uploadAll();

@@ -228,6 +228,7 @@ export class WorksService {
         // should change to Observable<models.Work>, and we'd need to JSON parse
         // the response and return it in .next() here.
         observer.next()
+        observer.complete();
       };      
 
       uploader.uploadAll();
