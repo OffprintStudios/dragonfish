@@ -53,5 +53,7 @@ export enum Fandoms {
     DeadByDaylight = 'Dead by Daylight',
     WingsOfFire = 'Wings of Fire',
     DisneyPrincesses = 'Disney Princesses',
+    Tangled = 'Tangled',
+    TheLionKing = 'The Lion King',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
