@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import * as models from 'src/app/models/works';
 import { AlertsService } from 'src/app/modules/alerts';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { HttpError } from 'src/app/models/site';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,8 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class WorksService {
   private url: string = `/api/content/works`;
 
-  public thisWorksPublishedSections: models.SectionInfo[];
+  public thisWorksPublishedSections: models.SectionInfo[]; // for the work page
+  public thisWorkId: string; // for cover art uploading
 
   constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) { }
 
@@ -205,5 +208,24 @@ export class WorksService {
    */
   public setSectionsList(sections: models.SectionInfo[]) {
     this.thisWorksPublishedSections = sections;
+  }
+
+  /**
+   * Uploads a user's avatar to the server for processing.
+   * 
+   * @param uploader the file uploader
+   */
+  public changeCoverArt(uploader: FileUploader): Observable<models.Work> {
+    return new Observable<models.Work>(observer => {
+      uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
+
+        if (status !== 201) {
+          const error: HttpError = JSON.parse(response);
+          return observer.error(error);
+        }
+      };
+
+      uploader.uploadAll();
+    });
   }
 }

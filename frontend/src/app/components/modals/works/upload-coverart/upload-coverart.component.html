@@ -1,1 +1,28 @@
-<p>upload-coverart works!</p>
+<div class="upload-coverart-modal">
+    <h1>Change Cover Art</h1>
+    <hr>
+    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" ng2FileSelect [uploader]="uploader" #coverartInput/>
+    
+    <div style="text-align: center;" *ngIf="!uploading; else isUploading">
+        <button (click)="coverartInput.click()">Select Cover Art</button>
+        <button style="margin-left: 2rem;" class="button-primary" *ngIf="croppedImage !== ''" (click)="uploadCoverArt()">Upload</button>
+        <button style="margin-left: 2rem;" type="button" (click)="cancel()">Cancel</button>
+    </div>
+
+    <ng-template #isUploading>
+        <div class="loader" *ngIf="uploading">
+            <div class="lds-dual-ring"></div>
+        </div>
+    </ng-template>
+
+    <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [containWithinAspectRatio]="true"
+        [aspectRatio]="1 / 1.41421"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+        (imageLoaded)="imageLoaded()"
+        (cropperReady)="cropperReady($event)"
+        (loadImageFailed)="loadImageFailed()"></image-cropper>
+</div>

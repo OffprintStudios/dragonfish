@@ -76,6 +76,7 @@ export class WorkPageComponent implements OnInit {
         this.workData = work;
         this.pubSections = work.sections.filter(section => { return section.published === true; });
         this.worksService.setSectionsList(this.pubSections);
+        this.worksService.thisWorkId = this.workId;
         this.loading = false;
       }, () => {
         this.loading = false;
@@ -167,7 +168,6 @@ export class WorkPageComponent implements OnInit {
    * Opens the cover art uploader.
    */
   openCoverArtUpload() {
-    this.updateCoverArt.updateContent(UploadCoverartComponent, { workId: this.workId });
     this.updateCoverArt.open();
   }
 }

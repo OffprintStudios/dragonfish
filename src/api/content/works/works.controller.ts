@@ -80,7 +80,7 @@ export class WorksController {
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('upload-coverart/:workId')
     async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {
-        const coverArtUrl = await this.imagesService.upload(coverArtImage, req.user.sub, 'coverart');
+        const coverArtUrl = await this.imagesService.upload(coverArtImage, workId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
         return await this.worksService.updateCoverArt(req.user, coverArt, workId);
     }
