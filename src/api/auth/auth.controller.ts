@@ -21,7 +21,7 @@ export class AuthController {
     @Post('register')
     async register(@Request() req: any, @Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
         const addedUser = await this.usersService.createUser(newUser);
-        const sessionId = uuidV4();                
+        const sessionId = uuidV4();
         const newSession = await this.usersService.addRefreshToken(addedUser._id, sessionId);
         return this.authService.login(addedUser, req, sessionId, newSession.expires);
     }
@@ -39,7 +39,7 @@ export class AuthController {
         }
 
         if (loginUser.rememberMe) {
-            const sessionId = uuidV4();                                    
+            const sessionId = uuidV4();
             const newSession = await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
             return this.authService.login(verifiedUser, req, sessionId, newSession.expires);
         } else {

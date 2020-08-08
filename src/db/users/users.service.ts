@@ -83,7 +83,7 @@ export class UsersService {
      * Adds a new refresh session ID to the user's sessions array on their document.
      * 
      * @param userId A user's ID
-     * @param signedSessionId A user's session ID, signed using the refresh signing key
+     * @param sessionId A user's session ID
      */
     async addRefreshToken(userId: string, sessionId: string): Promise<models.AuditSession> {
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
