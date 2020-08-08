@@ -215,17 +215,22 @@ export class WorksService {
    * 
    * @param uploader the file uploader
    */
-  public changeCoverArt(uploader: FileUploader): Observable<models.Work> {
-    return new Observable<models.Work>(observer => {
+  public changeCoverArt(uploader: FileUploader): Observable<void> {
+    return new Observable<void>(observer => {
       uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
 
         if (status !== 201) {
           const error: HttpError = JSON.parse(response);
           return observer.error(error);
         }
-      };
+        
+        // If we ever need to retun the modified work, the return type on this
+        // should change to Observable<models.Work>, and we'd need to JSON parse
+        // the response and return it in .next() here.
+        observer.next()
+      };      
 
       uploader.uploadAll();
-    });
+    });    
   }
 }
