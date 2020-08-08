@@ -77,7 +77,7 @@ export class PortBlogComponent implements OnInit {
    */
   currentUserIsSame() {
     if (this.currentUser) {
-      if (this.currentUser._id == this.portUserId) {
+      if (this.currentUser._id === this.portUserId) {
         return true;
       } else {
         return false;

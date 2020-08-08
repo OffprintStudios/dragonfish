@@ -31,11 +31,16 @@
 </div>
 
 <ng-template #noBlogs>
-    <div style="text-align: center;">
-        <h3 *ngIf="!currentUserIsSame; else thisIsUser">{{portUserName}} hasn't posted anything yet. Check back later!</h3>
+    <div style="text-align: center;" *ngIf="currentUser; else noUser">
+        <h3 *ngIf="!currentUserIsSame(); else thisIsUser">This user hasn't posted anything yet. Check back later!</h3>
         <ng-template #thisIsUser>
             <h3 style="margin-bottom: 0;">You haven't posted any blogs yet.</h3>
             <p style="margin-top: 0; font-style: italic;">Head on over to the My Blogs section of the homepage to get started!</p>
         </ng-template>
     </div>
+    <ng-template #noUser>
+        <div style="text-align: center;">
+            <h3>{{portUserName}} hasn't posted anything yet. Check back later!</h3>
+        </div>
+    </ng-template>
 </ng-template>
