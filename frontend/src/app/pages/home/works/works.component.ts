@@ -40,8 +40,8 @@ export class WorksComponent implements OnInit {
     // Initializing the new work form modal
     const newWorkPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.newWorkForm = this.toppy
@@ -57,8 +57,8 @@ export class WorksComponent implements OnInit {
     // Initializing the edit work form modal
     const editWorkPosition = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
-      height: 'auto',
+      width: '90%',
+      height: '90%'
     });
 
     this.editWorkForm = this.toppy
