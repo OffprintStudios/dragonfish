@@ -3,10 +3,102 @@
 </div>
 
 <div class="work-box" *ngIf="!loading">
+    <!--With cover art-->
     <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
-        <!--For coverart-->
+        <div class="three columns">
+            <img src="{{ workData.meta.coverArt }}">
+        </div>
+        <div class="nine columns" style="margin: 3rem 0 1rem 1rem; padding-right: 3rem;">
+            <!--Work title 'n such-->
+            <div class="work-header">
+                <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
+                <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
+                <div class="category-genre">
+                    {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
+                </div>
+            </div>
+
+            <!--Long description box-->
+            <div class="long-description">
+                <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+            </div>
+
+            <!--Sections-->
+            <div *ngIf="route.children.length === 0 && workData.sections.length > 0">
+                <div class="section-list" *ngIf="currentUserIsSame(); else notSameUser">
+                    <ul>
+                        <li *ngFor="let section of workData.sections">
+                            <div *ngIf="section.published === true">
+                                <div class="section-box">
+                                    <div>
+                                        <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="check-circle"></i-feather></button>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
+                                            {{ section.title }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="section-stats">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="section.published === false">
+                                <div class="section-box">
+                                    <div>
+                                        <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
+                                            {{ section.title }}
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <div class="section-stats">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <ng-template #notSameUser>
+                    <div class="section-list">
+                        <ul>
+                            <li *ngFor="let section of pubSections; let i = index">
+                                <div class="section-box" style="padding: 10px;">
+                                    <div style="flex: 1;">
+                                        <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">{{ section.title }}</a>
+                                    </div>
+                                    <div>
+                                        <div class="section-stats" style="margin-right: 2rem;">
+                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </ng-template>
+            </div>
+
+            <!--Work stats-->
+            <div class="work-stats">
+                Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
+            </div>
+        </div>
     </div>
 
+    <!--Without cover art-->
     <ng-template #noCoverArt>
         <div class="no-cover-art-work-container">
             <!--Work title 'n such-->
