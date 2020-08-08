@@ -8,6 +8,45 @@ div.approval-queue-container {
             display: inline-block;
             margin-bottom: 0;
         }
+
+        div.queue-controls {
+            float: right;
+            box-shadow: var(--site-dropshadow);
+
+            button.queue-filter {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-bottom: 0;
+                box-shadow: none;
+                i-feather {
+                    width: 16px;
+                    height: 16px;
+                    position: relative;
+                    top: 0.3rem;
+                }
+            }
+
+            button.queue-refresh {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                border-left: 0;
+                box-shadow: none;
+                margin-bottom: 0;
+                i-feather {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            button.active {
+                color: whitesmoke;
+                background-color: var(--site-accent);
+
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+        }
     }
 
     hr.header-divider {
