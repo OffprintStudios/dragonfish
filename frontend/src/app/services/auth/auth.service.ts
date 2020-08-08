@@ -87,6 +87,14 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body.token;
       }), catchError(err => {
+        if (err.status === 403) {
+          // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious          
+          localStorage.removeItem('currentUser');
+          this.currUserSubject.next(null);    
+          this.router.navigate(['/home/latest']);    
+          this.alertsService.error(`${err.error.message}. You have been logged out.`);
+          return null;          
+        }
         this.alertsService.error(err.error.message);
         return throwError(err);
       }));

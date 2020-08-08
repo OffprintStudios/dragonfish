@@ -9,6 +9,8 @@ import * as models from './models';
 import { isNullOrUndefined } from '../../util/validation';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
+import { REFRESH_EXPIRATION } from 'src/util';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class UsersService {
@@ -81,10 +83,22 @@ export class UsersService {
      * Adds a new refresh session ID to the user's sessions array on their document.
      * 
      * @param userId A user's ID
-     * @param sessionId A user's session ID
+     * @param signedSessionId A user's session ID, signed using the refresh signing key
      */
-    async addRefreshToken(userId: string, sessionId: string): Promise<void> {
-        return await this.userModel.updateOne({ "_id": userId }, { $push: { "audit.sessions": sessionId } });
+    async addRefreshToken(userId: string, sessionId: string): Promise<models.AuditSession> {
+        const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
+        const now = Date.now();
+        const updatedValue = await this.userModel.findOneAndUpdate({ _id: userId },
+            {
+                $push: {
+                    'audit.sessions': {
+                        _id: hashedSessionId,
+                        'createdAt': now,
+                        'expires': now + REFRESH_EXPIRATION
+                    }
+                }
+            }, { new: true });
+        return updatedValue.audit.sessions.find(x => x._id === hashedSessionId);
     }
 
     /**
@@ -92,8 +106,9 @@ export class UsersService {
      * @param userId A user's ID
      * @param sessionId The session ID to remove
      */
-    async clearRefreshToken(userId: string, sessionId: string) {
-        return await this.userModel.updateOne({ "_id": userId }, { $pull: { "audit.sessions": sessionId } });
+    async clearRefreshToken(userId: string, sessionId: string) {        
+        const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');        
+        return await this.userModel.updateOne({ _id: userId }, { $pull: { "audit.sessions": {_id: hashedSessionId} } });
     }
 
     /**
@@ -132,10 +147,11 @@ export class UsersService {
      * returns false.
      * 
      * @param userId A user's ID
-     * @param refreshToken An available refresh token
+     * @param sessionId The refresh token ID to check
      */
-    async checkRefreshToken(userId: string, refreshToken: string): Promise<boolean> {
-        const validUser = await this.userModel.findById({ "_id": userId, "audit.sessions": refreshToken });
+    async checkRefreshToken(userId: string, sessionId: string): Promise<boolean> {
+        const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');  
+        const validUser = await this.userModel.findOne({ _id: userId, 'audit.sessions._id': hashedSessionId });
         if (validUser) {
             return true;
         } else {
@@ -195,7 +211,7 @@ export class UsersService {
     async changePassword(userId: string, newPasswordInfo: models.ChangePassword): Promise<models.User> {
         try {
             const newHashedPw = await hash(newPasswordInfo.newPassword, { type: argon2id });
-            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "password": newHashedPw }, {new: true});
+            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "password": newHashedPw }, { new: true });
         } catch (err) {
             console.log(err); // we definitely want better error reporting for stuff like this
             throw new InternalServerErrorException(`Something went wrong! Try again in a little bit.`);
@@ -210,7 +226,7 @@ export class UsersService {
      * @param newProfileInfo Their new profile info
      */
     async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({ "_id": userId }, { "profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio }, {new: true});
+        return await this.userModel.findOneAndUpdate({ "_id": userId }, { "profile.themePref": newProfileInfo.themePref, "profile.bio": newProfileInfo.bio }, { new: true });
     }
 
     /**
@@ -220,7 +236,7 @@ export class UsersService {
      * @param avatarUrl The full URL of the new avatar
      */
     async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({ _id: userId}, {"profile.avatar": avatarUrl}, {new: true});
+        return await this.userModel.findOneAndUpdate({ _id: userId }, { "profile.avatar": avatarUrl }, { new: true });
     }
 
     /**

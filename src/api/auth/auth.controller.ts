@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
@@ -11,9 +11,9 @@ import * as models from 'src/db/users/models';
 
 @Controller('')
 export class AuthController {
-    constructor(private readonly authService: AuthService, 
+    constructor(private readonly authService: AuthService,
         private readonly usersService: UsersService,
-        private readonly imagesService: ImagesService) {}
+        private readonly imagesService: ImagesService) { }
 
     /* Login and Registration*/
 
@@ -21,27 +21,27 @@ export class AuthController {
     @Post('register')
     async register(@Request() req: any, @Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
         const addedUser = await this.usersService.createUser(newUser);
-        const sessionId = uuidV4();
-        await this.usersService.addRefreshToken(addedUser._id, sessionId);
-        return this.authService.login(addedUser, req, sessionId);
+        const sessionId = uuidV4();                
+        const newSession = await this.usersService.addRefreshToken(addedUser._id, sessionId);
+        return this.authService.login(addedUser, req, sessionId, newSession.expires);
     }
 
     @SetCookies()
     @Post('login')
     async login(@Request() req: any, @Body() loginUser: models.LoginUser, @Cookies() cookies: any): Promise<models.FrontendUser> {
         // Check for stray sessions from previous logout attempts that the server never received
-        let oldSessionId: string | null = cookies['refreshToken'];        
+        let oldSessionId: string | null = cookies['refreshToken'];
 
         const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
-        const sessionId = uuidV4();
-        
+
         if (oldSessionId) {
             await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
         }
 
         if (loginUser.rememberMe) {
-            await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
-            return this.authService.login(verifiedUser, req, sessionId);
+            const sessionId = uuidV4();                                    
+            const newSession = await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+            return this.authService.login(verifiedUser, req, sessionId, newSession.expires);
         } else {
             return this.authService.login(verifiedUser, req);
         }
@@ -56,19 +56,21 @@ export class AuthController {
             if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
                 // If the refresh token is valid, let's generate a new JWT.
                 return this.authService.refreshLogin(req.user);
+            } else {
+                throw new ForbiddenException(`Your login has expired. Please log back in.`);
             }
         } else {
-            throw new UnauthorizedException(`You don't have permission to do that.`);
+            throw new ForbiddenException(`Your refresh token is invalid.`);
         }
     }
 
-    @UseGuards(AuthGuard)    
+    @UseGuards(AuthGuard)
     @SetCookies()
     @Get('logout')
-    async logout(@Request() req: any, @Cookies() cookies: any) : Promise<void> {        
+    async logout(@Request() req: any, @Cookies() cookies: any): Promise<void> {
         const refreshToken = cookies['refreshToken'];
         await this.usersService.clearRefreshToken(req.user.sub, refreshToken);
-        this.authService.logout(req);        
+        this.authService.logout(req);
     }
 
     /* Account settings */
@@ -94,7 +96,7 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
-    async uploadAvatar(@UploadedFile() avatarImage: any, @Req() req: any) {        
+    async uploadAvatar(@UploadedFile() avatarImage: any, @Req() req: any) {
         const avatarUrl = await this.imagesService.upload(avatarImage, req.user.sub, 'avatars');
         const avatar = `${process.env.IMAGES_HOSTNAME}/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
         return await this.authService.updateAvatar(req.user, avatar);

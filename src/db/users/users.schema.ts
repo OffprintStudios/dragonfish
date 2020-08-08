@@ -4,6 +4,7 @@ import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 
 import { User, Roles } from './models';
+import { AuditSessionSchema } from './audit-session.schema';
 
 export const UsersSchema = new Schema({
     _id: {type: String, default: generate()},
@@ -24,7 +25,7 @@ export const UsersSchema = new Schema({
     },
     audit: {
         roles: {type: [String], enum: Object.keys(Roles), default: ['User']},
-        sessions: {type: [String], default: null},
+        sessions: {type: [AuditSessionSchema], default: null},
         isDeleted: {type: String, default: false},
     },
     createdAt: {type: Date, default: Date.now()},

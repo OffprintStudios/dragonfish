@@ -35,16 +35,18 @@ export class AuthService {
     }
 
     /**
-     * Logs a user in by generating a JWT payload and setting the httpOnly refresh token
+     * Logs a user in by generating a JWT payload and (if requested) setting the httpOnly refresh token
      * in the request cookies header. Then, constructs a specialized FrontendUser object
      * to send to the frontend.
      * 
      * @param user The incoming user
      * @param req The incoming login request
-     * @param sessionId (Optional) A new session ID. If included, will set a 'refreshToken' httpOnly cookie.
+     * @param sessionId (Optional) A new session ID. If included, sessionExpiry must also be included. 
+     * If included, will set a 'refreshToken' httpOnly cookie.
      * Otherwise, the cookie will not be set, and the user's session will only last an hour.
+     * @param sessionExpiry (Optional) Must be included if sessionId is passed. The expiry date of the user's session.
      */
-    async login(user: User, req: any, sessionId?: string): Promise<FrontendUser> {
+    async login(user: User, req: any, sessionId?: string, sessionExpiry?: Date): Promise<FrontendUser> {
         const payload: JwtPayload = {
             username: user.username,
             roles: user.audit.roles,
@@ -52,9 +54,13 @@ export class AuthService {
         };
         if (sessionId) {
             req._cookies = [
-                {name: 'refreshToken', value: sessionId, options: {httpOnly: true, expires: new Date(Date.now() + 2_592_000_000)}}
+                {name: 'refreshToken', value: sessionId, options: {httpOnly: true, expires: sessionExpiry}}
             ]
-        }
+        } else {
+            req._cookies = [
+                {name: 'refreshToken', value: '', options: {httpOnly: true, expires: Date.now()}}
+            ]
+        }        
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 

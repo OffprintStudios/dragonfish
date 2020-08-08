@@ -2,14 +2,15 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
 import { ImagesService } from './images.service';
+import { getJwtSecretKey, JWT_EXPIRATION } from 'src/util';
 
 
 @Module({
   imports: [
     JwtModule.registerAsync({
       useFactory: () => ({
-        secret: process.env.JWT_SECRET,
-        signOptions: { expiresIn: '3600s' }, // 3 hours, temporary until problems with auth tokens fixed.
+        secret: getJwtSecretKey(),
+        signOptions: {expiresIn: JWT_EXPIRATION},
       }),
     }),
   ],  

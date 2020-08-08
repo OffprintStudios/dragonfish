@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from 'src/db/users/users.module';
 import { ImagesModule } from '../images/images.module';
+import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 
 
 @Module({
@@ -12,8 +13,8 @@ import { ImagesModule } from '../images/images.module';
     UsersModule, ImagesModule,
     JwtModule.registerAsync({
       useFactory: () => ({
-        secret: process.env.JWT_SECRET,
-        signOptions: {expiresIn: '3600s'}, // 3 hours, temporary until problems with auth tokens fixed.
+        secret: getJwtSecretKey(),
+        signOptions: {expiresIn: JWT_EXPIRATION},
       }),
     }),
   ],
