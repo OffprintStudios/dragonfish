@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { Roles } from './roles.enum';
+import { AuditSession } from './audit-session.model';
 
 export interface User extends Document {
     readonly _id: string;
@@ -20,7 +21,7 @@ export interface User extends Document {
     };
     readonly audit: {
         readonly roles: Roles[];
-        readonly sessions: string[] | null;
+        readonly sessions: AuditSession[] | null;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
