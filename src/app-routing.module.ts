@@ -16,7 +16,8 @@ const routes: Routes = [
         {path: 'admin', module: AdminModule},
         {path: 'search', module: SearchModule},
         {path: 'images', module: ImagesModule},
-        {path: 'contrib', module: ContribModule}
+        {path: 'contrib', module: ContribModule},
+        {path: 'browse', module: BrowseModule},
     ]}
 ];
 
