@@ -16,13 +16,28 @@ div.work-box {
         padding: 3rem 3rem 1rem 3rem;
     }
 
+    @media(min-width: 400px) {
+        div.image-container {
+            display: grid; 
+            padding: 2.5rem;
+        }
+    }
+
+    @media(min-width: 550px) {
+        div.image-container {
+            display: grid; 
+            padding: 0rem;
+            margin: 2.5rem;
+        }
+    }    
+
     img {
+        align-self: center;
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
         border: 1px solid whitesmoke;
-        box-shadow: var(--site-dropshadow);
-        margin: 2.5rem 2.5rem 0.5rem 2.5rem;
+        box-shadow: var(--site-dropshadow);        
     }
 
     div.work-header {
