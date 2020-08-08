@@ -310,9 +310,15 @@ export class WorksService {
      * @param authorId The author of the work
      */
     async approveWork(workId: string, authorId: string): Promise<void> {
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved}).where("audit.isDeleted", false)
+        return await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
+            .where("audit.isDeleted", false)
             .then(async () => {
-                const workCount = await this.workModel.countDocuments({author: authorId}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
+                console.log(`Trying to count works.`);
+                console.log(authorId);
+                const workCount = await this.workModel.countDocuments({author: authorId})
+                    .where('audit.isDeleted', false)
+                    .where('audit.published', models.ApprovalStatus.Approved);
+                console.log(workCount);
                 await this.usersService.updateWorkCount(authorId, workCount);
             });
     }

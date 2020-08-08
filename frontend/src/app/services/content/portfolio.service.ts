@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { User } from 'src/app/models/users';
 import { Blog } from 'src/app/models/blogs';
+import { Work } from 'src/app/models/works';
 
 @Injectable({
   providedIn: 'root'
@@ -42,14 +43,19 @@ export class PortfolioService {
     }));
   }
 
-  /*getWorksList(id: number) {
-    return this.http.get<Work[]>(`/api/content/portfolio/get-works-list/id?id=` + id, {observe: 'response', withCredentials: true})
+  /**
+   * Fetches a user's published works for display in their portfolio.
+   * 
+   * @param userId The user ID of the requested portfolio
+   */
+  public getWorksList(userId: string) {
+    return this.http.get<Work[]>(`${this.url}/get-works-list/${userId}`, {observe: 'response', withCredentials: true})
       .pipe(map(works => {
-        return works.body.data;
+        return works.body;
       }), catchError(err => {
         return throwError(err);
-      }))
-  }*/
+      }));
+  }
 
   /**
    * Fetches a published blog from the database given its ID.
