@@ -354,4 +354,17 @@ export class WorksService {
     async fetchNewPublishedWorks(): Promise<models.Work[]> {
         return await this.workModel.find().where('audit.published').equals(models.ApprovalStatus.Approved).sort({ 'createdAt': -1 });
     }
+
+    /**
+     * Grabs a list of all works by this user.
+     * 
+     * @param userId The user whose works we're fetching
+     */
+    async getWorksList(userId: string): Promise<models.Work[]> {
+        return await this.workModel.find()
+            .where('author').equals(userId)
+            .where('audit.published').equals(models.ApprovalStatus.Approved)
+            .where('audit.isDeleted').equals(false)
+            .sort({ 'createdAt': -1 });
+    }
 }
