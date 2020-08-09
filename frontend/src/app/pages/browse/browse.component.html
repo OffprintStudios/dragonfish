@@ -5,8 +5,39 @@
     <hr class="header-divider">
 </div>
 
-<div style="text-align: center; margin-top: 2rem;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
-</div>
+<ng-container [ngSwitch]="loadingState">
+    <div *ngSwitchCase="'notstarted'">not started yet, hol' up</div>
+
+    <div *ngSwitchCase="'success'">
+        <div class="all-works-feed" *ngFor="let work of works">
+            <app-short-work-card 
+                id={{work._id}}
+                authorId={{work.author._id}}
+                title="{{work.title}}"
+                author="{{work.author.username}}"
+                authorAvatarUrl="{{work.author.profile.avatar}}"
+                coverImageUrl="{{work.meta.coverArt}}"
+                [categories]="work.meta.category"
+                [genres]="work.meta.genres"
+                [fandoms]="work.meta.fandoms"
+                shortDesc="{{work.shortDesc}}"
+                creationDate="{{work.createdAt}}"
+                views="{{work.stats.views}}"
+                likes="{{work.stats.likes}}"
+                dislikes="{{work.stats.dislikes}}"
+                status="{{work.meta.status}}"
+                rating="{{work.meta.rating}}">
+            </app-short-work-card>
+        </div>
+    </div>
+    
+    <div *ngSwitchCase="'loading'" class="loader">
+        <div class="lds-dual-ring"></div>
+    </div>    
+
+    <div *ngSwitchCase="'failure'">
+        oh noes, no works found
+    </div>
+</ng-container>
+
+

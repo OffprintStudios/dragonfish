@@ -36,6 +36,7 @@ import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
   UsersComponent, AuditComponent } from './pages/dashboard';
+import { ShortWorkCardComponent } from './components/short-work-card/short-work-card.component';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -76,7 +77,7 @@ const toolbarOptions = [
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
-    NewsManagementComponent, DocsComponent, UploadCoverartComponent
+    NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
