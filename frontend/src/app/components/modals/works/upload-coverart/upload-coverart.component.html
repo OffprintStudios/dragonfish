@@ -3,14 +3,14 @@
     <hr>
     <input type="file" style="display: none;" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" ng2FileSelect [uploader]="uploader" #coverartInput/>
     
-    <div style="text-align: center;" *ngIf="!uploading; else isUploading">
+    <div style="text-align: center;" *ngIf="!loading; else isLoading">
         <button (click)="coverartInput.click()">Select Cover Art</button>
         <button style="margin-left: 2rem;" class="button-primary" *ngIf="croppedImage !== ''" (click)="uploadCoverArt()">Upload</button>
         <button style="margin-left: 2rem;" type="button" (click)="cancel()">Cancel</button>
     </div>
 
-    <ng-template #isUploading>
-        <div class="loader" *ngIf="uploading">
+    <ng-template #isLoading>
+        <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
     </ng-template>
@@ -20,9 +20,9 @@
         [maintainAspectRatio]="false"
         [containWithinAspectRatio]="true"
         [aspectRatio]="1 / 1.41421"
-        format="png"
+        [format]="fileFormat"
+        [(cropper)]="cropperDimensions"
         (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"
-        (cropperReady)="cropperReady($event)"
+        (imageLoaded)="imageLoaded()"        
         (loadImageFailed)="loadImageFailed()"></image-cropper>
 </div>
