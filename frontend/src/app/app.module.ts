@@ -38,6 +38,7 @@ import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.com
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
   UsersComponent, AuditComponent } from './pages/dashboard';
 import { ShortWorkCardComponent } from './components/short-work-card/short-work-card.component';
+import { ToLocaleStringPipe } from './pipes/to-locale-string.pipe';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -79,7 +80,7 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

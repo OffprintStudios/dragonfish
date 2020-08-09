@@ -18,11 +18,11 @@ export class ShortWorkCardComponent implements OnInit {
   @Input() views: number;
   @Input() likes: number;
   @Input() dislikes: number;  
+  @Input() words: number;
   
   constructor() { }
 
-  ngOnInit(): void {
-    console.log("Initted.");
+  ngOnInit(): void {    
   }
 
 }

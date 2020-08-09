@@ -25,7 +25,8 @@
                     creationDate="{{work.createdAt}}"
                     views="{{work.stats.views}}"
                     likes="{{work.stats.likes}}"
-                    dislikes="{{work.stats.dislikes}}">
+                    dislikes="{{work.stats.dislikes}}"
+                    [words]="work.stats.totWords">
                 </app-short-work-card>
             </div>
         </ng-container>
