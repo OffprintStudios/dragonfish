@@ -8,6 +8,7 @@ import * as models from 'src/app/models/works';
 import { AlertsService } from 'src/app/modules/alerts';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpError } from 'src/app/models/site';
+import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root'
@@ -220,8 +221,16 @@ export class WorksService {
       uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
 
         if (status !== 201) {
-          const error: HttpError = JSON.parse(response);
-          return observer.error(error);
+          const errorMessage: HttpError = this.tryParseJsonHttpError(response);
+          if (!errorMessage) {
+            const juryRiggedError: HttpError = {
+              statusCode: status, 
+              error: response
+            };
+            return observer.error(juryRiggedError);
+          } else  {
+            return observer.error(errorMessage);
+          }
         }
         
         // If we ever need to retun the modified work, the return type on this
@@ -233,5 +242,14 @@ export class WorksService {
 
       uploader.uploadAll();
     });    
+  }
+
+  private tryParseJsonHttpError(response: string): HttpError | null {
+    try {
+      const error: HttpError = JSON.parse(response);
+      return error;
+    } catch (err) {
+      return null;
+    }
   }
 }

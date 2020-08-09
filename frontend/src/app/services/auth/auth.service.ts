@@ -178,8 +178,16 @@ export class AuthService {
       uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
 
         if (status !== 201) {
-          const error: HttpError = JSON.parse(response);
-          return observer.error(error);
+          const errorMessage: HttpError = this.tryParseJsonHttpError(response);
+          if (!errorMessage) {
+            const juryRiggedError: HttpError = {
+              statusCode: status, 
+              error: response
+            };
+            return observer.error(juryRiggedError);
+          } else  {
+            return observer.error(errorMessage);
+          }
         }
 
         // parse out the new user and set it
@@ -192,5 +200,14 @@ export class AuthService {
 
       uploader.uploadAll();
     });
+  }
+
+  private tryParseJsonHttpError(response: string): HttpError | null {
+    try {
+      const error: HttpError = JSON.parse(response);
+      return error;
+    } catch (err) {
+      return null;
+    }
   }
 }
