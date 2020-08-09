@@ -261,10 +261,9 @@ export class UsersService {
             $text: { $search: searchParameters.text }
         };
 
-        const results = await this.userModel.find(filter,
-            {
-                searchScore: { $meta: 'textScore' }
-            }).sort({ score: { $meta: 'textScore' } })
+        const results = await this.userModel.find(filter)
+            .select({searchScore: {$meta: 'textScore'}})
+            .sort({ score: { $meta: 'textScore' } })
             .sort({ 'stats.views': -1 })
             .select('username profile.avatar stats.works stats.blogs stats.watchers stats.watching')
             .skip((p.page - 1) * p.pageSize)
