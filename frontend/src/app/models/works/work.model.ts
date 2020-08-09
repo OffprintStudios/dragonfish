@@ -17,14 +17,7 @@ export interface Work {
     readonly title: string;
     readonly shortDesc: string;
     readonly longDesc: string;
-    readonly meta: {
-        readonly category: Categories;
-        readonly fandoms?: Fandoms[];
-        readonly genres: GenresFiction[] | GenresPoetry[];
-        readonly rating: ContentRating;
-        readonly status: WorkStatus;
-        readonly coverArt?: string;
-    };
+    readonly meta: WorkMetadata;
     readonly stats: {
         readonly totWords: number;
         readonly likes: number;
@@ -50,3 +43,12 @@ export interface SectionInfo {
     };
     readonly createdAt: Date;
 }
+
+export interface WorkMetadata {
+    readonly category: Categories;
+    readonly fandoms?: Fandoms[];
+    readonly genres: GenresFiction[] | GenresPoetry[];
+    readonly rating: ContentRating;
+    readonly status: WorkStatus;
+    readonly coverArt?: string;
+};

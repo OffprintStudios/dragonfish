@@ -7,10 +7,30 @@ div.browse-container {
         h2 {
             display: inline-block;
             margin-bottom: 0;
-        }
+        }        
     }
 
     hr.header-divider {
         margin-top: 0;
+        margin-bottom: 1.5rem;
     }
+
+    h3.new-works-header {
+        margin-bottom: 1rem;
+    }
+
+    div.all-works-feed {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        app-short-work-card {
+            width: 300px;
+            padding: 5px;
+        }
+    }    
+}
+
+div.loader {
+    text-align: center;
+    margin-top: 2rem;
 }
