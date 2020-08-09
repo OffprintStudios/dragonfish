@@ -6,3 +6,4 @@ export { ChangePassword } from './change-password.model';
 export { ChangeProfile } from './change-profile.model';
 export { Roles } from './roles.enum';
 export { JwtPayload } from './jwt-payload.model';
+export { SearchUser } from './search-user.model';

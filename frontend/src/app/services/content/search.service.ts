@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import { SearchUser } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts/alerts.service';
+import { SearchResults } from 'src/app/models/admin';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +14,14 @@ export class SearchService {
   private url: string = `/api/search`
 
   constructor(private http: HttpClient, private alertsService: AlertsService) { }
-
-  public testQueries(query: string, pageNum: number) {
-    return this.http.get(`${this.url}/find-results?query=${query}&pageNum=${pageNum}`, {observe: 'response', withCredentials: true})
+  
+  public getUsersFromQuery(query: string, pageNum: number, pageSize: number) {
+    return this.http.get<SearchResults<SearchUser>>(`${this.url}/find-user-results?query=${query}&pageNum=${pageNum}&pageSize=${pageSize}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
+        console.log(res.body);
         return;
       }), catchError(err => {
+        this.alertsService.error(`Something went wrong performing this search on users. Try again in a little bit.`);
         return throwError(err);
       }));
   }

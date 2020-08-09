@@ -14,12 +14,12 @@ export class SearchService {
         private readonly usersService: UsersService) { }
 
     
-    async searchUsers(query: string, pageNum: number) {
+    async searchUsers(query: string, pageNum: number, pageSize: number): Promise<SearchResults<SearchUser>> {
         const parameters: SearchParameters = {
             text: query,
-            pagination: new Pagination({page: `${pageNum}`, pageSize: `25`})
+            pagination: new Pagination({page: `${pageNum}`, pageSize: `${pageSize}`})
         };
-        // return await this.usersService.findRelatedUsers(parameters);
+        return await this.usersService.findRelatedUsers(parameters);
     }
 
     async searchBlogs() {
