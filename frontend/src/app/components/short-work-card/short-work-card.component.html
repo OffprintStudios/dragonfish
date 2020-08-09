@@ -1,25 +1,34 @@
 <div class="short-work-card-container">
+  <!-- Row 1: Title and author -->
+  <div class="work-header">
+    <h1><a [routerLink]="['/work', id, title | slugify]">{{ title }}</a></h1>
+    <h2>by<a [routerLink]="['/work', authorId, author | slugify]">{{ author }}</a></h2>
+  </div>
 
-    <!-- Row 1: Title and author -->
-    <div class="work-header">
-        <h1><a [routerLink]="['/work', id, title | slugify]">{{title}}</a></h1>
-        <h2>by <a [routerLink]="['/work', authorId, author | slugify]">{{author}}</a></h2>
-    </div>    
-
-    <!-- Row 2: Cover art, Category, Genre, Fandoms -->
-    <img class="cover-art" *ngIf="coverImageUrl" [src]="coverImageUrl"/>
-    <div class="category-genre" [ngClass]="{ 'no-cover-art': !coverImageUrl, 'cover-art': coverImageUrl }">
-        {{ categories | fixCategories }}<span>//</span>{{ genres | separateEntities:categories }}<div style="display: inline-block;" *ngIf="fandoms.length > 0"><span>//</span>{{ fandoms | separateEntities }}</div>
+  <!-- Row 2: Cover art, 
+        Category, Genre, Fandoms 
+        Short description
+    -->
+  <div class="work-details">
+    <img class="cover-art" *ngIf="coverImageUrl" [src]="coverImageUrl" />
+    <div class="category-genre">
+      {{ categories | fixCategories }}<span>//</span
+      >{{ genres | separateEntities: categories }}
+      <div style="display: inline-block;" *ngIf="fandoms.length > 0">
+        <span>//</span>{{ fandoms | separateEntities }}
+      </div>
     </div>
-
-    <!-- Row 3: Short desc -->
-    <div class="short-description" [ngClass]="{ 'no-cover-art': !coverImageUrl, 'cover-art': coverImageUrl }">        
-        {{shortDesc}}
+    <div
+      class="short-description"
+      [ngClass]="{ 'no-cover-art': !coverImageUrl, 'cover-art': coverImageUrl }">
+      {{ shortDesc }}
     </div>
+  </div>
 
-    <!-- Row 4: Meta info -->
-    <div class="meta-info">
-        here is where the meta info goes
-    </div>
-
+  <!-- Row 3: Meta info -->
+  <div class="meta-info">
+    <i-feather name="calendar"></i-feather> {{ creationDate | date: 'shortDate'
+    }}<span>//</span><i-feather name="eye"></i-feather> {{ views
+    }}<span>//</span>{{ status }}<span>//</span>{{ rating }}
+  </div>
 </div>

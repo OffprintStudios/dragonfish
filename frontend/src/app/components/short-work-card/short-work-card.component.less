@@ -1,97 +1,91 @@
 div.short-work-card-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto 1px auto auto;
-    background-color: var(--site-accent);
-    border: 1px solid var(--site-borders);
-    box-shadow: var(--site-dropshadow);
-    min-width: 290px;
-    max-width: 95%;    
-    padding: 1.5rem;
+  display: grid;
+  grid-template-rows: auto auto auto;
+  background-color: var(--site-accent);
+  border: 1px solid var(--site-borders);
+  box-shadow: var(--site-dropshadow);
+  min-width: 290px;
+  max-width: 95%;
+  padding: 1.5rem;
 
-    .work-header {
-        grid-column-end: span 2;
-        h1 {
-            display: inline-block;
-            color: whitesmoke;
-            font-weight: 500;
-            margin: 0;
-            a {
-                color: whitesmoke;
-                padding: 10px 5px 0 5px;
-                &:hover {
-                    background-color: var(--site-accent-hover);
-                }
-            }
+  .work-header {
+    h1 {
+      display: inline;
+      color: whitesmoke;
+      font-weight: 600;
+      font-size: 3.5rem;
+      margin: 0;
+      a {
+        color: whitesmoke;
+        padding: 10px 5px 0 5px;
+        &:hover {
+          background-color: var(--site-accent-hover);
         }
-    
-        h2 {
-            display: inline-block;
-            margin: 0 0 0 1rem;
-            font-size: 20px;
-            font-style: italic;
-            color: whitesmoke;
-            a {
-                color: whitesmoke;
-                padding: 5px 5px 2px 2px;
-                &:hover {
-                    background-color: var(--site-accent-hover);
-                }
-            }
-            span {
-                margin: 0 0.5rem 0 0.5rem;
-            }            
-        }
+        box-decoration-break: clone;
+      }
     }
-    
+
+    h2 {
+      display: inline;
+      margin: 0 0 0 1rem;
+      font-size: 20px;
+      font-style: italic;
+      color: whitesmoke;
+      a {
+        color: whitesmoke;
+        padding: 5px 5px 2px 2px;
+        &:hover {
+          background-color: var(--site-accent-hover);
+        }
+      }
+      span {
+        margin: 0 0.5rem 0 0.5rem;
+      }
+    }
+  }
+
+  .work-details {
+    grid-row: 2;
     img.cover-art {
-        grid-column: 1;
-        grid-row: 2;
-        grid-row-end: 4;
-        align-self: center;        
-        max-height: 150px;
-        max-width: 100px;
-        border: 1px solid whitesmoke;
-        box-shadow: var(--site-dropshadow);
+      float: left;
+      margin-right: 1rem;
+      max-height: 150px;
+      max-width: 100px;
+      border: 1px solid whitesmoke;
+      box-shadow: var(--site-dropshadow);
     }
-
     div.category-genre {
-        &.no-cover-art {         
-            grid-column: 1 / span 2;                           
-        }       
-        &.cover-art {             
-            grid-column: 2;
-            margin-left: 1.5rem;
-        }
-        align-self: start;
-        grid-row: 2;
-        border-top: 1px solid whitesmoke;
-        border-bottom: 1px solid whitesmoke;
-        color: whitesmoke;  
-        font-size: 11px;      
-        span {
-            margin: 0 0.75rem 0 0.75rem;
-        }
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 1px solid whitesmoke;
+      border-bottom: 1px solid whitesmoke;
+      padding: 0.5rem 0rem;
+      color: whitesmoke;
+      font-size: 12px;
+      span {
+        margin: 0 0.75rem 0 0.75rem;
+      }
     }
 
     div.short-description {
-        &.no-cover-art {         
-            grid-column: 1 / span 2;
-            margin: 1.5rem 1.5rem 1.5rem 0rem
-        }       
-        &.cover-art {             
-            grid-column: 2;            
-            margin: 1.5rem;
-        }        
-        grid-row: 3;
-        align-self: start;
-        text-align: justify;        
-        color: whitesmoke;
-
+      color: whitesmoke;
     }
+  }
 
-    div.meta-info {
-        grid-row: 4;
-        grid-column: span 2;
+  div.meta-info {
+    grid-row: 3;
+    margin-top: 1rem;
+    padding: 0.5rem 0rem;
+    border-top: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+    color: whitesmoke;
+    font-size: 12px;
+    span {
+      margin: 0 0.75rem 0 0.75rem;
     }
+    i-feather {
+      height: 14px;
+      width: 14px;
+    }
+  }
 }
