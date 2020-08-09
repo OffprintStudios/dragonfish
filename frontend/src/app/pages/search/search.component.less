@@ -13,11 +13,15 @@ div.search-nav {
         
         input[type=text] {
             background-color: var(--site-accent-hover);
-            border: none;
             color: whitesmoke;
             box-shadow: none;
             font-size: 32px;
-            padding: 5px;
+            padding: 5px 20px 5px 20px;
+
+            &::placeholder {
+                font-style: italic;
+                color: whitesmoke;
+            }
         }
     }
 
