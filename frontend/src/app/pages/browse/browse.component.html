@@ -2,11 +2,41 @@
     <div class="browse-header">
         <h2>Browse</h2>
     </div>
-    <hr class="header-divider">
-</div>
 
-<div style="text-align: center; margin-top: 2rem;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
+    <hr class="header-divider">
+
+    <h3 class="new-works-header">New works</h3>
+
+    <ng-container [ngSwitch]="loadingState">
+        <div *ngSwitchCase="'notstarted'">
+            Just a second...
+        </div>
+    
+        <ng-container *ngSwitchCase="'success'">
+            <div class="all-works-feed">
+                <app-short-work-card *ngFor="let work of works" 
+                    id={{work._id}}
+                    authorId={{work.author._id}}
+                    title="{{work.title}}"
+                    author="{{work.author.username}}"
+                    authorAvatarUrl="{{work.author.profile.avatar}}"
+                    [meta]="work.meta"
+                    shortDesc="{{work.shortDesc}}"
+                    creationDate="{{work.createdAt}}"
+                    views="{{work.stats.views}}"
+                    likes="{{work.stats.likes}}"
+                    dislikes="{{work.stats.dislikes}}">
+                </app-short-work-card>
+            </div>
+        </ng-container>
+        
+        <div *ngSwitchCase="'loading'" class="loader">
+            <div class="lds-dual-ring"></div>
+        </div>    
+    
+        <div *ngSwitchCase="'failure'">
+            Failed to retrieve list of stories.
+        </div>
+    </ng-container>
+
 </div>
