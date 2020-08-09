@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
 import { SearchService } from 'src/app/services/content';
 
 @Component({
@@ -8,19 +10,8 @@ import { SearchService } from 'src/app/services/content';
 })
 export class SearchComponent implements OnInit {
 
-  constructor(private searchService: SearchService) { }
+  constructor(private searchService: SearchService, public route: ActivatedRoute) { }
 
   ngOnInit(): void {
-  }
-
-  testQueries() {
-    const testQuery = `test query`;
-    const testPage = 1;
-
-    this.searchService.testQueries(testQuery, testPage).subscribe(() => {
-      console.log(`Success!`);
-    }, () => {
-      console.log(`Failure!`);
-    });
   }
 }
