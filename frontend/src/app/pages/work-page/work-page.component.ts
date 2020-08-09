@@ -7,6 +7,8 @@ import * as workModels from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
+import { QueueService } from 'src/app/services/admin';
+import { Decision } from 'src/app/models/admin';
 
 @Component({
   selector: 'app-work-page',
@@ -24,7 +26,7 @@ export class WorkPageComponent implements OnInit {
   updateCoverArt: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    public route: ActivatedRoute, private router: Router, private toppy: Toppy) {
+    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -169,5 +171,14 @@ export class WorkPageComponent implements OnInit {
    */
   openCoverArtUpload() {
     this.updateCoverArt.open();
+  }
+
+  /**
+   * Submits a work for approval in the approval queue.
+   */
+  submitWorkForApproval() {
+    this.queueService.submitWork(this.workId).subscribe(() => {
+      this.fetchData();
+    });
   }
 }

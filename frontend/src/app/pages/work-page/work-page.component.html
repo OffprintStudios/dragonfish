@@ -195,7 +195,13 @@
     <span class="controls-left">
         <button class="add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']"><i-feather class="plus-section" name="plus"></i-feather>Section</button>
         <button class="user-buttons" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
-        <button class="user-buttons right" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
+        <button class="user-buttons" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
+        <div style="display: inline-block;" [ngSwitch]="workData.audit.published">
+            <button class="user-buttons right active" *ngSwitchCase="'Approved'"><i-feather name="book-open"></i-feather></button>
+            <button class="user-buttons right" *ngSwitchCase="'Pending'"><i-feather name="clock"></i-feather></button>
+            <button class="user-buttons right" *ngSwitchCase="'Rejected'"><i-feather name="x"></i-feather></button>
+            <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather name="book"></i-feather></button>
+        </div>
     </span>
     <span class="controls-right">
         <button class="user-buttons delete" style="margin-right: 0;" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
