@@ -12,7 +12,7 @@ export class ShortWorkCardComponent implements OnInit {
   @Input() title: string;
   @Input() author: string;
   @Input() authorAvatarUrl: string;
-  @Input() meta: any;
+  @Input() meta: WorkMetadata;
   @Input() shortDesc: string;
   @Input() creationDate: Date;
   @Input() views: number;
