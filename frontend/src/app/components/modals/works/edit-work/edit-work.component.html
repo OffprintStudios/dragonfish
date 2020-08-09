@@ -45,6 +45,7 @@
                     bindValue="key"
                     placeholder="Select one"
                     formControlName="thisCategory"
+                    [searchable]="false"
                     class="custom"></ng-select>
 
         <!--Fandom-->
@@ -72,6 +73,7 @@
                         placeholder="Select genres"
                         clearAllText="Clear"
                         formControlName="theseGenres"
+                        [searchable]="false"
                         class="custom"></ng-select>
         </div>
 
@@ -84,6 +86,7 @@
                         placeholder="Select genre"
                         clearAllText="Clear"
                         formControlName="theseGenres"
+                        [searchable]="false"
                         class="custom"></ng-select>
         </div>
 
@@ -96,6 +99,7 @@
                             placeholder="Select rating"
                             clearAllText="Clear"
                             formControlName="rating"
+                            [searchable]="false"
                             class="custom"></ng-select>
             </div>
             <div class="six columns">
@@ -106,6 +110,7 @@
                             placeholder="Select status"
                             clearAllText="Clear"
                             formControlName="status"
+                            [searchable]="false"
                             class="custom"></ng-select>
             </div>
         </div>
