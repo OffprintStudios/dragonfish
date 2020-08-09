@@ -16,7 +16,7 @@ function parseFiniteIntOrDefault(s: string, d?: number): number {
 
 export class Pagination {
     readonly page: number; // 1-indexed
-    readonly pageSize: number;
+    readonly pageSize?: number;
     constructor(params: {[key: string]: string}) {
         if (params.page) {
             let parsed = parseFiniteIntOrDefault(params.page, 1);

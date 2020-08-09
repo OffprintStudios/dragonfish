@@ -16,12 +16,10 @@ import { DarkCrimson, Aqua, DarkAqua, Royal, DarkRoyal, Steel, MidnightField, Au
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('userMenu', {static: false}) userMenu: ElementRef;
-  @ViewChild('searchMenu', {static: false}) searchMenu: ElementRef;  
 
   title = 'offprint';
   currentUser: User;
   userMenuDropdown: ToppyControl;
-  searchMenuDropdown: ToppyControl;
 
   rotatingSlogan: string;
 
@@ -60,12 +58,6 @@ export class AppComponent implements OnInit, AfterViewInit {
       .config({closeOnDocClick: true, closeOnEsc: true})
       .content(UserMenuComponent)
       .create();
-    
-    this.searchMenuDropdown = this.toppy
-      .position(new RelativePosition({src: this.searchMenu.nativeElement, width: 'auto', placement: OutsidePlacement.BOTTOM_RIGHT}))
-      .config({closeOnDocClick: true, closeOnEsc: true})
-      .content(SearchMenuComponent)
-      .create();
   }
 
   /**
@@ -73,13 +65,6 @@ export class AppComponent implements OnInit, AfterViewInit {
    */
   openUserMenu() {
     this.userMenuDropdown.open();
-  }
-
-  /**
-   * Opens the search menu dropdown.
-   */
-  openSearchMenu() {
-    this.searchMenuDropdown.open();
   }
 
   /**
