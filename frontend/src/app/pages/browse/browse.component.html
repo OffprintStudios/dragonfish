@@ -3,41 +3,42 @@
         <h2>Browse</h2>
     </div>
     <hr class="header-divider">
-</div>
 
-<ng-container [ngSwitch]="loadingState">
-    <div *ngSwitchCase="'notstarted'">not started yet, hol' up</div>
-
-    <div *ngSwitchCase="'success'">
-        <div class="all-works-feed" *ngFor="let work of works">
-            <app-short-work-card 
-                id={{work._id}}
-                authorId={{work.author._id}}
-                title="{{work.title}}"
-                author="{{work.author.username}}"
-                authorAvatarUrl="{{work.author.profile.avatar}}"
-                coverImageUrl="{{work.meta.coverArt}}"
-                [categories]="work.meta.category"
-                [genres]="work.meta.genres"
-                [fandoms]="work.meta.fandoms"
-                shortDesc="{{work.shortDesc}}"
-                creationDate="{{work.createdAt}}"
-                views="{{work.stats.views}}"
-                likes="{{work.stats.likes}}"
-                dislikes="{{work.stats.dislikes}}"
-                status="{{work.meta.status}}"
-                rating="{{work.meta.rating}}">
-            </app-short-work-card>
+    <ng-container [ngSwitch]="loadingState">
+        <div *ngSwitchCase="'notstarted'">
+            Just a second...
         </div>
-    </div>
     
-    <div *ngSwitchCase="'loading'" class="loader">
-        <div class="lds-dual-ring"></div>
-    </div>    
+        <ng-container *ngSwitchCase="'success'">
+            <div class="all-works-feed">
+                <app-short-work-card *ngFor="let work of works" 
+                    id={{work._id}}
+                    authorId={{work.author._id}}
+                    title="{{work.title}}"
+                    author="{{work.author.username}}"
+                    authorAvatarUrl="{{work.author.profile.avatar}}"
+                    coverImageUrl="{{work.meta.coverArt}}"
+                    [categories]="work.meta.category"
+                    [genres]="work.meta.genres"
+                    [fandoms]="work.meta.fandoms"
+                    shortDesc="{{work.shortDesc}}"
+                    creationDate="{{work.createdAt}}"
+                    views="{{work.stats.views}}"
+                    likes="{{work.stats.likes}}"
+                    dislikes="{{work.stats.dislikes}}"
+                    status="{{work.meta.status}}"
+                    rating="{{work.meta.rating}}">
+                </app-short-work-card>
+            </div>
+        </ng-container>
+        
+        <div *ngSwitchCase="'loading'" class="loader">
+            <div class="lds-dual-ring"></div>
+        </div>    
+    
+        <div *ngSwitchCase="'failure'">
+            Failed to retrieve list of stories.
+        </div>
+    </ng-container>
 
-    <div *ngSwitchCase="'failure'">
-        oh noes, no works found
-    </div>
-</ng-container>
-
-
+</div>
