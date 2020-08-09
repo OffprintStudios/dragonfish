@@ -12,17 +12,17 @@ export class ShortWorkCardComponent implements OnInit {
   @Input() title: string;
   @Input() author: string;
   @Input() authorAvatarUrl: string;
-  @Input() meta: any;
+  @Input() meta: WorkMetadata;
   @Input() shortDesc: string;
   @Input() creationDate: Date;
   @Input() views: number;
   @Input() likes: number;
   @Input() dislikes: number;  
+  @Input() words: number;
   
   constructor() { }
 
-  ngOnInit(): void {
-    console.log("Initted.");
+  ngOnInit(): void {    
   }
 
 }

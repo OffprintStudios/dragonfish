@@ -11,8 +11,8 @@ export class StringifyMetaPipe implements PipeTransform {
      */
     transform(value: WorkMetadata) {
         const categoryString: string = Categories[value.category];
-        if (Categories[value.category] === Categories.Poetry) {
-            return `${categoryString} // ${GenresPoetry[value[0]]}`;
+        if (Categories[value.category] === Categories.Poetry) {            
+            return `${categoryString} // ${GenresPoetry[value.genres[0]]}`;
         }
         
         const genreString: string = value.genres.length === 1 
