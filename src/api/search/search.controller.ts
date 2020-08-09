@@ -15,6 +15,7 @@ export class SearchController {
     async findUserRequests(@Query('query') query: string,
         @Query('pageNum') pageNum: number,
         @Query('pageSize') pageSize: number) {
+        console.log(`Query: ${query}\nPage number: ${pageNum}\nPage size: ${pageSize}`);
         return await this.searchService.searchUsers(query, pageNum, pageSize);
     }
 

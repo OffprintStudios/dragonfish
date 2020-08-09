@@ -26,8 +26,8 @@ export class SearchComponent implements OnInit {
     const query = this.searchField.query.value;
     console.log(query);
 
-    this.searchService.getUsersFromQuery(query, 1, 10).subscribe(() => {
+    /*this.searchService.getUsersFromQuery(query, 1, 10).subscribe(() => {
       return;
-    })
+    })*/
   }
 }
