@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Categories, GenresPoetry, GenresFiction, Fandoms, WorkStatus, ContentRating, WorkMetadata } from 'src/app/models/works';
+import { WorkMetadata } from 'src/app/models/works';
 
 @Component({
   selector: 'app-short-work-card',
