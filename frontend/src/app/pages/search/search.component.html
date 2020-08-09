@@ -1,0 +1,12 @@
+<div class="search-nav">
+    <div class="search-bar">
+        <input type="text" class="u-full-width">
+    </div>
+    <div class="search-nav-items">
+        <a [routerLink]="['/search/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="book-open"></i-feather></span>Works</a>
+        <a [routerLink]="['/search/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>Blogs</a>
+        <a [routerLink]="['/search/users']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Users</a>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

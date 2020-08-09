@@ -19,6 +19,7 @@ import { RegisterComponent } from './pages/account';
 
 import { AuthGuard } from './services/auth';
 import { Roles } from './models/users';
+import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 
 const routes: Routes = [
@@ -60,6 +61,11 @@ const routes: Routes = [
     {path: 'users', canActivate: [AuthGuard], component: UsersComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
     {path: 'audit-log', canActivate: [AuthGuard], component: AuditComponent, data: {roles: [Roles.Moderator, Roles.Admin]}}
   ]},
+  {path: 'search', component: SearchComponent, children: [
+    {path: 'users', component: FindUsersComponent},
+    {path: 'blogs', component: FindBlogsComponent},
+    {path: 'works', component: FindWorksComponent},
+  ]}
 ];
 
 @NgModule({

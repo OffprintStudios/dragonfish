@@ -28,6 +28,7 @@ import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
   UnpublishedSectionPageComponent } from './pages/work-page';
+import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
@@ -77,7 +78,8 @@ const toolbarOptions = [
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
-    NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent
+    NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent, SearchComponent, FindUsersComponent,
+    FindWorksComponent, FindBlogsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

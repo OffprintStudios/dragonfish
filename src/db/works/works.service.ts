@@ -289,17 +289,15 @@ export class WorksService {
      * @param workInfo The work we're modifying
      */
     async editWork(user: any, workInfo: models.EditWork): Promise<void> {
-        await this.workModel.findOneAndUpdate({"_id": workInfo._id, "author": user.sub}, {
-            title: workInfo.title,
-            shortDesc: workInfo.shortDesc,
-            longDesc: workInfo.longDesc,
-            meta: {
-                category: workInfo.category,
-                fandoms: workInfo.fandoms,
-                genres: workInfo.genres,
-                rating: workInfo.rating,
-                status: workInfo.status,
-            },
+        await this.workModel.updateOne({"_id": workInfo._id, "author": user.sub}, {
+            'title': workInfo.title,
+            'shortDesc': workInfo.shortDesc,
+            'longDesc': workInfo.longDesc,
+            'meta.category': workInfo.category,
+            'meta.fandoms': workInfo.fandoms,
+            'meta.genres': workInfo.genres,
+            'meta.rating': workInfo.rating,
+            'meta.status': workInfo.status,
         }).where("audit.isDeleted", false);
     }
 
@@ -310,9 +308,12 @@ export class WorksService {
      * @param authorId The author of the work
      */
     async approveWork(workId: string, authorId: string): Promise<void> {
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved}).where("audit.isDeleted", false)
+        return await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
+            .where("audit.isDeleted", false)
             .then(async () => {
-                const workCount = await this.workModel.countDocuments({author: authorId}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
+                const workCount = await this.workModel.countDocuments({author: authorId})
+                    .where('audit.isDeleted', false)
+                    .where('audit.published', models.ApprovalStatus.Approved);
                 await this.usersService.updateWorkCount(authorId, workCount);
             });
     }

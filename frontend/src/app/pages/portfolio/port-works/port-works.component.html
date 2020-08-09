@@ -3,10 +3,75 @@
         <h2>Works</h2>
     </div>
     <hr class="header-divider">
-</div>
 
-<div style="text-align: center; margin-top: 2rem;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
+    <div class="loader" *ngIf="loading">
+        <div class="lds-dual-ring"></div>
+    </div>
+    
+    <div *ngIf="!loading && !worksArePresent()">
+        <div style="margin-top: 2rem; text-align: center;" *ngIf="currentUserIsSame()">
+            <h3 style="margin-bottom: 0;">You haven't submitted any works yet.</h3>
+            <p style="margin-top: 0;">Head on over to the My Works menu on the home page to get started!</p>
+        </div>
+        <div style="margin-top: 2rem; text-align: center;" *ngIf="!currentUserIsSame()">
+            <h3 style="margin-bottom: 0;">This user hasn't submitted any works yet.</h3>
+            <p style="margin-top: 0;">Check back again later!</p>
+        </div>
+    </div>
+
+    <div *ngFor="let workData of portWorksData">
+        <div class="work-box" *ngIf="!loading">
+            <!--With cover art-->
+            <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
+                <div class="three columns image-container">
+                    <img src="{{ workData.meta.coverArt }}" />
+                </div>
+                <div class="nine columns" style="margin: 3rem 0 1rem 1rem; padding-right: 3rem;">
+                
+                    <!--Work title 'n such-->
+                    <div class="work-header">
+                        <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
+                        <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
+                        <div class="category-genre">
+                            {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
+                        </div>
+                    </div>
+    
+                    <!--Long description box-->
+                    <div class="long-description">
+                        <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                    </div>
+    
+                    <!--Work stats-->
+                    <div class="work-stats">
+                        Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
+                    </div>
+                </div>
+            </div>
+    
+            <!--Without cover art-->
+            <ng-template #noCoverArt>
+                <div class="no-cover-art-work-container">
+                    <!--Work title 'n such-->
+                    <div class="work-header">
+                        <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
+                        <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
+                        <div class="category-genre">
+                            {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
+                        </div>
+                    </div>
+    
+                    <!--Long description box-->
+                    <div class="long-description">
+                        <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                    </div>
+    
+                    <!--Work stats-->
+                    <div class="work-stats">
+                        Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
 </div>

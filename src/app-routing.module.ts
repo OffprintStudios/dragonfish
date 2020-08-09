@@ -27,6 +27,7 @@ const routes: Routes = [
         AuthModule,
         ContentModule,
         AdminModule,
+        SearchModule,
         ImagesModule,
         ContribModule,
         BrowseModule,
