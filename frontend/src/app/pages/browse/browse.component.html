@@ -20,17 +20,12 @@
                     title="{{work.title}}"
                     author="{{work.author.username}}"
                     authorAvatarUrl="{{work.author.profile.avatar}}"
-                    coverImageUrl="{{work.meta.coverArt}}"
-                    [categories]="work.meta.category"
-                    [genres]="work.meta.genres"
-                    [fandoms]="work.meta.fandoms"
+                    [meta]="work.meta"
                     shortDesc="{{work.shortDesc}}"
                     creationDate="{{work.createdAt}}"
                     views="{{work.stats.views}}"
                     likes="{{work.stats.likes}}"
-                    dislikes="{{work.stats.dislikes}}"
-                    status="{{work.meta.status}}"
-                    rating="{{work.meta.rating}}">
+                    dislikes="{{work.stats.dislikes}}">
                 </app-short-work-card>
             </div>
         </ng-container>

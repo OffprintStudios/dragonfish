@@ -10,25 +10,16 @@
         Short description
     -->
   <div class="work-details">
-    <img class="cover-art" *ngIf="coverImageUrl" [src]="coverImageUrl" />
-    <div class="category-genre">
-      {{ categories | fixCategories }}<span>//</span
-      >{{ genres | separateEntities: categories }}
-      <div style="display: inline-block;" *ngIf="fandoms.length > 0">
-        <span>//</span>{{ fandoms | separateEntities }}
-      </div>
-    </div>
-    <div
-      class="short-description"
-      [ngClass]="{ 'no-cover-art': !coverImageUrl, 'cover-art': coverImageUrl }">
-      {{ shortDesc }}
-    </div>
+    <img class="cover-art" *ngIf="meta.coverArt" [src]="meta.coverArt" />
+    <div class="category-genre">{{meta | stringifyMeta}}</div>    
+    <div class="short-description"> {{ shortDesc }} </div>
   </div>
 
   <!-- Row 3: Meta info -->
   <div class="meta-info">
-    <i-feather name="calendar"></i-feather> {{ creationDate | date: 'shortDate'
-    }}<span>//</span><i-feather name="eye"></i-feather> {{ views
-    }}<span>//</span>{{ status }}<span>//</span>{{ rating }}
+    <i-feather name="calendar"></i-feather> {{ creationDate | date: 'shortDate'}}
+    <span>//</span><i-feather name="eye"></i-feather> {{ views}}
+    <span>//</span>{{ meta.status }}
+    <span>//</span>{{ meta.rating }}
   </div>
 </div>

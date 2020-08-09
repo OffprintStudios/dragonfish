@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Categories, GenresPoetry, GenresFiction, Fandoms, WorkStatus, ContentRating } from 'src/app/models/works';
+import { Categories, GenresPoetry, GenresFiction, Fandoms, WorkStatus, ContentRating, WorkMetadata } from 'src/app/models/works';
 
 @Component({
   selector: 'app-short-work-card',
@@ -12,17 +12,12 @@ export class ShortWorkCardComponent implements OnInit {
   @Input() title: string;
   @Input() author: string;
   @Input() authorAvatarUrl: string;
-  @Input() coverImageUrl?: string;
-  @Input() categories: Categories;
-  @Input() genres: GenresFiction[] | GenresPoetry[];
-  @Input() fandoms?: Fandoms[];
+  @Input() meta: any;
   @Input() shortDesc: string;
   @Input() creationDate: Date;
   @Input() views: number;
   @Input() likes: number;
-  @Input() dislikes: number;
-  @Input() status: WorkStatus;
-  @Input() rating: ContentRating;
+  @Input() dislikes: number;  
   
   constructor() { }
 

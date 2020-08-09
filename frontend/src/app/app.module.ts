@@ -10,7 +10,7 @@ import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe } from './pipes';
+import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe, StringifyMetaPipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -79,7 +79,7 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
