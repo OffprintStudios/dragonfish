@@ -1,6 +1,8 @@
 <div class="search-nav">
     <div class="search-bar">
-        <input type="text" class="u-full-width" placeholder="Search ...">
+        <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+            <input formControlName="query" type="text" class="u-full-width" placeholder="Search ...">
+        </form>
     </div>
     <div class="search-nav-items">
         <a [routerLink]="['/search/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="book-open"></i-feather></span>0 Works</a>
@@ -11,9 +13,8 @@
 
 <div *ngIf="route.children.length === 0">
     <div style="text-align: center;">
-        <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-        <p style="margin-top: 0; margin-bottom: 0;">Looks like you came here a bit too early.</p>
-        <p style="margin-top: 0;">Keep an eye on the patch notes to find out when this feature will be available!</p>
+        <h3 style="margin-bottom: 0;">You haven't entered any queries</h3>
+        <p style="margin-top: 0;">Type in the search box and hit enter to see the results.</p>
     </div>
 </div>
 

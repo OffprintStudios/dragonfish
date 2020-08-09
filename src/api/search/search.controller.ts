@@ -12,8 +12,10 @@ export class SearchController {
     }
 
     @Get('find-user-results')
-    async findUserRequests(@Query('query') query: string, @Query('pageNum') pageNum: number) {
-        return await this.searchService.searchUsers(query, pageNum);
+    async findUserRequests(@Query('query') query: string,
+        @Query('pageNum') pageNum: number,
+        @Query('pageSize') pageSize: number) {
+        return await this.searchService.searchUsers(query, pageNum, pageSize);
     }
 
     @Get('find-work-results')
