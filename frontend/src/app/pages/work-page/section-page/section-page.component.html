@@ -17,7 +17,11 @@
     <button style="border-left: 0;" *ngIf="indexNext < sectionsList.length + 1" [routerLink]="['/work', workId, workTitle | slugify, indexNext, sectionsList[indexNext - 1].title | slugify]"><i-feather name="chevron-right"></i-feather></button>
 </div>
 
-<div class="section-container" *ngIf="!loading">
+<div class="loader" *ngIf="sectionSwitching">
+    <div class="lds-dual-ring"></div>
+</div> 
+
+<div class="section-container" *ngIf="!sectionSwitching && !loading">
     <div class="section-content">
         <div class="section-header">
             <h1>{{ sectionData.title }}</h1>
