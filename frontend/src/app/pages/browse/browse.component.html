@@ -10,7 +10,7 @@
     
         <ng-container *ngSwitchCase="'success'">
             <div class="works-feed">
-                <div *ngFor="let work of works">
+                <div style="margin: 0 auto 1rem auto;" *ngFor="let work of works">
                     <div class="work-container">
                         <!--Header-->
                         <div class="work-header">
@@ -23,7 +23,7 @@
                             <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>
                             <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
                             <div class="category-genre">
-                                {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<div style="display: inline-block;" *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</div>
+                                {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<div *ngIf="work.meta.fandoms.length > 0">{{ work.meta.fandoms | separateEntities }}</div>
                             </div>
                         </div>
 

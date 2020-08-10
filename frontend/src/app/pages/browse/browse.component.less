@@ -21,8 +21,8 @@ div.browse-container {
 
     div.works-feed {
         display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+        flex-flow: row wrap;
+        width: 100%;
         div.work-container {
             display: flex;
             flex-direction: column;
@@ -32,6 +32,10 @@ div.browse-container {
             border: 1px solid var(--site-borders);
             background-color: var(--site-accent);
             text-align: left;
+
+            @media(max-width: 400px) {
+                width: 95%;
+            }
     
             div.work-header {
                 margin-bottom: 0;
