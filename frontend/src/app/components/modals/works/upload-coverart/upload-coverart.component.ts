@@ -24,8 +24,7 @@ export class UploadCoverartComponent implements OnInit {
 
   fileToReturn: File;
   
-  showCropper = false;
-  fileFormat = "png";
+  showCropper = false;  
   cropperDimensions: CropperPosition = {
     x1: 0, x2: 0, y1: 0, y2: 0
   };
@@ -74,9 +73,7 @@ export class UploadCoverartComponent implements OnInit {
     if (!uploadedImageFormat) {
       this.loadImageFailed();  
       throw new Error("Unsupported image format.");
-    }
-
-    this.fileFormat = uploadedImageFormat;
+    }    
   }
 
   imageCropped(event: ImageCroppedEvent): File {
@@ -92,7 +89,8 @@ export class UploadCoverartComponent implements OnInit {
     }
 
     this.croppedImage = event.base64;
-    this.fileToReturn = this.base64ToFile(event.base64, 'coverart');    
+    this.fileToReturn = this.base64ToFile(event.base64, 'coverart');   
+    console.log(`Cropped file is ${((event.base64.length * 6) / 8).toLocaleString()} bytes.`);
     return this.fileToReturn;
   }
 
@@ -101,7 +99,7 @@ export class UploadCoverartComponent implements OnInit {
   }
 
   loadImageFailed(): void {
-    this.alertsService.error(`Seems like we can't load the image. Is something wrong with it?`);
+    this.alertsService.error(`Seems like we can't load the image. Is something wrong with it? We only support PNG, JPEG and GIF.`);
   }
 
   base64ToFile(data: any, filename: string): File {
@@ -197,7 +195,7 @@ export class UploadCoverartComponent implements OnInit {
 
       // GIF
       case "47494638":
-        return "png"; // coerce GIFs to PNGs
+        return "gif"; // coerce GIFs to PNGs
 
       // All JPEG
       case "ffd8ffe0":
@@ -207,7 +205,7 @@ export class UploadCoverartComponent implements OnInit {
       case "ffd8ffe8":
         return "jpeg";          
       default:        
-      return null;
+        return null;
     }
   }
 }
