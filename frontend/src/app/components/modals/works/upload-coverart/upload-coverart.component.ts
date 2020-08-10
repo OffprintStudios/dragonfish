@@ -205,7 +205,7 @@ export class UploadCoverartComponent implements OnInit {
       case "ffd8ffe8":
         return "jpeg";          
       default:        
-      return null;
+        return null;
     }
   }
 }
