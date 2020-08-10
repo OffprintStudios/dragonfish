@@ -3,6 +3,7 @@ import { Blog, EditBlog } from 'src/app/models/blogs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { dividerHandler } from 'src/app/util/quill';
 
 @Component({
   selector: 'app-edit-blog',
@@ -12,6 +13,13 @@ import { AlertsService } from 'src/app/modules/alerts';
 export class EditBlogComponent implements OnInit {
   blogData: Blog;
   close: any;
+
+  editorFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'divider', 'link', 'blockquote', 'code',
+    'align', 'center', 'right', 'justify',
+    'list', 'bullet', 'ordered'
+  ];
 
   editBlogForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -34,6 +42,16 @@ export class EditBlogComponent implements OnInit {
    */
   triggerChangeDetection() {
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
+  onEditorCreated(event: any) {
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
   }
 
   /**

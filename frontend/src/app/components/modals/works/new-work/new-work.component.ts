@@ -22,13 +22,12 @@ export class NewWorkComponent implements OnInit {
   rating = models.ContentRating; // Alias for content ratings
   status = models.WorkStatus; // Alias for work statuses
 
-  editorModules = {
-    toolbar: {
-      handlers: {
-        'divider': dividerHandler,
-      }
-    }
-  };
+  editorFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'divider', 'link', 'blockquote', 'code',
+    'align', 'center', 'right', 'justify',
+    'list', 'bullet', 'ordered'
+  ];
 
   newWorkForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -56,6 +55,16 @@ export class NewWorkComponent implements OnInit {
    */
   triggerChangeDetection() {
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
+  onEditorCreated(event: any) {
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
   }
 
   /**

@@ -45,7 +45,7 @@
                 </div>
                 <div class="section-body">
                     <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
-                    <quill-editor [styles]="{height: '500px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()">
+                    <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                         <div quill-editor-toolbar>
                             <span class="ql-formats">
                                 <button class="ql-bold" [title]="'Bold'"></button>
@@ -54,15 +54,20 @@
                                 <button class="ql-strike" [title]="'Strikethrough'"></button>
                             </span>
                             <span class="ql-formats">
+                                <button class="ql-align ql-center" value="center"></button>
+                                <button class="ql-align ql-right" value="right"></button>
+                                <button class="ql-align ql-justify" value="justify"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list ql-bullet" value="bullet"></button>
+                                <button class="ql-list ql-ordered" value="ordered"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-divider" [title]="'Divider'"></button>
                                 <button class="ql-link" [title]="'Link'"></button>
                                 <button class="ql-blockquote" [title]="'Blockquote'"></button>
                                 <button class="ql-code" [title]="'Code'"></button>
                                 <button class="ql-clean" [title]="'Remove formatting'"></button>
-                            </span>
-                            <span class="ql-formats">
-                                <button class="ql-align ql-center" value="center"></button>
-                                <button class="ql-align ql-right" value="right"></button>
-                                <button class="ql-align ql-justify" value="justify"></button>
                             </span>
                             <select class="ql-header"></select>
                         </div>
@@ -72,7 +77,7 @@
             <div class="authors-note">
                 <h3>A word from the author...</h3>
                 <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
-                <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()">
+                <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                     <div quill-editor-toolbar>
                         <span class="ql-formats">
                             <button class="ql-bold" [title]="'Bold'"></button>
@@ -81,15 +86,20 @@
                             <button class="ql-strike" [title]="'Strikethrough'"></button>
                         </span>
                         <span class="ql-formats">
+                            <button class="ql-align ql-center" value="center"></button>
+                            <button class="ql-align ql-right" value="right"></button>
+                            <button class="ql-align ql-justify" value="justify"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list ql-bullet" value="bullet"></button>
+                            <button class="ql-list ql-ordered" value="ordered"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-divider" [title]="'Divider'"></button>
                             <button class="ql-link" [title]="'Link'"></button>
                             <button class="ql-blockquote" [title]="'Blockquote'"></button>
                             <button class="ql-code" [title]="'Code'"></button>
                             <button class="ql-clean" [title]="'Remove formatting'"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-align ql-center" value="center"></button>
-                            <button class="ql-align ql-right" value="right"></button>
-                            <button class="ql-align ql-justify" value="justify"></button>
                         </span>
                         <select class="ql-header"></select>
                     </div>
@@ -99,7 +109,9 @@
             <div class="loader" *ngIf="submitting">
                 <div class="lds-dual-ring"></div>
             </div>
-            <button type="submit" class="button-primary" style="width: 70%; margin: 0 auto;" *ngIf="!submitting">Save Changes</button>
+            <div style="width: 70%; margin: 0 auto;">
+                <button type="submit" class="button-primary u-full-width" *ngIf="!submitting">Save Changes</button>
+            </div>
         </form>
     </div>
 </ng-template>

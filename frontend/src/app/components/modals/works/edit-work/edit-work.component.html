@@ -15,7 +15,7 @@
         <!--Long description-->
         <label for="longDesc">Long Description</label>
         <div class="warning-message" *ngIf="fields.longDesc.invalid && (fields.longDesc.dirty || fields.longDesc.touched)">Long descriptions must be more than 3 characters.</div>
-        <quill-editor minLength="3" formControlName="longDesc" (onEditorChanged)="triggerChangeDetection()">
+        <quill-editor minLength="3" formControlName="longDesc" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
             <div quill-editor-toolbar>
                 <span class="ql-formats">
                     <button class="ql-bold" [title]="'Bold'"></button>
@@ -24,15 +24,20 @@
                     <button class="ql-strike" [title]="'Strikethrough'"></button>
                 </span>
                 <span class="ql-formats">
+                    <button class="ql-align ql-center" value="center"></button>
+                    <button class="ql-align ql-right" value="right"></button>
+                    <button class="ql-align ql-justify" value="justify"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list ql-bullet" value="bullet"></button>
+                    <button class="ql-list ql-ordered" value="ordered"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-divider" [title]="'Divider'"></button>
                     <button class="ql-link" [title]="'Link'"></button>
                     <button class="ql-blockquote" [title]="'Blockquote'"></button>
                     <button class="ql-code" [title]="'Code'"></button>
                     <button class="ql-clean" [title]="'Remove formatting'"></button>
-                </span>
-                <span class="ql-formats">
-                    <button class="ql-align ql-center" value="center"></button>
-                    <button class="ql-align ql-right" value="right"></button>
-                    <button class="ql-align ql-justify" value="justify"></button>
                 </span>
                 <select class="ql-header"></select>
             </div>

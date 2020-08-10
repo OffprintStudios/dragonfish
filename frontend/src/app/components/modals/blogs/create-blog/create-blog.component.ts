@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/blogs';
+import { dividerHandler } from 'src/app/util/quill';
 import { BlogsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 
@@ -20,9 +21,12 @@ export class CreateBlogComponent implements OnInit {
     published: new FormControl(false)
   });
 
-  styles = {
-
-  };
+  editorFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'divider', 'link', 'blockquote', 'code',
+    'align', 'center', 'right', 'justify',
+    'list', 'bullet', 'ordered'
+  ];
 
   constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) {}
 
@@ -33,6 +37,16 @@ export class CreateBlogComponent implements OnInit {
    */
   triggerChangeDetection() {
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
+  onEditorCreated(event: any) {
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
   }
 
   /**

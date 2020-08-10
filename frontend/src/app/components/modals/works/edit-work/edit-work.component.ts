@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/works';
+import { dividerHandler } from 'src/app/util/quill';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 
@@ -21,6 +22,13 @@ export class EditWorkComponent implements OnInit {
   genresPoetry = models.GenresPoetry; // Alias for poetry genres
   rating = models.ContentRating; // Alias for content ratings
   status = models.WorkStatus; // Alias for work statuses
+
+  editorFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'divider', 'link', 'blockquote', 'code',
+    'align', 'center', 'right', 'justify',
+    'list', 'bullet', 'ordered'
+  ];
 
   editWorkForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -58,6 +66,16 @@ export class EditWorkComponent implements OnInit {
    */
   triggerChangeDetection() {
     return this.cdr.detectChanges();
+  }
+
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
+  onEditorCreated(event: any) {
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
   }
 
   /**

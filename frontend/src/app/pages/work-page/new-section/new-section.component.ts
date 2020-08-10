@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { dividerHandler } from 'src/app/util/quill';
 import { CreateSection } from 'src/app/models/works';
 import { WorksService } from 'src/app/services/content';
 
@@ -14,6 +15,13 @@ export class NewSectionComponent implements OnInit {
   loading = false; // Loading check for submission
   workId: string; // The work's ID
   workName: string; // The work's name
+
+  editorFormats = [
+    'bold', 'italic', 'underline', 'strike',
+    'divider', 'link', 'blockquote', 'code',
+    'align', 'center', 'right', 'justify',
+    'list', 'bullet', 'ordered'
+  ];
 
   newSectionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -42,6 +50,16 @@ export class NewSectionComponent implements OnInit {
    */
   triggerChangeDetection() {
     return this.cdr.detectChanges();
+  }
+
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
+  onEditorCreated(event: any) {
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
   }
 
   /**
