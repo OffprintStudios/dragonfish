@@ -134,7 +134,7 @@ export class UploadCoverartComponent implements OnInit {
         this.close();
       },
       (error: HttpError) => {
-        this.loading = false;
+        this.loading = false;        
         this.alertsService.error(`Failed to upload your cover art. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
       },
     );
@@ -209,6 +209,5 @@ export class UploadCoverartComponent implements OnInit {
       default:        
       return null;
     }
-
   }
 }
