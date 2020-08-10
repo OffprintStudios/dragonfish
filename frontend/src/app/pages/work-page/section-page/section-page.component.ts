@@ -18,7 +18,9 @@ export class SectionPageComponent implements OnInit {
 
   sectionsList: workModels.SectionInfo[];
   sectionData: workModels.Section;
-  loading = false;
+  loading = false; // controls the spinner above section selection boxes
+  sectionSwitching: boolean = false; // controls the spinner between the section selection boxes
+  hideContents: boolean = false;
   indexNext = 0;
   indexPrev = 0;
   currSection: workModels.SectionInfo = null;
@@ -45,14 +47,16 @@ export class SectionPageComponent implements OnInit {
     this.route.parent.paramMap.subscribe(params => {
       this.workId = params.get('workId');
       this.workTitle = params.get('title');
-      this.route.paramMap.subscribe(routeParams => {
+      this.route.paramMap.subscribe(routeParams => {    
+        this.sectionSwitching = true;
         this.sectionNum = +routeParams.get('sectionNum');
         this.indexNext = this.sectionNum + 1;
         this.indexPrev = this.sectionNum - 1;
         this.currSection = this.sectionsList[this.sectionNum - 1];
-        this.worksService.getPublishedSection(this.workId, this.sectionsList[this.sectionNum - 1]._id).subscribe(section => {
+        this.worksService.getPublishedSection(this.workId, this.sectionsList[this.sectionNum - 1]._id).subscribe(section => {          
           this.sectionData = section;
           this.loading = false;
+          this.sectionSwitching = false;
         });
       });
     });
