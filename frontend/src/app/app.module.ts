@@ -39,6 +39,8 @@ import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.com
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
   UsersComponent, AuditComponent } from './pages/dashboard';
 
+import { Divider, dividerHandler } from './util/quill';
+
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
 const icons = Quill.import('ui/icons');
@@ -55,17 +57,18 @@ icons.right = '<i class="fas fa-align-right"></i>';
 icons.justify = '<i class="fas fa-align-justify"></i>';
 icons.video = '<i class="fas fa-video"></i>';
 icons.image = '<i class="fas fa-image"></i>';
+icons.ordered = '<i class="fas fa-list-ol"></i>';
+icons.bullet = '<i class="fas fa-list"></i>';
+icons.divider = '—';
 
 Quill.register('modules/magicUrl', MagicUrlModule);
+Quill.register(Divider);
 
 const toolbarOptions = [
-  [{header: []}],
-  ['bold', 'italic', 'underline', 'strike'],
-  ['link', 'blockquote', 'code', 'clean'],
-  [{align: null}, {align: 'center'}, {align: 'right'}, {align: 'justify'}],
-  [{header: 2}, {header: 3}],
+  [{header: []}, 'bold', 'italic', 'underline', 'strike'],
+  ['divider', 'link', 'blockquote', 'code', 'clean'],
+  [{align: 'center'}, {align: 'right'}, {align: 'justify'}],
   [{list: 'ordered'}, {list: 'bullet'}],
-  [{color: []}]
 ];
 
 @NgModule({
@@ -87,7 +90,12 @@ const toolbarOptions = [
     QuillModule.forRoot({
       format: 'json',
       modules: {
-        toolbar: {container: toolbarOptions},
+        toolbar: {
+          container: toolbarOptions,
+          handlers: {
+            'divider': dividerHandler,
+          }
+        },
       },
     }),
   ],

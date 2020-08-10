@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/works';
+import { dividerHandler } from 'src/app/util/quill';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 
@@ -20,6 +21,14 @@ export class NewWorkComponent implements OnInit {
   genresPoetry = models.GenresPoetry; // Alias for poetry genres
   rating = models.ContentRating; // Alias for content ratings
   status = models.WorkStatus; // Alias for work statuses
+
+  editorModules = {
+    toolbar: {
+      handlers: {
+        'divider': dividerHandler,
+      }
+    }
+  };
 
   newWorkForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
