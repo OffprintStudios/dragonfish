@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as models from 'src/app/models/works';
-import { dividerHandler } from 'src/app/util/quill';
+import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 
@@ -25,7 +25,7 @@ export class EditWorkComponent implements OnInit {
 
   editorFormats = [
     'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code',
+    'divider', 'link', 'blockquote', 'code', 'image',
     'align', 'center', 'right', 'justify',
     'list', 'bullet', 'ordered'
   ];
@@ -76,6 +76,7 @@ export class EditWorkComponent implements OnInit {
   onEditorCreated(event: any) {
     let toolbar = event.getModule('toolbar');
     toolbar.addHandler('divider', dividerHandler);
+    toolbar.addHandler('image', imageHandler);
   }
 
   /**

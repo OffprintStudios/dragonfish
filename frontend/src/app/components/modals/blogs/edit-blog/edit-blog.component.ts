@@ -3,7 +3,7 @@ import { Blog, EditBlog } from 'src/app/models/blogs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
-import { dividerHandler } from 'src/app/util/quill';
+import { dividerHandler, imageHandler } from 'src/app/util/quill';
 
 @Component({
   selector: 'app-edit-blog',
@@ -16,7 +16,7 @@ export class EditBlogComponent implements OnInit {
 
   editorFormats = [
     'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code',
+    'divider', 'link', 'blockquote', 'code', 'image',
     'align', 'center', 'right', 'justify',
     'list', 'bullet', 'ordered'
   ];
@@ -52,6 +52,7 @@ export class EditBlogComponent implements OnInit {
   onEditorCreated(event: any) {
     let toolbar = event.getModule('toolbar');
     toolbar.addHandler('divider', dividerHandler);
+    toolbar.addHandler('image', imageHandler);
   }
 
   /**

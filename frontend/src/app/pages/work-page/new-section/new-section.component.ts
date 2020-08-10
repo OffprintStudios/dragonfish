@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { dividerHandler } from 'src/app/util/quill';
+import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { CreateSection } from 'src/app/models/works';
 import { WorksService } from 'src/app/services/content';
 
@@ -18,7 +18,7 @@ export class NewSectionComponent implements OnInit {
 
   editorFormats = [
     'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code',
+    'divider', 'link', 'blockquote', 'code', 'image',
     'align', 'center', 'right', 'justify',
     'list', 'bullet', 'ordered'
   ];
@@ -60,6 +60,7 @@ export class NewSectionComponent implements OnInit {
   onEditorCreated(event: any) {
     let toolbar = event.getModule('toolbar');
     toolbar.addHandler('divider', dividerHandler);
+    toolbar.addhandler('image', imageHandler);
   }
 
   /**
