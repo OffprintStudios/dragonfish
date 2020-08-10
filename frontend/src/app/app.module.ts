@@ -10,7 +10,8 @@ import * as QuillNamespace from 'quill';
 import * as MagicUrl from 'quill-magic-url';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe, StringifyMetaPipe } from './pipes';
+import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
+  StringifyMetaPipe, ToLocaleStringPipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,8 +38,6 @@ import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
   UsersComponent, AuditComponent } from './pages/dashboard';
-import { ShortWorkCardComponent } from './components/short-work-card/short-work-card.component';
-import { ToLocaleStringPipe } from './pipes/to-locale-string.pipe';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -79,7 +78,7 @@ const toolbarOptions = [
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
-    NewsManagementComponent, DocsComponent, UploadCoverartComponent, ShortWorkCardComponent, SearchComponent, FindUsersComponent,
+    NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe
   ],
   imports: [
