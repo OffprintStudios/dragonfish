@@ -46,7 +46,7 @@
                                     </div>
                                     <div>
                                         <div class="section-stats">
-                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                            {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                         </div>
                                     </div>
                                     <div>
@@ -87,7 +87,7 @@
                                     </div>
                                     <div>
                                         <div class="section-stats" style="margin-right: 2rem;">
-                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                            {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>
@@ -100,8 +100,8 @@
             <!--Work stats-->
             <div class="work-stats">
                 <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
-                <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords }}<span>//</span>
-                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views }}<span>//</span>
+                <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
+                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
                 <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
                 {{ workData.meta.status }}
             </div>
@@ -148,7 +148,7 @@
                                     </div>
                                     <div>
                                         <div class="section-stats">
-                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                            {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                         </div>
                                     </div>
                                     <div>
@@ -168,7 +168,7 @@
                                     </div>
                                     <div>
                                         <div class="section-stats">
-                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                            {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                         </div>
                                     </div>
                                     <div>
@@ -189,7 +189,7 @@
                                     </div>
                                     <div>
                                         <div class="section-stats" style="margin-right: 2rem;">
-                                            {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                            {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                         </div>
                                     </div>
                                 </div>
@@ -202,8 +202,8 @@
             <!--Work stats-->
             <div class="work-stats">
                 <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
-                <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords }}<span>//</span>
-                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views }}<span>//</span>
+                <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
+                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
                 <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
                 {{ workData.meta.status }}
             </div>

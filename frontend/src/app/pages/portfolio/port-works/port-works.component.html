@@ -30,6 +30,12 @@
                 
                     <!--Work title 'n such-->
                     <div class="work-header">
+                        <div style="display: inline-block;" [ngSwitch]="workData.meta.rating">
+                            <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
+                            <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
+                            <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
+                            <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
+                        </div>
                         <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                         <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                         <div class="category-genre">
@@ -44,7 +50,11 @@
     
                     <!--Work stats-->
                     <div class="work-stats">
-                        Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
+                        <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
+                        <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
+                        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
+                        <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
+                        {{ workData.meta.status }}
                     </div>
                 </div>
             </div>
@@ -54,6 +64,12 @@
                 <div class="no-cover-art-work-container">
                     <!--Work title 'n such-->
                     <div class="work-header">
+                        <div style="display: inline-block;" [ngSwitch]="workData.meta.rating">
+                            <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
+                            <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
+                            <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
+                            <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
+                        </div>
                         <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                         <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                         <div class="category-genre">
@@ -68,7 +84,11 @@
     
                     <!--Work stats-->
                     <div class="work-stats">
-                        Created: {{ workData.createdAt | date:'shortDate' }}<span>//</span>{{ workData.stats.views }} view{{ workData.stats.views | pluralize }}<span>//</span>0% approval<span>//</span>{{ workData.meta.status }}<span>//</span>{{ workData.meta.rating }}
+                        <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
+                        <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
+                        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
+                        <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
+                        {{ workData.meta.status }}
                     </div>
                 </div>
             </ng-template>
