@@ -191,11 +191,11 @@ export class UploadCoverartComponent implements OnInit {
     switch (header) {
       // PNG
       case "89504e47":
-        return "jpeg";          
+        return "png";          
 
       // GIF
       case "47494638":
-        return "png"; // coerce GIFs to PNGs
+        return "gif"; // coerce GIFs to PNGs
 
       // All JPEG
       case "ffd8ffe0":
