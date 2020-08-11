@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <div *ngFor="let workData of portWorksData">
+    <ng-container *ngFor="let workData of portWorksData">
         <div class="work-box" *ngIf="!loading">
             <!--With cover art-->
             <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
@@ -88,5 +88,5 @@
                 {{ workData.meta.status }}
             </div>
         </div>
-    </div>
+    </ng-container>
 </div>
