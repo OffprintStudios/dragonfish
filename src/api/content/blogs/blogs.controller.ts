@@ -21,7 +21,7 @@ export class BlogsController {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
         if (newBlog.body.length < 3) {
-            throw new BadRequestException("Your blog body text must be more than 3 characters.");
+            throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
         return await this.blogsService.createNewBlog(req.user, newBlog);
     }
@@ -45,7 +45,7 @@ export class BlogsController {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
         if (editBlog.body.length < 3) {
-            throw new BadRequestException("Your blog body text must be more than 3 characters.");
+            throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
         return await this.blogsService.editBlog(req.user, editBlog);
     }

@@ -134,6 +134,10 @@ export class WorksController {
         }         
     }
 
+    /**
+     * Validates the given section for errors. Throws a BadRequestException if any are found.
+     * Does nothing if the section is valid.     
+     */
     private validateSection(section: models.CreateSection | models.EditSection): void {
         if (section.title.length < 3 || section.title.length > 100) {
             throw new BadRequestException("Section titles must be between 3 and 100 characters.");
