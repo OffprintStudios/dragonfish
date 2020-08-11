@@ -55,7 +55,7 @@
     </ng-template>
 
     <!--Sections-->
-    <div *ngIf="route.children.length === 0 && workData.sections.length > 0">
+    <ng-container *ngIf="route.children.length === 0 && workData.sections.length > 0">
         <div class="section-list" *ngIf="currentUserIsSame(); else notSameUser">
             <ul>
                 <li *ngFor="let section of workData.sections">
@@ -120,6 +120,15 @@
                 </ul>
             </div>
         </ng-template>
+    </ng-container>
+
+    <!--Work stats-->
+    <div class="work-stats">
+        <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
+        <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
+        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
+        <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
+        {{ workData.meta.status }}
     </div>
 </div>
 
