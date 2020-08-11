@@ -18,7 +18,7 @@ export class NewSectionComponent implements OnInit {
   workName: string; // The work's name
 
   editorFormats = [
-    'bold', 'italic', 'underline', 'strike',
+    'header', 'bold', 'italic', 'underline', 'strike',
     'divider', 'link', 'blockquote', 'code', 'image',
     'align', 'center', 'right', 'justify',
     'list', 'bullet', 'ordered'
