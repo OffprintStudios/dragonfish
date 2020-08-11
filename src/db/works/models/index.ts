@@ -2,9 +2,9 @@ export { Work } from './work.model';
 export { AuthorInfo } from './work.model';
 export { Section } from './section.model';
 export { Categories } from './categories.enum';
-export { Fandoms } from './fandoms.enum';
+export { Fandoms, MAX_FANDOMS_PER_STORY } from './fandoms.enum';
 export { ContentRating } from './content-rating.enum';
-export { Genres } from './genres.enum';
+export { Genres, MAX_GENRES_PER_FANFIC, MAX_GENRES_PER_POEM, MAX_GENRES_PER_ORIGINAL } from './genres.enum';
 export { WorkStatus } from './work-status.enum';
 export { ApprovalStatus } from './approval-status.enum';
 

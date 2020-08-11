@@ -57,3 +57,5 @@ export enum Fandoms {
     TheLionKing = 'The Lion King',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
+
+export const MAX_FANDOMS_PER_STORY: number = 5;
