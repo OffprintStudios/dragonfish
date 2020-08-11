@@ -16,7 +16,7 @@ export class CreateBlogComponent implements OnInit {
   loading = false; // Loading check for submission
 
   newBlogForm = new FormGroup({
-    title: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     body: new FormControl('', [Validators.required, Validators.minLength(5)]),
     published: new FormControl(false)
   });
@@ -60,6 +60,20 @@ export class CreateBlogComponent implements OnInit {
    */
   submitForm() {
     this.loading = true;
+
+    /* Validations */
+    if (this.fields.title.invalid) {
+      this.alertsService.warn(`A title must be between 3 and 100 characters in length.`);
+      this.loading = false;
+      return;
+    }
+    if (this.fields.body.invalid) {
+      this.alertsService.warn(`Body text must be greater than 5 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    /* Creation after validation */
     const newBlogInfo: models.CreateBlog = {
       title: this.fields.title.value,
       body: this.fields.body.value,

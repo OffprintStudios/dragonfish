@@ -33,7 +33,7 @@ export class EditWorkComponent implements OnInit {
   editWorkForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     shortDesc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
-    longDesc: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    longDesc: new FormControl('', [Validators.required, Validators.minLength(5)]),
     thisCategory: new FormControl(null, Validators.required),
     theseFandoms: new FormControl([]),
     theseGenres: new FormControl([], Validators.required),
@@ -84,6 +84,55 @@ export class EditWorkComponent implements OnInit {
    */
   submitEdits() {
     this.loading = true;
+
+    if (this.fields.title.invalid) {
+      this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.shortDesc.invalid) {
+      this.alertsService.warn(`Short descriptions must be between 3 and 250 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.longDesc.invalid) {
+      this.alertsService.warn(`Long descriptions must be more than 5 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.thisCategory.value === null) {
+      this.alertsService.warn(`You must choose a category.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.thisCategory.value === 'Fanfiction' && this.fields.theseFandoms.value.length < 1) {
+      this.alertsService.warn(`You must pick at least one fandom.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.theseGenres.value.length < 1) {
+      this.alertsService.warn(`You must have at least one genre.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.rating.value === null) {
+      this.alertsService.warn(`You must select a content rating.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.status.value === null) {
+      this.alertsService.warn(`You must select a status.`);
+      this.loading = false;
+      return;
+    }
+    
     const newChanges: models.EditWork = {
       _id: this.workData._id,
       title: this.fields.title.value,

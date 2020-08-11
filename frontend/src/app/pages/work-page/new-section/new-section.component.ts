@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { CreateSection } from 'src/app/models/works';
 import { WorksService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-new-section',
@@ -25,11 +26,12 @@ export class NewSectionComponent implements OnInit {
 
   newSectionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-    body: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    authorsNote: new FormControl('', [Validators.minLength(3), Validators.maxLength(2000)]),
+    body: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    authorsNote: new FormControl('', [Validators.minLength(5), Validators.maxLength(2000)]),
   });
 
-  constructor(private worksService: WorksService, private route: ActivatedRoute, private router: Router, private cdr: ChangeDetectorRef) {
+  constructor(private worksService: WorksService, private route: ActivatedRoute, private alertsService: AlertsService,
+    private router: Router, private cdr: ChangeDetectorRef) {
     // Getting the parameters from the parent component
     this.route.parent.paramMap.subscribe(params => {
       this.workId = params.get('workId');
@@ -68,6 +70,25 @@ export class NewSectionComponent implements OnInit {
    */
   submitSection() {
     this.loading = true;
+    if (this.fields.title.invalid) {
+      this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.body.invalid) {
+      this.alertsService.warn(`Body text must be greater than 5 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.authorsNote.value !== null || this.fields.authorsNote.value !== undefined) {
+      if (this.fields.authorsNote.invalid) {
+        this.alertsService.warn(`Author's notes must be between 5 and 2000 characters.`);
+        this.loading = false;
+        return;
+      }
+    }
 
     const newSection: CreateSection = {
       title: this.fields.title.value,

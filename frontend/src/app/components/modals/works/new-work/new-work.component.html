@@ -14,7 +14,7 @@
 
         <!--Long description-->
         <label for="longDesc">Long Description</label>
-        <div class="warning-message" *ngIf="fields.longDesc.invalid && (fields.longDesc.dirty || fields.longDesc.touched)">Long descriptions must be more than 3 characters.</div>
+        <div class="warning-message" *ngIf="fields.longDesc.invalid && (fields.longDesc.dirty || fields.longDesc.touched)">Long descriptions must be more than 5 characters.</div>
         <quill-editor minLength="3" formControlName="longDesc" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
             <div quill-editor-toolbar>
                 <span class="ql-formats">

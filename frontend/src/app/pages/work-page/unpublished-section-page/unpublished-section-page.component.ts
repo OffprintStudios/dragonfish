@@ -7,6 +7,7 @@ import { User } from 'src/app/models/users';
 import { Section, EditSection } from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
+import { AlertsService } from 'src/app/modules/alerts';
 
 @Component({
   selector: 'app-unpublished-section-page',
@@ -39,7 +40,7 @@ export class UnpublishedSectionPageComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private worksService: WorksService, private cdr: ChangeDetectorRef,
-    private router: Router, private route: ActivatedRoute) {
+    private router: Router, private route: ActivatedRoute, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
     this.fetchData();
   }
@@ -110,6 +111,25 @@ export class UnpublishedSectionPageComponent implements OnInit {
    */
   submitEdits() {
     this.submitting = true;
+    if (this.fields.title.invalid) {
+      this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.body.invalid) {
+      this.alertsService.warn(`Body text must be greater than 5 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.authorsNote.value !== null || this.fields.authorsNote.value !== undefined) {
+      if (this.fields.authorsNote.invalid) {
+        this.alertsService.warn(`Author's notes must be between 5 and 2000 characters.`);
+        this.loading = false;
+        return;
+      }
+    }
     const newEdits: EditSection = {
       title: this.fields.title.value,
       body: this.fields.body.value,
