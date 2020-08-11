@@ -217,7 +217,7 @@
         <button title="Edit Work" class="user-buttons" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
         <button title="Add/Change Cover Art" class="user-buttons" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
         <div style="display: inline-block;" [ngSwitch]="workData.audit.published">
-            <button class="user-buttons right active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Published</button>
+            <button class="user-buttons right active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
             <button class="user-buttons right" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
             <button class="user-buttons right" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
             <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
