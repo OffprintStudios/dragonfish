@@ -63,12 +63,12 @@ export class CreateBlogComponent implements OnInit {
 
     /* Validations */
     if (this.fields.title.invalid) {
-      alert(`A title must be between 3 and 100 characters in length.`);
+      this.alertsService.warn(`A title must be between 3 and 100 characters in length.`);
       this.loading = false;
       return;
     }
     if (this.fields.body.invalid) {
-      alert(`Body text must be greater than 5 characters.`);
+      this.alertsService.warn(`Body text must be greater than 5 characters.`);
       this.loading = false;
       return;
     }
