@@ -8,8 +8,8 @@
             </div>
             <div class="section-body">
                 <label for="body">Body:</label>
-                <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
-                <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
+                <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 5 characters.</div>
+                <quill-editor [styles]="{height: '750px'}" minLength="5" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                     <div quill-editor-toolbar>
                         <span class="ql-formats">
                             <button class="ql-bold" [title]="'Bold'"></button>
@@ -41,8 +41,8 @@
         </div>
         <div class="authors-note">
             <h3>A word from the author...</h3>
-            <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
-            <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
+            <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be between 5 and 2000 characters.</div>
+            <quill-editor [styles]="{height: '300px'}" minLength="5" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                 <div quill-editor-toolbar>
                     <span class="ql-formats">
                         <button class="ql-bold" [title]="'Bold'"></button>
