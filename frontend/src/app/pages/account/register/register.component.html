@@ -12,9 +12,9 @@
     <div class="six columns">
         <h3 class="form-header">Login</h3>
         <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-            <input type="email" formControlName="email" class="u-full-width" placeholder="Email" required>
+            <input type="email" formControlName="email" class="u-full-width" placeholder="Email" autocomplete="email" required>
 
-            <input type="password" formControlName="password" class="u-full-width" placeholder="Password" required>
+            <input type="password" formControlName="password" class="u-full-width" placeholder="Password" autocomplete="current-password" required>
 
             <label>
                 <input type="checkbox" formControlName="rememberMe">
