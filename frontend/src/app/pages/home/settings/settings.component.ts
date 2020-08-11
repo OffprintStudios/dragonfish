@@ -123,6 +123,15 @@ export class SettingsComponent implements OnInit {
   get changeProfileFields() { return this.changeProfileForm.controls; }
 
   submitUsernameAndEmailForm() {
+    if (this.usernameAndEmailFields.email.invalid) {
+      this.alertsService.warn(`Your email must be a valid address.`);
+      return;
+    }
+
+    if (this.usernameAndEmailFields.username.invalid) {
+      this.alertsService.warn(`Your username must be between 3 and 32 characters.`);
+      return;
+    }
     const newNameAndEmail: models.ChangeNameAndEmail = {
       username: this.usernameAndEmailFields.username.value,
       email: this.usernameAndEmailFields.email.value,
@@ -135,8 +144,13 @@ export class SettingsComponent implements OnInit {
   }
 
   submitChangePasswordForm() {
+    if (this.passwordFields.newPassword.invalid || this.passwordFields.confirmNewPassword.invalid) {
+      this.alertsService.warn(`Password fields cannot be empty.`);
+      return;
+    }
+
     if (this.passwordFields.newPassword.value !== this.passwordFields.confirmNewPassword.value) {
-      alert('Your new password doesn\'t match.');
+      this.alertsService.warn('Your new password doesn\'t match.');
       return;
     }
 
@@ -151,6 +165,11 @@ export class SettingsComponent implements OnInit {
   }
 
   submitProfileForm() {
+    if (this.changeProfileFields.newBio.invalid) {
+      this.alertsService.warn(`Bios must be between 3 and 50 characters.`);
+      return;
+    }
+
     const newProfileInfo: models.ChangeProfile = {
       themePref: this.changeProfileFields.newThemePref.value.name,
       bio: this.changeProfileFields.newBio.value,
