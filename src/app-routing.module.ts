@@ -8,6 +8,8 @@ import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
 import { ContribModule } from './api/contrib/contrib.module';
 import { BrowseModule } from './api/browse/browse.module';
+import { CollectionsModule } from './db/collections/collections.module';
+import { HistoryModule } from './db/history/history.module';
 
 const routes: Routes = [
     {path: 'api', children: [
@@ -31,6 +33,8 @@ const routes: Routes = [
         ImagesModule,
         ContribModule,
         BrowseModule,
+        CollectionsModule,
+        HistoryModule,
     ],
     exports: [RouterModule],
 })
