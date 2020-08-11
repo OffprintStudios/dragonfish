@@ -18,14 +18,29 @@
         <ng-template #theQueue>
             <div class="work-list">
                 <div class="work-item" *ngFor="let entry of queue">
+                    <div class="work-cover-art">
+                        <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
+                    </div>
                     <div class="work-info">
                         <div class="info">
-                            <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
-                            <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
-                            <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
-                            <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                            <div class="work-header">
+                                <ng-container [ngSwitch]="entry.workToApprove.meta.rating">
+                                    <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
+                                    <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
+                                    <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
+                                    <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
+                                </ng-container>
+                                <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
+                                <h4 class="author-byline">by <a [routerLink]="['/portfolio', entry.workToApprove.author._id, entry.workToApprove.author.username | slugify]">
+                                    {{ entry.workToApprove.author.username }}
+                                </a></h4>
+                            </div>
+                            <div class="info-bits">
+                                <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
+                                <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
+                                <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                            </div>
                             <div class="stats">
-                                <h4>{{ entry.workToApprove.meta.rating }}</h4><span>//</span>
                                 <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
                                 <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords }} total word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>

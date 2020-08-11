@@ -11,12 +11,12 @@
         <div class="nine columns" style="margin: 2rem 0 0 0; padding-right: 2rem;">
             <!--Work title 'n such-->
             <div class="work-header">
-                <div style="display: inline-block;" [ngSwitch]="workData.meta.rating">
+                <ng-container [ngSwitch]="workData.meta.rating">
                     <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
                     <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
                     <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
                     <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
-                </div>
+                </ng-container>
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                 <div class="category-genre">
