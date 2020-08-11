@@ -294,6 +294,15 @@ quill-view {
                 object-fit: contain;
             }
         }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+            }
+        }
     }
 }
 
@@ -344,6 +353,16 @@ quill-editor {
         font-size: 16px;
         font-family: 'Raleway';
         box-shadow: var(--site-dropshadow);
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+            
+            &:hover {
+                color: var(--site-accent-hover) !important;
+                text-decoration: underline !important;
+            }
+        }
     }
     .ql-editor:data-placeholder {
         color: var(--site-text-color) !important;
