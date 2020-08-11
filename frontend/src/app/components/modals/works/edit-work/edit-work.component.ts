@@ -24,7 +24,7 @@ export class EditWorkComponent implements OnInit {
   status = models.WorkStatus; // Alias for work statuses
 
   editorFormats = [
-    'bold', 'italic', 'underline', 'strike',
+    'header', 'bold', 'italic', 'underline', 'strike',
     'divider', 'link', 'blockquote', 'code', 'image',
     'align', 'center', 'right', 'justify',
     'list', 'bullet', 'ordered'
