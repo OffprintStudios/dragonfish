@@ -246,21 +246,42 @@ button, a.button, input[type=submit] {
 }
 
 /* QuillJS */
+.content-box {
+    quill-view {
+        div.ql-container, div.ql-snow {
+            font-size: 16px;
+            font-family: 'Raleway';
+            height: 100%;
+
+            div.ql-editor {
+                iframe {
+                    width: 500px;
+                    height: 300px;
+                }
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            a {
+                color: whitesmoke !important;
+                text-decoration: underline !important;
+
+                &:hover {
+                    text-decoration: none !important;
+                }
+            }
+        }
+    }
+}
+
 quill-view {
     div.ql-container, div.ql-snow {
         font-size: 16px;
         font-family: 'Raleway';
         height: 100%;
-
-        a {
-            color: var(--site-accent);
-            text-decoration: none !important;
-            
-            &:hover {
-                color: var(--site-accent-hover);
-                text-decoration: underline !important;
-            }
-        }
 
         div.ql-editor {
             iframe {

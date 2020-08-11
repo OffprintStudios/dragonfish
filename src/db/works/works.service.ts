@@ -353,7 +353,9 @@ export class WorksService {
      * Fetches all new published works by newest first.
      */
     async fetchNewPublishedWorks(): Promise<models.Work[]> {
-        return await this.workModel.find().where('audit.published').equals(models.ApprovalStatus.Approved).sort({ 'createdAt': -1 });
+        return await this.workModel.find().where('audit.published', models.ApprovalStatus.Approved)
+            .where('audit.isDeleted', false)
+            .sort({ 'createdAt': -1 });
     }
 
     /**
