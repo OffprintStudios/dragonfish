@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Get, Put, Body, Patch } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException } from '@nestjs/common';
 
 import * as models from 'src/db/blogs/models';
 import { BlogsService } from 'src/db/blogs/blogs.service';
@@ -17,6 +17,12 @@ export class BlogsController {
     @UseGuards(AuthGuard)
     @Put('create-blog')
     async createBlog(@Request() req: any, @Body() newBlog: models.CreateBlog) {
+        if (newBlog.title.length < 3 || newBlog.title.length > 100) {
+            throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
+        }
+        if (newBlog.body.length < 3) {
+            throw new BadRequestException("Your blog body text must be more than 3 characters.");
+        }
         return await this.blogsService.createNewBlog(req.user, newBlog);
     }
 
@@ -35,6 +41,12 @@ export class BlogsController {
     @UseGuards(AuthGuard)
     @Patch('edit-blog')
     async editBlog(@Request() req: any, @Body() editBlog: models.EditBlog) {
+        if (editBlog.title.length < 3 || editBlog.title.length > 100) {
+            throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
+        }
+        if (editBlog.body.length < 3) {
+            throw new BadRequestException("Your blog body text must be more than 3 characters.");
+        }
         return await this.blogsService.editBlog(req.user, editBlog);
     }
 

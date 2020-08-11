@@ -22,3 +22,7 @@ export enum Genres {
     FreeVerse = 'Free Verse',
     FixedVerse = 'Fixed Verse'
 }
+
+export const MAX_GENRES_PER_FANFIC: number = 2;
+export const MAX_GENRES_PER_POEM: number = 1;
+export const MAX_GENRES_PER_ORIGINAL: number = 2;

@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
@@ -90,6 +90,9 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Patch('update-profile')
     async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
+        if (newProfile.bio.length > 50) { 
+            throw new BadRequestException("Your bio must not be longer than 50 characters.");
+        }
         return await this.authService.updateProfile(req.user, newProfile);
     }
 

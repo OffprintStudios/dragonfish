@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, UploadedFile, UseInterceptors, BadRequestException } from '@nestjs/common';
 
 import * as models from 'src/db/works/models';
 import { WorksService } from 'src/db/works/works.service';
@@ -19,6 +19,7 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Put('create-work')
     async createWork(@Request() req: any, @Body() newWork: models.CreateWork) {
+        this.validateWork(newWork);       
         return await this.worksService.createNewWork(req.user, newWork);
     }
 
@@ -31,6 +32,7 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Patch('edit-work')
     async editWork(@Request() req: any, @Body() workInfo: models.EditWork) {
+        this.validateWork(workInfo);
         return await this.worksService.editWork(req.user, workInfo);
     }
 
@@ -43,6 +45,7 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Put('create-section/:workId')
     async createSection(@Request() req: any, @Param('workId') workId: string, @Body() newSection: models.CreateSection) {
+        this.validateSection(newSection);
         return await this.worksService.createNewSection(req.user, workId, newSection);
     }
 
@@ -55,6 +58,7 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Patch('edit-section/:workId/:sectionId')
     async editSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() someEdits: models.EditSection) {
+        this.validateSection(someEdits);
         return await this.worksService.editSection(req.user, workId, sectionId, someEdits);
     }
 
@@ -83,5 +87,62 @@ export class WorksController {
         const coverArtUrl = await this.imagesService.upload(coverArtImage, workId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
         return await this.worksService.updateCoverArt(req.user, coverArt, workId);
+    }
+
+    /**
+     * Validates the given work for errors. Throws a BadRequestException if any are found.
+     * Does nothing if the work is valid.
+     */
+    private validateWork(work: models.CreateWork | models.EditWork): void {
+        if (work.title.length < 3 || work.title.length > 100) {
+            throw new BadRequestException("Titles must be between 3 and 100 characters.");
+        }
+        if (work.shortDesc.length < 3 || work.shortDesc.length > 250) {
+            throw new BadRequestException("Short descriptions must be between 3 and 250 characters.");
+        }
+        if (work.longDesc.length < 5) {
+            throw new BadRequestException("Long descriptions must be at least 5 characters long.")
+        }
+        if (!work.category) {
+            throw new BadRequestException("You must select a category.");
+        }
+        if (!work.rating) {
+            throw new BadRequestException("You must select a content rating.");
+        }
+        if (!work.status) {
+            throw new BadRequestException("You must select a status.");
+        }
+
+        // Category-specific validation
+        if (work.category === models.Categories.Fanfiction) {
+            if (work.fandoms.length < 1 || work.fandoms.length > models.MAX_FANDOMS_PER_STORY) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_FANDOMS_PER_STORY} fandoms.`);
+            }
+            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_FANFIC) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_FANFIC} genres.`);
+            }
+        }
+        if (work.category === models.Categories.OriginalFiction) {
+            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_ORIGINAL) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_ORIGINAL} genres.`);
+            }
+        }
+        if (work.category === models.Categories.Poetry) {
+            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_POEM) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_POEM} genres.`);
+            }
+        }         
+    }
+
+    private validateSection(section: models.CreateSection | models.EditSection): void {
+        if (section.title.length < 3 || section.title.length > 100) {
+            throw new BadRequestException("Section titles must be between 3 and 100 characters.");
+        }
+        if (section.body.length < 5) {
+            throw new BadRequestException("Section bodies must be at least 5 characters long.");
+        }
+        if (section.authorsNote && section.authorsNote.length < 3) {
+            throw new BadRequestException("Author's notes must be at least 3 characters long.")
+        }
     }
 }
