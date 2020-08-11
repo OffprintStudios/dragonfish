@@ -22,8 +22,9 @@ div.port-works-container {
     
     div.work-box {
         position: relative;
+        margin-top: 0;
         width: 90%;
-        margin: 0 auto 4rem auto;
+        margin: 0 auto 0 auto;
         border: 1px solid var(--site-borders);
         background-color: var(--site-accent);
         box-shadow: var(--site-dropshadow);
@@ -108,7 +109,7 @@ div.port-works-container {
                 }
             }
         }
-
+    
         div.long-description {
             width: 90%;
             margin: 1.25rem auto 0 auto;
@@ -122,35 +123,45 @@ div.port-works-container {
                     text-decoration: none;
                 }
             }
-        }
-    }
     
-    div.work-stats {
-        margin: 0 auto 0 auto;
-        padding: 10px;
-        border-top: 1px solid whitesmoke;
-        text-align: right;
-        font-size: 14px;
-        color: whitesmoke;
-        a.work-stat-button {
-            color: whitesmoke;
-            text-decoration: none;
-            padding: 2px;
-            &:hover {
-                background-color: var(--site-accent-hover);
+            quill-view {
+                a {
+                    color: var(--site-accent-hover) !important;
+                    font-weight: 500;
+    
+                    &:hover {
+                        text-decoration: underline !important;
+                    }
+                }
             }
         }
-        span {
-            margin: 0 0.5rem 0 0.5rem;
+    
+        div.work-stats {
+            margin: 0 2rem 0 2rem;
+            padding: 10px;
+            border-top: 1px solid whitesmoke;
+            text-align: right;
+            font-size: 14px;
+            color: whitesmoke;
+            a.work-stat-button {
+                color: whitesmoke;
+                text-decoration: none;
+                padding: 2px;
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                }
+            }
+            span {
+                margin: 0 0.5rem 0 0.5rem;
+            }
+    
+            i-feather {
+                position: relative;
+                width: 16px;
+                height: 16px;
+                stroke-width: 1;
+                top: 0.25rem;
+                margin-right: 0.25rem;
+            }
         }
-
-        i-feather {
-            position: relative;
-            width: 16px;
-            height: 16px;
-            stroke-width: 1;
-            top: 0.25rem;
-            margin-right: 0.25rem;
-        }
-    }
 }
