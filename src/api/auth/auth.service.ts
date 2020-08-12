@@ -103,15 +103,17 @@ export class AuthService {
             // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
             throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`)
         }
-        try {
-            if (!(await verify(potentialUser.password, changeUsernameRequest.currentPassword, {type: argon2id}))) {
-                throw new UnauthorizedException(`You don't have permission to do that.`);
-            }
-            const updatedUser = await this.usersService.changeUsername(potentialUser._id, changeUsernameRequest.newUsername);
-            return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(jwtPayload));
-        } catch (err) {
-            throw new InternalServerErrorException(`Something went wrong verifying you. Try again in a little bit.`);
+       
+        if (!(await verify(potentialUser.password, changeUsernameRequest.currentPassword, {type: argon2id}))) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
         }
+        const updatedUser = await this.usersService.changeUsername(potentialUser._id, changeUsernameRequest.newUsername);
+        const newJwt: JwtPayload = {
+            sub: jwtPayload.sub,
+            username: jwtPayload.username,
+            roles: jwtPayload.roles
+        }
+        return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(newJwt));        
     }
 
     /**
@@ -126,15 +128,18 @@ export class AuthService {
             // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
             throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`)
         }
-        try {
-            if (!(await verify(potentialUser.password, changeEmailRequest.currentPassword, {type: argon2id}))) {
-                throw new UnauthorizedException(`You don't have permission to do that.`);
-            }
-            const updatedUser = await this.usersService.changeEmail(potentialUser._id, changeEmailRequest.newEmail);
-            return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(jwtPayload))
-        } catch (err) {
-            throw new InternalServerErrorException(`Something went wrong verifying you. Try again in a little bit.`);
+       
+        if (!(await verify(potentialUser.password, changeEmailRequest.currentPassword, {type: argon2id}))) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
         }
+
+        const updatedUser = await this.usersService.changeEmail(potentialUser._id, changeEmailRequest.newEmail);
+        const newJwt: JwtPayload = {
+            sub: jwtPayload.sub,
+            username: jwtPayload.username,
+            roles: jwtPayload.roles
+        }
+        return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(newJwt))        
     }
 
     /**

@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
 
-import { User, CreateUser, LoginUser, ChangeNameAndEmail, ChangePassword, ChangeProfile } from 'src/app/models/users';
+import { User, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
 import { HttpError } from 'src/app/models/site';
 
@@ -118,12 +118,27 @@ export class AuthService {
   /* Account settings */
 
   /**
-   * Sends a request to change a user's username and email.
-   * 
-   * @param newNameAndEmail The new name and email requested
+   * Sends a request to change a user's email.
+   * @param newEmail The requested new email and current password.
    */
-  public changeNameAndEmail(newNameAndEmail: ChangeNameAndEmail) {
-    return this.http.patch<User>(`${this.url}/change-name-and-email`, newNameAndEmail, { observe: 'response', withCredentials: true })
+  public changeEmail(newEmail: ChangeEmail): Observable<User> {
+    return this.http.patch<User>(`${this.url}/change-email`, newEmail, { observe: 'response', withCredentials: true })
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sends a request to change a user's username.
+   * @param newUsername The reuqested new username and current password.
+   */
+  public changeUsername(newUsername: ChangeUsername): Observable<User> {
+    return this.http.patch<User>(`${this.url}/change-username`, newUsername, { observe: 'response', withCredentials: true})
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);

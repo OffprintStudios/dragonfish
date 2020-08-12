@@ -84,7 +84,9 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Patch('change-username')
     async changeUsername(@Request() req: any, @Body() changeUsernameRequest: models.ChangeUsername) {
-        return await this.authService.changeUsername(req.user, changeUsernameRequest);
+        // TODO: Determine how we want to handle this.
+        // We should decide what--and if we need--restrictions to have around name changes.
+        //return await this.authService.changeUsername(req.user, changeUsernameRequest);
     }
 
     @UseGuards(AuthGuard)

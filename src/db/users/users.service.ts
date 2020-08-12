@@ -193,7 +193,7 @@ export class UsersService {
         if (!isNullOrUndefined(existingUsername)) {
             throw new ConflictException(`This username is already in use. Please use another.`);
         }
-        return await this.userModel.findOneAndUpdate({id: userId}, {username: newUsername}, {new: true});
+        return await this.userModel.findOneAndUpdate({_id: userId}, {username: newUsername}, {new: true});
     }
 
     /**
@@ -206,7 +206,7 @@ export class UsersService {
         if (!isNullOrUndefined(existingEmail)) {
             throw new ConflictException(`That email is already in use. Please use another.`);
         }
-        return await this.userModel.findOneAndUpdate({id: userId}, {email: newEmail}, {new: true});
+        return await this.userModel.findOneAndUpdate({_id: userId}, {email: newEmail}, {new: true});
     }
 
     /**
