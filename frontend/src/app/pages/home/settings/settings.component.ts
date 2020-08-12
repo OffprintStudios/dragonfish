@@ -9,6 +9,9 @@ import { AlertsService } from 'src/app/modules/alerts';
 import { ThrowStmt } from '@angular/compiler';
 import { HttpError } from 'src/app/models/site';
 import { UploadAvatarComponent } from 'src/app/components/modals/account';
+import { Observable, throwError, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { stringify } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -88,12 +91,6 @@ export class SettingsComponent implements OnInit {
           break;
       }
 
-      this.changeUsernameAndEmailForm.setValue({
-        email: x.email,
-        username: x.username,
-        currPassword: ''
-      });
-
       this.changeProfileForm.setValue({
         newThemePref: this.themePrefOptions[themePrefIndex],
         newBio: x.profile.bio
@@ -117,31 +114,27 @@ export class SettingsComponent implements OnInit {
       .content(UploadAvatarComponent)
       .create();
   }
-
-  get usernameAndEmailFields() { return this.changeUsernameAndEmailForm.controls; }
+  
   get passwordFields() { return this.changePasswordForm.controls; }
   get changeProfileFields() { return this.changeProfileForm.controls; }
 
-  submitUsernameAndEmailForm() {
-    if (this.usernameAndEmailFields.email.invalid) {
-      this.alertsService.warn(`Your email must be a valid address.`);
-      return;
-    }
-
-    if (this.usernameAndEmailFields.username.invalid) {
-      this.alertsService.warn(`Your username must be between 3 and 32 characters.`);
-      return;
-    }
-    const newNameAndEmail: models.ChangeNameAndEmail = {
-      username: this.usernameAndEmailFields.username.value,
-      email: this.usernameAndEmailFields.email.value,
-      currentPassword: this.usernameAndEmailFields.currPassword.value,
+  changeEmail = (newEmail: string, password: string): Observable<string> => {
+    const changeRequest: models.ChangeEmail = {
+      currentPassword: password,
+      newEmail: newEmail
     };
-
-    this.authService.changeNameAndEmail(newNameAndEmail).subscribe(() => {
-      location.reload();
-    });
-  }
+    return this.authService.changeEmail(changeRequest)
+      .pipe(map(x => {
+        if (x) {
+          this.alertsService.success("Email successfully changed!");
+          return x.email;          
+        } else {
+          return null;
+        }
+      }), catchError(_ => {
+        return of(null);
+      }));
+  };
 
   submitChangePasswordForm() {
     if (this.passwordFields.newPassword.invalid || this.passwordFields.confirmNewPassword.invalid) {
