@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
 
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
-  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
+  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
     PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
@@ -37,7 +37,7 @@ import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
-  UsersComponent, AuditComponent } from './pages/dashboard';
+  UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
 
 import { Divider, dividerHandler } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
@@ -83,7 +83,8 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
