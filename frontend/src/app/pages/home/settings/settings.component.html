@@ -4,18 +4,18 @@
     </div>
     <hr class="header-divider">
     <div class="settings-cardrow">
-        <div class="settings-card">
-            <form [formGroup]="changeUsernameAndEmailForm" (ngSubmit)="submitUsernameAndEmailForm()">
-                <div class="settings-card-content">
-                    <h1>Change Username/Email</h1>
-                    <input class="u-full-width" type="email" formControlName="email" placeholder="New Email">
-                    <input class="u-full-width" type="text" formControlName="username" placeholder="New Username">
-                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
-                </div>
-                <div class="settings-card-footer">
-                    <button type="submit" class="button-primary">Save Changes</button>
-                </div>
-            </form>
+        <div class="settings-card">            
+            <div class="settings-card-content">
+                <h1>Change Email</h1>
+                <app-network-input 
+                    inputClasses="u-full-width" 
+                    passwordBoxClasses="u-full-width"
+                    inputType="email"
+                    inputPlaceholder="New Email"
+                    [inputValue]="currentUser.email"
+                    [uploadFunction]="changeEmail">
+                </app-network-input>                    
+            </div>
         </div>
         <div class="settings-card">
             <form [formGroup]="changePasswordForm" (ngSubmit)="submitChangePasswordForm()">

@@ -40,6 +40,7 @@ import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, Do
   UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
 
 import { Divider, dividerHandler } from './util/quill';
+import { NetworkInputComponent } from './components/network-input/network-input.component';
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -82,7 +83,8 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, AlertsComponent, OverviewComponent
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
+    OverviewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
