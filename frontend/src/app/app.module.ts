@@ -37,7 +37,7 @@ import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
-  UsersComponent, AuditComponent } from './pages/dashboard';
+  UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
 
 import { Divider, dividerHandler } from './util/quill';
 
@@ -82,7 +82,7 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, AlertsComponent
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, AlertsComponent, OverviewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

@@ -1,13 +1,23 @@
-<div class="dash-nav">
-    <div class="dash-nav-items">
-        <a [routerLink]="['/dashboard/queue']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="list"></i-feather></span>Queue</a>
-        <a [routerLink]="['/dashboard/news-management']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
-        <a [routerLink]="['/dashboard/docs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="briefcase"></i-feather></span>Docs</a>
-        <a [routerLink]="['/dashboard/reports']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>Reports</a>
-        <a [routerLink]="['/dashboard/users']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Users</a>
-        <a [routerLink]="['/dashboard/audit-log']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="clipboard"></i-feather></span>Audit</a>
+<div class="row">
+    <div class="three columns">
+        <div class="dashboard-nav">
+            <div class="dash-header">
+                <h3 style="color: whitesmoke; margin-bottom: 0;">Dashboard</h3>
+                <hr style="margin-top: 0; margin-bottom: 0;">
+            </div>
+            <ul class="dash-nav-list">
+                <li><a [routerLink]="['/dashboard/overview']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span>Overview<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/queue']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="list"></i-feather></span>Queue<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/news-management']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/docs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="briefcase"></i-feather></span>Docs<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/reports']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>Reports<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/users']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Users<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+                <li><a [routerLink]="['/dashboard/audit-log']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="clipboard"></i-feather></span>Audit<i-feather class="end-point" name="chevron-right"></i-feather></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="nine columns">
+        <router-outlet></router-outlet>
     </div>
 </div>
-
-<router-outlet></router-outlet>
 
