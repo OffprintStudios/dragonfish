@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import * as models from 'src/app/models/blogs';
+import * as models from 'shared-imports';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { BlogsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';

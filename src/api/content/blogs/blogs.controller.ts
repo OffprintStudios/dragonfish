@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException } from '@nestjs/common';
 
-import * as models from 'src/db/blogs/models';
+import * as models from 'shared/models/blogs';
 import { BlogsService } from 'src/db/blogs/blogs.service';
 import { AuthGuard } from 'src/guards';
 

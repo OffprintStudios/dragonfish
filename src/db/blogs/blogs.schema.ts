@@ -3,7 +3,7 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
-import { Blog } from './models';
+import { BlogDocument } from './blog-document';
 
 /**
  * The Mongoose schema for blogs.
@@ -32,7 +32,7 @@ export const BlogsSchema = new Schema({
 
 BlogsSchema.plugin(MongooseAutopopulate);
 
-BlogsSchema.pre<Blog>('save', async function(next: HookNextFunction) {
+BlogsSchema.pre<BlogDocument>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());
     this.set('title', sanitize(this.title));
     this.set('body', sanitize(this.body));
@@ -47,7 +47,7 @@ BlogsSchema.pre<Blog>('save', async function(next: HookNextFunction) {
     return next();
 });
 
-BlogsSchema.pre<Blog>('findOneAndUpdate', async function(next: HookNextFunction) {
+BlogsSchema.pre<BlogDocument>('findOneAndUpdate', async function(next: HookNextFunction) {
     const wordCount = await wordCounter.countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
 

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { User } from 'src/app/models/users';
-import { Blog } from 'src/app/models/blogs';
+import { Blog } from 'shared-imports';
 import { AuthService } from 'src/app/services/auth';
 import { BlogsService, PortfolioService } from 'src/app/services/content';
 import { EditBlogComponent } from 'src/app/components/modals/blogs';

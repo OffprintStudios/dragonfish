@@ -1,12 +1,6 @@
 export interface Blog {
     readonly _id: string;
-    readonly author: {
-        readonly _id: string;
-        readonly username: string;
-        readonly profile: {
-            readonly avatar: string;
-        };
-    };
+    readonly author: UserInfo;
     readonly title: string;
     readonly body: string;
     readonly published: boolean;
@@ -22,4 +16,12 @@ export interface Blog {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+}
+
+export interface UserInfo {
+    readonly _id: string;
+    readonly username: string;
+    readonly profile: {
+        readonly avatar: string;
+    };
 }

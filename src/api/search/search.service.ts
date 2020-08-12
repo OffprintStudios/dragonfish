@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { User, SearchUser } from '../../db/users/models';
-import { Work } from '../../db/works/models';
-import { Blog } from '../../db/blogs/models';
+import { SearchUser } from '../../db/users/models';
 import { SearchParameters, SearchResults, Pagination } from './models';
 import { UsersService } from '../../db/users/users.service';
 import { WorksService } from '../../db/works/works.service';
