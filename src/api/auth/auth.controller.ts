@@ -76,9 +76,15 @@ export class AuthController {
     /* Account settings */
 
     @UseGuards(AuthGuard)
-    @Patch('change-name-and-email')
-    async changeNameAndEmail(@Request() req: any, @Body() newNameAndEmail: models.ChangeNameAndEmail) {
-        return await this.authService.changeNameAndEmail(req.user, newNameAndEmail);
+    @Patch('change-email')
+    async changeEmail(@Request() req: any, @Body() changeEmailRequest: models.ChangeEmail) {
+        return await this.authService.changeEmail(req.user, changeEmailRequest);
+    }
+
+    @UseGuards(AuthGuard)
+    @Patch('change-username')
+    async changeUsername(@Request() req: any, @Body() changeUsernameRequest: models.ChangeUsername) {
+        return await this.authService.changeUsername(req.user, changeUsernameRequest);
     }
 
     @UseGuards(AuthGuard)

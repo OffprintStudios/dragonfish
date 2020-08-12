@@ -184,21 +184,29 @@ export class UsersService {
     }
 
     /**
-     * Updates a user's username and email, first by making sure the new username and email aren't
-     * already taken. To be used only after the current password has been verified in the AuthService.
-     * 
-     * @param userId A user's ID
-     * @param newNameAndEmail Their new name and email address
+     * Updates a user's username, and ensures that the new username is not already in use.
+     * @param userId The user's ID.
+     * @param newUsername The user's proposed new username.
      */
-    async changeNameAndEmail(userId: string, newNameAndEmail: models.ChangeNameAndEmail): Promise<models.User> {
-        const existingUsername = await this.userModel.findOne({ username: sanitize(newNameAndEmail.username) });
-        const existingEmail = await this.userModel.findOne({ email: sanitize(newNameAndEmail.email) });
-
-        if (isNullOrUndefined(existingUsername) || isNullOrUndefined(existingEmail)) {
-            return await this.userModel.findOneAndUpdate({ "_id": userId }, { "email": newNameAndEmail.email, "username": newNameAndEmail.username });
-        } else {
-            throw new ConflictException('Someone already has your username or email. Try another combination.');
+    async changeUsername(userId: string, newUsername: string): Promise<models.User> {
+        const existingUsername = await this.userModel.findOne({username: sanitize(newUsername)});
+        if (!isNullOrUndefined(existingUsername)) {
+            throw new ConflictException(`This username is already in use. Please use another.`);
         }
+        return await this.userModel.findOneAndUpdate({id: userId}, {username: newUsername}, {new: true});
+    }
+
+    /**
+     * Updates a user's email, and ensures that the new email is not already in use.
+     * @param userId The user's ID.
+     * @param newEmail The user's proposed new email address.
+     */
+    async changeEmail(userId: string, newEmail: string): Promise<models.User> {
+        const existingEmail = await this.userModel.findOne({email: sanitize(newEmail)});
+        if (!isNullOrUndefined(existingEmail)) {
+            throw new ConflictException(`That email is already in use. Please use another.`);
+        }
+        return await this.userModel.findOneAndUpdate({id: userId}, {email: newEmail}, {new: true});
     }
 
     /**

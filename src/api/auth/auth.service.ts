@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException, InternalServerErrorException, NotFou
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser, ChangeNameAndEmail, ChangePassword, ChangeProfile } from 'src/db/users/models';
+import { User, FrontendUser, ChangeNameAndEmail, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'src/db/users/models';
 import { UsersService } from 'src/db/users/users.service';
 import { JwtPayload } from './models';
 
@@ -92,34 +92,48 @@ export class AuthService {
     }
 
     /**
-     * Checks to see if the user making a username and email change request is actually
-     * allowed by checking the password hash. If they are, then their new username and email
-     * are accepted for processing. If not, then this errors out.
-     * 
-     * @param user The user making the request
-     * @param newNameAndEmail Their new username and email
+     * Changes a user's username. First validates their credentials, and if they match, makes the change
+     * and returns a new FrontendUser.
+     * @param jwtPayload The JWT payload of the user making the request.
+     * @param changeUsernameRequest The requested new username, and current password.
      */
-    async changeNameAndEmail(user: JwtPayload, newNameAndEmail: ChangeNameAndEmail): Promise<FrontendUser> {
-        const potentialUser = await this.usersService.findOneById(user.sub);
-        if (potentialUser) {
-            try {
-                if (await verify(potentialUser.password, newNameAndEmail.currentPassword, {type: argon2id})) {
-                    const newUserInfo = await this.usersService.changeNameAndEmail(potentialUser._id, newNameAndEmail);
-                    const newUserPayload: JwtPayload = {
-                        sub: newUserInfo._id,
-                        username: newUserInfo.username,
-                        roles: newUserInfo.audit.roles,
-                    };
-                    return this.usersService.buildFrontendUser(newUserInfo, this.jwtService.sign(newUserPayload)); // Probably want to not do this for potential security concerns
-                } else {
-                    throw new UnauthorizedException(`You don't have permission to do that.`);
-                }
-            } catch (err) {
-                console.log(err);
-                throw new InternalServerErrorException('Something went wrong verifying your credentials. Try again in a little bit.');
+    async changeUsername(jwtPayload: JwtPayload, changeUsernameRequest: ChangeUsername): Promise<FrontendUser> {
+        const potentialUser = await this.usersService.findOneById(jwtPayload.sub);
+        if (!potentialUser) {
+            // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
+            throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`)
+        }
+        try {
+            if (!(await verify(potentialUser.password, changeUsernameRequest.currentPassword, {type: argon2id}))) {
+                throw new UnauthorizedException(`You don't have permission to do that.`);
             }
-        } else {
-            throw new NotFoundException(`It doesn't look like you exist! Try again in a little bit, or create an account.`);
+            const updatedUser = await this.usersService.changeUsername(potentialUser._id, changeUsernameRequest.newUsername);
+            return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(jwtPayload));
+        } catch (err) {
+            throw new InternalServerErrorException(`Something went wrong verifying you. Try again in a little bit.`);
+        }
+    }
+
+    /**
+     * Change a user's email. First validates their credentials, and if they match, makes the change,
+     * and returns a new FrontendUser.
+     * @param jwtPayload The JWT payload of the user making the request.
+     * @param changeEmailRequest The requested new email, and current password.
+     */
+    async changeEmail(jwtPayload: JwtPayload, changeEmailRequest: ChangeEmail): Promise<FrontendUser> {
+        const potentialUser = await this.usersService.findOneById(jwtPayload.sub);
+        if (!potentialUser) {
+            // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
+            throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`)
+        }
+        try {
+            if (!(await verify(potentialUser.password, changeEmailRequest.currentPassword, {type: argon2id}))) {
+                throw new UnauthorizedException(`You don't have permission to do that.`);
+            }
+            const updatedUser = await this.usersService.changeEmail(potentialUser._id, changeEmailRequest.newEmail);
+            return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(jwtPayload))
+        } catch (err) {
+            throw new InternalServerErrorException(`Something went wrong verifying you. Try again in a little bit.`);
         }
     }
 
