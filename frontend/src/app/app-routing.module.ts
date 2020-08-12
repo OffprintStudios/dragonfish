@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, WorksComponent,
-  BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent } from './pages/home';
+  BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
   PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
@@ -34,6 +34,7 @@ const routes: Routes = [
       {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent},
       {path: 'inbox', canActivate: [AuthGuard], component: InboxComponent},
       {path: 'settings', canActivate: [AuthGuard], component: SettingsComponent},
+      {path: 'alerts', canActivate: [AuthGuard], component: AlertsComponent},
       {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
     ]}
   ]},

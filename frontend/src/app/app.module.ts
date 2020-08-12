@@ -20,7 +20,7 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
 
 import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
-  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent } from './pages/home';
+  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
     PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
@@ -82,7 +82,7 @@ const toolbarOptions = [
     UnpublishedSectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent,
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, AlertsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
