@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import * as models from 'src/app/models/blogs';
+import * as models from 'shared-models';
 import { AlertsService } from 'src/app/modules/alerts';
 
 @Injectable({

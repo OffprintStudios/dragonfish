@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as models from 'src/app/models/works';
+import { Work } from 'shared-models';
 import { BrowseService } from 'src/app/services/content/browse.service';
 import { AlertsService } from 'src/app/modules/alerts';
-import { HttpError } from 'src/app/models/site';
 import { HttpErrorResponse } from '@angular/common/http';
 
 type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
@@ -15,7 +14,7 @@ type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 })
 export class BrowseComponent implements OnInit {
   loadingState: LoadingState = 'notstarted';
-  works: models.Work[] = [];
+  works: Work[] = [];
 
   constructor(private browseService: BrowseService, private alertService: AlertsService) { 
     this.fetchData();

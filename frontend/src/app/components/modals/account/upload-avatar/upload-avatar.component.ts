@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ImageCroppedEvent, Dimensions } from 'ngx-image-cropper';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { FileUploader } from 'ng2-file-upload';
 
 import { AlertsService } from 'src/app/modules/alerts';
 import { AuthService } from 'src/app/services/auth';
-import { User } from 'src/app/models/users';
 import { HttpError } from 'src/app/models/site';
+import { User } from 'shared-models';
 
 @Component({
   selector: 'app-upload-avatar',

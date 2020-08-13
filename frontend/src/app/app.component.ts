@@ -3,11 +3,11 @@ import { Router, NavigationEnd } from '@angular/router';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
 
-import { User, Roles } from './models/users';
+import { User } from 'shared-models';
 import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
-import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
-import { DarkCrimson, Aqua, DarkAqua, Royal, DarkRoyal, Steel, MidnightField, Autumn, DuskAutumn, PredefinedThemes } from './models/site/theme';
+import { UserMenuComponent } from './components/dropdowns';
+import { PredefinedThemes } from './models/site/theme';
 
 @Component({
   selector: 'app-root',

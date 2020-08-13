@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Request, Body, Get, Post, Param, Patch } from '@nestjs/common';
 
 import { ContribService } from './contrib.service';
-import { Decision } from './models';
-import { Roles } from 'src/db/users/models';
+import { Decision } from 'shared/models/contrib';
+import { Roles } from 'shared/models/users';
 import { RolesGuard } from 'src/guards';
 
 @Controller()

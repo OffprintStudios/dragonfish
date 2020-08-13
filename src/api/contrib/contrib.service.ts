@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { ApprovalQueue } from 'src/db/approval-queue/models';
+import { ApprovalQueue } from 'shared/models/approval-queue';
 import { ApprovalQueueService } from 'src/db/approval-queue/approval-queue.service';
 
 @Injectable()

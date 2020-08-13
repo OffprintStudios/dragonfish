@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AlertsService } from 'src/app/modules/alerts';
-import { ApprovalQueue, Decision } from 'src/app/models/admin';
+import { ApprovalQueue, Decision } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'

@@ -1,20 +1,22 @@
 import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
-import * as models from './models';
-import { UsersService } from '../users/users.service';
-import { SearchParameters } from '../../api/search/models/search-parameters';
-import { SearchResults } from '../../api/search/models/search-results';
-import { isNullOrUndefined } from 'util';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
 import { isNull } from 'lodash';
 
+import * as models from 'shared/models/works';
+import * as documents from './models';
+import { UsersService } from '../users/users.service';
+import { SearchParameters } from 'src/api/search/models/search-parameters';
+import { SearchResults } from 'src/api/search/models/search-results';
+import { isNullOrUndefined } from 'util';
+
 @Injectable()
 export class WorksService {
     constructor(
-        @InjectModel('Work') private readonly workModel: Model<models.Work>,
-        @InjectModel('Section') private readonly sectionModel: Model<models.Section>,
+        @InjectModel('Work') private readonly workModel: Model<documents.WorkDocument>,
+        @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
         private readonly usersService: UsersService) {}
     
     /* Work and Section creation*/
@@ -64,6 +66,7 @@ export class WorksService {
             });
 
             return await newSection.save().then(async section => {
+                //@ts-ignore
                 await this.workModel.findByIdAndUpdate(workId, {$push: {"sections": section._id}}).where("audit.isDeleted", false);
                 return section;
             });
@@ -111,6 +114,7 @@ export class WorksService {
      * @param sectionId The section itself
      */
     async findOneSectionById(workId: string, sectionId: string): Promise<models.Section> {
+        //@ts-ignore
         const thisWork = await this.workModel.findOne({ "_id": workId, "sections": sectionId }).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
@@ -145,7 +149,7 @@ export class WorksService {
      * 
      * @param searchParameters The user's search query
      */
-    async findRelatedWorks(searchParameters: SearchParameters): Promise<SearchResults<models.Work> | null> {
+    async findRelatedWorks(searchParameters: SearchParameters): Promise<SearchResults<documents.WorkDocument> | null> {
         const p = searchParameters.pagination;
         const filter: FilterQuery<models.Work> = {
             $text: {$search: searchParameters.text},
@@ -182,6 +186,7 @@ export class WorksService {
      * @param sectionId The section ID
      */
     async getSectionForUser(user: any, workId: string, sectionId: string): Promise<models.Section> {
+        //@ts-ignore
         const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId }).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
@@ -200,6 +205,7 @@ export class WorksService {
      * @param sectionInfo The new section information
      */
     async editSection(user: any, workId: string, sectionId: string, sectionInfo: models.EditSection): Promise<models.Section> {
+        //@ts-ignore
         const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
@@ -230,6 +236,7 @@ export class WorksService {
      * @param pubStatus The new section publishing status
      */
     async publishSection(user: any, workId: string, sectionId: string, pubStatus: models.PublishSection) {
+        //@ts-ignore
         const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
@@ -269,6 +276,7 @@ export class WorksService {
      * @param sectionId The section itself
      */
     async deleteSection(user: any, workId: string, sectionId: string): Promise<void> {
+        //@ts-ignore
         const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
@@ -308,9 +316,11 @@ export class WorksService {
      * @param authorId The author of the work
      */
     async approveWork(workId: string, authorId: string): Promise<void> {
+        //@ts-ignore
         return await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
             .where("audit.isDeleted", false)
             .then(async () => {
+                //@ts-ignore
                 const workCount = await this.workModel.countDocuments({author: authorId})
                     .where('audit.isDeleted', false)
                     .where('audit.published', models.ApprovalStatus.Approved);
@@ -325,6 +335,7 @@ export class WorksService {
      * @param authorId The author of the work
      */
     async rejectWork(workId: string, authorId: string): Promise<void> {
+        //@ts-ignore
         await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Rejected}).where("audit.isDeleted", false);
     }
 
@@ -335,6 +346,7 @@ export class WorksService {
      * @param authorId The author of the work
      */
     async pendingWork(workId: string, authorId: string): Promise<void> {
+        //@ts-ignore
         await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Pending}).where("audit.isDeleted", false);
     }
 

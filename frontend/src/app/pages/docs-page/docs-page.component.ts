@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { DocsService } from 'src/app/services/admin';
-import { Doc } from 'src/app/models/admin';
+import { Doc } from 'shared-models';
 
 @Component({
   selector: 'app-docs',

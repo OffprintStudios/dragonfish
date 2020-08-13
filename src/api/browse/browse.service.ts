@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { Work } from 'src/db/works/models';
+import { Work } from 'shared/models/works';
 import { WorksService } from 'src/db/works/works.service';
 
 @Injectable()

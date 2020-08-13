@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
+import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import * as models from 'src/app/models/works';
 import { AlertsService } from 'src/app/modules/alerts';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpError } from 'src/app/models/site';
-import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
+import { CreateWork, CreateSection, EditSection, EditWork, Section, 
+  PublishSection, SectionInfo, Work 
+} from 'shared-models';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,7 @@ import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
 export class WorksService {
   private url: string = `/api/content/works`;
 
-  public thisWorksPublishedSections: models.SectionInfo[]; // for the work page
+  public thisWorksPublishedSections: SectionInfo[]; // for the work page
   public thisWorkId: string; // for cover art uploading
 
   constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) { }
@@ -27,8 +29,8 @@ export class WorksService {
    * 
    * @param info The work's information
    */
-  public createWork(info: models.CreateWork) {
-    return this.http.put<models.Work>(`${this.url}/create-work`, info, {observe: 'response', withCredentials: true})
+  public createWork(info: CreateWork) {
+    return this.http.put<Work>(`${this.url}/create-work`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success(`Work successfully created.`);
@@ -45,8 +47,8 @@ export class WorksService {
    * @param workId The work the section belongs to
    * @param info The new section's information
    */
-  public createSection(workId: string, info: models.CreateSection) {
-    return this.http.put<models.Section>(`${this.url}/create-section/${workId}`, info, {observe: 'response', withCredentials: true})
+  public createSection(workId: string, info: CreateSection) {
+    return this.http.put<Section>(`${this.url}/create-section/${workId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         this.alertsService.success(`Section successfully created.`);
         return res.body._id;
@@ -63,7 +65,7 @@ export class WorksService {
    * @param sectionId The section itself
    */
   public getSectionForUser(workId: string, sectionId: string) {
-    return this.http.get<models.Section>(`${this.url}/get-section-for-user/${workId}/${sectionId}`, {observe: 'response', withCredentials: true})
+    return this.http.get<Section>(`${this.url}/get-section-for-user/${workId}/${sectionId}`, {observe: 'response', withCredentials: true})
       .pipe(map(section => {
         return section.body;
       }), catchError(err => {
@@ -77,7 +79,7 @@ export class WorksService {
    * the homepage.
    */
   public fetchUserWorks() {
-    return this.http.get<models.Work[]>(`${this.url}/fetch-user-works`, {observe: 'response', withCredentials: true})
+    return this.http.get<Work[]>(`${this.url}/fetch-user-works`, {observe: 'response', withCredentials: true})
       .pipe(map(works => {
         return works.body;
       }), catchError(err => {
@@ -126,7 +128,7 @@ export class WorksService {
    * 
    * @param workInfo The work we're editing
    */
-  public editWork(workInfo: models.EditWork) {
+  public editWork(workInfo: EditWork) {
     return this.http.patch(` ${this.url}/edit-work`, workInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         this.alertsService.success(`Changes saved successfully.`);
@@ -142,7 +144,7 @@ export class WorksService {
    * @param workId The work we're fetching
    */
   public fetchWork(workId: string) {
-    return this.http.get<models.Work>(`${this.url}/get-work/${workId}`, {observe: 'response', withCredentials: true})
+    return this.http.get<Work>(`${this.url}/get-work/${workId}`, {observe: 'response', withCredentials: true})
       .pipe(map(work => {
         return work.body;
       }), catchError(err => {
@@ -159,7 +161,7 @@ export class WorksService {
    * @param sectionId The section itself
    * @param sectionData The new information for the section
    */
-  public editSection(workId: string, sectionId: string, sectionData: models.EditSection) {
+  public editSection(workId: string, sectionId: string, sectionData: EditSection) {
     return this.http.patch(`${this.url}/edit-section/${workId}/${sectionId}`, sectionData, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Changes saved!`);
@@ -176,7 +178,7 @@ export class WorksService {
    * @param sectionId The section itself
    * @param pubStatus The new publishing status for this section
    */
-  public setPublishStatusSection(workId: string, sectionId: string, pubStatus: models.PublishSection) {
+  public setPublishStatusSection(workId: string, sectionId: string, pubStatus: PublishSection) {
     return this.http.patch(`${this.url}/set-publishing-status/${workId}/${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Section published successfully!`);
@@ -193,7 +195,7 @@ export class WorksService {
    * @param sectionId The section itself
    */
   public getPublishedSection(workId: string, sectionId: string) {
-    return this.http.get<models.Section>(`${this.url}/fetch-section/${workId}/${sectionId}`, {observe: 'response', withCredentials: true})
+    return this.http.get<Section>(`${this.url}/fetch-section/${workId}/${sectionId}`, {observe: 'response', withCredentials: true})
       .pipe(map(section => {
         return section.body;
       }), catchError(err => {
@@ -207,7 +209,7 @@ export class WorksService {
    * 
    * @param sections The list of published sections of a work
    */
-  public setSectionsList(sections: models.SectionInfo[]) {
+  public setSectionsList(sections: SectionInfo[]) {
     this.thisWorksPublishedSections = sections;
   }
 

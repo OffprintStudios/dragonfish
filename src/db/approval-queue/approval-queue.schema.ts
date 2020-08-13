@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutpopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
-import { ApprovalQueue } from './models';
+import { ApprovalQueueDocument } from './models';
 
 export const ApprovalQueueSchema = new Schema({
     _id: {type: String, default: generate()},
@@ -15,7 +15,7 @@ export const ApprovalQueueSchema = new Schema({
 
 ApprovalQueueSchema.plugin(MongooseAutpopulate);
 
-ApprovalQueueSchema.pre<ApprovalQueue>('save', async function (next: HookNextFunction) {
+ApprovalQueueSchema.pre<ApprovalQueueDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
     this.set('createdAt', Date.now());
     this.set('updatedAt', Date.now());

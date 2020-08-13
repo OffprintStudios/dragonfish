@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import * as models from 'src/app/models/works';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction, 
+  GenresPoetry, WorkStatus 
+} from 'shared-models';
 
 @Component({
   selector: 'app-new-work',
@@ -15,12 +17,12 @@ export class NewWorkComponent implements OnInit {
   close: any; // Alias for Toppy
   loading = false; // Loading check for submission
 
-  categories = models.Categories; // Alias for categories
-  fandoms = models.Fandoms; // Alias for fandoms
-  genresFiction = models.GenresFiction; // Alias for fiction genres
-  genresPoetry = models.GenresPoetry; // Alias for poetry genres
-  rating = models.ContentRating; // Alias for content ratings
-  status = models.WorkStatus; // Alias for work statuses
+  categories = Categories; // Alias for categories
+  fandoms = Fandoms; // Alias for fandoms
+  genresFiction = GenresFiction; // Alias for fiction genres
+  genresPoetry = GenresPoetry; // Alias for poetry genres
+  rating = ContentRating; // Alias for content ratings
+  status = WorkStatus; // Alias for work statuses
 
   editorFormats = [
     'header', 'bold', 'italic', 'underline', 'strike',
@@ -173,7 +175,7 @@ export class NewWorkComponent implements OnInit {
       return;
     }
 
-    const newWork: models.CreateWork = {
+    const newWork: CreateWork = {
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,
       longDesc: this.fields.longDesc.value,

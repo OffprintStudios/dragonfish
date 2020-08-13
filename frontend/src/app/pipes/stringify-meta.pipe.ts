@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { WorkMetadata, Categories, GenresFiction, GenresPoetry, Fandoms } from 'src/app/models/works';
+import { WorkMetadata, Categories, GenresFiction, GenresPoetry, Fandoms } from 'shared-models';
 
 
 @Pipe({name: 'stringifyMeta'})

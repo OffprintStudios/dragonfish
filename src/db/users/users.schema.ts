@@ -3,8 +3,9 @@ import { generate } from 'shortid';
 import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 
-import { User, Roles } from './models';
+import { Roles } from 'shared/models/users';
 import { AuditSessionSchema } from './audit-session.schema';
+import { UserDocument } from './models';
 
 export const UsersSchema = new Schema({
     _id: {type: String, default: generate()},
@@ -32,7 +33,7 @@ export const UsersSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'users'});
 
-UsersSchema.pre<User>('save', async function(next: HookNextFunction) {
+UsersSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     const user = this;
     if (!user.isModified('password')) {
         return next();

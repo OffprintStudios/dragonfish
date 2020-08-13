@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Categories, GenresFiction, GenresPoetry, Fandoms } from 'src/app/models/works';
+import { GenresFiction, GenresPoetry, Genres, Categories, Fandoms,  } from 'shared-models';
 
 @Pipe({name: 'separateEntities'})
 export class SeparateEntitiesPipe implements PipeTransform {
-    transform(value: GenresFiction[] | GenresPoetry[] | Fandoms[], category?: Categories) {
+    transform(value: Genres[] | Fandoms[], category?: Categories) {
         if (Categories[category] === Categories.OriginalFiction || Categories[category] === Categories.Fanfiction) {
             if (value.length === 1) {
                 return GenresFiction[value[0]];

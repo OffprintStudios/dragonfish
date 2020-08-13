@@ -3,7 +3,7 @@ import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
 
-import { Section } from './models';
+import { SectionDocument } from './models';
 
 /**
  * The Mongoose schema for sections.
@@ -24,7 +24,7 @@ export const SectionsSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'sections'});
 
-SectionsSchema.pre<Section>('save', async function(next: HookNextFunction) {
+SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());
     this.set('title', sanitize(this.title));
     this.set('body', sanitize(this.body));

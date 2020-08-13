@@ -1,10 +1,10 @@
-import { Injectable, UnauthorizedException, InternalServerErrorException, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser, ChangeNameAndEmail, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'src/db/users/models';
+import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'shared/models/users';
 import { UsersService } from 'src/db/users/users.service';
-import { JwtPayload } from './models';
+import { JwtPayload } from 'shared/models/auth';
 
 @Injectable()
 export class AuthService {

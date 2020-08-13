@@ -3,11 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
-import { User } from 'src/app/models/users';
-import { Section, EditSection } from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { EditSection, User, Section } from 'shared-models';
 
 @Component({
   selector: 'app-unpublished-section-page',

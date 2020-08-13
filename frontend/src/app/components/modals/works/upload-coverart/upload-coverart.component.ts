@@ -5,8 +5,8 @@ import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
 import { AuthService } from 'src/app/services/auth';
 import { AlertsService } from 'src/app/modules/alerts';
 import { HttpError } from 'src/app/models/site';
-import { User } from 'src/app/models/users';
 import { WorksService } from 'src/app/services/content';
+import { User } from 'shared-models';
 
 @Component({
   selector: 'app-upload-coverart',

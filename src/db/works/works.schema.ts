@@ -4,7 +4,8 @@ import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as sanitize from 'sanitize-html';
 
-import * as models from './models';
+import * as models from 'shared/models/works';
+import * as documents from './models';
 
 /**
  * The Mongoose schema for works.
@@ -20,7 +21,7 @@ export const WorksSchema = new Schema({
     meta: {
         category: {type: String, enum: Object.keys(models.Categories), required: true},
         fandoms: {type: [String], enum: Object.keys(models.Fandoms)},
-        genres: {type: [String], enum: Object.keys(models.Genres), required: true},
+        genres: {type: [String], enum: Object.keys(models.GenresFiction).concat(Object.keys(models.GenresPoetry)), required: true},
         rating: {type: String, enum: Object.keys(models.ContentRating), required: true},
         status: {type: String, enum: Object.keys(models.WorkStatus), required: true},
         coverArt: {type: String},
@@ -47,7 +48,7 @@ export const WorksSchema = new Schema({
 
 WorksSchema.plugin(MongooseAutopopulate);
 
-WorksSchema.pre<models.Work>('save', async function (next: HookNextFunction) {
+WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
     this.set('title', sanitize(this.title));
     this.set('shortDesc', sanitize(this.shortDesc));

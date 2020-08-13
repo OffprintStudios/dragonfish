@@ -5,9 +5,9 @@ import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
 
-import { User, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts';
 import { HttpError } from 'src/app/models/site';
+import { User, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'

@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as lodash from 'lodash';
 
-import * as models from 'src/app/models/admin/docs';
-import { User, Roles } from 'src/app/models/users';
 import { DocsService } from 'src/app/services/admin';
 import { AuthService } from 'src/app/services/auth';
 import { AlertsService } from 'src/app/modules/alerts';
+import { Doc, User, Roles } from 'shared-models';
 
 @Component({
   selector: 'app-docs',
@@ -15,7 +14,7 @@ import { AlertsService } from 'src/app/modules/alerts';
 })
 export class DocsComponent implements OnInit {
   currentUser: User;
-  docs: models.Doc[];
+  docs: Doc[];
 
   constructor(private docsService: DocsService, private authService: AuthService,
     private router: Router, private alertsService: AlertsService, public route: ActivatedRoute) {

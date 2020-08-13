@@ -2,7 +2,8 @@ import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 
-import * as models from './models';
+import * as documents from './models';
+import * as models from 'shared/models/history';
 
 export const HistorySchema = new Schema({
     _id: {type: String, default: generate()},
@@ -19,7 +20,7 @@ export const HistorySchema = new Schema({
 
 HistorySchema.plugin(MongooseAutopopulate);
 
-HistorySchema.pre<models.History>('save', async function (next: HookNextFunction) {
+HistorySchema.pre<documents.HistoryDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
     this.set('createdAt', Date.now());
     this.set('updatedAt', Date.now());

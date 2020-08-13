@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Post, Body, Request, Get, UnauthorizedException, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from 'src/db/users/users.service';
 import { ImagesService } from '../images/images.service';
 import { AuthGuard, RefreshGuard } from 'src/guards';
-import * as models from 'src/db/users/models';
+import * as models from 'shared/models/users';
 
 @Controller('')
 export class AuthController {

@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { SearchUser } from 'src/app/models/users';
 import { AlertsService } from 'src/app/modules/alerts/alerts.service';
 import { SearchResults } from 'src/app/models/admin';
+import { SearchUser } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'

@@ -4,15 +4,17 @@ import {Model, PaginateModel} from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
 
-import * as models from './models';
-import {UsersService} from '../users/users.service';
-import {SearchParameters} from '../../api/search/models/search-parameters';
-import {SearchResults} from '../../api/search/models/search-results';
+import * as models from 'shared/models/blogs';
+import * as documents from './models/blog-document.model';
+import { UserInfo } from 'shared/models/users';
+import { UsersService } from '../users/users.service';
+import { SearchParameters } from '../../api/search/models/search-parameters';
+import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class BlogsService {
-    constructor(@InjectModel('Blog') private readonly blogModel: Model<models.Blog>,
+    constructor(@InjectModel('Blog') private readonly blogModel: Model<documents.BlogDocument>,
                 private readonly usersService: UsersService) {
     }
 
@@ -127,7 +129,7 @@ export class BlogsService {
             // If the blog exists
             if (user) {
                 // If a user is viewing
-                const authorInfo = thisBlog.author as models.UserInfo;
+                const authorInfo = thisBlog.author as UserInfo;
                 if (authorInfo._id === user.sub) {
                     // If the user is the author
                     return thisBlog;
@@ -150,7 +152,7 @@ export class BlogsService {
      * @returns a SearchResults object containing the first page of matches and pagination info if there are results.
      * If there are no results and the page != 1, returns null (and the API should either 404 or 400).
      */
-    async findRelatedBlogs(searchParameters: SearchParameters): Promise<SearchResults<models.Blog> | null> {
+    async findRelatedBlogs(searchParameters: SearchParameters): Promise<SearchResults<documents.BlogDocument> | null> {
         const p = searchParameters.pagination;
         const filter = {
             $text: {$search: searchParameters.text},
