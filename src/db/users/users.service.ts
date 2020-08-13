@@ -319,4 +319,11 @@ export class UsersService {
         const thisUser = await this.userModel.findById(userId);
         return thisUser.audit.roles;
     }
+
+    /**
+     * Gets the estimated count of users from the db.
+     */
+    async getUserCount(): Promise<number> {
+        return await this.userModel.estimatedDocumentCount().where("audit.isDeleted", false);
+    }
 }

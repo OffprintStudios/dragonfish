@@ -382,4 +382,11 @@ export class WorksService {
             .where('audit.isDeleted').equals(false)
             .sort({ 'createdAt': -1 });
     }
+
+    /**
+     * Gets the estimated count of works from the db.
+     */
+    async getWorkCount(): Promise<number> {
+        return await this.workModel.estimatedDocumentCount().where("audit.isDeleted", false);
+    }
 }
