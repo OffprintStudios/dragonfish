@@ -35,7 +35,9 @@ export class CreateDocComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private docsService: DocsService,
-    private cdr: ChangeDetectorRef, private alertsService: AlertsService, private router: Router) { }
+    private cdr: ChangeDetectorRef, private alertsService: AlertsService, private router: Router) {
+      this.authService.currUser.subscribe(x => { this.currentUser = x; });
+    }
 
   ngOnInit(): void {
   }
@@ -95,7 +97,7 @@ export class CreateDocComponent implements OnInit {
     const docToCreate: CreateDoc = {
       _id: this.fields.id.value,
       docName: this.fields.docName.value,
-      docDescription: this.fields.docDescription.value,
+      docDescription: this.fields.docDesc.value,
       docBody: this.fields.docBody.value,
       approvedRoles: this.fields.approvedRoles.value,
     };
