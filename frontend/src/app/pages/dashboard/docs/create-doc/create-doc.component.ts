@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { User, Roles } from 'src/app/models/users';
+import { User, Roles } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { DocsService } from 'src/app/services/admin';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
