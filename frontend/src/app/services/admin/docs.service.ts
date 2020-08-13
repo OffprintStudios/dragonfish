@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import * as lodash from 'lodash';
 
 import { AlertsService } from 'src/app/modules/alerts';
 import { Doc, CreateDoc, EditDoc } from 'src/app/models/admin/docs';
@@ -22,7 +23,9 @@ export class DocsService {
    * @param docInfo The document info
    */
   public createDoc(userRoles: Roles[], docInfo: CreateDoc) {
-    if (userRoles.includes(Roles.Admin)) {
+    const requiredRole: Roles[] = [Roles.Admin];
+    const hasRoles = lodash.intersection(userRoles, requiredRole);
+    if (hasRoles.length > 0) {
       return this.http.put(`${this.url}/create-doc`, docInfo, {observe: 'response', withCredentials: true})
         .pipe(map(() => {
           this.alertsService.success(`Document added to database.`);

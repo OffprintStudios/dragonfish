@@ -100,7 +100,7 @@ export class CreateDocComponent implements OnInit {
       approvedRoles: this.fields.approvedRoles.value,
     };
 
-    this.docsService.createDoc(this.currentUser.roles, docToCreate).subscribe(() => {
+    this.docsService.createDoc(this.currentUser.roles as Roles[], docToCreate).subscribe(() => {
       this.router.navigate(['/dashboard/docs']);
     })
   }
