@@ -52,6 +52,7 @@ export class EditDocComponent implements OnInit {
       this.docsService.fetchForEdit(this.docId).subscribe(doc => {
         this.docToEdit = doc;
         this.editDocForm.setValue({
+          docName: doc.docName,
           docBody: doc.docBody
         });
         this.loading = false;

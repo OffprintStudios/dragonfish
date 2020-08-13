@@ -35,6 +35,22 @@ export class DocsComponent implements OnInit {
     });
   }
 
+  /**
+   * Checks to see if you're an admin.
+   */
+  isAdmin() {
+    const allowedRoles: Roles[] = [Roles.Admin];
+    const isAllowed = lodash.intersection(allowedRoles, this.currentUser.roles);
+    if (isAllowed.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Switches to the Create Doc page if you're an admin.
+   */
   switchToCreateDoc() {
     if (this.currentUser) {
       const allowedRoles: Roles[] = [Roles.Admin];
@@ -44,6 +60,25 @@ export class DocsComponent implements OnInit {
         return;
       } else {
         this.alertsService.error(`You must be an admin to create new site docs.`);
+      }
+    } else {
+      return;
+    }
+  }
+
+  /**
+   * Switches to edit view for the provided document.
+   * 
+   * @param doc The doc to edit
+   */
+  editDoc(doc: Doc) {
+    if (this.currentUser) {
+      const isAllowed = lodash.intersection(doc.audit.approvedRoles, this.currentUser.roles);
+      if (isAllowed.length > 0) {
+        this.router.navigate([`/dashboard/docs/edit-doc/${doc._id}`]);
+        return;
+      } else {
+        this.alertsService.error(`You don't have permission to edit this document.`)
       }
     } else {
       return;

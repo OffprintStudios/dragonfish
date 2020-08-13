@@ -1,1 +1,18 @@
-<p>docs works!</p>
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>
+
+<ng-container *ngIf="!loading && doc; else noDoc">
+    <h1 class="doc-header">{{ doc.docName }}</h1>
+    <hr class="doc-divider">
+    <div class="doc-container">
+        <quill-view [content]="doc.docBody" sanitize="true" format="json"></quill-view>
+    </div>
+</ng-container>
+
+<ng-template #noDoc>
+    <div style="text-align: center; margin-top: 2rem;">
+        <h3 style="margin-bottom: 0;">Oops! Looks like something went wrong.</h3>
+        <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Contact the administrator if you're seeing this message.</p>
+    </div>
+</ng-template>
