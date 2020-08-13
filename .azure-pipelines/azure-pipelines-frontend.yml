@@ -47,4 +47,4 @@ steps:
     PathtoPublish: '$(Build.SourcesDirectory)/dist/static'
     ArtifactName: 'frontend-dist-static'
     publishLocation: 'Container'
-  displayName: 'Publish /dist/static'
+  displayName: 'Publish /dist/src/static'
