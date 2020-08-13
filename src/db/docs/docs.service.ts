@@ -24,6 +24,7 @@ export class DocsService {
                 "_id": docInfo._id,
                 "contributors": [user.sub],
                 "docName": docInfo.docName,
+                "docDescription": docInfo.docDescription,
                 "docBody": docInfo.docBody,
                 "audit.approvedRoles": docInfo.approvedRoles,
                 "audit.lastUpdatedBy": user.sub,

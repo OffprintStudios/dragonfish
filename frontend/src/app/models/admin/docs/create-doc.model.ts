@@ -1,4 +1,4 @@
-import { Roles } from "src/db/users/models";
+import { Roles } from 'src/app/models/users';
 
 export interface CreateDoc {
     readonly _id: string;

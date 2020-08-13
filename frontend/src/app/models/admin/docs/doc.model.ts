@@ -1,17 +1,14 @@
-import { Document } from 'mongoose';
+import { Roles } from 'src/app/models/users';
 
-import { Roles } from 'src/db/users/models';
-
-export interface Doc extends Document {
+export interface Doc {
     readonly _id: string;
-    readonly contributors: string[] | UserInfo[];
+    readonly contributors: UserInfo[];
     readonly docName: string;
     readonly docDescription: string;
     readonly docBody: string;
     readonly audit: {
         readonly approvedRoles: Roles[];
-        readonly lastUpdatedBy: string | UserInfo;
-        readonly isDeleted: boolean;
+        readonly lastUpdatedBy: UserInfo;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
