@@ -2,7 +2,7 @@
     Create New Document
 </h2>
 
-<form [formGroup]="createDocForm">
+<form [formGroup]="createDocForm" (ngSubmit)="submitDoc()">
     <label for="id">Document ID</label>
     <input type="text" formControlName="id" class="u-full-width" placeholder="Document ID">
 

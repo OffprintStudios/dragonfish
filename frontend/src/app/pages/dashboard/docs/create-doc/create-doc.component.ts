@@ -1,10 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { User, Roles } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { DocsService } from 'src/app/services/admin';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
+import { AlertsService } from 'src/app/modules/alerts';
+import { CreateDoc } from 'src/app/models/admin';
 
 @Component({
   selector: 'app-create-doc',
@@ -31,10 +34,16 @@ export class CreateDocComponent implements OnInit {
     approvedRoles: new FormControl([], [Validators.required]),
   });
 
-  constructor(private authService: AuthService, private docsService: DocsService, private cdr: ChangeDetectorRef) { }
+  constructor(private authService: AuthService, private docsService: DocsService,
+    private cdr: ChangeDetectorRef, private alertsService: AlertsService, private router: Router) { }
 
   ngOnInit(): void {
   }
+
+  /**
+   * Create doc form getter.
+   */
+  get fields() { return this.createDocForm.controls; }
 
   /**
    * Required for Quill
@@ -52,5 +61,47 @@ export class CreateDocComponent implements OnInit {
     let toolbar = event.getModule('toolbar');
     toolbar.addHandler('divider', dividerHandler);
     toolbar.addHandler('image', imageHandler);
+  }
+
+  /**
+   * Submits document to the database.
+   */
+  submitDoc() {
+    if (this.fields.id.invalid) {
+      this.alertsService.warn(`ID field cannot be empty.`);
+      return;
+    }
+
+    if (this.fields.docName.invalid) {
+      this.alertsService.warn(`Document name cannot be empty.`);
+      return;
+    }
+
+    if (this.fields.docDesc.invalid) {
+      this.alertsService.warn(`Document description cannot be empty.`);
+      return;
+    }
+
+    if (this.fields.docBody.invalid) {
+      this.alertsService.warn(`Document body cannot be empty.`);
+      return;
+    }
+
+    if (this.fields.approvedRoles.invalid || this.fields.approvedRoles.value.length === 0) {
+      this.alertsService.warn(`Approved roles cannot be empty.`);
+      return;
+    }
+
+    const docToCreate: CreateDoc = {
+      _id: this.fields.id.value,
+      docName: this.fields.docName.value,
+      docDescription: this.fields.docDescription.value,
+      docBody: this.fields.docBody.value,
+      approvedRoles: this.fields.approvedRoles.value,
+    };
+
+    this.docsService.createDoc(this.currentUser.roles, docToCreate).subscribe(() => {
+      this.router.navigate(['/dashboard/docs']);
+    })
   }
 }
