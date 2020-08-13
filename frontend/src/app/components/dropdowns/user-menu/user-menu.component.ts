@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth';
 import { Router, NavigationStart } from '@angular/router';
 import * as lodash from 'lodash';
-import { User, Roles } from 'src/app/models/users';
+
+import { Roles, User } from 'shared-models';
 
 @Component({
   selector: 'app-user-menu',

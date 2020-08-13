@@ -5,9 +5,8 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from 'src/app/components/modals/blogs';
-import { User } from 'src/app/models/users';
-import { Blog, SetPublishStatus } from 'shared-imports';
 import { AlertsService } from 'src/app/modules/alerts';
+import { Blog, SetPublishStatus, User } from 'shared-models';
 
 @Component({
   selector: 'app-blogs',

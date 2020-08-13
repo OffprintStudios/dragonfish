@@ -5,7 +5,8 @@ import { hash, argon2id } from 'argon2';
 import * as sanitize from 'sanitize-html';
 import validator from 'validator';
 
-import * as models from './models';
+import * as documents from './models';
+import * as models from 'shared/models/users';
 import { isNullOrUndefined } from '../../util/validation';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
@@ -14,8 +15,8 @@ import { createHash } from 'crypto';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel('User') private readonly userModel: Model<models.User>,
-        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<models.InviteCodes>) { }
+    constructor(@InjectModel('User') private readonly userModel: Model<documents.UserDocument>,
+        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<documents.InviteCodesDocument>) { }
 
     /**
      * Creates a user and adds them to the database. First, it ensures the 
@@ -263,7 +264,7 @@ export class UsersService {
      * 
      * @param searchParameters The relevant search parameters
      */
-    async findRelatedUsers(searchParameters: SearchParameters): Promise<SearchResults<models.SearchUser> | null> {
+    async findRelatedUsers(searchParameters: SearchParameters): Promise<SearchResults<documents.SearchUserDocument> | null> {
         const p = searchParameters.pagination;
         const filter: FilterQuery<models.User> = {
             $text: { $search: searchParameters.text }

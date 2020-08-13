@@ -3,7 +3,7 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 
-import { Collection } from './models';
+import { CollectionDocument } from './models';
 
 /**
  * The Collections schema
@@ -28,7 +28,7 @@ export const CollectionsSchema = new Schema({
 
 CollectionsSchema.plugin(MongooseAutopopulate);
 
-CollectionsSchema.pre<Collection>('save', async function (next: HookNextFunction) {
+CollectionsSchema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
     this.set('name', sanitize(this.name));
     this.set('details', null);

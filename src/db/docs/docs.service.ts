@@ -5,12 +5,13 @@ import * as lodash from 'lodash';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
 
-import * as models from './models';
-import { JwtPayload } from 'src/api/auth/models';
+import * as documents from './models';
+import * as models from 'shared/models/docs';
+import { JwtPayload } from 'shared/models/auth';
 
 @Injectable()
 export class DocsService {
-    constructor(@InjectModel('Doc') private readonly docModel: Model<models.Doc>) {}
+    constructor(@InjectModel('Doc') private readonly docModel: Model<documents.DocDocument>) {}
 
     /**
      * Creates a new site document and adds it to the Docs collection.

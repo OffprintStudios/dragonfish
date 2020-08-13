@@ -4,8 +4,8 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
 
-import * as models from './models';
-import { Roles } from 'src/db/users/models';
+import * as documents from './models';
+import { Roles } from 'shared/models/users';
 
 export const DocsSchema = new Schema({
     _id: {type: String, default: generate()},
@@ -29,7 +29,7 @@ export const DocsSchema = new Schema({
 
 DocsSchema.plugin(MongooseAutopopulate);
 
-DocsSchema.pre<models.Doc>('save', async function (next: HookNextFunction) {
+DocsSchema.pre<documents.DocDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', sanitize(this._id));
     this.set('docName', sanitize(this.docName));
     this.set('docDescription', sanitize(this.docDescription));

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Blog, EditBlog } from 'shared-imports';
+import { Blog, EditBlog } from 'shared-models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';

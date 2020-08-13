@@ -1,17 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { Observable, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { ToppyControl, Toppy, GlobalPosition, InsidePlacement } from 'toppy';
 
-import * as models from 'src/app/models/users';
 import { AuthService } from 'src/app/services/auth';
 import { AlertsService } from 'src/app/modules/alerts';
-import { ThrowStmt } from '@angular/compiler';
-import { HttpError } from 'src/app/models/site';
 import { UploadAvatarComponent } from 'src/app/components/modals/account';
-import { Observable, throwError, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { stringify } from '@angular/compiler/src/util';
+import { ChangeEmail, ChangePassword, ChangeProfile, User } from 'shared-models';
 
 
 @Component({
@@ -20,7 +16,7 @@ import { stringify } from '@angular/compiler/src/util';
   styleUrls: ['./settings.component.less']
 })
 export class SettingsComponent implements OnInit {
-  currentUser: models.User;
+  currentUser: User;
 
   themePrefOptions = [
     { name: 'crimson', displayName: 'Crimson' },
@@ -119,7 +115,7 @@ export class SettingsComponent implements OnInit {
   get changeProfileFields() { return this.changeProfileForm.controls; }
 
   changeEmail = (newEmail: string, password: string): Observable<string> => {
-    const changeRequest: models.ChangeEmail = {
+    const changeRequest: ChangeEmail = {
       currentPassword: password,
       newEmail: newEmail
     };
@@ -147,7 +143,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    const newPasswordInfo: models.ChangePassword = {
+    const newPasswordInfo: ChangePassword = {
       currentPassword: this.passwordFields.currPassword.value,
       newPassword: this.passwordFields.newPassword.value,
     };
@@ -163,7 +159,7 @@ export class SettingsComponent implements OnInit {
       return;
     }
 
-    const newProfileInfo: models.ChangeProfile = {
+    const newProfileInfo: ChangeProfile = {
       themePref: this.changeProfileFields.newThemePref.value.name,
       bio: this.changeProfileFields.newBio.value,
     };

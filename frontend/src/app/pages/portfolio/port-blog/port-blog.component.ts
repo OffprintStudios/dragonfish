@@ -3,10 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { User } from 'src/app/models/users';
-import { Blog } from 'shared-imports';
 import { AuthService } from 'src/app/services/auth';
 import { PortfolioService } from 'src/app/services/content';
+import { Blog, User } from 'shared-models';
 
 @Component({
   selector: 'app-port-blog',

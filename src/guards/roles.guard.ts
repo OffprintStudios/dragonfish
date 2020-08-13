@@ -3,9 +3,9 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
 
-import { Roles } from 'src/db/users/models';
+import { Roles } from 'shared/models/users';
 import { UsersService } from 'src/db/users/users.service';
-import { JwtPayload } from 'src/api/auth/models';
+import { JwtPayload } from 'shared/models/auth';
 
 /**
  * This is a mixin so we can do stuff like UseGuards(RolesGuard(['Admin','Moderator'])).

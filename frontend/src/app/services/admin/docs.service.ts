@@ -4,8 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AlertsService } from 'src/app/modules/alerts';
-import { Doc, CreateDoc, EditDoc } from 'src/app/models/admin/docs';
-import { Roles } from 'src/app/models/users';
+import { Doc, CreateDoc, EditDoc, Roles } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'

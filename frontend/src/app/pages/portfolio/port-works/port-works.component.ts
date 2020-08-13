@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User } from 'src/app/models/users';
-import { Work } from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { PortfolioService, WorksService } from 'src/app/services/content';
+import { User, Work } from 'shared-models';
 
 @Component({
   selector: 'app-port-works',

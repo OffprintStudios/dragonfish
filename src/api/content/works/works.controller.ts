@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, UploadedFile, UseInterceptors, BadRequestException } from '@nestjs/common';
 
-import * as models from 'src/db/works/models';
+import * as models from 'shared/models/works';
 import { WorksService } from 'src/db/works/works.service';
 import { AuthGuard, OptionalAuthGuard } from 'src/guards';
 import { FileInterceptor } from '@nestjs/platform-express';

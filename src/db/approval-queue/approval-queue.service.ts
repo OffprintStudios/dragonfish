@@ -2,13 +2,13 @@ import { Injectable, BadRequestException, ConflictException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { ApprovalQueue } from './models';
+import * as documents from './models/approval-queue-document.model';
 import { WorksService } from '../works/works.service';
-import { Categories } from '../works/models';
+import { Categories } from 'shared/models/works';
 
 @Injectable()
 export class ApprovalQueueService {
-    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: Model<ApprovalQueue>,
+    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: Model<documents.ApprovalQueueDocument>,
         private readonly worksService: WorksService) {}
 
     /**
@@ -17,7 +17,7 @@ export class ApprovalQueueService {
      * @param user The author of the work
      * @param workId The work's ID
      */
-    async addOneWork(user: any, workId: string): Promise<ApprovalQueue> {
+    async addOneWork(user: any, workId: string): Promise<documents.ApprovalQueueDocument> {
         const verifiedWork = await this.worksService.fetchOneUserWorkForQueue(user, workId);
         if (verifiedWork.meta.category !== Categories.Poetry && verifiedWork.stats.totWords < 750) {
             throw new BadRequestException(`Works need to have a minimum published word count of 750.`);
@@ -34,7 +34,7 @@ export class ApprovalQueueService {
     /**
      * Fetches the entire queue.
      */
-    async fetchAll(): Promise<ApprovalQueue[]> {
+    async fetchAll(): Promise<documents.ApprovalQueueDocument[]> {
         return await this.approvalQueue.find();
     }
 
@@ -43,7 +43,7 @@ export class ApprovalQueueService {
      * 
      * @param user The claimant
      */
-    async fetchForMod(user: any): Promise<ApprovalQueue[]> {
+    async fetchForMod(user: any): Promise<documents.ApprovalQueueDocument[]> {
         return await this.approvalQueue.find().where("claimedBy", user.sub);
     }
 

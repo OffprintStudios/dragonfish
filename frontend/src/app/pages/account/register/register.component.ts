@@ -3,9 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth';
 import { Router } from '@angular/router';
 import { AlertsService } from 'src/app/modules/alerts';
-import { CreateUser, LoginUser } from 'src/app/models/users';
 import { first } from 'rxjs/operators';
-import { User } from 'src/app/models/users';
+import { User, CreateUser, LoginUser } from 'shared-models';
 
 @Component({
   selector: 'app-register',

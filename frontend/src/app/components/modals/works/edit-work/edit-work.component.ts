@@ -1,10 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import * as models from 'src/app/models/works';
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { Categories, EditWork, Fandoms, GenresFiction, GenresPoetry, 
+  ContentRating, WorkStatus, Work 
+} from 'shared-models';
 
 @Component({
   selector: 'app-edit-work',
@@ -13,15 +15,15 @@ import { AlertsService } from 'src/app/modules/alerts';
 })
 export class EditWorkComponent implements OnInit {
   close: any; // Alias for Toppy
-  workData: models.Work; // The work we're editing
+  workData: Work; // The work we're editing
   loading = false; // Loading check for submission
 
-  categories = models.Categories; // Alias for categories
-  fandoms = models.Fandoms; // Alias for fandoms
-  genresFiction = models.GenresFiction; // Alias for fiction genres
-  genresPoetry = models.GenresPoetry; // Alias for poetry genres
-  rating = models.ContentRating; // Alias for content ratings
-  status = models.WorkStatus; // Alias for work statuses
+  categories = Categories; // Alias for categories
+  fandoms = Fandoms; // Alias for fandoms
+  genresFiction = GenresFiction; // Alias for fiction genres
+  genresPoetry = GenresPoetry; // Alias for poetry genres
+  rating = ContentRating; // Alias for content ratings
+  status = WorkStatus; // Alias for work statuses
 
   editorFormats = [
     'header', 'bold', 'italic', 'underline', 'strike',
@@ -133,7 +135,7 @@ export class EditWorkComponent implements OnInit {
       return;
     }
     
-    const newChanges: models.EditWork = {
+    const newChanges: EditWork = {
       _id: this.workData._id,
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,

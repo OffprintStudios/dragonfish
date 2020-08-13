@@ -2,11 +2,10 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { User } from 'src/app/models/users';
-import * as workModels from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { SlugifyPipe } from 'src/app/pipes';
+import { User, Section, SectionInfo} from 'shared-models';
 
 @Component({
   selector: 'app-section-page',
@@ -16,14 +15,14 @@ import { SlugifyPipe } from 'src/app/pipes';
 export class SectionPageComponent implements OnInit {
   currentUser: User;
 
-  sectionsList: workModels.SectionInfo[];
-  sectionData: workModels.Section;
+  sectionsList: SectionInfo[];
+  sectionData: Section;
   loading = false; // controls the spinner above section selection boxes
   sectionSwitching: boolean = false; // controls the spinner between the section selection boxes
   hideContents: boolean = false;
   indexNext = 0;
   indexPrev = 0;
-  currSection: workModels.SectionInfo = null;
+  currSection: SectionInfo = null;
   
   workId: string;
   workTitle: string;
@@ -68,7 +67,7 @@ export class SectionPageComponent implements OnInit {
    * @param secOne The first to compare
    * @param secTwo The second to compare
    */
-  compareSections(secOne: workModels.SectionInfo, secTwo: workModels.SectionInfo) {
+  compareSections(secOne: SectionInfo, secTwo: SectionInfo) {
     if (secOne._id === secTwo._id) {
       return true;
     } else {
@@ -81,7 +80,7 @@ export class SectionPageComponent implements OnInit {
    * 
    * @param event The section changed to
    */
-  onSelectChange(event: workModels.SectionInfo) {
+  onSelectChange(event: SectionInfo) {
     const thisSectionIndex = this.sectionsList.indexOf(event);
     this.router.navigate([`/work/${this.workId}/${this.workTitle}/${thisSectionIndex + 1}/${this.slugify.transform(event.title)}`])
   }

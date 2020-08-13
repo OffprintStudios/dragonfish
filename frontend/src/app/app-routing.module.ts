@@ -20,7 +20,7 @@ import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 import { RegisterComponent } from './pages/account';
 
 import { AuthGuard } from './services/auth';
-import { Roles } from './models/users';
+import { Roles } from 'shared-models';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 

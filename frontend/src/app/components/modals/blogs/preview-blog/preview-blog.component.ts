@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from 'src/app/services/content';
-import { Blog } from 'shared-imports';
+import { Blog } from 'shared-models';
 
 @Component({
   selector: 'app-preview-blog',

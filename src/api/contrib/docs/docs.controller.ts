@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Body, Param, Request, Get, Put, Patch } from '@nestjs/common';
 
-import * as models from 'src/db/docs/models';
-import { Roles } from 'src/db/users/models';
+import * as models from 'shared/models/docs';
+import { Roles } from 'shared/models/users';
 import { RolesGuard } from 'src/guards';
 import { DocsService } from 'src/db/docs/docs.service';
 

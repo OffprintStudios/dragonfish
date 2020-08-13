@@ -1,2 +1,1 @@
-export * from './history.model';
-export { RatingOption } from './rating-option.enum';
+export { HistoryDocument } from './history-document.model';

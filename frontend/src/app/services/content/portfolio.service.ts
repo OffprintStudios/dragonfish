@@ -3,9 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { User } from 'src/app/models/users';
-import { Blog } from 'shared-imports';
-import { Work } from 'src/app/models/works';
+import { Blog, User, Work } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'

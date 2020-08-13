@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
-import { User } from 'src/app/models/users';
-import * as workModels from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
-import { Decision } from 'src/app/models/admin';
+import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
 
 @Component({
   selector: 'app-work-page',
@@ -20,8 +18,8 @@ export class WorkPageComponent implements OnInit {
   loading = false; // Loading check for fetching data
 
   workId: string; // This work's ID
-  workData: workModels.Work; // This work's data
-  pubSections: workModels.SectionInfo[]; // This work's published sections
+  workData: Work; // This work's data
+  pubSections: SectionInfo[]; // This work's published sections
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
 
@@ -146,7 +144,7 @@ export class WorkPageComponent implements OnInit {
    * @param pubStatus The current publishing status of this section
    */
   publishSection(sectionId: string, pubStatus: boolean) {
-    const newPubStatus: workModels.PublishSection = {
+    const newPubStatus: PublishSection = {
       oldPub: pubStatus,
       newPub: !pubStatus
     };

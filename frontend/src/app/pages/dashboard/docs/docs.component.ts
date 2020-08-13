@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/users';
+import { User } from 'shared-models';
 
 @Component({
   selector: 'app-docs',

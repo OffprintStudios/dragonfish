@@ -1,1 +1,1 @@
-export { ApprovalQueue } from './approval-queue.model';
+export { ApprovalQueueDocument } from './approval-queue-document.model';

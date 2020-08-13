@@ -1,3 +1,5 @@
+import { UserInfo } from '../users';
+
 export interface Blog {
     readonly _id: string;
     readonly author: UserInfo;
@@ -16,12 +18,4 @@ export interface Blog {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
-}
-
-export interface UserInfo {
-    readonly _id: string;
-    readonly username: string;
-    readonly profile: {
-        readonly avatar: string;
-    };
 }

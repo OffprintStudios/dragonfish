@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
-import { User } from 'src/app/models/users';
-import * as models from 'src/app/models/works';
 import { AuthService } from 'src/app/services/auth';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 import { NewWorkComponent, EditWorkComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
+import { ApprovalStatus, Categories, User, Work } from 'shared-models';
 
 @Component({
   selector: 'app-works',
@@ -17,8 +16,8 @@ import { QueueService } from 'src/app/services/admin';
 })
 export class WorksComponent implements OnInit {
   currentUser: User;
-  works: models.Work[];
-  unfilteredList: models.Work[];
+  works: Work[];
+  unfilteredList: Work[];
   newWorkForm: ToppyControl;
   editWorkForm: ToppyControl;
 
@@ -95,11 +94,11 @@ export class WorksComponent implements OnInit {
     if (this.isUnpubFiltered) {
       this.isPubFiltered = true;
       this.isUnpubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
     } else {
       this.unfilteredList = this.works;
       this.isPubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.Approved});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
     }
   }
 
@@ -110,11 +109,11 @@ export class WorksComponent implements OnInit {
     if (this.isPubFiltered) {
       this.isUnpubFiltered = true;
       this.isPubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
     } else {
       this.unfilteredList = this.works;
       this.isUnpubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === models.ApprovalStatus.NotSubmitted});
+      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
     }
   }
 
@@ -139,7 +138,7 @@ export class WorksComponent implements OnInit {
    * 
    * @param work The work to edit
    */
-  openEditWorkForm(work: models.Work) {
+  openEditWorkForm(work: Work) {
     this.editWorkForm.updateContent(EditWorkComponent, {workData: work});
     this.editWorkForm.open();
   }
@@ -184,8 +183,8 @@ export class WorksComponent implements OnInit {
    * 
    * @param approvalStatus The work's approval status
    */
-  checkStatus(approvalStatus: models.ApprovalStatus) {
-    if (models.ApprovalStatus[approvalStatus] === models.ApprovalStatus.Approved) {
+  checkStatus(approvalStatus: ApprovalStatus) {
+    if (ApprovalStatus[approvalStatus] === ApprovalStatus.Approved) {
       return true;
     } else {
       return false;
@@ -197,8 +196,8 @@ export class WorksComponent implements OnInit {
    * 
    * @param work The work we're submitting.
    */
-  submitWorkToQueue(work: models.Work) {
-    if (work.meta.category !== models.Categories.Poetry && work.stats.totWords < 750) {
+  submitWorkToQueue(work: Work) {
+    if (work.meta.category !== Categories.Poetry && work.stats.totWords < 750) {
       alert(`Works must have a total published word count of at least 750 words.`);
       return;
     }

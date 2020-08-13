@@ -3,9 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
-import { CreateSection } from 'src/app/models/works';
 import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
+import { CreateSection } from 'shared-models';
 
 @Component({
   selector: 'app-new-section',

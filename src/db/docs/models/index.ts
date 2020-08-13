@@ -1,3 +1,1 @@
-export * from './doc.model';
-export { CreateDoc } from './create-doc.model';
-export { EditDoc } from './edit-doc.model';
+export { DocDocument } from './doc-document.model';

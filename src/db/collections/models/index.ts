@@ -1,1 +1,1 @@
-export * from './collection.model';
+export { CollectionDocument } from './collection-document.model';
