@@ -38,12 +38,13 @@ import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
-import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, DocsComponent, ReportsComponent,
+import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
   UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
+
+import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dashboard/docs';
 
 import { Divider, dividerHandler } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
-
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -87,7 +88,7 @@ const toolbarOptions = [
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
-    OverviewComponent, DocsPageComponent, SiteStaffComponent
+    OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

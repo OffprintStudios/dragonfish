@@ -22,6 +22,7 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './services/auth';
 import { Roles } from 'shared-models';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
+import { CreateDocComponent, EditDocComponent } from './pages/dashboard/docs';
 
 
 const routes: Routes = [
@@ -60,7 +61,10 @@ const routes: Routes = [
     {path: 'overview', canActivate:[AuthGuard], component: OverviewComponent, data: {roles: [Roles.Contributor, Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
     {path: 'queue', canActivate: [AuthGuard], component: ApprovalQueueComponent, data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
     {path: 'news-management', canActivate: [AuthGuard], component: NewsManagementComponent, data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
-    {path: 'docs', canActivate: [AuthGuard], component: DocsComponent, data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
+    {path: 'docs', canActivate: [AuthGuard], component: DocsComponent, data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}, children: [
+      {path: 'create-doc', canActivate: [AuthGuard], component: CreateDocComponent, data: {roles: [Roles.Admin]}},
+      {path: 'edit-doc/:docId', canActivate: [AuthGuard], component: EditDocComponent, data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
+    ]},
     {path: 'reports', canActivate: [AuthGuard], component: ReportsComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
     {path: 'users', canActivate: [AuthGuard], component: UsersComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
     {path: 'audit-log', canActivate: [AuthGuard], component: AuditComponent, data: {roles: [Roles.Moderator, Roles.Admin]}},
