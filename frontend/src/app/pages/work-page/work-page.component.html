@@ -91,7 +91,7 @@
                             </div>
                             <div>
                                 <div class="section-stats">
-                                    {{ section.stats.words }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                 </div>
                             </div>
                             <div>
@@ -140,7 +140,7 @@
         <div style="display: inline-block;" [ngSwitch]="workData.audit.published">
             <button class="user-buttons right active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
             <button class="user-buttons right" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
-            <button class="user-buttons right" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
+            <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
             <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
         </div>
     </span>

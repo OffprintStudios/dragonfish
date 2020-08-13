@@ -18,7 +18,7 @@
         <ng-template #theQueue>
             <div class="work-list">
                 <div class="work-item" *ngFor="let entry of queue">
-                    <div class="work-cover-art">
+                    <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
                         <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
                     </div>
                     <div class="work-info">

@@ -7,12 +7,15 @@ import { UsersModule } from '../../db/users/users.module';
 import { ContribController } from './contrib.controller';
 import { ApprovalQueueModule } from 'src/db/approval-queue/approval-queue.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from 'src/util';
+import { DocsController } from './docs/docs.controller';
+import { DocsModule } from 'src/db/docs/docs.module';
 
 @Module({
   imports: [
     UsersModule,
     WorksModule,
     ApprovalQueueModule,
+    DocsModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
@@ -21,6 +24,6 @@ import { getJwtSecretKey, JWT_EXPIRATION } from 'src/util';
     }),
   ],
   providers: [ContribService],
-  controllers: [ContribController]
+  controllers: [ContribController, DocsController]
 })
 export class ContribModule {}

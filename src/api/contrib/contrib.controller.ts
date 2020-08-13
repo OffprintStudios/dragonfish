@@ -9,6 +9,7 @@ import { RolesGuard } from 'src/guards';
 export class ContribController {
     constructor(private readonly contribService: ContribService) {}
 
+    /* Approval Queue */
     @UseGuards(RolesGuard([Roles.User]))
     @Post('submit-work/:workId')
     async submitWork(@Request() req: any, @Param('workId') workId: string) {
