@@ -1,5 +1,5 @@
-import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as lodash from 'lodash';
 
 import { DocsService } from 'src/app/services/admin';
