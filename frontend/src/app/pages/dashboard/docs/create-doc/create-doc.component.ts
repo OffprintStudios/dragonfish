@@ -93,6 +93,7 @@ export class CreateDocComponent implements OnInit {
       return;
     }
 
+    this.loading = true;
     const docToCreate: CreateDoc = {
       _id: this.fields.id.value,
       docName: this.fields.docName.value,
@@ -102,6 +103,7 @@ export class CreateDocComponent implements OnInit {
     };
 
     this.docsService.createDoc(this.currentUser.roles as Roles[], docToCreate).subscribe(() => {
+      this.loading = false;
       this.router.navigate(['/dashboard/docs']);
     })
   }
