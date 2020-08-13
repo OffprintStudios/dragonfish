@@ -44,7 +44,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/dist/static'
+    PathtoPublish: '$(Build.SourcesDirectory)/dist/src/static'
     ArtifactName: 'frontend-dist-static'
     publishLocation: 'Container'
   displayName: 'Publish /dist/src/static'
