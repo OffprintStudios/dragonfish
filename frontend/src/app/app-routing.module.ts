@@ -15,6 +15,8 @@ import { ApprovalQueueComponent, DashboardComponent, NewsManagementComponent, Do
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 
+import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
+
 import { RegisterComponent } from './pages/account';
 
 import { AuthGuard } from './services/auth';
@@ -68,7 +70,9 @@ const routes: Routes = [
     {path: 'users', component: FindUsersComponent},
     {path: 'blogs', component: FindBlogsComponent},
     {path: 'works', component: FindWorksComponent},
-  ]}
+  ]},
+  {path: 'site-staff', component: SiteStaffComponent},
+  {path: 'docs/:docId', component: DocsPageComponent},
 ];
 
 @NgModule({

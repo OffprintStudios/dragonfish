@@ -31,6 +31,8 @@ import { WorkPageComponent, SectionPageComponent, NewSectionComponent,
   UnpublishedSectionPageComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
+import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
+
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
@@ -41,6 +43,7 @@ import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, Do
 
 import { Divider, dividerHandler } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
+
 
 const Quill: any = QuillNamespace;
 const MagicUrlModule: any = MagicUrl;
@@ -84,7 +87,7 @@ const toolbarOptions = [
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
-    OverviewComponent
+    OverviewComponent, DocsPageComponent, SiteStaffComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

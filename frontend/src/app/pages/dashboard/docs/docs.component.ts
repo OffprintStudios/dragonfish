@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { User } from 'src/app/models/users';
 
 @Component({
   selector: 'app-docs',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./docs.component.less']
 })
 export class DocsComponent implements OnInit {
+  currentUser: User;
 
   constructor() { }
 
