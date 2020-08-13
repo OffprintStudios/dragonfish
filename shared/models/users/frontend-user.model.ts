@@ -1,3 +1,5 @@
+import { Roles } from './roles.enum';
+
 export interface FrontendUser {
     readonly _id: string;
     readonly email: string;
@@ -14,7 +16,7 @@ export interface FrontendUser {
         readonly watchers: number;
         readonly watching: number;
     };
-    readonly roles: string[];
+    readonly roles: Roles[];
     readonly createdAt: Date;
     readonly token?: string;
 }

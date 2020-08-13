@@ -8,6 +8,7 @@ import * as wordCounter from '@offprintstudios/word-counter';
 import * as documents from './models';
 import * as models from 'shared/models/docs';
 import { JwtPayload } from 'shared/models/auth';
+import { Roles } from 'shared/models/users';
 
 @Injectable()
 export class DocsService {
@@ -20,7 +21,9 @@ export class DocsService {
      * @param docInfo The doc's info
      */
     async createDoc(user: JwtPayload, docInfo: models.CreateDoc): Promise<models.Doc> {
-        if (user.roles.includes('Admin')) {
+        const requiredRole: Roles[] = [Roles.Admin];
+        const hasRoles = lodash.intersection(user.roles, requiredRole);
+        if (hasRoles.length > 0) {
             const newDoc = new this.docModel({
                 "_id": docInfo._id,
                 "contributors": [user.sub],
@@ -97,7 +100,9 @@ export class DocsService {
      * @param docId The document to delete
      */
     async deleteDoc(user: JwtPayload, docId: string): Promise<void> {
-        if (user.roles.includes('Admin')) {
+        const requiredRole: Roles[] = [Roles.Admin];
+        const hasRoles = lodash.intersection(user.roles, requiredRole);
+        if (hasRoles.length > 0) {
             return await this.docModel.updateOne({"_id": docId}, {
                 "audit.lastUpdatedBy": user.sub,
                 "audit.isDeleted": true
