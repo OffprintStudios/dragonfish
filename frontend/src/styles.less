@@ -88,6 +88,45 @@ div.success-message {
     .messages(rgb(101,211,110));
 }
 
+div.text-rating {
+    float: left;
+    border: 2px solid #000000;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;    
+    color: #000000;
+    text-align: center;
+    &.small {
+        font-size: 24px;
+        line-height: 24px;
+        height: 24px;
+        width: 24px;
+    }
+    &.medium {
+        font-size: 32px;
+        line-height: 32px;
+        height: 32px;
+        width: 32px;
+    }
+    &.large {
+        font-size: 48px;
+        line-height: 48px;
+        height: 48px;
+        width: 48px;
+    }
+    &.everyone {
+        background: #08A400
+    }
+    &.teen {
+        background: #EBCF00;
+    }
+    &.mature {
+        background: #FF7700;
+    }
+    &.explicit {
+        background: #FF000A;
+    }
+}
+
 pre {
     code {
         background-color: var(--site-controls-background);

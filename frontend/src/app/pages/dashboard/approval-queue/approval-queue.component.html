@@ -25,10 +25,10 @@
                         <div class="info">
                             <div class="work-header">
                                 <ng-container [ngSwitch]="entry.workToApprove.meta.rating">
-                                    <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
-                                    <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
-                                    <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
-                                    <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
+                                    <div class="text-rating everyone small" *ngSwitchDefault>E</div>
+                                    <div class="text-rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                    <div class="text-rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                    <div class="text-rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>
                                 <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
                                 <h4 class="author-byline">by <a [routerLink]="['/portfolio', entry.workToApprove.author._id, entry.workToApprove.author.username | slugify]">
