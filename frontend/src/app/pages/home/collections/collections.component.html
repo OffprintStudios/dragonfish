@@ -21,10 +21,18 @@
         <div class="collections-grid">
             <div class="collections-box" *ngFor="let collection of collections">
                 <div class="coll-header">
-                    <h3>{{ collection.name }}</h3>
+                    <div class="header">
+                        <h3>{{ collection.name }}</h3>
+                    </div>
+                    <div class="set-coll-visibility">
+                        <ng-container [ngSwitch]="collection.audit.isPublic">
+                            <a *ngSwitchCase="true"><i-feather name="check-circle"></i-feather></a>
+                            <a *ngSwitchDefault><i-feather name="circle"></i-feather></a>
+                        </ng-container>
+                    </div>
                 </div>
-                <div class="coll-body">
-
+                <div class="coll-desc">
+                    {{ collection.desc }}
                 </div>
             </div>
         </div>
