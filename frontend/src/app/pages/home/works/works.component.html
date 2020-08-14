@@ -45,10 +45,10 @@
                     <div class="work-info">
                         <div class="info">
                             <ng-container [ngSwitch]="work.meta.rating">
-                                <div class="text-rating everyone small" *ngSwitchDefault>E</div>
-                                <div class="text-rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                <div class="text-rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                <div class="text-rating explicit small" *ngSwitchCase="'Explicit'">X</div>
+                                <div class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
                             </ng-container>
                             <h3><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h3>
                             <br>

@@ -12,10 +12,10 @@
             <!--Work title 'n such-->
             <div class="work-header">
                 <ng-container [ngSwitch]="workData.meta.rating">
-                    <div class="text-rating everyone large" *ngSwitchDefault>E</div>
-                    <div class="text-rating teen large" *ngSwitchCase="'Teen'">T</div>
-                    <div class="text-rating mature large" *ngSwitchCase="'Mature'">M</div>
-                    <div class="text-rating explicit large" *ngSwitchCase="'Explicit'">X</div>
+                    <div class="rating everyone large" *ngSwitchDefault>E</div>
+                    <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
+                    <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
+                    <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
                 </ng-container>
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
@@ -35,10 +35,10 @@
             <div class="no-cover-art-work-container">
                 <div class="work-header">
                     <ng-container [ngSwitch]="workData.meta.rating">
-                        <div class="text-rating everyone large" *ngSwitchDefault>E</div>
-                        <div class="text-rating teen large" *ngSwitchCase="'Teen'">T</div>
-                        <div class="text-rating mature large" *ngSwitchCase="'Mature'">M</div>
-                        <div class="text-rating explicit large" *ngSwitchCase="'Explicit'">X</div>
+                        <div class="rating everyone large" *ngSwitchDefault>E</div>
+                        <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
+                        <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
+                        <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
                     </ng-container>
                     <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                     <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
