@@ -13,18 +13,18 @@
                 <div style="margin: 0 auto 1rem auto;" *ngFor="let work of works">
                     <div class="work-container">
                         <!--Header-->
-                        <div class="work-header">                            
+                        <div class="work-header">
                             <ng-container [ngSwitch]="work.meta.rating">
-                                <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
-                                <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
-                                <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
-                                <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
-                            </ng-container>
+                                <div class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                            </ng-container>                            
                             <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
                             <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
                             <div class="category-genre">
                                 {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
-                            </div>
+                            </div>                            
                         </div>
 
                         <!--Short description-->
