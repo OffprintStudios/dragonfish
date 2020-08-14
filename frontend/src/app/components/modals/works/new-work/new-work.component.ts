@@ -175,13 +175,19 @@ export class NewWorkComponent implements OnInit {
       return;
     }
 
+    // Because the genre dropdown for poetry is multipe=false, we get a
+    // single string instead of an array here. Wrap it up in an array.
+    const genres = Array.isArray(this.fields.theseGenres.value)
+      ? this.fields.theseGenres.value
+      : [this.fields.theseGenres.value];
+    
     const newWork: CreateWork = {
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,
       longDesc: this.fields.longDesc.value,
       category: this.fields.thisCategory.value,
       fandoms: this.fields.theseFandoms.value,
-      genres: this.fields.theseGenres.value,
+      genres: genres,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
     };
