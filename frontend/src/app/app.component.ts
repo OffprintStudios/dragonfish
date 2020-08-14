@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentUser: User;
   userMenuDropdown: ToppyControl;
 
+  loading = false;
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
@@ -32,9 +33,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       this.currentUser = x;
     });
 
-    this.statsService.fetchFrontPageStats().subscribe(stats => {
-      this.footerStats = stats;
-    });
+    this.fetchFrontPageStats();
 
     // Sets the current site theme based on user preference
     if (this.currentUser) {
@@ -66,6 +65,17 @@ export class AppComponent implements OnInit, AfterViewInit {
       .config({closeOnDocClick: true, closeOnEsc: true})
       .content(UserMenuComponent)
       .create();
+  }
+
+  /**
+   * Fetches the front page stats.
+   */
+  private fetchFrontPageStats() {
+    this.loading = true;
+    this.statsService.fetchFrontPageStats().subscribe(stats => {
+      this.footerStats = stats;
+      this.loading = false;
+    });
   }
 
   /**

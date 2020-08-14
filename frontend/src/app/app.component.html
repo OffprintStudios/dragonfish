@@ -81,7 +81,10 @@
           <p>
             More detailed stats to come.
           </p>
-          <ul>
+          <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+          </div>
+          <ul *ngIf="!loading">
             <li>{{ footerStats.numUsers | toLocaleString }} user{{ footerStats.numUsers | pluralize }} registered</li>
             <li>{{ footerStats.numWorks | toLocaleString }} work{{ footerStats.numWorks | pluralize }} written</li>
           </ul>
