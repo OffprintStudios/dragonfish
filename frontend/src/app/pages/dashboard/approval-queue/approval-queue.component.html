@@ -42,9 +42,9 @@
                             </div>
                             <div class="stats">
                                 <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
-                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords }} total word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
-                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
-                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
                                 <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
                             </div>
                         </div>
@@ -73,6 +73,9 @@
             <ng-template #theQueue>
                 <div class="work-list">
                     <div class="work-item" *ngFor="let entry of queueForMod">
+                        <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
+                            <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
+                        </div>
                         <div class="work-info">
                             <div class="info">
                                 <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
@@ -82,9 +85,9 @@
                                 <div class="stats">
                                     <h4>{{ entry.workToApprove.meta.rating }}</h4><span>//</span>
                                     <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
-                                    <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords }} total word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
-                                    <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
-                                    <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
+                                    <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
+                                    <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
+                                    <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
                                     <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
                                 </div>
                             </div>
