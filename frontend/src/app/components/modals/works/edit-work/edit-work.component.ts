@@ -134,6 +134,12 @@ export class EditWorkComponent implements OnInit {
       this.loading = false;
       return;
     }
+
+    // Because the genre dropdown for poetry is multipe=false, we get a
+    // single string instead of an array here. Wrap it up in an array.
+    const genres = Array.isArray(this.fields.theseGenres.value)
+      ? this.fields.theseGenres.value
+      : [this.fields.theseGenres.value];
     
     const newChanges: EditWork = {
       _id: this.workData._id,
@@ -142,7 +148,7 @@ export class EditWorkComponent implements OnInit {
       longDesc: this.fields.longDesc.value,
       category: this.fields.thisCategory.value,
       fandoms: this.fields.theseFandoms.value,
-      genres: this.fields.theseGenres.value,
+      genres: genres,
       rating: this.fields.rating.value,
       status: this.fields.status.value
     };

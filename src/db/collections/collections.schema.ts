@@ -15,7 +15,7 @@ export const CollectionsSchema = new Schema({
     desc: {type: String, trim: true},
     details: [{
         work: {type: String, ref: 'Work', autopopulate: {
-            select: '_id author title shortDesc stats.totWords'
+            select: '_id author title shortDesc meta stats createdAt'
         }},
         addedOn: {type: Date},
     }],
