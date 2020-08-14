@@ -84,6 +84,21 @@ export class CollectionsService {
     }
 
     /**
+     * Removes a work from the collection.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection ID
+     * @param workId The work to remove
+     */
+    async removeWorkFromCollection(user: JwtPayload, collId: string, workId: string): Promise<void> {
+        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {
+            $pull: {
+                'details.work': workId
+            }
+        });
+    }
+
+    /**
      * Soft deletes a collection associated with the provided user.
      * 
      * @param user The owner of the collection

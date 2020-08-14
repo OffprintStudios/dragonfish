@@ -38,4 +38,10 @@ export class CollectionsController {
     async addWork(@Request() req: any, @Param('collId') collId: string, @Param('workId') workId: string) {
         return await this.collsService.addWorkToCollection(req.user, collId, workId);
     }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('remove-work/:collId/:workId')
+    async removeWork(@Request() req: any, @Param('collId') collId: string, @Param('workId') workId: string) {
+        return await this.collsService.removeWorkFromCollection(req.user, collId, workId);
+    }
 }
