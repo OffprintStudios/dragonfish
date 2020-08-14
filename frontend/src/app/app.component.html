@@ -79,8 +79,12 @@
         <div>
           <h1>Statistics</h1>
           <p>
-            Something useful will be here one day!
+            More detailed stats to come.
           </p>
+          <ul>
+            <li>{{ footerStats.numUsers | toLocaleString }} user{{ footerStats.numUsers | pluralize }} registered</li>
+            <li>{{ footerStats.numWorks | toLocaleString }} work{{ footerStats.numWorks | pluralize }} written</li>
+          </ul>
         </div>
       </div>
     </footer>

@@ -8,6 +8,8 @@ import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
 import { UserMenuComponent } from './components/dropdowns';
 import { PredefinedThemes } from './models/site/theme';
+import { StatsService } from './services/admin';
+import { FrontPageStats } from 'shared-models';
 
 @Component({
   selector: 'app-root',
@@ -21,11 +23,17 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentUser: User;
   userMenuDropdown: ToppyControl;
 
+  footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  constructor(private router: Router, private toppy: Toppy, private authService: AuthService, private selectConfig: NgSelectConfig) {
+  constructor(private router: Router, private toppy: Toppy, private authService: AuthService,
+    private selectConfig: NgSelectConfig, private statsService: StatsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
+    });
+
+    this.statsService.fetchFrontPageStats().subscribe(stats => {
+      this.footerStats = stats;
     });
 
     // Sets the current site theme based on user preference
@@ -46,7 +54,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       } else {
         window.scrollTo(0,0);
       }
-    })
+    });
   }
 
   /**

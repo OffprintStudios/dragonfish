@@ -15,3 +15,4 @@ export { ApprovalStatus, AuthorInfo, Categories, ContentRating,
     MAX_GENRES_PER_FANFIC, MAX_GENRES_PER_ORIGINAL, MAX_GENRES_PER_POEM,
     PublishSection, Section, SectionInfo, Work, WorkStatus, WorkMetadata 
 } from '../shared/models/works';
+export { FrontPageStats } from '../shared/models/stats';
