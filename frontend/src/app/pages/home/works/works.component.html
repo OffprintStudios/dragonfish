@@ -41,6 +41,7 @@
                             <i-feather name="book"></i-feather>
                         </button>
                     </div>
+                    <img class="work-coverart" *ngIf="work.meta.coverArt" [src]="work.meta.coverArt">
                     <div class="work-info">
                         <div class="info">
                             <h3><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h3>
