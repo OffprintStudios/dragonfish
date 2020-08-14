@@ -7,7 +7,6 @@ import { ToppyModule } from 'toppy';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
-import * as MagicUrl from 'quill-magic-url';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
@@ -47,7 +46,6 @@ import { Divider, dividerHandler } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 
 const Quill: any = QuillNamespace;
-const MagicUrlModule: any = MagicUrl;
 const icons = Quill.import('ui/icons');
 icons.bold = '<i class="fas fa-bold"></i>';
 icons.italic = '<i class="fas fa-italic"></i>';
@@ -66,7 +64,6 @@ icons.ordered = '<i class="fas fa-list-ol"></i>';
 icons.bullet = '<i class="fas fa-list"></i>';
 icons.divider = '—';
 
-Quill.register('modules/magicUrl', MagicUrlModule);
 Quill.register(Divider);
 
 const toolbarOptions = [

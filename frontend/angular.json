@@ -35,7 +35,8 @@
               "url",
               "querystring",
               "punycode",
-              "lodash"
+              "lodash",
+              "@pulsedotso/quill-markdown-shortcuts"
             ]
           },
           "configurations": {
