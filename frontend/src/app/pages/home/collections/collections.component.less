@@ -3,14 +3,33 @@ div.collections-container {
     div.collections-header {
         max-width: 100%;
         margin-top: 2rem;
+        border-bottom: 1px solid var(--site-borders);
 
         h2 {
             display: inline-block;
             margin-bottom: 0;
         }
+
+        div.collections-controls {
+            float: right;
+            box-shadow: var(--site-dropshadow);
+            button.coll-control {
+                float: right;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-bottom: 0;
+                box-shadow: none;
+                i-feather {
+                    width: 16px;
+                    height: 16px;
+                    position: relative;
+                    top: 0.3rem;
+                }
+            }
+        }
     }
 
-    hr.header-divider {
-        margin-top: 0;
+    div.loader {
+        text-align: center;
     }
 }

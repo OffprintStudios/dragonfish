@@ -1,4 +1,5 @@
 import { AuthorInfo } from '../works';
+import { WorkMetadata } from '../works';
 
 export interface Collection {
     readonly _id: string;
@@ -20,9 +21,15 @@ export interface WorkInfo {
     readonly author: AuthorInfo;
     readonly title: string;
     readonly shortDesc: string;
+    readonly meta: WorkMetadata;
     readonly stats: {
         readonly totWords: number;
+        readonly likes: number;
+        readonly dislikes: number;
+        readonly views: number;
+        readonly comments: number;
     };
+    readonly createdAt: Date;
 }
 
 export interface Details {
