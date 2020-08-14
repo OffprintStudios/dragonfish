@@ -4,6 +4,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { Blog, User, Work } from 'shared-models';
+import { Collection } from '../../../../../shared/models/collections';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +29,7 @@ export class PortfolioService {
   }
 
   /**
-   * Fetches a user's published blogs for display in their portfolio.
+   * Fetches a user's published blogs for display on their portfolio.
    * 
    * @param userId The user ID of the requested portfolio
    */
@@ -42,7 +43,7 @@ export class PortfolioService {
   }
 
   /**
-   * Fetches a user's published works for display in their portfolio.
+   * Fetches a user's published works for display on their portfolio.
    * 
    * @param userId The user ID of the requested portfolio
    */
@@ -50,6 +51,19 @@ export class PortfolioService {
     return this.http.get<Work[]>(`${this.url}/get-works-list/${userId}`, {observe: 'response', withCredentials: true})
       .pipe(map(works => {
         return works.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches a user's public collections for display on their portfolio.
+   * @param userId The user ID of the requested portfolio
+   */
+  public getCollectionsList(userId: string) {
+    return this.http.get<Collection[]>(`${this.url}/get-collections/${userId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(colls => {
+        return colls.body;
       }), catchError(err => {
         return throwError(err);
       }));
