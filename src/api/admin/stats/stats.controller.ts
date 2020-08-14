@@ -11,7 +11,7 @@ export class StatsController {
     @Get('front-page-stats')
     async getFooterStats() {
         const userCount = await this.usersService.getUserCount();
-        const workCount = await this.worksService.getWorkCount();
+        const workCount = await this.worksService.getTotalWorkCount();
         const frontPageStats: FrontPageStats = {
             numUsers: userCount,
             numWorks: workCount
