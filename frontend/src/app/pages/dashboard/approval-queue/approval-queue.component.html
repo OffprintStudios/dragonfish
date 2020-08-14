@@ -30,7 +30,7 @@
                                     <div class="text-rating mature small" *ngSwitchCase="'Mature'">M</div>
                                     <div class="text-rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>
-                                <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
+                                <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>                                
                                 <h4 class="author-byline">by <a [routerLink]="['/portfolio', entry.workToApprove.author._id, entry.workToApprove.author.username | slugify]">
                                     {{ entry.workToApprove.author.username }}
                                 </a></h4>
