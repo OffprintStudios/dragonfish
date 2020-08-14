@@ -28,7 +28,7 @@ export class CollectionsComponent implements OnInit {
     // Creates the Create Collection modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
-      width: 'auto',
+      width: '90%',
       height: 'auto',
     });
 
