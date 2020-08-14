@@ -6,9 +6,13 @@ import * as path from 'path';
 
 import { AppModule } from './app.module';
 
-const results: DotenvConfigOutput = config({path: path.resolve(__dirname, '..', '.env')});
+let results: DotenvConfigOutput = config({path: path.resolve(__dirname, '..', '.env')});
 if (results.error) {
-  throw new Error(`You don't have the .env file set up!` + results.error);
+  // Try once more in the path above _that_
+  results = config({path: path.resolve(__dirname, '..', '..', '.env')});
+  if (results.error) {
+    throw new Error(`You don't have the .env file set up!` + results.error);
+  }
 }
 
 async function bootstrap() {
