@@ -34,6 +34,17 @@
                 <div class="coll-desc">
                     {{ collection.desc }}
                 </div>
+                <div class="coll-list">
+                    <ng-container *ngIf="collection.details.length === 0; else displayWorks">
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <h4 style="margin-bottom: 0; font-size: 18px;">You haven't added any works yet.</h4>
+                            <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Head to any work page and click the Add to Collection button to get started!</p>
+                        </div>
+                    </ng-container>
+                    <ng-template #displayWorks>
+                        It's either null or undefined.
+                    </ng-template>
+                </div>
             </div>
         </div>
     </ng-container>
