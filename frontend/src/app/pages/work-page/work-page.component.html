@@ -6,7 +6,7 @@
     <!--With cover art-->
     <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
         <div class="three columns image-container">
-            <img [src]="workData.meta.coverArt" />
+            <img class="bordered-cover-art shadow" [src]="workData.meta.coverArt" />
         </div>
         <div class="nine columns" style="margin: 2rem 0 0 0; padding-right: 2rem;">
             <!--Work title 'n such-->
