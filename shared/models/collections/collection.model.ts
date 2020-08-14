@@ -2,8 +2,9 @@ import { AuthorInfo } from '../works';
 
 export interface Collection {
     readonly _id: string;
-    readonly owner: string;
+    readonly user: string;
     readonly name: string;
+    readonly desc: string;
     readonly details: Details[];
     readonly audit: {
         readonly isPublic: boolean;

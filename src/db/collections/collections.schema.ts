@@ -10,8 +10,9 @@ import { CollectionDocument } from './models';
  */
 export const CollectionsSchema = new Schema({
     _id: {type: String, default: generate()},
-    owner: {type: String, ref: 'User', required: true},
+    user: {type: String, ref: 'User', required: true},
     name: {type: String, trim: true, default: 'Untitled Collection'},
+    desc: {type: String, trim: true},
     details: [{
         work: {type: String, ref: 'Work', autopopulate: {
             select: '_id author title shortDesc stats.totWords'
@@ -31,7 +32,7 @@ CollectionsSchema.plugin(MongooseAutopopulate);
 CollectionsSchema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
     this.set('name', sanitize(this.name));
-    this.set('details', null);
+    this.set('desc', sanitize(this.desc));
     this.set('createdAt', Date.now());
     this.set('updatedAt', Date.now());
 
