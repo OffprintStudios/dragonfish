@@ -261,10 +261,9 @@ export class WorksService {
      * @param workId The work we're deleting
      */
     async deleteWork(user: any, workId: string): Promise<void> {
-        await this.workModel.findOneAndUpdate({"_id": workId, "author": user.sub}, {"audit.isDeleted": true}).then(async () => {
-            const workCount = await this.workModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', models.ApprovalStatus.Approved);
-            await this.usersService.updateWorkCount(user.sub, workCount);
-        });
+        await this.workModel.findOneAndUpdate({"_id": workId, "author": user.sub}, {"audit.isDeleted": true});
+        const workCount = await this.getWorkCount(user.sub);
+        await this.usersService.updateWorkCount(user.sub, workCount);
     }
 
     /**
@@ -317,15 +316,10 @@ export class WorksService {
      */
     async approveWork(workId: string, authorId: string): Promise<void> {
         //@ts-ignore
-        return await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
-            .where("audit.isDeleted", false)
-            .then(async () => {
-                //@ts-ignore
-                const workCount = await this.workModel.countDocuments({author: authorId})
-                    .where('audit.isDeleted', false)
-                    .where('audit.published', models.ApprovalStatus.Approved);
-                await this.usersService.updateWorkCount(authorId, workCount);
-            });
+        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
+            .where("audit.isDeleted", false);
+        const workCount = await this.getWorkCount(authorId);
+        await this.usersService.updateWorkCount(authorId, workCount);
     }
 
     /**
@@ -384,9 +378,20 @@ export class WorksService {
     }
 
     /**
-     * Gets the estimated count of works from the db.
+     * Gets the count of published, non-deleted works from the db.
      */
-    async getWorkCount(): Promise<number> {
-        return await this.workModel.estimatedDocumentCount().where("audit.isDeleted", false);
+    async getWorkCount(authorId: string): Promise<number> {
+        //@ts-ignore
+        return await this.workModel.countDocuments({author: authorId})
+            .where("audit.isDeleted", false)
+            .where('audit.published', models.ApprovalStatus.Approved);
+    }
+
+    /**
+     * Gets an estimated count of _all_ non-deleted works, included upublished works.
+     */
+    async getTotalWorkCount(): Promise<number> {
+        return await this.workModel.estimatedDocumentCount()
+            .where("audit.isDeleted", false);
     }
 }
