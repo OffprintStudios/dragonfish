@@ -12,10 +12,10 @@
             <!--Work title 'n such-->
             <div class="work-header">
                 <ng-container [ngSwitch]="workData.meta.rating">
-                    <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
-                    <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
-                    <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
-                    <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
+                    <div class="text-rating everyone large" *ngSwitchDefault>E</div>
+                    <div class="text-rating teen large" *ngSwitchCase="'Teen'">T</div>
+                    <div class="text-rating mature large" *ngSwitchCase="'Mature'">M</div>
+                    <div class="text-rating explicit large" *ngSwitchCase="'Explicit'">X</div>
                 </ng-container>
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
@@ -32,14 +32,14 @@
     </div>
     <ng-template #noCoverArt>
             <!--Work title 'n such-->
-            <div style="margin-top: 2rem; padding: 0 2rem 0 2rem;">
+            <div class="no-cover-art-work-container">
                 <div class="work-header">
-                    <div style="display: inline-block;" [ngSwitch]="workData.meta.rating">
-                        <img class="rating" src="assets/icons/teenIcon.svg" *ngSwitchCase="'Teen'">
-                        <img class="rating" src="assets/icons/matureIcon.svg" *ngSwitchCase="'Mature'">
-                        <img class="rating" src="assets/icons/explicitIcon.svg" *ngSwitchCase="'Explicit'">
-                        <img class="rating" src="assets/icons/everyoneIcon.svg" *ngSwitchDefault>
-                    </div>
+                    <ng-container [ngSwitch]="workData.meta.rating">
+                        <div class="text-rating everyone large" *ngSwitchDefault>E</div>
+                        <div class="text-rating teen large" *ngSwitchCase="'Teen'">T</div>
+                        <div class="text-rating mature large" *ngSwitchCase="'Mature'">M</div>
+                        <div class="text-rating explicit large" *ngSwitchCase="'Explicit'">X</div>
+                    </ng-container>
                     <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                     <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                     <div class="category-genre">
