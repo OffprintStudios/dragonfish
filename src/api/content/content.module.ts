@@ -9,10 +9,12 @@ import { PortfolioController } from './portfolio/portfolio.controller';
 import { UsersModule } from 'src/db/users/users.module';
 import { ImagesModule } from '../images/images.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from 'src/util';
+import { CollectionsModule } from 'src/db/collections/collections.module';
+import { CollectionsController } from './collections/collections.controller';
 
 @Module({
   imports: [
-    BlogsModule, WorksModule, UsersModule, ImagesModule,
+    BlogsModule, WorksModule, UsersModule, ImagesModule, CollectionsModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
@@ -20,6 +22,6 @@ import { getJwtSecretKey, JWT_EXPIRATION } from 'src/util';
       }),
     }),
   ],
-  controllers: [BlogsController, WorksController, PortfolioController]
+  controllers: [BlogsController, WorksController, PortfolioController, CollectionsController]
 })
 export class ContentModule {}

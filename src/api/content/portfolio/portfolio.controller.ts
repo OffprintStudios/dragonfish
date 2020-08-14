@@ -4,12 +4,14 @@ import { WorksService } from 'src/db/works/works.service';
 
 import { UsersService } from 'src/db/users/users.service';
 import { OptionalAuthGuard } from 'src/guards';
+import { CollectionsService } from 'src/db/collections/collections.service';
 
 @Controller('portfolio')
 export class PortfolioController {
     constructor(private readonly usersService: UsersService, 
         private readonly blogsService: BlogsService, 
-        private readonly worksService: WorksService) {}
+        private readonly worksService: WorksService,
+        private readonly collsService: CollectionsService) {}
 
     @Get('get-user-info/:userId')
     async getUserInfo(@Param('userId') userId: string) {
@@ -30,5 +32,10 @@ export class PortfolioController {
     @Get('get-works-list/:userId')
     async getWorksList(@Param('userId') userId: string) {
         return await this.worksService.getWorksList(userId);
+    }
+
+    @Get('get-collections/:userId')
+    async getCollections(@Param('userId') userId: string) {
+        return await this.collsService.getPortfolioCollections(userId);
     }
 }

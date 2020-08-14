@@ -69,6 +69,21 @@ export class CollectionsService {
     }
 
     /**
+     * Adds a work to the collection.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection ID
+     * @param workId The work to add
+     */
+    async addWorkToCollection(user: JwtPayload, collId: string, workId: string): Promise<void> {
+        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {
+            $push: {
+                'details.work': workId, 'details.addedOn': Date.now()
+            }
+        });
+    }
+
+    /**
      * Soft deletes a collection associated with the provided user.
      * 
      * @param user The owner of the collection
