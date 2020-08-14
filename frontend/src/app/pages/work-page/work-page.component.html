@@ -152,18 +152,18 @@
 <ng-template #notThisUserControls>
     <div class="work-controls" *ngIf="currentUser && workData.audit.published === 'Approved'">
         <span class="controls-left">
-            <a class="button user-button"><i-feather name="thumbs-up"></i-feather></a>
+            <button class="user-buttons"><i-feather name="thumbs-up"></i-feather></button>
             <ng-template #alreadyLiked>
-                <a class="button user-button selected"><i-feather name="thumbs-up"></i-feather></a>
+                <button class="user-buttons active"><i-feather name="thumbs-up"></i-feather></button>
             </ng-template>
-            <a class="button user-button user-button-middle"><i-feather name="thumbs-down"></i-feather></a>
+            <button class="user-buttons"><i-feather name="thumbs-down"></i-feather></button>
             <ng-template #alreadyDisliked>
-                <a class="button user-button user-button-middle selected"><i-feather name="thumbs-down"></i-feather></a>
+                <button class="user-buttons active"><i-feather name="thumbs-down"></i-feather></button>
             </ng-template>
-            <a class="button user-button"><i-feather name="folder-plus"></i-feather></a>
+            <button class="user-buttons right"><i-feather name="folder-plus"></i-feather></button>
         </span>
         <span class="controls-right">
-            <a class="button user-button"><i-feather name="flag"></i-feather></a>
+            <button class="user-buttons right"><i-feather name="flag"></i-feather></button>
         </span>
     </div>
 </ng-template>
