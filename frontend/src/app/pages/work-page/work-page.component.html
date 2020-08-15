@@ -4,12 +4,11 @@
 
 <div class="work-box" *ngIf="!loading">
     <!--With cover art-->
-    <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
-        <div class="three columns image-container">
+    <div class="work-info">
+        <div class="image-container" *ngIf="workData.meta.coverArt">
             <img class="bordered-cover-art shadow" [src]="workData.meta.coverArt" />
         </div>
-        <div class="nine columns" style="margin: 2rem 0 0 0; padding-right: 2rem;">
-            <!--Work title 'n such-->
+        <div class="work-details">
             <div class="work-header">
                 <ng-container [ngSwitch]="workData.meta.rating">
                     <div class="rating everyone large" *ngSwitchDefault>E</div>
@@ -23,36 +22,35 @@
                     {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
                 </div>
             </div>
-
-            <!--Long description box-->
-            <div class="long-description content-box">
+            <div class="work-description content-box">
                 <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
             </div>
         </div>
-    </div>
-    <ng-template #noCoverArt>
-            <!--Work title 'n such-->
-            <div class="no-cover-art-work-container">
-                <div class="work-header">
-                    <ng-container [ngSwitch]="workData.meta.rating">
-                        <div class="rating everyone large" *ngSwitchDefault>E</div>
-                        <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
-                        <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
-                        <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
-                    </ng-container>
-                    <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
-                    <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
-                    <div class="category-genre">
-                        {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
-                    </div>
+        <div class="controls">
+            <div>
+                <button class="control-button" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                <button class="control-button mid" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                <button class="control-button end" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+            </div>
+            <div class="stats">
+                <div class="stat-block" title="Total Words: {{ workData.stats.totWords | toLocaleString }}">
+                    <span class="stat-icon"><i-feather name="pen-tool"></i-feather></span>
+                    <span class="stat-number">{{ workData.stats.totWords | abbreviate }}</span>
                 </div>
-
-                <!--Long description box-->
-                <div class="long-description content-box">
-                    <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                <div class="stat-block" title="Approval Rating">
+                    <span class="stat-icon"><i-feather name="heart"></i-feather></span>
+                    <span class="stat-number">0%</span>
+                </div>
+                <div class="stat-block" title="Views: {{ workData.stats.views | toLocaleString }}">
+                    <span class="stat-icon"><i-feather name="bar-chart-2"></i-feather></span>
+                    <span class="stat-number">{{ workData.stats.views | abbreviate }}</span>
                 </div>
             </div>
-    </ng-template>
+            <div>
+                <button class="control-button bottom" title="Report"><i-feather name="flag"></i-feather></button>
+            </div>
+        </div>
+    </div>
 
     <!--Sections-->
     <ng-container *ngIf="route.children.length === 0 && workData.sections.length > 0">
@@ -125,14 +123,11 @@
     <!--Work stats-->
     <div class="work-stats">
         <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
-        <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
-        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
-        <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
         {{ workData.meta.status }}
     </div>
 </div>
 
-<div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
+<div class="work-controls" *ngIf="currentUser && currentUserIsSame(); else notThisUserControls">
     <span class="controls-left">
         <button class="add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']"><i-feather class="plus-section" name="plus"></i-feather>Section</button>
         <button title="Edit Work" class="user-buttons" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>

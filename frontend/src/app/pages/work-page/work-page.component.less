@@ -12,6 +12,157 @@ div.work-box {
     background-color: var(--site-accent);
     box-shadow: var(--site-dropshadow);
 
+
+    div.work-info {
+        display: flex;
+        flex-direction: row;
+        //justify-content: space-between;
+        //align-items: center;
+
+        div.image-container {
+            max-width: 250px;
+            margin-right: 0;
+            img {
+                object-fit: contain;
+            }
+        }
+
+        div.work-details {
+            flex: 1;
+            margin: 2.5rem 2.5rem 0 2.5rem;
+            div.work-header {
+                margin-bottom: 0;
+                h1 {
+                    display: inline-block;
+                    font-weight: 700;
+                    color: whitesmoke;
+                    margin-bottom: 0;
+                    a {
+                        color: whitesmoke;
+                        padding: 10px 5px 0 5px;
+                        &:hover {
+                            background-color: var(--site-accent-hover);
+                        }
+                    }
+                }
+        
+                h2 {
+                    display: inline-block;
+                    margin: 0 0 0 1rem;
+                    font-size: 20px;
+                    font-style: italic;
+                    color: whitesmoke;
+                    a {
+                        color: whitesmoke;
+                        padding: 5px 5px 2px 2px;
+                        &:hover {
+                            background-color: var(--site-accent-hover);
+                        }
+                    }
+                    span {
+                        margin: 0 0.5rem 0 0.5rem;
+                    }
+                }
+        
+                div.category-genre {
+                    padding:5px 0 5px 5px;
+                    border-top: 1px solid whitesmoke;
+                    border-bottom: 1px solid whitesmoke;
+                    color: whitesmoke;
+                    span {
+                        margin: 0 0.75rem 0 0.75rem;
+                    }
+                }
+            }
+
+            div.work-description {
+                width: 95%;
+                margin: 1rem auto 0 auto;
+                color: whitesmoke;
+                a {
+                    color: whitesmoke;
+                    text-decoration: underline;
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+        div.controls {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid whitesmoke;
+            border-right: 1px solid whitesmoke;
+            margin: 2.5rem 2.5rem 2.5rem 0;
+            box-shadow: var(--site-dropshadow);
+
+            button.control-button {
+                width: 100%;
+                display: block;
+                padding-left: 15px;
+                padding-right: 15px;
+                margin-bottom: 0;
+                box-shadow: none;
+                border-top: 1px solid whitesmoke;
+                border-left: none;
+                border-bottom: none;
+                border-right: 0;
+                color: whitesmoke;
+                align-self: flex-start;
+                background-color: var(--site-accent);
+
+                &:hover {
+                    color: whitesmoke;
+                    background-color: var(--site-accent-hover);
+                }
+
+                i-feather {
+                    position: relative;
+                    stroke-width: 1;
+                    top: 0.5rem;
+                }
+            }
+            
+            button.end {
+                border-top: none;
+                border-bottom: 1px solid whitesmoke;
+            }
+
+            button.mid {
+                border-bottom: 1px solid whitesmoke;
+            }
+
+            button.bottom {
+                border-top: 1px solid whitesmoke;
+                border-bottom: 1px solid whitesmoke;
+            }
+
+            div.stats {
+                margin: auto 0 auto 0;
+                color: whitesmoke;
+                font-size: 0;
+                align-self: center;
+                text-align: center;
+                div.stat-block {
+                    span.stat-icon {
+                        i-feather {
+                            stroke-width: 1;
+                            position: relative;
+                            top: 0.65rem;
+                            margin-right: 0.25rem;
+                        }
+                    }
+    
+                    span.stat-number {
+                        display: block;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+
     div.no-cover-art-work-container {
         margin-top: 2rem; 
         padding: 0 2rem 0 2rem;
@@ -38,53 +189,12 @@ div.work-box {
         max-height: 100%;                
     }
 
-    div.work-header {
-        margin-bottom: 0;
-        h1 {
-            display: inline-block;
-            font-weight: 700;
-            color: whitesmoke;
-            margin-bottom: 0;
-            a {
-                color: whitesmoke;
-                padding: 10px 5px 0 5px;
-                &:hover {
-                    background-color: var(--site-accent-hover);
-                }
-            }
-        }
-
-        h2 {
-            display: inline-block;
-            margin: 0 0 0 1rem;
-            font-size: 20px;
-            font-style: italic;
-            color: whitesmoke;
-            a {
-                color: whitesmoke;
-                padding: 5px 5px 2px 2px;
-                &:hover {
-                    background-color: var(--site-accent-hover);
-                }
-            }
-            span {
-                margin: 0 0.5rem 0 0.5rem;
-            }
-        }
-
-        div.category-genre {
-            padding:5px 0 5px 5px;
-            border-top: 1px solid whitesmoke;
-            border-bottom: 1px solid whitesmoke;
-            color: whitesmoke;
-            span {
-                margin: 0 0.75rem 0 0.75rem;
-            }
-        }
+    div.controls {
+        border-left: 1px solid whitesmoke;
     }
 
     div.section-list {
-        width: 90%;
+        width: 91.5%;
         margin: 0 auto 0 auto;
         color: whitesmoke;
         box-shadow: var(--site-dropshadow);
