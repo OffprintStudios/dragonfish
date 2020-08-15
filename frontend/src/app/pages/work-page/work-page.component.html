@@ -27,11 +27,26 @@
             </div>
         </div>
         <div class="controls">
-            <div>
-                <button class="control-button" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                <button class="control-button mid" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
-                <button class="control-button end" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
-            </div>
+            <ng-container *ngIf="currentUser && !currentUserIsSame()">
+                <div>
+                    <button class="control-button" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                    <button class="control-button mid" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                    <button class="control-button end" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="currentUser && currentUserIsSame()">
+                <div>
+                    <button class="control-button" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']" title="New Section"><i-feather name="plus"></i-feather></button>
+                    <button class="control-button" title="Edit Work" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
+                    <button class="control-button" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
+                    <ng-container [ngSwitch]="workData.audit.published">
+                        <button class="control-button bottom active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather></button>
+                        <button class="control-button bottom" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather></button>
+                        <button class="control-button bottom" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather></button>
+                        <button class="control-button bottom" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather></button>
+                    </ng-container>
+                </div>
+            </ng-container>
             <div class="stats">
                 <div class="stat-block" title="Total Words: {{ workData.stats.totWords | toLocaleString }}">
                     <span class="stat-icon"><i-feather name="pen-tool"></i-feather></span>
@@ -46,9 +61,16 @@
                     <span class="stat-number">{{ workData.stats.views | abbreviate }}</span>
                 </div>
             </div>
-            <div>
-                <button class="control-button bottom" title="Report"><i-feather name="flag"></i-feather></button>
-            </div>
+            <ng-container *ngIf="currentUser && !currentUserIsSame()">
+                <div>
+                    <button class="control-button bottom" title="Report"><i-feather name="flag"></i-feather></button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="currentUser && currentUserIsSame()">
+                <div>
+                    <button class="control-button bottom" title="Delete Work" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
+                </div>
+            </ng-container>
         </div>
     </div>
 
@@ -73,14 +95,14 @@
                                 </div>
                             </div>
                             <div>
-                                <button title="Publish" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
                     <div *ngIf="section.published === false">
                         <div class="section-box">
                             <div>
-                                <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
+                                <button title="Publish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
                                 <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
@@ -93,7 +115,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
