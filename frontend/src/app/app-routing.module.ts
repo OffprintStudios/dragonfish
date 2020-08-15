@@ -7,8 +7,7 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
   PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
 
-import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent,
-  NewSectionComponent } from './pages/work-page';
+import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
 import { ApprovalQueueComponent, DashboardComponent, NewsManagementComponent, DocsComponent,
   ReportsComponent, UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
@@ -52,9 +51,8 @@ const routes: Routes = [
     {path: 'collections', component: PortCollectionsComponent},
     {path: '', component: PortHomeComponent},
   ]},
-  {path: 'work/:workId/:title', component: WorkPageComponent, children: [
-    {path: 'section/:sectionId', canActivate: [AuthGuard], component: UnpublishedSectionPageComponent},
-    {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
+  {path: 'work/:workId/:title', component: WorkPageComponent, children: [    
+    {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
   ]},
   {path: 'dashboard', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: DashboardComponent, children: [

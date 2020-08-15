@@ -7,13 +7,18 @@ div.section-selector {
     text-align: center;
     margin: 2rem auto 0 auto;
     justify-content: center;
-    button {
-        box-shadow: none;        
-        margin-bottom: 0;
+    a {        
+        height: 36px;
+        padding: 0 30px;        
+        border: 1px solid var(--site-borders);
         i-feather {
             position: relative;
             top: 0.5rem;
         }
+        &:hover {
+            color: whitesmoke;
+            background: var(--site-accent);            
+        }        
     }
 
     ng-select {

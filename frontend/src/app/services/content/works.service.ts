@@ -17,8 +17,7 @@ import { CreateWork, CreateSection, EditSection, EditWork, Section,
 })
 export class WorksService {
   private url: string = `/api/content/works`;
-
-  public thisWorksPublishedSections: SectionInfo[]; // for the work page
+  
   public thisWorkId: string; // for cover art uploading
 
   constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) { }
@@ -202,15 +201,6 @@ export class WorksService {
         this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
       }));
-  }
-
-  /**
-   * Used to share a work's published sections with the section page.
-   * 
-   * @param sections The list of published sections of a work
-   */
-  public setSectionsList(sections: SectionInfo[]) {
-    this.thisWorksPublishedSections = sections;
   }
 
   /**

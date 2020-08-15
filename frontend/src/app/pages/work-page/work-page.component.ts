@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from 'src/app/services/auth';
-import { WorksService, CollectionsService } from 'src/app/services/content';
+import { WorksService, CollectionsService, SectionsService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
@@ -27,7 +27,8 @@ export class WorkPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
-    private collsService: CollectionsService) {
+    private collsService: CollectionsService, private sectionsService: SectionsService) {
+
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -79,8 +80,12 @@ export class WorkPageComponent implements OnInit {
       this.worksService.fetchWork(this.workId).subscribe(work => {
         this.workData = work;
         this.pubSections = work.sections.filter(section => { return section.published === true; });
-        this.worksService.setSectionsList(this.pubSections);
         this.worksService.thisWorkId = this.workId;
+        if (this.currentUserIsSame()) {
+          this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
+        }  else {
+          this.sectionsService.setInfo(this.pubSections, work.author._id);
+        }
         this.loading = false;
       }, () => {
         this.loading = false;
@@ -111,7 +116,7 @@ export class WorkPageComponent implements OnInit {
   /**
    * Confirms that the user really wants to delete their work. If true, send the request
    * to the backend. If false, do nothing.
-   * 
+   *
    * @param workId The ID of the work we're deleting
    */
   askDelete(workId: string) {
@@ -130,7 +135,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Sends a request to delete a section associated with this work from the database.
-   * 
+   *
    * @param workId The work the section belongs to
    * @param sectionId The section itself
    */
@@ -148,7 +153,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Sends a request to publish or unpublish the specify section.
-   * 
+   *
    * @param sectionId The section we're publishing or unpublishing
    * @param pubStatus The current publishing status of this section
    */
@@ -167,7 +172,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Opens the edit form.
-   */ 
+   */
   openEditForm() {
     this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
     this.editWork.open();
