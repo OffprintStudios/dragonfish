@@ -392,6 +392,7 @@ export class WorksService {
      */
     async getTotalWorkCount(): Promise<number> {
         return await this.workModel.estimatedDocumentCount()
+            .where("audit.published", models.ApprovalStatus.Approved)
             .where("audit.isDeleted", false);
     }
 }

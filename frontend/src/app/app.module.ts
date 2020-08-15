@@ -37,6 +37,8 @@ import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
+import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
+
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
   UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
 
@@ -85,7 +87,8 @@ const toolbarOptions = [
     ApprovalQueueComponent, DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
-    OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent
+    OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
+    AddToCollectionComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -108,7 +111,8 @@ const toolbarOptions = [
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
-    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent
+    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
+    AddToCollectionComponent
   ],
   bootstrap: [AppComponent]
 })
