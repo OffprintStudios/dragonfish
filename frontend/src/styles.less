@@ -316,14 +316,31 @@ button, a.button, input[type=submit] {
 
             a {
                 color: whitesmoke !important;
-                text-decoration: underline !important;
-                font-weight: 700 !important;
-
+                text-decoration: none !important;
+                background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);                
+                z-index: 1; // necessary, otherwise the highlight covers the text
+                position: relative; // allows us to use position: aboslute in the ::before            
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 100%;
+                    transform: scaleY(0%);
+                    opacity: 0;
+                    background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+                    transition: transform 0.3s, opacity 0.1s;
+                    z-index: -1; // necessary, otherwise the highlight covers the text
+                }
+                &:hover::before {
+                    opacity: 1;
+                    transform: scaleY(110%);
+                    transform-origin: bottom center;
+                }
                 &:hover {
-                    text-decoration: none !important;
-                    font-weight: 700 !important;
                     color: whitesmoke !important;
-                    background: linear-gradient(0deg,var(--site-accent-hover) 0%, var(--site-accent) 100%, var(--site-accent) 100%);
+                    text-decoration: none !important;                    
                 }
             }
         }
