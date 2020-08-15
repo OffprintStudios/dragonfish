@@ -88,14 +88,16 @@ export class WorkPageComponent implements OnInit {
    * Checks to see if the current user is the author of this work.
    */
   currentUserIsSame() {
-    if (this.currentUser) {
-      if (this.workData.author._id === this.currentUser._id) {
-        return true;
+    if (this.workData) {
+      if (this.currentUser) {
+        if (this.workData.author._id === this.currentUser._id) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
-      return false;
     }
   }
 
