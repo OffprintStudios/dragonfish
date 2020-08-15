@@ -1,13 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { dividerHandler, imageHandler } from 'src/app/util/quill';
 
 import { AuthService } from 'src/app/services/auth';
 import { WorksService, SectionsService } from 'src/app/services/content';
 import { SlugifyPipe } from 'src/app/pipes';
-import { User, Section, SectionInfo} from 'shared-models';
+import { User, Section, SectionInfo, EditSection} from 'shared-models';
 import { Observable } from 'rxjs';
+import { AlertsService } from 'src/app/modules/alerts';
 
 enum SectionState {
   User,
@@ -35,8 +36,8 @@ export class SectionPageComponent implements OnInit {
     
   workId: string;  
   workTitle: string;
-  initialSectionNum: number;
-  initialSectionId: string;
+  sectionNum: number;
+  sectionId: string;
 
   // Author-mode specific properties
   editing: boolean = false;
@@ -54,14 +55,15 @@ export class SectionPageComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(3)]),
     authorsNote: new FormControl('', [Validators.minLength(3), Validators.maxLength(2000)]),
   });
-  // end
+  // end author-mode stuff
 
   // export the enum type so Angular templates can use it
   SectionState = SectionState;
 
   constructor(private authService: AuthService, private worksService: WorksService,
     private router: Router, private route: ActivatedRoute, private slugify: SlugifyPipe,
-    private location: Location, private sectionsService: SectionsService) {
+    private sectionsService: SectionsService, private alertsService: AlertsService,
+    private cdr: ChangeDetectorRef) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });           
       this.fetchData();
   }
@@ -87,12 +89,12 @@ export class SectionPageComponent implements OnInit {
       this.workTitle = params.get('title');
       this.route.paramMap.subscribe(routeParams => {    
         this.sectionSwitching = true;
-        this.initialSectionNum = +routeParams.get('sectionNum');
-        this.initialSectionId = this.sectionsList[this.initialSectionNum - 1]._id;
-        this.indexNext = this.initialSectionNum + 1;
-        this.indexPrev = this.initialSectionNum - 1;
-        this.currSection = this.sectionsList[this.initialSectionNum - 1];
-        this.getOneSection(this.workId, this.sectionsList[this.initialSectionNum - 1]._id).subscribe(section => {
+        this.sectionNum = +routeParams.get('sectionNum');
+        this.sectionId = this.sectionsList[this.sectionNum - 1]._id;
+        this.indexNext = this.sectionNum + 1;
+        this.indexPrev = this.sectionNum - 1;
+        this.currSection = this.sectionsList[this.sectionNum - 1];
+        this.getOneSection(this.workId, this.sectionsList[this.sectionNum - 1]._id).subscribe(section => {
           this.sectionData = section;
           this.loading = false;
           this.sectionSwitching = false;
@@ -155,28 +157,110 @@ export class SectionPageComponent implements OnInit {
  */
   get fields() { return this.editSection.controls; }
 
+  /**
+   * Switches between the edit form and reading view.
+   */
   toggleEditForm() {
+    if (this.editing === true) {
+      this.editing = false;
+    } else {
+      this.editSection.setValue({
+        title: this.sectionData.title,
+        body: this.sectionData.body,
+        authorsNote: this.sectionData.authorsNote
+      });
 
+      this.editing = true;
+    }
   }
 
-  askDelete() {
+  /**
+   * Submits the section's edits to the backend.
+   */
+  submitEdits() {    
+    this.submitting = true;
+    if (this.fields.title.invalid) {
+      this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
+      this.loading = false;
+      return;
+    }
 
+    if (this.fields.body.invalid) {
+      this.alertsService.warn(`Body text must be greater than 5 characters.`);
+      this.loading = false;
+      return;
+    }
+
+    if (this.fields.authorsNote.value !== null || this.fields.authorsNote.value !== undefined) {
+      if (this.fields.authorsNote.invalid) {
+        this.alertsService.warn(`Author's notes must be between 5 and 2000 characters.`);
+        this.loading = false;
+        return;
+      }
+    }
+    const newEdits: EditSection = {
+      title: this.fields.title.value,
+      body: this.fields.body.value,
+      authorsNote: this.fields.authorsNote.value,
+      oldWords: this.sectionData.stats.words,
+    };
+
+    this.worksService.editSection(this.workId, this.sectionId, newEdits).subscribe(() => {
+      this.editing = false;
+      this.submitting = false;
+      this.fetchData();
+    }, () => {
+      this.editing = false;
+      this.submitting = false;
+    });
   }
 
-  submitEdits() {
-
-  }
-
+  /**
+   * Asks the user if they want to go back to reader mode without saving any changes.
+   */
   askExit() {
-
+    if (this.editSection.dirty || this.editSection.touched) {
+      if (confirm('Are you sure? All unsaved changes will be discarded.')) {
+        this.toggleEditForm();
+      } else {
+        console.log('Action cancelled.');
+      }
+    } else {
+      this.toggleEditForm();
+    }
   }
 
+  /**
+   * Asks the user if they would actually want to delete this section. Deletes if true.
+   */
+  askDelete() {
+    if (confirm(`Are you sure you want to delete this section? This action is irreversible.`)) {
+      this.worksService.deleteSection(this.workId, this.sectionId).subscribe(() => {
+        this.router.navigate([`/work/${this.workId}/${this.workTitle}`]);
+        return;
+      }, err => {
+        console.log(err);
+        return;
+      });
+    }
+  }
+
+  /**
+   * Required for the QuillJS editor.
+   */
   triggerChangeDetection() {
-
+    return this.cdr.detectChanges();
   }
 
+  /**
+   * Gets the Quill Editor object after the editor's creation in the template HTML
+   * 
+   * @param event The editor object
+   */
   onEditorCreated(event: any) {
-
+    let toolbar = event.getModule('toolbar');
+    toolbar.addHandler('divider', dividerHandler);
+    toolbar.addHandler('image', imageHandler);
   }
 
   /* End author mode stuff */
