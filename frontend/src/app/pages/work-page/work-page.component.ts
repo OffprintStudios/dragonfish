@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from 'src/app/services/auth';
-import { WorksService } from 'src/app/services/content';
+import { WorksService, SectionsService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
@@ -24,7 +24,8 @@ export class WorkPageComponent implements OnInit {
   updateCoverArt: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService) {
+    public route: ActivatedRoute, private router: Router, private toppy: Toppy, 
+    private queueService: QueueService, private sectionsService: SectionsService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -75,8 +76,12 @@ export class WorkPageComponent implements OnInit {
       this.worksService.fetchWork(this.workId).subscribe(work => {
         this.workData = work;
         this.pubSections = work.sections.filter(section => { return section.published === true; });
-        this.worksService.setSectionsList(this.pubSections);
         this.worksService.thisWorkId = this.workId;
+        if (this.currentUserIsSame()) {
+          this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
+        }  else {
+          this.sectionsService.setInfo(this.pubSections, work.author._id);
+        }       
         this.loading = false;
       }, () => {
         this.loading = false;

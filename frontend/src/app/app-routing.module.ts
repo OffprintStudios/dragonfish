@@ -52,9 +52,8 @@ const routes: Routes = [
     {path: 'collections', component: PortCollectionsComponent},
     {path: '', component: PortHomeComponent},
   ]},
-  {path: 'work/:workId/:title', component: WorkPageComponent, children: [
-    {path: 'section/:sectionId', canActivate: [AuthGuard], component: UnpublishedSectionPageComponent},
-    {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},
+  {path: 'work/:workId/:title', component: WorkPageComponent, children: [    
+    {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
     {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
   ]},
   {path: 'dashboard', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Contributor, Roles.Moderator, Roles.Admin]}, component: DashboardComponent, children: [

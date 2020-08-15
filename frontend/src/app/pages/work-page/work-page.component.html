@@ -58,14 +58,14 @@
     <ng-container *ngIf="route.children.length === 0 && workData.sections.length > 0">
         <div class="section-list" *ngIf="currentUserIsSame(); else notSameUser">
             <ul>
-                <li *ngFor="let section of workData.sections">
+                <li *ngFor="let section of workData.sections; let i = index">
                     <div *ngIf="section.published === true">
                         <div class="section-box">
                             <div>
                                 <button title="Unpublish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="check-circle"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
-                                <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
+                                <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">
                                     {{ section.title }}
                                 </a>
                             </div>
@@ -85,7 +85,7 @@
                                 <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
-                                <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, 'section', section._id]">
+                                <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">
                                     {{ section.title }}
                                 </a>
                             </div>
