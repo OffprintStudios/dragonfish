@@ -16,6 +16,12 @@ export class CollectionsController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-one-user-collection')
+    async fetchOneUserCollection(@Request() req: any) {
+        console.log(req.user);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
     @Put('create-collection')
     async createCollection(@Request() req: any, @Body() collInfo: CreateCollection) {
         return await this.collsService.createCollection(req.user, collInfo);
