@@ -127,16 +127,6 @@
             <span class="stat-number">{{ workData.meta.status }}</span>
         </div>
         <span>//</span>
-        <div class="stat-block" title="Total Words: {{ workData.stats.totWords | toLocaleString }}">
-            <span class="stat-icon"><i-feather name="pen-tool"></i-feather></span>
-            <span class="stat-number">{{ workData.stats.totWords | abbreviate }} word{{ workData.stats.totWords | pluralize }}</span>
-        </div>
-        <span>//</span>
-        <div class="stat-block" title="Published On">
-            <span class="stat-icon"><i-feather name="calendar"></i-feather></span>
-            <span class="stat-number">{{ workData.createdAt | date:'shortDate' }}</span>
-        </div>
-        <span>//</span>
         <div class="stat-block" title="Views: {{ workData.stats.views | toLocaleString }}">
             <span class="stat-icon"><i-feather name="bar-chart-2"></i-feather></span>
             <span class="stat-number">{{ workData.stats.views | abbreviate }} view{{ workData.stats.views | pluralize }}</span>
@@ -145,6 +135,16 @@
         <div class="stat-block" title="Comments: {{ workData.stats.comments | toLocaleString }}">
             <span class="stat-icon"><i-feather name="message-circle"></i-feather></span>
             <span class="stat-number">{{ workData.stats.comments | abbreviate }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block" title="Total Words: {{ workData.stats.totWords | toLocaleString }}">
+            <span class="stat-icon"><i-feather name="pen-tool"></i-feather></span>
+            <span class="stat-number">{{ workData.stats.totWords | abbreviate }} word{{ workData.stats.totWords | pluralize }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block" title="Published On">
+            <span class="stat-icon"><i-feather name="calendar"></i-feather></span>
+            <span class="stat-number">{{ workData.createdAt | date:'mediumDate' }}</span>
         </div>
         <span>//</span>
         <div class="stat-block">
