@@ -11,6 +11,7 @@ import { Collection, CreateCollection, EditCollection } from 'shared-models';
 })
 export class CollectionsService {
   private url = `/api/content/collections`;
+  public thisUsersCollections: Collection[];
 
   constructor(private http: HttpClient, private alertsService: AlertsService) { }
 

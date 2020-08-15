@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from 'src/app/services/auth';
-import { WorksService } from 'src/app/services/content';
+import { WorksService, CollectionsService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
@@ -26,7 +26,8 @@ export class WorkPageComponent implements OnInit {
   addToCollections: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService) {
+    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
+    private collsService: CollectionsService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
@@ -84,6 +85,9 @@ export class WorkPageComponent implements OnInit {
       }, () => {
         this.loading = false;
       });
+      this.collsService.fetchUserCollections().subscribe(colls => {
+        this.collsService.thisUsersCollections = colls;
+      })
     });
   }
 
