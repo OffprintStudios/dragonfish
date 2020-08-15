@@ -35,9 +35,16 @@
                             <span class="stat-icon"><i-feather name="heart"></i-feather></span>
                             <span class="stat-number">0%</span>
                         </div>
-                        <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                        <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
-                        <button class="control-button left" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+                        <ng-container *ngIf="currentUser; else noUser">
+                            <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                            <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                            <button class="control-button left" title="Add to Collection" (click)="openAddToCollections()"><i-feather name="folder-plus"></i-feather></button>
+                        </ng-container>
+                        <ng-template #noUser>
+                            <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                            <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                            <button class="control-button left" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+                        </ng-template>
                     </div>
                 </div>
             </div>

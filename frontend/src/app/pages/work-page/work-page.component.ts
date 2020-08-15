@@ -7,6 +7,7 @@ import { WorksService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
+import { AddToCollectionComponent } from 'src/app/components/modals/collections';
 
 @Component({
   selector: 'app-work-page',
@@ -22,6 +23,7 @@ export class WorkPageComponent implements OnInit {
   pubSections: SectionInfo[]; // This work's published sections
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
+  addToCollections: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService) {
@@ -30,16 +32,16 @@ export class WorkPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    // Set up the edit work modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
       width: '90%',
       height: '90%'
     });
 
+    // Set up the edit work modal
     this.editWork = this.toppy
       .position(position)
-      .config({ closeOnEsc: true, backdrop: true})
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
       .content(EditWorkComponent)
       .create();
 
@@ -48,21 +50,22 @@ export class WorkPageComponent implements OnInit {
     });
 
     // Set up the upload cover art modal
-    const coverArtPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
     this.updateCoverArt = this.toppy
-      .position(coverArtPosition)
-      .config({closeOnEsc: true, backdrop: true})
+      .position(position)
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
       .content(UploadCoverartComponent)
       .create();
 
     this.updateCoverArt.listen('t_close').subscribe(() => {
       this.fetchData();
     });
+
+    // Set up add to collections modal
+    this.addToCollections = this.toppy
+      .position(position)
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
+      .content(AddToCollectionComponent)
+      .create();
   }
 
   /**
@@ -171,6 +174,13 @@ export class WorkPageComponent implements OnInit {
    */
   openCoverArtUpload() {
     this.updateCoverArt.open();
+  }
+
+  /**
+   * Opens the add to collections box.
+   */
+  openAddToCollections() {
+    this.addToCollections.open();
   }
 
   /**
