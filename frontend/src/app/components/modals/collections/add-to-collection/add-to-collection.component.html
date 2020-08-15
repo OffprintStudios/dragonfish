@@ -1,1 +1,15 @@
-<p>add-to-collection works!</p>
+<div class="add-to-collection-modal">
+    <div class="add-to-collection-header">
+        <h3>Add to Collection</h3>
+    </div>
+    <div class="add-to-collection-body">
+        <ul>
+            <li *ngFor="let coll of collections">
+                <a>{{ coll.name }}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="add-to-collection-footer">
+        <button>Cancel</button>
+    </div>
+</div>

@@ -12,7 +12,7 @@ import { Rss, BookOpen, Archive, Book, Coffee, Inbox, Settings, Feather,
          HelpCircle, LogOut, Key, Menu, Filter, RotateCcw, Bookmark, Edit,
          BarChart2, MessageCircle, PenTool, Cloud, Layers, ChevronLeft,
          Grid, AlertTriangle, Users, AlignJustify, Clipboard, Hash,
-         Briefcase, Calendar, Image, User, Home, Map, Bell, Mail } from 'angular-feather/icons';
+         Briefcase, Calendar, Image, User, Home, Map, Bell, Mail, Heart } from 'angular-feather/icons';
 
 const icons = {
   Rss, BookOpen, Archive, Book, Coffee, Inbox, Settings,
@@ -26,7 +26,7 @@ const icons = {
   RotateCcw, Bookmark, Edit, BarChart2, MessageCircle, PenTool, Cloud,
   Layers, ChevronLeft, Grid, AlertTriangle, Users, AlignJustify,
   Clipboard, Hash, Briefcase, Calendar, Image, User, Home, Map, Bell,
-  Mail
+  Mail, Heart
 };
 
 @NgModule({

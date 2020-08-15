@@ -3,10 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from 'src/app/services/auth';
-import { WorksService, SectionsService } from 'src/app/services/content';
+import { WorksService, CollectionsService, SectionsService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
+import { AddToCollectionComponent } from 'src/app/components/modals/collections';
 
 @Component({
   selector: 'app-work-page',
@@ -22,25 +23,27 @@ export class WorkPageComponent implements OnInit {
   pubSections: SectionInfo[]; // This work's published sections
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
+  addToCollections: ToppyControl;
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    public route: ActivatedRoute, private router: Router, private toppy: Toppy, 
-    private queueService: QueueService, private sectionsService: SectionsService) {
+    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
+    private collsService: CollectionsService, private sectionsService: SectionsService) {
+
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
 
   ngOnInit(): void {
-    // Set up the edit work modal
     const position = new GlobalPosition({
       placement: InsidePlacement.CENTER,
       width: '90%',
       height: '90%'
     });
 
+    // Set up the edit work modal
     this.editWork = this.toppy
       .position(position)
-      .config({ closeOnEsc: true, backdrop: true})
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
       .content(EditWorkComponent)
       .create();
 
@@ -49,21 +52,22 @@ export class WorkPageComponent implements OnInit {
     });
 
     // Set up the upload cover art modal
-    const coverArtPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
     this.updateCoverArt = this.toppy
-      .position(coverArtPosition)
-      .config({closeOnEsc: true, backdrop: true})
+      .position(position)
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
       .content(UploadCoverartComponent)
       .create();
 
     this.updateCoverArt.listen('t_close').subscribe(() => {
       this.fetchData();
     });
+
+    // Set up add to collections modal
+    this.addToCollections = this.toppy
+      .position(position)
+      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
+      .content(AddToCollectionComponent)
+      .create();
   }
 
   /**
@@ -81,11 +85,14 @@ export class WorkPageComponent implements OnInit {
           this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
         }  else {
           this.sectionsService.setInfo(this.pubSections, work.author._id);
-        }       
+        }
         this.loading = false;
       }, () => {
         this.loading = false;
       });
+      this.collsService.fetchUserCollections().subscribe(colls => {
+        this.collsService.thisUsersCollections = colls;
+      })
     });
   }
 
@@ -93,21 +100,23 @@ export class WorkPageComponent implements OnInit {
    * Checks to see if the current user is the author of this work.
    */
   currentUserIsSame() {
-    if (this.currentUser) {
-      if (this.workData.author._id === this.currentUser._id) {
-        return true;
+    if (this.workData) {
+      if (this.currentUser) {
+        if (this.workData.author._id === this.currentUser._id) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
-      return false;
     }
   }
 
   /**
    * Confirms that the user really wants to delete their work. If true, send the request
    * to the backend. If false, do nothing.
-   * 
+   *
    * @param workId The ID of the work we're deleting
    */
   askDelete(workId: string) {
@@ -126,7 +135,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Sends a request to delete a section associated with this work from the database.
-   * 
+   *
    * @param workId The work the section belongs to
    * @param sectionId The section itself
    */
@@ -144,7 +153,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Sends a request to publish or unpublish the specify section.
-   * 
+   *
    * @param sectionId The section we're publishing or unpublishing
    * @param pubStatus The current publishing status of this section
    */
@@ -163,7 +172,7 @@ export class WorkPageComponent implements OnInit {
 
   /**
    * Opens the edit form.
-   */ 
+   */
   openEditForm() {
     this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
     this.editWork.open();
@@ -174,6 +183,13 @@ export class WorkPageComponent implements OnInit {
    */
   openCoverArtUpload() {
     this.updateCoverArt.open();
+  }
+
+  /**
+   * Opens the add to collections box.
+   */
+  openAddToCollections() {
+    this.addToCollections.open();
   }
 
   /**

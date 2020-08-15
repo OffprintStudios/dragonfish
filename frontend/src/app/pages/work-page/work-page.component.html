@@ -4,12 +4,11 @@
 
 <div class="work-box" *ngIf="!loading">
     <!--With cover art-->
-    <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
-        <div class="three columns image-container">
+    <div class="work-info">
+        <div class="image-container" *ngIf="workData.meta.coverArt">
             <img class="bordered-cover-art shadow" [src]="workData.meta.coverArt" />
         </div>
-        <div class="nine columns" style="margin: 2rem 0 0 0; padding-right: 2rem;">
-            <!--Work title 'n such-->
+        <div class="work-details">
             <div class="work-header">
                 <ng-container [ngSwitch]="workData.meta.rating">
                     <div class="rating everyone large" *ngSwitchDefault>E</div>
@@ -20,39 +19,46 @@
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
                 <div class="category-genre">
-                    {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
+                    <div>
+                        {{ workData.meta.category | fixCategories }}<span>//</span>
+                    </div>
+                    <div>
+                        {{ workData.meta.genres | separateEntities:workData.meta.category }}
+                    </div>
+                    <div>
+                        <ng-container *ngIf="workData.meta.fandoms.length > 0">
+                            <span>//</span>{{ workData.meta.fandoms | separateEntities }}
+                        </ng-container>
+                    </div>
+                    <div class="approval">
+                        <div class="stat-block" title="Approval Rating">
+                            <span class="stat-icon"><i-feather name="heart"></i-feather></span>
+                            <span class="stat-number">0%</span>
+                        </div>
+                        <ng-container *ngIf="currentUser; else noUser">
+                            <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                            <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                            <button class="control-button left" title="Add to Collection" (click)="openAddToCollections()"><i-feather name="folder-plus"></i-feather></button>
+                        </ng-container>
+                        <ng-template #noUser>
+                            <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                            <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                            <button class="control-button left" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+                        </ng-template>
+                    </div>
                 </div>
             </div>
-
-            <!--Long description box-->
-            <div class="long-description content-box">
+            
+            <div class="work-description content-box">
                 <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
             </div>
         </div>
     </div>
-    <ng-template #noCoverArt>
-            <!--Work title 'n such-->
-            <div class="no-cover-art-work-container">
-                <div class="work-header">
-                    <ng-container [ngSwitch]="workData.meta.rating">
-                        <div class="rating everyone large" *ngSwitchDefault>E</div>
-                        <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
-                        <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
-                        <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
-                    </ng-container>
-                    <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
-                    <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
-                    <div class="category-genre">
-                        {{ workData.meta.category | fixCategories }}<span>//</span>{{ workData.meta.genres | separateEntities:workData.meta.category }}<div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0"><span>//</span>{{ workData.meta.fandoms | separateEntities }}</div>
-                    </div>
-                </div>
 
-                <!--Long description box-->
-                <div class="long-description content-box">
-                    <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
-                </div>
-            </div>
-    </ng-template>
+    <!--Work stats and controls-->
+        <div class="work-controls">
+            
+        </div>
 
     <!--Sections-->
     <ng-container *ngIf="route.children.length === 0 && workData.sections.length > 0">
@@ -75,14 +81,14 @@
                                 </div>
                             </div>
                             <div>
-                                <button title="Publish" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
                     <div *ngIf="section.published === false">
                         <div class="section-box">
                             <div>
-                                <button class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
+                                <button title="Publish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
                                 <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">
@@ -95,7 +101,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
@@ -124,49 +130,54 @@
 
     <!--Work stats-->
     <div class="work-stats">
-        <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
-        <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
-        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
-        <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
-        {{ workData.meta.status }}
-    </div>
-</div>
-
-<div class="work-controls" *ngIf="currentUserIsSame(); else notThisUserControls">
-    <span class="controls-left">
-        <button class="add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']"><i-feather class="plus-section" name="plus"></i-feather>Section</button>
-        <button title="Edit Work" class="user-buttons" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
-        <button title="Add/Change Cover Art" class="user-buttons" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
-        <div style="display: inline-block;" [ngSwitch]="workData.audit.published">
-            <button class="user-buttons right active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
-            <button class="user-buttons right" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
-            <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
-            <button class="user-buttons right" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
+        <div class="stat-block">
+            <span class="stat-number">{{ workData.meta.status }}</span>
         </div>
-    </span>
-    <span class="controls-right">
-        <button title="Delete Work" class="user-buttons delete" style="margin-right: 0;" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
-    </span>
+        <span>//</span>
+        <div class="stat-block" title="Views: {{ workData.stats.views | toLocaleString }}">
+            <span class="stat-icon"><i-feather name="bar-chart-2"></i-feather></span>
+            <span class="stat-number">{{ workData.stats.views | abbreviate }} view{{ workData.stats.views | pluralize }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block" title="Comments: {{ workData.stats.comments | toLocaleString }}">
+            <span class="stat-icon"><i-feather name="message-circle"></i-feather></span>
+            <span class="stat-number">{{ workData.stats.comments | abbreviate }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block" title="Total Words: {{ workData.stats.totWords | toLocaleString }}">
+            <span class="stat-icon"><i-feather name="pen-tool"></i-feather></span>
+            <span class="stat-number">{{ workData.stats.totWords | abbreviate }} word{{ workData.stats.totWords | pluralize }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block" title="Published On">
+            <span class="stat-icon"><i-feather name="calendar"></i-feather></span>
+            <span class="stat-number">{{ workData.createdAt | date:'mediumDate' }}</span>
+        </div>
+        <span>//</span>
+        <div class="stat-block">
+            <span class="stat-number"><a class="work-stat-link">Report</a></span>
+        </div>
+    </div>
 </div>
 
-<ng-template #notThisUserControls>
-    <div class="work-controls" *ngIf="currentUser && workData.audit.published === 'Approved'">
-        <span class="controls-left">
-            <button class="user-buttons"><i-feather name="thumbs-up"></i-feather></button>
-            <ng-template #alreadyLiked>
-                <button class="user-buttons active"><i-feather name="thumbs-up"></i-feather></button>
-            </ng-template>
-            <button class="user-buttons"><i-feather name="thumbs-down"></i-feather></button>
-            <ng-template #alreadyDisliked>
-                <button class="user-buttons active"><i-feather name="thumbs-down"></i-feather></button>
-            </ng-template>
-            <button class="user-buttons right"><i-feather name="folder-plus"></i-feather></button>
-        </span>
-        <span class="controls-right">
-            <button class="user-buttons right"><i-feather name="flag"></i-feather></button>
-        </span>
+<div class="author-controls" *ngIf="currentUser && currentUserIsSame()">
+    <div class="controls-start">
+        <ng-container [ngSwitch]="workData.audit.published">
+            <button class="control-button pub-status active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
+            <button class="control-button pub-status" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
+            <button class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
+            <button class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
+        </ng-container>
+        <button class="control-button mid" title="Edit Work" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
+        <button class="control-button mid" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
     </div>
-</ng-template>
+    <div class="controls-mid">
+        <button class="control-button add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']" title="New Section"><i-feather name="plus"></i-feather>Section</button>
+    </div>
+    <div class="controls-end">
+        <button class="control-button end" title="Delete Work" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
+    </div>
+</div>
 
 <div *ngIf="workData">
     <router-outlet></router-outlet>

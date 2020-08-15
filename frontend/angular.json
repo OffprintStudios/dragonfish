@@ -36,7 +36,7 @@
               "querystring",
               "punycode",
               "lodash",
-              "@pulsedotso/quill-markdown-shortcuts"
+              "numeral"
             ]
           },
           "configurations": {
