@@ -7,8 +7,7 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
   PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
 
-import { WorkPageComponent, UnpublishedSectionPageComponent, SectionPageComponent,
-  NewSectionComponent } from './pages/work-page';
+import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
 import { ApprovalQueueComponent, DashboardComponent, NewsManagementComponent, DocsComponent,
   ReportsComponent, UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
