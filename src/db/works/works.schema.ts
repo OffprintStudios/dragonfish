@@ -40,6 +40,7 @@ export const WorksSchema = new Schema({
     audit: {
         threadId: {type: String, default: generate()},
         published: {type: String, enum: Object.keys(models.ApprovalStatus), default: 'NotSubmitted'},
+        publishedOn: {type: Date, default: null},
         isDeleted: {type: Boolean, default: false}
     },
     createdAt: {type: Date, default: Date.now()},

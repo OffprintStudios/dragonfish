@@ -21,6 +21,9 @@ export interface User {
     readonly audit: {
         readonly roles: Roles[];
         readonly sessions: AuditSession[] | null;
+        readonly termsAgree: boolean;
+        readonly emailConfirmed: boolean;
+        readonly isDeleted: boolean;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;

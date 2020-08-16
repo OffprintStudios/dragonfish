@@ -27,6 +27,8 @@ export const UsersSchema = new Schema({
     audit: {
         roles: {type: [String], enum: Object.keys(Roles), default: ['User']},
         sessions: {type: [AuditSessionSchema], default: null},
+        termsAgree: {type: Boolean, default: false},
+        emailConfirmed: {type: Boolean, default: false},
         isDeleted: {type: String, default: false},
     },
     createdAt: {type: Date, default: Date.now()},

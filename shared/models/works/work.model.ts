@@ -23,6 +23,7 @@ export interface Work {
     readonly audit: {
         readonly threadId: string;
         readonly published: ApprovalStatus;
+        readonly publishedOn: Date;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
