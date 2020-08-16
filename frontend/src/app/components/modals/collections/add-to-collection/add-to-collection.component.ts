@@ -21,4 +21,6 @@ export class AddToCollectionComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  
 }

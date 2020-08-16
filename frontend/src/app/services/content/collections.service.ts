@@ -110,4 +110,34 @@ export class CollectionsService {
         return throwError(err);
       }));
   }
+
+  /**
+   * Sends a request to set a collection to public to the backend.
+   * 
+   * @param collId The collection's ID
+   */
+  public setToPublic(collId: string) {
+    return this.http.patch<void>(`${this.url}/set-public/${collId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sends a request to set a collection to private to the backend.
+   * 
+   * @param collId The collection's ID
+   */
+  public setToPrivate(collId: string) {
+    return this.http.patch<void>(`${this.url}/set-private/${collId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
 }

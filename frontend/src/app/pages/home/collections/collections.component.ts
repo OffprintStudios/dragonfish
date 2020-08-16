@@ -15,6 +15,7 @@ export class CollectionsComponent implements OnInit {
   currentUser: User;
 
   loading = false;
+  submitting = false;
   collections: Collection[];
 
   createCollection: ToppyControl;
@@ -51,6 +52,32 @@ export class CollectionsComponent implements OnInit {
     this.collsService.fetchUserCollections().subscribe(colls => {
       this.collections = colls;
       this.loading = false;
+    });
+  }
+
+  /**
+   * Sets a collection to public.
+   * 
+   * @param collId The collection's ID
+   */
+  setPublic(collId: string) {
+    this.submitting = true;
+    this.collsService.setToPublic(collId).subscribe(() => {
+      this.submitting = false;
+      this.fetchData();
+    });
+  }
+
+  /**
+   * Sets a collection to private.
+   * 
+   * @param collId The collection's ID
+   */
+  setPrivate(collId: string) {
+    this.submitting = true;
+    this.collsService.setToPrivate(collId).subscribe(() => {
+      this.submitting = false;
+      this.fetchData();
     });
   }
 
