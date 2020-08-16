@@ -90,13 +90,17 @@ export class WorkPageComponent implements OnInit {
         }  else {
           this.sectionsService.setInfo(this.pubSections, work.author._id);
         }
-        this.loading = false;
       }, () => {
         this.loading = false;
       });
-      this.collsService.fetchUserCollections().subscribe(colls => {
-        this.collsService.thisUsersCollections = colls;
-      })
+      if (this.currentUser) {
+        this.collsService.fetchUserCollections().subscribe(colls => {
+          this.collsService.thisUsersCollections = colls;
+          this.loading = false;
+        });
+      } else {
+        this.loading = false;
+      }
     });
   }
 
