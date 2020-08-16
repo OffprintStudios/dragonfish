@@ -20,15 +20,15 @@ div.browse-container {
     }
 
     div.works-feed {
-        display: flex;
-        flex-flow: row wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-gap: 1rem;
         width: 100%;
         div.work-container {
             display: flex;
             flex-direction: column;
             padding: 10px;
-            width: 410px;
-            height: 325px;
+            min-height: 30rem;
             border: 1px solid var(--site-borders);
             background-color: var(--site-accent);
             text-align: left;
@@ -57,7 +57,7 @@ div.browse-container {
                 h2 {
                     display: inline-block;
                     margin: 0 0 0 0;
-                    font-size: 16px;
+                    font-size: 14px;
                     font-style: italic;
                     color: whitesmoke;
                     a {
@@ -101,10 +101,10 @@ div.browse-container {
             }
 
             div.work-stats {
-                padding-top: 10px;
+                padding-top: 5px;
                 border-top: 1px solid whitesmoke;
                 text-align: right;
-                font-size: 14px;
+                font-size: 11px;
                 color: whitesmoke;
                 a.work-stat-button {
                     color: whitesmoke;
@@ -120,8 +120,8 @@ div.browse-container {
         
                 i-feather {
                     position: relative;
-                    width: 16px;
-                    height: 16px;
+                    width: 13px;
+                    height: 13px;
                     stroke-width: 1;
                     top: 0.25rem;
                     margin-right: 0.25rem;

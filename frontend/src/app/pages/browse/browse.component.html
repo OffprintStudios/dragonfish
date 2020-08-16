@@ -10,7 +10,7 @@
     
         <ng-container *ngSwitchCase="'success'">
             <div class="works-feed">
-                <div style="margin: 0 auto 1rem auto;" *ngFor="let work of works">
+                <div *ngFor="let work of works">
                     <div class="work-container">
                         <!--Header-->
                         <div class="work-header">
@@ -40,8 +40,9 @@
                         <!--Work stats-->
                         <div class="work-stats">
                             <i-feather name="calendar" title="Created At"></i-feather>{{ work.createdAt | date:'shortDate' }}<span>//</span>
-                            <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | toLocaleString }}<span>//</span>
-                            <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | toLocaleString }}<span>//</span>
+                            <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | abbreviate }}<span>//</span>
+                            <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
+                            <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
                             <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
                             {{ work.meta.status }}
                         </div>
