@@ -43,9 +43,9 @@
                             <ng-template #unpubTitle>
                                 <h3><a>{{ blog.title }}</a></h3>
                             </ng-template>
-                            <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
-                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
-                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                            <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
                             <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ blog.updatedAt | date:'short' }}</h4>
                         </div>
                     </div>
