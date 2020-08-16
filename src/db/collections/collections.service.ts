@@ -52,6 +52,19 @@ export class CollectionsService {
     }
 
     /**
+     * Grabs a single public collection from the database belonging to the specified user.
+     * 
+     * @param userId The owner of the portfolio
+     * @param collId The collection to fetch
+     */
+    async getOnePortCollection(userId: string, collId: string): Promise<documents.CollectionDocument> {
+        return await this.collectionModel.findOne({'_id': collId})
+            .where('user').equals(userId)
+            .where('audit.isPublic').equals(true)
+            .where('audit.isDeleted').equals(false);
+    }
+
+    /**
      * Edits a collection given the newest collection info.
      * 
      * @param user The owner of the collection
@@ -99,7 +112,7 @@ export class CollectionsService {
      * @param collId The collection to delete
      */
     async deleteCollection(user: JwtPayload, collId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isDeleted': false})
+        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isDeleted': true})
             .where('user').equals(user.sub);
     }
 

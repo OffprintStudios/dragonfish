@@ -34,8 +34,13 @@ export class PortfolioController {
         return await this.worksService.getWorksList(userId);
     }
 
-    @Get('get-collections/:userId')
-    async getCollections(@Param('userId') userId: string) {
+    @Get('get-port-collections/:userId')
+    async getPortCollections(@Param('userId') userId: string) {
         return await this.collsService.getPortfolioCollections(userId);
+    }
+
+    @Get('get-one-collection/:userId/:collId')
+    async getOneCollection(@Param('userId') userId: string, @Param('collId') collId: string) {
+        return await this.collsService.getOnePortCollection(userId, collId);
     }
 }

@@ -82,6 +82,21 @@ export class CollectionsComponent implements OnInit {
   }
 
   /**
+   * Sends a request to delete the specified collection.
+   * 
+   * @param collId The collection to delete
+   */
+  askDelete(collId: string) {
+    if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
+      this.collsService.deleteCollection(collId).subscribe(() => {
+        this.fetchData();
+      });
+    } else {
+      return;
+    }
+  }
+
+  /**
    * Opens the create collection modal
    */
   openCreateCollectionModal() {

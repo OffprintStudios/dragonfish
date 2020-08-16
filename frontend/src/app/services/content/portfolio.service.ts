@@ -58,12 +58,28 @@ export class PortfolioService {
 
   /**
    * Fetches a user's public collections for display on their portfolio.
+   * 
    * @param userId The user ID of the requested portfolio
    */
   public getCollectionsList(userId: string) {
     return this.http.get<Collection[]>(`${this.url}/get-collections/${userId}`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches the specified public collection for display on a user's portfolio.
+   * 
+   * @param userId The user ID of the requested portfolio
+   * @param collId The collection to fetch
+   */
+  public getOneCollection(userId: string, collId: string) {
+    return this.http.get<Collection>(`${this.url}/get-one-collection/${userId}/${collId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(coll => {
+        return coll.body;
       }), catchError(err => {
         return throwError(err);
       }));

@@ -21,9 +21,6 @@
         <div class="collections-grid">
             <div class="collections-box" *ngFor="let collection of collections">
                 <div class="coll-header">
-                    <div class="header">
-                        <h3>{{ collection.name }}</h3>
-                    </div>
                     <div class="set-coll-visibility">
                         <div class="submitter" *ngIf="submitting">
                             <div class="lds-dual-ring"></div>
@@ -31,6 +28,14 @@
                         <ng-container *ngIf="!submitting" [ngSwitch]="collection.audit.isPublic">
                             <a (click)="setPrivate(collection._id)" *ngSwitchCase="true"><i-feather name="check-circle"></i-feather></a>
                             <a (click)="setPublic(collection._id)" *ngSwitchDefault><i-feather name="circle"></i-feather></a>
+                        </ng-container>
+                    </div>
+                    <div class="header">
+                        <h3>{{ collection.name }}</h3>
+                    </div>
+                    <div class="delete-coll">
+                        <ng-container *ngIf="!submitting">
+                            <a (click)="askDelete(collection._id)"><i-feather name="trash-2"></i-feather></a>
                         </ng-container>
                     </div>
                 </div>
