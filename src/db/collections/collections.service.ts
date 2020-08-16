@@ -108,4 +108,26 @@ export class CollectionsService {
         return await this.collectionModel.updateOne({'_id': collId}, {'audit.isDeleted': false})
             .where('user').equals(user.sub);
     }
+
+    /**
+     * Sets a collection's isPublic flag to true.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection to make public
+     */
+    async setPublic(user: JwtPayload, collId: string): Promise<void> {
+        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isPublic': true})
+            .where('user').equals(user.sub);
+    }
+
+    /**
+     * Sets a collection's isPublic flag to false.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection to make private
+     */
+    async setPrivate(user: JwtPayload, collId: string): Promise<void> {
+        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isPublic': false})
+            .where('user').equals(user.sub);
+    }
 }

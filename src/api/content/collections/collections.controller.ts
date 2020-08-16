@@ -50,4 +50,16 @@ export class CollectionsController {
     async removeWork(@Request() req: any, @Param('collId') collId: string, @Param('workId') workId: string) {
         return await this.collsService.removeWorkFromCollection(req.user, collId, workId);
     }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-public/:collId')
+    async setPublic(@Request() req: any, @Param('collId') collId: string) {
+        return await this.collsService.setPublic(req.user, collId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-private/:collId')
+    async setPrivate(@Request() req: any, @Param('collId') collId: string) {
+        return await this.collsService.setPrivate(req.user, collId);
+    }
 }
