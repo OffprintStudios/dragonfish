@@ -68,6 +68,10 @@ export class WorkPageComponent implements OnInit {
       .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
       .content(AddToCollectionComponent)
       .create();
+
+    this.addToCollections.listen('t_close').subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**

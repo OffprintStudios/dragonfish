@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as lodash from 'lodash';
 
 import { CollectionsService, WorksService } from 'src/app/services/content';
-import { Collection } from 'shared-models';
+import { Collection, WorkInfo } from 'shared-models';
 
 @Component({
   selector: 'app-add-to-collection',
@@ -28,7 +28,15 @@ export class AddToCollectionComponent implements OnInit {
    * @param coll The collection to check
    */
   checkIfInCollection(coll: Collection) {
-    const isThere = lodash.find(coll.details, {'work._id': this.workId});
+    let isThere = null;
+
+    coll.details.forEach((entry) => {
+      let thisWork = entry.work as WorkInfo;
+      if (thisWork._id === this.workId) {
+        isThere = thisWork;
+      }
+    });
+
     if (isThere) {
       return true;
     } else {
