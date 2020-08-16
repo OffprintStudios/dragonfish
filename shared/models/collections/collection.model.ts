@@ -33,6 +33,6 @@ export interface WorkInfo {
 }
 
 export interface Details {
-    readonly work: WorkInfo;
+    readonly work: string | WorkInfo;
     readonly addedOn: Date;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as lodash from 'lodash';
 
 import { CollectionsService, WorksService } from 'src/app/services/content';
 import { Collection } from 'shared-models';
@@ -22,5 +23,45 @@ export class AddToCollectionComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
+  /**
+   * If the work ID is listed in 
+   * @param coll The collection to check
+   */
+  checkIfInCollection(coll: Collection) {
+    const isThere = lodash.find(coll.details, {'work._id': this.workId});
+    if (isThere) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Adds a work to a collection.
+   * 
+   * @param coll The collection in question
+   */
+  addToCollection(coll: Collection) {
+    this.collsService.addWork(coll._id, this.workId).subscribe(() => {
+      this.close();
+    });
+  }
+
+  /**
+   * Removes a work from a collection.
+   * 
+   * @param coll The collection in question
+   */
+  removeFromCollection(coll: Collection) {
+    this.collsService.removeWork(coll._id, this.workId).subscribe(() => {
+      this.close();
+    });
+  }
+
+  /**
+   * Closes the modal.
+   */
+  cancel() {
+    this.close();
+  }
 }

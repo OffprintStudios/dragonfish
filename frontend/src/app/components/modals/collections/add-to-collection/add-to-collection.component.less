@@ -11,7 +11,6 @@ div.add-to-collection-modal {
     color: var(--site-text-color);
 
     div.add-to-collection-header {
-        border-bottom: 1px solid var(--site-borders);
         margin-bottom: 1rem;
         h3 {
             text-align: center;
@@ -21,10 +20,49 @@ div.add-to-collection-modal {
 
     div.add-to-collection-body {
         flex: 1;
+
+        ul {
+            list-style-type: none;
+            margin: 0 auto;
+            width: 100%;
+
+            li {
+                text-align: left;
+                width: 100%;
+                margin-bottom: 0;
+                border-bottom: 1px solid var(--site-borders);
+
+                a {
+                    color: var(--site-text-color);
+                    width: 100%;
+                    padding: 10px;
+                    box-sizing: border-box;
+                    margin-bottom: 0;
+                    display: inline-block;
+
+                    &:hover {
+                        background-color: var(--site-accent);
+                        color: whitesmoke;
+                    }
+
+                    i-feather.end-point {
+                        position: relative;
+                        float: right;
+                        color: whitesmoke;
+                        height: 17px;
+                        width: 17px;
+                        top: 0.25rem;
+                    }
+                }
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+        }
     }
 
     div.add-to-collection-footer {
-        border-top: 1px solid var(--site-borders);
         text-align: center;
         padding-top: 10px;
     }

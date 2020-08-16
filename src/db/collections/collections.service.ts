@@ -5,7 +5,7 @@ import * as sanitize from 'sanitize-html';
 
 import * as documents from './models';
 import { JwtPayload } from 'shared/models/auth';
-import { CreateCollection, EditCollection } from 'shared/models/collections';
+import { CreateCollection, EditCollection, Details } from 'shared/models/collections';
 
 @Injectable()
 export class CollectionsService {
@@ -76,11 +76,12 @@ export class CollectionsService {
      * @param workId The work to add
      */
     async addWorkToCollection(user: JwtPayload, collId: string, workId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {
-            $push: {
-                'details.work': workId, 'details.addedOn': Date.now()
-            }
-        });
+        const entry: Details = {
+            work: workId,
+            addedOn: new Date(),
+        };
+
+        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {$push: {'details': entry}});
     }
 
     /**

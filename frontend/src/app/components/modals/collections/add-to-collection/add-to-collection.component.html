@@ -1,15 +1,20 @@
 <div class="add-to-collection-modal">
     <div class="add-to-collection-header">
-        <h3>Add to Collection</h3>
+        <h3>Add To Collection</h3>
     </div>
     <div class="add-to-collection-body">
         <ul>
             <li *ngFor="let coll of collections">
-                <a>{{ coll.name }}</a>
+                <ng-container *ngIf="checkIfInCollection(coll); else notHere">
+                    <a (click)="removeFromCollection(coll)">{{ coll.name }}<i-feather class="end-point" name="check-circle"></i-feather></a>
+                </ng-container>
+                <ng-template #notHere>
+                    <a (click)="addToCollection(coll)">{{ coll.name }}<i-feather class="end-point" name="circle"></i-feather></a>
+                </ng-template>
             </li>
         </ul>
     </div>
     <div class="add-to-collection-footer">
-        <button>Cancel</button>
+        <button (click)="cancel()">Cancel</button>
     </div>
 </div>
