@@ -52,7 +52,7 @@ export class CollectionsService {
     }
 
     /**
-     * Grabs a single public collection from the database belonging to the specified user.
+     * Grabs a single collection from the database belonging to the specified user.
      * 
      * @param userId The owner of the portfolio
      * @param collId The collection to fetch
@@ -60,7 +60,6 @@ export class CollectionsService {
     async getOnePortCollection(userId: string, collId: string): Promise<documents.CollectionDocument> {
         return await this.collectionModel.findOne({'_id': collId})
             .where('user').equals(userId)
-            .where('audit.isPublic').equals(true)
             .where('audit.isDeleted').equals(false);
     }
 

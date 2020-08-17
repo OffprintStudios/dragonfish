@@ -5,7 +5,7 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
   BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
-  PortWorksComponent, PortCollectionsComponent } from './pages/portfolio';
+  PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
 
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -49,6 +49,7 @@ const routes: Routes = [
     {path: 'blog/:blogId', component: PortBlogPageComponent},
     {path: 'works', component: PortWorksComponent },
     {path: 'collections', component: PortCollectionsComponent},
+    {path: 'collection/:collId', component: PortCollectionPageComponent},
     {path: '', component: PortHomeComponent},
   ]},
   {path: 'work/:workId/:title', component: WorkPageComponent, children: [    
