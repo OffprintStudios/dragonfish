@@ -32,12 +32,12 @@ export class CreateCollectionComponent implements OnInit {
    */
   submitCollection() {
     if (this.fields.name.invalid) {
-      this.alertsService.warn(`Collections must have a name.`);
+      this.alertsService.warn(`Collections must have a name between 3 and 32 characters.`);
       return;
     }
 
     if (this.fields.desc.invalid) {
-      this.alertsService.warn(`Collections must have a description.`);
+      this.alertsService.warn(`Collections must have a description between 3 and 50 characters.`);
       return;
     }
 

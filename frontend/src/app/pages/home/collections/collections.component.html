@@ -50,8 +50,15 @@
                         </div>
                     </ng-container>
                     <ng-template #displayWorks>
-                        It's either null or undefined.
+                        <ul>
+                            <li *ngFor="let entry of collection.details | slice:0:5">
+                                <a [routerLink]="['/work', $any(entry.work)._id, $any(entry.work).title | slugify]">{{ $any(entry.work).title }}<span class="end-point">{{ $any(entry.work).stats.totWords | abbreviate }}</span></a>
+                            </li>
+                        </ul>
                     </ng-template>
+                </div>
+                <div class="coll-footer">
+                    {{ collection.details.length | toLocaleString }} work{{ collection.details.length | pluralize }}
                 </div>
             </div>
         </div>

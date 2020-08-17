@@ -1,7 +1,7 @@
 export { ApprovalQueue } from '../shared/models/approval-queue';
 export { JwtPayload } from '../shared/models/auth';
 export { Blog, CreateBlog, EditBlog, SetPublishStatus } from '../shared/models/blogs';
-export { Collection, CreateCollection, EditCollection, WorkInfo, Details } from '../shared/models/collections';
+export { Collection, CreateCollection, EditCollection, WorkInfo, Details} from '../shared/models/collections';
 export { Decision } from '../shared/models/contrib';
 export { CreateDoc, Doc, EditDoc } from '../shared/models/docs';
 export { History, ItemInfo, RatingOption } from '../shared/models/history'

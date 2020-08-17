@@ -2,17 +2,24 @@
     <div class="collections-header">
         <h2>Collections</h2>
     </div>
-    <hr class="header-divider">
     
     <div class="loader" *ngIf="loading">
         <div class="lds-dual-ring"></div>
     </div>
 
     <ng-container *ngIf="!loading && portCollsData.length === 0">
-        <div style="text-align: center; margin-top: 2rem;">
-            <h3 style="margin-bottom: 0;">You haven't created any collections yet.</h3>
-            <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Why not make your first one by hitting Add Collection button?</p>
-        </div>
+        <ng-container *ngIf="currentUserIsSame(); else notThisUserCollections">
+            <div style="text-align: center; margin-top: 2rem;">
+                <h3 style="margin-bottom: 0;">You haven't created any collections yet.</h3>
+                <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Why not make your first one by going to the Collections tab and hitting Add Collection?</p>
+            </div>
+        </ng-container>
+        <ng-template #notThisUserCollections>
+            <div style="text-align: center; margin-top: 2rem;">
+                <h4 style="margin-bottom: 0; font-size: 18px;">This user hasn't added any public collections yet.</h4>
+                <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Check back later to see if they change that!</p>
+            </div>
+        </ng-template>
     </ng-container>
     <ng-container *ngIf="!loading && portCollsData.length > 0">
         <div class="collections-grid">
@@ -41,22 +48,31 @@
                 </div>
                 <div class="coll-list">
                     <ng-container *ngIf="collection.details.length === 0; else displayWorks">
-                        <div style="text-align: center; margin-top: 2rem;">
-                            <h4 style="margin-bottom: 0; font-size: 18px;">You haven't added any works yet.</h4>
-                            <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Head to any work page and click the Add to Collection button to get started!</p>
-                        </div>
+                        <ng-container *ngIf="currentUserIsSame(); else notThisUserWorks">
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <h4 style="margin-bottom: 0; font-size: 18px;">You haven't added any works yet.</h4>
+                                <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Head to any work page and click the Add to Collection button to get started!</p>
+                            </div>
+                        </ng-container>
+                        <ng-template #notThisUserWorks>
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <h4 style="margin-bottom: 0; font-size: 18px;">This user hasn't added any works to this collection yet.</h4>
+                                <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Check back later to see if they change that!</p>
+                            </div>
+                        </ng-template>
                     </ng-container>
                     <ng-template #displayWorks>
-                        It's either null or undefined.
+                        <ul>
+                            <li *ngFor="let entry of collection.details | slice:0:5">
+                                <a [routerLink]="['/work', $any(entry.work)._id, $any(entry.work).title | slugify]">{{ $any(entry.work).title }}<span class="end-point">{{ $any(entry.work).stats.totWords | abbreviate }}</span></a>
+                            </li>
+                        </ul>
                     </ng-template>
+                </div>
+                <div class="coll-footer">
+                    {{ collection.details.length | toLocaleString }} work{{ collection.details.length | pluralize }}
                 </div>
             </div>
         </div>
     </ng-container>
-</div>
-
-<div style="text-align: center; margin-top: 2rem;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
 </div>

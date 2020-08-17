@@ -102,8 +102,56 @@ div.collections-container {
         }
 
         div.coll-desc {
-            border-bottom: 1px solid var(--site-borders);
+            text-align: center;
             font-style: italic;
+            border-bottom: 1px solid var(--site-borders);
+        }
+
+        div.coll-list {
+            flex: 1;
+            margin-top: 1rem;
+            ul {
+                list-style-type: none;
+                margin: 0 auto;
+                width: 95%;
+    
+                li {
+                    text-align: left;
+                    width: 100%;
+                    margin-bottom: 0;
+                    border-bottom: 1px solid var(--site-borders);
+    
+                    a {
+                        color: var(--site-text-color);
+                        width: 100%;
+                        padding: 10px;
+                        box-sizing: border-box;
+                        margin-bottom: 0;
+                        display: inline-block;
+    
+                        &:hover {
+                            background-color: var(--site-accent);
+                            color: whitesmoke;
+                        }
+    
+                        span.end-point {
+                            position: relative;
+                            float: right;
+                        }
+                    }
+    
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+
+        div.coll-footer {
+            margin-top: 1rem;
+            text-align: center;
+            font-style: italic;
+            border-top: 1px solid var(--site-borders);
         }
     }
 }
