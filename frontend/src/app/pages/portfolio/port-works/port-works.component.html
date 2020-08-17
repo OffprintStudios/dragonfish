@@ -19,74 +19,46 @@
         </div>
     </div>
 
-    <ng-container *ngFor="let workData of portWorksData">
-        <div class="work-box" *ngIf="!loading">
-            <!--With cover art-->
-            <div class="row" *ngIf="workData.meta.coverArt; else noCoverArt">
-                <div class="three columns image-container">
-                    <img class="bordered-cover-art shadow" [src]="workData.meta.coverArt" />
+    <div class="works-feed">
+        <ng-container *ngFor="let work of portWorksData">
+            <div class="work-container">
+                <!--Header-->
+                <div class="work-header">
+                    <ng-container [ngSwitch]="work.meta.rating">
+                        <div class="rating everyone small" *ngSwitchDefault>E</div>
+                        <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                        <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                        <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                    </ng-container>                            
+                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
+                    <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
+                    <div class="approval" title="Approval Rating">
+                        <i-feather name="heart"></i-feather>0%
+                    </div>
+                    <div class="category-genre">
+                        {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
+                    </div>                            
                 </div>
-                <div class="nine columns" style="margin: 2rem 0 0 0; padding-right: 2rem;">
-                    <!--Work title 'n such-->
-                    <div class="work-header">
-                        <ng-container [ngSwitch]="workData.meta.rating">
-                            <div class="rating everyone large" *ngSwitchDefault>E</div>
-                            <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
-                            <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
-                            <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
-                        </ng-container>
-                        <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
-                        <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
-                        <div class="category-genre">
-                            {{ workData.meta.category | fixCategories }}<span>//</span>
-                            {{ workData.meta.genres | separateEntities:workData.meta.category }}
-                            <div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0">
-                                <span>//</span>{{ workData.meta.fandoms | separateEntities }}
-                            </div>
-                        </div>
-                    </div>
 
-                    <!--Long description box-->
-                    <div class="long-description content-box">
-                        <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                <!--Short description-->
+                <div class="short-description">
+                    <div *ngIf="work.meta.coverArt">
+                        <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
                     </div>
+                    <div>
+                        {{ work.shortDesc }}
+                    </div>
+                </div>
+
+                <!--Work stats-->
+                <div class="work-stats">
+                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
+                    <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
+                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | abbreviate }}<span>//</span>
+                    <i-feather name="calendar" title="Created At"></i-feather>{{ work.createdAt | date:'shortDate' }}<span>//</span>
+                    {{ work.meta.status }}
                 </div>
             </div>
-            <ng-template #noCoverArt>
-                <!--Work title 'n such-->
-                <div class="no-cover-art-work-container">
-                    <div class="work-header">
-                        <ng-container [ngSwitch]="workData.meta.rating">
-                            <div class="rating everyone large" *ngSwitchDefault>E</div>
-                            <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
-                            <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
-                            <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
-                        </ng-container>
-                        <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
-                        <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>
-                        <div class="category-genre">
-                            {{ workData.meta.category | fixCategories }}<span>//</span>
-                            {{ workData.meta.genres | separateEntities:workData.meta.category }}
-                            <div style="display: inline-block;" *ngIf="workData.meta.fandoms.length > 0">
-                                <span>//</span>{{ workData.meta.fandoms | separateEntities }}
-                            </div>
-                        </div>
-                    </div>
-                    <!--Long description box-->
-                    <div class="long-description content-box">
-                        <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
-                    </div>
-                </div>
-            </ng-template>
-
-            <!--Work stats-->
-            <div class="work-stats">
-                <i-feather name="calendar" title="Created At"></i-feather>{{ workData.createdAt | date:'shortDate' }}<span>//</span>
-                <i-feather name="pen-tool" title="Words"></i-feather>{{ workData.stats.totWords | toLocaleString }}<span>//</span>
-                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ workData.stats.views | toLocaleString }}<span>//</span>
-                <i-feather name="thumbs-up" title="Approval Rating"></i-feather>0%<span>//</span>
-                {{ workData.meta.status }}
-            </div>
-        </div>
-    </ng-container>
+        </ng-container>
+    </div>
 </div>
