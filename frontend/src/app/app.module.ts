@@ -22,7 +22,7 @@ import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent
   BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
-    PortCollectionsComponent, PortBlogPageComponent } from './pages/portfolio';
+    PortCollectionsComponent, PortBlogPageComponent, PortCollectionPageComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -87,7 +87,7 @@ const toolbarOptions = [
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
-    AddToCollectionComponent, AbbreviateNumbersPipe
+    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
