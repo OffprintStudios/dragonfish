@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ERROR_COMPONENT_TYPE } from '@angular/compiler';
+import { ERROR_COMPONENT_TYPE, CompileNgModuleSummary } from '@angular/compiler';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -9,7 +9,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AlertsService } from 'src/app/modules/alerts';
 import { HttpError } from 'src/app/models/site';
 import { CreateWork, CreateSection, EditSection, EditWork, Section, 
-  PublishSection, SectionInfo, Work 
+  PublishSection, SectionInfo, Work, SetApprovalRating
 } from 'shared-models';
 
 @Injectable({
@@ -240,6 +240,56 @@ export class WorksService {
     });    
   }
 
+  /**
+   * Sets a user's rating to Liked.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setLike(setRating: SetApprovalRating) {
+    return this.http.patch<void>(`${this.url}/set-like`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sets a user's rating to Disliked.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setDislike(setRating: SetApprovalRating) {
+    return this.http.patch<void>(`${this.url}/set-dislike`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sets a user's rating to NoVote.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setNoVote(setRating: SetApprovalRating) {
+    return this.http.patch<void>(`${this.url}/set-no-vote`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Attempts to parse an HttpError.
+   * 
+   * @param response The response to parse
+   */
   private tryParseJsonHttpError(response: string): HttpError | null {
     try {
       const error: HttpError = JSON.parse(response);
