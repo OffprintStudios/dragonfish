@@ -50,7 +50,7 @@ export class WorksService {
     return this.http.put<Section>(`${this.url}/create-section/${workId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         this.alertsService.success(`Section successfully created.`);
-        return res.body._id;
+        return res.body;
       }), catchError(err => {
         this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);

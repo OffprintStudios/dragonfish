@@ -3,9 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { dividerHandler, imageHandler } from 'src/app/util/quill';
-import { WorksService } from 'src/app/services/content';
+import { WorksService, SectionsService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 import { CreateSection } from 'shared-models';
+import { SlugifyPipe } from 'src/app/pipes';
 
 @Component({
   selector: 'app-new-section',
@@ -16,6 +17,7 @@ export class NewSectionComponent implements OnInit {
   loading = false; // Loading check for submission
   workId: string; // The work's ID
   workName: string; // The work's name
+  latestSectionIndex: number; // The index of the current last section
 
   editorFormats = [
     'header', 'bold', 'italic', 'underline', 'strike',
@@ -30,9 +32,11 @@ export class NewSectionComponent implements OnInit {
     authorsNote: new FormControl('', [Validators.minLength(5), Validators.maxLength(2000)]),
   });
 
-  constructor(private worksService: WorksService, private route: ActivatedRoute, private alertsService: AlertsService,
-    private router: Router, private cdr: ChangeDetectorRef) {
+  constructor(private worksService: WorksService, private route: ActivatedRoute, 
+    private alertsService: AlertsService, private router: Router, private cdr: ChangeDetectorRef,
+    private sectionsService: SectionsService, private slugify: SlugifyPipe) {
     // Getting the parameters from the parent component
+    this.latestSectionIndex = sectionsService.allSections.length - 1;
     this.route.parent.paramMap.subscribe(params => {
       this.workId = params.get('workId');
       this.workName = params.get('title');
@@ -96,8 +100,8 @@ export class NewSectionComponent implements OnInit {
       authorsNote: this.fields.authorsNote.value
     };
     
-    this.worksService.createSection(this.workId, newSection).subscribe(sectionId => {
-      this.router.navigate([`/work/` + this.workId + `/` + this.workName + `/section/` + sectionId]);
+    this.worksService.createSection(this.workId, newSection).subscribe(section => {
+      this.router.navigate([`/work/${this.workId}/${this.workName}/${this.latestSectionIndex + 1}/${this.slugify.transform(section.title)}`]);
     }, () => {
       this.loading = false;
     });
