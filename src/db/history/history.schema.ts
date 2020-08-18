@@ -12,7 +12,7 @@ export const HistorySchema = new Schema({
     viewedOn: {type: Date, required: true},
     sectionsRead: {type: [String], ref: 'Section', default: null},
     ratingOption: {type: String, enum: Object.keys(models.RatingOption)},
-    visible: {type:Boolean, default: false},
+    visible: {type:Boolean, default: true},
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'history'});
