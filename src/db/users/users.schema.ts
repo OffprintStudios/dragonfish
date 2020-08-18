@@ -48,7 +48,6 @@ UsersSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
         user.set('password', hashedPw);
         user.set('createdAt', Date.now());
         user.set('updatedAt', Date.now());
-        
         return next();
     } catch (err) {
         return next(err);

@@ -7,16 +7,19 @@ import validator from 'validator';
 
 import * as documents from './models';
 import * as models from 'shared/models/users';
+import { CreateCollection } from 'shared/models/collections';
 import { isNullOrUndefined } from '../../util/validation';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
 import { REFRESH_EXPIRATION } from 'src/util';
 import { createHash } from 'crypto';
+import { CollectionsService } from '../collections/collections.service';
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel('User') private readonly userModel: Model<documents.UserDocument>,
-        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<documents.InviteCodesDocument>) { }
+        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<documents.InviteCodesDocument>,
+        private readonly collsService: CollectionsService) { }
 
     /**
      * Creates a user and adds them to the database. First, it ensures the 
@@ -56,10 +59,19 @@ export class UsersService {
 
         const newUser = new this.userModel(newUserInfo);
 
-        const savedUser = await newUser.save();
-        await this.useInviteCode(storedInviteCode._id, savedUser._id);
+        return await newUser.save().then(async userDoc => {
+            await this.useInviteCode(storedInviteCode._id, userDoc._id);
+            
+            const newFavColl: CreateCollection = {
+                name: 'Favorites',
+                desc: `For the stories I'd rather never forget.`,
+                public: false
+            };
 
-        return savedUser;
+            return await this.collsService.createCollection(userDoc._id, newFavColl).then(() => {
+                return userDoc;
+            });
+        });
     }
 
     /**

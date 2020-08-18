@@ -17,9 +17,9 @@ export class CollectionsService {
      * @param user The owner of the collection
      * @param collInfo The collection's information
      */
-    async createCollection(user: JwtPayload, collInfo: CreateCollection): Promise<documents.CollectionDocument> {
+    async createCollection(userId: string, collInfo: CreateCollection): Promise<documents.CollectionDocument> {
         const newCollection = new this.collectionModel({
-            'user': user.sub,
+            'user': userId,
             'name': sanitize(collInfo.name),
             'desc': sanitize(collInfo.desc),
             'audit.isPublic': collInfo.public,
