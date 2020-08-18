@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Param, Get } from '@nestjs/common';
+import { Controller, UseGuards, Request, Param, Get, Post, Patch } from '@nestjs/common';
 
 import { RolesGuard } from 'src/guards';
 import { Roles } from 'shared/models/users';
@@ -21,8 +21,14 @@ export class HistoryController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Get('add-or-update-history/:workId')
+    @Post('add-or-update-history/:workId')
     async addOrUpdateHistory(@Request() req: any, @Param('workId') workId: string) {
         return await this.histService.addOrUpdateHistory(req.user.sub, workId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('change-item-visibility/:workId')
+    async changeItemVisibility(@Request() req: any, @Param('workId') workId: string) {
+        return await this.histService.changeVisibility(req.user.sub, workId);
     }
 }

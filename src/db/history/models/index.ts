@@ -1,1 +1,1 @@
-export { HistoryDocument, HistoryItemDocument } from './history-document.model';
+export { HistoryDocument } from './history-document.model';
