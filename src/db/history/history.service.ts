@@ -23,6 +23,7 @@ export class HistoryService {
                 'owner': userId,
                 'work': workId,
                 'viewedOn': new Date(),
+                'ratingOption': RatingOption.NoVote
             });
 
             return await newHist.save();

@@ -3,13 +3,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from 'src/app/services/auth';
-import { WorksService, CollectionsService, SectionsService } from 'src/app/services/content';
+import { WorksService, CollectionsService, SectionsService, HistoryService } from 'src/app/services/content';
 import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
-import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
+import { User, PublishSection, SectionInfo, Work, History } from 'shared-models';
 import { AddToCollectionComponent } from 'src/app/components/modals/collections';
 import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
 import { calculateApprovalRating } from 'src/app/util/functions';
+import { RatingOption } from '../../../../../shared/models/history';
+import { SetApprovalRating } from '../../../../../shared/models/works';
 
 @Component({
   selector: 'app-work-page',
@@ -23,6 +25,7 @@ export class WorkPageComponent implements OnInit {
   workId: string; // This work's ID
   workData: Work; // This work's data.
   pubSections: SectionInfo[]; // This work's published sections
+  userHist: History;
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
   addToCollections: ToppyControl;
@@ -34,7 +37,7 @@ export class WorkPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
-    private collsService: CollectionsService, private sectionsService: SectionsService) {
+    private collsService: CollectionsService, private sectionsService: SectionsService, private histService: HistoryService) {
 
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
@@ -104,7 +107,11 @@ export class WorkPageComponent implements OnInit {
     if (this.currentUser) {
       this.collsService.fetchUserCollections().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
-        this.loading = false;
+        this.histService.addOrUpdateHistory(this.workId).subscribe(hist => {
+          this.userHist = hist;
+          console.log(hist);
+          this.loading = false;
+        });
       });
     } else {
       this.loading = false;
@@ -225,4 +232,57 @@ export class WorkPageComponent implements OnInit {
   calcApprovalRating(likes: number, dislikes: number) {
     return calculateApprovalRating(likes, dislikes);
   }
+
+  /**
+   * Sets this user's rating as Liked.
+   * 
+   * @param workId This work ID
+   * @param currRating The current user's rating
+   */
+  setLike(workId: string, currRating: RatingOption) {
+    const ratingOptions: SetApprovalRating = {
+      workId: workId,
+      oldApprovalRating: currRating
+    };
+
+    this.worksService.setLike(ratingOptions).subscribe(() => {
+      this.fetchData();
+    });
+  }
+
+  /**
+   * Sets this user's rating as Disliked.
+   * 
+   * @param workId This work ID
+   * @param currRating The current user's rating
+   */
+  setDislike(workId: string, currRating: RatingOption) {
+    const ratingOptions: SetApprovalRating = {
+      workId: workId,
+      oldApprovalRating: currRating
+    };
+
+    this.worksService.setDislike(ratingOptions).subscribe(() => {
+      this.fetchData();
+    });
+  }
+
+
+  /**
+   * Sets this user's rating as NoVote.
+   * 
+   * @param workId This work ID
+   * @param currRating The current user's rating
+   */
+  setNoVote(workId: string, currRating: RatingOption) {
+    const ratingOptions: SetApprovalRating = {
+      workId: workId,
+      oldApprovalRating: currRating
+    };
+
+    this.worksService.setNoVote(ratingOptions).subscribe(() => {
+      this.fetchData();
+    });
+  }
+
 }
