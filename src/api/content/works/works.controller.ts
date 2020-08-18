@@ -2,9 +2,10 @@ import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, Upl
 
 import * as models from 'shared/models/works';
 import { WorksService } from 'src/db/works/works.service';
-import { AuthGuard, OptionalAuthGuard } from 'src/guards';
+import { AuthGuard, OptionalAuthGuard, RolesGuard } from 'src/guards';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImagesService } from 'src/api/images/images.service';
+import { Roles } from 'shared/models/users';
 
 @Controller('works')
 export class WorksController {
@@ -87,6 +88,24 @@ export class WorksController {
         const coverArtUrl = await this.imagesService.upload(coverArtImage, workId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
         return await this.worksService.updateCoverArt(req.user, coverArt, workId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-like')
+    async setLike(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
+        return await this.worksService.setLike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-dislike')
+    async setDislike(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
+        return await this.worksService.setDislike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-no-vote')
+    async setNoVote(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
+        return await this.worksService.setNoVote(req.user.sub, setRating.workId, setRating.oldApprovalRating);
     }
 
     /**
