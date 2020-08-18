@@ -70,9 +70,7 @@ export class UsersService {
             };
 
             return await this.collsService.createCollection(userDoc._id, newFavColl).then(async () => {
-                return await this.histService.createHistoryDocument(userDoc).then(() => {
-                    return userDoc;
-                });
+                return userDoc;
             });
         });
     }

@@ -5,6 +5,7 @@ import { UsersModule } from 'src/db/users/users.module';
 import { WorksSchema } from './works.schema';
 import { SectionsSchema } from './sections.schema';
 import { WorksService } from './works.service';
+import { HistoryModule } from '../history/history.module';
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ import { WorksService } from './works.service';
       {name: 'Work', schema: WorksSchema},
       {name: 'Section', schema: SectionsSchema},
     ]),
-    UsersModule
+    UsersModule, HistoryModule
   ],
   providers: [WorksService],
   exports: [WorksService]

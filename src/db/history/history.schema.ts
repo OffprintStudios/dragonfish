@@ -5,33 +5,19 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as documents from './models';
 import * as models from 'shared/models/history';
 
-export const HistoryItemSchema = new Schema({
-    _id: {type: String, default: generate()},
-    work: {type: String, ref: 'Work', autopopulate: true},
-    ratingStatus: {type: String, enum: Object.keys(models.RatingOption)},
-    visible: {type: Boolean, default: true},
-    finishedReading: {type: Boolean, default: false},
-    finishedOn: {type: Date, default: null},
-    viewedOn: {type: Date, default: Date.now()},
-});
-
 export const HistorySchema = new Schema({
     _id: {type: String, default: generate()},
-    owner: {type: String, ref: 'User', required: true, unique: true},
-    items: {type: [HistoryItemSchema], default: null},
+    owner: {type: String, ref: 'User', required: true, index: true},
+    work: {type: String, ref: 'Work', requred: true, autopopulate: true},
+    viewedOn: {type: Date, required: true},
+    sectionsRead: {type: [String], ref: 'Section', default: null},
+    ratingOption: {type: String, enum: Object.keys(models.RatingOption)},
+    visible: {type:Boolean, default: false},
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'history'});
 
-HistoryItemSchema.plugin(MongooseAutopopulate);
 HistorySchema.plugin(MongooseAutopopulate);
-
-HistoryItemSchema.pre<documents.HistoryItemDocument>('save', async function (next: HookNextFunction) {
-    this.set('_id', generate());
-    this.set('viewedOn', Date.now());
-
-    return next();
-});
 
 HistorySchema.pre<documents.HistoryDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());

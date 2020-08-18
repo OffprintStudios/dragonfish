@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
@@ -11,13 +11,15 @@ import { UsersService } from '../users/users.service';
 import { SearchParameters } from 'src/api/search/models/search-parameters';
 import { SearchResults } from 'src/api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
+import { HistoryService } from '../history/history.service';
+import { RatingOption } from 'shared/models/history';
 
 @Injectable()
 export class WorksService {
     constructor(
         @InjectModel('Work') private readonly workModel: Model<documents.WorkDocument>,
         @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
-        private readonly usersService: UsersService) {}
+        private readonly usersService: UsersService, private readonly histService: HistoryService) {}
     
     /* Work and Section creation*/
     
@@ -394,5 +396,84 @@ export class WorksService {
         return await this.workModel.estimatedDocumentCount()
             .where("audit.published", models.ApprovalStatus.Approved)
             .where("audit.isDeleted", false);
+    }
+
+    /**
+     * Changes the rating of a user to a Like.
+     * 
+     * @param userId The user making the change
+     * @param workId The work in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setLike(userId: string, workId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was a dislike
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.likes': 1}
+            });
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.dislikes': -1}
+            });
+            await this.histService.setLike(userId, workId);
+        } else if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was already a like
+            throw new ConflictException(`You've already upvoted this work!`);
+        } else {
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.likes': 1}
+            });
+            await this.histService.setLike(userId, workId);
+        }
+    }
+
+    /**
+     * Changes the rating of a user to a Dislike
+     * 
+     * @param userId The user making the change
+     * @param workId The work in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setDislike(userId: string, workId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was a like
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.dislikes': 1}
+            });
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.likes': -1}
+            });
+            await this.histService.setDislike(userId, workId);
+        } else if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was already a dislike
+            throw new ConflictException(`You've already downvoted this work!`);
+        } else {
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.dislikes': 1}
+            });
+            await this.histService.setDislike(userId, workId);
+        }
+    }
+
+    /**
+     * Changes the rating of a user to NoVote
+     * 
+     * @param userId The user making the change
+     * @param workId The work in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setNoVote(userId: string, workId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was a like
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.likes': -1}
+            });
+            await this.histService.setNoVote(userId, workId);
+        } else if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was a dislike
+            await this.workModel.updateOne({'_id': workId}, {
+                $inc: {'stats.dislikes': -1}
+            });
+            await this.histService.setNoVote(userId, workId);
+        }
     }
 }
