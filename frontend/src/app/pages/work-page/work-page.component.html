@@ -64,7 +64,7 @@
     <ng-container *ngIf="route.children.length === 0 && workData.sections.length > 0">
         <div class="section-list" *ngIf="currentUserIsSame(); else notSameUser">
             <ul>
-                <li *ngFor="let section of workData.sections; let i = index">
+                <li *ngFor="let section of allSectionViewModels; let i = index">
                     <div *ngIf="section.published === true">
                         <div class="section-box">
                             <div>
@@ -77,7 +77,7 @@
                             </div>
                             <div>
                                 <div class="section-stats">
-                                    {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                 </div>
                             </div>
                             <div>
@@ -97,7 +97,7 @@
                             </div>
                             <div>
                                 <div class="section-stats">
-                                    {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                 </div>
                             </div>
                             <div>
@@ -111,14 +111,14 @@
         <ng-template #notSameUser>
             <div class="section-list">
                 <ul>
-                    <li *ngFor="let section of pubSections; let i = index">
+                    <li *ngFor="let section of pubSectionViewModels; let i = index">
                         <div class="section-box" style="padding: 10px;">
                             <div style="flex: 1;">
                                 <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">{{ section.title }}</a>
                             </div>
                             <div>
                                 <div class="section-stats" style="margin-right: 2rem;">
-                                    {{ section.stats.words | toLocaleString }} word{{ section.stats.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
