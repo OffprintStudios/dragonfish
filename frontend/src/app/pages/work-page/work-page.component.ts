@@ -8,6 +8,7 @@ import { EditWorkComponent, UploadCoverartComponent } from 'src/app/components/m
 import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
 import { AddToCollectionComponent } from 'src/app/components/modals/collections';
+import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
 
 @Component({
   selector: 'app-work-page',
@@ -19,11 +20,16 @@ export class WorkPageComponent implements OnInit {
   loading = false; // Loading check for fetching data
 
   workId: string; // This work's ID
-  workData: Work; // This work's data
+  workData: Work; // This work's data.
   pubSections: SectionInfo[]; // This work's published sections
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
   addToCollections: ToppyControl;
+
+  // The sections list binds to these, as they can be mutated individually,
+  // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)
+  allSectionViewModels: SectionInfoViewModel[];
+  pubSectionViewModels: SectionInfoViewModel[];
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
@@ -79,29 +85,29 @@ export class WorkPageComponent implements OnInit {
    */
   private fetchData() {
     this.loading = true;
-    this.route.paramMap.subscribe(params => {
-      this.workId = params.get('workId');
-      this.worksService.fetchWork(this.workId).subscribe(work => {
-        this.workData = work;
-        this.pubSections = work.sections.filter(section => { return section.published === true; });
-        this.worksService.thisWorkId = this.workId;
-        if (this.currentUserIsSame()) {
-          this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
-        }  else {
-          this.sectionsService.setInfo(this.pubSections, work.author._id);
-        }
-      }, () => {
+    this.workId = this.route.snapshot.paramMap.get('workId');        
+    this.worksService.fetchWork(this.workId).subscribe(work => {
+      this.workData = work;
+      this.pubSections = work.sections.filter(section => { return section.published === true; });
+      this.allSectionViewModels = work.sections.map(x => new SectionInfoViewModel(x));
+      this.pubSectionViewModels = this.pubSections.map(x => new SectionInfoViewModel(x));
+      this.worksService.thisWorkId = this.workId;
+      if (this.currentUserIsSame()) {
+        this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
+      }  else {
+        this.sectionsService.setInfo(this.pubSections, work.author._id);
+      }
+    }, () => {
+      this.loading = false;
+    });
+    if (this.currentUser) {
+      this.collsService.fetchUserCollections().subscribe(colls => {
+        this.collsService.thisUsersCollections = colls;
         this.loading = false;
       });
-      if (this.currentUser) {
-        this.collsService.fetchUserCollections().subscribe(colls => {
-          this.collsService.thisUsersCollections = colls;
-          this.loading = false;
-        });
-      } else {
-        this.loading = false;
-      }
-    });
+    } else {
+      this.loading = false;
+    }   
   }
 
   /**
@@ -172,7 +178,7 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setPublishStatusSection(this.workId, sectionId, newPubStatus).subscribe(() => {
-      this.fetchData();
+      this.allSectionViewModels.find(x => x._id === sectionId).published = !pubStatus;
     }, () => {
       console.log(`An error has occurred.`);
     });

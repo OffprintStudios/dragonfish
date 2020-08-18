@@ -50,7 +50,7 @@ export class WorksService {
     return this.http.put<Section>(`${this.url}/create-section/${workId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         this.alertsService.success(`Section successfully created.`);
-        return res.body._id;
+        return res.body;
       }), catchError(err => {
         this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
@@ -180,7 +180,11 @@ export class WorksService {
   public setPublishStatusSection(workId: string, sectionId: string, pubStatus: PublishSection) {
     return this.http.patch(`${this.url}/set-publishing-status/${workId}/${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
-        this.alertsService.success(`Section published successfully!`);
+        if (pubStatus.newPub === true) {
+          this.alertsService.success(`Section published!`);
+        } else {
+          this.alertsService.success('Section unpublished!');
+        }
       }), catchError(err => {
         this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
