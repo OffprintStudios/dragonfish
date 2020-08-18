@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { Work } from 'shared-models';
 import { BrowseService } from 'src/app/services/content/browse.service';
 import { AlertsService } from 'src/app/modules/alerts';
-import { HttpErrorResponse } from '@angular/common/http';
+import { calculateApprovalRating } from 'src/app/util/functions';
 
 type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 
@@ -23,6 +24,9 @@ export class BrowseComponent implements OnInit {
   ngOnInit(): void {        
   }
 
+  /**
+   * Fetches data for the browse page.
+   */
   private fetchData() {    
     this.loadingState = 'loading';    
     this.browseService.fetchAllPublishedWorks().subscribe(allWorks => {
@@ -37,5 +41,12 @@ export class BrowseComponent implements OnInit {
       this.loadingState = 'failure';
       this.alertService.error(`Failed to retrieve stories. ${err.message}`);
     });
+  }
+
+  /**
+   * Calculates a work's approval rating.
+   */
+  calcApprovalRating(likes: number, dislikes: number) {
+    return calculateApprovalRating(likes, dislikes);
   }
 }

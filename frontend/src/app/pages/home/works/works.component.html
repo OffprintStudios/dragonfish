@@ -57,9 +57,11 @@
                             <h4 *ngIf="work.meta.fandoms.length > 0">{{ work.meta.fandoms | separateEntities }}</h4>
                             <div class="stats">                                
                                 <h4>{{ work.meta.status }}</h4><span>//</span>
-                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords | toLocaleString }} total word{{ work.stats.totWords | pluralize }}</h4><span>//</span>
-                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views | toLocaleString }} view{{ work.stats.views | pluralize}}</h4><span>//</span>
-                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments | toLocaleString }} comment{{ work.stats.comments | pluralize }}</h4><span>//</span>
+                                <h4 title="Likes"><i-feather name="thumbs-up"></i-feather>{{ work.stats.likes | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Dislikes"><i-feather name="thumbs-down"></i-feather>{{ work.stats.dislikes | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments | toLocaleString }}</h4><span>//</span>
                                 <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
                             </div>
                         </div>

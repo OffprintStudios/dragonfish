@@ -9,6 +9,7 @@ import { QueueService } from 'src/app/services/admin';
 import { User, PublishSection, SectionInfo, Work, } from 'shared-models';
 import { AddToCollectionComponent } from 'src/app/components/modals/collections';
 import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
+import { calculateApprovalRating } from 'src/app/util/functions';
 
 @Component({
   selector: 'app-work-page',
@@ -213,5 +214,15 @@ export class WorkPageComponent implements OnInit {
     this.queueService.submitWork(this.workId).subscribe(() => {
       this.fetchData();
     });
+  }
+
+  /**
+   * Calculates a work's approval rating.
+   * 
+   * @param likes The number of likes
+   * @param dislikes The number of dislikes
+   */
+  calcApprovalRating(likes: number, dislikes: number) {
+    return calculateApprovalRating(likes, dislikes);
   }
 }

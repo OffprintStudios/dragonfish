@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth';
-import { PortfolioService, WorksService } from 'src/app/services/content';
+import { PortfolioService } from 'src/app/services/content';
 import { User, Work } from 'shared-models';
+import { calculateApprovalRating } from 'src/app/util/functions';
 
 @Component({
   selector: 'app-port-works',
@@ -69,5 +70,15 @@ export class PortWorksComponent implements OnInit {
         return false;
       }
     }
+  }
+
+  /**
+   * Calculates a work's approval rating.
+   * 
+   * @param likes Number of likes
+   * @param dislikes Number of dislikes
+   */
+  calcApprovalRating(likes: number, dislikes: number) {
+    return calculateApprovalRating(likes, dislikes);
   }
 }

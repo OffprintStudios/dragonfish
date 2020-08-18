@@ -33,7 +33,7 @@
                     <div class="approval">
                         <div class="stat-block" title="Approval Rating">
                             <span class="stat-icon"><i-feather name="heart"></i-feather></span>
-                            <span class="stat-number">0%</span>
+                            <span class="stat-number">{{ calcApprovalRating(workData.stats.likes, workData.stats.dislikes) }}%</span>
                         </div>
                         <ng-container *ngIf="currentUser; else noUser">
                             <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
