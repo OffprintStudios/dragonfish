@@ -14,12 +14,13 @@ import { SearchResults } from '../../api/search/models/search-results';
 import { REFRESH_EXPIRATION } from 'src/util';
 import { createHash } from 'crypto';
 import { CollectionsService } from '../collections/collections.service';
+import { HistoryService } from '../history/history.service';
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel('User') private readonly userModel: Model<documents.UserDocument>,
         @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<documents.InviteCodesDocument>,
-        private readonly collsService: CollectionsService) { }
+        private readonly collsService: CollectionsService, private readonly histService: HistoryService) { }
 
     /**
      * Creates a user and adds them to the database. First, it ensures the 
@@ -68,8 +69,10 @@ export class UsersService {
                 public: false
             };
 
-            return await this.collsService.createCollection(userDoc._id, newFavColl).then(() => {
-                return userDoc;
+            return await this.collsService.createCollection(userDoc._id, newFavColl).then(async () => {
+                return await this.histService.createHistoryDocument(userDoc).then(() => {
+                    return userDoc;
+                });
             });
         });
     }
