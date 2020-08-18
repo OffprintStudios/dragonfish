@@ -4,7 +4,7 @@ export { Blog, CreateBlog, EditBlog, SetPublishStatus } from '../shared/models/b
 export { Collection, CreateCollection, EditCollection, WorkInfo, Details} from '../shared/models/collections';
 export { Decision } from '../shared/models/contrib';
 export { CreateDoc, Doc, EditDoc } from '../shared/models/docs';
-export { History, ItemInfo, RatingOption } from '../shared/models/history'
+export { History, HistoryItem, RatingOption } from '../shared/models/history'
 export { AuditSession, ChangeEmail, ChangePassword, ChangeProfile,
     ChangeUsername, CreateUser, FrontendUser as User, InviteCodes, LoginUser,
     Roles, SearchUser, UserInfo
