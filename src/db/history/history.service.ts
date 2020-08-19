@@ -95,10 +95,10 @@ export class HistoryService {
      * Soft deletes a history document so it no longer shows up on frontend queries.
      * 
      * @param userId The owner of the history document
-     * @param workId The work associated with it
+     * @param histId The history document itself
      */
-    async changeVisibility(userId: string, workId: string): Promise<void> {
-        return await this.histModel.updateOne({'owner': userId, 'work': workId}, {
+    async changeVisibility(userId: string, histId: string): Promise<void> {
+        return await this.histModel.updateOne({'_id': histId, 'owner': userId}, {
             'visible': false
         });
     }

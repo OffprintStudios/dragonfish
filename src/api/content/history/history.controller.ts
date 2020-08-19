@@ -27,8 +27,8 @@ export class HistoryController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Patch('change-item-visibility/:workId')
-    async changeItemVisibility(@Request() req: any, @Param('workId') workId: string) {
-        return await this.histService.changeVisibility(req.user.sub, workId);
+    @Patch('change-item-visibility/:histId')
+    async changeItemVisibility(@Request() req: any, @Param('histId') histId: string) {
+        return await this.histService.changeVisibility(req.user.sub, histId);
     }
 }

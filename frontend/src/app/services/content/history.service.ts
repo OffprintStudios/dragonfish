@@ -58,10 +58,10 @@ export class HistoryService {
   /**
    * Soft deletes a history doc by setting its visibility to false.
    * 
-   * @param workId The work to parse
+   * @param histId The ID of the history document
    */
-  public changeVisibility(workId: string) {
-    return this.http.patch<void>(`${this.url}/change-item-visibility/${workId}`, {}, {observe: 'response', withCredentials: true})
+  public changeVisibility(histId: string) {
+    return this.http.patch<void>(`${this.url}/change-item-visibility/${histId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Item successfully removed.`);
         return;
