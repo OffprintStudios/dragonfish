@@ -3,6 +3,7 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 import * as wordCounter from '@offprintstudios/word-counter';
+import * as MongoosePaginate from 'mongoose-paginate-v2';
 
 import * as documents from './models/blog-document.model';
 
@@ -32,6 +33,7 @@ export const BlogsSchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'blogs'});
 
 BlogsSchema.plugin(MongooseAutopopulate);
+BlogsSchema.plugin(MongoosePaginate);
 
 BlogsSchema.pre<documents.BlogDocument>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());

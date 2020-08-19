@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
 
 import * as models from 'shared/models/blogs';
 import { BlogsService } from 'src/db/blogs/blogs.service';
@@ -9,9 +9,9 @@ export class BlogsController {
     constructor(private readonly blogsService: BlogsService) {}
 
     @UseGuards(AuthGuard)
-    @Get('fetch-user-blogs')
-    async fetchUserBlogs(@Request() req: any) {
-        return await this.blogsService.fetchUserBlogs(req.user);
+    @Get('fetch-user-blogs/:pageNum')
+    async fetchUserBlogs(@Request() req: any, @Param('pageNum') pageNum: number) {
+        return await this.blogsService.fetchUserBlogs(req.user, pageNum);
     }
 
     @UseGuards(AuthGuard)

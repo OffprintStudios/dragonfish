@@ -5,7 +5,11 @@
 
 <div *ngIf="blogsArePresent();else noBlogs">
     <div class="blog-feed">
-        <div class="blog-container" *ngFor="let blog of portBlogsData">
+        <div class="blog-container" *ngFor="let blog of portBlogsData.docs | paginate: {
+            itemsPerPage: portBlogsData.limit,
+            currentPage: pageNum,
+            totalItems: portBlogsData.totalDocs
+        }">
             <div class="blog-box">
                 <div class="content-controls-container" *ngIf="currentUser">
                     <span class="content-controls">
@@ -33,6 +37,7 @@
             </div>
         </div>
     </div>
+    <pagination-controls (pageChange)="fetchData($event)"></pagination-controls>
 </div>
 
 <ng-template #noBlogs>

@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { AuthService } from 'src/app/services/auth';
 import { PortfolioService } from 'src/app/services/content';
-import { Blog, User } from 'shared-models';
+import { Blog, User, PaginateResult } from 'shared-models';
 
 @Component({
   selector: 'app-port-blog',
@@ -16,12 +16,14 @@ export class PortBlogComponent implements OnInit {
   currentUser: User; // The currently logged-in user
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
-  portBlogsData: Blog[]; // The list of published blogs
+  portBlogsData: PaginateResult<Blog>; // The list of published blogs
   loading = false; // Loading check for fetching data
+
+  pageNum = 1;
 
   constructor(private route: ActivatedRoute, private portService: PortfolioService, private authService: AuthService) {
     this.authService.currUser.subscribe(x => {this.currentUser = x;});
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
@@ -32,13 +34,14 @@ export class PortBlogComponent implements OnInit {
   /**
    * Fetches the data for this user's published blogs list.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
     this.route.parent.paramMap.subscribe(params => {
       this.portUserId = params.get('id');
       this.portUserName = params.get('username');
-      this.portService.getBlogList(this.portUserId).subscribe(blogs => {
+      this.portService.getBlogList(this.portUserId, pageNum).subscribe(blogs => {
         this.portBlogsData = blogs;
+        this.pageNum = pageNum;
         this.loading = false;
       });
     });
@@ -50,7 +53,7 @@ export class PortBlogComponent implements OnInit {
    */
   blogsArePresent() {
     if (this.portBlogsData) {
-      if (this.portBlogsData.length > 0) {
+      if (this.portBlogsData.docs.length > 0) {
         return true;
       } else {
         return false;

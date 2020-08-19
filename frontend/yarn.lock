@@ -5939,6 +5939,11 @@ ngx-image-cropper@^3.2.1:
   optionalDependencies:
     hammerjs "^2.0.8"
 
+ngx-pagination@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-pagination/-/ngx-pagination-5.0.0.tgz#a4b4c150a70aef17ccd825e4543e174a974bbd14"
+  integrity sha512-Ur0pTWRe2ZXoJ8impEzo0IZKxY5aEcQfSmL5uBqW1rHI2J6nfzgZAHsSLagKHFGchXq0PkRlDVVMcIaNxYJwvQ==
+
 ngx-quill@^11.1.0:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-11.1.0.tgz#1f92b9e3f3f43b4877ea46b5b1b9983ed1383680"

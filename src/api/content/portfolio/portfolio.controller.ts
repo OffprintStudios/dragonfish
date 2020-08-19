@@ -18,9 +18,9 @@ export class PortfolioController {
         return await this.usersService.getOneUser(userId);
     }
 
-    @Get('get-blogs-list/:userId')
-    async getBlogsList(@Param('userId') userId: string) {
-        return await this.blogsService.getPubBlogList(userId);
+    @Get('get-blogs-list/:userId/:pageNum')
+    async getBlogsList(@Param('userId') userId: string, @Param('pageNum') pageNum: number) {
+        return await this.blogsService.getPubBlogList(userId, pageNum);
     }
 
     @UseGuards(OptionalAuthGuard)

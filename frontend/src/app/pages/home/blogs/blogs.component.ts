@@ -6,7 +6,7 @@ import { BlogsService } from 'src/app/services/content';
 import { AuthService } from 'src/app/services/auth';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from 'src/app/components/modals/blogs';
 import { AlertsService } from 'src/app/modules/alerts';
-import { Blog, SetPublishStatus, User } from 'shared-models';
+import { Blog, SetPublishStatus, User, PaginateResult } from 'shared-models';
 
 @Component({
   selector: 'app-blogs',
@@ -15,12 +15,14 @@ import { Blog, SetPublishStatus, User } from 'shared-models';
 })
 export class BlogsComponent implements OnInit {
   currentUser: User;
-  blogs: Blog[];
+  paginatedBlogs: PaginateResult<Blog>;
   unfilteredList: Blog[];
 
   loading = false;
   isPubFiltered = false;
   isUnpubFiltered = false;
+
+  pageNum = 1;
 
   searchBlogs = new FormGroup({
     query: new FormControl('', Validators.required),
@@ -32,7 +34,7 @@ export class BlogsComponent implements OnInit {
 
   constructor(private blogsService: BlogsService, private authService: AuthService, private toppy: Toppy, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
-    this.fetchData();
+    this.fetchData(1);
   }
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class BlogsComponent implements OnInit {
       .create();
 
     this.createBlog.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(1);
     });
 
     // Creates the previewBlog modal
@@ -67,7 +69,7 @@ export class BlogsComponent implements OnInit {
       .create();
     
     this.previewBlog.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
 
     // Creates the editBlog modal
@@ -84,7 +86,7 @@ export class BlogsComponent implements OnInit {
       .create();
 
     this.editBlog.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
@@ -96,10 +98,11 @@ export class BlogsComponent implements OnInit {
   /**
    * Fetches the list of blogs from the backend.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
-    this.blogsService.fetchUserBlogs().subscribe(blogs => {
-      this.blogs = blogs.reverse();
+    this.blogsService.fetchUserBlogs(pageNum).subscribe(paginatedBlogs => {
+      this.paginatedBlogs = paginatedBlogs;
+      this.pageNum = pageNum;
       this.loading = false;
     });
   }
@@ -108,12 +111,14 @@ export class BlogsComponent implements OnInit {
    * Checks to see if the blogs array is empty.
    */
   isBlogsEmpty() {
-    if (this.blogs) {
-      if (this.blogs.length === 0) {
-        return true;
-      } else {
-        return false;
-      }
+    if (this.paginatedBlogs) {
+      if (this.paginatedBlogs.docs) {
+        if (this.paginatedBlogs.docs.length === 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } 
     }
   }
 
@@ -149,7 +154,7 @@ export class BlogsComponent implements OnInit {
   askDelete(blogId: string) {
     if (confirm('Are you sure you want to delete this blog? This action is irreversible.')) {
       this.blogsService.deleteBlog(blogId).subscribe(_ => {
-        this.fetchData();
+        this.fetchData(this.pageNum);
         return;
       }, err => {
         console.log(err);
@@ -171,7 +176,7 @@ export class BlogsComponent implements OnInit {
     const pubStatus: SetPublishStatus = {blogId: blogId, publishStatus: !publishStatus};
 
     this.blogsService.setPublishStatus(pubStatus).subscribe(_ => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
       return;
     }, err => {
       console.log(err);
@@ -184,7 +189,7 @@ export class BlogsComponent implements OnInit {
    * Filters the blogs list by published content.
    */
   filterByPublished() {
-    if (this.isUnpubFiltered) {
+    /*if (this.isUnpubFiltered) {
       this.isPubFiltered = true;
       this.isUnpubFiltered = false;
       this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
@@ -192,14 +197,14 @@ export class BlogsComponent implements OnInit {
       this.unfilteredList = this.blogs;
       this.isPubFiltered = true;
       this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
-    }
+    }*/
   }
 
   /**
    * Filters the blogs list by unpublished content.
    */
   filterByUnpublished() {
-    if (this.isPubFiltered) {
+    /*if (this.isPubFiltered) {
       this.isUnpubFiltered = true;
       this.isPubFiltered = false;
       this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
@@ -207,16 +212,16 @@ export class BlogsComponent implements OnInit {
       this.unfilteredList = this.blogs;
       this.isUnpubFiltered = true;
       this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
-    }
+    }*/
   }
 
   /**
    * Clears all filters.
    */
   clearFilter() {
-    this.isPubFiltered = false;
+    /*this.isPubFiltered = false;
     this.isUnpubFiltered = false;
-    this.blogs = this.unfilteredList;
+    this.blogs = this.unfilteredList;*/
   }
 
   /**
@@ -226,7 +231,7 @@ export class BlogsComponent implements OnInit {
    * TODO: Make this check for equivalent text regardless of capitalization.
    */
   searchFor() {
-    const query: string = this.searchField.query.value;
+    /*const query: string = this.searchField.query.value;
     if (this.isPubFiltered) {
       this.blogs = this.blogs.filter(blog => {
         return blog.title.includes(query);
@@ -240,6 +245,6 @@ export class BlogsComponent implements OnInit {
       this.blogs = this.unfilteredList.filter(blog => {
         return blog.title.includes(query);
       });
-    }
+    }*/
   }
 }

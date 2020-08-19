@@ -17,3 +17,4 @@ export { ApprovalStatus, AuthorInfo, Categories, ContentRating,
     SetApprovalRating
 } from '../shared/models/works';
 export { FrontPageStats } from '../shared/models/stats';
+export { PaginateResult } from '../shared/models/util';

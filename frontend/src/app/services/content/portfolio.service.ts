@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Blog, User, Work } from 'shared-models';
+import { Blog, User, Work, PaginateResult } from 'shared-models';
 import { Collection } from '../../../../../shared/models/collections';
 
 @Injectable({
@@ -33,10 +33,10 @@ export class PortfolioService {
    * 
    * @param userId The user ID of the requested portfolio
    */
-  public getBlogList(userId: string) {
-    return this.http.get<Blog[]>(`${this.url}/get-blogs-list/${userId}`, {observe: 'response', withCredentials: true})
+  public getBlogList(userId: string, pageNum: number) {
+    return this.http.get<PaginateResult<Blog>>(`${this.url}/get-blogs-list/${userId}/${pageNum}`, {observe: 'response', withCredentials: true})
     .pipe(map(blogs => {
-      return blogs.body.reverse();
+      return blogs.body;
     }), catchError(err => {
       return throwError(err);
     }));

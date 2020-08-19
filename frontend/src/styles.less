@@ -555,3 +555,44 @@ quill-editor {
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
     background-color: var(--site-accent-hover);
 }
+
+/* Ngx Pagination */
+pagination-controls {
+    width: 100%;
+    text-align: center;
+    ul.ngx-pagination {
+        margin-bottom: 0;
+        li {
+            border: 1px solid var(--site-borders);
+            border-right: none;
+            margin-right: 0;
+
+            &:last-child {
+                border-right: 1px solid var(--site-borders);
+            }
+        }
+
+        li.disabled {
+            color: var(--site-text-color);
+            padding: 5px 10px;
+            cursor: not-allowed;
+        }
+
+        li.current {
+            padding: 5px 10px;
+            color: whitesmoke;
+            background-color: var(--site-accent);
+        }
+
+        a {
+            margin: 0;
+            color: var(--site-text-color);
+            padding: 5px 10px;
+
+            &:hover {
+                background-color: var(--site-accent);
+                color: whitesmoke;
+            }
+        }
+    }
+}

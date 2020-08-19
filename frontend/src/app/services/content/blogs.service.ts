@@ -36,12 +36,11 @@ export class BlogsService {
    * Fetches a user's blogs for display in the blog management section
    * of the home page.
    */
-  public fetchUserBlogs() {
-    return this.http.get<models.Blog[]>(`${this.url}/fetch-user-blogs`, {observe: 'response', withCredentials: true})
+  public fetchUserBlogs(pageNum: number) {
+    return this.http.get<models.PaginateResult<models.Blog>>(`${this.url}/fetch-user-blogs/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
-        if (res.status === 200) {
-          return res.body;
-        }
+        console.log(res.body);
+        return res.body;
       }), catchError(err => {
         return throwError(err);
       }));

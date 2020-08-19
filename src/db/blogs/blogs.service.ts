@@ -1,6 +1,6 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
-import {InjectModel} from '@nestjs/mongoose';
-import {Model, PaginateModel} from 'mongoose';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, PaginateModel, PaginateResult } from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
 
@@ -14,7 +14,7 @@ import { isNullOrUndefined } from 'util';
 
 @Injectable()
 export class BlogsService {
-    constructor(@InjectModel('Blog') private readonly blogModel: Model<documents.BlogDocument>,
+    constructor(@InjectModel('Blog') private readonly blogModel: PaginateModel<documents.BlogDocument>,
                 private readonly usersService: UsersService) {
     }
 
@@ -54,8 +54,12 @@ export class BlogsService {
      *
      * @param user The user whose blogs are being requested.
      */
-    async fetchUserBlogs(user: any): Promise<models.Blog[]> {
-        return await this.blogModel.find().where('author', user.sub).where('audit.isDeleted', false);
+    async fetchUserBlogs(user: any, pageNum: number): Promise<PaginateResult<documents.BlogDocument>> {
+        return await this.blogModel.paginate({'author': user.sub, 'audit.isDeleted': false}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15,
+        });
     }
 
     /**
@@ -111,8 +115,12 @@ export class BlogsService {
      *
      * @param userId The ID of the user whose blogs we're fetching
      */
-    async getPubBlogList(userId: string): Promise<models.Blog[]> {
-        return await this.blogModel.find().where('author', userId).where('published', true).where('audit.isDeleted', false);
+    async getPubBlogList(userId: any, pageNum: number): Promise<PaginateResult<documents.BlogDocument>> {
+        return await this.blogModel.paginate({'author': userId, 'published': true, 'audit.isDeleted': false}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**

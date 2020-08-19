@@ -26,7 +26,11 @@
         <h4 style="text-align: center;" *ngIf="isBlogsEmpty(); else blogsList">You haven't created any blogs yet.</h4>
         <ng-template #blogsList>
             <div class="blog-list">
-                <div class="blog-item" *ngFor="let blog of blogs">
+                <div class="blog-item" *ngFor="let blog of paginatedBlogs.docs | paginate: {
+                    itemsPerPage: paginatedBlogs.limit,
+                    currentPage: pageNum,
+                    totalItems: paginatedBlogs.totalDocs
+                }">
                     <div class="blog-check">
                         <button class="check-published" (click)="setPublishStatus(blog._id, blog.published)" *ngIf="blog.published; else blogUnpublished">
                             <i-feather name="check-circle"></i-feather>
@@ -56,6 +60,7 @@
                     </div>
                 </div>
             </div>
+            <pagination-controls (pageChange)="fetchData($event)"></pagination-controls>
         </ng-template>
     </div>
 </div>

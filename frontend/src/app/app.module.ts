@@ -9,6 +9,7 @@ import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe } from './pipes';
 import { IconsModule, AlertsModule } from './modules';
@@ -91,7 +92,7 @@ const toolbarOptions = [
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule,
+    IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
