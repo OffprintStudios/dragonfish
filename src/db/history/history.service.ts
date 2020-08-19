@@ -29,7 +29,8 @@ export class HistoryService {
             return await newHist.save();
         } else {
             return await this.histModel.findOneAndUpdate({'owner': userId, 'work': workId}, {
-                'viewedOn': new Date()
+                'viewedOn': new Date(),
+                'visible': true
             });
         }
     }

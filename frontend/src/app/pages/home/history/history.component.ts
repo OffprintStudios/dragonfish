@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { User, History } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { HistoryService } from 'src/app/services/content';
+import { calculateApprovalRating } from 'src/app/util/functions';
 
 @Component({
   selector: 'app-history',
@@ -49,5 +50,28 @@ export class HistoryComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  /**
+   * Checks to see if the list of history documents is empty
+   */
+  isHistoryEmpty() {
+    if (this.histList) {
+      if (this.histList.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  /**
+   * Calculates the approval rating.
+   * 
+   * @param likes The likes on a work
+   * @param dislikes The dislikes on a work
+   */
+  calcApprovalRating(likes: number, dislikes: number) {
+    return calculateApprovalRating(likes, dislikes);
   }
 }
