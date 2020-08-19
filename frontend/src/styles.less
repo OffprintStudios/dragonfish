@@ -302,7 +302,14 @@ button, a.button, input[type=submit] {
             font-family: 'Raleway';
             height: 100%;
 
+            p {
+                margin: 1em 0px;
+            }
+
             div.ql-editor {
+                &.ql-blank::before {
+                    margin: 1em 0px;
+                }
                 iframe {
                     width: 500px;
                     height: 300px;
@@ -334,6 +341,10 @@ quill-view {
         font-family: 'Raleway';
         height: 100%;
 
+        p {
+            margin: 1em 0px;
+        }
+
         div.ql-editor {
             iframe {
                 width: 500px;
@@ -343,6 +354,9 @@ quill-view {
                 max-width: 100%;
                 max-height: 100%;
                 object-fit: contain;
+            }
+            &.ql-blank::before {
+                margin: 1em 0px;
             }
         }
 
@@ -362,6 +376,14 @@ quill-view-html {
         font-size: 16px;
         font-family: 'Raleway';
         height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-edtior.ql-blank::before {
+            margin: 1em 0px;
+        }
 
         a {
             color: var(--site-accent) !important;
@@ -404,6 +426,14 @@ quill-editor {
         font-size: 16px;
         font-family: 'Raleway';
         box-shadow: var(--site-dropshadow);
+
+        p {
+            margin: 1em 0px;
+        }
+        
+        div.ql-editor.ql-blank::before {
+            margin: 1em 0px;
+        }
 
         a {
             color: var(--site-accent) !important;
