@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { AuthService } from 'src/app/services/auth';
 import { PortfolioService } from 'src/app/services/content';
-import { User, Work } from 'shared-models';
+import { User, Work, PaginateResult } from 'shared-models';
 import { calculateApprovalRating } from 'src/app/util/functions';
 
 @Component({
@@ -15,13 +15,15 @@ export class PortWorksComponent implements OnInit {
   currentUser: User; // The currently logged-in user
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
-  portWorksData: Work[]; // The list of published works
+  portWorksData: PaginateResult<Work>; // The list of published works
   loading = false; // Loading check for fetching data
+
+  pageNum = 1;
 
   constructor(private route: ActivatedRoute, private portService: PortfolioService,
     private authService: AuthService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
-      this.fetchData();
+      this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
@@ -30,13 +32,14 @@ export class PortWorksComponent implements OnInit {
   /**
    * Fetches the data for this user's published works list.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
     this.route.parent.paramMap.subscribe(params => {
       this.portUserId = params.get('id');
       this.portUserName = params.get('username');
-      this.portService.getWorksList(this.portUserId).subscribe(works => {
+      this.portService.getWorksList(this.portUserId, pageNum).subscribe(works => {
         this.portWorksData = works;
+        this.pageNum = pageNum;
         this.loading = false;
       });
     });
@@ -48,7 +51,7 @@ export class PortWorksComponent implements OnInit {
    */
   worksArePresent() {
     if (this.portWorksData) {
-      if (this.portWorksData.length > 0) {
+      if (this.portWorksData.docs.length > 0) {
         return true;
       } else {
         return false;

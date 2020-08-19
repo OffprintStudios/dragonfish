@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { Work } from 'shared-models';
+import { Work, PaginateResult } from 'shared-models';
 import { BrowseService } from 'src/app/services/content/browse.service';
 import { AlertsService } from 'src/app/modules/alerts';
 import { calculateApprovalRating } from 'src/app/util/functions';
@@ -15,10 +15,12 @@ type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 })
 export class BrowseComponent implements OnInit {
   loadingState: LoadingState = 'notstarted';
-  works: Work[] = [];
+  works: PaginateResult<Work>;
+
+  pageNum = 1;
 
   constructor(private browseService: BrowseService, private alertService: AlertsService) { 
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {        
@@ -27,10 +29,10 @@ export class BrowseComponent implements OnInit {
   /**
    * Fetches data for the browse page.
    */
-  private fetchData() {    
+  fetchData(pageNum: number) {    
     this.loadingState = 'loading';    
-    this.browseService.fetchAllPublishedWorks().subscribe(allWorks => {
-      if (!allWorks || allWorks.length === 0) {
+    this.browseService.fetchAllPublishedWorks(pageNum).subscribe(allWorks => {
+      if (!allWorks || allWorks.docs.length === 0) {
         this.loadingState = 'failure';
       } else {
         this.loadingState = 'success';

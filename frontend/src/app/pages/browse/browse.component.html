@@ -10,7 +10,11 @@
     
         <ng-container *ngSwitchCase="'success'">
             <div class="works-feed">
-                <div *ngFor="let work of works">
+                <div *ngFor="let work of works.docs | paginate: {
+                    itemsPerPage: works.limit,
+                    currentPage: pageNum,
+                    totalItems: works.totalDocs
+                }">
                     <div class="work-container">
                         <!--Header-->
                         <div class="work-header">
@@ -61,5 +65,5 @@
             Failed to retrieve list of stories.
         </div>
     </ng-container>
-
+    <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
 </div>

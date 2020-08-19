@@ -7,7 +7,7 @@ import * as models from 'shared/models/history';
 
 export const HistorySchema = new Schema({
     _id: {type: String, default: generate()},
-    owner: {type: String, ref: 'User', required: true, index: true},
+    owner: {type: String, ref: 'User', required: true},
     work: {type: String, ref: 'Work', requred: true, autopopulate: true},
     viewedOn: {type: Date, required: true},
     sectionsRead: {type: [String], ref: 'Section', default: null},

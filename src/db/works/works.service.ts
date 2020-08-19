@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
 import * as wordCounter from '@offprintstudios/word-counter';
 import * as sanitize from 'sanitize-html';
 import { isNull } from 'lodash';
@@ -13,11 +13,13 @@ import { SearchResults } from 'src/api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
 import { HistoryService } from '../history/history.service';
 import { RatingOption } from 'shared/models/history';
+import { AnyLengthString } from 'aws-sdk/clients/comprehendmedical';
+import { AnyCnameRecord } from 'dns';
 
 @Injectable()
 export class WorksService {
     constructor(
-        @InjectModel('Work') private readonly workModel: Model<documents.WorkDocument>,
+        @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>,
         @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
         private readonly usersService: UsersService, private readonly histService: HistoryService) {}
     
@@ -132,8 +134,12 @@ export class WorksService {
      * 
      * @param user The user whose works we're fetching.
      */
-    async fetchUserWorks(user: any): Promise<models.Work[]> {
-        return await this.workModel.find().where('author', user.sub).where('audit.isDeleted', false);
+    async fetchUserWorks(user: any, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        return await this.workModel.paginate({'author': user.sub, 'audit.isDeleted': false}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        })
     }
 
     /**
@@ -318,7 +324,7 @@ export class WorksService {
      */
     async approveWork(workId: string, authorId: string): Promise<void> {
         //@ts-ignore
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved})
+        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved, "audit.publishedOn": new Date()})
             .where("audit.isDeleted", false);
         const workCount = await this.getWorkCount(authorId);
         await this.usersService.updateWorkCount(authorId, workCount);
@@ -360,10 +366,12 @@ export class WorksService {
     /**
      * Fetches all new published works by newest first.
      */
-    async fetchNewPublishedWorks(): Promise<models.Work[]> {
-        return await this.workModel.find().where('audit.published', models.ApprovalStatus.Approved)
-            .where('audit.isDeleted', false)
-            .sort({ 'createdAt': -1 });
+    async fetchNewPublishedWorks(pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        return await this.workModel.paginate({'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false}, {
+            sort: {'audit.publishedOn': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**
@@ -371,12 +379,12 @@ export class WorksService {
      * 
      * @param userId The user whose works we're fetching
      */
-    async getWorksList(userId: string): Promise<models.Work[]> {
-        return await this.workModel.find()
-            .where('author').equals(userId)
-            .where('audit.published').equals(models.ApprovalStatus.Approved)
-            .where('audit.isDeleted').equals(false)
-            .sort({ 'createdAt': -1 });
+    async getWorksList(userId: any, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        return await this.workModel.paginate({'author': userId, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false}, {
+            sort: {'audit.publishedOn': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**

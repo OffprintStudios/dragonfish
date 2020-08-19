@@ -47,8 +47,8 @@ export class PortfolioService {
    * 
    * @param userId The user ID of the requested portfolio
    */
-  public getWorksList(userId: string) {
-    return this.http.get<Work[]>(`${this.url}/get-works-list/${userId}`, {observe: 'response', withCredentials: true})
+  public getWorksList(userId: string, pageNum: number) {
+    return this.http.get<PaginateResult<Work>>(`${this.url}/get-works-list/${userId}/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(works => {
         return works.body;
       }), catchError(err => {

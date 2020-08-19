@@ -26,7 +26,11 @@
         <h4 style="text-align: center;" *ngIf="isWorksEmpty(); else worksList">You haven't created any works yet.</h4>
         <ng-template #worksList>
             <div class="work-list">
-                <div class="work-item" *ngFor="let work of works">
+                <div class="work-item" *ngFor="let work of works.docs | paginate: {
+                    itemsPerPage: works.limit,
+                    currentPage: pageNum,
+                    totalItems: works.totalDocs
+                }">
                     <div class="work-check" [ngSwitch]="work.audit.published">
                         <button title="Revoke submission" class="check-published" *ngSwitchCase="'Approved'">
                             <i-feather name="book-open"></i-feather>
@@ -72,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-template>
     </div>
 </div>

@@ -29,12 +29,12 @@ export class PortfolioController {
         return await this.blogsService.getOneBlog(blogId, req.user);
     }
 
-    @Get('get-works-list/:userId')
-    async getWorksList(@Param('userId') userId: string) {
-        return await this.worksService.getWorksList(userId);
+    @Get('get-works-list/:userId/:pageNum')
+    async getWorksList(@Param('userId') userId: string, @Param('pageNum') pageNum: number) {
+        return await this.worksService.getWorksList(userId, pageNum);
     }
 
-    @Get('get-port-collections/:userId')
+    @Get('get-port-collections/:userId/:pageNum')
     async getPortCollections(@Param('userId') userId: string) {
         return await this.collsService.getPortfolioCollections(userId);
     }

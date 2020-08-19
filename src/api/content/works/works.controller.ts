@@ -12,9 +12,9 @@ export class WorksController {
     constructor (private readonly worksService: WorksService, private readonly imagesService: ImagesService) {}
 
     @UseGuards(AuthGuard)
-    @Get('fetch-user-works')
-    async fetchUserWorks(@Request() req: any) {
-        return await this.worksService.fetchUserWorks(req.user);
+    @Get('fetch-user-works/:pageNum')
+    async fetchUserWorks(@Request() req: any, @Param('pageNum') pageNum: number) {
+        return await this.worksService.fetchUserWorks(req.user, pageNum);
     }
 
     @UseGuards(AuthGuard)

@@ -11,6 +11,7 @@ import { HttpError } from 'src/app/models/site';
 import { CreateWork, CreateSection, EditSection, EditWork, Section, 
   PublishSection, SectionInfo, Work, SetApprovalRating
 } from 'shared-models';
+import { PaginateResult } from '../../../../../shared/models/util';
 
 @Injectable({
   providedIn: 'root'
@@ -77,8 +78,8 @@ export class WorksService {
    * Fetches a user's works for display in the work management section of
    * the homepage.
    */
-  public fetchUserWorks() {
-    return this.http.get<Work[]>(`${this.url}/fetch-user-works`, {observe: 'response', withCredentials: true})
+  public fetchUserWorks(pageNum: number) {
+    return this.http.get<PaginateResult<Work>>(`${this.url}/fetch-user-works/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(works => {
         return works.body;
       }), catchError(err => {

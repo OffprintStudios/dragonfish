@@ -20,7 +20,11 @@
     </div>
 
     <div class="works-feed">
-        <ng-container *ngFor="let work of portWorksData">
+        <ng-container *ngFor="let work of portWorksData.docs | paginate: {
+            itemsPerPage: portWorksData.limit,
+            currentPage: pageNum,
+            totalItems: portWorksData.totalDocs
+        }">
             <div class="work-container">
                 <!--Header-->
                 <div class="work-header">
@@ -61,4 +65,5 @@
             </div>
         </ng-container>
     </div>
+    <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
 </div>

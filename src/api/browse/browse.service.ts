@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PaginateResult } from 'mongoose';
 
 import { Work } from 'shared/models/works';
 import { WorksService } from 'src/db/works/works.service';
@@ -10,7 +11,7 @@ export class BrowseService {
     /**
      * Gets all new published works in descending order.
      */
-    async getAllNewPublishedWorks(): Promise<Work[]> {
-        return await this.worksService.fetchNewPublishedWorks();
+    async getAllNewPublishedWorks(pageNum: number): Promise<PaginateResult<Work>> {
+        return await this.worksService.fetchNewPublishedWorks(pageNum);
     }
 }

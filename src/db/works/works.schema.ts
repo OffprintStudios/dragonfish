@@ -2,6 +2,7 @@ import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
+import * as MongoosePaginate from 'mongoose-paginate-v2';
 import * as sanitize from 'sanitize-html';
 
 import * as models from 'shared/models/works';
@@ -48,6 +49,7 @@ export const WorksSchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'works'});
 
 WorksSchema.plugin(MongooseAutopopulate);
+WorksSchema.plugin(MongoosePaginate);
 
 WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());

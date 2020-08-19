@@ -7,7 +7,7 @@ import { WorksService } from 'src/app/services/content';
 import { AlertsService } from 'src/app/modules/alerts';
 import { NewWorkComponent, EditWorkComponent } from 'src/app/components/modals/works';
 import { QueueService } from 'src/app/services/admin';
-import { ApprovalStatus, Categories, User, Work } from 'shared-models';
+import { ApprovalStatus, Categories, User, Work, PaginateResult } from 'shared-models';
 
 @Component({
   selector: 'app-works',
@@ -16,7 +16,7 @@ import { ApprovalStatus, Categories, User, Work } from 'shared-models';
 })
 export class WorksComponent implements OnInit {
   currentUser: User;
-  works: Work[];
+  works: PaginateResult<Work>;
   unfilteredList: Work[];
   newWorkForm: ToppyControl;
   editWorkForm: ToppyControl;
@@ -25,6 +25,8 @@ export class WorksComponent implements OnInit {
   isUnpubFiltered = false;
   isPubFiltered = false;
 
+  pageNum = 1;
+
   searchWorks = new FormGroup({
     query: new FormControl(''),
   });
@@ -32,7 +34,7 @@ export class WorksComponent implements OnInit {
   constructor(private authService: AuthService, private worksService: WorksService,
     private alertsService: AlertsService, private toppy: Toppy, private queueService: QueueService) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
-      this.fetchData();
+      this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class WorksComponent implements OnInit {
       .create();
 
     this.newWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(1);
     });
 
     // Initializing the edit work form modal
@@ -67,7 +69,7 @@ export class WorksComponent implements OnInit {
       .create();
     
     this.editWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
@@ -79,10 +81,11 @@ export class WorksComponent implements OnInit {
   /**
    * Fetches the list of works from the backend.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
-    this.worksService.fetchUserWorks().subscribe(works => {
-      this.works = works.reverse();
+    this.worksService.fetchUserWorks(pageNum).subscribe(works => {
+      this.works = works;
+      this.pageNum = pageNum;
       this.loading = false;
     });
   }
@@ -91,7 +94,7 @@ export class WorksComponent implements OnInit {
    * Filters the works list by published content.
    */
   filterByPublished() {
-    if (this.isUnpubFiltered) {
+    /*if (this.isUnpubFiltered) {
       this.isPubFiltered = true;
       this.isUnpubFiltered = false;
       this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
@@ -99,14 +102,14 @@ export class WorksComponent implements OnInit {
       this.unfilteredList = this.works;
       this.isPubFiltered = true;
       this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
-    }
+    }*/
   }
 
   /**
    * Filters the works list by unpublished content.
    */
   filterByUnpublished() {
-    if (this.isPubFiltered) {
+    /*if (this.isPubFiltered) {
       this.isUnpubFiltered = true;
       this.isPubFiltered = false;
       this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
@@ -114,16 +117,16 @@ export class WorksComponent implements OnInit {
       this.unfilteredList = this.works;
       this.isUnpubFiltered = true;
       this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
-    }
+    }*/
   }
 
   /**
    * Clears all filters.
    */
   clearFilter() {
-    this.isPubFiltered = false;
+    /*this.isPubFiltered = false;
     this.isUnpubFiltered = false;
-    this.works = this.unfilteredList;
+    this.works = this.unfilteredList;*/
   }
 
   /**
@@ -148,7 +151,7 @@ export class WorksComponent implements OnInit {
    */
   isWorksEmpty() {
     if (this.works) {
-      if (this.works.length === 0) {
+      if (this.works.docs.length === 0) {
         return true;
       } else {
         return false;
@@ -165,7 +168,7 @@ export class WorksComponent implements OnInit {
   askDelete(workId: string) {
     if (confirm('Are you sure you want to delete this work? This action is irreversible.')) {
       this.worksService.deleteWork(workId).subscribe(() => {
-        this.fetchData();
+        this.fetchData(this.pageNum);
         return;
       }, err => {
         console.log(err);
@@ -203,7 +206,7 @@ export class WorksComponent implements OnInit {
     }
 
     this.queueService.submitWork(work._id).subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
@@ -214,7 +217,7 @@ export class WorksComponent implements OnInit {
    * TODO: Make this check for equivalent text regardless of capitalization.
    */
   searchFor() {
-    const query: string = this.searchField.query.value;
+    /*const query: string = this.searchField.query.value;
     if (this.isPubFiltered) {
       this.works = this.works.filter(work => {
         return work.title.includes(query);
@@ -228,6 +231,6 @@ export class WorksComponent implements OnInit {
       this.works = this.unfilteredList.filter(work => {
         return work.title.includes(query);
       });
-    }
+    }*/
   }
 }
