@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement, RelativePosition, OutsidePlacement } from 'toppy';
 
-import { User, Collection } from 'shared-models';
+import { User, Collection, PaginateResult } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { CollectionsService } from 'src/app/services/content';
 import { CreateCollectionComponent } from 'src/app/components/modals/collections';
@@ -16,13 +16,15 @@ export class CollectionsComponent implements OnInit {
 
   loading = false;
   submitting = false;
-  collections: Collection[];
+  collections: PaginateResult<Collection>;
+
+  pageNum = 1;
 
   createCollection: ToppyControl;
 
   constructor(private authService: AuthService, private collsService: CollectionsService, private toppy: Toppy) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
@@ -40,17 +42,18 @@ export class CollectionsComponent implements OnInit {
     .create();
 
     this.createCollection.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(1);
     });
   }
 
   /**
    * Fetches a user's collections
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
-    this.collsService.fetchUserCollections().subscribe(colls => {
+    this.collsService.fetchUserCollections(pageNum).subscribe(colls => {
       this.collections = colls;
+      this.pageNum = pageNum;
       this.loading = false;
     });
   }
@@ -64,7 +67,7 @@ export class CollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPublic(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
@@ -77,7 +80,7 @@ export class CollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPrivate(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
@@ -89,7 +92,7 @@ export class CollectionsComponent implements OnInit {
   askDelete(collId: string) {
     if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
       this.collsService.deleteCollection(collId).subscribe(() => {
-        this.fetchData();
+        this.fetchData(this.pageNum);
       });
     } else {
       return;

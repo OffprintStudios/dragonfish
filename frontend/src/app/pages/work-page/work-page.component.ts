@@ -105,7 +105,7 @@ export class WorkPageComponent implements OnInit {
       this.loading = false;
     });
     if (this.currentUser) {
-      this.collsService.fetchUserCollections().subscribe(colls => {
+      this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
         this.histService.addOrUpdateHistory(this.workId).subscribe(hist => {
           this.userHist = hist;

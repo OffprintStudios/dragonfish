@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { User, Collection } from 'shared-models';
+import { User, Collection, PaginateResult } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { PortfolioService, CollectionsService } from 'src/app/services/content';
 
@@ -14,14 +14,16 @@ export class PortCollectionsComponent implements OnInit {
   currentUser: User; // The currently logged-in user
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
-  portCollsData: Collection[]; // The list of public collections
+  portCollsData: PaginateResult<Collection>; // The list of public collections
   loading = false; // Loading check for fetching data
   submitting = false; // Submission check for changes to public collections
+
+  pageNum = 1;
 
   constructor(private authService: AuthService, private portService: PortfolioService,
     private collsService: CollectionsService, private route: ActivatedRoute) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
@@ -30,13 +32,14 @@ export class PortCollectionsComponent implements OnInit {
   /**
    * Fetches the data for this user's public collections.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
     this.route.parent.paramMap.subscribe(params => {
       this.portUserId = params.get('id');
       this.portUserName = params.get('username');
-      this.portService.getCollectionsList(this.portUserId).subscribe(colls => {
+      this.portService.getCollectionsList(this.portUserId, pageNum).subscribe(colls => {
         this.portCollsData = colls;
+        this.pageNum = 1;
         this.loading = false;
       });
     });
@@ -48,7 +51,7 @@ export class PortCollectionsComponent implements OnInit {
    */
   collectionsArePresent() {
     if (this.portCollsData) {
-      if (this.portCollsData.length > 0) {
+      if (this.portCollsData.docs.length > 0) {
         return true;
       } else {
         return false;
@@ -72,15 +75,44 @@ export class PortCollectionsComponent implements OnInit {
     }
   }
 
+  /**
+   * Sets a collection to public.
+   * 
+   * @param collId The collection's ID
+   */
   setPublic(collId: string) {
-
+    this.submitting = true;
+    this.collsService.setToPublic(collId).subscribe(() => {
+      this.submitting = false;
+      this.fetchData(this.pageNum);
+    });
   }
 
+  /**
+   * Sets a collection to private.
+   * 
+   * @param collId The collection's ID
+   */
   setPrivate(collId: string) {
-
+    this.submitting = true;
+    this.collsService.setToPrivate(collId).subscribe(() => {
+      this.submitting = false;
+      this.fetchData(this.pageNum);
+    });
   }
 
+  /**
+   * Sends a request to delete the specified collection.
+   * 
+   * @param collId The collection to delete
+   */
   askDelete(collId: string) {
-
+    if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
+      this.collsService.deleteCollection(collId).subscribe(() => {
+        this.fetchData(this.pageNum);
+      });
+    } else {
+      return;
+    }
   }
 }

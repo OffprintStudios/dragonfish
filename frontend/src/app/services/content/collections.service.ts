@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AlertsService } from 'src/app/modules/alerts';
-import { Collection, CreateCollection, EditCollection } from 'shared-models';
+import { Collection, CreateCollection, EditCollection, PaginateResult } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,21 @@ export class CollectionsService {
   /**
    * Fetches a user's collections.
    */
-  public fetchUserCollections() {
-    return this.http.get<Collection[]>(`${this.url}/fetch-user-collections`, {observe: 'response', withCredentials: true})
+  public fetchUserCollections(pageNum: number) {
+    return this.http.get<PaginateResult<Collection>>(`${this.url}/fetch-user-collections/${pageNum}`, {observe: 'response', withCredentials: true})
+      .pipe(map(colls => {
+        return colls.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches a user's collections without pagination.
+   */
+  public fetchUserCollectionsNoPaginate() {
+    return this.http.get<Collection[]>(`${this.url}/fetch-user-collections-no-paginate`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
       }), catchError(err => {

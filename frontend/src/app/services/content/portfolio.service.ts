@@ -61,8 +61,8 @@ export class PortfolioService {
    * 
    * @param userId The user ID of the requested portfolio
    */
-  public getCollectionsList(userId: string) {
-    return this.http.get<Collection[]>(`${this.url}/get-port-collections/${userId}`, {observe: 'response', withCredentials: true})
+  public getCollectionsList(userId: string, pageNum: number) {
+    return this.http.get<PaginateResult<Collection>>(`${this.url}/get-port-collections/${userId}/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
       }), catchError(err => {

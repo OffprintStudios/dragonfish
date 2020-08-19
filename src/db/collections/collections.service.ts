@@ -42,6 +42,15 @@ export class CollectionsService {
     }
 
     /**
+     * Gets all undeleted collections belonging to a single user.
+     * 
+     * @param user The owner of these collections
+     */
+    async getUserCollectionsNoPaginate(user: JwtPayload): Promise<documents.CollectionDocument[]>{
+        return await this.collectionModel.find({'user': user.sub, 'audit.isDeleted': false});
+    }
+
+    /**
      * Fetches all public collections that a user has.
      * 
      * @param userId The owner of the portfolio

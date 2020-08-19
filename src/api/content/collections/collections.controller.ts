@@ -14,6 +14,12 @@ export class CollectionsController {
     async fetchUserCollections(@Request() req: any, @Param('pageNum') pageNum: number) {
         return await this.collsService.getUserCollections(req.user, pageNum);
     }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-user-collections-no-paginate')
+    async fetchUserCollectionsNoPaginate(@Request() req: any) {
+        return await this.collsService.getUserCollectionsNoPaginate(req.user);
+    }
     
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-collection')
