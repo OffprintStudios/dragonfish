@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { generate } from 'shortid';
+import { Model, PaginateModel, PaginateResult } from 'mongoose';
 
 import * as documents from './models';
 import { RatingOption } from 'shared/models/history';
@@ -9,7 +8,7 @@ import { isNullOrUndefined } from 'src/util';
 
 @Injectable()
 export class HistoryService {
-    constructor(@InjectModel('History') private readonly histModel: Model<documents.HistoryDocument>) {}
+    constructor(@InjectModel('History') private readonly histModel: PaginateModel<documents.HistoryDocument>) {}
 
     /**
      * Creates a new history document on a per-user basis.
@@ -40,10 +39,12 @@ export class HistoryService {
      * 
      * @param userId The owner of these documents
      */
-    async fetchUserHistory(userId: string): Promise<documents.HistoryDocument[]> {
-        return await this.histModel.find({'owner': userId})
-            .where('visible').equals(true)
-            .sort({'viewedOn': -1});
+    async fetchUserHistory(userId: string, pageNum: number): Promise<PaginateResult<documents.HistoryDocument>> {
+        return await this.histModel.paginate({'owner': userId, 'visible': true}, {
+            sort: {'viewedOn': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**

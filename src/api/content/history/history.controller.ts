@@ -9,9 +9,9 @@ export class HistoryController {
     constructor(private readonly histService: HistoryService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-user-history')
-    async fetchUserHistory(@Request() req: any) {
-        return await this.histService.fetchUserHistory(req.user.sub);
+    @Get('fetch-user-history/:pageNum')
+    async fetchUserHistory(@Request() req: any, @Param('pageNum') pageNum: number) {
+        return await this.histService.fetchUserHistory(req.user.sub, pageNum);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

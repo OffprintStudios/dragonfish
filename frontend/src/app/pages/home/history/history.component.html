@@ -9,7 +9,11 @@
         <h4 style="text-align: center;" *ngIf="isHistoryEmpty()">You haven't created any works yet.</h4>
         <ng-container *ngIf="!loading && !isHistoryEmpty()">
             <div class="work-list">
-                <div class="work-item" *ngFor="let doc of histList">
+                <div class="work-item" *ngFor="let doc of histList.docs | paginate: {
+                    itemsPerPage: histList.limit,
+                    currentPage: pageNum,
+                    totalItems: histList.totalDocs
+                }">
                     <div class="work-check">
                         <button title="Delete From History" class="check-published" (click)="askDelete(doc._id)">
                             <i-feather name="trash-2"></i-feather>
@@ -42,6 +46,7 @@
                     </div>
                 </div>
             </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
     </div>
 </div>

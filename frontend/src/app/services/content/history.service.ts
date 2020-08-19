@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { History } from 'shared-models';
+import { History, PaginateResult } from 'shared-models';
 import { AlertsService } from 'src/app/modules/alerts';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class HistoryService {
   /**
    * Fetches a user's entire history.
    */
-  public fetchUserHistory() {
-    return this.http.get<History[]>(`${this.url}/fetch-user-history`, {observe: 'response', withCredentials: true})
+  public fetchUserHistory(pageNum: number) {
+    return this.http.get<PaginateResult<History>>(`${this.url}/fetch-user-history/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(hist => {
         return hist.body;
       }), catchError(err => {

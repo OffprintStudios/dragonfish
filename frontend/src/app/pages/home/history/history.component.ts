@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User, History } from 'shared-models';
+import { User, History, PaginateResult } from 'shared-models';
 import { AuthService } from 'src/app/services/auth';
 import { HistoryService } from 'src/app/services/content';
 import { calculateApprovalRating } from 'src/app/util/functions';
@@ -13,15 +13,17 @@ import { calculateApprovalRating } from 'src/app/util/functions';
 export class HistoryComponent implements OnInit {
   currentUser: User;
 
-  histList: History[];
+  histList: PaginateResult<History>;
   loading = false;
+
+  pageNum = 1;
 
   constructor(private authService: AuthService, private histService: HistoryService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
 
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {}
@@ -29,10 +31,11 @@ export class HistoryComponent implements OnInit {
   /**
    * Fetches the history list.
    */
-  private fetchData() {
+  fetchData(pageNum: number) {
     this.loading = true;
-    this.histService.fetchUserHistory().subscribe(hists => {
+    this.histService.fetchUserHistory(pageNum).subscribe(hists => {
       this.histList = hists;
+      this.pageNum = pageNum;
       this.loading = false;
     });
   }
@@ -45,7 +48,7 @@ export class HistoryComponent implements OnInit {
   askDelete(histId: string) {
     if (confirm(`Are you sure you want to delete this? This action cannot be reversed.`)) {
       this.histService.changeVisibility(histId).subscribe(() => {
-        this.fetchData();
+        this.fetchData(this.pageNum);
       });
     } else {
       return;
@@ -57,7 +60,7 @@ export class HistoryComponent implements OnInit {
    */
   isHistoryEmpty() {
     if (this.histList) {
-      if (this.histList.length === 0) {
+      if (this.histList.docs.length === 0) {
         return true;
       } else {
         return false;

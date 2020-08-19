@@ -1,6 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
+import * as MongoosePaginate from 'mongoose-paginate-v2';
 
 import * as documents from './models';
 import * as models from 'shared/models/history';
@@ -18,6 +19,7 @@ export const HistorySchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'history'});
 
 HistorySchema.plugin(MongooseAutopopulate);
+HistorySchema.plugin(MongoosePaginate);
 
 HistorySchema.pre<documents.HistoryDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
