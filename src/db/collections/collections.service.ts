@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel, PaginateResult } from 'mongoose';
 import * as sanitize from 'sanitize-html';
 
 import * as documents from './models';
@@ -9,7 +9,7 @@ import { CreateCollection, EditCollection } from 'shared/models/collections';
 
 @Injectable()
 export class CollectionsService {
-    constructor(@InjectModel('Collection') private readonly collectionModel: Model<documents.CollectionDocument>) {}
+    constructor(@InjectModel('Collection') private readonly collectionModel: PaginateModel<documents.CollectionDocument>) {}
 
     /**
      * Creates a collection and saves it to the database.
@@ -33,10 +33,12 @@ export class CollectionsService {
      * 
      * @param user The owner of these collections
      */
-    async getUserCollections(user: JwtPayload): Promise<documents.CollectionDocument[]> {
-        return await this.collectionModel.find()
-            .where('user').equals(user.sub)
-            .where('audit.isDeleted').equals(false);
+    async getUserCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<documents.CollectionDocument>> {
+        return await this.collectionModel.paginate({'user': user.sub, 'audit.isDeleted': false}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**
@@ -44,11 +46,12 @@ export class CollectionsService {
      * 
      * @param userId The owner of the portfolio
      */
-    async getPortfolioCollections(userId: string): Promise<documents.CollectionDocument[]> {
-        return await this.collectionModel.find()
-            .where('user').equals(userId)
-            .where('audit.isPublic').equals(true)
-            .where('audit.isDeleted').equals(false);
+    async getPortfolioCollections(userId: string, pageNum: number): Promise<PaginateResult<documents.CollectionDocument>> {
+        return await this.collectionModel.paginate({'user': userId, 'audit.isPublic': true, 'audit.isDeleted': false}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**

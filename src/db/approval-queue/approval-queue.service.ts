@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel, PaginateResult } from 'mongoose';
 
 import * as documents from './models/approval-queue-document.model';
 import { WorksService } from '../works/works.service';
@@ -8,7 +8,7 @@ import { Categories } from 'shared/models/works';
 
 @Injectable()
 export class ApprovalQueueService {
-    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: Model<documents.ApprovalQueueDocument>,
+    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<documents.ApprovalQueueDocument>,
         private readonly worksService: WorksService) {}
 
     /**
@@ -34,8 +34,12 @@ export class ApprovalQueueService {
     /**
      * Fetches the entire queue.
      */
-    async fetchAll(): Promise<documents.ApprovalQueueDocument[]> {
-        return await this.approvalQueue.find();
+    async fetchAll(pageNum: number): Promise<PaginateResult<documents.ApprovalQueueDocument>> {
+        return await this.approvalQueue.paginate({}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**
@@ -43,8 +47,12 @@ export class ApprovalQueueService {
      * 
      * @param user The claimant
      */
-    async fetchForMod(user: any): Promise<documents.ApprovalQueueDocument[]> {
-        return await this.approvalQueue.find().where("claimedBy", user.sub);
+    async fetchForMod(user: any, pageNum: number): Promise<PaginateResult<documents.ApprovalQueueDocument>> {
+        return await this.approvalQueue.paginate({'claimedBy': user.sub}, {
+            sort: {'createdAt': -1},
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /**

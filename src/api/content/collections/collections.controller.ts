@@ -10,9 +10,9 @@ export class CollectionsController {
     constructor(private readonly collsService: CollectionsService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-user-collections')
-    async fetchUserCollections(@Request() req: any) {
-        return await this.collsService.getUserCollections(req.user);
+    @Get('fetch-user-collections/:pageNum')
+    async fetchUserCollections(@Request() req: any, @Param('pageNum') pageNum: number) {
+        return await this.collsService.getUserCollections(req.user, pageNum);
     }
     
     @UseGuards(RolesGuard([Roles.User]))

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from 'src/app/services/auth';
 import { QueueService } from 'src/app/services/admin';
-import { ApprovalQueue, Decision, User } from 'shared-models';
+import { ApprovalQueue, Decision, User, PaginateResult } from 'shared-models';
 
 @Component({
   selector: 'app-approval-queue',
@@ -13,14 +13,16 @@ export class ApprovalQueueComponent implements OnInit {
   currentUser: User; // the currently logged-in user
 
   loading = false; // loading check
-  queue: ApprovalQueue[]; // the approval queue
-  queueForMod: ApprovalQueue[]; // the 
+  queue: PaginateResult<ApprovalQueue>; // the approval queue
+  queueForMod: PaginateResult<ApprovalQueue>; // the approval queue for a single mod
+
+  pageNum = 1;
 
   forMe = false; // for switching views
 
   constructor(private authService: AuthService, private queueService: QueueService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData();
+    this.fetchData(this.pageNum);
   }
   ngOnInit(): void {
   }
@@ -30,13 +32,15 @@ export class ApprovalQueueComponent implements OnInit {
    * 
    * @param which Which entries to fetch
    */
-  private fetchData() {
-    this.queueService.getQueue().subscribe(entries => {
+  fetchData(pageNum: number) {
+    this.queueService.getQueue(pageNum).subscribe(entries => {
       this.queue = entries;
+      this.pageNum = pageNum;
     });
 
-    this.queueService.getQueueForMod().subscribe(entries => {
+    this.queueService.getQueueForMod(pageNum).subscribe(entries => {
       this.queueForMod = entries;
+      this.pageNum = pageNum;
     });
   }
 
@@ -44,7 +48,7 @@ export class ApprovalQueueComponent implements OnInit {
    * Forces a refresh of the queue.
    */
   forceRefresh() {
-    this.fetchData();
+    this.fetchData(1);
   }
 
   /**
@@ -62,10 +66,12 @@ export class ApprovalQueueComponent implements OnInit {
    * Checks to see if the queue is empty.
    */
   queueIsEmpty() {
-    if (this.queue.length === 0) {
-      return true;
-    } else {
-      return false;
+    if (this.queue) {
+      if (this.queue.docs.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
@@ -73,10 +79,12 @@ export class ApprovalQueueComponent implements OnInit {
    * Checks to see if the mod queue is empty.
    */
   myQueueIsEmpty() {
-    if (this.queueForMod.length === 0) {
-      return true;
-    } else {
-      return false;
+    if (this.queueForMod) {
+      if (this.queueForMod.docs.length === 0) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 
@@ -117,7 +125,7 @@ export class ApprovalQueueComponent implements OnInit {
    */
   claimWork(entry: ApprovalQueue) {
     this.queueService.claimWork(entry._id).subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
   
@@ -135,7 +143,7 @@ export class ApprovalQueueComponent implements OnInit {
     };
 
     this.queueService.approveWork(decision).subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     })
   }
 
@@ -153,7 +161,7 @@ export class ApprovalQueueComponent implements OnInit {
     };
 
     this.queueService.rejectWork(decision).subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     })
   }
 }

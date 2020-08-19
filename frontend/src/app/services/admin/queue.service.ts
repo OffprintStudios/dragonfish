@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AlertsService } from 'src/app/modules/alerts';
-import { ApprovalQueue, Decision } from 'shared-models';
+import { ApprovalQueue, Decision, PaginateResult } from 'shared-models';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +33,8 @@ export class QueueService {
   /**
    * Gets the entire queue.
    */
-  public getQueue() {
-    return this.http.get<ApprovalQueue[]>(`${this.url}/queue`, {observe: 'response', withCredentials: true})
+  public getQueue(pageNum: number) {
+    return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/queue/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(entries => {
         return entries.body;
       }), catchError(err => {
@@ -46,8 +46,8 @@ export class QueueService {
   /**
    * Gets the claimed works from one moderator.
    */
-  public getQueueForMod() {
-    return this.http.get<ApprovalQueue[]>(`${this.url}/queue-for-mod`, {observe: 'response', withCredentials: true})
+  public getQueueForMod(pageNum: number) {
+    return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/queue-for-mod/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(entries => {
         return entries.body;
       }), catchError(err => {

@@ -17,15 +17,15 @@ export class ContribController {
     }
 
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
-    @Get('queue')
-    async getQueue() {
-        return await this.contribService.getQueue();
+    @Get('queue/:pageNum')
+    async getQueue(@Param('pageNum') pageNum: number) {
+        return await this.contribService.getQueue(pageNum);
     }
 
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
-    @Get('queue-for-mod')
-    async getQueueForMod(@Request() req: any) {
-        return await this.contribService.getQueueForMod(req.user);
+    @Get('queue-for-mod/:pageNum')
+    async getQueueForMod(@Request() req: any, @Param('pageNum') pageNum: number) {
+        return await this.contribService.getQueueForMod(req.user, pageNum);
     }
 
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))

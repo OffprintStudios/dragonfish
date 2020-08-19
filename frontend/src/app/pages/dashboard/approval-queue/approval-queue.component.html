@@ -17,7 +17,11 @@
         <h4 style="text-align: center;" *ngIf="queueIsEmpty(); else theQueue">Surprisingly, no one's submitted anything yet.</h4>
         <ng-template #theQueue>
             <div class="work-list">
-                <div class="work-item" *ngFor="let entry of queue">
+                <div class="work-item" *ngFor="let entry of queue.docs | paginate: {
+                    itemsPerPage: queue.limit,
+                    currentPage: pageNum,
+                    totalItems: queue.totalDocs
+                }">
                     <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
                         <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
                     </div>
@@ -61,6 +65,7 @@
                     </div>
                 </div>
             </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-template>
     </div>
 
@@ -72,7 +77,11 @@
             <h4 style="text-align: center;" *ngIf="myQueueIsEmpty(); else theQueue">You haven't claimed anything yet.</h4>
             <ng-template #theQueue>
                 <div class="work-list">
-                    <div class="work-item" *ngFor="let entry of queueForMod">
+                    <div class="work-item" *ngFor="let entry of queueForMod.docs | paginate: {
+                        itemsPerPage: queue.limit,
+                        currentPage: pageNum,
+                        totalItems: queue.totalDocs
+                    }">
                         <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
                             <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
                         </div>
@@ -104,6 +113,7 @@
                         </div>
                     </div>
                 </div>
+                <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
             </ng-template>
         </div>    
     </ng-template>

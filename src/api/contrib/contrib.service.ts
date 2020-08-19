@@ -20,8 +20,8 @@ export class ContribService {
     /**
      * Fetches the entire queue.
      */
-    async getQueue(): Promise<ApprovalQueue[]> {
-        return await this.approvalQueueService.fetchAll();
+    async getQueue(pageNum: number) {
+        return await this.approvalQueueService.fetchAll(pageNum);
     }
 
     /**
@@ -29,8 +29,8 @@ export class ContribService {
      * 
      * @param user The claimant
      */
-    async getQueueForMod(user: any) {
-        return await this.approvalQueueService.fetchForMod(user);
+    async getQueueForMod(user: any, pageNum: number) {
+        return await this.approvalQueueService.fetchForMod(user, pageNum);
     }
 
     /**

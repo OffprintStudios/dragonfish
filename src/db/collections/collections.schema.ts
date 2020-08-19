@@ -1,5 +1,6 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
+import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
 
@@ -28,6 +29,7 @@ export const CollectionsSchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'collections'});
 
 CollectionsSchema.plugin(MongooseAutopopulate);
+CollectionsSchema.plugin(MongoosePaginate);
 
 CollectionsSchema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());

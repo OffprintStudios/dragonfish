@@ -1,5 +1,6 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutpopulate from 'mongoose-autopopulate';
+import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { generate } from 'shortid';
 import { ApprovalQueueDocument } from './models';
 
@@ -14,6 +15,7 @@ export const ApprovalQueueSchema = new Schema({
 }, {timestamps: true, autoIndex: true, collection: 'approval_queue'});
 
 ApprovalQueueSchema.plugin(MongooseAutpopulate);
+ApprovalQueueSchema.plugin(MongoosePaginate);
 
 ApprovalQueueSchema.pre<ApprovalQueueDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
