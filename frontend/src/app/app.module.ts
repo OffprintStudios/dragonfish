@@ -44,7 +44,7 @@ import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, Re
 
 import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dashboard/docs';
 
-import { Divider, dividerHandler } from './util/quill';
+import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 
 const Quill: any = QuillNamespace;
@@ -67,6 +67,7 @@ icons.bullet = '<i class="fas fa-list"></i>';
 icons.divider = '—';
 
 Quill.register(Divider);
+Quill.register('blots/text', TextSoftBreakBlot);
 
 const toolbarOptions = [
   [{header: []}, 'bold', 'italic', 'underline', 'strike'],
@@ -99,9 +100,24 @@ const toolbarOptions = [
         toolbar: {
           container: toolbarOptions,
           handlers: {
-            'divider': dividerHandler,
+            'divider': dividerHandler,            
           }
         },
+        keyboard: {
+          bindings: {
+            "shift enter": {
+              key: 13,
+              shiftKey: true,
+              handler: shiftEnterHandler
+            }
+          }
+        },
+        clipboard: {
+          matchers: [           
+            [ Node.TEXT_NODE, textNodeMatcher ],
+            [ "BR", brMatcher ]
+          ],          
+        }
       },
     }),
   ],
