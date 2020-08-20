@@ -56,7 +56,9 @@ export class NagBarComponent implements OnInit, OnDestroy {
       // Show the next value in the content queue
       const content = this.contentQueue.shift();
       this.content = content[0];
-      this.contentInjector = ReflectiveInjector.resolveAndCreate([content[1]], this.injector);
+      if (content[1])  {
+        this.contentInjector = ReflectiveInjector.resolveAndCreate([content[1]], this.injector);
+      }
       this.shown = true;
     } else {
       // No more content, close the bar.
