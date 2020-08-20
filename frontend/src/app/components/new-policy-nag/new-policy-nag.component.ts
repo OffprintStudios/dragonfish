@@ -17,7 +17,7 @@ export class NewPolicyNagComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmitClicked() {
+  onSubmitClicked(): void {
     // set agree locally and with the server, then close the bar
     this.loading = true;
     this.authService.agreeToPolicies().subscribe(x => {
