@@ -4,6 +4,7 @@ export interface FrontendUser {
     readonly _id: string;
     readonly email: string;
     readonly username: string;
+    readonly agreedToPolicies: boolean;
     readonly profile: {
         readonly avatar: string;
         readonly themePref: string;

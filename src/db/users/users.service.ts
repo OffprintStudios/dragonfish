@@ -136,6 +136,7 @@ export class UsersService {
             _id: user._id,
             email: user.email,
             username: user.username,
+            agreedToPolicies: user.agreedToPolicies,
             profile: {
                 avatar: user.profile.avatar,
                 themePref: user.profile.themePref,
@@ -259,6 +260,14 @@ export class UsersService {
      */
     async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
         return await this.userModel.findOneAndUpdate({ _id: userId }, { "profile.avatar": avatarUrl }, { new: true });
+    }
+
+    /**
+     * Updates a user's 'agreedToPolicy' to be true and returns the updated user.
+     * @param userId The ID of the user to update.
+     */
+    async agreeToPolicies(userId: string): Promise<models.User> {
+        return await this.userModel.findOneAndUpdate({_id: userId}, {agreedToPolicies: true}, { new: true });
     }
 
     /**

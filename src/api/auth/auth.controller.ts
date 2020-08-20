@@ -105,6 +105,12 @@ export class AuthController {
     }
 
     @UseGuards(AuthGuard)
+    @Post('agree-to-policies')
+    async agreeToPolicies(@Request() req: any): Promise<models.FrontendUser> {
+        return await this.authService.agreeToPolicies(req.user);
+    }
+
+    @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
     async uploadAvatar(@UploadedFile() avatarImage: any, @Req() req: any) {

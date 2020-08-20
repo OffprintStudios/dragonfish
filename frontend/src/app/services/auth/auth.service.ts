@@ -184,6 +184,23 @@ export class AuthService {
   }
 
   /**
+   * Sends a message to the server instructing it to set the user's 
+   * 'agreedToPolicies' field to true. On success, returns the updated
+   * user object.
+   */
+  public agreeToPolicies(): Observable<User> {
+    return this.http.post<User>(`${this.url}/agree-to-policies`, null, { observe: 'response', withCredentials: true })
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
    * Uploads a user's avatar to the server for processing.
    * 
    * @param uploader the file uploader
