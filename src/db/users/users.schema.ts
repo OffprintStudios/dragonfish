@@ -12,6 +12,7 @@ export const UsersSchema = new Schema({
     email: {type: String, trim: true, required: [true, 'You must provide a valid email.'], unique: true},
     username: {type: String, trim: true, required: [true, 'You must provide a valid username.'], unique: true},
     password: {type: String, trim: true, required: true},
+    agreedToPolicies: {type: Boolean, required: true, default: false},
     profile: {
         avatar: {type: String, trim: true, default: 'https://images.offprint.net/avatars/avatar.png'},
         themePref: {type: String, default: 'crimson'},

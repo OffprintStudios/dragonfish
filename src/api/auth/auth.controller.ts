@@ -64,7 +64,7 @@ export class AuthController {
         }
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(RefreshGuard)
     @SetCookies()
     @Get('logout')
     async logout(@Request() req: any, @Cookies() cookies: any): Promise<void> {
