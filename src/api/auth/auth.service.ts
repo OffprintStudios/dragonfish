@@ -193,6 +193,21 @@ export class AuthService {
     }
 
     /**
+     * Update the given user's 'agreedToPolicies' flag to be true. Returns a new
+     * FrontendUSer on success.
+     * @param user The ID of the user to update.
+     */
+    async agreeToPolicies(user: JwtPayload): Promise<FrontendUser> {
+        const updatedUserInfo = await this.usersService.agreeToPolicies(user.sub);
+        const updatedJwt: JwtPayload = {
+            sub: user.sub,
+            username: user.username,
+            roles: user.roles
+        };
+        return this.usersService.buildFrontendUser(updatedUserInfo, this.jwtService.sign(updatedJwt));
+    }
+
+    /**
      * Updates the user's avatar. Not account-sensitive, so doesn't require a password.
      * A new FrontendUser is returned.
      * @param user The user making the request

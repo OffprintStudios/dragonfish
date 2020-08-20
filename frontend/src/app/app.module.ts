@@ -12,7 +12,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe } from './pipes';
-import { IconsModule, AlertsModule } from './modules';
+import { IconsModule, AlertsModule, NagBarModule } from './modules';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +46,7 @@ import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dash
 
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
+import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -89,11 +90,12 @@ const toolbarOptions = [
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
-    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent
+    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
+    NagBarModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {

@@ -31,6 +31,10 @@ export class UsersService {
      * @param newUserInfo A new user's information
      */
     async createUser(newUserInfo: models.CreateUser): Promise<models.User> {
+        if (!newUserInfo.agreedToPolicies) {
+            throw new BadRequestException("You must agree to the site policies.");
+        }
+
         if (!newUserInfo.inviteCode) {
             throw new BadRequestException('An invite code is required while Offprint is in its Origins phase.')
         }
@@ -58,21 +62,17 @@ export class UsersService {
             throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
 
-        const newUser = new this.userModel(newUserInfo);
-
-        return await newUser.save().then(async userDoc => {
-            await this.useInviteCode(storedInviteCode._id, userDoc._id);
+        const newUser = await new this.userModel(newUserInfo).save();              
+        await this.useInviteCode(storedInviteCode._id, newUser._id);
             
-            const newFavColl: CreateCollection = {
-                name: 'Favorites',
-                desc: `For the stories I'd rather never forget.`,
-                public: false
-            };
+        const newFavColl: CreateCollection = {
+            name: 'Favorites',
+            desc: `For the stories I'd rather never forget.`,
+            public: false
+        };
+        await this.collsService.createCollection(newUser._id, newFavColl);
 
-            return await this.collsService.createCollection(userDoc._id, newFavColl).then(async () => {
-                return userDoc;
-            });
-        });
+        return newUser;
     }
 
     /**
@@ -136,6 +136,7 @@ export class UsersService {
             _id: user._id,
             email: user.email,
             username: user.username,
+            agreedToPolicies: user.agreedToPolicies,
             profile: {
                 avatar: user.profile.avatar,
                 themePref: user.profile.themePref,
@@ -259,6 +260,14 @@ export class UsersService {
      */
     async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
         return await this.userModel.findOneAndUpdate({ _id: userId }, { "profile.avatar": avatarUrl }, { new: true });
+    }
+
+    /**
+     * Updates a user's 'agreedToPolicy' to be true and returns the updated user.
+     * @param userId The ID of the user to update.
+     */
+    async agreeToPolicies(userId: string): Promise<models.User> {
+        return await this.userModel.findOneAndUpdate({_id: userId}, {agreedToPolicies: true}, { new: true });
     }
 
     /**
