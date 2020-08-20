@@ -12,7 +12,8 @@ export const NewsSchema = new Schema({
     desc: {type: String, trim: true, required: true},
     body: {type: String, trim: true, required: true},
     audit: {
-        featured: {type: Boolean, default: false}
+        featured: {type: Boolean, default: false},
+        publishedOn: {type: Date, default: null},
     }
 });
 
