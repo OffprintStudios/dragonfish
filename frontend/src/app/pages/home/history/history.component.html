@@ -39,8 +39,10 @@
                                 <h4 title="Approval Rating"><i-feather name="heart"></i-feather>{{ calcApprovalRating($any(doc.work).stats.likes, $any(doc.work).stats.dislikes) }}%</h4><span>//</span>
                                 <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ $any(doc.work).stats.totWords | toLocaleString }}</h4><span>//</span>
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ $any(doc.work).stats.views | toLocaleString }}</h4><span>//</span>
-                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.work).stats.comments | toLocaleString }}</h4><span>//</span>
-                                <h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | date:'short' }}</h4>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.work).stats.comments | toLocaleString }}</h4>
+                                <ng-container *ngIf="$any(doc.work).audit.publishedOn">
+                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | date:'short' }}</h4>
+                                </ng-container>
                             </div>
                         </div>
                     </div>
