@@ -294,6 +294,29 @@ button, a.button, input[type=submit] {
     }
 }
 
+/* Content inside accent-colored boxes. */
+.content-box {
+    color: whitesmoke;
+    a {
+        color: whitesmoke;
+        text-decoration: none;
+        background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);
+        &:hover {
+            color: whitesmoke;
+            background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+            text-decoration: none;
+        }
+    }
+    &.dark {
+        a {
+            background: linear-gradient(0deg, var(--site-accent-hover) 0%, var(--site-accent) 10%, var(--site-accent-hover) 50%);
+            &:hover {
+                background: linear-gradient(0deg, var(--site-accent-hover) 0%, var(--site-accent) 10%, var(--site-accent) 90%, var(--site-accent-hover) 100%);                
+            }
+        }
+    }
+}
+
 /* QuillJS */
 .content-box {
     quill-view {

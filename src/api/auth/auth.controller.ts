@@ -64,7 +64,7 @@ export class AuthController {
         }
     }
 
-    @UseGuards(AuthGuard)
+    @UseGuards(RefreshGuard)
     @SetCookies()
     @Get('logout')
     async logout(@Request() req: any, @Cookies() cookies: any): Promise<void> {
@@ -102,6 +102,12 @@ export class AuthController {
             throw new BadRequestException("Your bio must not be longer than 50 characters.");
         }
         return await this.authService.updateProfile(req.user, newProfile);
+    }
+
+    @UseGuards(AuthGuard)
+    @Post('agree-to-policies')
+    async agreeToPolicies(@Request() req: any): Promise<models.FrontendUser> {
+        return await this.authService.agreeToPolicies(req.user);
     }
 
     @UseGuards(AuthGuard)

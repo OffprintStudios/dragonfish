@@ -61,6 +61,7 @@ export class RegisterComponent implements OnInit {
       username: this.registerFields.username.value,
       password: this.registerFields.password.value,
       inviteCode: this.registerFields.inviteCode.value,
+      agreedToPolicies: this.registerFields.tosCheck.value
     };
     this.authService.register(credentials).pipe(first()).subscribe(() => {
       this.loadingRegister = false;

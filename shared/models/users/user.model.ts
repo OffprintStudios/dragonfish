@@ -6,6 +6,7 @@ export interface User {
     readonly email: string;
     readonly username: string;
     readonly password: string;
+    readonly agreedToPolicies: boolean;
     readonly profile: {
         readonly avatar: string;
         readonly themePref: string;

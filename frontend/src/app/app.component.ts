@@ -10,6 +10,8 @@ import { UserMenuComponent } from './components/dropdowns';
 import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from 'shared-models';
+import { NagBarService } from './modules/nag-bar';
+import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +30,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   rotatingSlogan: string;
 
   constructor(private router: Router, private toppy: Toppy, private authService: AuthService,
-    private selectConfig: NgSelectConfig, private statsService: StatsService) {
+    private selectConfig: NgSelectConfig, private statsService: StatsService,
+    private nagBarService: NagBarService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -54,7 +57,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         window.scrollTo(0,0);
       }
     });
-  }
+  }  
 
   /**
    * Initializes the global dropdown menus.
@@ -65,6 +68,23 @@ export class AppComponent implements OnInit, AfterViewInit {
       .config({closeOnDocClick: true, closeOnEsc: true})
       .content(UserMenuComponent)
       .create();
+
+      // Initialize the ToS nagbar if we need to
+      if (!this.currentUser) {
+        this.authService.currUser.subscribe(x => {
+        // This is wrapped in setTimeout because it's called by ngAfterInit,
+        // and if we modify the UI before that finishes, Angular errors out.
+        // So allow one render tick to progress before we try.
+          setTimeout(() => {
+            this.checkUserPolicies(x);
+          });
+        })
+      } else {
+        // See above comment re: setTimeout()
+        setTimeout(() => {
+            this.checkUserPolicies(this.currentUser);
+        });
+      }
   }
 
   /**
@@ -99,5 +119,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.documentElement.style.setProperty('--site-borders', newTheme.borders);
     document.documentElement.style.setProperty('--site-controls-background', newTheme.controlsBackground);
     document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
+  }
+
+  private checkUserPolicies(user: User) {
+    if (!user.agreedToPolicies) {
+      this.nagBarService.queueContent(NewPolicyNagComponent, null);
+    }     
   }
 }
