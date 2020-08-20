@@ -30,5 +30,6 @@ export const slogans: string[] = [
     "Currently Hosting 128471 Stories",
     "Founded on Spite",
     "Every time you complain about the slogan, we add another one!",
-    "The Future of Fiction’s Past, Today!"
+    "The Future of Fiction’s Past, Today!",
+    "Origins, pt. 2—Alpha 0.2.0"
 ];
