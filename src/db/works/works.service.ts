@@ -401,7 +401,7 @@ export class WorksService {
      * Gets an estimated count of _all_ non-deleted works, included upublished works.
      */
     async getTotalWorkCount(): Promise<number> {
-        return await this.workModel.estimatedDocumentCount()
+        return await this.workModel.countDocuments()
             .where("audit.published", models.ApprovalStatus.Approved)
             .where("audit.isDeleted", false);
     }
