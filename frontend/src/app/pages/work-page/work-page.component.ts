@@ -109,7 +109,6 @@ export class WorkPageComponent implements OnInit {
         this.collsService.thisUsersCollections = colls;
         this.histService.addOrUpdateHistory(this.workId).subscribe(hist => {
           this.userHist = hist;
-          console.log(hist);
           this.loading = false;
         });
       });
@@ -147,7 +146,6 @@ export class WorkPageComponent implements OnInit {
         this.router.navigate(['/home/works']);
         return;
       }, err => {
-        console.log(err);
         return;
       });
     } else {
@@ -167,7 +165,6 @@ export class WorkPageComponent implements OnInit {
         this.fetchData();
         return;
       }, err => {
-        console.log(err);
         return;
       });
     }
@@ -187,8 +184,6 @@ export class WorkPageComponent implements OnInit {
 
     this.worksService.setPublishStatusSection(this.workId, sectionId, newPubStatus).subscribe(() => {
       this.allSectionViewModels.find(x => x._id === sectionId).published = !pubStatus;
-    }, () => {
-      console.log(`An error has occurred.`);
     });
   }
 
