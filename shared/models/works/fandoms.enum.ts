@@ -55,6 +55,8 @@ export enum Fandoms {
     DisneyPrincesses = 'Disney Princesses',
     Tangled = 'Tangled',
     TheLionKing = 'The Lion King',
+    Danganronpa = 'Danganronpa',
+    RevolutionaryGirlUtena = 'Revolutionary Girl Utena',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
 
