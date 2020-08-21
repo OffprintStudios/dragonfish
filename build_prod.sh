@@ -11,5 +11,6 @@ yarn add @angular-devkit/build-angular --dev
 yarn install
 yarn build --prod
 
-# Mobing back to root
+# Moving back to root
 cd ../
+cp .env ./dist/.env
