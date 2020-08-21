@@ -96,7 +96,7 @@ export function textNodeMatcher(node: any, delta: any) {
     //     text = toDeltaText(text);
     //     return new Delta().insert(text.trim());
     // }
-    // Interpret a text node than only contains a newline as a soft line break
+    // Interpret a text node that only contains a newline as a soft line break
     if (text.trim().length === 0 && text.includes('\n')) {
         return new Delta().insert(LINE_SEPARATOR);
     }
