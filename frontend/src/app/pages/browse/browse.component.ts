@@ -36,6 +36,7 @@ export class BrowseComponent implements OnInit {
         this.loadingState = 'failure';
       } else {
         this.loadingState = 'success';
+        this.pageNum = pageNum;
       }
 
       this.works = allWorks;
