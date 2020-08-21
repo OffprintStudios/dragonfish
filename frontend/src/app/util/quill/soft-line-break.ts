@@ -79,28 +79,26 @@ export function shiftEnterHandler(this: any, range: QuillRange) {
 }
 
 export function brMatcher(node: Node) {
-    if (node.nextSibling && !node.nextSibling.textContent.startsWith('\n')) {
-        return new Delta().insert(LINE_SEPARATOR);
-    } else {
-        // If this node is a <br>, and the next node doesn't exist, 
-        // or is a <br>, just return an empty Delta.
-        // TODO: Is this actually ideal behavior?
-        return new Delta();
-    }
+    // This behavior always interprets a BR as a soft line break,
+    // which means that any lone <br>s will be folded into the next <p> or
+    // (if there is no next paragraph) the previous <p>
+    return new Delta().insert(LINE_SEPARATOR);
 }
 
 export function textNodeMatcher(node: any, delta: any) {
     // This code is almost identical to the default TextMatcher code--
     // just with extra calls to toDeltaText().
     let text = node.data;
+    // Going to comment this out for now--it actually seems to result in 
+    // WORSE imports from external sources (and Word).
     // Word represents empty line with <o:p>&nbsp;</o:p>
-    if (node.parentNode.tagName === 'O:P') {
-        text = toDeltaText(text);
-        return new Delta().insert(text.trim());
-    }
-    if (text.trim().length === 0 && text.includes('\n')) {
-        return new Delta().insert(text);
-    }
+    // if (node.parentNode.tagName === 'O:P') {
+    //     text = toDeltaText(text);
+    //     return new Delta().insert(text.trim());
+    // }
+    // if (text.trim().length === 0 && text.includes('\n')) {
+    //     return new Delta().insert(text);
+    // }
     if (!isPre(node)) {
         const replacer = (collapse, match) => {
             const replaced = match.replace(/[^\u00a0]/g, ''); // \u00a0 is nbsp;
