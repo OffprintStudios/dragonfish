@@ -44,6 +44,7 @@
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
     "graphql-tools": "^6.0.12",
+    "helmet": "^4.1.0",
     "lodash": "^4.17.19",
     "lodash.escaperegexp": "^4.1.2",
     "mongoose": "^5.9.22",
