@@ -416,21 +416,22 @@ export class WorksService {
     async setLike(userId: string, workId: string, oldRatingOption: RatingOption) {
         if (oldRatingOption === RatingOption.Disliked) {
             // If the old rating option was a dislike
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.likes': 1}
-            });
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.dislikes': -1}
-            });
-            await this.histService.setLike(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': 1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setLike(userId, workId);
+                });
+
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': -1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved);
+
         } else if (oldRatingOption === RatingOption.Liked) {
             // If the old rating option was already a like
             throw new ConflictException(`You've already upvoted this work!`);
         } else {
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.likes': 1}
-            });
-            await this.histService.setLike(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': 1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setLike(userId, workId);
+                });
         }
     }
 
@@ -444,21 +445,22 @@ export class WorksService {
     async setDislike(userId: string, workId: string, oldRatingOption: RatingOption) {
         if (oldRatingOption === RatingOption.Liked) {
             // If the old rating option was a like
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.dislikes': 1}
-            });
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.likes': -1}
-            });
-            await this.histService.setDislike(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': 1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setDislike(userId, workId);
+                });
+
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': -1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved);
+
         } else if (oldRatingOption === RatingOption.Disliked) {
             // If the old rating option was already a dislike
             throw new ConflictException(`You've already downvoted this work!`);
         } else {
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.dislikes': 1}
-            });
-            await this.histService.setDislike(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': 1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setDislike(userId, workId);
+                });
         }
     }
 
@@ -472,16 +474,16 @@ export class WorksService {
     async setNoVote(userId: string, workId: string, oldRatingOption: RatingOption) {
         if (oldRatingOption === RatingOption.Liked) {
             // If the old rating option was a like
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.likes': -1}
-            });
-            await this.histService.setNoVote(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': -1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setNoVote(userId, workId);
+                });
         } else if (oldRatingOption === RatingOption.Disliked) {
             // If the old rating option was a dislike
-            await this.workModel.updateOne({'_id': workId}, {
-                $inc: {'stats.dislikes': -1}
-            });
-            await this.histService.setNoVote(userId, workId);
+            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': -1}})
+                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
+                    await this.histService.setNoVote(userId, workId);
+                });
         }
     }
 }
