@@ -163,7 +163,16 @@ export class SectionPageComponent implements OnInit {
   toggleEditForm() {
     if (this.editing === true) {
       this.editing = false;
-    } else {
+    } else {      
+      // First, clear the contents of the Body and Author's Note. This is because
+      // Quill REALLY struggles when making large changes. However, going to
+      // or from an empty string is very fast.
+      this.editSection.setValue({
+        title: "",
+        body: "",
+        authorsNote: ""
+      });
+
       this.editSection.setValue({
         title: this.sectionData.title,
         body: this.sectionData.body,
