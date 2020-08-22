@@ -38,6 +38,7 @@ import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
+import { CommentsComponent } from './components/comments';
 
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
   UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
@@ -90,7 +91,7 @@ const toolbarOptions = [
     NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
-    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent
+    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
