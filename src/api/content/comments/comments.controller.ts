@@ -21,6 +21,16 @@ export class CommentsController {
         return await this.commentsService.createWorkComment(req.user, workId, commentInfo);
     }
 
+    @Get('get-blog-comments/:blogId')
+    async getBlogComments(@Param('blogId') blogId: string) {
+        return await this.commentsService.getBlogComments(blogId);
+    }
+
+    @Get('get-work-comments/:workId')
+    async getWorkComments(@Param('workId') workId: string) {
+        return await this.commentsService.getWorkComments(workId);
+    }
+
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-comment/:commentId')
     async editComment(@Request() req: any, @Param('commentId') commentId: string, @Body() commentInfo: EditComment) {

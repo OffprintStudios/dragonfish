@@ -19,7 +19,7 @@ export class CommentsService {
      * @param blogId The blog the comment belongs to
      * @param commentInfo The comment's info
      */
-    async createBlogComment(user: any, blogId: string, commentInfo: models.CreateComment) {
+    async createBlogComment(user: any, blogId: string, commentInfo: models.CreateComment): Promise<documents.BlogCommentDocument> {
         const newComment = new this.blogCommentModel({
             user: user.sub,
             blogId: blogId,
@@ -36,7 +36,7 @@ export class CommentsService {
      * @param workId The work the comment belongs to
      * @param commentInfo The comment's info
      */
-    async createWorkComment(user: any, workId: string, commentInfo: models.CreateComment) {
+    async createWorkComment(user: any, workId: string, commentInfo: models.CreateComment): Promise<documents.WorkCommentDocument> {
         const newComment = new this.workCommentModel({
             user: user.sub,
             workId: workId,
@@ -47,14 +47,32 @@ export class CommentsService {
     }
 
     /**
+     * Grabs the comments belonging to this blog.
+     * 
+     * @param blogId The blog that these comments belong to
+     */
+    async getBlogComments(blogId: string): Promise<documents.BlogCommentDocument[]> {
+        return await this.blogCommentModel.find().where('blogId').equals(blogId);
+    }
+
+    /**
+     * Grabs the comments belonging to this work.
+     * 
+     * @param workId The work that these comments belong to
+     */
+    async getWorkComments(workId: string): Promise<documents.WorkCommentDocument[]> {
+        return await this.workCommentModel.find().where('workId').equals(workId);
+    }
+
+    /**
      * Edits a comment belonging to a user, given its ID.
      * 
      * @param user The owner of the comment
      * @param commentId The comment's ID
      * @param commentInfo The comment's new info
      */
-    async editComment(user: any, commentId: string, commentInfo: models.EditComment) {
-        return await this.commentModel.findByIdAndUpdate(commentId, {
+    async editComment(user: any, commentId: string, commentInfo: models.EditComment): Promise<void> {
+        return await this.commentModel.updateOne({'_id': commentId}, {
             'body': sanitize(commentInfo.body)
         }).where('user').equals(user.sub);
     }

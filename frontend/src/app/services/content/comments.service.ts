@@ -49,6 +49,36 @@ export class CommentsService {
   }
 
   /**
+   * Fetches the comments belonging to a blog.
+   * 
+   * @param blogId The blog that these comments belong to
+   */
+  public getBlogComments(blogId: string) {
+    return this.http.get<BlogComment[]>(`${this.url}/get-blog-comments/${blogId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(comments => {
+        return comments.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches the comments belonging to a work.
+   * 
+   * @param workId The work that these comments belong to
+   */
+  public getWorkComments(workId: string) {
+    return this.http.get<WorkComment[]>(`${this.url}/get-work-comments/${workId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(comments => {
+        return comments.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
    * Edits a comment.
    * 
    * @param commentId The comment to edit
