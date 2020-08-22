@@ -1,0 +1,1 @@
+export { Comment, BlogComment, WorkComment } from './comment.model';
