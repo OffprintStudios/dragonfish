@@ -49,10 +49,3 @@ BlogsSchema.pre<documents.BlogDocument>('save', async function(next: HookNextFun
     
     return next();
 });
-
-BlogsSchema.pre<documents.BlogDocument>('findOneAndUpdate', async function(next: HookNextFunction) {
-    const wordCount = await wordCounter.countWords(sanitize(this.body));
-    this.set('stats.words', wordCount);
-
-    return next();
-});
