@@ -13,11 +13,13 @@ import { CollectionsModule } from 'src/db/collections/collections.module';
 import { CollectionsController } from './collections/collections.controller';
 import { HistoryController } from './history/history.controller';
 import { HistoryModule } from 'src/db/history/history.module';
+import { CommentsModule } from 'src/db/comments/comments.module';
+import { CommentsController } from './comments/comments.controller';
 
 @Module({
   imports: [
     BlogsModule, WorksModule, UsersModule, ImagesModule, CollectionsModule,
-    HistoryModule,
+    HistoryModule, CommentsModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
@@ -25,6 +27,6 @@ import { HistoryModule } from 'src/db/history/history.module';
       }),
     }),
   ],
-  controllers: [BlogsController, WorksController, PortfolioController, CollectionsController, HistoryController]
+  controllers: [BlogsController, WorksController, PortfolioController, CollectionsController, HistoryController, CommentsController]
 })
 export class ContentModule {}

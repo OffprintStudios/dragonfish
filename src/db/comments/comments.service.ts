@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as sanitize from 'sanitize-html';
 
 import * as documents from './models';
 import * as models from 'shared/models/comments';
 
 @Injectable()
 export class CommentsService {
-    constructor(@InjectModel('BlogComment') private readonly blogCommentModel: Model<documents.BlogCommentDocument>,
+    constructor(@InjectModel('Comment') private readonly commentModel: Model<documents.CommentDocument>,
+        @InjectModel('BlogComment') private readonly blogCommentModel: Model<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: Model<documents.WorkCommentDocument>) {}
 
     /**
@@ -42,5 +44,18 @@ export class CommentsService {
         });
 
         return await newComment.save();
+    }
+
+    /**
+     * Edits a comment belonging to a user, given its ID.
+     * 
+     * @param user The owner of the comment
+     * @param commentId The comment's ID
+     * @param commentInfo The comment's new info
+     */
+    async editComment(user: any, commentId: string, commentInfo: models.EditComment) {
+        return await this.commentModel.findByIdAndUpdate(commentId, {
+            'body': sanitize(commentInfo.body)
+        }).where('user').equals(user.sub);
     }
 }
