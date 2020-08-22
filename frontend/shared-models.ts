@@ -18,3 +18,4 @@ export { ApprovalStatus, AuthorInfo, Categories, ContentRating,
 } from '../shared/models/works';
 export { FrontPageStats } from '../shared/models/stats';
 export { PaginateResult } from '../shared/models/util';
+export { Comment, BlogComment, WorkComment, CreateComment, EditComment } from '../shared/models/comments';
