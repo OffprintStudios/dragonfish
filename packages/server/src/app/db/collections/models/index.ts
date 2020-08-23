@@ -1,0 +1,1 @@
+export { CollectionDocument } from './collection-document.model';

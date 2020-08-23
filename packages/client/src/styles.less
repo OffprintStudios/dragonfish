@@ -1,0 +1,651 @@
+/* You can add global styles to this file, and also import other style files */
+@import (css) url("https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700");
+@import (css) url("https://fonts.googleapis.com/css?family=Raleway:300,400,500,700");
+@import (css) url("https://cdn.quilljs.com/1.3.6/quill.core.css");
+@import (css) url("https://cdn.quilljs.com/1.3.6/quill.bubble.css");
+@import (css) url("https://cdn.quilljs.com/1.3.6/quill.snow.css");
+@import (css) url("https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css");
+@import (css) "~@ng-select/ng-select/themes/default.theme.css";
+
+:root {
+    --site-accent: #DD4C4F;
+    --site-accent-hover: #933235;
+    --site-accent-light: #EA7C7C;
+
+    --site-background: #fbfbfb;
+    --site-controls-background: lightgrey;
+    --site-dropshadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    --site-borders: grey;
+    
+    --site-text-color: black;
+
+    --site-max-width: 2000px;
+
+    --site-code-background: #f0f0f0;
+
+    // Other things
+    --dark-theme-background: rgb(39,39,39);
+    --alt-blue: rgb(80,154,233);
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+div.main-stage {
+    max-width: var(--site-max-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div.container {
+    @media (max-width: 1000px) {
+        width: 95%;
+        padding: 0;
+    }
+}
+
+div.container, div.row {
+    max-width: var(--site-max-width);
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Josefin Sans', sans-serif;
+    color: var(--site-accent);
+}
+
+a {
+    text-decoration: none;
+    color: var(--site-accent);
+
+    &:hover {
+        color: var(--site-accent-hover);
+    }
+}
+
+.messages(@border-color) {
+    text-align: center;
+    border: 1px solid @border-color;
+    padding: 10px;
+}
+
+.avatar(@width, @height, @border) {
+    object-fit: cover;
+    border: 2px solid @border;
+    max-width: @width;
+    max-height: @height;
+    border-radius: 50%;
+    box-shadow: var(--site-dropshadow);
+}
+
+img.bordered-cover-art {
+    object-fit: contain;
+    border: 1px solid whitesmoke;    
+    &.shadow {
+        box-shadow: var(--site-dropshadow);
+    }
+}
+
+div.error-message {
+    .messages(rgb(163,73,62));
+}
+
+div.success-message {
+    .messages(rgb(101,211,110));
+}
+
+div.rating {
+    float: left;
+    border: 2px solid #000000;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;    
+    color: #000000;
+    text-align: center;
+    &.small {
+        font-size: 24px;
+        line-height: 24px;
+        height: 24px;
+        width: 24px;
+    }
+    &.large {
+        border: 3px solid #000000;
+        font-size: 32px;
+        line-height: 32px;
+        height: 32px;
+        width: 32px;
+    }
+    &.large {
+        border: 4px solid #000000;
+        font-size: 40px;
+        line-height: 40px;
+        height: 40px;
+        width: 40px;
+    }
+    &.everyone {
+        background: #08A400
+    }
+    &.teen {
+        background: #EBCF00;
+    }
+    &.mature {
+        background: #FF7700;
+    }
+    &.explicit {
+        background: #FF000A;
+    }
+}
+
+pre {
+    code {
+        background-color: var(--site-controls-background);
+        border: 1px solid var(--site-borders);
+        border-radius: 0;
+    }
+}
+
+blockquote {
+    border-left: 2px solid var(--site-borders);
+    padding-left: 10px;
+}
+
+/* Buttons and Inputs */
+a.button, button,
+input[type=text], input[type=password], 
+input[type=email], input[type=submit], select {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-background);
+    border-radius: 0;
+    color: var(--site-text-color);
+    box-shadow: var(--site-dropshadow);
+}
+
+a.button-primary, button.button-primary,
+input[type=submit].button-primary {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    border-radius: 0px;
+    color: whitesmoke;
+}
+
+a.button:hover, button:hover,
+input[type=submit]:hover {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+a.button-primary:hover, button.button-primary:hover,
+input[type=submit].button-primary:hover {
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent-hover);
+}
+
+button:disabled {
+    background-color: darkgrey;
+    color: black;
+}
+
+input[type=text]:focus, input[type=password]:focus,
+input[type=email]:focus, select:focus {
+    border: 1px solid var(--site-accent);
+}
+
+textarea {
+    border: 1px solid var(--site-borders);
+    border-radius: 0px;
+    background-color: var(--site-background);
+    box-shadow: var(--site-dropshadow);
+
+    &:focus {
+        border: 1px solid var(--site-accent);
+    }
+}
+
+div.meta-container {
+    max-width: 60%;
+    margin: 0 auto;
+    border: 1px solid var(--site-borders);
+    padding: 20px;
+    box-shadow: var(--site-dropshadow);
+}
+
+span.label-body {
+    display: inline;
+    i-feather {
+        position: relative;
+        margin-left: 0.5rem;
+        width: 20px;
+        height: 20px;
+        color: var(--site-accent);
+        top: 0.30rem;
+    }
+}
+
+/* Loading animation */
+.lds-dual-ring {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    margin-right: 3rem;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 25px;
+    height: 25px;
+    margin: 1px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    border-color: var(--site-accent) transparent var(--site-accent) transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+}
+
+.lds-dual-ring-big {
+    display: block;
+    width: 68px;
+    height: 68px;
+
+    &:after {
+        content: " ";
+        display: block;
+        width: 68px;
+        height: 68px;
+        margin: 1px;
+        border-radius: 50%;
+        border-color: var(--site-accent) transparent var(--site-accent) transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+}
+
+.lds-dual-ring-button {
+    display: block;
+    width: 25px;
+    height: 25px;
+
+    &:after {
+        content: " ";
+        display: block;
+        width: 25px;
+        height: 25px;
+        margin: 1px;
+        border-radius: 50%;
+        border-color: whitesmoke transparent whitesmoke transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+}
+
+/* Button with Feather */
+button, a.button, input[type=submit] {
+    i-feather {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        top: 0.25rem;
+    }
+}
+
+/* Content inside accent-colored boxes. */
+.content-box {
+    color: whitesmoke;
+    a {
+        color: whitesmoke;
+        text-decoration: none;
+        background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);
+        &:hover {
+            color: whitesmoke;
+            background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+            text-decoration: none;
+        }
+    }
+    &.dark {
+        a {
+            background: linear-gradient(0deg, var(--site-accent-hover) 0%, var(--site-accent) 10%, var(--site-accent-hover) 50%);
+            &:hover {
+                background: linear-gradient(0deg, var(--site-accent-hover) 0%, var(--site-accent) 10%, var(--site-accent) 90%, var(--site-accent-hover) 100%);                
+            }
+        }
+    }
+}
+
+/* QuillJS */
+.content-box {
+    quill-view {
+        div.ql-container, div.ql-snow {
+            font-size: 16px;
+            font-family: 'Raleway';
+            height: 100%;
+
+            p {
+                margin: 1em 0px;
+            }
+
+            div.ql-editor {
+                &.ql-blank::before {
+                    margin: 1em 0px;
+                }
+                iframe {
+                    width: 500px;
+                    height: 300px;
+                }
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            a {
+                color: whitesmoke !important;
+                text-decoration: none !important;
+                background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);                                
+                &:hover {
+                    color: whitesmoke !important;
+                    background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+                    text-decoration: none !important;                    
+                }
+            }
+        }
+    }
+}
+
+quill-view {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-editor {
+            iframe {
+                width: 500px;
+                height: 300px;
+            }
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+            &.ql-blank::before {
+                margin: 1em 0px;
+            }
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+            }
+        }
+    }
+}
+
+quill-view-html {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-edtior.ql-blank::before {
+            margin: 1em 0px;
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+            
+            &:hover {
+                color: var(--site-accent-hover) !important;
+                text-decoration: underline !important;
+            }
+        }
+    }
+}
+
+.ql-toolbar.ql-snow {
+    border: 1px solid var(--site-borders);
+    color: var(--site-text-color);
+    padding: 0;
+    svg {
+        stroke: var(--site-text-color);
+
+        .ql-stroke {
+            stroke: var(--site-text-color);
+        }
+
+        .ql-stroke:hover {
+            stroke: var(--site-accent);
+        }
+    }
+
+    svg:hover {
+        stroke: var(--site-accent);
+    }
+}
+
+quill-editor {
+    .ql-container.ql-snow {
+        border: 1px solid var(--site-borders);
+        margin-bottom: 2rem;
+        height: 300px;
+        font-size: 16px;
+        font-family: 'Raleway';
+        box-shadow: var(--site-dropshadow);
+
+        p {
+            margin: 1em 0px;
+        }
+        
+        div.ql-editor.ql-blank::before {
+            margin: 1em 0px;
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+            
+            &:hover {
+                color: var(--site-accent-hover) !important;
+                text-decoration: underline !important;
+            }
+        }
+    }
+    .ql-editor:data-placeholder {
+        color: var(--site-text-color) !important;
+    }
+    .ql-snow .ql-picker {
+        color: var(--site-text-color) !important;
+        font-size: 16px !important;
+        top: 1rem !important;
+        left: 0.25rem !important;
+        font-family: 'Raleway' !important;
+    }
+    .ql-snow .ql-picker-options {
+        background-color: var(--site-background) !important;
+    }
+    div {
+        span.ql-formats {
+            border-right: 1px solid var(--site-borders);
+            margin-right: 0 !important;
+            padding: 0 10px 0 10px;
+        }
+        button {
+            margin-bottom: 0;
+            color: var(--site-text-color);
+            font-size: 16px;
+            height: auto !important;
+            box-shadow: none;
+        }
+        button:hover {
+            color: whitesmoke !important;
+            background-color: var(--site-accent) !important;
+        }
+        button.ql-active {
+            color: whitesmoke !important;
+            background-color: var(--site-accent) !important;
+        }
+    }
+}
+
+/* NgSelect */
+.ng-select.custom {
+    border: 1px solid var(--site-borders);
+    min-height: 0px;
+    border-radius: 0;
+    margin-bottom: 1.5rem;
+    color: var(--site-text-color);
+    box-shadow: var(--site-dropshadow);
+    background-color: var(--site-background);
+}
+
+.ng-select.custom .ng-control {
+    min-height: 0px;
+    border-radius: 0;
+    border: none;
+}
+
+.ng-select.custom .ng-select-container {
+    min-height: 0px;
+    border-radius: 0;
+    border: none;
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+.ng-dropdown-panel.custom {
+    border: 1px solid var(--site-borders);
+    min-height: 0px;
+    border-radius: 0;
+    background-color: var(--site-background);
+}
+
+.ng-dropdown-panel.custom .ng-dropdown-panel-items {
+    background-color: var(--site-background);
+}
+
+.ng-dropdown-panel.ng-select-top {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border: 1px solid var(--site-borders);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border: 1px solid var(--site-borders);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
+    border-radius: 0;
+}
+
+.ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
+    border-radius: 0;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+    background-color: var(--site-accent-hover);
+    color: whitesmoke;
+}
+ 
+.ng-dropdown-panel.custom .ng-dropdown-panel-items .ng-option {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+.ng-dropdown-panel.custom .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    border-radius: 0;
+    border: 1px solid var(--site-borders);
+    background-color: var(--site-accent);
+    color: whitesmoke;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+    border-right: 1px solid var(--site-accent-hover);
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
+    background-color: var(--site-accent-hover);
+}
+
+/* Ngx Pagination */
+pagination-controls {
+    width: 100%;
+    text-align: center;
+    ul.ngx-pagination {
+        margin-bottom: 0;
+        li {
+            border: 1px solid var(--site-borders);
+            border-right: none;
+            margin-right: 0;
+
+            &:last-child {
+                border-right: 1px solid var(--site-borders);
+            }
+        }
+
+        li.disabled {
+            color: var(--site-text-color);
+            padding: 5px 10px;
+            cursor: not-allowed;
+        }
+
+        li.current {
+            padding: 5px 10px;
+            color: whitesmoke;
+            background-color: var(--site-accent);
+        }
+
+        a {
+            margin: 0;
+            color: var(--site-text-color);
+            padding: 5px 10px;
+
+            &:hover {
+                background-color: var(--site-accent);
+                color: whitesmoke;
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+<div class="blogs-list-container">
+    <div class="blogs-list-header">
+        <h2>My Blogs</h2>
+        <div class="blog-controls">
+            <form [formGroup]="searchBlogs" class="search-blogs" (ngSubmit)="searchFor()">
+                <div class="blogs-search">
+                    <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
+                    <button class="submit-blog-search" type="submit"><i-feather name="search"></i-feather></button>
+                </div>
+            </form>
+            <button class="blog-filter" style="border-left: 1px solid var(--site-borders)" (click)="filterByUnpublished()" *ngIf="!isUnpubFiltered; else unpubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
+            <ng-template #unpubFiltered>
+                <button class="blog-filter active" style="border-left: 1px solid var(--site-borders)" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
+            </ng-template>
+            <button class="blog-filter" (click)="filterByPublished()" *ngIf="!isPubFiltered; else pubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
+            <ng-template #pubFiltered>
+                <button class="blog-filter active" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
+            </ng-template>
+            <button class="add-blog" (click)="openNewBlogForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Blog</button>
+        </div>
+    </div>
+    <div class="blogs-list">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="isBlogsEmpty(); else blogsList">You haven't created any blogs yet.</h4>
+        <ng-template #blogsList>
+            <div class="blog-list">
+                <div class="blog-item" *ngFor="let blog of paginatedBlogs.docs | paginate: {
+                    itemsPerPage: paginatedBlogs.limit,
+                    currentPage: pageNum,
+                    totalItems: paginatedBlogs.totalDocs
+                }">
+                    <div class="blog-check">
+                        <button class="check-published" (click)="setPublishStatus(blog._id, blog.published)" *ngIf="blog.published; else blogUnpublished">
+                            <i-feather name="check-circle"></i-feather>
+                        </button>
+                        <ng-template #blogUnpublished>
+                            <button class="check-unpublished" (click)="setPublishStatus(blog._id, blog.published)">
+                                <i-feather name="circle"></i-feather>
+                            </button>
+                        </ng-template>
+                    </div>
+                    <div class="blog-info">
+                        <div class="info">
+                            <h3 *ngIf="blog.published; else unpubTitle"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h3>
+                            <ng-template #unpubTitle>
+                                <h3><a>{{ blog.title }}</a></h3>
+                            </ng-template>
+                            <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                            <h4 title="Created On"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                        </div>
+                    </div>
+                    <div class="blog-control-buttons">
+                        <button class="blog-controls top" (click)="openPreview(blog)"><i-feather name="eye"></i-feather></button>
+                        <button class="blog-controls mid" (click)="openEditForm(blog)"><i-feather name="edit-3"></i-feather></button>
+                        <button class="blog-controls bottom" (click)="askDelete(blog._id)"><i-feather name="trash-2"></i-feather></button>
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-template>
+    </div>
+</div>

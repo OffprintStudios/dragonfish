@@ -1,0 +1,5 @@
+<div *ngFor="let alert of alerts" class="{{ cssClass(alert) }}">
+    <span style="margin-right:0.5rem;"><b>{{ alert.title }}</b></span>
+    {{ alert.message }}
+    <a class="close" (click)="removeAlert(alert)"><i-feather name="x-circle"></i-feather></a>
+</div>

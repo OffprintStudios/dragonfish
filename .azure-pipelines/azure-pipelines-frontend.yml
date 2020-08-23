@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude: 
+      - /
+    include: 
+      - /frontend/*
+      - /.azure-pipelines/azure-pipelines-frontend.yml
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.6.0'
+  displayName: 'Install Node.js 14.6.0'
+
+- script: |
+    yarn global add @angular/cli@9.1.5    
+    yarn global add typescript@3.9.7 
+  displayName: 'Install global tools'
+
+- task: Cache@2
+  inputs:
+  # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
+    key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/frontend/yarn.lock'
+    path: '$(Build.SourcesDirectory)/frontend/node_modules'
+    cacheHitVar: 'CacheRestored'
+  displayName: "Cache node_modules"
+
+- script: |
+    cd frontend
+    yarn install --production=false --non-interactive --frozen-lockfile
+  displayName: "Yarn install"
+  condition: ne(variables['CacheRestored'], 'true')
+
+- script: |
+    cd frontend
+    yarn build:prod
+  displayName: "Build"
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.SourcesDirectory)/dist/src/static'
+    ArtifactName: 'frontend-dist-static'
+    publishLocation: 'Container'
+  displayName: 'Publish /dist/src/static'

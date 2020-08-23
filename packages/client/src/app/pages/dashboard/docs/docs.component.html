@@ -1,0 +1,36 @@
+<div class="docs-container">
+    <div class="docs-header">
+        <h2>Documents & Policies</h2>
+        <div class="docs-controls" *ngIf="isAdmin()">
+            <button class="docs-control-button" (click)="switchToCreateDoc()"><i-feather name="plus"></i-feather>Document</button>
+        </div>
+    </div>
+
+    <hr class="header-divider">
+    <ng-container *ngIf="docs && docs.length > 0; else noDocs">
+        <div class="docs-grid" *ngIf="route.children.length === 0">
+            <div class="doc-box" *ngFor="let doc of docs">
+                <div class="doc-header">
+                    <h2>{{ doc.docName }}</h2>
+                    <hr>
+                </div>
+                <div class="doc-body">
+                    <p>{{ doc.docDescription }}</p>
+                </div>
+                <div class="doc-footer">
+                    <button (click)="editDoc(doc)"><i-feather name="edit-3"></i-feather></button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #noDocs>
+        <div style="text-align: center; margin-top: 2rem;">
+            <h3 style="margin-bottom: 0;">No docs available yet</h3>
+            <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Contact the admin if docs should be here, but aren't.</p>
+        </div>
+    </ng-template>
+
+    <ng-container *ngIf="route.children.length > 0">
+        <router-outlet></router-outlet>
+    </ng-container>
+</div>

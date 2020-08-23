@@ -1,0 +1,50 @@
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>
+
+<ng-container *ngIf="!loading">
+    <h3 style="text-align: center;">
+        Edit "{{ docToEdit.docName }}"
+    </h3>
+
+    <form [formGroup]="editDocForm" (ngSubmit)="submitDocEdits()">
+        <label for="docName">{{ docToEdit.docName }}</label>
+        <input type="text" formControlName="docName" class="u-full-width" placeholder="Name">
+
+        <label for="docBody">Body</label>
+        <quill-editor minLength="3" formControlName="docBody" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
+            <div quill-editor-toolbar>
+                <span class="ql-formats">
+                    <button class="ql-bold" [title]="'Bold'"></button>
+                    <button class="ql-italic" [title]="'Italic'"></button>
+                    <button class="ql-underline" [title]="'Underline'"></button>
+                    <button class="ql-strike" [title]="'Strikethrough'"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-align ql-center" value="center"></button>
+                    <button class="ql-align ql-right" value="right"></button>
+                    <button class="ql-align ql-justify" value="justify"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-list ql-bullet" value="bullet"></button>
+                    <button class="ql-list ql-ordered" value="ordered"></button>
+                </span>
+                <span class="ql-formats">
+                    <button class="ql-divider" [title]="'Divider'"></button>
+                    <button class="ql-link" [title]="'Link'"></button>
+                    <button class="ql-image" [title]="'Image link'"></button>
+                    <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                    <button class="ql-code" [title]="'Code'"></button>
+                    <button class="ql-clean" [title]="'Remove formatting'"></button>
+                </span>
+                <select class="ql-header"></select>
+            </div>
+        </quill-editor>
+
+        <hr>
+        <div class="loader" *ngIf="submitting">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <button type="submit" class="button-primary u-full-width" *ngIf="!submitting">Submit Edits</button>
+    </form>
+</ng-container>

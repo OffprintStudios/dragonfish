@@ -1,0 +1,98 @@
+
+<div class="nav">
+  <nag-bar></nag-bar>
+  <header>
+    <div class="nav-box">
+      <div class="user-menu" *ngIf="currentUser; else signUp">
+        <img class="user-menu-avatar" (click)="openUserMenu()" [src]="currentUser.profile.avatar" #userMenu/>
+        <div class="user-menu-dropdown">
+          <a class="menu-icon" [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather><span class="stat-counter">0</span></a>
+          <a class="menu-icon" [routerLink]="['/home/inbox']"><i-feather name="mail"></i-feather><span class="stat-counter">0</span></a>
+        </div>
+        <!--<button class="login" (click)="openUserMenu()" #userMenu>Menu</button>-->
+      </div>
+      <ng-template #signUp>
+        <div class="user-menu">
+          <button class="login" [routerLink]="['/register']">Join / Log In</button>
+        </div>
+      </ng-template>
+      <div class="site-logo">
+        <h1><a class="offprint" [routerLink]="['/home']">OFFPRINT</a></h1>
+        <h2>{{ rotatingSlogan }}</h2>
+      </div>
+      <div class="search-menu">
+        <button class="search">Search</button>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav>
+  <div class="nav-items">
+    <a [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span>Home</a>
+    <a [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left"><span class="link-icon"><i-feather name="map"></i-feather></span>Browse</a> 
+    <a [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Groups</a>
+    <a [routerLink]="['/news']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
+    <ng-container *ngIf="currentUser">
+      <a [routerLink]="['/home/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="feather"></i-feather></span>My Works</a>
+      <a [routerLink]="['/home/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>My Blogs</a>
+      <a [routerLink]="['/home/watching']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="eye"></i-feather></span>Watching</a>
+      <a [routerLink]="['/home/collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections</a>
+      <a [routerLink]="['/home/history']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="layers"></i-feather></span>History</a>
+    </ng-container>
+  </div>
+</nav>
+
+<div class="main-stage">
+  <alert></alert>
+
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
+
+  <div class="container footer">
+    <footer>
+      <div class="grid-container thirds">
+        <div>
+          <h1>Help</h1>
+          <p> Here's some useful tips to get you started:</p>
+          <ul>
+            <li><a [routerLink]="['/docs/what-is-offprint']">What is Offprint?</a></li>
+            <li><a [routerLink]="['/docs/connect-with-offprint']">Connect with Offprint</a></li>
+            <li><a [routerLink]="['/docs/omnibus']">The Offprint Omnibus</a></li>
+            <li><a [routerLink]="['/docs/code-of-conduct']">Code of Conduct</a></li>
+          </ul>
+        </div>
+        <div>
+          <h1>About</h1>
+          <p>
+            We're a site dedicated to the cultivation of a community of writers 
+            that help each other grow, get better, and just have fun.
+          </p>
+          <p>
+            &copy;2020 Offprint Studios
+          </p>
+          <ul>
+            <li><a [routerLink]="['/docs/terms-and-privacy']">Terms of Service & Privacy Policy</a></li>
+            <li><a [routerLink]="['/docs/open-source-licenses']">Open Source Licenses</a></li>
+            <li><a [routerLink]="['/site-staff']">Site Staff</a></li>
+            <li><a [routerLink]="['/supporters']">Patreon Supporters</a></li>
+          </ul>
+        </div>
+        <div>
+          <h1>Statistics</h1>
+          <p>
+            More detailed stats to come.
+          </p>
+          <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+          </div>
+          <ul *ngIf="!loading">
+            <li>{{ footerStats.numUsers | toLocaleString }} user{{ footerStats.numUsers | pluralize }} registered</li>
+            <li>{{ footerStats.numWorks | toLocaleString }} work{{ footerStats.numWorks | pluralize }} written</li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
