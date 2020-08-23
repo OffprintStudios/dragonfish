@@ -1,0 +1,131 @@
+div.loader {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+div.comments-topbar {
+    max-width: 70%;
+    margin: 2rem auto 0 auto;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--site-borders);
+    div.paginator {
+        display: inline-block;
+    }
+    div.create-comment {
+        float: right;
+
+        button {
+            padding-left: 10px;
+            padding-right: 10px;
+            i-feather {
+                position: relative;
+                top: 0.5rem;
+                stroke-width: 1;
+            }
+        }
+    }
+}
+
+div.comments-container {
+    max-width: 70%;
+    margin: 0 auto;
+
+    div.loader {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    div.comment {
+        border: 1px solid var(--site-borders);
+        padding: 10px;
+        box-shadow: var(--site-dropshadow);
+        margin-top: 2.5rem;
+
+        div.row {
+            margin-bottom: 0;
+
+            div.comm-side-header {
+                border-right: 1px solid var(--site-borders);
+                padding-right: 12px;
+
+                img {
+                    max-width: 125px;
+                    max-height: 125px;
+                    object-fit: cover;
+                    border: 1px solid var(--site-borders);
+                    border-radius: 50%;
+                    display: block;
+                    margin: 0 auto 0 auto;
+                    box-shadow: var(--site-dropshadow);
+                }
+
+                h3.comm-user {
+                    font-size: 26px;
+                    text-align: center;
+                    margin-bottom: 0;
+                    font-weight: 400;
+                }
+                
+                span.comm-created-at {
+                    display: inline-block;
+                    width: 100%;
+                    margin: 0 auto;
+                }
+            }
+
+            div.comm-body-box {
+                color: var(--site-text-color);
+                position: relative;
+
+                div.comm-meta-panel {
+                    width: 100%;
+                    border-bottom: 1px solid var(--site-borders);
+                    margin-bottom: 1rem;
+                }
+
+                span.comm-divider {
+                    margin: 0 0.5rem 0 0.5rem;
+                }
+
+                span.comm-controls {
+                    float: right;
+
+                    a {
+                        margin-left: 0.25rem;
+                        margin-right: 0.25rem;
+
+                        i-feather {
+                            position: relative;
+                            width: 20px;
+                            height: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.comments-bottom-bar {
+    max-width: 70%;
+    margin: 0 auto;
+    margin-top: 2.5rem;
+    border-top: 1px solid var(--site-borders);
+    padding-top: 10px;
+    div.paginator {
+        display: inline-block;
+    }
+    div.create-comment {
+        float: right;
+
+        button {
+            padding-left: 10px;
+            padding-right: 10px;
+            i-feather {
+                position: relative;
+                top: 0.5rem;
+                stroke-width: 1;
+            }
+        }
+    }
+}
