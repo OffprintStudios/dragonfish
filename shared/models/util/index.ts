@@ -1,1 +1,0 @@
-export { PaginateResult } from './paginate-result.model';

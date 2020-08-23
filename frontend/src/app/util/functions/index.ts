@@ -1,1 +1,0 @@
-export { calculateApprovalRating } from './approval-rating';
