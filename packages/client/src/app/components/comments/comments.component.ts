@@ -30,7 +30,7 @@ export class CommentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData();
-    
+
     // Setting up the comment form
     const pos = new GlobalPosition({
       placement: InsidePlacement.BOTTOM,
@@ -50,21 +50,15 @@ export class CommentsComponent implements OnInit {
   }
 
   fetchData(/*pageNum: number*/) {
-    console.log(`Beginning data fetch`);
-    console.log(this.itemKind);
     this.loading = true;
     if (this.itemKind === 'Blog') {
-      console.log(`Hit Blog`);
       this.commentsService.getBlogComments(this.itemId).subscribe(comments => {
         this.comments = comments;
-        console.log(`Blog Comments Fetched`);
         this.loading = false;
       });
     } else if (this.itemKind === 'Work') {
-      console.log(`Hit Work`);
       this.commentsService.getWorkComments(this.itemId).subscribe(comments => {
         this.comments = comments;
-        console.log(`Work Comments Fetched`);
         this.loading = false;
       });
     }
@@ -78,5 +72,10 @@ export class CommentsComponent implements OnInit {
         return false;
       }
     }
+  }
+
+  newComment(itemId: string, itemKind: string) {
+    this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind});
+    this.commentForm.open();
   }
 }

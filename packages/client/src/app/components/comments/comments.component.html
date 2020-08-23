@@ -10,7 +10,7 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="pageNum = $event" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment"><i-feather name="message-circle"></i-feather></button>
+            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
             <button title="Refresh Thread" style="border-left: 0; border-right: 0;"><i-feather name="refresh-cw"></i-feather></button>
             <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
@@ -20,19 +20,16 @@
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
-        <div style="margin-top: 2rem; text-align: center;">
+        <div style="margin-top: 2rem; text-align: center;" *ngIf="comments.length === 0">
             <h4 style="margin-bottom: 0;">No one's said anything yet...</h4>
             <p style="margin-top: 0; font-style: italic;">But you could be the first!</p>
         </div>
         <div class="comment" *ngFor="let comment of comments | paginate: { id: 'comments', itemsPerPage: 5, currentPage: pageNum, totalItems: comments.length }; let i = index">
             <div class="row">
                 <div class="comm-side-header three columns">
-                    <img *ngIf="comment.avatar; else noAvatar" src="{{ comment.avatar }}">
-                    <ng-template #noAvatar>
-                        <img src="assets/img/avatar.png">
-                    </ng-template>
+                    <img [src]="comment.user.profile.avatar">
                     <h3 class="comm-user">
-                        <a [routerLink]="['/portfolio', comment.userId, comment.username | slugify]">{{ comment.username }}</a>
+                        <a [routerLink]="['/portfolio', comment.user._id, comment.user.username | slugify]">{{ comment.user.username }}</a>
                     </h3>
                     <span class="comm-created-at">
                         <div style="text-align: center;">
@@ -69,7 +66,7 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="pageNum = $event" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment"><i-feather name="message-circle"></i-feather></button>
+            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
             <button title="Refresh Thread" style="border-left: 0; border-right: 0;"><i-feather name="refresh-cw"></i-feather></button>
             <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
