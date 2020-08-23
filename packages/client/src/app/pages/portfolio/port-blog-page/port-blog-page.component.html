@@ -1,4 +1,10 @@
-<div class="blog-container">
+<ng-container *ngIf="loading">
+    <div class="loader">
+        <div class="lds-dual-ring"></div>
+    </div>
+</ng-container>
+
+<div class="blog-container" *ngIf="!loading">
     <div class="content-controls-container" *ngIf="currentUserIsSame(); else notThisUser">
         <a class="meta" title="Edit" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></a>
         <a class="meta" title="Delete" (click)="askDelete()"><i-feather name="trash-2"></i-feather></a>
@@ -22,3 +28,7 @@
         <quill-view [content]="blogData.body" format="json"></quill-view>
     </div>
 </div>
+
+<ng-container *ngIf="!loading">
+    <comments [itemId]="blogData._id" [itemKind]="'Blog'" [pageNum]="1"></comments>
+</ng-container>

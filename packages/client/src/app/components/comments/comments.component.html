@@ -1,1 +1,54 @@
-<p>comments works!</p>
+<ng-container *ngIf="loading">
+    <div class="loader">
+        <div class="lds-dual-ring"></div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!loading">
+    <div class="comments-container">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <div style="margin-top: 2rem; text-align: center;">
+            <h2>No one's said anything yet...</h2>
+        </div>
+        <div class="comment" *ngFor="let comment of comments; let i = index">
+            <div class="row">
+                <div class="comm-side-header three columns">
+                    <img *ngIf="comment.avatar; else noAvatar" src="{{ comment.avatar }}">
+                    <ng-template #noAvatar>
+                        <img src="assets/img/avatar.png">
+                    </ng-template>
+                    <h3 class="comm-user">
+                        <a [routerLink]="['/portfolio', comment.userId, comment.username | slugify]">{{ comment.username }}</a>
+                    </h3>
+                    <span class="comm-created-at">
+                        <div style="text-align: center;">
+                            {{ comment.createdAt | date: 'mediumDate'}}
+                        </div>
+                        <div style="text-align: center;">
+                            {{ comment.createdAt | date: 'mediumTime' }}
+                        </div>
+                    </span>
+                </div>
+                <div class="comm-body-box nine columns">
+                    <div class="comm-meta-panel">
+                        <span class="comm-id">#{{ i + 1 }}</span>
+                        <span class="comm-controls">
+                            <a><i-feather name="edit-3"></i-feather></a>
+                        </span>
+                        <ng-template #notThisUser>
+                            <span class="comm-controls" *ngIf="currentUser">
+                                <a><i-feather name="corner-up-left"></i-feather></a>
+                                <a><i-feather name="flag"></i-feather></a>
+                            </span>
+                        </ng-template>
+                    </div>
+                    <div class="comm-body">
+                        <quill-view [content]="comment.body" sanitize="true" format="json"></quill-view>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
