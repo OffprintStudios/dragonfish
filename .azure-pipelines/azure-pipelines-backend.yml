@@ -4,9 +4,7 @@ trigger:
       - master
   paths:
     exclude: 
-      - /frontend
       - /.azure-pipelines/azure-pipelines-frontend.yml
-      - /docs
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -22,6 +20,7 @@ steps:
       yarn global add @nestjs/cli@7.4.1
       yarn global add typescript@3.9.7
       yarn global add neon-cli@0.4.0
+      yarn global add @angular/cli@10.0.4
     displayName: 'Install global tools'
 
   - task: Cache@2
