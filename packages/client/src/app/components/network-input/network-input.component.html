@@ -1,0 +1,32 @@
+<div class="network-input-container">
+    <input 
+        [type]="inputType"
+        [placeholder]="inputPlaceholder"
+        [ngClass]="inputClasses"
+        [readonly]="currentState === _InputState.Default || currentState === _InputState.Uploading"
+        [(ngModel)]="inputValue">
+    <!-- In the "Default" state: -->
+    <a class="button" (click)="beginEditing()" *ngIf="currentState === _InputState.Default">
+        <i-feather name="edit-3"></i-feather>
+    </a>
+
+    <!-- In the "Editing" state: -->
+    <a class="button" (click)="accept()" *ngIf="currentState === _InputState.Editing">
+        <i-feather name="check"></i-feather>
+    </a>
+    <a class="button" (click)="cancel()" *ngIf="currentState === _InputState.Editing">
+        <i-feather name="x"></i-feather>
+    </a>
+
+    <!-- In the "Uploading" state: -->
+    <div class="loader" *ngIf="currentState === _InputState.Uploading">
+        <div class="lds-dual-ring"></div>
+    </div>
+</div>
+
+<input *ngIf="currentState === _InputState.Editing"
+    type="password"
+    placeholder="Current Password"
+    [ngClass]="passwordBoxClasses"
+    [(ngModel)]="passwordValue"
+    required>

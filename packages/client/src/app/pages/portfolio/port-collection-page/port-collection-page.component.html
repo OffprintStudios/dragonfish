@@ -1,0 +1,187 @@
+<div class="collection-container">
+    <div class="loader" *ngIf="loading">
+        <div class="lds-dual-ring"></div>
+    </div>
+
+    <ng-container *ngIf="!loading">
+        <ng-container *ngIf="collection.details.length > 0; else noWorks">
+            <!--If this collection is private-->
+            <ng-container *ngIf="collection.audit.isPublic === false; else publicColl">
+                <ng-container *ngIf="currentUserIsSame(); else notSame">
+                    <div class="header">
+                        <div class="coll-pub">
+                            <i-feather name="lock"></i-feather>
+                        </div>
+                        <div class="coll-name">
+                            <h2>{{ collection.name }}</h2>
+                        </div>
+                        <div class="coll-desc">
+                            <h3>{{ collection.desc }}</h3>
+                        </div>
+                    </div>
+                    <div class="works-feed">
+                        <div *ngFor="let entry of $any(collection.details)">
+                            <div class="work-container">
+                                <!--Header-->
+                                <div class="work-header">
+                                    <ng-container [ngSwitch]="entry.work.meta.rating">
+                                        <div class="rating everyone small" *ngSwitchDefault>E</div>
+                                        <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                        <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                        <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                    </ng-container>                            
+                                    <h1><a [routerLink]="['/work', entry.work._id, entry.work.title | slugify]">{{ entry.work.title }}</a></h1>                            
+                                    <h2>by <a [routerLink]="['/portfolio', entry.work.author._id, entry.work.author.username | slugify]">{{ entry.work.author.username }}</a></h2>
+                                    <div class="approval" title="Approval Rating">
+                                        <i-feather name="heart"></i-feather>0%
+                                    </div>
+                                    <div class="category-genre">
+                                        {{ entry.work.meta.category | fixCategories }}<span>//</span>
+                                        {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                        <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
+                                            <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                        </ng-container>
+                                    </div>                            
+                                </div>
+        
+                                <!--Short description-->
+                                <div class="short-description">
+                                    <div *ngIf="entry.work.meta.coverArt">
+                                        <img class="cover-art bordered-cover-art" [src]="entry.work.meta.coverArt">
+                                    </div>
+                                    <div>
+                                        {{ entry.work.shortDesc }}
+                                    </div>
+                                </div>
+        
+                                <!--Work stats-->
+                                <div class="work-stats">
+                                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ entry.work.stats.views | abbreviate }}<span>//</span>
+                                    <i-feather name="message-circle" title="Comments"></i-feather>{{ entry.work.stats.comments | abbreviate }}<span>//</span>
+                                    <i-feather name="pen-tool" title="Words"></i-feather>{{ entry.work.stats.totWords | abbreviate }}<span>//</span>
+                                    <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | date:'shortDate' }}<span>//</span>
+                                    {{ entry.work.meta.status }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-template #notSame>
+                    <div style="text-align: center;">
+                        <h3 style="margin-bottom: 0;">You don't have permission to view this collection.</h3>
+                        <p style="margin-top: 0; font-style: italic;">
+                            Navigate back to the previous page.
+                        </p>
+                    </div>
+                </ng-template>
+            </ng-container>
+        
+            <!--If the collection is public-->
+            <ng-template #publicColl>
+                <div class="header">
+                    <div class="coll-pub" *ngIf="currentUserIsSame()">
+                        <i-feather name="unlock"></i-feather>
+                    </div>
+                    <div class="coll-name">
+                        <h2>{{ collection.name }}</h2>
+                    </div>
+                    <div class="coll-desc">
+                        <h3>{{ collection.desc }}</h3>
+                    </div>
+                </div>
+                <div class="works-feed">
+                    <div *ngFor="let entry of $any(collection.details)">
+                        <div class="work-container">
+                            <!--Header-->
+                            <div class="work-header">
+                                <ng-container [ngSwitch]="entry.work.meta.rating">
+                                    <div class="rating everyone small" *ngSwitchDefault>E</div>
+                                    <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                    <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                    <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                </ng-container>                            
+                                <h1><a [routerLink]="['/work', entry.work._id, entry.work.title | slugify]">{{ entry.work.title }}</a></h1>                            
+                                <h2>by <a [routerLink]="['/portfolio', entry.work.author._id, entry.work.author.username | slugify]">{{ entry.work.author.username }}</a></h2>
+                                <div class="approval" title="Approval Rating">
+                                    <i-feather name="heart"></i-feather>0%
+                                </div>
+                                <div class="category-genre">
+                                    {{ entry.work.meta.category | fixCategories }}<span>//</span>
+                                    {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                    <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
+                                        <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                    </ng-container>
+                                </div>                            
+                            </div>
+    
+                            <!--Short description-->
+                            <div class="short-description">
+                                <div *ngIf="entry.work.meta.coverArt">
+                                    <img class="cover-art bordered-cover-art" [src]="entry.work.meta.coverArt">
+                                </div>
+                                <div>
+                                    {{ entry.work.shortDesc }}
+                                </div>
+                            </div>
+    
+                            <!--Work stats-->
+                            <div class="work-stats">
+                                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ entry.work.stats.views | abbreviate }}<span>//</span>
+                                <i-feather name="message-circle" title="Comments"></i-feather>{{ entry.work.stats.comments | abbreviate }}<span>//</span>
+                                <i-feather name="pen-tool" title="Words"></i-feather>{{ entry.work.stats.totWords | abbreviate }}<span>//</span>
+                                <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | date:'shortDate' }}<span>//</span>
+                                {{ entry.work.meta.status }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-template #noWorks>
+            <ng-container *ngIf="collection.audit.isPublic === false; else publicNoWorks">
+                <ng-container *ngIf="currentUserIsSame(); else privateNoWorks">
+                    <div class="header">
+                        <div class="coll-pub">
+                            <i-feather name="lock"></i-feather>
+                        </div>
+                        <div class="coll-name">
+                            <h2>{{ collection.name }}</h2>
+                        </div>
+                        <div class="coll-desc">
+                            <h3>{{ collection.desc }}</h3>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <h3 style="margin-bottom: 0;">You haven't added any works yet.</h3>
+                        <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 16px;">Head to any work page and click the Add to Collection button to get started!</p>
+                    </div>
+                </ng-container>
+                <ng-template #privateNoWorks>
+                    <div style="text-align: center;">
+                        <h3 style="margin-bottom: 0;">You don't have permission to view this collection.</h3>
+                        <p style="margin-top: 0; font-style: italic;">
+                            Navigate back to the previous page.
+                        </p>
+                    </div>
+                </ng-template>
+            </ng-container>
+            <ng-template #publicNoWorks>
+                <div class="header">
+                    <div class="coll-pub" *ngIf="currentUserIsSame()">
+                        <i-feather name="unlock"></i-feather>
+                    </div>
+                    <div class="coll-name">
+                        <h2>{{ collection.name }}</h2>
+                    </div>
+                    <div class="coll-desc">
+                        <h3>{{ collection.desc }}</h3>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <h4 style="margin-bottom: 0;">This user hasn't added any works to this collection yet.</h4>
+                    <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 16px;">Check back later to see if they change that!</p>
+                </div>
+            </ng-template>
+        </ng-template>
+    </ng-container>
+</div>

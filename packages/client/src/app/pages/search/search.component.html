@@ -1,0 +1,22 @@
+<div class="search-nav">
+    <div class="search-bar">
+        <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+            <input formControlName="query" type="text" class="u-full-width" placeholder="Search ...">
+        </form>
+    </div>
+    <div class="search-nav-items">
+        <a [routerLink]="['/search/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="book-open"></i-feather></span>0 Works</a>
+        <a [routerLink]="['/search/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>0 Blogs</a>
+        <a [routerLink]="['/search/users']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>0 Users</a>
+    </div>
+</div>
+
+<div *ngIf="route.children.length === 0">
+    <div style="text-align: center;">
+        <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
+        <p style="margin-top: 0; margin-bottom: 0;">Looks like you're here a bit too early.</p>
+        <p style="margin-top: 0;">Check the patch notes to see when this feature will be made available!</p>
+    </div>
+</div>
+
+<router-outlet></router-outlet>

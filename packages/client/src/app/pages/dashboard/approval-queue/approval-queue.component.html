@@ -1,0 +1,120 @@
+<div class="approval-queue-container">
+    <div class="approval-queue-header">
+        <h2>Approval Queue</h2>
+        <div class="queue-controls">
+            <button class="queue-filter" (click)="changeQueueView()" *ngIf="!forMe; else resetQueue"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>My Claims</button>
+            <ng-template #resetQueue>
+                <button class="queue-filter active" (click)="changeQueueView()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>My Claims</button>
+            </ng-template>
+            <button class="queue-refresh" (click)="forceRefresh()"><i-feather name="refresh-cw" style="margin-right: 1rem;"></i-feather>Refresh</button>
+        </div>
+    </div>
+    <hr class="header-divider">
+    <div class="queue-list" *ngIf="!forMe; else myQueue">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="queueIsEmpty(); else theQueue">Surprisingly, no one's submitted anything yet.</h4>
+        <ng-template #theQueue>
+            <div class="work-list">
+                <div class="work-item" *ngFor="let entry of queue.docs | paginate: {
+                    itemsPerPage: queue.limit,
+                    currentPage: pageNum,
+                    totalItems: queue.totalDocs
+                }">
+                    <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
+                        <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
+                    </div>
+                    <div class="work-info">
+                        <div class="info">
+                            <div class="work-header">
+                                <ng-container [ngSwitch]="entry.workToApprove.meta.rating">
+                                    <div class="rating everyone small" *ngSwitchDefault>E</div>
+                                    <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                    <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                    <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                </ng-container>
+                                <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>                                
+                                <h4 class="author-byline">by <a [routerLink]="['/portfolio', entry.workToApprove.author._id, entry.workToApprove.author.username | slugify]">
+                                    {{ entry.workToApprove.author.username }}
+                                </a></h4>
+                            </div>
+                            <div class="info-bits">
+                                <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
+                                <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
+                                <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                            </div>
+                            <div class="stats">
+                                <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
+                                <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
+                        <img class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                    </div>
+                    <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
+                        <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
+                    </div>
+                    <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
+                        <button class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                        <button class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-template>
+    </div>
+
+    <ng-template #myQueue>
+        <div class="queue-list">
+            <div class="loader" *ngIf="loading">
+                <div class="lds-dual-ring"></div>
+            </div>
+            <h4 style="text-align: center;" *ngIf="myQueueIsEmpty(); else theQueue">You haven't claimed anything yet.</h4>
+            <ng-template #theQueue>
+                <div class="work-list">
+                    <div class="work-item" *ngFor="let entry of queueForMod.docs | paginate: {
+                        itemsPerPage: queue.limit,
+                        currentPage: pageNum,
+                        totalItems: queue.totalDocs
+                    }">
+                        <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
+                            <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
+                        </div>
+                        <div class="work-info">
+                            <div class="info">
+                                <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>
+                                <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
+                                <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
+                                <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                                <div class="stats">
+                                    <h4>{{ entry.workToApprove.meta.rating }}</h4><span>//</span>
+                                    <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
+                                    <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
+                                    <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
+                                    <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
+                                    <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
+                            <img class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                        </div>
+                        <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
+                            <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
+                        </div>
+                        <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
+                            <button class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                            <button class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
+                        </div>
+                    </div>
+                </div>
+                <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+            </ng-template>
+        </div>    
+    </ng-template>
+</div>

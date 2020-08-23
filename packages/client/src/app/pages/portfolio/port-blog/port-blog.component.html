@@ -1,0 +1,56 @@
+<div class="port-blogs-header">
+    <h2>Blogs</h2>
+</div>
+<hr class="header-divider">
+
+<div *ngIf="blogsArePresent();else noBlogs">
+    <div class="blog-feed">
+        <div class="blog-container" *ngFor="let blog of portBlogsData.docs | paginate: {
+            itemsPerPage: portBlogsData.limit,
+            currentPage: pageNum,
+            totalItems: portBlogsData.totalDocs
+        }">
+            <div class="blog-box">
+                <div class="content-controls-container" *ngIf="currentUser">
+                    <span class="content-controls">
+                        <a class="meta" title="Report"><i-feather name="flag"></i-feather></a>
+                    </span>
+                </div>
+                <div class="blog-header">
+                    <h1 class="header"><a [routerLink]="['/portfolio', portUserId, portUserName, 'blog', blog._id]">{{ blog.title }}</a></h1>
+                    <div style="text-align: center;">
+                        <h2 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h2>
+                        <span>//</span>
+                        <h2 class="subtitle">{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h2>
+                        <span>//</span>
+                        <h2 class="subtitle">{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h2>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <quill-view [content]="blog.body" format="json"></quill-view>
+                </div>
+            </div>
+            <div class="blog-footer">
+                <div style="text-align: center;">
+                    <a class="button" [routerLink]="['/portfolio', portUserId, portUserName, 'blog', blog._id]">Continue Reading</a>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+</div>
+
+<ng-template #noBlogs>
+    <div style="text-align: center;" *ngIf="currentUser; else noUser">
+        <h3 *ngIf="!currentUserIsSame(); else thisIsUser">This user hasn't posted anything yet. Check back later!</h3>
+        <ng-template #thisIsUser>
+            <h3 style="margin-bottom: 0;">You haven't posted any blogs yet.</h3>
+            <p style="margin-top: 0; font-style: italic;">Head on over to the My Blogs section of the homepage to get started!</p>
+        </ng-template>
+    </div>
+    <ng-template #noUser>
+        <div style="text-align: center;">
+            <h3>{{portUserName}} hasn't posted anything yet. Check back later!</h3>
+        </div>
+    </ng-template>
+</ng-template>

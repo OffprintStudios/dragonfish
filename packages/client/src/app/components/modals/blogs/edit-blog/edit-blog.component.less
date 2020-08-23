@@ -1,0 +1,41 @@
+div.edit-blog-modal {
+    padding: 20px;
+    background-color: var(--site-background);
+    border: 1px solid var(--site-borders);
+    overflow: auto;
+    height: 90%;
+    width: 60%;
+    margin: 0 auto;
+    div.edit-blog-header {
+        text-align: center;
+        border-bottom: 1px solid var(--site-borders);
+        margin-bottom: 1.5rem;
+        h1 {
+            margin-bottom: 0;
+            font-size: 36px;
+        }
+    }
+    div.warning-message {
+        font-size: 14px;
+        font-style: italic;
+        color: var(--site-accent);
+    }
+
+    div.edit-blog-form {
+
+        button.blog-modal-button {
+            width: 100%;
+        }
+    }
+
+    div.loader {
+        position: relative;
+        margin-bottom: 1rem;
+        margin-right: 0;
+        text-align: center;
+    
+        .lds-dual-ring {
+            margin-right: 0.5rem;
+        }
+    }    
+}

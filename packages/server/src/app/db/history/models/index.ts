@@ -1,0 +1,1 @@
+export { HistoryDocument } from './history-document.model';
