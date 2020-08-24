@@ -75,7 +75,9 @@ export class CommentFormComponent implements OnInit {
         this.close();
       });
     } else if (this.itemKind === 'Work') {
-
+      this.commentsService.addWorkComment(this.itemId, commInfo).subscribe(() => {
+        this.close();
+      });
     }
   }
 
