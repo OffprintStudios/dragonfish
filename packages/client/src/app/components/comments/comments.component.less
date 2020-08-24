@@ -65,11 +65,48 @@ div.comments-container {
                     margin-bottom: 0;
                     font-weight: 400;
                 }
+
+                div.role {
+                    text-align: center;
+                    border: 1px solid var(--site-borders);
+                    padding: 2px;
+                    font-size: 16px;
+                    margin-bottom: 0.5rem;
+                    color: whitesmoke;
+                }
+
+                div.admin {
+                    background-color: rgb(235, 69, 63);
+                }
+
+                div.moderator {
+                    background-color: rgb(246,195,57);
+                }
+
+                div.chat-moderator {
+                    background-color: rgb(235, 123, 49);
+                }
+
+                div.contributor {
+                    background-color: rgb(18, 154, 216);
+                }
+
+                div.work-approver {
+                    background-color: rgb(154, 89, 177);
+                }
                 
-                span.comm-created-at {
-                    display: inline-block;
-                    width: 100%;
-                    margin: 0 auto;
+                div.vip {
+                    background-color: rgb(0, 189, 158);
+                }
+
+                div.supporter {
+                    background-color: rgb(176, 2, 85);
+                }
+                
+                span.tagline {
+                    text-align: center;
+                    font-size: 16px;
+                    font-style: italic;
                 }
             }
 
@@ -81,6 +118,25 @@ div.comments-container {
                     width: 100%;
                     border-bottom: 1px solid var(--site-borders);
                     margin-bottom: 1rem;
+
+                    span.divider {
+                        margin: 0 0.5rem 0 0.5rem;
+                    }
+
+                    span.comm-id {
+                        display: inline-block;
+                    }
+
+                    span.comm-created-at {
+                        display: inline-block;
+                        i-feather {
+                            width: 20px;
+                            position: relative;
+                            top: 0.25rem;
+                            stroke-width: 1;
+                            margin-right: 0.15rem;
+                        }
+                    }
                 }
 
                 span.comm-divider {
@@ -97,7 +153,7 @@ div.comments-container {
                         i-feather {
                             position: relative;
                             width: 20px;
-                            height: 20px;
+                            stroke-width: 1;
                         }
                     }
                 }

@@ -31,18 +31,49 @@
                     <h3 class="comm-user">
                         <a [routerLink]="['/portfolio', comment.user._id, comment.user.username | slugify]">{{ comment.user.username }}</a>
                     </h3>
-                    <span class="comm-created-at">
-                        <div style="text-align: center;">
-                            {{ comment.createdAt | date: 'mediumDate'}}
+                    <ng-container [ngSwitch]="determineProminentRole(comment.user.audit.roles)">
+                        <div class="role admin" *ngSwitchCase="'Admin'">
+                            Admin
                         </div>
+                        <div class="role moderator" *ngSwitchCase="'Moderator'">
+                            Moderator
+                        </div>
+                        <div class="role chat-moderator" *ngSwitchCase="'ChatModerator'">
+                            Chat Moderator
+                        </div>
+                        <div class="role contributor" *ngSwitchCase="'Contributor'">
+                            Contributor
+                        </div>
+                        <div class="role work-approver" *ngSwitchCase="'WorkApprover'">
+                            Work Approver
+                        </div>
+                        <div class="role vip" *ngSwitchCase="'VIP'">
+                            VIP
+                        </div>
+                        <div class="role supporter" *ngSwitchCase="'Supporter'">
+                            Supporter
+                        </div>
+                    </ng-container>
+                    <span class="tagline" *ngIf="comment.user.profile.tagline; else member">
                         <div style="text-align: center;">
-                            {{ comment.createdAt | date: 'mediumTime' }}
+                            {{ comment.user.profile.tagline }}
                         </div>
                     </span>
+                    <ng-template #member>
+                        <span class="tagline">
+                            <div style="text-align: center;">
+                                Member
+                            </div>
+                        </span>
+                    </ng-template>
                 </div>
                 <div class="comm-body-box nine columns">
                     <div class="comm-meta-panel">
                         <span class="comm-id">#{{ i + 1 }}</span>
+                        <span class="divider">//</span>
+                        <span class="comm-created-at" title="Created On">
+                            <i-feather name="calendar"></i-feather>{{ comment.createdAt | date: 'mediumDate'}}, {{ comment.createdAt | date: 'mediumTime' }}
+                        </span>
                         <span class="comm-controls">
                             <a><i-feather name="edit-3"></i-feather></a>
                         </span>

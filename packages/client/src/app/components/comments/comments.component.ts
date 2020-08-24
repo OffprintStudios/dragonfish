@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import * as lodash from 'lodash';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { BlogComment, WorkComment } from '@pulp-fiction/models/comments';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
 import { CommentFormComponent } from './comment-form/comment-form.component';
-import { jitOnlyGuardedExpression } from '@angular/compiler/src/render3/util';
 
 @Component({
   selector: 'comments',
@@ -71,6 +71,36 @@ export class CommentsComponent implements OnInit {
       } else {
         return false;
       }
+    }
+  }
+
+  determineProminentRole(roles: Roles[]) {
+    // this will totally need retooling to figure out a much better way to verify what the top-level
+    // role is
+    const hasAdmin = lodash.intersection([Roles.Admin], roles);
+    const hasModerator = lodash.intersection([Roles.Moderator], roles);
+    const hasChatModerator = lodash.intersection([Roles.ChatModerator], roles);
+    const hasContributor = lodash.intersection([Roles.Contributor], roles);
+    const hasWorkApprover = lodash.intersection([Roles.WorkApprover], roles);
+    const hasVIP = lodash.intersection([Roles.VIP], roles);
+    const hasSupporter = lodash.intersection([Roles.Supporter], roles);
+
+    if (hasAdmin.length > 0) {
+      return Roles.Admin;
+    } else if (hasModerator.length > 0) {
+      return Roles.Moderator;
+    } else if (hasChatModerator.length > 0) {
+      return Roles.ChatModerator;
+    } else if (hasContributor.length > 0) {
+      return Roles.Contributor;
+    } else if (hasWorkApprover.length > 0) {
+      return Roles.WorkApprover;
+    } else if (hasVIP.length > 0) {
+      return Roles.VIP;
+    } else if (hasSupporter.length > 0) {
+      return Roles.Supporter;
+    } else {
+      return Roles.User;
     }
   }
 
