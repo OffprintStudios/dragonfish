@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { CommentsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
-import { imageHandler, dividerHandler } from '../../../util/quill';
+import { imageHandler, dividerHandler, quoteComment } from '../../../util/quill';
 import { CreateComment, EditComment } from '@pulp-fiction/models/comments';
 
 @Component({
@@ -20,6 +20,8 @@ export class CommentFormComponent implements OnInit {
   editMode: boolean;
   editCommInfo: string;
   commentId: string;
+
+  quoteCommInfo: string;
 
   public styles = {
     'height': '200px',
@@ -46,6 +48,13 @@ export class CommentFormComponent implements OnInit {
       this.commentForm.setValue({
         body: this.editCommInfo
       });
+    }
+
+    if (this.quoteCommInfo) {
+      quoteComment(this.quoteCommInfo);
+      /*this.commentForm.setValue({
+        body: quoteComment(this.quoteCommInfo)
+      });*/
     }
   }
 

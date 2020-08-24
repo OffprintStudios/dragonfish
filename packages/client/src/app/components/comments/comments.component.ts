@@ -121,4 +121,15 @@ export class CommentsComponent implements OnInit {
 
     this.commentForm.open();
   }
+
+  quoteComment(itemId: string, itemKind: string, commInfo: string) {
+    this.commentForm.updateContent(CommentFormComponent, {
+      itemId: itemId,
+      itemKind: itemKind,
+      editMode: false,
+      quoteCommInfo: commInfo
+    });
+
+    this.commentForm.open();
+  }
 }

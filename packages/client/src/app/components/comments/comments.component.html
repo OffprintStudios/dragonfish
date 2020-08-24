@@ -79,7 +79,7 @@
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">
-                                <a><i-feather name="corner-up-left"></i-feather></a>
+                                <a (click)="quoteComment(itemId, itemKind, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
                                 <a><i-feather name="flag"></i-feather></a>
                             </span>
                         </ng-template>
