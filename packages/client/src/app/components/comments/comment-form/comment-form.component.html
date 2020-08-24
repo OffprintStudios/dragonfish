@@ -2,31 +2,7 @@
 <div class="comment-container">
     <div class="comment-form-container">
         <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
-            <quill-editor minLength="10" formControlName="body" [styles]="styles" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
-                <div quill-editor-toolbar>
-                    <span class="ql-formats">
-                        <button class="ql-bold" [title]="'Bold'"></button>
-                        <button class="ql-italic" [title]="'Italic'"></button>
-                        <button class="ql-underline" [title]="'Underline'"></button>
-                        <button class="ql-strike" [title]="'Strikethrough'"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-list ql-bullet" value="bullet"></button>
-                        <button class="ql-list ql-ordered" value="ordered"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-divider" [title]="'Divider'"></button>
-                        <button class="ql-blockquote" [title]="'Blockquote'"></button>
-                        <button class="ql-code" [title]="'Code'"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-link" [title]="'Link'"></button>
-                        <button class="ql-image" [title]="'Image link'"></button>
-                        <button class="ql-video" [title]="'Video link'"></button>
-                        <button class="ql-clean" [title]="'Remove formatting'"></button>
-                    </span>
-                </div>
-            </quill-editor>
+            <pulp-fiction-editor [parentForm]="commentForm" [controlName]="'body'" [minLength]="10" [height]="'200px'"></pulp-fiction-editor>
             <div class="comment-control">
                 <button type="submit">Submit</button>
                 <button style="margin-left: 1rem;" type="button" (click)="askCancel()">Cancel</button>

@@ -7,7 +7,6 @@ import { Comment, BlogComment, WorkComment } from '@pulp-fiction/models/comments
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
 import { CommentFormComponent } from './comment-form/comment-form.component';
-import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'comments',
