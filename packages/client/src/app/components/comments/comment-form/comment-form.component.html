@@ -1,7 +1,7 @@
 
 <div class="comment-container">
     <div class="comment-form-container">
-        <form [formGroup]="commentForm" (ngSubmit)="submitNewComment()">
+        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
             <quill-editor minLength="10" formControlName="body" [styles]="styles" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                 <div quill-editor-toolbar>
                     <span class="ql-formats">

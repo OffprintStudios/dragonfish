@@ -74,8 +74,8 @@
                         <span class="comm-created-at" title="Created On">
                             <i-feather name="calendar"></i-feather>{{ comment.createdAt | date: 'mediumDate'}}, {{ comment.createdAt | date: 'mediumTime' }}
                         </span>
-                        <span class="comm-controls">
-                            <a><i-feather name="edit-3"></i-feather></a>
+                        <span class="comm-controls" *ngIf="currentUserIsSame(comment.user._id); else notThisUser">
+                            <a (click)="editComment(itemId, itemKind, comment._id, comment.body)"><i-feather name="edit-3"></i-feather></a>
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">

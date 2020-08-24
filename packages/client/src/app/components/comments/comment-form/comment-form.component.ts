@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommentsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
 import { imageHandler, dividerHandler } from '../../../util/quill';
-import { CreateComment } from '@pulp-fiction/models/comments';
+import { CreateComment, EditComment } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'pulp-fiction-comment-form',
@@ -13,8 +13,13 @@ import { CreateComment } from '@pulp-fiction/models/comments';
 })
 export class CommentFormComponent implements OnInit {
   close: any;
+
   itemId: string;
   itemKind: string;
+
+  editMode: boolean;
+  editCommInfo: string;
+  commentId: string;
 
   public styles = {
     'height': '200px',
@@ -37,6 +42,11 @@ export class CommentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.editMode === true) {
+      this.commentForm.setValue({
+        body: this.editCommInfo
+      });
+    }
   }
 
   /**
@@ -62,20 +72,27 @@ export class CommentFormComponent implements OnInit {
     toolbar.addHandler('image', imageHandler);
   }
 
-  submitNewComment() {
-    const commInfo: CreateComment = {
-      body: this.fields.body.value
-    };
+  submitComment() {
+    if (this.editMode === false) {
+      const commInfo: CreateComment = {
+        body: this.fields.body.value
+      };
 
-    console.log(this.itemKind);
-    console.log(this.itemId);
+      if (this.itemKind === 'Blog') {
+        this.commentsService.addBlogComment(this.itemId, commInfo).subscribe(() => {
+          this.close();
+        });
+      } else if (this.itemKind === 'Work') {
+        this.commentsService.addWorkComment(this.itemId, commInfo).subscribe(() => {
+          this.close();
+        });
+      }
+    } else if (this.editMode === true) {
+      const commInfo: EditComment = {
+        body: this.fields.body.value
+      };
 
-    if (this.itemKind === 'Blog') {
-      this.commentsService.addBlogComment(this.itemId, commInfo).subscribe(() => {
-        this.close();
-      });
-    } else if (this.itemKind === 'Work') {
-      this.commentsService.addWorkComment(this.itemId, commInfo).subscribe(() => {
+      this.commentsService.editComment(this.commentId, commInfo).subscribe(() => {
         this.close();
       });
     }

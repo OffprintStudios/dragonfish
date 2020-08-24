@@ -3,10 +3,11 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { BlogComment, WorkComment } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment } from '@pulp-fiction/models/comments';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
 import { CommentFormComponent } from './comment-form/comment-form.component';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'comments',
@@ -21,7 +22,7 @@ export class CommentsComponent implements OnInit {
 
   currentUser: FrontendUser;
   loading = false;
-  comments: BlogComment[] | WorkComment[];
+  comments: Comment[] | BlogComment[] | WorkComment[];
   commentForm: ToppyControl;
 
   constructor(private authService: AuthService, private toppy: Toppy, private commentsService: CommentsService) { 
@@ -105,7 +106,19 @@ export class CommentsComponent implements OnInit {
   }
 
   newComment(itemId: string, itemKind: string) {
-    this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind});
+    this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind, editMode: false});
+    this.commentForm.open();
+  }
+
+  editComment(itemId: string, itemKind: string, commentId: string, commInfo: string) {
+    this.commentForm.updateContent(CommentFormComponent, {
+      itemId: itemId,
+      itemKind: itemKind,
+      editMode: true,
+      commentId: commentId,
+      editCommInfo: commInfo
+    });
+
     this.commentForm.open();
   }
 }
