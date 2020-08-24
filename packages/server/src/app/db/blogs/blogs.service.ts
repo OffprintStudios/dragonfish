@@ -155,6 +155,15 @@ export class BlogsService {
     }
 
     /**
+     * Increments the count of comments on a blog.
+     * 
+     * @param blogId The blog we're accessing
+     */
+    async addComment(blogId: string): Promise<void> {
+        return await this.blogModel.updateOne({'_id': blogId}, {$inc: {'stats.comments': 1}});
+    }
+
+    /**
      * Returns blogs matching the full text search parameter given and obeys the pagination associated with it.
      * @param searchParameters
      * @returns a SearchResults object containing the first page of matches and pagination info if there are results.

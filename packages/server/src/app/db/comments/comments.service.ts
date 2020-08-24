@@ -5,12 +5,15 @@ import * as sanitize from 'sanitize-html';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
+import { BlogsService } from '../blogs/blogs.service';
+import { WorksService } from '../works/works.service';
 
 @Injectable()
 export class CommentsService {
     constructor(@InjectModel('Comment') private readonly commentModel: Model<documents.CommentDocument>,
         @InjectModel('BlogComment') private readonly blogCommentModel: Model<documents.BlogCommentDocument>,
-        @InjectModel('WorkComment') private readonly workCommentModel: Model<documents.WorkCommentDocument>) {}
+        @InjectModel('WorkComment') private readonly workCommentModel: Model<documents.WorkCommentDocument>,
+        private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
 
     /**
      * Creates a new comment that belongs to a blog.
@@ -26,7 +29,10 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save();
+        return await newComment.save().then(async doc => {
+            await this.blogsService.addComment(blogId);
+            return doc;
+        });
     }
 
     /**

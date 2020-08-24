@@ -5,8 +5,12 @@ import { Schema } from 'mongoose';
 import { CommentsSchema } from './comments.schema';
 import { CommentsService } from './comments.service';
 
+import { BlogsModule } from '../blogs/blogs.module';
+import { WorksModule } from '../works/works.module';
+
 @Module({
   imports: [
+    BlogsModule, WorksModule,
     MongooseModule.forFeature([
       {name: 'Comment', schema: CommentsSchema},
     ]),
