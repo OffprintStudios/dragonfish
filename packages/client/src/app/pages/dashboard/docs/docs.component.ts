@@ -32,7 +32,6 @@ export class DocsComponent implements OnInit {
   private fetchData() {
     this.docsService.fetchForDashboard().subscribe(docs => {
       this.docs = docs;
-      console.log(docs);
     });
   }
 
