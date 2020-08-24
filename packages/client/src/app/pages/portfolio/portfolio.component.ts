@@ -46,10 +46,12 @@ export class PortfolioComponent implements OnInit {
    */
   currentUserIsSame() {
     if (this.currentUser) {
-      if (this.currentUser._id === this.portUser._id) {
-        return true;
-      } else {
-        return false;
+      if (this.portUser) {
+        if (this.currentUser._id === this.portUser._id) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
   }

@@ -25,7 +25,7 @@
         </div>
         <h4 style="text-align: center;" *ngIf="isWorksEmpty(); else worksList">You haven't created any works yet.</h4>
         <ng-template #worksList>
-            <div class="work-list">
+            <div class="work-list" *ngIf="works && works.docs">
                 <div class="work-item" *ngFor="let work of works.docs | paginate: {
                     itemsPerPage: works.limit,
                     currentPage: pageNum,
