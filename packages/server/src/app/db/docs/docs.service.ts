@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as lodash from 'lodash';
 import * as sanitize from 'sanitize-html';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/docs';
@@ -83,7 +83,7 @@ export class DocsService {
         if (rolesIntersection.length === 0) {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
         } else {
-            const wordCount = wordCounter.countWords(sanitize(docInfo.docBody));
+            const wordCount = await countWords(sanitize(docInfo.docBody));
             return await this.docModel.updateOne({"_id": docInfo._id}, {
                 "docTitle": sanitize(docInfo.docTitle),
                 "docBody": sanitize(docInfo.docBody),

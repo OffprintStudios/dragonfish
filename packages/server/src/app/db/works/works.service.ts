@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 import * as sanitize from 'sanitize-html';
 
 import * as models from '@pulp-fiction/models/works';
@@ -215,12 +215,12 @@ export class WorksService {
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {
+        } else {        
             return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
                 "title": sanitize(sectionInfo.title),
                 "body": sanitize(sectionInfo.body),
-                "authorsNote": sanitize(sectionInfo.authorsNote),
-                "stats.words": wordCounter.countWords(sanitize(sectionInfo.body))
+                "authorsNote": sanitize(sectionInfo.authorsNote),                
+                "stats.words": await countWords(sanitize(sectionInfo.body))
             }, {new: true}).then(async sec => {
                 if (sec.published === true) {
                     await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {

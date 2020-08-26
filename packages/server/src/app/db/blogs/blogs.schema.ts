@@ -2,7 +2,7 @@ import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 
 import * as documents from './models/blog-document.model';
@@ -41,7 +41,7 @@ BlogsSchema.pre<documents.BlogDocument>('save', async function(next: HookNextFun
     this.set('body', sanitize(this.body));
     this.set('published', this.published);
 
-    const wordCount = await wordCounter.countWords(sanitize(this.body));
+    const wordCount = await countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());
