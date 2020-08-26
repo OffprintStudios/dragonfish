@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import * as sanitize from 'sanitize-html';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 
 import { SectionDocument } from './models';
 
@@ -33,7 +33,7 @@ SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunctio
     }
     this.set('published', this.published);
 
-    const wordCount = wordCounter.countWords(sanitize(this.body));
+    const wordCount = await countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());
