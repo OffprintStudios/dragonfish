@@ -2,7 +2,7 @@ import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as sanitize from 'sanitize-html';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 
 import * as documents from './models';
 import { Roles } from '@pulp-fiction/models/users';
@@ -34,7 +34,7 @@ DocsSchema.pre<documents.DocDocument>('save', async function (next: HookNextFunc
     this.set('docName', sanitize(this.docName));
     this.set('docDescription', sanitize(this.docDescription));
     this.set('docBody', sanitize(this.docBody));
-    this.set('words', wordCounter.countWords(sanitize(this.docBody)));
+    this.set('words', await countWords(sanitize(this.docBody)));
     this.set('createdAt', Date.now());
     this.set('updatedAt', Date.now());
 

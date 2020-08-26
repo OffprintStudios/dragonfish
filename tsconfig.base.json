@@ -16,9 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@pulp-fiction/models/*": [
-        "packages/models/src/lib/*"
-      ]
+      "@pulp-fiction/models/*": ["packages/models/src/lib/*"],
+      "@pulp-fiction/word_counter": ["packages/word_counter/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

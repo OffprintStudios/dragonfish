@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateResult } from 'mongoose';
-import * as wordCounter from '@offprintstudios/word-counter';
+import { countWords } from '@pulp-fiction/word_counter';
 import * as sanitize from 'sanitize-html';
 
 import * as models from '@pulp-fiction/models/blogs';
@@ -100,7 +100,7 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        const wordcount = await wordCounter.countWords(blogInfo.body);
+        const wordcount = await countWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
             {"_id": blogInfo._id, "author": user.sub},
             {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
