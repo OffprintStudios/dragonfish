@@ -12,6 +12,11 @@ export const CommentsSchema = new Schema({
         select: '_id username profile.avatar profile.tagline audit.roles'
     }},
     body: {type: String, required: true, trim: true},
+    audit: {
+        hidden: {type: Boolean, default: false},
+        warning: {type: String, default: null},
+        
+    },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()}
 }, {discriminatorKey: 'kind', autoIndex: true, timestamps: true, collection: 'comments'});
