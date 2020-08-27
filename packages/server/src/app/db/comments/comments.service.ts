@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as sanitize from 'sanitize-html';
@@ -7,6 +7,7 @@ import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
 import { BlogsService } from '../blogs/blogs.service';
 import { WorksService } from '../works/works.service';
+import { isNullOrUndefined } from '../../util';
 
 @Injectable()
 export class CommentsService {
@@ -78,8 +79,23 @@ export class CommentsService {
      * @param commentInfo The comment's new info
      */
     async editComment(user: any, commentId: string, commentInfo: models.EditComment): Promise<void> {
-        return await this.commentModel.updateOne({'_id': commentId}, {
-            'body': sanitize(commentInfo.body)
-        }).where('user').equals(user.sub);
+        const oldComment = await this.commentModel.findById(commentId).where('user').equals(user.sub);
+        const oldBody = oldComment.body;
+
+        if (isNullOrUndefined(oldComment)) {
+            throw new NotFoundException(`The comment you were trying to edit cannot be found.`);
+        } else if (oldComment.audit.canEdit === true) {
+            return await this.commentModel.updateOne({'_id': commentId, 'user': user.sub}, {
+                'body': sanitize(commentInfo.body),
+                $push: {
+                    'history': {
+                        'oldBody': oldBody,
+                        'editedOn': new Date()
+                    }
+                }
+            });
+        } else {
+            throw new UnauthorizedException(`You don't have permission to edit this comment.`);
+        }
     }
 }
