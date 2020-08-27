@@ -20,9 +20,6 @@ You must have the following tools installed on your system (or in a docker conta
 * The [Rust 1.15 (or later) toolchain](https://rustup.rs/).
     * You may also need the following packages in order to compile the Rust packages:
         * `build-essential`
-        * `llvm-dev`
-        * `libclang-dev`
-        * `clang`
 
 Once you've installed and verified that these dependencies are working as expected, run `./build_dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries.
 
