@@ -1,12 +1,31 @@
 import { Roles } from '../users';
+import { ContentAction } from './content-action.enum';
 
 export interface Comment {
     readonly _id: string;
     readonly user: string | UserInfoComments;
-    readonly body: string;
+    body: string;
+    readonly replies: string[];
+    readonly stats: {
+        readonly likes: number;
+        readonly dislikes: number;
+    };
+    readonly history: CommentHistory[];
+    readonly audit: {
+        readonly isActioned: boolean;
+        readonly canEdit: boolean;
+        readonly action: ContentAction;
+        readonly actionReason: string;
+        readonly actionedBy: string | ModInfo;
+    };
     readonly createdAt: Date;
     readonly updatedAt: Date;
     readonly kind: string;
+}
+
+export interface CommentHistory {
+    readonly oldBody: string;
+    readonly editedOn: Date;
 }
 
 export interface UserInfoComments {
@@ -18,6 +37,14 @@ export interface UserInfoComments {
     };
     readonly audit: {
         readonly roles: Roles[]
+    };
+}
+
+export interface ModInfo {
+    readonly _id: string;
+    readonly username: string;
+    readonly audit: {
+        readonly roles: Roles[];
     };
 }
 
