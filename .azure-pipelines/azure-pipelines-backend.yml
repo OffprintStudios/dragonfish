@@ -5,6 +5,8 @@ trigger:
   paths:
     exclude: 
       - /.azure-pipelines/azure-pipelines-frontend.yml
+      - /packages/client/*
+      - /packages/client-e2e/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -14,14 +16,6 @@ steps:
     inputs:
       versionSpec: '14.6.0'
     displayName: 'Install Node.js 14.6.0'
-
-  # Add NPM/Yarn global tools
-  - script: |      
-      yarn global add @nestjs/cli@7.4.1
-      yarn global add typescript@3.9.7
-      yarn global add neon-cli@0.4.0
-      yarn global add @angular/cli@10.0.4
-    displayName: 'Install global tools'
 
   - task: Cache@2
     inputs:
@@ -43,25 +37,9 @@ steps:
   # Publish the built /dist folder to make it available for release
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/dist'
+      PathtoPublish: '$(Build.SourcesDirectory)/dist/server'
       ArtifactName: 'backend-dist'
       publishLocation: 'Container'
-    displayName: "Publish /dist folder"
-
-    # Collect node_modules into an archive, or publishing takes forEVER
-  - task: ArchiveFiles@2
-    inputs:
-      rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
-      archiveType: tar
-      tarCompression: xz
-      archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'  
-
-    # Publish the built /node_modules folder to make it available for release
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/node_modules.tar.xz'
-      ArtifactName: 'backend-node_modules'
-      publishLocation: 'Container'
-    displayName: "Publish tarred /node_modules folder"
+    displayName: "Publish /dist/server folder"
     
 
