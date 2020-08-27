@@ -6,6 +6,7 @@
     "nx": "nx",
     "start": "nx serve",
     "build": "nx build",
+    "build:prod": "nx build --prod",
     "test": "nx test",
     "lint": "nx workspace-lint && nx lint",
     "e2e": "nx e2e",

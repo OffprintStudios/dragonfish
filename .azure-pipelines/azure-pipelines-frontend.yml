@@ -6,7 +6,9 @@ trigger:
     exclude: 
       - /
     include: 
-      - /frontend/*
+      - /packages/client/*
+      - /packages/client-e2e/*
+      - /packages/models/*
       - /.azure-pipelines/azure-pipelines-frontend.yml
 
 pool:
@@ -18,33 +20,27 @@ steps:
     versionSpec: '14.6.0'
   displayName: 'Install Node.js 14.6.0'
 
-- script: |
-    yarn global add @angular/cli@9.1.5    
-    yarn global add typescript@3.9.7 
-  displayName: 'Install global tools'
-
 - task: Cache@2
   inputs:
   # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
     key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/frontend/yarn.lock'
-    path: '$(Build.SourcesDirectory)/frontend/node_modules'
+    path: '$(Build.SourcesDirectory)/node_modules'
     cacheHitVar: 'CacheRestored'
   displayName: "Cache node_modules"
 
-- script: |
-    cd frontend
-    yarn install --production=false --non-interactive --frozen-lockfile
+# Install production-only packages if the cache doesn't exist, or is out of date.
+- script: yarn install --production=false --non-interactive --frozen-lockfile
   displayName: "Yarn install"
   condition: ne(variables['CacheRestored'], 'true')
 
-- script: |
-    cd frontend
-    yarn build:prod
+# Build the project
+- script: yarn build:prod
   displayName: "Build"
 
+# Publish the built /dist/packages/client folder to make it available for release  
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/dist/src/static'
-    ArtifactName: 'frontend-dist-static'
+    PathtoPublish: '$(Build.SourcesDirectory)/dist/packages/client'
+    ArtifactName: 'frontend-dist'
     publishLocation: 'Container'
-  displayName: 'Publish /dist/src/static'
+  displayName: 'Publish /dist/packages/client'
