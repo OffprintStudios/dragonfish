@@ -14,10 +14,7 @@ RUN wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/n
     
 RUN apt-get update && apt-get install -y \
     yarn=1.22.1-1 \
-    build-essential \
-    llvm-dev \
-    libclang-dev \
-    clang
+    build-essential
 
 RUN yarn add --dev typescript@3.9.7 \
     @angular/cli@10.0.4 \
@@ -29,11 +26,11 @@ RUN yarn add --dev typescript@3.9.7 \
 RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
-WORKDIR /opt/pulpd
-
 ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
 
 EXPOSE 3333
 EXPOSE 4200
 EXPOSE 3000
 EXPOSE 9229
+
+WORKDIR /opt/pulpd
