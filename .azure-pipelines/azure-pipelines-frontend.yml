@@ -23,13 +23,13 @@ steps:
 - task: Cache@2
   inputs:
   # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
-    key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/frontend/yarn.lock'
+    key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
     path: '$(Build.SourcesDirectory)/node_modules'
     cacheHitVar: 'CacheRestored'
   displayName: "Cache node_modules"
 
 # Install production-only packages if the cache doesn't exist, or is out of date.
-- script: yarn install --production=false --non-interactive --frozen-lockfile
+- script: yarn install --non-interactive --frozen-lockfile
   displayName: "Yarn install"
   condition: ne(variables['CacheRestored'], 'true')
 

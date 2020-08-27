@@ -26,7 +26,7 @@ steps:
     displayName: "Cache node_modules"
 
     # Install production-only packages if the cache doesn't exist, or is out of date.
-  - script: yarn install --production=true --non-interactive --frozen-lockfile
+  - script: yarn install --non-interactive --frozen-lockfile
     displayName: "Yarn install"
     condition: ne(variables['CacheRestored'], 'true')
 
