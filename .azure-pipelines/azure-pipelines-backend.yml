@@ -35,7 +35,7 @@ steps:
     displayName: "Build"
 
     # DEBUG REMOVE ME AAAAAAA
-  - script: 'ls $(Build.SourcesDirectory)/dist'
+  - script: 'ls -la $(Build.SourcesDirectory)/dist/packages'
     displayName: "AAAAAAA REMOVE ME AHHHHHH"
 
   # Publish the built /dist/packages/server folder to make it available for release
