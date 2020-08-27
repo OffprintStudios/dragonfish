@@ -34,12 +34,16 @@ steps:
   - script: yarn build:prod
     displayName: "Build"
 
-  # Publish the built /dist/server folder to make it available for release
+    # DEBUG REMOVE ME AAAAAAA
+  - script: 'ls $(Build.SourcesDirectory)/dist'
+    displayName: "AAAAAAA REMOVE ME AHHHHHH"
+
+  # Publish the built /dist/packages/server folder to make it available for release
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/dist/server'
+      PathtoPublish: '$(Build.SourcesDirectory)/dist/packages/server'
       ArtifactName: 'backend-dist'
       publishLocation: 'Container'
-    displayName: "Publish /dist/server folder"
+    displayName: "Publish /dist/packages/server folder"
     
 

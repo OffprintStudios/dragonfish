@@ -5,6 +5,7 @@ trigger:
   paths:
     exclude: 
       - /
+      - /.azure-pipelines/azure-pipelines-backend.yml
     include: 
       - /packages/client/*
       - /packages/client-e2e/*
