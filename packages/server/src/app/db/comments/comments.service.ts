@@ -81,7 +81,6 @@ export class CommentsService {
     async editComment(user: any, commentId: string, commentInfo: models.EditComment): Promise<void> {
         const oldComment = await this.commentModel.findById(commentId).where('user').equals(user.sub);
         const oldBody = oldComment.body;
-        console.log(oldBody);
 
         if (isNullOrUndefined(oldComment)) {
             throw new NotFoundException(`The comment you were trying to edit cannot be found.`);
