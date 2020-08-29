@@ -19,7 +19,7 @@
         <div class="warning-message" *ngIf="fields.longDesc.invalid && (fields.longDesc.dirty || fields.longDesc.touched)">
             Long descriptions must be more than 5 characters.
         </div>
-        <pulp-fiction-editor [parentForm]="newWorkForm" [controlName]="'longDesc'" [minLength]="3" [height]="'300px'"></pulp-fiction-editor>
+        <quill-pulp-fiction-editor [parentForm]="newWorkForm" [controlName]="'longDesc'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
 
         <!--Category-->
         <label style="margin-top: 1rem;" for="category">Category</label>
