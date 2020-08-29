@@ -208,11 +208,18 @@ export class SectionPageComponent implements OnInit {
         return;
       }
     }
+
+    if (!this.sectionData.usesFroala) {
+      // TODO: Get rendered HTML and send it up instead of Quill Deltas.
+      throw new Error("Not implemented. Fix iiiiit");
+    }
+
     const newEdits: EditSection = {
       title: this.fields.title.value,
       body: this.fields.body.value,
       authorsNote: this.fields.authorsNote.value,
       oldWords: this.sectionData.stats.words,
+      usesFroala: true,
     };
 
     this.worksService.editSection(this.workId, this.sectionId, newEdits).subscribe(() => {

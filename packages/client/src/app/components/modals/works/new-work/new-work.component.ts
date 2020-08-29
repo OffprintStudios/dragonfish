@@ -189,6 +189,7 @@ export class NewWorkComponent implements OnInit {
       genres: genres,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
+      usesFroala: true,
     };
 
     this.worksService.createWork(newWork).subscribe(() => {

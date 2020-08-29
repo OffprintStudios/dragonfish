@@ -139,6 +139,11 @@ export class EditWorkComponent implements OnInit {
     const genres = Array.isArray(this.fields.theseGenres.value)
       ? this.fields.theseGenres.value
       : [this.fields.theseGenres.value];
+
+      if (!this.workData.usesFroala) {
+        // TODO: instead of sending up Quill data, send up rendered HTML
+        throw new Error("Not yet implemented, fix this nonsense");
+      }
     
     const newChanges: EditWork = {
       _id: this.workData._id,
@@ -149,7 +154,8 @@ export class EditWorkComponent implements OnInit {
       fandoms: this.fields.theseFandoms.value,
       genres: genres,
       rating: this.fields.rating.value,
-      status: this.fields.status.value
+      status: this.fields.status.value,
+      usesFroala: true,
     };
 
     this.worksService.editWork(newChanges).subscribe(() => {

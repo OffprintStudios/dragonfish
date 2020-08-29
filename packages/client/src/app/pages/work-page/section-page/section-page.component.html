@@ -29,12 +29,22 @@
                     <h1>{{ sectionData.title }}</h1>
                 </div>
                 <div class="section-body">
-                    <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
+                    <ngContainer *ngIf="!sectionData.usesFroala">
+                        <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
+                    </ngContainer>
+                    <ngContainer *ngIf="sectionData.usesFroala">
+                        <div [innerHtml]="sectionData.body | safeHtml"></div>
+                    </ngContainer>
                 </div>
             </div>
             <div class="authors-note" *ngIf="sectionData.authorsNote">
                 <h3>A word from the author...</h3>
-                <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
+                <ngContainer *ngIf="!sectionData.usesFroala">
+                    <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
+                </ngContainer>    
+                <ngContainer *ngIf="sectionData.usesFroala">
+                    <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
+                </ngContainer>
             </div>
         </div>
     </ng-container>
@@ -53,12 +63,22 @@
                         <h1>{{ sectionData.title }}</h1>
                     </div>
                     <div class="section-body">
-                        <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
+                        <ngContainer *ngIf="!sectionData.usesFroala">
+                            <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
+                        </ngContainer>
+                        <ngContainer *ngIf="sectionData.usesFroala">
+                            <div [innerHtml]="sectionData.body | safeHtml"></div>
+                        </ngContainer>
                     </div>
                 </div>
                 <div class="authors-note" *ngIf="sectionData.authorsNote">
                     <h3>A word from the author...</h3>
-                    <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
+                    <ngContainer *ngIf="!sectionData.usesFroala">
+                        <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
+                    </ngContainer>    
+                    <ngContainer *ngIf="sectionData.usesFroala">
+                        <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
+                    </ngContainer>
                 </div>
             </div>
         </div>
@@ -83,39 +103,45 @@
                         </div>
                         <div class="section-body">
                             <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
-                            <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
-                                <div quill-editor-toolbar>
-                                    <span class="ql-formats">
-                                        <button class="ql-bold" [title]="'Bold'"></button>
-                                        <button class="ql-italic" [title]="'Italic'"></button>
-                                        <button class="ql-underline" [title]="'Underline'"></button>
-                                        <button class="ql-strike" [title]="'Strikethrough'"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-align ql-center" value="center"></button>
-                                        <button class="ql-align ql-right" value="right"></button>
-                                        <button class="ql-align ql-justify" value="justify"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-list ql-bullet" value="bullet"></button>
-                                        <button class="ql-list ql-ordered" value="ordered"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-divider" [title]="'Divider'"></button>
-                                        <button class="ql-link" [title]="'Link'"></button>
-                                        <button class="ql-image" [title]="'Image link'"></button>
-                                        <button class="ql-blockquote" [title]="'Blockquote'"></button>
-                                        <button class="ql-code" [title]="'Code'"></button>
-                                        <button class="ql-clean" [title]="'Remove formatting'"></button>
-                                    </span>
-                                    <select class="ql-header"></select>
-                                </div>
-                            </quill-editor>
+                            <ngContainer *ngIf="!sectionData.usesFroala">
+                                <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
+                                    <div quill-editor-toolbar>
+                                        <span class="ql-formats">
+                                            <button class="ql-bold" [title]="'Bold'"></button>
+                                            <button class="ql-italic" [title]="'Italic'"></button>
+                                            <button class="ql-underline" [title]="'Underline'"></button>
+                                            <button class="ql-strike" [title]="'Strikethrough'"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-align ql-center" value="center"></button>
+                                            <button class="ql-align ql-right" value="right"></button>
+                                            <button class="ql-align ql-justify" value="justify"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-list ql-bullet" value="bullet"></button>
+                                            <button class="ql-list ql-ordered" value="ordered"></button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-divider" [title]="'Divider'"></button>
+                                            <button class="ql-link" [title]="'Link'"></button>
+                                            <button class="ql-image" [title]="'Image link'"></button>
+                                            <button class="ql-blockquote" [title]="'Blockquote'"></button>
+                                            <button class="ql-code" [title]="'Code'"></button>
+                                            <button class="ql-clean" [title]="'Remove formatting'"></button>
+                                        </span>
+                                        <select class="ql-header"></select>
+                                    </div>
+                                </quill-editor>
+                            </ngContainer>
+                            <ngContainer *ngIf="sectionData.usesFroala">
+                                <froala-pulp-fiction-editor formControlName="body"></froala-pulp-fiction-editor>
+                            </ngContainer>
                         </div>
                     </div>
                     <div class="authors-note">
                         <h3>A word from the author...</h3>
                         <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
+                        <ngContainer *ngIf="!sectionData.usesFroala">                        
                         <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                             <div quill-editor-toolbar>
                                 <span class="ql-formats">
@@ -144,6 +170,10 @@
                                 <select class="ql-header"></select>
                             </div>
                         </quill-editor>
+                    </ngContainer>
+                    <ngContainer *ngIf="sectionData.usesFroala">
+                        <froala-pulp-fiction-editor formControlName="authorsNote"></froala-pulp-fiction-editor>
+                    </ngContainer>
                     </div>
                     <hr style="width: 70%;">
                     <div class="loader" *ngIf="submitting">

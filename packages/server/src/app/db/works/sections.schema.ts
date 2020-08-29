@@ -22,6 +22,9 @@ export const SectionsSchema = new Schema({
     },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
+
+    // delete once we've migrated completely from Quill
+    usesFroala: {type: Boolean, default: false},
 }, {timestamps: true, autoIndex: true, collection: 'sections'});
 
 SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunction) {
@@ -33,7 +36,9 @@ SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunctio
     }
     this.set('published', this.published);
 
-    const wordCount = await countWords(sanitize(this.body));
+    const wordCount = this.usesFroala 
+        ? 3 // sufficiently random for now
+        : await countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

@@ -19,13 +19,6 @@ export class NewSectionComponent implements OnInit {
   workName: string; // The work's name
   latestSectionIndex: number; // The index of the current last section
 
-  editorFormats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code', 'image',
-    'align', 'center', 'right', 'justify',
-    'list', 'bullet', 'ordered'
-  ];
-
   newSectionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     body: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -51,23 +44,6 @@ export class NewSectionComponent implements OnInit {
    */
   get fields() { return this.newSectionForm.controls; }
 
-  /**
-   * Required for the QuillJS editor.
-   */
-  triggerChangeDetection() {
-    return this.cdr.detectChanges();
-  }
-
-  /**
-   * Gets the Quill Editor object after the editor's creation in the template HTML
-   * 
-   * @param event The editor object
-   */
-  onEditorCreated(event: any) {
-    let toolbar = event.getModule('toolbar');
-    toolbar.addHandler('divider', dividerHandler);
-    toolbar.addhandler('image', imageHandler);
-  }
 
   /**
    * Sends the new section info to the database.
@@ -97,7 +73,8 @@ export class NewSectionComponent implements OnInit {
     const newSection: CreateSection = {
       title: this.fields.title.value,
       body: this.fields.body.value,
-      authorsNote: this.fields.authorsNote.value
+      authorsNote: this.fields.authorsNote.value,
+      usesFroala: true
     };
     
     this.worksService.createSection(this.workId, newSection).subscribe(section => {

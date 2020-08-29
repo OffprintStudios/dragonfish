@@ -30,6 +30,9 @@ export const BlogsSchema = new Schema({
     },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
+
+    // Remove once we've migrated away from Quill
+    usesFroala: {type: Boolean, default: false}
 }, {timestamps: true, autoIndex: true, collection: 'blogs'});
 
 BlogsSchema.plugin(MongooseAutopopulate);
@@ -41,7 +44,9 @@ BlogsSchema.pre<documents.BlogDocument>('save', async function(next: HookNextFun
     this.set('body', sanitize(this.body));
     this.set('published', this.published);
 
-    const wordCount = await countWords(sanitize(this.body));
+    const wordCount = this.usesFroala 
+        ? 3 // replace with countStringWords or whatever
+        : await countWords(sanitize(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

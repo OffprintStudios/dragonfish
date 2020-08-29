@@ -9,4 +9,7 @@ export interface Section {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+
+    // Remove this once we've migrated all sections from Quill
+    readonly usesFroala: boolean;
 }

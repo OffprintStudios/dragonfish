@@ -12,5 +12,12 @@ export interface CreateWork {
     readonly fandoms?: Fandoms[];
     readonly genres: Genres[];
     readonly rating: ContentRating,
-    readonly status: WorkStatus,
+    readonly status: WorkStatus,    
+    
+    /**
+     * Determines whether or not the long description uses Froala or not.
+     * Has no bearing on sections.
+     * Remove this once we've migrated fully away from Quill.     
+     */
+    readonly usesFroala: boolean;
 }

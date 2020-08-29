@@ -78,11 +78,18 @@ export class EditBlogComponent implements OnInit {
       this.loading = false;
       return;
     }
+
+    if (!this.blogData.usesFroala) {
+      // TODO: Instead of sending up Quill data, get rendered HTML and send that up instead
+      throw new Error("Not implemented. Developers oughta get on that.");      
+    }
+
     const updatedBlogInfo: EditBlog = {
       _id: blogId,
       title: this.fields.title.value,
       body: this.fields.body.value,
       published: this.fields.published.value,
+      usesFroala: true
     };
 
     this.blogService.editBlog(updatedBlogInfo).subscribe(() => {

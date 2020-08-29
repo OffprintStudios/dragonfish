@@ -64,6 +64,7 @@ export class WorksService {
                 title: sanitize(newSectionInfo.title),
                 body: sanitize(newSectionInfo.body),
                 authorsNote: sanitize(newSectionInfo.authorsNote),
+                usesFroala: newSectionInfo.usesFroala                
             });
 
             return await newSection.save().then(async section => {
@@ -218,9 +219,28 @@ export class WorksService {
         } else {        
             return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
                 "title": sanitize(sectionInfo.title),
-                "body": sanitize(sectionInfo.body),
+                "body": sanitize(sectionInfo.body, {  
+                    allowedAttributes: {
+                        'p': ["style"],
+                    },
+                    allowedStyles: {
+                        '*': {
+                            // Match HEX and RGB
+                            'color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
+                            'text-align': [/^left$/, /^right$/, /^center$/],
+                            // Match any number with px, em, or %
+                            'font-size': [/^\d+(?:px|em|%)$/]
+                        },
+                        'p': {
+                            'font-size': [/^\d+rem$/]
+                        }
+                    }
+                }),
                 "authorsNote": sanitize(sectionInfo.authorsNote),                
-                "stats.words": await countWords(sanitize(sectionInfo.body))
+                "stats.words": sectionInfo.usesFroala 
+                    ? 3 // TODO: Make this return a real value
+                    : await countWords(sanitize(sectionInfo.body)),
+                "usesFroala": sectionInfo.usesFroala
             }, {new: true}).then(async sec => {
                 if (sec.published === true) {
                     await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
