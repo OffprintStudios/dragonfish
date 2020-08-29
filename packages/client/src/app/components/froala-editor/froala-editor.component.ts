@@ -19,6 +19,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 export class FroalaEditorComponent implements OnInit {
 
     options: Object = {
+        attribution: false,
         htmlAllowComments: false,
         htmlRemoveTags: ['script', 'style', 'base'],    
         pasteDeniedAttrs: [ 'class', 'id', 'contenteditable' ],

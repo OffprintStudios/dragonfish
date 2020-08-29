@@ -242,7 +242,7 @@
   }
 
   .fr-box.fr-basic .fr-wrapper {
-    background: #fff;
+    background: var(--site-background);
     border: 1px solid var(--site-borders);
     border-bottom-color: #efefef;
     top: 0;
@@ -307,9 +307,9 @@
   .fr-toolbar .fr-command.fr-btn,
   .fr-popup .fr-command.fr-btn,
   .fr-modal .fr-command.fr-btn {
-    background: transparent;
+    background: var(--site-background);
     box-shadow: none;
-    color: #333333;
+    color: var(--site-text-color);
     -moz-outline: 0;
     outline: none;
     border: 0;
@@ -317,11 +317,7 @@
     cursor: pointer;
     text-align: left;
     margin: 4px 2px;
-    padding: 0;
-    -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -ms-transition: all 0.5s;
-    -o-transition: all 0.5s;    
+    padding: 0;        
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
@@ -385,11 +381,11 @@
   .fr-toolbar .fr-command.fr-btn svg path,
   .fr-popup .fr-command.fr-btn svg path,
   .fr-modal .fr-command.fr-btn svg path {
-    -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    -ms-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    fill: #333333;
+    // -webkit-transition: all 0.5s;
+    // -moz-transition: all 0.5s;
+    // -ms-transition: all 0.5s;
+    // -o-transition: all 0.5s;
+    fill: var(--site-text-color);
   }
   .fr-toolbar .fr-command.fr-btn span.fr-sr-only,
   .fr-popup .fr-command.fr-btn span.fr-sr-only,
@@ -479,8 +475,8 @@
   .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
   .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
   .fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:hover {
-    background: #ebebeb;
-    fill: #333333;
+    background: var(--site-accent);
+    fill: whitesmoke;
   }
   .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover::after,
   .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover::after,
@@ -586,7 +582,7 @@
     .fr-command.fr-btn.fr-active:not(.fr-dropdown)
     svg
     path {
-    fill: #0098f7;
+    fill: var(--site-accent);
   }
   .fr-toolbar.fr-disabled .fr-btn,
   .fr-toolbar.fr-disabled .fr-btn.fr-active,
@@ -666,7 +662,7 @@
   .fr-desktop .fr-command:focus:not(.fr-table-cell),
   .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
   .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
-    background: #ebebeb;
+    background: var(--site-accent);
   }
   .fr-desktop .fr-command:hover::after,
   .fr-desktop .fr-command:focus::after,
@@ -677,16 +673,16 @@
   .fr-desktop .fr-command.fr-selected:not(.fr-table-cell),
   .fr-desktop .fr-command:active {
     color: #333333;
-    background: #d6d6d6;
+    background: var(--site-accent);
   }
   .fr-desktop .fr-command.fr-active:hover,
   .fr-desktop .fr-command.fr-active:focus,
   .fr-desktop .fr-command.fr-active.fr-btn-hover,
   .fr-desktop .fr-command.fr-active.fr-expanded {
-    background: #ebebeb;
+    background: var(--site-accent);
   }
   .fr-desktop .fr-command.fr-active:active {
-    background: #d6d6d6;
+    background: var(--site-accent);    
   }
   .fr-desktop .fr-command.fr-disabled:hover,
   .fr-desktop .fr-command.fr-disabled:focus,
@@ -701,7 +697,7 @@
 
   .fr-toolbar.fr-mobile .fr-command.fr-blink,
   .fr-popup.fr-mobile .fr-command.fr-blink {
-    background: #d6d6d6;
+    background: var(--site-accent);
   }
 
   .fr-command.fr-btn.fr-options {
@@ -832,7 +828,7 @@
     a
     svg
     path {
-    fill: #333333;
+    fill: var(--site-text-color);
   }
   .fr-command.fr-btn
     + .fr-dropdown-menu
@@ -1454,8 +1450,8 @@
   }
 
   .fr-toolbar {
-    color: #222222;
-    background: #fff;
+    color: var(--site-text-color);
+    background: var(--site-background);
     position: relative;
     font-family: Arial, Helvetica, sans-serif;
     -webkit-box-sizing: border-box;
@@ -1675,7 +1671,7 @@
   .second-toolbar {
     border: 1px solid var(--site-borders);
     border-top: 0;
-    background: #fff;
+    background: var(--site-background);
     line-height: 1.4;
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
