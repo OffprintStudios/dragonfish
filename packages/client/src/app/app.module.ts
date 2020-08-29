@@ -49,6 +49,9 @@ import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dash
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
+import 'froala-editor/js/plugins.pkgd.min.js';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
 icons.bold = '<i class="fas fa-bold"></i>';
@@ -97,7 +100,9 @@ const toolbarOptions = [
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule,
+    NagBarModule, 
+    FroalaEditorModule.forRoot(),
+    FroalaViewModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',
       modules: {
