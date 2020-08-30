@@ -7,6 +7,7 @@ import { DocsService } from '../../../../services/admin';
 import { AlertsService } from '../../../../modules/alerts';
 import { Router, ActivatedRoute } from '@angular/router';
 import { imageHandler, dividerHandler } from '../../../../util/quill';
+import { getQuillHtml } from 'packages/client/src/app/util/functions';
 
 @Component({
   selector: 'app-edit-doc',
@@ -98,10 +99,16 @@ export class EditDocComponent implements OnInit {
       return;
     }
     this.submitting = true;
+
+    const docBody = this.docToEdit.usesFroala
+      ? this.fields.docBody.value
+      : getQuillHtml(document.querySelector("quill-editor"));
+
     const docToEdit: EditDoc = {
       _id: this.docId,
       docTitle: this.fields.docName.value,
-      docBody: this.fields.docBody.value,
+      docBody: docBody,
+      usesFroala: true
     };
 
     this.docsService.editDoc(docToEdit).subscribe(() => {

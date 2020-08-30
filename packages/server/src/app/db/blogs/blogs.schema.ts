@@ -1,9 +1,9 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
-import * as sanitize from 'sanitize-html';
-import { countWords } from '@pulp-fiction/word_counter';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as documents from './models/blog-document.model';
 
@@ -30,6 +30,9 @@ export const BlogsSchema = new Schema({
     },
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
+
+    // Remove once we've migrated away from Quill
+    usesFroala: {type: Boolean, default: false}
 }, {timestamps: true, autoIndex: true, collection: 'blogs'});
 
 BlogsSchema.plugin(MongooseAutopopulate);
@@ -37,11 +40,13 @@ BlogsSchema.plugin(MongoosePaginate);
 
 BlogsSchema.pre<documents.BlogDocument>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());
-    this.set('title', sanitize(this.title));
-    this.set('body', sanitize(this.body));
+    this.set('title', await sanitizeHtml(this.title));
+    this.set('body', await sanitizeHtml(this.body));
     this.set('published', this.published);
 
-    const wordCount = await countWords(sanitize(this.body));
+    const wordCount = this.usesFroala 
+        ? await countPlaintextWords(await stripAllHtml(this.body))
+        : await countQuillWords(await sanitizeHtml(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

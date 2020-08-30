@@ -4,7 +4,7 @@ import { ControlContainer, FormGroupDirective, FormGroup } from '@angular/forms'
 import { imageHandler, dividerHandler } from '../../util/quill';
 
 @Component({
-  selector: 'pulp-fiction-editor',
+  selector: 'quill-pulp-fiction-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.less'],
   viewProviders: [

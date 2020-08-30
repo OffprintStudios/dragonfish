@@ -14,4 +14,7 @@ export interface EditWork {
     readonly genres: Genres[];
     readonly rating: ContentRating,
     readonly status: WorkStatus,
+
+    // Remove this once we've migrated all sections from Quill
+    readonly usesFroala: boolean;
 }

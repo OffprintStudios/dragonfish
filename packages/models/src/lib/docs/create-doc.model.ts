@@ -6,4 +6,7 @@ export interface CreateDoc {
     readonly docDescription: string;
     readonly docBody: string;
     readonly approvedRoles: Roles[];
+
+    // Remove this once we've migrated fully away from Quill
+    readonly usesFroala: boolean;
 }

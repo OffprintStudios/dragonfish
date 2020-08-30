@@ -1,5 +1,4 @@
 //! A native module for counting the number of words in the body of work submitted to Offprint.
-//! Defines a single `count_words()` function.
 
 use wasm_bindgen::prelude::*;
 
@@ -30,14 +29,15 @@ enum StrOrMap {
 }
 
 #[wasm_bindgen]
-pub fn count_words(body_text: &str) -> Result<u32, JsValue> {
-    match try_count_words(&body_text) {
+/// Counts the number of words in a collection of QuillJS Deltas.
+pub fn count_quill_words(body_text: &str) -> Result<u32, JsValue> {
+    match try_count_quill_words(&body_text) {
         Ok(count) => Ok(count),
         Err(e) => Err(js_sys::Error::new(&e.to_string()).into())
     }
 }
 
-fn try_count_words(text: &str) -> serde_json::Result<u32> {
+fn try_count_quill_words(text: &str) -> serde_json::Result<u32> {
   let work_content: Delta = serde_json::from_str(text)?;
   let mut string_builder = String::new();
   for chunk in work_content.ops.iter().filter_map(|x| match &x.insert {
@@ -48,4 +48,10 @@ fn try_count_words(text: &str) -> serde_json::Result<u32> {
   }
   let word_count = count::count_words(&string_builder, "");
   Ok(word_count as u32)
+}
+
+#[wasm_bindgen]
+/// Counts the number of words in a string of plain text.
+pub fn count_plaintext_words(body_text: &str) -> u32 {
+    count::count_words(body_text, "") as u32
 }

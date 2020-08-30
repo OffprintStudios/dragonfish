@@ -18,4 +18,7 @@ export interface Blog {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+
+    // Remove this once we've finished migrating away from Quill
+    readonly usesFroala: boolean;
 }

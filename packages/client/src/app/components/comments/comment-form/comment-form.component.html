@@ -2,7 +2,7 @@
 <div class="comment-container">
     <div class="comment-form-container">
         <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
-            <pulp-fiction-editor [parentForm]="commentForm" [controlName]="'body'" [minLength]="10" [height]="'200px'"></pulp-fiction-editor>
+            <quill-pulp-fiction-editor [parentForm]="commentForm" [controlName]="'body'" [minLength]="10" [height]="'200px'"></quill-pulp-fiction-editor> 
             <div class="comment-control">
                 <button type="submit">Submit</button>
                 <button style="margin-left: 1rem;" type="button" (click)="askCancel()">Cancel</button>

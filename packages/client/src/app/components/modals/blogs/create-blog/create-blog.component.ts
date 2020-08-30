@@ -78,6 +78,7 @@ export class CreateBlogComponent implements OnInit {
       title: this.fields.title.value,
       body: this.fields.body.value,
       published: this.fields.published.value,
+      usesFroala: true,
     };
 
     this.blogsService.createBlog(newBlogInfo).subscribe(() => {

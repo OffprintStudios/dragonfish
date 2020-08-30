@@ -3,4 +3,7 @@ export interface EditSection {
     readonly body: string;
     readonly authorsNote?: string;
     readonly oldWords: number;
+
+    // Remove this once we've migrated all sections from Quill
+    readonly usesFroala: boolean;
 }

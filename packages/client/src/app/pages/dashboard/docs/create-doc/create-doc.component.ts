@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { AuthService } from '../../../../services/auth';
 import { DocsService } from '../../../../services/admin';
-import { dividerHandler, imageHandler } from '../../../../util/quill';
 import { AlertsService } from '../../../../modules/alerts';
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { CreateDoc } from '@pulp-fiction/models/docs';
@@ -19,13 +18,6 @@ export class CreateDocComponent implements OnInit {
   rolesList = Roles;
   loading = false;
 
-  editorFormats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code', 'image',
-    'align', 'center', 'right', 'justify',
-    'list', 'bullet', 'ordered'
-  ];
-
   createDocForm = new FormGroup({
     id: new FormControl('', [Validators.required]),
     docName: new FormControl('', [Validators.required]),
@@ -35,7 +27,7 @@ export class CreateDocComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private docsService: DocsService,
-    private cdr: ChangeDetectorRef, private alertsService: AlertsService, private router: Router) {
+    private alertsService: AlertsService, private router: Router) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
     }
 
@@ -46,24 +38,6 @@ export class CreateDocComponent implements OnInit {
    * Create doc form getter.
    */
   get fields() { return this.createDocForm.controls; }
-
-  /**
-   * Required for Quill
-   */
-  triggerChangeDetection() {
-    return this.cdr.detectChanges();
-  }
-
-  /**
-   * Gets the Quill Editor object after the editor's creation in the template HTML
-   * 
-   * @param event The editor object
-   */
-  onEditorCreated(event: any) {
-    let toolbar = event.getModule('toolbar');
-    toolbar.addHandler('divider', dividerHandler);
-    toolbar.addHandler('image', imageHandler);
-  }
 
   /**
    * Submits document to the database.
@@ -101,6 +75,7 @@ export class CreateDocComponent implements OnInit {
       docDescription: this.fields.docDesc.value,
       docBody: this.fields.docBody.value,
       approvedRoles: this.fields.approvedRoles.value,
+      usesFroala: true
     };
 
     this.docsService.createDoc(this.currentUser.roles as Roles[], docToCreate).subscribe(() => {

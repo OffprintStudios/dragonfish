@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
-import { countWords } from '@pulp-fiction/word_counter';
-import * as sanitize from 'sanitize-html';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as models from '@pulp-fiction/models/works';
 import * as documents from './models';
@@ -32,9 +32,9 @@ export class WorksService {
     async createNewWork(user: any, newWorkInfo: models.CreateWork): Promise<models.Work> {
         const newWork = new this.workModel({
             author: user.sub,
-            title: sanitize(newWorkInfo.title),
-            shortDesc: sanitize(newWorkInfo.shortDesc),
-            longDesc: sanitize(newWorkInfo.longDesc),
+            title: await sanitizeHtml(newWorkInfo.title),
+            shortDesc: await sanitizeHtml(newWorkInfo.shortDesc),
+            longDesc: await sanitizeHtml(newWorkInfo.longDesc),
             meta: {
                 category: newWorkInfo.category,
                 fandoms: newWorkInfo.fandoms,
@@ -42,6 +42,8 @@ export class WorksService {
                 rating: newWorkInfo.rating,
                 status: newWorkInfo.status,
             },
+            // Delete this when we're all migrated.
+            usesFroala: newWorkInfo.usesFroala
         });
 
         return await newWork.save();
@@ -61,9 +63,12 @@ export class WorksService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             const newSection = new this.sectionModel({
-                title: sanitize(newSectionInfo.title),
-                body: sanitize(newSectionInfo.body),
-                authorsNote: sanitize(newSectionInfo.authorsNote),
+                title: await sanitizeHtml(newSectionInfo.title),
+                body: await sanitizeHtml(newSectionInfo.body),
+                authorsNote: await sanitizeHtml(newSectionInfo.authorsNote),
+
+                // Delete this when we're all migrated
+                usesFroala: newSectionInfo.usesFroala                
             });
 
             return await newSection.save().then(async section => {
@@ -215,12 +220,17 @@ export class WorksService {
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {        
+        } else {                    
             return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
-                "title": sanitize(sectionInfo.title),
-                "body": sanitize(sectionInfo.body),
-                "authorsNote": sanitize(sectionInfo.authorsNote),                
-                "stats.words": await countWords(sanitize(sectionInfo.body))
+                "title": await sanitizeHtml(sectionInfo.title),
+                "body": await sanitizeHtml(sectionInfo.body),
+                "authorsNote": await sanitizeHtml(sectionInfo.authorsNote),                
+                "stats.words": sectionInfo.usesFroala 
+                    ? await countPlaintextWords(await stripAllHtml(sectionInfo.body))
+                    : await countQuillWords(await sanitizeHtml(sectionInfo.body)),
+
+                // Delete this when we're all migrated
+                "usesFroala": sectionInfo.usesFroala
             }, {new: true}).then(async sec => {
                 if (sec.published === true) {
                     await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
@@ -310,6 +320,9 @@ export class WorksService {
             'meta.genres': workInfo.genres,
             'meta.rating': workInfo.rating,
             'meta.status': workInfo.status,
+            
+            // Delete this when migrated from Quill
+            'usesFroala': workInfo.usesFroala,
         }).where("audit.isDeleted", false);
     }
 

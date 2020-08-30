@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateResult } from 'mongoose';
-import { countWords } from '@pulp-fiction/word_counter';
-import * as sanitize from 'sanitize-html';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer'
 
 import * as models from '@pulp-fiction/models/blogs';
 import * as documents from './models/blog-document.model';
@@ -30,7 +30,10 @@ export class BlogsService {
             author: user.sub,
             title: newBlogInfo.title,
             body: newBlogInfo.body,
-            published: newBlogInfo.published
+            published: newBlogInfo.published,
+
+            // Delete this when we're all migrated
+            usesFroala: newBlogInfo.usesFroala
         });
         return await newBlog.save().then(async blog => {
             const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
@@ -100,10 +103,20 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        const wordcount = await countWords(blogInfo.body);
+        const wordcount = blogInfo.usesFroala 
+            ? await countPlaintextWords(await stripAllHtml(blogInfo.body))
+            : await countQuillWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
             {"_id": blogInfo._id, "author": user.sub},
-            {"title": sanitize(blogInfo.title), "body": sanitize(blogInfo.body), "published": blogInfo.published, "stats.words": wordcount}
+            {
+                "title": await sanitizeHtml(blogInfo.title), 
+                "body": await sanitizeHtml(blogInfo.body), 
+                "published": blogInfo.published, 
+                "stats.words": wordcount,
+
+                // Delete this when we're all migrated
+                "usesFroala": blogInfo.usesFroala
+            }
             ).where('audit.isDeleted', false).then(async () => {
                 const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
                 await this.usersService.updateBlogCount(user.sub, blogCount);

@@ -25,9 +25,7 @@
               "packages/client/src/favicon.ico",
               "packages/client/src/assets"
             ],
-            "styles": ["packages/client/src/styles.less", 
-              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-              "./node_modules/froala-editor/css/froala_style.min.css"],
+            "styles": ["packages/client/src/styles.less"],
             "scripts": []
           },
           "configurations": {
@@ -160,7 +158,8 @@
         "serve": {
           "builder": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "server:build"          
+            "buildTarget": "server:build",
+            "port": 9229
           }
         },
         "lint": {
@@ -235,6 +234,38 @@
             "tsConfig": "packages/word_counter/tsconfig.spec.json",
             "passWithNoTests": true
           }
+        }
+      }
+    },
+    "html_sanitizer": {
+      "projectType": "library",
+      "root": "packages/html_sanitizer",
+      "sourceRoot": "packages/html_sanitizer/src",
+      "prefix": "pulp-fiction",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/html_sanitizer/tsconfig.lib.json",
+              "packages/html_sanitizer/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!packages/html_sanitizer/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "packages/html_sanitizer/jest.config.js",
+            "tsConfig": "packages/html_sanitizer/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "packages/html_sanitizer/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "less"
         }
       }
     }

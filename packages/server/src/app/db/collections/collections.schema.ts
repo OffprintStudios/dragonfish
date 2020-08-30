@@ -2,7 +2,7 @@ import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { generate } from 'shortid';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import { CollectionDocument } from './models';
 
@@ -33,8 +33,8 @@ CollectionsSchema.plugin(MongoosePaginate);
 
 CollectionsSchema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
-    this.set('name', sanitize(this.name));
-    this.set('desc', sanitize(this.desc));
+    this.set('name', await sanitizeHtml(this.name));
+    this.set('desc', await sanitizeHtml(this.desc));
     this.set('createdAt', Date.now());
     this.set('updatedAt', Date.now());
 

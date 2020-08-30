@@ -37,6 +37,9 @@
     },
     "word_counter": {
       "tags": []
+    },
+    "html_sanitizer": {
+      "tags": []
     }
   },
   "workspaceLayout": {

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
@@ -97,7 +97,7 @@ export class CommentsService {
             throw new NotFoundException(`The comment you were trying to edit cannot be found.`);
         } else if (oldComment.audit.canEdit === true) {
             return await this.commentModel.updateOne({'_id': commentId, 'user': user.sub}, {
-                'body': sanitize(commentInfo.body),
+                'body': await sanitizeHtml(commentInfo.body),
                 $push: {
                     'history': {
                         'oldBody': oldBody,

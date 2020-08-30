@@ -27,7 +27,12 @@
                     </div>
                 </div>
                 <div class="blog-content">
-                    <quill-view [content]="blog.body" format="json"></quill-view>
+                    <ngContainer *ngIf="!blog.usesFroala">
+                        <quill-view [content]="blog.body" format="json"></quill-view>
+                    </ngContainer>
+                    <ngContainer *ngIf="blog.usesFroala">
+                        <div [innerHtml]="blog.body | safeHtml"></div>
+                    </ngContainer>
                 </div>
             </div>
             <div class="blog-footer">

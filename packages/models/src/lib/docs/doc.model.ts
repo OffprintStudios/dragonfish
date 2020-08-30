@@ -13,4 +13,7 @@ export interface Doc {
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
+
+    // Remove this once we've migrated away from Quill
+    readonly usesFroala: boolean;
 }

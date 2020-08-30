@@ -8,7 +8,7 @@
         
         <label for="body">Body:</label>
         <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be more than 3 characters.</div>
-        <pulp-fiction-editor [parentForm]="newBlogForm" [controlName]="'body'" [minLength]="3" [height]="'300px'"></pulp-fiction-editor>
+        <froala-pulp-fiction-editor formControlName="body"></froala-pulp-fiction-editor>
 
         <label>
             <input type="checkbox" formControlName="published">
