@@ -53,8 +53,8 @@ export class CommentsService {
    * 
    * @param blogId The blog that these comments belong to
    */
-  public getBlogComments(blogId: string) {
-    return this.http.get<BlogComment[]>(`${this.url}/get-blog-comments/${blogId}`, {observe: 'response', withCredentials: true})
+  public getBlogComments(blogId: string, pageNum: number) {
+    return this.http.get<BlogComment[]>(`${this.url}/get-blog-comments/${blogId}/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(comments => {
         return comments.body;
       }), catchError(err => {
@@ -68,8 +68,8 @@ export class CommentsService {
    * 
    * @param workId The work that these comments belong to
    */
-  public getWorkComments(workId: string) {
-    return this.http.get<WorkComment[]>(`${this.url}/get-work-comments/${workId}`, {observe: 'response', withCredentials: true})
+  public getWorkComments(workId: string, pageNum: number) {
+    return this.http.get<WorkComment[]>(`${this.url}/get-work-comments/${workId}/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(comments => {
         return comments.body;
       }), catchError(err => {
