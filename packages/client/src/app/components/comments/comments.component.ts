@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import * as lodash from 'lodash';
 
@@ -19,6 +19,7 @@ export class CommentsComponent implements OnInit {
   @Input() itemKind: string;
   @Input() pageNum: number;
   @Input() banlist?: any;
+  @Output() emitPageChange = new EventEmitter<number>();
 
   currentUser: FrontendUser;
   loading = false;
@@ -56,12 +57,14 @@ export class CommentsComponent implements OnInit {
       this.commentsService.getBlogComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
         this.pageNum = pageNum;
+        this.emitPageChange.emit(pageNum);
         this.loading = false;
       });
     } else if (this.itemKind === 'Work') {
       this.commentsService.getWorkComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
         this.pageNum = pageNum;
+        this.emitPageChange.emit(pageNum);
         this.loading = false;
       });
     }

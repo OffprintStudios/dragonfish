@@ -65,7 +65,7 @@ export class CommentsService {
         return await this.blogCommentModel.paginate({"blogId": blogId}, {
             sort: {"createdAt": 1},
             page: pageNum,
-            limit: 25
+            limit: 5
         });
     }
 
@@ -78,7 +78,7 @@ export class CommentsService {
         return await this.workCommentModel.paginate({"workId": workId}, {
             sort: {"createdAt": 1},
             page: pageNum,
-            limit: 25
+            limit: 5
         });
     }
 
