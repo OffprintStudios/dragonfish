@@ -21,6 +21,7 @@ export class PortBlogPageComponent implements OnInit {
   blogData: Blog; // The blog we're displaying
   editBlog: ToppyControl; // The blog editing form modal
   loading = false; // Loading check for fetching data
+  blogUrl = '';
   pageNum = 1; // Comments page
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private portService: PortfolioService,
@@ -57,6 +58,7 @@ export class PortBlogPageComponent implements OnInit {
       this.portUserName = parentParams.get('username');
       this.route.paramMap.subscribe(params => {
         this.blogId = params.get('blogId');
+        this.blogUrl = `/portfolio/${this.portUserId}/${this.portUserName}/blog/${this.blogId}`;
         this.portService.getBlog(this.blogId).subscribe(blog => {
           this.blogData = blog;
           this.loading = false;
