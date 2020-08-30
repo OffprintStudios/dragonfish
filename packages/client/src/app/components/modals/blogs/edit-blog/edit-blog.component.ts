@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BlogsService } from '../../../../services/content';
 import { AlertsService } from '../../../../modules/alerts';
 import { dividerHandler, imageHandler } from '../../../../util/quill';
+import { getQuillHtml } from 'packages/client/src/app/util/functions';
 
 @Component({
   selector: 'app-edit-blog',
@@ -79,15 +80,14 @@ export class EditBlogComponent implements OnInit {
       return;
     }
 
-    if (!this.blogData.usesFroala) {
-      // TODO: Instead of sending up Quill data, get rendered HTML and send that up instead
-      throw new Error("Not implemented. Developers oughta get on that.");      
-    }
+    const blogBody = this.blogData.usesFroala
+      ? this.fields.body.value
+      : getQuillHtml(document.querySelector("quill-editor"))
 
     const updatedBlogInfo: EditBlog = {
       _id: blogId,
       title: this.fields.title.value,
-      body: this.fields.body.value,
+      body: blogBody,
       published: this.fields.published.value,
       usesFroala: true
     };
