@@ -10,6 +10,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Section, SectionInfo, EditSection} from '@pulp-fiction/models/works';
 import { Observable } from 'rxjs';
 import { AlertsService } from '../../../modules/alerts';
+import { getQuillHtml } from '../../../util/functions';
 
 enum SectionState {
   User,
@@ -209,15 +210,18 @@ export class SectionPageComponent implements OnInit {
       }
     }
 
-    if (!this.sectionData.usesFroala) {
-      // TODO: Get rendered HTML and send it up instead of Quill Deltas.
-      throw new Error("Not implemented. Fix iiiiit");
-    }
+    const sectionBodyValue = this.sectionData.usesFroala
+      ? this.fields.body.value
+      : getQuillHtml(document.querySelector("quill-editor"));
+
+    const authorsNoteValue = this.sectionData.usesFroala
+      ? this.fields.authorsNote.value
+      : getQuillHtml(document.querySelector("div.authors-note"));
 
     const newEdits: EditSection = {
       title: this.fields.title.value,
-      body: this.fields.body.value,
-      authorsNote: this.fields.authorsNote.value,
+      body: sectionBodyValue,
+      authorsNote: authorsNoteValue,
       oldWords: this.sectionData.stats.words,
       usesFroala: true,
     };

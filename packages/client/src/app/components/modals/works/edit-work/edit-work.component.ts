@@ -6,6 +6,7 @@ import { WorksService } from '../../../../services/content';
 import { AlertsService } from '../../../../modules/alerts';
 import { Categories, EditWork, Fandoms, GenresFiction, GenresPoetry, 
   ContentRating, WorkStatus, Work } from '@pulp-fiction/models/works';
+import { getQuillHtml } from 'packages/client/src/app/util/functions';
 
 @Component({
   selector: 'app-edit-work',
@@ -140,16 +141,15 @@ export class EditWorkComponent implements OnInit {
       ? this.fields.theseGenres.value
       : [this.fields.theseGenres.value];
 
-      if (!this.workData.usesFroala) {
-        // TODO: instead of sending up Quill data, send up rendered HTML
-        throw new Error("Not yet implemented, fix this nonsense");
-      }
+      const longDescValue = this.workData.usesFroala 
+        ? this.fields.longDesc.value
+        : getQuillHtml(document.querySelector("quill-editor"));
     
     const newChanges: EditWork = {
       _id: this.workData._id,
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,
-      longDesc: this.fields.longDesc.value,
+      longDesc: longDescValue,
       category: this.fields.thisCategory.value,
       fandoms: this.fields.theseFandoms.value,
       genres: genres,

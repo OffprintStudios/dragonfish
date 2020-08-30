@@ -216,26 +216,10 @@ export class WorksService {
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {        
+        } else {                    
             return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
                 "title": sanitize(sectionInfo.title),
-                "body": sanitize(sectionInfo.body, {  
-                    allowedAttributes: {
-                        'p': ["style"],
-                    },
-                    allowedStyles: {
-                        '*': {
-                            // Match HEX and RGB
-                            'color': [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/],
-                            'text-align': [/^left$/, /^right$/, /^center$/],
-                            // Match any number with px, em, or %
-                            'font-size': [/^\d+(?:px|em|%)$/]
-                        },
-                        'p': {
-                            'font-size': [/^\d+rem$/]
-                        }
-                    }
-                }),
+                "body": sanitize(sectionInfo.body),
                 "authorsNote": sanitize(sectionInfo.authorsNote),                
                 "stats.words": sectionInfo.usesFroala 
                     ? 3 // TODO: Make this return a real value
@@ -330,6 +314,9 @@ export class WorksService {
             'meta.genres': workInfo.genres,
             'meta.rating': workInfo.rating,
             'meta.status': workInfo.status,
+            
+            // Delete this when migrated from Quill
+            'usesFroala': workInfo.usesFroala,
         }).where("audit.isDeleted", false);
     }
 

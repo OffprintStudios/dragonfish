@@ -60,7 +60,12 @@
             </div>
             
             <div class="work-description content-box">
-                <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                <ngContainer *ngIf="!workData.usesFroala">
+                    <quill-view [content]="workData.longDesc" sanitize="true" format="json"></quill-view>
+                </ngContainer>
+                <ngContainer *ngIf="workData.usesFroala">
+                    <div class="html-description" [innerHtml]="workData.longDesc | safeHtml"></div>
+                </ngContainer>
             </div>
         </div>
     </div>
