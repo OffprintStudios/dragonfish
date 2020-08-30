@@ -45,18 +45,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
   }
-
-  /**
-   * Every time a new page is navigated to, the scroll position is reset to the top of the page.
-   */
+  
   ngOnInit() {
-    this.router.events.subscribe((event) => {
-      if (!(event instanceof NavigationEnd)) {
-        return;
-      } else {
-        window.scrollTo(0,0);
-      }
-    });
   }  
 
   /**

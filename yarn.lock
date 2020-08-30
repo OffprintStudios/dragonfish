@@ -2920,6 +2920,13 @@ angular-feather@^6.0.10:
   dependencies:
     feather-icons "4.24.1"
 
+angular-froala-wysiwyg@^3.2.1-1:
+  version "3.2.1-1"
+  resolved "https://registry.yarnpkg.com/angular-froala-wysiwyg/-/angular-froala-wysiwyg-3.2.1-1.tgz#4542b9e6b3838ebf0000f6eddbe2d3c512ec6e6d"
+  integrity sha512-vYW7mgdagIgDGnTql0WxI7aJfU+frEkHy7pTS0GYYUX81FpkeWsr6cOzunLdwlE+7iDMyDD6pFmp1tZGEQUynw==
+  dependencies:
+    froala-editor "^3.2.1"
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
@@ -6207,6 +6214,11 @@ fresh@0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
   integrity sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=
+
+froala-editor@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/froala-editor/-/froala-editor-3.2.1.tgz#7ca9e9422a8109a41959192abc772920f6092e3f"
+  integrity sha512-aTsCB2FA/XYJ6s1VdzNDbC7PT6YZhjb5hC9Lj5/DBrN5eCTlXm4b9xGp2taZ+vpBKe3ElgznUpa+25nxaeL0CA==
 
 from2@^2.1.0:
   version "2.3.0"

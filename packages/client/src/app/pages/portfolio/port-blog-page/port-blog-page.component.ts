@@ -21,6 +21,8 @@ export class PortBlogPageComponent implements OnInit {
   blogData: Blog; // The blog we're displaying
   editBlog: ToppyControl; // The blog editing form modal
   loading = false; // Loading check for fetching data
+  blogUrl = '';
+  pageNum = 1; // Comments page
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private portService: PortfolioService,
       private blogsService: BlogsService, private toppy: Toppy, private router: Router) {
@@ -56,12 +58,31 @@ export class PortBlogPageComponent implements OnInit {
       this.portUserName = parentParams.get('username');
       this.route.paramMap.subscribe(params => {
         this.blogId = params.get('blogId');
+        this.blogUrl = `/portfolio/${this.portUserId}/${this.portUserName}/blog/${this.blogId}`;
         this.portService.getBlog(this.blogId).subscribe(blog => {
           this.blogData = blog;
           this.loading = false;
         });
       });
     });
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get('page') !== null) {
+        this.pageNum = +queryParams.get('page');
+      }
+    });
+  }
+
+  /**
+   * Changes query params to the appropriate page.
+   * @param event The page changed to
+   */
+  onPageChange(event: number) {
+    if (event !== 1) {
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    } else {
+      this.router.navigate([], {relativeTo: this.route});
+    }
   }
 
   /**
