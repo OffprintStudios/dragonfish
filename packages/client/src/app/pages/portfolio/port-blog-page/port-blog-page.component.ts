@@ -76,12 +76,10 @@ export class PortBlogPageComponent implements OnInit {
    * @param event The page changed to
    */
   onPageChange(event: number) {
-    console.log(event);
-
     if (event !== 1) {
       this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
     } else {
-      return;
+      this.router.navigate([], {relativeTo: this.route});
     }
   }
 

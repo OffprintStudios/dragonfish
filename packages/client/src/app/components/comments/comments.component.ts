@@ -75,6 +75,11 @@ export class CommentsComponent implements OnInit {
     }
   }
 
+  /**
+   * If there's a logged-in user, check to see if the user owns the specific comment requested.
+   * 
+   * @param userId The user ID of the comment
+   */
   currentUserIsSame(userId: string) {
     if (this.currentUser) {
       if (this.currentUser._id === userId) {
@@ -85,6 +90,11 @@ export class CommentsComponent implements OnInit {
     }
   }
 
+  /**
+   * Checks to see what toplevel role a user has to display the appropriate tag.
+   * 
+   * @param roles A comment user's roles
+   */
   determineProminentRole(roles: Roles[]) {
     // this will totally need retooling to figure out a much better way to verify what the top-level
     // role is
@@ -115,11 +125,25 @@ export class CommentsComponent implements OnInit {
     }
   }
 
+  /**
+   * Creates a new comment.
+   * 
+   * @param itemId The current item
+   * @param itemKind The item's kind
+   */
   newComment(itemId: string, itemKind: string) {
     this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind, editMode: false});
     this.commentForm.open();
   }
 
+  /**
+   * Edits a comment.
+   * 
+   * @param itemId The current item
+   * @param itemKind The item's kind
+   * @param commentId The comment's ID
+   * @param commInfo The comment's info
+   */
   editComment(itemId: string, itemKind: string, commentId: string, commInfo: string) {
     this.commentForm.updateContent(CommentFormComponent, {
       itemId: itemId,
@@ -132,6 +156,14 @@ export class CommentsComponent implements OnInit {
     this.commentForm.open();
   }
 
+  /**
+   * Creates a comment with a quote.
+   * 
+   * @param itemId The current item
+   * @param itemKind The item's kind
+   * @param commentId The comment's ID
+   * @param commInfo The comment's info
+   */
   quoteComment(itemId: string, itemKind: string, commInfo: string) {
     this.commentForm.updateContent(CommentFormComponent, {
       itemId: itemId,
