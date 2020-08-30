@@ -15,11 +15,11 @@ import { CommentFormComponent } from './comment-form/comment-form.component';
   styleUrls: ['./comments.component.less']
 })
 export class CommentsComponent implements OnInit {
-  @Input() itemId: string;
-  @Input() itemKind: string;
-  @Input() pageNum: number;
-  @Input() banlist?: any;
-  @Output() emitPageChange = new EventEmitter<number>();
+  @Input() itemId: string; // The ID of the blog/work/newspost
+  @Input() itemKind: string; // The kind of comments thread it is, between blogs/works/newsposts
+  @Input() pageNum: number; // The requested page number
+  @Input() banlist?: any; // The banlist of the thread
+  @Output() emitPageChange = new EventEmitter<number>(); // Emits the current page number
 
   currentUser: FrontendUser;
   loading = false;
@@ -51,6 +51,11 @@ export class CommentsComponent implements OnInit {
     });
   }
 
+  /**
+   * Fetches the requested page of comments.
+   * 
+   * @param pageNum The page desired
+   */
   fetchData(pageNum: number) {
     this.loading = true;
     if (this.itemKind === 'Blog') {
