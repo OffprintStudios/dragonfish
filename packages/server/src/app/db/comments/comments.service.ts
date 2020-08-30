@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as documents from './models';
@@ -11,9 +11,9 @@ import { isNullOrUndefined } from '../../util';
 
 @Injectable()
 export class CommentsService {
-    constructor(@InjectModel('Comment') private readonly commentModel: Model<documents.CommentDocument>,
-        @InjectModel('BlogComment') private readonly blogCommentModel: Model<documents.BlogCommentDocument>,
-        @InjectModel('WorkComment') private readonly workCommentModel: Model<documents.WorkCommentDocument>,
+    constructor(@InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
+        @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
+        @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
         private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
 
     /**
@@ -50,7 +50,10 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save();
+        return await newComment.save().then(async doc => {
+            await this.worksService.addComment(workId);
+            return doc;
+        });
     }
 
     /**
@@ -58,8 +61,12 @@ export class CommentsService {
      * 
      * @param blogId The blog that these comments belong to
      */
-    async getBlogComments(blogId: string): Promise<documents.BlogCommentDocument[]> {
-        return await this.blogCommentModel.find().where('blogId').equals(blogId);
+    async getBlogComments(blogId: string, pageNum: number): Promise<PaginateResult<documents.BlogCommentDocument>> {
+        return await this.blogCommentModel.paginate({"blogId": blogId}, {
+            sort: {"createdAt": 1},
+            page: pageNum,
+            limit: 5
+        });
     }
 
     /**
@@ -67,8 +74,12 @@ export class CommentsService {
      * 
      * @param workId The work that these comments belong to
      */
-    async getWorkComments(workId: string): Promise<documents.WorkCommentDocument[]> {
-        return await this.workCommentModel.find().where('workId').equals(workId);
+    async getWorkComments(workId: string, pageNum: number): Promise<PaginateResult<documents.WorkCommentDocument>> {
+        return await this.workCommentModel.paginate({"workId": workId}, {
+            sort: {"createdAt": 1},
+            page: pageNum,
+            limit: 5
+        });
     }
 
     /**

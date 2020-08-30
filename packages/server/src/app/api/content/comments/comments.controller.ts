@@ -21,14 +21,14 @@ export class CommentsController {
         return await this.commentsService.createWorkComment(req.user, workId, commentInfo);
     }
 
-    @Get('get-blog-comments/:blogId')
-    async getBlogComments(@Param('blogId') blogId: string) {
-        return await this.commentsService.getBlogComments(blogId);
+    @Get('get-blog-comments/:blogId/:pageNum')
+    async getBlogComments(@Param('blogId') blogId: string, @Param('pageNum') pageNum: number) {
+        return await this.commentsService.getBlogComments(blogId, pageNum);
     }
 
-    @Get('get-work-comments/:workId')
-    async getWorkComments(@Param('workId') workId: string) {
-        return await this.commentsService.getWorkComments(workId);
+    @Get('get-work-comments/:workId/:pageNum')
+    async getWorkComments(@Param('workId') workId: string, @Param('pageNum') pageNum: number) {
+        return await this.commentsService.getWorkComments(workId, pageNum);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

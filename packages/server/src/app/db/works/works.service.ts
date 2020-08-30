@@ -327,6 +327,17 @@ export class WorksService {
     }
 
     /**
+     * Adds a comment to a work.
+     * 
+     * @param workId The work to update
+     */
+    async addComment(workId: string) {
+        await this.workModel.updateOne({"_id": workId, "audit.isDeleted": false, "audit.published": models.ApprovalStatus.Approved}, {
+            $inc: {"stats.comments": 1}
+        });
+    }
+
+    /**
      * Sets the approval status of a work to Approved.
      * 
      * @param workId The work to approve
