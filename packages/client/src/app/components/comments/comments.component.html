@@ -7,7 +7,7 @@
 <ng-container *ngIf="!loading">
     <div class="comments-topbar">
         <div class="paginator">
-            <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="pageNum = $event" id="comments"></pagination-controls>
+            <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
             <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
@@ -20,11 +20,11 @@
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
-        <div style="margin-top: 2rem; text-align: center;" *ngIf="comments.length === 0">
+        <div style="margin-top: 2rem; text-align: center;" *ngIf="comments.docs.length === 0">
             <h4 style="margin-bottom: 0;">No one's said anything yet...</h4>
             <p style="margin-top: 0; font-style: italic;">But you could be the first!</p>
         </div>
-        <div class="comment" *ngFor="let comment of comments | paginate: { id: 'comments', itemsPerPage: 5, currentPage: pageNum, totalItems: comments.length }; let i = index">
+        <div class="comment" *ngFor="let comment of comments.docs | paginate: { id: 'comments', itemsPerPage: comments.limit, currentPage: pageNum, totalItems: comments.totalDocs }; let i = index">
             <div class="row">
                 <div class="comm-side-header three columns">
                     <img [src]="comment.user.profile.avatar">
@@ -94,7 +94,7 @@
 
     <div class="comments-bottom-bar">
         <div class="paginator">
-            <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="pageNum = $event" id="comments"></pagination-controls>
+            <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
             <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>

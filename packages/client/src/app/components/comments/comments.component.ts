@@ -4,6 +4,7 @@ import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { Comment, BlogComment, WorkComment } from '@pulp-fiction/models/comments';
+import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
 import { CommentFormComponent } from './comment-form/comment-form.component';
@@ -21,7 +22,7 @@ export class CommentsComponent implements OnInit {
 
   currentUser: FrontendUser;
   loading = false;
-  comments: Comment[] | BlogComment[] | WorkComment[];
+  comments: PaginateResult<Comment> | PaginateResult<BlogComment> | PaginateResult<WorkComment>;
   commentForm: ToppyControl;
 
   constructor(private authService: AuthService, private toppy: Toppy, private commentsService: CommentsService) { 
@@ -29,7 +30,7 @@ export class CommentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchData();
+    this.fetchData(this.pageNum);
 
     // Setting up the comment form
     const pos = new GlobalPosition({
@@ -45,20 +46,22 @@ export class CommentsComponent implements OnInit {
       .create();
 
     this.commentForm.listen('t_close').subscribe(() => {
-      this.fetchData();
+      this.fetchData(this.pageNum);
     });
   }
 
-  fetchData(/*pageNum: number*/) {
+  fetchData(pageNum: number) {
     this.loading = true;
     if (this.itemKind === 'Blog') {
-      this.commentsService.getBlogComments(this.itemId).subscribe(comments => {
+      this.commentsService.getBlogComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
+        this.pageNum = pageNum;
         this.loading = false;
       });
     } else if (this.itemKind === 'Work') {
-      this.commentsService.getWorkComments(this.itemId).subscribe(comments => {
+      this.commentsService.getWorkComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
+        this.pageNum = pageNum;
         this.loading = false;
       });
     }
