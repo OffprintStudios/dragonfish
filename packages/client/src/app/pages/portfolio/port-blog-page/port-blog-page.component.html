@@ -30,5 +30,5 @@
 </div>
 
 <ng-container *ngIf="!loading">
-    <comments [itemId]="blogData._id" [itemKind]="'Blog'" [pageNum]="1"></comments>
+    <comments [itemId]="blogData._id" [itemKind]="'Blog'" [pageNum]="pageNum" (emitPageChange)="onPageChange($event)"></comments>
 </ng-container>
