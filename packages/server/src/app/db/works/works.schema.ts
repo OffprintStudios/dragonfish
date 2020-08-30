@@ -3,7 +3,7 @@ import { generate } from 'shortid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as models from '@pulp-fiction/models/works';
 import * as documents from './models';
@@ -56,9 +56,9 @@ WorksSchema.plugin(MongoosePaginate);
 
 WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
-    this.set('title', sanitize(this.title));
-    this.set('shortDesc', sanitize(this.shortDesc));
-    this.set('longDesc', sanitize(this.longDesc));
+    this.set('title', await sanitizeHtml(this.title));
+    this.set('shortDesc', await sanitizeHtml(this.shortDesc));
+    this.set('longDesc', await sanitizeHtml(this.longDesc));
     this.set('meta.category', this.meta.category);
     if (this.meta.fandoms) {
         this.set('meta.fandoms', this.meta.fandoms);

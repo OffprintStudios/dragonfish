@@ -2,7 +2,7 @@ import { Injectable, ConflictException, BadRequestException, InternalServerError
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { hash, argon2id } from 'argon2';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import validator from 'validator';
 
 import * as documents from './models';
@@ -54,8 +54,8 @@ export class UsersService {
             throw new BadRequestException('Your username must be between 3 and 50 characters.');
         }
 
-        const existingUsername = await this.userModel.findOne({ username: sanitize(newUserInfo.username) });
-        const existingEmail = await this.userModel.findOne({ email: sanitize(newUserInfo.email) });
+        const existingUsername = await this.userModel.findOne({ username: await sanitizeHtml(newUserInfo.username) });
+        const existingEmail = await this.userModel.findOne({ email: await sanitizeHtml(newUserInfo.email) });
         if (!isNullOrUndefined(existingUsername) || !isNullOrUndefined(existingEmail)) {
             throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
@@ -79,7 +79,7 @@ export class UsersService {
      * @param potEmail A potential user's email
      */
     async findOneByEmail(potEmail: string): Promise<models.User> {
-        return await this.userModel.findOne({ email: sanitize(potEmail) });
+        return await this.userModel.findOne({ email: await sanitizeHtml(potEmail) });
     }
 
     /**
@@ -202,7 +202,7 @@ export class UsersService {
      * @param newUsername The user's proposed new username.
      */
     async changeUsername(userId: string, newUsername: string): Promise<models.User> {
-        const existingUsername = await this.userModel.findOne({username: sanitize(newUsername)});
+        const existingUsername = await this.userModel.findOne({username: await sanitizeHtml(newUsername)});
         if (!isNullOrUndefined(existingUsername)) {
             throw new ConflictException(`This username is already in use. Please use another.`);
         }
@@ -215,7 +215,7 @@ export class UsersService {
      * @param newEmail The user's proposed new email address.
      */
     async changeEmail(userId: string, newEmail: string): Promise<models.User> {
-        const existingEmail = await this.userModel.findOne({email: sanitize(newEmail)});
+        const existingEmail = await this.userModel.findOne({email: await sanitizeHtml(newEmail)});
         if (!isNullOrUndefined(existingEmail)) {
             throw new ConflictException(`That email is already in use. Please use another.`);
         }
@@ -319,7 +319,7 @@ export class UsersService {
      * @param codeId The ID of the invite code to look for.
      */
     async findOneInviteCode(codeId: string): Promise<models.InviteCodes> {
-        return await this.inviteCodesModel.findById(sanitize(codeId));
+        return await this.inviteCodesModel.findById(await sanitizeHtml(codeId));
     }
 
     /**

@@ -13,6 +13,14 @@ module.exports = (config, context) => {
                 outName: "word_counter",
                 // Release should probably be in a separate webpack.config.prod.js or something. But for now...
                 forceMode: "release"
+            }),
+            new WasmPackPlugin({
+                crateDirectory: path.resolve(__dirname, "..", "..", "native", "html_sanitizer", "src"),                
+                extraArgs: "--target bundler",
+                outDir: path.resolve(__dirname, "..", "..", "packages", "html_sanitizer", "src", "lib"),
+                outName: "html_sanitizer",
+                // Release should probably be in a separate webpack.config.prod.js or something. But for now...
+                forceMode: "release"
             })
         ]
     }

@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
-import { countWords } from '@pulp-fiction/word_counter';
-import * as sanitize from 'sanitize-html';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as models from '@pulp-fiction/models/works';
 import * as documents from './models';
@@ -32,9 +32,9 @@ export class WorksService {
     async createNewWork(user: any, newWorkInfo: models.CreateWork): Promise<models.Work> {
         const newWork = new this.workModel({
             author: user.sub,
-            title: sanitize(newWorkInfo.title),
-            shortDesc: sanitize(newWorkInfo.shortDesc),
-            longDesc: sanitize(newWorkInfo.longDesc),
+            title: await sanitizeHtml(newWorkInfo.title),
+            shortDesc: await sanitizeHtml(newWorkInfo.shortDesc),
+            longDesc: await sanitizeHtml(newWorkInfo.longDesc),
             meta: {
                 category: newWorkInfo.category,
                 fandoms: newWorkInfo.fandoms,
@@ -42,6 +42,8 @@ export class WorksService {
                 rating: newWorkInfo.rating,
                 status: newWorkInfo.status,
             },
+            // Delete this when we're all migrated.
+            usesFroala: newWorkInfo.usesFroala
         });
 
         return await newWork.save();
@@ -61,9 +63,11 @@ export class WorksService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             const newSection = new this.sectionModel({
-                title: sanitize(newSectionInfo.title),
-                body: sanitize(newSectionInfo.body),
-                authorsNote: sanitize(newSectionInfo.authorsNote),
+                title: await sanitizeHtml(newSectionInfo.title),
+                body: await sanitizeHtml(newSectionInfo.body),
+                authorsNote: await sanitizeHtml(newSectionInfo.authorsNote),
+
+                // Delete this when we're all migrated
                 usesFroala: newSectionInfo.usesFroala                
             });
 
@@ -218,12 +222,14 @@ export class WorksService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {                    
             return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, {
-                "title": sanitize(sectionInfo.title),
-                "body": sanitize(sectionInfo.body),
-                "authorsNote": sanitize(sectionInfo.authorsNote),                
+                "title": await sanitizeHtml(sectionInfo.title),
+                "body": await sanitizeHtml(sectionInfo.body),
+                "authorsNote": await sanitizeHtml(sectionInfo.authorsNote),                
                 "stats.words": sectionInfo.usesFroala 
-                    ? 3 // TODO: Make this return a real value
-                    : await countWords(sanitize(sectionInfo.body)),
+                    ? await countPlaintextWords(await stripAllHtml(sectionInfo.body))
+                    : await countQuillWords(await sanitizeHtml(sectionInfo.body)),
+
+                // Delete this when we're all migrated
                 "usesFroala": sectionInfo.usesFroala
             }, {new: true}).then(async sec => {
                 if (sec.published === true) {

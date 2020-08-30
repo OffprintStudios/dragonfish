@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
-import * as sanitize from 'sanitize-html';
-import { countWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
 
 import { SectionDocument } from './models';
 
@@ -29,16 +29,16 @@ export const SectionsSchema = new Schema({
 
 SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunction) {
     this.set('_id', generate());
-    this.set('title', sanitize(this.title));
-    this.set('body', sanitize(this.body));
+    this.set('title', await sanitizeHtml(this.title));
+    this.set('body', await sanitizeHtml(this.body));
     if (this.authorsNote) {
-        this.set('authorsNote', sanitize(this.authorsNote));
+        this.set('authorsNote', await sanitizeHtml(this.authorsNote));
     }
     this.set('published', this.published);
 
     const wordCount = this.usesFroala 
-        ? 3 // sufficiently random for now
-        : await countWords(sanitize(this.body));
+        ? await countPlaintextWords(await stripAllHtml(this.body))
+        : await countQuillWords(await sanitizeHtml(this.body));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

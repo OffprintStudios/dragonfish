@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction, model } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import { generate } from 'shortid';
 
 import { CommentDocument } from './models';
@@ -42,7 +42,7 @@ CommentsSchema.plugin(MongoosePaginate);
 
 CommentsSchema.pre<CommentDocument>('save', async function (next: HookNextFunction) {
     this.set('_id', generate());
-    this.set('body', sanitize(this.body));
+    this.set('body', await sanitizeHtml(this.body));
     this.set('createdAt', new Date());
     this.set('updatedAt', new Date());
 

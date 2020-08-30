@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import { hash, argon2id } from 'argon2';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import { Roles } from '@pulp-fiction/models/users';
 import { AuditSessionSchema } from './audit-session.schema';
@@ -44,8 +44,8 @@ UsersSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     try {
         const hashedPw = await hash(user.password, {type: argon2id});
         user.set('_id', generate());
-        user.set('email', sanitize(user.email));
-        user.set('username', sanitize(user.username));
+        user.set('email', await sanitizeHtml(user.email));
+        user.set('username', await sanitizeHtml(user.username));
         user.set('password', hashedPw);
         user.set('createdAt', Date.now());
         user.set('updatedAt', Date.now());

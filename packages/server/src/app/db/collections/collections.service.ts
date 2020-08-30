@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateResult } from 'mongoose';
-import * as sanitize from 'sanitize-html';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as documents from './models';
 import { JwtPayload } from '@pulp-fiction/models/auth';
@@ -20,8 +20,8 @@ export class CollectionsService {
     async createCollection(userId: string, collInfo: CreateCollection): Promise<documents.CollectionDocument> {
         const newCollection = new this.collectionModel({
             'user': userId,
-            'name': sanitize(collInfo.name),
-            'desc': sanitize(collInfo.desc),
+            'name': await sanitizeHtml(collInfo.name),
+            'desc': await sanitizeHtml(collInfo.desc),
             'audit.isPublic': collInfo.public,
         });
 
@@ -84,8 +84,8 @@ export class CollectionsService {
      */
     async editCollection(user: JwtPayload, collId: string, collInfo: EditCollection): Promise<void> {
         return await this.collectionModel.updateOne({'_id': collId}, {
-            'name': sanitize(collInfo.name),
-            'desc': sanitize(collInfo.desc),
+            'name': await sanitizeHtml(collInfo.name),
+            'desc': await sanitizeHtml(collInfo.desc),
             'audit.isPublic': collInfo.public,
         })
         .where('user').equals(user.sub)

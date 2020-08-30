@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as lodash from 'lodash';
-import * as sanitize from 'sanitize-html';
-import { countWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
+import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/docs';
@@ -32,6 +32,9 @@ export class DocsService {
                 "docBody": docInfo.docBody,
                 "audit.approvedRoles": docInfo.approvedRoles,
                 "audit.lastUpdatedBy": user.sub,
+
+                // Delete this when we're all migrated.
+                "usesFroala": docInfo.usesFroala
             });
     
             return await newDoc.save();
@@ -84,11 +87,11 @@ export class DocsService {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
         } else {
             const wordCount = docInfo.usesFroala
-                ? 3 // TODO: Replace this with a real word count 
-                : await countWords(sanitize(docInfo.docBody));
+                ? await countPlaintextWords(await stripAllHtml(docInfo.docBody))
+                : await countQuillWords(await sanitizeHtml(docInfo.docBody));
             return await this.docModel.updateOne({"_id": docInfo._id}, {
-                "docTitle": sanitize(docInfo.docTitle),
-                "docBody": sanitize(docInfo.docBody),
+                "docTitle": await sanitizeHtml(docInfo.docTitle),
+                "docBody": await sanitizeHtml(docInfo.docBody),
                 "words": wordCount,
                 "lastUpdatedBy": user.sub,
 
