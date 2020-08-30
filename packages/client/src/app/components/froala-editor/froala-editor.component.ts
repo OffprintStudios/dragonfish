@@ -1,13 +1,14 @@
-import 'froala-editor/js/plugins/align.min.js'; // import the alignment plugin
+import 'froala-editor/js/plugins/align.min.js'; // Adds alignment options
 import 'froala-editor/js/plugins/code_view.min.js' // allow user to view (and edit) the HTML directly
-import 'froala-editor/js/plugins/colors.min.js'; // import custom colors
-import 'froala-editor/js/plugins/font_size.min.js'; // import custom font sizes
-import 'froala-editor/js/plugins/fullscreen.min.js' // import the fullscreen mode plugin
-import 'froala-editor/js/plugins/lists.min.js' // import the fullscreen mode plugin
+import 'froala-editor/js/plugins/colors.min.js'; // Adds custom color options
+import 'froala-editor/js/plugins/font_size.min.js'; // Adds font size customization
+import 'froala-editor/js/plugins/fullscreen.min.js' // Adds the fullscreen button
+import 'froala-editor/js/plugins//image.min.js' // Adds the insertImage option and associated functionality
+import 'froala-editor/js/plugins/link.min.js' // Add the insertLink option and associated functionality
+import 'froala-editor/js/plugins/lists.min.js' // Adds <ul> and <ol> functionality
 import 'froala-editor/js/plugins/paragraph_format.min.js' // import the header styles formatter
-import 'froala-editor/js/plugins/quote.min.js' // Adds the "quote" option
-//import 'froala-editor/js/third_party/spell_checker.min'
-import { Component, OnInit, ViewEncapsulation, Input, forwardRef } from '@angular/core';
+import 'froala-editor/js/plugins/quote.min.js' // Adds the "blockquote" option
+import { Component, ViewEncapsulation, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Component({
@@ -36,6 +37,9 @@ export class FroalaEditorComponent implements ControlValueAccessor {
       'paste.beforeCleanup': this.pasteBeforeCleanup
     },
     theme: "offprint",
+    imageMove: false, // don't allow dragging of imgaes
+    imageUpload: false,
+    imageInsertButtons: ['imageBack', '|', 'imageByURL', 'imageManager'], // Default buttons include an "insert directly" button, which we don't allow
     toolbarButtons: {
       moreText: {
         buttons: ['paragraphFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'fontSize'],
