@@ -83,12 +83,16 @@ export class DocsService {
         if (rolesIntersection.length === 0) {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
         } else {
-            const wordCount = await countWords(sanitize(docInfo.docBody));
+            const wordCount = docInfo.usesFroala
+                ? 3 // TODO: Replace this with a real word count 
+                : await countWords(sanitize(docInfo.docBody));
             return await this.docModel.updateOne({"_id": docInfo._id}, {
                 "docTitle": sanitize(docInfo.docTitle),
                 "docBody": sanitize(docInfo.docBody),
                 "words": wordCount,
                 "lastUpdatedBy": user.sub,
+
+                "usesFroala": docInfo.usesFroala
             });
         } 
     }
