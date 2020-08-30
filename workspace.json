@@ -44,7 +44,7 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
+              "x": [
                 {
                   "type": "initial",
                   "maximumWarning": "2mb",
@@ -53,7 +53,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumError": "90kb"
                 }
               ]
             }
