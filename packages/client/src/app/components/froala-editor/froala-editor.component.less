@@ -1,2 +1,141 @@
+div.offprint-editor {
+    box-shadow: var(--site-dropshadow);
+    .fr-box.fr-basic {
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid var(--site-borders);
 
+        & .fr-element {
+            color: var(--site-text-color);    
+            padding: 20px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            overflow-x: auto;
+            min-height: var(--editor-min-height);
+            text-align: left;
+        }
 
+        & .fr-wrapper {
+            background: var(--site-background);
+            border: none;
+            border-bottom-color: transparent;
+            top: 0;
+            left: 0;
+        }
+    }
+
+    .fr-toolbar {
+        color: var(--site-text-color);
+        background: var(--site-background);
+        border: none;
+        font-family: Raleway, sans-serif;
+
+        & .fr-btn-grp {
+            margin: 0;
+            padding: 0 0.25rem 0 0.25rem;
+            border-right: 1px solid var(--site-borders);
+        }
+
+        & .fr-float-right {
+            border-left: 1px solid var(--site-borders);
+            border-right: none;
+        }
+
+        & .fr-btn {
+            fill: var(--site-text-color);
+            border-radius: 0;
+            -moz-border-radius: 0;
+            -webkit-border-radius: 0;
+            box-shadow: none;
+
+            &:hover {
+                fill: whitesmoke;
+                background: var(--site-accent);
+            }
+        }
+
+        & .fr-command.fr-btn {
+            margin: 0;
+            height: 40px;
+            color: var(--site-text-color);
+
+            &.fr-open {
+                border-radius: 0;
+                -moz-border-radius: 0;
+                -webkit-border-radius: 0;
+            }
+
+            & svg path {
+                fill: var(--site-text-color);
+
+                &:active {
+                    fill: var(--site-accent);
+                }
+            }
+
+            &:hover svg path {
+                fill: whitesmoke !important;
+
+                &:active {
+                    fill: whitesmoke !important;
+                }
+            }
+        }
+    }
+
+    .fr-toolbar .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
+    .fr-toolbar
+        .fr-more-toolbar
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path,
+    .fr-toolbar
+        .fr-buttons:not(.fr-tabs)
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path,
+    .fr-popup .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
+        .fr-popup
+        .fr-more-toolbar
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path,
+    .fr-popup
+        .fr-buttons:not(.fr-tabs)
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path,
+    .fr-modal .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
+    .fr-modal
+        .fr-more-toolbar
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path,
+    .fr-modal
+        .fr-buttons:not(.fr-tabs)
+        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+        svg
+        path {
+        fill: var(--site-accent);
+    }
+
+    .fr-toolbar.fr-top {
+        top: 0;
+        border-radius: 0;
+        -moz-border-radius: 0;
+        -webkit-border-radius: 0;
+        border-bottom: 1px solid var(--site-borders);
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+    }
+
+    .second-toolbar {
+        border: none;
+    }
+}
