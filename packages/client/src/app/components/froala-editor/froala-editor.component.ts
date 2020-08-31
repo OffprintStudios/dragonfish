@@ -8,7 +8,7 @@ import 'froala-editor/js/plugins/link.min.js' // Add the insertLink option and a
 import 'froala-editor/js/plugins/lists.min.js' // Adds <ul> and <ol> functionality
 import 'froala-editor/js/plugins/paragraph_format.min.js' // import the header styles formatter
 import 'froala-editor/js/plugins/quote.min.js' // Adds the "blockquote" option
-import { Component, ViewEncapsulation, forwardRef } from '@angular/core';
+import { Component, ViewEncapsulation, forwardRef, OnInit, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 @Component({
@@ -25,7 +25,9 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
   ]
 })
 
-export class FroalaEditorComponent implements ControlValueAccessor {
+export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
+  @Input() minHeight: string;
+
   model: any;
   options: Object = {
     attribution: false,
@@ -75,6 +77,14 @@ export class FroalaEditorComponent implements ControlValueAccessor {
   }
 
   constructor() { }
+
+  ngOnInit() {
+    if (this.minHeight) {
+      document.documentElement.style.setProperty('--editor-min-height', this.minHeight);
+    } else {
+      document.documentElement.style.setProperty('--editor-min-height', '300px');
+    }
+  }
 
   // Required for ControlValueAccessor
   writeValue(content: any): void {

@@ -3,6 +3,9 @@
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2020 Froala Labs
  */
+button {
+  margin-bottom: 0;
+}
 
 .clearfix::after {
   clear: both;
@@ -39,7 +42,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   overflow-x: auto;
-  min-height: 60px;
+  min-height: var(--editor-min-height);
   text-align: left;
 }
 .fr-box.fr-basic.fr-rtl .fr-element {
@@ -167,7 +170,7 @@ iframe.fr-iframe {
   position: absolute;
   font-size: 14px;
   color: #aaa;
-  font-family: sans-serif;
+  font-family: Raleway, sans-serif;
   z-index: 1;
   display: none;
   top: 0;
@@ -264,7 +267,6 @@ iframe.fr-iframe {
   line-height: 1;
   cursor: pointer;
   text-align: left;
-  margin: 4px 2px;
   padding: 0;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
@@ -413,8 +415,8 @@ iframe.fr-iframe {
 .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active,
 .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active,
 .fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
-  fill: #333333;
-  background: #d6d6d6;
+  fill: whitesmoke;
+  background: var(--site-accent-hover);
   -webkit-transition: 0.5s ease;
   -moz-transition: 0.5s ease;
   -ms-transition: 0.5s ease;
@@ -435,7 +437,7 @@ iframe.fr-iframe {
 .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:after,
 .fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:after {
   border-top: 0;
-  border-bottom: 4px solid #222222;
+  border-bottom: 4px solid whitesmoke;
 }
 .fr-toolbar .fr-command.fr-btn.fr-disabled,
 .fr-popup .fr-command.fr-btn.fr-disabled,
@@ -706,6 +708,7 @@ iframe.fr-iframe {
   .fr-dropdown-wrapper
   .fr-dropdown-content {
   position: relative;
+  border: 1px solid var(--site-borders);
 }
 .fr-command.fr-btn
   + .fr-dropdown-menu
@@ -835,7 +838,7 @@ body.prevent-scroll.fr-mobile {
 
 .fr-modal {
   color: #222222;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Raleway, sans-serif;
   position: fixed;
   overflow-x: auto;
   overflow-y: scroll;
@@ -1011,7 +1014,7 @@ ol.decimal_type > li:before {
   -webkit-box-shadow: var(--site-dropshadow);
   -moz-box-shadow: var(--site-dropshadow);
   box-shadow: var(--site-dropshadow);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Raleway, sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1391,7 +1394,7 @@ ol.decimal_type > li:before {
   color: var(--site-text-color);
   background: var(--site-background);
   position: relative;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Raleway, sans-serif;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1493,14 +1496,13 @@ ol.decimal_type > li:before {
   }
 }
 .fr-toolbar .fr-command.fr-btn.fr-open {
-  margin-top: 10px;
   margin-bottom: -1px;
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
 }
 .fr-toolbar .fr-command.fr-btn.fr-open:not(:hover):not(:focus):not(:active) {
-  background: #f5f5f5;
+  background: var(--site-accent-hover);
 }
 .fr-toolbar.fr-rtl {
   text-align: right;
@@ -5460,12 +5462,13 @@ span.fr-img-caption.fr-view.fr-dii.fr-fir {
   -moz-background-clip: padding;
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-  background: var(--site-text-color);
-  color: var(--site-background);
+  background: var(--site-background);
+  color: var(--site-text-color);
   box-shadow: var(--site-dropshadow);
   font-size: 11px;
   line-height: 22px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Raleway, sans-serif;
+  border: 1px solid var(--site-borders);
   -webkit-transition: opacity 0.2s ease 0s;
   -moz-transition: opacity 0.2s ease 0s;
   -ms-transition: opacity 0.2s ease 0s;
