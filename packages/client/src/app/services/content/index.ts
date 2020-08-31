@@ -3,6 +3,6 @@ export { PortfolioService } from './portfolio.service';
 export { WorksService } from './works.service';
 export { SearchService } from './search.service';
 export { CollectionsService } from './collections.service';
-export { SectionsService } from './sections.service';
+export { LocalSectionsService } from './local-sections.service';
 export { HistoryService } from './history.service';
 export { CommentsService } from './comments.service';

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SectionsService } from './sections.service';
+import { LocalSectionsService } from './local-sections.service';
 
 describe('SectionsService', () => {
-  let service: SectionsService;
+  let service: LocalSectionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SectionsService);
+    service = TestBed.inject(LocalSectionsService);
   });
 
   it('should be created', () => {

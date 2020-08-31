@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { dividerHandler, imageHandler } from '../../../util/quill';
 
 import { AuthService } from '../../../services/auth';
-import { WorksService, SectionsService } from '../../../services/content';
+import { WorksService, LocalSectionsService } from '../../../services/content';
 import { SlugifyPipe } from '../../../pipes';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Section, SectionInfo, EditSection} from '@pulp-fiction/models/works';
@@ -64,7 +64,7 @@ export class SectionPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private worksService: WorksService,
     private router: Router, private route: ActivatedRoute, private slugify: SlugifyPipe,
-    private sectionsService: SectionsService, private alertsService: AlertsService,
+    private sectionsService: LocalSectionsService, private alertsService: AlertsService,
     private cdr: ChangeDetectorRef) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });           
       this.fetchData();

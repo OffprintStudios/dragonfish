@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from '../../services/auth';
-import { WorksService, CollectionsService, SectionsService, HistoryService } from '../../services/content';
+import { WorksService, CollectionsService, LocalSectionsService, HistoryService } from '../../services/content';
 import { EditWorkComponent, UploadCoverartComponent } from '../../components/modals/works';
 import { QueueService } from '../../services/admin';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -37,7 +37,7 @@ export class WorkPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
-    private collsService: CollectionsService, private sectionsService: SectionsService, private histService: HistoryService) {
+    private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService) {
 
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
