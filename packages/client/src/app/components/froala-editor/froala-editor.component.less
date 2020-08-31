@@ -1,3 +1,49 @@
+.fr-tooltip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0 8px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    background: var(--site-background);
+    color: var(--site-text-color);
+    box-shadow: var(--site-dropshadow);
+    font-size: 11px;
+    line-height: 22px;
+    font-family: Raleway, sans-serif !important;
+    border-radius: 0;
+    border: 1px solid var(--site-borders);
+    transition: opacity 0.2s ease 0s;
+    -webkit-transition: opacity 0.2s ease 0s;
+    -moz-transition: opacity 0.2s ease 0s;
+    -ms-transition: opacity 0.2s ease 0s;
+    -o-transition: opacity 0.2s ease 0s;
+    -webkit-opacity: 0;
+    -moz-opacity: 0;
+    opacity: 0;
+    filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+    -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+    left: -3000px;
+    user-select: none;
+    -o-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    z-index: 2147483647;
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    &.fr-visible {
+      -webkit-opacity: 1;
+      -moz-opacity: 1;
+      opacity: 1;
+      filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+      -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+    }
+}
+
 div.offprint-editor {
   box-shadow: var(--site-dropshadow);
   .fr-box.fr-basic {
@@ -79,9 +125,27 @@ div.offprint-editor {
         border-radius: 0;
         -moz-border-radius: 0;
         -webkit-border-radius: 0;
+        
         // Active toolbar togglebuttons
         &:not(:hover):not(:focus):not(:active) {
           background: var(--site-accent-hover);
+        }
+        
+        -moz-background-clip: padding;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid var(--site-borders);
+
+        & .fr-element {
+            color: var(--site-text-color);    
+            font-family: Raleway, sans-serif;
+            padding: 20px;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            overflow-x: auto;
+            min-height: var(--editor-min-height);
+            text-align: left;
         }
       }
 
@@ -95,6 +159,17 @@ div.offprint-editor {
 
       &:hover svg path {
         fill: whitesmoke !important;
+      }
+      
+    .fr-placeholder {
+        font-family: Raleway, sans-serif;
+    }
+
+    .fr-toolbar {
+        color: var(--site-text-color);
+        background: var(--site-background);
+        border: none;
+        font-family: Raleway, sans-serif;
 
         &:active {
           fill: whitesmoke !important;
@@ -240,7 +315,7 @@ div.offprint-editor {
         background: var(--site-accent);
       }
     }
-
+    
     // Checkbox stuff
     .fr-checkbox {
       // Force the checkbox's label to appear next to it.
@@ -277,6 +352,46 @@ div.offprint-editor {
         -moz-border-radius: 0px;
         -webkit-border-radius: 0px;
       }
+    }
+
+    .fr-toolbar .fr-command.fr-btn.fr-dropdown:after,
+    .fr-popup .fr-command.fr-btn.fr-dropdown:after,
+    .fr-modal .fr-command.fr-btn.fr-dropdown:after {
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid var(--site-text-color);
+        right: 2px;
+        top: 18px;
+        transition: all 0.3s;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        content: '';
+    }
+    .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active,
+    .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active,
+    .fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
+        fill: whitesmoke;
+        background: var(--site-accent-hover);
+        transition: 0.5s ease;
+        -webkit-transition: 0.5s ease;
+        -moz-transition: 0.5s ease;
+        -ms-transition: 0.5s ease;
+        -o-transition: 0.5s ease;
+    }
+    .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+    .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+    .fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:hover {
+        background: var(--site-accent);
+        fill: whitesmoke;
+    }
+
+    .second-toolbar {
+        border: none;
     }
   }
 
