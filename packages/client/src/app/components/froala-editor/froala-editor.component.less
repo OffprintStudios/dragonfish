@@ -1,224 +1,337 @@
 div.offprint-editor {
-    box-shadow: var(--site-dropshadow);
-    .fr-box.fr-basic {
+  box-shadow: var(--site-dropshadow);
+  .fr-box.fr-basic {
+    border-radius: 0;
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid var(--site-borders);
+
+    & .fr-element {
+      color: var(--site-text-color);
+      padding: 20px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      overflow-x: auto;
+      min-height: var(--editor-min-height);
+      text-align: left;
+    }
+
+    & .fr-wrapper {
+      background: var(--site-background);
+      border: none;
+      border-bottom-color: transparent;
+      top: 0;
+      left: 0;
+    }
+  }
+
+  .fr-toolbar {
+    color: var(--site-text-color);
+    background: var(--site-background);
+    border: none;
+    font-family: Raleway, sans-serif;
+
+    &.fr-top {
+      top: 0;
+      border-radius: 0;
+      -moz-border-radius: 0;
+      -webkit-border-radius: 0;
+      border-bottom: 1px solid var(--site-borders);
+      -moz-background-clip: padding;
+      -webkit-background-clip: padding-box;
+      background-clip: padding-box;
+    }
+
+    & .fr-btn-grp {
+      margin: 0;
+      padding: 0 0.25rem 0 0.25rem;
+      border-right: 1px solid var(--site-borders);
+    }
+
+    & .fr-float-right {
+      border-left: 1px solid var(--site-borders);
+      border-right: none;
+    }
+
+    & .fr-btn {
+      fill: var(--site-text-color);
+      border-radius: 0;
+      -moz-border-radius: 0;
+      -webkit-border-radius: 0;
+      box-shadow: none;
+
+      &:hover {
+        fill: whitesmoke;
+        background: var(--site-accent);
+      }
+    }
+
+    & .fr-command.fr-btn {
+      margin: 0;
+      height: 40px;
+      color: var(--site-text-color);
+
+      &.fr-open {
         border-radius: 0;
         -moz-border-radius: 0;
         -webkit-border-radius: 0;
-        -moz-background-clip: padding;
-        -webkit-background-clip: padding-box;
-        background-clip: padding-box;
-        border: 1px solid var(--site-borders);
-
-        & .fr-element {
-            color: var(--site-text-color);    
-            padding: 20px;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            overflow-x: auto;
-            min-height: var(--editor-min-height);
-            text-align: left;
-        }
-
-        & .fr-wrapper {
-            background: var(--site-background);
-            border: none;
-            border-bottom-color: transparent;
-            top: 0;
-            left: 0;
-        }
-    }
-
-    .fr-toolbar {
-        color: var(--site-text-color);
-        background: var(--site-background);
-        border: none;
-        font-family: Raleway, sans-serif;
-
-        &.fr-top {
-            top: 0;
-            border-radius: 0;
-            -moz-border-radius: 0;
-            -webkit-border-radius: 0;
-            border-bottom: 1px solid var(--site-borders);
-            -moz-background-clip: padding;
-            -webkit-background-clip: padding-box;
-            background-clip: padding-box;
-        }
-
-        & .fr-btn-grp {
-            margin: 0;
-            padding: 0 0.25rem 0 0.25rem;
-            border-right: 1px solid var(--site-borders);
-        }
-
-        & .fr-float-right {
-            border-left: 1px solid var(--site-borders);
-            border-right: none;
-        }
-
-        & .fr-btn {
-            fill: var(--site-text-color);
-            border-radius: 0;
-            -moz-border-radius: 0;
-            -webkit-border-radius: 0;
-            box-shadow: none;
-
-            &:hover {
-                fill: whitesmoke;
-                background: var(--site-accent);
-            }
-        }
-
-        & .fr-command.fr-btn {
-            margin: 0;
-            height: 40px;
-            color: var(--site-text-color);
-
-            &.fr-open {
-                border-radius: 0;
-                -moz-border-radius: 0;
-                -webkit-border-radius: 0;
-                // Active toolbar togglebuttons
-                &:not(:hover):not(:focus):not(:active) {
-                    background: var(--site-accent-hover);
-                  }
-            }
-
-            & svg path {
-                fill: var(--site-text-color);
-
-                &:active {
-                    fill: var(--site-accent);
-                }
-            }
-
-            &:hover svg path {
-                fill: whitesmoke !important;
-
-                &:active {
-                    fill: whitesmoke !important;
-                }
-            }
-        }
-
-        // Hide the 1px tall divider between toolbar and editor window.
-        // We can achieve this with a border-bottom on the toolbar.
-        .fr-newline {
-            background: transparent;
-        }
-
-        .fr-more-toolbar {
-            background-color: var(--site-background);
-            &.fr-expanded {
-                height: 40px; // match the smaller buttons in the upper toolbar
-                border-top: 1px solid var(--site-borders);
-            }
-        }
-
-        &.fr-toolbar-open {
-            padding-bottom: 40px; // match te smaller button height
-        }
-    }
-
-    .fr-toolbar .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
-    .fr-toolbar
-        .fr-more-toolbar
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path,
-    .fr-toolbar
-        .fr-buttons:not(.fr-tabs)
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path,
-    .fr-popup .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
-        .fr-popup
-        .fr-more-toolbar
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path,
-    .fr-popup
-        .fr-buttons:not(.fr-tabs)
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path,
-    .fr-modal .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
-    .fr-modal
-        .fr-more-toolbar
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path,
-    .fr-modal
-        .fr-buttons:not(.fr-tabs)
-        .fr-command.fr-btn.fr-active:not(.fr-dropdown)
-        svg
-        path {
-        fill: var(--site-accent);
-    }    
-
-    .second-toolbar {
-        border: none;
-    }
-
-    // Dropdown styling
-    .fr-command.fr-btn + .fr-dropdown-menu {
-        background: var(--site-background);       
-        -webkit-box-shadow: var(--site-dropshadow);
-        -moz-box-shadow: var(--site-dropshadow);
-        box-shadow: var(--site-dropshadow);
-
-        // Selected color for <a> buttons inside dropdowns
-        & .fr-dropdown-content
-        ul.fr-dropdown-list
-        li
-        a.fr-active {
-            background: var(--site-accent-hover);
+        // Active toolbar togglebuttons
+        &:not(:hover):not(:focus):not(:active) {
+          background: var(--site-accent-hover);
         }
       }
 
-    // Hover color for <a> buttons inside dropdowns
-    .fr-desktop .fr-command:hover:not(.fr-table-cell),
-    .fr-desktop .fr-command:focus:not(.fr-table-cell),
-    .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
-    .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
-    background: var(--site-accent-hover);
+      & svg path {
+        fill: var(--site-text-color);
+
+        &:active {
+          fill: var(--site-accent);
+        }
+      }
+
+      &:hover svg path {
+        fill: whitesmoke !important;
+
+        &:active {
+          fill: whitesmoke !important;
+        }
+      }
     }
+
+    // Hide the 1px tall divider between toolbar and editor window.
+    // We can achieve this with a border-bottom on the toolbar.
+    .fr-newline {
+      background: transparent;
+    }
+
+    .fr-more-toolbar {
+      background-color: var(--site-background);
+      &.fr-expanded {
+        height: 40px; // match the smaller buttons in the upper toolbar
+        border-top: 1px solid var(--site-borders);
+      }
+    }
+
+    &.fr-toolbar-open {
+      padding-bottom: 40px; // match the smaller button height
+    }
+  }
+
+  .fr-toolbar
+    .fr-btn-grp
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-toolbar
+    .fr-more-toolbar
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-toolbar
+    .fr-buttons:not(.fr-tabs)
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-popup .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
+  .fr-popup
+    .fr-more-toolbar
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-popup
+    .fr-buttons:not(.fr-tabs)
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-modal .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path,
+  .fr-modal
+    .fr-more-toolbar
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path,
+  .fr-modal
+    .fr-buttons:not(.fr-tabs)
+    .fr-command.fr-btn.fr-active:not(.fr-dropdown)
+    svg
+    path {
+    fill: var(--site-accent);
+  }
+
+  .second-toolbar {
+    border: none;
+  }
+
+  // Dropdown styling
+  .fr-command.fr-btn + .fr-dropdown-menu {
+    background: var(--site-background);
+    -webkit-box-shadow: var(--site-dropshadow);
+    -moz-box-shadow: var(--site-dropshadow);
+    box-shadow: var(--site-dropshadow);
+
+    // Selected color for <a> buttons inside dropdowns
+    & .fr-dropdown-content ul.fr-dropdown-list li a.fr-active {
+      background: var(--site-accent-hover);
+    }
+  }
+
+  // Hover color for <a> buttons inside dropdowns
+  .fr-desktop .fr-command:hover:not(.fr-table-cell),
+  .fr-desktop .fr-command:focus:not(.fr-table-cell),
+  .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
+  .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
+    background: var(--site-accent-hover);
+  }
+
+  .fr-popup {
+    background: var(--site-background);
+    box-shadow: var(--site-dropshadow);
+    color: var(--site-text-color);
+
+    & .fr-buttons.fr-tabs {
+      background-color: var(--site-background);
+      border-radius: 0px;
+      -webkit-border-radius: 0px;
+      -moz-border-radius: 0px;
+    }
+
+    // Text inputs inside popups
+    & .fr-input-line {
+      textarea,
+      input[type='text'] {
+        background: var(--site-background);
+        border: solid 1px var(--site-borders);
+        box-shadow: var(--site-dropshadow);
+        color: var(--site-text-color);
+        border-radius: 0px;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+        transition: padding 0.5s;
+        -webkit-transition: padding 0.5s;
+        -moz-transition: padding 0.5s;
+        -ms-transition: padding 0.5s;
+        -o-transition: padding 0.5s;
+        &:focus {
+          border: solid 1px var(--site-accent);
+        }
+      }
+
+      input + label,
+      textarea + label {
+        background: var(--site-background);
+      }
+    }
+
+    // Submit buttons inside popups
+    & .fr-action-buttons button.fr-command {
+      color: var(--site-text-color);
+      border: 1px solid var(--site-borders);
+      border-radius: 0;
+      transition: none;
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      &:hover {
+        color: whitesmoke;
+        background: var(--site-accent);
+      }
+    }
+
+    // Checkbox stuff
+    .fr-checkbox {
+      // Force the label next to the checkbox to appear next to it.
+      &-line label {
+        display: inline;
+      }
+
+      // Checkbox colors
+      & input:not(:checked) + span {
+        border: solid 2px var(--site-borders);
+      }
+
+      & input:not(:checked):active + span {
+        background-color: var(--site-accent-hover);
+      }
+
+      & input:not(:checked):focus + span,
+      & input:not(:checked):hover + span {
+        background-color: var(--site-accent-hover);
+      }
+
+      & input:checked + span {
+        background: var(--site-accent);
+        border: solid 2px var(--site-accent);
+      }
+
+      & input:checked:active + span {
+        background-color: var(--site-accent);
+      }
+
+      // Checkbox border radius
+      & span {
+        border-radius: 0px;
+        -moz-border-radius: 0px;
+        -webkit-border-radius: 0px;
+      }
+    }
+  }
 }
 
 // Things that get rendered outside of the editor:
 .offprint-theme {
+  // Arrows besides multi-option buttons
+  &.fr-toolbar .fr-command.fr-btn.fr-dropdown:after,
+  &.fr-popup .fr-command.fr-btn.fr-dropdown:after,
+  &.fr-modal .fr-command.fr-btn.fr-dropdown:after {
+    border-top: 4px solid var(--site-text-color);
+  }
+  &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active,
+  &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active,
+  &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
+    fill: whitesmoke;
+    background: var(--site-accent-hover);
+  }
+  &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+  &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+  &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:hover {
+    background: var(--site-accent);
+    fill: whitesmoke;
+  }
+  &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:after,
+  &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:after,
+  &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:after {
+    border-top: 0;
+    border-bottom: 4px solid whitesmoke;
+  }
+  // end arrows stuff
 
-    // Arrows besides multi-option buttons
-    &.fr-toolbar .fr-command.fr-btn.fr-dropdown:after,
-    &.fr-popup .fr-command.fr-btn.fr-dropdown:after,
-    &.fr-modal .fr-command.fr-btn.fr-dropdown:after {
-        border-top: 4px solid var(--site-text-color);
-    }
-    &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active,
-    &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active,
-    &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
-        fill: whitesmoke;
-        background: var(--site-accent-hover);
-    }
-        &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
-        &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
-        &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:hover {
-        background: var(--site-accent);
-        fill: whitesmoke;
-    }
-    &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:after,
-    &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:after,
-    &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:after {
-        border-top: 0;
-        border-bottom: 4px solid whitesmoke;
-    }
+  // Selected color for buttons that open popups
+  &.fr-toolbar .fr-command.fr-btn.fr-btn-active-popup,
+  &.fr-popup .fr-command.fr-btn.fr-btn-active-popup,
+  &.fr-modal .fr-command.fr-btn.fr-btn-active-popup {
+    background: var(--site-accent);
+  }
 
-    // Tooltips
-    &.fr-tooltip {
-        background: var(--site-background);
-        color: var(--site-text-color);
-        box-shadow: var(--site-dropshadow);
-        border: 1px solid var(--site-borders);
-    }
+  // Tooltips
+  &.fr-tooltip {
+    background: var(--site-background);
+    color: var(--site-text-color);
+    box-shadow: var(--site-dropshadow);
+    border: 1px solid var(--site-borders);
+  }
+
+  &.fr-toolbar .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active,
+  &.fr-toolbar
+    .fr-tabs
+    .fr-command.fr-btn:not(:hover):not(:focus).fr-active-tab,
+  &.fr-popup .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active,
+  &.fr-popup .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active-tab,
+  &.fr-modal .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active,
+  &.fr-modal .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active-tab {
+    background: var(--site-accent-hover);
+  }
 }
