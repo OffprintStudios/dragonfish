@@ -23,8 +23,7 @@ export class WorkPageComponent implements OnInit {
   loading = false; // Loading check for fetching data
 
   workId: string; // This work's ID
-  workData: Work; // This work's data.
-  pubSections: SectionInfo[]; // This work's published sections
+  workData: Work; // This work's data.  
   userHist: History;
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
@@ -32,8 +31,12 @@ export class WorkPageComponent implements OnInit {
 
   // The sections list binds to these, as they can be mutated individually,
   // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)
-  allSectionViewModels: SectionInfoViewModel[];
-  pubSectionViewModels: SectionInfoViewModel[];
+  get allSectionViewModels(): ReadonlyArray<SectionInfoViewModel> {
+    return this.sectionsService.allSections;
+  }
+  get pubSectionViewModels(): ReadonlyArray<SectionInfoViewModel> {
+    return this.sectionsService.publishedSections;
+  }
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
@@ -92,14 +95,12 @@ export class WorkPageComponent implements OnInit {
     this.workId = this.route.snapshot.paramMap.get('workId');        
     this.worksService.fetchWork(this.workId).subscribe(work => {
       this.workData = work;
-      this.pubSections = work.sections.filter(section => { return section.published === true; });
-      this.allSectionViewModels = work.sections.map(x => new SectionInfoViewModel(x));
-      this.pubSectionViewModels = this.pubSections.map(x => new SectionInfoViewModel(x));
       this.worksService.thisWorkId = this.workId;
+      const pubSections = work.sections.filter(section => { return section.published === true; });      
       if (this.currentUserIsSame()) {
-        this.sectionsService.setInfo(this.pubSections, work.author._id, this.workData.sections);
+        this.sectionsService.setInfo(pubSections, work.author._id, this.workData.sections);
       }  else {
-        this.sectionsService.setInfo(this.pubSections, work.author._id);
+        this.sectionsService.setInfo(pubSections, work.author._id);
       }
     }, () => {
       this.loading = false;
