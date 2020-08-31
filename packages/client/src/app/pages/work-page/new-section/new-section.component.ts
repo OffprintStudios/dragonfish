@@ -2,11 +2,11 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { dividerHandler, imageHandler } from '../../../util/quill';
-import { WorksService, SectionsService } from '../../../services/content';
+import { WorksService, LocalSectionsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
 import { CreateSection } from '@pulp-fiction/models/works';
 import { SlugifyPipe } from '../../../pipes';
+import { SectionKind } from '../../../services/content/local-sections.service';
 
 @Component({
   selector: 'app-new-section',
@@ -27,7 +27,7 @@ export class NewSectionComponent implements OnInit {
 
   constructor(private worksService: WorksService, private route: ActivatedRoute, 
     private alertsService: AlertsService, private router: Router, private cdr: ChangeDetectorRef,
-    private sectionsService: SectionsService, private slugify: SlugifyPipe) {
+    private sectionsService: LocalSectionsService, private slugify: SlugifyPipe) {
     // Getting the parameters from the parent component
     this.latestSectionIndex = sectionsService.allSections.length - 1;
     this.route.parent.paramMap.subscribe(params => {
@@ -77,8 +77,12 @@ export class NewSectionComponent implements OnInit {
       usesFroala: true
     };
     
-    this.worksService.createSection(this.workId, newSection).subscribe(section => {
-      this.router.navigate([`/work/${this.workId}/${this.workName}/${this.latestSectionIndex + 1}/${this.slugify.transform(section.title)}`]);
+    this.worksService.createSection(this.workId, newSection).subscribe(section => {      
+      this.sectionsService.addSection(section, SectionKind.Unpublished);
+      const pageNum = this.latestSectionIndex === -1
+        ? 1 // if this is the first section being created
+        : this.latestSectionIndex + 1;
+      this.router.navigate([`/work/${this.workId}/${this.workName}/${pageNum}/${this.slugify.transform(section.title)}`]);
     }, () => {
       this.loading = false;
     });
