@@ -35,6 +35,17 @@ div.offprint-editor {
         border: none;
         font-family: Raleway, sans-serif;
 
+        &.fr-top {
+            top: 0;
+            border-radius: 0;
+            -moz-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-bottom: 1px solid var(--site-borders);
+            -moz-background-clip: padding;
+            -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+        }
+
         & .fr-btn-grp {
             margin: 0;
             padding: 0 0.25rem 0 0.25rem;
@@ -68,6 +79,10 @@ div.offprint-editor {
                 border-radius: 0;
                 -moz-border-radius: 0;
                 -webkit-border-radius: 0;
+                // Active toolbar togglebuttons
+                &:not(:hover):not(:focus):not(:active) {
+                    background: var(--site-accent-hover);
+                  }
             }
 
             & svg path {
@@ -85,6 +100,24 @@ div.offprint-editor {
                     fill: whitesmoke !important;
                 }
             }
+        }
+
+        // Hide the 1px tall divider between toolbar and editor window.
+        // We can achieve this with a border-bottom on the toolbar.
+        .fr-newline {
+            background: transparent;
+        }
+
+        .fr-more-toolbar {
+            background-color: var(--site-background);
+            &.fr-expanded {
+                height: 40px; // match the smaller buttons in the upper toolbar
+                border-top: 1px solid var(--site-borders);
+            }
+        }
+
+        &.fr-toolbar-open {
+            padding-bottom: 40px; // match te smaller button height
         }
     }
 
@@ -122,20 +155,70 @@ div.offprint-editor {
         svg
         path {
         fill: var(--site-accent);
-    }
-
-    .fr-toolbar.fr-top {
-        top: 0;
-        border-radius: 0;
-        -moz-border-radius: 0;
-        -webkit-border-radius: 0;
-        border-bottom: 1px solid var(--site-borders);
-        -moz-background-clip: padding;
-        -webkit-background-clip: padding-box;
-        background-clip: padding-box;
-    }
+    }    
 
     .second-toolbar {
         border: none;
+    }
+
+    // Dropdown styling
+    .fr-command.fr-btn + .fr-dropdown-menu {
+        background: var(--site-background);       
+        -webkit-box-shadow: var(--site-dropshadow);
+        -moz-box-shadow: var(--site-dropshadow);
+        box-shadow: var(--site-dropshadow);
+
+        // Selected color for <a> buttons inside dropdowns
+        & .fr-dropdown-content
+        ul.fr-dropdown-list
+        li
+        a.fr-active {
+            background: var(--site-accent-hover);
+        }
+      }
+
+    // Hover color for <a> buttons inside dropdowns
+    .fr-desktop .fr-command:hover:not(.fr-table-cell),
+    .fr-desktop .fr-command:focus:not(.fr-table-cell),
+    .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
+    .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
+    background: var(--site-accent-hover);
+    }
+}
+
+// Things that get rendered outside of the editor:
+.offprint-theme {
+
+    // Arrows besides multi-option buttons
+    &.fr-toolbar .fr-command.fr-btn.fr-dropdown:after,
+    &.fr-popup .fr-command.fr-btn.fr-dropdown:after,
+    &.fr-modal .fr-command.fr-btn.fr-dropdown:after {
+        border-top: 4px solid var(--site-text-color);
+    }
+    &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active,
+    &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active,
+    &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
+        fill: whitesmoke;
+        background: var(--site-accent-hover);
+    }
+        &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+        &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
+        &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:hover {
+        background: var(--site-accent);
+        fill: whitesmoke;
+    }
+    &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:after,
+    &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:after,
+    &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active:after {
+        border-top: 0;
+        border-bottom: 4px solid whitesmoke;
+    }
+
+    // Tooltips
+    &.fr-tooltip {
+        background: var(--site-background);
+        color: var(--site-text-color);
+        box-shadow: var(--site-dropshadow);
+        border: 1px solid var(--site-borders);
     }
 }
