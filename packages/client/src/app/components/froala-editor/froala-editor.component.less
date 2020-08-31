@@ -9,7 +9,7 @@ div.offprint-editor {
     background-clip: padding-box;
     border: 1px solid var(--site-borders);
 
-    & .fr-element {
+    .fr-element {
       color: var(--site-text-color);
       padding: 20px;
       -webkit-box-sizing: border-box;
@@ -20,7 +20,7 @@ div.offprint-editor {
       text-align: left;
     }
 
-    & .fr-wrapper {
+    .fr-wrapper {
       background: var(--site-background);
       border: none;
       border-bottom-color: transparent;
@@ -46,18 +46,18 @@ div.offprint-editor {
       background-clip: padding-box;
     }
 
-    & .fr-btn-grp {
+    .fr-btn-grp {
       margin: 0;
       padding: 0 0.25rem 0 0.25rem;
       border-right: 1px solid var(--site-borders);
     }
 
-    & .fr-float-right {
+    .fr-float-right {
       border-left: 1px solid var(--site-borders);
       border-right: none;
     }
 
-    & .fr-btn {
+    .fr-btn {
       fill: var(--site-text-color);
       border-radius: 0;
       -moz-border-radius: 0;
@@ -70,7 +70,7 @@ div.offprint-editor {
       }
     }
 
-    & .fr-command.fr-btn {
+    .fr-command.fr-btn {
       margin: 0;
       height: 40px;
       color: var(--site-text-color);
@@ -191,7 +191,7 @@ div.offprint-editor {
     box-shadow: var(--site-dropshadow);
     color: var(--site-text-color);
 
-    & .fr-buttons.fr-tabs {
+    .fr-buttons.fr-tabs {
       background-color: var(--site-background);
       border-radius: 0px;
       -webkit-border-radius: 0px;
@@ -199,7 +199,7 @@ div.offprint-editor {
     }
 
     // Text inputs inside popups
-    & .fr-input-line {
+    .fr-input-line {
       textarea,
       input[type='text'] {
         background: var(--site-background);
@@ -226,7 +226,7 @@ div.offprint-editor {
     }
 
     // Submit buttons inside popups
-    & .fr-action-buttons button.fr-command {
+    .fr-action-buttons button.fr-command {
       color: var(--site-text-color);
       border: 1px solid var(--site-borders);
       border-radius: 0;
@@ -249,35 +249,41 @@ div.offprint-editor {
       }
 
       // Checkbox colors
-      & input:not(:checked) + span {
+      input:not(:checked) + span {
         border: solid 2px var(--site-borders);
       }
 
-      & input:not(:checked):active + span {
+      input:not(:checked):active + span {
         background-color: var(--site-accent-hover);
       }
 
-      & input:not(:checked):focus + span,
-      & input:not(:checked):hover + span {
+      input:not(:checked):focus + span,
+      input:not(:checked):hover + span {
         background-color: var(--site-accent-hover);
       }
 
-      & input:checked + span {
+      input:checked + span {
         background: var(--site-accent);
         border: solid 2px var(--site-accent);
       }
 
-      & input:checked:active + span {
+      input:checked:active + span {
         background-color: var(--site-accent);
       }
 
       // Checkbox border radius
-      & span {
+      span {
         border-radius: 0px;
         -moz-border-radius: 0px;
         -webkit-border-radius: 0px;
       }
     }
+  }
+
+  // HTML mode editor window
+  textarea.fr-code {
+      background: var(--site-background);
+      color: var(--site-text-color);
   }
 }
 
