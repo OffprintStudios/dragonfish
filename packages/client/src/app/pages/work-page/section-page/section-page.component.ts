@@ -11,6 +11,8 @@ import { Section, SectionInfo, EditSection} from '@pulp-fiction/models/works';
 import { Observable } from 'rxjs';
 import { AlertsService } from '../../../modules/alerts';
 import { getQuillHtml } from '../../../util/functions';
+import { SectionInfoViewModel } from '../viewmodels/section-info.viewmodel';
+import { SectionKind } from '../../../services/content/local-sections.service';
 
 enum SectionState {
   User,
@@ -29,12 +31,12 @@ export class SectionPageComponent implements OnInit {
   loading = false; // controls the spinner above section selection boxes
   sectionSwitching: boolean = false; // controls the spinner between the section selection boxes  
   
-  sectionsList: SectionInfo[];
+  sectionsList: ReadonlyArray<SectionInfoViewModel>;
   sectionData: Section;
   hideContents: boolean = false;
   indexNext = 0;
   indexPrev = 0;
-  currSection: SectionInfo = null;
+  currSection: SectionInfoViewModel = null;
     
   workId: string;  
   workTitle: string;
@@ -138,7 +140,7 @@ export class SectionPageComponent implements OnInit {
    * 
    * @param event The section changed to
    */
-  onSelectChange(event: SectionInfo) {
+  onSelectChange(event: SectionInfoViewModel) {
     const thisSectionIndex = this.sectionsList.indexOf(event);
     this.router.navigate([`/work/${this.workId}/${this.workTitle}/${thisSectionIndex + 1}/${this.slugify.transform(event.title)}`])
   }
@@ -257,6 +259,8 @@ export class SectionPageComponent implements OnInit {
   askDelete() {
     if (confirm(`Are you sure you want to delete this section? This action is irreversible.`)) {
       this.worksService.deleteSection(this.workId, this.sectionId).subscribe(() => {
+        const publishState: SectionKind = this.sectionData.published ? SectionKind.Published : SectionKind.Unpublished;
+        this.sectionsService.removeSection(this.sectionId, publishState);
         this.router.navigate([`/work/${this.workId}/${this.workTitle}`]);
         return;
       }, err => {
