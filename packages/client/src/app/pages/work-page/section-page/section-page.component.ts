@@ -194,20 +194,20 @@ export class SectionPageComponent implements OnInit {
     this.submitting = true;
     if (this.fields.title.invalid) {
       this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
-      this.loading = false;
+      this.submitting = false;
       return;
     }
 
     if (this.fields.body.invalid) {
       this.alertsService.warn(`Body text must be greater than 5 characters.`);
-      this.loading = false;
+      this.submitting = false;
       return;
     }
 
     if (this.fields.authorsNote.value !== null || this.fields.authorsNote.value !== undefined) {
       if (this.fields.authorsNote.invalid) {
         this.alertsService.warn(`Author's notes must be between 5 and 2000 characters.`);
-        this.loading = false;
+        this.submitting = false;
         return;
       }
     }
