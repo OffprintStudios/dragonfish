@@ -23,7 +23,23 @@ export class NewEditorComponent implements OnInit {
   config: Object = {
     // Todo: configure toolbar properly
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html for details
-    toolbar: [ 'heading', '|', 'bold', 'italic' ]
+    toolbar: [ 'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
+    'alignment', 'fontsize', 'fontcolor', '|', 'horizontalline', 'blockquote', 'imageupload', 'mediaembed', '|',
+    'undo', 'redo'],
+    heading: {
+      options: [
+        { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+        { model: 'heading2', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading2' },
+        { model: 'heading3', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading3' }
+      ]
+    },
+    image: {
+      upload: {
+        panel: {
+          items: [ 'insertimageviaurl' ]
+        }
+      }
+    }
   };
 
   pasteBeforeCleanup(pastedHtml: string): string {
