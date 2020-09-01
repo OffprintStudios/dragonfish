@@ -27,6 +27,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
   @Input() minHeight: string;
+  @Input() maxHeight: string;
 
   model: any;
   options: Object = {
@@ -83,6 +84,12 @@ export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
       document.documentElement.style.setProperty('--editor-min-height', this.minHeight);
     } else {
       document.documentElement.style.setProperty('--editor-min-height', '300px');
+    }
+
+    if (this.maxHeight) {
+      document.documentElement.style.setProperty('--editor-max-height', this.maxHeight);
+    } else {
+      document.documentElement.style.setProperty('--editor-max-height', '500px');
     }
   }
 
