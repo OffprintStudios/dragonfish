@@ -44,8 +44,17 @@
     }
 }
 
+.fr-command.fr-btn+.fr-dropdown-menu {
+    border-radius: 0;
+}
+
+span.fr-placeholder {
+    font-family: Raleway, sans-serif !important;
+}
+
 div.offprint-editor {
   box-shadow: var(--site-dropshadow);
+  font-size: 1.6rem !important;
   .fr-box.fr-basic {
     border-radius: 0;
     -moz-border-radius: 0;
@@ -63,7 +72,9 @@ div.offprint-editor {
       box-sizing: border-box;
       overflow-x: auto;
       min-height: var(--editor-min-height);
+      max-height: var(--editor-max-height);
       text-align: left;
+      font-family: Raleway, sans-serif;
     }
 
     .fr-wrapper {
@@ -73,6 +84,12 @@ div.offprint-editor {
       top: 0;
       left: 0;
     }
+  }
+
+  .fr-command.fr-btn+.fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a {
+      &:hover {
+          color: whitesmoke;
+      }
   }
 
   .fr-toolbar {
@@ -129,12 +146,16 @@ div.offprint-editor {
         // Active toolbar togglebuttons
         &:not(:hover):not(:focus):not(:active) {
           background: var(--site-accent-hover);
+
+          svg path {
+              fill: whitesmoke;
+          }
         }
         
         -moz-background-clip: padding;
         -webkit-background-clip: padding-box;
         background-clip: padding-box;
-        border: 1px solid var(--site-borders);
+        border: none;
 
         & .fr-element {
             color: var(--site-text-color);    
@@ -157,13 +178,15 @@ div.offprint-editor {
         }
       }
 
+      &:hover {
+          color: whitesmoke;
+      }
+
       &:hover svg path {
         fill: whitesmoke !important;
       }
       
-    .fr-placeholder {
-        font-family: Raleway, sans-serif;
-    }
+
 
     .fr-toolbar {
         color: var(--site-text-color);
@@ -249,7 +272,8 @@ div.offprint-editor {
 
     // Selected color for <a> buttons inside dropdowns
     & .fr-dropdown-content ul.fr-dropdown-list li a.fr-active {
-      background: var(--site-accent-hover);
+      background: var(--site-accent);
+      color: whitesmoke;
     }
   }
 
@@ -258,13 +282,16 @@ div.offprint-editor {
   .fr-desktop .fr-command:focus:not(.fr-table-cell),
   .fr-desktop .fr-command.fr-btn-hover:not(.fr-table-cell),
   .fr-desktop .fr-command.fr-expanded:not(.fr-table-cell) {
-    background: var(--site-accent-hover);
+    background: var(--site-accent);
+    color: whitesmoke;
   }
 
   .fr-popup {
     background: var(--site-background);
     box-shadow: var(--site-dropshadow);
     color: var(--site-text-color);
+    border: 1px solid var(--site-borders);
+    border-radius: 0;
 
     .fr-buttons.fr-tabs {
       background-color: var(--site-background);
@@ -382,6 +409,10 @@ div.offprint-editor {
         -moz-transition: 0.5s ease;
         -ms-transition: 0.5s ease;
         -o-transition: 0.5s ease;
+
+        svg path {
+            fill: whitesmoke;
+        }
     }
     .fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
     .fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
@@ -415,6 +446,10 @@ div.offprint-editor {
   &.fr-modal .fr-command.fr-btn.fr-dropdown.fr-active {
     fill: whitesmoke;
     background: var(--site-accent-hover);
+
+    svg path {
+        fill: whitesmoke;
+    }
   }
   &.fr-toolbar .fr-command.fr-btn.fr-dropdown.fr-active:hover,
   &.fr-popup .fr-command.fr-btn.fr-dropdown.fr-active:hover,
@@ -455,4 +490,71 @@ div.offprint-editor {
   &.fr-modal .fr-tabs .fr-command.fr-btn:not(:hover):not(:focus).fr-active-tab {
     background: var(--site-accent-hover);
   }
+}
+
+.fr-popup {
+    border-radius: 0;
+    border: 1px solid var(--site-borders);
+    background: var(--site-background);
+    color: whitesmoke;
+
+    & .fr-buttons.fr-tabs {
+        background: var(--site-background);
+        color: var(--site-text-color);
+        border-radius: 0;
+        border-bottom: 1px solid var(--site-borders);
+    }
+}
+
+.fr-popup .fr-buttons {
+    border-radius: 0;
+    border-bottom: 1px solid var(--site-borders);
+    background: var(--site-background);
+
+    & .fr-btn {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+
+        svg path {
+            fill: var(--site-text-color);
+        }
+
+        &:hover {
+            background: var(--site-accent);
+
+            svg path {
+                fill: whitesmoke;
+            }
+        }
+    }
+}
+
+.fr-popup .fr-input-line input[type="text"], .fr-popup .fr-input-line textarea {
+    background: var(--site-background);
+    color: var(--site-text-color);
+    border-radius: 0;
+    border: 1px solid var(--site-borders);
+}
+
+.fr-command.fr-btn+.fr-dropdown-menu {
+    background: var(--site-background);
+    color: var(--site-text-color);
+
+    a.fr-command {
+        &:hover {
+            background: var(--site-accent);
+            color: whitesmoke;
+        }
+    }
+}
+
+.fr-command.fr-btn+.fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a.fr-active {
+    color: whitesmoke;
+    background: var(--site-accent);
+
+    &:hover {
+        color: whitesmoke;
+        background: var(--site-accent-hover);
+    }
 }
