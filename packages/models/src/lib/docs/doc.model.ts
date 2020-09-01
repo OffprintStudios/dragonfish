@@ -15,5 +15,5 @@ export interface Doc {
     readonly updatedAt: Date;
 
     // Remove this once we've migrated away from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

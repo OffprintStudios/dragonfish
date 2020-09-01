@@ -33,7 +33,7 @@ export class BlogsService {
             published: newBlogInfo.published,
 
             // Delete this when we're all migrated
-            usesFroala: newBlogInfo.usesFroala
+            usesNewEditor: newBlogInfo.usesNewEditor
         });
         return await newBlog.save().then(async blog => {
             const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);
@@ -103,7 +103,7 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: any, blogInfo: models.EditBlog): Promise<void> {
-        const wordcount = blogInfo.usesFroala 
+        const wordcount = blogInfo.usesNewEditor 
             ? await countPlaintextWords(await stripAllHtml(blogInfo.body))
             : await countQuillWords(blogInfo.body);
         await this.blogModel.findOneAndUpdate(
@@ -115,7 +115,7 @@ export class BlogsService {
                 "stats.words": wordcount,
 
                 // Delete this when we're all migrated
-                "usesFroala": blogInfo.usesFroala
+                "usesNewEditor": blogInfo.usesNewEditor
             }
             ).where('audit.isDeleted', false).then(async () => {
                 const blogCount = await this.blogModel.countDocuments({author: user.sub}).where('audit.isDeleted', false).where('published', true);

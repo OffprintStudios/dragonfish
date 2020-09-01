@@ -24,7 +24,7 @@ export const SectionsSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 
     // delete once we've migrated completely from Quill
-    usesFroala: {type: Boolean, default: false},
+    usesNewEditor: {type: Boolean, default: false},
 }, {timestamps: true, autoIndex: true, collection: 'sections'});
 
 SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunction) {
@@ -36,7 +36,7 @@ SectionsSchema.pre<SectionDocument>('save', async function(next: HookNextFunctio
     }
     this.set('published', this.published);
 
-    const wordCount = this.usesFroala 
+    const wordCount = this.usesNewEditor 
         ? await countPlaintextWords(await stripAllHtml(this.body))
         : await countQuillWords(await sanitizeHtml(this.body));
     this.set('stats.words', wordCount);

@@ -12,7 +12,7 @@
         <input type="text" formControlName="docName" class="u-full-width" placeholder="Name">
 
         <label for="docBody">Body</label>
-        <ngContainer *ngIf="!docToEdit.usesFroala">        
+        <ngContainer *ngIf="!docToEdit.usesNewEditor">        
             <quill-editor minLength="3" formControlName="docBody" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                 <div quill-editor-toolbar>
                     <span class="ql-formats">
@@ -42,8 +42,8 @@
                 </div>
             </quill-editor>
         </ngContainer>
-        <ngContainer *ngIf="docToEdit.usesFroala">
-            <froala-pulp-fiction-editor formControlName="docBody"></froala-pulp-fiction-editor>
+        <ngContainer *ngIf="docToEdit.usesNewEditor">
+            <new-pulp-fiction-editor [parentForm]="editDocForm" [controlName]="'docBody'"></new-pulp-fiction-editor>
         </ngContainer>
 
         <hr>

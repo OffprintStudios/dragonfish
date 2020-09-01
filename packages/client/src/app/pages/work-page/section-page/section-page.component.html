@@ -29,20 +29,20 @@
                     <h1>{{ sectionData.title }}</h1>
                 </div>
                 <div class="section-body">
-                    <ngContainer *ngIf="!sectionData.usesFroala">
+                    <ngContainer *ngIf="!sectionData.usesNewEditor">
                         <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
                     </ngContainer>
-                    <ngContainer *ngIf="sectionData.usesFroala">
+                    <ngContainer *ngIf="sectionData.usesNewEditor">
                         <div [innerHtml]="sectionData.body | safeHtml"></div>
                     </ngContainer>
                 </div>
             </div>
             <div class="authors-note" *ngIf="sectionData.authorsNote">
                 <h3>A word from the author...</h3>
-                <ngContainer *ngIf="!sectionData.usesFroala">
+                <ngContainer *ngIf="!sectionData.usesNewEditor">
                     <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
                 </ngContainer>    
-                <ngContainer *ngIf="sectionData.usesFroala">
+                <ngContainer *ngIf="sectionData.usesNewEditor">
                     <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
                 </ngContainer>
             </div>
@@ -63,20 +63,20 @@
                         <h1>{{ sectionData.title }}</h1>
                     </div>
                     <div class="section-body">
-                        <ngContainer *ngIf="!sectionData.usesFroala">
+                        <ngContainer *ngIf="!sectionData.usesNewEditor">
                             <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
                         </ngContainer>
-                        <ngContainer *ngIf="sectionData.usesFroala">
+                        <ngContainer *ngIf="sectionData.usesNewEditor">
                             <div [innerHtml]="sectionData.body | safeHtml"></div>
                         </ngContainer>
                     </div>
                 </div>
                 <div class="authors-note" *ngIf="sectionData.authorsNote">
                     <h3>A word from the author...</h3>
-                    <ngContainer *ngIf="!sectionData.usesFroala">
+                    <ngContainer *ngIf="!sectionData.usesNewEditor">
                         <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
                     </ngContainer>    
-                    <ngContainer *ngIf="sectionData.usesFroala">
+                    <ngContainer *ngIf="sectionData.usesNewEditor">
                         <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
                     </ngContainer>
                 </div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="section-body">
                             <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
-                            <ngContainer *ngIf="!sectionData.usesFroala">
+                            <ngContainer *ngIf="!sectionData.usesNewEditor">
                                 <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                                     <div quill-editor-toolbar>
                                         <span class="ql-formats">
@@ -133,15 +133,15 @@
                                     </div>
                                 </quill-editor>
                             </ngContainer>
-                            <ngContainer *ngIf="sectionData.usesFroala">
-                                <froala-pulp-fiction-editor formControlName="body"></froala-pulp-fiction-editor>
+                            <ngContainer *ngIf="sectionData.usesNewEditor">
+                                <new-pulp-fiction-editor [parentForm]="editSection" [controlName]="'body'" ></new-pulp-fiction-editor>
                             </ngContainer>
                         </div>
                     </div>
                     <div class="authors-note">
                         <h3>A word from the author...</h3>
                         <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
-                        <ngContainer *ngIf="!sectionData.usesFroala">                        
+                        <ngContainer *ngIf="!sectionData.usesNewEditor">                        
                         <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                             <div quill-editor-toolbar>
                                 <span class="ql-formats">
@@ -171,8 +171,8 @@
                             </div>
                         </quill-editor>
                     </ngContainer>
-                    <ngContainer *ngIf="sectionData.usesFroala">
-                        <froala-pulp-fiction-editor formControlName="authorsNote"></froala-pulp-fiction-editor>
+                    <ngContainer *ngIf="sectionData.usesNewEditor">
+                        <new-pulp-fiction-editor [parentForm]="editSection" [controlName]="'authorsNote'"></new-pulp-fiction-editor>
                     </ngContainer>
                     </div>
                     <hr style="width: 70%;">

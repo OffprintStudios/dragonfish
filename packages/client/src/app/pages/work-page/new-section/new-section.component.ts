@@ -74,7 +74,7 @@ export class NewSectionComponent implements OnInit {
       title: this.fields.title.value,
       body: this.fields.body.value,
       authorsNote: this.fields.authorsNote.value,
-      usesFroala: true
+      usesNewEditor: true
     };
     
     this.worksService.createSection(this.workId, newSection).subscribe(section => {      

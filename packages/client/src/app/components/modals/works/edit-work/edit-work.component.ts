@@ -141,7 +141,7 @@ export class EditWorkComponent implements OnInit {
       ? this.fields.theseGenres.value
       : [this.fields.theseGenres.value];
 
-      const longDescValue = this.workData.usesFroala 
+      const longDescValue = this.workData.usesNewEditor 
         ? this.fields.longDesc.value
         : getQuillHtml(document.querySelector("quill-editor"));
     
@@ -155,7 +155,7 @@ export class EditWorkComponent implements OnInit {
       genres: genres,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
-      usesFroala: true,
+      usesNewEditor: true,
     };
 
     this.worksService.editWork(newChanges).subscribe(() => {

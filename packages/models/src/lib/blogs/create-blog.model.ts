@@ -4,6 +4,6 @@ export interface CreateBlog {
     readonly published: boolean;
 
     // Remove this once we've migrated away from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }
  

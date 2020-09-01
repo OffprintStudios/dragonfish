@@ -4,5 +4,5 @@ export interface CreateSection {
     readonly authorsNote?: string;
     
      // Remove this once we've migrated all sections from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

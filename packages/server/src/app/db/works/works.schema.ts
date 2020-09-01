@@ -48,7 +48,7 @@ export const WorksSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 
     // delete once we've migrated completely from Quill
-    usesFroala: {type: Boolean, default: false},
+    usesNewEditor: {type: Boolean, default: false},
 }, {timestamps: true, autoIndex: true, collection: 'works'});
 
 WorksSchema.plugin(MongooseAutopopulate);

@@ -6,10 +6,10 @@
     <h1 class="doc-header">{{ doc.docName }}</h1>
     <hr class="doc-divider">
     <div class="doc-container">
-        <ngContainer *ngIf="!doc.usesFroala">
+        <ngContainer *ngIf="!doc.usesNewEditor">
             <quill-view [content]="doc.docBody" sanitize="true" format="json"></quill-view>
         </ngContainer>
-        <ngContainer *ngIf="doc.usesFroala">
+        <ngContainer *ngIf="doc.usesNewEditor">
             <div [innerHtml]="doc.docBody | safeHtml"></div>
         </ngContainer>
     </div>
