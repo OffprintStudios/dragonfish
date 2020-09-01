@@ -43,6 +43,7 @@ export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
     imageMove: false, // don't allow dragging of imgaes
     imageUpload: false,
     imageInsertButtons: ['imageBack', '|', 'imageByURL', 'imageManager'], // Default buttons include an "insert directly" button, which we don't allow
+    videoInsertButtons: ['videoBack', '|', 'videoByUrl'],
     toolbarButtons: {
       moreText: {
         buttons: ['paragraphFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'fontSize'],
@@ -50,19 +51,19 @@ export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
         buttonsVisible: 6
       },
       moreParagraph: {
-        buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatUL', 'formatOL'],
+        buttons: ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify', 'formatUL', 'formatOL', 'quote', 'outdent', 'indent'],
         align: 'left',
-        buttonsVisible: 3
+        buttonsVisible: 4
       },
       moreRich: {
-        buttons: ['insertHR', 'insertLink', 'insertImage', 'quote', 'clearFormatting'],
+        buttons: ['clearFormatting', 'insertHR', 'insertLink', 'insertImage', 'insertVideo', 'emoticons'],
         align: 'left',
         buttonsVisible: 3,
       },
       moreMisc: {
-        buttons: ['undo', 'redo', 'fullscreen', 'html'],
+        buttons: ['undo', 'redo', 'fullscreen', 'spellChecker'],
         align: 'right',
-        buttonsVisible: 2
+        buttonsVisible: 4
       }
     }
   }
