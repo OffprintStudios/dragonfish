@@ -537,6 +537,10 @@ div.offprint-editor {
     border: 1px solid var(--site-borders);
 }
 
+.fr-popup .fr-buttons:not(.fr-tabs) {
+  padding: 0;
+}
+
 .fr-command.fr-btn+.fr-dropdown-menu {
     background: var(--site-background);
     color: var(--site-text-color);
@@ -549,12 +553,98 @@ div.offprint-editor {
     }
 }
 
+.fr-command.fr-btn+.fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a {
+  color: var(--site-text-color);
+
+  & svg path {
+    color: var(--site-text-color);
+  }
+}
+
+.fr-command.fr-btn+.fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a svg path {
+  fill: var(--site-text-color);
+}
+
+.fr-command.fr-btn + .fr-dropdown-menu a.fr-command:hover {
+  color: whitesmoke;
+
+  & svg path {
+    fill: whitesmoke;
+  }
+}
+
+.fr-popup .fr-buttons .fr-btn {
+  margin: 0;
+}
+
+.fr-desktop .fr-command.fr-active:active {
+  background: var(--site-accent); 
+
+  & svg path {
+    fill: whitesmoke;
+  }
+}
+
+.fr-desktop .fr-command.fr-active:hover {
+  svg path {
+    fill: whitesmoke !important;
+  }
+}
+
+.fr-separator.fr-vs {
+  margin: 0;
+}
+
 .fr-command.fr-btn+.fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a.fr-active {
     color: whitesmoke;
     background: var(--site-accent);
 
+    & svg path {
+      fill: whitesmoke;
+    }
+
     &:hover {
         color: whitesmoke;
         background: var(--site-accent-hover);
+
+        & svg path {
+          fill: whitesmoke;
+        }
     }
+}
+
+.fr-toolbar .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-toolbar .fr-more-toolbar .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-toolbar .fr-buttons:not(.fr-tabs) .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-popup .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-popup .fr-more-toolbar .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-popup .fr-buttons:not(.fr-tabs) .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-modal .fr-btn-grp .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-modal .fr-more-toolbar .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path, 
+.fr-modal .fr-buttons:not(.fr-tabs) .fr-command.fr-btn.fr-active:not(.fr-dropdown) svg path {
+  fill: var(--site-accent);
+}
+
+.fr-popup .fr-input-line input+label, .fr-popup .fr-input-line textarea+label {
+  font-family: Raleway, sans-serif;
+  background: var(--site-background);
+  color: var(--site-text-color);
+}
+
+.fr-popup .fr-action-buttons button.fr-command {
+  border-radius: 0;
+  box-shadow: none;
+  border: 1px solid var(--site-borders);
+  font-size: 1.15rem;
+  color: var(--site-text-color);
+
+  &:active {
+    background: var(--site-accent);
+    color: whitesmoke;
+  }
+
+  &:hover {
+    background: var(--site-accent);
+    color: whitesmoke;
+  }
 }

@@ -1,9 +1,12 @@
 import 'froala-editor/js/plugins/align.min.js'; // Adds alignment options
-import 'froala-editor/js/plugins/code_view.min.js' // allow user to view (and edit) the HTML directly
 import 'froala-editor/js/plugins/colors.min.js'; // Adds custom color options
 import 'froala-editor/js/plugins/font_size.min.js'; // Adds font size customization
 import 'froala-editor/js/plugins/fullscreen.min.js' // Adds the fullscreen button
+import 'froala-editor/js/plugins/url.min.js'; // Detects if a url is typed and adds it appropriately
 import 'froala-editor/js/plugins//image.min.js' // Adds the insertImage option and associated functionality
+import 'froala-editor/js/plugins/video.min.js'; // Adds the insertVideo option and associated functionality
+import 'froala-editor/js/plugins/quick_insert.min.js'; // Adds quick insert functionality
+import 'froala-editor/js/plugins/emoticons.min.js'; // Adds emoticons functionality
 import 'froala-editor/js/plugins/link.min.js' // Add the insertLink option and associated functionality
 import 'froala-editor/js/plugins/lists.min.js' // Adds <ul> and <ol> functionality
 import 'froala-editor/js/plugins/paragraph_format.min.js' // import the header styles formatter
@@ -43,7 +46,8 @@ export class FroalaEditorComponent implements ControlValueAccessor, OnInit {
     imageMove: false, // don't allow dragging of imgaes
     imageUpload: false,
     imageInsertButtons: ['imageBack', '|', 'imageByURL', 'imageManager'], // Default buttons include an "insert directly" button, which we don't allow
-    videoInsertButtons: ['videoBack', '|', 'videoByUrl'],
+    videoInsertButtons: ['videoBack', 'videoByURL'],
+    videoAllowedProviders: ['youtube', 'vimeo'],
     toolbarButtons: {
       moreText: {
         buttons: ['paragraphFormat', 'bold', 'italic', 'underline', 'strikeThrough', 'fontSize'],
