@@ -11,7 +11,7 @@
         </div>
         <div class="create-comment">
             <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;"><i-feather name="refresh-cw"></i-feather></button>
+            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
             <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <p style="margin-top: 0; font-style: italic;">But you could be the first!</p>
         </div>
         <div class="comment" *ngFor="let comment of comments.docs | paginate: { id: 'comments', itemsPerPage: comments.limit, currentPage: pageNum, totalItems: comments.totalDocs }; let i = index">
-            <div class="row" [id]="comment._id">
+            <div class="row" [id]="'comment-' + comment._id">
                 <div class="comm-side-header three columns">
                     <img [src]="comment.user.profile.avatar">
                     <h3 class="comm-user">
@@ -69,7 +69,7 @@
                 </div>
                 <div class="comm-body-box nine columns">
                     <div class="comm-meta-panel">
-                        <span class="comm-id"><a [routerLink]="['./']" [queryParams]="{page: pageNum}" [fragment]="comment._id">#{{ (pageNum - 1) * comments.limit + 1 + i }}</a></span>
+                        <span class="comm-id"><a [routerLink]="['./']" [queryParams]="{page: pageNum}" [fragment]="'comment-' + comment._id">#{{ (pageNum - 1) * comments.limit + 1 + i }}</a></span>
                         <span class="divider">//</span>
                         <span class="comm-created-at" title="Created On">
                             <i-feather name="calendar"></i-feather>{{ comment.createdAt | date: 'mediumDate'}}, {{ comment.createdAt | date: 'mediumTime' }}
@@ -79,13 +79,13 @@
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">
-                                <a (click)="quoteComment(itemId, itemKind, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
+                                <a (click)="quoteComment(itemId, itemKind, comment.user, 'comment-' + comment._id, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
                                 <a><i-feather name="flag"></i-feather></a>
                             </span>
                         </ng-template>
                     </div>
                     <div class="comm-body">
-                        <quill-view [content]="comment.body" sanitize="true" format="json"></quill-view>
+                        <div [innerHtml]="comment.body | safeHtml"></div>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@
         </div>
         <div class="create-comment">
             <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;"><i-feather name="refresh-cw"></i-feather></button>
+            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
             <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
     </div>

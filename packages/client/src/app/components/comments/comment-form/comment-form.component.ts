@@ -1,10 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { CommentsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
-import { imageHandler, dividerHandler, quoteComment } from '../../../util/quill';
-import { CreateComment, EditComment } from '@pulp-fiction/models/comments';
+import { CreateComment, EditComment, UserInfoComments } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'pulp-fiction-comment-form',
@@ -21,26 +20,15 @@ export class CommentFormComponent implements OnInit {
   editCommInfo: string;
   commentId: string;
 
+  quoteCommUser: UserInfoComments;
+  quoteCommUrl: string;
   quoteCommInfo: string;
-
-  public styles = {
-    'height': '200px',
-    'box-shadow': 'none',
-    'margin-bottom': '0'
-  };
-
-  editorFormats = [
-    'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code', 'image', 'video',
-    'align', 'center', 'right', 'justify',
-    'list', 'bullet', 'ordered'
-  ];
 
   commentForm = new FormGroup({
     body: new FormControl('', [Validators.required, Validators.minLength(10)])
   })
 
-  constructor(private commentsService: CommentsService, private alertsService: AlertsService, private cdr: ChangeDetectorRef) {
+  constructor(private commentsService: CommentsService, private alertsService: AlertsService) {
   }
 
   ngOnInit(): void {
@@ -50,11 +38,15 @@ export class CommentFormComponent implements OnInit {
       });
     }
 
-    if (this.quoteCommInfo) {
-      quoteComment(this.quoteCommInfo);
-      /*this.commentForm.setValue({
-        body: quoteComment(this.quoteCommInfo)
-      });*/
+    if (this.quoteCommInfo && this.quoteCommUser && this.quoteCommUrl) {
+      this.commentForm.setValue({
+        body: `
+          <blockquote>
+            <em><a href="#${this.quoteCommUrl}">${this.quoteCommUser.username}</a> said:</em>\n
+            ${this.quoteCommInfo}
+          </blockquote>
+        `
+      });
     }
   }
 
@@ -62,24 +54,6 @@ export class CommentFormComponent implements OnInit {
    * Comment form field getter.
    */
   get fields() { return this.commentForm.controls; }
-
-  /**
-   * Required for the QuillJS editor.
-   */
-  triggerChangeDetection() {
-    this.cdr.detectChanges();
-  }
-
-  /**
-   * Gets the Quill Editor object after the editor's creation in the template HTML
-   * 
-   * @param event The editor object
-   */
-  onEditorCreated(event: any) {
-    let toolbar = event.getModule('toolbar');
-    toolbar.addHandler('divider', dividerHandler);
-    toolbar.addHandler('image', imageHandler);
-  }
 
   submitComment() {
     if (this.editMode === false) {

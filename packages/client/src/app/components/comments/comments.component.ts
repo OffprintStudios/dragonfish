@@ -3,7 +3,7 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
@@ -74,6 +74,13 @@ export class CommentsComponent implements OnInit {
         this.loading = false;
       });
     }
+  }
+
+  /**
+   * Refreshes the thread with the current page.
+   */
+  refreshThread() {
+    this.fetchData(this.pageNum);
   }
 
   /**
@@ -179,11 +186,13 @@ export class CommentsComponent implements OnInit {
    * @param commentId The comment's ID
    * @param commInfo The comment's info
    */
-  quoteComment(itemId: string, itemKind: string, commInfo: string) {
+  quoteComment(itemId: string, itemKind: string, commUser: UserInfoComments, commUrl: string, commInfo: string) {
     this.commentForm.updateContent(CommentFormComponent, {
       itemId: itemId,
       itemKind: itemKind,
       editMode: false,
+      quoteCommUser: commUser,
+      quoteCommUrl: commUrl,
       quoteCommInfo: commInfo
     });
 
