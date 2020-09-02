@@ -43,11 +43,6 @@ export class NewEditorComponent implements OnInit {
     }
   };
 
-  pasteBeforeCleanup(pastedHtml: string): string {
-    // Strip out spurious newline characters. <br> or bust, baby
-    return pastedHtml.replace(/(?:\r\n|\r|\n)/g, '');
-  }
-
   constructor() { }
 
   ngOnInit() {
