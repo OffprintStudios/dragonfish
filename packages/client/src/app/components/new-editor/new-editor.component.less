@@ -1,11 +1,10 @@
-:host ::ng-deep .ck-editor__editable_inline {
-  min-height: 500px;
-}
-
 form.offprint-editor {
   font-family: Raleway, sans-serif;
   .ck.ck-editor__main > .ck-editor__editable {
     background: var(--site-background);
+    min-height: var(--editor-min-height);
+    max-height: var(--editor-max-height);
+    border-radius: 0;
   }
 
   .ck.ck-reset_all, .ck.ck-reset_all * {
@@ -35,6 +34,34 @@ form.offprint-editor {
           fill: whitesmoke;
         }
       }
+    }
+  }
+
+  .ck-on {
+    background: var(--site-accent);
+  }
+
+  .ck.ck-list__item .ck-button.ck-on {
+    background: var(--site-accent);
+
+    & .ck-button__label {
+      background: var(--site-accent);
+      color: whitesmoke;
+    }
+
+    &:hover:not(.ck-disabled) {
+      background: var(--site-accent-hover);
+
+      .ck-button__label {
+        background: var(--site-accent-hover);
+        color: whitesmoke;
+      }
+    }
+  }
+
+  .ck.ck-list__item .ck-button {
+    &:hover:not(.ck-disabled) {
+      background: var(--site-accent);
     }
   }
 
