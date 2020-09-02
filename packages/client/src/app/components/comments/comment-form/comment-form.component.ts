@@ -36,9 +36,7 @@ export class CommentFormComponent implements OnInit {
       this.commentForm.setValue({
         body: this.editCommInfo
       });
-    }
-
-    if (this.quoteCommInfo && this.quoteCommUser && this.quoteCommUrl) {
+    } else if (this.quoteCommInfo && this.quoteCommUser && this.quoteCommUrl) {
       this.commentForm.setValue({
         body: `
           <blockquote>
