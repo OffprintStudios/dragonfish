@@ -43,7 +43,7 @@
             </quill-editor>
         </ngContainer>
         <ngContainer *ngIf="docToEdit.usesNewEditor">
-            <new-pulp-fiction-editor [parentForm]="editDocForm" [controlName]="'docBody'"></new-pulp-fiction-editor>
+            <editor [parentForm]="editDocForm" [controlName]="'docBody'"></editor>
         </ngContainer>
 
         <hr>

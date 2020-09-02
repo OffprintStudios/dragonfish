@@ -14,7 +14,7 @@
                 <quill-pulp-fiction-editor [parentForm]="editBlogForm" [controlName]="'body'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
             </ngContainer>
             <ngContainer *ngIf="blogData.usesNewEditor">
-                <new-pulp-fiction-editor [parentForm]="editBlogForm" [controlName]="'body'"></new-pulp-fiction-editor>
+                <editor [parentForm]="editBlogForm" [controlName]="'body'"></editor>
             </ngContainer>
         
             <label>

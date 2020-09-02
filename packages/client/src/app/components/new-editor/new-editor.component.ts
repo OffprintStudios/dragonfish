@@ -4,7 +4,7 @@ import { Component, ViewEncapsulation, OnInit, Input } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'new-pulp-fiction-editor',
+  selector: 'editor',
   templateUrl: './new-editor.component.html',
   styleUrls: ['./new-editor.component.less'],
   encapsulation: ViewEncapsulation.None, // Disable CSS encapsulation so the .less file can affect the child editor component  

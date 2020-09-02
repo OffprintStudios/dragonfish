@@ -19,7 +19,7 @@
             <quill-pulp-fiction-editor [parentForm]="editWorkForm" [controlName]="'longDesc'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
         </ngContainer>
         <ngContainer *ngIf="workData.usesNewEditor">
-            <new-pulp-fiction-editor [parentForm]="editWorkForm" [controlName]="'longDesc'"></new-pulp-fiction-editor>
+            <editor [parentForm]="editWorkForm" [controlName]="'longDesc'"></editor>
         </ngContainer>
 
         <!--Category-->
