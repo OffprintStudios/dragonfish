@@ -1,5 +1,6 @@
 form.offprint-editor {
   font-family: Raleway, sans-serif;
+  margin-bottom: 0;
   .ck.ck-editor__main > .ck-editor__editable {
     background: var(--site-background);
     min-height: var(--editor-min-height);
@@ -7,13 +8,22 @@ form.offprint-editor {
     border-radius: 0;
   }
 
+  .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
+  .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+    border-radius: 0;
+  }
+
   .ck.ck-reset_all, .ck.ck-reset_all * {
     font-family: Raleway, sans-serif;
     color: var(--site-text-color);
+    border-radius: 0;
     background: var(--site-background);
   }
 
-  .ck-rounded-corners .ck.ck-button, .ck-rounded-corners a.ck.ck-button, .ck.ck-button.ck-rounded-corners, a.ck.ck-button.ck-rounded-corners {
+  .ck-rounded-corners .ck.ck-button, 
+  .ck-rounded-corners a.ck.ck-button, 
+  .ck.ck-button.ck-rounded-corners, 
+  a.ck.ck-button.ck-rounded-corners {
     border-radius: 0;
   }
 
@@ -33,6 +43,39 @@ form.offprint-editor {
         path {
           fill: whitesmoke;
         }
+      }
+    }
+  }
+
+  .ck.ck-button.ck-on:not(.ck-disabled), 
+  a.ck.ck-button.ck-on:not(.ck-disabled) {
+    background: var(--site-accent);
+
+    svg.ck.ck-icon {
+      background: var(--site-accent);
+      path {
+        fill: whitesmoke;
+      }
+    }
+
+    span.ck-button__label {
+      background: var(--site-accent);
+      color: whitesmoke;
+    }
+
+    &:hover {
+      background: var(--site-accent-hover);
+
+      svg.ck.ck-icon {
+        background: var(--site-accent-hover);
+        path {
+          fill: whitesmoke;
+        }
+      }
+
+      span.ck-button__label {
+        background: var(--site-accent-hover);
+        color: whitesmoke;
       }
     }
   }
