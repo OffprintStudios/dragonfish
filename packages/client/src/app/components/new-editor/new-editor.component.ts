@@ -26,6 +26,7 @@ export class NewEditorComponent implements OnInit {
     toolbar: [ 'heading', '|', 'fontsize', 'fontcolor', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
     'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'imageupload', 'mediaembed', '|',
     'undo', 'redo'],
+    placeholder: 'Keeping you on the edge of your seats...',
     heading: {
       options: [
         { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
