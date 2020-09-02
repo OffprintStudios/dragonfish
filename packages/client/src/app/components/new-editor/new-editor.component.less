@@ -6,17 +6,24 @@ form.offprint-editor {
     min-height: var(--editor-min-height);
     max-height: var(--editor-max-height);
     border-radius: 0;
+    border: 1px solid var(--site-borders);
   }
 
   .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,
   .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
     border-radius: 0;
+    background: var(--site-background);
+    border-bottom: none;
   }
 
   .ck.ck-reset_all, .ck.ck-reset_all * {
     font-family: Raleway, sans-serif;
     color: var(--site-text-color);
     border-radius: 0;
+    //background: var(--site-background);
+  }
+
+  .ck.ck-color-table {
     background: var(--site-background);
   }
 
@@ -25,6 +32,28 @@ form.offprint-editor {
   .ck.ck-button.ck-rounded-corners, 
   a.ck.ck-button.ck-rounded-corners {
     border-radius: 0;
+  }
+
+  .ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button, 
+  .ck.ck-dropdown .ck-dropdown__panel .ck-list .ck-list__item:last-child .ck-button.ck-rounded-corners {
+    border-radius: 0;
+  }
+
+  .ck-rounded-corners .ck.ck-dropdown .ck-dropdown__panel .ck-list, 
+  .ck.ck-dropdown .ck-dropdown__panel .ck-list.ck-rounded-corners {
+    background: var(--site-background);
+  }
+
+  .ck.ck-tooltip .ck-tooltip__text {
+    background: var(--site-background);
+    border: 1px solid var(--site-borders);
+  }
+
+  .ck.ck-tooltip.ck-tooltip_s .ck-tooltip__text:after {
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: var(--site-borders);
   }
 
   .ck.ck-button {
