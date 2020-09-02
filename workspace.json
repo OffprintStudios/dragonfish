@@ -26,13 +26,7 @@
               "packages/client/src/assets"
             ],
             "styles": [
-              "packages/client/src/styles.less",
-              "./node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-              "./node_modules/froala-editor/css/froala_style.min.css"
-            ],
-            "scripts": [
-              "./node_modules/froala-editor/js/froala_editor.pkgd.min.js"
-            ],
+              "packages/client/src/styles.less"],
             "allowedCommonJsDependencies": [
               "lodash",
               "numeral"
@@ -63,7 +57,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "6kb",
-                  "maximumError": "90kb"
+                  "maximumError": "10kb"
                 }
               ]
             }

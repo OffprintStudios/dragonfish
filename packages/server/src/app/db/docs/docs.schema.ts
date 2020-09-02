@@ -27,7 +27,7 @@ export const DocsSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 
     // Remove once we've migrated away from Quill
-    usesFroala: {type: Boolean, default: false}
+    usesNewEditor: {type: Boolean, default: false}
 }, {timestamps: true, autoIndex: true, collection: 'docs'});
 
 DocsSchema.plugin(MongooseAutopopulate);
@@ -37,7 +37,7 @@ DocsSchema.pre<documents.DocDocument>('save', async function (next: HookNextFunc
     this.set('docName', await sanitizeHtml(this.docName));
     this.set('docDescription', await sanitizeHtml(this.docDescription));
     this.set('docBody', await sanitizeHtml(this.docBody));
-    const wordCount = this.usesFroala
+    const wordCount = this.usesNewEditor
         ? await countPlaintextWords(await stripAllHtml(this.docBody))
         : await countQuillWords(await sanitizeHtml(this.docBody));
     this.set('words', wordCount);

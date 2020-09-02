@@ -20,5 +20,5 @@ export interface Blog {
     readonly updatedAt: Date;
 
     // Remove this once we've finished migrating away from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

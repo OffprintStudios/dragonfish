@@ -212,11 +212,11 @@ export class SectionPageComponent implements OnInit {
       }
     }
 
-    const sectionBodyValue = this.sectionData.usesFroala
+    const sectionBodyValue = this.sectionData.usesNewEditor
       ? this.fields.body.value
       : getQuillHtml(document.querySelector("quill-editor"));
 
-    const authorsNoteValue = this.sectionData.usesFroala
+    const authorsNoteValue = this.sectionData.usesNewEditor
       ? this.fields.authorsNote.value
       : getQuillHtml(document.querySelector("div.authors-note"));
 
@@ -225,7 +225,7 @@ export class SectionPageComponent implements OnInit {
       body: sectionBodyValue,
       authorsNote: authorsNoteValue,
       oldWords: this.sectionData.stats.words,
-      usesFroala: true,
+      usesNewEditor: true,
     };
 
     this.worksService.editSection(this.workId, this.sectionId, newEdits).subscribe(() => {

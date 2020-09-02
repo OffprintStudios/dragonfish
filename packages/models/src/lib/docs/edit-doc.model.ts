@@ -4,5 +4,5 @@ export interface EditDoc {
     readonly docBody: string;
 
     // Remove this once we've migrated fully away from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

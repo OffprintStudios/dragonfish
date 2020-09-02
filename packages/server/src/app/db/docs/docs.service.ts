@@ -34,7 +34,7 @@ export class DocsService {
                 "audit.lastUpdatedBy": user.sub,
 
                 // Delete this when we're all migrated.
-                "usesFroala": docInfo.usesFroala
+                "usesNewEditor": docInfo.usesNewEditor
             });
     
             return await newDoc.save();
@@ -86,7 +86,7 @@ export class DocsService {
         if (rolesIntersection.length === 0) {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
         } else {
-            const wordCount = docInfo.usesFroala
+            const wordCount = docInfo.usesNewEditor
                 ? await countPlaintextWords(await stripAllHtml(docInfo.docBody))
                 : await countQuillWords(await sanitizeHtml(docInfo.docBody));
             return await this.docModel.updateOne({"_id": docInfo._id}, {
@@ -95,7 +95,7 @@ export class DocsService {
                 "words": wordCount,
                 "lastUpdatedBy": user.sub,
 
-                "usesFroala": docInfo.usesFroala
+                "usesNewEditor": docInfo.usesNewEditor
             });
         } 
     }

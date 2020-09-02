@@ -49,8 +49,8 @@ import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dash
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-import { FroalaEditorComponent } from './components/froala-editor';
+import { NewEditorComponent } from './components/new-editor';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -95,14 +95,13 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
-    CommentFormComponent, EditorComponent, FroalaEditorComponent, SafeHtmlPipe
+    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule, 
-    FroalaEditorModule.forRoot(),
-    FroalaViewModule.forRoot(),
+    NagBarModule,     
+    CKEditorModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {

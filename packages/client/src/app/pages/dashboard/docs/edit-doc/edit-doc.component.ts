@@ -100,7 +100,7 @@ export class EditDocComponent implements OnInit {
     }
     this.submitting = true;
 
-    const docBody = this.docToEdit.usesFroala
+    const docBody = this.docToEdit.usesNewEditor
       ? this.fields.docBody.value
       : getQuillHtml(document.querySelector("quill-editor"));
 
@@ -108,7 +108,7 @@ export class EditDocComponent implements OnInit {
       _id: this.docId,
       docTitle: this.fields.docName.value,
       docBody: docBody,
-      usesFroala: true
+      usesNewEditor: true
     };
 
     this.docsService.editDoc(docToEdit).subscribe(() => {

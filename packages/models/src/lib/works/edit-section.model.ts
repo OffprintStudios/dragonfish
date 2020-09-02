@@ -5,5 +5,5 @@ export interface EditSection {
     readonly oldWords: number;
 
     // Remove this once we've migrated all sections from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

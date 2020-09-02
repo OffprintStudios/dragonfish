@@ -80,7 +80,7 @@ export class EditBlogComponent implements OnInit {
       return;
     }
 
-    const blogBody = this.blogData.usesFroala
+    const blogBody = this.blogData.usesNewEditor
       ? this.fields.body.value
       : getQuillHtml(document.querySelector("quill-editor"))
 
@@ -89,7 +89,7 @@ export class EditBlogComponent implements OnInit {
       title: this.fields.title.value,
       body: blogBody,
       published: this.fields.published.value,
-      usesFroala: true
+      usesNewEditor: true
     };
 
     this.blogService.editBlog(updatedBlogInfo).subscribe(() => {

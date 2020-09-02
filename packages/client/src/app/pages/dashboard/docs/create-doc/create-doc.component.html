@@ -13,7 +13,7 @@
     <input type="text" formControlName="docDesc" class="u-full-width" placeholder="Description">
 
     <label for="docBody">Body</label>
-    <froala-pulp-fiction-editor formControlName="docBody"></froala-pulp-fiction-editor>
+    <new-pulp-fiction-editor [parentForm]="createDocForm" [controlName]="'docBody'"></new-pulp-fiction-editor>
 
     <label for="approvedRoles">Approved Roles</label>
     <ng-select [items]="rolesList | keyvalue"

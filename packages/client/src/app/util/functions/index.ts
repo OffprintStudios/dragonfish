@@ -1,2 +1,2 @@
 export { calculateApprovalRating } from './approval-rating';
-export { getQuillHtml } from './froala-migration';
+export { getQuillHtml } from './new-editor-migration';

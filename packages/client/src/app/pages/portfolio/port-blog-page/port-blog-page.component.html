@@ -25,10 +25,10 @@
        </div>
     </div>
     <div class="blog-body">
-        <ngContainer *ngIf="!blogData.usesFroala">
+        <ngContainer *ngIf="!blogData.usesNewEditor">
             <quill-view [content]="blogData.body" format="json"></quill-view>
         </ngContainer>
-        <ngContainer *ngIf="blogData.usesFroala">
+        <ngContainer *ngIf="blogData.usesNewEditor">
             <div [innerHtml]="blogData.body | safeHtml"></div>
         </ngContainer>
     </div>

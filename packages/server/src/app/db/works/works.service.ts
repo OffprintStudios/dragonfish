@@ -43,7 +43,7 @@ export class WorksService {
                 status: newWorkInfo.status,
             },
             // Delete this when we're all migrated.
-            usesFroala: newWorkInfo.usesFroala
+            usesNewEditor: newWorkInfo.usesNewEditor
         });
 
         return await newWork.save();
@@ -68,7 +68,7 @@ export class WorksService {
                 authorsNote: await sanitizeHtml(newSectionInfo.authorsNote),
 
                 // Delete this when we're all migrated
-                usesFroala: newSectionInfo.usesFroala                
+                usesNewEditor: newSectionInfo.usesNewEditor                
             });
 
             return await newSection.save().then(async section => {
@@ -225,12 +225,12 @@ export class WorksService {
                 "title": await sanitizeHtml(sectionInfo.title),
                 "body": await sanitizeHtml(sectionInfo.body),
                 "authorsNote": await sanitizeHtml(sectionInfo.authorsNote),                
-                "stats.words": sectionInfo.usesFroala 
+                "stats.words": sectionInfo.usesNewEditor 
                     ? await countPlaintextWords(await stripAllHtml(sectionInfo.body))
                     : await countQuillWords(await sanitizeHtml(sectionInfo.body)),
 
                 // Delete this when we're all migrated
-                "usesFroala": sectionInfo.usesFroala
+                "usesNewEditor": sectionInfo.usesNewEditor
             }, {new: true}).then(async sec => {
                 if (sec.published === true) {
                     await this.workModel.updateOne({ "_id": thisWork._id}, {$inc: {"stats.totWords": -sectionInfo.oldWords}}).then(async () => {
@@ -322,7 +322,7 @@ export class WorksService {
             'meta.status': workInfo.status,
             
             // Delete this when migrated from Quill
-            'usesFroala': workInfo.usesFroala,
+            'usesNewEditor': workInfo.usesNewEditor,
         }).where("audit.isDeleted", false);
     }
 

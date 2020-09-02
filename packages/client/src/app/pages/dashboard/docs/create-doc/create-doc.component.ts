@@ -75,7 +75,7 @@ export class CreateDocComponent implements OnInit {
       docDescription: this.fields.docDesc.value,
       docBody: this.fields.docBody.value,
       approvedRoles: this.fields.approvedRoles.value,
-      usesFroala: true
+      usesNewEditor: true
     };
 
     this.docsService.createDoc(this.currentUser.roles as Roles[], docToCreate).subscribe(() => {

@@ -15,9 +15,9 @@ export interface CreateWork {
     readonly status: WorkStatus,    
     
     /**
-     * Determines whether or not the long description uses Froala or not.
+     * Determines whether or not the long description uses the new editor or not.
      * Has no bearing on sections.
      * Remove this once we've migrated fully away from Quill.     
      */
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }

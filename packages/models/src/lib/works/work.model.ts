@@ -29,7 +29,7 @@ export interface Work {
     readonly updatedAt: Date;
 
     // Remove this once we've migrated all sections from Quill
-    readonly usesFroala: boolean;
+    readonly usesNewEditor: boolean;
 }
 
 export interface AuthorInfo {
