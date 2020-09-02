@@ -24,6 +24,7 @@ form.offprint-editor {
     //background: var(--site-background);
   }
 
+
   .ck.ck-color-table {
     background: var(--site-background);
   }
@@ -144,4 +145,46 @@ form.offprint-editor {
     text-transform: none;
     box-shadow: none;
   }
+}
+
+.ck.ck-link-form {
+  border-radius: 0;
+  font-family: Raleway, sans-serif;
+  box-shadow: var(--site-dropshadow);
+}
+
+.ck-rounded-corners .ck.ck-input-text, .ck.ck-input-text.ck-rounded-corners {
+  border-radius: 0;
+}
+
+.ck.ck-input-text {
+  box-shadow: none;
+  font-family: Raleway, sans-serif;
+  border: 1px solid var(--site-borders);
+
+  &:focus {
+    box-shadow: none;
+    border: 1px solid var(--site-accent);
+  }
+}
+
+.ck.ck-button:not(.ck-disabled), a.ck.ck-button:not(.ck-disabled) {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.ck-rounded-corners .ck.ck-tooltip .ck-tooltip__text,
+.ck.ck-tooltip .ck-tooltip__text.ck-rounded-corners {
+  border-radius: 0;
+  border: 1px solid var(--site-borders);
+  background: var(--site-background);
+  color: var(--site-text-color);
+  font-family: Raleway, sans-serif;
+}
+
+.ck.ck-tooltip.ck-tooltip_s .ck-tooltip__text:after {
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  border-bottom-color: var(--site-borders);
 }
