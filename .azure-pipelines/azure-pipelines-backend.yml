@@ -47,7 +47,7 @@ steps:
     condition: ne(variables['CacheRestored'], 'true')
 
   # Build the project
-  - script: yarn build server --prod
+  - script: yarn build:ci server --prod
     displayName: "Build"
 
   # Publish the built /dist/packages/server folder to make it available for release
