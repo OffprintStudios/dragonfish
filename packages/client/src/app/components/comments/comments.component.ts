@@ -17,7 +17,6 @@ import { CommentFormComponent } from './comment-form/comment-form.component';
 export class CommentsComponent implements OnInit {
   @Input() itemId: string; // The ID of the blog/work/newspost
   @Input() itemKind: string; // The kind of comments thread it is, between blogs/works/newsposts
-  @Input() itemUrl: string; // The item's URL
   @Input() pageNum: number; // The requested page number
   @Input() banlist?: any; // The banlist of the thread
   @Output() emitPageChange = new EventEmitter<number>(); // Emits the current page number
@@ -130,20 +129,6 @@ export class CommentsComponent implements OnInit {
       return Roles.Supporter;
     } else {
       return Roles.User;
-    }
-  }
-
-  /**
-   * Generates a comment URL with an anchor tag
-   * 
-   * @param commentId The comment to scroll to
-   */
-  generateUrl(commentId: string) {
-    console.log(this.itemUrl);
-    if (this.itemKind === 'Blog') {
-      return `${this.itemUrl}?page=${this.pageNum}#${commentId}`;
-    } else if (this.itemKind === 'Work') {
-      return `${this.itemUrl}?page=${this.pageNum}#${commentId}`;
     }
   }
 

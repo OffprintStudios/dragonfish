@@ -27,12 +27,12 @@
                     </div>
                 </div>
                 <div class="blog-content">
-                    <ngContainer *ngIf="!blog.usesNewEditor">
+                    <ng-container *ngIf="!blog.usesNewEditor">
                         <quill-view [content]="blog.body" format="json"></quill-view>
-                    </ngContainer>
-                    <ngContainer *ngIf="blog.usesNewEditor">
+                    </ng-container>
+                    <ng-container *ngIf="blog.usesNewEditor">
                         <div [innerHtml]="blog.body | safeHtml"></div>
-                    </ngContainer>
+                    </ng-container>
                 </div>
             </div>
             <div class="blog-footer">

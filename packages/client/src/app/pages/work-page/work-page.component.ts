@@ -29,6 +29,8 @@ export class WorkPageComponent implements OnInit {
   updateCoverArt: ToppyControl;
   addToCollections: ToppyControl;
 
+  pageNum = 1; // For comments pages
+
   // The sections list binds to these, as they can be mutated individually,
   // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)
   get allSectionViewModels(): ReadonlyArray<SectionInfoViewModel> {
@@ -105,6 +107,13 @@ export class WorkPageComponent implements OnInit {
     }, () => {
       this.loading = false;
     });
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get('page') !== null) {
+        this.pageNum = +queryParams.get('page');
+      }
+    });
+    
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
@@ -116,6 +125,19 @@ export class WorkPageComponent implements OnInit {
     } else {
       this.loading = false;
     }   
+  }
+
+  /**
+   * Handles page changing
+   * 
+   * @param event The new page
+   */
+  onPageChange(event: number) {
+    if (event !== 1) {
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    } else {
+      this.router.navigate([], {relativeTo: this.route});
+    }
   }
 
   /**
