@@ -44,6 +44,7 @@
     "@nestjs/jwt": "^7.1.0",
     "@nestjs/mongoose": "^7.0.2",
     "@nestjs/platform-express": "^7.0.0",
+    "@nestjs/serve-static": "^2.1.3",
     "@nestjsplus/cookies": "^1.1.1",
     "@ng-select/ng-select": "^5.0.1",
     "@nrwl/angular": "^10.1.0",

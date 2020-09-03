@@ -41,5 +41,13 @@ steps:
       ArtifactName: 'backend-dist'
       publishLocation: 'Container'
     displayName: "Publish /dist/packages/server folder"
+
+  # Also publish the latest pm2 config
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/pm2.config.js'
+      ArtifactName: 'pm2.config.js'
+      publishLocation: 'Container'
+    displayName: 'Publish pm2 config'
     
 
