@@ -25,6 +25,22 @@ steps:
       cacheHitVar: 'CacheRestored'
     displayName: "Cache node_modules"
 
+  # Cache word_counter's output
+  - task: Cache@2
+    inputs:
+      key: 'cargo | "$(Agent.OS)" | $(Build.SourcesDirectory)/native/word_counter/Cargo.lock'
+      path: '$(Build.SourcesDirectory)/native/word_counter/target'
+      cacheHitVar: 'WordCounterCacheRestored'
+    displayName: "Cache word_counter output"
+
+  # Cache html_sanitizer's output
+  - task: Cache@2
+    inputs:
+      key: 'cargo | "$(Agent.OS)" | $(Build.SourcesDirectory)/native/html_sanitizer/Cargo.lock'
+      path: '$(Build.SourcesDirectory)/native/html_sanitizer/target'
+      cacheHitVar: 'WordCounterCacheRestored'
+    displayName: "Cache html_sanitizer output"
+
     # Install production-only packages if the cache doesn't exist, or is out of date.
   - script: yarn install --non-interactive --frozen-lockfile
     displayName: "Yarn install"
@@ -46,7 +62,7 @@ steps:
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(Build.SourcesDirectory)/pm2.config.js'
-      ArtifactName: 'pm2.config.js'
+      ArtifactName: 'pm2-config'
       publishLocation: 'Container'
     displayName: 'Publish pm2 config'
     

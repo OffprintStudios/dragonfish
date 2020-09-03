@@ -50,6 +50,6 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.SourcesDirectory)/pm2.config.js'
-    ArtifactName: 'pm2.config.js'
+    ArtifactName: 'pm2-config'
     publishLocation: 'Container'
   displayName: 'Publish pm2 config'
