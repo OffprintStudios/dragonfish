@@ -32,7 +32,7 @@ steps:
     displayName: 'Cache node_modules'
 
   # Untar the cached node_modules folder if we had a cache hit
-  - script: tar -xfv $(Build.SourcesDirectory)/tarred_node_modules/node_modules.tar.xz --directory=$(Build.SourcesDirectory)
+  - script: tar -xf $(Build.SourcesDirectory)/tarred_node_modules/node_modules.tar.xz --directory=$(Build.SourcesDirectory)
     condition: eq(variables['NodeCacheRestored'], 'true')
     displayName: 'Untar node_modules.xz'
 
