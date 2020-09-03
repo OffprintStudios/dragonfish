@@ -70,11 +70,5 @@ steps:
       ArtifactName: 'pm2-config'
       publishLocation: 'Container'
     displayName: 'Publish pm2 config'
-
-  - script: ls -la $(Build.SourcesDirectory)/native/word_counter
-    displayName: "Debug show word counter dirs"
-
-  - script: ls -la $(Build.SourcesDirectory)/native/html_sanitizer
-    displayName: "Debug show html_sanitizer dirs"
     
 
