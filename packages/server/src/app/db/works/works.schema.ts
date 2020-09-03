@@ -39,7 +39,7 @@ export const WorksSchema = new Schema({
         match: {'audit.isDeleted': false},
     }}],
     audit: {
-        threadId: {type: String, default: generate()},
+        hasComments: {type: Boolean, default: true},
         published: {type: String, enum: Object.keys(models.ApprovalStatus), default: 'NotSubmitted'},
         publishedOn: {type: Date, default: null},
         isDeleted: {type: Boolean, default: false}

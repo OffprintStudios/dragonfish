@@ -21,7 +21,7 @@ export interface Work {
     };
     readonly sections?: SectionInfo[];
     readonly audit: {
-        readonly threadId: string;
+        readonly hasComments: boolean;
         readonly published: ApprovalStatus;
         readonly publishedOn: Date;
     };
