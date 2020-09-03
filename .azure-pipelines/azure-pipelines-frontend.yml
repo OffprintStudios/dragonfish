@@ -3,10 +3,10 @@ trigger:
     include:
       - master
   paths:
-    exclude: 
+    exclude:
       - /
       - /.azure-pipelines/azure-pipelines-backend.yml
-    include: 
+    include:
       - /packages/client/*
       - /packages/client-e2e/*
       - /packages/models/*
@@ -16,40 +16,40 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '14.6.0'
-  displayName: 'Install Node.js 14.6.0'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '14.6.0'
+    displayName: 'Install Node.js 14.6.0'
 
-- task: Cache@2
-  inputs:
-  # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
-    key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
-    path: '$(Build.SourcesDirectory)/node_modules'
-    cacheHitVar: 'CacheRestored'
-  displayName: "Cache node_modules"
+  - task: Cache@2
+    inputs:
+      # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
+      key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
+      path: '$(Build.SourcesDirectory)/node_modules'
+      cacheHitVar: 'CacheRestored'
+    displayName: 'Cache node_modules'
 
-# Install production-only packages if the cache doesn't exist, or is out of date.
-- script: yarn install --non-interactive --frozen-lockfile
-  displayName: "Yarn install"
-  condition: ne(variables['CacheRestored'], 'true')
+  # Install production-only packages if the cache doesn't exist, or is out of date.
+  - script: yarn install --non-interactive --frozen-lockfile
+    displayName: 'Yarn install'
+    condition: ne(variables['CacheRestored'], 'true')
 
-# Build the project
-- script: yarn build:ci:client
-  displayName: "Build"
+  # Build the project
+  - script: yarn build:ci:client
+    displayName: 'Build'
 
-# Publish the built /dist/packages/client folder to make it available for release  
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/dist/packages/client'
-    ArtifactName: 'frontend-dist'
-    publishLocation: 'Container'
-  displayName: 'Publish /dist/packages/client'
+  # Publish the built /dist/packages/client folder to make it available for release
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/dist/packages/client'
+      ArtifactName: 'frontend-dist'
+      publishLocation: 'Container'
+    displayName: 'Publish /dist/packages/client'
 
-# Also publish the latest pm2 config
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/pm2.config.js'
-    ArtifactName: 'pm2-config'
-    publishLocation: 'Container'
-  displayName: 'Publish pm2 config'
+  # Also publish the latest pm2 config
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/pm2.config.js'
+      ArtifactName: 'pm2-config'
+      publishLocation: 'Container'
+    displayName: 'Publish pm2 config'
