@@ -26,7 +26,7 @@ steps:
     inputs:
       # Cache the tarred node_modules.xz file.
       # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
-      key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
+      key: 'v2 | yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
       path: '$(Build.SourcesDirectory)/node_modules.tar.xz'
       cacheHitVar: 'NodeCacheRestored'
     displayName: 'Cache node_modules'
