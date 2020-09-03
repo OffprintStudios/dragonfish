@@ -24,11 +24,17 @@ steps:
 
   - task: Cache@2
     inputs:
+      # Cache the tarred node_modules.xz file.
       # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
       key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
-      path: '$(Build.SourcesDirectory)/node_modules'
-      cacheHitVar: 'CacheRestored'
+      path: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      cacheHitVar: 'NodeCacheRestored'
     displayName: 'Cache node_modules'
+
+  # Untar the cached node_modules folder if we had a cache hit
+  - script: tar -xfv $(Build.SourcesDirectory)/node_modules.tar.xz --directory=$(Build.SourcesDirectory)
+    condition: eq(variables['NodeCacheRestored'], 'true')
+    displayName: 'Untar node_modules.xz'
 
   # Cache word_counter's output
   - task: Cache@2
@@ -46,10 +52,10 @@ steps:
       cacheHitVar: 'WordCounterCacheRestored'
     displayName: 'Cache html_sanitizer output'
 
-    # Install production-only packages if the cache doesn't exist, or is out of date.
+  # Install production-only packages if the cache doesn't exist, or is out of date.
   - script: yarn install --non-interactive --frozen-lockfile
+    condition: ne(variables['NodeCacheRestored'], 'true')
     displayName: 'Yarn install'
-    condition: ne(variables['CacheRestored'], 'true')
 
   # Build the project
   - script: yarn build:ci:server
@@ -64,7 +70,9 @@ steps:
     displayName: 'Publish /dist/packages/server folder'
 
   # Collect node_modules into an archive, or publishing takes forEVER
+  # (but only if we didn't restore the .tar.xz file from cache already)
   - task: ArchiveFiles@2
+    condition: ne(variables['NodeCacheRestored'], 'true')
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
       archiveType: tar
