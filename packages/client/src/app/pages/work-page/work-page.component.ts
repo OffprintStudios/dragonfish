@@ -110,11 +110,10 @@ export class WorkPageComponent implements OnInit {
       this.loading = false;
     });
 
-    this.route.queryParamMap.subscribe(queryParams => {
-      if (queryParams.get('page') !== null) {
-        this.pageNum = +queryParams.get('page');
-      }
-    });
+    const queryParams = this.route.snapshot.queryParamMap;    
+    if (queryParams.get('page') !== null) {
+      this.pageNum = +queryParams.get('page');
+    }
     
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {

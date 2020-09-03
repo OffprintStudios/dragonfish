@@ -54,23 +54,20 @@ export class PortBlogPageComponent implements OnInit {
    */
   private fetchData() {
     this.loading = true;
-    this.route.parent.paramMap.subscribe(parentParams => {
-      this.portUserId = parentParams.get('id');
-      this.portUserName = parentParams.get('username');
-      this.route.paramMap.subscribe(params => {
-        this.blogId = params.get('blogId');
-        this.portService.getBlog(this.blogId).subscribe(blog => {
-          this.blogData = blog;
-          this.loading = false;
-        });
-      });
+    const parentParams = this.route.parent.snapshot.paramMap;    
+    this.portUserId = parentParams.get('id');
+    this.portUserName = parentParams.get('username');
+    const params = this.route.snapshot.paramMap;
+    this.blogId = params.get('blogId');
+    this.portService.getBlog(this.blogId).subscribe(blog => {
+      this.blogData = blog;
+      this.loading = false;
     });
 
-    this.route.queryParamMap.subscribe(queryParams => {
-      if (queryParams.get('page') !== null) {
-        this.pageNum = +queryParams.get('page');
-      }
-    });
+    const queryParams = this.route.snapshot.queryParamMap;    
+    if (queryParams.get('page') !== null) {
+      this.pageNum = +queryParams.get('page');
+    }
   }
 
   /**
