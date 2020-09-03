@@ -69,7 +69,7 @@ steps:
       rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
       archiveType: tar
       tarCompression: xz
-    archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'
 
   # Publish the built /node_modules folder to make it available for release
   - task: PublishBuildArtifacts@1
