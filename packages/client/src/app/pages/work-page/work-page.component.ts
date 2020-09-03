@@ -12,6 +12,7 @@ import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
 import { calculateApprovalRating } from '../../util/functions';
 import { History, RatingOption } from '@pulp-fiction/models/history';
 import { Work, PublishSection, SectionInfo, SetApprovalRating } from '@pulp-fiction/models/works';
+import { ItemKind } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'app-work-page',
@@ -30,6 +31,7 @@ export class WorkPageComponent implements OnInit {
   addToCollections: ToppyControl;
 
   pageNum = 1; // For comments pages
+  itemKind = ItemKind.Work;
 
   // The sections list binds to these, as they can be mutated individually,
   // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)

@@ -199,7 +199,7 @@
 
     <ng-container *ngIf="workData.audit.published === 'Approved'">
         <comments [itemId]="workData._id"
-                  [itemKind]="'Work'"
+                  [itemKind]="itemKind"
                   [pageNum]="pageNum"
                   (emitPageChange)="onPageChange($event)"></comments>
     </ng-container>
