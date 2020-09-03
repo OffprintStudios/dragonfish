@@ -3,7 +3,7 @@ import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment, UserInfoComments } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
@@ -16,8 +16,7 @@ import { CommentFormComponent } from './comment-form/comment-form.component';
 })
 export class CommentsComponent implements OnInit {
   @Input() itemId: string; // The ID of the blog/work/newspost
-  @Input() itemKind: string; // The kind of comments thread it is, between blogs/works/newsposts
-  @Input() itemUrl: string; // The item's URL
+  @Input() itemKind: ItemKind; // The kind of comments thread it is, between blogs/works/newsposts
   @Input() pageNum: number; // The requested page number
   @Input() banlist?: any; // The banlist of the thread
   @Output() emitPageChange = new EventEmitter<number>(); // Emits the current page number
@@ -59,14 +58,14 @@ export class CommentsComponent implements OnInit {
    */
   fetchData(pageNum: number) {
     this.loading = true;
-    if (this.itemKind === 'Blog') {
+    if (this.itemKind === ItemKind.Blog) {
       this.commentsService.getBlogComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
         this.pageNum = pageNum;
         this.emitPageChange.emit(pageNum);
         this.loading = false;
       });
-    } else if (this.itemKind === 'Work') {
+    } else if (this.itemKind === ItemKind.Work) {
       this.commentsService.getWorkComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
         this.pageNum = pageNum;
@@ -134,26 +133,12 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
-   * Generates a comment URL with an anchor tag
-   * 
-   * @param commentId The comment to scroll to
-   */
-  generateUrl(commentId: string) {
-    console.log(this.itemUrl);
-    if (this.itemKind === 'Blog') {
-      return `${this.itemUrl}?page=${this.pageNum}#${commentId}`;
-    } else if (this.itemKind === 'Work') {
-      return `${this.itemUrl}?page=${this.pageNum}#${commentId}`;
-    }
-  }
-
-  /**
    * Creates a new comment.
    * 
    * @param itemId The current item
    * @param itemKind The item's kind
    */
-  newComment(itemId: string, itemKind: string) {
+  newComment(itemId: string, itemKind: ItemKind) {
     this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind, editMode: false});
     this.commentForm.open();
   }
@@ -166,7 +151,7 @@ export class CommentsComponent implements OnInit {
    * @param commentId The comment's ID
    * @param commInfo The comment's info
    */
-  editComment(itemId: string, itemKind: string, commentId: string, commInfo: string) {
+  editComment(itemId: string, itemKind: ItemKind, commentId: string, commInfo: string) {
     this.commentForm.updateContent(CommentFormComponent, {
       itemId: itemId,
       itemKind: itemKind,
@@ -186,7 +171,7 @@ export class CommentsComponent implements OnInit {
    * @param commentId The comment's ID
    * @param commInfo The comment's info
    */
-  quoteComment(itemId: string, itemKind: string, commUser: UserInfoComments, commUrl: string, commInfo: string) {
+  quoteComment(itemId: string, itemKind: ItemKind, commUser: UserInfoComments, commUrl: string, commInfo: string) {
     this.commentForm.updateContent(CommentFormComponent, {
       itemId: itemId,
       itemKind: itemKind,

@@ -7,6 +7,7 @@ import { BlogsService, PortfolioService } from '../../../services/content';
 import { EditBlogComponent } from '../../../components/modals/blogs';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
+import { ItemKind } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'app-port-blog-page',
@@ -21,8 +22,8 @@ export class PortBlogPageComponent implements OnInit {
   blogData: Blog; // The blog we're displaying
   editBlog: ToppyControl; // The blog editing form modal
   loading = false; // Loading check for fetching data
-  blogUrl = '';
   pageNum = 1; // Comments page
+  itemKind = ItemKind.Blog;
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private portService: PortfolioService,
       private blogsService: BlogsService, private toppy: Toppy, private router: Router) {
@@ -58,7 +59,6 @@ export class PortBlogPageComponent implements OnInit {
       this.portUserName = parentParams.get('username');
       this.route.paramMap.subscribe(params => {
         this.blogId = params.get('blogId');
-        this.blogUrl = `/portfolio/${this.portUserId}/${this.portUserName}/blog/${this.blogId}`;
         this.portService.getBlog(this.blogId).subscribe(blog => {
           this.blogData = blog;
           this.loading = false;

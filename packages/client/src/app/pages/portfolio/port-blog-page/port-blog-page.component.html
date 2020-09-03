@@ -25,19 +25,18 @@
        </div>
     </div>
     <div class="blog-body">
-        <ngContainer *ngIf="!blogData.usesNewEditor">
+        <ng-container *ngIf="!blogData.usesNewEditor">
             <quill-view [content]="blogData.body" format="json"></quill-view>
-        </ngContainer>
-        <ngContainer *ngIf="blogData.usesNewEditor">
+        </ng-container>
+        <ng-container *ngIf="blogData.usesNewEditor">
             <div [innerHtml]="blogData.body | safeHtml"></div>
-        </ngContainer>
+        </ng-container>
     </div>
 </div>
 
 <ng-container *ngIf="!loading">
     <comments [itemId]="blogData._id"
-              [itemKind]="'Blog'" 
-              [itemUrl]="blogUrl"
+              [itemKind]="itemKind"
               [pageNum]="pageNum" 
               (emitPageChange)="onPageChange($event)"></comments>
 </ng-container>

@@ -12,6 +12,7 @@ import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
 import { calculateApprovalRating } from '../../util/functions';
 import { History, RatingOption } from '@pulp-fiction/models/history';
 import { Work, PublishSection, SectionInfo, SetApprovalRating } from '@pulp-fiction/models/works';
+import { ItemKind } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'app-work-page',
@@ -28,6 +29,9 @@ export class WorkPageComponent implements OnInit {
   editWork: ToppyControl;
   updateCoverArt: ToppyControl;
   addToCollections: ToppyControl;
+
+  pageNum = 1; // For comments pages
+  itemKind = ItemKind.Work;
 
   // The sections list binds to these, as they can be mutated individually,
   // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)
@@ -105,6 +109,13 @@ export class WorkPageComponent implements OnInit {
     }, () => {
       this.loading = false;
     });
+
+    this.route.queryParamMap.subscribe(queryParams => {
+      if (queryParams.get('page') !== null) {
+        this.pageNum = +queryParams.get('page');
+      }
+    });
+    
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
@@ -116,6 +127,19 @@ export class WorkPageComponent implements OnInit {
     } else {
       this.loading = false;
     }   
+  }
+
+  /**
+   * Handles page changing
+   * 
+   * @param event The new page
+   */
+  onPageChange(event: number) {
+    if (event !== 1) {
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    } else {
+      this.router.navigate([], {relativeTo: this.route});
+    }
   }
 
   /**

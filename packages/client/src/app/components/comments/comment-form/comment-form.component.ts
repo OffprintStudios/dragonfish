@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { CommentsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
-import { CreateComment, EditComment, UserInfoComments } from '@pulp-fiction/models/comments';
+import { CreateComment, EditComment, UserInfoComments, ItemKind } from '@pulp-fiction/models/comments';
 
 @Component({
   selector: 'pulp-fiction-comment-form',
@@ -14,7 +14,7 @@ export class CommentFormComponent implements OnInit {
   close: any;
 
   itemId: string;
-  itemKind: string;
+  itemKind: ItemKind;
 
   editMode: boolean;
   editCommInfo: string;
@@ -59,11 +59,11 @@ export class CommentFormComponent implements OnInit {
         body: this.fields.body.value
       };
 
-      if (this.itemKind === 'Blog') {
+      if (this.itemKind === ItemKind.Blog) {
         this.commentsService.addBlogComment(this.itemId, commInfo).subscribe(() => {
           this.close();
         });
-      } else if (this.itemKind === 'Work') {
+      } else if (this.itemKind === ItemKind.Work) {
         this.commentsService.addWorkComment(this.itemId, commInfo).subscribe(() => {
           this.close();
         });
