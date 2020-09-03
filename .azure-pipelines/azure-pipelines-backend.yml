@@ -63,6 +63,22 @@ steps:
       publishLocation: 'Container'
     displayName: 'Publish /dist/packages/server folder'
 
+  # Collect node_modules into an archive, or publishing takes forEVER
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
+      archiveType: tar
+      tarCompression: xz
+    archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+
+  # Publish the built /node_modules folder to make it available for release
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      ArtifactName: 'backend-node_modules'
+      publishLocation: 'Container'
+    displayName: 'Publish tarred /node_modules folder'
+
   # Also publish the latest pm2 config
   - task: PublishBuildArtifacts@1
     inputs:
