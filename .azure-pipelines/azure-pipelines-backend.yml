@@ -24,6 +24,11 @@ steps:
       path: '$(Build.SourcesDirectory)/node_modules'
       cacheHitVar: 'CacheRestored'
     displayName: "Cache node_modules"
+  
+  # This is included in package.json, but only under devDependencies, so this (production!) build won't see it.
+  # As a workaround, install it globally
+  - script: yarn global add wasm-pack 
+    displayName: "Install wasm-pack"
 
   # Cache word_counter's output
   - task: Cache@2
