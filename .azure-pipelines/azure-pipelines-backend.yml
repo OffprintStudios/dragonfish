@@ -27,12 +27,12 @@ steps:
       # Cache the tarred node_modules.xz file.
       # Note that the cache key is the hash of of yarn.lock. If the lockfile changes, the cache gets invalidated.
       key: 'v2 | yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)/yarn.lock'
-      path: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      path: '$(Build.SourcesDirectory)/tarred_node_modules'
       cacheHitVar: 'NodeCacheRestored'
     displayName: 'Cache node_modules'
 
   # Untar the cached node_modules folder if we had a cache hit
-  - script: tar -xfv $(Build.SourcesDirectory)/node_modules.tar.xz --directory=$(Build.SourcesDirectory)
+  - script: tar -xfv $(Build.SourcesDirectory)/tarred_node_modules/node_modules.tar.xz --directory=$(Build.SourcesDirectory)
     condition: eq(variables['NodeCacheRestored'], 'true')
     displayName: 'Untar node_modules.xz'
 
@@ -71,18 +71,19 @@ steps:
 
   # Collect node_modules into an archive, or publishing takes forEVER
   # (but only if we didn't restore the .tar.xz file from cache already)
+  # Put it into the tarred_node_modules folder so the Cache task has a folder to work with
   - task: ArchiveFiles@2
     condition: ne(variables['NodeCacheRestored'], 'true')
     inputs:
       rootFolderOrFile: '$(Build.SourcesDirectory)/node_modules'
       archiveType: tar
       tarCompression: xz
-      archiveFile: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      archiveFile: '$(Build.SourcesDirectory)/tarred_node_modules/node_modules.tar.xz'  
 
   # Publish the built /node_modules folder to make it available for release
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(Build.SourcesDirectory)/node_modules.tar.xz'
+      PathtoPublish: '$(Build.SourcesDirectory)/tarred_node_modules/node_modules.tar.xz'
       ArtifactName: 'backend-node_modules'
       publishLocation: 'Container'
     displayName: 'Publish tarred /node_modules folder'
