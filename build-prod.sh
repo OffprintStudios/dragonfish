@@ -8,6 +8,7 @@ echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 yarn global add @angular/cli
 yarn global add @nestjs/cli
 yarn install
+yarn add @nrwl/node
 printf "Done!\n"
 
 # Building everything
