@@ -8,16 +8,16 @@ module.exports = (config, context) => {
         plugins: [
             ...config.plugins,
             new WasmPackPlugin({
-                crateDirectory: path.resolve(__dirname, "..", "..", "native", "word_counter", "src"),                
-                extraArgs: "--verbose --target bundler",
+                crateDirectory: path.resolve(__dirname, "..", "..", "native", "word_counter"),                
+                extraArgs: "--target bundler",
                 outDir: path.resolve(__dirname, "..", "..", "packages", "word_counter", "src", "lib"),
                 outName: "word_counter",
                 // Release should probably be in a separate webpack.config.prod.js or something. But for now...
                 forceMode: "release"
             }),
             new WasmPackPlugin({
-                crateDirectory: path.resolve(__dirname, "..", "..", "native", "html_sanitizer", "src"),                
-                extraArgs: "--verbose --target bundler",
+                crateDirectory: path.resolve(__dirname, "..", "..", "native", "html_sanitizer"),                
+                extraArgs: "--target bundler",
                 outDir: path.resolve(__dirname, "..", "..", "packages", "html_sanitizer", "src", "lib"),
                 outName: "html_sanitizer",
                 // Release should probably be in a separate webpack.config.prod.js or something. But for now...
