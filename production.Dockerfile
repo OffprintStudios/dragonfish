@@ -24,7 +24,7 @@ RUN yarn global add @angular/cli@10.0.4 \
 RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
-ENV PATH "$PATH:/opt/pulpd/node_modules/.bin:$HOME/.cargo/env"
+ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
 ENV RUST_BACKTRACE "1"
 
 WORKDIR /opt/pulpd
