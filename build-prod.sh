@@ -2,7 +2,7 @@
 
 # Installing dependencies for workspace
 printf "Acquiring all dependences...\n"
-echo 'source $HOME/.cargo/env'
+source $HOME/.cargo/env
 yarn install
 printf "Done!\n"
 
