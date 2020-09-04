@@ -14,7 +14,8 @@ printf "Done!\n"
 
 # Building everything
 printf "Building the server and client...\n"
-nx build server && nx build client --prod
+nx build server
+nx build client --prod
 printf "Done!\n"
 
 # Copying .env file to server
