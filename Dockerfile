@@ -16,13 +16,8 @@ RUN apt-get update && apt-get install -y \
     yarn=1.22.1-1 \
     build-essential
 
-RUN yarn global add @angular/cli@10.0.4 \
-    @nestjs/cli@7.4.1 \    
-    nx    
-
-# Download rust and add it to the PATH
-RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
-RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
+RUN ./build-prod.sh
+RUN node ./dist/packages/server/main.js
 
 ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
 
