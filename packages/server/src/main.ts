@@ -11,7 +11,7 @@ import { AppModule } from './app/app.module';
  */
 const results: DotenvConfigOutput = config();
 if (results.error) {
-  throw new Error(`Couldn't find the .env file!`);
+  console.log(`You don't have a .env file set up! Are you sure the environment variables are configured?`);
 }
 
 async function bootstrap() {
