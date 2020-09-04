@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Installing dependencies for workspace
+rm -rf node_modules
 printf "Acquiring all dependences...\n"
 curl https://sh.rustup.rs -sSf |  bash -s -- -y
 echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
