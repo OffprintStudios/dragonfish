@@ -31,3 +31,9 @@ COPY . .
 RUN ls
 
 RUN ./build-prod.sh
+
+EXPOSE 3333
+EXPOSE 3000
+EXPOSE 27017
+
+ENTRYPOINT ["node ./dist/packages/server/main.js"]

@@ -18,7 +18,7 @@ printf "Done!\n"
 
 # Copying client to server and moving into it
 printf "Copying client files to server folder for static file serving...\n"
-rsync -r ./dist/packages/client/* ./dist/packages/server/static
+cp -r ./dist/packages/client/* ./dist/packages/server/static
 printf "Done!\n\n"
 
 # Exit message
