@@ -26,6 +26,7 @@ RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
 ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
 
+WORKDIR /opt/pulpd
 COPY . .
 RUN ls
 
