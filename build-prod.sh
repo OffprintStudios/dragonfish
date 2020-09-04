@@ -9,7 +9,7 @@ printf "\n"
 
 # Building everything
 printf "Building the server and client...\n"
-nx build server --prod && nx build client --prod
+yarn build server:prod && yarn build client:prod
 printf "\n"
 
 # Copying .env file to server
