@@ -2,6 +2,8 @@
 
 # Installing dependencies for workspace
 printf "Acquiring all dependences...\n"
+curl https://sh.rustup.rs -sSf |  bash -s -- -y
+echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 yarn install
 printf "Done!\n"
 
