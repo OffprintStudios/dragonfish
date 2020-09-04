@@ -26,8 +26,8 @@ RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
 ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
 
-RUN git clone https://github.com/OffprintStudios/pulp-fiction.git
-RUN cd pulp-fiction
+COPY . .
+RUN ls
 
 RUN ./build-prod.sh
 RUN node ./dist/packages/server/main.js
