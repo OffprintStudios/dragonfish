@@ -20,7 +20,6 @@ printf "\n"
 # Copying client to server and moving into it
 printf "Copying client files to server folder for static file serving...\n"
 rsync -r ./dist/packages/client/* ./dist/packages/server/static
-cd ./dist/packages/server
 printf "\n"
 
 # Exit message
