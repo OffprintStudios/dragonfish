@@ -1,6 +1,7 @@
 const path = require("path");
 const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
+console.log(`Exporting this webpack config, for word counter: ${path.resolve(__dirname, '..', '..', 'native', 'word_counter', 'src')}`);
 module.exports = (config, context) => {
     return {
         ...config,        
