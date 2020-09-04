@@ -1,0 +1,16 @@
+{
+  "name": "html_sanitizer",
+  "collaborators": [
+    "Offprint Development Team"
+  ],
+  "version": "0.1.0",
+  "license": "MIT",
+  "files": [
+    "html_sanitizer_bg.wasm",
+    "html_sanitizer.js",
+    "html_sanitizer.d.ts"
+  ],
+  "module": "html_sanitizer.js",
+  "types": "html_sanitizer.d.ts",
+  "sideEffects": false
+}
