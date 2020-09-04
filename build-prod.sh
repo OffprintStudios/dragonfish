@@ -2,14 +2,7 @@
 
 # Installing dependencies for workspace
 printf "Acquiring all dependences...\n"
-rm -rf node_modules
-curl https://sh.rustup.rs -sSf |  bash -s -- -y
-echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
-yarn global add @angular/cli@10.0.4
-yarn global add @nestjs/cli@7.4.1
 yarn install
-yarn add @nrwl/node
-yarn add inquirer
 printf "Done!\n"
 
 # Building everything
