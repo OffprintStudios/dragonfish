@@ -32,5 +32,6 @@ EXPOSE 3000
 EXPOSE 9229
 
 WORKDIR /opt/pulpd
+COPY . /opt/pulpd
 RUN ./build-prod.sh
 RUN node ./dist/packages/server/main.js
