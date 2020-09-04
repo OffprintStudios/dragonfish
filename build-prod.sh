@@ -6,7 +6,6 @@ rm -rf node_modules
 curl https://sh.rustup.rs -sSf |  bash -s -- -y
 echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 yarn install
-yarn add @nrwl/node
 printf "Done!\n"
 
 # Building everything
