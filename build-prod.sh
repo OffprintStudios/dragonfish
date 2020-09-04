@@ -23,4 +23,5 @@ rsync -r ./dist/packages/client/* ./dist/packages/server/static
 printf "\n"
 
 # Exit message
+printf "Here we go...\n"
 printf "Ready for blastoff!\n"
