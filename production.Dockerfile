@@ -31,4 +31,3 @@ COPY . .
 RUN ls
 
 RUN ./build-prod.sh
-RUN node ./dist/packages/server/main.js
