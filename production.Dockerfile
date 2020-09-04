@@ -31,7 +31,12 @@ WORKDIR /opt/pulpd
 COPY . .
 RUN ls
 
-RUN ./build-prod.sh
+RUN yarn install
+RUN nx build server
+RUN nx build client --prod
+RUN cp .env ./dist/packages/server/.env
+RUN mkdir ./dist/packages/server/static
+RUN cp -r ./dist/packages/client/* ./dist/packages/server/static/
 
 EXPOSE 3333
 EXPOSE 3000
