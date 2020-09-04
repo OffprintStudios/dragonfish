@@ -9,6 +9,7 @@ yarn global add @angular/cli
 yarn global add @nestjs/cli
 yarn install
 yarn add @nrwl/node
+yarn add inquirer
 printf "Done!\n"
 
 # Building everything
