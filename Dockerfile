@@ -32,3 +32,4 @@ EXPOSE 3000
 EXPOSE 9229
 
 WORKDIR /opt/pulpd
+COPY . .
