@@ -30,3 +30,5 @@ export class MessageDocument extends Document implements Message {
     @Prop()
     readonly updatedAt: Date;
 }
+
+export const MessageSchema = SchemaFactory.createForClass(MessageDocument);
