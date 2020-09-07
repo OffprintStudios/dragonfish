@@ -9,6 +9,9 @@ export class MessageDocument extends Document implements Message {
     @Prop({default: uuidV4()})
     readonly _id: string;
 
+    @Prop({type: String, ref: 'MessageThread', required: true})
+    readonly threadId: string;
+
     @Prop({type: String, ref: 'User', autopopulate: {
         select: '_id username profile.avatar audit.roles'
     }})
