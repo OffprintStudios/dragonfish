@@ -53,6 +53,7 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
 
 import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { SiteSidenavComponent } from './components/site-sidenav/site-sidenav.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -97,7 +98,7 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
-    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe
+    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

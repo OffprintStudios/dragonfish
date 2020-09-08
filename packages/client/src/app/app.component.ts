@@ -34,12 +34,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
-    rememberMe: new FormControl(false),
-  });
-
   constructor(private router: Router, private authService: AuthService,
     private selectConfig: NgSelectConfig, private statsService: StatsService,
     private nagBarService: NagBarService, private alertsService: AlertsService) {
@@ -127,61 +121,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (!user.agreedToPolicies) {
       this.nagBarService.queueContent(NewPolicyNagComponent, null);
     }     
-  }
-
-  /**
-   * In order to access the contributor page
-   */
-  checkUserRolesForContribMenu() {
-    if (this.currentUser) {
-      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
-      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
-
-      if (hasRoles.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Login form field getter.
-   */
-  get loginFields() { return this.loginForm.controls; }
-
-  /**
-   * Submits the login form to the backend.
-   */
-  onLoginSubmit() {
-    if (this.loginForm.invalid) {
-      return;
-    } else {
-      this.loadingLogin = true;
-      const credentials: LoginUser = {
-        email: this.loginFields.email.value, 
-        password: this.loginFields.password.value, 
-        rememberMe: this.loginFields.rememberMe.value
-      };
-      this.authService.login(credentials).pipe(first()).subscribe(() => {
-        this.loadingLogin = false;
-        this.router.navigate(['/home/latest']);
-      }, err => {
-        this.loadingLogin = false;
-        this.alertsService.error(err.error.message);
-      })
-    }
-  }
-
-  /**
-   * Calls the logout method from AuthService.
-   */
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/home/latest']).then(() => {
-      location.reload();
-    });
   }
 }
