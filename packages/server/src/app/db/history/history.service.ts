@@ -48,6 +48,16 @@ export class HistoryService {
     }
 
     /**
+     * Fetches seven history documents belonging to one user for their sidenav.
+     * 
+     * @param userId The owner of these documents
+     */
+    async fetchUserSidenavHistory(userId: string): Promise<documents.HistoryDocument[]> {
+        return await this.histModel.find({'owner': userId, 'visible': true})
+            .limit(7);
+    }
+
+    /**
      * Fetches one history document associated with both a user and a work.
      * 
      * @param userId The owner of the history document
