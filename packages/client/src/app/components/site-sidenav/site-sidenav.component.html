@@ -17,10 +17,18 @@
             for offprint convos
         </mat-tab>
         <mat-tab>
-          <ng-template mat-tab-label>
-            <i-feather name="bell"></i-feather>
-          </ng-template>
-          for offprint notifications
+            <ng-template mat-tab-label>
+                <i-feather name="eye"></i-feather>
+            </ng-template>
+            <div style="margin-top: 1.25rem; padding-left: 1.5rem; padding-right: 1.5rem; text-align: center;">
+                <h4 style="color: whitesmoke;">Pardon the dust!</h4>
+                <p style="color: whitesmoke; font-style: italic; margin-bottom: 0;">
+                    Looks like you came here a bit too early.
+                </p>
+                <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
+                    Keep an eye on the patch notes to find out when<br>this feature will be available!
+                </p>
+            </div>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
@@ -28,13 +36,19 @@
           </ng-template>
           here's some history content
         </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="bell"></i-feather>
+            </ng-template>
+            for offprint notifications
+          </mat-tab>
       </mat-tab-group>
     </div>
     <div class="user-footer">
         <p>Offprint Alpha, ver. 0.3.0</p>
-        <button [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather></button>
-        <button [routerLink]="['/home/settings']" class="mid"><i-feather name="settings"></i-feather></button>
-        <button (click)="logout()"><i-feather name="log-out"></i-feather></button>
+        <button matTooltip="Portfolio" matTooltipClass="offprint-tooltip" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather></button>
+        <button matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']" class="mid"><i-feather name="settings"></i-feather></button>
+        <button matTooltip="Log out" matTooltipClass="offprint-tooltip" (click)="logout()"><i-feather name="log-out"></i-feather></button>
     </div>
   </div>
   <ng-template #login>

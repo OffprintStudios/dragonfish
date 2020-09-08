@@ -36,41 +36,6 @@ body {
     color: var(--site-text-color);
 }
 
-mat-sidenav-container {
-    background: var(--site-background);
-}
-
-.mat-drawer-container {
-    background-color: var(--site-background);
-    color: var(--site-text-color);
-}
-
-.mat-drawer {
-    background-color: var(--site-accent);
-    color: whitesmoke;
-    border-right: 1px solid var(--site-borders);
-    border-left: 1px solid var(--site-borders);
-}
-
-div.user-buttons {
-    .mat-tab-label {
-        opacity: 1 !important;
-        min-width: 135px !important;
-    }
-    
-    .mat-tab-label, .mat-tab-link {
-        color: whitesmoke;
-    }
-
-    .mat-tab-nav-bar, .mat-tab-header {
-        border-bottom: none;
-    }
-
-    .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-        background-color: var(--site-accent-hover);
-    }
-}
-
 div.main-stage {
     max-width: var(--site-max-width);
     margin-left: auto;
@@ -684,5 +649,50 @@ pagination-controls {
                 color: whitesmoke;
             }
         }
+    }
+}
+
+/* Material styles */
+mat-sidenav-container {
+    background: var(--site-background);
+}
+
+.mat-drawer-container {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+.mat-drawer {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+    border-right: 1px solid var(--site-borders);
+    border-left: 1px solid var(--site-borders);
+}
+
+.offprint-tooltip {
+    font-family: Raleway, sans-serif !important;
+    border: 1px solid var(--site-borders) !important;
+    background: var(--site-background) !important;
+    color: var(--site-text-color) !important;
+    border-radius: 0 !important;
+    box-shadow: var(--site-dropshadow);
+}
+
+div.user-buttons {
+    .mat-tab-label {
+        opacity: 1 !important;
+        min-width: 135px !important;
+    }
+    
+    .mat-tab-label, .mat-tab-link {
+        color: whitesmoke;
+    }
+
+    .mat-tab-nav-bar, .mat-tab-header {
+        border-bottom: none;
+    }
+
+    .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+        background-color: var(--site-accent-hover);
     }
 }
