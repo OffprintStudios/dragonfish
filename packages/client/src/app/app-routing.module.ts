@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, WorksComponent,
-    BlogsComponent, InboxComponent, SettingsComponent, HistoryComponent, AlertsComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, WorksComponent,
+    BlogsComponent, InboxComponent, SettingsComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
   
   import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
     PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
@@ -28,9 +28,9 @@ const routes: Routes = [
     {path: 'home', component: HomeComponent, children: [
       {path: '', children: [
         {path: 'latest', component: LatestComponent},
-        {path: 'watching', canActivate: [AuthGuard], component: WatchingComponent},
+        {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
         {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent},
-        {path: 'history', canActivate: [AuthGuard], component: HistoryComponent},
+        {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
         {path: 'works', canActivate: [AuthGuard], component: WorksComponent},
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent},
         {path: 'inbox', canActivate: [AuthGuard], component: InboxComponent},

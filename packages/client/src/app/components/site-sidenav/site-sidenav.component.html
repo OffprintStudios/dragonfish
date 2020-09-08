@@ -14,41 +14,25 @@
             <ng-template mat-tab-label>
               <i-feather name="message-circle"></i-feather>
             </ng-template>
-            for offprint convos
+            <sidenav-conversations></sidenav-conversations>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
                 <i-feather name="eye"></i-feather>
             </ng-template>
-            <div style="margin-top: 1.25rem; text-align: center;">
-                <h4 style="color: whitesmoke;">Pardon the dust!</h4>
-                <p style="color: whitesmoke; font-style: italic;">
-                    Looks like you came here a bit too early.
-                </p>
-                <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
-                    Keep an eye on the patch notes to find out when<br>this feature will be available!
-                </p>
-            </div>
+            <sidenav-watching></sidenav-watching>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
             <i-feather name="layers"></i-feather>
           </ng-template>
-          here's some history content
+          <sidenav-history></sidenav-history>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
               <i-feather name="bell"></i-feather>
             </ng-template>
-            <div style="margin-top: 1.25rem; text-align: center;">
-                <h4 style="color: whitesmoke;">Pardon the dust!</h4>
-                <p style="color: whitesmoke; font-style: italic;">
-                    Looks like you came here a bit too early.
-                </p>
-                <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
-                    Keep an eye on the patch notes to find out when<br>this feature will be available!
-                </p>
-            </div>
+            <sidenav-notifications></sidenav-notifications>
           </mat-tab>
       </mat-tab-group>
     </div>

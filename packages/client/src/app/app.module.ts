@@ -21,7 +21,7 @@ import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
+import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
   BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
@@ -53,7 +53,8 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
 
 import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { SiteSidenavComponent } from './components/site-sidenav/site-sidenav.component';
+import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
+  HistoryComponent } from './components/site-sidenav';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -89,7 +90,7 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
+    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, ApprovalQueueComponent, 
@@ -98,7 +99,8 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
-    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent
+    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
+    NotificationsComponent, WatchingPageComponent, HistoryComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
