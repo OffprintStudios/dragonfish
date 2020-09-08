@@ -51,6 +51,24 @@ mat-sidenav-container {
     border-right: 1px solid var(--site-borders);
 }
 
+div.user-buttons {
+    .mat-tab-label {
+        opacity: 1 !important;
+    }
+    
+    .mat-tab-label, .mat-tab-link {
+        color: whitesmoke;
+    }
+
+    .mat-tab-nav-bar, .mat-tab-header {
+        border-bottom: none;
+    }
+
+    .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+        background-color: var(--site-accent-hover);
+    }
+}
+
 div.main-stage {
     max-width: var(--site-max-width);
     margin-left: auto;
