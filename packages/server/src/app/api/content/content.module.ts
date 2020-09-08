@@ -15,11 +15,13 @@ import { HistoryController } from './history/history.controller';
 import { HistoryModule } from '../../db/history/history.module';
 import { CommentsModule } from '../../db/comments/comments.module';
 import { CommentsController } from './comments/comments.controller';
+import { MessagesController } from './messages/messages.controller';
+import { MessagesModule } from '../../db/messages/messages.module';
 
 @Module({
   imports: [
     BlogsModule, WorksModule, UsersModule, ImagesModule, CollectionsModule,
-    HistoryModule, CommentsModule,
+    HistoryModule, CommentsModule, MessagesModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
@@ -27,6 +29,10 @@ import { CommentsController } from './comments/comments.controller';
       }),
     }),
   ],
-  controllers: [BlogsController, WorksController, PortfolioController, CollectionsController, HistoryController, CommentsController]
+  controllers: [
+    BlogsController, WorksController, PortfolioController, 
+    CollectionsController, HistoryController, CommentsController, 
+    MessagesController
+  ]
 })
 export class ContentModule {}
