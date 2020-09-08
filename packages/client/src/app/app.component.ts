@@ -23,8 +23,7 @@ import { AlertsService } from './modules/alerts';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild('userMenu', {static: false}) userMenu: ElementRef;
-  @ViewChild('sidenav', {static: false}) sidenav: ElementRef;
+  @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
 
   title = 'offprint';
   currentUser: FrontendUser;
@@ -41,7 +40,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     rememberMe: new FormControl(false),
   });
 
-  constructor(private router: Router, private toppy: Toppy, private authService: AuthService,
+  constructor(private router: Router, private authService: AuthService,
     private selectConfig: NgSelectConfig, private statsService: StatsService,
     private nagBarService: NagBarService, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => {
@@ -65,12 +64,6 @@ export class AppComponent implements OnInit, AfterViewInit {
    * Initializes the global dropdown menus.
    */
   ngAfterViewInit() {
-    this.userMenuDropdown = this.toppy
-      .position(new RelativePosition({src: this.userMenu.nativeElement, width: 'auto', placement: OutsidePlacement.BOTTOM_LEFT}))
-      .config({closeOnDocClick: true, closeOnEsc: true})
-      .content(UserMenuComponent)
-      .create();
-
       // Initialize the ToS nagbar if we need to
       if (!this.currentUser) {
         this.authService.currUser.subscribe(x => {
@@ -78,7 +71,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         // and if we modify the UI before that finishes, Angular errors out.
         // So allow one render tick to progress before we try.
           setTimeout(() => {
-            this.checkUserPolicies(x);
+            if (x !== null) {
+              this.checkUserPolicies(x);
+            }
           });
         })
       } else {
@@ -171,7 +166,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         rememberMe: this.loginFields.rememberMe.value
       };
       this.authService.login(credentials).pipe(first()).subscribe(() => {
-        this.loadingLogin = false;        
+        this.loadingLogin = false;
         this.router.navigate(['/home/latest']);
       }, err => {
         this.loadingLogin = false;
