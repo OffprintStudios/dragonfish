@@ -8,6 +8,7 @@
         </div>
         <div class="username">
           <h3>{{ currentUser.username }}</h3>
+          <h4>Welcome back!</h4>
         </div>
       </div>
       <div class="user-buttons">
@@ -25,6 +26,12 @@
               <li class="divider"></li>
               <li class="item"><a (click)="logout()"><i-feather name="log-out"></i-feather>Log Out</a></li>
             </ul>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="message-circle"></i-feather>
+            </ng-template>
+            for offprint convos
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>

@@ -13,7 +13,7 @@
 div.user-menu {
     display: flex;
     flex-direction: column;
-    //margin: 1.5rem;
+    min-width: 35rem;
     height: 100%;
 
     div.login-form {
@@ -72,9 +72,22 @@ div.user-menu {
         }
 
         div.username {
+            font-size: 0;
+            flex: 1;
+            border-bottom: 1px solid whitesmoke;
             h3 {
                 color: whitesmoke;
                 font-weight: 500;
+                font-size: 36px;
+                margin-bottom: 0;
+            }
+
+            h4 {
+                color: whitesmoke;
+                margin-top: 0;
+                margin-bottom: 0;
+                font-size: 24px;
+                font-style: italic;
             }
         }
     }
@@ -94,7 +107,7 @@ div.user-menu {
 
         ul {
             list-style-type: none;
-            width: 100%;
+            padding: 1rem 1.5rem 0 1.5rem;
             margin-bottom: 0;
             li {
                 cursor: pointer;
@@ -130,7 +143,7 @@ div.user-menu {
                 }
             }
             li.divider {
-                border-bottom: 1px solid var(--site-borders);
+                border-bottom: 1px solid whitesmoke;
                 margin-top: 0;
                 margin-bottom: 0.5rem;
             }
