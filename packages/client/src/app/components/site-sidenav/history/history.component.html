@@ -1,1 +1,11 @@
-<p>history works!</p>
+<ng-container *ngIf="histItems && histItems.length !== 0; else noHistory">
+    <div>
+        There's history here
+    </div>
+</ng-container>
+
+<ng-template #noHistory>
+    <div>
+        You haven't read anything yet.
+    </div>
+</ng-template>

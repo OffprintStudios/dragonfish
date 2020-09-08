@@ -54,7 +54,8 @@ export class HistoryService {
      */
     async fetchUserSidenavHistory(userId: string): Promise<documents.HistoryDocument[]> {
         return await this.histModel.find({'owner': userId, 'visible': true})
-            .limit(7);
+            .limit(7)
+            .sort({'viewedOn': -1});
     }
 
     /**

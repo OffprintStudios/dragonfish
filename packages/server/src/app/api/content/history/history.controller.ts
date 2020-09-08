@@ -17,7 +17,7 @@ export class HistoryController {
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-sidenav-history')
     async fetchUserSidenavHistory(@Request() req: any) {
-        return await this.fetchUserSidenavHistory(req.user.sub);
+        return await this.histService.fetchUserSidenavHistory(req.user.sub);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

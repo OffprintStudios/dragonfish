@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HistoryService } from '../../../services/content';
+
+import { History } from '@pulp-fiction/models/history';
 
 @Component({
   selector: 'sidenav-history',
@@ -6,10 +9,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./history.component.less']
 })
 export class HistoryComponent implements OnInit {
+  loading = false;
+  histItems: History[];
 
-  constructor() { }
+  constructor(private historyService: HistoryService) {
+    this.fetchData();
+  }
 
   ngOnInit(): void {
   }
 
+  /**
+   * Fetches a user's sitenav history.
+   */
+  private fetchData() {
+    this.loading = true;
+    this.historyService.fetchUserSidenavHistory().subscribe(hist => {
+      this.histItems = hist;
+      this.loading = false;
+    });
+  }
 }
