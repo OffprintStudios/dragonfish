@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
+import { MaterialModule } from '@pulp-fiction/material';
 import { ToppyModule } from 'toppy';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
@@ -101,7 +102,7 @@ const toolbarOptions = [
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule, BrowserAnimationsModule, CKEditorModule,
+    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
