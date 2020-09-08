@@ -3,8 +3,12 @@
   <mat-sidenav [fixedInViewport]="true" #sidenav>
     <div class="user-menu" *ngIf="currentUser; else login">
       <div class="user-header">
-        <img class="user-avatar" [src]="currentUser.profile.avatar">
-        <h3>{{ currentUser.username }}</h3>
+        <div class="avatar">
+          <img class="user-avatar" [src]="currentUser.profile.avatar">
+        </div>
+        <div class="username">
+          <h3>{{ currentUser.username }}</h3>
+        </div>
       </div>
       <div class="user-buttons">
         <ul>
@@ -17,28 +21,36 @@
           <li class="item"><a (click)="logout()"><i-feather name="log-out"></i-feather>Log Out</a></li>
         </ul>
       </div>
+      <div class="user-footer">
+        <p>Offprint Alpha, ver. 0.3.0</p>
+      </div>
     </div>
     <ng-template #login>
       <div class="user-menu">
-        <h2>Welcome to Offprint!</h2>
-        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
-          
-          <input type="email" formControlName="email" class="u-full-width" placeholder="Email" autocomplete="email" required>
-
-          <input type="password" formControlName="password" class="u-full-width" placeholder="Password" autocomplete="current-password" required>
-
-          <label>
-            <input type="checkbox" formControlName="rememberMe">
-            <span class="label-body">Remember me for a month</span>
-          </label>
-
-          <p>New around here? Why not <a [routerLink]="['/register']">register today</a>!</p>
-
-          <div class="loader" *ngIf="loadingLogin">
-            <div class="lds-dual-ring"></div>
-          </div>
-          <button type="submit" [disabled]="!loginForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingLogin">Log in</button>
-        </form>
+        <div class="login-form">
+          <h2>Welcome to Offprint!</h2>
+          <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+  
+            <p>New around here? Why not <a [routerLink]="['/register']">register today</a>!</p>
+            
+            <input type="email" formControlName="email" class="u-full-width" placeholder="Email" autocomplete="email" required>
+  
+            <input type="password" formControlName="password" class="u-full-width" placeholder="Password" autocomplete="current-password" required>
+  
+            <label>
+              <input type="checkbox" formControlName="rememberMe">
+              <span class="label-body">Remember me for a month</span>
+            </label>
+  
+            <div class="loader" *ngIf="loadingLogin">
+              <div class="lds-dual-ring"></div>
+            </div>
+            <button type="submit" [disabled]="!loginForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingLogin">Log in</button>
+          </form>
+        </div>
+        <div class="user-footer">
+          <p>Offprint Alpha, ver. 0.3.0</p>
+        </div>
       </div>
     </ng-template>
   </mat-sidenav>

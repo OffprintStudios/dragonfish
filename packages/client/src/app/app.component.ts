@@ -185,6 +185,8 @@ export class AppComponent implements OnInit, AfterViewInit {
    */
   logout() {
     this.authService.logout();
-    location.reload();
+    this.router.navigate(['/home/latest']).then(() => {
+      location.reload();
+    });
   }
 }
