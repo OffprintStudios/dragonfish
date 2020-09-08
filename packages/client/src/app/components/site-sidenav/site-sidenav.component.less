@@ -104,14 +104,13 @@ div.user-menu {
         flex: 1;
         width: 100%;
         margin-top: 0.5rem;
+        overflow: auto;
         
         .mat-tab-group {
             font-family: Raleway, sans-serif;
             font-size: initial;
             color: whitesmoke;
         }
-
-
 
         ul {
             list-style-type: none;
@@ -175,7 +174,9 @@ div.user-menu {
             margin-bottom: 0;
 
             i-feather {
-                stroke-width: 1;
+                position: relative;
+                width: 16px;
+                top: -0.2rem;
             }
 
             &:hover {
