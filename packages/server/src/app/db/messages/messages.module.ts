@@ -29,7 +29,7 @@ import { MessagesService } from './messages.service';
         name: 'MessageThread',
         useFactory: () => {
           const schema = MessageThreadSchema;
-          schema.plugin(require('mongoose-autopulate'));
+          schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(require('mongoose-paginate-v2'));
           schema.pre<MessageThreadDocument>('save', async function (next: HookNextFunction) {
             this.set('_id', uuidV4());
