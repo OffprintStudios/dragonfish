@@ -22,7 +22,7 @@ export class HistoryComponent implements OnInit {
   /**
    * Fetches a user's sitenav history.
    */
-  private fetchData() {
+  fetchData() {
     this.loading = true;
     this.historyService.fetchUserSidenavHistory().subscribe(hist => {
       this.histItems = hist;

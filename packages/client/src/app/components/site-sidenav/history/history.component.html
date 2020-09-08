@@ -1,11 +1,31 @@
 <ng-container *ngIf="histItems && histItems.length !== 0; else noHistory">
-    <div>
-        There's history here
+    <div class="hist-container">
+        <div class="hist-item" *ngFor="let item of histItems">
+            <div class="work-cover">
+                <img [src]="$any(item.work).meta.coverArt" />
+            </div>
+            <div class="work-info">
+                <h4>
+                    <a [routerLink]="['/work', $any(item.work)._id, $any(item.work).title | slugify]">{{ $any(item.work).title }}</a>
+                </h4>
+                <h5>{{ $any(item.work).meta.category | fixCategories }}</h5><span>//</span><h5>{{ $any(item.work).meta.genres | separateEntities:$any(item.work).meta.category }}</h5>
+            </div>
+            <div class="viewed-on">
+                <span>{{ item.viewedOn | date:'shortDate' }}</span>
+                <span>{{ item.viewedOn | date: 'shortTime' }}</span>
+            </div>
+        </div>
+        <div class="hist-footer">
+            <button matRipple [routerLink]="['/home/history']">See full history</button>
+        </div>
     </div>
 </ng-container>
 
 <ng-template #noHistory>
-    <div>
-        You haven't read anything yet.
+    <div style="text-align: center; margin-top: 1.5rem;">
+        <h3>You haven't read anything yet.</h3>
+        <p>
+            Browse around a bit! This list will populate automatically.
+        </p>
     </div>
 </ng-template>

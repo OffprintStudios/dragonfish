@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { first } from 'rxjs/operators';
 import * as lodash from 'lodash';
 
 import { FrontendUser, LoginUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
 import { AlertsService } from '../../modules/alerts';
+import { ConversationsComponent } from './conversations/conversations.component';
+import { HistoryComponent } from './history/history.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { WatchingComponent } from './watching/watching.component';
 
 @Component({
   selector: 'site-sidenav',
@@ -14,6 +19,11 @@ import { AlertsService } from '../../modules/alerts';
   styleUrls: ['./site-sidenav.component.less']
 })
 export class SiteSidenavComponent implements OnInit {
+  @ViewChild(ConversationsComponent) private convoComponent: ConversationsComponent;
+  @ViewChild(HistoryComponent) private histComponent: HistoryComponent;
+  @ViewChild(NotificationsComponent) private notifComponent: NotificationsComponent;
+  @ViewChild(WatchingComponent) private watchingComponent: WatchingComponent;
+
   currentUser: FrontendUser;
 
   loadingLogin = false;
@@ -29,6 +39,18 @@ export class SiteSidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onTabChanged(event: MatTabChangeEvent) {
+    if (event.index === 0) {
+      // do something for conversations
+    } else if (event.index === 1) {
+      // do something for watching
+    } else if (event.index === 2) {
+      this.histComponent.fetchData();
+    } else if (event.index === 3) {
+      // do something for notifications
+    }
   }
 
   /**

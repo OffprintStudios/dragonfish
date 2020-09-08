@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="user-buttons">
-      <mat-tab-group>
+      <mat-tab-group (selectedTabChange)="onTabChanged($event)" dynamicHeight>
         <mat-tab>
             <ng-template mat-tab-label>
               <i-feather name="message-circle"></i-feather>
