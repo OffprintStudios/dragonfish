@@ -2,8 +2,11 @@ import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angula
 import { Router, NavigationEnd } from '@angular/router';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import * as lodash from 'lodash';
+import { first } from 'rxjs/operators';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
 import { UserMenuComponent } from './components/dropdowns';
@@ -12,6 +15,7 @@ import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
+import { AlertsService } from './modules/alerts';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -20,18 +24,26 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
 })
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('userMenu', {static: false}) userMenu: ElementRef;
+  @ViewChild('sidenav', {static: false}) sidenav: ElementRef;
 
   title = 'offprint';
   currentUser: FrontendUser;
   userMenuDropdown: ToppyControl;
 
   loading = false;
+  loadingLogin = false;
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
+  loginForm = new FormGroup({
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    rememberMe: new FormControl(false),
+  });
+
   constructor(private router: Router, private toppy: Toppy, private authService: AuthService,
     private selectConfig: NgSelectConfig, private statsService: StatsService,
-    private nagBarService: NagBarService) {
+    private nagBarService: NagBarService, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -47,7 +59,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-  }  
+  }
 
   /**
    * Initializes the global dropdown menus.
@@ -111,9 +123,68 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
   }
 
+  /**
+   * Checks to see if the currently logged-in user has agreed to the site's policies.
+   * 
+   * @param user The currently logged-in user
+   */
   private checkUserPolicies(user: FrontendUser) {
     if (!user.agreedToPolicies) {
       this.nagBarService.queueContent(NewPolicyNagComponent, null);
     }     
+  }
+
+  /**
+   * In order to access the contributor page
+   */
+  checkUserRolesForContribMenu() {
+    if (this.currentUser) {
+      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
+      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
+
+      if (hasRoles.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Login form field getter.
+   */
+  get loginFields() { return this.loginForm.controls; }
+
+  /**
+   * Submits the login form to the backend.
+   */
+  onLoginSubmit() {
+    if (this.loginForm.invalid) {
+      return;
+    } else {
+      this.loadingLogin = true;
+      const credentials: LoginUser = {
+        email: this.loginFields.email.value, 
+        password: this.loginFields.password.value, 
+        rememberMe: this.loginFields.rememberMe.value
+      };
+      this.authService.login(credentials).pipe(first()).subscribe(() => {
+        this.loadingLogin = false;        
+        this.router.navigate(['/home/latest']);
+      }, err => {
+        this.loadingLogin = false;
+        this.alertsService.error(err.error.message);
+      })
+    }
+  }
+
+  /**
+   * Calls the logout method from AuthService.
+   */
+  logout() {
+    this.authService.logout();
+    location.reload();
   }
 }

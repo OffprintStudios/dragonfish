@@ -1,12 +1,46 @@
 
 <mat-sidenav-container>
-  <mat-sidenav #sidenav>
-    <div class="user-menu" *ngIf="currentUser">
+  <mat-sidenav [fixedInViewport]="true" #sidenav>
+    <div class="user-menu" *ngIf="currentUser; else login">
       <div class="user-header">
         <img class="user-avatar" [src]="currentUser.profile.avatar">
         <h3>{{ currentUser.username }}</h3>
       </div>
+      <div class="user-buttons">
+        <ul>
+          <li class="item" *ngIf="checkUserRolesForContribMenu()"><a [routerLink]="['/dashboard']"><i-feather name="grid"></i-feather>Dashboard</a></li>
+          <li class="item"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather>Portfolio</a></li>
+          <li class="item"><a [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather>Alerts</a></li>
+          <li class="item"><a [routerLink]="['/home/inbox']"><i-feather name="inbox"></i-feather>Inbox</a></li>
+          <li class="item"><a [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather>Settings</a></li>
+          <li class="divider"></li>
+          <li class="item"><a (click)="logout()"><i-feather name="log-out"></i-feather>Log Out</a></li>
+        </ul>
+      </div>
     </div>
+    <ng-template #login>
+      <div class="user-menu">
+        <h2>Welcome to Offprint!</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+          
+          <input type="email" formControlName="email" class="u-full-width" placeholder="Email" autocomplete="email" required>
+
+          <input type="password" formControlName="password" class="u-full-width" placeholder="Password" autocomplete="current-password" required>
+
+          <label>
+            <input type="checkbox" formControlName="rememberMe">
+            <span class="label-body">Remember me for a month</span>
+          </label>
+
+          <p>New around here? Why not <a [routerLink]="['/register']">register today</a>!</p>
+
+          <div class="loader" *ngIf="loadingLogin">
+            <div class="lds-dual-ring"></div>
+          </div>
+          <button type="submit" [disabled]="!loginForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingLogin">Log in</button>
+        </form>
+      </div>
+    </ng-template>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="nav">
@@ -22,8 +56,8 @@
             <!--<button class="login" (click)="openUserMenu()" #userMenu>Menu</button>-->
           </div>
           <ng-template #signUp>
-            <div class="user-menu">
-              <button class="login" [routerLink]="['/register']">Join / Log In</button>
+            <div class="user-menu-nav">
+              <button class="login" (click)="sidenav.toggle()">Join / Log In</button>
             </div>
           </ng-template>
           <div class="site-logo">

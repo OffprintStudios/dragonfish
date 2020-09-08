@@ -3,10 +3,42 @@ div.user-menu {
     display: flex;
     flex-direction: column;
     margin: 1.5rem;
+
+    h2 {
+        color: whitesmoke;
+        text-align: center;
+        border-bottom: 1px solid whitesmoke;
+    }
+
+    form {
+        margin-bottom: 0;
+        input[type=email],input[type=password] {
+            box-shadow: none;
+            border: 1px solid whitesmoke;
+            color: whitesmoke;
+            background-color: var(--site-accent-hover);
+            &::placeholder {
+                color: whitesmoke;
+            }
+        }
+        p {
+            a {
+                color: whitesmoke;
+                text-decoration: none;
+                background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);
+                &:hover {
+                    color: whitesmoke;
+                    background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+
     div.user-header {
         img.user-avatar {
-            max-width: 100px;
-            max-height: 100px;
+            max-width: 75px;
+            max-height: 75px;
             object-fit: cover;
             border: 1px solid whitesmoke;
             border-radius: 50%;
@@ -20,7 +52,54 @@ div.user-menu {
             color: whitesmoke;
             display: inline-block;
             font-weight: 500;
-            border-bottom: 1px solid whitesmoke;
+        }
+    }
+
+    div.user-buttons {
+        width: 100%;
+        margin-top: 0.5rem;
+        ul {
+            list-style-type: none;
+            width: 100%;
+            margin-bottom: 0;
+            li {
+                cursor: pointer;
+            }
+            li.item {
+                &:focus {
+                    border-radius: 0 !important;
+                    outline: none;
+                }
+                a {
+                    width: 100%;
+                    padding: 10px;
+                    font-size: 15px;
+                    color: whitesmoke;
+                    display: inline-block;
+                    box-sizing: border-box;
+                    &:hover {
+                        color: whitesmoke;
+                        background-color: var(--site-accent-hover);
+                    }
+                    i-feather {
+                        position: relative;
+                        width: 15px;
+                        height: 15px;
+                        top: 0.15rem;
+                        margin-right: 1rem;
+                    }
+
+                    &:focus {
+                        border-radius: 0 !important;
+                        outline: none;
+                    }
+                }
+            }
+            li.divider {
+                border-bottom: 1px solid var(--site-borders);
+                margin-top: 0;
+                margin-bottom: 0.5rem;
+            }
         }
     }
 }
