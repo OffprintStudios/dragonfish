@@ -1,18 +1,27 @@
 /* Sidenav */
 div.user-menu {
+    display: flex;
+    flex-direction: column;
     margin: 1.5rem;
-    img.user-menu-avatar {
-        max-width: 100px;
-        max-height: 100px;
-        object-fit: cover;
-        border: 1px solid whitesmoke;
-        border-radius: 50%;
-        font-size: 0;
-        vertical-align: middle;
-    }
-
-    h3 {
-        color: whitesmoke;
+    div.user-header {
+        img.user-avatar {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border: 1px solid whitesmoke;
+            border-radius: 50%;
+            font-size: 0;
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 1.5rem;
+        }
+    
+        h3 {
+            color: whitesmoke;
+            display: inline-block;
+            font-weight: 500;
+            border-bottom: 1px solid whitesmoke;
+        }
     }
 }
 
@@ -36,7 +45,7 @@ div.nav {
           align-items: center;
           max-width: 80%;
 
-          div.user-menu {
+          div.user-menu-nav {
               vertical-align: middle;
 
               img.user-menu-avatar {
