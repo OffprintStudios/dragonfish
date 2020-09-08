@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRippleModule } from '@angular/material/core'
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { MatRippleModule } from '@angular/material/core'
     MatSelectModule,
     MatTabsModule,
     MatTooltipModule,
-    MatRippleModule
+    MatRippleModule,
+    MatBadgeModule
   ],
   exports: [
     FlexLayoutModule,
@@ -48,7 +50,8 @@ import { MatRippleModule } from '@angular/material/core'
     MatSelectModule,
     MatTabsModule,
     MatTooltipModule,
-    MatRippleModule
+    MatRippleModule,
+    MatBadgeModule
   ]
 })
 export class MaterialModule {}
