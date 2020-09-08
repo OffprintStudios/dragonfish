@@ -11,15 +11,27 @@
         </div>
       </div>
       <div class="user-buttons">
-        <ul>
-          <li class="item" *ngIf="checkUserRolesForContribMenu()"><a [routerLink]="['/dashboard']"><i-feather name="grid"></i-feather>Dashboard</a></li>
-          <li class="item"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather>Portfolio</a></li>
-          <li class="item"><a [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather>Alerts</a></li>
-          <li class="item"><a [routerLink]="['/home/inbox']"><i-feather name="inbox"></i-feather>Inbox</a></li>
-          <li class="item"><a [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather>Settings</a></li>
-          <li class="divider"></li>
-          <li class="item"><a (click)="logout()"><i-feather name="log-out"></i-feather>Log Out</a></li>
-        </ul>
+        <mat-tab-group>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="compass"></i-feather>
+            </ng-template>
+            <ul>
+              <li class="item" *ngIf="checkUserRolesForContribMenu()"><a [routerLink]="['/dashboard']"><i-feather name="grid"></i-feather>Dashboard</a></li>
+              <li class="item"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather>Portfolio</a></li>
+              <li class="item"><a [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather>Alerts</a></li>
+              <li class="item"><a [routerLink]="['/home/inbox']"><i-feather name="inbox"></i-feather>Inbox</a></li>
+              <li class="item"><a [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather>Settings</a></li>
+              <li class="divider"></li>
+              <li class="item"><a (click)="logout()"><i-feather name="log-out"></i-feather>Log Out</a></li>
+            </ul>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="layers"></i-feather>
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
       </div>
       <div class="user-footer">
         <p>Offprint Alpha, ver. 0.3.0</p>
