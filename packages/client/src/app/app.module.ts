@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -100,8 +101,7 @@ const toolbarOptions = [
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule,     
-    CKEditorModule,
+    NagBarModule, BrowserAnimationsModule, CKEditorModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
