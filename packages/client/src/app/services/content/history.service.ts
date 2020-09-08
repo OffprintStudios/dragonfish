@@ -29,6 +29,19 @@ export class HistoryService {
   }
 
   /**
+   * Fetches a user's history for their sidenav.
+   */
+  public fetchUserSidenavHistory() {
+    return this.http.get<History[]>(`${this.url}/fetch-user-sidenav-history`, {observe: 'response', withCredentials: true})
+    .pipe(map(hist => {
+      return hist.body;
+    }), catchError(err => {
+      this.alertsService.error(err.error.message);
+      return throwError(err);
+    }));
+  }
+
+  /**
    * Fetches one history doc without updating the viewedOn date.
    */
   public fetchOneHistDoc(workId: string) {
