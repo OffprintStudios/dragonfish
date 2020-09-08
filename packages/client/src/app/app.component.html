@@ -33,6 +33,9 @@
     
     <nav>
       <div class="nav-items">
+        <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
+          <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span>Dashboard</a>
+        </ng-container>
         <a [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span>Home</a>
         <a [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left"><span class="link-icon"><i-feather name="map"></i-feather></span>Browse</a> 
         <a [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Groups</a>
@@ -100,7 +103,6 @@
         </footer>
       </div>
     </div>
-    
   </mat-sidenav-content>
 </mat-sidenav-container>
 

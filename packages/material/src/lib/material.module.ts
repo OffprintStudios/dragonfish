@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -27,7 +28,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatMenuModule,
     MatTableModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ],
   exports: [
     FlexLayoutModule,
@@ -42,7 +44,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatMenuModule,
     MatTableModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule {}

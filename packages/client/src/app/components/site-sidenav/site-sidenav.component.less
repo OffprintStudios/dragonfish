@@ -159,11 +159,36 @@ div.user-menu {
     }
 
     div.user-footer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         border-top: 1px solid whitesmoke;
         color: whitesmoke;
         margin: 0 1.5rem 1.5rem 1.5rem;
+        button {
+            box-shadow: none;
+            background-color: var(--site-accent);
+            color: whitesmoke;
+            border: 1px solid whitesmoke;
+            border-top: none;
+            padding: 5px 10px;
+
+            i-feather {
+                stroke-width: 1;
+            }
+
+            &:hover {
+                background-color: var(--site-accent-hover);
+            }
+        }
+
+        button.mid {
+            border-left: none;
+            border-right: none;
+        }
+
         p {
-            text-align: center;
+            flex: 1;
             margin: 0;
         }
     }

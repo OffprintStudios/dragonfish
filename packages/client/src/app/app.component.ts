@@ -1,15 +1,11 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as lodash from 'lodash';
-import { first } from 'rxjs/operators';
 
-import { FrontendUser, Roles, LoginUser } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
-import { UserMenuComponent } from './components/dropdowns';
 import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
@@ -27,7 +23,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   title = 'offprint';
   currentUser: FrontendUser;
-  userMenuDropdown: ToppyControl;
 
   loading = false;
   loadingLogin = false;
@@ -90,13 +85,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Opens the user menu dropdown.
-   */
-  openUserMenu() {
-    this.userMenuDropdown.open();
-  }
-
-  /**
    * Changes the site's theme based on user preference by manipulating CSS variables declared
    * in styles.less.
    * @param newTheme The theme to change to.
@@ -121,5 +109,23 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (!user.agreedToPolicies) {
       this.nagBarService.queueContent(NewPolicyNagComponent, null);
     }     
+  }
+
+  /**
+   * In order to access the contributor page
+   */
+  checkUserRolesForContribMenu() {
+    if (this.currentUser) {
+      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
+      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
+
+      if (hasRoles.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 }

@@ -60,24 +60,6 @@ export class SiteSidenavComponent implements OnInit {
   }
 
   /**
-   * In order to access the contributor page
-   */
-  checkUserRolesForContribMenu() {
-    if (this.currentUser) {
-      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
-      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
-
-      if (hasRoles.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  /**
    * Calls the logout method from AuthService.
    */
   logout() {
