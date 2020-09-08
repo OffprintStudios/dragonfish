@@ -22,7 +22,7 @@ export class MessagesService {
      */
     async createNewPrivateThread(user: any, initialMessage: CreateInitialMessage) {
         const newThread = new this.messageThreadModel({
-            name: initialMessage.name,
+            name: sanitizeHtml(initialMessage.name),
             users: [user.sub, initialMessage.recipient],
         });
 

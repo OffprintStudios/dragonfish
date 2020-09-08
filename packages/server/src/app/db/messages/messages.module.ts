@@ -42,6 +42,7 @@ import { MessagesService } from './messages.service';
       }
     ])
   ],
+  exports: [MessagesService],
   providers: [MessagesService]
 })
 export class MessagesModule {}
