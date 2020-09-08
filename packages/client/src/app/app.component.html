@@ -34,16 +34,16 @@
     <nav>
       <div class="nav-items">
         <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
-          <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span>Dashboard</a>
+          <a matRipple [routerLink]="['/dashboard']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span>Dashboard</a>
         </ng-container>
-        <a [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span>Home</a>
-        <a [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left"><span class="link-icon"><i-feather name="map"></i-feather></span>Browse</a> 
-        <a [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Groups</a>
-        <a [routerLink]="['/news']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
+        <a matRipple [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span>Home</a>
+        <a matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left"><span class="link-icon"><i-feather name="map"></i-feather></span>Browse</a> 
+        <a matRipple [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span>Groups</a>
+        <a matRipple [routerLink]="['/news']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span>News</a>
         <ng-container *ngIf="currentUser">
-          <a [routerLink]="['/home/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="feather"></i-feather></span>My Works</a>
-          <a [routerLink]="['/home/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>My Blogs</a>
-          <a [routerLink]="['/home/collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections</a>
+          <a matRipple [routerLink]="['/home/works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="feather"></i-feather></span>My Works</a>
+          <a matRipple [routerLink]="['/home/blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>My Blogs</a>
+          <a matRipple [routerLink]="['/home/collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections</a>
         </ng-container>
       </div>
     </nav>
