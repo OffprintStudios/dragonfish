@@ -16,6 +16,12 @@ export class MessagesController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-user-sidenav-threads')
+    async fetchUserSidenavThreads(@Request() req: any) {
+        return await this.messageService.fetchSidenavThreads(req.user);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
     @Put('create-new-private-thread')
     async createNewPrivateThread(@Request() req: any, @Body() initialMessage: CreateInitialMessage) {
         return await this.messageService.createNewPrivateThread(req.user, initialMessage);

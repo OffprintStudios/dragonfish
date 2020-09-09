@@ -9,7 +9,7 @@ export class MessageDocument extends Document implements Message {
     @Prop({default: uuidV4()})
     readonly _id: string;
 
-    @Prop({type: String, ref: 'MessageThread', required: true})
+    @Prop({type: String, ref: 'MessageThread', required: true, index: true})
     readonly threadId: string;
 
     @Prop({type: String, ref: 'User', autopopulate: {

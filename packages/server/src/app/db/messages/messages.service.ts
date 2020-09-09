@@ -50,7 +50,14 @@ export class MessagesService {
             body: sanitizeHtml(response.body)
         });
 
-        return await newResponse.save();
+        return await newResponse.save().then(async doc => {
+            await this.messageThreadModel.findByIdAndUpdate(response.threadId, {
+                $inc: {'meta.numMessages': 1},
+                'meta.userWhoRepliedLast': user.sub
+            });
+            
+            return doc;
+        });
     }
 
     /**
@@ -66,5 +73,16 @@ export class MessagesService {
             page: pageNum,
             limit: 15
         });
+    }
+
+    /**
+     * Fetches a small subset of active conversations, sorted by update date.
+     * 
+     * @param user The user who's part of these threads
+     */
+    async fetchSidenavThreads(user: any): Promise<MessageThreadDocument[]> {
+        return await this.messageThreadModel.find({'users': user.sub, 'audit.isDeleted': false})
+            .sort({'updatedAt': -1})
+            .limit(7);
     }
 }

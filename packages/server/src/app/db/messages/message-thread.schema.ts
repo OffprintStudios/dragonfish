@@ -12,7 +12,7 @@ export class MessageThreadDocument extends Document implements MessageThread {
     @Prop({default: null})
     readonly name: string;
 
-    @Prop({type: [String], ref: 'User', autopopulate: {
+    @Prop({type: [String], ref: 'User', index: true, autopopulate: {
         select: '_id username profile.avatar audit.roles'
     }})
     readonly users: string[] | MessageThreadUser[];
