@@ -1,13 +1,16 @@
 <ng-container *ngIf="activeConvos && activeConvos.length !== 0; else noConvos">
     <div class="convo-container">
         <div class="convo-item">
-
+            There's some conversations here.
         </div>
     </div>
 </ng-container>
 
 <ng-template #noConvos>
-    <div class="convo-container">
-        
+    <div style="text-align: center; margin-top: 1.5rem;">
+        <h3 style="color: whitesmoke; margin-bottom: 0;">There's nothing here...</h3>
+        <p style="color: whitesmoke; margin-top: 0;">
+            Start a conversation with other users by<br>hitting the comment button on a their portfolio!
+        </p>
     </div>
 </ng-template>
