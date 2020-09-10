@@ -1,1 +1,13 @@
-<p>conversations works!</p>
+<ng-container *ngIf="activeConvos && activeConvos.length !== 0; else noConvos">
+    <div class="convo-container">
+        <div class="convo-item">
+
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #noConvos>
+    <div class="convo-container">
+        
+    </div>
+</ng-template>
