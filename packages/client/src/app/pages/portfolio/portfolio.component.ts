@@ -63,6 +63,8 @@ export class PortfolioComponent implements OnInit {
    * Opens the new message dialog
    */
   startNewConversation() {
-    this.dialog.open(StartConversationComponent);
+    if (this.portUserId) {
+      this.dialog.open(StartConversationComponent, {data: {userId: this.portUserId}});
+    }
   }
 }

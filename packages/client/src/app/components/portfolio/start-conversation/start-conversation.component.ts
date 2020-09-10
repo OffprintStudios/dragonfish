@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CreateInitialMessage } from '@pulp-fiction/models/messages';
 import { MessagesService } from '../../../services/content';
@@ -20,7 +20,7 @@ export class StartConversationComponent implements OnInit {
   });
 
   constructor(private messageService: MessagesService, private alertsService: AlertsService,
-    private dialogRef: MatDialogRef<StartConversationComponent>) { }
+    private dialogRef: MatDialogRef<StartConversationComponent>, @Inject(MAT_DIALOG_DATA) private data: any) { }
 
   ngOnInit(): void {
   }
@@ -31,6 +31,24 @@ export class StartConversationComponent implements OnInit {
   get fields() { return this.newConversation.controls; }
 
   submitConversation() {
-    console.log(this.fields);
+    if (this.fields.subject.invalid) {
+      this.alertsService.warn(`The conversation subject needs to be between 3 and 36 characters.`);
+      return;
+    }
+
+    if (this.fields.message.invalid) {
+      this.alertsService.warn(`Your message needs to be at least 5 characters.`);
+      return;
+    }
+
+    const newMessage: CreateInitialMessage = {
+      name: this.fields.subject.value,
+      body: this.fields.message.value,
+      recipient: this.data.userId
+    };
+
+    this.messageService.createNewPrivateThread(newMessage).subscribe(() => {
+      this.dialogRef.close();
+    })
   }
 }
