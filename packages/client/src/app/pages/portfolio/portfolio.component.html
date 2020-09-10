@@ -40,17 +40,19 @@
 
 <div class="portfolio-user-controls" *ngIf="currentUserIsSame();else notPortUser">
     <span class="control-left">
-        <a class="button" [routerLink]="['/home/settings']">Manage</a>
+        <button matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather></button>
     </span>
 </div>
 
 <ng-template #notPortUser>
     <div class="portfolio-user-controls" *ngIf="currentUser">
         <span class="control-left">
-            <a class="button">Subscribe</a>
+            <button matTooltip="Watch" matTooltipClass="offprint-tooltip" matRipple><i-feather name="eye"></i-feather></button>
+            <button class="mid" matTooltip="Start Conversation" matTooltipClass="offprint-tooltip" matRipple><i-feather name="message-circle"></i-feather></button>
+            <button matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip" matRipple><i-feather name="user-plus"></i-feather></button>
         </span>
         <span class="control-right">
-            <a class="button">Report</a>
+            <button matTooltip="Report" matTooltipClass="offprint-tooltip" matRipple><i-feather name="flag"></i-feather></button>
         </span>
     </div>
 </ng-template>

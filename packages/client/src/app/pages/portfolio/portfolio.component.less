@@ -115,14 +115,31 @@ div.portfolio-user-controls {
     border-left: 1px solid var(--site-borders);
     border-right: 1px solid var(--site-borders);
     border-bottom: 1px solid var(--site-borders);
-    display: flexbox;
+    display: flex;
+    flex-direction: row;
+
+    button {
+        padding: 5px 10px;
+
+        i-feather {
+            position: relative;
+            stroke-width: 1;
+            top: -0.1rem;
+            color: var(--site-text-color);
+        }
+
+        &.mid {
+            border-left: 0;
+            border-right: 0;
+        }
+    }
 
     span.control-left {
+        flex: 1;
         margin-left: 0.75rem;
     }
 
     span.control-right {
-        float: right;
         padding-right: 0.75rem;
     }
 }
