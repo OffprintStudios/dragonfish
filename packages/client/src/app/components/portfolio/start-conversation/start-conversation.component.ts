@@ -30,5 +30,7 @@ export class StartConversationComponent implements OnInit {
    */
   get fields() { return this.newConversation.controls; }
 
-  
+  submitConversation() {
+    console.log(this.fields);
+  }
 }
