@@ -1,7 +1,7 @@
 <ng-container *ngIf="histItems && histItems.length !== 0; else noHistory">
     <div class="hist-container">
         <div class="hist-item" *ngFor="let item of histItems">
-            <div class="work-cover">
+            <div class="work-cover" *ngIf="$any(item.work).meta.coverArt">
                 <img [src]="$any(item.work).meta.coverArt" />
             </div>
             <div class="work-info">
