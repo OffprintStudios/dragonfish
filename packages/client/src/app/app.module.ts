@@ -55,6 +55,7 @@ import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
+import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -100,7 +101,7 @@ const toolbarOptions = [
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
-    NotificationsComponent, WatchingPageComponent, HistoryComponent
+    NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
@@ -140,7 +141,7 @@ const toolbarOptions = [
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
     NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
-    AddToCollectionComponent, CommentFormComponent
+    AddToCollectionComponent, CommentFormComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })
