@@ -43,7 +43,7 @@ export class SiteSidenavComponent implements OnInit {
 
   onTabChanged(event: MatTabChangeEvent) {
     if (event.index === 0) {
-      // do something for conversations
+      this.convoComponent.fetchData();
     } else if (event.index === 1) {
       // do something for watching
     } else if (event.index === 2) {
