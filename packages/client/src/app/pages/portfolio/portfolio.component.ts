@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
 import { PortfolioService } from '../../services/content';
+import { StartConversationComponent } from '../../components/portfolio/start-conversation/start-conversation.component';
 
 @Component({
   selector: 'app-portfolio',
@@ -17,7 +19,8 @@ export class PortfolioComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged-in user
   loading = false; // Loading check for fetching data
 
-  constructor(private authService: AuthService, private router: Router, public route: ActivatedRoute, private portService: PortfolioService) {
+  constructor(private authService: AuthService, private router: Router, public route: ActivatedRoute,
+    private portService: PortfolioService, public dialog: MatDialog) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -56,4 +59,10 @@ export class PortfolioComponent implements OnInit {
     }
   }
 
+  /**
+   * Opens the new message dialog
+   */
+  startNewConversation() {
+    this.dialog.open(StartConversationComponent);
+  }
 }
