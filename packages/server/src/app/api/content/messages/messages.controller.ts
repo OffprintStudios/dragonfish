@@ -24,6 +24,7 @@ export class MessagesController {
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-new-private-thread')
     async createNewPrivateThread(@Request() req: any, @Body() initialMessage: CreateInitialMessage) {
+        console.log(initialMessage);
         return await this.messageService.createNewPrivateThread(req.user, initialMessage);
     }
 

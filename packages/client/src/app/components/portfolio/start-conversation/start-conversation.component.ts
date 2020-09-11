@@ -30,6 +30,9 @@ export class StartConversationComponent implements OnInit {
    */
   get fields() { return this.newConversation.controls; }
 
+  /**
+   * Sends the message request to the backend.
+   */
   submitConversation() {
     if (this.fields.subject.invalid) {
       this.alertsService.warn(`The conversation subject needs to be between 3 and 36 characters.`);

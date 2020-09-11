@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 
 import { MessageDocument } from './message.schema';
 import { MessageThreadDocument } from './message-thread.schema';
@@ -20,9 +20,9 @@ export class MessagesService {
      * @param user The user creating the thread
      * @param initialMessage The first message of said thread
      */
-    async createNewPrivateThread(user: any, initialMessage: CreateInitialMessage) {
+    async createNewPrivateThread(user: any, initialMessage: CreateInitialMessage): Promise<void> {
         const newThread = new this.messageThreadModel({
-            name: sanitizeHtml(initialMessage.name),
+            name: await sanitizeHtml(initialMessage.name),
             users: [user.sub, initialMessage.recipient],
         });
 
@@ -30,10 +30,15 @@ export class MessagesService {
             const newMessage = new this.messageModel({
                 threadId: doc._id,
                 user: user.sub,
-                body: sanitizeHtml(initialMessage.body)
+                body: await sanitizeHtml(initialMessage.body)
             });
 
-            await newMessage.save();
+            await newMessage.save().then(async () => {
+                await this.messageThreadModel.findByIdAndUpdate(doc._id, {
+                    $inc: {'meta.numMessages': 1},
+                    'meta.userWhoRepliedLast': user.sub
+                });
+            });
         });
     }
 
@@ -43,11 +48,11 @@ export class MessagesService {
      * @param user The user responding
      * @param response Their response
      */
-    async createResponse(user: any, response: CreateResponse) {
+    async createResponse(user: any, response: CreateResponse): Promise<MessageDocument> {
         const newResponse = new this.messageModel({
             threadId: response.threadId,
             user: user.sub,
-            body: sanitizeHtml(response.body)
+            body: await sanitizeHtml(response.body)
         });
 
         return await newResponse.save().then(async doc => {
@@ -67,7 +72,7 @@ export class MessagesService {
      * @param user The user who's part of these threads
      * @param pageNum The current page of threads
      */
-    async fetchThreads(user: any, pageNum: number) {
+    async fetchThreads(user: any, pageNum: number): Promise<PaginateResult<MessageThreadDocument>> {
         return await this.messageThreadModel.paginate({'users': user.sub, 'audit.isDeleted': false}, {
             sort: {'updatedAt': -1},
             page: pageNum,
