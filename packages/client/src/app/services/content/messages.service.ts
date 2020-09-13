@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -13,7 +14,7 @@ import { AlertsService } from '../../modules/alerts';
 export class MessagesService {
   private url = `/api/content/messages`;
 
-  constructor(private http: HttpClient, private alertsService: AlertsService) {}
+  constructor(private http: HttpClient, private alertsService: AlertsService, private _snackbar: MatSnackBar) {}
 
   /**
    * Fetches a user's threads.
@@ -49,7 +50,7 @@ export class MessagesService {
   public createNewPrivateThread(initialMessage: CreateInitialMessage) {
     return this.http.put<void>(`${this.url}/create-new-private-thread`, initialMessage, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
-        this.alertsService.success(`Message sent successfully!`);
+        this._snackbar.open(`Message sent successfully!`, 'Close')
         return;
       }), catchError(err => {
         this.alertsService.error(err.error.message);
