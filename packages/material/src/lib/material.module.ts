@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRippleModule } from '@angular/material/core'
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTooltipModule,
     MatRippleModule,
     MatBadgeModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   exports: [
     FlexLayoutModule,
@@ -54,7 +56,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTooltipModule,
     MatRippleModule,
     MatBadgeModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ]
 })
 export class MaterialModule {}
