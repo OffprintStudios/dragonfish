@@ -18,12 +18,16 @@ export class MessageThreadDocument extends Document implements MessageThread {
     readonly users: string[] | MessageThreadUser[];
 
     @Prop(raw({
+        threadPicture: {type: String, default: null},
         numMessages: {type: Number, default: 0},
-        userWhoRepliedLast: {type: String, ref: 'User', default: null}
+        userWhoRepliedLast: {type: String, ref: 'User', default: null},
+        lastMessage: {type: String, default: null}
     }))
     readonly meta: {
+        readonly threadPicture: string;
         readonly numMessages: number;
         readonly userWhoRepliedLast: string;
+        readonly lastMessage: string;
     };
 
     @Prop(raw({

@@ -5,8 +5,10 @@ export interface MessageThread {
     readonly name: string;
     readonly users: string[] | MessageThreadUser[];
     readonly meta: {
+        readonly threadPicture: string;
         readonly numMessages: number;
         readonly userWhoRepliedLast: string;
+        readonly lastMessage: string;
     };
     readonly audit: {
         readonly isDeleted: boolean;

@@ -1,9 +1,32 @@
 div.convo-container {
+    margin-top: 1.5rem;
     div.convo-item {
-        object {
-            width: 75px;
-            height: 75px;
-            fill: whitesmoke;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        padding: 5px;
+        border-bottom: 1px solid whitesmoke;
+
+        div.convo-picture {
+
+        }
+
+        div.convo-info {
+            flex: 1;
+            h4 {
+                font-weight: 500;
+                font-size: 26px;
+                color: whitesmoke;
+                margin-bottom: 0;
+            }
+
+            h5 {
+                font-size: 16px;
+                font-style: italic;
+                color: whitesmoke;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
         }
     }
 }

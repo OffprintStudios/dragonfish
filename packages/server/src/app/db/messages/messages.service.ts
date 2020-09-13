@@ -36,7 +36,8 @@ export class MessagesService {
             await newMessage.save().then(async () => {
                 await this.messageThreadModel.findByIdAndUpdate(doc._id, {
                     $inc: {'meta.numMessages': 1},
-                    'meta.userWhoRepliedLast': user.sub
+                    'meta.userWhoRepliedLast': user.sub,
+                    'meta.lastMessage': await sanitizeHtml(initialMessage.body)
                 });
             });
         });

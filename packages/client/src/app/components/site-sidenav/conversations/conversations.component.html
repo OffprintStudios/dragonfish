@@ -1,8 +1,18 @@
 <ng-container *ngIf="activeConvos && activeConvos.length !== 0; else noConvos">
     <div class="convo-container">
-        <div class="convo-item">
-            There's some conversations here.
-        </div>
+        <ng-container *ngFor="let convo of activeConvos">
+            <div class="convo-item">
+                <ng-container *ngIf="convo.meta.threadPicture !== null">
+                    <div class="convo-picture">
+
+                    </div>
+                </ng-container>
+                <div class="convo-info">
+                    <h4>{{ convo.name }}</h4>
+                    <h5>{{ convo.meta.lastMessage }}</h5>
+                </div>
+            </div>
+        </ng-container>
     </div>
 </ng-container>
 
