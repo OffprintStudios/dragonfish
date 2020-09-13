@@ -33,7 +33,7 @@ const routes: Routes = [
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
         {path: 'works', canActivate: [AuthGuard], component: WorksComponent},
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent},
-        {path: 'inbox', canActivate: [AuthGuard], component: InboxComponent},
+        {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
         {path: 'settings', canActivate: [AuthGuard], component: SettingsComponent},
         {path: 'alerts', canActivate: [AuthGuard], component: AlertsComponent},
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
