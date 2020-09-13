@@ -6,7 +6,6 @@ import { catchError, map } from 'rxjs/operators';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { MessageThread, CreateInitialMessage, CreateResponse } from '@pulp-fiction/models/messages';
-import { AlertsService } from '../../modules/alerts';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +13,7 @@ import { AlertsService } from '../../modules/alerts';
 export class MessagesService {
   private url = `/api/content/messages`;
 
-  constructor(private http: HttpClient, private alertsService: AlertsService, private _snackbar: MatSnackBar) {}
+  constructor(private http: HttpClient, private _snackbar: MatSnackBar) {}
 
   /**
    * Fetches a user's threads.
@@ -24,7 +23,7 @@ export class MessagesService {
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this._snackbar.open(err.error.message, 'Close');
         return throwError(err);
       }));
   }
@@ -37,7 +36,7 @@ export class MessagesService {
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this._snackbar.open(err.error.message, 'Close');
         return throwError(err);
       }));
   }
@@ -53,7 +52,7 @@ export class MessagesService {
         this._snackbar.open(`Message sent successfully!`, 'Close')
         return;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this._snackbar.open(err.error.message, 'Close');
         return throwError(err);
       }));
   }
@@ -68,7 +67,7 @@ export class MessagesService {
       .pipe(map(res => {
         return;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this._snackbar.open(err.error.message, 'Close');
         return throwError(err);
       }));
   }
