@@ -17,7 +17,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
-  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe } from './pipes';
+  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe } from './pipes';
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
@@ -101,7 +101,7 @@ const toolbarOptions = [
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
-    NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent
+    NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,

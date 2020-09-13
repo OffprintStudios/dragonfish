@@ -4,7 +4,6 @@ div.convo-container {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 100%;
         padding: 5px 10px;
         border-bottom: 1px solid whitesmoke;
 
@@ -32,6 +31,14 @@ div.convo-container {
                 font-size: 26px;
                 color: whitesmoke;
                 margin-bottom: 0;
+
+                a {
+                    color: whitesmoke;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
 
             h5 {
@@ -40,6 +47,26 @@ div.convo-container {
                 color: whitesmoke;
                 margin-bottom: 0;
                 margin-top: 0;
+            }
+        }
+
+        div.convo-link {
+            font-size: 0;
+        }
+    }
+
+    div.convo-inbox {
+        text-align: center;
+        margin-top: 1.5rem;
+        button {
+            box-shadow: none;
+            border: 1px solid whitesmoke;
+            color: whitesmoke;
+            background: var(--site-accent);
+
+            &:hover {
+                color: whitesmoke;
+                background: var(--site-accent-hover);
             }
         }
     }

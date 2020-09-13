@@ -15,11 +15,17 @@
                     </div>
                 </ng-template>
                 <div class="convo-info">
-                    <h4>{{ convo.name }}</h4>
-                    <h5>{{ convo.meta.lastMessage }}</h5>
+                    <h4><a>{{ convo.name | truncate:32 }}</a></h4>
+                    <h5>{{ convo.meta.lastMessage | truncate:52 }}</h5>
+                </div>
+                <div class="convo-link">
+                    <i-feather name="chevron-right"></i-feather>
                 </div>
             </div>
         </ng-container>
+        <div class="convo-inbox">
+            <button matRipple>See all conversations</button>
+        </div>
     </div>
 </ng-container>
 
