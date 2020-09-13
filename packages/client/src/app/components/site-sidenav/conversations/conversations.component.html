@@ -2,11 +2,18 @@
     <div class="convo-container">
         <ng-container *ngFor="let convo of activeConvos">
             <div class="convo-item">
-                <ng-container *ngIf="convo.meta.threadPicture !== null">
+                <ng-container *ngIf="convo.meta.threadPicture !== null; else defaultIcon">
                     <div class="convo-picture">
 
                     </div>
                 </ng-container>
+                <ng-template #defaultIcon>
+                    <div class="convo-picture">
+                        <div class="convo-icon">
+                            <i-feather name="message-circle"></i-feather>
+                        </div>
+                    </div>
+                </ng-template>
                 <div class="convo-info">
                     <h4>{{ convo.name }}</h4>
                     <h5>{{ convo.meta.lastMessage }}</h5>
