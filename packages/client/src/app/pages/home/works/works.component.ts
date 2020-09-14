@@ -72,7 +72,7 @@ export class WorksComponent implements OnInit {
    * @param work The work to edit
    */
   openEditWorkForm(work: Work) {
-    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {thisWork: work}});
+    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: work}});
     editWorkRef.afterClosed().subscribe(() => {
       this.fetchData(this.pageNum);
     });
