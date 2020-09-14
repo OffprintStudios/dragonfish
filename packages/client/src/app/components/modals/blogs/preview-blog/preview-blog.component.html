@@ -1,4 +1,4 @@
-<div class="preview-blog-modal">
+<mat-dialog-content>
     <div class="blog-container">
         <div class="blog-header">
             <h1 class="title">{{ blogData.title }}</h1>
@@ -19,4 +19,9 @@
             </ng-container>
         </div>
     </div>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
+        <button (click)="close()">Close</button>
+    </div>
+</mat-dialog-actions>

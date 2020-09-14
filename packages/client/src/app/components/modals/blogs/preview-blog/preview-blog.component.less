@@ -1,56 +1,46 @@
-div.preview-blog-modal {
-    padding: 20px;
-    background-color: var(--site-background);
+div.blog-container {
     border: 1px solid var(--site-borders);
-    overflow: auto;
-    height: 90%;
-    width: 60%;
     margin: 0 auto;
-    div.blog-container {
-        border: 1px solid var(--site-borders);
-        max-width: 90%;
-        margin: 0 auto;
-        padding: 20px;
-        box-shadow: var(--site-dropshadow);
-        span {
+    padding: 20px;
+    box-shadow: var(--site-dropshadow);
+    span {
+        margin: 0 0.5rem 0 0.5rem;
+        font-size: 20px;
+    }
+    div.content-controls-container {
+        font-size: 20px;
+        text-align: right;
+        a.meta {
             margin: 0 0.5rem 0 0.5rem;
-            font-size: 20px;
         }
-        div.content-controls-container {
-            font-size: 20px;
-            text-align: right;
-            a.meta {
-                margin: 0 0.5rem 0 0.5rem;
-            }
+    }
+    div.blog-header {
+        border-bottom: 1px solid var(--site-borders);
+        margin-bottom: 1.5rem;
+        h1.title {
+            text-align: center;
+            font-weight: 400;
+            margin-bottom: 0;
         }
-        div.blog-header {
-            border-bottom: 1px solid var(--site-borders);
-            margin-bottom: 1.5rem;
-            h1.title {
-                text-align: center;
-                font-weight: 400;
-                margin-bottom: 0;
+        h2.subtitle {
+            display: inline-block;
+            text-align: left;
+            font-size: 20px;
+            font-style: italic;
+            color: var(--site-text-color);
+            margin-bottom: 0;
+
+            i-feather {
+                position: relative;
+                width: 20px;
+                height: 20px;
+                top: 0.25rem;
+                margin-right: 0.75rem;
             }
-            h2.subtitle {
-                display: inline-block;
-                text-align: left;
+            span {
+                margin-left: 1rem;
+                margin-right: 1rem;
                 font-size: 20px;
-                font-style: italic;
-                color: var(--site-text-color);
-                margin-bottom: 0;
-    
-                i-feather {
-                    position: relative;
-                    width: 20px;
-                    height: 20px;
-                    top: 0.25rem;
-                    margin-right: 0.75rem;
-                }
-                span {
-                    margin-left: 1rem;
-                    margin-right: 1rem;
-                    font-size: 20px;
-                }
             }
         }
     }
