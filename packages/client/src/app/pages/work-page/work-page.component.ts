@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from '../../services/auth';
@@ -44,7 +45,8 @@ export class WorkPageComponent implements OnInit {
 
   constructor(private authService: AuthService, private worksService: WorksService,
     public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
-    private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService) {
+    private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService,
+    public dialog: MatDialog) {
 
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
@@ -215,22 +217,30 @@ export class WorkPageComponent implements OnInit {
    * Opens the edit form.
    */
   openEditForm() {
-    this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
-    this.editWork.open();
+    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: this.workData}});
+    editWorkRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
    * Opens the cover art uploader.
    */
   openCoverArtUpload() {
-    this.updateCoverArt.open();
+    const updateCoverArtRef = this.dialog.open(UploadCoverartComponent);
+    updateCoverArtRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
    * Opens the add to collections box.
    */
   openAddToCollections() {
-    this.addToCollections.open();
+    const addToCollsRef = this.dialog.open(AddToCollectionComponent);
+    addToCollsRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    })
   }
 
   /**
