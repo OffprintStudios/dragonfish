@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
