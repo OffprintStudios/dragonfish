@@ -1,4 +1,4 @@
-<div class="create-collection-modal">
+<mat-dialog-content>
     <div class="create-collection-header">
         <h3>Create Collection</h3>
     </div>
@@ -16,8 +16,10 @@
             </label>
         </form>
     </div>
-    <div class="create-collection-footer">
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
         <button class="create" type="submit" (click)="submitCollection()">Create</button>
         <button (click)="askCancel()">Cancel</button>
     </div>
-</div>
+</mat-dialog-actions>
