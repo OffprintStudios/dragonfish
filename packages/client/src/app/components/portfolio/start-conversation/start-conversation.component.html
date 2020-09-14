@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Start a new Conversation</h2>
+<mat-dialog-content>
+    <form [formGroup]="newConversation" (ngSubmit)="submitConversation()">
+        <input class="u-full-width" type="text" placeholder="Subject" formControlName="subject">
+        <textarea class="u-full-width" style="max-width: 100%;" formControlName="message"></textarea>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
+        <button (click)="submitConversation()" class="button-primary" style="margin-right: 1.25rem;">Submit</button>
+        <button mat-dialog-close>Cancel</button>
+    </div>
+</mat-dialog-actions>

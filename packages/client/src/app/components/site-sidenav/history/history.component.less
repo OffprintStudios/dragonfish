@@ -1,0 +1,79 @@
+div.hist-container {
+    min-height: 15rem;
+    margin-top: 1.25rem;
+    div.hist-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border: 1px solid whitesmoke;
+        border-radius: 4px;
+        padding: 5px;
+        max-width: 90%;
+        margin: 0 auto 1.5rem auto;
+        background: var(--site-background);
+        box-shadow: var(--site-dropshadow) !important;
+
+        div.work-cover {
+            font-size: 0;
+            margin-right: 1.25rem;
+            img {
+                max-width: 51px;
+                max-height: 51px;
+                object-fit: contain;
+                border: 1px solid whitesmoke;
+            }
+        }
+
+        div.work-info {
+            flex: 1;
+
+            h4 {
+                font-weight: 500;
+                font-size: 24px;
+                margin: 0;
+            }
+
+            h5 {
+                font-size: 14px;
+                font-style: italic;
+                margin: 0;
+                display: inline-block;
+                color: var(--site-text-color);
+            }
+
+            span {
+                display: inline-block;
+                margin-left: 0.25rem;
+                margin-right: 0.25rem;
+                font-size: 14px;
+                color: var(--site-text-color);
+            }
+        }
+
+        div.viewed-on {
+            color: var(--site-text-color);
+
+            span {
+                display: block;
+            }
+        }
+    }
+
+    div.hist-footer {
+        margin-top: 1.5rem;
+        text-align: center;
+        border-top: 1px solid transparent;
+
+        button {
+            box-shadow: none;
+            color: whitesmoke;
+            border: 1px solid whitesmoke;
+            background-color: var(--site-accent);
+
+            &:hover {
+                color: whitesmoke;
+                background-color: var(--site-accent-hover);
+            }
+        }
+    }
+}

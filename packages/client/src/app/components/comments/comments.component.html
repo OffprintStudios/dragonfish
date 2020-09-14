@@ -10,9 +10,9 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
-            <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="scrollToNewCommentForm()"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
+            <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
     </div>
 
@@ -75,18 +75,36 @@
                             <i-feather name="calendar"></i-feather>{{ comment.createdAt | date: 'mediumDate'}}, {{ comment.createdAt | date: 'mediumTime' }}
                         </span>
                         <span class="comm-controls" *ngIf="currentUserIsSame(comment.user._id); else notThisUser">
-                            <a (click)="editComment(itemId, itemKind, comment._id, comment.body)"><i-feather name="edit-3"></i-feather></a>
+                            <ng-container *ngIf="comment.isEditing; else notEditButton">
+                                <a matTooltip="Cancel" matTooltipClass="offprint-tooltip" (click)="exitEditing(comment._id)"><i-feather name="x"></i-feather></a>
+                            </ng-container>
+                            <ng-template #notEditButton>
+                                <a matTooltip="Edit" matTooltipClass="offprint-tooltip" (click)="editComment(comment._id, comment.body)"><i-feather name="edit-3"></i-feather></a>
+                            </ng-template>
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">
-                                <a (click)="quoteComment(itemId, itemKind, comment.user, 'comment-' + comment._id, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
+                                <a (click)="quoteComment(comment.user, 'comment-' + comment._id, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
                                 <a><i-feather name="flag"></i-feather></a>
                             </span>
                         </ng-template>
                     </div>
-                    <div class="comm-body">
-                        <div [innerHtml]="comment.body | safeHtml"></div>
-                    </div>
+                    <ng-container *ngIf="comment.isEditing; else isNotEditing">
+                        <div class="comm-body">
+                            <form [formGroup]="editCommentForm" (ngSubmit)="submitEdits(comment._id)">
+                                <editor [parentForm]="editCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
+                                <div class="comment-control">
+                                    <button type="submit">Submit</button>
+                                    <button type="button" (click)="exitEditing(comment._id)">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </ng-container>
+                    <ng-template #isNotEditing>
+                        <div class="comm-body">
+                            <div [innerHtml]="comment.body | safeHtml"></div>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -97,9 +115,19 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
-            <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="scrollToNewCommentForm()"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
+            <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
+    </div>
+
+    <!--To be replaced once the floating editor is reimplemented-->
+    <div class="comments-form" #newCommentSection>
+        <form [formGroup]="newCommentForm" (ngSubmit)="submitNewComment()">
+            <editor [parentForm]="newCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
+            <div class="comment-control">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
     </div>
 </ng-container>

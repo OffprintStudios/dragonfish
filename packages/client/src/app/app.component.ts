@@ -1,17 +1,17 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { Toppy, ToppyControl, RelativePosition, OutsidePlacement } from 'toppy';
+import * as lodash from 'lodash';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { slogans, Theme } from './models/site';
-import { UserMenuComponent } from './components/dropdowns';
 import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
+import { AlertsService } from './modules/alerts';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -19,19 +19,19 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
   styleUrls: ['./app.component.less']
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  @ViewChild('userMenu', {static: false}) userMenu: ElementRef;
+  @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
 
   title = 'offprint';
   currentUser: FrontendUser;
-  userMenuDropdown: ToppyControl;
 
   loading = false;
+  loadingLogin = false;
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  constructor(private router: Router, private toppy: Toppy, private authService: AuthService,
+  constructor(private router: Router, private authService: AuthService,
     private selectConfig: NgSelectConfig, private statsService: StatsService,
-    private nagBarService: NagBarService) {
+    private nagBarService: NagBarService, private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -47,18 +47,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
-  }  
+  }
 
   /**
    * Initializes the global dropdown menus.
    */
   ngAfterViewInit() {
-    this.userMenuDropdown = this.toppy
-      .position(new RelativePosition({src: this.userMenu.nativeElement, width: 'auto', placement: OutsidePlacement.BOTTOM_LEFT}))
-      .config({closeOnDocClick: true, closeOnEsc: true})
-      .content(UserMenuComponent)
-      .create();
-
       // Initialize the ToS nagbar if we need to
       if (!this.currentUser) {
         this.authService.currUser.subscribe(x => {
@@ -66,7 +60,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         // and if we modify the UI before that finishes, Angular errors out.
         // So allow one render tick to progress before we try.
           setTimeout(() => {
-            this.checkUserPolicies(x);
+            if (x !== null) {
+              this.checkUserPolicies(x);
+            }
           });
         })
       } else {
@@ -89,13 +85,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Opens the user menu dropdown.
-   */
-  openUserMenu() {
-    this.userMenuDropdown.open();
-  }
-
-  /**
    * Changes the site's theme based on user preference by manipulating CSS variables declared
    * in styles.less.
    * @param newTheme The theme to change to.
@@ -111,9 +100,32 @@ export class AppComponent implements OnInit, AfterViewInit {
     document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
   }
 
+  /**
+   * Checks to see if the currently logged-in user has agreed to the site's policies.
+   * 
+   * @param user The currently logged-in user
+   */
   private checkUserPolicies(user: FrontendUser) {
     if (!user.agreedToPolicies) {
       this.nagBarService.queueContent(NewPolicyNagComponent, null);
     }     
+  }
+
+  /**
+   * In order to access the contributor page
+   */
+  checkUserRolesForContribMenu() {
+    if (this.currentUser) {
+      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
+      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
+
+      if (hasRoles.length === 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
   }
 }

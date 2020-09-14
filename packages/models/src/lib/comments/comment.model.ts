@@ -18,6 +18,7 @@ export interface Comment {
         readonly actionReason: string;
         readonly actionedBy: string | ModInfo;
     };
+    isEditing: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
     readonly kind: string;

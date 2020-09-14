@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../services/auth';
 import { WorksService, CollectionsService, LocalSectionsService, HistoryService } from '../../services/content';
@@ -25,13 +25,10 @@ export class WorkPageComponent implements OnInit {
 
   workId: string; // This work's ID
   workData: Work; // This work's data.  
-  userHist: History;
-  editWork: ToppyControl;
-  updateCoverArt: ToppyControl;
-  addToCollections: ToppyControl;
+  userHist: History; // The current user's reading history
 
   pageNum = 1; // For comments pages
-  itemKind = ItemKind.Work;
+  itemKind = ItemKind.Work; // Sets the item kind for comments
 
   // The sections list binds to these, as they can be mutated individually,
   // without requiring us to re-assign workData (which forces the entire section list to be rebuilt)
@@ -43,52 +40,15 @@ export class WorkPageComponent implements OnInit {
   }
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    public route: ActivatedRoute, private router: Router, private toppy: Toppy, private queueService: QueueService,
-    private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService) {
+    public route: ActivatedRoute, private router: Router, private queueService: QueueService,
+    private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService,
+    public dialog: MatDialog) {
 
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData();
     }
 
   ngOnInit(): void {
-    const position = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    // Set up the edit work modal
-    this.editWork = this.toppy
-      .position(position)
-      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
-      .content(EditWorkComponent)
-      .create();
-
-    this.editWork.listen('t_close').subscribe(() => {
-      this.fetchData();
-    });
-
-    // Set up the upload cover art modal
-    this.updateCoverArt = this.toppy
-      .position(position)
-      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
-      .content(UploadCoverartComponent)
-      .create();
-
-    this.updateCoverArt.listen('t_close').subscribe(() => {
-      this.fetchData();
-    });
-
-    // Set up add to collections modal
-    this.addToCollections = this.toppy
-      .position(position)
-      .config({closeOnDocClick: true, closeOnEsc: true, backdrop: true})
-      .content(AddToCollectionComponent)
-      .create();
-
-    this.addToCollections.listen('t_close').subscribe(() => {
-      this.fetchData();
-    });
   }
 
   /**
@@ -215,22 +175,30 @@ export class WorkPageComponent implements OnInit {
    * Opens the edit form.
    */
   openEditForm() {
-    this.editWork.updateContent(EditWorkComponent, { workData: this.workData });
-    this.editWork.open();
+    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: this.workData}});
+    editWorkRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
    * Opens the cover art uploader.
    */
   openCoverArtUpload() {
-    this.updateCoverArt.open();
+    const updateCoverArtRef = this.dialog.open(UploadCoverartComponent);
+    updateCoverArtRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 
   /**
    * Opens the add to collections box.
    */
   openAddToCollections() {
-    this.addToCollections.open();
+    const addToCollsRef = this.dialog.open(AddToCollectionComponent);
+    addToCollsRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    })
   }
 
   /**
@@ -265,7 +233,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setLike(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.Liked;
+
+      if (currRating === RatingOption.Disliked) {
+        this.workData.stats.dislikes -= 1;
+      } else {
+        this.workData.stats.likes += 1;
+      }
     });
   }
 
@@ -282,7 +256,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setDislike(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.Disliked;
+      
+      if (currRating === RatingOption.Disliked) {
+        this.workData.stats.likes -= 1;
+      } else {
+        this.workData.stats.dislikes += 1;
+      }
     });
   }
 
@@ -300,7 +280,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setNoVote(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.NoVote;
+      
+      if (currRating === RatingOption.Liked) {
+        this.workData.stats.likes -= 1;
+      } else if (currRating === RatingOption.Disliked) {
+        this.workData.stats.dislikes -= 1;
+      }
     });
   }
 

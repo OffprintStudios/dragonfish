@@ -33,6 +33,7 @@ export const CommentsSchema = new Schema({
             select: '_id username audit.roles'
         }},
     },
+    isEditing: {type: Boolean, default: false},
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()}
 }, {discriminatorKey: 'kind', autoIndex: true, timestamps: true, collection: 'comments'});

@@ -1,4 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { Blog } from '@pulp-fiction/models/blogs';
 
 @Component({
@@ -8,10 +10,15 @@ import { Blog } from '@pulp-fiction/models/blogs';
 })
 export class PreviewBlogComponent implements OnInit {
   blogData: Blog;
-  close: any;
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<PreviewBlogComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {
+    this.blogData = this.data.blogData;
+  }
 
   ngOnInit(): void {
+  }
+
+  close() {
+    this.dialogRef.close();
   }
 }

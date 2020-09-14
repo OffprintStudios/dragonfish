@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { CollectionsService } from '../../../../services/content';
-import { AlertsService } from '../../../../modules/alerts';
 import { CreateCollection } from '@pulp-fiction/models/collections';
 
 @Component({
@@ -10,15 +12,14 @@ import { CreateCollection } from '@pulp-fiction/models/collections';
   styleUrls: ['./create-collection.component.less']
 })
 export class CreateCollectionComponent implements OnInit {
-  close: any;
-
   createCollectionForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
     desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
     public: new FormControl(false)
   });
 
-  constructor(private collsService: CollectionsService, private alertsService: AlertsService) { }
+  constructor(private collsService: CollectionsService, private snackbar: MatSnackBar, 
+    private dialogRef: MatDialogRef<CreateCollectionComponent>) { }
 
   ngOnInit(): void {}
 
@@ -32,12 +33,12 @@ export class CreateCollectionComponent implements OnInit {
    */
   submitCollection() {
     if (this.fields.name.invalid) {
-      this.alertsService.warn(`Collections must have a name between 3 and 32 characters.`);
+      this.snackbar.open(`Collections must have a name between 3 and 32 characters.`);
       return;
     }
 
     if (this.fields.desc.invalid) {
-      this.alertsService.warn(`Collections must have a description between 3 and 50 characters.`);
+      this.snackbar.open(`Collections must have a description between 3 and 50 characters.`);
       return;
     }
 
@@ -48,7 +49,7 @@ export class CreateCollectionComponent implements OnInit {
     };
 
     this.collsService.createCollection(newCollection).subscribe(() => {
-      this.close();
+      this.dialogRef.close();
     });
   }
 
@@ -58,12 +59,12 @@ export class CreateCollectionComponent implements OnInit {
   askCancel() {
     if (this.createCollectionForm.dirty || this.createCollectionForm.touched) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        this.close();
+        this.dialogRef.close();
       } else {
         return;
       }
     } else {
-      this.close();
+      this.dialogRef.close();
       return;
     }
   }

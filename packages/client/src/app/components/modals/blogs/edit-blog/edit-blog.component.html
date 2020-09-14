@@ -1,4 +1,4 @@
-<div class="edit-blog-modal">
+<mat-dialog-content>
     <div class="edit-blog-header">
         <h1>Editing: "{{ blogData.title }}"</h1>
     </div>
@@ -10,27 +10,26 @@
                 
             <label for="body">Body:</label>
             <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be more than 3 characters.</div>
-            <ngContainer *ngIf="!blogData.usesNewEditor">
+            <ng-container *ngIf="!blogData.usesNewEditor">
                 <quill-pulp-fiction-editor [parentForm]="editBlogForm" [controlName]="'body'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
-            </ngContainer>
-            <ngContainer *ngIf="blogData.usesNewEditor">
+            </ng-container>
+            <ng-container *ngIf="blogData.usesNewEditor">
                 <editor [parentForm]="editBlogForm" [controlName]="'body'"></editor>
-            </ngContainer>
+            </ng-container>
         
             <label>
                 <input type="checkbox" formControlName="published">
                 <span class="label-body">Publish Now</span>
             </label>
-        
-            <p>
-                NOTE: All unpublished work is submitted as a draft. You can publish a blog&mdash;or revoke it&mdash;at any time.
-            </p>
-        
-            <div class="loader" *ngIf="loading">
-                <div class="lds-dual-ring"></div>
-            </div>
-            <button type="submit" class="button-primary blog-modal-button" *ngIf="!loading">Save Changes</button>
-            <button type="button" class="blog-modal-button" (click)="askCancel()">Cancel</button>
         </form>
     </div>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <button type="submit" class="button-primary blog-modal-button" (click)="submitEdits()" *ngIf="!loading">Save Changes</button>
+        <button type="button" class="blog-modal-button" (click)="askCancel()">Cancel</button>
+    </div>
+</mat-dialog-actions>

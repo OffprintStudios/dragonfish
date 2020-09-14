@@ -1,0 +1,73 @@
+div.convo-container {
+    margin-top: 1.5rem;
+    div.convo-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 5px 10px;
+        border-bottom: 1px solid whitesmoke;
+
+        div.convo-picture {
+            div.convo-icon {
+                width: 40px;
+                height: 40px;
+                border: 1px solid whitesmoke;
+                background: var(--site-controls-background);
+                border-radius: 100%;
+                padding: 10px;
+                margin-right: 1rem;
+                i-feather {
+                    width: 40px;
+                    object-fit: cover;
+                    color: var(--site-text-color);
+                }
+            }
+        }
+
+        div.convo-info {
+            flex: 1;
+            h4 {
+                font-weight: 500;
+                font-size: 26px;
+                color: whitesmoke;
+                margin-bottom: 0;
+
+                a {
+                    color: whitesmoke;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            h5 {
+                font-size: 16px;
+                font-style: italic;
+                color: whitesmoke;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
+        }
+
+        div.convo-link {
+            font-size: 0;
+        }
+    }
+
+    div.convo-inbox {
+        text-align: center;
+        margin-top: 1.5rem;
+        button {
+            box-shadow: none;
+            border: 1px solid whitesmoke;
+            color: whitesmoke;
+            background: var(--site-accent);
+
+            &:hover {
+                color: whitesmoke;
+                background: var(--site-accent-hover);
+            }
+        }
+    }
+}

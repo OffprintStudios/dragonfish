@@ -2,10 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
+import { MaterialModule } from '@pulp-fiction/material';
 import { ToppyModule } from 'toppy';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
@@ -15,11 +18,11 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
-  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe } from './pipes';
+  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe } from './pipes';
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingComponent, CollectionsComponent, HistoryComponent,
+import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
   BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
@@ -38,7 +41,7 @@ import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
-import { CommentsComponent, CommentFormComponent } from './components/comments';
+import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
 
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
@@ -51,6 +54,9 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
 
 import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
+  HistoryComponent } from './components/site-sidenav';
+import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -86,7 +92,7 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryComponent, EditBlogComponent,
+    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, ApprovalQueueComponent, 
@@ -95,13 +101,13 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
-    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe
+    EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
+    NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule,     
-    CKEditorModule,
+    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {
@@ -131,12 +137,13 @@ const toolbarOptions = [
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
     SlugifyPipe,
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
     NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
-    AddToCollectionComponent, CommentFormComponent
+    AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })

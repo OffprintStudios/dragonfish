@@ -40,6 +40,9 @@
     },
     "html_sanitizer": {
       "tags": []
+    },
+    "material": {
+      "tags": []
     }
   },
   "workspaceLayout": {

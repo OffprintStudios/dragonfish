@@ -14,7 +14,6 @@ import { FrontendUser, CreateUser, LoginUser } from '@pulp-fiction/models/users'
 export class RegisterComponent implements OnInit {
   currentUser: FrontendUser;
   loadingRegister = false;
-  loadingLogin = false;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
@@ -26,13 +25,8 @@ export class RegisterComponent implements OnInit {
     ageCheck: new FormControl(false, Validators.requiredTrue),
   });
 
-  loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
-    rememberMe: new FormControl(false),
-  });
-
-  constructor(private authService: AuthService, private router: Router, private alertsService: AlertsService) {
+  constructor(private authService: AuthService, private router: Router, 
+    private alertsService: AlertsService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -41,7 +35,6 @@ export class RegisterComponent implements OnInit {
   }
 
   get registerFields() { return this.registerForm.controls; }
-  get loginFields() { return this.loginForm.controls; }
 
   onRegisterSubmit() {
     this.loadingRegister = true;
@@ -70,25 +63,5 @@ export class RegisterComponent implements OnInit {
       this.loadingRegister = false;
       this.alertsService.error(err.error.message);
     });
-  }
-
-  onLoginSubmit() {
-    if (this.loginForm.invalid) {
-      return;
-    } else {
-      this.loadingLogin = true;
-      const credentials: LoginUser = {
-        email: this.loginFields.email.value, 
-        password: this.loginFields.password.value, 
-        rememberMe: this.loginFields.rememberMe.value
-      };
-      this.authService.login(credentials).pipe(first()).subscribe(() => {
-        this.loadingLogin = false;        
-        this.router.navigate(['/home/latest']);
-      }, err => {
-        this.loadingLogin = false;
-        this.alertsService.error(err.error.message);
-      })
-    }
   }
 }

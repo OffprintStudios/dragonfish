@@ -1,7 +1,5 @@
-<div class="add-to-collection-modal">
-    <div class="add-to-collection-header">
-        <h3>Add To Collection</h3>
-    </div>
+<h1 mat-dialog-title>Add to Collection</h1>
+<mat-dialog-content>
     <div class="add-to-collection-body">
         <ng-container *ngIf="collections.length > 0">
             <ul>
@@ -22,7 +20,9 @@
             </div>
         </ng-container>
     </div>
-    <div class="add-to-collection-footer">
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
         <button (click)="cancel()">Cancel</button>
     </div>
-</div>
+</mat-dialog-actions>

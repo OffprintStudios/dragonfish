@@ -1,0 +1,73 @@
+<div class="user-menu" *ngIf="currentUser; else login">
+    <div class="user-header">
+      <div class="avatar">
+        <img class="user-avatar" [src]="currentUser.profile.avatar">
+      </div>
+      <div class="username">
+        <h3>{{ currentUser.username }}</h3>
+        <h4>Welcome back!</h4>
+      </div>
+    </div>
+    <div class="user-buttons">
+      <mat-tab-group (selectedTabChange)="onTabChanged($event)" dynamicHeight>
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="message-circle"></i-feather>
+            </ng-template>
+            <sidenav-conversations></sidenav-conversations>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <i-feather name="eye"></i-feather>
+            </ng-template>
+            <sidenav-watching></sidenav-watching>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <i-feather name="layers"></i-feather>
+          </ng-template>
+          <sidenav-history></sidenav-history>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+              <i-feather name="bell"></i-feather>
+            </ng-template>
+            <sidenav-notifications></sidenav-notifications>
+          </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="user-footer">
+        <p>Offprint Alpha, ver. 0.3.0</p>
+        <button matRipple matTooltip="Portfolio" matTooltipClass="offprint-tooltip" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather></button>
+        <button matRipple matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']" class="mid"><i-feather name="settings"></i-feather></button>
+        <button matRipple matTooltip="Log out" matTooltipClass="offprint-tooltip" (click)="logout()"><i-feather name="log-out"></i-feather></button>
+    </div>
+  </div>
+  <ng-template #login>
+    <div class="user-menu">
+      <div class="login-form">
+        <h2>Welcome to Offprint!</h2>
+        <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+
+          <p>New around here? Why not <a [routerLink]="['/register']">register today</a>!</p>
+          
+          <input type="email" formControlName="email" class="u-full-width" placeholder="Email" autocomplete="email" required>
+
+          <input type="password" formControlName="password" class="u-full-width" placeholder="Password" autocomplete="current-password" required>
+
+          <label>
+            <input type="checkbox" formControlName="rememberMe">
+            <span class="label-body">Remember me for a month</span>
+          </label>
+
+          <div class="loader" *ngIf="loadingLogin">
+            <div class="lds-dual-ring"></div>
+          </div>
+          <button type="submit" [disabled]="!loginForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingLogin">Log in</button>
+        </form>
+      </div>
+      <div class="user-footer">
+        <p>Offprint Alpha, ver. 0.3.0</p>
+      </div>
+    </div>
+  </ng-template>

@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateComment, EditComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
-import { CommentFormComponent } from './comment-form/comment-form.component';
 
 @Component({
   selector: 'comments',
@@ -21,35 +21,37 @@ export class CommentsComponent implements OnInit {
   @Input() banlist?: any; // The banlist of the thread
   @Output() emitPageChange = new EventEmitter<number>(); // Emits the current page number
 
+  @ViewChild('newCommentSection') newCommentSection: ElementRef;
+
   currentUser: FrontendUser;
   loading = false;
   comments: PaginateResult<Comment> | PaginateResult<BlogComment> | PaginateResult<WorkComment>;
-  commentForm: ToppyControl;
 
-  constructor(private authService: AuthService, private toppy: Toppy, private commentsService: CommentsService) { 
+  newCommentForm = new FormGroup({
+    body: new FormControl('', [Validators.required, Validators.minLength(10)])
+  });
+
+  editCommentForm = new FormGroup({
+    body: new FormControl('', [Validators.required, Validators.minLength(10)])
+  });
+
+  constructor(private authService: AuthService, private commentsService: CommentsService, private snackbar: MatSnackBar) { 
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
   ngOnInit(): void {
     this.fetchData(this.pageNum);
-
-    // Setting up the comment form
-    const pos = new GlobalPosition({
-      placement: InsidePlacement.BOTTOM,
-      width: '100%',
-      height: 'auto'
-    });
-
-    this.commentForm = this.toppy
-      .position(pos)
-      .config({closeOnEsc: true})
-      .content(CommentFormComponent)
-      .create();
-
-    this.commentForm.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
   }
+
+  /**
+   * Getter for the new comment form
+   */
+  get newCommentFields() { return this.newCommentForm.controls; }
+
+  /**
+   * Getter for the edit comment form
+   */
+  get editCommentFields() { return this.editCommentForm.controls; }
 
   /**
    * Fetches the requested page of comments.
@@ -73,6 +75,13 @@ export class CommentsComponent implements OnInit {
         this.loading = false;
       });
     }
+  }
+
+  /**
+   * Scrolls to the new comment form
+   */
+  scrollToNewCommentForm() {
+    this.newCommentSection.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 
   /**
@@ -133,54 +142,97 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
-   * Creates a new comment.
-   * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
+   * Creates a new comment
    */
-  newComment(itemId: string, itemKind: ItemKind) {
-    this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind, editMode: false});
-    this.commentForm.open();
+  submitNewComment() {
+    if (this.newCommentFields.body.invalid) {
+      this.snackbar.open('Comments must be at least 10 characters long.');
+      return;
+    }
+
+    const comm: CreateComment = {
+      body: this.newCommentFields.body.value
+    };
+
+    if (this.itemKind === ItemKind.Blog) {
+      this.commentsService.addBlogComment(this.itemId, comm).subscribe(() => {
+        this.newCommentForm.reset();
+        this.fetchData(this.pageNum);
+      });
+    } else if (this.itemKind === ItemKind.Work) {
+      this.commentsService.addWorkComment(this.itemId, comm).subscribe(() => {
+        this.newCommentForm.reset();
+        this.fetchData(this.pageNum);
+      });
+    }
   }
 
   /**
-   * Edits a comment.
+   * Submits edits on a comment.
    * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
-   * @param commentId The comment's ID
-   * @param commInfo The comment's info
+   * @param commentId The comment we're editing
    */
-  editComment(itemId: string, itemKind: ItemKind, commentId: string, commInfo: string) {
-    this.commentForm.updateContent(CommentFormComponent, {
-      itemId: itemId,
-      itemKind: itemKind,
-      editMode: true,
-      commentId: commentId,
-      editCommInfo: commInfo
-    });
+  submitEdits(commentId: string) {
+    if (this.editCommentFields.body.invalid) {
+      this.snackbar.open('Comments must be at least 10 characters long.');
+      return;
+    }
 
-    this.commentForm.open();
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    const commInfo: EditComment = {
+      body: this.editCommentFields.body.value
+    };
+
+    this.commentsService.editComment(commentId, commInfo).subscribe(() => {
+      this.comments.docs[commentIndex].isEditing = false;
+      this.comments.docs[commentIndex].body = this.editCommentFields.body.value;
+    });
   }
 
   /**
-   * Creates a comment with a quote.
+   * Appends a comment to the new comment form for quoting.
    * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
-   * @param commentId The comment's ID
-   * @param commInfo The comment's info
+   * @param quoteUser The user we're quoting
+   * @param commentId The ID of the quoted comment
+   * @param commentBody The body of the quoted comment
    */
-  quoteComment(itemId: string, itemKind: ItemKind, commUser: UserInfoComments, commUrl: string, commInfo: string) {
-    this.commentForm.updateContent(CommentFormComponent, {
-      itemId: itemId,
-      itemKind: itemKind,
-      editMode: false,
-      quoteCommUser: commUser,
-      quoteCommUrl: commUrl,
-      quoteCommInfo: commInfo
+  quoteComment(quoteUser: UserInfoComments, commentId: string, commentBody: string) {
+    this.newCommentForm.setValue({
+      body: `
+        <blockquote>
+          <em><a href="#${commentId}">${quoteUser.username}</a> said:</em>\n
+          ${commentBody}
+        </blockquote>
+      `
     });
 
-    this.commentForm.open();
+    this.scrollToNewCommentForm();
+  }
+
+  /**
+   * Sets the editCommentForm to the comment body requested.
+   * 
+   * @param commentId: The comment's Id
+   * @param commentBody The comment body of what we're editing
+   */
+  editComment(commentId: string, commentBody: string) {
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    this.comments.docs[commentIndex].isEditing = true;
+
+    this.editCommentForm.setValue({
+      body: commentBody
+    });
+  }
+
+  /**
+   * Exits editing mode without saving any changes
+   * 
+   * @param commentId The comment's ID
+   */
+  exitEditing(commentId: string) {
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    this.comments.docs[commentIndex].isEditing = false;
+
+    this.editCommentForm.reset();
   }
 }

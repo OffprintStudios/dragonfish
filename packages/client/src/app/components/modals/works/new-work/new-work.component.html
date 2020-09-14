@@ -1,4 +1,4 @@
-<div class="new-work-modal">
+<mat-dialog-content>
     <h1>Create a new work</h1>
     <hr>
     <form [formGroup]="newWorkForm" (ngSubmit)="submitWork()">
@@ -97,11 +97,14 @@
                             class="custom"></ng-select>
             </div>
         </div>
-
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
-        <button class="work-modal-button" type="submit" *ngIf="!loading">Create Work</button>
-        <button class="work-modal-button-cancel" type="button" (click)="askCancel()">Cancel</button>
-    </form>
-</div>
+        <button matRipple class="work-modal-button" type="submit" (click)="submitWork()" *ngIf="!loading">Submit</button>
+        <button matRipple class="work-modal-button-cancel" type="button" (click)="askCancel()">Cancel</button>
+    </div>
+</mat-dialog-actions>

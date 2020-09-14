@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { MatDialog } from '@angular/material/dialog';
 
 import { BlogsService } from '../../../services/content';
 import { AuthService } from '../../../services/auth';
@@ -18,11 +18,8 @@ import { PaginateResult } from '@pulp-fiction/models/util';
 export class BlogsComponent implements OnInit {
   currentUser: FrontendUser;
   paginatedBlogs: PaginateResult<Blog>;
-  unfilteredList: Blog[];
 
   loading = false;
-  isPubFiltered = false;
-  isUnpubFiltered = false;
 
   pageNum = 1;
 
@@ -30,66 +27,13 @@ export class BlogsComponent implements OnInit {
     query: new FormControl('', Validators.required),
   });
 
-  createBlog: ToppyControl;
-  previewBlog: ToppyControl;
-  editBlog: ToppyControl;
-
-  constructor(private blogsService: BlogsService, private authService: AuthService, private toppy: Toppy, private alertsService: AlertsService) {
+  constructor(private blogsService: BlogsService, private authService: AuthService,
+      private alertsService: AlertsService, private dialog: MatDialog) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
     this.fetchData(1);
   }
 
   ngOnInit(): void {
-    // Creates the createBlog modal
-    const createPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.createBlog = this.toppy
-      .position(createPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(CreateBlogComponent)
-      .create();
-
-    this.createBlog.listen('t_close').subscribe(() => {
-      this.fetchData(1);
-    });
-
-    // Creates the previewBlog modal
-    const previewPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.previewBlog = this.toppy
-      .position(previewPosition)
-      .config({backdrop: true, closeOnEsc: true, closeOnDocClick: true})
-      .content(PreviewBlogComponent)
-      .create();
-    
-    this.previewBlog.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
-
-    // Creates the editBlog modal
-    const editPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.editBlog = this.toppy
-      .position(editPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(EditBlogComponent)
-      .create();
-
-    this.editBlog.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
   }
 
   /**
@@ -128,23 +72,30 @@ export class BlogsComponent implements OnInit {
    * Opens the new blog form.
    */
   openNewBlogForm() {
-    this.createBlog.open();
+    const createBlogRef = this.dialog.open(CreateBlogComponent);
+    createBlogRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
    * Opens the edit blog form.
    */
   openEditForm(blog: Blog) {
-    this.editBlog.updateContent(EditBlogComponent, {blogData: blog});
-    this.editBlog.open();
+    const editBlogRef = this.dialog.open(EditBlogComponent, {data: {blogData: blog}});
+    editBlogRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
    * Opens the blog preview.
    */
   openPreview(blog: Blog) {
-    this.previewBlog.updateContent(PreviewBlogComponent, {blogData: blog});
-    this.previewBlog.open();
+    const previewBlogRef = this.dialog.open(PreviewBlogComponent, {data: {blogData: blog}});
+    previewBlogRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
@@ -185,45 +136,6 @@ export class BlogsComponent implements OnInit {
       this.alertsService.error('Something went wrong! Try again in a little bit.');
       return;
     });
-  }
-
-  /**
-   * Filters the blogs list by published content.
-   */
-  filterByPublished() {
-    /*if (this.isUnpubFiltered) {
-      this.isPubFiltered = true;
-      this.isUnpubFiltered = false;
-      this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
-    } else {
-      this.unfilteredList = this.blogs;
-      this.isPubFiltered = true;
-      this.blogs = this.unfilteredList.filter(blog => {return blog.published === true});
-    }*/
-  }
-
-  /**
-   * Filters the blogs list by unpublished content.
-   */
-  filterByUnpublished() {
-    /*if (this.isPubFiltered) {
-      this.isUnpubFiltered = true;
-      this.isPubFiltered = false;
-      this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
-    } else {
-      this.unfilteredList = this.blogs;
-      this.isUnpubFiltered = true;
-      this.blogs = this.unfilteredList.filter(blog => {return blog.published === false});
-    }*/
-  }
-
-  /**
-   * Clears all filters.
-   */
-  clearFilter() {
-    /*this.isPubFiltered = false;
-    this.isUnpubFiltered = false;
-    this.blogs = this.unfilteredList;*/
   }
 
   /**

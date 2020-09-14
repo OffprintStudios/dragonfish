@@ -1,4 +1,4 @@
-<div class="new-blog-modal">
+<mat-dialog-content>
     <h1>Create a new blog</h1>
     <hr>
     <form [formGroup]="newBlogForm" (ngSubmit)="submitForm()">
@@ -8,9 +8,9 @@
         
         <label for="body">Body:</label>
         <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be more than 3 characters.</div>
-        <editor [parentForm]="newBlogForm" controlName="'body'"></editor>
+        <editor [parentForm]="newBlogForm" [controlName]="'body'"></editor>
 
-        <label>
+        <label style="margin-top: 1.5rem;">
             <input type="checkbox" formControlName="published">
             <span class="label-body">Publish Now</span>
         </label>
@@ -18,11 +18,14 @@
         <p>
             NOTE: All unpublished work is submitted as a draft. You can publish a blog&mdash;or revoke it&mdash;at any time.
         </p>
-
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
-        <button type="submit" class="blog-modal-button" *ngIf="!loading">Create Blog</button>
+        <button type="submit" class="blog-modal-button" (click)="submitForm()" *ngIf="!loading">Submit</button>
         <button type="button" class="blog-modal-button" (click)="askCancel()">Cancel</button>
-    </form>
-</div>
+    </div>
+</mat-dialog-actions>

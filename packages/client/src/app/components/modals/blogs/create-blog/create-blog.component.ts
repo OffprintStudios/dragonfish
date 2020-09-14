@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 
 import * as models from '@pulp-fiction/models/blogs';
-import { dividerHandler, imageHandler } from '../../../../util/quill';
 import { BlogsService } from '../../../../services/content';
 import { AlertsService } from '../../../../modules/alerts';
 
@@ -12,7 +12,6 @@ import { AlertsService } from '../../../../modules/alerts';
   styleUrls: ['./create-blog.component.less']
 })
 export class CreateBlogComponent implements OnInit {
-  close: any; // Alias for Toppy
   loading = false; // Loading check for submission
 
   newBlogForm = new FormGroup({
@@ -21,34 +20,10 @@ export class CreateBlogComponent implements OnInit {
     published: new FormControl(false)
   });
 
-  editorFormats = [
-    'header', 'bold', 'italic', 'underline', 'strike',
-    'divider', 'link', 'blockquote', 'code', 'image',
-    'align', 'center', 'right', 'justify',
-    'list', 'bullet', 'ordered'
-  ];
-
-  constructor(private blogsService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) {}
+  constructor(private blogsService: BlogsService, private dialogRef: MatDialogRef<CreateBlogComponent>,
+    private alertsService: AlertsService) {}
 
   ngOnInit() {}
-
-  /**
-   * Required for QuillJS validators
-   */
-  triggerChangeDetection() {
-    this.cdr.detectChanges();
-  }
-
-  /**
-   * Gets the Quill Editor object after the editor's creation in the template HTML
-   * 
-   * @param event The editor object
-   */
-  onEditorCreated(event: any) {
-    let toolbar = event.getModule('toolbar');
-    toolbar.addHandler('divider', dividerHandler);
-    toolbar.addHandler('image', imageHandler);
-  }
 
   /**
    * Create form getters
@@ -83,7 +58,7 @@ export class CreateBlogComponent implements OnInit {
 
     this.blogsService.createBlog(newBlogInfo).subscribe(() => {
       this.loading = false;
-      this.close();
+      this.dialogRef.close();
     }, err => {
       this.loading = false;
       this.alertsService.error(err);
@@ -98,12 +73,12 @@ export class CreateBlogComponent implements OnInit {
   askCancel() {
     if (this.newBlogForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        this.close();
+        this.dialogRef.close();
       } else {
         return;
       }
     } else {
-      this.close();
+      this.dialogRef.close();
       return;
     }
   }

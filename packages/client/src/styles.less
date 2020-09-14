@@ -5,7 +5,7 @@
 @import (css) url("https://cdn.quilljs.com/1.3.6/quill.bubble.css");
 @import (css) url("https://cdn.quilljs.com/1.3.6/quill.snow.css");
 @import (css) url("https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/default.min.css");
-@import (css) "~@ng-select/ng-select/themes/default.theme.css";
+@import (css) '~@ng-select/ng-select/themes/default.theme.css';
 
 :root {
     --site-accent: #DD4C4F;
@@ -30,6 +30,14 @@
     --editor-max-height: 500px;
 }
 
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
 body {
     font-family: 'Raleway', sans-serif;
     background-color: var(--site-background);
@@ -40,10 +48,14 @@ div.main-stage {
     max-width: var(--site-max-width);
     margin-left: auto;
     margin-right: auto;
+
+    @media (max-width: 1150px) {
+        max-width: 100%;
+    }
 }
 
 div.container {
-    @media (max-width: 1000px) {
+    @media (max-width: 1150px) {
         width: 95%;
         padding: 0;
     }
@@ -158,16 +170,15 @@ input[type=text], input[type=password],
 input[type=email], input[type=submit], select {
     border: 1px solid var(--site-borders);
     background-color: var(--site-background);
-    border-radius: 0;
+    border-radius: 4px;
     color: var(--site-text-color);
-    box-shadow: var(--site-dropshadow);
 }
 
 a.button-primary, button.button-primary,
 input[type=submit].button-primary {
     border: 1px solid var(--site-borders);
     background-color: var(--site-accent);
-    border-radius: 0px;
+    border-radius: 4pxpx;
     color: whitesmoke;
 }
 
@@ -198,7 +209,6 @@ textarea {
     border: 1px solid var(--site-borders);
     border-radius: 0px;
     background-color: var(--site-background);
-    box-shadow: var(--site-dropshadow);
 
     &:focus {
         border: 1px solid var(--site-accent);
@@ -514,19 +524,18 @@ quill-editor {
     border-radius: 0;
     margin-bottom: 1.5rem;
     color: var(--site-text-color);
-    box-shadow: var(--site-dropshadow);
     background-color: var(--site-background);
 }
 
 .ng-select.custom .ng-control {
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     border: none;
 }
 
 .ng-select.custom .ng-select-container {
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     border: none;
     background-color: var(--site-background);
     color: var(--site-text-color);
@@ -535,7 +544,7 @@ quill-editor {
 .ng-dropdown-panel.custom {
     border: 1px solid var(--site-borders);
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     background-color: var(--site-background);
 }
 
@@ -547,28 +556,28 @@ quill-editor {
     background-color: var(--site-background);
     color: var(--site-text-color);
     border: 1px solid var(--site-borders);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-bottom {
     background-color: var(--site-background);
     color: var(--site-text-color);
     border: 1px solid var(--site-borders);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
     background-color: var(--site-background);
     color: var(--site-text-color);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
@@ -597,7 +606,7 @@ quill-editor {
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-    border-radius: 0;
+    border-radius: 4px;
     border: 1px solid var(--site-borders);
     background-color: var(--site-accent);
     color: whitesmoke;
@@ -627,6 +636,16 @@ pagination-controls {
             }
         }
 
+        .pagination-previous {
+            border-top-left-radius: 4px;
+            border-bottom-left-radius: 4px;
+        }
+
+        .pagination-next {
+            border-top-right-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+
         li.disabled {
             color: var(--site-text-color);
             padding: 5px 10px;
@@ -649,5 +668,108 @@ pagination-controls {
                 color: whitesmoke;
             }
         }
+    }
+}
+
+/* Material styles */
+mat-sidenav-container {
+    background: var(--site-background);
+}
+
+.mat-drawer-container {
+    background-color: var(--site-background);
+    color: var(--site-text-color);
+}
+
+.mat-drawer {
+    background-color: var(--site-accent);
+    color: whitesmoke;
+    border-right: 1px solid var(--site-borders);
+    border-left: 1px solid var(--site-borders);
+}
+
+.offprint-tooltip {
+    font-family: Raleway, sans-serif !important;
+    border: 1px solid var(--site-borders) !important;
+    background: var(--site-background) !important;
+    color: var(--site-text-color) !important;
+    border-radius: 0 !important;
+    box-shadow: var(--site-dropshadow);
+}
+
+.mat-badge-content {
+    color: whitesmoke;
+    font-weight: 400;
+    font-size: 12px;
+    font-family: Raleway, sans-serif;
+    background: var(--site-accent-hover);
+}
+
+.mat-badge-medium .mat-badge-content {
+    width: initial;
+    height: 22px;
+    min-width: 22px;
+}
+
+.mat-ripple:not(:empty) {
+    transform: none;
+}
+
+.mat-dialog-container {
+    margin: 0 auto;
+    background: var(--site-background);
+    color: var(--site-text-color);
+    border-radius: 4px !important;
+    border: 1px solid var(--site-borders);
+}
+
+.mat-dialog-title {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.mat-snack-bar-container {
+    border-radius: 0;
+    border: 1px solid var(--site-borders);
+    background: var(--site-background);
+    color: var(--site-text-color);
+}
+
+.mat-simple-snackbar {
+    font-family: Raleway, sans-serif;
+}
+
+.mat-simple-snackbar-action {
+    color: var(--site-accent);
+}
+
+.mat-button {
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid transparent;
+}
+
+div.actions {
+    width: 100%;
+    text-align: center;
+
+    button {
+        margin: 0 1.5rem 0 0;
+        border: 1px solid var(--site-borders);
+        color: var(--site-text-color);
+    }
+}
+
+div.user-buttons {
+    .mat-tab-label {
+        opacity: 1 !important;
+        min-width: 120px !important;
+    }
+    
+    .mat-tab-label, .mat-tab-link {
+        color: whitesmoke;
+    }
+
+    .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+        background-color: var(--site-accent-hover);
     }
 }

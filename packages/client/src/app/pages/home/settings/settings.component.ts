@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { ToppyControl, Toppy, GlobalPosition, InsidePlacement } from 'toppy';
@@ -48,9 +49,7 @@ export class SettingsComponent implements OnInit {
     newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(50)])
   });
 
-  changeAvatarModal: ToppyControl;
-
-  constructor(private authService: AuthService, private alertsService: AlertsService, private toppy: Toppy) {
+  constructor(private authService: AuthService, private alertsService: AlertsService, private dialog: MatDialog, private toppy: Toppy) {
     this.authService.currUser.subscribe(x => {
       let themePrefIndex = 0;
 
@@ -96,20 +95,7 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Settings for the changeAvatar modal
-    const position = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.changeAvatarModal = this.toppy
-      .position(position)
-      .config({closeOnEsc: true, backdrop: true})
-      .content(UploadAvatarComponent)
-      .create();
-  }
+  ngOnInit(): void {}
   
   get passwordFields() { return this.changePasswordForm.controls; }
   get changeProfileFields() { return this.changeProfileForm.controls; }
@@ -170,6 +156,6 @@ export class SettingsComponent implements OnInit {
   }
 
   changeAvatar() {
-    this.changeAvatarModal.open();
+    this.dialog.open(UploadAvatarComponent);
   }
 }

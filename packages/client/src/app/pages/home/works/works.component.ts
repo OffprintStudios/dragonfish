@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../services/auth';
 import { WorksService } from '../../../services/content';
-import { AlertsService } from '../../../modules/alerts';
 import { NewWorkComponent, EditWorkComponent } from '../../../components/modals/works';
 import { QueueService } from '../../../services/admin';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -20,8 +19,6 @@ export class WorksComponent implements OnInit {
   currentUser: FrontendUser;
   works: PaginateResult<Work>;
   unfilteredList: Work[];
-  newWorkForm: ToppyControl;
-  editWorkForm: ToppyControl;
 
   loading = false;
   isUnpubFiltered = false;
@@ -33,46 +30,13 @@ export class WorksComponent implements OnInit {
     query: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private worksService: WorksService,
-    private alertsService: AlertsService, private toppy: Toppy, private queueService: QueueService) {
+  constructor(private authService: AuthService, private worksService: WorksService, 
+    private queueService: QueueService, public dialog: MatDialog) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
-    // Initializing the new work form modal
-    const newWorkPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.newWorkForm = this.toppy
-      .position(newWorkPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(NewWorkComponent)
-      .create();
-
-    this.newWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData(1);
-    });
-
-    // Initializing the edit work form modal
-    const editWorkPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.editWorkForm = this.toppy
-      .position(editWorkPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(EditWorkComponent)
-      .create();
-    
-    this.editWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
   }
 
   /**
@@ -93,49 +57,13 @@ export class WorksComponent implements OnInit {
   }
 
   /**
-   * Filters the works list by published content.
-   */
-  filterByPublished() {
-    /*if (this.isUnpubFiltered) {
-      this.isPubFiltered = true;
-      this.isUnpubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
-    } else {
-      this.unfilteredList = this.works;
-      this.isPubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
-    }*/
-  }
-
-  /**
-   * Filters the works list by unpublished content.
-   */
-  filterByUnpublished() {
-    /*if (this.isPubFiltered) {
-      this.isUnpubFiltered = true;
-      this.isPubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
-    } else {
-      this.unfilteredList = this.works;
-      this.isUnpubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
-    }*/
-  }
-
-  /**
-   * Clears all filters.
-   */
-  clearFilter() {
-    /*this.isPubFiltered = false;
-    this.isUnpubFiltered = false;
-    this.works = this.unfilteredList;*/
-  }
-
-  /**
    * Opens the new work form modal.
    */
   openNewWorkForm() {
-    this.newWorkForm.open();
+    const newWorkRef = this.dialog.open(NewWorkComponent);
+    newWorkRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
@@ -144,8 +72,10 @@ export class WorksComponent implements OnInit {
    * @param work The work to edit
    */
   openEditWorkForm(work: Work) {
-    this.editWorkForm.updateContent(EditWorkComponent, {workData: work});
-    this.editWorkForm.open();
+    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: work}});
+    editWorkRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**

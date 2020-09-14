@@ -16,6 +16,8 @@ div.blogs-list-container {
                 padding-left: 1rem;
                 padding-right: 1rem;
                 margin-bottom: 0;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
                 box-shadow: none;
                 i-feather {
                     width: 16px;
@@ -32,6 +34,7 @@ div.blogs-list-container {
                 //margin-left: 2rem;
                 border-left: 0;
                 border-right: 0;
+                border-radius: 0;
                 box-shadow: none;
                 margin-bottom: 0;
                 i-feather {
@@ -61,6 +64,7 @@ div.blogs-list-container {
                         box-shadow: none;
                         border-right: 0;
                         margin-bottom: 0;
+                        border-radius: 0;
                     }
     
                     button.submit-blog-search {
@@ -69,6 +73,8 @@ div.blogs-list-container {
                         padding-left: 1rem;
                         padding-right: 1rem;
                         margin-bottom: 0;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
     
                         i-feather {
                             height: 16px;
@@ -95,6 +101,7 @@ div.blogs-list-container {
                 flex-direction: row;
                 justify-content: space-between;
                 border: 1px solid var(--site-borders);
+                border-radius: 4px;
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
                 min-height: 12rem;
@@ -107,6 +114,8 @@ div.blogs-list-container {
                         border-top: none;
                         border-bottom: none;
                         border-left: none;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
                         height: 100%;
                         padding-left: 15px;
                         padding-right: 15px;
@@ -120,7 +129,6 @@ div.blogs-list-container {
                             width: 35px;
                             height: 35px;
                             top: 0.75rem;
-                            stroke-width: 1;
                         }
                     }
 
@@ -131,6 +139,8 @@ div.blogs-list-container {
                         border-bottom: none;
                         border-left: none;
                         height: 100%;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
                         padding-left: 15px;
                         padding-right: 15px;
                         margin-bottom: 0;
@@ -144,7 +154,6 @@ div.blogs-list-container {
                             width: 35px;
                             height: 35px;
                             top: 0.75rem;
-                            stroke-width: 1;
                         }
                     }
                 }
@@ -204,7 +213,6 @@ div.blogs-list-container {
                         i-feather {
                             position: relative;
                             top: 0.75rem;
-                            stroke-width: 1;
                         }
                         &:hover {
                             color: whitesmoke;
@@ -213,16 +221,23 @@ div.blogs-list-container {
                     }
                     button.top {
                         border-right: 0;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                        border-bottom-right-radius: 0;
                     }
                     button.mid {
                         border-top: 1px solid var(--site-borders);
                         border-right: 0;
+                        border-radius: 0;
                         box-shadow: none;
                         margin-bottom: 0;
                     }
 
                     button.bottom {
                         border-right: none;
+                        border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                        border-top-right-radius: 0;
                         border-top: 1px solid var(--site-borders);
                     }
                 }
