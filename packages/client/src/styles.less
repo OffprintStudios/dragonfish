@@ -30,6 +30,14 @@
     --editor-max-height: 500px;
 }
 
+html,body {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden; 
+}
+
 body {
     font-family: 'Raleway', sans-serif;
     background-color: var(--site-background);
@@ -514,19 +522,18 @@ quill-editor {
     border-radius: 0;
     margin-bottom: 1.5rem;
     color: var(--site-text-color);
-    box-shadow: var(--site-dropshadow);
     background-color: var(--site-background);
 }
 
 .ng-select.custom .ng-control {
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     border: none;
 }
 
 .ng-select.custom .ng-select-container {
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     border: none;
     background-color: var(--site-background);
     color: var(--site-text-color);
@@ -535,7 +542,7 @@ quill-editor {
 .ng-dropdown-panel.custom {
     border: 1px solid var(--site-borders);
     min-height: 0px;
-    border-radius: 0;
+    border-radius: 4px;
     background-color: var(--site-background);
 }
 
@@ -547,28 +554,28 @@ quill-editor {
     background-color: var(--site-background);
     color: var(--site-text-color);
     border: 1px solid var(--site-borders);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-bottom {
     background-color: var(--site-background);
     color: var(--site-text-color);
     border: 1px solid var(--site-borders);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
     background-color: var(--site-background);
     color: var(--site-text-color);
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-top .ng-dropdown-panel-items .ng-option:first-child {
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel.ng-select-bottom .ng-dropdown-panel-items .ng-option:last-child {
-    border-radius: 0;
+    border-radius: 4px;
 }
 
 .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
@@ -597,7 +604,7 @@ quill-editor {
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-    border-radius: 0;
+    border-radius: 4px;
     border: 1px solid var(--site-borders);
     background-color: var(--site-accent);
     color: whitesmoke;
@@ -693,9 +700,11 @@ mat-sidenav-container {
 }
 
 .mat-dialog-container {
+    margin: 0 auto;
     background: var(--site-background);
     color: var(--site-text-color);
-    border-radius: 0 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
     border: 1px solid var(--site-borders);
 }
 
@@ -722,6 +731,15 @@ mat-sidenav-container {
     border-radius: 0;
     box-shadow: none;
     border: 1px solid transparent;
+}
+
+div.actions {
+    width: 100%;
+    text-align: center;
+
+    button {
+        margin: 0 1.5rem 0 0;
+    }
 }
 
 div.user-buttons {

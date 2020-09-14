@@ -1,11 +1,7 @@
 div.new-work-modal {
     background-color: var(--site-background);
-    padding: 20px;
-    border: 1px solid var(--site-borders);
-    overflow: auto;
-    height: 90%;
-    width: 60%;
-    margin: 0 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     h1 {
         font-size: 48px;
         text-align: center;
@@ -17,7 +13,15 @@ div.new-work-modal {
     }
 
     form {
-        margin-bottom: 0;
+        width: 100%;
+        margin: 0 auto;
+
+        input {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            box-shadow: none;
+        }
     }
 
     div.warning-message {
@@ -51,18 +55,6 @@ div.new-work-modal {
         &:hover {
             background-color: var(--site-accent-hover);
             color: whitesmoke;
-        }
-    }
-
-    quill-editor {
-        div {
-            button {
-                margin-bottom: 0;
-            }
-        }
-
-        div.ql-editor {
-            font-family: 'Raleway';
         }
     }
 

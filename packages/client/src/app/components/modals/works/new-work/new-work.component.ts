@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { dividerHandler, imageHandler } from '../../../../util/quill';
 import { WorksService } from '../../../../services/content';
-import { AlertsService } from '../../../../modules/alerts';
 import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction, 
   GenresPoetry, WorkStatus } from '@pulp-fiction/models/works';
 
@@ -13,7 +14,6 @@ import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction,
   styleUrls: ['./new-work.component.less']
 })
 export class NewWorkComponent implements OnInit {
-  close: any; // Alias for Toppy
   loading = false; // Loading check for submission
 
   categories = Categories; // Alias for categories
@@ -41,7 +41,8 @@ export class NewWorkComponent implements OnInit {
     status: new FormControl(null, Validators.required)
   });
 
-  constructor(private worksService: WorksService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) { }
+  constructor(private worksService: WorksService, private dialogRef: MatDialogRef<NewWorkComponent>,
+    private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -50,13 +51,6 @@ export class NewWorkComponent implements OnInit {
    * Getter for the new work form.
    */
   get fields() { return this.newWorkForm.controls; }
-
-  /**
-   * Required for the QuillJS editor.
-   */
-  triggerChangeDetection() {
-    this.cdr.detectChanges();
-  }
 
   /**
    * Gets the Quill Editor object after the editor's creation in the template HTML
@@ -111,12 +105,12 @@ export class NewWorkComponent implements OnInit {
   askCancel() {
     if (this.newWorkForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        this.close();
+        this.dialogRef.close();
       } else {
         return;
       }
     } else {
-      this.close();
+      this.dialogRef.close();
       return;
     }
   }
@@ -127,49 +121,49 @@ export class NewWorkComponent implements OnInit {
   submitWork() {
     this.loading = true;
     if (this.fields.title.invalid) {
-      this.alertsService.warn(`Titles must be between 3 and 100 characters.`);
+      this.snackbar.open(`Titles must be between 3 and 100 characters.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.shortDesc.invalid) {
-      this.alertsService.warn(`Short descriptions must be between 3 and 250 characters.`);
+      this.snackbar.open(`Short descriptions must be between 3 and 250 characters.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.longDesc.invalid) {
-      this.alertsService.warn(`Long descriptions must be more than 5 characters.`);
+      this.snackbar.open(`Long descriptions must be more than 5 characters.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.thisCategory.value === null) {
-      this.alertsService.warn(`You must choose a category.`);
+      this.snackbar.open(`You must choose a category.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.thisCategory.value === 'Fanfiction' && this.fields.theseFandoms.value.length < 1) {
-      this.alertsService.warn(`You must pick at least one fandom.`);
+      this.snackbar.open(`You must pick at least one fandom.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.theseGenres.value.length < 1) {
-      this.alertsService.warn(`You must have at least one genre.`);
+      this.snackbar.open(`You must have at least one genre.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.rating.value === null) {
-      this.alertsService.warn(`You must select a content rating.`);
+      this.snackbar.open(`You must select a content rating.`);
       this.loading = false;
       return;
     }
 
     if (this.fields.status.value === null) {
-      this.alertsService.warn(`You must select a status.`);
+      this.snackbar.open(`You must select a status.`);
       this.loading = false;
       return;
     }
@@ -194,10 +188,10 @@ export class NewWorkComponent implements OnInit {
 
     this.worksService.createWork(newWork).subscribe(() => {
       this.loading = false;
-      this.close();
+      this.dialogRef.close();
     }, err => {
       this.loading = false;
-      this.alertsService.error('Something went wrong! Try again in a little bit.');
+      this.snackbar.open('Something went wrong! Try again in a little bit.');
     });
   }
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from '../../../services/auth';
 import { WorksService } from '../../../services/content';
-import { AlertsService } from '../../../modules/alerts';
 import { NewWorkComponent, EditWorkComponent } from '../../../components/modals/works';
 import { QueueService } from '../../../services/admin';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -34,7 +34,7 @@ export class WorksComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private worksService: WorksService,
-    private alertsService: AlertsService, private toppy: Toppy, private queueService: QueueService) {
+    private toppy: Toppy, private queueService: QueueService, public dialog: MatDialog) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData(this.pageNum);
     }
@@ -135,7 +135,7 @@ export class WorksComponent implements OnInit {
    * Opens the new work form modal.
    */
   openNewWorkForm() {
-    this.newWorkForm.open();
+    this.dialog.open(NewWorkComponent);
   }
 
   /**
@@ -144,8 +144,7 @@ export class WorksComponent implements OnInit {
    * @param work The work to edit
    */
   openEditWorkForm(work: Work) {
-    this.editWorkForm.updateContent(EditWorkComponent, {workData: work});
-    this.editWorkForm.open();
+    this.dialog.open(EditWorkComponent, {data: {thisWork: work}});
   }
 
   /**
