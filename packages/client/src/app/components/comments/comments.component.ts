@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateComment } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateComment, EditComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
@@ -34,7 +35,7 @@ export class CommentsComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(10)])
   });
 
-  constructor(private authService: AuthService, private commentsService: CommentsService) { 
+  constructor(private authService: AuthService, private commentsService: CommentsService, private snackbar: MatSnackBar) { 
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -46,6 +47,11 @@ export class CommentsComponent implements OnInit {
    * Getter for the new comment form
    */
   get newCommentFields() { return this.newCommentForm.controls; }
+
+  /**
+   * Getter for the edit comment form
+   */
+  get editCommentFields() { return this.editCommentForm.controls; }
 
   /**
    * Fetches the requested page of comments.
@@ -139,6 +145,11 @@ export class CommentsComponent implements OnInit {
    * Creates a new comment
    */
   submitNewComment() {
+    if (this.newCommentFields.body.invalid) {
+      this.snackbar.open('Comments must be at least 10 characters long.');
+      return;
+    }
+
     const comm: CreateComment = {
       body: this.newCommentFields.body.value
     };
@@ -154,6 +165,28 @@ export class CommentsComponent implements OnInit {
         this.fetchData(this.pageNum);
       });
     }
+  }
+
+  /**
+   * Submits edits on a comment.
+   * 
+   * @param commentId The comment we're editing
+   */
+  submitEdits(commentId: string) {
+    if (this.editCommentFields.body.invalid) {
+      this.snackbar.open('Comments must be at least 10 characters long.');
+      return;
+    }
+
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    const commInfo: EditComment = {
+      body: this.editCommentFields.body.value
+    };
+
+    this.commentsService.editComment(commentId, commInfo).subscribe(() => {
+      this.comments.docs[commentIndex].isEditing = false;
+      this.comments.docs[commentIndex].body = this.editCommentFields.body.value;
+    });
   }
 
   /**

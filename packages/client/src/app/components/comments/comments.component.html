@@ -91,7 +91,7 @@
                     </div>
                     <ng-container *ngIf="comment.isEditing; else isNotEditing">
                         <div class="comm-body">
-                            <form [formGroup]="editCommentForm">
+                            <form [formGroup]="editCommentForm" (ngSubmit)="submitEdits(comment._id)">
                                 <editor [parentForm]="editCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
                                 <div class="comment-control">
                                     <button type="submit">Submit</button>
