@@ -14,8 +14,8 @@ export interface Work {
     readonly meta: WorkMetadata;
     readonly stats: {
         readonly totWords: number;
-        readonly likes: number;
-        readonly dislikes: number;
+        likes: number;
+        dislikes: number;
         readonly views: number;
         readonly comments: number;
     };

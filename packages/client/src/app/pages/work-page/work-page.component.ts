@@ -233,7 +233,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setLike(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.Liked;
+
+      if (currRating === RatingOption.Disliked) {
+        this.workData.stats.dislikes -= 1;
+      } else {
+        this.workData.stats.likes += 1;
+      }
     });
   }
 
@@ -250,7 +256,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setDislike(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.Disliked;
+      
+      if (currRating === RatingOption.Disliked) {
+        this.workData.stats.likes -= 1;
+      } else {
+        this.workData.stats.dislikes += 1;
+      }
     });
   }
 
@@ -268,7 +280,13 @@ export class WorkPageComponent implements OnInit {
     };
 
     this.worksService.setNoVote(ratingOptions).subscribe(() => {
-      this.fetchData();
+      this.userHist.ratingOption = RatingOption.NoVote;
+      
+      if (currRating === RatingOption.Liked) {
+        this.workData.stats.likes -= 1;
+      } else if (currRating === RatingOption.Disliked) {
+        this.workData.stats.dislikes -= 1;
+      }
     });
   }
 

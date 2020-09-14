@@ -7,7 +7,7 @@ export interface History {
     readonly work: string | Work;
     readonly viewedOn: Date;
     readonly sectionsRead: string[];
-    readonly ratingOption: RatingOption;
+    ratingOption: RatingOption;
     readonly visible: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
