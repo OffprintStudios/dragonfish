@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog, DialogPosition } from '@angular/material/dialog';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 import * as lodash from 'lodash';
 
@@ -24,31 +25,13 @@ export class CommentsComponent implements OnInit {
   currentUser: FrontendUser;
   loading = false;
   comments: PaginateResult<Comment> | PaginateResult<BlogComment> | PaginateResult<WorkComment>;
-  commentForm: ToppyControl;
 
-  constructor(private authService: AuthService, private toppy: Toppy, private commentsService: CommentsService) { 
+  constructor(private authService: AuthService, private commentsService: CommentsService, private dialog: MatDialog) { 
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
   ngOnInit(): void {
     this.fetchData(this.pageNum);
-
-    // Setting up the comment form
-    const pos = new GlobalPosition({
-      placement: InsidePlacement.BOTTOM,
-      width: '100%',
-      height: 'auto'
-    });
-
-    this.commentForm = this.toppy
-      .position(pos)
-      .config({closeOnEsc: true})
-      .content(CommentFormComponent)
-      .create();
-
-    this.commentForm.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
   }
 
   /**
@@ -139,8 +122,15 @@ export class CommentsComponent implements OnInit {
    * @param itemKind The item's kind
    */
   newComment(itemId: string, itemKind: ItemKind) {
-    this.commentForm.updateContent(CommentFormComponent, {itemId: itemId, itemKind: itemKind, editMode: false});
-    this.commentForm.open();
+    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
+      itemId: itemId,
+      itemKind: itemKind,
+      editMode: false
+    }});
+
+    commentFormRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
@@ -152,15 +142,17 @@ export class CommentsComponent implements OnInit {
    * @param commInfo The comment's info
    */
   editComment(itemId: string, itemKind: ItemKind, commentId: string, commInfo: string) {
-    this.commentForm.updateContent(CommentFormComponent, {
+    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
       itemId: itemId,
       itemKind: itemKind,
       editMode: true,
       commentId: commentId,
       editCommInfo: commInfo
-    });
+    }});
 
-    this.commentForm.open();
+    commentFormRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
@@ -172,15 +164,17 @@ export class CommentsComponent implements OnInit {
    * @param commInfo The comment's info
    */
   quoteComment(itemId: string, itemKind: ItemKind, commUser: UserInfoComments, commUrl: string, commInfo: string) {
-    this.commentForm.updateContent(CommentFormComponent, {
+    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
       itemId: itemId,
       itemKind: itemKind,
       editMode: false,
       quoteCommUser: commUser,
       quoteCommUrl: commUrl,
       quoteCommInfo: commInfo
-    });
+    }});
 
-    this.commentForm.open();
+    commentFormRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 }

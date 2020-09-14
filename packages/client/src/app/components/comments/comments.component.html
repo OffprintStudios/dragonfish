@@ -10,9 +10,9 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
-            <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
+            <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
     </div>
 
@@ -97,9 +97,9 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
-            <button title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
-            <button title="Thread Settings"><i-feather name="settings"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
+            <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
     </div>
 </ng-container>

@@ -1,12 +1,9 @@
-
-<div class="comment-container">
-    <div class="comment-form-container">
-        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
-            <editor [parentForm]="commentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
-            <div class="comment-control">
-                <button type="submit">Submit</button>
-                <button style="margin-left: 1rem;" type="button" (click)="askCancel()">Cancel</button>
-            </div>
-        </form>
-    </div>
+<div class="comment-form-container">
+    <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+        <editor [parentForm]="commentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
+        <div class="comment-control">
+            <button type="submit">Submit</button>
+            <button style="margin-left: 1rem;" type="button" (click)="askCancel()">Cancel</button>
+        </div>
+    </form>
 </div>

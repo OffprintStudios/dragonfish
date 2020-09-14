@@ -1,36 +1,30 @@
-div.comment-container {
-    z-index: 10;
-    height: 325px;
+div.comment-form-container {
+    background-color: var(--site-background);
+    width: 50%;
+    margin: 0 auto;
     box-shadow: var(--site-dropshadow);
+    quill-editor {
+        box-shadow: none !important;
+        margin-bottom: 0 !important;
+    }
 
-    div.comment-form-container {
+    quill-editor-toolbar {
         background-color: var(--site-background);
-        width: 50%;
-        margin: 0 auto;
-        box-shadow: var(--site-dropshadow);
-        quill-editor {
-            box-shadow: none !important;
-            margin-bottom: 0 !important;
-        }
+    }
 
-        quill-editor-toolbar {
-            background-color: var(--site-background);
-        }
+    div.comment-control {
+        background-color: var(--site-controls-background);
+        border-left: 1px solid var(--site-borders);
+        border-right: 1px solid var(--site-borders);
+        border-bottom: 1px solid var(--site-borders);
+        padding-top: 10px;
+        margin-top: 0;
+        text-align: center;
+    }
 
-        div.comment-control {
-            background-color: var(--site-controls-background);
-            border-left: 1px solid var(--site-borders);
-            border-right: 1px solid var(--site-borders);
-            border-bottom: 1px solid var(--site-borders);
-            padding-top: 10px;
-            margin-top: 0;
-            text-align: center;
-        }
-
-        div.warning-message {
-            font-size: 14px;
-            font-style: italic;
-            color: var(--site-accent);
-        }
+    div.warning-message {
+        font-size: 14px;
+        font-style: italic;
+        color: var(--site-accent);
     }
 }

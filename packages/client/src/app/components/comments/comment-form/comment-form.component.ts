@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { CommentsService } from '../../../services/content';
-import { AlertsService } from '../../../modules/alerts';
 import { CreateComment, EditComment, UserInfoComments, ItemKind } from '@pulp-fiction/models/comments';
+import { VirtualTimeScheduler } from 'rxjs';
 
 @Component({
   selector: 'pulp-fiction-comment-form',
@@ -11,8 +12,6 @@ import { CreateComment, EditComment, UserInfoComments, ItemKind } from '@pulp-fi
   styleUrls: ['./comment-form.component.less']
 })
 export class CommentFormComponent implements OnInit {
-  close: any;
-
   itemId: string;
   itemKind: ItemKind;
 
@@ -28,7 +27,18 @@ export class CommentFormComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(10)])
   })
 
-  constructor(private commentsService: CommentsService, private alertsService: AlertsService) {
+  constructor(private commentsService: CommentsService, private dialogRef: MatDialogRef<CommentFormComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any) {
+      this.itemId = this.data.itemId;
+      this.itemKind = this.data.itemKind;
+
+      this.editMode = this.data.editMode;
+      this.editCommInfo = this.data.editCommInfo;
+      this.commentId = this.data.commentId;
+
+      this.quoteCommUser = this.data.quoteCommUser;
+      this.quoteCommUrl = this.data.quoteCommUrl;
+      this.quoteCommInfo = this.data.quoteCommInfo;
   }
 
   ngOnInit(): void {
@@ -61,11 +71,11 @@ export class CommentFormComponent implements OnInit {
 
       if (this.itemKind === ItemKind.Blog) {
         this.commentsService.addBlogComment(this.itemId, commInfo).subscribe(() => {
-          this.close();
+          this.dialogRef.close();
         });
       } else if (this.itemKind === ItemKind.Work) {
         this.commentsService.addWorkComment(this.itemId, commInfo).subscribe(() => {
-          this.close();
+          this.dialogRef.close();
         });
       }
     } else if (this.editMode === true) {
@@ -74,7 +84,7 @@ export class CommentFormComponent implements OnInit {
       };
 
       this.commentsService.editComment(this.commentId, commInfo).subscribe(() => {
-        this.close();
+        this.dialogRef.close();
       });
     }
   }
@@ -83,6 +93,6 @@ export class CommentFormComponent implements OnInit {
    * Checks to see if the form is dirty and asks if a user actually wants to close it
    */
   askCancel() {
-    this.close();
+    this.dialogRef.close();
   }
 }
