@@ -1,6 +1,6 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Blog, EditBlog } from '@pulp-fiction/models/blogs';
 
@@ -32,8 +32,10 @@ export class EditBlogComponent implements OnInit {
     published: new FormControl(false)
   });
 
-  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService,
-    private dialogRef: MatDialogRef<EditBlogComponent>, private snackbar: MatSnackBar) { }
+  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef, private dialogRef: MatDialogRef<EditBlogComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any, private snackbar: MatSnackBar) {
+      this.blogData = this.data.blogData;
+    }
 
   ngOnInit(): void {
     this.editBlogForm.setValue({
