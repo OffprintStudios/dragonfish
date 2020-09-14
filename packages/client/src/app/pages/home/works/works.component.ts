@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from '../../../services/auth';
 import { WorksService } from '../../../services/content';
@@ -20,8 +19,6 @@ export class WorksComponent implements OnInit {
   currentUser: FrontendUser;
   works: PaginateResult<Work>;
   unfilteredList: Work[];
-  newWorkForm: ToppyControl;
-  editWorkForm: ToppyControl;
 
   loading = false;
   isUnpubFiltered = false;
@@ -33,46 +30,13 @@ export class WorksComponent implements OnInit {
     query: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private worksService: WorksService,
-    private toppy: Toppy, private queueService: QueueService, public dialog: MatDialog) {
+  constructor(private authService: AuthService, private worksService: WorksService, 
+    private queueService: QueueService, public dialog: MatDialog) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
       this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
-    // Initializing the new work form modal
-    const newWorkPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.newWorkForm = this.toppy
-      .position(newWorkPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(NewWorkComponent)
-      .create();
-
-    this.newWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData(1);
-    });
-
-    // Initializing the edit work form modal
-    const editWorkPosition = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.editWorkForm = this.toppy
-      .position(editWorkPosition)
-      .config({backdrop: true, closeOnEsc: true})
-      .content(EditWorkComponent)
-      .create();
-    
-    this.editWorkForm.listen('t_close').subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
   }
 
   /**
@@ -96,7 +60,10 @@ export class WorksComponent implements OnInit {
    * Opens the new work form modal.
    */
   openNewWorkForm() {
-    this.dialog.open(NewWorkComponent);
+    const newWorkRef = this.dialog.open(NewWorkComponent);
+    newWorkRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
@@ -105,7 +72,10 @@ export class WorksComponent implements OnInit {
    * @param work The work to edit
    */
   openEditWorkForm(work: Work) {
-    this.dialog.open(EditWorkComponent, {data: {thisWork: work}});
+    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {thisWork: work}});
+    editWorkRef.afterClosed().subscribe(() => {
+      this.fetchData(this.pageNum);
+    });
   }
 
   /**
