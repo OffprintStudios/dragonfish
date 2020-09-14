@@ -30,8 +30,8 @@
                             <div class="lds-dual-ring"></div>
                         </div>
                         <ng-container *ngIf="!submitting" [ngSwitch]="collection.audit.isPublic">
-                            <a (click)="setPrivate(collection._id)" *ngSwitchCase="true"><i-feather name="check-circle"></i-feather></a>
-                            <a (click)="setPublic(collection._id)" *ngSwitchDefault><i-feather name="circle"></i-feather></a>
+                            <a (click)="setPrivate(collection._id)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
+                            <a (click)="setPublic(collection._id)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
                         </ng-container>
                     </div>
                     <div class="header">
