@@ -30,6 +30,8 @@ div.work-box {
     margin-top: 0;
     width: 95%;
     margin: 0 auto 0 auto;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
     border: 1px solid var(--site-borders);
     background-color: var(--site-accent);
     box-shadow: var(--site-dropshadow);
@@ -113,15 +115,18 @@ div.work-box {
                         button.start {
                             border-left: 1px solid whitesmoke;
                             border-right: none;
+                            border-radius: 0;
                         }
         
                         button.mid {
                             border-right: 1px solid whitesmoke;
                             border-left: 1px solid whitesmoke;
+                            border-radius: 0;
                         }
 
                         button.left {
                             border-right: none;
+                            border-radius: 0;
                         }
 
                         button.dislike {
@@ -370,6 +375,8 @@ div.author-controls {
     align-items: center;
     padding: 10px 0 0 0;
     background-color: var(--site-controls-background);
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
     border-bottom: 1px solid var(--site-borders);
     border-left: 1px solid var(--site-borders);
     border-right: 1px solid var(--site-borders);

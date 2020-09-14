@@ -37,23 +37,23 @@
                         </div>
                         <ng-container *ngIf="currentUser; else noUser">
                             <ng-container *ngIf="userHist.ratingOption === 'NoVote'">
-                                <button class="control-button start" (click)="setLike(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                                <button class="control-button mid dislike" (click)="setDislike(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                                <button matRipple class="control-button start" (click)="setLike(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                                <button matRipple class="control-button mid dislike" (click)="setDislike(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
                             </ng-container>
                             <ng-container *ngIf="userHist.ratingOption === 'Liked'">
-                                <button class="control-button start active" (click)="setNoVote(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                                <button class="control-button mid dislike" (click)="setDislike(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                                <button matRipple class="control-button start active" (click)="setNoVote(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                                <button matRipple class="control-button mid dislike" (click)="setDislike(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
                             </ng-container>
                             <ng-container *ngIf="userHist.ratingOption === 'Disliked'">
-                                <button class="control-button start" (click)="setLike(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                                <button class="control-button mid dislike active" (click)="setNoVote(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                                <button matRipple class="control-button start" (click)="setLike(workData._id, userHist.ratingOption)" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                                <button matRipple class="control-button mid dislike active" (click)="setNoVote(workData._id, userHist.ratingOption)" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
                             </ng-container>
-                            <button class="control-button left" title="Add to Collection" (click)="openAddToCollections()"><i-feather name="folder-plus"></i-feather></button>
+                            <button matRipple class="control-button left" title="Add to Collection" (click)="openAddToCollections()"><i-feather name="folder-plus"></i-feather></button>
                         </ng-container>
                         <ng-template #noUser>
-                            <button class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
-                            <button class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
-                            <button class="control-button left" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
+                            <button matRipple class="control-button start" title="Like"><i-feather name="thumbs-up"></i-feather></button>
+                            <button matRipple class="control-button mid dislike" title="Dislike"><i-feather name="thumbs-down"></i-feather></button>
+                            <button matRipple class="control-button left" title="Add to Collection"><i-feather name="folder-plus"></i-feather></button>
                         </ng-template>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div *ngIf="section.published === true">
                         <div class="section-box">
                             <div>
-                                <button title="Unpublish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="check-circle"></i-feather></button>
+                                <button matRipple title="Unpublish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="book-open"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
                                 <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">
@@ -96,14 +96,14 @@
                                 </div>
                             </div>
                             <div>
-                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button matRipple title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
                     <div *ngIf="section.published === false">
                         <div class="section-box">
                             <div>
-                                <button title="Publish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="circle"></i-feather></button>
+                                <button matRipple title="Publish" class="pub-unpub" (click)="publishSection(section._id, section.published)"><i-feather name="book"></i-feather></button>
                             </div>
                             <div style="flex: 1;">
                                 <a class="section-info" [routerLink]="['/work', workData._id, workData.title | slugify, i + 1, section.title | slugify]">
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                             <div>
-                                <button title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
+                                <button matRipple title="Delete Section" class="delete-section" (click)="askDeleteSection(section._id)"><i-feather name="trash-2"></i-feather></button>
                             </div>
                         </div>
                     </div>
@@ -178,19 +178,19 @@
 <div class="author-controls" *ngIf="currentUser && currentUserIsSame()">
     <div class="controls-start">
         <ng-container [ngSwitch]="workData.audit.published">
-            <button class="control-button pub-status active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
-            <button class="control-button pub-status" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
-            <button class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
-            <button class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
+            <button matRipple class="control-button pub-status active" *ngSwitchCase="'Approved'"><i-feather class="submission" name="book-open"></i-feather>Approved</button>
+            <button matRipple class="control-button pub-status" *ngSwitchCase="'Pending'"><i-feather class="submission" name="clock"></i-feather>Pending</button>
+            <button matRipple class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchCase="'Rejected'"><i-feather class="submission" name="x"></i-feather>Rejected</button>
+            <button matRipple class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
         </ng-container>
-        <button class="control-button mid" title="Edit Work" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
-        <button class="control-button mid" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
+        <button matRipple class="control-button mid" title="Edit Work" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
+        <button matRipple class="control-button mid" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
     </div>
     <div class="controls-mid">
-        <button class="control-button add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']" title="New Section"><i-feather name="plus"></i-feather>Section</button>
+        <button matRipple class="control-button add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']" title="New Section"><i-feather name="plus"></i-feather>Section</button>
     </div>
     <div class="controls-end">
-        <button class="control-button end" title="Delete Work" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
+        <button matRipple class="control-button end" title="Delete Work" (click)="askDelete(workData._id)"><i-feather name="trash-2"></i-feather></button>
     </div>
 </div>
 
