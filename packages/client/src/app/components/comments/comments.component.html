@@ -10,7 +10,7 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button matRipple class="start" title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="scrollToNewCommentForm()"><i-feather name="message-circle"></i-feather></button>
             <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
             <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
@@ -97,9 +97,19 @@
             <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
         </div>
         <div class="create-comment">
-            <button matRipple class="start" title="New Comment" (click)="newComment(itemId, itemKind)"><i-feather name="message-circle"></i-feather></button>
+            <button matRipple class="start" title="New Comment" (click)="scrollToNewCommentForm()"><i-feather name="message-circle"></i-feather></button>
             <button matRipple class="mid" title="Refresh Thread" style="border-left: 0; border-right: 0;" (click)="refreshThread()"><i-feather name="refresh-cw"></i-feather></button>
             <button matRipple class="end" title="Thread Settings"><i-feather name="settings"></i-feather></button>
         </div>
+    </div>
+
+    <!--To be replaced once the floating editor is reimplemented-->
+    <div class="comments-form" #newCommentSection>
+        <form [formGroup]="newCommentForm">
+            <editor [parentForm]="newCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
+            <div class="comment-control">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
     </div>
 </ng-container>

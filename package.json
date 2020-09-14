@@ -54,6 +54,7 @@
     "@nestjs/websockets": "^7.4.4",
     "@nestjsplus/cookies": "^1.1.1",
     "@ng-select/ng-select": "^5.0.1",
+    "@nicky-lenaers/ngx-scroll-to": "^9.0.0",
     "@nrwl/angular": "^10.1.0",
     "@types/aws-sdk": "^2.7.0",
     "@types/body-parser": "^1.19.0",

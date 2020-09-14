@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { MatDialog, DialogPosition } from '@angular/material/dialog';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
@@ -22,9 +22,15 @@ export class CommentsComponent implements OnInit {
   @Input() banlist?: any; // The banlist of the thread
   @Output() emitPageChange = new EventEmitter<number>(); // Emits the current page number
 
+  @ViewChild('newCommentSection') newCommentSection: ElementRef;
+
   currentUser: FrontendUser;
   loading = false;
   comments: PaginateResult<Comment> | PaginateResult<BlogComment> | PaginateResult<WorkComment>;
+
+  newCommentForm = new FormGroup({
+    body: new FormControl('', [Validators.required, Validators.minLength(10)])
+  })
 
   constructor(private authService: AuthService, private commentsService: CommentsService, private dialog: MatDialog) { 
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
@@ -33,6 +39,11 @@ export class CommentsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchData(this.pageNum);
   }
+
+  /**
+   * Getter for the new comment form
+   */
+  get newCommentFields() { return this.newCommentForm.controls; }
 
   /**
    * Fetches the requested page of comments.
@@ -56,6 +67,13 @@ export class CommentsComponent implements OnInit {
         this.loading = false;
       });
     }
+  }
+
+  /**
+   * Scrolls to the new comment form
+   */
+  scrollToNewCommentForm() {
+    this.newCommentSection.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 
   /**
