@@ -1,4 +1,7 @@
 <div class="edit-work-modal">
+
+</div>
+<mat-dialog-content>
     <h1>Editing "{{ workData.title }}"</h1>
     <hr>
     <form [formGroup]="editWorkForm" (ngSubmit)="submitEdits()">
@@ -15,15 +18,15 @@
         <!--Long description-->
         <label for="longDesc">Long Description</label>
         <div class="warning-message" *ngIf="fields.longDesc.invalid && (fields.longDesc.dirty || fields.longDesc.touched)">Long descriptions must be more than 5 characters.</div>
-        <ngContainer *ngIf="!workData.usesNewEditor">
+        <ng-container *ngIf="!workData.usesNewEditor">
             <quill-pulp-fiction-editor [parentForm]="editWorkForm" [controlName]="'longDesc'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
-        </ngContainer>
-        <ngContainer *ngIf="workData.usesNewEditor">
+        </ng-container>
+        <ng-container *ngIf="workData.usesNewEditor">
             <editor [parentForm]="editWorkForm" [controlName]="'longDesc'"></editor>
-        </ngContainer>
+        </ng-container>
 
         <!--Category-->
-        <label for="category">Category</label>
+        <label for="category" style="margin-top: 1.5rem;">Category</label>
         <ng-select [items]="categories | keyvalue"
                     bindLabel="value"
                     bindValue="key"
@@ -99,10 +102,15 @@
             </div>
         </div>
 
+
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions">
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
         </div>
-        <button class="work-modal-button" type="submit" *ngIf="!loading">Save Changes</button>
-        <button class="work-modal-button-cancel" type="button" (click)="askCancel()">Cancel</button>
-    </form>
-</div>
+        <button matRipple type="submit" (click)="submitEdits()" *ngIf="!loading">Save</button>
+        <button matRipple type="button" (click)="askCancel()">Cancel</button>
+    </div>
+</mat-dialog-actions>

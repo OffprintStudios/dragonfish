@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { dividerHandler, imageHandler } from '../../../../util/quill';
@@ -43,7 +44,11 @@ export class EditWorkComponent implements OnInit {
     status: new FormControl(null, Validators.required)
   });
 
-  constructor(private worksService: WorksService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) { }
+  constructor(private worksService: WorksService, private cdr: ChangeDetectorRef, 
+    private alertsService: AlertsService, private dialogRef: MatDialogRef<EditWorkComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: any) {
+      this.workData = this.data.workData;
+    }
 
   ngOnInit(): void {
     this.editWorkForm.setValue({
@@ -160,7 +165,7 @@ export class EditWorkComponent implements OnInit {
 
     this.worksService.editWork(newChanges).subscribe(() => {
       this.loading = false;
-      this.close();
+      this.dialogRef.close();
     }, () => {
       this.loading = false;
       this.alertsService.error('Something went wrong! Try again in a little bit.');
@@ -209,12 +214,12 @@ export class EditWorkComponent implements OnInit {
   askCancel() {
     if (this.editWorkForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        this.close();
+        this.dialogRef.close();
       } else {
         return;
       }
     } else {
-      this.close();
+      this.dialogRef.close();
       return;
     }
   }
