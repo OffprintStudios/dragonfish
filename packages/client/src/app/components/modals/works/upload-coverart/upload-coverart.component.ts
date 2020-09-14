@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
 
@@ -14,7 +15,6 @@ import { FrontendUser } from '@pulp-fiction/models/users';
   styleUrls: ['./upload-coverart.component.less']
 })
 export class UploadCoverartComponent implements OnInit {
-  close: any; // required by Toppy
   workId: string;
 
   currentUser: FrontendUser;
@@ -38,7 +38,8 @@ export class UploadCoverartComponent implements OnInit {
    */
   newImageAdded: boolean = true;
 
-  constructor(private authService: AuthService, private worksService: WorksService, private alertsService: AlertsService) {
+  constructor(private authService: AuthService, private worksService: WorksService, 
+    private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
     this.workId = this.worksService.thisWorkId;
     this.uploader = new FileUploader({
@@ -117,7 +118,7 @@ export class UploadCoverartComponent implements OnInit {
   }
 
   cancel() {
-    this.close();
+    this.dialogRef.close();
   }
 
   uploadCoverArt() {
@@ -129,7 +130,7 @@ export class UploadCoverartComponent implements OnInit {
       () => {
         this.loading = false;
         this.alertsService.success('Cover art uploaded successfully!');
-        this.close();
+        this.dialogRef.close();
       },
       (error: HttpError) => {
         this.loading = false;        
