@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageCroppedEvent, Dimensions } from 'ngx-image-cropper';
 import { FileUploader } from 'ng2-file-upload';
 
@@ -13,8 +15,6 @@ import { FrontendUser } from '@pulp-fiction/models/users';
   styleUrls: ['./upload-avatar.component.less']
 })
 export class UploadAvatarComponent implements OnInit {
-  close: any; // required by Toppy
-
   currentUser: FrontendUser;
 
   imageChangedEvent: Event;
@@ -30,7 +30,7 @@ export class UploadAvatarComponent implements OnInit {
     itemAlias: 'avatar'
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService) {
+  constructor(private authService: AuthService, private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -59,7 +59,7 @@ export class UploadAvatarComponent implements OnInit {
   }
 
   loadImageFailed(): void {
-    this.alertsService.error(`Seems like we can't load the image. Is something wrong with it?`);
+    this.snackbar.open(`Uh-oh! Seems like we can't load the image. Is something wrong with it?`);
   }
 
   base64ToFile(data: any, filename: string): File {
@@ -77,7 +77,7 @@ export class UploadAvatarComponent implements OnInit {
   }
 
   cancel() {
-    this.close();
+    this.dialogRef.close();
   }
 
   uploadAvatar() {
@@ -88,12 +88,12 @@ export class UploadAvatarComponent implements OnInit {
     this.authService.changeAvatar(this.uploader).subscribe(
       () => {
         this.uploading = false;
-        this.alertsService.success('Avatar uploaded successfully!');
-        this.close();
+        this.snackbar.open('Avatar uploaded successfully!');
+        this.dialogRef.close();
       },
       (error: HttpError) => {
         this.uploading = false;
-        this.alertsService.error(`Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
+        this.snackbar.open(`Uh-oh! Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
       },
     );
   }
