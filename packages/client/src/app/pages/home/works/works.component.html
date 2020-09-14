@@ -8,14 +8,7 @@
                     <button class="submit-work-search" type="submit"><i-feather name="search"></i-feather></button>
                 </div>
             </form>
-            <button matRipple class="work-filter" style="border-left: 1px solid var(--site-borders)" (click)="filterByUnpublished()" *ngIf="!isUnpubFiltered; else unpubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
-            <ng-template #unpubFiltered>
-                <button matRipple class="work-filter active" style="border-left: 1px solid var(--site-borders)" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Unpublished</button>
-            </ng-template>
-            <button matRipple class="work-filter" (click)="filterByPublished()" *ngIf="!isPubFiltered; else pubFiltered"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
-            <ng-template #pubFiltered>
-                <button matRipple class="work-filter active" (click)="clearFilter()"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Published</button>
-            </ng-template>
+            <button matRipple class="work-filter"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Filter</button>
             <button matRipple class="add-work" (click)="openNewWorkForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Work</button>
         </div>
     </div>

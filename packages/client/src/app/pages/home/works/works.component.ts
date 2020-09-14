@@ -93,45 +93,6 @@ export class WorksComponent implements OnInit {
   }
 
   /**
-   * Filters the works list by published content.
-   */
-  filterByPublished() {
-    /*if (this.isUnpubFiltered) {
-      this.isPubFiltered = true;
-      this.isUnpubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
-    } else {
-      this.unfilteredList = this.works;
-      this.isPubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.Approved});
-    }*/
-  }
-
-  /**
-   * Filters the works list by unpublished content.
-   */
-  filterByUnpublished() {
-    /*if (this.isPubFiltered) {
-      this.isUnpubFiltered = true;
-      this.isPubFiltered = false;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
-    } else {
-      this.unfilteredList = this.works;
-      this.isUnpubFiltered = true;
-      this.works = this.unfilteredList.filter(work => {return work.audit.published === ApprovalStatus.NotSubmitted});
-    }*/
-  }
-
-  /**
-   * Clears all filters.
-   */
-  clearFilter() {
-    /*this.isPubFiltered = false;
-    this.isUnpubFiltered = false;
-    this.works = this.unfilteredList;*/
-  }
-
-  /**
    * Opens the new work form modal.
    */
   openNewWorkForm() {
