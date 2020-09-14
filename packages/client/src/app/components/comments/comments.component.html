@@ -75,7 +75,12 @@
                             <i-feather name="calendar"></i-feather>{{ comment.createdAt | date: 'mediumDate'}}, {{ comment.createdAt | date: 'mediumTime' }}
                         </span>
                         <span class="comm-controls" *ngIf="currentUserIsSame(comment.user._id); else notThisUser">
-                            <a (click)="editComment(itemId, itemKind, comment._id, comment.body)"><i-feather name="edit-3"></i-feather></a>
+                            <ng-container *ngIf="comment.isEditing; else notEditButton">
+                                <a matTooltip="Cancel" matTooltipClass="offprint-tooltip" (click)="exitEditing(comment._id)"><i-feather name="x"></i-feather></a>
+                            </ng-container>
+                            <ng-template #notEditButton>
+                                <a matTooltip="Edit" matTooltipClass="offprint-tooltip" (click)="editComment(comment._id, comment.body)"><i-feather name="edit-3"></i-feather></a>
+                            </ng-template>
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">
@@ -84,9 +89,22 @@
                             </span>
                         </ng-template>
                     </div>
-                    <div class="comm-body">
-                        <div [innerHtml]="comment.body | safeHtml"></div>
-                    </div>
+                    <ng-container *ngIf="comment.isEditing; else isNotEditing">
+                        <div class="comm-body">
+                            <form [formGroup]="editCommentForm">
+                                <editor [parentForm]="editCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
+                                <div class="comment-control">
+                                    <button type="submit">Submit</button>
+                                    <button type="button" (click)="exitEditing(comment._id)">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </ng-container>
+                    <ng-template #isNotEditing>
+                        <div class="comm-body">
+                            <div [innerHtml]="comment.body | safeHtml"></div>
+                        </div>
+                    </ng-template>
                 </div>
             </div>
         </div>

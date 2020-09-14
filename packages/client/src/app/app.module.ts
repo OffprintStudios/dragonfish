@@ -41,7 +41,7 @@ import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
-import { CommentsComponent, CommentFormComponent } from './components/comments';
+import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
 
 import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
@@ -101,7 +101,7 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
-    CommentFormComponent, EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
+    EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe
   ],
   imports: [
@@ -143,7 +143,7 @@ const toolbarOptions = [
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
     NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
-    AddToCollectionComponent, CommentFormComponent, StartConversationComponent
+    AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })

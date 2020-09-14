@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as lodash from 'lodash';
 
@@ -8,7 +7,6 @@ import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateCo
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
-import { CommentFormComponent } from './comment-form/comment-form.component';
 
 @Component({
   selector: 'comments',
@@ -30,9 +28,13 @@ export class CommentsComponent implements OnInit {
 
   newCommentForm = new FormGroup({
     body: new FormControl('', [Validators.required, Validators.minLength(10)])
-  })
+  });
 
-  constructor(private authService: AuthService, private commentsService: CommentsService, private dialog: MatDialog) { 
+  editCommentForm = new FormGroup({
+    body: new FormControl('', [Validators.required, Validators.minLength(10)])
+  });
+
+  constructor(private authService: AuthService, private commentsService: CommentsService) { 
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -175,24 +177,29 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
-   * Edits a comment.
+   * Sets the editCommentForm to the comment body requested.
    * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
-   * @param commentId The comment's ID
-   * @param commInfo The comment's info
+   * @param commentId: The comment's Id
+   * @param commentBody The comment body of what we're editing
    */
-  editComment(itemId: string, itemKind: ItemKind, commentId: string, commInfo: string) {
-    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
-      itemId: itemId,
-      itemKind: itemKind,
-      editMode: true,
-      commentId: commentId,
-      editCommInfo: commInfo
-    }});
+  editComment(commentId: string, commentBody: string) {
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    this.comments.docs[commentIndex].isEditing = true;
 
-    commentFormRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
+    this.editCommentForm.setValue({
+      body: commentBody
     });
+  }
+
+  /**
+   * Exits editing mode without saving any changes
+   * 
+   * @param commentId The comment's ID
+   */
+  exitEditing(commentId: string) {
+    const commentIndex = lodash.findIndex(this.comments.docs, {_id: commentId});
+    this.comments.docs[commentIndex].isEditing = false;
+
+    this.editCommentForm.reset();
   }
 }
