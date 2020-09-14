@@ -184,7 +184,7 @@
             <button matRipple class="control-button pub-status" (click)="submitWorkForApproval()" *ngSwitchDefault><i-feather class="submission" name="book"></i-feather>Submit</button>
         </ng-container>
         <button matRipple class="control-button mid" title="Edit Work" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></button>
-        <button matRipple class="control-button mid" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
+        <button matRipple class="control-button end" title="Change Cover Art" (click)="openCoverArtUpload()"><i-feather name="image"></i-feather></button>
     </div>
     <div class="controls-mid">
         <button matRipple class="control-button add-section" [routerLink]="['/work', workData._id, workData.title | slugify, 'new-section']" title="New Section"><i-feather name="plus"></i-feather>Section</button>
