@@ -79,7 +79,7 @@
                         </span>
                         <ng-template #notThisUser>
                             <span class="comm-controls" *ngIf="currentUser">
-                                <a (click)="quoteComment(itemId, itemKind, comment.user, 'comment-' + comment._id, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
+                                <a (click)="quoteComment(comment.user, 'comment-' + comment._id, comment.body)"><i-feather name="corner-up-left"></i-feather></a>
                                 <a><i-feather name="flag"></i-feather></a>
                             </span>
                         </ng-template>
@@ -105,7 +105,7 @@
 
     <!--To be replaced once the floating editor is reimplemented-->
     <div class="comments-form" #newCommentSection>
-        <form [formGroup]="newCommentForm">
+        <form [formGroup]="newCommentForm" (ngSubmit)="submitNewComment()">
             <editor [parentForm]="newCommentForm" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></editor> 
             <div class="comment-control">
                 <button type="submit">Submit</button>

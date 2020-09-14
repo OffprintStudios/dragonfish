@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
@@ -134,6 +134,47 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
+   * Creates a new comment
+   */
+  submitNewComment() {
+    const comm: CreateComment = {
+      body: this.newCommentFields.body.value
+    };
+
+    if (this.itemKind === ItemKind.Blog) {
+      this.commentsService.addBlogComment(this.itemId, comm).subscribe(() => {
+        this.newCommentForm.reset();
+        this.fetchData(this.pageNum);
+      });
+    } else if (this.itemKind === ItemKind.Work) {
+      this.commentsService.addWorkComment(this.itemId, comm).subscribe(() => {
+        this.newCommentForm.reset();
+        this.fetchData(this.pageNum);
+      });
+    }
+  }
+
+  /**
+   * Appends a comment to the new comment form for quoting.
+   * 
+   * @param quoteUser The user we're quoting
+   * @param commentId The ID of the quoted comment
+   * @param commentBody The body of the quoted comment
+   */
+  quoteComment(quoteUser: UserInfoComments, commentId: string, commentBody: string) {
+    this.newCommentForm.setValue({
+      body: `
+        <blockquote>
+          <em><a href="#${commentId}">${quoteUser.username}</a> said:</em>\n
+          ${commentBody}
+        </blockquote>
+      `
+    });
+
+    this.scrollToNewCommentForm();
+  }
+
+  /**
    * Edits a comment.
    * 
    * @param itemId The current item
@@ -148,29 +189,6 @@ export class CommentsComponent implements OnInit {
       editMode: true,
       commentId: commentId,
       editCommInfo: commInfo
-    }});
-
-    commentFormRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
-  }
-
-  /**
-   * Creates a comment with a quote.
-   * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
-   * @param commentId The comment's ID
-   * @param commInfo The comment's info
-   */
-  quoteComment(itemId: string, itemKind: ItemKind, commUser: UserInfoComments, commUrl: string, commInfo: string) {
-    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
-      itemId: itemId,
-      itemKind: itemKind,
-      editMode: false,
-      quoteCommUser: commUser,
-      quoteCommUrl: commUrl,
-      quoteCommInfo: commInfo
     }});
 
     commentFormRef.afterClosed().subscribe(() => {
