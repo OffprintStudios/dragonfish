@@ -1,4 +1,4 @@
-name: Build Server (Dev)
+name: Build Client (Dev)
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -31,5 +31,5 @@ jobs:
       - name: Install local dependencies
         run: yarn install
         
-      - name: Build server
-        run: yarn build server
+      - name: Build client
+        run: yarn build client:prod
