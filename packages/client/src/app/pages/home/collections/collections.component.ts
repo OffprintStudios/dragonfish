@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -22,31 +23,12 @@ export class CollectionsComponent implements OnInit {
 
   pageNum = 1;
 
-  createCollection: ToppyControl;
-
-  constructor(private authService: AuthService, private collsService: CollectionsService, private toppy: Toppy) {
+  constructor(private authService: AuthService, private collsService: CollectionsService, private dialog: MatDialog) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {
-    // Creates the Create Collection modal
-    const position = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: 'auto',
-    });
-
-    this.createCollection = this.toppy
-    .position(position)
-    .config({backdrop: true, closeOnDocClick: true, closeOnEsc: true})
-    .content(CreateCollectionComponent)
-    .create();
-
-    this.createCollection.listen('t_close').subscribe(() => {
-      this.fetchData(1);
-    });
-  }
+  ngOnInit(): void {}
 
   /**
    * Fetches a user's collections
@@ -105,6 +87,6 @@ export class CollectionsComponent implements OnInit {
    * Opens the create collection modal
    */
   openCreateCollectionModal() {
-    this.createCollection.open();
+    this.dialog.open(CreateCollectionComponent);
   }
 }
