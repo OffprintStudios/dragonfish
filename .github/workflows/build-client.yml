@@ -32,4 +32,4 @@ jobs:
         run: yarn install
         
       - name: Build client
-        run: yarn build client:prod
+        run: yarn build client
