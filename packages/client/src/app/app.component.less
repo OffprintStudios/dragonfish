@@ -129,6 +129,12 @@ nav {
   max-width: 80%;
   margin: 0 auto 2rem auto;
 
+  @media (max-width: 1150px) {
+      max-width: 95%;
+  }
+
+  overflow: auto;
+
   div.nav-items {
       border-bottom: 1px solid var(--site-borders);
       margin: 0 auto;
@@ -147,6 +153,7 @@ nav {
           color: var(--site-text-color);
           display: flex;
           flex-direction: row;
+          flex-wrap: nowrap;
           align-items: center;
           font-size: 20px;
           padding: 5px 10px;
