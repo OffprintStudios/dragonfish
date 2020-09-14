@@ -16,7 +16,6 @@ import * as QuillNamespace from 'quill';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe } from './pipes';
@@ -108,7 +107,7 @@ const toolbarOptions = [
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
     IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, ScrollToModule.forRoot(),
+    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule,
     QuillModule.forRoot({
       format: 'json',
       modules: {

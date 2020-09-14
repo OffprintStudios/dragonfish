@@ -8,6 +8,11 @@ div.comments-topbar {
     margin: 2rem auto 0 auto;
     padding-bottom: 5px;
     border-bottom: 1px solid var(--site-borders);
+
+    @media (max-width: 1150px) {
+        max-width: 100%;
+    }
+
     div.paginator {
         display: inline-block;
     }
@@ -46,6 +51,10 @@ div.comments-topbar {
 div.comments-container {
     max-width: 70%;
     margin: 0 auto;
+    
+    @media (max-width: 1150px) {
+        max-width: 100%;
+    }
 
     div.loader {
         text-align: center;
@@ -69,6 +78,12 @@ div.comments-container {
                 img {
                     max-width: 125px;
                     max-height: 125px;
+
+                    @media (max-width: 1150px) {
+                        max-width: 75px;
+                        max-height: 75px;
+                    }
+
                     object-fit: cover;
                     border: 1px solid var(--site-borders);
                     border-radius: 50%;
@@ -81,6 +96,10 @@ div.comments-container {
                     text-align: center;
                     margin-bottom: 0;
                     font-weight: 400;
+
+                    @media (max-width: 1150px) {
+                        font-size: 18px;
+                    }
                 }
 
                 div.role {
@@ -91,6 +110,10 @@ div.comments-container {
                     font-size: 16px;
                     margin-bottom: 0.5rem;
                     color: whitesmoke;
+
+                    @media (max-width: 1150px) {
+                        font-size: 12px;
+                    }
                 }
 
                 div.admin {
@@ -125,6 +148,10 @@ div.comments-container {
                     text-align: center;
                     font-size: 16px;
                     font-style: italic;
+
+                    @media (max-width: 1150px) {
+                        font-size: 12px;
+                    }
                 }
             }
 
@@ -186,6 +213,11 @@ div.comments-bottom-bar {
     margin-top: 2.5rem;
     border-top: 1px solid var(--site-borders);
     padding-top: 10px;
+
+    @media (max-width: 1150px) {
+        max-width: 100%;
+    }
+
     div.paginator {
         display: inline-block;
     }
@@ -224,6 +256,10 @@ div.comments-bottom-bar {
 div.comments-form {
     max-width: 70%;
     margin: 1.5rem auto 0 auto;
+
+    @media (max-width: 1150px) {
+        max-width: 100%;
+    }
 
     div.comment-control {
         background-color: var(--site-controls-background);

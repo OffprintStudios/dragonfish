@@ -134,24 +134,6 @@ export class CommentsComponent implements OnInit {
   }
 
   /**
-   * Creates a new comment.
-   * 
-   * @param itemId The current item
-   * @param itemKind The item's kind
-   */
-  newComment(itemId: string, itemKind: ItemKind) {
-    const commentFormRef = this.dialog.open(CommentFormComponent, {hasBackdrop: false, data: {
-      itemId: itemId,
-      itemKind: itemKind,
-      editMode: false
-    }});
-
-    commentFormRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
-  }
-
-  /**
    * Edits a comment.
    * 
    * @param itemId The current item
