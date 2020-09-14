@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CollectionsService, WorksService } from '../../../../services/content';
 import { Collection, WorkInfo } from '@pulp-fiction/models/collections';
@@ -9,12 +10,12 @@ import { Collection, WorkInfo } from '@pulp-fiction/models/collections';
   styleUrls: ['./add-to-collection.component.less']
 })
 export class AddToCollectionComponent implements OnInit {
-  close: any;
   workId: string;
 
   collections: Collection[];
 
-  constructor(private collsService: CollectionsService, private worksService: WorksService) {
+  constructor(private collsService: CollectionsService, private worksService: WorksService,
+    private dialogRef: MatDialogRef<AddToCollectionComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {
     this.workId = this.worksService.thisWorkId;
     this.collections = this.collsService.thisUsersCollections;
   }
@@ -50,7 +51,7 @@ export class AddToCollectionComponent implements OnInit {
    */
   addToCollection(coll: Collection) {
     this.collsService.addWork(coll._id, this.workId).subscribe(() => {
-      this.close();
+      this.dialogRef.close();
     });
   }
 
@@ -61,7 +62,7 @@ export class AddToCollectionComponent implements OnInit {
    */
   removeFromCollection(coll: Collection) {
     this.collsService.removeWork(coll._id, this.workId).subscribe(() => {
-      this.close();
+      this.dialogRef.close();
     });
   }
 
@@ -69,6 +70,6 @@ export class AddToCollectionComponent implements OnInit {
    * Closes the modal.
    */
   cancel() {
-    this.close();
+    this.dialogRef.close();
   }
 }
