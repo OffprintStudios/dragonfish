@@ -1,6 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Blog, EditBlog } from '@pulp-fiction/models/blogs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Blog, EditBlog } from '@pulp-fiction/models/blogs';
+
+
 import { BlogsService } from '../../../../services/content';
 import { AlertsService } from '../../../../modules/alerts';
 import { dividerHandler, imageHandler } from '../../../../util/quill';
@@ -13,7 +17,6 @@ import { getQuillHtml } from 'packages/client/src/app/util/functions';
 })
 export class EditBlogComponent implements OnInit {
   blogData: Blog;
-  close: any;
   loading = false;
 
   editorFormats = [
@@ -29,7 +32,8 @@ export class EditBlogComponent implements OnInit {
     published: new FormControl(false)
   });
 
-  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService) { }
+  constructor(private blogService: BlogsService, private cdr: ChangeDetectorRef, private alertsService: AlertsService,
+    private dialogRef: MatDialogRef<EditBlogComponent>, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.editBlogForm.setValue({
@@ -70,12 +74,12 @@ export class EditBlogComponent implements OnInit {
   submitEdits(blogId: string) {
     this.loading = true;
     if (this.fields.title.invalid) {
-      this.alertsService.warn(`A title must be between 3 and 100 characters in length.`);
+      this.snackbar.open(`A title must be between 3 and 100 characters in length.`)
       this.loading = false;
       return;
     }
     if (this.fields.body.invalid) {
-      this.alertsService.warn(`Body text must be greater than 5 characters.`);
+      this.snackbar.open(`Body text must be greater than 5 characters.`);
       this.loading = false;
       return;
     }
@@ -94,10 +98,10 @@ export class EditBlogComponent implements OnInit {
 
     this.blogService.editBlog(updatedBlogInfo).subscribe(() => {
       this.loading = false;
-      this.close();
+      this.dialogRef.close();
     }, err => {
       this.loading = false;
-      this.alertsService.error(err);
+      this.snackbar.open(err);
     });
   }
 
@@ -109,12 +113,12 @@ export class EditBlogComponent implements OnInit {
   askCancel() {
     if (this.editBlogForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        this.close();
+        this.dialogRef.close();
       } else {
         return;
       }
     } else {
-      this.close();
+      this.dialogRef.close();
       return;
     }
   }
