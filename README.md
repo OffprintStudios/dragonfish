@@ -7,8 +7,8 @@ It's still very much a work in progress.
 ## Build Status
 |Pulp Fiction|Build|Test|Production|
 |------------|-----|----|----------|
-|Server|![Build Server (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Server%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|(n/a)|
-|Client|![Build Client (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Client%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|(n/a)|
+|Server|![Build Server (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Server%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
+|Client|![Build Client (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Client%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
 
 ## Setting Up The Dev Environment
 
