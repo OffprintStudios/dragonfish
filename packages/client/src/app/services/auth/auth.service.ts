@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
+import { CookieService } from 'ngx-cookie';
 
 import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
@@ -17,7 +18,7 @@ export class AuthService {
   public currUser: Observable<FrontendUser>;
   private url: string = `/api/auth`;
 
-  constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService) {
+  constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService, private cookies: CookieService) {
     this.currUserSubject = new BehaviorSubject<FrontendUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currUser = this.currUserSubject.asObservable();
   }
@@ -248,6 +249,18 @@ export class AuthService {
       }), catchError(err => {
         return throwError(err);
       }));
+  }
+
+  public setContentFilter(enableMature: boolean, enableExplicit: boolean) {
+    if (enableMature === true && enableExplicit === false) {
+
+    } else if (enableMature === false && enableExplicit === true) {
+
+    } else if (enableMature === true && enableExplicit === true) {
+
+    } else if (enableMature === false && enableExplicit === false) {
+
+    }
   }
 
   private tryParseJsonHttpError(response: string): HttpError | null {
