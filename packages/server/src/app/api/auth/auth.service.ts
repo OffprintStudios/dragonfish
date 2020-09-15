@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException, InternalServerErrorException, NotFou
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from '@pulp-fiction/models/users';
+import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
 import { UsersService } from '../../db/users/users.service';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 
@@ -220,6 +220,23 @@ export class AuthService {
             username: user.username,
             roles: user.roles
         };
+        return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(newUserPayload));
+    }
+
+    /**
+     * Updates a user's tagline with the provided info.
+     * 
+     * @param user The user's JWT
+     * @param newTagline Their new tagline
+     */
+    async updateTagline(user: JwtPayload, newTagline: UpdateTagline): Promise<FrontendUser> {
+        const updatedUser = await this.usersService.updateTagline(user.sub, newTagline.newTagline);
+        const newUserPayload: JwtPayload = {
+            sub: user.sub,
+            username: user.username,
+            roles: user.roles
+        };
+
         return this.usersService.buildFrontendUser(updatedUser, this.jwtService.sign(newUserPayload));
     }
 }

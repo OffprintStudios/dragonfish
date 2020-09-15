@@ -346,8 +346,8 @@ export class UsersService {
      * @param userId The user we're changing
      * @param newTagline Their new tagline
      */
-    async updateTagline(userId: string, newTagline: string) {
-        return await this.userModel.updateOne({"_id": userId}, {"profile.tagline": newTagline});
+    async updateTagline(userId: string, newTagline: string): Promise<documents.UserDocument> {
+        return await this.userModel.findOneAndUpdate({"_id": userId}, {"profile.tagline": await sanitizeHtml(newTagline)}, {new: true});
     }
 
     /**

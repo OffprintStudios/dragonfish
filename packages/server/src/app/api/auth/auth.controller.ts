@@ -122,6 +122,6 @@ export class AuthController {
     @UseGuards(RolesGuard([models.Roles.Admin, models.Roles.Moderator, models.Roles.ChatModerator]))
     @Patch('update-tagline')
     async updateTagline(@Request() req: any, @Body() tagline: models.UpdateTagline) {
-        return await this.usersService.updateTagline(req.user.sub, tagline.newTagline);
+        return await this.authService.updateTagline(req.user, tagline);
     }
 }
