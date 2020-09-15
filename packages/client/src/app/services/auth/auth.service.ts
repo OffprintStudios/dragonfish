@@ -111,7 +111,7 @@ export class AuthService {
     // Fire and forget. If this fails, it doesn't matter to the user, 
     // and we don't want to leak that fact anyway.
     this.http.get(`${this.url}/logout`, { withCredentials: true }).subscribe();
-
+    this.cookies.remove('contentFilter');
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');
@@ -269,6 +269,8 @@ export class AuthService {
     } else if (enableMature === false && enableExplicit === false) {
       this.cookies.put('contentFilter', ContentFilter.Default);
     }
+
+    location.reload();
   }
 
   private tryParseJsonHttpError(response: string): HttpError | null {
