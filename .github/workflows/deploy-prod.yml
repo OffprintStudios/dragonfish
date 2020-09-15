@@ -13,8 +13,8 @@ on:
                 description: Git Ref (Optional)
                 required: false
   
-  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-  jobs:
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
     bump-version:
         name: Bump Site Version
         runs-on: ubuntu-latest
