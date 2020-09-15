@@ -3,6 +3,8 @@ name: Build Client (Dev)
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
+  pull_request:
+    branches: [ master ]
   repository_dispatch:
     types: [trigger-workflow-2]
 
@@ -35,7 +37,7 @@ jobs:
         run: yarn build client
 
       - name: Trigger Deployment to Test environment
-        if: success()
+        if: ${{ success() && github.name != 'pull_request' }}
         uses: peter-evans/repository-dispatch@v1
         with:
             token: ${{ secrets.REPO_GHA_PAT }}
