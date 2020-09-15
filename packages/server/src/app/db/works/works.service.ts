@@ -388,11 +388,10 @@ export class WorksService {
      * Fetches all new published works by newest first.
      */
     async fetchNewPublishedWorks(contentFilter: models.ContentFilter, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        if (contentFilter === models.ContentFilter.Default) {
+        if (contentFilter === models.ContentFilter.Everything) {
             return await this.workModel.paginate({
                 'audit.published': models.ApprovalStatus.Approved,
                 'audit.isDeleted': false,
-                $or: [{'meta.rating': models.ContentRating.Everyone}, {'meta.rating': models.ContentRating.Teen}]
             }, {
                 sort: {'audit.publishedOn': -1},
                 page: pageNum,
@@ -422,6 +421,7 @@ export class WorksService {
             return await this.workModel.paginate({
                 'audit.published': models.ApprovalStatus.Approved,
                 'audit.isDeleted': false,
+                $or: [{'meta.rating': models.ContentRating.Everyone}, {'meta.rating': models.ContentRating.Teen}]
             }, {
                 sort: {'audit.publishedOn': -1},
                 page: pageNum,
