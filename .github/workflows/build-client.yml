@@ -37,7 +37,7 @@ jobs:
         run: yarn build client
 
       - name: Trigger Deployment to Test environment
-        if: ${{ success() && github.name != 'pull_request' }}
+        if: ${{ success() && github.event_name != 'pull_request' }}
         uses: peter-evans/repository-dispatch@v1
         with:
             token: ${{ secrets.REPO_GHA_PAT }}

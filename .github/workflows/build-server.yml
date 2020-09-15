@@ -35,7 +35,7 @@ jobs:
         run: yarn build server
 
       - name: Trigger Client Build
-        if: ${{ success() && github.name != 'pull_request' }}
+        if: ${{ success() && github.event_name != 'pull_request' }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.REPO_GHA_PAT }}
