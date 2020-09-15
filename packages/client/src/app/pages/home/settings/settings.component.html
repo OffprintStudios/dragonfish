@@ -57,5 +57,16 @@
                 </div>
             </div>
         </div>
+        <div class="settings-card" *ngIf="currentUser && includesRoles(currentUser.roles)">
+            <form [formGroup]="updateTagline" (ngSubmit)="submitTagline()">
+                <div class="settings-card-content">
+                    <h1>Update Tagline</h1>
+                    <input class="u-full-width" type="text" formControlName="newTagline" placeholder="Just another wanderer">
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
