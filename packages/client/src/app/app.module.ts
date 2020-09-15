@@ -105,9 +105,10 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe
   ],
   imports: [
-    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, CookieModule.forRoot(),
-    IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
+    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
+    AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule,
+    CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',
       modules: {
