@@ -69,11 +69,15 @@
             </form>
         </div>
         <div class="settings-card">
-            <form [formGroup]="setContentFilter">
-                <div class="settings-card-content">
+            <form [formGroup]="setContentFilter" (ngSubmit)="submitContentFilter()">
+                <div class="settings-card-content" style="margin-bottom: 1.5rem;">
                     <h1>Content Filters</h1>
-                    <mat-slide-toggle formControlName="enableMature">See Mature</mat-slide-toggle>
-                    <mat-slide-toggle formControlName="enableExplicit">See Explicit</mat-slide-toggle>
+                    <span style="display: block; width: 100%; text-align: center;">
+                        <mat-slide-toggle formControlName="enableMature">See Mature</mat-slide-toggle>
+                    </span>
+                    <span style="display: block; width: 100%; text-align: center;">
+                        <mat-slide-toggle formControlName="enableExplicit">See Explicit</mat-slide-toggle>
+                    </span>
                 </div>
                 <div class="settings-card-footer">
                     <button type="submit" class="button-primary">Set Filters</button>

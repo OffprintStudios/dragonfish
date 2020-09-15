@@ -152,6 +152,7 @@ export class SettingsComponent implements OnInit {
   get passwordFields() { return this.changePasswordForm.controls; }
   get changeProfileFields() { return this.changeProfileForm.controls; }
   get updateTaglineFields() { return this.updateTagline.controls; }
+  get setFilterFields() { return this.setContentFilter.controls; }
 
   changeEmail = (newEmail: string, password: string): Observable<string> => {
     const changeRequest: ChangeEmail = {
@@ -238,6 +239,6 @@ export class SettingsComponent implements OnInit {
   }
 
   submitContentFilter() {
-    
+      this.authService.setContentFilter(this.setFilterFields.enableMature.value, this.setFilterFields.enableExplicit.value);
   }
 }
