@@ -8,7 +8,9 @@ import { CookieService } from 'ngx-cookie';
 
 import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
-import { FrontendUser, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
+import { FrontendUser, CreateUser, LoginUser, ChangePassword,
+  ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
+import { ContentFilter } from '@pulp-fiction/models/works';
 
 @Injectable({
   providedIn: 'root'
@@ -251,15 +253,21 @@ export class AuthService {
       }));
   }
 
+  /**
+   * Sets the contentFilter cookie based on the values of the two provided booleans.
+   * 
+   * @param enableMature Enable mature check
+   * @param enableExplicit Enable explicit check
+   */
   public setContentFilter(enableMature: boolean, enableExplicit: boolean) {
     if (enableMature === true && enableExplicit === false) {
-
+      this.cookies.put('contentFilter', ContentFilter.MatureEnabled);
     } else if (enableMature === false && enableExplicit === true) {
-
+      this.cookies.put('contentFilter', ContentFilter.ExplicitEnabled);
     } else if (enableMature === true && enableExplicit === true) {
-
+      this.cookies.put('contentFilter', ContentFilter.Everything);
     } else if (enableMature === false && enableExplicit === false) {
-
+      this.cookies.put('contentFilter', ContentFilter.Default);
     }
   }
 
