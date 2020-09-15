@@ -341,6 +341,16 @@ export class UsersService {
     }
 
     /**
+     * Changes a user's tagline.
+     * 
+     * @param userId The user we're changing
+     * @param newTagline Their new tagline
+     */
+    async updateTagline(userId: string, newTagline: string) {
+        return await this.userModel.updateOne({"_id": userId}, {"profile.tagline": newTagline});
+    }
+
+    /**
      * Gets the estimated count of users from the db.
      */
     async getUserCount(): Promise<number> {
