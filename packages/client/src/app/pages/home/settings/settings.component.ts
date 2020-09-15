@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import * as lodash from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { ToppyControl, Toppy, GlobalPosition, InsidePlacement } from 'toppy';
 
 import { AuthService } from '../../../services/auth';
 import { AlertsService } from '../../../modules/alerts';
 import { UploadAvatarComponent } from '../../../components/modals/account';
-import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser } from '@pulp-fiction/models/users';
+import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
 
 
 @Component({
@@ -49,7 +50,12 @@ export class SettingsComponent implements OnInit {
     newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(50)])
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService, private dialog: MatDialog, private toppy: Toppy) {
+  updateTagline = new FormGroup({
+    newTagline: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)])
+  });
+
+  constructor(private authService: AuthService, private alertsService: AlertsService, private dialog: MatDialog,
+    private snackbar: MatSnackBar) {
     this.authService.currUser.subscribe(x => {
       let themePrefIndex = 0;
 
@@ -91,6 +97,10 @@ export class SettingsComponent implements OnInit {
         newBio: x.profile.bio
       });
 
+      this.updateTagline.setValue({
+        newTagline: x.profile.tagline
+      });
+
       this.currentUser = x;
     });
   }
@@ -99,6 +109,7 @@ export class SettingsComponent implements OnInit {
   
   get passwordFields() { return this.changePasswordForm.controls; }
   get changeProfileFields() { return this.changeProfileForm.controls; }
+  get updateTaglineFields() { return this.updateTagline.controls; }
 
   changeEmail = (newEmail: string, password: string): Observable<string> => {
     const changeRequest: ChangeEmail = {
@@ -157,5 +168,30 @@ export class SettingsComponent implements OnInit {
 
   changeAvatar() {
     this.dialog.open(UploadAvatarComponent);
+  }
+
+  includesRoles(roles: Roles[]) {
+    const hasRoles = lodash.intersection([Roles.Admin, Roles.Moderator, Roles.ChatModerator], roles);
+
+    if (hasRoles.length === 0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  submitTagline() {
+    if (this.updateTaglineFields.newTagline.invalid) {
+      this.snackbar.open('Taglines must be between 3 and 32 characters long.');
+      return;
+    }
+
+    const taglineInfo: UpdateTagline = {
+      newTagline: this.updateTaglineFields.newTagline.value
+    };
+
+    this.authService.updateTagline(taglineInfo).subscribe(() => {
+      location.reload();
+    });
   }
 }

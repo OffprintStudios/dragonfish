@@ -341,6 +341,16 @@ export class UsersService {
     }
 
     /**
+     * Changes a user's tagline.
+     * 
+     * @param userId The user we're changing
+     * @param newTagline Their new tagline
+     */
+    async updateTagline(userId: string, newTagline: string): Promise<documents.UserDocument> {
+        return await this.userModel.findOneAndUpdate({"_id": userId}, {"profile.tagline": await sanitizeHtml(newTagline)}, {new: true});
+    }
+
+    /**
      * Gets the estimated count of users from the db.
      */
     async getUserCount(): Promise<number> {

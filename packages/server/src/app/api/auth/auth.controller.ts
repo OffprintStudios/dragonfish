@@ -118,4 +118,10 @@ export class AuthController {
         const avatar = `${process.env.IMAGES_HOSTNAME}/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
         return await this.authService.updateAvatar(req.user, avatar);
     }
+
+    @UseGuards(RolesGuard([models.Roles.Admin, models.Roles.Moderator, models.Roles.ChatModerator]))
+    @Patch('update-tagline')
+    async updateTagline(@Request() req: any, @Body() tagline: models.UpdateTagline) {
+        return await this.authService.updateTagline(req.user, tagline);
+    }
 }

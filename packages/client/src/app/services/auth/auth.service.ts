@@ -7,7 +7,7 @@ import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
 
 import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
-import { FrontendUser, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername } from '@pulp-fiction/models/users';
+import { FrontendUser, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -232,6 +232,22 @@ export class AuthService {
 
       uploader.uploadAll();
     });
+  }
+
+  /**
+   * Updates a user's tagline.
+   * 
+   * @param tagline The new tagline
+   */
+  public updateTagline(tagline: UpdateTagline) {
+    return this.http.patch<FrontendUser>(`${this.url}/update-tagline`, tagline, {observe: 'response', withCredentials: true})
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
   }
 
   private tryParseJsonHttpError(response: string): HttpError | null {
