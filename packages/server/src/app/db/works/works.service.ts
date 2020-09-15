@@ -387,12 +387,47 @@ export class WorksService {
     /**
      * Fetches all new published works by newest first.
      */
-    async fetchNewPublishedWorks(pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        return await this.workModel.paginate({'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false}, {
-            sort: {'audit.publishedOn': -1},
-            page: pageNum,
-            limit: 15
-        });
+    async fetchNewPublishedWorks(contentFilter: models.ContentFilter, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        if (contentFilter === models.ContentFilter.Default) {
+            return await this.workModel.paginate({
+                'audit.published': models.ApprovalStatus.Approved,
+                'audit.isDeleted': false,
+                $or: [{'meta.rating': models.ContentRating.Everyone}, {'meta.rating': models.ContentRating.Teen}]
+            }, {
+                sort: {'audit.publishedOn': -1},
+                page: pageNum,
+                limit: 15
+            });
+        } else if (contentFilter === models.ContentFilter.MatureEnabled) {
+            return await this.workModel.paginate({
+                'audit.published': models.ApprovalStatus.Approved,
+                'audit.isDeleted': false,
+                $or: [{'meta.rating': models.ContentRating.Everyone}, {'meta.rating': models.ContentRating.Teen}, {'meta.rating': models.ContentRating.Mature}]
+            }, {
+                sort: {'audit.publishedOn': -1},
+                page: pageNum,
+                limit: 15
+            });
+        } else if (contentFilter === models.ContentFilter.ExplicitEnabled) {
+            return await this.workModel.paginate({
+                'audit.published': models.ApprovalStatus.Approved,
+                'audit.isDeleted': false,
+                $or: [{'meta.rating': models.ContentRating.Everyone}, {'meta.rating': models.ContentRating.Teen}, {'meta.rating': models.ContentRating.Explicit}]
+            }, {
+                sort: {'audit.publishedOn': -1},
+                page: pageNum,
+                limit: 15
+            });
+        } else {
+            return await this.workModel.paginate({
+                'audit.published': models.ApprovalStatus.Approved,
+                'audit.isDeleted': false,
+            }, {
+                sort: {'audit.publishedOn': -1},
+                page: pageNum,
+                limit: 15
+            });
+        }
     }
 
     /**

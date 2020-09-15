@@ -23,7 +23,7 @@ export const WorksSchema = new Schema({
         category: {type: String, enum: Object.keys(models.Categories), required: true},
         fandoms: {type: [String], enum: Object.keys(models.Fandoms)},
         genres: {type: [String], enum: Object.keys(models.GenresFiction).concat(Object.keys(models.GenresPoetry)), required: true},
-        rating: {type: String, enum: Object.keys(models.ContentRating), required: true},
+        rating: {type: String, enum: Object.keys(models.ContentRating), required: true, index: true},
         status: {type: String, enum: Object.keys(models.WorkStatus), required: true},
         coverArt: {type: String},
     },
