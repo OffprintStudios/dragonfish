@@ -240,9 +240,11 @@ export class AuthService {
    * @param tagline The new tagline
    */
   public updateTagline(tagline: UpdateTagline) {
-    return this.http.patch<void>(`${this.url}/update-tagline`, tagline, {observe: 'response', withCredentials: true})
-      .pipe(map(() => {
-        return;
+    return this.http.patch<FrontendUser>(`${this.url}/update-tagline`, tagline, {observe: 'response', withCredentials: true})
+      .pipe(map(user => {
+        localStorage.setItem('currentUser', JSON.stringify(user.body));
+        this.currUserSubject.next(user.body);
+        return user.body;
       }), catchError(err => {
         return throwError(err);
       }));
