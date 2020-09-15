@@ -3,10 +3,8 @@ name: Build Client (Dev)
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  repository_dispatch:
+    types: [trigger-workflow-2]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,6 +17,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+        with:
+            ref: ${{ github.event.client_payload.sha }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1.4.3
@@ -33,3 +33,12 @@ jobs:
         
       - name: Build client
         run: yarn build client
+
+      - name: Trigger Deployment to Test environment
+        if: success()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+            token: ${{ secrets.REPO_GHA_PAT }}
+            repository: ${{ github.repository }}
+            event-type: trigger-workflow-3
+            client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
