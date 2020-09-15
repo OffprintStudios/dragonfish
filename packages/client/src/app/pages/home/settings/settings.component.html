@@ -68,5 +68,17 @@
                 </div>
             </form>
         </div>
+        <div class="settings-card">
+            <form [formGroup]="setContentFilter">
+                <div class="settings-card-content">
+                    <h1>Content Filters</h1>
+                    <mat-slide-toggle formControlName="enableMature">See Mature</mat-slide-toggle>
+                    <mat-slide-toggle formControlName="enableExplicit">See Explicit</mat-slide-toggle>
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Set Filters</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
