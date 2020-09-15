@@ -9,7 +9,7 @@ export class BrowseController {
     constructor(private readonly browseService: BrowseService) {}
 
     @Get('all-pub-works/:pageNum') 
-    async getAllPutWorks(@Cookies('contentFilter') contentFilter: ContentFilter, @Param('pageNum') pageNum: number) {
+    async getAllPubWorks(@Cookies('contentFilter') contentFilter: ContentFilter, @Param('pageNum') pageNum: number) {
         return await this.browseService.getAllNewPublishedWorks(contentFilter, pageNum);
     }
 }
