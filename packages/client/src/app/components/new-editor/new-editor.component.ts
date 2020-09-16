@@ -1,4 +1,5 @@
 import * as CKEditor from './ckeditor.js';
+import * as Indent from '@ckeditor/ckeditor5-indent/src/indent';
 
 import { Component, ViewEncapsulation, OnInit, Input } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup } from '@angular/forms';
@@ -23,6 +24,7 @@ export class NewEditorComponent implements OnInit {
   config: Object = {
     // Todo: configure toolbar properly
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html for details
+    plugins: [ Indent ],
     toolbar: [ 'heading', '|', 'fontsize', 'fontcolor', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
     'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'imageupload', 'mediaembed', '|',
     'undo', 'redo'],
