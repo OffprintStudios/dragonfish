@@ -6,6 +6,7 @@ export { ContentRating } from './content-rating.enum';
 export { Genres, GenresFiction, GenresPoetry, MAX_GENRES_PER_FANFIC, MAX_GENRES_PER_POEM, MAX_GENRES_PER_ORIGINAL } from './genres.enum';
 export { WorkStatus } from './work-status.enum';
 export { ApprovalStatus } from './approval-status.enum';
+export { ContentFilter } from './content-filter.enum';
 
 /* Data transfer objects */
 export { CreateWork } from './create-work.model';

@@ -1,10 +1,13 @@
 import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
+import { Cookies } from '@nestjsplus/cookies';
+
+import { ContentFilter } from '@pulp-fiction/models/works';
 import { BlogsService } from '../../../db/blogs/blogs.service';
 import { WorksService } from '../../../db/works/works.service';
-
 import { UsersService } from '../../../db/users/users.service';
 import { OptionalAuthGuard } from '../../../guards';
 import { CollectionsService } from '../../../db/collections/collections.service';
+
 
 @Controller('portfolio')
 export class PortfolioController {
@@ -30,8 +33,8 @@ export class PortfolioController {
     }
 
     @Get('get-works-list/:userId/:pageNum')
-    async getWorksList(@Param('userId') userId: string, @Param('pageNum') pageNum: number) {
-        return await this.worksService.getWorksList(userId, pageNum);
+    async getWorksList(@Cookies('contentFilter') contentFilter: ContentFilter, @Param('userId') userId: string, @Param('pageNum') pageNum: number) {
+        return await this.worksService.getWorksList(userId, contentFilter, pageNum);
     }
 
     @Get('get-port-collections/:userId/:pageNum')

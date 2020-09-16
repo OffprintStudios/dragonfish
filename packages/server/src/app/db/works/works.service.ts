@@ -387,12 +387,37 @@ export class WorksService {
     /**
      * Fetches all new published works by newest first.
      */
-    async fetchNewPublishedWorks(pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        return await this.workModel.paginate({'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false}, {
-            sort: {'audit.publishedOn': -1},
-            page: pageNum,
-            limit: 15
-        });
+    async fetchNewPublishedWorks(contentFilter: models.ContentFilter, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        let query = {'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
+        let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
+
+        switch (contentFilter) {
+            case models.ContentFilter.Everything: 
+                query = query;
+                break;
+            case models.ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Mature}
+                ];
+                break;
+            case models.ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}
+                ];
+                break;
+        }
+
+        return await this.workModel.paginate(query, paginateOptions);
     }
 
     /**
@@ -400,12 +425,37 @@ export class WorksService {
      * 
      * @param userId The user whose works we're fetching
      */
-    async getWorksList(userId: any, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        return await this.workModel.paginate({'author': userId, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false}, {
-            sort: {'audit.publishedOn': -1},
-            page: pageNum,
-            limit: 15
-        });
+    async getWorksList(userId: any, contentFilter: models.ContentFilter, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
+        let query = {'author': userId, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
+        let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
+
+        switch (contentFilter) {
+            case models.ContentFilter.Everything: 
+                query = query;
+                break;
+            case models.ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Mature}
+                ];
+                break;
+            case models.ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}
+                ];
+                break;
+        }
+
+        return await this.workModel.paginate(query, paginateOptions);
     }
 
     /**

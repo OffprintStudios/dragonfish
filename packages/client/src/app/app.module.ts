@@ -9,13 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
 import { MaterialModule } from '@pulp-fiction/material';
-import { ToppyModule } from 'toppy';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CookieModule } from 'ngx-cookie';
 
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe } from './pipes';
@@ -105,9 +105,10 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe
   ],
   imports: [
-    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, ToppyModule,
-    IconsModule, AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
+    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
+    AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule,
+    CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',
       modules: {

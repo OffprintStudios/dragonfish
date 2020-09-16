@@ -4,10 +4,13 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
+import { CookieService } from 'ngx-cookie';
 
 import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
-import { FrontendUser, CreateUser, LoginUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
+import { FrontendUser, CreateUser, LoginUser, ChangePassword,
+  ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
+import { ContentFilter } from '@pulp-fiction/models/works';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +20,7 @@ export class AuthService {
   public currUser: Observable<FrontendUser>;
   private url: string = `/api/auth`;
 
-  constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService) {
+  constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService, private cookies: CookieService) {
     this.currUserSubject = new BehaviorSubject<FrontendUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currUser = this.currUserSubject.asObservable();
   }
@@ -108,7 +111,8 @@ export class AuthService {
     // Fire and forget. If this fails, it doesn't matter to the user, 
     // and we don't want to leak that fact anyway.
     this.http.get(`${this.url}/logout`, { withCredentials: true }).subscribe();
-
+    
+    this.cookies.remove('contentFilter');
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
     this.alertsService.success('See you next time!');
@@ -248,6 +252,26 @@ export class AuthService {
       }), catchError(err => {
         return throwError(err);
       }));
+  }
+
+  /**
+   * Sets the contentFilter cookie based on the values of the two provided booleans.
+   * 
+   * @param enableMature Enable mature check
+   * @param enableExplicit Enable explicit check
+   */
+  public setContentFilter(enableMature: boolean, enableExplicit: boolean) {
+    if (enableMature === true && enableExplicit === false) {
+      this.cookies.put('contentFilter', ContentFilter.MatureEnabled);
+    } else if (enableMature === false && enableExplicit === true) {
+      this.cookies.put('contentFilter', ContentFilter.ExplicitEnabled);
+    } else if (enableMature === true && enableExplicit === true) {
+      this.cookies.put('contentFilter', ContentFilter.Everything);
+    } else if (enableMature === false && enableExplicit === false) {
+      this.cookies.put('contentFilter', ContentFilter.Default);
+    }
+
+    location.reload();
   }
 
   private tryParseJsonHttpError(response: string): HttpError | null {
