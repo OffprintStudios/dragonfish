@@ -1320,6 +1320,15 @@
     "@ckeditor/ckeditor5-core" "^22.0.0"
     "@ckeditor/ckeditor5-utils" "^22.0.0"
 
+"@ckeditor/ckeditor5-ui@^22.0.0":
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-ui/-/ckeditor5-ui-22.0.0.tgz#5509e49bcb189c29fbe0412812b75581d4493c10"
+  integrity sha512-b+uQGc4lugywNAsvE9vsye+bWr52Ic4h7nA1Jrc/ppy7D9dUL+S93U7oK16wZHlyWZMuzAVxz+KUm8Ve33PwCQ==
+  dependencies:
+    "@ckeditor/ckeditor5-core" "^22.0.0"
+    "@ckeditor/ckeditor5-utils" "^22.0.0"
+    lodash-es "^4.17.15"
+
 "@ckeditor/ckeditor5-utils@^22.0.0":
   version "22.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-utils/-/ckeditor5-utils-22.0.0.tgz#f158c25449a3cbd5a0fd887d14be860826596640"

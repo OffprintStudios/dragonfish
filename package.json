@@ -44,6 +44,7 @@
     "@auth0/angular-jwt": "^5.0.1",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "@ckeditor/ckeditor5-indent": "^22.0.0",
+    "@ckeditor/ckeditor5-ui": "^22.0.0",
     "@nestjs/common": "^7.0.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/graphql": "^7.6.0",

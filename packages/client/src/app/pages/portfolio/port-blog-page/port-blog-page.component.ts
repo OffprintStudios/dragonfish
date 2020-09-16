@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Toppy, ToppyControl, GlobalPosition, InsidePlacement } from 'toppy';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../services/auth';
 import { BlogsService, PortfolioService } from '../../../services/content';
@@ -20,34 +20,17 @@ export class PortBlogPageComponent implements OnInit {
   portUserName: string; // The username for this portfolio
   blogId: string; // The ID of this blog
   blogData: Blog; // The blog we're displaying
-  editBlog: ToppyControl; // The blog editing form modal
   loading = false; // Loading check for fetching data
   pageNum = 1; // Comments page
   itemKind = ItemKind.Blog;
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private portService: PortfolioService,
-      private blogsService: BlogsService, private toppy: Toppy, private router: Router) {
+      private blogsService: BlogsService, private dialog: MatDialog, private router: Router) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
     this.fetchData();
   }
 
-  ngOnInit(): void {
-    let position = new GlobalPosition({
-      placement: InsidePlacement.CENTER,
-      width: '90%',
-      height: '90%'
-    });
-
-    this.editBlog = this.toppy
-      .position(position)
-      .config({backdrop: true})
-      .content(EditBlogComponent)
-      .create();
-    
-    this.editBlog.listen('t_close').subscribe(() => {
-      this.fetchData();
-    });
-  }
+  ngOnInit(): void {}
 
   /**
    * Fetches the blog from the backend.
@@ -118,7 +101,9 @@ export class PortBlogPageComponent implements OnInit {
    * Opens the edit form for this blog.
    */
   openEditForm() {
-    this.editBlog.updateContent(EditBlogComponent, {blogData: this.blogData});
-    this.editBlog.open();
+    const dialogRef = this.dialog.open(EditBlogComponent, {data: {blogData: this.blogData}});
+    dialogRef.afterClosed().subscribe(() => {
+      this.fetchData();
+    });
   }
 }
