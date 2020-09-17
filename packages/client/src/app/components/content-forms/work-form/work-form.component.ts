@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -10,12 +10,14 @@ import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction,
 import { WorksService } from '../../../services/content';
 
 @Component({
-  selector: 'new-work',
-  templateUrl: './new-work.component.html',
-  styleUrls: ['./new-work.component.less']
+  selector: 'work-form',
+  templateUrl: './work-form.component.html',
+  styleUrls: ['./work-form.component.less']
 })
-export class NewWorkComponent implements OnInit {
+export class WorkFormComponent implements OnInit {
   @Input() username: string;
+  @Output() onSubmit = new EventEmitter<boolean>();
+  @Output() onCancel = new EventEmitter<boolean>();
 
   @ViewChild('genreInput') genreInput: ElementRef<HTMLInputElement>;
   @ViewChild('fandomInput') fandomInput: ElementRef<HTMLInputElement>;
@@ -95,7 +97,8 @@ export class NewWorkComponent implements OnInit {
   askCancel() {
     if (this.newWorkForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
-        console.log('cancelled');
+        this.onCancel.emit(true);
+        return;
       } else {
         return;
       }
@@ -267,8 +270,10 @@ export class NewWorkComponent implements OnInit {
 
     this.worksService.createWork(newWork).subscribe(() => {
       this.loading = false;
+      this.onSubmit.emit(true);
     }, err => {
       this.loading = false;
+      this.onSubmit.emit(false);
       this.snackbar.open('Something went wrong! Try again in a little bit.');
     });
   }

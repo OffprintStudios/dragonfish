@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewWorkComponent } from './new-work.component';
+import { WorkFormComponent } from './work-form.component';
 
-describe('NewWorkComponent', () => {
-  let component: NewWorkComponent;
-  let fixture: ComponentFixture<NewWorkComponent>;
+describe('WorkFormComponent', () => {
+  let component: WorkFormComponent;
+  let fixture: ComponentFixture<WorkFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewWorkComponent ]
+      declarations: [ WorkFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewWorkComponent);
+    fixture = TestBed.createComponent(WorkFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

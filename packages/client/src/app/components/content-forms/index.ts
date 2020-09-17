@@ -1,1 +1,1 @@
-export { NewWorkComponent as CreateNewWorkComponent } from './new-work/new-work.component';
+export { WorkFormComponent as CreateNewWorkComponent } from './work-form/work-form.component';

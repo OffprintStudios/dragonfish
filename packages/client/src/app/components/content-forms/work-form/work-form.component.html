@@ -1,4 +1,4 @@
-<form [formGroup]="newWorkForm">
+<form [formGroup]="newWorkForm" (ngSubmit)="submitWork()">
     <div class="work-box">
         <div class="work-info">
             <div class="work-details">
@@ -125,7 +125,7 @@
         </div>
     </div>
     <div class="work-controls">
-        <button>Submit</button>
-        <button>Cancel</button>
+        <button type="submit">Submit</button>
+        <button type="button" (click)="askCancel()">Cancel</button>
     </div>
 </form>
