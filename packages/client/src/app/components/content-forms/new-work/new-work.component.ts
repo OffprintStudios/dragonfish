@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction, 
   GenresPoetry, WorkStatus } from '@pulp-fiction/models/works';
@@ -14,7 +17,12 @@ import { WorksService } from '../../../services/content';
 export class NewWorkComponent implements OnInit {
   @Input() username: string;
 
+  @ViewChild('genreInput') genreInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
   loading = false;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  genresList: string[] = [];
 
   categories = Categories; // Alias for categories
   fandoms = Fandoms; // Alias for fandoms
@@ -92,6 +100,44 @@ export class NewWorkComponent implements OnInit {
     } else {
       return;
     }
+  }
+
+  addGenre(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our genre
+    if ((value || '').trim() && this.genresList.length < 2) {
+      this.genresList.push(GenresFiction[value.trim()]);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.fields.theseGenres.setValue(this.genresList);
+  }
+
+  removeGenre(genre: string): void {
+    const index = this.genresList.indexOf(genre);
+
+    if (index >= 0) {
+      this.genresList.splice(index, 1);
+    }
+  }
+
+  selectedGenre(event: MatAutocompleteSelectedEvent): void {
+    if (this.genresList.length < 2) {
+      console.log('hit!');
+      this.genresList.push(GenresFiction[event.option.value]);
+      this.genreInput.nativeElement.value = '';
+      this.fields.theseGenres.setValue(this.genresList);
+    }
+  }
+
+  debug() {
+    return JSON.stringify(this.fields.theseGenres.value);
   }
 
   /**
