@@ -18,11 +18,13 @@ export class NewWorkComponent implements OnInit {
   @Input() username: string;
 
   @ViewChild('genreInput') genreInput: ElementRef<HTMLInputElement>;
+  @ViewChild('fandomInput') fandomInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   loading = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   genresList: string[] = [];
+  fandomsList: string[] = [];
 
   categories = Categories; // Alias for categories
   fandoms = Fandoms; // Alias for fandoms
@@ -102,6 +104,11 @@ export class NewWorkComponent implements OnInit {
     }
   }
 
+  /**
+   * Adds the specific chip to the theseGenres form control
+   * 
+   * @param event The chip input event
+   */
   addGenre(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
@@ -119,6 +126,11 @@ export class NewWorkComponent implements OnInit {
     this.fields.theseGenres.setValue(this.genresList);
   }
 
+  /**
+   * Removes a genre from the form conrol
+   * 
+   * @param genre The genre to remove
+   */
   removeGenre(genre: string): void {
     const index = this.genresList.indexOf(genre);
 
@@ -127,17 +139,65 @@ export class NewWorkComponent implements OnInit {
     }
   }
 
+  /**
+   * Adds a genre to the chip list.
+   * 
+   * @param event An autocomplete event
+   */
   selectedGenre(event: MatAutocompleteSelectedEvent): void {
     if (this.genresList.length < 2) {
-      console.log('hit!');
       this.genresList.push(GenresFiction[event.option.value]);
       this.genreInput.nativeElement.value = '';
       this.fields.theseGenres.setValue(this.genresList);
     }
   }
 
-  debug() {
-    return JSON.stringify(this.fields.theseGenres.value);
+  /**
+   * Adds the specific chip to the theseFandoms form control
+   * 
+   * @param event The chip input event
+   */
+  addFandom(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fandom
+    if ((value || '').trim() && this.fandomsList.length < 5) {
+      this.genresList.push(Fandoms[value.trim()]);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.fields.theseFandoms.setValue(this.fandomsList);
+  }
+
+  /**
+   * Removes a fandom from the form conrol
+   * 
+   * @param fandom The fandom to remove
+   */
+  removeFandom(fandom: string): void {
+    const index = this.fandomsList.indexOf(fandom);
+
+    if (index >= 0) {
+      this.fandomsList.splice(index, 1);
+    }
+  }
+
+  /**
+   * Adds a genre to the chip list.
+   * 
+   * @param event An autocomplete event
+   */
+  selectedFandom(event: MatAutocompleteSelectedEvent): void {
+    if (this.fandomsList.length < 5) {
+      this.fandomsList.push(Fandoms[event.option.value]);
+      this.fandomInput.nativeElement.value = '';
+      this.fields.theseFandoms.setValue(this.fandomsList);
+    }
   }
 
   /**
@@ -192,12 +252,6 @@ export class NewWorkComponent implements OnInit {
       this.loading = false;
       return;
     }
-
-    // Because the genre dropdown for poetry is multipe=false, we get a
-    // single string instead of an array here. Wrap it up in an array.
-    const genres = Array.isArray(this.fields.theseGenres.value)
-      ? this.fields.theseGenres.value
-      : [this.fields.theseGenres.value];
     
     const newWork: CreateWork = {
       title: this.fields.title.value,
@@ -205,7 +259,7 @@ export class NewWorkComponent implements OnInit {
       longDesc: this.fields.longDesc.value,
       category: this.fields.thisCategory.value,
       fandoms: this.fields.theseFandoms.value,
-      genres: genres,
+      genres: this.fields.theseGenres.value,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
       usesNewEditor: true,

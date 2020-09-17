@@ -33,19 +33,18 @@
                         </mat-form-field>
                     </div>
                     <span *ngIf="isFiction() || isPoetry()">//</span>
-                    <div style="flex: 1;">
+                    <div [ngStyle]="isFanfiction() ? {'flex': '0.5'} : {'flex': '1'}">
                         <!--Genres for Fiction-->
                         <div *ngIf="isFiction()">
                             <mat-form-field class="work-form work-chips">
                                 <mat-chip-list #fictionChipList aria-label="Genres selection">
-                                    <mat-chip *ngFor="let genre of genresList" [selectable]="true" [removable]="true">
+                                    <mat-chip *ngFor="let genre of genresList" [selectable]="true" [removable]="true" (removed)="removeGenre(genre)">
                                         {{ genre }}
                                         <mat-icon matChipRemove>cancel</mat-icon>
                                     </mat-chip>
                                     <input
                                         placeholder="Choose Genres (max 2)"
                                         #genreInput
-                                        [formControl]="fields.theseGenres"
                                         [matAutocomplete]="auto"
                                         [matChipInputFor]="fictionChipList"
                                         [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
@@ -60,37 +59,73 @@
 
                         <!--Genres for Poetry-->
                         <div *ngIf="isPoetry()">
-                            <ng-select [items]="genresPoetry | keyvalue"
-                                bindLabel="value"
-                                bindValue="key"
-                                placeholder="Select Genre"
-                                clearAllText="Clear"
-                                formControlName="theseGenres"
-                                [searchable]="false"
-                                class="custom"></ng-select>
+                            <mat-form-field class="work-form work-chips">
+                                <mat-chip-list #fictionChipList aria-label="Genres selection">
+                                    <mat-chip *ngFor="let genre of genresList" [selectable]="true" [removable]="true" (removed)="removeGenre(genre)">
+                                        {{ genre }}
+                                        <mat-icon matChipRemove>cancel</mat-icon>
+                                    </mat-chip>
+                                    <input
+                                        placeholder="Choose Genre"
+                                        #genreInput
+                                        [matAutocomplete]="auto"
+                                        [matChipInputFor]="fictionChipList"
+                                        [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                                </mat-chip-list>
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedGenre($event)">
+                                    <mat-option *ngFor="let genre of genresPoetry | keyvalue" [value]="genre.key">
+                                        {{ genre.value }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
                         </div>
                     </div>
                     <span *ngIf="isFanfiction()">//</span>
-                    <div *ngIf="isFanfiction()">
+                    <div *ngIf="isFanfiction()" [ngStyle]="isFanfiction() ? {'flex': '0.5', 'overflow': 'auto'} : {'flex': 'none'}">
                         <!--Fandoms-->
-                        <ng-select [items]="fandoms | keyvalue"
-                            bindLabel="value"
-                            bindValue="key"
-                            [multiple]="true"
-                            maxSelectedItems="5"
-                            placeholder="Select Fandoms (5 Max)"
-                            clearAllText="Clear"
-                            formControlName="theseFandoms"
-                            class="custom"></ng-select>
+                        <mat-form-field class="work-form work-chips">
+                            <mat-chip-list #fandomChipList aria-label="Fandoms selection">
+                                <mat-chip *ngFor="let fandom of fandomsList" [selectable]="true" [removable]="true" (removed)="removeFandom(fandom)">
+                                    {{ fandom }}
+                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                </mat-chip>
+                                <input
+                                    placeholder="Choose Fandoms (max 5)"
+                                    #fandomInput
+                                    [matAutocomplete]="auto"
+                                    [matChipInputFor]="fandomChipList"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedFandom($event)">
+                                <mat-option *ngFor="let fandom of fandoms | keyvalue" [value]="fandom.key">
+                                    {{ fandom.value }}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
                     </div>
                 </div>
                 
                 <div class="work-description">
+                    <input class="u-full-width" type="text" formControlName="shortDesc" placeholder="Short Description..." />
+                    
                     <editor [parentForm]="newWorkForm" [controlName]="'longDesc'"></editor>
+                </div>
+
+                <div class="work-stats">
+                    <mat-form-field class="work-form">
+                        <mat-label>Choose a status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option *ngFor="let stat of status | keyvalue" [value]="stat.key">
+                                {{ stat.value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
     </div>
+    <div class="work-controls">
+        <button>Submit</button>
+        <button>Cancel</button>
+    </div>
 </form>
-
-{{ debug() }}
