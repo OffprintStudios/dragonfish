@@ -59,12 +59,12 @@ export class WorksComponent implements OnInit {
   /**
    * Opens the new work form modal.
    */
-  openNewWorkForm() {
+  /*openNewWorkForm() {
     const newWorkRef = this.dialog.open(NewWorkComponent);
     newWorkRef.afterClosed().subscribe(() => {
       this.fetchData(this.pageNum);
     });
-  }
+  }*/
 
   /**
    * Opens the edit work form modal.

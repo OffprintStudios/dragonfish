@@ -1,0 +1,1 @@
+export { NewWorkComponent as CreateNewWorkComponent } from './new-work/new-work.component';

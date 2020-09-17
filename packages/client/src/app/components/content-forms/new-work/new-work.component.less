@@ -1,0 +1,82 @@
+div.work-box {
+    position: relative;
+    width: 95%;
+    margin: 0 auto 0 auto;
+    border: 1px solid var(--site-borders);
+    border-radius: 4px;
+    background: var(--site-accent);
+    box-shadow: var(--site-dropshadow);
+
+    div.work-info {
+        display: flex;
+        flex-direction: row;
+
+        div.work-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: 2.5rem 2.5rem 0 2.5rem;
+
+            div.work-header {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-bottom: 5px;
+                
+                div.content-rating {
+                    margin-right: 1.25rem;
+                }
+
+                h1 {
+                    flex: 1;
+                    align-self: center;
+                    margin-bottom: 0;
+                    input.work-title {
+                        margin-bottom: 0;
+                        width: 100%;
+                        height: 6rem;
+                        border: 1px solid whitesmoke;
+                        background-color: var(--site-accent-hover);
+
+                        &:active {
+                            border: 1px solid whitesmoke;
+                        }
+
+                        &:focus {
+                            border: 1px solid whitesmoke;
+                        }
+
+                        &::placeholder {
+                            color: lightgrey;
+                        }
+                    }
+                }
+
+                h2 {
+                    margin: 0 0 0 1rem;
+                    font-size: 20px;
+                    font-style: italic;
+                    color: whitesmoke;
+                }
+            }
+
+            div.category-genre {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                border-top: 1px solid whitesmoke;
+                border-bottom: 1px solid whitesmoke;
+                color: whitesmoke;
+                padding: 5px 10px;
+                margin-bottom: 1.5rem;
+                span {
+                    margin: 0 0.75rem 0 0.75rem;
+                }
+            }
+
+            div.work-description {
+                margin-bottom: 1.5rem;
+            }
+        }
+    }
+}

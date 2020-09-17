@@ -1,0 +1,84 @@
+<form [formGroup]="newWorkForm">
+    <div class="work-box">
+        <div class="work-info">
+            <div class="work-details">
+                <div class="work-header">
+                    <h1>
+                        <input class="work-title" type="text" formControlName="title" placeholder="Title">
+                    </h1>
+                    <h2>by {{ username }}</h2>
+                </div>
+
+                <div class="category-genre">
+                    <div>
+                        <!--Content Rating-->
+                        <ng-select [items]="rating | keyvalue"
+                            bindLabel="value"
+                            bindValue="key"
+                            placeholder="Select Rating"
+                            clearAllText="Clear"
+                            formControlName="rating"
+                            [searchable]="false"
+                            class="custom"></ng-select>
+                    </div>
+                    <span>//</span>
+                    <div>
+                        <!--Categories-->
+                        <ng-select [items]="categories | keyvalue"
+                            bindLabel="value"
+                            bindValue="key"
+                            placeholder="Select A Category"
+                            formControlName="thisCategory"
+                            [searchable]="false"
+                            class="custom"></ng-select>
+                    </div>
+                    <span>//</span>
+                    <div style="width: 40px;">
+                        <!--Genres for Fiction-->
+                        <div *ngIf="isFiction()">
+                            <ng-select [items]="genresFiction | keyvalue"
+                                bindLabel="value"
+                                bindValue="key"
+                                [multiple]="true"
+                                maxSelectedItems="2"
+                                placeholder="Select Genres (2 Max)"
+                                clearAllText="Clear"
+                                formControlName="theseGenres"
+                                [searchable]="false"
+                                class="custom"></ng-select>
+                        </div>
+
+                        <!--Genres for Poetry-->
+                        <div *ngIf="isPoetry()">
+                            <ng-select [items]="genresPoetry | keyvalue"
+                                bindLabel="value"
+                                bindValue="key"
+                                placeholder="Select Genre"
+                                clearAllText="Clear"
+                                formControlName="theseGenres"
+                                [searchable]="false"
+                                class="custom"></ng-select>
+                        </div>
+                    </div>
+                    <span *ngIf="isFanfiction()">//</span>
+                    <div *ngIf="isFanfiction()">
+                        <!--Fandoms-->
+                        <ng-select [items]="fandoms | keyvalue"
+                            bindLabel="value"
+                            bindValue="key"
+                            [multiple]="true"
+                            maxSelectedItems="5"
+                            placeholder="Select Fandoms (5 Max)"
+                            clearAllText="Clear"
+                            formControlName="theseFandoms"
+                            class="custom"></ng-select>
+                    </div>
+                </div>
+                
+                <div class="work-description">
+                    <editor [parentForm]="newWorkForm" [controlName]="'longDesc'"></editor>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
