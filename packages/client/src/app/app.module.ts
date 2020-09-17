@@ -36,7 +36,7 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
-import { CreateNewWorkComponent } from './components/content-forms';
+import { WorkFormComponent } from './components/content-forms';
 import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -104,7 +104,7 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    CreateNewWorkComponent
+    WorkFormComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
