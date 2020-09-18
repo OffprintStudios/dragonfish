@@ -98,12 +98,14 @@ export class WorkFormComponent implements OnInit {
   askCancel() {
     if (this.workForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
+        this.workForm.reset();
         this.onCancel.emit(true);
         return;
       } else {
         return;
       }
     } else {
+      this.workForm.reset();
       this.onCancel.emit(true);
       return;
     }
