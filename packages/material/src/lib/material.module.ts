@@ -18,6 +18,8 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   imports: [
@@ -39,7 +41,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatBadgeModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ],
   exports: [
     FlexLayoutModule,
@@ -60,7 +64,9 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatBadgeModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatChipsModule,
+    MatAutocompleteModule
   ]
 })
 export class MaterialModule {}

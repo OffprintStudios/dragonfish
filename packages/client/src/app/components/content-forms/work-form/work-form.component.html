@@ -1,0 +1,98 @@
+<form [formGroup]="workForm" (ngSubmit)="submitWork()" [ngStyle]="toggle ? {'display': 'block'} : {'display': 'none'}">
+    <div class="work-box">
+        <div class="work-info">
+            <div class="work-details">
+                <div class="work-header">
+                    <h1>
+                        <input class="work-title" type="text" formControlName="title" placeholder="Title">
+                    </h1>
+                    <h2>by {{ username }}</h2>
+                </div>
+
+                <div class="category-genre">
+                    <div>
+                        <!--Content Rating-->
+                        <mat-form-field class="work-form">
+                            <mat-label>Select a rating</mat-label>
+                            <mat-select formControlName="rating">
+                                <mat-option *ngFor="let rate of rating | keyvalue" [value]="rate.key">
+                                    {{ rate.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <span>//</span>
+                    <div>
+                        <mat-form-field class="work-form">
+                            <mat-label>Select a category</mat-label>
+                            <mat-select formControlName="thisCategory">
+                                <mat-option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
+                                    {{ cat.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <span *ngIf="isFiction() || isPoetry()">//</span>
+                    <div [ngStyle]="isFanfiction() ? {'flex': '0.5'} : {'flex': '1'}">
+                        <!--Genres for Fiction-->
+                        <div *ngIf="isFiction()">
+                            <mat-form-field class="work-form">
+                                <mat-label>Choose Genres (max 2)</mat-label>
+                                <mat-select formControlName="theseGenres" multiple>
+                                    <mat-option *ngFor="let genre of genresFiction | keyvalue" [value]="genre.key">
+                                        {{ genre.value }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <!--Genres for Poetry-->
+                        <div *ngIf="isPoetry()">
+                            <mat-form-field class="work-form">
+                                <mat-label>Choose Genre</mat-label>
+                                <mat-select formControlName="theseGenres" multiple>
+                                    <mat-option *ngFor="let genre of genresPoetry | keyvalue" [value]="genre.key">
+                                        {{ genre.value }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <span *ngIf="isFanfiction()">//</span>
+                    <div *ngIf="isFanfiction()" [ngStyle]="isFanfiction() ? {'flex': '0.5', 'overflow': 'auto'} : {'flex': 'none'}">
+                        <!--Fandoms-->
+                        <mat-form-field class="work-form">
+                            <mat-label>Choose Fandoms (max 5)</mat-label>
+                            <mat-select formControlName="theseFandoms" multiple>
+                                <mat-option *ngFor="let fandom of fandoms | keyvalue" [value]="fandom.key">
+                                    {{ fandom.value }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                
+                <div class="work-description">
+                    <input class="u-full-width" type="text" formControlName="shortDesc" placeholder="Short Description..." />
+                    
+                    <editor [parentForm]="workForm" [controlName]="'longDesc'"></editor>
+                </div>
+
+                <div class="work-stats">
+                    <mat-form-field class="work-form">
+                        <mat-label>Choose a status</mat-label>
+                        <mat-select formControlName="status">
+                            <mat-option *ngFor="let stat of status | keyvalue" [value]="stat.key">
+                                {{ stat.value }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="work-controls">
+        <button type="submit">Submit</button>
+        <button type="button" (click)="askCancel()">Cancel</button>
+    </div>
+</form>
