@@ -24,7 +24,7 @@ export class NewEditorComponent implements OnInit {
     // Todo: configure toolbar properly
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html for details
     toolbar: [ 'heading', '|', 'fontsize', 'fontcolor', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
-    'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'imageupload', 'mediaembed', '|',
+    'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
     'undo', 'redo'],
     placeholder: 'Keeping you on the edge of your seats...',
     heading: {
@@ -34,12 +34,8 @@ export class NewEditorComponent implements OnInit {
         { model: 'heading3', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading3' }
       ]
     },
-    image: {
-      upload: {
-        panel: {
-          items: [ 'insertimageviaurl' ]
-        }
-      }
+    mediaEmbed: {
+      removeProviders: ['googleMaps', 'flickr', 'facebook', 'instagram']
     }
   };
 
