@@ -23,7 +23,7 @@ export class NewEditorComponent implements OnInit {
   config: Object = {
     // Todo: configure toolbar properly
     // https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/configuration.html for details
-    toolbar: [ 'heading', '|', 'fontsize', 'fontcolor', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
+    toolbar: [ 'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
     'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
     'undo', 'redo'],
     placeholder: 'Keeping you on the edge of your seats...',
