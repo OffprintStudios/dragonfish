@@ -5,7 +5,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
-import { Categories, ContentRating, CreateWork, Fandoms, GenresFiction, 
+import { Categories, ContentRating, CreateWork, Fandoms, Genres, GenresFiction, 
   GenresPoetry, WorkStatus } from '@pulp-fiction/models/works';
 import { WorksService } from '../../../services/content';
 
@@ -26,8 +26,8 @@ export class WorkFormComponent implements OnInit {
 
   loading = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  genresList: string[] = [];
-  fandomsList: string[] = [];
+  genresList: Genres[] = [];
+  fandomsList: Fandoms[] = [];
 
   categories = Categories; // Alias for categories
   fandoms = Fandoms; // Alias for fandoms
@@ -36,7 +36,7 @@ export class WorkFormComponent implements OnInit {
   rating = ContentRating; // Alias for content ratings
   status = WorkStatus; // Alias for work statuses
 
-  newWorkForm = new FormGroup({
+  workForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     shortDesc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
     longDesc: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -54,7 +54,7 @@ export class WorkFormComponent implements OnInit {
   /**
    * Getter for the new work form.
    */
-  get fields() { return this.newWorkForm.controls; }
+  get fields() { return this.workForm.controls; }
 
     /**
    * Checks to see if the selected category is one of the two fiction categories.
@@ -96,7 +96,7 @@ export class WorkFormComponent implements OnInit {
    * Otherwise, it closes the form immediately.
    */
   askCancel() {
-    if (this.newWorkForm.dirty) {
+    if (this.workForm.dirty) {
       if (confirm('Are you sure? Any unsaved changes will be lost.')) {
         this.onCancel.emit(true);
         return;
@@ -106,102 +106,6 @@ export class WorkFormComponent implements OnInit {
     } else {
       this.onCancel.emit(true);
       return;
-    }
-  }
-
-  /**
-   * Adds the specific chip to the theseGenres form control
-   * 
-   * @param event The chip input event
-   */
-  addGenre(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our genre
-    if ((value || '').trim() && this.genresList.length < 2) {
-      this.genresList.push(GenresFiction[value.trim()]);
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
-    this.fields.theseGenres.setValue(this.genresList);
-  }
-
-  /**
-   * Removes a genre from the form conrol
-   * 
-   * @param genre The genre to remove
-   */
-  removeGenre(genre: string): void {
-    const index = this.genresList.indexOf(genre);
-
-    if (index >= 0) {
-      this.genresList.splice(index, 1);
-    }
-  }
-
-  /**
-   * Adds a genre to the chip list.
-   * 
-   * @param event An autocomplete event
-   */
-  selectedGenre(event: MatAutocompleteSelectedEvent): void {
-    if (this.genresList.length < 2) {
-      this.genresList.push(GenresFiction[event.option.value]);
-      this.genreInput.nativeElement.value = '';
-      this.fields.theseGenres.setValue(this.genresList);
-    }
-  }
-
-  /**
-   * Adds the specific chip to the theseFandoms form control
-   * 
-   * @param event The chip input event
-   */
-  addFandom(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our fandom
-    if ((value || '').trim() && this.fandomsList.length < 5) {
-      this.genresList.push(Fandoms[value.trim()]);
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
-    this.fields.theseFandoms.setValue(this.fandomsList);
-  }
-
-  /**
-   * Removes a fandom from the form conrol
-   * 
-   * @param fandom The fandom to remove
-   */
-  removeFandom(fandom: string): void {
-    const index = this.fandomsList.indexOf(fandom);
-
-    if (index >= 0) {
-      this.fandomsList.splice(index, 1);
-    }
-  }
-
-  /**
-   * Adds a genre to the chip list.
-   * 
-   * @param event An autocomplete event
-   */
-  selectedFandom(event: MatAutocompleteSelectedEvent): void {
-    if (this.fandomsList.length < 5) {
-      this.fandomsList.push(Fandoms[event.option.value]);
-      this.fandomInput.nativeElement.value = '';
-      this.fields.theseFandoms.setValue(this.fandomsList);
     }
   }
 
@@ -234,14 +138,28 @@ export class WorkFormComponent implements OnInit {
       return;
     }
 
-    if (this.fields.thisCategory.value === 'Fanfiction' && this.fields.theseFandoms.value.length < 1) {
-      this.snackbar.open(`You must pick at least one fandom.`);
-      this.loading = false;
-      return;
+    if (this.fields.thisCategory.value === Categories.Fanfiction) {
+      if (this.fields.theseFandoms.value.length < 1) {
+        this.snackbar.open(`You must pick at least one fandom.`);
+        this.loading = false;
+        return;
+      } else if (this.fields.theseFandoms.value.length > 5) {
+        this.snackbar.open(`You can only have up to five fandoms.`);
+        this.loading = false;
+        return;
+      }
     }
 
     if (this.fields.theseGenres.value.length < 1) {
       this.snackbar.open(`You must have at least one genre.`);
+      this.loading = false;
+      return;
+    } else if (this.fields.thisCategory.value === Categories.Poetry && this.fields.theseGenres.value.length > 1) {
+      this.snackbar.open(`Poetry can only have one genre.`);
+      this.loading = false;
+      return;
+    } else if (this.fields.theseGenres.value.length > 2) {
+      this.snackbar.open(`You can only have up to two genres.`);
       this.loading = false;
       return;
     }
@@ -257,13 +175,20 @@ export class WorkFormComponent implements OnInit {
       this.loading = false;
       return;
     }
+
+    let fandoms: Fandoms[];
+    if (this.fields.thisCategory.value === Categories.Fanfiction) {
+      fandoms = this.fields.theseFandoms.value;
+    } else {
+      fandoms = undefined;
+    }
     
     const newWork: CreateWork = {
       title: this.fields.title.value,
       shortDesc: this.fields.shortDesc.value,
       longDesc: this.fields.longDesc.value,
       category: this.fields.thisCategory.value,
-      fandoms: this.fields.theseFandoms.value,
+      fandoms: fandoms,
       genres: this.fields.theseGenres.value,
       rating: this.fields.rating.value,
       status: this.fields.status.value,
@@ -272,6 +197,7 @@ export class WorkFormComponent implements OnInit {
 
     this.worksService.createWork(newWork).subscribe(() => {
       this.loading = false;
+      this.workForm.reset();
       this.onSubmit.emit(true);
     }, err => {
       this.loading = false;
