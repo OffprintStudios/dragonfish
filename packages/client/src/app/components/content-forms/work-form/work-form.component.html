@@ -1,4 +1,4 @@
-<form [formGroup]="newWorkForm" (ngSubmit)="submitWork()">
+<form [formGroup]="newWorkForm" (ngSubmit)="submitWork()" [ngStyle]="toggle ? {'display': 'block'} : {'display': 'none'}">
     <div class="work-box">
         <div class="work-info">
             <div class="work-details">

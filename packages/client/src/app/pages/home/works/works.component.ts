@@ -18,11 +18,9 @@ import { PaginateResult } from '@pulp-fiction/models/util';
 export class WorksComponent implements OnInit {
   currentUser: FrontendUser;
   works: PaginateResult<Work>;
-  unfilteredList: Work[];
 
   loading = false;
-  isUnpubFiltered = false;
-  isPubFiltered = false;
+  addingNewWork = false;
 
   pageNum = 1;
 
@@ -57,14 +55,38 @@ export class WorksComponent implements OnInit {
   }
 
   /**
-   * Opens the new work form modal.
+   * Toggles the new work form.
    */
-  /*openNewWorkForm() {
-    const newWorkRef = this.dialog.open(NewWorkComponent);
-    newWorkRef.afterClosed().subscribe(() => {
+  toggleNewWorkForm() {
+    if (this.addingNewWork === true) {
+      this.addingNewWork = false;
+    } else {
+      this.addingNewWork = true;
+    }
+  }
+
+  /**
+   * Closes the form if adding the work succeeded.
+   * 
+   * @param event Success check
+   */
+  onSubmit(event: boolean) {
+    if (event === true) {
+      this.addingNewWork = false;
       this.fetchData(this.pageNum);
-    });
-  }*/
+    }
+  }
+
+  /**
+   * Cancels adding a new work
+   * 
+   * @param event The cancel event
+   */
+  cancelNewWork(event: boolean) {
+    if (event === true) {
+      this.addingNewWork = false;
+    }
+  }
 
   /**
    * Opens the edit work form modal.

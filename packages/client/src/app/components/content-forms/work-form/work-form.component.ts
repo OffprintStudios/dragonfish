@@ -16,6 +16,7 @@ import { WorksService } from '../../../services/content';
 })
 export class WorkFormComponent implements OnInit {
   @Input() username: string;
+  @Input() toggle: boolean = false;
   @Output() onSubmit = new EventEmitter<boolean>();
   @Output() onCancel = new EventEmitter<boolean>();
 
@@ -46,7 +47,7 @@ export class WorkFormComponent implements OnInit {
     status: new FormControl(null, Validators.required)
   });
 
-  constructor(private worksService: WorksService, private snackbar: MatSnackBar) { }
+  constructor(private worksService: WorksService, private snackbar: MatSnackBar) {}
 
   ngOnInit(): void { }
 
@@ -103,6 +104,7 @@ export class WorkFormComponent implements OnInit {
         return;
       }
     } else {
+      this.onCancel.emit(true);
       return;
     }
   }
