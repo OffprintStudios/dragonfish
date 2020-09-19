@@ -3,9 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import { InitialResults } from './models';
 import { AlertsService } from '../../modules/alerts';
-import { SearchResults } from '../../models/admin';
-import { SearchUser } from '@pulp-fiction/models/users';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +14,8 @@ export class SearchService {
 
   constructor(private http: HttpClient, private alertsService: AlertsService) { }
   
-  public getUsersFromQuery(query: string, pageNum: number, pageSize: number) {
-    return this.http.get<SearchResults<SearchUser>>(`${this.url}/find-user-results?query=${query}&pageNum=${pageNum}&pageSize=${pageSize}`, {observe: 'response', withCredentials: true})
+  public getInitialResults(query: string) {
+    return this.http.get<InitialResults>(`${this.url}/get-initial-results?query=${query}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         console.log(res.body);
         return;

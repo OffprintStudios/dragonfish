@@ -161,29 +161,29 @@ export class WorksService {
      * @param query The relevant search parameters
      */
     async findInitialRelatedWorks(query: string, contentFilter: models.ContentFilter): Promise<PaginateResult<documents.WorkDocument>> {
-        let paginateQuery = {$text: {$search: query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
+        let paginateQuery = {'$text': {'$search': query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
         let paginateOptions = {page: 1, limit: 6};
 
         switch (contentFilter) {
             case models.ContentFilter.Everything: 
-                query = query;
+                paginateQuery = paginateQuery;
                 break;
             case models.ContentFilter.MatureEnabled:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Mature}
                 ];
                 break;
             case models.ContentFilter.ExplicitEnabled:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Explicit}
                 ];
                 break;
             default:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}
                 ];
@@ -204,24 +204,24 @@ export class WorksService {
 
         switch (contentFilter) {
             case models.ContentFilter.Everything: 
-                query = query;
+            paginateQuery = paginateQuery;
                 break;
             case models.ContentFilter.MatureEnabled:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Mature}
                 ];
                 break;
             case models.ContentFilter.ExplicitEnabled:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Explicit}
                 ];
                 break;
             default:
-                query['$or'] = [
+                paginateQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}
                 ];
