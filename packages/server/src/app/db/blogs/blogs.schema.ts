@@ -35,7 +35,7 @@ export const BlogsSchema = new Schema({
     usesNewEditor: {type: Boolean, default: false}
 }, {timestamps: true, autoIndex: true, collection: 'blogs'});
 
-BlogsSchema.index({'title': 'text'})
+BlogsSchema.index({title: 'text'})
 
 BlogsSchema.plugin(MongooseAutopopulate);
 BlogsSchema.plugin(MongoosePaginate);

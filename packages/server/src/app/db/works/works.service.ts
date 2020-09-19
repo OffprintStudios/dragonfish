@@ -155,37 +155,80 @@ export class WorksService {
     }
 
     /**
+     * Finds the first six matches given the provided search parameters.
+     * For use with the initial page of search results.
+     * 
+     * @param query The relevant search parameters
+     */
+    async findInitialRelatedWorks(query: string, contentFilter: models.ContentFilter): Promise<PaginateResult<documents.WorkDocument>> {
+        let paginateQuery = {$text: {$search: query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
+        let paginateOptions = {page: 1, limit: 6};
+
+        switch (contentFilter) {
+            case models.ContentFilter.Everything: 
+                query = query;
+                break;
+            case models.ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Mature}
+                ];
+                break;
+            case models.ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}
+                ];
+                break;
+        }
+
+        return await this.workModel.paginate(paginateQuery, paginateOptions);
+    }
+
+    /**
      * Finds any related works related to a user's query.
      * 
      * @param searchParameters The user's search query
      */
-    async findRelatedWorks(searchParameters: SearchParameters): Promise<SearchResults<documents.WorkDocument> | null> {
-        const p = searchParameters.pagination;
-        const filter: FilterQuery<models.Work> = {
-            $text: {$search: searchParameters.text},
-            'audit.published': models.ApprovalStatus.Approved,
-        };
+    async findRelatedWorks(query: string, pageNum: number, contentFilter: models.ContentFilter): Promise<PaginateResult<documents.WorkDocument>> {
+        let paginateQuery = {$text: {$search: query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
+        let paginateOptions = {page: pageNum, limit: 15};
 
-        const results = await this.workModel.find(filter,
-            {
-                searchScore: {$meta: 'textScore'}
-            }).sort({score: {$meta: 'textScore'}})
-            .sort({'stats.views': -1})
-            .skip((p.page - 1) * p.pageSize)
-            .limit(p.pageSize);
-
-        if (results.length === 0 && p.page !== 1) {
-            return null;
-        } else {
-            const totalPages = Math.ceil(
-                await this.workModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
-            );
-            return {
-                matches: results,
-                totalPages: totalPages,
-                pagination: searchParameters.pagination
-            };
+        switch (contentFilter) {
+            case models.ContentFilter.Everything: 
+                query = query;
+                break;
+            case models.ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Mature}
+                ];
+                break;
+            case models.ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}, 
+                    {'meta.rating': models.ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': models.ContentRating.Everyone}, 
+                    {'meta.rating': models.ContentRating.Teen}
+                ];
+                break;
         }
+
+        return await this.workModel.paginate(paginateQuery, paginateOptions);
     }
 
     /**

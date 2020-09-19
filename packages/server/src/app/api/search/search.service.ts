@@ -1,30 +1,32 @@
 import { Injectable } from '@nestjs/common';
 
-import { SearchUserDocument } from '../../db/users/models';
 import { UsersService } from '../../db/users/users.service';
 import { WorksService } from '../../db/works/works.service';
 import { BlogsService } from '../../db/blogs/blogs.service';
-import { SearchParameters, SearchResults, Pagination } from './models';
+import { ContentFilter } from '@pulp-fiction/models/works';
 
 @Injectable()
 export class SearchService {
     constructor(private readonly worksService: WorksService, private readonly blogsService: BlogsService,
         private readonly usersService: UsersService) { }
 
+    async fetchInitialResults(query: string, contentFilter: ContentFilter) {
+        const initialUsers = await this.usersService.findInitialRelatedUsers(query);
+        const initialBlogs = await this.blogsService.findInitialRelatedBlogs(query);
+        const initialWorks = await this.worksService.findInitialRelatedWorks(query, contentFilter);
+
+        return {users: initialUsers, blogs: initialBlogs, works: initialWorks};
+    }
     
-    async searchUsers(query: string, pageNum: number, pageSize: number): Promise<SearchResults<SearchUserDocument>> {
-        const parameters: SearchParameters = {
-            text: query,
-            pagination: new Pagination({page: `${pageNum}`, pageSize: `${pageSize}`})
-        };
-        return await this.usersService.findRelatedUsers(parameters);
+    async searchUsers(query: string, pageNum: number) {
+        return await this.usersService.findRelatedUsers(query, pageNum);
     }
 
-    async searchBlogs() {
-
+    async searchBlogs(query: string, pageNum: number) {
+        return await this.blogsService.findRelatedBlogs(query, pageNum);
     }
 
-    async searchWorks() {
-
+    async searchWorks(query: string, pageNum: number, contentFilter: ContentFilter) {
+        return await this.worksService.findRelatedWorks(query, pageNum, contentFilter);
     }
 }

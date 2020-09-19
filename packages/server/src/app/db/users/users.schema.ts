@@ -36,7 +36,9 @@ export const UsersSchema = new Schema({
     updatedAt: {type: Date, default: Date.now()},
 }, {timestamps: true, autoIndex: true, collection: 'users'});
 
-UsersSchema.index({'username': 'text'});
+UsersSchema.index({username: 'text'});
+
+UsersSchema.plugin(require('mongoose-paginate-v2'));
 
 UsersSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     const user = this;
