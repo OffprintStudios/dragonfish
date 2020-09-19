@@ -21,6 +21,8 @@ import { AlertsService } from './modules/alerts';
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
 
+  sidenavOpened: boolean;
+
   title = 'offprint';
   currentUser: FrontendUser;
 
@@ -29,9 +31,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  constructor(private router: Router, private authService: AuthService,
-    private selectConfig: NgSelectConfig, private statsService: StatsService,
-    private nagBarService: NagBarService, private alertsService: AlertsService) {
+  constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
+    private nagBarService: NagBarService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -47,6 +48,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
+    this.router.events.subscribe(event => {
+      this.sidenavOpened = false;
+    });
   }
 
   /**
