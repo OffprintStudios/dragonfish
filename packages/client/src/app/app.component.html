@@ -1,7 +1,7 @@
 
 <mat-sidenav-container>
   <mat-sidenav [fixedInViewport]="true" [(opened)]="sidenavOpened" #sidenav>
-    <site-sidenav></site-sidenav>
+    <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="nav">
