@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { SearchService } from '../../services/utility';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { InitialResults } from '../../services/utility/models';
 
 @Component({
   selector: 'app-search',
@@ -14,6 +15,8 @@ export class SearchComponent implements OnInit {
     query: new FormControl('', Validators.required)
   });
 
+  initialResults: InitialResults;
+
   constructor(private searchService: SearchService, public route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -22,15 +25,13 @@ export class SearchComponent implements OnInit {
   get searchField() { return this.searchForm.controls; }
 
   private fetchData(query: string) {
-    this.searchService.getInitialResults(query).subscribe(() => {
-      return;
+    this.searchService.getInitialResults(query).subscribe(results => {
+      this.initialResults = results;
     });
   }
 
   submitSearch() {
     const query = this.searchField.query.value;
-    console.log(query);
-
     this.fetchData(query);
   }
 }
