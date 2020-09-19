@@ -12,7 +12,7 @@
         <input type="text" formControlName="docName" class="u-full-width" placeholder="Name">
 
         <label for="docBody">Body</label>
-        <ngContainer *ngIf="!docToEdit.usesNewEditor">        
+        <ng-container *ngIf="!docToEdit.usesNewEditor">        
             <quill-editor minLength="3" formControlName="docBody" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                 <div quill-editor-toolbar>
                     <span class="ql-formats">
@@ -41,10 +41,10 @@
                     <select class="ql-header"></select>
                 </div>
             </quill-editor>
-        </ngContainer>
-        <ngContainer *ngIf="docToEdit.usesNewEditor">
+        </ng-container>
+        <ng-container *ngIf="docToEdit.usesNewEditor">
             <editor [parentForm]="editDocForm" [controlName]="'docBody'"></editor>
-        </ngContainer>
+        </ng-container>
 
         <hr>
         <div class="loader" *ngIf="submitting">
