@@ -12,11 +12,16 @@
 </div>
 
 <div *ngIf="route.children.length === 0">
-    <div style="text-align: center;">
-        <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-        <p style="margin-top: 0; margin-bottom: 0;">Looks like you're here a bit too early.</p>
-        <p style="margin-top: 0;">Check the patch notes to see when this feature will be made available!</p>
-    </div>
+    <ng-container *ngIf="initialResults === undefined; else resultsAreIn">
+        <div style="text-align: center;">
+            <h3 style="margin-bottom: 0;">You haven't searched for anything yet...</h3>
+            <p style="margin-top: 0; margin-bottom: 0;">Type your query in the search bar and hit enter.</p>
+            <p style="margin-top: 0;">The first six blogs/works/users will show up here.</p>
+        </div>
+    </ng-container>
+    <ng-template #resultsAreIn>
+        
+    </ng-template>
 </div>
 
 <router-outlet></router-outlet>
