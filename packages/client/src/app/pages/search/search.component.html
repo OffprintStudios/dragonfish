@@ -27,13 +27,13 @@
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.works.totalDocs === 0; else noWorks">
+                    <ng-container *ngIf="initialResults.works.totalDocs === 0; else hasWorks">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No works found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
                         </div>
                     </ng-container>
-                    <ng-template #noWorks>
+                    <ng-template #hasWorks>
                         <div class="works-feed">
                             <div *ngFor="let work of initialResults.works.docs">
                                 <div class="work-container">
@@ -90,14 +90,40 @@
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.blogs.totalDocs === 0; else noBlogs">
+                    <ng-container *ngIf="initialResults.blogs.totalDocs === 0; else hasBlogs">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No blogs found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
                         </div>
                     </ng-container>
-                    <ng-template #noBlogs>
-
+                    <ng-template #hasBlogs>
+                        <div class="blogs-feed">
+                            <div *ngFor="let blog of initialResults.blogs.docs">
+                                <div class="blog-container">
+                                    <div class="blog-header">
+                                        <h3>{{ blog.title }}</h3>
+                                        <div>
+                                            <h4 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                                            <span>//</span>
+                                            <h4 class="subtitle">{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4>
+                                            <span>//</span>
+                                            <h4 class="subtitle">{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="blog-body">
+                                        <ng-container *ngIf="!blog.usesNewEditor">
+                                            <quill-view [content]="blog.body" sanitize="true" format="json"></quill-view>
+                                        </ng-container>
+                                        <ng-container *ngIf="blog.usesNewEditor">
+                                            <div class="html-description" [innerHtml]="blog.body | safeHtml"></div>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                                <div class="blog-control">
+                                    <button>Read More</button>
+                                </div>
+                            </div>
+                        </div>
                     </ng-template>
                 </div>
             </div>
@@ -112,14 +138,44 @@
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.users.totalDocs === 0; else noUsers">
+                    <ng-container *ngIf="initialResults.users.totalDocs === 0; else hasUsers">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No users found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
                         </div>
                     </ng-container>
-                    <ng-template #noUsers>
-
+                    <ng-template #hasUsers>
+                        <div class="users-feed">
+                            <div *ngFor="let user of initialResults.users.docs">
+                                <div class="user-container">
+                                    <div class="user-avatar">
+                                        <img [src]="user.profile.avatar" />
+                                    </div>
+                                    <div class="profile">
+                                        <div class="bio">
+                                            <h4><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h4>
+                                            <p>
+                                                {{ user.profile.tagline }}
+                                            </p>
+                                        </div>
+                                        <div class="stats">
+                                            <div class="works">
+                                                <span class="icon"><i-feather name="feather"></i-feather></span>
+                                                <span class="stat">{{ user.stats.works | abbreviate }} work{{ user.stats.works | pluralize }}</span>
+                                            </div>
+                                            <div class="blogs">
+                                                <span class="icon"><i-feather name="coffee"></i-feather></span>
+                                                <span class="stat">{{ user.stats.blogs | abbreviate }} blog{{ user.stats.blogs | pluralize }}</span>
+                                            </div>
+                                            <div class="watchers">
+                                                <span class="icon"><i-feather name="eye"></i-feather></span>
+                                                <span class="stat">{{ user.stats.watchers | abbreviate }} watcher{{ user.stats.watchers | pluralize }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </ng-template>
                 </div>
             </div>
