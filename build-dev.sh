@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/bin/bash 
 # Installing dependencies for workspace
 printf "Acquiring all dependences...\n"
 source $HOME/.cargo/env
@@ -19,7 +18,7 @@ printf "Done!\n"
 
 # Copying client to server and moving into it
 printf "Copying client files to server folder for static file serving...\n"
-mkdir ./dist/packages/server/static
+mkdir -p ./dist/packages/server/static
 cp -r ./dist/packages/client/* ./dist/packages/server/static/
 printf "Done!\n\n"
 
