@@ -1,12 +1,56 @@
 <div class="find-users-container">
     <div class="find-users-header">
-        <h2>Matching Users</h2>
+        <h2>All Matching Users</h2>
     </div>
     <hr class="header-divider">
 </div>
 
-<div style="text-align: center;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0;">Keep an eye on the patch notes to find out when this feature will be available!</p>
-</div>
+<ng-container *ngIf="results === undefined; else showUsers">
+    <div style="text-align: center;">
+        <h3 style="margin-bottom: 0;">You haven't searched for anything yet...</h3>
+        <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
+    </div>
+</ng-container>
+
+<ng-template #showUsers>
+    <ng-container *ngIf="results.docs.length === 0; else hasUsers">
+        <div style="text-align: center;">
+            <h3 style="margin-bottom: 0;">No users found</h3>
+            <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
+        </div>
+    </ng-container>
+    <ng-template #hasUsers>
+        <div class="users-feed">
+            <div *ngFor="let user of results.docs | paginate: { id: 'comments', itemsPerPage: results.limit, currentPage: pageNum, totalItems: results.totalDocs }">
+                <div class="user-container">
+                    <div class="user-avatar">
+                        <img [src]="user.profile.avatar" />
+                    </div>
+                    <div class="profile">
+                        <div class="bio">
+                            <h4><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h4>
+                            <p>
+                                {{ user.profile.tagline }}
+                            </p>
+                        </div>
+                        <div class="stats">
+                            <div class="works">
+                                <span class="icon"><i-feather name="feather"></i-feather></span>
+                                <span class="stat">{{ user.stats.works | abbreviate }} work{{ user.stats.works | pluralize }}</span>
+                            </div>
+                            <div class="blogs">
+                                <span class="icon"><i-feather name="coffee"></i-feather></span>
+                                <span class="stat">{{ user.stats.blogs | abbreviate }} blog{{ user.stats.blogs | pluralize }}</span>
+                            </div>
+                            <div class="watchers">
+                                <span class="icon"><i-feather name="eye"></i-feather></span>
+                                <span class="stat">{{ user.stats.watchers | abbreviate }} watcher{{ user.stats.watchers | pluralize }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
+    </ng-template>
+</ng-template>

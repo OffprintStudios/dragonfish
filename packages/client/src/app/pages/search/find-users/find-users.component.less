@@ -14,3 +14,91 @@ div.find-users-container {
         margin-top: 0;
     }
 }
+
+div.users-feed {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(335px, 1fr));
+    grid-gap: 1rem;
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    div.user-container {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        border: 1px solid var(--site-borders);
+        align-items: center;
+        border-radius: 4px;
+        background: var(--site-accent);
+        box-shadow: var(--site-dropshadow);
+
+        div.user-avatar {
+            font-size: 0;
+            height: 100%;
+            padding: 5px;
+            img {
+                width: 100px;
+                border-radius: 50%;
+                object-fit: contain;
+                border: 1px solid whitesmoke;
+            }
+        }
+
+        div.profile {
+            width: 100%;
+            padding: 5px;
+            div.bio {
+                width: 100%;
+                border-bottom: 1px solid whitesmoke;
+                h4 {
+                    color: whitesmoke;
+                    font-weight: 500;
+                    font-size: 38px;
+                    margin-bottom: 0;
+                    a {
+                        color: whitesmoke;
+                        margin-bottom: 0;
+                        &:hover {
+                            text-decoration: underline;
+                            color: whitesmoke;
+                        }
+                    }
+                }
+                p {
+                    position: relative;
+                    top: -0.75rem;
+                    color: whitesmoke;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                    font-style: italic;
+                }
+            }
+
+            div.stats {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                padding-top: 1rem;
+
+                div {
+                    width: 33.33%;
+                    text-align: center;
+                    color: whitesmoke;
+                }
+
+                span.icon {
+                    display: block;
+                }
+                span.stat {
+                    display: block;
+                }
+
+                div.blogs {
+                    border-left: 1px solid whitesmoke;
+                    border-right: 1px solid whitesmoke;
+                }
+            }
+        }
+    }
+}
