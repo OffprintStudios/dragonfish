@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgSelectConfig } from '@ng-select/ng-select';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
@@ -11,7 +10,6 @@ import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
-import { AlertsService } from './modules/alerts';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -21,6 +19,8 @@ import { AlertsService } from './modules/alerts';
 export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
 
+  sidenavOpened: boolean;
+
   title = 'offprint';
   currentUser: FrontendUser;
 
@@ -29,9 +29,8 @@ export class AppComponent implements OnInit, AfterViewInit {
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  constructor(private router: Router, private authService: AuthService,
-    private selectConfig: NgSelectConfig, private statsService: StatsService,
-    private nagBarService: NagBarService, private alertsService: AlertsService) {
+  constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
+    private nagBarService: NagBarService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -47,6 +46,9 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit() {
+    this.router.events.subscribe(event => {
+      this.sidenavOpened = false;
+    });
   }
 
   /**
@@ -109,6 +111,17 @@ export class AppComponent implements OnInit, AfterViewInit {
     if (!user.agreedToPolicies) {
       this.nagBarService.queueContent(NewPolicyNagComponent, null);
     }     
+  }
+
+  /**
+   * Closes the sidenav if the close button was clicked.
+   * 
+   * @param event Check for the close button click
+   */
+  onCloseClicked(event: boolean) {
+    if (event === true) {
+      this.sidenavOpened = false;
+    }
   }
 
   /**

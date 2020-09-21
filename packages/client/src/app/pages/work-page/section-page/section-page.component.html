@@ -29,22 +29,22 @@
                     <h1>{{ sectionData.title }}</h1>
                 </div>
                 <div class="section-body">
-                    <ngContainer *ngIf="!sectionData.usesNewEditor">
+                    <ng-container *ngIf="!sectionData.usesNewEditor">
                         <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
-                    </ngContainer>
-                    <ngContainer *ngIf="sectionData.usesNewEditor">
+                    </ng-container>
+                    <ng-container *ngIf="sectionData.usesNewEditor">
                         <div [innerHtml]="sectionData.body | safeHtml"></div>
-                    </ngContainer>
+                    </ng-container>
                 </div>
             </div>
             <div class="authors-note" *ngIf="sectionData.authorsNote">
                 <h3>A word from the author...</h3>
-                <ngContainer *ngIf="!sectionData.usesNewEditor">
+                <ng-container *ngIf="!sectionData.usesNewEditor">
                     <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
-                </ngContainer>    
-                <ngContainer *ngIf="sectionData.usesNewEditor">
+                </ng-container>    
+                <ng-container *ngIf="sectionData.usesNewEditor">
                     <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
-                </ngContainer>
+                </ng-container>
             </div>
         </div>
     </ng-container>
@@ -63,22 +63,22 @@
                         <h1>{{ sectionData.title }}</h1>
                     </div>
                     <div class="section-body">
-                        <ngContainer *ngIf="!sectionData.usesNewEditor">
+                        <ng-container *ngIf="!sectionData.usesNewEditor">
                             <quill-view [content]="sectionData.body" sanitize="true" format="json"></quill-view>
-                        </ngContainer>
-                        <ngContainer *ngIf="sectionData.usesNewEditor">
+                        </ng-container>
+                        <ng-container *ngIf="sectionData.usesNewEditor">
                             <div [innerHtml]="sectionData.body | safeHtml"></div>
-                        </ngContainer>
+                        </ng-container>
                     </div>
                 </div>
                 <div class="authors-note" *ngIf="sectionData.authorsNote">
                     <h3>A word from the author...</h3>
-                    <ngContainer *ngIf="!sectionData.usesNewEditor">
+                    <ng-container *ngIf="!sectionData.usesNewEditor">
                         <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
-                    </ngContainer>    
-                    <ngContainer *ngIf="sectionData.usesNewEditor">
+                    </ng-container>    
+                    <ng-container *ngIf="sectionData.usesNewEditor">
                         <div [innerHtml]="sectionData.authorsNote | safeHtml"></div>
-                    </ngContainer>
+                    </ng-container>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="section-body">
                             <div class="warning-message" *ngIf="fields.body.invalid && (fields.body.dirty || fields.body.touched)">Body text must be greater than 3 characters.</div>
-                            <ngContainer *ngIf="!sectionData.usesNewEditor">
+                            <ng-container *ngIf="!sectionData.usesNewEditor">
                                 <quill-editor [styles]="{height: '750px'}" minLength="3" formControlName="body" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                                     <div quill-editor-toolbar>
                                         <span class="ql-formats">
@@ -132,16 +132,16 @@
                                         <select class="ql-header"></select>
                                     </div>
                                 </quill-editor>
-                            </ngContainer>
-                            <ngContainer *ngIf="sectionData.usesNewEditor">
-                                <new-pulp-fiction-editor [parentForm]="editSection" [controlName]="'body'" ></new-pulp-fiction-editor>
-                            </ngContainer>
+                            </ng-container>
+                            <ng-container *ngIf="sectionData.usesNewEditor">
+                                <editor [parentForm]="editSection" [controlName]="'body'" ></editor>
+                            </ng-container>
                         </div>
                     </div>
                     <div class="authors-note">
                         <h3>A word from the author...</h3>
                         <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
-                        <ngContainer *ngIf="!sectionData.usesNewEditor">                        
+                        <ng-container *ngIf="!sectionData.usesNewEditor">                        
                         <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">
                             <div quill-editor-toolbar>
                                 <span class="ql-formats">
@@ -170,10 +170,10 @@
                                 <select class="ql-header"></select>
                             </div>
                         </quill-editor>
-                    </ngContainer>
-                    <ngContainer *ngIf="sectionData.usesNewEditor">
+                    </ng-container>
+                    <ng-container *ngIf="sectionData.usesNewEditor">
                         <editor [parentForm]="editSection" [controlName]="'authorsNote'"></editor>
-                    </ngContainer>
+                    </ng-container>
                     </div>
                     <hr style="width: 70%;">
                     <div class="loader" *ngIf="submitting">

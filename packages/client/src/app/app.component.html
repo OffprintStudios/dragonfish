@@ -1,7 +1,7 @@
 
 <mat-sidenav-container>
-  <mat-sidenav [fixedInViewport]="true" #sidenav>
-    <site-sidenav></site-sidenav>
+  <mat-sidenav [fixedInViewport]="true" [(opened)]="sidenavOpened" #sidenav>
+    <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
     <div class="nav">
@@ -63,6 +63,7 @@
               <p> Here's some useful tips to get you started:</p>
               <ul>
                 <li><a [routerLink]="['/docs/what-is-offprint']">What is Offprint?</a></li>
+                <li><a [routerLink]="['/docs/latest-patch-notes']">Latest Patch Notes</a></li>
                 <li><a [routerLink]="['/docs/connect-with-offprint']">Connect with Offprint</a></li>
                 <li><a [routerLink]="['/docs/omnibus']">The Offprint Omnibus</a></li>
                 <li><a [routerLink]="['/docs/code-of-conduct']">Code of Conduct</a></li>

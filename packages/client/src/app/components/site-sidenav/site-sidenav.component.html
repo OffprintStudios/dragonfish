@@ -7,6 +7,9 @@
         <h3>{{ currentUser.username }}</h3>
         <h4>Welcome back!</h4>
       </div>
+      <div class="close-sidenav">
+        <a class="close-button" (click)="onCloseClicked()"><i-feather name="x"></i-feather></a>
+      </div>
     </div>
     <div class="user-buttons">
       <mat-tab-group (selectedTabChange)="onTabChanged($event)" dynamicHeight>
@@ -67,7 +70,7 @@
         </form>
       </div>
       <div class="user-footer">
-        <p>Offprint Alpha, ver. 0.3.0</p>
+        <p>Offprint Alpha, ver. 0.3.1</p>
       </div>
     </div>
   </ng-template>

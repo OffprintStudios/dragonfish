@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { first } from 'rxjs/operators';
-import * as lodash from 'lodash';
 
-import { FrontendUser, LoginUser, Roles } from '@pulp-fiction/models/users';
+import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
 import { AlertsService } from '../../modules/alerts';
 import { ConversationsComponent } from './conversations/conversations.component';
@@ -23,6 +22,8 @@ export class SiteSidenavComponent implements OnInit {
   @ViewChild(HistoryComponent) private histComponent: HistoryComponent;
   @ViewChild(NotificationsComponent) private notifComponent: NotificationsComponent;
   @ViewChild(WatchingComponent) private watchingComponent: WatchingComponent;
+
+  @Output() closeSidenav = new EventEmitter<boolean>();
 
   currentUser: FrontendUser;
 
@@ -79,6 +80,13 @@ export class SiteSidenavComponent implements OnInit {
         this.alertsService.error(err.error.message);
       })
     }
+  }
+
+  /**
+   * Emits whether or not a user wants to close the sidenav
+   */
+  onCloseClicked() {
+    this.closeSidenav.emit(true);
   }
 
   /**

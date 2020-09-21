@@ -19,6 +19,9 @@ jobs:
         name: Bump Site Version
         runs-on: ubuntu-latest
         steps:
+            - name: Get the repo
+              uses: actions/checkout@v2
+              
             - name: Bump site version
               run: git tag ${{ github.event.inputs.version }}
     

@@ -686,6 +686,7 @@ mat-sidenav-container {
     color: whitesmoke;
     border-right: 1px solid var(--site-borders);
     border-left: 1px solid var(--site-borders);
+    max-width: 512px;
 }
 
 .offprint-tooltip {
@@ -896,6 +897,10 @@ div.user-buttons {
     .mat-tab-label {
         opacity: 1 !important;
         min-width: 120px !important;
+
+        @media (max-width: 1150px) {
+            min-width: 100px !important;
+        }
     }
     
     .mat-tab-label, .mat-tab-link {
