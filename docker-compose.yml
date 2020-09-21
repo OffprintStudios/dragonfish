@@ -1,7 +1,9 @@
 version: '3'
 services:
   pulpd:
-    build: .
+    build:
+      context: .
+      dockerfile: dev-setup.Dockerfile
     ports:
       - "3000:3000"
       - "9229:9229"
