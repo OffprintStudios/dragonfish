@@ -22,8 +22,8 @@
                 <div class="results-header">
                     <i-feather name="feather"></i-feather>
                     <h3>Top Works</h3>
-                    <span class="see-more" *ngIf="initialResults.works.length !== 0 && initialResults.works.length > 6">
-                        <a [routerLink]="['/search/works']">See {{ initialResults.works.length - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.works.length !== 0">
+                        <a [routerLink]="['/search/works']" [queryParams]="{ query: searchField.query.value }">See {{ initialResults.works.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">
@@ -85,8 +85,8 @@
                 <div class="results-header">
                     <i-feather name="coffee"></i-feather>
                     <h3>Top Blogs</h3>
-                    <span class="see-more" *ngIf="initialResults.blogs.length !== 0 && initialResults.blogs.length > 6">
-                        <a [routerLink]="['/search/blogs']">See {{ initialResults.blogs.length - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.blogs.length !== 0">
+                        <a [routerLink]="['/search/blogs']" [queryParams]="{ query: searchField.query.value }">See {{ initialResults.blogs.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">
@@ -133,8 +133,8 @@
                 <div class="results-header">
                     <i-feather name="user"></i-feather>
                     <h3>Top Users</h3>
-                    <span class="see-more" *ngIf="initialResults.users.length !== 0 && initialResults.users.length > 6">
-                        <a [routerLink]="['/search/users']">See {{ initialResults.users.length - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.users.length !== 0">
+                        <a [routerLink]="['/search/users']" [queryParams]="{ query: searchField.query.value }">See {{ initialResults.users.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">

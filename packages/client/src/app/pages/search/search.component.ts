@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { calculateApprovalRating } from '../../util/functions';
 import { SearchService } from '../../services/utility';
@@ -12,20 +12,31 @@ import { InitialResults } from '../../services/utility/models';
   styleUrls: ['./search.component.less']
 })
 export class SearchComponent implements OnInit {
+  initialQuery: string;
+
   searchForm = new FormGroup({
     query: new FormControl('', Validators.required)
   });
 
   initialResults: InitialResults;
 
-  constructor(private searchService: SearchService, public route: ActivatedRoute) { }
+  constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    const queryParams = this.route.snapshot.queryParamMap;    
+    if (queryParams.get('query') !== null) {
+      this.initialQuery = queryParams.get('query');
+      this.searchForm.setValue({
+        query: this.initialQuery
+      });
+      this.fetchData(this.initialQuery);
+    }
   }
 
   get searchField() { return this.searchForm.controls; }
 
   private fetchData(query: string) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {query: query}, queryParamsHandling: 'merge'});
     this.searchService.getInitialResults(query).subscribe(results => {
       this.initialResults = results;
     });
