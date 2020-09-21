@@ -17,10 +17,9 @@ export class SearchService {
   public getInitialResults(query: string) {
     return this.http.get<InitialResults>(`${this.url}/get-initial-results?query=${query}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
-        console.log(res.body);
         return res.body;
       }), catchError(err => {
-        this.alertsService.error(`Something went wrong performing this search on users. Try again in a little bit.`);
+        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
       }));
   }

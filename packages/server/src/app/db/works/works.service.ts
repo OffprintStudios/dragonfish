@@ -160,37 +160,37 @@ export class WorksService {
      * 
      * @param query The relevant search parameters
      */
-    async findInitialRelatedWorks(query: string, contentFilter: models.ContentFilter): Promise<PaginateResult<documents.WorkDocument>> {
-        let paginateQuery = {'$text': {'$search': query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
-        let paginateOptions = {page: 1, limit: 6};
+    async findInitialRelatedWorks(query: string, contentFilter: models.ContentFilter): Promise<documents.WorkDocument[]> {
+        let findQuery = {'$text': {'$search': query}, 'audit.published': models.ApprovalStatus.Approved, 'audit.isDeleted': false};
 
         switch (contentFilter) {
             case models.ContentFilter.Everything: 
-                paginateQuery = paginateQuery;
+                findQuery = findQuery;
                 break;
             case models.ContentFilter.MatureEnabled:
-                paginateQuery['$or'] = [
+                findQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Mature}
                 ];
                 break;
             case models.ContentFilter.ExplicitEnabled:
-                paginateQuery['$or'] = [
+                findQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}, 
                     {'meta.rating': models.ContentRating.Explicit}
                 ];
                 break;
             default:
-                paginateQuery['$or'] = [
+                findQuery['$or'] = [
                     {'meta.rating': models.ContentRating.Everyone}, 
                     {'meta.rating': models.ContentRating.Teen}
                 ];
                 break;
         }
 
-        return await this.workModel.paginate(paginateQuery, paginateOptions);
+        return await this.workModel.find(findQuery)
+            .limit(6);
     }
 
     /**

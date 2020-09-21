@@ -22,12 +22,12 @@
                 <div class="results-header">
                     <i-feather name="feather"></i-feather>
                     <h3>Top Works</h3>
-                    <span class="see-more" *ngIf="initialResults.works.totalDocs !== 0 && initialResults.works.totalDocs > 6">
-                        <a [routerLink]="['/search/works']">See {{ initialResults.works.totalDocs - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.works.length !== 0 && initialResults.works.length > 6">
+                        <a [routerLink]="['/search/works']">See {{ initialResults.works.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.works.totalDocs === 0; else hasWorks">
+                    <ng-container *ngIf="initialResults.works.length === 0; else hasWorks">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No works found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
@@ -35,7 +35,7 @@
                     </ng-container>
                     <ng-template #hasWorks>
                         <div class="works-feed">
-                            <div *ngFor="let work of initialResults.works.docs">
+                            <div *ngFor="let work of initialResults.works">
                                 <div class="work-container">
                                     <!--Header-->
                                     <div class="work-header">
@@ -85,12 +85,12 @@
                 <div class="results-header">
                     <i-feather name="coffee"></i-feather>
                     <h3>Top Blogs</h3>
-                    <span class="see-more" *ngIf="initialResults.blogs.totalDocs !== 0 && initialResults.blogs.totalDocs > 6">
-                        <a [routerLink]="['/search/blogs']">See {{ initialResults.blogs.totalDocs - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.blogs.length !== 0 && initialResults.blogs.length > 6">
+                        <a [routerLink]="['/search/blogs']">See {{ initialResults.blogs.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.blogs.totalDocs === 0; else hasBlogs">
+                    <ng-container *ngIf="initialResults.blogs.length === 0; else hasBlogs">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No blogs found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
@@ -98,7 +98,7 @@
                     </ng-container>
                     <ng-template #hasBlogs>
                         <div class="blogs-feed">
-                            <div *ngFor="let blog of initialResults.blogs.docs">
+                            <div *ngFor="let blog of initialResults.blogs">
                                 <div class="blog-container">
                                     <div class="blog-header">
                                         <h3>{{ blog.title }}</h3>
@@ -133,12 +133,12 @@
                 <div class="results-header">
                     <i-feather name="user"></i-feather>
                     <h3>Top Users</h3>
-                    <span class="see-more" *ngIf="initialResults.users.totalDocs !== 0 && initialResults.users.totalDocs > 6">
-                        <a [routerLink]="['/search/users']">See {{ initialResults.users.totalDocs - 6 }} more</a>
+                    <span class="see-more" *ngIf="initialResults.users.length !== 0 && initialResults.users.length > 6">
+                        <a [routerLink]="['/search/users']">See {{ initialResults.users.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">
-                    <ng-container *ngIf="initialResults.users.totalDocs === 0; else hasUsers">
+                    <ng-container *ngIf="initialResults.users.length === 0; else hasUsers">
                         <div style="text-align: center; margin-top: 1.25rem;">
                             <h3 style="margin-bottom: 0;">No users found</h3>
                             <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
@@ -146,7 +146,7 @@
                     </ng-container>
                     <ng-template #hasUsers>
                         <div class="users-feed">
-                            <div *ngFor="let user of initialResults.users.docs">
+                            <div *ngFor="let user of initialResults.users">
                                 <div class="user-container">
                                     <div class="user-avatar">
                                         <img [src]="user.profile.avatar" />

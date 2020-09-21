@@ -182,11 +182,9 @@ export class BlogsService {
      * 
      * @param query The relevant search parameters
      */
-    async findInitialRelatedBlogs(query: string) {
-        return await this.blogModel.paginate({$text: {$search: query}, 'published': true, 'audit.isDeleted': false}, {
-            page: 1,
-            limit: 6
-        });
+    async findInitialRelatedBlogs(query: string): Promise<documents.BlogDocument[]> {
+        return await this.blogModel.find({$text: {$search: query}, 'published': true, 'audit.isDeleted': false})
+            .limit(6);
     }
 
     /**
