@@ -21,7 +21,7 @@
     </ng-container>
     <ng-template #hasUsers>
         <div class="users-feed">
-            <div *ngFor="let user of results.docs | paginate: { id: 'comments', itemsPerPage: results.limit, currentPage: pageNum, totalItems: results.totalDocs }">
+            <div *ngFor="let user of results.docs | paginate: { id: 'users', itemsPerPage: results.limit, currentPage: pageNum, totalItems: results.totalDocs }">
                 <div class="user-container">
                     <div class="user-avatar">
                         <img [src]="user.profile.avatar" />
@@ -51,6 +51,6 @@
                 </div>
             </div>
         </div>
-        <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData($event)" id="comments"></pagination-controls>
+        <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData(query, $event)" id="users"></pagination-controls>
     </ng-template>
 </ng-template>
