@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ApprovalQueueService } from '../../db/approval-queue/approval-queue.service';
+import { WorksService } from '../../db/works/works.service';
 
 @Injectable()
 export class ContribService {
-    constructor(private approvalQueueService: ApprovalQueueService) {}
+    constructor(private approvalQueueService: ApprovalQueueService,
+        private worksService: WorksService) {}
 
     /**
      * Submits a work to the queue.
@@ -14,6 +16,10 @@ export class ContribService {
      * @param workId The work's ID
      */
     async submitWork(user: any, workId: string) {
+        let publishedSections = (await this.worksService.findOneWorkById(workId)).sections;
+        if (!publishedSections || publishedSections.length < 1) {
+            throw new BadRequestException("Your work must contain at least one published section before it can be submitted.");
+        }
         return await this.approvalQueueService.addOneWork(user, workId);
     }
 

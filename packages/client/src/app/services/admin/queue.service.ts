@@ -27,7 +27,11 @@ export class QueueService {
         this.alertsService.success(`Work successfully submitted!`);
         return;
       }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        if (err.error.message) {
+          this.alertsService.error(`HTTP ${err.status}: ${err.error.message}`);
+        } else {
+          this.alertsService.error(`Something went wrong! Try again in a little bit.\nDetails: HTTP ${err.status}`);
+        }
         return throwError(err);
       }))
   }

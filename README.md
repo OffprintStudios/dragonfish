@@ -78,7 +78,7 @@ nx build client
 ```
 On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
 ```bash
-nx build client --poll=2000
+nx build client --watch --poll=2000
 ```
 
 Note that by default, the backend serves up the frontend, so in order to test the website, both of them must be running.
