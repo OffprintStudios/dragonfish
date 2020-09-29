@@ -16,7 +16,8 @@ export class ContribService {
      * @param workId The work's ID
      */
     async submitWork(user: any, workId: string) {
-        let publishedSections = (await this.worksService.findOneWorkById(workId)).sections;
+        let publishedSections = (await this.worksService.findOneWorkById(workId)).sections
+            .filter(x => x.published);
         if (!publishedSections || publishedSections.length < 1) {
             throw new BadRequestException("Your work must contain at least one published section before it can be submitted.");
         }
