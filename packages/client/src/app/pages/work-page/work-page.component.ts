@@ -13,6 +13,7 @@ import { calculateApprovalRating } from '../../util/functions';
 import { History, RatingOption } from '@pulp-fiction/models/history';
 import { Work, PublishSection, SectionInfo, SetApprovalRating } from '@pulp-fiction/models/works';
 import { ItemKind } from '@pulp-fiction/models/comments';
+import { AlertsService } from '../../modules/alerts';
 
 @Component({
   selector: 'app-work-page',
@@ -39,7 +40,7 @@ export class WorkPageComponent implements OnInit {
     return this.sectionsService.publishedSections;
   }
 
-  constructor(private authService: AuthService, private worksService: WorksService,
+  constructor(private authService: AuthService, private worksService: WorksService, private alertsService: AlertsService,
     public route: ActivatedRoute, private router: Router, private queueService: QueueService,
     private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService,
     public dialog: MatDialog) {
@@ -205,6 +206,10 @@ export class WorkPageComponent implements OnInit {
    * Submits a work for approval in the approval queue.
    */
   submitWorkForApproval() {
+    if (this.sectionsService.publishedSections.length <= 0) {
+      this.alertsService.error("Your work must contain at least one published section before it can be submitted."); 
+      return;
+    }
     this.queueService.submitWork(this.workId).subscribe(() => {
       this.fetchData();
     });
