@@ -8,39 +8,39 @@
         <h4>Welcome back!</h4>
       </div>
       <div class="close-sidenav">
-        <a class="close-button" (click)="onCloseClicked()"><i-feather name="x"></i-feather></a>
+        <a matTooltip="Close" matTooltipClass="offprint-tooltip" class="close-button" (click)="onCloseClicked()"><i-feather name="x"></i-feather></a>
       </div>
     </div>
     <div class="user-buttons">
       <mat-tab-group (selectedTabChange)="onTabChanged($event)" dynamicHeight>
         <mat-tab>
             <ng-template mat-tab-label>
-              <i-feather name="message-circle"></i-feather>
+              <i-feather name="message-circle" matTooltip="Inbox" matTooltipClass="offprint-tooltip"></i-feather>
             </ng-template>
             <sidenav-conversations></sidenav-conversations>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <i-feather name="eye"></i-feather>
+                <i-feather name="eye" matTooltip="Watching" matTooltipClass="offprint-tooltip"></i-feather>
             </ng-template>
             <sidenav-watching></sidenav-watching>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
-            <i-feather name="layers"></i-feather>
+            <i-feather name="layers" matTooltip="History" matTooltipClass="offprint-tooltip"></i-feather>
           </ng-template>
           <sidenav-history></sidenav-history>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-              <i-feather name="bell"></i-feather>
+              <i-feather name="bell" matTooltip="Alerts" matTooltipClass="offprint-tooltip"></i-feather>
             </ng-template>
             <sidenav-notifications></sidenav-notifications>
           </mat-tab>
       </mat-tab-group>
     </div>
     <div class="user-footer">
-        <p>Offprint Alpha, ver. 0.3.0</p>
+        <p>Offprint Alpha, ver. 0.3.1</p>
         <button matRipple matTooltip="Portfolio" matTooltipClass="offprint-tooltip" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather></button>
         <button matRipple matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']" class="mid"><i-feather name="settings"></i-feather></button>
         <button matRipple matTooltip="Log out" matTooltipClass="offprint-tooltip" (click)="logout()"><i-feather name="log-out"></i-feather></button>
