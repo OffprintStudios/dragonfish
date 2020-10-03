@@ -10,7 +10,7 @@
                 <ng-container *ngIf="currentUserIsSame(); else notSame">
                     <div class="header">
                         <div class="coll-pub">
-                            <i-feather name="lock"></i-feather>
+                            <i-feather matTooltip="Private" matTooltipClass="offprint-tooltip" name="lock"></i-feather>
                         </div>
                         <div class="coll-name">
                             <h2>{{ collection.name }}</h2>
@@ -25,10 +25,10 @@
                                 <!--Header-->
                                 <div class="work-header">
                                     <ng-container [ngSwitch]="entry.work.meta.rating">
-                                        <div class="rating everyone small" *ngSwitchDefault>E</div>
-                                        <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                        <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                        <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                        <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                        <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                        <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                        <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                     </ng-container>                            
                                     <h1><a [routerLink]="['/work', entry.work._id, entry.work.title | slugify]">{{ entry.work.title }}</a></h1>                            
                                     <h2>by <a [routerLink]="['/portfolio', entry.work.author._id, entry.work.author.username | slugify]">{{ entry.work.author.username }}</a></h2>
@@ -80,7 +80,7 @@
             <ng-template #publicColl>
                 <div class="header">
                     <div class="coll-pub" *ngIf="currentUserIsSame()">
-                        <i-feather name="unlock"></i-feather>
+                        <i-feather matTooltip="Public" matTooltipClass="offprint-tooltip" name="unlock"></i-feather>
                     </div>
                     <div class="coll-name">
                         <h2>{{ collection.name }}</h2>
@@ -95,10 +95,10 @@
                             <!--Header-->
                             <div class="work-header">
                                 <ng-container [ngSwitch]="entry.work.meta.rating">
-                                    <div class="rating everyone small" *ngSwitchDefault>E</div>
-                                    <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                    <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                    <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                    <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                    <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                    <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                    <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>                            
                                 <h1><a [routerLink]="['/work', entry.work._id, entry.work.title | slugify]">{{ entry.work.title }}</a></h1>                            
                                 <h2>by <a [routerLink]="['/portfolio', entry.work.author._id, entry.work.author.username | slugify]">{{ entry.work.author.username }}</a></h2>
@@ -142,7 +142,7 @@
                 <ng-container *ngIf="currentUserIsSame(); else privateNoWorks">
                     <div class="header">
                         <div class="coll-pub">
-                            <i-feather name="lock"></i-feather>
+                            <i-feather matTooltip="Private" matTooltipClass="offprint-tooltip" name="lock"></i-feather>
                         </div>
                         <div class="coll-name">
                             <h2>{{ collection.name }}</h2>
@@ -168,7 +168,7 @@
             <ng-template #publicNoWorks>
                 <div class="header">
                     <div class="coll-pub" *ngIf="currentUserIsSame()">
-                        <i-feather name="unlock"></i-feather>
+                        <i-feather matTooltip="Public" matTooltipClass="offprint-tooltip" name="unlock"></i-feather>
                     </div>
                     <div class="coll-name">
                         <h2>{{ collection.name }}</h2>
