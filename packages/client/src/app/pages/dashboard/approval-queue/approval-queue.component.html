@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
-                        <img matTooltip="Claimed by {{entry.claimedBy.username | toLocaleString}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                        <img matTooltip="Claimed by {{entry.claimedBy.username}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
                     </div>
                     <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
                         <button matTooltip="Claim work" matTooltipClass="offprint-tooltip" class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                         <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
-                            <img matTooltip="Claimed by {{entry.claimedBy.username | toLocaleString}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                            <img matTooltip="Claimed by {{entry.claimedBy.username}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
                         </div>
                         <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
                             <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
