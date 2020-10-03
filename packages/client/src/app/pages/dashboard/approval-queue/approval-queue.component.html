@@ -29,10 +29,10 @@
                         <div class="info">
                             <div class="work-header">
                                 <ng-container [ngSwitch]="entry.workToApprove.meta.rating">
-                                    <div class="rating everyone small" *ngSwitchDefault>E</div>
-                                    <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                    <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                    <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                                    <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                    <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                    <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                    <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>
                                 <h3><a [routerLink]="['/work', entry.workToApprove._id, entry.workToApprove.title | slugify]">{{ entry.workToApprove.title }}</a></h3>                                
                                 <h4 class="author-byline">by <a [routerLink]="['/portfolio', entry.workToApprove.author._id, entry.workToApprove.author.username | slugify]">
@@ -54,14 +54,14 @@
                         </div>
                     </div>
                     <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
-                        <img class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                        <img matTooltip="Claimed by {{entry.claimedBy.username}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
                     </div>
                     <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
-                        <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
+                        <button matTooltip="Claim work" matTooltipClass="offprint-tooltip" class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
                     </div>
                     <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
-                        <button class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
-                        <button class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
+                        <button matTooltip="Approve work" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                        <button matTooltip="Reject work" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
                     </div>
                 </div>
             </div>
@@ -102,14 +102,14 @@
                             </div>
                         </div>
                         <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
-                            <img class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                            <img matTooltip="Claimed by {{entry.claimedBy.username}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
                         </div>
                         <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
                             <button class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
                         </div>
                         <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
-                            <button class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
-                            <button class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
+                            <button matTooltip="Approve work" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                            <button matTooltip="Reject work" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
                         </div>
                     </div>
                 </div>

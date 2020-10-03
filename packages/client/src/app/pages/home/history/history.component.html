@@ -23,10 +23,10 @@
                     <div class="work-info">
                         <div class="info">
                             <ng-container [ngSwitch]="$any(doc.work).meta.rating">
-                                <div class="rating everyone small" *ngSwitchDefault>E</div>
-                                <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
+                                <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
                             </ng-container>
                             <h3><a [routerLink]="['/work', $any(doc.work)._id, $any(doc.work).title | slugify]">{{ $any(doc.work).title }}</a></h3>
                             <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.work).author._id, $any(doc.work).author.username | slugify]">{{ $any(doc.work).author.username }}</a></h4>

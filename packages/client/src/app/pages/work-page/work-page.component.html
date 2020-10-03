@@ -11,10 +11,10 @@
         <div class="work-details">
             <div class="work-header">
                 <ng-container [ngSwitch]="workData.meta.rating">
-                    <div class="rating everyone large" *ngSwitchDefault>E</div>
-                    <div class="rating teen large" *ngSwitchCase="'Teen'">T</div>
-                    <div class="rating mature large" *ngSwitchCase="'Mature'">M</div>
-                    <div class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
+                    <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone large" *ngSwitchDefault>E</div>
+                    <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen large" *ngSwitchCase="'Teen'">T</div>
+                    <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature large" *ngSwitchCase="'Mature'">M</div>
+                    <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
                 </ng-container>
                 <h1><a [routerLink]="['/work', workData._id, workData.title | slugify]">{{ workData.title }}</a></h1>
                 <h2>by <a [routerLink]="['/portfolio', workData.author._id, workData.author.username | slugify]">{{ workData.author.username }}</a></h2>

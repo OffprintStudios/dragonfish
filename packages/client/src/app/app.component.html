@@ -9,10 +9,10 @@
       <header>
         <div class="nav-box">
           <div class="user-menu-nav" *ngIf="currentUser; else signUp">
-            <img class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
+            <img matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
             <div class="user-menu-dropdown">
-              <a class="menu-icon" [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather><span class="stat-counter">0</span></a>
-              <a class="menu-icon" [routerLink]="['/home/inbox']"><i-feather name="message-circle"></i-feather><span class="stat-counter">0</span></a>
+              <a matTooltip="Alerts" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/home/alerts']"><i-feather name="bell"></i-feather><span class="stat-counter">0</span></a>
+              <a matTooltip="Inbox" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/home/inbox']"><i-feather name="message-circle"></i-feather><span class="stat-counter">0</span></a>
             </div>
           </div>
           <ng-template #signUp>

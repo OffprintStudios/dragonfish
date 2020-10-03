@@ -8,32 +8,32 @@
         <h4>Welcome back!</h4>
       </div>
       <div class="close-sidenav">
-        <a class="close-button" (click)="onCloseClicked()"><i-feather name="x"></i-feather></a>
+        <a matTooltip="Close" matTooltipClass="offprint-tooltip" class="close-button" (click)="onCloseClicked()"><i-feather name="x"></i-feather></a>
       </div>
     </div>
     <div class="user-buttons">
       <mat-tab-group (selectedTabChange)="onTabChanged($event)" dynamicHeight>
         <mat-tab>
             <ng-template mat-tab-label>
-              <i-feather name="message-circle"></i-feather>
+              <i-feather matTooltip="Inbox" matTooltipClass="offprint-tooltip" name="message-circle"></i-feather>
             </ng-template>
             <sidenav-conversations></sidenav-conversations>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-                <i-feather name="eye"></i-feather>
+                <i-feather matTooltip="Watching" matTooltipClass="offprint-tooltip" name="eye"></i-feather>
             </ng-template>
             <sidenav-watching></sidenav-watching>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
-            <i-feather name="layers"></i-feather>
+            <i-feather matTooltip="History" matTooltipClass="offprint-tooltip" name="layers"></i-feather>
           </ng-template>
           <sidenav-history></sidenav-history>
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-              <i-feather name="bell"></i-feather>
+              <i-feather matTooltip="Alerts" matTooltipClass="offprint-tooltip" name="bell"></i-feather>
             </ng-template>
             <sidenav-notifications></sidenav-notifications>
           </mat-tab>
