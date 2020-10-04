@@ -14,7 +14,7 @@ export enum Fandoms {
     AdventureTime = 'Adventure Time',
     StevenUniverse = 'Steven Universe',
     TwilightSaga = 'Twilight Saga',
-    Undertale = 'Undertale',
+    Undertale = 'Undertale/Deltarune',
     Supernatural = 'Supernatural',
     HungerGames = 'Hunger Games',
     Voltron = 'Voltron',
@@ -57,6 +57,12 @@ export enum Fandoms {
     TheLionKing = 'The Lion King',
     Danganronpa = 'Danganronpa',
     RevolutionaryGirlUtena = 'Revolutionary Girl Utena',
+    InfinityTrain = 'Infinity Train',
+    Garfield = 'Garfield',
+    Seinfeld = 'Seinfeld',
+    Hitman = 'Hitman',
+    SwordOfTheStars = 'Sword of the Stars',
+    AnimalCrossing = 'Animal Crossing',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
 
