@@ -12,6 +12,7 @@ export enum GenresFiction {
     Horror = 'Horror',
     Thriller = 'Thriller',
     Mystery = 'Mystery',
+    Porn = 'Porn',
     // Essay = 'Essay',
     // Journalism = 'Journalism',
     // Biography = 'Biography', 
