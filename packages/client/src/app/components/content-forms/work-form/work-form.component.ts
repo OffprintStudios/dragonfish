@@ -6,8 +6,8 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 import { Categories, ContentRating, CreateWork, Fandoms, Genres, GenresFiction, 
-  GenresPoetry, WorkStatus, MAX_FANDOMS_PER_STORY, MAX_GENRES_PER_FANFIC, MAX_GENRES_PER_POEM,
-  MAX_GENRES_PER_ORIGINAL } from '@pulp-fiction/models/works';
+  GenresPoetry, WorkStatus, MAX_FANDOMS_PER_STORY, MAX_GENRES_PER_FICTION,
+  MAX_GENRES_PER_POEM } from '@pulp-fiction/models/works';
 import { WorksService } from '../../../services/content';
 
 @Component({
@@ -36,6 +36,10 @@ export class WorkFormComponent implements OnInit {
   genresPoetry = GenresPoetry; // Alias for poetry genres
   rating = ContentRating; // Alias for content ratings
   status = WorkStatus; // Alias for work statuses
+  
+  maxFandomsPerStory = MAX_FANDOMS_PER_STORY;
+  maxGenresPerFiction = MAX_GENRES_PER_FICTION;
+  maxGenresPerPoem = MAX_GENRES_PER_POEM;
 
   workForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -162,13 +166,8 @@ export class WorkFormComponent implements OnInit {
       this.snackbar.open(`Poetry can only have one genre.`);
       this.loading = false;
       return;
-    } else if (this.fields.thisCategory.value === Categories.Fanfiction 
-      && this.fields.theseGenres.value.length > MAX_GENRES_PER_FANFIC) {
-      this.snackbar.open(`You can only have up to ${MAX_GENRES_PER_FANFIC} genres.`);
-      this.loading = false;
-      return;
-    } else if (this.fields.theseGenres.value.length > MAX_GENRES_PER_ORIGINAL) {
-      this.snackbar.open(`You can only have up to ${MAX_GENRES_PER_ORIGINAL} genres.`);
+    } else if (this.fields.theseGenres.value.length > MAX_GENRES_PER_FICTION) {
+      this.snackbar.open(`You can only have up to ${MAX_GENRES_PER_FICTION} genres.`);
       this.loading = false;
       return;
     }

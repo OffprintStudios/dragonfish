@@ -37,12 +37,12 @@
 
         <!--Fandom-->
         <div *ngIf="isFanfiction()">
-            <label>Fandoms (Up to 5)</label>
+            <label>Fandoms (Up to {{ maxFandomsPerStory }})</label>
             <ng-select [items]="fandoms | keyvalue"
                         bindLabel="value"
                         bindValue="key"
                         [multiple]="true"
-                        maxSelectedItems="5"
+                        maxSelectedItems="{{ maxFandomsPerStory }}"
                         placeholder="Select fandoms"
                         clearAllText="Clear"
                         formControlName="theseFandoms"
@@ -51,12 +51,12 @@
 
         <!--Genres for Fiction-->
         <div *ngIf="isFiction()">
-            <label>Genres (Up to 2)</label>
+            <label>Genres (Up to {{ maxGenresPerFiction }})</label>
             <ng-select [items]="genresFiction | keyvalue"
                         bindLabel="value"
                         bindValue="key"
                         [multiple]="true"
-                        maxSelectedItems="2"
+                        maxSelectedItems="{{ maxGenresPerFiction }}"
                         placeholder="Select genres"
                         clearAllText="Clear"
                         formControlName="theseGenres"
@@ -66,7 +66,7 @@
 
         <!--Genres for Poetry-->
         <div *ngIf="isPoetry()">
-            <label>Genres</label>
+            <label>Genre (Up to {{ maxGenresPerPoem }})</label>
             <ng-select [items]="genresPoetry | keyvalue"
                         bindLabel="value"
                         bindValue="key"

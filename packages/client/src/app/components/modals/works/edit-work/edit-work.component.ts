@@ -6,7 +6,8 @@ import { dividerHandler, imageHandler } from '../../../../util/quill';
 import { WorksService } from '../../../../services/content';
 import { AlertsService } from '../../../../modules/alerts';
 import { Categories, EditWork, Fandoms, GenresFiction, GenresPoetry, 
-  ContentRating, WorkStatus, Work } from '@pulp-fiction/models/works';
+  ContentRating, WorkStatus, Work, MAX_FANDOMS_PER_STORY, MAX_GENRES_PER_FICTION,
+  MAX_GENRES_PER_POEM } from '@pulp-fiction/models/works';
 import { getQuillHtml } from 'packages/client/src/app/util/functions';
 
 @Component({
@@ -25,6 +26,9 @@ export class EditWorkComponent implements OnInit {
   genresPoetry = GenresPoetry; // Alias for poetry genres
   rating = ContentRating; // Alias for content ratings
   status = WorkStatus; // Alias for work statuses
+  maxFandomsPerStory = MAX_FANDOMS_PER_STORY;
+  maxGenresPerFiction = MAX_GENRES_PER_FICTION;
+  maxGenresPerPoem = MAX_GENRES_PER_POEM;
 
   editorFormats = [
     'header', 'bold', 'italic', 'underline', 'strike',

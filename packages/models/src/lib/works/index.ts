@@ -3,7 +3,7 @@ export { Section } from './section.model';
 export { Categories } from './categories.enum';
 export { Fandoms, MAX_FANDOMS_PER_STORY } from './fandoms.enum';
 export { ContentRating } from './content-rating.enum';
-export { Genres, GenresFiction, GenresPoetry, MAX_GENRES_PER_FANFIC, MAX_GENRES_PER_POEM, MAX_GENRES_PER_ORIGINAL } from './genres.enum';
+export { Genres, GenresFiction, GenresPoetry, MAX_GENRES_PER_FICTION, MAX_GENRES_PER_POEM } from './genres.enum';
 export { WorkStatus } from './work-status.enum';
 export { ApprovalStatus } from './approval-status.enum';
 export { ContentFilter } from './content-filter.enum';

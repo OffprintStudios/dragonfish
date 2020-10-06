@@ -37,7 +37,7 @@
                         <!--Genres for Fiction-->
                         <div *ngIf="isFiction()">
                             <mat-form-field class="work-form">
-                                <mat-label>Choose Genres (max 2)</mat-label>
+                                <mat-label>Genres (Up to {{ maxGenresPerFiction }})</mat-label>
                                 <mat-select formControlName="theseGenres" multiple>
                                     <mat-option *ngFor="let genre of genresFiction | keyvalue" [value]="genre.key">
                                         {{ genre.value }}
@@ -62,7 +62,7 @@
                     <div *ngIf="isFanfiction()" [ngStyle]="isFanfiction() ? {'flex': '0.5', 'overflow': 'auto'} : {'flex': 'none'}">
                         <!--Fandoms-->
                         <mat-form-field class="work-form">
-                            <mat-label>Choose Fandoms (max 5)</mat-label>
+                            <mat-label>Fandoms (Up to {{ maxFandomsPerStory }})</mat-label>
                             <mat-select formControlName="theseFandoms" multiple>
                                 <mat-option *ngFor="let fandom of fandoms | keyvalue" [value]="fandom.key">
                                     {{ fandom.value }}
