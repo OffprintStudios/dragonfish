@@ -137,13 +137,13 @@ export class WorksController {
             if (work.fandoms.length < 1 || work.fandoms.length > models.MAX_FANDOMS_PER_STORY) {
                 throw new BadRequestException(`You must select between 1 and ${models.MAX_FANDOMS_PER_STORY} fandoms.`);
             }
-            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_FANFIC) {
-                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_FANFIC} genres.`);
+            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_FICTION) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_FICTION} genres.`);
             }
         }
         if (work.category === models.Categories.OriginalFiction) {
-            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_ORIGINAL) {
-                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_ORIGINAL} genres.`);
+            if (work.genres.length < 1 || work.genres.length > models.MAX_GENRES_PER_FICTION) {
+                throw new BadRequestException(`You must select between 1 and ${models.MAX_GENRES_PER_FICTION} genres.`);
             }
         }
         if (work.category === models.Categories.Poetry) {
