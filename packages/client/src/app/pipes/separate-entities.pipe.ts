@@ -8,7 +8,8 @@ export class SeparateEntitiesPipe implements PipeTransform {
             if (value.length === 1) {
                 return GenresFiction[value[0]];
               } else {
-                const theseGenres: string[] = [GenresFiction[value[0]], GenresFiction[value[1]]];
+                let theseGenres: string[] = new Array();
+                value.forEach(genre => { theseGenres.push(GenresFiction[genre]) });
                 return theseGenres.join(', ');
               }
         } else if (Categories[category] === Categories.Poetry) {
