@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { CookieModule } from 'ngx-cookie';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,22 +23,20 @@ import { UsersComponent } from './pages/users/users.component';
 import { PostFormComponent } from './pages/news/post-form/post-form.component';
 import { NewEditorComponent } from './components/new-editor';
 
+import * as pipes from './pipes';
+
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent,
-    QueueComponent,
-    AuditComponent,
-    DocsComponent,
-    NewsComponent,
-    ReportsComponent,
-    UsersComponent,
-    PostFormComponent,
-    NewEditorComponent
+    AppComponent, HomeComponent, QueueComponent, AuditComponent,
+    DocsComponent, NewsComponent, ReportsComponent, UsersComponent,
+    PostFormComponent, NewEditorComponent, pipes.AbbreviateNumbersPipe, pipes.FixCategoriesPipe,
+    pipes.PluralizePipe, pipes.SafeHtmlPipe, pipes.SeparateEntitiesPipe, pipes.SlugifyPipe,
+    pipes.StringifyMetaPipe, pipes.ToLocaleStringPipe, pipes.TruncatePipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MaterialModule,
     HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, CKEditorModule,
+    NgxPaginationModule,
     CookieModule.forRoot()
   ],
   providers: [
