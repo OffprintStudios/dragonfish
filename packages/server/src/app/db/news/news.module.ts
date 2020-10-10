@@ -13,6 +13,7 @@ import { NewsService } from './news.service';
         name: 'Newspost',
         useFactory: () => {
           const schema = NewsSchema;
+          schema.index({title: 'text'});
           schema.plugin(require('mongoose-autopopulate'));
           schema.plugin(require('mongoose-paginate-v2'));
           schema.pre<NewsDocument>('save', async function (next: HookNextFunction) {
