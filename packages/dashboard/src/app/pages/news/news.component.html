@@ -27,14 +27,13 @@
 </div>
 
 <ng-container *ngIf="route.children.length === 0">
-    <!--<div class="posts-list">
-        <ng-container *ngIf="posts && posts.length > 0">
-            <div class="post" *ngFor="let post of posts">
+    <div class="posts-list">
+        <ng-container *ngIf="posts && posts.totalDocs > 0">
+            <div class="post" *ngFor="let post of posts.docs">
                 {{ post.title }}
             </div>
         </ng-container>
-    </div>-->
-    hi!
+    </div>
 </ng-container>
 
 <router-outlet></router-outlet>

@@ -11,7 +11,7 @@ import { NewsPost, PostForm } from '@pulp-fiction/models/news';
   providedIn: 'root'
 })
 export class NewsService {
-  private url = `/api/contrib/news`;
+  private url = `/api/dashboard/news`;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
@@ -21,7 +21,7 @@ export class NewsService {
    * @param form A newspost's info
    */
   public createNewspost(form: PostForm) {
-    return this.http.post<NewsPost>(`${this.url}/create-newspost`, form, {observe: 'response', withCredentials: true})
+    return this.http.put<NewsPost>(`${this.url}/create-post`, form, {observe: 'response', withCredentials: true})
       .pipe(map(_res => {
         this.snackBar.open(`Post created successfully!`);
         return;
@@ -37,7 +37,7 @@ export class NewsService {
    * @param form A newspost's info
    */
   public editNewspost(form: PostForm) {
-    return this.http.patch<NewsPost>(`${this.url}/edit-newspost`, form, {observe: 'response', withCredentials: true})
+    return this.http.patch<NewsPost>(`${this.url}/edit-post`, form, {observe: 'response', withCredentials: true})
       .pipe(map(_res => {
         this.snackBar.open(`Changed saved!`);
         return;
@@ -50,8 +50,8 @@ export class NewsService {
   /**
    * Fetches all newsposts
    */
-  public fetchAll() {
-    return this.http.get<PaginateResult<NewsPost>>(`${this.url}/fetch-all`, {observe: 'response', withCredentials: true})
+  public fetchAll(pageNum: number) {
+    return this.http.get<PaginateResult<NewsPost>>(`${this.url}/fetch-all/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {

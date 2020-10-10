@@ -5,7 +5,7 @@ import * as lodash from 'lodash';
 
 import { NewsDocument } from './news.schema';
 
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PostForm } from '@pulp-fiction/models/news';
 import { JwtPayload } from '@pulp-fiction/models/auth';
@@ -29,7 +29,7 @@ export class NewsService {
                 'desc': await sanitizeHtml(postInfo.desc),
                 'body': await sanitizeHtml(postInfo.body),
                 'category': postInfo.category,
-                'stats.words': await countPlaintextWords(postInfo.body),
+                'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
             });
     
             return await newPost.save();
@@ -53,7 +53,7 @@ export class NewsService {
                 postToEdit.desc = await sanitizeHtml(postInfo.desc);
                 postToEdit.body = await sanitizeHtml(postInfo.body);
                 postToEdit.category = postInfo.category;
-                postToEdit.stats.words = await countPlaintextWords(postInfo.body);
+                postToEdit.stats.words = await countPlaintextWords(await stripAllHtml(postInfo.body));
 
                 return await postToEdit.save();
             } else {
@@ -62,7 +62,7 @@ export class NewsService {
                     postToEdit.desc = await sanitizeHtml(postInfo.desc);
                     postToEdit.body = await sanitizeHtml(postInfo.body);
                     postToEdit.category = postInfo.category;
-                    postToEdit.stats.words = await countPlaintextWords(postInfo.body);
+                    postToEdit.stats.words = await countPlaintextWords(await stripAllHtml(postInfo.body));
     
                     return await postToEdit.save();
                 } else {
