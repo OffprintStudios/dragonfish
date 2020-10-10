@@ -16,7 +16,7 @@ import { IconsModule } from '@pulp-fiction/icons';
 import { HomeComponent } from './pages/home/home.component';
 import { QueueComponent } from './pages/queue/queue.component';
 import { AuditComponent } from './pages/audit/audit.component';
-import { DocsComponent } from './pages/docs/docs.component';
+import { DocsComponent, CreateDocComponent, EditDocComponent } from './pages/docs';
 import { NewsComponent } from './pages/news/news.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { UsersComponent } from './pages/users/users.component';
@@ -31,7 +31,8 @@ import * as pipes from './pipes';
     DocsComponent, NewsComponent, ReportsComponent, UsersComponent,
     PostFormComponent, NewEditorComponent, pipes.AbbreviateNumbersPipe, pipes.FixCategoriesPipe,
     pipes.PluralizePipe, pipes.SafeHtmlPipe, pipes.SeparateEntitiesPipe, pipes.SlugifyPipe,
-    pipes.StringifyMetaPipe, pipes.ToLocaleStringPipe, pipes.TruncatePipe
+    pipes.StringifyMetaPipe, pipes.ToLocaleStringPipe, pipes.TruncatePipe, CreateDocComponent,
+    EditDocComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MaterialModule,

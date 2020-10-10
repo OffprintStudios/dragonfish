@@ -22,7 +22,7 @@
         </div>
         <h4 style="text-align: center;" *ngIf="queueIsEmpty(); else theQueue">Surprisingly, no one's submitted anything yet.</h4>
         <ng-template #theQueue>
-            <div class="work-list">
+            <div class="work-list" *ngIf="queue && queue.docs">
                 <div class="work-item" *ngFor="let entry of queue.docs | paginate: {
                     itemsPerPage: queue.limit,
                     currentPage: pageNum,
