@@ -1,7 +1,8 @@
-import { Controller, UseGuards, Post, Body, Request, Get, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException } from '@nestjs/common';
+import { Controller, UseGuards, Post, Body, Request, Get, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
+import * as lodash from 'lodash';
 
 import { AuthService } from './auth.service';
 import { UsersService } from '../../db/users/users.service';
@@ -45,7 +46,32 @@ export class AuthController {
         } else {
             return this.authService.login(verifiedUser, req);
         }
+    }
 
+    @SetCookies()
+    @Post('login-dashboard')
+    async loginDashboard(@Request() req: any, @Body() loginUser: models.LoginUser, @Cookies() cookies: any) {
+        // Check for stray sessions from previous logout attempts that the server never received
+        let oldSessionId: string | null = cookies['refreshToken'];
+
+        const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
+
+        let hasRoles = lodash.intersection(verifiedUser.audit.roles, [models.Roles.Admin, models.Roles.Moderator, models.Roles.Contributor, models.Roles.WorkApprover]);
+        if (hasRoles.length > 0) {
+            if (oldSessionId) {
+                await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
+            }
+    
+            if (loginUser.rememberMe) {
+                const sessionId = uuidV4();
+                const newSession = await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
+                return this.authService.login(verifiedUser, req, sessionId, newSession.expires);
+            } else {
+                return this.authService.login(verifiedUser, req);
+            }
+        } else {
+            throw new UnauthorizedException(`You don't have permission to access the dashboard.`);
+        }
     }
 
     @UseGuards(RefreshGuard)
