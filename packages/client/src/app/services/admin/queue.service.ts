@@ -22,7 +22,7 @@ export class QueueService {
    * @param workId The work to submit
    */
   submitWork(workId: string) {
-    return this.http.post(`${this.url}/submit-work/${workId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.post(`/api/dashboard/queue/submit-work/${workId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Work successfully submitted!`);
         return;
