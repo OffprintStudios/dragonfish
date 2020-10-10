@@ -20,6 +20,7 @@ import { NewsComponent } from './pages/news/news.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { UsersComponent } from './pages/users/users.component';
 import { PostFormComponent } from './pages/news/post-form/post-form.component';
+import { NewEditorComponent } from './components/new-editor';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { PostFormComponent } from './pages/news/post-form/post-form.component';
     NewsComponent,
     ReportsComponent,
     UsersComponent,
-    PostFormComponent
+    PostFormComponent,
+    NewEditorComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MaterialModule,
