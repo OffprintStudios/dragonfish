@@ -15,13 +15,13 @@ export class QueueController {
         }
     
         @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
-        @Get('queue/:pageNum')
+        @Get('get-queue/:pageNum')
         async getQueue(@Param('pageNum') pageNum: number) {
             return await this.queueService.getQueue(pageNum);
         }
     
         @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
-        @Get('queue-for-mod/:pageNum')
+        @Get('get-queue-for-mod/:pageNum')
         async getQueueForMod(@Request() req: any, @Param('pageNum') pageNum: number) {
             return await this.queueService.getQueueForMod(req.user, pageNum);
         }
