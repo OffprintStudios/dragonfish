@@ -30,6 +30,7 @@ export interface PostStats {
     dislikes: number;
     comments: number;
     words: number;
+    views: number;
 }
 
 export interface PostAudit {
