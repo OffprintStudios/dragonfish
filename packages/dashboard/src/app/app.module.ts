@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { CookieModule } from 'ngx-cookie';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +19,8 @@ import { IconsModule } from '@pulp-fiction/icons';
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MaterialModule,
-    HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, CKEditorModule
+    HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, CKEditorModule,
+    CookieModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

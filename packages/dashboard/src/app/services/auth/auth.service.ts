@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
 import { CookieService } from 'ngx-cookie';
 
-import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
 import { FrontendUser, CreateUser, LoginUser, ChangePassword,
   ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
@@ -20,7 +20,7 @@ export class AuthService {
   public currUser: Observable<FrontendUser>;
   private url: string = `/api/auth`;
 
-  constructor(private http: HttpClient, private router: Router, private alertsService: AlertsService, private cookies: CookieService) {
+  constructor(private http: HttpClient, private router: Router, private snackBar: MatSnackBar, private cookies: CookieService) {
     this.currUserSubject = new BehaviorSubject<FrontendUser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currUser = this.currUserSubject.asObservable();
   }
@@ -74,7 +74,7 @@ export class AuthService {
         });
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -95,10 +95,10 @@ export class AuthService {
           localStorage.removeItem('currentUser');
           this.currUserSubject.next(null);    
           this.router.navigate(['/home/latest']);    
-          this.alertsService.error(`${err.error.message}. You have been logged out.`);
+          this.snackBar.open(`${err.error.message}. You have been logged out.`);
           return null;          
         }
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -115,7 +115,7 @@ export class AuthService {
     this.cookies.remove('contentFilter');
     localStorage.removeItem('currentUser');
     this.currUserSubject.next(null);
-    this.alertsService.success('See you next time!');
+    this.snackBar.open('See you next time!');
     this.router.navigate(['/home/latest']);    
   }
 
@@ -132,7 +132,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -148,7 +148,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -165,7 +165,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -182,7 +182,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
@@ -199,7 +199,7 @@ export class AuthService {
         this.currUserSubject.next(user.body);
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }

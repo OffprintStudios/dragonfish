@@ -328,7 +328,10 @@
               "packages/dashboard/src/favicon.ico",
               "packages/dashboard/src/assets"
             ],
-            "styles": ["packages/dashboard/src/styles.less"],
+            "styles": [
+              "packages/dashboard/src/custom-style.scss",
+              "packages/dashboard/src/styles.less"
+            ],
             "scripts": []
           },
           "configurations": {

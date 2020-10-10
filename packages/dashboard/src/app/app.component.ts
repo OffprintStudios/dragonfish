@@ -26,4 +26,6 @@ export class AppComponent {
       this.currentUser = x;
     });
   }
+
+  get loginFields() { return this.loginForm.controls; }
 }
