@@ -65,7 +65,7 @@ export class AuthService {
    * @param credentials A user's credentials.
    */
   public login(credentials: LoginUser): Observable<FrontendUser> {
-    return this.http.post<FrontendUser>(`${this.url}/login`, credentials, { withCredentials: true, observe: 'response' })
+    return this.http.post<FrontendUser>(`${this.url}/login-dashboard`, credentials, { withCredentials: true, observe: 'response' })
       .pipe(map(user => {
         localStorage.setItem('currentUser', JSON.stringify(user.body));
         this.currUserSubject.next(user.body);
