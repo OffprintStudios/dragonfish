@@ -1,11 +1,9 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { ApprovalQueueService } from '../../db/approval-queue/approval-queue.service';
-import { WorksService } from '../../db/works/works.service';
+import { ApprovalQueueService } from '../../../db/approval-queue/approval-queue.service';
+import { WorksService } from '../../../db/works/works.service';
 
 @Injectable()
-export class ContribService {
+export class QueueService {
     constructor(private approvalQueueService: ApprovalQueueService,
         private worksService: WorksService) {}
 
