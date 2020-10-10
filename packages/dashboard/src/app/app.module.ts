@@ -12,10 +12,26 @@ import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
 import { MaterialModule } from '@pulp-fiction/material';
 import { IconsModule } from '@pulp-fiction/icons';
+import { HomeComponent } from './pages/home/home.component';
+import { QueueComponent } from './pages/queue/queue.component';
+import { AuditComponent } from './pages/audit/audit.component';
+import { DocsComponent } from './pages/docs/docs.component';
+import { NewsComponent } from './pages/news/news.component';
+import { ReportsComponent } from './pages/reports/reports.component';
+import { UsersComponent } from './pages/users/users.component';
+import { PostFormComponent } from './pages/news/post-form/post-form.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    QueueComponent,
+    AuditComponent,
+    DocsComponent,
+    NewsComponent,
+    ReportsComponent,
+    UsersComponent,
+    PostFormComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, BrowserAnimationsModule, MaterialModule,
