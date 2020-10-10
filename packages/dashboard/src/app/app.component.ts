@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 
 @Component({
@@ -27,5 +27,34 @@ export class AppComponent {
     });
   }
 
+  /**
+   * Login form field getter.
+   */
   get loginFields() { return this.loginForm.controls; }
+
+  /**
+   * Logs a user in
+   */
+  submitLogin() {
+    this.loadingLogin = true;
+    const credentials: LoginUser = {
+      email: this.loginFields.email.value,
+      password: this.loginFields.password.value,
+      rememberMe: this.loginFields.rememberMe.value
+    };
+
+    this.authService.login(credentials).subscribe(() => {
+      this.loadingLogin = false;
+      this.loginForm.reset();
+    }, () => {
+      this.loadingLogin = false;
+    });
+  }
+
+  /**
+   * Logs a user out.
+   */
+  logOut() {
+    this.authService.logout();
+  }
 }

@@ -5,7 +5,7 @@
         <img src="assets/icons/dashlogo.png">
       </div>
       <div class="login-body">
-        <form [formGroup]="loginForm">
+        <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" placeholder="someone@offprint.net">
@@ -31,7 +31,7 @@
           <div class="user-menu-nav">
             <img class="user-menu-avatar" [src]="currentUser.profile.avatar"/>
             <div class="user-menu-dropdown">
-              <a class="menu-icon"><span class="stat-counter">sign out</span></a>
+              <a class="menu-icon" (click)="logOut()"><span class="stat-counter">sign out</span></a>
             </div>
           </div>
           <div class="site-logo">
