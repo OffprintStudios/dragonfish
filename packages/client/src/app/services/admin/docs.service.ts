@@ -71,7 +71,7 @@ export class DocsService {
    * @param docId The doc to fetch
    */
   public fetchOne(docId: string) {
-    return this.http.get<Doc>(`${this.url}/fetch-one/${docId}`, {observe: 'response', withCredentials: true})
+    return this.http.get<Doc>(`/api/dashboard/docs/fetch-one/${docId}`, {observe: 'response', withCredentials: true})
       .pipe(map(doc => {
         return doc.body;
       }), catchError(err => {
