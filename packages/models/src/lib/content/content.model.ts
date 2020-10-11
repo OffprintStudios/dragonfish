@@ -13,6 +13,10 @@ export interface ContentModel {
         readonly dislikes: number;
         readonly comments: number;
     };
+    audit: {
+        hasComments: boolean;
+        isDeleted: boolean;
+    };
     readonly kind: string;
     readonly createdAt: Date;
     readonly updatedAt: Date;

@@ -37,6 +37,15 @@ export class ContentDocument extends Document implements ContentModel {
         readonly comments: number;
     };
 
+    @Prop(raw({
+        hasComments: {type: Boolean, default: true},
+        isDeleted: {type: Boolean, default: false}
+    }))
+    audit: {
+        hasComments: boolean;
+        isDeleted: boolean;
+    };
+
     @Prop()
     readonly kind: string;
 

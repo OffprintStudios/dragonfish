@@ -43,9 +43,7 @@ import { NewsCategory } from '@pulp-fiction/models/content';
         audit: {
           featured: {type: Boolean, default: false},
           published: {type: Boolean, default: false},
-          publishedOn: {type: Date, default: null},
-          isDeleted: {type: Boolean, default: false},
-          hasComments: {type: Boolean, default: false}
+          publishedOn: {type: Date, default: null}
         }
       })),
       inject: [getModelToken('Content')]
