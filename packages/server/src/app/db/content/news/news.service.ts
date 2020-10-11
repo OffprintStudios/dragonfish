@@ -26,7 +26,7 @@ export class NewsService {
                 'title': await sanitizeHtml(postInfo.title),
                 'desc': await sanitizeHtml(postInfo.desc),
                 'body': await sanitizeHtml(postInfo.body),
-                'category': postInfo.category,
+                'meta.category': postInfo.category,
                 'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
             });
     
