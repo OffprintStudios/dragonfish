@@ -53,6 +53,9 @@
     },
     "icons": {
       "tags": []
+    },
+    "loading": {
+      "tags": []
     }
   },
   "workspaceLayout": {

@@ -457,6 +457,38 @@
           }
         }
       }
+    },
+    "loading": {
+      "projectType": "library",
+      "root": "packages/loading",
+      "sourceRoot": "packages/loading/src",
+      "prefix": "pulp-fiction",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/loading/tsconfig.lib.json",
+              "packages/loading/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!packages/loading/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "packages/loading/jest.config.js",
+            "tsConfig": "packages/loading/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "packages/loading/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "less"
+        }
+      }
     }
   },
   "cli": {
