@@ -8,6 +8,7 @@ import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
 import { BrowseModule } from './api/browse/browse.module';
 import { DashboardModule } from './api/dashboard/dashboard.module';
+import { ContentModule } from './db/content/content.module';
 
 const routes: Routes = [
     {path: 'api', children: [
