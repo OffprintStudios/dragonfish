@@ -1,4 +1,4 @@
-import { Controller, Request, UseGuards, Body, Param, Post, Put, Patch, Get } from '@nestjs/common';
+import { Controller, Request, UseGuards, Body, Param, Put, Patch, Get } from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
 import { NewsService } from '../../../db/news';
@@ -25,5 +25,17 @@ export class NewsController {
     @Get('fetch-all/:pageNum')
     async fetchAll(@Request() _req: any, @Param('pageNum') pageNum: number) {
         return await this.newsService.fetchAllForDashboard(pageNum);
+    }
+
+    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
+    @Get('fetch-for-edit/:postId')
+    async fetchForEdit(@Request() req: any, @Param('postId') postId: string) {
+        return await this.newsService.fetchForEdit(req.user, postId);
+    }
+
+    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
+    @Patch('set-publish-status/:postId')
+    async setPublishStatus(@Request() req: any, @Param('postId') postId: string, @Body() pubStatus: object) {
+        console.log(pubStatus);
     }
 }

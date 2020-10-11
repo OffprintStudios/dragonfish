@@ -88,6 +88,45 @@ export class NewsService {
     }
 
     /**
+     * Fetches a post for editing.
+     * 
+     * @param user The user requesting to edit
+     * @param postId The post to edit
+     */
+    async fetchForEdit(user: JwtPayload, postId: string): Promise<NewsDocument> {
+        const postToFetch = await this.newsModel.findById(postId);
+        if (this.checkRoles(user, [Roles.Admin, Roles.Moderator])) {
+            return postToFetch;
+        } else if (postToFetch._id === user.sub && this.checkRoles(user, [Roles.Contributor])) {
+            return postToFetch;
+        } else {
+            throw new UnauthorizedException(`You don't have permission to edit this post.`);
+        }
+    }
+
+    /**
+     * Changes the publish status of a post. If isPublished is true, it
+     * sets a new publishedOn date.
+     * 
+     * @param user The user in charge of this post
+     * @param postId The post itself
+     * @param isPublished The publish flag
+     */
+    async setPublishStatus(user: JwtPayload, postId: string, isPublished: boolean): Promise<NewsDocument> {
+        const postToPublish = await this.newsModel.findById(postId);
+        if (postToPublish._id === user.sub) {
+            postToPublish.audit.published = isPublished;
+            if (isPublished === true) {
+                postToPublish.audit.publishedOn = new Date();
+            }
+    
+            return await postToPublish.save();
+        } else {
+            throw new UnauthorizedException(`You don't have permission to publish this.`);
+        }
+    }
+
+    /**
      * Verifies that a user has a specific set of roles.
      * 
      * @param user The user to verify
