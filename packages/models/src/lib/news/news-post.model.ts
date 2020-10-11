@@ -8,6 +8,7 @@ export interface NewsPost {
     desc: string;
     body: string;
     category: NewsCategory;
+    coverPic: string;
     stats: PostStats;
     audit: PostAudit;
     readonly createdAt: Date;

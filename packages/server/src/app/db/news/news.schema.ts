@@ -26,6 +26,9 @@ export class NewsDocument extends Document implements NewsPost {
     @Prop({type: String, enum: Object.keys(NewsCategory), required: true, index: true})
     category: NewsCategory;
 
+    @Prop({type: String, trim: true, default: null})
+    coverPic: string;
+
     @Prop(raw({
         likes: {type: Number, default: 0},
         dislikes: {type: Number, default: 0},
