@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { NewsPost, PostForm } from '@pulp-fiction/models/news';
+import { NewsContentModel, NewsForm } from '@pulp-fiction/models/content';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ export class NewsService {
    * 
    * @param form A newspost's info
    */
-  public createNewspost(form: PostForm) {
-    return this.http.put<NewsPost>(`${this.url}/create-post`, form, {observe: 'response', withCredentials: true})
+  public createNewspost(form: NewsForm) {
+    return this.http.put<NewsContentModel>(`${this.url}/create-post`, form, {observe: 'response', withCredentials: true})
       .pipe(map(_res => {
         this.snackBar.open(`Post created successfully!`);
         return;
@@ -36,8 +36,8 @@ export class NewsService {
    * 
    * @param form A newspost's info
    */
-  public editNewspost(form: PostForm) {
-    return this.http.patch<NewsPost>(`${this.url}/edit-post`, form, {observe: 'response', withCredentials: true})
+  public editNewspost(form: NewsForm) {
+    return this.http.patch<NewsContentModel>(`${this.url}/edit-post`, form, {observe: 'response', withCredentials: true})
       .pipe(map(_res => {
         this.snackBar.open(`Changed saved!`);
         return;
@@ -51,7 +51,38 @@ export class NewsService {
    * Fetches all newsposts
    */
   public fetchAll(pageNum: number) {
-    return this.http.get<PaginateResult<NewsPost>>(`${this.url}/fetch-all/${pageNum}`, {observe: 'response', withCredentials: true})
+    return this.http.get<PaginateResult<NewsContentModel>>(`${this.url}/fetch-all/${pageNum}`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Fetches a post for editing.
+   * 
+   * @param postId The post to fetch
+   */
+  public fetchForEdit(postId: string) {
+    return this.http.get<NewsContentModel>(`${this.url}/fetch-for-edit/${postId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Changes the pubStatus of a post.
+   * 
+   * @param postId The post to publish/unpublish
+   * @param pubStatus The pubstatus to change to
+   */
+  public setPublishStatus(postId: string, pubStatus: boolean) {
+    return this.http.patch<NewsContentModel>(`${this.url}/set-publish-status/${postId}`, {pubStatus}, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {

@@ -24,6 +24,7 @@ import { PostFormComponent } from './pages/news/post-form/post-form.component';
 import { NewEditorComponent } from './components/new-editor';
 
 import * as pipes from './pipes';
+import { EditNewsPostResolver } from './resolvers';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import * as pipes from './pipes';
     CookieModule.forRoot()
   ],
   providers: [
+    EditNewsPostResolver,
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
   ],

@@ -1,6 +1,6 @@
 <div class="newspost-form">
     <div class="form-header">
-        <h3>Create a Newspost</h3>
+        <h3>{{ pageTitle }}</h3>
         <button type="submit" (click)="submitForm()">Save Post</button>
     </div>
     <form [formGroup]="postForm" (ngSubmit)="submitForm()">

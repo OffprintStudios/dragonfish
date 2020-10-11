@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { PostForm, NewsCategory } from '@pulp-fiction/models/news';
+import { NewsForm, NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 import { NewsService } from '../../../services/contrib/news';
 
 @Component({
@@ -14,6 +14,9 @@ import { NewsService } from '../../../services/contrib/news';
 export class PostFormComponent implements OnInit {
   categories = NewsCategory;
 
+  currPost: NewsContentModel;
+  pageTitle: string = `Create a Newspost`;
+
   postForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
     desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
@@ -21,9 +24,20 @@ export class PostFormComponent implements OnInit {
     category: new FormControl(null, [Validators.required])
   });
 
-  constructor(private newsService: NewsService, private snackBar: MatSnackBar, private router: Router) { }
+  constructor(private newsService: NewsService, private snackBar: MatSnackBar, private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.currPost = this.route.snapshot.data.post as NewsContentModel;
+    if (this.currPost) {
+      this.pageTitle = `Editing Newspost`;
+      this.postForm.setValue({
+        title: this.currPost.title,
+        desc: this.currPost.desc,
+        body: this.currPost.body,
+        category: this.currPost.meta.category
+      });
+    }
+  }
 
   get formFields() { return this.postForm.controls; }
 
@@ -48,7 +62,7 @@ export class PostFormComponent implements OnInit {
       return;
     }
 
-    const formData: PostForm = {
+    const formData: NewsForm = {
       title: this.formFields.title.value,
       desc: this.formFields.desc.value,
       body: this.formFields.body.value,

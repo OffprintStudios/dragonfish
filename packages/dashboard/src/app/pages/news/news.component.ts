@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { NewsPost } from '@pulp-fiction/models/news';
+import { NewsContentModel } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { NewsService } from '../../services/contrib/news';
@@ -16,7 +16,7 @@ import { NewsService } from '../../services/contrib/news';
 export class NewsComponent implements OnInit {
   currentUser: FrontendUser;
 
-  posts: PaginateResult<NewsPost>;
+  posts: PaginateResult<NewsContentModel>;
   pageNum: number = 1;
 
   searchForm = new FormGroup({

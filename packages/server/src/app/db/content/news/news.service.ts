@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { PostForm } from '@pulp-fiction/models/news';
+import { NewsForm } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
@@ -19,7 +19,7 @@ export class NewsService {
      * @param user The user creating the post
      * @param postInfo The post's info
      */
-    async createNewPost(user: JwtPayload, postInfo: PostForm): Promise<NewsContentDocument> {
+    async createNewPost(user: JwtPayload, postInfo: NewsForm): Promise<NewsContentDocument> {
         if (this.checkRoles(user)) {
             const newPost = new this.newsModel({
                 'author': user.sub,
@@ -43,7 +43,7 @@ export class NewsService {
      * @param postId The post to edit
      * @param postInfo The new info to add
      */
-    async editPost(user: JwtPayload, postId: string, postInfo: PostForm): Promise<NewsContentDocument> {
+    async editPost(user: JwtPayload, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
         const postToEdit = await this.newsModel.findById(postId);
         if (this.checkRoles(user)) {
             if (this.checkRoles(user, [Roles.Admin, Roles.Moderator])) {
