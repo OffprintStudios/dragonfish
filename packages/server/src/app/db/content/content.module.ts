@@ -44,7 +44,8 @@ import { NewsCategory } from '@pulp-fiction/models/content';
           featured: {type: Boolean, default: false},
           published: {type: Boolean, default: false},
           publishedOn: {type: Date, default: null},
-          isDeleted: {type: Boolean, default: false}
+          isDeleted: {type: Boolean, default: false},
+          hasComments: {type: Boolean, default: false}
         }
       })),
       inject: [getModelToken('Content')]

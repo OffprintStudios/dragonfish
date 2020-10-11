@@ -11,5 +11,6 @@ export interface NewsContentModel extends ContentModel {
         published: boolean;
         publishedOn: Date;
         isDeleted: boolean;
+        hasComments: boolean;
     };
 }
