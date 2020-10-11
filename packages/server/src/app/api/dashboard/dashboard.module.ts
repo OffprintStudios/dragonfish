@@ -11,10 +11,11 @@ import { QueueController } from './queue/queue.controller';
 import { DocsController } from './docs/docs.controller';
 import { QueueService } from './queue/queue.service';
 import { WorksModule } from '../../db/works/works.module';
+import { ContentModule } from '../content/content.module';
 
 @Module({
   imports: [
-    NewsModule, UsersModule, ApprovalQueueModule, DocsModule, WorksModule,
+    ContentModule, UsersModule, ApprovalQueueModule, DocsModule, WorksModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),

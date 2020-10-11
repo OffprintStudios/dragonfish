@@ -1,7 +1,7 @@
 import { Controller, Request, UseGuards, Body, Param, Put, Patch, Get } from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
-import { NewsService } from '../../../db/news';
+import { NewsService } from '../../../db/content/news/news.service';
 import { Roles } from '@pulp-fiction/models/users';
 import { PostForm } from '@pulp-fiction/models/news';
 
