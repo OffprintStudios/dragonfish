@@ -15,8 +15,6 @@ import { NewsService } from '../../services/contrib/news';
 })
 export class NewsComponent implements OnInit {
   currentUser: FrontendUser;
-  toggleForm: boolean = false;
-  loadingForm: boolean = false;
 
   posts: PaginateResult<NewsPost>;
   pageNum: number = 1;
@@ -34,14 +32,6 @@ export class NewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  toggleNewsForm() {
-    if (this.toggleForm === true) {
-      this.toggleForm = false;
-    } else {
-      this.toggleForm = true;
-    }
   }
 
   fetchData(pageNum: number) {
