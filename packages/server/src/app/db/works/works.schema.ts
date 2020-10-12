@@ -51,6 +51,8 @@ export const WorksSchema = new Schema({
     usesNewEditor: {type: Boolean, default: false},
 }, {timestamps: true, autoIndex: true, collection: 'works'});
 
+WorksSchema.index({title: 'text'});
+
 WorksSchema.plugin(MongooseAutopopulate);
 WorksSchema.plugin(MongoosePaginate);
 

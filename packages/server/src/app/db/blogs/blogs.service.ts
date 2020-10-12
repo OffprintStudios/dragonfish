@@ -177,37 +177,25 @@ export class BlogsService {
     }
 
     /**
-     * Returns blogs matching the full text search parameter given and obeys the pagination associated with it.
-     * @param searchParameters
-     * @returns a SearchResults object containing the first page of matches and pagination info if there are results.
-     * If there are no results and the page != 1, returns null (and the API should either 404 or 400).
+     * Finds the first six matches given the provided search parameters.
+     * For use with the initial page of search results.
+     * 
+     * @param query The relevant search parameters
      */
-    async findRelatedBlogs(searchParameters: SearchParameters): Promise<SearchResults<documents.BlogDocument> | null> {
-        const p = searchParameters.pagination;
-        const filter = {
-            $text: {$search: searchParameters.text},
-            published: true,
-            'audit.isDeleted': false
-        };
-        const results = await this.blogModel.find(filter,
-            {
-                searchScore: {$meta: 'textScore'}
-            }).sort({score: {$meta: 'textScore'}})
-            .sort({'stats.views': -1})
-            .skip((p.page - 1) * p.pageSize)
-            .limit(p.pageSize);
+    async findInitialRelatedBlogs(query: string): Promise<documents.BlogDocument[]> {
+        return await this.blogModel.find({$text: {$search: query}, 'published': true, 'audit.isDeleted': false})
+            .limit(6);
+    }
 
-        if (results.length === 0 && p.page !== 1) {
-            return null;
-        } else {
-            const totalPages = Math.ceil(
-                await this.blogModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
-            );
-            return {
-                matches: results,
-                totalPages: totalPages,
-                pagination: searchParameters.pagination
-            };
-        }
+    /**
+     * Returns blogs matching the full text search parameter given and obeys the pagination associated with it.
+     * 
+     * @param query The relevant search parameters
+     */
+    async findRelatedBlogs(query: string, pageNum: number) {
+        return await this.blogModel.paginate({$text: {$search: query}, 'published': true, 'audit.isDeleted': false}, {
+            page: pageNum,
+            limit: 15
+        });
     }
 }

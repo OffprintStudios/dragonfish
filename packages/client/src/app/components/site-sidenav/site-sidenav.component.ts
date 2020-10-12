@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { first } from 'rxjs/operators';
+import { GlobalConstants } from '../../shared';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
@@ -26,8 +27,8 @@ export class SiteSidenavComponent implements OnInit {
   @Output() closeSidenav = new EventEmitter<boolean>();
 
   currentUser: FrontendUser;
-
   loadingLogin = false;
+  siteVersion = GlobalConstants.siteVersion;
 
   loginForm = new FormGroup({
     email: new FormControl('', Validators.required),

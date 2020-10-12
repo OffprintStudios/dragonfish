@@ -1,12 +1,52 @@
 <div class="find-blogs-container">
     <div class="find-blogs-header">
-        <h2>Matching Blogs</h2>
+        <h2>All Matching Blogs</h2>
     </div>
     <hr class="header-divider">
 </div>
 
-<div style="text-align: center;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0;">Keep an eye on the patch notes to find out when this feature will be available!</p>
-</div>
+<ng-container *ngIf="results === undefined; else showBlogs">
+    <div style="text-align: center;">
+        <h3 style="margin-bottom: 0;">You haven't searched for anything yet...</h3>
+        <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
+    </div>
+</ng-container>
+
+<ng-template #showBlogs>
+    <ng-container *ngIf="results && results.totalDocs === 0; else hasBlogs">
+        <div style="text-align: center;">
+            <h3 style="margin-bottom: 0;">No blogs found</h3>
+            <p style="margin-top: 0; margin-bottom: 0;">Were you looking for something here?</p>
+        </div>
+    </ng-container>
+    <ng-template #hasBlogs>
+        <div class="blogs-feed">
+            <div *ngFor="let blog of results.docs | paginate: { id: 'blogs', itemsPerPage: results.limit, currentPage: pageNum, totalItems: results.totalDocs }">
+                <div class="blog-container">
+                    <div class="blog-header">
+                        <h3>{{ blog.title }}</h3>
+                        <div>
+                            <h4 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                            <span>//</span>
+                            <h4 class="subtitle">{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4>
+                            <span>//</span>
+                            <h4 class="subtitle">{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h4>
+                        </div>
+                    </div>
+                    <div class="blog-body">
+                        <ng-container *ngIf="!blog.usesNewEditor">
+                            <quill-view [content]="blog.body" sanitize="true" format="json"></quill-view>
+                        </ng-container>
+                        <ng-container *ngIf="blog.usesNewEditor">
+                            <div class="html-description" [innerHtml]="blog.body | safeHtml"></div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="blog-control">
+                    <button>Read More</button>
+                </div>
+            </div>
+        </div>
+        <pagination-controls [nextLabel]="''" [previousLabel]="''" (pageChange)="fetchData(query, $event)" id="blogs"></pagination-controls>
+    </ng-template>
+</ng-template>

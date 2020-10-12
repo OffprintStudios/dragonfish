@@ -1,31 +1,30 @@
 import { Controller, Get, Query } from '@nestjs/common';
+import { Cookies } from '@nestjsplus/cookies';
 
+import { ContentFilter } from '@pulp-fiction/models/works';
 import { SearchService } from './search.service';
 
 @Controller()
 export class SearchController {
     constructor(private readonly searchService: SearchService) {}
 
-    @Get('find-results')
-    async findResults(@Query('query') query: string, @Query('pageNum') pageNum: number) {
-        console.log(`Query: ${query}\nPage Number: ${pageNum}`);
+    @Get('get-initial-results')
+    async getInitialResults(@Query('query') query: string, @Cookies('contentFilter') contentFilter: ContentFilter) {
+        return await this.searchService.fetchInitialResults(query, contentFilter);
     }
 
-    @Get('find-user-results')
-    async findUserRequests(@Query('query') query: string,
-        @Query('pageNum') pageNum: number,
-        @Query('pageSize') pageSize: number) {
-        console.log(`Query: ${query}\nPage number: ${pageNum}\nPage size: ${pageSize}`);
-        return await this.searchService.searchUsers(query, pageNum, pageSize);
+    @Get('get-user-results')
+    async getUserRequests(@Query('query') query: string, @Query('pageNum') pageNum: number) {
+        return await this.searchService.searchUsers(query, pageNum);
     }
 
-    @Get('find-work-results')
-    async findWorkResults(@Query('query') query: string, @Query('pageNum') pageNum: number) {
-
+    @Get('get-blog-results')
+    async getBlogResults(@Query('query') query: string, @Query('pageNum') pageNum: number) {
+        return await this.searchService.searchBlogs(query, pageNum);
     }
 
-    @Get('find-blog-results')
-    async findBlogResults(@Query('query') query: string, @Query('pageNum') pageNum: number) {
-
+    @Get('get-work-results')
+    async getWorkResults(@Query('query') query: string, @Query('pageNum') pageNum: number, @Cookies('contentFilter') contentFilter: ContentFilter) {
+        return await this.searchService.searchWorks(query, pageNum, contentFilter);
     }
 }

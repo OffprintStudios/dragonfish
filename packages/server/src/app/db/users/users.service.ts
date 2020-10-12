@@ -1,6 +1,6 @@
 import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 import { hash, argon2id } from 'argon2';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import validator from 'validator';
@@ -16,8 +16,8 @@ import { CollectionsService } from '../collections/collections.service';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel('User') private readonly userModel: Model<documents.UserDocument>,
-        @InjectModel('InviteCodes') private readonly inviteCodesModel: Model<documents.InviteCodesDocument>,
+    constructor(@InjectModel('User') private readonly userModel: PaginateModel<documents.UserDocument>,
+        @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<documents.InviteCodesDocument>,
         private readonly collsService: CollectionsService) { }
 
     /**
@@ -280,36 +280,28 @@ export class UsersService {
     }
 
     /**
+     * Finds the first six matches given the provided search parameters.
+     * For use with the initial page of search results.
+     * 
+     * @param query The relevant search parameters
+     */
+    async findInitialRelatedUsers(query: string): Promise<documents.UserDocument[]>{
+        return await this.userModel.find({$text: {$search: query}})
+            .select('-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted')
+            .limit(6);
+    }
+
+    /**
      * Finds any related users given the provided search parameters.
      * 
-     * @param searchParameters The relevant search parameters
+     * @param query The relevant search parameters
      */
-    async findRelatedUsers(searchParameters: SearchParameters): Promise<SearchResults<documents.SearchUserDocument> | null> {
-        const p = searchParameters.pagination;
-        const filter: FilterQuery<models.User> = {
-            $text: { $search: searchParameters.text }
-        };
-
-        const results = await this.userModel.find(filter)
-            .select({searchScore: {$meta: 'textScore'}})
-            .sort({ score: { $meta: 'textScore' } })
-            .sort({ 'stats.views': -1 })
-            .select('username profile.avatar stats.works stats.blogs stats.watchers stats.watching')
-            .skip((p.page - 1) * p.pageSize)
-            .limit(p.pageSize);
-
-        if (results.length === 0 && p.page !== 1) {
-            return null;
-        } else {
-            const totalPages = Math.ceil(
-                await this.userModel.count(filter) / p.pageSize // God, we should probably cache this stuff.
-            );
-            return {
-                matches: results,
-                totalPages: totalPages,
-                pagination: searchParameters.pagination
-            };
-        }
+    async findRelatedUsers(query: string, pageNum: number): Promise<PaginateResult<documents.UserDocument>> {
+        return await this.userModel.paginate({$text: {$search: "\"" + query + "\""}}, {
+            select: '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted',
+            page: pageNum,
+            limit: 15
+        });
     }
 
     /* Invite codes, only used for the Origins Arc */
