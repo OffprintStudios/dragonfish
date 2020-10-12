@@ -42,10 +42,14 @@ div.section-container {
         }
     }
     div.authors-note {
+        @media (max-width: 1150px) {
+            max-width: 95%;
+        }
+
         max-width: 70%;
         margin: 3rem auto 0 auto;
         border-top: 2px solid var(--site-accent);
-        h3 {
+        h2.authors-note-header {
             margin-top: 1rem;
             font-weight: 400;
         }

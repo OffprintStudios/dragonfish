@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="authors-note" *ngIf="sectionData.authorsNote">
-                <h3>A word from the author...</h3>
+                <h2 class="authors-note-header">A word from the author...</h2>
                 <ng-container *ngIf="!sectionData.usesNewEditor">
                     <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
                 </ng-container>    
@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="authors-note" *ngIf="sectionData.authorsNote">
-                    <h3>A word from the author...</h3>
+                    <h2 class="authors-note-header">A word from the author...</h2>
                     <ng-container *ngIf="!sectionData.usesNewEditor">
                         <quill-view [content]="sectionData.authorsNote" sanitize="true" format="json"></quill-view>
                     </ng-container>    
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <div class="authors-note">
-                        <h3>A word from the author...</h3>
+                        <h2 authors-note-header="authors-note-header">A word from the author...</h2>
                         <div class="warning-message" *ngIf="fields.authorsNote.invalid && (fields.authorsNote.dirty || fields.authorsNote.touched)">Author's Notes must be greater than 3 characters.</div>
                         <ng-container *ngIf="!sectionData.usesNewEditor">                        
                         <quill-editor [styles]="{height: '300px'}" minLength="3" formControlName="authorsNote" (onEditorChanged)="triggerChangeDetection()" (onEditorCreated)="onEditorCreated($event)" [formats]="editorFormats">

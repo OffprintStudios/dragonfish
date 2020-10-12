@@ -164,6 +164,24 @@ blockquote {
     padding-left: 10px;
 }
 
+/* Sections and authors notes. These go in the main stylesheet
+ * because section bodies have no view encapsulation, and can be
+ * (and are) affected by global styles. Therefore, these must also be
+ * global styles.
+ * If we can find a way to have an element with directly-set
+ * innerHtml AND view encapsulation, we can move this back down to the
+ * component level.
+*/
+div.section-body, div.authors-note {    
+    h1 { font-size: 3em; } 
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.5em; }
+    h4 { font-size: 1.25em; }
+    h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
+    h6 { font-size: 1em; text-transform: uppercase; }
+    img { max-width: 100% }
+}
+
 /* Buttons and Inputs */
 a.button, button,
 input[type=text], input[type=password], 
