@@ -39,6 +39,7 @@ export class SearchComponent implements OnInit {
     this.router.navigate([], {relativeTo: this.route, queryParams: {query: query}, queryParamsHandling: 'merge'});
     this.searchService.getInitialResults(query).subscribe(results => {
       this.initialResults = results;
+      console.log(this.initialResults);
     });
   }
 

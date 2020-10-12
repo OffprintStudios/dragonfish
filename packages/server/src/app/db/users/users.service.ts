@@ -286,8 +286,7 @@ export class UsersService {
      * @param query The relevant search parameters
      */
     async findInitialRelatedUsers(query: string): Promise<documents.UserDocument[]>{
-        return await this.userModel.find({$text: {$search: "\"" + query + "\""}})
-            .where('audit.isDeleted', false)
+        return await this.userModel.find({$text: {$search: query}})
             .select('-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted')
             .limit(6);
     }
@@ -298,7 +297,7 @@ export class UsersService {
      * @param query The relevant search parameters
      */
     async findRelatedUsers(query: string, pageNum: number): Promise<PaginateResult<documents.UserDocument>> {
-        return await this.userModel.paginate({$text: {$search: "\"" + query + "\""}, 'audit.isDeleted': false}, {
+        return await this.userModel.paginate({$text: {$search: "\"" + query + "\""}}, {
             select: '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted',
             page: pageNum,
             limit: 15

@@ -12,7 +12,7 @@ export class SearchService {
         private readonly usersService: UsersService) { }
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter) {
-        const parsedQuery = "\"" + await sanitizeHtml(query) + "\"";
+        const parsedQuery = `"${await sanitizeHtml(query)}"`;
 
         const initialUsers = await this.usersService.findInitialRelatedUsers(parsedQuery);
         const initialBlogs = await this.blogsService.findInitialRelatedBlogs(parsedQuery);
@@ -22,17 +22,17 @@ export class SearchService {
     }
     
     async searchUsers(query: string, pageNum: number) {
-        const parsedQuery = "\"" + await sanitizeHtml(query) + "\"";
+        const parsedQuery = `"${await sanitizeHtml(query)}"`;
         return await this.usersService.findRelatedUsers(parsedQuery, pageNum);
     }
 
     async searchBlogs(query: string, pageNum: number) {
-        const parsedQuery = "\"" + await sanitizeHtml(query) + "\""
+        const parsedQuery = `"${await sanitizeHtml(query)}"`;
         return await this.blogsService.findRelatedBlogs(parsedQuery, pageNum);
     }
 
     async searchWorks(query: string, pageNum: number, contentFilter: ContentFilter) {
-        const parsedQuery = "\"" + await sanitizeHtml(query) + "\""
+        const parsedQuery = `"${await sanitizeHtml(query)}"`;
         return await this.worksService.findRelatedWorks(parsedQuery, pageNum, contentFilter);
     }
 }
