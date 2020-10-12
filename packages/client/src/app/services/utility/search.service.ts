@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
@@ -15,6 +15,10 @@ import { User } from '@pulp-fiction/models/users';
 })
 export class SearchService {
   private url: string = `/api/search`
+
+  workResults: Observable<PaginateResult<Work>>;
+  blogResults: Observable<PaginateResult<Blog>>;
+  userResults: Observable<PaginateResult<User>>;
 
   constructor(private http: HttpClient, private alertsService: AlertsService) { }
   
