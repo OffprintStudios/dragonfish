@@ -48,7 +48,7 @@ const routes: Routes = [
       {path: 'collection/:collId', component: PortCollectionPageComponent},
       {path: '', component: PortHomeComponent},
     ]},
-    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {work: WorkPageResolver}, children: [    
+    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
       {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
     ]},

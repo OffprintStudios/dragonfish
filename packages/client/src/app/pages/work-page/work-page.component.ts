@@ -11,9 +11,10 @@ import { AddToCollectionComponent } from '../../components/modals/collections';
 import { SectionInfoViewModel } from './viewmodels/section-info.viewmodel';
 import { calculateApprovalRating } from '../../util/functions';
 import { History, RatingOption } from '@pulp-fiction/models/history';
-import { Work, PublishSection, SectionInfo, SetApprovalRating } from '@pulp-fiction/models/works';
+import { Work, PublishSection, SetApprovalRating } from '@pulp-fiction/models/works';
 import { ItemKind } from '@pulp-fiction/models/comments';
 import { AlertsService } from '../../modules/alerts';
+import { WorkPageData } from '../../models/site';
 
 @Component({
   selector: 'app-work-page',
@@ -49,7 +50,11 @@ export class WorkPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.workData = this.route.snapshot.data.work as Work;
+    const data = this.route.snapshot.data.workData as WorkPageData;
+    this.workData = data.work;
+    if (data.history !== null) {
+      this.userHist = data.history;
+    }
   }
 
   /**
@@ -64,14 +69,11 @@ export class WorkPageComponent implements OnInit {
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
-        this.histService.addOrUpdateHistory(this.workData._id).subscribe(hist => {
-          this.userHist = hist;
-          this.loading = false;
-        });
+        this.loading = false;
       });
     } else {
       this.loading = false;
-    }   
+    }
   }
 
   /**
