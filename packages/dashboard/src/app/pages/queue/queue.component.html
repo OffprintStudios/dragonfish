@@ -40,8 +40,8 @@
                                     <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
                                     <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>
-                                <h3><a>{{ entry.workToApprove.title }}</a></h3>                                
-                                <h4 class="author-byline">by <a>
+                                <h3><a [href]="getOffprintWorkLink(entry.workToApprove._id, entry.workToApprove.title | slugify)">{{ entry.workToApprove.title }}</a></h3>                                
+                                <h4 class="author-byline">by <a [href]="getOffprintUserLink(entry.workToApprove.author._id, entry.workToApprove.author.username | slugify)">
                                     {{ entry.workToApprove.author.username }}
                                 </a></h4>
                             </div>

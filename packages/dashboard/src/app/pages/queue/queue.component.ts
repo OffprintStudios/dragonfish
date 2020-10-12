@@ -52,6 +52,14 @@ export class QueueComponent implements OnInit {
     });
   }
 
+  getOffprintWorkLink(workId: string, workNameSlug: string) {
+    return `https://offprint.net/work/${workId}/${workNameSlug}`;
+  }
+
+  getOffprintUserLink(userId: string, usernameSlug: string) {
+    return `https://offprint.net/portfolio/${userId}/${usernameSlug}`;
+  }
+
   /**
    * Forces a refresh of the queue.
    */
