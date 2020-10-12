@@ -9,7 +9,7 @@ import { EditNewsPostResolver } from './resolvers';
 import { AuditComponent } from './pages/audit';
 import { CreateDocComponent, DocsComponent, EditDocComponent } from './pages/docs';
 import { HomeComponent } from './pages/home';
-import { NewsComponent, PostFormComponent } from './pages/news';
+import { NewsComponent, PostFormComponent, PreviewPostComponent } from './pages/news';
 import { QueueComponent } from './pages/queue';
 import { ReportsComponent } from './pages/reports';
 import { UsersComponent } from './pages/users';
@@ -20,7 +20,8 @@ const routes: Routes = [
   {path: 'queue', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover]}, component: QueueComponent},
   {path: 'news', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, component: NewsComponent, children: [
     {path: 'create-post', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, component: PostFormComponent},
-    {path: 'edit-post/:postId', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, resolve: {post: EditNewsPostResolver}, component: PostFormComponent}
+    {path: 'edit-post/:postId', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, resolve: {post: EditNewsPostResolver}, component: PostFormComponent},
+    {path: 'preview-post/:postId', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, resolve: {post: EditNewsPostResolver}, component: PreviewPostComponent}
   ]},
   {path: 'docs', canActivate: [AuthGuard], data: {roles: [Roles.Admin, Roles.Moderator, Roles.Contributor]}, component: DocsComponent, children: [
     {path: 'create-doc', canActivate: [AuthGuard], component: CreateDocComponent, data: {roles: [Roles.Admin]}},
