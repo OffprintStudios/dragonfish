@@ -1,0 +1,1 @@
+export { WorkPageResolver } from './work-page.resolver';

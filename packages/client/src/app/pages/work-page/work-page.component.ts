@@ -24,7 +24,6 @@ export class WorkPageComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged in user
   loading = false; // Loading check for fetching data
 
-  workId: string; // This work's ID
   workData: Work; // This work's data.  
   userHist: History; // The current user's reading history
 
@@ -50,27 +49,13 @@ export class WorkPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    this.workData = this.route.snapshot.data.work as Work;
   }
 
   /**
    * Fetches the requisite work from the database.
    */
   private fetchData() {
-    this.loading = true;
-    this.workId = this.route.snapshot.paramMap.get('workId');        
-    this.worksService.fetchWork(this.workId).subscribe(work => {
-      this.workData = work;
-      this.worksService.thisWorkId = this.workId;
-      const pubSections = work.sections.filter(section => { return section.published === true; });      
-      if (this.currentUserIsSame()) {
-        this.sectionsService.setInfo(pubSections, work.author._id, this.workData.sections);
-      }  else {
-        this.sectionsService.setInfo(pubSections, work.author._id);
-      }
-    }, () => {
-      this.loading = false;
-    });
-
     const queryParams = this.route.snapshot.queryParamMap;    
     if (queryParams.get('page') !== null) {
       this.pageNum = +queryParams.get('page');
@@ -79,7 +64,7 @@ export class WorkPageComponent implements OnInit {
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
-        this.histService.addOrUpdateHistory(this.workId).subscribe(hist => {
+        this.histService.addOrUpdateHistory(this.workData._id).subscribe(hist => {
           this.userHist = hist;
           this.loading = false;
         });
@@ -146,7 +131,7 @@ export class WorkPageComponent implements OnInit {
    */
   askDeleteSection(sectionId: string) {
     if (confirm(`Are you sure you want to delete this section? This action is irreversible.`)) {
-      this.worksService.deleteSection(this.workId, sectionId).subscribe(() => {
+      this.worksService.deleteSection(this.workData._id, sectionId).subscribe(() => {
         this.fetchData();
         return;
       }, err => {
@@ -167,7 +152,7 @@ export class WorkPageComponent implements OnInit {
       newPub: !pubStatus
     };
 
-    this.worksService.setPublishStatusSection(this.workId, sectionId, newPubStatus).subscribe(() => {
+    this.worksService.setPublishStatusSection(this.workData._id, sectionId, newPubStatus).subscribe(() => {
       this.allSectionViewModels.find(x => x._id === sectionId).published = !pubStatus;
     });
   }
@@ -210,7 +195,7 @@ export class WorkPageComponent implements OnInit {
       this.alertsService.error("Your work must contain at least one published section before it can be submitted."); 
       return;
     }
-    this.queueService.submitWork(this.workId).subscribe(() => {
+    this.queueService.submitWork(this.workData._id).subscribe(() => {
       this.fetchData();
     });
   }

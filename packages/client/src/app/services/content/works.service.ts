@@ -141,7 +141,7 @@ export class WorksService {
    * 
    * @param workId The work we're fetching
    */
-  public fetchWork(workId: string) {
+  public fetchWork(workId: string): Observable<Work> {
     return this.http.get<Work>(`${this.url}/get-work/${workId}`, {observe: 'response', withCredentials: true})
       .pipe(map(work => {
         return work.body;
