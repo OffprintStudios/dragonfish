@@ -34,7 +34,7 @@
     <nav>
       <div class="nav-items">
         <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
-          <a matRipple [routerLink]="['/dashboard']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dashboard</span></a>
+          <a matRipple href="https://dashboard.offprint.net/"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dashboard</span></a>
         </ng-container>
         <a matRipple [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
         <a matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active" class="inner-left"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 

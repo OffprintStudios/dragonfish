@@ -45,11 +45,6 @@ import { CreateCollectionComponent, AddToCollectionComponent } from './component
 import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
 
-import { DashboardComponent, ApprovalQueueComponent, NewsManagementComponent, ReportsComponent,
-  UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
-
-import { DocsComponent, CreateDocComponent, EditDocComponent} from './pages/dashboard/docs';
-
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
@@ -96,11 +91,10 @@ const toolbarOptions = [
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, ApprovalQueueComponent, 
-    DashboardComponent, BeatrizHeroComponent, ReportsComponent, UsersComponent, AuditComponent,
-    NewsManagementComponent, DocsComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
+    SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, BeatrizHeroComponent,
+    UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
-    OverviewComponent, DocsPageComponent, SiteStaffComponent, CreateDocComponent, EditDocComponent, CreateCollectionComponent,
+    DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,

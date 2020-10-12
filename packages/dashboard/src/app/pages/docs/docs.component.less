@@ -1,0 +1,61 @@
+div.docs-container {
+    width: 90%;
+    margin: 2rem auto 0 auto;
+
+    div.docs-grid {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-gap: 1.5rem;
+
+        div.doc-box {
+            border: 1px solid var(--site-borders);
+            border-radius: 4px;
+            box-shadow: var(--site-dropshadow);
+            //padding: 3rem;
+            min-height: 10rem;
+            display: flex;
+            flex-direction: column;
+
+            div.doc-header {
+                padding: 2rem 2rem 0 2rem;
+                h2 {
+                    font-size: 36px;
+                    margin-bottom: 0;
+                }
+
+                hr {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+            }
+
+            div.doc-body {
+                flex: 1;
+                padding: 0 2rem 0 2rem;
+            }
+
+            div.doc-footer {
+                text-align: center;
+                padding: 0 2rem 1rem 2rem;
+                hr {
+                    margin-top: 0;
+                    margin-bottom: 1rem;
+                }
+
+                button {
+                    margin-bottom: 0;
+                    padding: 5px 10px 5px 10px;
+                    box-shadow: none;
+
+                    i-feather {
+                        width: 20px;
+                        height: 20px;
+                        position: relative;
+                        top: -0.1rem;
+                    }
+                }
+            }
+        }
+    }
+}
