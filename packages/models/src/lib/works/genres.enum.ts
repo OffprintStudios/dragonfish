@@ -12,6 +12,7 @@ export enum GenresFiction {
     Horror = 'Horror',
     Thriller = 'Thriller',
     Mystery = 'Mystery',
+    Erotica = 'Erotica',
     // Essay = 'Essay',
     // Journalism = 'Journalism',
     // Biography = 'Biography', 
@@ -27,6 +28,5 @@ export enum GenresPoetry {
     FixedVerse = 'Fixed Verse'
 }
 
-export const MAX_GENRES_PER_FANFIC: number = 2;
+export const MAX_GENRES_PER_FICTION: number = 3;
 export const MAX_GENRES_PER_POEM: number = 1;
-export const MAX_GENRES_PER_ORIGINAL: number = 2;

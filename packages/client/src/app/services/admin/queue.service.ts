@@ -12,7 +12,7 @@ import { PaginateResult } from '@pulp-fiction/models/util';
   providedIn: 'root'
 })
 export class QueueService {
-  private url: string = `/api/contrib`;
+  private url: string = `/api/dashboard/queue`;
 
   constructor(private http: HttpClient, private alertsService: AlertsService) { }
 
@@ -27,81 +27,12 @@ export class QueueService {
         this.alertsService.success(`Work successfully submitted!`);
         return;
       }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+        if (err.error.message) {
+          this.alertsService.error(`HTTP ${err.status}: ${err.error.message}`);
+        } else {
+          this.alertsService.error(`Something went wrong! Try again in a little bit.\nDetails: HTTP ${err.status}`);
+        }
         return throwError(err);
       }))
-  }
-
-  /**
-   * Gets the entire queue.
-   */
-  public getQueue(pageNum: number) {
-    return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/queue/${pageNum}`, {observe: 'response', withCredentials: true})
-      .pipe(map(entries => {
-        return entries.body;
-      }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-        return throwError(err);
-      }));
-  }
-
-  /**
-   * Gets the claimed works from one moderator.
-   */
-  public getQueueForMod(pageNum: number) {
-    return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/queue-for-mod/${pageNum}`, {observe: 'response', withCredentials: true})
-      .pipe(map(entries => {
-        return entries.body;
-      }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-        return throwError(err);
-      }));
-  }
-
-  /**
-   * Claims a work.
-   * 
-   * @param docId The document to claim
-   */
-  public claimWork(docId: string) {
-    return this.http.patch(`${this.url}/claim-work/${docId}`, {}, {observe: 'response', withCredentials: true})
-      .pipe(map(() => {
-        return;
-      }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-        return throwError(err);
-      }))
-  }
-
-  /**
-   * Approves a work.
-   * 
-   * @param decision Info about the decision.
-   */
-  public approveWork(decision: Decision) {
-    return this.http.patch(`${this.url}/approve-work`, decision, {observe: 'response', withCredentials: true})
-      .pipe(map(() => {
-        this.alertsService.success(`Decision successfully submitted!`);
-        return;
-      }), catchError(err => {
-        this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-        return throwError(err);
-      }));
-  }
-
-  /**
-   * Rejects a work.
-   * 
-   * @param decision Info about the decision.
-   */
-  public rejectWork(decision: Decision) {
-    return this.http.patch(`${this.url}/reject-work`, decision, {observe: 'response', withCredentials: true})
-    .pipe(map(() => {
-      this.alertsService.success(`Decision successfully submitted!`);
-      return;
-    }), catchError(err => {
-      this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-      return throwError(err);
-    }));
   }
 }

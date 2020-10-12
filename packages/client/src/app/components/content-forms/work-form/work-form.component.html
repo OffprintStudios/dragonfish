@@ -13,7 +13,7 @@
                     <div>
                         <!--Content Rating-->
                         <mat-form-field class="work-form">
-                            <mat-label>Select a rating</mat-label>
+                            <mat-label>Content Rating</mat-label>
                             <mat-select formControlName="rating">
                                 <mat-option *ngFor="let rate of rating | keyvalue" [value]="rate.key">
                                     {{ rate.value }}
@@ -24,7 +24,7 @@
                     <span>//</span>
                     <div>
                         <mat-form-field class="work-form">
-                            <mat-label>Select a category</mat-label>
+                            <mat-label>Category</mat-label>
                             <mat-select formControlName="thisCategory">
                                 <mat-option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
                                     {{ cat.value }}
@@ -37,7 +37,7 @@
                         <!--Genres for Fiction-->
                         <div *ngIf="isFiction()">
                             <mat-form-field class="work-form">
-                                <mat-label>Choose Genres (max 2)</mat-label>
+                                <mat-label>Genres (Up to {{ maxGenresPerFiction }})</mat-label>
                                 <mat-select formControlName="theseGenres" multiple>
                                     <mat-option *ngFor="let genre of genresFiction | keyvalue" [value]="genre.key">
                                         {{ genre.value }}
@@ -49,7 +49,7 @@
                         <!--Genres for Poetry-->
                         <div *ngIf="isPoetry()">
                             <mat-form-field class="work-form">
-                                <mat-label>Choose Genre</mat-label>
+                                <mat-label>Genre</mat-label>
                                 <mat-select formControlName="theseGenres" multiple>
                                     <mat-option *ngFor="let genre of genresPoetry | keyvalue" [value]="genre.key">
                                         {{ genre.value }}
@@ -62,7 +62,7 @@
                     <div *ngIf="isFanfiction()" [ngStyle]="isFanfiction() ? {'flex': '0.5', 'overflow': 'auto'} : {'flex': 'none'}">
                         <!--Fandoms-->
                         <mat-form-field class="work-form">
-                            <mat-label>Choose Fandoms (max 5)</mat-label>
+                            <mat-label>Fandoms (Up to {{ maxFandomsPerStory }})</mat-label>
                             <mat-select formControlName="theseFandoms" multiple>
                                 <mat-option *ngFor="let fandom of fandoms | keyvalue" [value]="fandom.key">
                                     {{ fandom.value }}
@@ -80,7 +80,7 @@
 
                 <div class="work-stats">
                     <mat-form-field class="work-form">
-                        <mat-label>Choose a status</mat-label>
+                        <mat-label>Status</mat-label>
                         <mat-select formControlName="status">
                             <mat-option *ngFor="let stat of status | keyvalue" [value]="stat.key">
                                 {{ stat.value }}

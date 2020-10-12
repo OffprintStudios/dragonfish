@@ -1,0 +1,28 @@
+<div class="newspost-form">
+    <div class="form-header">
+        <h3>{{ pageTitle }}</h3>
+        <button type="submit" (click)="submitForm()">Save Post</button>
+    </div>
+    <form [formGroup]="postForm" (ngSubmit)="submitForm()">
+        <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="The Latest Scoop" formControlName="title">
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="There's something afoot..." formControlName="desc">
+        </mat-form-field>
+
+        <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+                <mat-option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
+                    {{ cat.value }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <editor [parentForm]="postForm" [controlName]="'body'" [minHeight]="'700px'" [maxHeight]="'1000px'"></editor>
+    </form>
+</div>

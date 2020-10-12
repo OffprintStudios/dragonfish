@@ -6,6 +6,10 @@
 /out-tsc
 target
 
+# Compiled rust module output
+/packages/html_sanitizer/src/lib/*
+/packages/word_counter/src/lib/*
+
 # dependencies
 /node_modules
 

@@ -9,7 +9,7 @@
                 </div>
             </form>
             <button matRipple class="work-filter"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Filter</button>
-            <button matRipple class="add-work" (click)="toggleNewWorkForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Work</button>
+            <button matRipple matTooltip="Add work" matTooltipClass="offprint-tooltip" class="add-work" (click)="toggleNewWorkForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Work</button>
         </div>
     </div>
     <div class="new-work-form">
@@ -45,10 +45,10 @@
                     <div class="work-info">
                         <div class="info">
                             <ng-container [ngSwitch]="work.meta.rating">
-                                <div class="rating everyone small" *ngSwitchDefault>E</div>
-                                <div class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
+                                <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
                             </ng-container>
                             <h3><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h3>
                             <br>
@@ -67,8 +67,8 @@
                         </div>
                     </div>
                     <div class="work-control-buttons">
-                        <button class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
-                        <button class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
+                        <button  matTooltip="Edit" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
+                        <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
                     </div>
                 </div>
             </div>

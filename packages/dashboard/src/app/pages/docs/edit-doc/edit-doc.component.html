@@ -1,0 +1,24 @@
+<div class="loader" *ngIf="loading">
+    <div class="lds-dual-ring"></div>
+</div>
+
+<ng-container *ngIf="!loading">
+    <h3 style="text-align: center;">
+        Edit "{{ docToEdit.docName }}"
+    </h3>
+
+    <form [formGroup]="editDocForm" (ngSubmit)="submitDocEdits()">
+        <mat-form-field style="width: 100%" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="A New Document" formControlName="docName">
+        </mat-form-field>
+    
+        <editor [parentForm]="editDocForm" [controlName]="'docBody'"></editor>
+
+        <hr>
+        <div class="loader" *ngIf="submitting">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <button type="submit" class="button-primary u-full-width" *ngIf="!submitting">Submit Edits</button>
+    </form>
+</ng-container>
