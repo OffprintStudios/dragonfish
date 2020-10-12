@@ -35,9 +35,26 @@ export class NewsComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Fetches data for the current page of results.
+   * 
+   * @param pageNum The current page
+   */
   fetchData(pageNum: number) {
     this.newsService.fetchAll(pageNum).subscribe(data => {
       this.posts = data;
+    });
+  }
+
+  /**
+   * Changes a post's publishing status.
+   * 
+   * @param postId The post ID
+   * @param pubStatus The new pubStatus
+   */
+  setPublishStatus(postId: string, pubStatus: boolean) {
+    this.newsService.setPublishStatus(postId, pubStatus).subscribe(() => {
+      this.fetchData(this.pageNum);
     });
   }
 }

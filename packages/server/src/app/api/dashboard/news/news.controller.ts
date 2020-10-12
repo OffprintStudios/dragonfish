@@ -35,7 +35,7 @@ export class NewsController {
 
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
     @Patch('set-publish-status/:postId')
-    async setPublishStatus(@Request() req: any, @Param('postId') postId: string, @Body() pubStatus: object) {
-        console.log(pubStatus);
+    async setPublishStatus(@Request() req: any, @Param('postId') postId: string, @Body() pubStatus: any) {
+        this.newsService.setPublishStatus(req.user, postId, pubStatus.pubStatus);
     }
 }

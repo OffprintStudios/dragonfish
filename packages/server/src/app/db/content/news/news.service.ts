@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { NewsForm } from '@pulp-fiction/models/content';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles, UserInfo } from '@pulp-fiction/models/users';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { NewsContentDocument } from './news-content.document';
@@ -112,13 +112,12 @@ export class NewsService {
      */
     async setPublishStatus(user: JwtPayload, postId: string, isPublished: boolean): Promise<NewsContentDocument> {
         const postToPublish = await this.newsModel.findById(postId);
-        if (postToPublish._id === user.sub) {
-            postToPublish.audit.published = isPublished;
-            if (isPublished === true) {
-                postToPublish.audit.publishedOn = new Date();
-            }
-    
-            return await postToPublish.save();
+        const authorInfo = postToPublish.author as UserInfo;
+        if (authorInfo._id === user.sub) {
+            return await this.newsModel.findOneAndUpdate({'_id': postId, 'author': user.sub}, {
+                'audit.published': isPublished,
+                'audit.publishedOn': new Date()
+            });
         } else {
             throw new UnauthorizedException(`You don't have permission to publish this.`);
         }
