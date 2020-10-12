@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { NewsContentModel } from '@pulp-fiction/models/content';
@@ -23,16 +24,16 @@ export class NewsComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private newsService: NewsService, private authService: AuthService, public route: ActivatedRoute) {
+  constructor(private newsService: NewsService, private authService: AuthService, public route: ActivatedRoute, private router: Router) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
-
-    this.fetchData(this.pageNum);
+    
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd && event.urlAfterRedirects === '/news'))
+      .subscribe(() => { this.fetchData(this.pageNum) });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   fetchData(pageNum: number) {
     this.newsService.fetchAll(pageNum).subscribe(data => {

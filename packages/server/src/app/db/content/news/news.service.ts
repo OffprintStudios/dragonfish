@@ -44,27 +44,25 @@ export class NewsService {
      * @param postInfo The new info to add
      */
     async editPost(user: JwtPayload, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
-        console.log(`Edit Post function: ${postId}`);
         const postToEdit = await this.newsModel.findById(postId);
-        console.log(postToEdit);
         if (this.checkRoles(user)) {
             if (this.checkRoles(user, [Roles.Admin, Roles.Moderator])) {
-                postToEdit.title = await sanitizeHtml(postInfo.title);
-                postToEdit.desc = await sanitizeHtml(postInfo.desc);
-                postToEdit.body = await sanitizeHtml(postInfo.body);
-                postToEdit.meta.category = postInfo.category;
-                postToEdit.stats.words = await countPlaintextWords(await stripAllHtml(postInfo.body));
-
-                return await postToEdit.save();
+                return await this.newsModel.findByIdAndUpdate(postId, {
+                    'title': await sanitizeHtml(postInfo.title),
+                    'desc': await sanitizeHtml(postInfo.desc),
+                    'body': await sanitizeHtml(postInfo.body),
+                    'meta.category': postInfo.category,
+                    'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
+                }, {new: true});
             } else {
                 if (postToEdit._id === user.sub) {
-                    postToEdit.title = await sanitizeHtml(postInfo.title);
-                    postToEdit.desc = await sanitizeHtml(postInfo.desc);
-                    postToEdit.body = await sanitizeHtml(postInfo.body);
-                    postToEdit.meta.category = postInfo.category;
-                    postToEdit.stats.words = await countPlaintextWords(await stripAllHtml(postInfo.body));
-    
-                    return await postToEdit.save();
+                    return await this.newsModel.findByIdAndUpdate(postId, {
+                        'title': await sanitizeHtml(postInfo.title),
+                        'desc': await sanitizeHtml(postInfo.desc),
+                        'body': await sanitizeHtml(postInfo.body),
+                        'meta.category': postInfo.category,
+                        'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
+                    }, {new: true});
                 } else {
                     throw new UnauthorizedException(`You don't own this post.`);
                 }

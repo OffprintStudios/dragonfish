@@ -18,7 +18,6 @@ export class NewsController {
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
     @Patch('edit-post/:postId')
     async editPost(@Request() req: any, @Param('postId') postId: string, @Body() postInfo: PostForm) {
-        console.log(`Controller: ${postId}\n`);
         return await this.newsService.editPost(req.user, postId, postInfo);
     }
 
