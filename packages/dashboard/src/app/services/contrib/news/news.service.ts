@@ -36,8 +36,8 @@ export class NewsService {
    * 
    * @param form A newspost's info
    */
-  public editNewspost(form: NewsForm) {
-    return this.http.patch<NewsContentModel>(`${this.url}/edit-post`, form, {observe: 'response', withCredentials: true})
+  public editNewspost(postId: string, form: NewsForm) {
+    return this.http.patch<NewsContentModel>(`${this.url}/edit-post/${postId}`, form, {observe: 'response', withCredentials: true})
       .pipe(map(_res => {
         this.snackBar.open(`Changed saved!`);
         return;

@@ -16,6 +16,7 @@ export class PostFormComponent implements OnInit {
 
   currPost: NewsContentModel;
   pageTitle: string = `Create a Newspost`;
+  isEditing: boolean = false;
 
   postForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
@@ -30,6 +31,8 @@ export class PostFormComponent implements OnInit {
     this.currPost = this.route.snapshot.data.post as NewsContentModel;
     if (this.currPost) {
       this.pageTitle = `Editing Newspost`;
+      this.isEditing = true;
+      console.log(this.currPost._id);
       this.postForm.setValue({
         title: this.currPost.title,
         desc: this.currPost.desc,
@@ -69,9 +72,21 @@ export class PostFormComponent implements OnInit {
       category: this.formFields.category.value
     };
 
-    this.newsService.createNewspost(formData).subscribe(() => {
-      this.snackBar.open(`Post saved successfully!`);
-      this.router.navigate(['/news']);
-    });
+    if (this.isEditing) {
+      if (this.currPost) {
+        this.newsService.editNewspost(this.currPost._id, formData).subscribe(() => {
+          this.snackBar.open(`Changes saved!`);
+          this.router.navigate(['/news']);
+        });
+      } else {
+        this.snackBar.open(`Something went wrong!`);
+        return;
+      }
+    } else {
+      this.newsService.createNewspost(formData).subscribe(() => {
+        this.snackBar.open(`Post saved successfully!`);
+        this.router.navigate(['/news']);
+      });
+    }
   }
 }

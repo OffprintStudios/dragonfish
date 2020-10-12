@@ -44,7 +44,9 @@ export class NewsService {
      * @param postInfo The new info to add
      */
     async editPost(user: JwtPayload, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
+        console.log(`Edit Post function: ${postId}`);
         const postToEdit = await this.newsModel.findById(postId);
+        console.log(postToEdit);
         if (this.checkRoles(user)) {
             if (this.checkRoles(user, [Roles.Admin, Roles.Moderator])) {
                 postToEdit.title = await sanitizeHtml(postInfo.title);
