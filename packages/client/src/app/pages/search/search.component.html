@@ -1,4 +1,4 @@
-<div class="search-nav" [ngStyle]="{'display': route.children.length === 0 ? 'block' : 'none'}">
+<div class="search-nav">
     <div class="search-bar">
         <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
             <input formControlName="query" type="text" class="u-full-width" placeholder="Search ...">
@@ -86,7 +86,7 @@
                     <i-feather name="coffee"></i-feather>
                     <h3>Top Blogs</h3>
                     <span class="see-more" *ngIf="initialResults.blogs.length !== 0">
-                        <a [routerLink]="['/search/blogs']" [queryParams]="{ query: searchField.query.value }">See {{ initialResults.blogs.length - 6 }} more</a>
+                        <a [routerLink]="['/search/blogs']" [queryParams]="{ query: searchField.query.value }" *ngIf="initialResults.blogs.length > 5">See {{ initialResults.blogs.length - 6 }} more</a>
                     </span>
                 </div>
                 <div class="results-body">

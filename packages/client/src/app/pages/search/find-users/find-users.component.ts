@@ -18,15 +18,16 @@ export class FindUsersComponent implements OnInit {
   constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    const queryParams = this.route.snapshot.queryParamMap;    
-    if (queryParams.get('query') !== null && queryParams.get('page') === null) {
-      this.query = queryParams.get('query');
-      this.fetchData(this.query, this.pageNum);
-    } else if (queryParams.get('query') !== null && queryParams.get('page') !== null) {
-      this.query = queryParams.get('query');
-      this.pageNum = +queryParams.get('page');
-      this.fetchData(this.query, this.pageNum);
-    }
+    this.route.queryParamMap.subscribe(params => {
+      if (params.get('query') !== null && params.get('page') === null) {
+        this.query = params.get('query');
+        this.fetchData(this.query, this.pageNum);
+      } else if (params.get('query') !== null && params.get('page') !== null) {
+        this.query = params.get('query');
+        this.pageNum = +params.get('page');
+        this.fetchData(this.query, this.pageNum);
+      }
+    });
   }
 
   fetchData(query: string, pageNum: number) {
