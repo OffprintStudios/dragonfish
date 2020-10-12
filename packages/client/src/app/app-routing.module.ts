@@ -8,9 +8,6 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
     PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
   
   import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
-    
-  import { ApprovalQueueComponent, DashboardComponent, NewsManagementComponent, DocsComponent,
-    ReportsComponent, UsersComponent, AuditComponent, OverviewComponent } from './pages/dashboard';
   
   import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
   
@@ -19,9 +16,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
   import { RegisterComponent } from './pages/account';
   
   import { AuthGuard } from './services/auth';
-  import { Roles } from '@pulp-fiction/models/users';
   import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-  import { CreateDocComponent, EditDocComponent } from './pages/dashboard/docs';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
