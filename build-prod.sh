@@ -9,7 +9,7 @@ printf "Done!\n"
 # Building everything
 printf "Building the server and client...\n"
 nx build server
-nx build dashboard --prod
+nx build client --prod
 printf "Done!\n"
 
 # Copying .env file to server
@@ -20,7 +20,7 @@ printf "Done!\n"
 # Copying client to server and moving into it
 printf "Copying client files to server folder for static file serving...\n"
 mkdir -p ./dist/packages/server/static
-cp -r ./dist/packages/dashboard/* ./dist/packages/server/static/
+cp -r ./dist/packages/client/* ./dist/packages/server/static/
 printf "Done!\n\n"
 
 # Exit message
