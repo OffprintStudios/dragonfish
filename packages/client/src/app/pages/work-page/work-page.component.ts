@@ -50,11 +50,12 @@ export class WorkPageComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    const data = this.route.snapshot.data.workData as WorkPageData;
-    this.workData = data.work;
-    if (data.history !== null) {
-      this.userHist = data.history;
-    }
+    this.route.data.subscribe(data => {
+      this.workData = data.workData.work;
+      if (data.workData.history !== null) {
+        this.userHist = data.workData.history;
+      }
+    });
   }
 
   /**
