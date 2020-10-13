@@ -24,24 +24,10 @@ export class PortfolioComponent implements OnInit {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
-    this.fetchData();
   }
 
   ngOnInit(): void {
-  }
-
-  /**
-   * Fetches the data for this portfolio
-   */
-  private fetchData() {
-    this.loading = true;
-    this.route.paramMap.subscribe(params => {
-      this.portUserId = params.get('id');
-      this.portService.getUserInfo(this.portUserId).subscribe(x => {
-        this.portUser = x;
-        this.loading = false;
-      });
-    });
+    this.portUser = this.route.snapshot.data.portData as FrontendUser;
   }
 
   /**

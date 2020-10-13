@@ -18,6 +18,8 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
   import { AuthGuard } from './services/auth';
   import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
+  import { BlogPageResolver, PortfolioResolver, WorkPageResolver } from './resolvers';
+
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, children: [
@@ -38,15 +40,15 @@ const routes: Routes = [
     {path: 'groups', component: GroupsComponent},
     {path: 'news', component: NewsComponent},
     {path: 'register', component: RegisterComponent},
-    {path: 'portfolio/:id/:username', component: PortfolioComponent, children: [
+    {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blog', component: PortBlogComponent},
-      {path: 'blog/:blogId', component: PortBlogPageComponent},
+      {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: PortWorksComponent },
       {path: 'collections', component: PortCollectionsComponent},
       {path: 'collection/:collId', component: PortCollectionPageComponent},
       {path: '', component: PortHomeComponent},
     ]},
-    {path: 'work/:workId/:title', component: WorkPageComponent, children: [    
+    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
       {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
     ]},
@@ -60,7 +62,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled'})],
+    imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
     exports: [RouterModule]
 })
 export class AppRoutingModule {}
