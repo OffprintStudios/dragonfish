@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
 
 @Component({
   selector: 'app-alerts',
@@ -10,6 +12,7 @@ export class AlertsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    GlobalMethods.setTwoPartTitle(GlobalConstants.ALERTS);
   }
 
 }

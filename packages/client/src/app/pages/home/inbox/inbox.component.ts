@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { MessageThread } from '@pulp-fiction/models/messages';
@@ -22,7 +24,9 @@ export class InboxComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    GlobalMethods.setTwoPartTitle(GlobalConstants.INBOX);
+  }
 
   private fetchData(pageNum: number) {
     this.messageService.fetchUserThreads(pageNum).subscribe(threads => {
