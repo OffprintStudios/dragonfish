@@ -16,9 +16,7 @@ import { ItemKind } from '@pulp-fiction/models/comments';
 })
 export class PortBlogPageComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged-in user
-  portUserId: string; // The user ID for this portfolio
   portUserName: string; // The username for this portfolio
-  blogId: string; // The ID of this blog
   blogData: Blog; // The blog we're displaying
   loading = false; // Loading check for fetching data
   pageNum = 1; // Comments page
@@ -30,23 +28,16 @@ export class PortBlogPageComponent implements OnInit {
     this.fetchData();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const params = this.route.parent.snapshot.paramMap;
+    this.portUserName = params.get('username');
+    this.blogData = this.route.snapshot.data.blogData as Blog;
+  }
 
   /**
    * Fetches the blog from the backend.
    */
   private fetchData() {
-    this.loading = true;
-    const parentParams = this.route.parent.snapshot.paramMap;    
-    this.portUserId = parentParams.get('id');
-    this.portUserName = parentParams.get('username');
-    const params = this.route.snapshot.paramMap;
-    this.blogId = params.get('blogId');
-    this.portService.getBlog(this.blogId).subscribe(blog => {
-      this.blogData = blog;
-      this.loading = false;
-    });
-
     const queryParams = this.route.snapshot.queryParamMap;    
     if (queryParams.get('page') !== null) {
       this.pageNum = +queryParams.get('page');
@@ -90,7 +81,7 @@ export class PortBlogPageComponent implements OnInit {
   askDelete() {
     if (confirm('Are you sure you want to delete this blog?\nThis action is irreversible.')) {
       this.blogsService.deleteBlog(this.blogData._id).subscribe(() => {
-        this.router.navigate([`/portfolio/${this.portUserId}/${this.portUserName}/blog`]);
+        this.router.navigate([`/portfolio/${this.blogData.author._id}/${this.portUserName}/blog`]);
       });
     } else {
       console.log('Action cancelled.');
