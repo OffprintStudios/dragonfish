@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { History } from '@pulp-fiction/models/history';
@@ -28,7 +30,9 @@ export class HistoryComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    GlobalMethods.setTwoPartTitle(GlobalConstants.HISTORY);
+  }
 
   /**
    * Fetches the history list.
