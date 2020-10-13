@@ -18,7 +18,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
   import { AuthGuard } from './services/auth';
   import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-  import { BlogPageResolver, WorkPageResolver } from './resolvers';
+  import { BlogPageResolver, PortfolioResolver, WorkPageResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -40,7 +40,7 @@ const routes: Routes = [
     {path: 'groups', component: GroupsComponent},
     {path: 'news', component: NewsComponent},
     {path: 'register', component: RegisterComponent},
-    {path: 'portfolio/:id/:username', component: PortfolioComponent, children: [
+    {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blog', component: PortBlogComponent},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: PortWorksComponent },
