@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
 
 @Component({
   selector: 'app-latest',
@@ -13,6 +14,7 @@ export class LatestComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    GlobalMethods.setDefaultTitle();
   }
 
 }
