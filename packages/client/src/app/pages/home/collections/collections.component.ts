@@ -8,6 +8,9 @@ import { AuthService } from '../../../services/auth';
 import { CollectionsService } from '../../../services/content';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
+import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
+
 @Component({
   selector: 'app-collections',
   templateUrl: './collections.component.html',
@@ -27,7 +30,9 @@ export class CollectionsComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    GlobalMethods.setTwoPartTitle(GlobalConstants.COLLECTIONS);
+  }
 
   /**
    * Fetches a user's collections

@@ -7,6 +7,9 @@ import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
 import { PortfolioService, CollectionsService } from '../../../services/content';
 
+import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
+
 @Component({
   selector: 'app-port-collections',
   templateUrl: './port-collections.component.html',
@@ -29,6 +32,7 @@ export class PortCollectionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    GlobalMethods.setThreePartTitle(this.portUserName, GlobalConstants.COLLECTIONS);
   }
 
   /**

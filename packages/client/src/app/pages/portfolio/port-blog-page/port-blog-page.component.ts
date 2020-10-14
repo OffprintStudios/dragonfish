@@ -9,6 +9,8 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ItemKind } from '@pulp-fiction/models/comments';
 
+import { GlobalMethods } from '../../../shared/global-methods';
+
 @Component({
   selector: 'app-port-blog-page',
   templateUrl: './port-blog-page.component.html',
@@ -32,6 +34,7 @@ export class PortBlogPageComponent implements OnInit {
     const params = this.route.parent.snapshot.paramMap;
     this.portUserName = params.get('username');
     this.blogData = this.route.snapshot.data.blogData as Blog;
+    GlobalMethods.setTwoPartTitle(this.blogData.title);
   }
 
   /**
