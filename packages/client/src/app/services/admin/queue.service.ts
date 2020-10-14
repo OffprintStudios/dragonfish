@@ -4,9 +4,6 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AlertsService } from '../../modules/alerts';
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { Decision } from '@pulp-fiction/models/contrib';
-import { PaginateResult } from '@pulp-fiction/models/util';
 
 @Injectable({
   providedIn: 'root'
