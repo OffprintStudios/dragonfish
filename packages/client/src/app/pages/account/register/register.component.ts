@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { GlobalConstants } from '../../../shared';
+import { GlobalMethods } from '../../../shared/global-methods';
 import { AuthService } from '../../../services/auth';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../../modules/alerts';
@@ -33,7 +34,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this comment is here to stop linter errors
+    GlobalMethods.setTwoPartTitle(GlobalConstants.REGISTER);
   }
 
   get registerFields() { return this.registerForm.controls; }

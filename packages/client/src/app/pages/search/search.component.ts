@@ -6,6 +6,9 @@ import { SearchService } from '../../services/utility';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InitialResults } from '../../services/utility/models';
 
+import { GlobalConstants } from '../../shared';
+import { GlobalMethods } from '../../shared/global-methods';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -31,6 +34,8 @@ export class SearchComponent implements OnInit {
       });
       this.fetchData(this.initialQuery);
     }
+    
+    GlobalMethods.setTwoPartTitle(GlobalConstants.SEARCH);
   }
 
   get searchField() { return this.searchForm.controls; }
