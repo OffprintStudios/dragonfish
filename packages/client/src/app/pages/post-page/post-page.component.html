@@ -4,7 +4,7 @@
         <h2>{{ currPost.desc }}</h2>
         <div class="post-cat">
             <div class="info">
-                <span>by {{ $any(currPost.author).username }}</span>
+                <span>by <a [routerLink]="['/portfolio', $any(currPost.author)._id, $any(currPost.author).username | slugify]">{{ $any(currPost.author).username }}</a></span>
                 <span class="divider">//</span>
                 <span>{{ category[currPost.meta.category] }}</span>
                 <span class="divider">//</span>
