@@ -10,3 +10,4 @@ export { MyCollectionsResolver } from './my-collections.resolver';
 export { PortWorksResolver } from './port-works.resolver';
 export { PortBlogsResolver } from './port-blogs.resolver';
 export { PortCollectionsResolver } from './port-collections.resolver';
+export { CollectionPageResolver } from './collection-page.resolver';

@@ -20,8 +20,7 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, 
-  PortCollectionsResolver} from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver} from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -49,7 +48,7 @@ const routes: Routes = [
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: PortWorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: PortCollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'collection/:collId', component: PortCollectionPageComponent},
+      {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: '', component: PortHomeComponent},
     ]},
     {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
@@ -70,7 +69,8 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
-      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver
+      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
+      CollectionPageResolver
     ]
 })
 export class AppRoutingModule {}

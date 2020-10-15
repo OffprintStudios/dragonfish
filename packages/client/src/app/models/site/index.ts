@@ -5,3 +5,4 @@ export { WorkPageData } from './work-page';
 export { PortWorks } from './port-works';
 export { PortBlogs } from './port-blogs';
 export { PortCollections } from './port-collections';
+export { CollPage } from './coll-page';
