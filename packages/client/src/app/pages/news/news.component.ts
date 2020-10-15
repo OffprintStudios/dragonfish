@@ -29,10 +29,7 @@ export class NewsComponent implements OnInit {
    * @param event The new page
    */
   onPageChange(event: number) {
-    if (event !== 1) {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
-    } else {
-      this.router.navigate([], {relativeTo: this.route});
-    }
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 }
