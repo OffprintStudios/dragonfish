@@ -28,9 +28,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
     PortCollectionsComponent, PortBlogPageComponent, PortCollectionPageComponent } from './pages/portfolio';
 
-import { NewsComponent, PostPageComponent } from './pages/news';
-
-import { BrowseComponent, GroupsComponent } from './pages';
+import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';

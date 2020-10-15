@@ -9,7 +9,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageC
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
-import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
+import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
   
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
   
@@ -19,7 +19,6 @@ import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver } from './resolvers';
-import { PostPageComponent } from './pages/news';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
