@@ -52,27 +52,19 @@ export class ContentService {
      * @param published Optional parameter, checks whether item needs to be published
      */
     async fetchManyByKind(kind: string, pageNum: number, published?: boolean):  Promise<PaginateResult<ContentDocument>> {
-        if (published) {
-            if (published === true) {
-                if (kind === 'NewsContent') {
-                    return await this.contentModel.paginate({'kind': kind, 'audit.published': true, 'audit.isDeleted': false}, {
-                        sort: {'audit.publishedOn': -1},
-                        page: pageNum,
-                        limit: 15
-                    });
-                } else if (kind === 'WorkContent') {
-                    // find work docs
-                } else if (kind === 'BlogContent') {
-                    // find blog docs
-                } else {
-                    throw new BadRequestException(`The designated document kind does not exist.`);
-                }
-            } else {
-                return await this.contentModel.paginate({'kind': kind, 'audit.isDeleted': false}, {
+        if (published === true) {
+            if (kind === 'NewsContent') {
+                return await this.contentModel.paginate({'kind': kind, 'audit.published': true, 'audit.isDeleted': false}, {
                     sort: {'audit.publishedOn': -1},
                     page: pageNum,
                     limit: 15
                 });
+            } else if (kind === 'WorkContent') {
+                // find work docs
+            } else if (kind === 'BlogContent') {
+                // find blog docs
+            } else {
+                throw new BadRequestException(`The designated document kind does not exist.`);
             }
         } else {
             return await this.contentModel.paginate({'kind': kind, 'audit.isDeleted': false}, {
