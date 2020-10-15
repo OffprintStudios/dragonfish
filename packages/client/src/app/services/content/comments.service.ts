@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Comment, BlogComment, WorkComment, CreateComment, EditComment } from '@pulp-fiction/models/comments';
+import { BlogComment, WorkComment, ContentComment, CreateComment, EditComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
@@ -49,6 +49,17 @@ export class CommentsService {
     }));
   }
 
+  public addContentComment(contentId: string, commentInfo: CreateComment) {
+    return this.http.put<ContentComment>(`${this.url}/add-content-comment/${contentId}`, commentInfo, {observe: 'response', withCredentials: true})
+    .pipe(map(() => {
+      this.alertsService.success(`Comment added successfully!`);
+      return;
+    }), catchError(err => {
+      this.alertsService.error(err.error.message);
+      return throwError(err);
+    }));
+  }
+
   /**
    * Fetches the comments belonging to a blog.
    * 
@@ -77,6 +88,16 @@ export class CommentsService {
         this.alertsService.error(err.error.message);
         return throwError(err);
       }));
+  }
+
+  public getContentComments(contentId: string, pageNum: number) {
+    return this.http.get<PaginateResult<ContentComment>>(`${this.url}/get-content-comments/${contentId}/${pageNum}`, {observe: 'response', withCredentials: true})
+    .pipe(map(comments => {
+      return comments.body;
+    }), catchError(err => {
+      this.alertsService.error(err.error.message);
+      return throwError(err);
+    }));
   }
 
   /**

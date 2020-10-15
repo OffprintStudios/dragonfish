@@ -74,6 +74,13 @@ export class CommentsComponent implements OnInit {
         this.emitPageChange.emit(pageNum);
         this.loading = false;
       });
+    } else if (this.itemKind === ItemKind.Content) {
+      this.commentsService.getContentComments(this.itemId, pageNum).subscribe(comments => {
+        this.comments = comments;
+        this.pageNum = pageNum;
+        this.emitPageChange.emit(pageNum);
+        this.loading = false;
+      });
     }
   }
 
@@ -162,6 +169,10 @@ export class CommentsComponent implements OnInit {
     } else if (this.itemKind === ItemKind.Work) {
       this.commentsService.addWorkComment(this.itemId, comm).subscribe(() => {
         this.newCommentForm.reset();
+        this.fetchData(this.pageNum);
+      });
+    } else if (this.itemKind === ItemKind.Content) {
+      this.commentsService.addContentComment(this.itemId, comm).subscribe(() => {
         this.fetchData(this.pageNum);
       });
     }
