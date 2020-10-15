@@ -18,7 +18,8 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver } from './resolvers';
+import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
+  BrowseFeedResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -36,7 +37,7 @@ const routes: Routes = [
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
       ]}
     ]},
-    {path: 'browse', component: BrowseComponent},
+    {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
     {path: 'groups', component: GroupsComponent},
     {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'always'},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
@@ -65,6 +66,8 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
     exports: [RouterModule],
-    providers: [WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver]
+    providers: [
+      WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver
+    ]
 })
 export class AppRoutingModule {}
