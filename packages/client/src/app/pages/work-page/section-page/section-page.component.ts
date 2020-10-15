@@ -7,12 +7,14 @@ import { AuthService } from '../../../services/auth';
 import { WorksService, LocalSectionsService } from '../../../services/content';
 import { SlugifyPipe } from '../../../pipes';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { Section, SectionInfo, EditSection} from '@pulp-fiction/models/works';
+import { Work, Section, SectionInfo, EditSection} from '@pulp-fiction/models/works';
 import { Observable } from 'rxjs';
 import { AlertsService } from '../../../modules/alerts';
 import { getQuillHtml } from '../../../util/functions';
 import { SectionInfoViewModel } from '../viewmodels/section-info.viewmodel';
 import { SectionKind } from '../../../services/content/local-sections.service';
+
+import { Title } from '../../../shared';
 
 enum SectionState {
   User,
@@ -30,7 +32,9 @@ export class SectionPageComponent implements OnInit {
 
   loading = false; // controls the spinner above section selection boxes
   sectionSwitching: boolean = false; // controls the spinner between the section selection boxes  
-  
+
+  workData: Work; // This work's data.  
+
   sectionsList: ReadonlyArray<SectionInfoViewModel>;
   sectionData: Section;
   hideContents: boolean = false;
@@ -72,7 +76,10 @@ export class SectionPageComponent implements OnInit {
       this.fetchData();
   }
 
-  ngOnInit(): void {                    
+  ngOnInit(): void {
+    this.route.parent.data.subscribe(data => {
+      this.workData = data.workData.work;
+    }); 
     if (this.currentUserIsSame()) {
       this.currentUIState = SectionState.Author;
     }    
@@ -102,6 +109,8 @@ export class SectionPageComponent implements OnInit {
           this.sectionData = section;
           this.loading = false;
           this.sectionSwitching = false;
+          
+          Title.setThreePartTitle(this.workData.title, this.sectionData.title);
         });
       });
     });

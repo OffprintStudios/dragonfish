@@ -1,4 +1,5 @@
-import { Constants } from './global-constants';
+import { from } from 'rxjs';
+import { Constants } from './constants';
 
 export namespace Title {
     export function setDefaultTitle(): void {
