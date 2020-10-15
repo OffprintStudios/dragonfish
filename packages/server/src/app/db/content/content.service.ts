@@ -25,7 +25,7 @@ export class ContentService {
      */
     async fetchOnePublished(contentId: string, kind: string) {
         if (kind === 'NewsContent') {
-            return await this.contentModel.find({'_id': contentId, 'kind': kind}).where('audit.isDeleted', false).where('audit.published', true);
+            return await this.contentModel.findOne({'_id': contentId, 'kind': kind}).where('audit.isDeleted', false).where('audit.published', true);
         } else if (kind === 'WorkContent') {
             // find work doc
         } else if (kind === 'BlogContent') {
