@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { BlogsService } from '../../../services/content';
 import { AuthService } from '../../../services/auth';
@@ -27,13 +28,15 @@ export class BlogsComponent implements OnInit {
     query: new FormControl('', Validators.required),
   });
 
-  constructor(private blogsService: BlogsService, private authService: AuthService,
-      private alertsService: AlertsService, private dialog: MatDialog) {
+  constructor(private blogsService: BlogsService, private authService: AuthService, private alertsService: AlertsService,
+    private dialog: MatDialog, private router: Router, private route: ActivatedRoute) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
-    this.fetchData(1);
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.paginatedBlogs = data.feedData as PaginateResult<Blog>;
+    });
   }
 
   /**
@@ -42,16 +45,15 @@ export class BlogsComponent implements OnInit {
   get searchField() { return this.searchBlogs.controls; }
 
   /**
-   * Fetches the list of blogs from the backend.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.blogsService.fetchUserBlogs(pageNum).subscribe(paginatedBlogs => {
-      this.paginatedBlogs = paginatedBlogs;
-      this.pageNum = pageNum;
-      this.loading = false;
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
+
   
   /**
    * Checks to see if the blogs array is empty.
@@ -74,7 +76,7 @@ export class BlogsComponent implements OnInit {
   openNewBlogForm() {
     const createBlogRef = this.dialog.open(CreateBlogComponent);
     createBlogRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -84,7 +86,7 @@ export class BlogsComponent implements OnInit {
   openEditForm(blog: Blog) {
     const editBlogRef = this.dialog.open(EditBlogComponent, {data: {blogData: blog}});
     editBlogRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -94,7 +96,7 @@ export class BlogsComponent implements OnInit {
   openPreview(blog: Blog) {
     const previewBlogRef = this.dialog.open(PreviewBlogComponent, {data: {blogData: blog}});
     previewBlogRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -107,7 +109,7 @@ export class BlogsComponent implements OnInit {
   askDelete(blogId: string) {
     if (confirm('Are you sure you want to delete this blog? This action is irreversible.')) {
       this.blogsService.deleteBlog(blogId).subscribe(_ => {
-        this.fetchData(this.pageNum);
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
         return;
       }, err => {
         console.log(err);
@@ -129,7 +131,7 @@ export class BlogsComponent implements OnInit {
     const pubStatus: SetPublishStatus = {blogId: blogId, publishStatus: !publishStatus};
 
     this.blogsService.setPublishStatus(pubStatus).subscribe(_ => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
       return;
     }, err => {
       console.log(err);
