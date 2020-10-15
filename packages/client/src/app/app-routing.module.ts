@@ -19,7 +19,7 @@ import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
-  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver } from './resolvers';
+  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -27,7 +27,7 @@ const routes: Routes = [
       {path: '', children: [
         {path: 'latest', component: LatestComponent},
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
-        {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent},
+        {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent, resolve: {feedData: MyCollectionsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
         {path: 'works', canActivate: [AuthGuard], component: WorksComponent, resolve: {feedData: MyWorksResolver}, runGuardsAndResolvers: 'always'},
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent, resolve: {feedData: MyBlogsResolver}, runGuardsAndResolvers: 'always'},
@@ -68,7 +68,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
-      MyWorksResolver, MyBlogsResolver
+      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver
     ]
 })
 export class AppRoutingModule {}

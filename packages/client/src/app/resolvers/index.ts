@@ -6,3 +6,4 @@ export { NewsFeedResolver } from './news-feed.resolver';
 export { BrowseFeedResolver } from './browse-feed.resolver';
 export { MyWorksResolver } from './my-works.resolver';
 export { MyBlogsResolver } from './my-blogs.resolver';
+export { MyCollectionsResolver } from './my-collections.resolver';

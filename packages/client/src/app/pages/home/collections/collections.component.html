@@ -1,23 +1,18 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
+    </div>
+</div>
+
 <div class="collections-container">
-    <div class="collections-header">
-        <h2>Collections</h2>
-        <div class="collections-controls">
-            <button class="coll-control" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
-        </div>
-    </div>
-
-    <div class="loader" *ngIf="loading">
-        <div class="lds-dual-ring"></div>
-    </div>
-
-    <ng-container *ngIf="!loading && collections.docs.length === 0">
-        <div style="text-align: center; margin-top: 2rem;">
-            <h3 style="margin-bottom: 0;">You haven't created any collections yet.</h3>
-            <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Why not make your first one by hitting Add Collection button?</p>
+    <ng-container *ngIf="collections.docs.length === 0">
+        <div class="empty">
+            <h3>You haven't created any collections yet.</h3>
+            <p>Why not make your first one by hitting Add Collection button?</p>
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!loading && collections.docs.length > 0">
+    <ng-container *ngIf="collections.docs.length > 0">
         <div class="collections-grid">
             <div class="collections-box" *ngFor="let collection of collections.docs | paginate: {
                 itemsPerPage: collections.limit,
@@ -66,6 +61,6 @@
                 </div>
             </div>
         </div>
-        <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
     </ng-container>
 </div>

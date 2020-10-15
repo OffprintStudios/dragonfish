@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
@@ -22,24 +23,27 @@ export class CollectionsComponent implements OnInit {
 
   pageNum = 1;
 
-  constructor(private authService: AuthService, private collsService: CollectionsService, private dialog: MatDialog) {
+  constructor(private authService: AuthService, private collsService: CollectionsService, private dialog: MatDialog,
+    private route: ActivatedRoute, private router: Router) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
-
-  /**
-   * Fetches a user's collections
-   */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.collsService.fetchUserCollections(pageNum).subscribe(colls => {
-      this.collections = colls;
-      this.pageNum = pageNum;
-      this.loading = false;
+  ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.collections = data.feedData;
     });
   }
+
+  /**
+   * Handles page changing
+   * 
+   * @param event The new page
+   */
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
+  }
+
 
   /**
    * Sets a collection to public.
@@ -50,7 +54,7 @@ export class CollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPublic(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -63,7 +67,7 @@ export class CollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPrivate(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -75,7 +79,7 @@ export class CollectionsComponent implements OnInit {
   askDelete(collId: string) {
     if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
       this.collsService.deleteCollection(collId).subscribe(() => {
-        this.fetchData(this.pageNum);
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
       });
     } else {
       return;
