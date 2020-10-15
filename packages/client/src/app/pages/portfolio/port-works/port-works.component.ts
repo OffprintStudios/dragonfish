@@ -8,8 +8,7 @@ import { Work } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { calculateApprovalRating } from '../../../util/functions';
 
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-port-works',
@@ -32,7 +31,7 @@ export class PortWorksComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    GlobalMethods.setThreePartTitle(this.portUserName, GlobalConstants.WORKS);
+    Title.setThreePartTitle(this.portUserName, Constants.WORKS);
   }
 
   /**

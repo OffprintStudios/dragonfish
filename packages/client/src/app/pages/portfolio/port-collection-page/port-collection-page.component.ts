@@ -6,7 +6,7 @@ import { AuthService } from '../../../services/auth';
 import { PortfolioService } from '../../../services/content';
 import { Collection } from '@pulp-fiction/models/collections';
 
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Title } from '../../../shared';
 
 @Component({
   selector: 'app-port-collection-page',
@@ -28,9 +28,9 @@ export class PortCollectionPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.currentUserIsSame()) {
-      GlobalMethods.setTwoPartTitle(this.collection.name);
+      Title.setTwoPartTitle(this.collection.name);
     } else {
-      GlobalMethods.setThreePartTitle(this.portUserName, this.collection.name);
+      Title.setThreePartTitle(this.portUserName, this.collection.name);
     }
   }
 

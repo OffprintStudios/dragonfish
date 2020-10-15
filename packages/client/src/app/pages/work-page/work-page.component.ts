@@ -15,8 +15,7 @@ import { Work, PublishSection, SetApprovalRating } from '@pulp-fiction/models/wo
 import { ItemKind } from '@pulp-fiction/models/comments';
 import { AlertsService } from '../../modules/alerts';
 
-import { GlobalConstants } from '../../shared';
-import { GlobalMethods } from '../../shared/global-methods';
+import { Title } from '../../shared';
 
 @Component({
   selector: 'app-work-page',
@@ -59,7 +58,7 @@ export class WorkPageComponent implements OnInit {
       }
     });
 
-    GlobalMethods.setTwoPartTitle(this.workData.title);
+    Title.setTwoPartTitle(this.workData.title);
   }
 
   /**

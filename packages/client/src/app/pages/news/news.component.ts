@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
-import { GlobalConstants } from '../../shared';
-import { GlobalMethods } from '../../shared/global-methods';
+import { Constants, Title } from '../../shared';
 
 @Component({
   selector: 'app-news',
@@ -23,7 +22,7 @@ export class NewsComponent implements OnInit {
       this.posts = data.feedData;
       console.log(this.posts);
     });
-    GlobalMethods.setTwoPartTitle(GlobalConstants.NEWS);
+    Title.setTwoPartTitle(Constants.NEWS);
   }
 
   /**

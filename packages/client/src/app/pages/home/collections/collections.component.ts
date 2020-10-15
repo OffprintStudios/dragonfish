@@ -8,8 +8,7 @@ import { AuthService } from '../../../services/auth';
 import { CollectionsService } from '../../../services/content';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-collections',
@@ -31,7 +30,7 @@ export class CollectionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.COLLECTIONS);
+    Title.setTwoPartTitle(Constants.COLLECTIONS);
   }
 
   /**

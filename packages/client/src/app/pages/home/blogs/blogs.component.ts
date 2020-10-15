@@ -10,8 +10,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog, SetPublishStatus } from '@pulp-fiction/models/blogs';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-blogs',
@@ -37,7 +36,7 @@ export class BlogsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.MY_BLOGS);
+    Title.setTwoPartTitle(Constants.MY_BLOGS);
   }
 
   /**

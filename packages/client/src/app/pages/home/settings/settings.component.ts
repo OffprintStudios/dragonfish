@@ -13,8 +13,7 @@ import { UploadAvatarComponent } from '../../../components/modals/account';
 import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
 import { ContentFilter } from '@pulp-fiction/models/works';
 
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 
 @Component({
@@ -151,7 +150,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.SETTINGS);
+    Title.setTwoPartTitle(Constants.SETTINGS);
   }
   
   get passwordFields() { return this.changePasswordForm.controls; }
