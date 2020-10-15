@@ -1,8 +1,7 @@
 import * as CKEditor from './ckeditor.js';
 
-import { Component, ViewEncapsulation, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, Input } from '@angular/core';
 import { ControlContainer, FormGroupDirective, FormGroup } from '@angular/forms';
-import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 
 @Component({
   selector: 'editor',
@@ -22,9 +21,12 @@ export class NewEditorComponent implements OnInit {
 
   editor = CKEditor;
   config: Object = {    
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', 'fontSize', 'fontColor', '|', 'bulletedlist', 'numberedlist', '|',
-    'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
-    'undo', 'redo'],
+    toolbar: [ 'heading', '|', 
+      'bold', 'italic', 'underline', 'strikethrough', 'fontSize', 'fontColor', '|', 
+      'bulletedlist', 'numberedlist', '|',
+      'alignment', 'indent', 'outdent', '|', 
+      'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
+      'undo', 'redo'],
     placeholder: 'Keeping you on the edge of your seats...',
     heading: {
       options: [
