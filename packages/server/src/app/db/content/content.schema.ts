@@ -46,7 +46,7 @@ export class ContentDocument extends Document implements ContentModel {
         isDeleted: boolean;
     };
 
-    @Prop()
+    @Prop({index: true})
     readonly kind: string;
 
     @Prop()
