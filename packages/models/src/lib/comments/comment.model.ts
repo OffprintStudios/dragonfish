@@ -56,3 +56,7 @@ export interface BlogComment extends Comment {
 export interface WorkComment extends Comment {
     readonly workId: string;
 }
+
+export interface ContentComment extends Comment {
+    readonly contentId: string;
+}

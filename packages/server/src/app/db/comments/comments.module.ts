@@ -7,10 +7,11 @@ import { CommentsService } from './comments.service';
 
 import { BlogsModule } from '../blogs/blogs.module';
 import { WorksModule } from '../works/works.module';
+import { ContentModule } from '../content/content.module';
 
 @Module({
   imports: [
-    BlogsModule, WorksModule,
+    BlogsModule, WorksModule, ContentModule,
     MongooseModule.forFeature([
       {name: 'Comment', schema: CommentsSchema},
     ]),
@@ -28,6 +29,13 @@ import { WorksModule } from '../works/works.module';
       provide: getModelToken('WorkComment'),
       useFactory: commentModel => commentModel.discriminator('WorkComment', new Schema({
         workId: {type: String, ref: 'Work', required: true, index: true}
+      })),
+      inject: [getModelToken('Comment')]
+    },
+    {
+      provide: getModelToken('ContentComment'),
+      useFactory: commentModel => commentModel.discriminator('ContentComment', new Schema({
+        contentId: {type: String, ref: 'Content', required: true, index: true}
       })),
       inject: [getModelToken('Comment')]
     }

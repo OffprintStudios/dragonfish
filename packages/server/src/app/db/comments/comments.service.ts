@@ -14,6 +14,7 @@ export class CommentsService {
     constructor(@InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
         @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
+        @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
         private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
 
     /**
@@ -57,9 +58,27 @@ export class CommentsService {
     }
 
     /**
+     * Creates a new comment that belongs to some content.
+     * 
+     * @param user A user's JWT payload
+     * @param contentId The content the comment belongs to
+     * @param commentInfo The comment's info
+     */
+    async createContentComment(user: any, contentId: string, commentInfo: models.CreateComment): Promise<documents.ContentCommentDocument> {
+        const newComment = new this.contentCommentModel({
+            user: user.sub,
+            contentId: contentId,
+            body: commentInfo.body
+        });
+
+        return await newComment.save();
+    }
+
+    /**
      * Grabs the comments belonging to this blog.
      * 
      * @param blogId The blog that these comments belong to
+     * @param pageNum The current page
      */
     async getBlogComments(blogId: string, pageNum: number): Promise<PaginateResult<documents.BlogCommentDocument>> {
         return await this.blogCommentModel.paginate({"blogId": blogId}, {
@@ -73,9 +92,24 @@ export class CommentsService {
      * Grabs the comments belonging to this work.
      * 
      * @param workId The work that these comments belong to
+     * @param pageNum The current page
      */
     async getWorkComments(workId: string, pageNum: number): Promise<PaginateResult<documents.WorkCommentDocument>> {
         return await this.workCommentModel.paginate({"workId": workId}, {
+            sort: {"createdAt": 1},
+            page: pageNum,
+            limit: 25
+        });
+    }
+
+    /**
+     * Grabs the comments belonging to this content.
+     * 
+     * @param contentId The content that these comments belong to
+     * @param pageNum The current page
+     */
+    async getContentComments(contentId: string, pageNum: number): Promise<PaginateResult<documents.ContentCommentDocument>> {
+        return await this.contentCommentModel.paginate({"contentId": contentId}, {
             sort: {"createdAt": 1},
             page: pageNum,
             limit: 25
