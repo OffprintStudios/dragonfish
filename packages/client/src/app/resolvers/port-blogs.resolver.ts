@@ -20,6 +20,6 @@ export class PortBlogsResolver implements Resolve<PaginateResult<Blog>> {
             this.pageNum = pageNum;
         }
 
-        return this.portService.getBlogList(userId, pageNum);
+        return this.portService.getBlogList(userId, this.pageNum);
     }
 }

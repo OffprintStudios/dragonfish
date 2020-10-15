@@ -19,6 +19,8 @@ export class MyBlogsResolver implements Resolve<PaginateResult<Blog>> {
             this.pageNum = pageNum;
         }
 
+        console.log(pageNum);
+
         return this.blogsService.fetchUserBlogs(this.pageNum);
     }
 }

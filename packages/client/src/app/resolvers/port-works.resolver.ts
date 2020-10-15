@@ -20,7 +20,7 @@ export class PortWorksResolver implements Resolve<PortWorks> {
             this.pageNum = pageNum;
         }
 
-        const worksList = this.portService.getWorksList(userId, pageNum);
+        const worksList = this.portService.getWorksList(userId, this.pageNum);
 
         return zip(worksList, of(userId)).pipe(map(value => {
             const portWorks: PortWorks = {
