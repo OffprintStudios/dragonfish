@@ -17,13 +17,16 @@ export class NewEditorComponent implements OnInit {
   @Input() minHeight: string;
   @Input() maxHeight: string;
   @Input() parentForm: FormGroup;
-  @Input() controlName: string;
+  @Input() controlName: string;  
 
   editor = CKEditor;
   config: Object = {    
-    toolbar: [ 'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|', 'bulletedlist', 'numberedlist', '|',
-    'alignment', 'indent', 'outdent', '|', 'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
-    'undo', 'redo'],
+    toolbar: [ 'heading', '|', 
+      'bold', 'italic', 'underline', 'strikethrough', 'fontSize', 'fontColor', '|', 
+      'bulletedlist', 'numberedlist', '|',
+      'alignment', 'indent', 'outdent', '|', 
+      'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
+      'undo', 'redo'],
     placeholder: 'Keeping you on the edge of your seats...',
     heading: {
       options: [
@@ -35,6 +38,10 @@ export class NewEditorComponent implements OnInit {
         { model: 'heading5', view: 'h5', title: 'Heading 5', class: 'ck-heading_heading5' },
         { model: 'heading6', view: 'h6', title: 'Heading 6', class: 'ck-heading_heading6' }
       ]
+    },
+    image: {
+      styles: [ "alignLeft", "alignCenter", "alignRight", "full" ],
+      toolbar: [ "imageStyle:alignLeft", "imageStyle:alignCenter", "imageStyle:alignRight", "imageStyle:full" ]
     },
     mediaEmbed: {
       removeProviders: ['googleMaps', 'flickr', 'facebook', 'instagram']
@@ -54,7 +61,6 @@ export class NewEditorComponent implements OnInit {
       document.documentElement.style.setProperty('--editor-max-height', this.maxHeight);
     } else {
       document.documentElement.style.setProperty('--editor-max-height', '500px');
-    }
+    }    
   }
-
 }
