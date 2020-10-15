@@ -19,7 +19,6 @@ export class NewsComponent implements OnInit {
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.posts = data.feedData;
-      console.log(this.posts);
     });
   }
 
