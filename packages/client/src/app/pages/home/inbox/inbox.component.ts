@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { MessageThread } from '@pulp-fiction/models/messages';
@@ -25,7 +24,7 @@ export class InboxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.INBOX);
+    Title.setTwoPartTitle(Constants.INBOX);
   }
 
   private fetchData(pageNum: number) {

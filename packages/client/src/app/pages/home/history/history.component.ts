@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { History } from '@pulp-fiction/models/history';
@@ -31,7 +30,7 @@ export class HistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.HISTORY);
+    Title.setTwoPartTitle(Constants.HISTORY);
   }
 
   /**

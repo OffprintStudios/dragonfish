@@ -7,8 +7,7 @@ import { BrowseService } from '../../services/content/browse.service';
 import { AlertsService } from '../../modules/alerts';
 import { calculateApprovalRating } from '../../util/functions';
 
-import { GlobalConstants } from '../../shared';
-import { GlobalMethods } from '../../shared/global-methods';
+import { Constants, Title } from '../../shared';
 
 type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 
@@ -28,7 +27,7 @@ export class BrowseComponent implements OnInit {
   }
 
   ngOnInit(): void {      
-    GlobalMethods.setTwoPartTitle(GlobalConstants.BROWSE);  
+    Title.setTwoPartTitle(Constants.BROWSE);  
   }
 
   /**

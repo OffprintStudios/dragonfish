@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalConstants } from '../../shared';
-import { GlobalMethods } from '../../shared/global-methods';
+import { Constants, Title } from '../../shared';
 
 @Component({
   selector: 'app-news',
@@ -12,7 +11,7 @@ export class NewsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    GlobalMethods.setTwoPartTitle(GlobalConstants.NEWS);
+    Title.setTwoPartTitle(Constants.NEWS);
   }
 
 }

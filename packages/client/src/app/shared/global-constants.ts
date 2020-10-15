@@ -1,4 +1,4 @@
-export class GlobalConstants {
+export class Constants {
     public static siteVersion: string = '0.3.2';
 
     public static OFFPRINT: string = "Offprint";

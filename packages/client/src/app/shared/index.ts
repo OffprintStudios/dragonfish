@@ -1,1 +1,2 @@
-export { GlobalConstants } from './global-constants';
+export { Constants } from './global-constants';
+export { Title } from './title';

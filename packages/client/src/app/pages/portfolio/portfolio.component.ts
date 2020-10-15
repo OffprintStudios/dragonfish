@@ -7,7 +7,7 @@ import { AuthService } from '../../services/auth';
 import { PortfolioService } from '../../services/content';
 import { StartConversationComponent } from '../../components/portfolio/start-conversation/start-conversation.component';
 
-import { GlobalMethods } from '../../shared/global-methods';
+import { Title } from '../../shared';
 
 @Component({
   selector: 'app-portfolio',
@@ -30,7 +30,7 @@ export class PortfolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.portUser = this.route.snapshot.data.portData as FrontendUser;
-    GlobalMethods.setTwoPartTitle(this.portUser.username);
+    Title.setTwoPartTitle(this.portUser.username);
   }
 
   /**

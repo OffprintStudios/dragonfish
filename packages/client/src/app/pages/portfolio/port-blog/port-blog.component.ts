@@ -7,8 +7,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
-import { GlobalConstants } from '../../../shared';
-import { GlobalMethods } from '../../../shared/global-methods';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-port-blog',
@@ -30,7 +29,7 @@ export class PortBlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    GlobalMethods.setThreePartTitle(this.portUserName, GlobalConstants.BLOGS);
+    Title.setThreePartTitle(this.portUserName, Constants.BLOGS);
   }
 
   ngOnDestroy() {}
