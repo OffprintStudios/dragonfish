@@ -1,9 +1,6 @@
 export class Constants {
     public static siteVersion: string = '0.3.2';
 
-    public static OFFPRINT: string = "Offprint";
-    public static SEPARATOR: string = " - ";
-
     public static ALERTS: string = "Alerts";
     public static BLOGS: string = "Blogs";
     public static BROWSE: string = "Browse";
@@ -16,6 +13,7 @@ export class Constants {
     public static MY_WORKS: string = "My Works";
     public static NEWS: string = "News";
     public static NEW_SECTION: string = "New section";
+    public static OFFPRINT: string = "Offprint";
 
     public static REGISTER: string = "Register";
     public static SEARCH: string = "Search";
