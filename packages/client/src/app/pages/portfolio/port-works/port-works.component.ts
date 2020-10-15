@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth';
 import { PortfolioService } from '../../../services/content';
@@ -7,6 +7,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Work } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { calculateApprovalRating } from '../../../util/functions';
+import { PortWorks } from '../../../models/site';
 
 @Component({
   selector: 'app-port-works',
@@ -18,33 +19,30 @@ export class PortWorksComponent implements OnInit {
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
   portWorksData: PaginateResult<Work>; // The list of published works
-  loading = false; // Loading check for fetching data
 
   pageNum = 1;
 
   constructor(private route: ActivatedRoute, private portService: PortfolioService,
-    private authService: AuthService) {
+    private authService: AuthService, private router: Router) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
-      this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      const feedData = data.feedData as PortWorks;
+      this.portUserId = feedData.userId;
+      this.portWorksData = feedData.works;
+    });
   }
 
   /**
-   * Fetches the data for this user's published works list.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.route.parent.paramMap.subscribe(params => {
-      this.portUserId = params.get('id');
-      this.portUserName = params.get('username');
-      this.portService.getWorksList(this.portUserId, pageNum).subscribe(works => {
-        this.portWorksData = works;
-        this.pageNum = pageNum;
-        this.loading = false;
-      });
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 
   /**

@@ -19,7 +19,8 @@ import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
-  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver } from './resolvers';
+  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
+  PortWorksResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -43,9 +44,9 @@ const routes: Routes = [
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
-      {path: 'blog', component: PortBlogComponent},
+      {path: 'blog', component: PortBlogComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
-      {path: 'works', component: PortWorksComponent },
+      {path: 'works', component: PortWorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: PortCollectionsComponent},
       {path: 'collection/:collId', component: PortCollectionPageComponent},
       {path: '', component: PortHomeComponent},
@@ -68,7 +69,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
-      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver
+      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver
     ]
 })
 export class AppRoutingModule {}
