@@ -36,8 +36,7 @@ pub fn sanitize_html(html_string: &str) -> String {
                 "image_resized",
                 "image-style-align-left",
                 "image-style-align-center",
-                "image-style-align-right",
-                "",
+                "image-style-align-right"
             ],
         )
         .clean(html_string)
