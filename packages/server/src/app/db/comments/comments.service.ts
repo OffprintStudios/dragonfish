@@ -7,6 +7,7 @@ import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
 import { BlogsService } from '../blogs/blogs.service';
 import { WorksService } from '../works/works.service';
+import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class CommentsService {
         @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
         @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
-        private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
+        private readonly blogsService: BlogsService, private readonly worksService: WorksService, private readonly contentService: ContentService) {}
 
     /**
      * Creates a new comment that belongs to a blog.
@@ -71,7 +72,10 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save();
+        return await newComment.save().then(async doc => {
+            await this.contentService.addComment(contentId);
+            return doc;
+        });
     }
 
     /**

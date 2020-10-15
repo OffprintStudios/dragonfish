@@ -1,5 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { JwtPayload } from '@pulp-fiction/models/auth';
+import { UserInfo } from '@pulp-fiction/models/users';
+import { AnyKindOfDictionary } from 'lodash';
 import { PaginateModel, PaginateResult } from 'mongoose';
 
 import { ContentDocument } from './content.schema';
@@ -23,9 +26,15 @@ export class ContentService {
      * @param contentId A content's ID
      * @param kind A content's Kind
      */
-    async fetchOnePublished(contentId: string, kind: string) {
+    async fetchOnePublished(contentId: string, kind: string, user?: JwtPayload) {
         if (kind === 'NewsContent') {
-            return await this.contentModel.findOne({'_id': contentId, 'kind': kind}).where('audit.isDeleted', false).where('audit.published', true);
+            const post = await this.contentModel.findOne({'_id': contentId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': true});
+            if (user) {
+                await this.addView(user, (post.author as any)._id, post._id);
+                return post;
+            } else {
+                return post;
+            }
         } else if (kind === 'WorkContent') {
             // find work doc
         } else if (kind === 'BlogContent') {
@@ -72,5 +81,31 @@ export class ContentService {
                 limit: 15
             });
         }
+    }
+
+    /**
+     * Adds a comment to some content.
+     * 
+     * @param contentId The content's ID
+     */
+    async addComment(contentId: string) {
+        return await this.contentModel.updateOne({"_id": contentId}, {
+            $inc: {"stats.comments": 1}
+        });
+    }
+
+    /**
+     * Adds a view to a piece of content.
+     * 
+     * @param user The user adding the view
+     * @param authorId The author of the content
+     * @param contentId The content's ID
+     */
+    private async addView(user: JwtPayload, authorId: string, contentId: string): Promise<void> {
+        if (authorId === user.sub) {
+            return;
+        }
+
+        return await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.views': 1}});
     }
 }
