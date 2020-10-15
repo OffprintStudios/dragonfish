@@ -164,15 +164,19 @@ blockquote {
     padding-left: 10px;
 }
 
-/* Sections and authors notes. These go in the main stylesheet
- * because section bodies have no view encapsulation, and can be
- * (and are) affected by global styles. Therefore, these must also be
- * global styles.
+/* Sections, blog bodies, authors notes, and long descriptions. 
+ * These go in the main stylesheet because section bodies have 
+ * no view encapsulation, and can be (and are) affected by global 
+ * styles. Therefore, these must also be global styles.
  * If we can find a way to have an element with directly-set
- * innerHtml AND view encapsulation, we can move this back down to the
+ * innerHtml AND view encapsulation, we can move all this back down to the
  * component level.
 */
-div.section-body, div.authors-note {    
+div.section-body, 
+div.blog-body, 
+div.authors-note, 
+div.html-description {
+    // Headers and default image style
     h1 { font-size: 3em; } 
     h2 { font-size: 2em; }
     h3 { font-size: 1.5em; }
@@ -180,6 +184,48 @@ div.section-body, div.authors-note {
     h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
     h6 { font-size: 1em; text-transform: uppercase; }
     img { max-width: 100% }
+
+    // CKEditor-generated image styles
+    .image {
+        display: table;
+        clear: both;
+        text-align: center;
+        margin: 1em auto;
+    }
+
+    .image-style-align-{
+        &left {
+            float: left;
+            margin-right: 1.5em;
+        }
+        &center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &right {
+            float: right;
+            margin-left: 1.5em;
+        }
+    }
+
+    // A little CSS hack to force images at the bottom of content bodies to not break out of their containers.
+    // More details here: http://bonrouge.com/br.php?page=floats
+    :last-child:after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        clear: both;
+        visibility: hidden;
+    }
+    
+    // CKEditor-generated font sizes
+    span.text-{
+        &tiny { font-size: 0.7em; }
+        &small { font-size: 0.85em; }
+        &big { font-size: 1.4em; }
+        &huge { font-size: 1.85em; }
+    }
 }
 
 /* Buttons and Inputs */
