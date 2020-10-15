@@ -50,8 +50,6 @@ import { EditorComponent } from './components/editor';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
-import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver } from './resolvers';
-
 import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
@@ -140,7 +138,7 @@ const toolbarOptions = [
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    SlugifyPipe, WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver
+    SlugifyPipe
   ],
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { NewsService } from '../../services/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { NewsContentModel } from '@pulp-fiction/models/content';
+import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-news',
@@ -13,26 +12,14 @@ import { NewsContentModel } from '@pulp-fiction/models/content';
 export class NewsComponent implements OnInit {
   posts: PaginateResult<NewsContentModel>
   pageNum = 1;
+  category = NewsCategory;
 
-  constructor(private newsService: NewsService, private route: ActivatedRoute, private router: Router) {
-    this.fetchData(this.pageNum);
-  }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit(): void { }
-
-  /**
-   * Fetches the current page from the backend.
-   * 
-   * @param pageNum The current page
-   */
-  fetchData(pageNum: number) {
-    const queryParams = this.route.snapshot.queryParamMap;
-    if (queryParams.get('page') !== null) {
-      this.pageNum = +queryParams.get('page');
-    }
-
-    this.newsService.getNewsFeed(pageNum).subscribe(data => {
-      this.posts = data;
+  ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.posts = data.feedData;
+      console.log(this.posts);
     });
   }
 
