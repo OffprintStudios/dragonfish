@@ -7,6 +7,8 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
+import { Constants, Title } from '../../../shared';
+
 @Component({
   selector: 'app-port-blog',
   templateUrl: './port-blog.component.html',
@@ -14,6 +16,7 @@ import { PaginateResult } from '@pulp-fiction/models/util';
 })
 export class PortBlogComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged-in user
+  portUser: FrontendUser; // The user whose portfolio this is
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
   portBlogsData: PaginateResult<Blog>; // The list of published blogs
@@ -27,6 +30,8 @@ export class PortBlogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
+    Title.setThreePartTitle(this.portUser.username, Constants.BLOGS);
   }
 
   ngOnDestroy() {}

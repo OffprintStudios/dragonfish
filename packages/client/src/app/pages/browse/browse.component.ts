@@ -7,6 +7,8 @@ import { BrowseService } from '../../services/content/browse.service';
 import { AlertsService } from '../../modules/alerts';
 import { calculateApprovalRating } from '../../util/functions';
 
+import { Constants, Title } from '../../shared';
+
 type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 
 @Component({
@@ -24,7 +26,8 @@ export class BrowseComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {        
+  ngOnInit(): void {      
+    Title.setTwoPartTitle(Constants.BROWSE);  
   }
 
   /**

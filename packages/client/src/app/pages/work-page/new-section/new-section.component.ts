@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { WorksService, LocalSectionsService } from '../../../services/content';
 import { AlertsService } from '../../../modules/alerts';
-import { CreateSection } from '@pulp-fiction/models/works';
+import { Work, CreateSection } from '@pulp-fiction/models/works';
 import { SlugifyPipe } from '../../../pipes';
 import { SectionKind } from '../../../services/content/local-sections.service';
+
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-new-section',
@@ -18,6 +20,8 @@ export class NewSectionComponent implements OnInit {
   workId: string; // The work's ID
   workName: string; // The work's name
   latestSectionIndex: number; // The index of the current last section
+
+  workData: Work; // This work's data.  
 
   newSectionForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -36,7 +40,12 @@ export class NewSectionComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {     
+    this.route.parent.data.subscribe(data => {
+      this.workData = data.workData.work;
+    });
+    
+    Title.setThreePartTitle(this.workData.title, Constants.NEW_SECTION);
   }
 
   /**

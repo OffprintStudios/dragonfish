@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants, Title } from '../../../shared';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { History } from '@pulp-fiction/models/history';
@@ -28,7 +29,9 @@ export class HistoryComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.HISTORY);
+  }
 
   /**
    * Fetches the history list.

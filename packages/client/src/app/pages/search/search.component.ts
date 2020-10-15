@@ -6,6 +6,8 @@ import { SearchService } from '../../services/utility';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { InitialResults } from '../../services/utility/models';
 
+import { Constants, Title } from '../../shared';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -31,6 +33,8 @@ export class SearchComponent implements OnInit {
       });
       this.fetchData(this.initialQuery);
     }
+    
+    Title.setTwoPartTitle(Constants.SEARCH);
   }
 
   get searchField() { return this.searchForm.controls; }

@@ -14,7 +14,8 @@ import { History, RatingOption } from '@pulp-fiction/models/history';
 import { Work, PublishSection, SetApprovalRating } from '@pulp-fiction/models/works';
 import { ItemKind } from '@pulp-fiction/models/comments';
 import { AlertsService } from '../../modules/alerts';
-import { WorkPageData } from '../../models/site';
+
+import { Title } from '../../shared';
 
 @Component({
   selector: 'app-work-page',
@@ -45,9 +46,9 @@ export class WorkPageComponent implements OnInit {
     private collsService: CollectionsService, private sectionsService: LocalSectionsService, private histService: HistoryService,
     public dialog: MatDialog) {
 
-      this.authService.currUser.subscribe(x => { this.currentUser = x; });
-      this.fetchData();
-    }
+    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+    this.fetchData();
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
@@ -56,17 +57,19 @@ export class WorkPageComponent implements OnInit {
         this.userHist = data.workData.history;
       }
     });
+
+    Title.setTwoPartTitle(this.workData.title);
   }
 
   /**
    * Fetches the requisite work from the database.
    */
   private fetchData() {
-    const queryParams = this.route.snapshot.queryParamMap;    
+    const queryParams = this.route.snapshot.queryParamMap;
     if (queryParams.get('page') !== null) {
       this.pageNum = +queryParams.get('page');
     }
-    
+
     if (this.currentUser) {
       this.collsService.fetchUserCollectionsNoPaginate().subscribe(colls => {
         this.collsService.thisUsersCollections = colls;
@@ -84,9 +87,9 @@ export class WorkPageComponent implements OnInit {
    */
   onPageChange(event: number) {
     if (event !== 1) {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+      this.router.navigate([], { relativeTo: this.route, queryParams: { page: event }, queryParamsHandling: 'merge' });
     } else {
-      this.router.navigate([], {relativeTo: this.route});
+      this.router.navigate([], { relativeTo: this.route });
     }
   }
 
@@ -164,7 +167,7 @@ export class WorkPageComponent implements OnInit {
    * Opens the edit form.
    */
   openEditForm() {
-    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: this.workData}});
+    const editWorkRef = this.dialog.open(EditWorkComponent, { data: { workData: this.workData } });
     editWorkRef.afterClosed().subscribe(() => {
       this.fetchData();
     });
@@ -195,7 +198,7 @@ export class WorkPageComponent implements OnInit {
    */
   submitWorkForApproval() {
     if (this.sectionsService.publishedSections.length <= 0) {
-      this.alertsService.error("Your work must contain at least one published section before it can be submitted."); 
+      this.alertsService.error("Your work must contain at least one published section before it can be submitted.");
       return;
     }
     this.queueService.submitWork(this.workData._id).subscribe(() => {
@@ -250,7 +253,7 @@ export class WorkPageComponent implements OnInit {
 
     this.worksService.setDislike(ratingOptions).subscribe(() => {
       this.userHist.ratingOption = RatingOption.Disliked;
-      
+
       if (currRating === RatingOption.Disliked) {
         this.workData.stats.likes -= 1;
       } else {
@@ -274,7 +277,7 @@ export class WorkPageComponent implements OnInit {
 
     this.worksService.setNoVote(ratingOptions).subscribe(() => {
       this.userHist.ratingOption = RatingOption.NoVote;
-      
+
       if (currRating === RatingOption.Liked) {
         this.workData.stats.likes -= 1;
       } else if (currRating === RatingOption.Disliked) {

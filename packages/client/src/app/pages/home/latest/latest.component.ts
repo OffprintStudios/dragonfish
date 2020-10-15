@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalConstants } from '../../../shared';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-latest',
@@ -7,12 +7,13 @@ import { GlobalConstants } from '../../../shared';
   styleUrls: ['./latest.component.less']
 })
 export class LatestComponent implements OnInit {
-  siteVersion = GlobalConstants.siteVersion;
+  siteVersion = Constants.siteVersion;
 
   constructor() {
   }
 
   ngOnInit(): void {
+    Title.setDefaultTitle();
   }
 
 }

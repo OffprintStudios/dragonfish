@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { GlobalConstants } from '../../../shared';
+import { Constants, Title } from '../../../shared';
 import { AuthService } from '../../../services/auth';
 import { Router } from '@angular/router';
 import { AlertsService } from '../../../modules/alerts';
@@ -15,7 +15,7 @@ import { FrontendUser, CreateUser, LoginUser } from '@pulp-fiction/models/users'
 export class RegisterComponent implements OnInit {
   currentUser: FrontendUser;
   loadingRegister = false;
-  siteVersion = GlobalConstants.siteVersion;
+  siteVersion = Constants.siteVersion;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
@@ -33,7 +33,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this comment is here to stop linter errors
+    Title.setTwoPartTitle(Constants.REGISTER);
   }
 
   get registerFields() { return this.registerForm.controls; }

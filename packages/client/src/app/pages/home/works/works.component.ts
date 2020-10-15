@@ -10,6 +10,8 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Work, ApprovalStatus, Categories } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
+import { Constants, Title } from '../../../shared';
+
 @Component({
   selector: 'app-works',
   templateUrl: './works.component.html',
@@ -35,6 +37,7 @@ export class WorksComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.MY_WORKS);
   }
 
   /**

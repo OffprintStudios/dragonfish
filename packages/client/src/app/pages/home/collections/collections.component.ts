@@ -8,6 +8,8 @@ import { AuthService } from '../../../services/auth';
 import { CollectionsService } from '../../../services/content';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
+import { Constants, Title } from '../../../shared';
+
 @Component({
   selector: 'app-collections',
   templateUrl: './collections.component.html',
@@ -27,7 +29,9 @@ export class CollectionsComponent implements OnInit {
     this.fetchData(this.pageNum);
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.COLLECTIONS);
+  }
 
   /**
    * Fetches a user's collections
