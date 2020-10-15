@@ -6,7 +6,7 @@ import { NewsContentModel } from '@pulp-fiction/models/content';
 import { NewsService } from '../services/content';
 
 @Injectable()
-export class NewsPageResolver implements Resolve<NewsContentModel> {
+export class PostPageResolver implements Resolve<NewsContentModel> {
     constructor (private newsService: NewsService) { }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<NewsContentModel> {
