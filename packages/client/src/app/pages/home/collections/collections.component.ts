@@ -9,6 +9,8 @@ import { AuthService } from '../../../services/auth';
 import { CollectionsService } from '../../../services/content';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
+import { Constants, Title } from '../../../shared';
+
 @Component({
   selector: 'app-collections',
   templateUrl: './collections.component.html',
@@ -29,6 +31,7 @@ export class CollectionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.COLLECTIONS);
     this.route.data.subscribe(data => {
       this.collections = data.feedData;
     });

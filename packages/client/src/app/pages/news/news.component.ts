@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
+import { Constants, Title } from '../../shared';
 
 @Component({
   selector: 'app-news',
@@ -20,6 +21,7 @@ export class NewsComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.posts = data.feedData;
     });
+    Title.setTwoPartTitle(Constants.NEWS);
   }
 
   /**

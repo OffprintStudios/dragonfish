@@ -13,6 +13,8 @@ import { UploadAvatarComponent } from '../../../components/modals/account';
 import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
 import { ContentFilter } from '@pulp-fiction/models/works';
 
+import { Constants, Title } from '../../../shared';
+
 
 @Component({
   selector: 'app-settings',
@@ -147,7 +149,9 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.SETTINGS);
+  }
   
   get passwordFields() { return this.changePasswordForm.controls; }
   get changeProfileFields() { return this.changeProfileForm.controls; }

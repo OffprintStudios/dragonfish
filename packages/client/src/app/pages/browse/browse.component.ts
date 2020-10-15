@@ -5,6 +5,8 @@ import { Work } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { calculateApprovalRating } from '../../util/functions';
 
+import { Constants, Title } from '../../shared';
+
 type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 
 @Component({
@@ -20,6 +22,7 @@ export class BrowseComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.BROWSE);  
     this.route.data.subscribe(data => {
       this.works = data.feedData;
     });
