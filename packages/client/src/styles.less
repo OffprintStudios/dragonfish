@@ -314,6 +314,92 @@ span.label-body {
     }
 }
 
+/* Page toolbar */
+div.tools {
+    width: 80%;
+    margin: 0 auto 2rem auto;
+    border: 1px solid var(--site-borders);
+    border-radius: 0px 0px 4px 4px;
+    border-top: none;
+    background: var(--site-controls-background);
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @media (max-width: 1150px) {
+        width: 95%;
+    }
+
+    div.tool-buttons {
+        flex: 1;
+        button.tool {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            box-shadow: none;
+            margin-bottom: 0;
+    
+            i-feather {
+                width: 16px;
+                height: 16px;
+                position: relative;
+                top: 0.3rem;
+                margin-right: 0.5rem;
+            }
+    
+            &.left {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+    
+            &.mid {
+                border-radius: 0;
+                border-left: 0;
+            }
+    
+            &.end {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left: 0;
+            }
+        }
+    }
+
+    form.tool-search {
+        margin-bottom: 0;
+
+        div.search-bar {
+            position: relative;
+
+            input.search-input {
+                display: inline-block;
+                box-shadow: none;
+                border-right: 0;
+                margin-bottom: 0;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            button.search-submit {
+                float: right;
+                box-shadow: none;
+                padding-left: 1rem;
+                padding-right: 1rem;
+                margin-bottom: 0;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+
+                i-feather {
+                    height: 16px;
+                    width: 16px;
+                }
+            }
+        }
+    }
+}
+
 /* Button with Feather */
 button, a.button, input[type=submit] {
     i-feather {
