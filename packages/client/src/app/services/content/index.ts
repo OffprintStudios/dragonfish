@@ -6,3 +6,4 @@ export { LocalSectionsService } from './local-sections.service';
 export { HistoryService } from './history.service';
 export { CommentsService } from './comments.service';
 export { MessagesService } from './messages.service';
+export { NewsService } from './news.service';

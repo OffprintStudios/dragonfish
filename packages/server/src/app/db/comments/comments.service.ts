@@ -7,6 +7,7 @@ import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
 import { BlogsService } from '../blogs/blogs.service';
 import { WorksService } from '../works/works.service';
+import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 
 @Injectable()
@@ -14,7 +15,8 @@ export class CommentsService {
     constructor(@InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
         @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
-        private readonly blogsService: BlogsService, private readonly worksService: WorksService) {}
+        @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
+        private readonly blogsService: BlogsService, private readonly worksService: WorksService, private readonly contentService: ContentService) {}
 
     /**
      * Creates a new comment that belongs to a blog.
@@ -30,10 +32,9 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save().then(async doc => {
-            await this.blogsService.addComment(blogId);
-            return doc;
-        });
+        let doc = await newComment.save();
+        await this.blogsService.addComment(blogId);
+        return doc;
     }
 
     /**
@@ -49,17 +50,36 @@ export class CommentsService {
             workId: workId,
             body: commentInfo.body
         });
+        
+        let doc = await newComment.save();
+        await this.worksService.addComment(workId);
+        return doc;
+    }
 
-        return await newComment.save().then(async doc => {
-            await this.worksService.addComment(workId);
-            return doc;
+    /**
+     * Creates a new comment that belongs to some content.
+     * 
+     * @param user A user's JWT payload
+     * @param contentId The content the comment belongs to
+     * @param commentInfo The comment's info
+     */
+    async createContentComment(user: any, contentId: string, commentInfo: models.CreateComment): Promise<documents.ContentCommentDocument> {
+        const newComment = new this.contentCommentModel({
+            user: user.sub,
+            contentId: contentId,
+            body: commentInfo.body
         });
+
+        let doc = await newComment.save();
+        await this.contentService.addComment(contentId);
+        return doc;
     }
 
     /**
      * Grabs the comments belonging to this blog.
      * 
      * @param blogId The blog that these comments belong to
+     * @param pageNum The current page
      */
     async getBlogComments(blogId: string, pageNum: number): Promise<PaginateResult<documents.BlogCommentDocument>> {
         return await this.blogCommentModel.paginate({"blogId": blogId}, {
@@ -73,9 +93,24 @@ export class CommentsService {
      * Grabs the comments belonging to this work.
      * 
      * @param workId The work that these comments belong to
+     * @param pageNum The current page
      */
     async getWorkComments(workId: string, pageNum: number): Promise<PaginateResult<documents.WorkCommentDocument>> {
         return await this.workCommentModel.paginate({"workId": workId}, {
+            sort: {"createdAt": 1},
+            page: pageNum,
+            limit: 25
+        });
+    }
+
+    /**
+     * Grabs the comments belonging to this content.
+     * 
+     * @param contentId The content that these comments belong to
+     * @param pageNum The current page
+     */
+    async getContentComments(contentId: string, pageNum: number): Promise<PaginateResult<documents.ContentCommentDocument>> {
+        return await this.contentCommentModel.paginate({"contentId": contentId}, {
             sort: {"createdAt": 1},
             page: pageNum,
             limit: 25

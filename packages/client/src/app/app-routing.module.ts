@@ -4,21 +4,21 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, WorksComponent,
     BlogsComponent, InboxComponent, SettingsComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
   
-  import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
-    PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
+  PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
   
-  import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
+import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
-  import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
+import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
   
-  import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
+import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
   
-  import { RegisterComponent } from './pages/account';
+import { RegisterComponent } from './pages/account';
   
-  import { AuthGuard } from './services/auth';
-  import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
+import { AuthGuard } from './services/auth';
+import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-  import { BlogPageResolver, PortfolioResolver, WorkPageResolver } from './resolvers';
+import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -38,7 +38,8 @@ const routes: Routes = [
     ]},
     {path: 'browse', component: BrowseComponent},
     {path: 'groups', component: GroupsComponent},
-    {path: 'news', component: NewsComponent},
+    {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'always'},
+    {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blog', component: PortBlogComponent},
@@ -63,6 +64,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
-    exports: [RouterModule]
+    exports: [RouterModule],
+    providers: [WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver]
 })
 export class AppRoutingModule {}
