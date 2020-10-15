@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { ItemKind } from '@pulp-fiction/models/comments';
 import { AuthService } from '../../services/auth';
 
 @Component({
@@ -16,12 +17,23 @@ export class PostPageComponent implements OnInit {
   currPost: NewsContentModel;
   category = NewsCategory;
 
+  pageNum = 1; // For comments pages
+  itemKind = ItemKind.Content; // Sets the item kind for comments
+
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; })
+    this.fetchData();
   }
 
   ngOnInit(): void {
     this.currPost = this.route.snapshot.data.postData as NewsContentModel;
+  }
+
+  private fetchData() {
+    const queryParams = this.route.snapshot.queryParamMap;    
+    if (queryParams.get('page') !== null) {
+      this.pageNum = +queryParams.get('page');
+    }
   }
 
   /**

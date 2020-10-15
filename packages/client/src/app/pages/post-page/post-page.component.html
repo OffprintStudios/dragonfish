@@ -20,3 +20,8 @@
         <div class="html-description" [innerHtml]="currPost.body | safeHtml"></div>
     </div>
 </div>
+
+<comments [itemId]="currPost._id"
+          [itemKind]="itemKind"
+          [pageNum]="pageNum"
+          (emitPageChange)="onPageChange($event)"></comments>
