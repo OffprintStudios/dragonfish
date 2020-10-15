@@ -16,6 +16,7 @@ import { Constants, Title } from '../../../shared';
 })
 export class PortCollectionsComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged-in user
+  portUser: FrontendUser; // The user whose portfolio this is
   portUserId: string; // The ID of the user whose portfolio this is
   portUserName: string; // The username associated with this portfolio
   portCollsData: PaginateResult<Collection>; // The list of public collections
@@ -31,7 +32,8 @@ export class PortCollectionsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    Title.setThreePartTitle(this.portUserName, Constants.COLLECTIONS);
+    this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
+    Title.setThreePartTitle(this.portUser.username, Constants.COLLECTIONS);
   }
 
   /**
