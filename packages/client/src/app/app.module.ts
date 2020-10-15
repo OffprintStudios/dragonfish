@@ -28,7 +28,9 @@ import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsCompo
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
     PortCollectionsComponent, PortBlogPageComponent, PortCollectionPageComponent } from './pages/portfolio';
 
-import { BrowseComponent, GroupsComponent, NewsComponent } from './pages';
+import { NewsComponent, PostPageComponent } from './pages/news';
+
+import { BrowseComponent, GroupsComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
@@ -100,7 +102,8 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent
+    WorkFormComponent,
+    PostPageComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
