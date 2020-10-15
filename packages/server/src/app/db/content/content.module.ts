@@ -49,6 +49,6 @@ import { NewsCategory } from '@pulp-fiction/models/content';
       inject: [getModelToken('Content')]
     }
   ],
-  exports: [ContentService, NewsService, WorksService, BlogsService]
+  exports: [ContentService, NewsService, /*WorksService, BlogsService*/]
 })
 export class ContentModule {}
