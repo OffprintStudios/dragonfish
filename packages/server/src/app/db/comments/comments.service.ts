@@ -32,10 +32,9 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save().then(async doc => {
-            await this.blogsService.addComment(blogId);
-            return doc;
-        });
+        let doc = await newComment.save();
+        await this.blogsService.addComment(blogId);
+        return doc;
     }
 
     /**
@@ -51,11 +50,10 @@ export class CommentsService {
             workId: workId,
             body: commentInfo.body
         });
-
-        return await newComment.save().then(async doc => {
-            await this.worksService.addComment(workId);
-            return doc;
-        });
+        
+        let doc = await newComment.save();
+        await this.worksService.addComment(workId);
+        return doc;
     }
 
     /**
@@ -72,10 +70,9 @@ export class CommentsService {
             body: commentInfo.body
         });
 
-        return await newComment.save().then(async doc => {
-            await this.contentService.addComment(contentId);
-            return doc;
-        });
+        let doc = await newComment.save();
+        await this.contentService.addComment(contentId);
+        return doc;
     }
 
     /**
