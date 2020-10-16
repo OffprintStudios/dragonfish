@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth';
 import { PortfolioService } from '../../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { PaginateResult } from '@pulp-fiction/models/util';
+import { PortBlogs } from '../../../models/site';
 
 import { Constants, Title } from '../../../shared';
 
@@ -24,32 +25,28 @@ export class PortBlogComponent implements OnInit {
 
   pageNum = 1;
 
-  constructor(private route: ActivatedRoute, private portService: PortfolioService, private authService: AuthService) {
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) {
     this.authService.currUser.subscribe(x => {this.currentUser = x;});
-    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
     this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
     Title.setThreePartTitle(this.portUser.username, Constants.BLOGS);
+    this.route.data.subscribe(data => {
+      const feedData = data.feedData as PortBlogs;
+      this.portUserId = feedData.userId;
+      this.portBlogsData = feedData.blogs;
+    });
   }
 
-  ngOnDestroy() {}
-
   /**
-   * Fetches the data for this user's published blogs list.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.route.parent.paramMap.subscribe(params => {
-      this.portUserId = params.get('id');
-      this.portUserName = params.get('username');
-      this.portService.getBlogList(this.portUserId, pageNum).subscribe(blogs => {
-        this.portBlogsData = blogs;
-        this.pageNum = pageNum;
-        this.loading = false;
-      });
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 
   /**

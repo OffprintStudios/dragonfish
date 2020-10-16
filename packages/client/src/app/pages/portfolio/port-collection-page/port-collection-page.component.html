@@ -1,9 +1,6 @@
 <div class="collection-container">
-    <div class="loader" *ngIf="loading">
-        <div class="lds-dual-ring"></div>
-    </div>
 
-    <ng-container *ngIf="!loading">
+    <ng-container>
         <ng-container *ngIf="collection.details.length > 0; else noWorks">
             <!--If this collection is private-->
             <ng-container *ngIf="collection.audit.isPublic === false; else publicColl">

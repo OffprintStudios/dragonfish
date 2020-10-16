@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { Work } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { BrowseService } from '../../services/content/browse.service';
-import { AlertsService } from '../../modules/alerts';
 import { calculateApprovalRating } from '../../util/functions';
 
 import { Constants, Title } from '../../shared';
@@ -17,37 +15,27 @@ type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
   styleUrls: ['./browse.component.less']
 })
 export class BrowseComponent implements OnInit {
-  loadingState: LoadingState = 'notstarted';
   works: PaginateResult<Work>;
 
   pageNum = 1;
 
-  constructor(private browseService: BrowseService, private alertService: AlertsService) { 
-    this.fetchData(this.pageNum);
-  }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit(): void {      
+  ngOnInit(): void {
     Title.setTwoPartTitle(Constants.BROWSE);  
+    this.route.data.subscribe(data => {
+      this.works = data.feedData;
+    });
   }
 
   /**
-   * Fetches data for the browse page.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {    
-    this.loadingState = 'loading';    
-    this.browseService.fetchAllPublishedWorks(pageNum).subscribe(allWorks => {
-      if (!allWorks || allWorks.docs.length === 0) {
-        this.loadingState = 'failure';
-      } else {
-        this.loadingState = 'success';
-        this.pageNum = pageNum;
-      }
-
-      this.works = allWorks;
-    }, (err: HttpErrorResponse) => {
-      this.loadingState = 'failure';
-      this.alertService.error(`Failed to retrieve stories. ${err.message}`);
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 
   /**

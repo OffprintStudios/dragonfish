@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
 import { PortfolioService, CollectionsService } from '../../../services/content';
+import { PortCollections } from '../../../models/site';
 
 import { Constants, Title } from '../../../shared';
 
@@ -26,31 +27,30 @@ export class PortCollectionsComponent implements OnInit {
   pageNum = 1;
 
   constructor(private authService: AuthService, private portService: PortfolioService,
-    private collsService: CollectionsService, private route: ActivatedRoute) {
+    private collsService: CollectionsService, private route: ActivatedRoute, private router: Router) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      const feedData = data.feedData as PortCollections;
+      this.portUserId = feedData.userId;
+      this.portCollsData = feedData.collections;
+    });
     this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
     Title.setThreePartTitle(this.portUser.username, Constants.COLLECTIONS);
   }
 
   /**
-   * Fetches the data for this user's public collections.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.route.parent.paramMap.subscribe(params => {
-      this.portUserId = params.get('id');
-      this.portUserName = params.get('username');
-      this.portService.getCollectionsList(this.portUserId, pageNum).subscribe(colls => {
-        this.portCollsData = colls;
-        this.pageNum = 1;
-        this.loading = false;
-      });
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
+
 
   /**
    * Checks to see if the portCollsData array contains collections. Returns true
@@ -91,7 +91,7 @@ export class PortCollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPublic(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -104,7 +104,7 @@ export class PortCollectionsComponent implements OnInit {
     this.submitting = true;
     this.collsService.setToPrivate(collId).subscribe(() => {
       this.submitting = false;
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -116,7 +116,7 @@ export class PortCollectionsComponent implements OnInit {
   askDelete(collId: string) {
     if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
       this.collsService.deleteCollection(collId).subscribe(() => {
-        this.fetchData(this.pageNum);
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
       });
     } else {
       return;

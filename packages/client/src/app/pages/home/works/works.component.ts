@@ -9,6 +9,7 @@ import { QueueService } from '../../../services/admin';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Work, ApprovalStatus, Categories } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Constants, Title } from '../../../shared';
 
@@ -30,14 +31,16 @@ export class WorksComponent implements OnInit {
     query: new FormControl(''),
   });
 
-  constructor(private authService: AuthService, private worksService: WorksService, 
-    private queueService: QueueService, public dialog: MatDialog) {
+  constructor(private authService: AuthService, private worksService: WorksService, private queueService: QueueService, 
+    public dialog: MatDialog, private route: ActivatedRoute, private router: Router) {
       this.authService.currUser.subscribe(x => { this.currentUser = x; });
-      this.fetchData(this.pageNum);
     }
 
   ngOnInit(): void {
     Title.setTwoPartTitle(Constants.MY_WORKS);
+    this.route.data.subscribe(data => {
+      this.works = data.feedData as PaginateResult<Work>;
+    });
   }
 
   /**
@@ -46,15 +49,13 @@ export class WorksComponent implements OnInit {
   get searchField() { return this.searchWorks.controls; }
 
   /**
-   * Fetches the list of works from the backend.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.worksService.fetchUserWorks(pageNum).subscribe(works => {
-      this.works = works;
-      this.pageNum = pageNum;
-      this.loading = false;
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 
   /**
@@ -76,7 +77,7 @@ export class WorksComponent implements OnInit {
   onSubmit(event: boolean) {
     if (event === true) {
       this.addingNewWork = false;
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     }
   }
 
@@ -99,7 +100,7 @@ export class WorksComponent implements OnInit {
   openEditWorkForm(work: Work) {
     const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: work}});
     editWorkRef.afterClosed().subscribe(() => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 
@@ -125,7 +126,7 @@ export class WorksComponent implements OnInit {
   askDelete(workId: string) {
     if (confirm('Are you sure you want to delete this work? This action is irreversible.')) {
       this.worksService.deleteWork(workId).subscribe(() => {
-        this.fetchData(this.pageNum);
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
         return;
       }, err => {
         console.log(err);
@@ -163,7 +164,7 @@ export class WorksComponent implements OnInit {
     }
 
     this.queueService.submitWork(work._id).subscribe(() => {
-      this.fetchData(this.pageNum);
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     });
   }
 

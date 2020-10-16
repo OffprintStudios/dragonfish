@@ -3,12 +3,8 @@
         <h2>Works</h2>
     </div>
     <hr class="header-divider">
-
-    <div class="loader" *ngIf="loading">
-        <div class="lds-dual-ring"></div>
-    </div>
     
-    <div *ngIf="!loading && !worksArePresent()">
+    <div *ngIf="!worksArePresent()">
         <div style="margin-top: 2rem; text-align: center;" *ngIf="currentUserIsSame()">
             <h3 style="margin-bottom: 0;">You haven't submitted any works yet.</h3>
             <p style="margin-top: 0;">Head on over to the My Works menu on the home page to get started!</p>
@@ -65,5 +61,5 @@
             </div>
         </ng-container>
     </div>
-    <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
 </div>

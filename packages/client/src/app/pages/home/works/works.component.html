@@ -1,17 +1,17 @@
-<div class="works-list-container">
-    <div class="works-list-header">
-        <h2>My Works</h2>
-        <div class="work-controls">
-            <form [formGroup]="searchWorks" class="search-works" (ngSubmit)="searchFor()">
-                <div class="works-search">
-                    <input type="text" formControlName="query" class="search-input" placeholder="Search works...">
-                    <button class="submit-work-search" type="submit"><i-feather name="search"></i-feather></button>
-                </div>
-            </form>
-            <button matRipple class="work-filter"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Filter</button>
-            <button matRipple matTooltip="Add work" matTooltipClass="offprint-tooltip" class="add-work" (click)="toggleNewWorkForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Work</button>
-        </div>
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool left" (click)="toggleNewWorkForm()"><i-feather name="plus"></i-feather>Work</button>
+        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
     </div>
+    <form [formGroup]="searchWorks" class="tool-search" (ngSubmit)="searchFor()">
+        <div class="search-bar">
+            <input type="text" formControlName="query" class="search-input" placeholder="Search works...">
+            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
+<div class="works-list-container">
     <div class="new-work-form">
         <work-form [username]="currentUser.username" [toggle]="addingNewWork" (onSubmit)="onSubmit($event)" (onCancel)="cancelNewWork($event)"></work-form>
     </div>
@@ -72,7 +72,7 @@
                     </div>
                 </div>
             </div>
-            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-template>
     </div>
 </div>

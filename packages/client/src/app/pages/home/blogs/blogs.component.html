@@ -1,17 +1,17 @@
-<div class="blogs-list-container">
-    <div class="blogs-list-header">
-        <h2>My Blogs</h2>
-        <div class="blog-controls">
-            <form [formGroup]="searchBlogs" class="search-blogs" (ngSubmit)="searchFor()">
-                <div class="blogs-search">
-                    <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
-                    <button matRipple class="submit-blog-search" type="submit"><i-feather name="search"></i-feather></button>
-                </div>
-            </form>
-            <button matRipple class="blog-filter"><i-feather name="filter" style="margin-right: 1rem;"></i-feather>Filter</button>
-            <button matRipple matTooltip="Add blog" matTooltipClass="offprint-tooltip" class="add-blog" (click)="openNewBlogForm()"><i-feather name="plus" style="margin-right: 1rem;"></i-feather>Blog</button>
-        </div>
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool left" (click)="openNewBlogForm()"><i-feather name="plus"></i-feather>Blog</button>
+        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
     </div>
+    <form [formGroup]="searchBlogs" class="tool-search" (ngSubmit)="searchFor()">
+        <div class="search-bar">
+            <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
+            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
+<div class="blogs-list-container">
     <div class="blogs-list">
         <div class="loader" *ngIf="loading">
             <div class="lds-dual-ring"></div>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </div>
-            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-template>
     </div>
 </div>
