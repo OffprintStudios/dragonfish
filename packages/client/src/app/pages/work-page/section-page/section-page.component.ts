@@ -61,7 +61,7 @@ export class SectionPageComponent implements OnInit {
   editSection = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
     body: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    authorsNote: new FormControl('', [Validators.minLength(3), Validators.maxLength(2000)]),
+    authorsNote: new FormControl(''),
   });
   // end author-mode stuff
 
