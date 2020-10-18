@@ -4,7 +4,7 @@ export const spookySlogans: string[] = [
     "Where even dead fandoms come back to life",
     "Scarier Than Your Shipping Folder",
     "Scarier Than Your Crackfics",
-    "THIS IS OFFPRINT-WEEN",
+    "THIS IS OFFPRINT-WEEN, THIS IS OFFPRINT-WEEN",
     "Spookiest stories since that one night by the campfire",
     "Spoopy!",
     "Happy Spooky Finger Puppet Ghost Month!",
