@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
     }
 
-    this.rotatingSlogan = spookySlogans[Math.floor(Math.random() * slogans.length)];
+    this.rotatingSlogan = spookySlogans[Math.floor(Math.random() * spookySlogans.length)];
   }
   
   ngOnInit() {
