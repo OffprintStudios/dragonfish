@@ -14,7 +14,6 @@ export const slogans: string[] = [
     "The archive we didn’t ask for, but the one we deserved",
     "Originally part of a larger publication",
     "We may or may not be Futurama fans",
-    "",
     "Acquitted by a Jury of Our Peers",
     `Crime-free since ${new Date().toString()}`,
     "May contain nuts",
