@@ -70,6 +70,8 @@
             <ng-select [items]="genresPoetry | keyvalue"
                         bindLabel="value"
                         bindValue="key"
+                        [multiple]="true"
+                        maxSelectedItems="{{ maxGenresPerPoem }}"
                         placeholder="Select genre"
                         clearAllText="Clear"
                         formControlName="theseGenres"
