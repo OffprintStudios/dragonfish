@@ -4,7 +4,7 @@ import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
-import { slogans, Theme } from './models/site';
+import { spookySlogans, slogans, Theme } from './models/site';
 import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
     }
 
-    this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
+    this.rotatingSlogan = spookySlogans[Math.floor(Math.random() * spookySlogans.length)];
   }
   
   ngOnInit() {
