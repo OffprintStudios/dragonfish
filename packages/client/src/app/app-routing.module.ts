@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, HistoryPageComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent } from './pages/portfolio';
+  BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
+  HistoryComponent } from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -28,7 +29,6 @@ const routes: Routes = [
       {path: '', children: [
         {path: 'latest', component: LatestComponent},
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
-        {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
       ]}
     ]},
@@ -43,6 +43,7 @@ const routes: Routes = [
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'history', component: HistoryComponent, canActivate: [AuthGuard]},
       {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
       {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
