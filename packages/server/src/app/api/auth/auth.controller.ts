@@ -124,8 +124,8 @@ export class AuthController {
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('update-profile')
     async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
-        if (newProfile.bio && newProfile.bio.length > 50) { 
-            throw new BadRequestException("Your bio must not be longer than 50 characters.");
+        if (newProfile.bio && newProfile.bio.length > 160) { 
+            throw new BadRequestException("Your bio must not be longer than 160 characters.");
         }
         return await this.authService.updateProfile(req.user, newProfile);
     }
