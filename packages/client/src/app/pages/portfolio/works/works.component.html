@@ -17,11 +17,10 @@
     </form>
 </div>
 
-<div class="new-work-form">
-    <work-form [username]="currentUser.username" [toggle]="addingNewWork" (onSubmit)="onSubmit($event)" (onCancel)="cancelNewWork($event)"></work-form>
-</div>
-
 <ng-container *ngIf="listView; else showGallery">
+    <div class="new-work-form">
+        <work-form [username]="currentUser.username" [toggle]="addingNewWork" (onSubmit)="onSubmit($event)" (onCancel)="cancelNewWork($event)"></work-form>
+    </div>
     <ng-container *ngIf="userWorksData !== null">
         <div class="work-list" *ngIf="userWorksData.totalDocs !== 0; else noWorks">
             <div class="work-item" *ngFor="let work of userWorksData.docs | paginate: {
