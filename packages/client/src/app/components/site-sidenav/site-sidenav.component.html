@@ -42,7 +42,7 @@
     <div class="user-footer">
         <p>Offprint Alpha, ver. {{ siteVersion }}</p>
         <button matRipple matTooltip="Portfolio" matTooltipClass="offprint-tooltip" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"><i-feather name="user"></i-feather></button>
-        <button matRipple matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']" class="mid"><i-feather name="settings"></i-feather></button>
+        <button matRipple matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'settings']" class="mid"><i-feather name="settings"></i-feather></button>
         <button matRipple matTooltip="Log out" matTooltipClass="offprint-tooltip" (click)="logout()"><i-feather name="log-out"></i-feather></button>
     </div>
   </div>

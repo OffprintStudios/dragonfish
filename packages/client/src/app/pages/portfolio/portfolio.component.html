@@ -85,7 +85,7 @@
                     </a>
                 </li>
                 <li *ngIf="currentUser && currentUserIsSame()">
-                    <a>
+                    <a [routerLink]="['settings']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="settings"></i-feather>
                         </span>
