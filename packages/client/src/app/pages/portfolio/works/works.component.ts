@@ -102,7 +102,7 @@ export class WorksComponent implements OnInit {
      * Checks to see if the works array is empty.
      */
     isWorksEmpty() {
-        if (this.worksData.docs.length === 0) {
+        if (this.worksData.totalDocs === 0) {
             return true;
         } else {
             return false;

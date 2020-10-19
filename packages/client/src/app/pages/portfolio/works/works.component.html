@@ -19,7 +19,7 @@
 
 <ng-container *ngIf="listView; else showGallery">
     <ng-container *ngIf="userWorksData !== null">
-        <div class="work-list" *ngIf="userWorksData.docs">
+        <div class="work-list" *ngIf="userWorksData.totalDocs !== 0; else noWorks">
             <div class="work-item" *ngFor="let work of userWorksData.docs | paginate: {
                 itemsPerPage: userWorksData.limit,
                 currentPage: pageNum,
@@ -70,11 +70,14 @@
                 </div>
             </div>
         </div>
+        <ng-template #noWorks>
+            <h4 style="text-align: center;">You haven't created any works yet.</h4>
+        </ng-template>
         <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
     </ng-container>
 </ng-container>
 <ng-template #showGallery>
-    <div class="works-feed">
+    <div class="works-feed" *ngIf="worksData.totalDocs !== 0; else noGalleryWorks">
         <ng-container *ngFor="let work of worksData.docs | paginate: {
             itemsPerPage: worksData.limit,
             currentPage: pageNum,
@@ -120,5 +123,14 @@
             </div>
         </ng-container>
     </div>
+    <ng-template #noGalleryWorks>
+        <div class="empty">
+            <h3>There's nothing here...</h3>
+            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to list view and add a new work?</p>
+            <ng-template #notSameUser>
+                <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+            </ng-template>
+        </div>
+    </ng-template>
     <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
 </ng-template>
