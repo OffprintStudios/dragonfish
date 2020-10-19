@@ -1,11 +1,117 @@
-<div class="tools">
+<div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
-        <ng-container *ngIf="listView; else galleryView">
-            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
-            <button matRipple class="tool end"><i-feather name="plus"></i-feather>Collection</button>
-        </ng-container>
-        <ng-template #galleryView>
-            <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
-        </ng-template>
+        <button matRipple class="tool" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
     </div>
 </div>
+
+<ng-container *ngIf="currentUser && currentUserIsSame(); else notUser">
+    <div class="collections-container">
+        <ng-container *ngIf="userCollsData.totalDocs === 0; else hasColls">
+            <div class="empty">
+                <h3>You haven't created any collections yet.</h3>
+                <p>Why not make your first one by hitting Add Collection button?</p>
+            </div>
+        </ng-container>
+    
+        <ng-template #hasColls>
+            <div class="collections-grid">
+                <div class="collections-box" *ngFor="let collection of userCollsData.docs | paginate: {
+                    itemsPerPage: userCollsData.limit,
+                    currentPage: pageNum,
+                    totalItems: userCollsData.totalDocs
+                }">
+                    <div class="coll-header">
+                        <div class="set-coll-visibility">
+                            <div class="submitter" *ngIf="submitting">
+                                <div class="lds-dual-ring"></div>
+                            </div>
+                            <ng-container *ngIf="!submitting" [ngSwitch]="collection.audit.isPublic">
+                                <a matTooltip="Public (click to set to private)" matTooltipClass="offprint-tooltip" (click)="setPrivate(collection._id)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
+                                <a matTooltip="Private (click to set to public)" matTooltipClass="offprint-tooltip" (click)="setPublic(collection._id)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
+                            </ng-container>
+                        </div>
+                        <div class="header">
+                            <h3><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'collection', collection._id]">{{ collection.name }}</a></h3>
+                        </div>
+                        <div class="delete-coll">
+                            <ng-container *ngIf="!submitting">
+                                <a matTooltip="Delete" matTooltipClass="offprint-tooltip" (click)="askDelete(collection._id)"><i-feather name="trash-2"></i-feather></a>
+                            </ng-container>
+                        </div>
+                    </div>
+                    <div class="coll-desc">
+                        {{ collection.desc }}
+                    </div>
+                    <div class="coll-list">
+                        <ng-container *ngIf="collection.details.length === 0; else displayWorks">
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <h4 style="margin-bottom: 0; font-size: 18px;">You haven't added any works yet.</h4>
+                                <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Head to any work page and click the Add to Collection button to get started!</p>
+                            </div>
+                        </ng-container>
+                        <ng-template #displayWorks>
+                            <ul>
+                                <li *ngFor="let entry of collection.details | slice:0:5">
+                                    <a [routerLink]="['/work', $any(entry.work)._id, $any(entry.work).title | slugify]">{{ $any(entry.work).title }}<span class="end-point">{{ $any(entry.work).stats.totWords | abbreviate }} word{{ $any(entry.work).stats.totWords | pluralize }}</span></a>
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </div>
+                    <div class="coll-footer">
+                        {{ collection.details.length | toLocaleString }} work{{ collection.details.length | pluralize }}
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #notUser>
+    <div class="collections-container">
+        <ng-container *ngIf="collsData.totalDocs === 0; else hasPublicColls">
+            <div class="empty">
+                <h3>You haven't created any collections yet.</h3>
+                <p>Why not make your first one by hitting Add Collection button?</p>
+            </div>
+        </ng-container>
+    
+        <ng-template #hasPublicColls>
+            <div class="collections-grid">
+                <div class="collections-box" *ngFor="let collection of collsData.docs | paginate: {
+                    itemsPerPage: collsData.limit,
+                    currentPage: pageNum,
+                    totalItems: collsData.totalDocs
+                }">
+                    <div class="coll-header">
+                        <div class="header">
+                            <h3><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'collection', collection._id]">{{ collection.name }}</a></h3>
+                        </div>
+                    </div>
+                    <div class="coll-desc">
+                        {{ collection.desc }}
+                    </div>
+                    <div class="coll-list">
+                        <ng-container *ngIf="collection.details.length === 0; else displayWorks">
+                            <div style="text-align: center; margin-top: 2rem;">
+                                <h4 style="margin-bottom: 0; font-size: 18px;">You haven't added any works yet.</h4>
+                                <p style="margin-top: 0; margin-bottom: 0; font-style: italic; font-size: 12px;">Head to any work page and click the Add to Collection button to get started!</p>
+                            </div>
+                        </ng-container>
+                        <ng-template #displayWorks>
+                            <ul>
+                                <li *ngFor="let entry of collection.details | slice:0:5">
+                                    <a [routerLink]="['/work', $any(entry.work)._id, $any(entry.work).title | slugify]">{{ $any(entry.work).title }}<span class="end-point">{{ $any(entry.work).stats.totWords | abbreviate }} word{{ $any(entry.work).stats.totWords | pluralize }}</span></a>
+                                </li>
+                            </ul>
+                        </ng-template>
+                    </div>
+                    <div class="coll-footer">
+                        {{ collection.details.length | toLocaleString }} work{{ collection.details.length | pluralize }}
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-template>
+    </div>
+</ng-template>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
@@ -8,6 +9,7 @@ import { AuthService } from '../../../services/auth';
 import { CollectionsService, PortfolioService } from '../../../services/content';
 import { PortCollections, PortWorks } from '../../../models/site';
 import { Title, Constants } from '../../../shared';
+import { CreateCollectionComponent } from '../../../components/modals/collections';
 
 @Component({
     selector: 'port-collections',
@@ -25,7 +27,7 @@ export class CollectionsComponent implements OnInit {
     listView = false;
 
     constructor(private route: ActivatedRoute, private router: Router, private collsService: CollectionsService,
-        private portService: PortfolioService, private authService: AuthService) {
+        private portService: PortfolioService, private authService: AuthService, private dialog: MatDialog) {
             this.authService.currUser.subscribe(x => {
                 this.currentUser = x;
             });
@@ -67,16 +69,10 @@ export class CollectionsComponent implements OnInit {
     }
 
     /**
-     * Switches the view
+     * Opens the create collection modal
      */
-    switchView() {
-        if (this.listView === true) {
-            this.listView = false;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
-        } else {
-            this.listView = true;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
-        }
+    openCreateCollectionModal() {
+        this.dialog.open(CreateCollectionComponent);
     }
 
     /**
