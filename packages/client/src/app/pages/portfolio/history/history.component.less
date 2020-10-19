@@ -13,7 +13,7 @@ div.history-container {
     }
 
     div.works-list {
-        width: 80%;
+        width: 95%;
         margin: 0 auto 0 auto;
         div.work-list {
             margin-bottom: 2rem;
@@ -23,6 +23,7 @@ div.history-container {
                 flex-direction: row;
                 justify-content: space-around;
                 border: 1px solid var(--site-borders);
+                border-radius: 4px;
                 box-shadow: var(--site-dropshadow);
                 margin-bottom: 2rem;
                 min-height: 12rem;
@@ -37,35 +38,14 @@ div.history-container {
                 div.work-check {
                     position: relative;
                     text-align: center;
-                    button.check-unpublished {
-                        color: var(--site-borders);
-                        box-shadow: none;
-                        border-top: none;
-                        border-bottom: none;
-                        border-left: none;
-                        height: 100%;
-                        padding-left: 15px;
-                        padding-right: 15px;
-                        margin-bottom: 0;
-
-                        &:hover {
-                            color: whitesmoke;
-                        }
-
-                        i-feather {
-                            width: 35px;
-                            height: 35px;
-                            top: 0.75rem;
-                            stroke-width: 1;
-                        }
-                    }
-
                     button.check-published {
                         color: var(--site-text-color);
                         box-shadow: none;
                         border-top: none;
                         border-bottom: none;
                         border-left: none;
+                        border-top-right-radius: 0;
+                        border-bottom-right-radius: 0;
                         height: 100%;
                         padding-left: 15px;
                         padding-right: 15px;

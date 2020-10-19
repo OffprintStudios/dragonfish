@@ -22,11 +22,11 @@ import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
-  BlogsComponent, InboxComponent, AlertsComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent, 
-  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
+  BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
+  HistoryComponent as HistoryPageComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -87,19 +87,17 @@ const toolbarOptions = [
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
+    BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
-    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent,
-    PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, BeatrizHeroComponent,
-    UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
+    PortfolioComponent, PortHomeComponent, PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, 
+    SectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
+    BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
+    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent,
-    PostPageComponent
+    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

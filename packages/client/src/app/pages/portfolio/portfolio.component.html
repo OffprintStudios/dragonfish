@@ -4,6 +4,29 @@
             <img [src]="portUser.profile.avatar">
             <div class="port-username">
                 <h3>{{ portUser.username }}</h3>
+                <ng-container [ngSwitch]="determineProminentRole(portUser.roles)">
+                    <div class="role admin" *ngSwitchCase="'Admin'">
+                        Admin
+                    </div>
+                    <div class="role moderator" *ngSwitchCase="'Moderator'">
+                        Moderator
+                    </div>
+                    <div class="role chat-moderator" *ngSwitchCase="'ChatModerator'">
+                        Chat Moderator
+                    </div>
+                    <div class="role contributor" *ngSwitchCase="'Contributor'">
+                        Contributor
+                    </div>
+                    <div class="role work-approver" *ngSwitchCase="'WorkApprover'">
+                        Work Approver
+                    </div>
+                    <div class="role vip" *ngSwitchCase="'VIP'">
+                        VIP
+                    </div>
+                    <div class="role supporter" *ngSwitchCase="'Supporter'">
+                        Supporter
+                    </div>
+                </ng-container>
                 <p>{{ portUser.profile.bio }}</p>
             </div>
             <div class="port-stats">
@@ -53,7 +76,7 @@
                     </a>
                 </li>
                 <li>
-                    <a [routerLink]="['blog']" routerLinkActive="router-link-active">
+                    <a [routerLink]="['blogs']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="coffee"></i-feather>
                         </span>
@@ -77,7 +100,7 @@
                 </li>
                 <ng-container *ngIf="currentUser && currentUserIsSame()">
                     <li>
-                        <a>
+                        <a [routerLink]="['history']" routerLinkActive="router-link-active">
                             <span class="link-icon">
                                 <i-feather name="layers"></i-feather>
                             </span>
@@ -86,7 +109,7 @@
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a [routerLink]="['notifications']" routerLinkActive="router-link-active">
                             <span class="link-icon">
                                 <i-feather name="bell"></i-feather>
                             </span>
@@ -95,7 +118,7 @@
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a [routerLink]="['conversations']" routerLinkActive="router-link-active">
                             <span class="link-icon">
                                 <i-feather name="message-circle"></i-feather>
                             </span>

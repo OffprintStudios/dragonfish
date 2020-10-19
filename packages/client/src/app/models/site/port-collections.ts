@@ -3,5 +3,5 @@ import { Collection } from '@pulp-fiction/models/collections';
 
 export interface PortCollections {
     collections: PaginateResult<Collection>;
-    userId: string;
+    userCollections: PaginateResult<Collection>;
 }

@@ -29,10 +29,21 @@ export class ContentService {
     async fetchOnePublished(contentId: string, kind: string, user?: JwtPayload) {
         if (kind === 'NewsContent') {
             const post = await this.contentModel.findOne({'_id': contentId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': true});
+            // If approved
             if (user) {
-                await this.addView(user, (post.author as any)._id, post._id);
-                return post;
+                // If a user is viewing this
+                const authorInfo = post.author as any;
+                if (authorInfo._id === user.sub) {
+                    // If the user is the author of this work
+                    return post;
+                } else {
+                    // If the user isn't the author
+                    await this.contentModel.updateOne({'_id': post._id}, {$inc: {'stats.views': 0.5}});
+                    return post;
+                }
             } else {
+                // If there is no user viewing this
+                await this.contentModel.updateOne({'_id': post._id}, {$inc: {'stats.views': 0.5}});
                 return post;
             }
         } else if (kind === 'WorkContent') {
@@ -84,20 +95,5 @@ export class ContentService {
         return await this.contentModel.updateOne({"_id": contentId}, {
             $inc: {"stats.comments": 1}
         });
-    }
-
-    /**
-     * Adds a view to a piece of content.
-     * 
-     * @param user The user adding the view
-     * @param authorId The author of the content
-     * @param contentId The content's ID
-     */
-    private async addView(user: JwtPayload, authorId: string, contentId: string): Promise<void> {
-        if (authorId === user.sub) {
-            return;
-        }
-
-        return await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.views': 1}});
     }
 }
