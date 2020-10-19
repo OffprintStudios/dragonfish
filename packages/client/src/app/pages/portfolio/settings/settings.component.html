@@ -1,0 +1,84 @@
+<div class="settings-container">
+    <div class="settings-cardrow">
+        <div class="settings-card">            
+            <div class="settings-card-content">
+                <h1>Change Email</h1>
+                <app-network-input 
+                    inputClasses="u-full-width" 
+                    passwordBoxClasses="u-full-width"
+                    inputType="email"
+                    inputPlaceholder="New Email"
+                    [inputValue]="currentUser.email"
+                    [uploadFunction]="changeEmail">
+                </app-network-input>                    
+            </div>
+        </div>
+        <div class="settings-card">
+            <form [formGroup]="changePasswordForm" (ngSubmit)="submitChangePasswordForm()">
+                <div class="settings-card-content">
+                    <h1>Change Password</h1>
+                    <input class="u-full-width" type="password" formControlName="currPassword" placeholder="Current Password">
+                    <input class="u-full-width" type="password" formControlName="newPassword" placeholder="New Password">
+                    <input class="u-full-width" type="password" formControlName="confirmNewPassword" placeholder="Confirm New Password">
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <form [formGroup]="changeProfileForm" (ngSubmit)="submitProfileForm()">
+                <div class="settings-card-content">
+                    <h1>Personal Settings</h1>
+                    <label>Theme Preference</label>
+                    <select class="u-full-width" formControlName="newThemePref">
+                        <option *ngFor="let themePref of themePrefOptions" [ngValue]="themePref">
+                            {{ themePref.displayName }}
+                        </option>
+                    </select>
+                    <label for="newDescription">Account Bio</label>
+                    <textarea class="u-full-width" style="max-width: 100%;" id="newDescription" formControlName="newBio"></textarea>
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <div class="settings-card-content">
+                <h1>Avatar</h1>
+                <img [src]="currentUser.profile.avatar">
+                <div style="text-align: center;">
+                    <button type="button" class="button-primary" style="margin-top: 2rem;" (click)="changeAvatar()">Change Avatar</button>
+                </div>
+            </div>
+        </div>
+        <div class="settings-card" *ngIf="currentUser && includesRoles(currentUser.roles)">
+            <form [formGroup]="updateTagline" (ngSubmit)="submitTagline()">
+                <div class="settings-card-content">
+                    <h1>Update Tagline</h1>
+                    <input class="u-full-width" type="text" formControlName="newTagline" placeholder="Just another wanderer">
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+        <div class="settings-card">
+            <form [formGroup]="setContentFilter" (ngSubmit)="submitContentFilter()">
+                <div class="settings-card-content">
+                    <h1>Content Filters</h1>
+                    <span class="toggles">
+                        <mat-slide-toggle formControlName="enableMature">See Mature</mat-slide-toggle>
+                    </span>
+                    <span class="toggles">
+                        <mat-slide-toggle formControlName="enableExplicit">See Explicit</mat-slide-toggle>
+                    </span>
+                </div>
+                <div class="settings-card-footer">
+                    <button type="submit" class="button-primary">Set Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

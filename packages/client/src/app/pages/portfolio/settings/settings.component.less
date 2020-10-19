@@ -1,0 +1,99 @@
+div.settings-container {
+    width: 100%;
+    div.settings-header {
+        max-width: 100%;
+        margin-top: 2rem;
+
+        h2 {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+    }
+
+    hr.header-divider {
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    div.settings-section-header {
+        text-align: center;
+        h4 {
+            font-size: 28px;
+            font-weight: 500;
+        }
+    }
+
+    form {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    div.settings-cardrow {
+        max-width: 100%;
+        margin: 2rem auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        grid-gap: 1rem;
+        div.settings-card {
+            border: 1px solid var(--site-borders);
+            box-shadow: var(--site-dropshadow);
+            padding: 3rem;
+            min-height: 10rem;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            form {
+                flex: 1;
+            }
+                div.settings-card-content {
+                    flex: 1;
+                    margin-bottom: 1.5rem;
+                    h1 {
+                        font-size: 30px;
+                        text-align: center;
+                        font-weight: 400;
+                        margin-bottom: 1.5rem;
+                    }
+                    img {
+                        width: 130px;
+                        height: 130px;
+                        margin: 0 auto;
+                        border-radius: 50%;
+                        border: 1px solid var(--site-borders);
+                        object-fit: cover;
+                        object-position: 50% 50%; // Determines the viewport position
+                        display: block;
+                        text-align: center;
+                    }
+                    textarea {
+                        color: var(--site-text-color);
+                    }
+
+                    span.toggles {
+                        display: block;
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+                div.settings-card-footer {
+                    position: relative;
+                    border-top: 1px solid var(--site-borders);
+                    button {
+                        margin-top: 1rem;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+    div.loader {
+        position: relative;        
+        margin-right: 0;
+        margin-top: 1rem;
+        text-align: center;
+    
+        .lds-dual-ring {
+            margin-right: 0.5rem;
+        }
+    }
+}

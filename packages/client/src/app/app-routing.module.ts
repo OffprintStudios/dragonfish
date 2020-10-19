@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent,
-    BlogsComponent, InboxComponent, SettingsComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
+    BlogsComponent, InboxComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
-  WorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
+  WorksComponent, PortCollectionsComponent, PortCollectionPageComponent, SettingsComponent } from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -32,7 +32,6 @@ const routes: Routes = [
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent, resolve: {feedData: MyBlogsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
-        {path: 'settings', canActivate: [AuthGuard], component: SettingsComponent},
         {path: 'alerts', canActivate: [AuthGuard], component: AlertsComponent},
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
       ]}
@@ -48,6 +47,7 @@ const routes: Routes = [
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: PortCollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
