@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -17,6 +18,10 @@ export class WorksComponent implements OnInit {
     portUser: FrontendUser;
     worksData: PaginateResult<Work>
     pageNum = 1;
+
+    searchWorks = new FormGroup({
+        query: new FormControl('')
+    });
 
     constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService) {
         this.authService.currUser.subscribe(x => {
@@ -37,5 +42,12 @@ export class WorksComponent implements OnInit {
     onPageChange(event: number) {
         this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
         this.pageNum = event;
+    }
+
+    /**
+     * Searches through a user's works
+     */
+    searchFor() {
+        return;
     }
 }
