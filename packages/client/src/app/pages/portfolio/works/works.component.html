@@ -1,9 +1,9 @@
 <div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
         <ng-container *ngIf="listView; else galleryView">
-            <button matRipple class="tool left"><i-feather name="plus"></i-feather>Work</button>
-            <button matRipple class="tool mid"><i-feather name="filter"></i-feather>Filter</button>
-            <button matRipple class="tool end" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
+            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
+            <button matRipple class="tool mid"><i-feather name="plus"></i-feather>Work</button>
+            <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
         </ng-container>
         <ng-template #galleryView>
             <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
