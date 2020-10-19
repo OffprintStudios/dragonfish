@@ -1,12 +1,63 @@
-<div class="tools">
+<div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
-        <button matRipple class="tool left"><i-feather name="plus"></i-feather>Blog</button>
-        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+        <ng-container *ngIf="listView; else galleryView">
+            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
+            <button matRipple class="tool mid"><i-feather name="plus"></i-feather>Blog</button>
+            <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+        </ng-container>
+        <ng-template #galleryView>
+            <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
+        </ng-template>
     </div>
-    <form [formGroup]="searchBlogs" class="tool-search" (ngSubmit)="searchFor()">
+    <form [formGroup]="searchBlogs" class="tool-search" (ngSubmit)="searchFor()" *ngIf="listView">
         <div class="search-bar">
             <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
             <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
         </div>
     </form>
 </div>
+
+<ng-container *ngIf="listView; else showGallery">
+    <ng-container *ngIf="userBlogsData !== null">
+        <div class="blog-list">
+            <div class="blog-item" *ngFor="let blog of userBlogsData.docs | paginate: {
+                itemsPerPage: userBlogsData.limit,
+                currentPage: pageNum,
+                totalItems: userBlogsData.totalDocs
+            }">
+                <div class="blog-check">
+                    <button  matTooltip="Published (click to unpublish)" matTooltipClass="offprint-tooltip" class="check-published" *ngIf="blog.published; else blogUnpublished">
+                        <i-feather name="check-circle"></i-feather>
+                    </button>
+                    <ng-template #blogUnpublished>
+                        <button  matTooltip="Unpublished (click to publish)" matTooltipClass="offprint-tooltip" class="check-unpublished">
+                            <i-feather name="circle"></i-feather>
+                        </button>
+                    </ng-template>
+                </div>
+                <div class="blog-info">
+                    <div class="info">
+                        <h3 *ngIf="blog.published; else unpubTitle"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h3>
+                        <ng-template #unpubTitle>
+                            <h3><a>{{ blog.title }}</a></h3>
+                        </ng-template>
+                        <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                        <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                        <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                        <h4 title="Created On"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                    </div>
+                </div>
+                <div class="blog-control-buttons">
+                    <button matTooltip="Preview" matTooltipClass="offprint-tooltip" class="blog-controls top"><i-feather name="eye"></i-feather></button>
+                    <button matTooltip="Edit" matTooltipClass="offprint-tooltip" class="blog-controls mid"><i-feather name="edit-3"></i-feather></button>
+                    <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="blog-controls bottom"><i-feather name="trash-2"></i-feather></button>
+                </div>
+            </div>
+        </div>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+    </ng-container>
+</ng-container>
+
+<ng-template #showGallery>
+
+</ng-template>
