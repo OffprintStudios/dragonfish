@@ -26,8 +26,8 @@
                                 <div class="lds-dual-ring"></div>
                             </div>
                             <ng-container *ngIf="!submitting" [ngSwitch]="collection.audit.isPublic">
-                                <a matTooltip="Public (click to set to private)" matTooltipClass="offprint-tooltip" (click)="setPrivate(collection._id)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
-                                <a matTooltip="Private (click to set to public)" matTooltipClass="offprint-tooltip" (click)="setPublic(collection._id)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
+                                <a matTooltip="Public (click to set to private)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collection._id, false)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
+                                <a matTooltip="Private (click to set to public)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collection._id, true)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
                             </ng-container>
                         </div>
                         <div class="header">

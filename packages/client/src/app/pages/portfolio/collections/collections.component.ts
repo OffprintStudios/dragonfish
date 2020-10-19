@@ -70,29 +70,25 @@ export class CollectionsComponent implements OnInit {
     }
 
     /**
-     * Sets a collection to public.
+     * Sets a collection to public or private depending on the value of the setPublic boolean.
      * 
      * @param collId The collection's ID
+     * @param setPublic whether or not this request is to set a collection to public or private
      */
-    setPublic(collId: string) {
-        this.submitting = true;
-        this.collsService.setToPublic(collId).subscribe(() => {
-            this.submitting = false;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-        });
-    }
-
-    /**
-     * Sets a collection to private.
-     * 
-     * @param collId The collection's ID
-     */
-    setPrivate(collId: string) {
-        this.submitting = true;
-        this.collsService.setToPrivate(collId).subscribe(() => {
-            this.submitting = false;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-        });
+    setPublicPrivate(collId: string, setPublic: boolean) {
+        if (setPublic) {
+            this.submitting = true;
+            this.collsService.setToPublic(collId).subscribe(() => {
+                this.submitting = false;
+                this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+            });
+        } else {
+            this.submitting = true;
+            this.collsService.setToPrivate(collId).subscribe(() => {
+                this.submitting = false;
+                this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+            });
+        }
     }
 
     /**
