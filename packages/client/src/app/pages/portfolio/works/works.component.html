@@ -2,7 +2,7 @@
     <div class="tool-buttons">
         <ng-container *ngIf="listView; else galleryView">
             <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
-            <button matRipple class="tool mid"><i-feather name="plus"></i-feather>Work</button>
+            <button matRipple class="tool mid" (click)="toggleNewWorkForm()"><i-feather name="plus"></i-feather>Work</button>
             <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
         </ng-container>
         <ng-template #galleryView>
@@ -15,6 +15,10 @@
             <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
         </div>
     </form>
+</div>
+
+<div class="new-work-form">
+    <work-form [username]="currentUser.username" [toggle]="addingNewWork" (onSubmit)="onSubmit($event)" (onCancel)="cancelNewWork($event)"></work-form>
 </div>
 
 <ng-container *ngIf="listView; else showGallery">

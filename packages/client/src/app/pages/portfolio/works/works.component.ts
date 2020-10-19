@@ -27,6 +27,7 @@ export class WorksComponent implements OnInit {
     pageNum = 1;
 
     listView = false;
+    addingNewWork = false;
 
     searchWorks = new FormGroup({
         query: new FormControl('')
@@ -87,6 +88,40 @@ export class WorksComponent implements OnInit {
             this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
         }
     }
+
+      /**
+   * Toggles the new work form.
+   */
+  toggleNewWorkForm() {
+    if (this.addingNewWork === true) {
+      this.addingNewWork = false;
+    } else {
+      this.addingNewWork = true;
+    }
+  }
+
+  /**
+   * Closes the form if adding the work succeeded.
+   * 
+   * @param event Success check
+   */
+  onSubmit(event: boolean) {
+    if (event === true) {
+      this.addingNewWork = false;
+      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+    }
+  }
+
+  /**
+   * Cancels adding a new work
+   * 
+   * @param event The cancel event
+   */
+  cancelNewWork(event: boolean) {
+    if (event === true) {
+      this.addingNewWork = false;
+    }
+  }
 
     /**
      * Calculates a work's approval rating.
