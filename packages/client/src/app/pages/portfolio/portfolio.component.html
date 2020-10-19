@@ -1,62 +1,3 @@
-<!--<div class="portfolio-header-container">
-    <div class="portfolio-header">
-        <div class="row">
-            <div class="three columns">
-                <div class="port-nav-avatar" *ngIf="portUser.profile.avatar;else noAvatar">
-                    <img src="{{ portUser.profile.avatar }}">
-                </div>
-                <ng-template #noAvatar>
-                    <div class="port-nav-avatar">
-                        <img src="assets/img/avatar.png">
-                    </div>
-                </ng-template>
-            </div>
-            <div class="nine columns">
-                <div class="port-nav-header">
-                    <h1><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]">{{ portUser.username }}</a></h1>
-                    <h2 *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h2>
-                </div>
-                <div class="port-nav">
-                    <span>
-                        <a class="port-nav-button button-left" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog']" routerLinkActive="router-link-active">{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
-                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'works']" routerLinkActive="router-link-active">{{ portUser.stats.works }} Work{{ portUser.stats.works | pluralize }}</a>
-                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'collections']" routerLinkActive="router-link-active">Collections</a>
-                    </span>
-                </div>
-                <div class="stats">
-                    <p>
-                        <a>{{ portUser.stats.watchers }} watcher{{ portUser.stats.watchers | pluralize }}</a> // 
-                        <a>{{ portUser.stats.watching }} watching</a>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="portfolio-user-controls" *ngIf="currentUserIsSame();else notPortUser">
-    <span class="control-left">
-        <button matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather></button>
-    </span>
-</div>
-
-<ng-template #notPortUser>
-    <div class="portfolio-user-controls" *ngIf="currentUser">
-        <span class="control-left">
-            <button class="left" matTooltip="Watch" matTooltipClass="offprint-tooltip" matRipple><i-feather name="eye"></i-feather></button>
-            <button class="mid" matTooltip="Start Conversation" matTooltipClass="offprint-tooltip" matRipple><i-feather name="message-circle"></i-feather></button>
-            <button class="right" matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip" matRipple><i-feather name="user-plus"></i-feather></button>
-        </span>
-        <span class="control-right">
-            <button matTooltip="Report" matTooltipClass="offprint-tooltip" matRipple><i-feather name="flag"></i-feather></button>
-        </span>
-    </div>
-</ng-template>
-
-<div style="margin-top: 2rem;">
-    <router-outlet></router-outlet>
-</div>-->
-
 <div class="port-container">
     <div class="port-sidebar">
         <div class="port-avatar">
@@ -79,6 +20,12 @@
                     <span class="stat">{{ portUser.stats.watchers | abbreviate }}</span>
                 </div>
             </div>
+        </div>
+        <div class="port-controls" *ngIf="currentUser && !currentUserIsSame()">
+            <button class="control left" matTooltip="Start a Conversation" matTooltipClass="offprint-tooltip"><i-feather name="message-circle"></i-feather></button>
+            <button class="control mid" matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip"><i-feather name="user-plus"></i-feather></button>
+            <button class="control mid" matTooltip="Watch" matTooltipClass="offprint-tooltip"><i-feather name="eye"></i-feather></button>
+            <button class="control right" matTooltip="Report" matTooltipClass="offprint-tooltip"><i-feather name="flag"></i-feather></button>
         </div>
         <div class="port-nav">
             <ul class="navigation-list">
@@ -128,7 +75,7 @@
                         <i-feather class="end-point" name="chevron-right"></i-feather>
                     </a>
                 </li>
-                <li>
+                <li *ngIf="currentUser && currentUserIsSame()">
                     <a>
                         <span class="link-icon">
                             <i-feather name="message-circle"></i-feather>
@@ -137,7 +84,7 @@
                         <i-feather class="end-point" name="chevron-right"></i-feather>
                     </a>
                 </li>
-                <li>
+                <li *ngIf="currentUser && currentUserIsSame()">
                     <a>
                         <span class="link-icon">
                             <i-feather name="settings"></i-feather>
