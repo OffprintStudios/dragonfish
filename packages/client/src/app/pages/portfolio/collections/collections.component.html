@@ -1,0 +1,11 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <ng-container *ngIf="listView; else galleryView">
+            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
+            <button matRipple class="tool end"><i-feather name="plus"></i-feather>Collection</button>
+        </ng-container>
+        <ng-template #galleryView>
+            <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
+        </ng-template>
+    </div>
+</div>

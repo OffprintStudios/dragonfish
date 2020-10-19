@@ -22,12 +22,11 @@ import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
+import { HomeComponent, LatestComponent, WatchingPageComponent, HistoryPageComponent,
   InboxComponent, AlertsComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortCollectionsComponent, 
-  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
-  BlogsComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
+  BlogsComponent, CollectionsComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -90,10 +89,9 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
-    PortfolioComponent, PortHomeComponent, PortCollectionsComponent,
-    PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
-    SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, BeatrizHeroComponent,
-    UploadCoverartComponent, SearchComponent, FindUsersComponent,
+    PortfolioComponent, PortHomeComponent, PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, 
+    SectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
+    BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent, AlertsComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,

@@ -38,7 +38,7 @@ export class BlogsComponent implements OnInit {
 
     ngOnInit(): void {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
-        Title.setThreePartTitle(this.portUser.username, Constants.WORKS);
+        Title.setThreePartTitle(this.portUser.username, Constants.BLOGS);
 
         this.route.data.subscribe(data => {
             const feedData = data.feedData as PortBlogs;

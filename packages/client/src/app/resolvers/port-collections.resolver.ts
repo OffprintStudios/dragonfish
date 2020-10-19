@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { FrontendUser } from '@pulp-fiction/models/users';
 import { Observable, zip, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { PortCollections } from '../models/site';
-import { PortfolioService } from '../services/content';
+import { AuthService } from '../services/auth';
+import { CollectionsService, PortfolioService } from '../services/content';
 
 @Injectable()
 export class PortCollectionsResolver implements Resolve<PortCollections> {
+    currentUser: FrontendUser;
     pageNum: number = 1;
 
-    constructor (private portService: PortfolioService) { }
+    constructor (private portService: PortfolioService, private authService: AuthService, private collsService: CollectionsService) {
+        this.authService.currUser.subscribe(x => {
+            this.currentUser = x;
+        });
+    }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PortCollections> {
         const userId = route.parent.paramMap.get('id');
@@ -20,15 +27,26 @@ export class PortCollectionsResolver implements Resolve<PortCollections> {
             this.pageNum = pageNum;
         }
 
-        const blogList = this.portService.getCollectionsList(userId, this.pageNum);
+        const collList = this.portService.getCollectionsList(userId, this.pageNum);
 
-        return zip(blogList, of(userId)).pipe(map(value => {
-            const portBlogs: PortCollections = {
-                collections: value[0],
-                userId: value[1]
-            };
+        if (this.currentUser) {
+            const userCollList = this.collsService.fetchUserCollections(this.pageNum);
 
-            return portBlogs;
-        }));
+            return zip(collList, userCollList).pipe(map(value => {
+                const portColl: PortCollections = {
+                    collections: value[0],
+                    userCollections: value[1]
+                };
+                return portColl;
+            }));
+        } else {
+            return zip(collList, of(null)).pipe(map(value => {
+                const portColl: PortCollections = {
+                    collections: value[0],
+                    userCollections: value[1]
+                };
+                return portColl;
+            }));
+        }
     }
 }
