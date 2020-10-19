@@ -40,7 +40,6 @@ export class BlogsService {
   public fetchUserBlogs(pageNum: number) {
     return this.http.get<PaginateResult<models.Blog>>(`${this.url}/fetch-user-blogs/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
-        console.log(res.body);
         return res.body;
       }), catchError(err => {
         return throwError(err);
