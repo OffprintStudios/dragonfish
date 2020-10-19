@@ -77,7 +77,7 @@
                 </li>
                 <ng-container *ngIf="currentUser && currentUserIsSame()">
                     <li>
-                        <a>
+                        <a [routerLink]="['history']" routerLinkActive="router-link-active">
                             <span class="link-icon">
                                 <i-feather name="layers"></i-feather>
                             </span>
