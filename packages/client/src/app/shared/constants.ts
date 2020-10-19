@@ -1,7 +1,7 @@
 export class Constants {
     public static siteVersion: string = '0.4.1';
 
-    public static ALERTS: string = "Alerts";
+    public static NOTIFICATIONS: string = "Notifications";
     public static BLOGS: string = "Blogs";
     public static BROWSE: string = "Browse";
     public static COLLECTIONS: string = "Collections";
