@@ -30,7 +30,6 @@ const routes: Routes = [
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
         {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent, resolve: {feedData: MyCollectionsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
-        /*{path: 'works', canActivate: [AuthGuard], component: WorksComponent, resolve: {feedData: MyWorksResolver}, runGuardsAndResolvers: 'always'},*/
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent, resolve: {feedData: MyBlogsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
         {path: 'settings', canActivate: [AuthGuard], component: SettingsComponent},
