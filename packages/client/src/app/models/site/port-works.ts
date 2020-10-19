@@ -3,5 +3,5 @@ import { Work } from '@pulp-fiction/models/works';
 
 export interface PortWorks {
     works: PaginateResult<Work>,
-    userId: string;
+    userWorks: PaginateResult<Work>
 }

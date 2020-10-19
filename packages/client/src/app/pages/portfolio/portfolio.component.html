@@ -1,62 +1,122 @@
-<div class="loader" *ngIf="loading">
-    <div class="lds-dual-ring"></div>
-</div>
-
-<div class="portfolio-header-container" *ngIf="!loading">
-    <div class="portfolio-header">
-        <div class="row">
-            <div class="three columns">
-                <div class="port-nav-avatar" *ngIf="portUser.profile.avatar;else noAvatar">
-                    <img src="{{ portUser.profile.avatar }}">
-                </div>
-                <ng-template #noAvatar>
-                    <div class="port-nav-avatar">
-                        <img src="assets/img/avatar.png">
-                    </div>
-                </ng-template>
+<div class="port-container">
+    <div class="port-sidebar">
+        <div class="port-avatar">
+            <img [src]="portUser.profile.avatar">
+            <div class="port-username">
+                <h3>{{ portUser.username }}</h3>
+                <p>{{ portUser.profile.bio }}</p>
             </div>
-            <div class="nine columns">
-                <div class="port-nav-header">
-                    <h1><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]">{{ portUser.username }}</a></h1>
-                    <h2 *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h2>
+            <div class="port-stats">
+                <div class="works" matTooltip="Works" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="feather"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.works | abbreviate }}</span>
                 </div>
-                <div class="port-nav">
-                    <span>
-                        <a class="port-nav-button button-left" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog']" routerLinkActive="router-link-active">{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
-                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'works']" routerLinkActive="router-link-active">{{ portUser.stats.works }} Work{{ portUser.stats.works | pluralize }}</a>
-                        <a class="port-nav-button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'collections']" routerLinkActive="router-link-active">Collections</a>
-                    </span>
+                <div class="blogs" matTooltip="Blogs" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="coffee"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.blogs | abbreviate }}</span>
                 </div>
-                <div class="stats">
-                    <p>
-                        <a>{{ portUser.stats.watchers }} watcher{{ portUser.stats.watchers | pluralize }}</a> // 
-                        <a>{{ portUser.stats.watching }} watching</a>
-                    </p>
+                <div class="watchers" matTooltip="Watchers" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="eye"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.watchers | abbreviate }}</span>
                 </div>
             </div>
         </div>
+        <div class="port-controls" *ngIf="currentUser && !currentUserIsSame()">
+            <button class="control left" matTooltip="Start a Conversation" matTooltipClass="offprint-tooltip"><i-feather name="message-circle"></i-feather></button>
+            <button class="control mid" matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip"><i-feather name="user-plus"></i-feather></button>
+            <button class="control mid" matTooltip="Watch" matTooltipClass="offprint-tooltip"><i-feather name="eye"></i-feather></button>
+            <button class="control right" matTooltip="Report" matTooltipClass="offprint-tooltip"><i-feather name="flag"></i-feather></button>
+        </div>
+        <div class="port-nav">
+            <ul class="navigation-list">
+                <li>
+                    <a [routerLink]="['home']" routerLinkActive="router-link-active">
+                        <span class="link-icon">
+                            <i-feather name="home"></i-feather>
+                        </span>
+                        Home
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['works']" routerLinkActive="router-link-active">
+                        <span class="link-icon">
+                            <i-feather name="feather"></i-feather>
+                        </span>
+                        <ng-container *ngIf="currentUser && currentUserIsSame(); else notMyWorks">
+                            My Works
+                        </ng-container>
+                        <ng-template #notMyWorks>
+                            Works
+                        </ng-template>
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['blog']" routerLinkActive="router-link-active">
+                        <span class="link-icon">
+                            <i-feather name="coffee"></i-feather>
+                        </span>
+                        <ng-container *ngIf="currentUser && currentUserIsSame(); else notMyBlogs">
+                            My Blogs
+                        </ng-container>
+                        <ng-template #notMyBlogs>
+                            Blog
+                        </ng-template>
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a [routerLink]="['collections']" routerLinkActive="router-link-active">
+                        <span class="link-icon">
+                            <i-feather name="bookmark"></i-feather>
+                        </span>
+                        Collections
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <ng-container *ngIf="currentUser && currentUserIsSame()">
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="layers"></i-feather>
+                            </span>
+                            Reading History
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="bell"></i-feather>
+                            </span>
+                            Notifications
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="message-circle"></i-feather>
+                            </span>
+                            Conversations
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['settings']" routerLinkActive="router-link-active">
+                            <span class="link-icon">
+                                <i-feather name="settings"></i-feather>
+                            </span>
+                            Settings
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
+        </div>
     </div>
-</div>
-
-<div class="portfolio-user-controls" *ngIf="currentUserIsSame();else notPortUser">
-    <span class="control-left">
-        <button matTooltip="Settings" matTooltipClass="offprint-tooltip" [routerLink]="['/home/settings']"><i-feather name="settings"></i-feather></button>
-    </span>
-</div>
-
-<ng-template #notPortUser>
-    <div class="portfolio-user-controls" *ngIf="currentUser">
-        <span class="control-left">
-            <button class="left" matTooltip="Watch" matTooltipClass="offprint-tooltip" matRipple><i-feather name="eye"></i-feather></button>
-            <button class="mid" matTooltip="Start Conversation" matTooltipClass="offprint-tooltip" matRipple><i-feather name="message-circle"></i-feather></button>
-            <button class="right" matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip" matRipple><i-feather name="user-plus"></i-feather></button>
-        </span>
-        <span class="control-right">
-            <button matTooltip="Report" matTooltipClass="offprint-tooltip" matRipple><i-feather name="flag"></i-feather></button>
-        </span>
+    <div class="port-body">
+        <router-outlet></router-outlet>
     </div>
-</ng-template>
-
-<div style="margin-top: 2rem;">
-    <router-outlet></router-outlet>
 </div>
