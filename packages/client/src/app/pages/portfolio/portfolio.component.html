@@ -81,7 +81,62 @@
             </div>
         </div>
         <div class="port-nav">
-    
+            <ul class="navigation-list">
+                <li>
+                    <a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'home']">
+                        <span class="link-icon">
+                            <i-feather name="home"></i-feather>
+                        </span>
+                        Home
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <span class="link-icon">
+                            <i-feather name="feather"></i-feather>
+                        </span>
+                        Works
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <span class="link-icon">
+                            <i-feather name="coffee"></i-feather>
+                        </span>
+                        Blog
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <span class="link-icon">
+                            <i-feather name="bookmark"></i-feather>
+                        </span>
+                        Collections
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <span class="link-icon">
+                            <i-feather name="inbox"></i-feather>
+                        </span>
+                        Inbox
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <span class="link-icon">
+                            <i-feather name="settings"></i-feather>
+                        </span>
+                        Settings
+                        <i-feather class="end-point" name="chevron-right"></i-feather>
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="port-body">
