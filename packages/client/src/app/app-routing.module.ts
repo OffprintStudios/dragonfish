@@ -49,7 +49,8 @@ const routes: Routes = [
       {path: 'works', component: PortWorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: PortCollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
-      {path: '', component: PortHomeComponent},
+      {path: 'home', component: PortHomeComponent},
+      {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
     {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    

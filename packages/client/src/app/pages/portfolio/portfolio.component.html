@@ -83,7 +83,7 @@
         <div class="port-nav">
             <ul class="navigation-list">
                 <li>
-                    <a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'home']">
+                    <a [routerLink]="['home']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="home"></i-feather>
                         </span>
@@ -92,7 +92,7 @@
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a [routerLink]="['works']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="feather"></i-feather>
                         </span>
@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a [routerLink]="['blog']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="coffee"></i-feather>
                         </span>
@@ -110,7 +110,7 @@
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a [routerLink]="['collections']" routerLinkActive="router-link-active">
                         <span class="link-icon">
                             <i-feather name="bookmark"></i-feather>
                         </span>
