@@ -76,8 +76,10 @@ export class WorksComponent implements OnInit {
     switchView() {
         if (this.listView === true) {
             this.listView = false;
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
         } else {
             this.listView = true;
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
         }
     }
 
