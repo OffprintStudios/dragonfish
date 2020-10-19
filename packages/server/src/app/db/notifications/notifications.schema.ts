@@ -6,4 +6,7 @@ import { generate } from 'shortid';
 export class NotificationsDocument extends Document {
     @Prop({default: generate()})
     readonly _id: string;
+
+    @Prop()
+    readonly userId: string;
 }
