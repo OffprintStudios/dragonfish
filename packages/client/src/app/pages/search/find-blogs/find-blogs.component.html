@@ -24,7 +24,8 @@
             <div *ngFor="let blog of results.docs | paginate: { id: 'blogs', itemsPerPage: results.limit, currentPage: pageNum, totalItems: results.totalDocs }">
                 <div class="blog-container">
                     <div class="blog-header">
-                        <h3>{{ blog.title }}</h3>
+                        <h3><a [routerLink]="['/portfolio', $any(blog.author)._id, $any(blog.author).username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h3>
+                        <h4>by <a [routerLink]="['/portfolio', $any(blog.author)._id, $any(blog.author).username | slugify]">{{ $any(blog.author).username }}</a></h4>
                         <div>
                             <h4 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
                             <span>//</span>

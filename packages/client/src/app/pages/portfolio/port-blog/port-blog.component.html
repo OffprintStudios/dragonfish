@@ -17,7 +17,7 @@
                     </span>
                 </div>
                 <div class="blog-header">
-                    <h1 class="header"><a [routerLink]="['/portfolio', portUserId, portUserName, 'blog', blog._id]">{{ blog.title }}</a></h1>
+                    <h1 class="header"><a [routerLink]="['/portfolio', portUserId, portUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h1>
                     <div style="text-align: center;">
                         <h2 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h2>
                         <span>//</span>
@@ -37,7 +37,7 @@
             </div>
             <div class="blog-footer">
                 <div style="text-align: center;">
-                    <a class="button" [routerLink]="['/portfolio', portUserId, portUserName, 'blog', blog._id]">Continue Reading</a>
+                    <a class="button" [routerLink]="['/portfolio', portUserId, portUser.username | slugify, 'blog', blog._id]">Continue Reading</a>
                 </div>    
             </div>
         </div>
@@ -55,7 +55,7 @@
     </div>
     <ng-template #noUser>
         <div style="text-align: center;">
-            <h3>{{portUserName}} hasn't posted anything yet. Check back later!</h3>
+            <h3>{{ portUser.username }} hasn't posted anything yet. Check back later!</h3>
         </div>
     </ng-template>
 </ng-template>

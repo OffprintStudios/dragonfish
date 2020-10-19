@@ -39,7 +39,7 @@
                         </ng-container>
                     </div>
                     <div class="header">
-                        <h3><a [routerLink]="['/portfolio', portUserId, portUserName, 'collection', collection._id]">{{ collection.name }}</a></h3>
+                        <h3><a [routerLink]="['/portfolio', portUserId, portUser.username | slugify, 'collection', collection._id]">{{ collection.name }}</a></h3>
                     </div>
                     <div class="delete-coll" *ngIf="currentUser && currentUserIsSame()">
                         <ng-container *ngIf="!submitting">
@@ -78,6 +78,6 @@
                 </div>
             </div>
         </div>
-        <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
     </ng-container>
 </div>

@@ -23,10 +23,10 @@ import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
-  BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
+  BlogsComponent, InboxComponent, AlertsComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
-    PortCollectionsComponent, PortBlogPageComponent, PortCollectionPageComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent, 
+  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -89,7 +89,7 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
-    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
+    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, BeatrizHeroComponent,
     UploadCoverartComponent, SearchComponent, FindUsersComponent,
