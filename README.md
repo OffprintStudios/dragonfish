@@ -12,20 +12,32 @@ It's still very much a work in progress.
 
 ## Setting Up The Dev Environment
 
-You must have the following tools installed on your system (or in a docker container):
+You must have the following tools installed on your system or in a docker container (use listed versions or latest):
 
 * NodeJS 14.6.0
-* Yarn 1.22.4
-* MongoDB 4.2.1
+* Yarn 1.22.4 (don't use 2.x)
+* MongoDB Community Server 4.2.1
+    * MongoDB Compass is recommended
 * The [Rust 1.30 (or later) toolchain](https://rustup.rs/).
     * You'll also need a working C compiler. On Ubuntu, the `build-essential` apt package is sufficient.
+
+For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
+
 * The Angular CLI 10.0.4 (globally, via Yarn)
 * The NestJS CLI 7.4.1 (globally, via Yarn)
 * The `nx` CLI (globally, via Yarn)
 
-Once you've installed and verified that these dependencies are working as expected, run `./build_dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries.
+Once you've installed and verified that these dependencies are working as expected...
+
+- Create a file named `.env` at the root of the repository
+- Copy  the contents of `sample.env` to your new `.env`
+- Edit `.env` to use an *actual* secret. (If you intend to test out image functionality, fill in the DIGITALOCEAN_SPACES_* variables with your information)
+
+Run `./build-dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries. SH files can be run using Git Bash on Windows.
 
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
+
+To view the source files, VS Code is recommended.
 
 ### Developing in Docker
 If you just want to use `docker-compose`, you can follow these steps.
@@ -60,12 +72,18 @@ Once inside the docker container...
 
 - Create a file named `.env` at the root of the repository
 - Copy  the contents of `sample.env` to your new `.env`
-- Edit `.env` to use an *actual* secret. (If you intend to test out image functionality, fill in the DIGITALOCEAN_SPACES_* variables with your information)
-- Inside the docker container, run `build_dev.sh`.
+- Edit `.env` to set DATABASE_URL=mongodb://localhost:27017
+- Edit `.env` to set JWT_SECRET to an *actual* secret, such as a plain random string
+- If you intend to test out image functionality, fill in the DIGITALOCEAN_SPACES_* variables with your information
+- Inside the docker container, run `build-dev.sh`.
 
 After following these steps, you should have your very own copy of Offprint in a Docker container with all dependencies installed.
 
 ## Running the application
+
+Installing MongoDB should have resulted in a persistent MongoDB service running, which is necessary for the site.
+
+Note that by default, the backend serves up the frontend, so in order to test the website, both of them must be running.
 
 To run the backend:
 ```bash
@@ -76,12 +94,34 @@ To run the frontend:
 ```bash
 nx build client
 ```
+
 On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
 ```bash
 nx build client --watch --poll=2000
 ```
 
-Note that by default, the backend serves up the frontend, so in order to test the website, both of them must be running.
+Then you should find the website at http://localhost:3333
+
+To run the Dashboard:
+```bash
+nx serve dashboard
+```
+
+Then you should find the website at http://localhost:4200. Note the backend still needs to be run for this.
+
+## Troubleshooting
+
+When running the backend, if you get a message like this:
+```bash
+nx run server:serve
+ð§  Checking for wasm-pack...
+
+â¹ï¸  Installing wasm-pack
+
+spawn npm ENOENT
+```
+
+Then you may have to manually install [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/).
 
 ## Contributing
 
