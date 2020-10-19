@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent,
   InboxComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
   
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
+import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionsComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent } from './pages/portfolio';
   
