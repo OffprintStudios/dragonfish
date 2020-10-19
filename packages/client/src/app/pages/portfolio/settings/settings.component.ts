@@ -51,7 +51,7 @@ export class SettingsComponent implements OnInit {
 
   changeProfileForm = new FormGroup({
     newThemePref: new FormControl(this.themePrefOptions[0]),
-    newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(100)])
+    newBio: new FormControl('', [Validators.minLength(3), Validators.maxLength(160)])
   });
 
   updateTagline = new FormGroup({
