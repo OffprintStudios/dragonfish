@@ -1,4 +1,4 @@
-<div class="portfolio-header-container">
+<!--<div class="portfolio-header-container">
     <div class="portfolio-header">
         <div class="row">
             <div class="three columns">
@@ -55,4 +55,36 @@
 
 <div style="margin-top: 2rem;">
     <router-outlet></router-outlet>
+</div>-->
+
+<div class="port-container">
+    <div class="port-sidebar">
+        <div class="port-avatar">
+            <img [src]="portUser.profile.avatar">
+            <div class="port-username">
+                <h3>{{ portUser.username }}</h3>
+                <p>{{ portUser.profile.bio }}</p>
+            </div>
+            <div class="port-stats">
+                <div class="works" matTooltip="Works" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="feather"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.works | abbreviate }}</span>
+                </div>
+                <div class="blogs" matTooltip="Blogs" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="coffee"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.blogs | abbreviate }}</span>
+                </div>
+                <div class="watchers" matTooltip="Watchers" matTooltipClass="offprint-tooltip">
+                    <span class="icon"><i-feather name="eye"></i-feather></span>
+                    <span class="stat">{{ portUser.stats.watchers | abbreviate }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="port-nav">
+    
+        </div>
+    </div>
+    <div class="port-body">
+        <router-outlet></router-outlet>
+    </div>
 </div>
