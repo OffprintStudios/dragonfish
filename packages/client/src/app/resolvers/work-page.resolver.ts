@@ -32,6 +32,7 @@ export class WorkPageResolver implements Resolve<WorkPageData> {
             } else {
                 this.sectionsService.setInfo(pubSections, work.author._id);
             }
+            this.worksService.thisWorkId = workId;
             return work;
         }));
 
