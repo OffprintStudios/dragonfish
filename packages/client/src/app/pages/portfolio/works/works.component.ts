@@ -17,6 +17,7 @@ export class WorksComponent implements OnInit {
     currentUser: FrontendUser;
     portUser: FrontendUser;
     worksData: PaginateResult<Work>
+    userWorksData: PaginateResult<Work>
     pageNum = 1;
 
     searchWorks = new FormGroup({
