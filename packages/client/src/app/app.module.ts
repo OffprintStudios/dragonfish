@@ -23,10 +23,11 @@ import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
-  BlogsComponent, InboxComponent, AlertsComponent } from './pages/home';
+  InboxComponent, AlertsComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent, 
-  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent } from './pages/portfolio';
+  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
+  BlogsComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';

@@ -6,4 +6,5 @@ export { PortCollectionsComponent } from './port-collections/port-collections.co
 export { PortCollectionPageComponent } from './port-collection-page/port-collection-page.component';
 
 export { WorksComponent } from './works/works.component';
+export { BlogsComponent } from './blogs/blogs.component';
 export { SettingsComponent } from './settings/settings.component';

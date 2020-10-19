@@ -1,0 +1,12 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool left"><i-feather name="plus"></i-feather>Blog</button>
+        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+    </div>
+    <form [formGroup]="searchBlogs" class="tool-search" (ngSubmit)="searchFor()">
+        <div class="search-bar">
+            <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
+            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
