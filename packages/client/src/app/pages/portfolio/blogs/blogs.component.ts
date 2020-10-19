@@ -61,15 +61,7 @@ export class BlogsComponent implements OnInit {
      * Checks to see if the currently logged in user is the same as the user who owns this portfolio.
      */
     currentUserIsSame() {
-        if (this.currentUser) {
-            if (this.portUser) {
-                if (this.currentUser._id === this.portUser._id) {
-                    return true;
-                } else {
-                return false;
-                }
-            }
-        }
+        return this.currentUser && this.portUser && this.currentUser._id === this.portUser._id;
     }
 
     /**
