@@ -73,7 +73,8 @@ export class BlogsComponent implements OnInit {
     }
 
     /**
-     * Switches the view
+     * Switches the view between list view and gallery view via a boolean check. List view is only 
+     * available for users who own this portfolio, everyone else just gets the default gallery view.
      */
     switchView() {
         if (this.listView === true) {
@@ -86,7 +87,8 @@ export class BlogsComponent implements OnInit {
     }
 
   /**
-   * Opens the new blog form.
+   * Opens the new blog form by calling on an Angular Material dialog box with the CreateBlogComponent.
+   * On close, navigate to the same page as it was before so that data can be reloaded.
    */
   openNewBlogForm() {
     const createBlogRef = this.dialog.open(CreateBlogComponent);
@@ -96,7 +98,8 @@ export class BlogsComponent implements OnInit {
   }
 
   /**
-   * Opens the edit blog form.
+   * Opens the edit blog form by calling on an Angular Material dialog box with the EditBlogComponent, along with a blog's data.
+   * On close, navigate to the same page as it was before so that data can be reloaded.
    */
   openEditForm(blog: Blog) {
     const editBlogRef = this.dialog.open(EditBlogComponent, {data: {blogData: blog}});
@@ -106,7 +109,8 @@ export class BlogsComponent implements OnInit {
   }
 
   /**
-   * Opens the blog preview.
+   * Opens the preview blog modal by calling on an Angular Material dialog box with the PreviewBlogComponent, along with a blog's data.
+   * On close, navigate to the same page as it was before so that data can be reloaded.
    */
   openPreview(blog: Blog) {
     const previewBlogRef = this.dialog.open(PreviewBlogComponent, {data: {blogData: blog}});
