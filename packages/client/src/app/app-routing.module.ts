@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, WorksComponent,
+import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent,
     BlogsComponent, InboxComponent, SettingsComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
-  PortWorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
+  WorksComponent, PortCollectionsComponent, PortCollectionPageComponent } from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -30,7 +30,7 @@ const routes: Routes = [
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
         {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent, resolve: {feedData: MyCollectionsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
-        {path: 'works', canActivate: [AuthGuard], component: WorksComponent, resolve: {feedData: MyWorksResolver}, runGuardsAndResolvers: 'always'},
+        /*{path: 'works', canActivate: [AuthGuard], component: WorksComponent, resolve: {feedData: MyWorksResolver}, runGuardsAndResolvers: 'always'},*/
         {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent, resolve: {feedData: MyBlogsResolver}, runGuardsAndResolvers: 'always'},
         {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
         {path: 'settings', canActivate: [AuthGuard], component: SettingsComponent},
@@ -46,7 +46,7 @@ const routes: Routes = [
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blog', component: PortBlogComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
-      {path: 'works', component: PortWorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: PortCollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'home', component: PortHomeComponent},

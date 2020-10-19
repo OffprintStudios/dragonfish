@@ -20,8 +20,7 @@ export class PortfolioComponent implements OnInit {
 
   currentUser: FrontendUser; // The currently logged-in user
 
-  constructor(private authService: AuthService, private router: Router, public route: ActivatedRoute,
-    private portService: PortfolioService, public dialog: MatDialog) {
+  constructor(private authService: AuthService, public route: ActivatedRoute, public dialog: MatDialog) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
