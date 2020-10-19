@@ -32,10 +32,10 @@
                     <button title="Pending" class="check-unpublished" *ngSwitchCase="'Pending'">
                         <i-feather name="clock"></i-feather>
                     </button>
-                    <button title="Rejected" class="check-unpublished" *ngSwitchCase="'Rejected'">
+                    <button title="Rejected" class="check-unpublished" (click)="submitWorkToQueue(work)" *ngSwitchCase="'Rejected'">
                         <i-feather name="x"></i-feather>
                     </button>
-                    <button title="Submit" class="check-unpublished" *ngSwitchDefault>
+                    <button title="Submit" class="check-unpublished" (click)="submitWorkToQueue(work)" *ngSwitchDefault>
                         <i-feather name="book"></i-feather>
                     </button>
                 </div>
@@ -65,8 +65,8 @@
                     </div>
                 </div>
                 <div class="work-control-buttons">
-                    <button  matTooltip="Edit" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;"><i-feather name="edit-3"></i-feather></button>
-                    <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="work-controls right"><i-feather name="trash-2"></i-feather></button>
+                    <button matTooltip="Edit" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
+                    <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
                 </div>
             </div>
         </div>
