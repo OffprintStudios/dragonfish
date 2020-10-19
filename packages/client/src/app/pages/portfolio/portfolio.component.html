@@ -75,24 +75,44 @@
                         <i-feather class="end-point" name="chevron-right"></i-feather>
                     </a>
                 </li>
-                <li *ngIf="currentUser && currentUserIsSame()">
-                    <a>
-                        <span class="link-icon">
-                            <i-feather name="message-circle"></i-feather>
-                        </span>
-                        Conversations
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
-                <li *ngIf="currentUser && currentUserIsSame()">
-                    <a [routerLink]="['settings']" routerLinkActive="router-link-active">
-                        <span class="link-icon">
-                            <i-feather name="settings"></i-feather>
-                        </span>
-                        Settings
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
+                <ng-container *ngIf="currentUser && currentUserIsSame()">
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="layers"></i-feather>
+                            </span>
+                            Reading History
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="bell"></i-feather>
+                            </span>
+                            Notifications
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span class="link-icon">
+                                <i-feather name="message-circle"></i-feather>
+                            </span>
+                            Conversations
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['settings']" routerLinkActive="router-link-active">
+                            <span class="link-icon">
+                                <i-feather name="settings"></i-feather>
+                            </span>
+                            Settings
+                            <i-feather class="end-point" name="chevron-right"></i-feather>
+                        </a>
+                    </li>
+                </ng-container>
             </ul>
         </div>
     </div>
