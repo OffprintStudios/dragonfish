@@ -59,13 +59,7 @@ export class CollectionsComponent implements OnInit {
      * that owns this portfolio.
      */
     currentUserIsSame() {
-        if (this.currentUser) {
-            if (this.currentUser._id === this.portUser._id) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        return this.currentUser && this.portUser && this.currentUser._id === this.portUser._id;
     }
 
     /**
