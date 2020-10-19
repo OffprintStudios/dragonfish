@@ -25,8 +25,8 @@ import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatche
 import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent, HistoryPageComponent,
   BlogsComponent, InboxComponent, SettingsComponent, AlertsComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent,
-    PortCollectionsComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent, 
+  PortBlogPageComponent, PortCollectionPageComponent, WorksComponent } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -89,7 +89,7 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
-    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortWorksComponent, PortCollectionsComponent,
+    PortfolioComponent, PortHomeComponent, PortBlogComponent, PortCollectionsComponent,
     PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, SectionPageComponent,
     SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, BeatrizHeroComponent,
     UploadCoverartComponent, SearchComponent, FindUsersComponent,
