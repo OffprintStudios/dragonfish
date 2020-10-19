@@ -126,8 +126,6 @@ export class BlogsComponent implements OnInit {
         console.log(err);
         return;
       });
-    } else {
-      return;
     }
   }
 
