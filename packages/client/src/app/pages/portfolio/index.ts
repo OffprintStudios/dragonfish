@@ -7,4 +7,5 @@ export { WorksComponent } from './works/works.component';
 export { BlogsComponent } from './blogs/blogs.component';
 export { CollectionsComponent } from './collections/collections.component';
 export { NotificationsComponent } from './notifications/notifications.component';
+export { ConversationsComponent } from './conversations/conversations.component';
 export { SettingsComponent } from './settings/settings.component';

@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent,
-  InboxComponent, HistoryPageComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent, HistoryPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, NotificationsComponent } from './pages/portfolio';
+  BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent } from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -30,7 +29,6 @@ const routes: Routes = [
         {path: 'latest', component: LatestComponent},
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
         {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
-        {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
       ]}
     ]},
@@ -46,6 +44,7 @@ const routes: Routes = [
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
+      {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}

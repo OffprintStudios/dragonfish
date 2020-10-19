@@ -22,11 +22,10 @@ import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
 import { IconsModule, AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, HistoryPageComponent,
-  InboxComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent, HistoryPageComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications } from './pages/portfolio';
+  BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations } from './pages/portfolio';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -87,7 +86,7 @@ const toolbarOptions = [
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, InboxComponent, SettingsComponent, UserMenuComponent,
+    BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
     PortfolioComponent, PortHomeComponent, PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, 
     SectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
@@ -97,7 +96,7 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent, PostPageComponent, PortNotifications
+    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
