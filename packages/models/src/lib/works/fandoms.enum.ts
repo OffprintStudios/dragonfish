@@ -64,6 +64,7 @@ export enum Fandoms {
     SwordOfTheStars = 'Sword of the Stars',
     AnimalCrossing = 'Animal Crossing',
     PowerRangers = 'Power Rangers',
+    CultistSimulator = 'Cultist Simulator',
     Other = 'Other' // placeholder for fandoms that haven't been added yet
 }
 
