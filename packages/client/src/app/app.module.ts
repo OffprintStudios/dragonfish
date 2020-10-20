@@ -16,7 +16,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CookieModule } from 'ngx-cookie';
-import { AngularFittextModule } from 'angular-fittext';
+import { Ng2FittextModule } from 'ng2-fittext';
 
 import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe } from './pipes';
@@ -103,7 +103,7 @@ const toolbarOptions = [
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, AngularFittextModule,
+    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',

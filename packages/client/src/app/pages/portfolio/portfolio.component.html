@@ -2,8 +2,8 @@
     <div class="port-sidebar">
         <div class="port-avatar">
             <img [src]="portUser.profile.avatar">
-            <div class="port-username">
-                <h3 fittext>{{ portUser.username }}</h3>
+            <div class="port-username" style="width: 100%;">
+                <h3 [fittext]="true" [maxFontSize]="50" [minFontSize]="20">{{ portUser.username }}</h3>
                 <ng-container [ngSwitch]="determineProminentRole(portUser.roles)">
                     <div class="role admin" *ngSwitchCase="'Admin'">
                         Admin

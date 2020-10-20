@@ -3042,13 +3042,6 @@ angular-feather@^6.0.10:
   dependencies:
     feather-icons "4.24.1"
 
-angular-fittext@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/angular-fittext/-/angular-fittext-2.1.1.tgz#533ed6abe2bc6d3d45bae6775f3db41ef1baed08"
-  integrity sha512-z2jEwSSjn7jLQik9DcBKZDDMSzn+Hltf0c5t2pMY9Vxf80vkpvaerPfUnU4d5oGDDQeWtuZnva2kS0bjZlPVpw==
-  dependencies:
-    tslib "^1.9.0"
-
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
@@ -9340,6 +9333,11 @@ ng2-file-upload@^1.4.0:
   integrity sha512-3J/KPU/tyh/ad6TFeUbrxX+SihUj0iOEt2Zsg4EX7mB3GFiQscXOfcUOxCkBtPWWWaqt3azrYbVGzsYa3/7NzQ==
   dependencies:
     tslib "^1.9.0"
+
+ng2-fittext@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/ng2-fittext/-/ng2-fittext-1.2.12.tgz#ea9b57ccc158e7381d82118c1ed1a5e67bfdb86a"
+  integrity sha512-UW0Ds9cBvCOLfwJFLundfmAnSg9gwsFYg9NewbmfkKqrgcvDQsGhnTdecXbn2hqZd3LkdbaFF+rJcwxLZFWFJg==
 
 ngx-cookie@^5.0.0:
   version "5.0.0"
