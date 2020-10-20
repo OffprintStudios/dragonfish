@@ -3,7 +3,7 @@
         <div class="port-avatar">
             <img [src]="portUser.profile.avatar">
             <div class="port-username">
-                <h3>{{ portUser.username }}</h3>
+                <h3 fittext>{{ portUser.username }}</h3>
                 <ng-container [ngSwitch]="determineProminentRole(portUser.roles)">
                     <div class="role admin" *ngSwitchCase="'Admin'">
                         Admin

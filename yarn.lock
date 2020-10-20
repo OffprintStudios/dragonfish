@@ -3042,6 +3042,13 @@ angular-feather@^6.0.10:
   dependencies:
     feather-icons "4.24.1"
 
+angular-fittext@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/angular-fittext/-/angular-fittext-2.1.1.tgz#533ed6abe2bc6d3d45bae6775f3db41ef1baed08"
+  integrity sha512-z2jEwSSjn7jLQik9DcBKZDDMSzn+Hltf0c5t2pMY9Vxf80vkpvaerPfUnU4d5oGDDQeWtuZnva2kS0bjZlPVpw==
+  dependencies:
+    tslib "^1.9.0"
+
 ansi-colors@^3.0.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ansi-colors/-/ansi-colors-3.2.4.tgz#e3a3da4bfbae6c86a9c285625de124a234026fbf"
