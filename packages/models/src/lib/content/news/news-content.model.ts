@@ -1,4 +1,4 @@
-import { ContentModel } from './content.model';
+import { ContentModel } from '../content.model';
 import { NewsCategory } from './news-category.enum';
 
 export interface NewsContentModel extends ContentModel {

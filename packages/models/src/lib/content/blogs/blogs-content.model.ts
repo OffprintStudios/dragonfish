@@ -1,4 +1,4 @@
-import { ContentModel } from './content.model';
+import { ContentModel } from '../content.model';
 
 export interface BlogsContentModel extends ContentModel {
     audit: {

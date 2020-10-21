@@ -1,0 +1,1 @@
+export { BlogsContentModel } from './blogs-content.model';
