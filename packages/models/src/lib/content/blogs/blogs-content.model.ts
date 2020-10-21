@@ -4,6 +4,7 @@ export interface BlogsContentModel extends ContentModel {
     audit: {
         published: boolean;
         publishedOn: Date;
+        releaseOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
     };

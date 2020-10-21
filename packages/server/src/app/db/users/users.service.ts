@@ -13,6 +13,7 @@ import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
 import { createHash } from 'crypto';
 import { CollectionsService } from '../collections/collections.service';
+import { JwtPayload } from '@pulp-fiction/models/auth';
 
 @Injectable()
 export class UsersService {
@@ -183,6 +184,21 @@ export class UsersService {
      */
     async updateBlogCount(userId: string, blogCount: number): Promise<void> {
         await this.userModel.updateOne({ "_id": userId }, { "stats.blogs": blogCount });
+    }
+
+    /**
+     * Updates the number of blogs a user has tied to their account. Should only count blogs
+     * that are published and not deleted.
+     * 
+     * @param user The user to update
+     * @param addOne Whether to add one or subtract one
+     */
+    async changeBlogCount(user: JwtPayload, addOne: boolean): Promise<void> {
+        if (addOne === true) {
+            await this.userModel.updateOne({'_id': user.sub}, {$inc: {'stats.blogs': 1}});
+        } else {
+            await this.userModel.updateOne({'_id': user.sub}, {$inc: {'stats.blogs': -1}});
+        }
     }
 
     /**
