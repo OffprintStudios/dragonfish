@@ -1,34 +1,30 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-import { NotificationKind, Notification } from '@pulp-fiction/models/notifications';
+import { NotificationKind, UnpublishedNotification } from '@pulp-fiction/models/notifications';
 
 @Schema({
     'discriminatorKey': 'kind',
     'timestamps': true,
-    autoIndex: true,
 })
-export class NotificationDocument extends Document implements Notification {    
-    @Prop({required: true, index: true})
-    destinationUserId: string;    
-    
+export class UnpublishedNotificationDocument extends Document implements UnpublishedNotification {
     @Prop({required: true})
     sourceId: string;
 
     @Prop({required: true, type: String, enum: Object.keys(NotificationKind), default: 'Comment'})
-    kind: NotificationKind
+    kind: NotificationKind;
 
     @Prop({required: true})
     title: string;
 
     @Prop()
-    body?: string | undefined;
+    body?: string;
 
     @Prop({required: true, default: Date.now()})
     createdAt: Date;
 
     @Prop({required: true, default: Date.now()})
-    updatedAt: Date
+    updatedAt: Date;
 }
 
-export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
+export const UnpublishedNotificationSchema = SchemaFactory.createForClass(UnpublishedNotificationDocument);
