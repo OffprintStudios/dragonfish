@@ -20,14 +20,13 @@ export class ContentController {
         return await this.contentService.fetchOne(contentId, kind, req.user, isPublished);
     }
 
-    @UseGuards(OptionalAuthGuard)
     @Get('fetch-many')
-    async fetchMany(@Request() req: any, @Query('pageNum') pageNum: number, @Query('kind') kind: ContentKind, @Query('isPublished') isPublished: boolean) {
+    async fetchMany(@Query('pageNum') pageNum: number, @Query('kind') kind: ContentKind, @Query('isPublished') isPublished: boolean, @Query('userId') userId: string) {
         if (isNullOrUndefined(pageNum)) {
             throw new BadRequestException(`You must include a page number.`);
         }
 
-        return await this.contentService.fetchMany(pageNum, kind, isPublished, req.user);
+        return await this.contentService.fetchMany(pageNum, kind, isPublished, userId);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

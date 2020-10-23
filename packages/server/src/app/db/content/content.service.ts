@@ -71,7 +71,7 @@ export class ContentService {
      * @param isPublished (Optional) Checks whether item needs to be published
      * @param user (Optional) Checks to see if you need content owned by a specific user
      */
-    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, user?: JwtPayload): Promise<PaginateResult<ContentDocument>> {
+    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, userId?: string): Promise<PaginateResult<ContentDocument>> {
         let query = {'audit.isDeleted': false};
         let paginateOptions = {page: pageNum, limit: 15};
 
@@ -93,8 +93,8 @@ export class ContentService {
             }
         }
 
-        if (user) {
-            query['author'] = user.sub;
+        if (userId) {
+            query['author'] = userId;
         }
 
         return await this.contentModel.paginate(query, paginateOptions);
