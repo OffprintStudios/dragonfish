@@ -70,7 +70,7 @@ export class ContentService {
      * @param isPublished (Optional) Checks whether item needs to be published
      * @param user (Optional) Checks to see if you need content owned by a specific user
      */
-    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, user?: JwtPayload) {
+    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, user?: JwtPayload): Promise<PaginateResult<ContentDocument>> {
         let query = {'audit.isDeleted': false};
         let paginateOptions = {page: pageNum, limit: 15};
 
@@ -96,7 +96,17 @@ export class ContentService {
             query['author'] = user.sub;
         }
 
-        return await this.contentModel.find(query, paginateOptions);
+        return await this.contentModel.paginate(query, paginateOptions);
+    }
+
+    /**
+     * Sets the `isDeleted` flag of a piece of content belonging to the specified user to `true`.
+     * 
+     * @param user The owner fo this content
+     * @param contentId The content's ID
+     */
+    async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
+        return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.isDeleted': true});
     }
 
     /**

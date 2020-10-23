@@ -6,13 +6,7 @@ import { AuthGuard } from '../../../guards';
 
 @Controller('blogs')
 export class BlogsController {
-    constructor(private readonly blogsService: BlogsService) {}
-
-    @UseGuards(AuthGuard)
-    @Get('fetch-user-blogs/:pageNum')
-    async fetchUserBlogs(@Request() req: any, @Param('pageNum') pageNum: number) {
-        return await this.blogsService.fetchUserBlogs(req.user, pageNum);
-    }
+    constructor(private readonly blogsService: BlogsService, private readonly contentService: ContentService) {}
 
     @UseGuards(AuthGuard)
     @Put('create-blog')
@@ -27,9 +21,9 @@ export class BlogsController {
     }
 
     @UseGuards(AuthGuard)
-    @Patch('delete-blog')
-    async deleteBlog(@Request() req: any, @Body() blogId: {blogId: string}) {
-        return await this.blogsService.deleteBlog(req.user, blogId.blogId);
+    @Patch('delete-blog/:blogId')
+    async deleteBlog(@Request() req: any, @Param('blogId') blogId: string) {
+        return await this.contentService.deleteOne(req.user, blogId);
     }
 
     @UseGuards(AuthGuard)
@@ -39,15 +33,15 @@ export class BlogsController {
     }
 
     @UseGuards(AuthGuard)
-    @Patch('edit-blog')
-    async editBlog(@Request() req: any, @Body() editBlog: BlogForm) {
+    @Patch('edit-blog/:blogId')
+    async editBlog(@Request() req: any, @Param('blogId') blogId: string, @Body() editBlog: BlogForm) {
         if (editBlog.title.length < 3 || editBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
         if (editBlog.body.length < 3) {
             throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
-        return await this.blogsService.editBlog(req.user, editBlog);
+        return await this.blogsService.editBlog(req.user, blogId, editBlog);
     }
 
 }
