@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
 
-import * as models from '@pulp-fiction/models/blogs';
-import { BlogsService } from '../../../db/blogs/blogs.service';
+import { BlogForm, PubStatus } from '@pulp-fiction/models/content';
+import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
 
 @Controller('blogs')
@@ -16,7 +16,7 @@ export class BlogsController {
 
     @UseGuards(AuthGuard)
     @Put('create-blog')
-    async createBlog(@Request() req: any, @Body() newBlog: models.CreateBlog) {
+    async createBlog(@Request() req: any, @Body() newBlog: BlogForm) {
         if (newBlog.title.length < 3 || newBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
@@ -33,14 +33,14 @@ export class BlogsController {
     }
 
     @UseGuards(AuthGuard)
-    @Patch('set-publish-status')
-    async setPublishStatus(@Request() req: any, @Body() pubStatus: models.SetPublishStatus) {
-        return await this.blogsService.setPublishStatus(req.user, pubStatus);
+    @Patch('set-publish-status/:blogId')
+    async setPublishStatus(@Request() req: any, @Param('blogId') blogId: string, @Body() pubStatus: PubStatus) {
+        return await this.blogsService.changePublishStatus(req.user, blogId, pubStatus)
     }
 
     @UseGuards(AuthGuard)
     @Patch('edit-blog')
-    async editBlog(@Request() req: any, @Body() editBlog: models.EditBlog) {
+    async editBlog(@Request() req: any, @Body() editBlog: BlogForm) {
         if (editBlog.title.length < 3 || editBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }

@@ -12,7 +12,7 @@ import { countPlaintextWords } from '@pulp-fiction/word_counter';
 
 @Injectable()
 export class BlogsService {
-    constructor(@InjectModel('BlogsContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
+    constructor(@InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         private readonly usersService: UsersService) {}
 
     /**

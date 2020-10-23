@@ -3,7 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
-import { BlogsModule } from '../../db/blogs/blogs.module';
+// import { BlogsModule } from '../../db/blogs/blogs.module';
 import { WorksModule } from '../../db/works/works.module';
 import { PortfolioController } from './portfolio/portfolio.controller';
 import { UsersModule } from '../../db/users/users.module';
@@ -22,7 +22,7 @@ import { ContentModule as ContentCollectionModule } from '../../db/content';
 
 @Module({
   imports: [
-    BlogsModule, WorksModule, UsersModule, ImagesModule, CollectionsModule,
+    /*BlogsModule,*/ WorksModule, UsersModule, ImagesModule, CollectionsModule,
     HistoryModule, CommentsModule, MessagesModule, ContentCollectionModule,
     JwtModule.registerAsync({
       useFactory: () => ({

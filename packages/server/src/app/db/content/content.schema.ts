@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { ContentModel } from '@pulp-fiction/models/content';
+import { ContentModel, ContentKind } from '@pulp-fiction/models/content';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
@@ -46,8 +46,8 @@ export class ContentDocument extends Document implements ContentModel {
         isDeleted: boolean;
     };
 
-    @Prop({index: true})
-    readonly kind: string;
+    @Prop({type: String, enum: Object.keys(ContentKind), index: true})
+    readonly kind: ContentKind;
 
     @Prop()
     readonly createdAt: Date;

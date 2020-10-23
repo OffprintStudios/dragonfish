@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
+import { ContentKind } from '@pulp-fiction/models/content';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { isNullOrUndefined } from '../../util';
 
@@ -20,94 +21,82 @@ export class ContentService {
     }
 
     /**
-     * Fetches one published item from the content collection via ID.
+     * Fetches one published item from the content collection via ID and ContentKind. Optionally
+     * filters by whether or not the document is published. Also checks to see if a user is making
+     * this request, and adds a view where appropriate.
      * 
      * @param contentId A content's ID
      * @param kind A content's Kind
+     * @param user (Optional) The user making this request
+     * @param isPublished (Optional) Check to determine if the document should be published or not
      */
-    async fetchOnePublished(contentId: string, kind: string, user?: JwtPayload) {
-        if (kind === 'NewsContent') {
-            // find news doc
-            const post = await this.contentModel.findOne({'_id': contentId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': true});
-            // If approved
-            if (isNullOrUndefined(user)) {
-                // If a user is viewing this
-                const authorInfo = post.author as any;
-                if (authorInfo._id === user.sub) {
-                    // If the user is the author of this work
-                    return post;
-                } else {
-                    // If the user isn't the author
-                    await this.addView(contentId);
-                    return post;
-                }
-            } else {
-                // If there is no user viewing this
-                await this.addView(contentId);
-                return post;
+    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
+        let query = {'_id': contentId, 'kind': kind, 'audit.isDeleted': false};
+        if (isPublished) {
+            switch (kind) {
+                case ContentKind.BlogContent:
+                    query['audit.isPublished'] = true;
+                    break;
+                case ContentKind.WorkContent:
+                    // change query parameters for works
+                    break;
+                case ContentKind.NewsContent:
+                    query['audit.isPublished'] = true;
+                    break;
+                default: 
+                    throw new BadRequestException(`The document kind you requested does not exist.`);
             }
-        } else if (kind === 'WorkContent') {
-            // find work doc
-        } else if (kind === 'BlogContent') {
-            //find blog doc
-            const post = await this.contentModel.findOne({'_id': contentId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': true});
-            // If approved
-            if (isNullOrUndefined(user)) {
-                // If a user is viewing this
-                const authorInfo = post.author as any;
-                if (authorInfo._id === user.sub) {
-                    // If the user is the author of this work
-                    return post;
-                } else {
-                    // If the user isn't the author
-                    await this.addView(contentId);
-                    return post;
-                }
-            } else {
-                // If there is no user viewing this
-                await this.addView(contentId);
-                return post;
-            }
+        }
+        const doc = await this.contentModel.findOne(query);
+        if (isNullOrUndefined(user)) {
+            return doc;
         } else {
-            throw new BadRequestException(`The designated document kind does not exist.`);
+            const authorInfo = doc.author as any;
+            if (authorInfo._id === user.sub) {
+                return doc;
+            } else {
+                await this.addView(contentId);
+                return doc;
+            }
         }
     }
 
     /**
-     * Finds a bunch of content filtered by kind
+     * Finds a bunch of content documents. Can be filtered by kind and whether or not the items need
+     * to be published. TIP: Both `kind` and `isPublished` must be set in order for either to work.
      * 
-     * @param kind The kind of doc
      * @param pageNum The page number to grab
-     * @param published Optional parameter, checks whether item needs to be published
+     * @param kind (Optional) Filters by ContentKind
+     * @param isPublished (Optional) Checks whether item needs to be published
+     * @param user (Optional) Checks to see if you need content owned by a specific user
      */
-    async fetchManyByKind(kind: string, pageNum: number, published?: boolean):  Promise<PaginateResult<ContentDocument>> {
-        if (published === true) {
-            if (kind === 'NewsContent') {
-                // find news docs
-                return await this.contentModel.paginate({'kind': kind, 'audit.published': true, 'audit.isDeleted': false}, {
-                    sort: {'audit.publishedOn': -1},
-                    page: pageNum,
-                    limit: 15
-                });
-            } else if (kind === 'WorkContent') {
-                // find work docs
-            } else if (kind === 'BlogContent') {
-                // find blog docs
-                return await this.contentModel.paginate({'kind': kind, 'audit.published': true, 'audit.isDeleted': false}, {
-                    sort: {'audit.publishedOn': -1},
-                    page: pageNum,
-                    limit: 15
-                });
-            } else {
-                throw new BadRequestException(`The designated document kind does not exist.`);
+    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, user?: JwtPayload) {
+        let query = {'audit.isDeleted': false};
+        let paginateOptions = {page: pageNum, limit: 15};
+
+        if (!isNullOrUndefined(kind) && isPublished) {
+            switch (kind) {
+                case ContentKind.BlogContent:
+                    query['kind'] = ContentKind.BlogContent;
+                    query['audit.isPublished'] = true;
+                    break;
+                case ContentKind.WorkContent:
+                    // change query parameters for works
+                    break;
+                case ContentKind.NewsContent:
+                    query['kind'] = ContentKind.NewsContent;
+                    query['audit.isPublished'] = true;
+                    break;
+                default: 
+                    throw new BadRequestException(`The document kind you requested does not exist.`);
             }
-        } else {
-            return await this.contentModel.paginate({'kind': kind, 'audit.isDeleted': false}, {
-                sort: {'audit.createdAt': -1},
-                page: pageNum,
-                limit: 15
-            });
         }
+
+        if (user) {
+            query['author'] = user.sub;
+        }
+
+        return await this.contentModel.find(query, paginateOptions);
     }
 
     /**

@@ -51,8 +51,8 @@ import { UsersModule } from '../users/users.module';
       inject: [getModelToken('Content')]
     },
     {
-      provide: getModelToken('BlogsContent'),
-      useFactory: contentModel => contentModel.discriminator('BlogsContent', new Schema({
+      provide: getModelToken('BlogContent'),
+      useFactory: contentModel => contentModel.discriminator('BlogContent', new Schema({
         audit: {
           published: {type: Boolean, default: false},
           publishedOn: {type: Date, default: null},
