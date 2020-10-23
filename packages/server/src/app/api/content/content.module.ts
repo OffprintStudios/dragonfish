@@ -19,6 +19,7 @@ import { MessagesController } from './messages/messages.controller';
 import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
+import { ContentController } from './content.controller';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { ContentModule as ContentCollectionModule } from '../../db/content';
   controllers: [
     BlogsController, WorksController, PortfolioController, 
     CollectionsController, HistoryController, CommentsController, 
-    MessagesController, NewsController
+    MessagesController, NewsController, ContentController
   ]
 })
 export class ContentModule {}

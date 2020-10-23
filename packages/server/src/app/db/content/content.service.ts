@@ -12,15 +12,6 @@ export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>) {}
 
     /**
-     * Fetches one item from the content collection via ID.
-     * 
-     * @param contentId A content's ID
-     */
-    async fetchOneUnpublished(contentId: string) {
-        return await this.contentModel.findById(contentId).where('audit.isDeleted', false);
-    }
-
-    /**
      * Fetches one published item from the content collection via ID and ContentKind. Optionally
      * filters by whether or not the document is published. Also checks to see if a user is making
      * this request, and adds a view where appropriate.
@@ -48,14 +39,24 @@ export class ContentService {
             }
         }
         const doc = await this.contentModel.findOne(query);
+
         if (isNullOrUndefined(user)) {
-            return doc;
-        } else {
-            const authorInfo = doc.author as any;
-            if (authorInfo._id === user.sub) {
+            if (isPublished) {
+                await this.addView(contentId);
                 return doc;
             } else {
-                await this.addView(contentId);
+                return doc;
+            }
+        } else {
+            if (isPublished) {
+                const authorInfo = doc.author as any;
+                if (authorInfo._id === user.sub) {
+                    return doc;
+                } else {
+                    await this.addView(contentId);
+                    return doc;
+                }
+            } else {
                 return doc;
             }
         }
