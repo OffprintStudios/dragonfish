@@ -17,7 +17,7 @@ export class MyStuffComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private stuffService: MyStuffService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.myContent = this.route.snapshot.data.stuffData as ContentModel[];

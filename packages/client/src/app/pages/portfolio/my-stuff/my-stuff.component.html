@@ -16,8 +16,8 @@
 </div>
 
 <mat-menu #createMenu="matMenu">
-    <button mat-menu-item><i-feather name="book"></i-feather>Add Work</button>
-    <button mat-menu-item><i-feather name="coffee"></i-feather>Add Blog</button>
+    <button mat-menu-item [routerLink]="['new-work']"><i-feather name="book"></i-feather>Add Work</button>
+    <button mat-menu-item [routerLink]="['new-blog']"><i-feather name="coffee"></i-feather>Add Blog</button>
 </mat-menu>
 
 <mat-menu #filterMenu="matMenu">
@@ -26,13 +26,19 @@
     <button mat-menu-item>By Date Added</button>
 </mat-menu>
 
-<ng-container *ngIf="myContent.length === 0; else hasContent">
-    <div class="empty">
-        <h3>It's pretty lonely here...</h3>
-        <p>Why not add some content by hitting the create button?</p>
-    </div>
+<ng-container *ngIf="route.children.length === 0; else openedForms">
+    <ng-container *ngIf="myContent.length === 0; else hasContent">
+        <div class="empty">
+            <h3>It's pretty lonely here...</h3>
+            <p>Why not add some content by hitting the create button?</p>
+        </div>
+    </ng-container>
+    
+    <ng-template #hasContent>
+        there's something here!
+    </ng-template>
 </ng-container>
 
-<ng-template #hasContent>
-    there's something here!
+<ng-template #openedForms>
+    <router-outlet></router-outlet>
 </ng-template>
