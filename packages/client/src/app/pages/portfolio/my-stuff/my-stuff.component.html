@@ -26,9 +26,13 @@
     <button mat-menu-item>By Date Added</button>
 </mat-menu>
 
-<ng-container *ngIf="myContent.length === 0">
+<ng-container *ngIf="myContent.length === 0; else hasContent">
     <div class="empty">
         <h3>It's pretty lonely here...</h3>
         <p>Why not add some content by hitting the create button?</p>
     </div>
 </ng-container>
+
+<ng-template #hasContent>
+    there's something here!
+</ng-template>
