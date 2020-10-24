@@ -67,7 +67,11 @@ export class ContentService {
      * @param user The user making the request
      */
     async fetchAll(user: JwtPayload) {
-        return await this.contentModel.find({'author': user.sub, 'audit.isDeleted': false});
+        return await this.contentModel.find({
+            'author': user.sub, 
+            'audit.isDeleted': false, 
+            $or: [{'kind': ContentKind.BlogContent}, {'kind': ContentKind.WorkContent}]
+        });
     }
 
     /**
