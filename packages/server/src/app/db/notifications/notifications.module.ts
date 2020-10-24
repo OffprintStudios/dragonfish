@@ -33,6 +33,6 @@ import { NotificationSubscriptionSchema } from './notification-subscriptions.sch
     ])
   ],  
   providers: [NotificationsService, UnpublishedNotificationsService],
-  exports: [NotificationsService, UnpublishedNotificationsService],
+  exports: [NotificationsService],
 })
 export class NotificationsModule {}

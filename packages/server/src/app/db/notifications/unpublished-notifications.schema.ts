@@ -11,6 +11,9 @@ export class UnpublishedNotificationDocument extends Document implements Unpubli
     @Prop({required: true})
     sourceId: string;
 
+    @Prop()
+    sourceParentId?: string;
+
     @Prop({required: true, type: String, enum: Object.keys(NotificationKind), default: 'Comment'})
     kind: NotificationKind;
 

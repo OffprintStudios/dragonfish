@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { Document } from 'mongoose';
 
 @Schema({
     autoIndex: true    
