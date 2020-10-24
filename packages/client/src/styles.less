@@ -1171,3 +1171,32 @@ div.user-buttons {
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
     color: var(--site-accent);
 }
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: var(--site-accent-hover);
+}
+
+.mat-form-field.mat-focused.mat-primary {
+    color: var(--site-text-color) !important;
+    & .mat-select-arrow {
+        color: var(--site-accent-hover);
+    }
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.7em 0 0.7em 0 !important;
+    top: -0.25em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+    top: 1.8em;
+    margin-top: -0.18em;
+}
+
+.mat-form-field-label {
+    color: var(--site-text-color);
+}
+
+.mat-input-element::placeholder {
+    color: var(--site-text-color);
+}
