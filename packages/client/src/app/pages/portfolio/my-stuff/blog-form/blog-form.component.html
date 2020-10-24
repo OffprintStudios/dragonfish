@@ -1,9 +1,9 @@
 <div class="form-container">
     <div class="form-header">
         <h3>Create a New Blog</h3>
-        <button>Save</button>
+        <button (click)="submitForm()">Save</button>
     </div>
-    <form [formGroup]="blogForm">
+    <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
         <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>Title</mat-label>
             <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">

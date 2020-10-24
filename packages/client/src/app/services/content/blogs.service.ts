@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import * as models from '@pulp-fiction/models/blogs';
+import { BlogForm } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
@@ -22,7 +23,7 @@ export class BlogsService {
    *
    * @param info The blog's information.
    */
-  public createBlog(info: models.CreateBlog) {
+  public createBlog(info: BlogForm) {
     return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
