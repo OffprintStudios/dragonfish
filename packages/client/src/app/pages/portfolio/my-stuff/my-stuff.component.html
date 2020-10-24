@@ -53,7 +53,28 @@
     </ng-container>
     
     <ng-template #hasContent>
-        there's something here!
+        <div class="content-grid">
+            <ng-container *ngFor="let content of myContent">
+                <!--For blogs-->
+                <ng-container *ngIf="content.kind === 'BlogContent'">
+                    <div class="content-box">
+                        <div class="content-preview">
+                            <i-feather name="coffee"></i-feather>
+                        </div>
+                        <div class="content-description">
+                            <h5>{{ content.title }}</h5>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <!--For works-->
+                <ng-container *ngIf="content.kind === 'WorkContent'">
+                    <div class="content-box">
+                        this is a work!
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
     </ng-template>
 </ng-container>
 

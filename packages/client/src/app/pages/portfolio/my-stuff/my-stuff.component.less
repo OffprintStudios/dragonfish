@@ -3,3 +3,39 @@ div.tools {
     border-radius: 4px;
     width: 98.8%;
 }
+
+div.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    width: 95%;
+    margin: 0 auto;
+
+    div.content-box {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--site-borders);
+        border-radius: 4px;
+        min-height: 20rem;
+
+        div.content-preview {
+            flex: 1;
+            padding: 5px;
+            align-self: center;
+            i-feather {
+                position: relative;
+                width: 50px;
+                vertical-align: middle;
+            }
+        }
+
+        div.content-description {
+            text-align: center;
+            border-top: 1px solid var(--site-borders);
+            h5 {
+                font-weight: 500;
+                font-size: 16px;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
