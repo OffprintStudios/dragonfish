@@ -1,1 +1,19 @@
-<p>my-stuff works!</p>
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool left"><i-feather name="loader"></i-feather>Create</button>
+        <button matRipple class="tool mid"><i-feather name="plus"></i-feather>Folder</button>
+        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+    </div>
+    <form [formGroup]="searchStuff" class="tool-search">
+        <div class="search-bar">
+            <input type="text" formControlName="query" class="search-input" placeholder="Search your stuff...">
+            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
+<div class="empty">
+    <h3>Pardon the dust!</h3>
+    <p>Looks like you came here a bit too early.</p>
+    <p>Keep an eye on the patch notes to know when this feature will be available!</p>
+</div>
