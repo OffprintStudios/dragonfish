@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentModel } from '@pulp-fiction/models/content';
 import { MyStuffService } from '../../../services/user';
@@ -16,7 +17,10 @@ export class MyStuffComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private stuffService: MyStuffService) { }
+  constructor(private stuffService: MyStuffService, private route: ActivatedRoute, private router: Router) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.myContent = this.route.snapshot.data.stuffData as ContentModel[];
+    console.log(this.myContent);
+  }
 }

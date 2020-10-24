@@ -3,6 +3,9 @@
         <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
         <button matRipple class="tool mid" matTooltip="Create Folder" matTooltipClass="offprint-tooltip"><i-feather class="no-text" name="folder-plus"></i-feather></button>
         <button matRipple class="tool end" matTooltip="Filter" matTooltipClass="offprint-tooltip" [matMenuTriggerFor]="filterMenu"><i-feather class="no-text" name="filter"></i-feather></button>
+
+        <button matRipple class="tool left" style="margin: 0 0 0 1rem;" matTooltip="List View" matTooltipClass="offprint-tooltip"><i-feather class="no-text" name="list"></i-feather></button>
+        <button matRipple class="tool end" matTooltip="Icon View" matTooltipClass="offprint-tooltip"><i-feather name="no-text" name="grid"></i-feather></button>
     </div>
     <form [formGroup]="searchStuff" class="tool-search">
         <div class="search-bar">
@@ -13,8 +16,8 @@
 </div>
 
 <mat-menu #createMenu="matMenu">
-    <button mat-menu-item><i-feather name="plus"></i-feather>Add Work</button>
-    <button mat-menu-item><i-feather name="plus"></i-feather>Add Blog</button>
+    <button mat-menu-item><i-feather name="book"></i-feather>Add Work</button>
+    <button mat-menu-item><i-feather name="coffee"></i-feather>Add Blog</button>
 </mat-menu>
 
 <mat-menu #filterMenu="matMenu">
@@ -23,8 +26,9 @@
     <button mat-menu-item>By Date Added</button>
 </mat-menu>
 
-<div class="empty">
-    <h3>Pardon the dust!</h3>
-    <p>Looks like you came here a bit too early.</p>
-    <p>Keep an eye on the patch notes to know when this feature will be available!</p>
-</div>
+<ng-container *ngIf="myContent.length === 0">
+    <div class="empty">
+        <h3>It's pretty lonely here...</h3>
+        <p>Why not add some content by hitting the create button?</p>
+    </div>
+</ng-container>
