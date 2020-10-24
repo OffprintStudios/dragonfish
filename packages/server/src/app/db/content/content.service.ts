@@ -12,27 +12,25 @@ export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>) {}
 
     /**
-     * Fetches one published item from the content collection via ID and ContentKind. Optionally
-     * filters by whether or not the document is published. Also checks to see if a user is making
-     * this request, and adds a view where appropriate.
+     * Fetches one item from the content collection via ID and ContentKind. 
      * 
      * @param contentId A content's ID
      * @param kind A content's Kind
      * @param user (Optional) The user making this request
      * @param isPublished (Optional) Check to determine if the document should be published or not
      */
-    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
         let query = {'_id': contentId, 'kind': kind, 'audit.isDeleted': false};
         if (isPublished) {
             switch (kind) {
                 case ContentKind.BlogContent:
-                    query['audit.isPublished'] = true;
+                    query['audit.published'] = true;
                     break;
                 case ContentKind.WorkContent:
                     // change query parameters for works
                     break;
                 case ContentKind.NewsContent:
-                    query['audit.isPublished'] = true;
+                    query['audit.published'] = true;
                     break;
                 default: 
                     throw new BadRequestException(`The document kind you requested does not exist.`);
