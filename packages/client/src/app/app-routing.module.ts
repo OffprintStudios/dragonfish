@@ -6,7 +6,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent } from './pages/portfolio';
+  HistoryComponent, MyStuffComponent} from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -38,6 +38,7 @@ const routes: Routes = [
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
+      {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], runGuardsAndResolvers: 'always'},
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
