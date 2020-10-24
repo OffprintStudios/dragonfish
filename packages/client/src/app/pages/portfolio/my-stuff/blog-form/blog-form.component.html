@@ -1,1 +1,14 @@
-<p>blog-form works!</p>
+<div class="form-container">
+    <div class="form-header">
+        <h3>Create a New Blog</h3>
+        <button>Save</button>
+    </div>
+    <form [formGroup]="blogForm">
+        <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+        </mat-form-field>
+
+        <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+    </form>
+</div>
