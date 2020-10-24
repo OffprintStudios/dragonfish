@@ -12,6 +12,6 @@ export class MyStuffService {
   constructor(private http: HttpClient) { }
 
   public getContent() {
-    return this.http.get(`${this.url}/fetch-many?`)
+    return this.http.get(`${this.url}/fetch-many?pageNum=`)
   }
 }

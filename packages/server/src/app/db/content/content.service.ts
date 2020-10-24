@@ -63,38 +63,36 @@ export class ContentService {
     }
 
     /**
-     * Finds a bunch of content documents. Can be filtered by kind and whether or not the items need
-     * to be published. TIP: Both `kind` and `isPublished` must be set in order for either to work.
+     * Finds a bunch of content documents belonging to a user, per that user's
+     * request.
      * 
-     * @param pageNum The page number to grab
-     * @param kind (Optional) Filters by ContentKind
-     * @param isPublished (Optional) Checks whether item needs to be published
-     * @param user (Optional) Checks to see if you need content owned by a specific user
+     * @param user The user making the request
      */
-    async fetchMany(pageNum: number, kind?: ContentKind, isPublished?: boolean, userId?: string): Promise<PaginateResult<ContentDocument>> {
-        let query = {'audit.isDeleted': false};
-        let paginateOptions = {page: pageNum, limit: 15};
+    async fetchAll(user: JwtPayload) {
+        return await this.contentModel.find({'author': user.sub, 'audit.isDeleted': false});
+    }
 
-        if (!isNullOrUndefined(kind) && isPublished) {
-            switch (kind) {
-                case ContentKind.BlogContent:
-                    query['kind'] = ContentKind.BlogContent;
-                    query['audit.isPublished'] = true;
-                    break;
-                case ContentKind.WorkContent:
-                    // change query parameters for works
-                    break;
-                case ContentKind.NewsContent:
-                    query['kind'] = ContentKind.NewsContent;
-                    query['audit.isPublished'] = true;
-                    break;
-                default: 
-                    throw new BadRequestException(`The document kind you requested does not exist.`);
-            }
-        }
-
-        if (userId) {
-            query['author'] = userId;
+    /**
+     * Fetches all published documents based on kind, limited by page number.
+     * 
+     * @param pageNum The current page
+     * @param kind The kind of document to fetch
+     */
+    async fetchAllPublished(pageNum: number, kind: ContentKind): Promise<PaginateResult<ContentDocument>> {
+        let query = {'kind': kind, 'audit.isDeleted': false};
+        let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
+        switch (kind) {
+            case ContentKind.BlogContent:
+                query['audit.published'] = true;
+                break;
+            case ContentKind.WorkContent:
+                // change query parameters for works
+                break;
+            case ContentKind.NewsContent:
+                query['audit.published'] = true;
+                break;
+            default:
+                throw new BadRequestException(`The document kind you requested does not exist.`);
         }
 
         return await this.contentModel.paginate(query, paginateOptions);

@@ -17,6 +17,7 @@ export interface ContentModel {
     audit: {
         hasComments: boolean;
         isDeleted: boolean;
+        path: string[];
     };
     readonly kind: ContentKind;
     readonly createdAt: Date;
