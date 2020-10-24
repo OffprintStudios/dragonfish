@@ -283,6 +283,18 @@ button:disabled {
     color: black;
 }
 
+button.disabled, input[type="text"].disabled {
+    background-color: var(--site-controls-background);
+    color: grey;
+    cursor: not-allowed;
+
+    &:hover {
+        background-color: var(--site-controls-background);
+        color: grey;
+        cursor: not-allowed;
+    }
+}
+
 button:focus {
     border-color: var(--site-borders);
     color: var(--site-text-color);
