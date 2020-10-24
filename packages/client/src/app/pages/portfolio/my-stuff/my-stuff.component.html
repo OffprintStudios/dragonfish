@@ -1,8 +1,8 @@
 <div class="tools">
     <div class="tool-buttons">
-        <button matRipple class="tool left"><i-feather name="loader"></i-feather>Create</button>
+        <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
         <button matRipple class="tool mid"><i-feather name="plus"></i-feather>Folder</button>
-        <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+        <button matRipple class="tool end" [matMenuTriggerFor]="filterMenu"><i-feather name="filter"></i-feather>Filter</button>
     </div>
     <form [formGroup]="searchStuff" class="tool-search">
         <div class="search-bar">
@@ -11,6 +11,17 @@
         </div>
     </form>
 </div>
+
+<mat-menu #createMenu="matMenu">
+    <button mat-menu-item>Add Work</button>
+    <button mat-menu-item>Add Blog</button>
+</mat-menu>
+
+<mat-menu #filterMenu="matMenu">
+    <button mat-menu-item>By Name</button>
+    <button mat-menu-item>By Kind</button>
+    <button mat-menu-item>By Date Added</button>
+</mat-menu>
 
 <div class="empty">
     <h3>Pardon the dust!</h3>
