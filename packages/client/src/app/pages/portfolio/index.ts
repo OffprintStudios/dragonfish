@@ -10,4 +10,4 @@ export { HistoryComponent } from './history/history.component';
 export { NotificationsComponent } from './notifications/notifications.component';
 export { ConversationsComponent } from './conversations/conversations.component';
 export { SettingsComponent } from './settings/settings.component';
-export { MyStuffComponent } from './my-stuff/my-stuff.component';
+export * from './my-stuff';
