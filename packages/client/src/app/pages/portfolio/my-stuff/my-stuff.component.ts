@@ -27,6 +27,8 @@ export class MyStuffComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.myContent = this.route.snapshot.data.stuffData as ContentModel[];
+    this.route.data.subscribe(data => {
+      this.myContent = data.stuffData as ContentModel[];
+    });
   }
 }
