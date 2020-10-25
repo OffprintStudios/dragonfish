@@ -14,8 +14,8 @@
     </div>
     <form [formGroup]="searchStuff" class="tool-search">
         <div class="search-bar">
-            <input type="text" formControlName="query" class="search-input" [ngClass]="{'disabled': route.children.length === 0}" placeholder="Search your stuff...">
-            <button matRipple class="search-submit" [ngClass]="{'disabled': route.children.length === 0}" type="submit"><i-feather name="search"></i-feather></button>
+            <input type="text" formControlName="query" class="search-input" [ngClass]="{'disabled': route.children.length !== 0}" placeholder="Search your stuff...">
+            <button matRipple class="search-submit" [ngClass]="{'disabled': route.children.length !== 0}" type="submit"><i-feather name="search"></i-feather></button>
         </div>
     </form>
 </div>
@@ -44,13 +44,13 @@
             <ng-container *ngFor="let content of myContent">
                 <!--For blogs-->
                 <ng-container *ngIf="content.kind === 'BlogContent'">
-                    <div class="content-box">
-                        <div class="content-preview">
-                            <i-feather name="coffee"></i-feather>
-                        </div>
+                    <div class="content-box" [matTooltip]="'Blog — ' + content.title" [matTooltipClass]="'offprint-tooltip'">
                         <div class="content-description">
                             <i-feather name="coffee"></i-feather>
                             <h5>{{ content.title }}</h5>
+                        </div>
+                        <div class="content-preview">
+                            <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
                         </div>
                     </div>
                 </ng-container>
