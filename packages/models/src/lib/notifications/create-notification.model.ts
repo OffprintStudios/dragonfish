@@ -1,4 +1,4 @@
-import { NotificationKind } from './notification-kind';
+import { NotificationSourceKind } from './notification-source-kind';
 
 export interface CreateNotification {
     /**
@@ -12,7 +12,7 @@ export interface CreateNotification {
      * Undefined if the source doesn't have a parent.
      */
     sourceParentId?: string;
-    kind: NotificationKind;
+    kind: NotificationSourceKind;
     title: string;
     body?: string | undefined;
 }

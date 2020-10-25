@@ -1,5 +1,6 @@
-export { NotificationKind } from './notification-kind';
+export { NotificationSourceKind } from './notification-source-kind';
 export { Notification } from './notification.model';
 export { UnpublishedNotification } from './unpublished-notification.model';
 export { NotificationSubscription } from './notification-subscription.model';
 export { CreateNotification } from './create-notification.model';
+export { PublishStatus } from './publish-status';

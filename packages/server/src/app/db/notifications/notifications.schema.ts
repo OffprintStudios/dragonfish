@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-import { NotificationKind, Notification } from '@pulp-fiction/models/notifications';
+import { NotificationSourceKind, Notification } from '@pulp-fiction/models/notifications';
 
 @Schema({
     'discriminatorKey': 'kind',
@@ -15,8 +15,14 @@ export class NotificationDocument extends Document implements Notification {
     @Prop({required: true})
     sourceId: string;
 
-    @Prop({required: true, type: String, enum: Object.keys(NotificationKind), default: 'Comment'})
-    kind: NotificationKind
+    @Prop({required: true, type: String, enum: Object.keys(NotificationSourceKind), default: 'Comment'})
+    sourceKind: NotificationSourceKind
+
+    @Prop()
+    sourceParentId?: string | undefined;
+
+    @Prop()
+    sourceParentKind?: NotificationSourceKind | undefined;
 
     @Prop({required: true})
     title: string;
@@ -24,10 +30,10 @@ export class NotificationDocument extends Document implements Notification {
     @Prop()
     body?: string | undefined;
 
-    @Prop({required: true, default: Date.now()})
+    @Prop({required: true})
     createdAt: Date;
 
-    @Prop({required: true, default: Date.now()})
+    @Prop({required: true})
     updatedAt: Date
 }
 

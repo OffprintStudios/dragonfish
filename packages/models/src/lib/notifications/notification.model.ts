@@ -1,4 +1,4 @@
-import { NotificationKind } from './notification-kind';
+import { NotificationSourceKind } from './notification-source-kind';
 
 export interface Notification {
     _id: string;
@@ -12,6 +12,7 @@ export interface Notification {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
+    sourceKind: NotificationSourceKind;
     
     /**
      * The ID of the notification source's parent (i.e. if the notification
@@ -19,7 +20,7 @@ export interface Notification {
      * Undefined if the source doesn't have a parent.
      */
     sourceParentId?: string | undefined;
-    kind: NotificationKind;
+    sourceParentKind?: NotificationSourceKind | undefined;
     title: string;
     body?: string | undefined;
     createdAt: Date;

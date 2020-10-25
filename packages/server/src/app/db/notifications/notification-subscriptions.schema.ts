@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { NotificationSourceKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
 import { Document } from 'mongoose';
 
 @Schema({
@@ -8,6 +8,9 @@ import { Document } from 'mongoose';
 export class NotificationSubscriptionDocument extends Document implements NotificationSubscription {
     @Prop({required: true, index: true})
     notificationSourceId: string;
+
+    @Prop({required: true})
+    notificationSourceKind: NotificationSourceKind;
 
     @Prop({required: true, index: true})
     userId: string;
