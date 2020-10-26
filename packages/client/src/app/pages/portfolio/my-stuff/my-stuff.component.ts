@@ -16,6 +16,9 @@ export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
   myContent: ContentModel[];
 
+  itemSelected = false;
+  selectedContentId: string;
+
   searchStuff = new FormGroup({
     query: new FormControl('')
   });
@@ -24,11 +27,18 @@ export class MyStuffComponent implements OnInit {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
+    console.log(this.itemSelected);
   }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
       this.myContent = data.stuffData as ContentModel[];
     });
+  }
+
+  selectItem(content: ContentModel) {
+    content.audit.selected = true;
+    this.itemSelected = true;
+    this.selectedContentId = content._id;
   }
 }

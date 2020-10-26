@@ -21,6 +21,11 @@ div.content-grid {
         margin: 0.75rem;
         cursor: pointer;
 
+        &.selected {
+            border: 1px solid var(--site-accent);
+            box-shadow: var(--site-dropshadow);
+        }
+
         div.content-preview {
             flex: 1;
             padding: 5px;
@@ -41,7 +46,6 @@ div.content-grid {
         }
 
         div.content-description {
-            border-bottom: 1px solid var(--site-borders);
             border-top-left-radius: 4px;
             border-top-right-radius: 4px;
             padding: 5px;
