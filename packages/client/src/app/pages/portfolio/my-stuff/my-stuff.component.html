@@ -155,6 +155,27 @@
                         <div class="content-preview">
                             <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
                         </div>
+                        <div class="content-stats">
+                            <span class="stat-block">
+                                <i-feather class="stat-icon" name="eye"></i-feather>{{ content.stats.views | abbreviate}}
+                            </span>
+                            <span class="stat-divider"></span>
+                            <span class="stat-block">
+                                <i-feather class="stat-icon" name="message-circle"></i-feather>{{ content.stats.comments | abbreviate }}
+                            </span>
+                            <span class="stat-divider"></span>
+                            <span class="stat-block">
+                                <i-feather class="stat-icon" name="thumbs-up"></i-feather>{{ content.stats.likes | abbreviate }}
+                            </span>
+                            <span class="stat-divider"></span>
+                            <span class="stat-block">
+                                <i-feather class="stat-icon" name="thumbs-down"></i-feather>{{ content.stats.dislikes | abbreviate }}
+                            </span>
+                            <span class="stat-divider"></span>
+                            <span class="stat-block">
+                                <i-feather class="stat-icon" name="book"></i-feather>
+                            </span>
+                        </div>
                     </div>
                 </ng-container>
 

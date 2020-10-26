@@ -26,6 +26,37 @@ div.content-grid {
             box-shadow: var(--site-dropshadow);
         }
 
+        div.content-stats {
+            position: relative;
+            text-align: center;
+            width: 225px;
+            margin: 0 auto;
+            top: -1.9rem;
+            border-radius: 0 0 4px 4px;
+            backdrop-filter: blur(7px);
+
+            i-feather {
+                position: relative;
+                width: 16px;
+                stroke-width: 1;
+                top: 0.25rem;
+            }
+
+            span.stat-block {
+                font-size: 16px;
+
+                i-feather.stat-icon {
+                    margin-left: 0.15rem;
+                    margin-right: 0.15rem;
+                }
+            }
+
+            span.stat-divider {
+                border-left: 1px solid var(--site-borders);
+                margin: 0 0.15rem 0 0.15rem;
+            }
+        }
+
         div.content-preview {
             flex: 1;
             padding: 5px;
