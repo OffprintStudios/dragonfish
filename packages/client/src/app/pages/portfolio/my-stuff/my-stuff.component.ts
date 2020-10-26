@@ -74,7 +74,7 @@ export class MyStuffComponent implements OnInit {
   viewContent(content: ContentModel) {
     if (content.kind === ContentKind.BlogContent) {
       this.deselect();
-      this.router.navigate(['view-blog', content._id], {relativeTo: this.route});
+      this.router.navigate(['view-blog'], {relativeTo: this.route, queryParams: {contentId: content._id, kind: content.kind}, queryParamsHandling: 'merge'});
     } else if (content.kind === ContentKind.WorkContent) {
       // navigate to view work page
     }

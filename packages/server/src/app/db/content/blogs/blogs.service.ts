@@ -41,14 +41,14 @@ export class BlogsService {
      * @param blogId The blog's ID
      * @param blogInfo The blog info for the update
      */
-    async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<void> {
+    async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
         const wordcount = await countPlaintextWords(await stripAllHtml(blogInfo.body));
 
-        return await this.blogsModel.updateOne({'_id': blogId, 'author': user.sub}, {
+        return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
             'title': await sanitizeHtml(blogInfo.title),
             'body': await sanitizeHtml(blogInfo.body),
             'stats.words': wordcount
-        });
+        }, {new: true});
     }
 
     /**

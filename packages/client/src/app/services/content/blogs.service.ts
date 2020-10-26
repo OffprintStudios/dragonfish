@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import * as models from '@pulp-fiction/models/blogs';
-import { BlogForm } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
@@ -84,11 +84,12 @@ export class BlogsService {
    * 
    * @param blogInfo The updated blog info
    */
-  public editBlog(blogInfo: models.EditBlog) {
-    return this.http.patch(`${this.url}/edit-blog`, blogInfo, {observe: 'response', withCredentials: true})
+  public editBlog(blogId: string, blogInfo: BlogForm) {
+    return this.http.patch<BlogsContentModel>(`${this.url}/edit-blog/${blogId}`, blogInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Changes saved successfully.');
+          return res.body;
         }
       }), catchError(err => {
         return throwError(err);
