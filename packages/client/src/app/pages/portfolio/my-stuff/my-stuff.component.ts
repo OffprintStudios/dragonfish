@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ContentModel } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../../services/auth';
 import { MyStuffService } from '../../../services/user';
@@ -35,6 +35,11 @@ export class MyStuffComponent implements OnInit {
     });
   }
 
+  /**
+   * Marks a content item as selected. If another content item is already selected, the new one will replace that one.
+   * 
+   * @param content The content item to select
+   */
   selectItem(content: ContentModel) {
     if (this.currSelectedContent === null || this.currSelectedContent === undefined) {
       content.audit.selected = true;
@@ -52,9 +57,26 @@ export class MyStuffComponent implements OnInit {
     }
   }
 
+  /**
+   * Deselects any currently-selected content and sets all appropriate fields to false and empty.
+   */
   deselect() {
     this.currSelectedContent.audit.selected = false;
     this.itemSelected = false;
     this.currSelectedContent = null;
+  }
+
+  /**
+   * Deselects any currently-selected content and navigates to the specified view page.
+   * 
+   * @param content The content item to view
+   */
+  viewContent(content: ContentModel) {
+    if (content.kind === ContentKind.BlogContent) {
+      this.deselect();
+      this.router.navigate(['view-blog', content._id], {relativeTo: this.route});
+    } else if (content.kind === ContentKind.WorkContent) {
+      // navigate to view work page
+    }
   }
 }

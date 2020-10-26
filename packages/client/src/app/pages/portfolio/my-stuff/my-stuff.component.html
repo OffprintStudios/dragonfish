@@ -125,7 +125,7 @@
             <ng-container *ngFor="let content of myContent">
                 <!--For blogs-->
                 <ng-container *ngIf="content.kind === 'BlogContent'">
-                    <div class="content-box" (click)="selectItem(content)" [ngClass]="{'selected': content.audit.selected}">
+                    <div class="content-box" (click)="selectItem(content)" (dblclick)="viewContent(content)" [ngClass]="{'selected': content.audit.selected}">
                         <div class="content-description">
                             <i-feather name="coffee"></i-feather>
                             <h5>{{ content.title }}</h5>
