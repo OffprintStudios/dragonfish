@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
 
-import { BlogForm, PubStatus } from '@pulp-fiction/models/content';
+import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
 
@@ -28,8 +28,8 @@ export class BlogsController {
 
     @UseGuards(AuthGuard)
     @Patch('set-publish-status/:blogId')
-    async setPublishStatus(@Request() req: any, @Param('blogId') blogId: string, @Body() pubStatus: PubStatus) {
-        return await this.blogsService.changePublishStatus(req.user, blogId, pubStatus)
+    async setPublishStatus(@Request() req: any, @Param('blogId') blogId: string, @Body() pubChange: PubChange) {
+        return await this.blogsService.changePublishStatus(req.user, blogId, pubChange)
     }
 
     @UseGuards(AuthGuard)
