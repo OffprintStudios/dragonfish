@@ -18,6 +18,7 @@ export interface ContentModel {
         hasComments: boolean;
         isDeleted: boolean;
         path: string[];
+        selected: boolean;
     };
     readonly kind: ContentKind;
     readonly createdAt: Date;

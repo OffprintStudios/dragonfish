@@ -8,5 +8,6 @@ export interface BlogsContentModel extends ContentModel {
         hasComments: boolean;
         isDeleted: boolean;
         path: string[];
+        selected: boolean;
     };
 }

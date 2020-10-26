@@ -13,5 +13,6 @@ export interface NewsContentModel extends ContentModel {
         isDeleted: boolean;
         hasComments: boolean;
         path: string[];
+        selected: boolean;
     };
 }

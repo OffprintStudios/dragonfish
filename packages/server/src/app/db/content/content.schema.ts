@@ -40,12 +40,14 @@ export class ContentDocument extends Document implements ContentModel {
     @Prop(raw({
         hasComments: {type: Boolean, default: true},
         isDeleted: {type: Boolean, default: false},
-        path: {type: [String], default: []}
+        path: {type: [String], default: []},
+        selected: {type: Boolean, default: false}
     }))
     audit: {
         hasComments: boolean;
         isDeleted: boolean;
         path: string[];
+        selected: boolean;
     };
 
     @Prop({type: String, enum: Object.keys(ContentKind), index: true})

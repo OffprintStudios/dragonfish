@@ -40,7 +40,8 @@ const routes: Routes = [
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
         {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
-        {path: 'new-work', component: WorkFormComponent, canActivate: [AuthGuard]}
+        {path: 'new-work', component: WorkFormComponent, canActivate: [AuthGuard]},
+        {path: 'view-blog/:blogId', component: BlogFormComponent, canActivate: [AuthGuard]}
       ]},
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
