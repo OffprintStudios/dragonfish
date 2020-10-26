@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { UserInfo } from '../users';
 import { ContentKind } from './content-kind.enum';
 
@@ -19,6 +20,7 @@ export interface ContentModel {
         isDeleted: boolean;
         path: string[];
         selected: boolean;
+        childOf: Types.ObjectId;
     };
     readonly kind: ContentKind;
     readonly createdAt: Date;

@@ -6,10 +6,12 @@ import { JwtPayload } from '@pulp-fiction/models/auth';
 import { FolderForm } from '@pulp-fiction/models/content';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import { ContentFolderDocument } from './content-folders.schema';
+import { ContentService } from '../content';
 
 @Injectable()
 export class ContentFoldersService {
-    constructor(@InjectModel('ContentFolder') private readonly folderModel: PaginateModel<ContentFolderDocument>) {}
+    constructor(@InjectModel('ContentFolder') private readonly folderModel: PaginateModel<ContentFolderDocument>,
+        private readonly contentService: ContentService) {}
 
     /**
      * Creates a new folder and adds it to the database.
@@ -46,10 +48,13 @@ export class ContentFoldersService {
      * @param folderId The folder ID
      * @param contentId The content ID to be added
      */
-    async addToFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string) {
-        return await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
+    async addToFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
+        const doc = await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
             $push: {'contents': contentId}
         });
+
+        await this.contentService.setIsChild(user, contentId, folderId);
+        return doc;
     }
 
     /**
@@ -59,9 +64,31 @@ export class ContentFoldersService {
      * @param folderId The folder ID
      * @param contentId The content ID to be removed
      */
-    async removeFromFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string) {
-        return await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
+    async removeFromFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
+        const doc = await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
             $pull: {'contents': contentId}
         });
+
+        await this.contentService.setIsChild(user, contentId, folderId);
+        return doc;
+    }
+
+    /**
+     * Fetches a bunch of folders belonging to the specified user.
+     * 
+     * @param user The owner of these folders
+     */
+    async fetchAll(user: JwtPayload): Promise<ContentFolderDocument[]> {
+        return await this.folderModel.find({'owner': user.sub}, {autopopulate: false});
+    }
+
+    /**
+     * Fetches one folder owned by the specified user.
+     * 
+     * @param user The owner of this folder
+     * @param folderId The folder ID
+     */
+    async fetchOne(user: JwtPayload, folderId: Types.ObjectId): Promise<ContentFolderDocument> {
+        return await this.folderModel.findOne({'_id': folderId, 'owner': user.sub});
     }
 }

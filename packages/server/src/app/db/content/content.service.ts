@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { ContentKind } from '@pulp-fiction/models/content';
+import { Types } from 'mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { isNullOrUndefined } from '../../util';
 
@@ -130,5 +131,15 @@ export class ContentService {
         return await this.contentModel.updateOne({'_id': contentId}, {
             $inc: {'stats.views': 1}
         });
+    }
+
+    /**
+     * Sets the isChild field of a content document to the value of `isChild`, for folder checks.
+     * 
+     * @param user The owner of the content
+     * @param contentId The content's ID
+     */
+    async setIsChild(user: JwtPayload, contentId: string, parent: Types.ObjectId) {
+        return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.childOf': parent});
     }
 }

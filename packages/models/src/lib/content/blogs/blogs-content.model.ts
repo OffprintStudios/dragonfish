@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { ContentModel } from '../content.model';
 
 export interface BlogsContentModel extends ContentModel {
@@ -9,5 +10,6 @@ export interface BlogsContentModel extends ContentModel {
         isDeleted: boolean;
         path: string[];
         selected: boolean;
+        childOf: Types.ObjectId;
     };
 }

@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { ContentModel } from '../content.model';
 import { NewsCategory } from './news-category.enum';
 
@@ -14,5 +15,6 @@ export interface NewsContentModel extends ContentModel {
         hasComments: boolean;
         path: string[];
         selected: boolean;
+        childOf: Types.ObjectId;
     };
 }

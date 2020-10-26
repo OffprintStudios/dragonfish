@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Schema, HookNextFunction, Types } from 'mongoose';
+import { HookNextFunction, Types } from 'mongoose';
 
+import { ContentModule } from '../content';
 import { ContentFolderDocument, ContentFolderSchema } from './content-folders.schema';
 import { ContentFoldersService } from './content-folders.service';
 
 @Module({
   imports: [
+    ContentModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'ContentFolder',
