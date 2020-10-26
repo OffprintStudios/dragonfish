@@ -44,8 +44,6 @@ import { UsersModule } from '../users/users.module';
         },
         audit: {
           featured: {type: Boolean, default: false},
-          published: {type: Boolean, default: false},
-          publishedOn: {type: Date, default: null}
         }
       })),
       inject: [getModelToken('Content')]
@@ -54,8 +52,6 @@ import { UsersModule } from '../users/users.module';
       provide: getModelToken('BlogContent'),
       useFactory: contentModel => contentModel.discriminator('BlogContent', new Schema({
         audit: {
-          published: {type: Boolean, default: false},
-          publishedOn: {type: Date, default: null},
           releaseOn: {type: Date, default: null}
         }
       })),
