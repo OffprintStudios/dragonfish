@@ -44,7 +44,7 @@
             <ng-container *ngFor="let content of myContent">
                 <!--For blogs-->
                 <ng-container *ngIf="content.kind === 'BlogContent'">
-                    <div class="content-box" [matTooltip]="'Blog — ' + content.title" [matTooltipClass]="'offprint-tooltip'">
+                    <div class="content-box">
                         <div class="content-description">
                             <i-feather name="coffee"></i-feather>
                             <h5>{{ content.title }}</h5>
