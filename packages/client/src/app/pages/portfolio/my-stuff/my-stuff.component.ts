@@ -91,6 +91,7 @@ export class MyStuffComponent implements OnInit {
   deleteContent(content: ContentModel) {
     if (confirm(`Are you sure you want to delete this? This action is irreversible.`)) {
       this.stuffService.deleteOne(content._id).subscribe(() => {
+        this.deselect();
         this.router.navigate([], {relativeTo: this.route});
       });
     } else {
@@ -113,6 +114,7 @@ export class MyStuffComponent implements OnInit {
       };
 
       this.blogService.setPublishStatus(content._id, pubStatus).subscribe(() => {
+        this.deselect();
         this.router.navigate([], {relativeTo: this.route});
       });
     }
