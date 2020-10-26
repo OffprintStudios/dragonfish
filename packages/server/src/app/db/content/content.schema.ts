@@ -1,5 +1,6 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { ContentModel, ContentKind } from '@pulp-fiction/models/content';
+import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { Types } from 'mongoose';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
@@ -38,18 +39,20 @@ export class ContentDocument extends Document implements ContentModel {
     };
 
     @Prop(raw({
+        published: {type: String, enum: Object.keys(PubStatus), default: 'Unpublished'},
+        publishedOn: {type: Date, default: null},
         hasComments: {type: Boolean, default: true},
         isDeleted: {type: Boolean, default: false},
-        path: {type: [String], default: []},
         selected: {type: Boolean, default: false},
         childOf: {type: String, default: null}
     }))
     audit: {
+        published: PubStatus;
+        publishedOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        path: string[];
         selected: boolean;
-        childOf: string;
+        childOf: Types.ObjectId;
     };
 
     @Prop({type: String, enum: Object.keys(ContentKind), index: true})

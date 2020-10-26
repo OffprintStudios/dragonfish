@@ -1,4 +1,6 @@
+import { PubStatus } from '../pub-status.enum';
+
 export interface PubChange {
-    readonly oldStatus: boolean;
-    readonly newStatus: boolean;
+    readonly oldStatus: PubStatus;
+    readonly newStatus: PubStatus;
 }

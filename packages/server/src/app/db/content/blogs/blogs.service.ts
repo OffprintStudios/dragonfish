@@ -5,7 +5,7 @@ import { PaginateModel } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
-import { BlogForm, PubStatus } from '@pulp-fiction/models/content';
+import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 
@@ -60,15 +60,15 @@ export class BlogsService {
      * @param blogId The blog's ID
      * @param pubStatus Object for change in publishing status
      */
-    async changePublishStatus(user: JwtPayload, blogId: string, pubStatus: PubStatus): Promise<void> {
+    async changePublishStatus(user: JwtPayload, blogId: string, pubChange: PubChange): Promise<void> {
         await this.blogsModel.updateOne({'_id': blogId, 'author': user.sub}, {
-            'audit.published': pubStatus.newStatus,
+            'audit.published': pubChange.newStatus,
             'audit.publishedOn': new Date()
         });
 
-        if (pubStatus.oldStatus === false && pubStatus.newStatus === true) {
+        if (pubChange.oldStatus === PubStatus.Unpublished && pubChange.newStatus === PubStatus.Published) {
             await this.usersService.changeBlogCount(user, true);
-        } else if (pubStatus.oldStatus === true && pubStatus.newStatus === false) {
+        } else if (pubChange.oldStatus === PubStatus.Published && pubChange.newStatus === PubStatus.Unpublished) {
             await this.usersService.changeBlogCount(user, false);
         }
     }
