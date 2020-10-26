@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BlogsContentModel, ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
@@ -17,6 +17,7 @@ export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
   myContent: ContentModel[];
   contentKind = ContentKind;
+  pubStatus = PubStatus;
 
   itemSelected = false;
   currSelectedContent: ContentModel;
@@ -120,9 +121,10 @@ export class MyStuffComponent implements OnInit {
         };
       }
 
+      console.log(pubChange);
+
       this.blogService.changePublishStatus(content._id, pubChange as PubChange).subscribe(() => {
-        this.deselect();
-        this.router.navigate([], {relativeTo: this.route});
+        content.audit.published = this.pubStatus.Published;
       });
     }
   }
