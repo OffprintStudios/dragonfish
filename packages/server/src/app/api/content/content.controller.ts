@@ -5,10 +5,11 @@ import { ContentService } from '../../db/content';
 import { ContentKind } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { isNullOrUndefined } from '../../util';
+import { ContentFoldersService } from '../../db/content-folders/content-folders.service';
 
 @Controller()
 export class ContentController {
-    constructor (private readonly contentService: ContentService) {}
+    constructor (private readonly contentService: ContentService, private readonly folderService: ContentFoldersService) {}
 
     @UseGuards(OptionalAuthGuard)
     @Get('fetch-one')
@@ -34,5 +35,11 @@ export class ContentController {
         }
 
         return await this.contentService.deleteOne(req.user, contentId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-top-folders')
+    async fetchTopFolders(@Request() req: any) {
+        return await this.folderService.fetchTopFolders(req.user);
     }
 }

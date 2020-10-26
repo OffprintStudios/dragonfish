@@ -102,8 +102,8 @@ export class ContentFoldersService {
      * 
      * @param user The owner of these folders
      */
-    async fetchAll(user: JwtPayload): Promise<ContentFolderDocument[]> {
-        return await this.folderModel.find({'owner': user.sub}, {autopopulate: false});
+    async fetchTopFolders(user: JwtPayload): Promise<ContentFolderDocument[]> {
+        return await this.folderModel.find({'owner': user.sub, 'children': []}, {autopopulate: false});
     }
 
     /**

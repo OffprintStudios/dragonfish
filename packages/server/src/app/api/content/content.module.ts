@@ -20,11 +20,12 @@ import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
 import { ContentController } from './content.controller';
+import { ContentFoldersModule } from '../../db/content-folders/content-folders.module';
 
 @Module({
   imports: [
     /*BlogsModule,*/ WorksModule, UsersModule, ImagesModule, CollectionsModule,
-    HistoryModule, CommentsModule, MessagesModule, ContentCollectionModule,
+    HistoryModule, CommentsModule, MessagesModule, ContentCollectionModule, ContentFoldersModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
