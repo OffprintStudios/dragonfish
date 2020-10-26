@@ -79,4 +79,23 @@ export class MyStuffComponent implements OnInit {
       // navigate to view work page
     }
   }
+
+  /**
+   * Sends a request to delete the currently selected content.
+   * 
+   * @param content The content item to delete
+   */
+  deleteContent(content: ContentModel) {
+    console.log(content);
+  }
+
+  /**
+   * Sends a request to publish the currently selected content. Based entirely on the content's
+   * ContentKind.
+   * 
+   * @param content 
+   */
+  publishContent(content: ContentModel) {
+    console.log(content);
+  }
 }

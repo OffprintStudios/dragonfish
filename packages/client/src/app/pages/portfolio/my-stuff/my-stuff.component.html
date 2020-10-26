@@ -25,13 +25,13 @@
                 <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
                 </button>
-                <button matRipple class="tool mid" matTooltip="Publish" matTooltipClass="offprint-tooltip">
+                <button matRipple class="tool mid" (click)="publishContent(currSelectedContent)" matTooltip="Publish" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="book"></i-feather>
                 </button>
-                <button matRipple class="tool mid" matTooltip="Edit" matTooltipClass="offprint-tooltip">
+                <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="edit-3"></i-feather>
                 </button>
-                <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+                <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="trash-2"></i-feather>
                 </button>
             </ng-container>
