@@ -9,6 +9,9 @@ export class ContentFolderDocument extends Document {
     @Prop({type: String, ref: 'User', index: true})
     readonly owner: string;
 
+    @Prop({required: true})
+    name: string;
+
     @Prop({type: [String], ref: 'User', default: null, index: true, autopopulate: {
         select: '_id username profile.avatar audit.roles'
     }})

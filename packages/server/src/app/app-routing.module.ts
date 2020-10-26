@@ -8,7 +8,6 @@ import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
 import { BrowseModule } from './api/browse/browse.module';
 import { DashboardModule } from './api/dashboard/dashboard.module';
-import { ContentFoldersModule } from './db/content-folders/content-folders.module';
 
 const routes: Routes = [
     {path: 'api', children: [
@@ -32,7 +31,6 @@ const routes: Routes = [
         ImagesModule,
         BrowseModule,
         DashboardModule,
-        ContentFoldersModule,
     ]
 })
 export class AppRoutingModule {}
