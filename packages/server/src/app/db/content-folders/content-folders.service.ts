@@ -19,13 +19,24 @@ export class ContentFoldersService {
      * @param user The user creating the folder
      * @param folderInfo The folder's info
      */
-    async createFolder(user: JwtPayload, folderInfo: FolderForm): Promise<ContentFolderDocument> {
-        const newFolder = new this.folderModel({
-            owner: user.sub,
-            name: await sanitizeHtml(folderInfo.name)
-        });
-
-        return await newFolder.save();
+    async createFolder(user: JwtPayload, folderInfo: FolderForm, parentId?: Types.ObjectId): Promise<ContentFolderDocument> {
+        if (parentId) {
+            const newFolder = await new this.folderModel({
+                owner: user.sub,
+                name: await sanitizeHtml(folderInfo.name),
+                parents: [parentId],
+            }).save();
+            
+            await this.addChildFolder(user, parentId, newFolder._id);
+            return newFolder;
+        } else {
+            const newFolder = new this.folderModel({
+                owner: user.sub,
+                name: await sanitizeHtml(folderInfo.name)
+            });
+    
+            return await newFolder.save();
+        }
     }
 
     /**
@@ -39,6 +50,19 @@ export class ContentFoldersService {
         return await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
             'name': await sanitizeHtml(folderInfo.name)
         }, {new: true});
+    }
+
+    /**
+     * Appends a child folder ID to the children array of the parent.
+     * 
+     * @param user The owner of the parent folder
+     * @param parentId The parent folder
+     * @param childId The child folder
+     */
+    private async addChildFolder(user: JwtPayload, parentId: Types.ObjectId, childId: Types.ObjectId) {
+        return await this.folderModel.updateOne({'_id': parentId, 'owner': user.sub}, {
+            $push: {'children': childId}
+        });
     }
 
     /**

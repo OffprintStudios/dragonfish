@@ -18,8 +18,11 @@ export class ContentFolderDocument extends Document implements Folder {
     }})
     readonly sharedWith: string[];
 
-    @Prop({type: [Types.ObjectId], default: []})
+    @Prop({type: [Types.ObjectId], ref: 'ContentFolder', default: [], index: true, autopopulate: true})
     readonly parents: Types.ObjectId[];
+
+    @Prop({type: [Types.ObjectId], ref: 'ContentFolder', default: [], index: true, autopopulate: true})
+    readonly children: Types.ObjectId[];
 
     @Prop({type: [String], ref: 'Content', default: null, autopopulate: true})
     contents: string[];

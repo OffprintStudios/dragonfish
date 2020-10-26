@@ -7,6 +7,7 @@ export interface Folder {
     name: string;
     readonly sharedWith: string[] | UserInfo[];
     readonly parents: Types.ObjectId[];
+    readonly children: Types.ObjectId[];
     contents: string[];
     readonly createdAt: Date;
     readonly updatedAt: Date;
