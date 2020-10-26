@@ -1,8 +1,9 @@
-import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Folder } from '@pulp-fiction/models/content';
 import { Document, Types } from 'mongoose';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'content_folders'})
-export class ContentFolderDocument extends Document {
+export class ContentFolderDocument extends Document implements Folder {
     @Prop()
     readonly _id: Types.ObjectId;
 
