@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BlogsContentModel, ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
+import { BlogsContentModel, ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
@@ -107,13 +107,20 @@ export class MyStuffComponent implements OnInit {
    */
   publishContent(content: ContentModel) {
     if (content.kind === ContentKind.BlogContent) {
-      const blog = content as BlogsContentModel;
-      const pubStatus: PubStatus = {
-        oldStatus: blog.audit.published,
-        newStatus: !blog.audit.published
-      };
+      let pubChange = {};
+      if (content.audit.published === PubStatus.Published) {
+        pubChange = {
+          oldStatus: PubStatus.Published,
+          newStatus: PubStatus.Unpublished
+        };
+      } else if (content.audit.published === PubStatus.Unpublished) {
+        pubChange = {
+          oldStatus: PubStatus.Published,
+          newStatus: PubStatus.Unpublished
+        };
+      }
 
-      this.blogService.setPublishStatus(content._id, pubStatus).subscribe(() => {
+      this.blogService.changePublishStatus(content._id, pubChange as PubChange).subscribe(() => {
         this.deselect();
         this.router.navigate([], {relativeTo: this.route});
       });

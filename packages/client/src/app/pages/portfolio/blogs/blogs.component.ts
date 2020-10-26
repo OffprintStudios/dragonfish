@@ -137,14 +137,7 @@ export class BlogsComponent implements OnInit {
    */
   setPublishStatus(blogId: string, publishStatus: boolean) {
     const pubStatus: SetPublishStatus = {blogId: blogId, publishStatus: !publishStatus};
-
-    this.blogsService.setPublishStatus(pubStatus).subscribe(_ => {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-      return;
-    }, err => {
-      console.log(err);
-      return;
-    });
+    return;
   }
 
     /**

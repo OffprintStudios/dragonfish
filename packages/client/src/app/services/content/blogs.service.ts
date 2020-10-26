@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import * as models from '@pulp-fiction/models/blogs';
-import { BlogForm, BlogsContentModel, PubStatus } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
@@ -68,8 +68,8 @@ export class BlogsService {
    * 
    * @param blogId The ID of the blog we're changing status on
    */
-  public setPublishStatus(contentId: string, pubStatus: PubStatus) {
-    return this.http.patch(`${this.url}/set-publish-status/${contentId}`, pubStatus, {observe: 'response', withCredentials: true})
+  public changePublishStatus(contentId: string, pubChange: PubChange) {
+    return this.http.patch(`${this.url}/set-publish-status/${contentId}`, pubChange, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Blog status updated.');
