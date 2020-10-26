@@ -22,7 +22,7 @@
 
             <!--Content tools-->
             <ng-container *ngIf="itemSelected; else noItem">
-                <button matRipple class="tool left" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+                <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
                 </button>
                 <button matRipple class="tool mid" matTooltip="Publish" matTooltipClass="offprint-tooltip">
