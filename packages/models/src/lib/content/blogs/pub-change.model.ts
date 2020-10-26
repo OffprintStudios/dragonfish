@@ -1,4 +1,4 @@
-export interface PubStatus {
+export interface PubChange {
     readonly oldStatus: boolean;
     readonly newStatus: boolean;
 }

@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { UserInfo } from '../users';
+import { PubStatus } from './pub-status.enum';
 import { ContentKind } from './content-kind.enum';
 
 export interface ContentModel {
@@ -16,9 +17,10 @@ export interface ContentModel {
         readonly comments: number;
     };
     audit: {
+        published: PubStatus;
+        publishedOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        path: string[];
         selected: boolean;
         childOf: Types.ObjectId;
     };

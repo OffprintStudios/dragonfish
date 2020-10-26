@@ -1,14 +1,14 @@
 import { Types } from 'mongoose';
 import { ContentModel } from '../content.model';
+import { PubStatus } from '../pub-status.enum';
 
 export interface BlogsContentModel extends ContentModel {
     audit: {
-        published: boolean;
+        published: PubStatus;
         publishedOn: Date;
         releaseOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        path: string[];
         selected: boolean;
         childOf: Types.ObjectId;
     };
