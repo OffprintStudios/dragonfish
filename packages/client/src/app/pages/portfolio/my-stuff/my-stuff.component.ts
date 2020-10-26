@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
@@ -23,7 +24,8 @@ export class MyStuffComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService) {
+  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
+    private dialog: MatDialog) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -86,7 +88,13 @@ export class MyStuffComponent implements OnInit {
    * @param content The content item to delete
    */
   deleteContent(content: ContentModel) {
-    console.log(content);
+    if (confirm(`Are you sure you want to delete this? This action is irreversible.`)) {
+      this.stuffService.deleteOne(content._id).subscribe(() => {
+        this.router.navigate([], {relativeTo: this.route});
+      });
+    } else {
+      return;
+    }
   }
 
   /**

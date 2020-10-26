@@ -33,4 +33,13 @@ export class MyStuffService {
       // fetch work
     }
   }
+
+  public deleteOne(contentId: string) {
+    return this.http.patch(`${this.url}/delete-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }
