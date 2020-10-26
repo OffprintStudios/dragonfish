@@ -116,8 +116,8 @@ export class MyStuffComponent implements OnInit {
         };
       } else if (content.audit.published === PubStatus.Unpublished) {
         pubChange = {
-          oldStatus: PubStatus.Published,
-          newStatus: PubStatus.Unpublished
+          oldStatus: PubStatus.Unpublished,
+          newStatus: PubStatus.Published
         };
       }
 
