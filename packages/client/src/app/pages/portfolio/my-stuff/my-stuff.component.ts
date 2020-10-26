@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { BlogsContentModel, ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../../services/auth';
+import { BlogsService } from '../../../services/content';
 import { MyStuffService } from '../../../services/user';
 
 @Component({
@@ -16,6 +16,7 @@ import { MyStuffService } from '../../../services/user';
 export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
   myContent: ContentModel[];
+  contentKind = ContentKind;
 
   itemSelected = false;
   currSelectedContent: ContentModel;
@@ -25,7 +26,7 @@ export class MyStuffComponent implements OnInit {
   });
 
   constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private dialog: MatDialog) {
+    private blogService: BlogsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -98,12 +99,22 @@ export class MyStuffComponent implements OnInit {
   }
 
   /**
-   * Sends a request to publish the currently selected content. Based entirely on the content's
+   * Sends a request to change the publishing status of the currently selected content. Based entirely on the content's
    * ContentKind.
    * 
    * @param content 
    */
   publishContent(content: ContentModel) {
-    console.log(content);
+    if (content.kind === ContentKind.BlogContent) {
+      const blog = content as BlogsContentModel;
+      const pubStatus: PubStatus = {
+        oldStatus: blog.audit.published,
+        newStatus: !blog.audit.published
+      };
+
+      this.blogService.setPublishStatus(content._id, pubStatus).subscribe(() => {
+        this.router.navigate([], {relativeTo: this.route});
+      });
+    }
   }
 }

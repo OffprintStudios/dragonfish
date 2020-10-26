@@ -25,9 +25,31 @@
                 <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
                 </button>
-                <button matRipple class="tool mid" (click)="publishContent(currSelectedContent)" matTooltip="Publish" matTooltipClass="offprint-tooltip">
-                    <i-feather class="no-text" name="book"></i-feather>
-                </button>
+                <ng-container [ngSwitch]="currSelectedContent.kind">
+                    <!--If the content is a blog-->
+                    <ng-container *ngSwitchCase="contentKind.BlogContent">
+                        <!--If the blog is published-->
+                        <ng-container *ngIf="$any(currSelectedContent.audit).published; else notPublishedBlog">
+                            <button matRipple class="tool mid active" (click)="publishContent(currSelectedContent)" matTooltip="Unublish" matTooltipClass="offprint-tooltip">
+                                <i-feather class="no-text" name="book-open"></i-feather>
+                            </button>
+                        </ng-container>
+
+                        <!--If the blog isn't published-->
+                        <ng-template #notPublishedBlog>
+                            <button matRipple class="tool mid" (click)="publishContent(currSelectedContent)" matTooltip="Publish" matTooltipClass="offprint-tooltip">
+                                <i-feather class="no-text" name="book"></i-feather>
+                            </button>
+                        </ng-template>
+                    </ng-container>
+                    
+                    <!--If the content is a work-->
+                    <ng-container *ngSwitchCase="contentKind.WorkContent">
+                        <button matRipple class="tool mid" (click)="publishContent(currSelectedContent)" matTooltip="Publish" matTooltipClass="offprint-tooltip">
+                            <i-feather class="no-text" name="book"></i-feather>
+                        </button>
+                    </ng-container>
+                </ng-container>
                 <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="edit-3"></i-feather>
                 </button>
