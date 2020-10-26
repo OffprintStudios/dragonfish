@@ -143,53 +143,53 @@
     <ng-template #hasContent>
         <div class="content-grid">
             <ng-container *ngFor="let content of myContent">
-                <!--For blogs-->
-                <ng-container *ngIf="content.kind === 'BlogContent'">
-                    <div class="content-box" (click)="selectItem(content)" (dblclick)="viewContent(content)" [ngClass]="{'selected': content.audit.selected}">
-                        <div class="content-description">
-                            <i-feather name="coffee" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
-                            <h5>{{ content.title }}</h5>
-                        </div>
-                        <div class="content-preview">
-                            <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
-                        </div>
-                        <div class="content-stats">
-                            <span class="stat-block" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="eye"></i-feather>{{ content.stats.views | abbreviate}}
-                            </span>
-                            <span class="stat-divider"></span>
-                            <span class="stat-block" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="message-circle"></i-feather>{{ content.stats.comments | abbreviate }}
-                            </span>
-                            <span class="stat-divider"></span>
-                            <span class="stat-block" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="thumbs-up"></i-feather>{{ content.stats.likes | abbreviate }}
-                            </span>
-                            <span class="stat-divider"></span>
-                            <span class="stat-block" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="thumbs-down"></i-feather>{{ content.stats.dislikes | abbreviate }}
-                            </span>
-                            <span class="stat-divider"></span>
-                            <ng-container *ngIf="content.audit.published === pubStatus.Published; else unpubBlog">
-                                <span class="stat-block" [matTooltip]="'Published'" [matTooltipClass]="'offprint-tooltip'">
-                                    <i-feather class="stat-icon" name="book-open"></i-feather>
-                                </span>
-                            </ng-container>
-                            <ng-template #unpubBlog>
-                                <span class="stat-block" [matTooltip]="'Unpublished'" [matTooltipClass]="'offprint-tooltip'">
-                                    <i-feather class="stat-icon" name="book"></i-feather>
-                                </span>
-                            </ng-template>
-                        </div>
+                <div class="content-box" (click)="selectItem(content)" (dblclick)="viewContent(content)" [ngClass]="{'selected': content.audit.selected}">
+                    <div class="content-description">
+                        <ng-container [ngSwitch]="content.kind">
+                            <i-feather *ngSwitchCase="contentKind.BlogContent" name="coffee" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
+                            <i-feather *ngSwitchCase="contentKind.WorkContent" name="feather" [matTooltip]="'Work'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
+                        </ng-container>
+                        <h5>{{ content.title }}</h5>
                     </div>
-                </ng-container>
-
-                <!--For works-->
-                <ng-container *ngIf="content.kind === 'WorkContent'">
-                    <div class="content-box">
-                        this is a work!
+                    <div class="content-preview">
+                        <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
                     </div>
-                </ng-container>
+                    <div class="content-stats">
+                        <span class="stat-block" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
+                            <i-feather class="stat-icon" name="eye"></i-feather>{{ content.stats.views | abbreviate}}
+                        </span>
+                        <span class="stat-divider"></span>
+                        <span class="stat-block" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
+                            <i-feather class="stat-icon" name="message-circle"></i-feather>{{ content.stats.comments | abbreviate }}
+                        </span>
+                        <span class="stat-divider"></span>
+                        <span class="stat-block" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'">
+                            <i-feather class="stat-icon" name="thumbs-up"></i-feather>{{ content.stats.likes | abbreviate }}
+                        </span>
+                        <span class="stat-divider"></span>
+                        <span class="stat-block" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'">
+                            <i-feather class="stat-icon" name="thumbs-down"></i-feather>{{ content.stats.dislikes | abbreviate }}
+                        </span>
+                        <span class="stat-divider"></span>
+                        <ng-container [ngSwitch]="content.audit.published">
+                            <span *ngSwitchCase="pubStatus.Published" class="stat-block" [matTooltip]="'Published'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather class="stat-icon" name="book-open"></i-feather>
+                            </span>
+                            <span *ngSwitchCase="pubStatus.Unpublished" class="stat-block" [matTooltip]="'Unpublished'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather class="stat-icon" name="book"></i-feather>
+                            </span>
+                            <span *ngSwitchCase="pubStatus.Pending" class="stat-block" [matTooltip]="'Pending'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather class="stat-icon" name="clock"></i-feather>
+                            </span>
+                            <span *ngSwitchCase="pubStatus.Rejected" class="stat-block" [matTooltip]="'Rejected'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather class="stat-icon" name="x"></i-feather>
+                            </span>
+                            <span *ngSwitchCase="pubStatus.ApprovedUnpublished" class="stat-block" [matTooltip]="'Approved (Unpublished)'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather class="stat-icon" name="book"></i-feather>
+                            </span>
+                        </ng-container>
+                    </div>
+                </div>
             </ng-container>
         </div>
     </ng-template>
