@@ -46,27 +46,27 @@ export class ContentController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Post('create-folder')
-    async createFolder(@Request() req: any, @Body() folderInfo: FolderForm, @Query('parentId') parentId: Types.ObjectId) {
-        return await this.folderService.createFolder(req.user, folderInfo, parentId);
+    async createFolder(@Request() req: any, @Body() folderInfo: FolderForm, @Query('parentId') parentId: string) {
+        return await this.folderService.createFolder(req.user, folderInfo, Types.ObjectId(parentId));
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-folder')
-    async editFolder(@Request() req: any, @Body() folderInfo: FolderForm, @Query('folderId') folderId: Types.ObjectId) {
+    async editFolder(@Request() req: any, @Body() folderInfo: FolderForm, @Query('folderId') folderId: string) {
         if (isNullOrUndefined(folderId)) {
             throw new BadRequestException(`You must include the folder ID.`);
         }
 
-        return await this.folderService.editFolder(req.user, folderId, folderInfo);
+        return await this.folderService.editFolder(req.user, Types.ObjectId(folderId), folderInfo);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-one-folder')
-    async fetchOneFolder(@Request() req: any, @Query('folderId') folderId: Types.ObjectId) {
+    async fetchOneFolder(@Request() req: any, @Query('folderId') folderId: string) {
         if (isNullOrUndefined(folderId)) {
             throw new BadRequestException(`You must include the folder ID.`);
         }
 
-        return await this.folderService.fetchOne(req.user, folderId);
+        return await this.folderService.fetchOne(req.user, Types.ObjectId(folderId));
     }
 }
