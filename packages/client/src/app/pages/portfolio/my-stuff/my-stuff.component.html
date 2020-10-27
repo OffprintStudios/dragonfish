@@ -3,7 +3,7 @@
         <div class="tool-buttons">
             <!--Creation tools-->
             <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
-            <button matRipple class="tool end" matTooltip="Create Folder" matTooltipClass="offprint-tooltip">
+            <button matRipple class="tool end" matTooltip="Create Folder" matTooltipClass="offprint-tooltip" (click)="openNewFormDialog()">
                 <i-feather class="no-text" name="folder-plus"></i-feather>
             </button>
             <span class="tool-divider"></span>

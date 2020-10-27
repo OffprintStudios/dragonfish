@@ -56,6 +56,7 @@ import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, W
   HistoryComponent } from './components/site-sidenav';
 import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
 import { BlogFormComponent } from './pages/portfolio/my-stuff/blog-form/blog-form.component';
+import { NewFolderComponent } from './pages/portfolio/my-stuff/new-folder/new-folder.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -100,7 +101,7 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent
+    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, NewFolderComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
@@ -142,7 +143,7 @@ const toolbarOptions = [
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
     NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
-    AddToCollectionComponent, StartConversationComponent
+    AddToCollectionComponent, StartConversationComponent, NewFolderComponent
   ],
   bootstrap: [AppComponent],
 })

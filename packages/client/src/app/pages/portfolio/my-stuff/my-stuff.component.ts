@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentKind, ContentModel, Folder, PubChange, PubStatus } from '@pulp-fiction/models/content';
@@ -8,6 +9,7 @@ import { MyStuff } from '../../../models/site';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
 import { MyStuffService } from '../../../services/user';
+import { NewFolderComponent } from './new-folder/new-folder.component';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -29,7 +31,7 @@ export class MyStuffComponent implements OnInit {
   });
 
   constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private blogService: BlogsService) {
+    private blogService: BlogsService, private dialog: MatDialog) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -131,5 +133,15 @@ export class MyStuffComponent implements OnInit {
         content.audit.published = this.pubStatus.Published;
       });
     }
+  }
+
+  /**
+   * Opens the new form dialog box via MatDialog.
+   */
+  openNewFormDialog() {
+    const folderFormRef = this.dialog.open(NewFolderComponent, {width: '250px'});
+    folderFormRef.afterClosed().subscribe(() => {
+      this.router.navigate([], {relativeTo: this.route});
+    });
   }
 }
