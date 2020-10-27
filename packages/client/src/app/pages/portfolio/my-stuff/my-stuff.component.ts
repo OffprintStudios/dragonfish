@@ -25,6 +25,7 @@ export class MyStuffComponent implements OnInit {
 
   itemSelected = false;
   currSelectedContent: ContentModel;
+  viewingFolder = false;
 
   searchStuff = new FormGroup({
     query: new FormControl('')
@@ -73,6 +74,7 @@ export class MyStuffComponent implements OnInit {
   deselect() {
     this.currSelectedContent.audit.selected = false;
     this.itemSelected = false;
+    this.viewingFolder = false;
     this.currSelectedContent = null;
   }
 
@@ -96,6 +98,7 @@ export class MyStuffComponent implements OnInit {
    * @param folder The folder to open
    */
   openFolder(folder: Folder) {
+    this.viewingFolder = true;
     this.router.navigate(['folder', folder._id], {relativeTo: this.route});
   }
 

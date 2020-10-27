@@ -1,5 +1,5 @@
 <div class="tools">
-    <ng-container *ngIf="route.children.length === 0; else goBack">
+    <ng-container *ngIf="route.children.length === 0 || viewingFolder; else goBack">
         <div class="tool-buttons">
             <!--Creation tools-->
             <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
