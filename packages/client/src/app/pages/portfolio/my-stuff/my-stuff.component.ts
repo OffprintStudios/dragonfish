@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel, Folder, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { MyStuff } from '../../../models/site';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
 import { MyStuffService } from '../../../services/user';
@@ -16,6 +17,7 @@ import { MyStuffService } from '../../../services/user';
 export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
   myContent: ContentModel[];
+  myFolders: Folder[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
 
@@ -35,7 +37,12 @@ export class MyStuffComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.myContent = data.stuffData as ContentModel[];
+      const stuff = data.stuffData as MyStuff;
+      this.myContent = stuff.content;
+      this.myFolders = stuff.folders;
+
+      console.log(this.myContent);
+      console.log(this.myFolders);
     });
   }
 
