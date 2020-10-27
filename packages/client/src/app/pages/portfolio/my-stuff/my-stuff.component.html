@@ -146,7 +146,7 @@
         </div>
         <div class="content-folders">
             <ng-container *ngFor="let folder of myFolders">
-                <div class="folder-box">
+                <div class="folder-box" (dblclick)="openFolder(folder)">
                     <i-feather name="folder"></i-feather>
                     <h5>{{ folder.name }}</h5>
                 </div>

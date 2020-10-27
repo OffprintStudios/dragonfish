@@ -91,6 +91,15 @@ export class MyStuffComponent implements OnInit {
   }
 
   /**
+   * Navigates to the folder page given the provided folder.
+   * 
+   * @param folder The folder to open
+   */
+  openFolder(folder: Folder) {
+    this.router.navigate(['folder', folder._id], {relativeTo: this.route});
+  }
+
+  /**
    * Sends a request to delete the currently selected content.
    * 
    * @param content The content item to delete
