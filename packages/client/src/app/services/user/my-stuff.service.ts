@@ -42,4 +42,8 @@ export class MyStuffService {
         return throwError(err);
       }));
   }
+
+  public addFolder() {
+    
+  }
 }
