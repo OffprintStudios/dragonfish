@@ -6,7 +6,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent, MyStuffComponent, WorkFormComponent, BlogFormComponent} from './pages/portfolio';
+  HistoryComponent, MyStuffComponent, WorkFormComponent, BlogFormComponent, FolderPageComponent} from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -21,7 +21,7 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver} from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, FolderPageResolver} from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -41,7 +41,8 @@ const routes: Routes = [
       {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
         {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
         {path: 'new-work', component: WorkFormComponent, canActivate: [AuthGuard]},
-        {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+        {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+        {path: 'folder/:folderId', component: FolderPageComponent, canActivate: [AuthGuard], resolve: {folderData: FolderPageResolver}, runGuardsAndResolvers: 'always'}
       ]},
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
@@ -74,7 +75,7 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, FolderPageResolver
     ]
 })
 export class AppRoutingModule {}
