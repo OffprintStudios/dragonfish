@@ -40,9 +40,6 @@ export class MyStuffComponent implements OnInit {
       const stuff = data.stuffData as MyStuff;
       this.myContent = stuff.content;
       this.myFolders = stuff.folders;
-
-      console.log(this.myContent);
-      console.log(this.myFolders);
     });
   }
 
