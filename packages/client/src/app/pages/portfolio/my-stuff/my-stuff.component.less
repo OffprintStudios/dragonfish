@@ -4,11 +4,20 @@ div.tools {
     width: 98.8%;
 }
 
+div.header {
+    width: 100%;
+    border-bottom: 1px solid var(--site-borders);
+
+    h4 {
+        margin-bottom: 0;
+    }
+}
+
 div.content-folders {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    margin: 0 auto 2rem auto;
     width: 100%;
 
     div.folder-box {
@@ -18,6 +27,7 @@ div.content-folders {
         width: 225px;
         margin: 0.75rem;
         cursor: pointer;
+        padding: 10px;
         
         h5 {
             width: 175px;
@@ -33,6 +43,7 @@ div.content-folders {
         }
         i-feather {
             display: inline-block;
+            position: relative;
             vertical-align: middle;
             margin-right: 0.5rem;
             stroke-width: 1;
@@ -45,7 +56,7 @@ div.content-grid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
+    margin: 0 auto;
     width: 100%;
 
     div.content-box {

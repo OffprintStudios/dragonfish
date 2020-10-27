@@ -141,6 +141,9 @@
     </ng-container>
     
     <ng-template #hasContent>
+        <div class="header">
+            <h4>Folders</h4>
+        </div>
         <div class="content-folders">
             <ng-container *ngFor="let folder of myFolders">
                 <div class="folder-box">
@@ -148,6 +151,9 @@
                     <h5>{{ folder.name }}</h5>
                 </div>
             </ng-container>
+        </div>
+        <div class="header">
+            <h4>Content</h4>
         </div>
         <div class="content-grid">
             <ng-container *ngFor="let content of myContent">
