@@ -139,7 +139,7 @@ export class MyStuffComponent implements OnInit {
    * Opens the new form dialog box via MatDialog.
    */
   openNewFormDialog() {
-    const folderFormRef = this.dialog.open(NewFolderComponent, {width: '250px'});
+    const folderFormRef = this.dialog.open(NewFolderComponent, {width: '450px'});
     folderFormRef.afterClosed().subscribe(() => {
       this.router.navigate([], {relativeTo: this.route});
     });

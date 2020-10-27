@@ -1,1 +1,15 @@
-<p>new-folder works!</p>
+<h1 mat-dialog-title>Create a New Folder</h1>
+<div mat-dialog-content>
+    <form [formGroup]="newFolderForm" (ngSubmit)="submitForm()">
+        <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" placeholder="Contains Greatness">
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <div class="form-buttons">
+        <button class="left" (click)="submitForm()">Create</button>
+        <button class="right"(click)="cancel()">Cancel</button>
+    </div>
+</div>
