@@ -4,6 +4,43 @@ div.tools {
     width: 98.8%;
 }
 
+div.content-folders {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+
+    div.folder-box {
+        border: 1px solid var(--site-borders);
+        background: var(--site-accent);
+        border-radius: 4px;
+        width: 225px;
+        margin: 0.75rem;
+        cursor: pointer;
+        
+        h5 {
+            width: 175px;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: whitesmoke;
+        }
+        i-feather {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            stroke-width: 1;
+            color: whitesmoke;
+        }
+    }
+}
+
 div.content-grid {
     display: flex;
     flex-direction: row;

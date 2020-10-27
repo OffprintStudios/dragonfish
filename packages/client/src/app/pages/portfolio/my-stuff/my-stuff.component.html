@@ -133,7 +133,7 @@
 </mat-menu>
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
-    <ng-container *ngIf="myContent.length === 0; else hasContent">
+    <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
         <div class="empty">
             <h3>It's pretty lonely here...</h3>
             <p>Why not add some content by hitting the create button?</p>
@@ -141,6 +141,14 @@
     </ng-container>
     
     <ng-template #hasContent>
+        <div class="content-folders">
+            <ng-container *ngFor="let folder of myFolders">
+                <div class="folder-box">
+                    <i-feather name="folder"></i-feather>
+                    <h5>{{ folder.name }}</h5>
+                </div>
+            </ng-container>
+        </div>
         <div class="content-grid">
             <ng-container *ngFor="let content of myContent">
                 <div class="content-box" (click)="selectItem(content)" (dblclick)="viewContent(content)" [ngClass]="{'selected': content.audit.selected}">
