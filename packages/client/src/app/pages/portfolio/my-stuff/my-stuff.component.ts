@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Types } from 'mongoose';
 
 import { ContentKind, ContentModel, Folder, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -25,7 +26,8 @@ export class MyStuffComponent implements OnInit {
 
   itemSelected = false;
   currSelectedContent: ContentModel;
-  viewingFolder = false;
+  currFolder: Folder;
+  loadingFolder = false;
 
   searchStuff = new FormGroup({
     query: new FormControl('')
@@ -43,6 +45,14 @@ export class MyStuffComponent implements OnInit {
       const stuff = data.stuffData as MyStuff;
       this.myContent = stuff.content;
       this.myFolders = stuff.folders;
+    });
+
+    this.route.queryParamMap.subscribe(params => {
+      const pathId = params.get('folderId');
+      const folderId = Types.ObjectId(pathId);
+      this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
+        this.currFolder = folder;
+      });
     });
   }
 
@@ -74,7 +84,6 @@ export class MyStuffComponent implements OnInit {
   deselect() {
     this.currSelectedContent.audit.selected = false;
     this.itemSelected = false;
-    this.viewingFolder = false;
     this.currSelectedContent = null;
   }
 
@@ -98,8 +107,7 @@ export class MyStuffComponent implements OnInit {
    * @param folder The folder to open
    */
   openFolder(folder: Folder) {
-    this.viewingFolder = true;
-    this.router.navigate(['folder', folder._id], {relativeTo: this.route});
+    this.router.navigate([], {relativeTo: this.route, queryParams: {folder: folder._id}, queryParamsHandling: 'merge'});
   }
 
   /**

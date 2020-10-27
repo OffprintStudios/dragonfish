@@ -1,5 +1,5 @@
 <div class="tools">
-    <ng-container *ngIf="route.children.length === 0 || viewingFolder; else goBack">
+    <ng-container *ngIf="route.children.length === 0; else goBack">
         <div class="tool-buttons">
             <!--Creation tools-->
             <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
@@ -131,6 +131,19 @@
     <button mat-menu-item>By Kind</button>
     <button mat-menu-item>By Date Added</button>
 </mat-menu>
+
+<div class="folder-routing">
+    <ng-container *ngIf="currFolder; else topLevel">
+        <h3><a>Home</a></h3> <i-feather name="chevron-right"></i-feather>
+        <ng-container *ngFor="let parent of $any(currFolder.parents)">
+            <h3>{{ parent.name }}</h3> <i-feather name="chevron-right"></i-feather>
+        </ng-container>
+        <h3 class="active">{{ currFolder.name }}</h3>
+    </ng-container>
+    <ng-template #topLevel>
+        <h3 class="active">Home</h3>
+    </ng-template>
+</div>
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
     <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
