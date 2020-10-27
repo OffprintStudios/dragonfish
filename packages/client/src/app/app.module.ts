@@ -30,6 +30,8 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortColle
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent, MyStuffComponent } from './pages/portfolio';
 
+import { BlogFormComponent, NewFolderComponent, FolderPageComponent } from './pages/portfolio/my-stuff';
+
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
@@ -55,8 +57,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
 import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
-import { BlogFormComponent } from './pages/portfolio/my-stuff/blog-form/blog-form.component';
-import { NewFolderComponent } from './pages/portfolio/my-stuff/new-folder/new-folder.component';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -101,7 +101,7 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, NewFolderComponent
+    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, NewFolderComponent, FolderPageComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
