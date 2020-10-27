@@ -145,7 +145,75 @@
     </ng-template>
 </div>
 
-<ng-container *ngIf="route.children.length === 0; else openedForms">
+<ng-container *ngIf="route.children.length === 0">
+    <!--Folder view-->
+    <ng-container *ngIf="currFolder; else topLevelView">
+        <!--Folder is Empty-->
+        <ng-container *ngIf="currFolder.contents.length === 0 && currFolder.children.length === 0; else folderHasContent">
+            <div class="empty">
+                <h3>It's pretty lonely here...</h3>
+                <p>Why not add some content by hitting the create button?</p>
+            </div>
+        </ng-container>
+
+        <!--Folder has Content-->
+        <ng-template #folderHasContent>
+            <div class="header">
+                <h4>Folders</h4>
+            </div>
+            <div class="content-folders">
+                <ng-container *ngFor="let folder of myFolders">
+                    <div class="folder-box" (dblclick)="openFolder(folder)">
+                        <i-feather name="folder"></i-feather>
+                        <h5>{{ folder.name }}</h5>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="header">
+                <h4>Content</h4>
+            </div>
+            <div class="content-grid">
+
+            </div>
+        </ng-template>
+    </ng-container>
+
+    <!--Top level view-->
+    <ng-template #topLevelView>
+        <!--User nas nothing-->
+        <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
+            <div class="empty">
+                <h3>It's pretty lonely here...</h3>
+                <p>Why not add some content by hitting the create button?</p>
+            </div>
+        </ng-container>
+        
+        <!--User has content-->
+        <ng-template #hasContent>
+            <div class="header">
+                <h4>Folders</h4>
+            </div>
+            <div class="content-folders">
+                <ng-container *ngFor="let folder of myFolders">
+                    <div class="folder-box" (dblclick)="openFolder(folder)">
+                        <i-feather name="folder"></i-feather>
+                        <h5>{{ folder.name }}</h5>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="header">
+                <h4>Content</h4>
+            </div>
+            <div class="content-grid">
+                <ng-container *ngFor="let content of myContent">
+                    <content-item [content]="content"></content-item>
+                </ng-container>
+            </div>
+        </ng-template>
+    </ng-template>
+</ng-container>
+
+<!--<ng-container *ngIf="route.children.length === 0; else openedForms">
     <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
         <div class="empty">
             <h3>It's pretty lonely here...</h3>
@@ -220,7 +288,7 @@
             </ng-container>
         </div>
     </ng-template>
-</ng-container>
+</ng-container>-->
 
 <ng-template #openedForms>
     <router-outlet></router-outlet>
