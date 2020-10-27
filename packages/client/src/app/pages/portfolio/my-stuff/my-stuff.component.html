@@ -145,7 +145,7 @@
     </ng-template>
 </div>
 
-<ng-container *ngIf="route.children.length === 0">
+<ng-container *ngIf="route.children.length === 0; else openedForms">
     <!--Folder view-->
     <ng-container *ngIf="currFolder; else topLevelView">
         <!--Folder is Empty-->
@@ -173,7 +173,9 @@
                 <h4>Content</h4>
             </div>
             <div class="content-grid">
-
+                <ng-container *ngFor="let content of $any(currFolder.contents)">
+                    <content-item [content]="content"></content-item>
+                </ng-container>
             </div>
         </ng-template>
     </ng-container>
@@ -212,83 +214,6 @@
         </ng-template>
     </ng-template>
 </ng-container>
-
-<!--<ng-container *ngIf="route.children.length === 0; else openedForms">
-    <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
-        <div class="empty">
-            <h3>It's pretty lonely here...</h3>
-            <p>Why not add some content by hitting the create button?</p>
-        </div>
-    </ng-container>
-    
-    <ng-template #hasContent>
-        <div class="header">
-            <h4>Folders</h4>
-        </div>
-        <div class="content-folders">
-            <ng-container *ngFor="let folder of myFolders">
-                <div class="folder-box" (dblclick)="openFolder(folder)">
-                    <i-feather name="folder"></i-feather>
-                    <h5>{{ folder.name }}</h5>
-                </div>
-            </ng-container>
-        </div>
-        <div class="header">
-            <h4>Content</h4>
-        </div>
-        <div class="content-grid">
-            <ng-container *ngFor="let content of myContent">
-                <div class="content-box" (click)="selectItem(content)" (dblclick)="viewContent(content)" [ngClass]="{'selected': content.audit.selected}">
-                    <div class="content-description">
-                        <ng-container [ngSwitch]="content.kind">
-                            <i-feather *ngSwitchCase="contentKind.BlogContent" name="coffee" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
-                            <i-feather *ngSwitchCase="contentKind.WorkContent" name="feather" [matTooltip]="'Work'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
-                        </ng-container>
-                        <h5>{{ content.title }}</h5>
-                    </div>
-                    <div class="content-preview">
-                        <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
-                    </div>
-                    <div class="content-stats">
-                        <span class="stat-block" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
-                            <i-feather class="stat-icon" name="eye"></i-feather>{{ content.stats.views | abbreviate}}
-                        </span>
-                        <span class="stat-divider"></span>
-                        <span class="stat-block" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
-                            <i-feather class="stat-icon" name="message-circle"></i-feather>{{ content.stats.comments | abbreviate }}
-                        </span>
-                        <span class="stat-divider"></span>
-                        <span class="stat-block" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'">
-                            <i-feather class="stat-icon" name="thumbs-up"></i-feather>{{ content.stats.likes | abbreviate }}
-                        </span>
-                        <span class="stat-divider"></span>
-                        <span class="stat-block" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'">
-                            <i-feather class="stat-icon" name="thumbs-down"></i-feather>{{ content.stats.dislikes | abbreviate }}
-                        </span>
-                        <span class="stat-divider"></span>
-                        <ng-container [ngSwitch]="content.audit.published">
-                            <span *ngSwitchCase="pubStatus.Published" class="stat-block" [matTooltip]="'Published'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="book-open"></i-feather>
-                            </span>
-                            <span *ngSwitchCase="pubStatus.Unpublished" class="stat-block" [matTooltip]="'Unpublished'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="book"></i-feather>
-                            </span>
-                            <span *ngSwitchCase="pubStatus.Pending" class="stat-block" [matTooltip]="'Pending'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="clock"></i-feather>
-                            </span>
-                            <span *ngSwitchCase="pubStatus.Rejected" class="stat-block" [matTooltip]="'Rejected'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="x"></i-feather>
-                            </span>
-                            <span *ngSwitchCase="pubStatus.ApprovedUnpublished" class="stat-block" [matTooltip]="'Approved (Unpublished)'" [matTooltipClass]="'offprint-tooltip'">
-                                <i-feather class="stat-icon" name="book"></i-feather>
-                            </span>
-                        </ng-container>
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </ng-template>
-</ng-container>-->
 
 <ng-template #openedForms>
     <router-outlet></router-outlet>
