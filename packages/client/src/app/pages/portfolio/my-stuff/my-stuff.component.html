@@ -174,7 +174,7 @@
             </div>
             <div class="content-grid">
                 <ng-container *ngFor="let content of $any(currFolder.contents)">
-                    <content-item [content]="content"></content-item>
+                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
                 </ng-container>
             </div>
         </ng-template>
@@ -208,7 +208,7 @@
             </div>
             <div class="content-grid">
                 <ng-container *ngFor="let content of myContent">
-                    <content-item [content]="content"></content-item>
+                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
                 </ng-container>
             </div>
         </ng-template>
