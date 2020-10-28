@@ -53,6 +53,7 @@ export class MyStuffComponent implements OnInit {
       const folderId = Types.ObjectId(pathId);
       this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
         this.currFolder = folder;
+        this.stuffService.currentFolderId = folder._id;
       });
     });
   }
@@ -161,6 +162,7 @@ export class MyStuffComponent implements OnInit {
    */
   goHome() {
     this.currFolder = null;
+    this.stuffService.currentFolderId = null;
     this.router.navigate([], {relativeTo: this.route});
   }
 

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BlogForm, BlogsContentModel } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
+import { MyStuffService } from 'packages/client/src/app/services/user';
 
 @Component({
   selector: 'pulp-fiction-blog-form',
@@ -24,7 +25,8 @@ export class BlogFormComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
 
-  constructor(private route: ActivatedRoute, private blogsService: BlogsService, private location: Location, private snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private blogsService: BlogsService, private location: Location, private snackBar: MatSnackBar,
+    private stuffService: MyStuffService) { }
 
   ngOnInit(): void {
     const blogInfo = this.route.snapshot.data.blogData as BlogsContentModel;
@@ -66,9 +68,15 @@ export class BlogFormComponent implements OnInit {
     };
 
     if (this.createBlogMode) {
-      this.blogsService.createBlog(formData).subscribe(() => {
-        this.location.back();
-      });
+      if (this.stuffService.currentFolderId !== null && this.stuffService.currentFolderId !== undefined) {
+        this.blogsService.createBlog(formData, this.stuffService.currentFolderId).subscribe(() => {
+          this.location.back();
+        });
+      } else {
+        this.blogsService.createBlog(formData).subscribe(() => {
+          this.location.back();
+        });
+      }
     } else {
       this.blogsService.editBlog(this.currBlog._id, formData).subscribe(data => {
         this.currBlog = data;

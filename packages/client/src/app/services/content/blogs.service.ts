@@ -8,6 +8,7 @@ import * as models from '@pulp-fiction/models/blogs';
 import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
+import { Types } from 'mongoose';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,9 @@ export class BlogsService {
    *
    * @param info The blog's information.
    */
-  public createBlog(info: BlogForm) {
-    return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
+  public createBlog(info: BlogForm, parentId?: Types.ObjectId) {
+    if (parentId) {
+      return this.http.put<models.Blog>(`${this.url}/create-blog?folderId=${parentId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success('Blog successfully created.');
@@ -32,6 +34,16 @@ export class BlogsService {
       }), catchError(err => {
         return throwError(err);
       }));
+    } else {
+      return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        if (res.status === 201) {
+          this.alertsService.success('Blog successfully created.');
+        }
+      }), catchError(err => {
+        return throwError(err);
+      }));
+    }
   }
 
   /**
