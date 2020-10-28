@@ -27,7 +27,7 @@ export class MyStuffComponent implements OnInit {
   itemSelected = false;
   currSelectedContent: ContentModel;
   currFolder: Folder;
-  loadingFolder = false;
+  isFolder = false;
 
   isIconView = true;
 
@@ -54,6 +54,7 @@ export class MyStuffComponent implements OnInit {
       const folderId = Types.ObjectId(pathId);
       this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
         this.currFolder = folder;
+        this.isFolder = true;
       });
     });
   }
@@ -161,6 +162,8 @@ export class MyStuffComponent implements OnInit {
    * Goes back to normal view.
    */
   goHome() {
+    this.currFolder = null;
+    this.isFolder = false;
     this.router.navigate([], {relativeTo: this.route});
   }
 
