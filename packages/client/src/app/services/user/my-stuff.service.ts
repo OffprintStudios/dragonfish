@@ -10,7 +10,7 @@ import { BlogsContentModel, ContentKind, ContentModel, Folder, FolderForm } from
 })
 export class MyStuffService {
   private url = `/api/content`;
-  public currentFolder
+  public currentFolderId: Types.ObjectId;
 
   constructor(private http: HttpClient) { }
 
