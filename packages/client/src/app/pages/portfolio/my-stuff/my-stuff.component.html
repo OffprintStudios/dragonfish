@@ -164,12 +164,20 @@
                 <h4>Folders</h4>
             </div>
             <div class="content-folders">
-                <ng-container *ngFor="let folder of myFolders">
-                    <div class="folder-box" (dblclick)="openFolder(folder)">
-                        <i-feather name="folder"></i-feather>
-                        <h5>{{ folder.name }}</h5>
+                <ng-container *ngIf="currFolder.children.length === 0; else hasChildren">
+                    <div class="empty" style="width: 100%;">
+                        <h3>You don't have any folders...</h3>
+                        <p>Add some with the Create Folder button in the tool bar.</p>
                     </div>
                 </ng-container>
+                <ng-template #hasChildren>
+                    <ng-container *ngFor="let folder of $any(currFolder.children)">
+                        <div class="folder-box" (dblclick)="openFolder(folder)">
+                            <i-feather name="folder"></i-feather>
+                            <h5>{{ folder.name }}</h5>
+                        </div>
+                    </ng-container>
+                </ng-template>
             </div>
             <div class="header">
                 <h4>Content</h4>
@@ -198,12 +206,20 @@
                 <h4>Folders</h4>
             </div>
             <div class="content-folders">
-                <ng-container *ngFor="let folder of myFolders">
-                    <div class="folder-box" (dblclick)="openFolder(folder)">
-                        <i-feather name="folder"></i-feather>
-                        <h5>{{ folder.name }}</h5>
+                <ng-container *ngIf="myFolders.length === 0; else hasChildren">
+                    <div class="empty" style="width: 100%;">
+                        <h3>You don't have any folders...</h3>
+                        <p>Add some with the Create Folder button in the tool bar.</p>
                     </div>
                 </ng-container>
+                <ng-template #hasChildren>
+                    <ng-container *ngFor="let folder of myFolders">
+                        <div class="folder-box" (dblclick)="openFolder(folder)">
+                            <i-feather name="folder"></i-feather>
+                            <h5>{{ folder.name }}</h5>
+                        </div>
+                    </ng-container>
+                </ng-template>
             </div>
             <div class="header">
                 <h4>Content</h4>
