@@ -54,7 +54,6 @@ export class MyStuffComponent implements OnInit {
       const folderId = Types.ObjectId(pathId);
       this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
         this.currFolder = folder;
-        console.log(this.currFolder);
       });
     });
   }
