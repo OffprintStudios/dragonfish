@@ -1,6 +1,7 @@
-import { Controller, UseGuards, Request, Get, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
+import { Controller, UseGuards, Request, Put, Body, Patch, BadRequestException, Param, Query } from '@nestjs/common';
+import { Types } from 'mongoose';
 
-import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
+import { BlogForm, PubChange } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
 
@@ -10,14 +11,20 @@ export class BlogsController {
 
     @UseGuards(AuthGuard)
     @Put('create-blog')
-    async createBlog(@Request() req: any, @Body() newBlog: BlogForm) {
+    async createBlog(@Request() req: any, @Body() newBlog: BlogForm, @Query('parentId') parentId: string) {
         if (newBlog.title.length < 3 || newBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
         if (newBlog.body.length < 3) {
             throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
-        return await this.blogsService.createNewBlog(req.user, newBlog);
+
+        if (parentId) {
+            const folderId = Types.ObjectId(parentId);
+            return await this.blogsService.createNewBlog(req.user, newBlog, folderId);
+        } else {
+            return await this.blogsService.createNewBlog(req.user, newBlog);
+        }
     }
 
     @UseGuards(AuthGuard)

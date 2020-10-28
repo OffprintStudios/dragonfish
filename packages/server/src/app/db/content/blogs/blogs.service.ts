@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { PaginateModel } from 'mongoose';
+import { PaginateModel, Types } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
@@ -22,15 +22,27 @@ export class BlogsService {
      * @param user The user making the blog.
      * @param blogInfo The blog's information.
      */  
-    async createNewBlog(user: JwtPayload, blogInfo: BlogForm): Promise<BlogsContentDocument> {
-        const newBlog = new this.blogsModel({
-            'author': user.sub,
-            'title': await sanitizeHtml(blogInfo.title),
-            'body': await sanitizeHtml(blogInfo.body),
-            'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
-        });
-
-        return await newBlog.save();
+    async createNewBlog(user: JwtPayload, blogInfo: BlogForm, parentId?: Types.ObjectId): Promise<BlogsContentDocument> {
+        if (parentId) {
+            const newBlog = new this.blogsModel({
+                'author': user.sub,
+                'title': await sanitizeHtml(blogInfo.title),
+                'body': await sanitizeHtml(blogInfo.body),
+                'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body)),
+                'audit.childOf': parentId
+            });
+    
+            return await newBlog.save();
+        } else {
+            const newBlog = new this.blogsModel({
+                'author': user.sub,
+                'title': await sanitizeHtml(blogInfo.title),
+                'body': await sanitizeHtml(blogInfo.body),
+                'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
+            });
+    
+            return await newBlog.save();
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ export class BlogsService {
    */
   public createBlog(info: BlogForm, parentId?: Types.ObjectId) {
     if (parentId) {
-      return this.http.put<models.Blog>(`${this.url}/create-blog?folderId=${parentId}`, info, {observe: 'response', withCredentials: true})
+      return this.http.put<models.Blog>(`${this.url}/create-blog?parentId=${parentId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success('Blog successfully created.');
