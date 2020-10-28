@@ -183,9 +183,17 @@
                 <h4>Content</h4>
             </div>
             <div class="content-grid">
-                <ng-container *ngFor="let content of $any(currFolder.contents)">
-                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                <ng-container *ngIf="currFolder.contents.length === 0; else hasContent">
+                    <div class="empty" style="width: 100%;">
+                        <h3>It's pretty lonely here...</h3>
+                        <p>Why not add some content by hitting the create button?</p>
+                    </div>
                 </ng-container>
+                <ng-template #hasContent>
+                    <ng-container *ngFor="let content of $any(currFolder.contents)">
+                        <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                    </ng-container>
+                </ng-template>
             </div>
         </ng-template>
     </ng-container>
@@ -206,13 +214,13 @@
                 <h4>Folders</h4>
             </div>
             <div class="content-folders">
-                <ng-container *ngIf="myFolders.length === 0; else hasChildren">
+                <ng-container *ngIf="myFolders.length === 0; else hasChildrenTop">
                     <div class="empty" style="width: 100%;">
                         <h3>You don't have any folders...</h3>
                         <p>Add some with the Create Folder button in the tool bar.</p>
                     </div>
                 </ng-container>
-                <ng-template #hasChildren>
+                <ng-template #hasChildrenTop>
                     <ng-container *ngFor="let folder of myFolders">
                         <div class="folder-box" (dblclick)="openFolder(folder)">
                             <i-feather name="folder"></i-feather>
@@ -225,9 +233,17 @@
                 <h4>Content</h4>
             </div>
             <div class="content-grid">
-                <ng-container *ngFor="let content of myContent">
-                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                <ng-container *ngIf="myContent.length === 0; else hasContentTop">
+                    <div class="empty" style="width: 100%;">
+                        <h3>It's pretty lonely here...</h3>
+                        <p>Why not add some content by hitting the create button?</p>
+                    </div>
                 </ng-container>
+                <ng-template #hasContentTop>
+                    <ng-container *ngFor="let content of myContent">
+                        <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                    </ng-container>
+                </ng-template>
             </div>
         </ng-template>
     </ng-template>
