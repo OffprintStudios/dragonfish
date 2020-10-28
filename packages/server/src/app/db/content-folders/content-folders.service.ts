@@ -53,6 +53,23 @@ export class ContentFoldersService {
     }
 
     /**
+     * Moves a folder to another folder. 
+     * 
+     * @param user The owner of the folder
+     * @param destinationId The destination folder
+     * @param folderId The folder to be moved
+     * @param originId (Optional) The original folder
+     */
+    async moveFolder(user: JwtPayload, destinationId: Types.ObjectId, folderId: Types.ObjectId, originId?: Types.ObjectId) {
+        if (originId) {
+            await this.removeChildFolder(user, originId, folderId);
+            return await this.addChildFolder(user, destinationId, folderId);
+        } else {
+            return await this.addChildFolder(user, destinationId, folderId);
+        }
+    }
+
+    /**
      * Appends a child folder ID to the children array of the parent.
      * 
      * @param user The owner of the parent folder
@@ -66,13 +83,44 @@ export class ContentFoldersService {
     }
 
     /**
+     * Removes a child folder ID from the children array of the parent.
+     * 
+     * @param user The owner of the parent folder
+     * @param parentId The parent folder
+     * @param childId The child folder
+     */
+    private async removeChildFolder(user: JwtPayload, parentId: Types.ObjectId, childId: Types.ObjectId) {
+        return await this.folderModel.updateOne({'_id': parentId, 'owner': user.sub}, {
+            $pull: {'children': childId}
+        });
+    }
+
+    /**
+     * Moves a content item to a folder. If the item is already in a folder, then it removes it from that folder and
+     * changes its folder to the new destination.
+     * 
+     * @param user The owner of the folder
+     * @param destinationId The destination folder
+     * @param contentId The content to be moved
+     * @param originId (Optional) The original folder
+     */
+    async moveItem(user: JwtPayload, destinationId: Types.ObjectId, contentId: string, originId?: Types.ObjectId) {
+        if (originId) {
+            await this.removeContentFromFolder(user, originId, contentId);
+            return await this.addContentToFolder(user, destinationId, contentId);
+        } else {
+            return await this.addContentToFolder(user, destinationId, contentId);
+        }
+    }
+
+    /**
      * Adds some content to the specified folder.
      * 
      * @param user The owner of the folder
      * @param folderId The folder ID
      * @param contentId The content ID to be added
      */
-    async addToFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
+    private async addContentToFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
         const doc = await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
             $push: {'contents': contentId}
         });
@@ -88,12 +136,12 @@ export class ContentFoldersService {
      * @param folderId The folder ID
      * @param contentId The content ID to be removed
      */
-    async removeFromFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
+    private async removeContentFromFolder(user: JwtPayload, folderId: Types.ObjectId, contentId: string): Promise<ContentFolderDocument> {
         const doc = await this.folderModel.findOneAndUpdate({'_id': folderId, 'owner': user.sub}, {
             $pull: {'contents': contentId}
         });
 
-        await this.contentService.setIsChild(user, contentId, folderId);
+        await this.contentService.setIsChild(user, contentId, null);
         return doc;
     }
 
