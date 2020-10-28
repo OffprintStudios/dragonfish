@@ -4,10 +4,12 @@ import { Types } from 'mongoose';
 import { BlogForm, PubChange } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
+import { ContentFoldersService } from '../../../db/content-folders/content-folders.service';
 
 @Controller('blogs')
 export class BlogsController {
-    constructor(private readonly blogsService: BlogsService, private readonly contentService: ContentService) {}
+    constructor(private readonly blogsService: BlogsService, private readonly contentService: ContentService, 
+        private readonly folderService: ContentFoldersService) {}
 
     @UseGuards(AuthGuard)
     @Put('create-blog')
@@ -21,7 +23,9 @@ export class BlogsController {
 
         if (parentId) {
             const folderId = Types.ObjectId(parentId);
-            return await this.blogsService.createNewBlog(req.user, newBlog, folderId);
+            const blog = await this.blogsService.createNewBlog(req.user, newBlog, folderId);
+            await this.folderService.addToFolder(req.user, folderId, blog._id);
+            return blog;
         } else {
             return await this.blogsService.createNewBlog(req.user, newBlog);
         }
