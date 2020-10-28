@@ -29,6 +29,8 @@ export class MyStuffComponent implements OnInit {
   currFolder: Folder;
   loadingFolder = false;
 
+  isIconView = true;
+
   searchStuff = new FormGroup({
     query: new FormControl('')
   });
