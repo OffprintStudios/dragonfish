@@ -48,10 +48,11 @@ export class MyStuffComponent implements OnInit {
     });
 
     this.route.queryParamMap.subscribe(params => {
-      const pathId = params.get('folderId');
+      const pathId = params.get('folder');
       const folderId = Types.ObjectId(pathId);
       this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
         this.currFolder = folder;
+        console.log(this.currFolder);
       });
     });
   }
@@ -153,6 +154,13 @@ export class MyStuffComponent implements OnInit {
         content.audit.published = this.pubStatus.Published;
       });
     }
+  }
+
+  /**
+   * Goes back to normal view.
+   */
+  goHome() {
+    this.router.navigate([], {relativeTo: this.route});
   }
 
   /**

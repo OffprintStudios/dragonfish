@@ -134,7 +134,7 @@
 
 <div class="folder-routing">
     <ng-container *ngIf="currFolder; else topLevel">
-        <h3><a>Home</a></h3> <i-feather name="chevron-right"></i-feather>
+        <h3><a (click)="goHome()">Home</a></h3> <i-feather name="chevron-right"></i-feather>
         <ng-container *ngFor="let parent of $any(currFolder.parents)">
             <h3>{{ parent.name }}</h3> <i-feather name="chevron-right"></i-feather>
         </ng-container>
