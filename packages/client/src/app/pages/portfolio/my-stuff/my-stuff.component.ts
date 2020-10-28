@@ -163,7 +163,17 @@ export class MyStuffComponent implements OnInit {
   goHome() {
     this.currFolder = null;
     this.stuffService.currentFolderId = null;
+    this.deselect();
     this.router.navigate([], {relativeTo: this.route});
+  }
+
+  /**
+   * Moves the currently selected content to the specified folder.
+   * 
+   * @param folderId The folder to move the content into
+   */
+  moveToFolder(folderId: Types.ObjectId) {
+    console.log(folderId);
   }
 
   /**

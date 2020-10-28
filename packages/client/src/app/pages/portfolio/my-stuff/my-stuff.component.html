@@ -25,6 +25,9 @@
                 <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
                 </button>
+                <button matRipple class="tool mid" [matMenuTriggerFor]="moveToMenu" [matTooltip]="'Move'" [matTooltipClass]="'offprint-tooltip'">
+                    <i-feather class="no-text" name="folder"></i-feather>
+                </button>
                 <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="edit-3"></i-feather>
                 </button>
@@ -53,6 +56,9 @@
             <ng-template #noItem>
                 <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
+                </button>
+                <button matRipple class="tool mid disabled" [matTooltip]="'Move'" [matTooltipClass]="'offprint-tooltip'">
+                    <i-feather class="no-text" name="folder"></i-feather>
                 </button>
                 <button matRipple class="tool mid disabled" matTooltip="Edit" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="edit-3"></i-feather>
@@ -98,6 +104,9 @@
             <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
+            <button matRipple class="tool mid disabled" [matTooltip]="'Move'" [matTooltipClass]="'offprint-tooltip'">
+                <i-feather class="no-text" name="folder"></i-feather>
+            </button>
             <button matRipple class="tool mid disabled" matTooltip="Publish" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="book"></i-feather>
             </button>
@@ -132,6 +141,19 @@
     <button mat-menu-item>By Name</button>
     <button mat-menu-item>By Kind</button>
     <button mat-menu-item>By Date Added</button>
+</mat-menu>
+
+<mat-menu #moveToMenu="matMenu">
+    <ng-container *ngIf="currFolder; else topLevelFolderMenu">
+        <ng-container *ngFor="let folder of $any(currFolder.children)">
+            <button mat-menu-item (click)="moveToFolder(folder._id)">{{ folder.name }}</button>
+        </ng-container>
+    </ng-container>
+    <ng-template #topLevelFolderMenu>
+        <ng-container *ngFor="let folder of myFolders">
+            <button mat-menu-item (click)="moveToFolder(folder._id)">{{ folder.name }}</button>
+        </ng-container>
+    </ng-template>
 </mat-menu>
 
 <div class="folder-routing">
