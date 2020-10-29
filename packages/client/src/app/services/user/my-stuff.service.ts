@@ -10,7 +10,6 @@ import { BlogsContentModel, ContentKind, ContentModel, Folder, FolderForm } from
 })
 export class MyStuffService {
   private url = `/api/content`;
-  public currentFolderId: Types.ObjectId;
 
   constructor(private http: HttpClient) { }
 
@@ -40,51 +39,6 @@ export class MyStuffService {
     return this.http.patch(`${this.url}/delete-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         return;
-      }), catchError(err => {
-        return throwError(err);
-      }));
-  }
-
-  public createFolder(folderInfo: FolderForm, parentId?: Types.ObjectId) {
-    if (parentId) {
-      return this.http.post<Folder>(`${this.url}/create-folder?parentId=${parentId}`, folderInfo, {observe: 'response', withCredentials: true})
-        .pipe(map(res => {
-          return res.body;
-        }), catchError(err => {
-          return throwError(err);
-        }));
-    } else {
-      return this.http.post<Folder>(`${this.url}/create-folder`, folderInfo, {observe: 'response', withCredentials: true})
-        .pipe(map(res => {
-          return res.body;
-        }), catchError(err => {
-          return throwError(err);
-        }));
-    }
-  }
-
-  public editFolder(folderInfo: FolderForm, folderId: Types.ObjectId) {
-    return this.http.patch<Folder>(`${this.url}/edit-folder?folderId=${folderId}`, folderInfo, {observe: 'response', withCredentials: true})
-      .pipe(map(res => {
-        return res.body;
-      }), catchError(err => {
-        return throwError(err);
-      }));
-  }
-
-  public fetchTopFolders() {
-    return this.http.get<Folder[]>(`${this.url}/fetch-top-folders`, {observe: 'response', withCredentials: true})
-      .pipe(map(res => {
-        return res.body;
-      }), catchError(err => {
-        return throwError(err);
-      }));
-  }
-
-  public fetchOneFolder(folderId: Types.ObjectId) {
-    return this.http.get<Folder>(`${this.url}/fetch-one-folder?folderId=${folderId}`, {observe: 'response', withCredentials: true})
-      .pipe(map(res => {
-        return res.body;
       }), catchError(err => {
         return throwError(err);
       }));

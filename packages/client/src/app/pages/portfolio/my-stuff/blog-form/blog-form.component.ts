@@ -68,15 +68,9 @@ export class BlogFormComponent implements OnInit {
     };
 
     if (this.createBlogMode) {
-      if (this.stuffService.currentFolderId !== null && this.stuffService.currentFolderId !== undefined) {
-        this.blogsService.createBlog(formData, this.stuffService.currentFolderId).subscribe(() => {
-          this.location.back();
-        });
-      } else {
-        this.blogsService.createBlog(formData).subscribe(() => {
-          this.location.back();
-        });
-      }
+      this.blogsService.createBlog(formData).subscribe(() => {
+        this.location.back();
+      });
     } else {
       this.blogsService.editBlog(this.currBlog._id, formData).subscribe(data => {
         this.currBlog = data;

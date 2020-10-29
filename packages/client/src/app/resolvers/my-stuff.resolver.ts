@@ -8,20 +8,10 @@ import { MyStuff } from '../models/site';
 import { MyStuffService } from '../services/user';
 
 @Injectable()
-export class MyStuffResolver implements Resolve<MyStuff> {
+export class MyStuffResolver implements Resolve<ContentModel[]> {
     constructor (private stuffService: MyStuffService) { }
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<MyStuff> {
-        const content = this.stuffService.fetchAll();
-        const folders = this.stuffService.fetchTopFolders();
-
-        return zip(content, folders).pipe(map(value => {
-            const stuff: MyStuff = {
-                content: value[0],
-                folders: value[1]
-            };
-
-            return stuff;
-        }));
+    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<ContentModel[]> {
+        return this.stuffService.fetchAll();
     }
 }

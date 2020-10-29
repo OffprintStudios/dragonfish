@@ -2,15 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Types } from 'mongoose';
 
-import { ContentKind, ContentModel, Folder, PubChange, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { MyStuff } from '../../../models/site';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
 import { MyStuffService } from '../../../services/user';
-import { NewFolderComponent } from './new-folder/new-folder.component';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -20,13 +17,11 @@ import { NewFolderComponent } from './new-folder/new-folder.component';
 export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
   myContent: ContentModel[];
-  myFolders: Folder[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
 
   itemSelected = false;
   currSelectedContent: ContentModel;
-  currFolder: Folder;
 
   isIconView = true;
 
@@ -43,18 +38,7 @@ export class MyStuffComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      const stuff = data.stuffData as MyStuff;
-      this.myContent = stuff.content;
-      this.myFolders = stuff.folders;
-    });
-
-    this.route.queryParamMap.subscribe(params => {
-      const pathId = params.get('folder');
-      const folderId = Types.ObjectId(pathId);
-      this.stuffService.fetchOneFolder(folderId).subscribe(folder => {
-        this.currFolder = folder;
-        this.stuffService.currentFolderId = folder._id;
-      });
+      this.myContent = data.stuffData as ContentModel[];
     });
   }
 
@@ -104,15 +88,6 @@ export class MyStuffComponent implements OnInit {
   }
 
   /**
-   * Navigates to the folder page given the provided folder.
-   * 
-   * @param folder The folder to open
-   */
-  openFolder(folder: Folder) {
-    this.router.navigate([], {relativeTo: this.route, queryParams: {folder: folder._id}, queryParamsHandling: 'merge'});
-  }
-
-  /**
    * Sends a request to delete the currently selected content.
    * 
    * @param content The content item to delete
@@ -155,34 +130,5 @@ export class MyStuffComponent implements OnInit {
         content.audit.published = this.pubStatus.Published;
       });
     }
-  }
-
-  /**
-   * Goes back to normal view.
-   */
-  goHome() {
-    this.currFolder = null;
-    this.stuffService.currentFolderId = null;
-    this.deselect();
-    this.router.navigate([], {relativeTo: this.route});
-  }
-
-  /**
-   * Moves the currently selected content to the specified folder.
-   * 
-   * @param folderId The folder to move the content into
-   */
-  moveToFolder(folderId: Types.ObjectId) {
-    console.log(folderId);
-  }
-
-  /**
-   * Opens the new form dialog box via MatDialog.
-   */
-  openNewFormDialog() {
-    const folderFormRef = this.dialog.open(NewFolderComponent, {width: '450px'});
-    folderFormRef.afterClosed().subscribe(() => {
-      this.router.navigate([], {relativeTo: this.route});
-    });
   }
 }

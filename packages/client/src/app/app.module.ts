@@ -30,7 +30,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortColle
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent, MyStuffComponent } from './pages/portfolio';
 
-import { BlogFormComponent, NewFolderComponent, ContentItemComponent } from './pages/portfolio/my-stuff';
+import { BlogFormComponent, ContentItemComponent } from './pages/portfolio/my-stuff';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -102,7 +102,7 @@ const toolbarOptions = [
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
-    NewFolderComponent, ContentItemComponent
+    ContentItemComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
@@ -144,7 +144,7 @@ const toolbarOptions = [
   entryComponents: [
     UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
     NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
-    AddToCollectionComponent, StartConversationComponent, NewFolderComponent
+    AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })

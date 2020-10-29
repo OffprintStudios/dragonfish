@@ -3,7 +3,7 @@
         <div class="tool-buttons">
             <!--Creation tools-->
             <button matRipple class="tool left" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
-            <button matRipple class="tool end" matTooltip="Create Folder" matTooltipClass="offprint-tooltip" (click)="openNewFormDialog()">
+            <button matRipple class="tool end" matTooltip="Create Folder" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="folder-plus"></i-feather>
             </button>
             <span class="tool-divider"></span>
@@ -25,7 +25,7 @@
                 <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                     <i-feather class="no-text" name="x"></i-feather>
                 </button>
-                <button matRipple class="tool mid" [matMenuTriggerFor]="moveToMenu" [matTooltip]="'Move'" [matTooltipClass]="'offprint-tooltip'">
+                <button matRipple class="tool mid" [matTooltip]="'Move'" [matTooltipClass]="'offprint-tooltip'">
                     <i-feather class="no-text" name="folder"></i-feather>
                 </button>
                 <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
@@ -143,20 +143,7 @@
     <button mat-menu-item>By Date Added</button>
 </mat-menu>
 
-<mat-menu #moveToMenu="matMenu">
-    <ng-container *ngIf="currFolder; else topLevelFolderMenu">
-        <ng-container *ngFor="let folder of $any(currFolder.children)">
-            <button mat-menu-item (click)="moveToFolder(folder._id)">{{ folder.name }}</button>
-        </ng-container>
-    </ng-container>
-    <ng-template #topLevelFolderMenu>
-        <ng-container *ngFor="let folder of myFolders">
-            <button mat-menu-item (click)="moveToFolder(folder._id)">{{ folder.name }}</button>
-        </ng-container>
-    </ng-template>
-</mat-menu>
-
-<div class="folder-routing">
+<!--<div class="folder-routing">
     <ng-container *ngIf="currFolder; else topLevel">
         <h3><a (click)="goHome()">Home</a></h3> <i-feather name="chevron-right"></i-feather>
         <ng-container *ngFor="let parent of $any(currFolder.parents)">
@@ -167,59 +154,9 @@
     <ng-template #topLevel>
         <h3 class="active">Home</h3>
     </ng-template>
-</div>
+</div>-->
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
-    <!--Folder view-->
-    <ng-container *ngIf="currFolder; else topLevelView">
-        <!--Folder is Empty-->
-        <ng-container *ngIf="currFolder.contents.length === 0 && currFolder.children.length === 0; else folderHasContent">
-            <div class="empty">
-                <h3>It's pretty lonely here...</h3>
-                <p>Why not add some content by hitting the create button?</p>
-            </div>
-        </ng-container>
-
-        <!--Folder has Content-->
-        <ng-template #folderHasContent>
-            <div class="header">
-                <h4>Folders</h4>
-            </div>
-            <div class="content-folders">
-                <ng-container *ngIf="currFolder.children.length === 0; else hasChildren">
-                    <div class="empty" style="width: 100%;">
-                        <h3>You don't have any folders...</h3>
-                        <p>Add some with the Create Folder button in the tool bar.</p>
-                    </div>
-                </ng-container>
-                <ng-template #hasChildren>
-                    <ng-container *ngFor="let folder of $any(currFolder.children)">
-                        <div class="folder-box" (dblclick)="openFolder(folder)">
-                            <i-feather name="folder"></i-feather>
-                            <h5>{{ folder.name }}</h5>
-                        </div>
-                    </ng-container>
-                </ng-template>
-            </div>
-            <div class="header">
-                <h4>Content</h4>
-            </div>
-            <div class="content-grid">
-                <ng-container *ngIf="currFolder.contents.length === 0; else hasContent">
-                    <div class="empty" style="width: 100%;">
-                        <h3>It's pretty lonely here...</h3>
-                        <p>Why not add some content by hitting the create button?</p>
-                    </div>
-                </ng-container>
-                <ng-template #hasContent>
-                    <ng-container *ngFor="let content of $any(currFolder.contents)">
-                        <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
-                    </ng-container>
-                </ng-template>
-            </div>
-        </ng-template>
-    </ng-container>
-
     <!--Top level view-->
     <ng-template #topLevelView>
         <!--User nas nothing-->
@@ -232,28 +169,6 @@
         
         <!--User has content-->
         <ng-template #hasContent>
-            <div class="header">
-                <h4>Folders</h4>
-            </div>
-            <div class="content-folders">
-                <ng-container *ngIf="myFolders.length === 0; else hasChildrenTop">
-                    <div class="empty" style="width: 100%;">
-                        <h3>You don't have any folders...</h3>
-                        <p>Add some with the Create Folder button in the tool bar.</p>
-                    </div>
-                </ng-container>
-                <ng-template #hasChildrenTop>
-                    <ng-container *ngFor="let folder of myFolders">
-                        <div class="folder-box" (dblclick)="openFolder(folder)">
-                            <i-feather name="folder"></i-feather>
-                            <h5>{{ folder.name }}</h5>
-                        </div>
-                    </ng-container>
-                </ng-template>
-            </div>
-            <div class="header">
-                <h4>Content</h4>
-            </div>
             <div class="content-grid">
                 <ng-container *ngIf="myContent.length === 0; else hasContentTop">
                     <div class="empty" style="width: 100%;">
