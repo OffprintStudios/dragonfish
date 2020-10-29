@@ -4,4 +4,3 @@ export { PubStatus } from './pub-status.enum';
 
 export * from './news';
 export * from './blogs';
-export * from './folders';
