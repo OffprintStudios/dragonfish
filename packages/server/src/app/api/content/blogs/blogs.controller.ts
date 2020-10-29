@@ -1,5 +1,4 @@
-import { Controller, UseGuards, Request, Put, Body, Patch, BadRequestException, Param, Query } from '@nestjs/common';
-import { Types } from 'mongoose';
+import { Controller, UseGuards, Request, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
 
 import { BlogForm, PubChange } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';

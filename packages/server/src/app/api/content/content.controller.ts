@@ -2,7 +2,7 @@ import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch,
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { ContentKind, FolderForm } from '@pulp-fiction/models/content';
+import { ContentKind } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { isNullOrUndefined } from '../../util';
 import { Types } from 'mongoose';

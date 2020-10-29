@@ -41,7 +41,7 @@ export class ContentService {
 
         if (isNullOrUndefined(user)) {
             if (isPublished) {
-                await this.addView(contentId);
+                await this.incrementViewCount(contentId);
                 return doc;
             } else {
                 return doc;
@@ -52,7 +52,7 @@ export class ContentService {
                 if (authorInfo._id === user.sub) {
                     return doc;
                 } else {
-                    await this.addView(contentId);
+                    await this.incrementViewCount(contentId);
                     return doc;
                 }
             } else {
@@ -127,7 +127,7 @@ export class ContentService {
      * 
      * @param contentId The content's ID
      */
-    async addView(contentId: string) {
+    async incrementViewCount(contentId: string) {
         return await this.contentModel.updateOne({'_id': contentId}, {
             $inc: {'stats.views': 1}
         });
