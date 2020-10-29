@@ -55,10 +55,12 @@ export class BlogFormComponent implements OnInit {
 
   submitForm() {
     if (this.fields.title.invalid) {
+      this.snackBar.open(`Blog titles must be between 3 and 100 characters.`)
       return;
     }
 
     if (this.fields.body.invalid) {
+      this.snackBar.open(`Blog body text must be at least 3 characters.`)
       return;
     }
 
