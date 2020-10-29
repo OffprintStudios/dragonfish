@@ -8,6 +8,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../../services/auth';
 import { BlogsService } from '../../../services/content';
 import { MyStuffService } from '../../../services/user';
+import { ContentItem } from './viewmodels';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -16,12 +17,12 @@ import { MyStuffService } from '../../../services/user';
 })
 export class MyStuffComponent implements OnInit {
   currentUser: FrontendUser;
-  myContent: ContentModel[];
+  myContent: ContentItem[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
 
   itemSelected = false;
-  currSelectedContent: ContentModel;
+  currSelectedContent: ContentItem;
 
   isIconView = true;
 
@@ -38,7 +39,7 @@ export class MyStuffComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.myContent = data.stuffData as ContentModel[];
+      this.myContent = data.stuffData as ContentItem[];
     });
   }
 
@@ -47,15 +48,15 @@ export class MyStuffComponent implements OnInit {
    * 
    * @param content The content item to select
    */
-  selectItem(content: ContentModel) {
+  selectItem(content: ContentItem) {
     if (this.currSelectedContent === null || this.currSelectedContent === undefined) {
-      content.audit.selected = true;
+      content.selected = true;
       this.itemSelected = true;
       this.currSelectedContent = content;
     } else {
       if (this.currSelectedContent._id !== content._id) {
-        this.currSelectedContent.audit.selected = false;
-        content.audit.selected = true;
+        this.currSelectedContent.selected = false;
+        content.selected = true;
         this.itemSelected = true;
         this.currSelectedContent = content;
       } else {
@@ -68,7 +69,7 @@ export class MyStuffComponent implements OnInit {
    * Deselects any currently-selected content and sets all appropriate fields to false and empty.
    */
   deselect() {
-    this.currSelectedContent.audit.selected = false;
+    this.currSelectedContent.selected = false;
     this.itemSelected = false;
     this.currSelectedContent = null;
   }

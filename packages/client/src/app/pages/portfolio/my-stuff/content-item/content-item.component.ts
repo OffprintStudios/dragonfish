@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { ContentItem } from '../viewmodels';
 
 @Component({
     selector: 'content-item',
@@ -7,10 +8,10 @@ import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/conte
     styleUrls: ['./content-item.component.less']
 })
 export class ContentItemComponent implements OnInit {
-    @Input() content: ContentModel;
+    @Input() content: ContentItem;
     @Input() selected: boolean;
-    @Output() selectItem = new EventEmitter<ContentModel>();
-    @Output() viewItem = new EventEmitter<ContentModel>();
+    @Output() selectItem = new EventEmitter<ContentItem>();
+    @Output() viewItem = new EventEmitter<ContentItem>();
 
     contentKind = ContentKind;
     pubStatus = PubStatus;
@@ -21,7 +22,7 @@ export class ContentItemComponent implements OnInit {
 
     select() {
         this.selectItem.emit(this.content);
-        this.content.audit.selected = true;
+        this.content.selected = true;
         this.selected = true;
     }
 
