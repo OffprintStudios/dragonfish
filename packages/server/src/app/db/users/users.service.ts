@@ -187,8 +187,7 @@ export class UsersService {
     }
 
     /**
-     * Updates the number of blogs a user has tied to their account. Should only count blogs
-     * that are published and not deleted.
+     * Increments a user's blog count if the addOne flag is true. Decrements the same count if false.
      * 
      * @param user The user to update
      * @param addOne Whether to add one or subtract one
