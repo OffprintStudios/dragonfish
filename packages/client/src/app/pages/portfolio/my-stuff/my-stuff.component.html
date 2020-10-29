@@ -157,32 +157,29 @@
 </div>-->
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
-    <!--Top level view-->
-    <ng-template #topLevelView>
-        <!--User nas nothing-->
-        <ng-container *ngIf="myContent.length === 0 && myFolders.length === 0; else hasContent">
-            <div class="empty">
-                <h3>It's pretty lonely here...</h3>
-                <p>Why not add some content by hitting the create button?</p>
-            </div>
-        </ng-container>
+    <!--User nas nothing-->
+    <ng-container *ngIf="myContent.length === 0; else hasContent">
+        <div class="empty">
+            <h3>It's pretty lonely here...</h3>
+            <p>Why not add some content by hitting the create button?</p>
+        </div>
+    </ng-container>
         
-        <!--User has content-->
-        <ng-template #hasContent>
-            <div class="content-grid">
-                <ng-container *ngIf="myContent.length === 0; else hasContentTop">
-                    <div class="empty" style="width: 100%;">
-                        <h3>It's pretty lonely here...</h3>
-                        <p>Why not add some content by hitting the create button?</p>
-                    </div>
+    <!--User has content-->
+    <ng-template #hasContent>
+        <div class="content-grid">
+            <ng-container *ngIf="myContent.length === 0; else hasContentTop">
+                <div class="empty" style="width: 100%;">
+                    <h3>It's pretty lonely here...</h3>
+                    <p>Why not add some content by hitting the create button?</p>
+                </div>
+            </ng-container>
+            <ng-template #hasContentTop>
+                <ng-container *ngFor="let content of myContent">
+                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
                 </ng-container>
-                <ng-template #hasContentTop>
-                    <ng-container *ngFor="let content of myContent">
-                        <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
-                    </ng-container>
-                </ng-template>
-            </div>
-        </ng-template>
+            </ng-template>
+        </div>
     </ng-template>
 </ng-container>
 
