@@ -9,6 +9,5 @@ export interface BlogsContentModel extends ContentModel {
         releaseOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        selected: boolean;
     };
 }

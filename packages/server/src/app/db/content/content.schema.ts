@@ -42,15 +42,13 @@ export class ContentDocument extends Document implements ContentModel {
         published: {type: String, enum: Object.keys(PubStatus), default: 'Unpublished'},
         publishedOn: {type: Date, default: null},
         hasComments: {type: Boolean, default: true},
-        isDeleted: {type: Boolean, default: false},
-        selected: {type: Boolean, default: false}
+        isDeleted: {type: Boolean, default: false}
     }))
     audit: {
         published: PubStatus;
         publishedOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        selected: boolean;
     };
 
     @Prop({type: String, enum: Object.keys(ContentKind), index: true})

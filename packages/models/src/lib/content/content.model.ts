@@ -1,4 +1,3 @@
-import { Types } from 'mongoose';
 import { UserInfo } from '../users';
 import { PubStatus } from './pub-status.enum';
 import { ContentKind } from './content-kind.enum';
@@ -21,7 +20,6 @@ export interface ContentModel {
         publishedOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
-        selected: boolean;
     };
     readonly kind: ContentKind;
     readonly createdAt: Date;
