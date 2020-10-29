@@ -165,17 +165,9 @@
     <!--User has content-->
     <ng-template #hasContent>
         <div class="content-grid">
-            <ng-container *ngIf="myContent.length === 0; else hasContentTop">
-                <div class="empty" style="width: 100%;">
-                    <h3>It's pretty lonely here...</h3>
-                    <p>Why not add some content by hitting the create button?</p>
-                </div>
+            <ng-container *ngFor="let content of myContent">
+                <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
             </ng-container>
-            <ng-template #hasContentTop>
-                <ng-container *ngFor="let content of myContent">
-                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
-                </ng-container>
-            </ng-template>
         </div>
     </ng-template>
 </ng-container>
