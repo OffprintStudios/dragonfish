@@ -10,7 +10,6 @@ import { BlogsService } from './blogs/blogs.service';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { NewsCategory } from '@pulp-fiction/models/content';
 import { UsersModule } from '../users/users.module';
-import { ContentFoldersModule } from '../content-folders/content-folders.module';
 
 @Module({
   imports: [

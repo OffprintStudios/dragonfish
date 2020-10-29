@@ -4,16 +4,14 @@ import { Types } from 'mongoose';
 import { BlogForm, PubChange } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
-import { ContentFoldersService } from '../../../db/content-folders/content-folders.service';
 
 @Controller('blogs')
 export class BlogsController {
-    constructor(private readonly blogsService: BlogsService, private readonly contentService: ContentService, 
-        private readonly folderService: ContentFoldersService) {}
+    constructor(private readonly blogsService: BlogsService, private readonly contentService: ContentService) {}
 
     @UseGuards(AuthGuard)
     @Put('create-blog')
-    async createBlog(@Request() req: any, @Body() newBlog: BlogForm, @Query('parentId') parentId: string) {
+    async createBlog(@Request() req: any, @Body() newBlog: BlogForm) {
         if (newBlog.title.length < 3 || newBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
@@ -21,14 +19,7 @@ export class BlogsController {
             throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
 
-        if (parentId) {
-            const folderId = Types.ObjectId(parentId);
-            const blog = await this.blogsService.createNewBlog(req.user, newBlog, folderId);
-            await this.folderService.addToFolder(req.user, folderId, blog._id);
-            return blog;
-        } else {
-            return await this.blogsService.createNewBlog(req.user, newBlog);
-        }
+        return await this.blogsService.createNewBlog(req.user, newBlog);
     }
 
     @UseGuards(AuthGuard)
