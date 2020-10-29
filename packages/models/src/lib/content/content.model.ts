@@ -1,4 +1,6 @@
 import { UserInfo } from '../users';
+import { PubStatus } from './pub-status.enum';
+import { ContentKind } from './content-kind.enum';
 
 export interface ContentModel {
     readonly _id: string;
@@ -14,10 +16,12 @@ export interface ContentModel {
         readonly comments: number;
     };
     audit: {
+        published: PubStatus;
+        publishedOn: Date;
         hasComments: boolean;
         isDeleted: boolean;
     };
-    readonly kind: string;
+    readonly kind: ContentKind;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

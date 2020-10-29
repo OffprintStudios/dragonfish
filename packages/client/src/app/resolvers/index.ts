@@ -11,3 +11,5 @@ export { PortWorksResolver } from './port-works.resolver';
 export { PortBlogsResolver } from './port-blogs.resolver';
 export { PortCollectionsResolver } from './port-collections.resolver';
 export { CollectionPageResolver } from './collection-page.resolver';
+export { MyStuffResolver } from './my-stuff.resolver';
+export { ViewContentResolver } from './view-content.resolver';

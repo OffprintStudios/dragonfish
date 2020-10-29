@@ -1,5 +1,6 @@
 export { ContentModel } from './content.model';
-export { NewsContentModel } from './news-content.model';
+export { ContentKind } from './content-kind.enum';
+export { PubStatus } from './pub-status.enum';
 
-export { NewsCategory } from './news-category.enum';
-export { NewsForm } from './news-form.model';
+export * from './news';
+export * from './blogs';

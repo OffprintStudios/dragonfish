@@ -1,4 +1,6 @@
-import { ContentModel } from './content.model';
+import { Types } from 'mongoose';
+import { PubStatus } from '../pub-status.enum';
+import { ContentModel } from '../content.model';
 import { NewsCategory } from './news-category.enum';
 
 export interface NewsContentModel extends ContentModel {
@@ -8,7 +10,7 @@ export interface NewsContentModel extends ContentModel {
     };
     audit: {
         featured: boolean;
-        published: boolean;
+        published: PubStatus;
         publishedOn: Date;
         isDeleted: boolean;
         hasComments: boolean;

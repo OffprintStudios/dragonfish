@@ -98,7 +98,7 @@ export class EditBlogComponent implements OnInit {
       usesNewEditor: true
     };
 
-    this.blogService.editBlog(updatedBlogInfo).subscribe(() => {
+    this.blogService.editBlog(blogId, updatedBlogInfo).subscribe(() => {
       this.loading = false;
       this.dialogRef.close();
     }, err => {
