@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, zip } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { ContentModel } from '@pulp-fiction/models/content';
-import { MyStuff } from '../models/site';
 import { MyStuffService } from '../services/user';
 
 @Injectable()
