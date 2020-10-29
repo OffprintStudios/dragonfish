@@ -15,6 +15,5 @@ export interface NewsContentModel extends ContentModel {
         isDeleted: boolean;
         hasComments: boolean;
         selected: boolean;
-        childOf: Types.ObjectId;
     };
 }

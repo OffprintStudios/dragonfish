@@ -22,7 +22,6 @@ export interface ContentModel {
         hasComments: boolean;
         isDeleted: boolean;
         selected: boolean;
-        childOf: Types.ObjectId;
     };
     readonly kind: ContentKind;
     readonly createdAt: Date;

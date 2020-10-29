@@ -43,8 +43,7 @@ export class ContentDocument extends Document implements ContentModel {
         publishedOn: {type: Date, default: null},
         hasComments: {type: Boolean, default: true},
         isDeleted: {type: Boolean, default: false},
-        selected: {type: Boolean, default: false},
-        childOf: {type: String, default: null}
+        selected: {type: Boolean, default: false}
     }))
     audit: {
         published: PubStatus;
@@ -52,7 +51,6 @@ export class ContentDocument extends Document implements ContentModel {
         hasComments: boolean;
         isDeleted: boolean;
         selected: boolean;
-        childOf: Types.ObjectId;
     };
 
     @Prop({type: String, enum: Object.keys(ContentKind), index: true})

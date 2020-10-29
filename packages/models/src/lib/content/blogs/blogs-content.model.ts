@@ -10,6 +10,5 @@ export interface BlogsContentModel extends ContentModel {
         hasComments: boolean;
         isDeleted: boolean;
         selected: boolean;
-        childOf: Types.ObjectId;
     };
 }
