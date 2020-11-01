@@ -23,6 +23,7 @@ export interface Notification {
     sourceParentKind?: NotificationSourceKind | undefined;
     title: string;
     body?: string | undefined;
+    read: boolean;
     createdAt: Date;
     updatedAt: Date;
 }

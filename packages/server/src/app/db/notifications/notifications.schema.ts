@@ -3,8 +3,7 @@ import { Document } from 'mongoose';
 
 import { NotificationSourceKind, Notification } from '@pulp-fiction/models/notifications';
 
-@Schema({
-    'discriminatorKey': 'kind',
+@Schema({    
     'timestamps': true,
     autoIndex: true,
 })
@@ -21,7 +20,7 @@ export class NotificationDocument extends Document implements Notification {
     @Prop()
     sourceParentId?: string | undefined;
 
-    @Prop()
+    @Prop({type: String, enum: Object.keys(NotificationSourceKind)})
     sourceParentKind?: NotificationSourceKind | undefined;
 
     @Prop({required: true})
@@ -29,6 +28,9 @@ export class NotificationDocument extends Document implements Notification {
 
     @Prop()
     body?: string | undefined;
+
+    @Prop({required: true})
+    read: boolean;
 
     @Prop({required: true})
     createdAt: Date;

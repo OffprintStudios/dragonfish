@@ -5,8 +5,7 @@ import { NotificationSourceKind, PublishStatus, UnpublishedNotification } from '
 
 const FiveMB: number = 5_242_880; // Even this is probably overkill
 
-@Schema({
-    'discriminatorKey': 'kind',
+@Schema({    
     'timestamps': true,
     capped: { size: FiveMB }
 })
@@ -20,7 +19,7 @@ export class UnpublishedNotificationDocument extends Document implements Unpubli
     @Prop()
     sourceParentId?: string | undefined;
 
-    @Prop()
+    @Prop({type: String, enum: Object.keys(NotificationSourceKind)})
     sourceParentKind?: NotificationSourceKind | undefined;
 
     @Prop({required: true, type: String, enum: Object.keys(PublishStatus), default: 'NotStarted'})

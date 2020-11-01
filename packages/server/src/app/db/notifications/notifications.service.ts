@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateNotification, PublishStatus, UnpublishedNotification } from '@pulp-fiction/models/notifications';
+import { CreateNotification, NotificationSourceKind, PublishStatus, Notification } from '@pulp-fiction/models/notifications';
 import { Model } from 'mongoose';
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 
 import { NotificationDocument } from './notifications.schema';
 import { UnpublishedNotificationDocument } from './unpublished-notifications.schema';
+import { UnsubscribeResult } from './unsubscribe-result.model';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
 const MAX_MS_PER_WAKEUP: number = 100;
@@ -14,33 +15,121 @@ const NS_PER_MS: number = 1_000_000;
 
 @Injectable()
 export class NotificationsService {
+    private active: boolean = false;
+    private currentWakeup: Promise<void>;
+
     constructor(@InjectModel('Notification') private readonly notificationModel: Model<NotificationDocument>,
         @InjectModel('UnpublishedNotification') private readonly unpubNotifModel: Model<UnpublishedNotificationDocument>,
         @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>) {
         // Schedule intial wakeup of the unpublished notifications queue processor
-        setImmediate(async () => await this.processUnpublishedNotifications(MAX_NOTIFICATIONS_PER_WAKEUP));
+        this.beginProcessing();
     }
 
+    /**
+     * Post a notification to the processing queue, where it will be asynchronously sent to its targets.
+     * @param notification The notification to queue for processing.
+     */
     async queueNotification(notification: CreateNotification): Promise<void> {
         // Add it to the unpublished notification queue, where it'll (eventually)
         // be processed.
         await new this.unpubNotifModel(notification).save();
     }
 
+    /**
+     * Get all unread notifications for the given user.
+     * @param userId The ID of the user to retreive notifications for.
+     */
     async getUnreadNotifications(userId: string): Promise<Notification[]> {
-        throw new Error("Not implemented yet");
+        return await this.notificationModel.find({
+            destinationUserId: userId,
+            read: false
+        });
     }
 
+    /**
+     * Get *all* of a user's notifications.
+     * @param userId The ID of the user to retreive notifications for.
+     */
     async getAllNotifications(userId: string): Promise<Notification[]> {
-        throw new Error("Not implemented yet");
+        return await this.notificationModel.find({
+            destinationUserId: userId
+        });
     }
 
-    async subscribe(userId: string, sourceId: string): Promise<void> {
-        throw new Error("Not implemented yet");
+    /**
+     * Subscribes a user to a notification source.
+     * @param userId The user to subscribe
+     * @param sourceId The ID of the thing the user would like to subscribe to
+     * @param sourceKind The kind of notifications the notification source emits
+     */
+    async subscribe(userId: string, sourceId: string, sourceKind: NotificationSourceKind): Promise<void> {
+        const existingSubscription = await this.subscriptionModel.findOne({
+            userId: userId, 
+            notificationSourceKind: sourceKind, 
+            notificationSourceId: sourceId
+        });
+
+        // User is already subscribed, we're cool.
+        if (existingSubscription) {
+            return;
+        }
+       
+        await new this.subscriptionModel({
+            'userId': userId,
+            'notificationSourceId': sourceId,
+            'notificationSourceKind': sourceKind
+        }).save();       
     }
 
-    async unsubscribe(userId: string, sourceId: string): Promise<void> {
-        throw new Error("Not implemented yet");
+    /**
+     * Unsubscribes a user from a notification source.
+     * @param userId The user to unsubscribe.
+     * @param sourceId The ID of the thing the user would like to unsubscribe from
+     * @param sourceKind The kind of notifications the notification source emits
+     * @returns `UnsubscribeResult.NotFound` if the user was not subscribed to the given sourceId and sourceKind. 
+     * `UnsubscribeResult.Failure` on other errors. `UnsubscribeResult.Success` on success.
+     */
+    async unsubscribe(userId: string, sourceId: string, sourceKind: NotificationSourceKind): Promise<UnsubscribeResult> {
+        const deleteResult = await this.subscriptionModel.deleteOne({
+            userId: userId,
+            notificationSourceId: sourceId,
+            notificationSourceKind: sourceKind
+        });        
+        if (deleteResult.ok !== 1) {
+            return UnsubscribeResult.Failure;
+        }
+        if (deleteResult.deletedCount !== 1) {
+            return UnsubscribeResult.NotFound;
+        }
+
+        return UnsubscribeResult.Success;
+    }
+
+    /**
+     * If not already active, begins processing the unpublished notifications queue.
+     */
+    beginProcessing(): void {
+        if (this.active) {
+            return;
+        }
+
+        this.active = true;        
+        setImmediate(async () =>{
+            this.currentWakeup = this.processUnpublishedNotifications(MAX_NOTIFICATIONS_PER_WAKEUP);
+            await this.currentWakeup;
+        });
+    }
+
+    /**
+     * Notifies the processing queue to stop. 
+     * 
+     * If a notification is currently being processed, it will run to completion 
+     * before processing shuts down. Once the Promise returned by this method 
+     * resolves, processing is fully complete.
+     */
+    endProcessing(): Promise<void> {
+        this.active = false;
+        return this.currentWakeup;
     }
 
     /**
@@ -54,6 +143,10 @@ export class NotificationsService {
      * @param numToProcess The max number of notifications to process in this wakeup.
      */
     private async processUnpublishedNotifications(numToProcess: number): Promise<void> {
+        if (this.active) {
+            return;
+        }
+        
         const tickStart = process.hrtime();
         let processed: number = 0;
         let toPublish: UnpublishedNotificationDocument;
@@ -118,7 +211,10 @@ export class NotificationsService {
 
         // Queue the next wakeup
         setTimeout(
-            async () => await this.processUnpublishedNotifications(MAX_NOTIFICATIONS_PER_WAKEUP),
+            async () => {
+                this.currentWakeup = this.processUnpublishedNotifications(MAX_NOTIFICATIONS_PER_WAKEUP);
+                await this.currentWakeup;
+            },
             5000);
     }
 

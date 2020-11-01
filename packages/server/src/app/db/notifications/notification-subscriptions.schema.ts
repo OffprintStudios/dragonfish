@@ -7,13 +7,13 @@ import { Document } from 'mongoose';
 })
 export class NotificationSubscriptionDocument extends Document implements NotificationSubscription {
     @Prop({required: true, index: true})
-    notificationSourceId: string;
-
-    @Prop({required: true})
-    notificationSourceKind: NotificationSourceKind;
+    userId: string;
 
     @Prop({required: true, index: true})
-    userId: string;
+    notificationSourceId: string;
+
+    @Prop({required: true, type: String, enum: Object.keys(NotificationSourceKind)})
+    notificationSourceKind: NotificationSourceKind;
 }
 
 export const NotificationSubscriptionSchema = SchemaFactory.createForClass(NotificationSubscriptionDocument);
