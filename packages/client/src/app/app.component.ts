@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
@@ -42,12 +42,15 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
     }
 
-    this.rotatingSlogan = spookySlogans[Math.floor(Math.random() * spookySlogans.length)];
+    this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
   }
   
   ngOnInit() {
     this.router.events.subscribe(event => {
       this.sidenavOpened = false;
+      if (event instanceof NavigationEnd) {
+        this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
+      }
     });
   }
 
