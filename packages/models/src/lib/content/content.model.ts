@@ -8,6 +8,9 @@ export interface ContentModel {
     title: string;
     desc: string;
     body: string;
+    meta: {
+        
+    };
     readonly stats: {
         words: number;
         readonly views: number;
