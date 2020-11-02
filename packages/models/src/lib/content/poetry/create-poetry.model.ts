@@ -10,7 +10,7 @@ export interface CreatePoetry {
     readonly body: string;
     readonly category: WorkKind;
     readonly form: PoetryForm;
-    readonly genres: Genres
+    readonly genres: Genres[];
     readonly rating: ContentRating;
     readonly status: WorkStatus;
 }
