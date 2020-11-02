@@ -90,7 +90,8 @@ import { PoetryService } from './poetry/poetry.service';
           status: {type: String, enum: Object.keys(WorkStatus), required: true},
           coverArt: {type: String, trim: true, default: null}
         }
-      }))
+      })),
+      inject: [getModelToken('Content')]
     }
   ],
   exports: [ContentService, NewsService, BlogsService, ProseService, PoetryService]
