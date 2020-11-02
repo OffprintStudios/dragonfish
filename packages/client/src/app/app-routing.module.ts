@@ -6,7 +6,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent, MyStuffComponent, ProseFormComponent, BlogFormComponent} from './pages/portfolio';
+  HistoryComponent, MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent} from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -41,6 +41,7 @@ const routes: Routes = [
       {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
         {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
         {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
+        {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
         {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
       ]},
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
