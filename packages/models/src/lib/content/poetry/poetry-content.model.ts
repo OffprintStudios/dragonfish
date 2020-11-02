@@ -1,11 +1,13 @@
-import { ContentRating } from '../../content-rating.enum';
-import { Genres } from '../genres.enum';
-import { WorkContent } from '../work-content.model';
+import { ContentModel } from '../content.model';
+import { SectionInfo } from '../section-info.model';
 import { WorkKind } from '../work-kind.enum';
+import { Genres } from '../genres.enum';
+import { ContentRating } from '../content-rating.enum';
 import { WorkStatus } from '../work-status.enum';
 import { PoetryForm } from './poetry-form.enum';
 
-export interface PoetryContent extends WorkContent {
+export interface PoetryContent extends ContentModel {
+    sections?: SectionInfo[];
     meta: {
         type: WorkKind;
         form: PoetryForm;
