@@ -9,7 +9,7 @@ import { PoetryForm } from './poetry-form.enum';
 export interface PoetryContent extends ContentModel {
     sections?: SectionInfo[];
     meta: {
-        type: WorkKind;
+        category: WorkKind;
         form: PoetryForm;
         fandoms?: string[];
         genres: Genres[];

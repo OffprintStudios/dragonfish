@@ -8,7 +8,8 @@ import { WorkStatus } from '../work-status.enum';
 export interface ProseContent extends ContentModel {
     sections: SectionInfo[];
     meta: {
-        type: WorkKind;
+        category: WorkKind;
+        fandoms?: string[];
         genres: Genres[];
         rating: ContentRating;
         warnings: string[];
