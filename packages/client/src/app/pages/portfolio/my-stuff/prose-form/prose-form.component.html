@@ -14,10 +14,7 @@
                 <mat-form-field style="width: 100%;" appearance="outline">
                     <mat-label>Category</mat-label>
                     <mat-select [formControlName]="'category'">
-                        <mat-option>Select One</mat-option>
-                        <ng-container *ngFor="let category of categories | keyvalue">
-                            <mat-option [value]="category.key">{{ category.value }}</mat-option>
-                        </ng-container>
+                        <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{ category.value }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
