@@ -1,6 +1,5 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
-import { Types } from 'mongoose';
+import { ContentModel, ContentKind, PubStatus, ContentRating } from '@pulp-fiction/models/content';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
@@ -22,6 +21,15 @@ export class ContentDocument extends Document implements ContentModel {
 
     @Prop({trim: true, required: true})
     body: string;
+
+    @Prop(raw({
+        rating: {type: String, enum: Object.keys(ContentRating), required: true},
+        warnings: {type: [String], default: null}
+    }))
+    meta: {
+        rating: ContentRating;
+        warnings: string[];
+    };
 
     @Prop(raw({
         words: {type: Number, default: 0},
