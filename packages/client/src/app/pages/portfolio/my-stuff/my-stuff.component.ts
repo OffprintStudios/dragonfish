@@ -80,14 +80,13 @@ export class MyStuffComponent implements OnInit {
    * @param content The content item to view
    */
   viewContent(content: ContentModel) {
+    this.deselect();
     if (content.kind === ContentKind.BlogContent) {
-      this.deselect();
       this.router.navigate(['view-blog'], {relativeTo: this.route, queryParams: {contentId: content._id, kind: content.kind}, queryParamsHandling: 'merge'});
     } else if (content.kind === ContentKind.ProseContent) {
-      this.deselect();
       this.router.navigate(['view-prose'], {relativeTo: this.route, queryParams: {contentId: content._id, kind: content.kind}, queryParamsHandling: 'merge'});
     } else if (content.kind === ContentKind.PoetryContent) {
-      // navigate to view poetry page
+      this.router.navigate(['view-poetry'], {relativeTo: this.route, queryParams: {contentId: content._id, kind: content.kind}, queryParamsHandling: 'merge'});
     }
   }
 
