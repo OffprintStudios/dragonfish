@@ -29,7 +29,7 @@ export class MyStuffService {
         }), catchError(err => {
           return throwError(err);
         }));
-    } else if (kind === ContentKind.WorkContent) {
+    } else if (kind === ContentKind.PoetryContent || ContentKind.ProseContent) {
       // fetch work
     }
   }

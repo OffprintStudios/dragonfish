@@ -2,7 +2,8 @@
     <div class="content-description">
         <ng-container [ngSwitch]="content.kind">
             <i-feather *ngSwitchCase="contentKind.BlogContent" name="coffee" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
-            <i-feather *ngSwitchCase="contentKind.WorkContent" name="feather" [matTooltip]="'Work'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
+            <i-feather *ngSwitchCase="contentKind.PoetryContent" name="feather" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
+            <i-feather *ngSwitchCase="contentKind.ProseContent" name="book-open" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"></i-feather>
         </ng-container>
         <h5>{{ content.title }}</h5>
     </div>

@@ -83,7 +83,7 @@ export class MyStuffComponent implements OnInit {
     if (content.kind === ContentKind.BlogContent) {
       this.deselect();
       this.router.navigate(['view-blog'], {relativeTo: this.route, queryParams: {contentId: content._id, kind: content.kind}, queryParamsHandling: 'merge'});
-    } else if (content.kind === ContentKind.WorkContent) {
+    } else if (content.kind === ContentKind.ProseContent || ContentKind.PoetryContent) {
       // navigate to view work page
     }
   }
