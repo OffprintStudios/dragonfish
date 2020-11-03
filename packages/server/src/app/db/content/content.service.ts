@@ -27,7 +27,7 @@ export class ContentService {
                 case ContentKind.BlogContent:
                     query['audit.published'] = true;
                     break;
-                case ContentKind.WorkContent:
+                case ContentKind.ProseContent || ContentKind.PoetryContent:
                     // change query parameters for works
                     break;
                 case ContentKind.NewsContent:
@@ -71,7 +71,7 @@ export class ContentService {
         return await this.contentModel.find({
             'author': user.sub, 
             'audit.isDeleted': false, 
-            $or: [{'kind': ContentKind.BlogContent}, {'kind': ContentKind.WorkContent}]
+            $or: [{'kind': ContentKind.BlogContent}, {'kind': ContentKind.PoetryContent}, {'kind': ContentKind.ProseContent}]
         });
     }
 
@@ -88,7 +88,7 @@ export class ContentService {
             case ContentKind.BlogContent:
                 query['audit.published'] = true;
                 break;
-            case ContentKind.WorkContent:
+            case ContentKind.PoetryContent || ContentKind.ProseContent:
                 // change query parameters for works
                 break;
             case ContentKind.NewsContent:
