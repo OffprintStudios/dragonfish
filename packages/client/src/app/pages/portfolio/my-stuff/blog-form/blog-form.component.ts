@@ -53,6 +53,18 @@ export class BlogFormComponent implements OnInit {
     }
   }
 
+  goBack() {
+    if (this.blogForm.dirty && this.blogForm.touched) {
+      if (confirm(`Are you sure you want to go back? Any unsaved changes will be lost.`)) {
+        this.location.back();
+      } else {
+        return;
+      }
+    } else {
+      this.location.back();
+    }
+  }
+
   submitForm() {
     if (this.fields.title.invalid) {
       this.snackBar.open(`Blog titles must be between 3 and 100 characters.`)

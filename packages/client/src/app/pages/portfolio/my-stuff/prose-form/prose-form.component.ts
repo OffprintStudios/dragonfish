@@ -35,6 +35,18 @@ export class ProseFormComponent implements OnInit {
 
     get fields() { return this.proseForm.controls; }
 
+    goBack() {
+        if (this.proseForm.dirty && this.proseForm.touched) {
+          if (confirm(`Are you sure you want to go back? Any unsaved changes will be lost.`)) {
+            this.location.back();
+          } else {
+            return;
+          }
+        } else {
+          this.location.back();
+        }
+      }
+
     submitForm() {
         if (this.proseForm.invalid) {
             this.snackBar.open(`Looks like something's wrong with the stuff you've entered.`);

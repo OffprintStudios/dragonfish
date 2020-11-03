@@ -1,3 +1,44 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <!--Go back-->
+        <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
+        <span class="tool-divider"></span>
+
+        <!--Filtering tools-->
+        <button matRipple class="tool left disabled" matTooltip="List View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="list"></i-feather>
+        </button>
+        <button matRipple class="tool mid disabled" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="grid"></i-feather>
+        </button>
+        <button matRipple class="tool end disabled" matTooltip="Filter" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="filter"></i-feather>
+        </button>
+        <span class="tool-divider"></span>
+
+        <!--Content tools-->
+        <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="x"></i-feather>
+        </button>
+        <button matRipple class="tool mid disabled" matTooltip="Edit" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="edit-3"></i-feather>
+        </button>
+        <button matRipple class="tool end disabled" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="trash-2"></i-feather>
+        </button>
+        <span class="tool-divider"></span>
+        <button matRipple class="tool disabled">
+            <i-feather name="book"></i-feather>Unpublished
+        </button>
+    </div>
+    <form class="tool-search">
+        <div class="search-bar">
+            <input type="text" class="search-input disabled" placeholder="Search your stuff..." disabled>
+            <button matRipple class="search-submit disabled" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
 <div class="form-container">
     <div class="form-header">
         <h3>{{ formTitle }}</h3>
@@ -38,16 +79,21 @@
             </div>
         </div>
 
-        <mat-form-field style="width: 100%;" appearance="outline">
-            <mat-label>Short Description</mat-label>
-            <input matInput placeholder="One of the best things never told" formControlName="desc">
-        </mat-form-field>
-
         <ng-container *ngIf="isCollection; else isSingle">
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Short Description</mat-label>
+                <input matInput placeholder="One of the best things never told" formControlName="desc">
+            </mat-form-field>
+
             <label>Long Description</label>
         </ng-container>
 
         <ng-template #isSingle>
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Description</mat-label>
+                <input matInput placeholder="One of the best things never told" formControlName="desc">
+            </mat-form-field>
+
             <label>Poem</label>
         </ng-template>
         <editor [parentForm]="poetryForm" [controlName]="'body'" [minHeight]="'300px'" [maxHeight]="'300px'"></editor>

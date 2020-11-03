@@ -38,6 +38,18 @@ export class PoetryFormComponent implements OnInit {
 
     get fields() { return this.poetryForm.controls; }
 
+    goBack() {
+        if (this.poetryForm.dirty && this.poetryForm.touched) {
+          if (confirm(`Are you sure you want to go back? Any unsaved changes will be lost.`)) {
+            this.location.back();
+          } else {
+            return;
+          }
+        } else {
+          this.location.back();
+        }
+      }
+
     submitForm() {
       if (this.poetryForm.invalid) {
           this.snackBar.open(`Looks like something's wrong with the stuff you've entered.`);
