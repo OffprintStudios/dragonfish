@@ -4,14 +4,25 @@
         <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
         <span class="tool-divider"></span>
 
+        <!--Creation Tools-->
+        <button matRipple class="tool">
+            <i-feather name="book"></i-feather>Unpublished
+        </button>
+        <span class="tool-divider"></span>
+        
+        <button matRipple class="tool" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'">
+            <i-feather name="plus"></i-feather>Chapter
+        </button>
+        <span class="tool-divider"></span>
+
         <!--Filtering tools-->
-        <button matRipple class="tool left disabled" matTooltip="List View" matTooltipClass="offprint-tooltip">
+        <button matRipple class="tool left" matTooltip="List View" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="list"></i-feather>
         </button>
-        <button matRipple class="tool mid disabled" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
+        <button matRipple class="tool mid" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="grid"></i-feather>
         </button>
-        <button matRipple class="tool end disabled" matTooltip="Filter" matTooltipClass="offprint-tooltip">
+        <button matRipple class="tool end" matTooltip="Filter" matTooltipClass="offprint-tooltip" [matMenuTriggerFor]="filterMenu">
             <i-feather class="no-text" name="filter"></i-feather>
         </button>
         <span class="tool-divider"></span>
@@ -26,10 +37,6 @@
         <button matRipple class="tool end disabled" matTooltip="Delete" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="trash-2"></i-feather>
         </button>
-        <span class="tool-divider"></span>
-        <button matRipple class="tool disabled">
-            <i-feather name="book"></i-feather>Unpublished
-        </button>
     </div>
     <form class="tool-search">
         <div class="search-bar">
@@ -38,6 +45,12 @@
         </div>
     </form>
 </div>
+
+<mat-menu #filterMenu="matMenu">
+    <button mat-menu-item>By Name</button>
+    <button mat-menu-item>By Published</button>
+    <button mat-menu-item>By Date Added</button>
+</mat-menu>
 
 <div class="view-container">
     <div class="view-info">

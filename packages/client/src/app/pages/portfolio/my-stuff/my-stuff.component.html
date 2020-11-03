@@ -3,31 +3,8 @@
         <!--Creation tools-->
         <button matRipple class="tool" [matTooltip]="'Create Content'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
         <span class="tool-divider"></span>
-
-        <!--Filtering tools-->
-        <button matRipple class="tool left" [ngClass]="{'active': !isIconView}" matTooltip="List View" matTooltipClass="offprint-tooltip">
-            <i-feather class="no-text" name="list"></i-feather>
-        </button>
-        <button matRipple class="tool mid" [ngClass]="{'active': isIconView}" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
-            <i-feather class="no-text" name="grid"></i-feather>
-        </button>
-        <button matRipple class="tool end" matTooltip="Filter" matTooltipClass="offprint-tooltip" [matMenuTriggerFor]="filterMenu">
-            <i-feather class="no-text" name="filter"></i-feather>
-        </button>
-        <span class="tool-divider"></span>
-
-        <!--Content tools-->
-        <ng-container *ngIf="itemSelected; else noItem">
-            <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
-                <i-feather class="no-text" name="x"></i-feather>
-            </button>
-            <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
-                <i-feather class="no-text" name="edit-3"></i-feather>
-            </button>
-            <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
-                <i-feather class="no-text" name="trash-2"></i-feather>
-            </button>
-            <span class="tool-divider"></span>
+        
+        <ng-container *ngIf="itemSelected; else noItemSelected">
             <ng-container [ngSwitch]="currSelectedContent.audit.published">
                 <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
                     <i-feather name="book-open"></i-feather>Published
@@ -46,6 +23,31 @@
                 </button>
             </ng-container>
         </ng-container>
+        <ng-template #noItemSelected>
+            <button matRipple class="tool disabled">
+                <i-feather name="book"></i-feather>Unpublished
+            </button>
+        </ng-template>
+        <span class="tool-divider"></span>
+
+        <button matRipple class="tool disabled" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'">
+            <i-feather name="plus"></i-feather>Chapter
+        </button>
+        <span class="tool-divider"></span>
+
+        <!--Content tools-->
+        <ng-container *ngIf="itemSelected; else noItem">
+            <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+                <i-feather class="no-text" name="x"></i-feather>
+            </button>
+            <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
+                <i-feather class="no-text" name="edit-3"></i-feather>
+            </button>
+            <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+                <i-feather class="no-text" name="trash-2"></i-feather>
+            </button>
+            <span class="tool-divider"></span>
+        </ng-container>
         <ng-template #noItem>
             <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
@@ -57,10 +59,18 @@
                 <i-feather class="no-text" name="trash-2"></i-feather>
             </button>
             <span class="tool-divider"></span>
-            <button matRipple class="tool disabled">
-                <i-feather name="book"></i-feather>Unpublished
-            </button>
         </ng-template>
+
+        <!--Filtering tools-->
+        <button matRipple class="tool left" [ngClass]="{'active': !isIconView}" matTooltip="List View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="list"></i-feather>
+        </button>
+        <button matRipple class="tool mid" [ngClass]="{'active': isIconView}" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="grid"></i-feather>
+        </button>
+        <button matRipple class="tool end" matTooltip="Filter" matTooltipClass="offprint-tooltip" [matMenuTriggerFor]="filterMenu">
+            <i-feather class="no-text" name="filter"></i-feather>
+        </button>
     </div>
     <form [formGroup]="searchStuff" class="tool-search">
         <div class="search-bar">
