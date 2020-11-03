@@ -24,6 +24,7 @@ export class PoetryService {
             'desc': await sanitizeHtml(poetryInfo.desc),
             'body': await sanitizeHtml(poetryInfo.body),
             'meta.category': poetryInfo.category,
+            'meta.form': poetryInfo.form,
             'meta.genres': poetryInfo.genres,
             'meta.rating': poetryInfo.rating,
             'meta.status': poetryInfo.status
@@ -45,6 +46,7 @@ export class PoetryService {
             'desc': await sanitizeHtml(poetryInfo.desc),
             'body': await sanitizeHtml(poetryInfo.body),
             'meta.category': poetryInfo.category,
+            'meta.form': poetryInfo.form,
             'meta.genres': poetryInfo.genres,
             'meta.rating': poetryInfo.rating,
             'meta.status': poetryInfo.status
