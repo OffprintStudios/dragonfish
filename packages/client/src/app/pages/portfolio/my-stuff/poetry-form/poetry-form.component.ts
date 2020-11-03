@@ -19,6 +19,7 @@ export class PoetryFormComponent implements OnInit {
     genres = Genres;
     ratings = ContentRating;
     statuses = WorkStatus;
+    isCollection = false;
 
     poetryForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -43,18 +44,19 @@ export class PoetryFormComponent implements OnInit {
           return;
       }
 
-      const proseInfo: CreatePoetry ={
+      const poetryInfo: CreatePoetry ={
           title: this.fields.title.value,
           desc: this.fields.desc.value,
           body: this.fields.body.value,
           category: this.fields.category.value,
+          collection: this.isCollection,
           form: this.fields.form.value,
           genres: this.fields.genres.value,
           rating: this.fields.rating.value,
           status: this.fields.status.value
       };
 
-      this.poetryService.createPoetry(proseInfo).subscribe(() => {
+      this.poetryService.createPoetry(poetryInfo).subscribe(() => {
           this.location.back();
       });
   }
