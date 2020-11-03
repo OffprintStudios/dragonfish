@@ -28,14 +28,6 @@
             </div>
         </div>
 
-        <mat-form-field style="width: 100%;" appearance="outline">
-            <mat-label>Short Description</mat-label>
-            <input matInput placeholder="One of the best things never told" formControlName="desc">
-        </mat-form-field>
-
-        <label>Long Description</label>
-        <editor [parentForm]="proseForm" [controlName]="'body'" [minHeight]="'300px'" [maxHeight]="'300px'"></editor>
-
         <div class="row" style="margin-top: 2rem;">
             <div class="six columns">
                 <mat-form-field style="width: 100%;" appearance="outline">
@@ -54,5 +46,13 @@
                 </mat-form-field>
             </div>
         </div>
+
+        <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-label>Short Description</mat-label>
+            <input matInput placeholder="One of the best things never told" formControlName="desc">
+        </mat-form-field>
+
+        <label>Long Description</label>
+        <editor [parentForm]="proseForm" [controlName]="'body'" [minHeight]="'300px'" [maxHeight]="'300px'"></editor>
     </form>
 </div>
