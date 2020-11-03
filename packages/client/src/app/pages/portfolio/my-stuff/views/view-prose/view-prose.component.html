@@ -1,0 +1,40 @@
+<div class="view-container">
+    <div class="view-info">
+        <div class="view-coverart">
+            <div class="add-coverart" [matTooltip]="'Add Cover Art'" [matTooltipClass]="'offprint-tooltip'">
+                <i-feather name="plus"></i-feather>
+            </div>
+        </div>
+        <div class="view-header">
+            <h2>{{ myProse.title }}</h2>
+            <div class="view-tags">
+                <span class="tag">{{ myProse.meta.category }}</span>
+                <span class="divider">//</span>
+                <span class="tag">{{ myProse.meta.genres | separateEntities }}</span>
+            </div>
+            <div class="view-description">
+                <div class="html-description" [innerHtml]="myProse.body | safeHtml"></div>
+            </div>
+            <div class="view-stats">
+                <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | date:'mediumDate' }}</span>
+                <span class="divider">//</span>
+                <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myProse.stats.comments | abbreviate }}</span>
+                <span class="divider">//</span>
+                <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ myProse.stats.views | abbreviate }}</span>
+                <span class="divider">//</span>
+                <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-up"></i-feather>{{ myProse.stats.likes | abbreviate }}</span>
+                <span class="divider">//</span>
+                <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myProse.stats.dislikes | abbreviate }}</span>
+                <span class="divider">//</span>
+                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myProse.stats.words | abbreviate }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="view-sections">
+        <div class="empty">
+            <h3>It's lonely in here...</h3>
+            <p>Looks like you haven't added any chapters yet.</p>
+            <p>Why not hit the Add Chapter button in the toolbar?</p>
+        </div>
+    </div>
+</div>

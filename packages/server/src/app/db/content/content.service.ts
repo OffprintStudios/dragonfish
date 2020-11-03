@@ -71,8 +71,8 @@ export class ContentService {
         return await this.contentModel.find({
             'author': user.sub, 
             'audit.isDeleted': false, 
-            $or: [{'kind': ContentKind.BlogContent}, {'kind': ContentKind.PoetryContent}, {'kind': ContentKind.ProseContent}]
-        });
+            'kind': {$ne: ContentKind.NewsContent}
+        }).sort({'createdAt': 1});
     }
 
     /**
