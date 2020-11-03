@@ -5,9 +5,23 @@
         <span class="tool-divider"></span>
 
         <!--Creation Tools-->
-        <button matRipple class="tool">
-            <i-feather name="book"></i-feather>Unpublished
-        </button>
+        <ng-container [ngSwitch]="myPoetry.audit.published">
+            <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
+                <i-feather name="book-open"></i-feather>Published
+            </button>
+            <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool">
+                <i-feather name="book"></i-feather>Unpublished
+            </button>
+            <button *ngSwitchCase="pubStatus.Pending" matRipple class="tool">
+                <i-feather name="clock"></i-feather>Pending
+            </button>
+            <button *ngSwitchCase="pubStatus.Rejected" matRipple class="tool">
+                <i-feather name="x"></i-feather>Rejected
+            </button>
+            <button *ngSwitchCase="pubStatus.ApprovedUnpublished" matRipple class="tool">
+                <i-feather name="book"></i-feather>Approved
+            </button>
+        </ng-container>
         <span class="tool-divider"></span>
 
         <ng-container *ngIf="myPoetry.meta.collection; else singleton">

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { PoetryContent } from '@pulp-fiction/models/content';
+import { PoetryContent, PubStatus } from '@pulp-fiction/models/content';
 
 @Component({
     selector: 'view-poetry',
@@ -10,6 +10,8 @@ import { PoetryContent } from '@pulp-fiction/models/content';
 })
 export class ViewPoetryComponent implements OnInit {
     myPoetry: PoetryContent;
+
+    pubStatus = PubStatus;
 
     constructor(private route: ActivatedRoute, private location: Location) {}
 
