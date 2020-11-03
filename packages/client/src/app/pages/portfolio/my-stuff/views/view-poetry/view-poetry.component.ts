@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { PoetryContent } from '@pulp-fiction/models/content';
 
@@ -10,9 +11,13 @@ import { PoetryContent } from '@pulp-fiction/models/content';
 export class ViewPoetryComponent implements OnInit {
     myPoetry: PoetryContent;
 
-    constructor(private route: ActivatedRoute) {}
+    constructor(private route: ActivatedRoute, private location: Location) {}
 
     ngOnInit(): void {
         this.myPoetry = this.route.snapshot.data.poetryData as PoetryContent;
+    }
+
+    goBack() {
+        this.location.back();
     }
 }
