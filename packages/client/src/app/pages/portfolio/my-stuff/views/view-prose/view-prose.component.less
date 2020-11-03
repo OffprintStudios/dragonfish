@@ -38,10 +38,19 @@ div.view-container {
 
             display: flex;
             flex-direction: column;
-            
-            h2 {
-                font-weight: 700;
-                margin-bottom: 0;
+
+            div.view-title {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                h2 {
+                    flex: 1;
+                    position: relative;
+                    top: 0.4rem;
+                    font-weight: 700;
+                    margin-bottom: 0;
+                }
             }
 
             div.view-tags {
@@ -70,6 +79,11 @@ div.view-container {
                     stroke-width: 1;
                     margin-right: 0.25rem;
                     top: 0.25rem;
+
+                    &.kind {
+                        width: 20px;
+                        top: 0.4rem;
+                    }
                 }
             }
         }
