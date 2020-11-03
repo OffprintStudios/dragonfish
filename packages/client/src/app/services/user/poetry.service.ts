@@ -9,7 +9,7 @@ import { PoetryContent, CreatePoetry } from '@pulp-fiction/models/content';
   providedIn: 'root'
 })
 export class PoetryService {
-  private url: `/api/content/poetry`;
+  private url = `/api/content/poetry`;
 
   constructor(private http: HttpClient) { }
 

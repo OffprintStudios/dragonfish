@@ -9,11 +9,11 @@ import { ProseContent, CreateProse } from '@pulp-fiction/models/content';
   providedIn: 'root'
 })
 export class ProseService {
-  private url: `/api/content/prose`;
+  private url = `/api/content/prose`;
 
   constructor(private http: HttpClient) { }
 
-  public createPoetry(proseInfo: CreateProse) {
+  public createProse(proseInfo: CreateProse) {
     return this.http.put<ProseContent>(`${this.url}/create-prose`, proseInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
@@ -22,7 +22,7 @@ export class ProseService {
       }));
   }
 
-  public editPoetry(contentId: string, proseInfo: CreateProse) {
+  public editProse(contentId: string, proseInfo: CreateProse) {
     return this.http.patch<void>(`${this.url}/edit-prose?contentId=${contentId}`, proseInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;

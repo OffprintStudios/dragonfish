@@ -1,9 +1,9 @@
 <div class="form-container">
     <div class="form-header">
         <h3>{{ formTitle }}</h3>
-        <button class="form-button">Save</button>
+        <button class="form-button" (click)="submitForm()">Save</button>
     </div>
-    <form [formGroup]="proseForm">
+    <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
         <mat-form-field style="width: 100%;" appearance="outline">
             <mat-label>Title</mat-label>
             <input matInput placeholder="My Next Great Masterpiece" formControlName="title">
@@ -21,7 +21,7 @@
             <div class="six columns">
                 <mat-form-field style="width: 100%;" appearance="outline">
                     <mat-label>Genre(s)</mat-label>
-                    <mat-select [formControlName]="genres" multiple>
+                    <mat-select [formControlName]="'genres'" multiple>
                         <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{ genre.value }}</mat-option>
                     </mat-select>
                 </mat-form-field>
