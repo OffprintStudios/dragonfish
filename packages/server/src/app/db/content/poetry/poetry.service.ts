@@ -17,7 +17,7 @@ export class PoetryService {
      * @param user The author of this poetry
      * @param poetryInfo The poetry info
      */
-    async createProse(user: JwtPayload, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
+    async createPoetry(user: JwtPayload, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         const newProse = new this.poetryModel({
             'author': user.sub,
             'title': await sanitizeHtml(poetryInfo.title),
@@ -39,7 +39,7 @@ export class PoetryService {
      * @param poetryId The poetry ID
      * @param poetryInfo The poetry info
      */
-    async editProse(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<void> {
+    async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<void> {
         return await this.poetryModel.updateOne({'_id': poetryId, 'author': user.sub}, {
             'title': await sanitizeHtml(poetryInfo.title),
             'desc': await sanitizeHtml(poetryInfo.desc),
