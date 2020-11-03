@@ -85,6 +85,7 @@ import { PoetryService } from './poetry/poetry.service';
         meta: {
           category: {type: String, enum: Object.keys(WorkKind), required: true},
           form: {type: String, enum: Object.keys(PoetryForm), required: true},
+          collection: {type: Boolean, default: false},
           fandoms: {type: [String], default: null},
           genres: {type: [String], enum: Object.keys(Genres), required: true},
           status: {type: String, enum: Object.keys(WorkStatus), required: true},

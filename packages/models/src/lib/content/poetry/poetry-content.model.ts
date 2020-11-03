@@ -11,6 +11,7 @@ export interface PoetryContent extends ContentModel {
     meta: {
         category: WorkKind;
         form: PoetryForm;
+        collection: boolean;
         fandoms?: string[];
         genres: Genres[];
         rating: ContentRating;
