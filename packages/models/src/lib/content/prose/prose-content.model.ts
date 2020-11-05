@@ -6,7 +6,7 @@ import { ContentRating } from '../content-rating.enum';
 import { WorkStatus } from '../work-status.enum';
 
 export interface ProseContent extends ContentModel {
-    sections: SectionInfo[];
+    sections: string[] | SectionInfo[];
     meta: {
         category: WorkKind;
         fandoms?: string[];

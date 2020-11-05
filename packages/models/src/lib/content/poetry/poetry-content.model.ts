@@ -7,7 +7,7 @@ import { WorkStatus } from '../work-status.enum';
 import { PoetryForm } from './poetry-form.enum';
 
 export interface PoetryContent extends ContentModel {
-    sections?: SectionInfo[];
+    sections?: string[] | SectionInfo[];
     meta: {
         category: WorkKind;
         form: PoetryForm;
