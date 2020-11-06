@@ -2,8 +2,10 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
+import { Section, AuthorsNotePos } from '@pulp-fiction/models/sections';
+
 @Schema({timestamps: true, autoIndex: true, collection: 'sections'})
-export class SectionsDocument extends Document {
+export class SectionsDocument extends Document implements Section {
     @Prop({default: generate()})
     readonly _id: string;
 
@@ -16,8 +18,8 @@ export class SectionsDocument extends Document {
     @Prop({trim: true})
     authorsNote: string;
 
-    @Prop()
-    authorsNotePos: string;
+    @Prop({type: String, enum: Object.keys(AuthorsNotePos), default: AuthorsNotePos.Bottom})
+    authorsNotePos: AuthorsNotePos;
 
     @Prop({default: false})
     published: boolean;
@@ -37,6 +39,9 @@ export class SectionsDocument extends Document {
         publishedOn: Date;
         isDeleted: boolean;
     };
+
+    @Prop({default: false})
+    usesNewEditor: boolean; // this gets removed after QuillJS is nuked from orbit
 
     @Prop({default: Date.now()})
     createdAt: Date;
