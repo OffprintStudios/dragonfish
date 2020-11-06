@@ -11,20 +11,39 @@ import { Types } from 'mongoose';
 export class ContentController {
     constructor (private readonly contentService: ContentService) {}
 
-    @UseGuards(OptionalAuthGuard)
+    @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-one')
-    async fetchOne(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind, @Query('isPublished') isPublished: boolean) {
+    async fetchOne(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOne(contentId, kind, req.user, isPublished);
+        return await this.contentService.fetchOne(contentId, kind, req.user);
+    }
+
+    @UseGuards(OptionalAuthGuard)
+    @Get('fetch-one-published')
+    async fetchOnePublished(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
+        if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
+            throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
+        }
+
+        return await this.contentService.fetchOnePublished(contentId, kind, req.user);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-all')
     async fetchAll(@Request() req: any) {
         return await this.contentService.fetchAll(req.user);
+    }
+
+    @Get('fetch-all-published')
+    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('kind') kind: ContentKind) {
+        if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
+            throw new BadRequestException(`You must include both the page number and content kind in your request.`);
+        }
+
+        return await this.contentService.fetchAllPublished(pageNum, kind);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
