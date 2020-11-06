@@ -72,4 +72,26 @@ export class SectionsService {
     async deleteSection(sectionId: string): Promise<void> {
         return await this.sectionModel.updateOne({'_id': sectionId}, {'audit.isDeleted': true});
     }
+
+    /**
+     * Fetches a section by ID. Performs an extra check to only fetch a published section.
+     * 
+     * @param sectionId The second ID
+     */
+    async fetchSectionById(sectionId: string, published?: boolean): Promise<SectionsDocument> {
+        if (published) {
+            return await this.sectionModel.findOne({'_id': sectionId, 'published': true});
+        } else {
+            return await this.sectionModel.findOne({'_id': sectionId});
+        }
+    }
+
+    /**
+     * Fetches the list of sections belonging to a work, for use with My Stuff routes.
+     * 
+     * @param sectionIds A work's list of sections
+     */
+    async fetchSectionsList(sectionIds: string[]): Promise<SectionsDocument[]> {
+        return await this.sectionModel.find({'_id': {$in: sectionIds}, 'audit.isDeleted': false});
+    }
 }

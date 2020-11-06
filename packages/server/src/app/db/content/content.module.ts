@@ -6,6 +6,7 @@ import { generate } from 'shortid';
 import { ContentService } from './content.service';
 import { NewsService } from './news/news.service';
 import { BlogsService } from './blogs/blogs.service';
+import { SectionsModule } from '../sections/sections.module';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@pulp-fiction/models/content';
 import { UsersModule } from '../users/users.module';
@@ -14,7 +15,7 @@ import { PoetryService } from './poetry/poetry.service';
 
 @Module({
   imports: [
-    UsersModule,
+    UsersModule, SectionsModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'Content',
