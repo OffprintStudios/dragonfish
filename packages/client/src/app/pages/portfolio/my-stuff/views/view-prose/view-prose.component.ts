@@ -17,11 +17,14 @@ export class ViewProseComponent implements OnInit {
     mySections: SectionItem[];
     pubStatus = PubStatus;
     loadingSections = false;
+    editMode = false;
 
     sectionForm = new FormGroup({
         title: new FormControl(''),
-        body: new FormControl('')
-    })
+        body: new FormControl(''),
+        authorsNote: new FormControl(''),
+        authorsNotePos: new FormControl(null)
+    });
 
     constructor(private sectionsService: SectionsService, public route: ActivatedRoute, private location: Location) {}
 
@@ -34,11 +37,17 @@ export class ViewProseComponent implements OnInit {
         this.location.back();
     }
 
+    get fields() { return this.sectionForm.controls; }
+
     private fetchData() {
         this.loadingSections = true;
         this.sectionsService.fetchUserContentSections(this.myProse._id).subscribe(sections => {
             this.mySections = sections as SectionItem[];
             this.loadingSections = false;
         });
+    }
+
+    addSection() {
+        this.editMode = true;
     }
 }

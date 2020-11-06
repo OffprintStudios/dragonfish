@@ -24,7 +24,7 @@
         </ng-container>
         <span class="tool-divider"></span>
         
-        <button matRipple class="tool" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'">
+        <button matRipple class="tool" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'" (click)="addSection()">
             <i-feather name="plus"></i-feather>Chapter
         </button>
         <span class="tool-divider"></span>
@@ -113,8 +113,12 @@
 
         <!--After loading, display something-->
         <ng-template #viewSections>
+            <div class="sections-list">
+
+            </div>
+            <div class="section-container">
             <!--If the list of sections is empty-->
-            <ng-container *ngIf="mySections && mySections.length === 0; else sectionsList">
+            <ng-container *ngIf="mySections && mySections.length === 0;">
                 <div class="empty">
                     <h3>It's lonely in here...</h3>
                     <p>Looks like you haven't added any chapters yet.</p>
@@ -122,10 +126,20 @@
                 </div>
             </ng-container>
 
-            <!--If the list of sections is not empty-->
-            <ng-template #sectionsList>
-                stuff is here
-            </ng-template>
+            <!--If edit mode is toggled -->
+            <ng-container *ngIf="editMode">
+                <div class="form-container">
+                    <form [formGroup]="sectionForm">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Title</mat-label>
+                            <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
+                        </mat-form-field>
+
+                        <editor [parentForm]="sectionForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+                    </form>
+                </div>
+            </ng-container>
+            </div>
         </ng-template>
     </div>
 </div>
