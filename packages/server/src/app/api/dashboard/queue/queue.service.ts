@@ -13,14 +13,14 @@ export class QueueService {
      * @param user The author of the work
      * @param workId The work's ID
      */
-    async submitWork(user: any, workId: string) {
+    /*async submitWork(user: any, workId: string) {
         let publishedSections = (await this.worksService.findOneWorkById(workId)).sections
             .filter(x => x.published);
         if (!publishedSections || publishedSections.length < 1) {
             throw new BadRequestException("Your work must contain at least one published section before it can be submitted.");
         }
         return await this.approvalQueueService.addOneWork(user, workId);
-    }
+    }*/
 
     /**
      * Fetches the entire queue.
