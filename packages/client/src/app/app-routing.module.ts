@@ -6,7 +6,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent, MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent, ViewProseComponent, ViewPoetryComponent} from './pages/portfolio';
+  HistoryComponent, MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent, ViewProseComponent, ViewPoetryComponent } from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   

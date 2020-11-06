@@ -4,12 +4,15 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { Section, SectionForm } from '@pulp-fiction/models/sections';
+import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SectionsService {
   private url = `/api/content/sections`;
+  public myWork: PoetryContent | ProseContent;
+  public mySections: Section[];
 
   constructor(private http: HttpClient) { }
 

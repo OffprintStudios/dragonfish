@@ -1,4 +1,4 @@
-<div class="tools">
+<div class="tools" *ngIf="route.children.length === 0">
     <div class="tool-buttons">
         <!--Go back-->
         <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
@@ -104,12 +104,16 @@
         </div>
     </div>
     <div class="view-sections">
+        <!--Loading sections-->
         <ng-container *ngIf="loadingSections; else viewSections">
             <div class="empty">
                 <mat-spinner></mat-spinner>
             </div>
         </ng-container>
+
+        <!--After loading, display something-->
         <ng-template #viewSections>
+            <!--If the list of sections is empty-->
             <ng-container *ngIf="mySections && mySections.length === 0; else sectionsList">
                 <div class="empty">
                     <h3>It's lonely in here...</h3>
@@ -117,6 +121,8 @@
                     <p>Why not hit the Add Chapter button in the toolbar?</p>
                 </div>
             </ng-container>
+
+            <!--If the list of sections is not empty-->
             <ng-template #sectionsList>
                 stuff is here
             </ng-template>
