@@ -16,10 +16,10 @@ export class SectionsDocument extends Document implements Section {
     body: string;
 
     @Prop({trim: true})
-    authorsNote: string;
+    authorsNote?: string;
 
     @Prop({type: String, enum: Object.keys(AuthorsNotePos), default: AuthorsNotePos.Bottom})
-    authorsNotePos: AuthorsNotePos;
+    authorsNotePos?: AuthorsNotePos;
 
     @Prop({default: false})
     published: boolean;
