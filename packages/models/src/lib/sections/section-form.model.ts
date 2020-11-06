@@ -5,6 +5,7 @@ export interface SectionForm {
     readonly body: string;
     readonly authorsNote?: string;
     readonly authorsNotePos?: AuthorsNotePos;
+    readonly oldWords?: number;
     
      // Remove this once we've migrated all sections from Quill
     readonly usesNewEditor: boolean;

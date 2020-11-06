@@ -1,16 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
 import { Types } from 'mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { isNullOrUndefined } from '../../util';
+import { SectionsService } from '../sections/sections.service';
 
 import { ContentDocument } from './content.schema';
 
 @Injectable()
 export class ContentService {
-    constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>) {}
+    constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
+        private readonly sectionsService: SectionsService) {}
 
     /**
      * Fetches one unpublished item from the content collection via ID and ContentKind. 
@@ -98,6 +101,97 @@ export class ContentService {
      */
     async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
         return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.isDeleted': true});
+    }
+
+    /**
+     * Adds a section to some content. Only applicable to Prose, Poetry, and Scripts.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param sectionInfo The new section's info
+     */
+    async createSection(user: JwtPayload, contentId: string, sectionInfo: SectionForm) {
+        const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(work)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            return await this.sectionsService.createNewSection(sectionInfo).then(async sec => {
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$push: {'sections': sec._id}});
+                return sec;
+            });
+        }
+    }
+
+    /**
+     * Updates a given section with the new info. If the section is published, subtract the old word count and then add the new word count.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param sectionInfo The new section info
+     */
+    async editSection(user: JwtPayload, contentId: string, sectionId: string, sectionInfo: SectionForm) {
+        const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(work)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            return await this.sectionsService.editSection(sectionId, sectionInfo).then(async sec => {
+                if (sec.published === true) {
+                    await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": -sectionInfo.oldWords}}).then(async () => {
+                        await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": sec.stats.words}});
+                    });
+                }
+                return sec;
+            });
+        }
+    }
+
+    /**
+     * Publishes a section. If any change occurred in said section's publishing status, then it updates the parent content's wordcount
+     * accordingly.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param pubStatus The publishing status for this section
+     */
+    async publishSection(user: JwtPayload, contentId: string, sectionId: string, pubStatus: PublishSection) {
+        const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(work)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            const sec = await this.sectionsService.publishSection(sectionId, pubStatus);
+            if (sec.published === true && pubStatus.oldPub === false) { // if newly published
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': sec.stats.words}});
+            } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': -sec.stats.words}});
+            }
+            return sec;
+        }
+    }
+
+    /**
+     * Deletes a section and updates the parent wordcount accordingly if that section was published.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     */
+    async deleteSection(user: JwtPayload, contentId: string, sectionId: string): Promise<void> {
+        const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(work)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            const sec = await this.sectionsService.deleteSection(sectionId);
+            if (sec.published === true) {
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': -sec.stats.words}});
+            }
+            return;
+        }
     }
 
     /**

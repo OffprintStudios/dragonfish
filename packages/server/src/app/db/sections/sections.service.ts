@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer'
-import { SectionForm } from '@pulp-fiction/models/sections';
+import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
 import { SectionsDocument } from './sections.schema';
 import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter';
 
@@ -56,11 +56,11 @@ export class SectionsService {
      * @param sectionId The section ID
      * @param pubStatus The new pub status
      */
-    async publishSection(sectionId: string, pubStatus: boolean): Promise<SectionsDocument> {
-        if (pubStatus === true) {
-            return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {'published': pubStatus, 'audit.publishedOn': new Date()}, {new: true});
+    async publishSection(sectionId: string, pubStatus: PublishSection): Promise<SectionsDocument> {
+        if (pubStatus.newPub === true) {
+            return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {'published': pubStatus.newPub, 'audit.publishedOn': new Date()}, {new: true});
         } else {
-            return await this.sectionModel.findByIdAndUpdate({'_id': sectionId}, {'published': pubStatus}, {new: true});
+            return await this.sectionModel.findByIdAndUpdate({'_id': sectionId}, {'published': pubStatus.newPub}, {new: true});
         }
     }
 
@@ -69,8 +69,8 @@ export class SectionsService {
      * 
      * @param sectionId The section ID
      */
-    async deleteSection(sectionId: string): Promise<void> {
-        return await this.sectionModel.updateOne({'_id': sectionId}, {'audit.isDeleted': true});
+    async deleteSection(sectionId: string): Promise<SectionsDocument> {
+        return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {'audit.isDeleted': true});
     }
 
     /**
