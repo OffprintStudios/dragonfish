@@ -7,9 +7,6 @@ import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import * as models from '@pulp-fiction/models/works';
 import * as documents from './models';
 import { UsersService } from '../users/users.service';
-import { SearchParameters } from '../../api/search/models/search-parameters';
-import { SearchResults } from '../../api/search/models/search-results';
-import { isNullOrUndefined } from 'util';
 import { HistoryService } from '../history/history.service';
 import { RatingOption } from '@pulp-fiction/models/history';
 
