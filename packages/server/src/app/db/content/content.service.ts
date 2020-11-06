@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
 import { Types } from 'mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { isNullOrUndefined } from '../../util';
@@ -13,49 +13,38 @@ export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>) {}
 
     /**
-     * Fetches one item from the content collection via ID and ContentKind. 
+     * Fetches one unpublished item from the content collection via ID and ContentKind. 
      * 
      * @param contentId A content's ID
      * @param kind A content's Kind
-     * @param user (Optional) The user making this request
-     * @param isPublished (Optional) Check to determine if the document should be published or not
+     * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
-        let query = {'_id': contentId, 'kind': kind, 'audit.isDeleted': false};
-        if (isPublished) {
-            switch (kind) {
-                case ContentKind.BlogContent:
-                    query['audit.published'] = true;
-                    break;
-                case ContentKind.ProseContent || ContentKind.PoetryContent:
-                    // change query parameters for works
-                    break;
-                case ContentKind.NewsContent:
-                    query['audit.published'] = true;
-                    break;
-                default: 
-                    throw new BadRequestException(`The document kind you requested does not exist.`);
-            }
-        }
-        const doc = await this.contentModel.findOne(query);
-
-        if (isNullOrUndefined(user)) {
-            if (isPublished) {
-                await this.incrementViewCount(contentId);
-                return doc;
-            } else {
-                return doc;
-            }
+    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentDocument> {
+        if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
+            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false}, {autopopulate: false});
         } else {
-            if (isPublished) {
-                const authorInfo = doc.author as any;
-                if (authorInfo._id === user.sub) {
-                    return doc;
-                } else {
-                    await this.incrementViewCount(contentId);
-                    return doc;
-                }
+            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false});
+        }
+    }
+
+    /**
+     * Fetches one published item from the content collection via ID and ContentKind.
+     * 
+     * @param contentId A content's ID
+     * @param kind A content's Kind
+     * @param user (Optional) The user making the request
+     */
+    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentDocument> {
+        const doc = await this.contentModel.findOne({'_id': contentId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Published});
+        if (isNullOrUndefined(user)) {
+            await this.incrementViewCount(contentId);
+            return doc;
+        } else {
+            const authorInfo = doc.author as any;
+            if (authorInfo._id === user.sub) {
+                return doc;
             } else {
+                await this.incrementViewCount(contentId);
                 return doc;
             }
         }
