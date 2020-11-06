@@ -104,10 +104,22 @@
         </div>
     </div>
     <div class="view-sections">
-        <div class="empty">
-            <h3>It's lonely in here...</h3>
-            <p>Looks like you haven't added any chapters yet.</p>
-            <p>Why not hit the Add Chapter button in the toolbar?</p>
-        </div>
+        <ng-container *ngIf="loadingSections; else viewSections">
+            <div class="empty">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-container>
+        <ng-template #viewSections>
+            <ng-container *ngIf="mySections && mySections.length === 0; else sectionsList">
+                <div class="empty">
+                    <h3>It's lonely in here...</h3>
+                    <p>Looks like you haven't added any chapters yet.</p>
+                    <p>Why not hit the Add Chapter button in the toolbar?</p>
+                </div>
+            </ng-container>
+            <ng-template #sectionsList>
+                stuff is here
+            </ng-template>
+        </ng-template>
     </div>
 </div>
