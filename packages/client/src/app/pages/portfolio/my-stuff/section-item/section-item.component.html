@@ -1,16 +1,29 @@
 <div class="form-container">
     <div class="form-header">
-        <div class="form-buttons left">
-            <button class="left" [ngClass]="{'active': previewMode}" (click)="switchView()"><i-feather name="eye"></i-feather>preview</button>
-            <button class="mid" [ngClass]="{'active': !previewMode}" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
-            <button class="right"><i-feather name="save"></i-feather>save</button>
-            <button class="single"><i-feather name="circle"></i-feather>published</button>
-        </div>
-        <div class="form-buttons">
-            <button class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
-        </div>
+        <ng-container *ngIf="previewMode; else editModeButtons">
+            <div class="form-buttons left">
+                <button matRipple class="left active"><i-feather name="eye"></i-feather>preview</button>
+                <button matRipple class="mid" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
+                <button matRipple class="right disabled"><i-feather name="save"></i-feather>save</button>
+                <button matRipple class="single"><i-feather name="circle"></i-feather>published</button>
+            </div>
+            <div class="form-buttons">
+                <button matRipple class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
+            </div>
+        </ng-container>
+        <ng-template #editModeButtons>
+            <div class="form-buttons left">
+                <button matRipple class="left" (click)="switchView()"><i-feather name="eye"></i-feather>preview</button>
+                <button matRipple class="mid active" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
+                <button matRipple class="right"><i-feather name="save"></i-feather>save</button>
+                <button matRipple class="single"><i-feather name="circle"></i-feather>published</button>
+            </div>
+            <div class="form-buttons">
+                <button matRipple class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
+            </div>
+        </ng-template>
     </div>
-    <ng-container *ngIf="previewMode">
+    <ng-container *ngIf="previewMode; else editMode">
         <div class="form-body">
             <div class="body-header">
                 <h2>{{ section.title }}</h2>
@@ -18,4 +31,16 @@
             <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
         </div>
     </ng-container>
+    <ng-template #editMode>
+        <div class="form-body">
+            <form [formGroup]="editForm">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
+                </mat-form-field>
+    
+                <editor [parentForm]="editForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+            </form>
+        </div>
+    </ng-template>
 </div>

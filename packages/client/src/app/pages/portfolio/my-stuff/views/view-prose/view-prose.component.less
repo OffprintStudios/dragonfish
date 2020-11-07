@@ -132,6 +132,7 @@ div.view-container {
                 flex-direction: column;
                 height: 85px;
                 width: 150px;
+                cursor: pointer;
                 margin-top: 0.5rem;
                 margin-bottom: 0.5rem;
                 border-top-left-radius: 4px;
@@ -139,6 +140,24 @@ div.view-container {
                 border-left: 1px solid var(--site-borders);
                 border-top: 1px solid var(--site-borders);
                 border-bottom: 1px solid var(--site-borders);
+
+                &.active {
+                    border-color: var(--site-accent);
+
+                    div.section-title {
+                        color: whitesmoke;
+                        background: var(--site-accent);
+                    }
+                }
+
+                &:hover {
+                    border-color: var(--site-accent);
+
+                    div.section-title {
+                        color: whitesmoke;
+                        background: var(--site-accent);
+                    }
+                }
 
                 div.section-preview {
                     flex: 1;

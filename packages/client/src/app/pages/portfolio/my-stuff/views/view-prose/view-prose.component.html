@@ -110,10 +110,10 @@
         <ng-template #viewSections>
             <div class="sections-list">
                 <div class="add-section" (click)="addSection()">
-                    <i-feather name="plus"></i-feather><span class="button-text">CHAPTER</span>
+                    <i-feather name="plus"></i-feather><span class="button-text">SECTION</span>
                 </div>
                 <ng-container *ngFor="let section of mySections">
-                    <div class="section-box">
+                    <div class="section-box" [ngClass]="{'active': section.selected}" (click)="selectThisSection(section)">
                         <div class="section-title">
                             {{ section.title }}
                         </div>
@@ -142,15 +142,23 @@
                 </ng-container>
 
                 <ng-template #viewMode>
-                    <ng-container *ngIf="mySections.length === 0; else openSection">
+                    <ng-container *ngIf="mySections.length === 0; else selectSection">
                         <div class="empty">
                             <h3>It's lonely in here...</h3>
-                            <p>Looks like you haven't added any chapters yet.</p>
-                            <p>Why not hit the Add Chapter button on the side?</p>
+                            <p>Looks like you haven't added any sections yet.</p>
+                            <p>Why not hit the Add Section button on the side?</p>
                         </div>
                     </ng-container>
-                    <ng-template #openSection>
-                        <section-item [section]="selectedSection"></section-item>
+                    <ng-template #selectSection>
+                        <ng-container *ngIf="selectedSection; else nothingSelected">
+                            <section-item [section]="selectedSection"></section-item>
+                        </ng-container>
+                        <ng-template #nothingSelected>
+                            <div class="empty">
+                                <h3>You haven't selected a section yet</h3>
+                                <p>Click on any of the tabs to the left to get started!</p>
+                            </div>
+                        </ng-template>
                     </ng-template>
                 </ng-template>
             </div>

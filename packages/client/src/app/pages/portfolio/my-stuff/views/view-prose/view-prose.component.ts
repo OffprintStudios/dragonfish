@@ -47,13 +47,22 @@ export class ViewProseComponent implements OnInit {
         this.loadingSections = true;
         this.sectionsService.fetchUserContentSections(this.myProse._id).subscribe(sections => {
             this.mySections = sections.reverse() as SectionItem[];
-            this.selectedSection = this.mySections[0];
             this.loadingSections = false;
         });
     }
 
     addSection() {
         this.editMode = true;
+    }
+
+    selectThisSection(section: SectionItem) {
+        if (this.selectedSection) {
+            this.selectedSection.selected = false;
+            this.selectedSection = null;
+        }
+        
+        section.selected = true;
+        this.selectedSection = section;
     }
 
     submitForm() {
