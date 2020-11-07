@@ -1,0 +1,21 @@
+<div class="form-container">
+    <div class="form-header">
+        <div class="form-buttons left">
+            <button class="left" [ngClass]="{'active': previewMode}" (click)="switchView()"><i-feather name="eye"></i-feather>preview</button>
+            <button class="mid" [ngClass]="{'active': !previewMode}" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
+            <button class="right"><i-feather name="save"></i-feather>save</button>
+            <button class="single"><i-feather name="circle"></i-feather>published</button>
+        </div>
+        <div class="form-buttons">
+            <button class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
+        </div>
+    </div>
+    <ng-container *ngIf="previewMode">
+        <div class="form-body">
+            <div class="body-header">
+                <h2>{{ section.title }}</h2>
+            </div>
+            <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+        </div>
+    </ng-container>
+</div>

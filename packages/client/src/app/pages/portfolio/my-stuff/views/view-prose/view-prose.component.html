@@ -124,17 +124,7 @@
                 </ng-container>
             </div>
             <div class="section-container">
-                <!--If the list of sections is empty-->
-                <ng-container *ngIf="mySections && mySections.length === 0 && editMode === false">
-                    <div class="empty">
-                        <h3>It's lonely in here...</h3>
-                        <p>Looks like you haven't added any chapters yet.</p>
-                        <p>Why not hit the Add Chapter button on the side?</p>
-                    </div>
-                </ng-container>
-
-                <!--If edit mode is toggled -->
-                <ng-container *ngIf="editMode">
+                <ng-container *ngIf="editMode; else viewMode">
                     <div class="form-container">
                         <div class="form-header">
                             <h3>Add a Section</h3>
@@ -150,6 +140,19 @@
                         </form>
                     </div>
                 </ng-container>
+
+                <ng-template #viewMode>
+                    <ng-container *ngIf="mySections.length === 0; else openSection">
+                        <div class="empty">
+                            <h3>It's lonely in here...</h3>
+                            <p>Looks like you haven't added any chapters yet.</p>
+                            <p>Why not hit the Add Chapter button on the side?</p>
+                        </div>
+                    </ng-container>
+                    <ng-template #openSection>
+                        <section-item [section]="selectedSection"></section-item>
+                    </ng-template>
+                </ng-template>
             </div>
         </ng-template>
     </div>
