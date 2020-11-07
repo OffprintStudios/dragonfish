@@ -31,7 +31,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortColle
   HistoryComponent as HistoryPageComponent, MyStuffComponent } from './pages/portfolio';
 
 import { BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent } from './pages/portfolio/my-stuff';
+  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/portfolio/my-stuff';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -104,7 +104,8 @@ const toolbarOptions = [
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
-    ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent
+    ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
+    SectionItemComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

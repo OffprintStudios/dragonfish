@@ -119,7 +119,8 @@ export class ContentService {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             return await this.sectionsService.createNewSection(sectionInfo).then(async sec => {
-                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$push: {'sections': sec._id}});
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$push: {'sections': sec._id}}, {strict: false});
+
                 return sec;
             });
         }

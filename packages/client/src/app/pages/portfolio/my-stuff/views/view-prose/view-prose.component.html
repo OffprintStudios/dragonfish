@@ -23,11 +23,6 @@
             </button>
         </ng-container>
         <span class="tool-divider"></span>
-        
-        <button matRipple class="tool" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'" (click)="addSection()">
-            <i-feather name="plus"></i-feather>Chapter
-        </button>
-        <span class="tool-divider"></span>
 
         <!--Filtering tools-->
         <button matRipple class="tool left" matTooltip="List View" matTooltipClass="offprint-tooltip">
@@ -114,31 +109,47 @@
         <!--After loading, display something-->
         <ng-template #viewSections>
             <div class="sections-list">
-
+                <div class="add-section" (click)="addSection()">
+                    <i-feather name="plus"></i-feather><span class="button-text">CHAPTER</span>
+                </div>
+                <ng-container *ngFor="let section of mySections">
+                    <div class="section-box">
+                        <div class="section-title">
+                            {{ section.title }}
+                        </div>
+                        <div class="section-preview">
+                            <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
             <div class="section-container">
-            <!--If the list of sections is empty-->
-            <ng-container *ngIf="mySections && mySections.length === 0;">
-                <div class="empty">
-                    <h3>It's lonely in here...</h3>
-                    <p>Looks like you haven't added any chapters yet.</p>
-                    <p>Why not hit the Add Chapter button in the toolbar?</p>
-                </div>
-            </ng-container>
+                <!--If the list of sections is empty-->
+                <ng-container *ngIf="mySections && mySections.length === 0 && editMode === false">
+                    <div class="empty">
+                        <h3>It's lonely in here...</h3>
+                        <p>Looks like you haven't added any chapters yet.</p>
+                        <p>Why not hit the Add Chapter button on the side?</p>
+                    </div>
+                </ng-container>
 
-            <!--If edit mode is toggled -->
-            <ng-container *ngIf="editMode">
-                <div class="form-container">
-                    <form [formGroup]="sectionForm">
-                        <mat-form-field style="width: 100%;" appearance="outline">
-                            <mat-label>Title</mat-label>
-                            <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
-                        </mat-form-field>
+                <!--If edit mode is toggled -->
+                <ng-container *ngIf="editMode">
+                    <div class="form-container">
+                        <div class="form-header">
+                            <h3>Add a Section</h3>
+                            <button (click)="submitForm()">Save</button>
+                        </div>
+                        <form [formGroup]="sectionForm">
+                            <mat-form-field style="width: 100%;" appearance="outline">
+                                <mat-label>Title</mat-label>
+                                <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
+                            </mat-form-field>
 
-                        <editor [parentForm]="sectionForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
-                    </form>
-                </div>
-            </ng-container>
+                            <editor [parentForm]="sectionForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                        </form>
+                    </div>
+                </ng-container>
             </div>
         </ng-template>
     </div>
