@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NotificationSchema } from './notifications.schema';
-import { UnpublishedNotificationSchema } from './unpublished-notifications.schema';
+import { UnpublishedNotificationDocument, UnpublishedNotificationSchema } from './unpublished-notifications.schema';
 import { NotificationsService } from './notifications.service';
 import { NotificationSubscriptionSchema } from './notification-subscriptions.schema';
+import { HookNextFunction } from 'mongoose';
 
 @Module({
   imports: [
@@ -19,6 +20,11 @@ import { NotificationSubscriptionSchema } from './notification-subscriptions.sch
         name: 'UnpublishedNotification',
         useFactory: () => {
           const schema = UnpublishedNotificationSchema;
+          schema.pre<UnpublishedNotificationDocument>('save', async function(next: HookNextFunction) {
+            this.set('createdAt', Date.now());
+            this.set('updatedAt', Date.now());
+            return next();
+          });
           return schema;
         }
       },

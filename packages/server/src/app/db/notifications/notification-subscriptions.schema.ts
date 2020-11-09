@@ -3,7 +3,8 @@ import { NotificationSourceKind, NotificationSubscription } from '@pulp-fiction/
 import { Document } from 'mongoose';
 
 @Schema({
-    autoIndex: true    
+    autoIndex: true,
+    collection: 'notification_subscriptions'
 })
 export class NotificationSubscriptionDocument extends Document implements NotificationSubscription {
     @Prop({required: true, index: true})

@@ -9,6 +9,8 @@ import { BlogsService } from '../blogs/blogs.service';
 import { WorksService } from '../works/works.service';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
+import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationSourceKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class CommentsService {
@@ -16,7 +18,8 @@ export class CommentsService {
         @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
         @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
-        private readonly blogsService: BlogsService, private readonly worksService: WorksService, private readonly contentService: ContentService) {}
+        private readonly blogsService: BlogsService, private readonly worksService: WorksService, 
+        private readonly contentService: ContentService, private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new comment that belongs to a blog.
@@ -34,6 +37,16 @@ export class CommentsService {
 
         let doc = await newComment.save();
         await this.blogsService.addComment(blogId);
+
+        // Send notification to blog author
+        await this.notificationsService.queueNotification({
+            sourceId: doc._id,
+            sourceKind: NotificationSourceKind.Comment,
+            sourceParentId: blogId,
+            sourceParentKind: NotificationSourceKind.Blog,
+            title: `${user.username} posted a new comment on your blog!` // todo: add in blog title here?
+        });
+
         return doc;
     }
 

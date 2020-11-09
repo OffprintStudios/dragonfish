@@ -5,6 +5,7 @@ export interface CreateNotification {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
+    sourceKind: NotificationSourceKind;
 
     /**
      * The ID of the notification source's parent (i.e. if the notification
@@ -12,7 +13,7 @@ export interface CreateNotification {
      * Undefined if the source doesn't have a parent.
      */
     sourceParentId?: string;
-    kind: NotificationSourceKind;
+    sourceParentKind?: NotificationSourceKind | undefined;    
     title: string;
     body?: string | undefined;
 }

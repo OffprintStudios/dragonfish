@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateNotification, NotificationSourceKind, PublishStatus, Notification } from '@pulp-fiction/models/notifications';
-import { Model } from 'mongoose';
+import { CreateNotification, NotificationSourceKind, PublishStatus, Notification, NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { Model, Types } from 'mongoose';
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 
 import { NotificationDocument } from './notifications.schema';
@@ -23,6 +23,7 @@ export class NotificationsService {
         @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>) {
         // Schedule intial wakeup of the unpublished notifications queue processor
         this.beginProcessing();
+        console.log("Notifications service constructor complete");
     }
 
     /**
@@ -57,6 +58,26 @@ export class NotificationsService {
     }
 
     /**
+     * Marks all the given notifications for the given user as read.
+     * @param userId The user who owns the notifications
+     * @param notificationIds An array of notification IDs to mark as read
+     */
+    async markAsRead(userId: string, notificationIds: string[]) : Promise<void> {
+        const objectIds: Types.ObjectId[] = notificationIds.map(x => new Types.ObjectId(x));
+        const result = await this.notificationModel.updateMany({
+            '_id': { $in: objectIds },
+            'destinationUserId': userId,
+            'read': false
+        }, {
+            $set: { 'read': true }
+        });
+
+        if(result.ok !== 1) {
+            throw new InternalServerErrorException(`Failed to mark as read. Matched ${result.n} documents, and modified ${result.nModified}`);
+        }
+    }
+
+    /**
      * Subscribes a user to a notification source.
      * @param userId The user to subscribe
      * @param sourceId The ID of the thing the user would like to subscribe to
@@ -79,6 +100,16 @@ export class NotificationsService {
             'notificationSourceId': sourceId,
             'notificationSourceKind': sourceKind
         }).save();       
+    }
+
+    /**
+     * Returns all of a user's notification subscriptions.
+     * @param userId The ID of the user whose subscriptions will be returned
+     */
+    async getSubscriptions(userId: string): Promise<NotificationSubscription[]> {
+        return await this.subscriptionModel.find({
+            userId: userId
+        });
     }
 
     /**
@@ -142,8 +173,8 @@ export class NotificationsService {
      * Once it has completed (one way or another) it will schedule another wakeup 5 seconds in the future.
      * @param numToProcess The max number of notifications to process in this wakeup.
      */
-    private async processUnpublishedNotifications(numToProcess: number): Promise<void> {
-        if (this.active) {
+    private async processUnpublishedNotifications(numToProcess: number): Promise<void> {        
+        if (!this.active) {
             return;
         }
         
@@ -183,9 +214,6 @@ export class NotificationsService {
                 toPublish.publishStatus = PublishStatus.Published;
                 await toPublish.save();
 
-                // Put stale notifications back into the processing queue
-                await this.cleanUpStaleNotifications();
-
                 processed += 1;
                 if (processed >= numToProcess) {
                     break;
@@ -209,9 +237,12 @@ export class NotificationsService {
             }
         } // end while-loop
 
-        // Queue the next wakeup
+        // Put stale notifications back into the processing queue
+        await this.cleanUpStaleNotifications();
+
+        // Queue the next wakeup        
         setTimeout(
-            async () => {
+            async () => {                
                 this.currentWakeup = this.processUnpublishedNotifications(MAX_NOTIFICATIONS_PER_WAKEUP);
                 await this.currentWakeup;
             },

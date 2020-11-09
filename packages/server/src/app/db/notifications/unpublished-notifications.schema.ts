@@ -7,7 +7,8 @@ const FiveMB: number = 5_242_880; // Even this is probably overkill
 
 @Schema({    
     'timestamps': true,
-    capped: { size: FiveMB }
+    capped: { size: FiveMB },
+    collection: 'unpublished_notifications'
 })
 export class UnpublishedNotificationDocument extends Document implements UnpublishedNotification {
     @Prop({required: true})
@@ -30,11 +31,9 @@ export class UnpublishedNotificationDocument extends Document implements Unpubli
 
     @Prop()
     body?: string;
-
-    @Prop({required: true})
+    
     createdAt: Date;
-
-    @Prop({required: true})
+    
     updatedAt: Date;
 }
 
