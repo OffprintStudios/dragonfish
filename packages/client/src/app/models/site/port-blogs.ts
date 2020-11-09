@@ -3,5 +3,5 @@ import { Blog } from '@pulp-fiction/models/blogs';
 
 export interface PortBlogs {
     blogs: PaginateResult<Blog>;
-    userId: string;
+    userBlogs: PaginateResult<Blog>;
 }

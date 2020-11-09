@@ -1,0 +1,51 @@
+<div class="history-container">
+    <div class="works-list">
+        <div class="loader" *ngIf="loading">
+            <div class="lds-dual-ring"></div>
+        </div>
+        <h4 style="text-align: center;" *ngIf="isHistoryEmpty()">You haven't created any works yet.</h4>
+        <ng-container *ngIf="!loading && !isHistoryEmpty()">
+            <div class="work-list">
+                <div class="work-item" *ngFor="let doc of histList.docs | paginate: {
+                    itemsPerPage: histList.limit,
+                    currentPage: pageNum,
+                    totalItems: histList.totalDocs
+                }">
+                    <div class="work-check">
+                        <button title="Delete From History" class="check-published" (click)="askDelete(doc._id)">
+                            <i-feather name="trash-2"></i-feather>
+                        </button>
+                    </div>
+                    <img class="work-coverart" *ngIf="$any(doc.work).meta.coverArt" [src]="$any(doc.work).meta.coverArt">
+                    <div class="work-info">
+                        <div class="info">
+                            <ng-container [ngSwitch]="$any(doc.work).meta.rating">
+                                <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
+                            </ng-container>
+                            <h3><a [routerLink]="['/work', $any(doc.work)._id, $any(doc.work).title | slugify]">{{ $any(doc.work).title }}</a></h3>
+                            <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.work).author._id, $any(doc.work).author.username | slugify]">{{ $any(doc.work).author.username }}</a></h4>
+                            <br>
+                            <h4>{{ $any(doc.work).meta.category | fixCategories }}</h4><span>//</span>
+                            <h4>{{ $any(doc.work).meta.genres | separateEntities:$any(doc.work).meta.category }}</h4><span *ngIf="$any(doc.work).meta.fandoms.length > 0">//</span>
+                            <h4 *ngIf="$any(doc.work).meta.fandoms.length > 0">{{ $any(doc.work).meta.fandoms | separateEntities }}</h4>
+                            <div class="stats">                                
+                                <h4>{{ $any(doc.work).meta.status }}</h4><span>//</span>
+                                <h4 title="Approval Rating"><i-feather name="heart"></i-feather>{{ calcApprovalRating($any(doc.work).stats.likes, $any(doc.work).stats.dislikes) }}%</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ $any(doc.work).stats.totWords | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ $any(doc.work).stats.views | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.work).stats.comments | toLocaleString }}</h4>
+                                <ng-container *ngIf="$any(doc.work).audit.publishedOn">
+                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | date:'short' }}</h4>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-container>
+    </div>
+</div>

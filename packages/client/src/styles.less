@@ -56,7 +56,7 @@ div.main-stage {
 
 div.container {
     @media (max-width: 1150px) {
-        width: 95%;
+        width: 100%;
         padding: 0;
     }
 }
@@ -283,6 +283,27 @@ button:disabled {
     color: black;
 }
 
+button.disabled, input[type="text"].disabled {
+    background-color: var(--site-controls-background);
+    color: grey;
+    cursor: not-allowed;
+
+    &:hover {
+        background-color: var(--site-controls-background);
+        color: grey;
+        cursor: not-allowed;
+    }
+}
+
+button:focus {
+    border-color: var(--site-borders);
+    color: var(--site-text-color);
+
+    i-feather {
+        color: var(--site-text-color);
+    }
+}
+
 input[type=text]:focus, input[type=password]:focus,
 input[type=email]:focus, select:focus {
     border: 1px solid var(--site-accent);
@@ -402,6 +423,11 @@ div.tools {
             text-align: center;
         }
 
+        span.tool-divider {
+            margin-left: 0.5rem;
+            margin-right: 0.5rem;
+        }
+
         button.tool {
             padding-left: 1rem;
             padding-right: 1rem;
@@ -414,6 +440,13 @@ div.tools {
                 position: relative;
                 top: 0.3rem;
                 margin-right: 0.5rem;
+            }
+
+            i-feather.no-text {
+                width: 18px;
+                height: 18px;
+                top: 0.4rem;
+                margin-right: 0;
             }
     
             &.left {
@@ -430,6 +463,23 @@ div.tools {
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
                 border-left: 0;
+            }
+
+            &.active {
+                background: var(--site-accent);
+                color: whitesmoke;
+
+                i-feather {
+                    color: whitesmoke;
+                }
+
+                &:hover {
+                    background: var(--site-accent-hover);
+                    color: whitesmoke;
+                    i-feather {
+                        color: whitesmoke;
+                    }
+                }
             }
         }
     }
@@ -1055,6 +1105,36 @@ mat-sidenav-container {
     font-family: Raleway, sans-serif;
 }
 
+.mat-menu-panel {
+    background: var(--site-background) !important;
+    color: var(--site-text-color) !important;
+    border: 1px solid var(--site-borders);
+}
+
+button.mat-menu-item {
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    color: var(--site-text-color);
+    text-transform: none !important;
+    font-family: 'Raleway', sans-serif;
+
+    i-feather {
+        position: relative;
+        width: 16px;
+        top: 0.15rem;
+        margin-right: 0.25rem;
+    }
+}
+
+.mat-menu-item:hover:not([disabled]), 
+.mat-menu-item.cdk-program-focused:not([disabled]), 
+.mat-menu-item.cdk-keyboard-focused:not([disabled]), 
+.mat-menu-item-highlighted:not([disabled]) {
+    background: var(--site-accent);
+    color: whitesmoke;
+}
+
 div.actions {
     width: 100%;
     text-align: center;
@@ -1083,4 +1163,75 @@ div.user-buttons {
     .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
         background-color: var(--site-accent-hover);
     }
+}
+
+
+.work-form {
+    color: whitesmoke;
+    width: 100%;
+
+    .mat-form-field-label {
+        color: whitesmoke !important;
+    }
+
+    .mat-select-value {
+        color: whitesmoke;
+    }
+
+    .mat-select-placeholder {
+        color: whitesmoke !important;
+    }
+
+    .mat-select-arrow {
+        color: whitesmoke;
+    }
+}
+
+.mat-select {
+    font-family: Raleway, sans-serif;
+}
+
+.mat-option {
+    font-family: Raleway, sans-serif;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--site-borders);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: var(--site-accent);
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+    color: var(--site-accent);
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: var(--site-accent-hover);
+}
+
+.mat-form-field.mat-focused.mat-primary {
+    color: var(--site-text-color) !important;
+    & .mat-select-arrow {
+        color: var(--site-accent-hover);
+    }
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.7em 0 0.7em 0 !important;
+    top: -0.25em;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+    top: 1.8em;
+    margin-top: -0.18em;
+}
+
+.mat-form-field-label {
+    color: var(--site-text-color);
+}
+
+.mat-input-element::placeholder {
+    color: var(--site-text-color);
 }

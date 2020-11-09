@@ -9,9 +9,11 @@ import { WorksService } from './works/works.service';
 import { BlogsService } from './blogs/blogs.service';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { NewsCategory } from '@pulp-fiction/models/content';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
+    UsersModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'Content',
@@ -42,13 +44,20 @@ import { NewsCategory } from '@pulp-fiction/models/content';
         },
         audit: {
           featured: {type: Boolean, default: false},
-          published: {type: Boolean, default: false},
-          publishedOn: {type: Date, default: null}
+        }
+      })),
+      inject: [getModelToken('Content')]
+    },
+    {
+      provide: getModelToken('BlogContent'),
+      useFactory: contentModel => contentModel.discriminator('BlogContent', new Schema({
+        audit: {
+          releaseOn: {type: Date, default: null}
         }
       })),
       inject: [getModelToken('Content')]
     }
   ],
-  exports: [ContentService, NewsService, /*WorksService, BlogsService*/]
+  exports: [ContentService, NewsService, BlogsService, /* WorksService */]
 })
 export class ContentModule {}

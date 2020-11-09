@@ -1,6 +1,8 @@
-import { Controller, Param, Get } from '@nestjs/common';
+import { Controller, Request, Param, Get, UseGuards } from '@nestjs/common';
 
 import { ContentService } from '../../../db/content/content.service';
+import { OptionalAuthGuard } from '../../../guards';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Controller('news')
 export class NewsController {
@@ -8,11 +10,17 @@ export class NewsController {
 
     @Get('news-feed/:pageNum')
     async getNewsFeed(@Param('pageNum') pageNum: number) {
-        return await this.contentService.fetchManyByKind('NewsContent', pageNum, true);
+        return await this.contentService.fetchAllPublished(pageNum, ContentKind.NewsContent);
     }
 
+    @UseGuards(OptionalAuthGuard)
     @Get('news-post/:postId')
-    async getNewsPost(@Param('postId') postId: string) {
-        return await this.contentService.fetchOnePublished(postId, 'NewsContent');
+    async getNewsPost(@Request() req: any, @Param('postId') postId: string) {
+        return await this.contentService.fetchOne(
+            postId, // the contentId of the post
+            ContentKind.NewsContent, // fetch only a news post
+            req.user, // add a view if there's a user
+            true // fetch only a published post
+        );
     }
 }

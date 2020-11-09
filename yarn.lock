@@ -9334,6 +9334,11 @@ ng2-file-upload@^1.4.0:
   dependencies:
     tslib "^1.9.0"
 
+ng2-fittext@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/ng2-fittext/-/ng2-fittext-1.2.12.tgz#ea9b57ccc158e7381d82118c1ed1a5e67bfdb86a"
+  integrity sha512-UW0Ds9cBvCOLfwJFLundfmAnSg9gwsFYg9NewbmfkKqrgcvDQsGhnTdecXbn2hqZd3LkdbaFF+rJcwxLZFWFJg==
+
 ngx-cookie@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/ngx-cookie/-/ngx-cookie-5.0.0.tgz#b5c04fbeac9b577fe6471ca2c740f0365beae41e"

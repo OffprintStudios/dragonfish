@@ -1,0 +1,113 @@
+<div class="tools" *ngIf="currentUser && currentUserIsSame()">
+    <div class="tool-buttons">
+        <ng-container *ngIf="listView; else galleryView">
+            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
+            <button matRipple class="tool mid" (click)="openNewBlogForm()"><i-feather name="plus"></i-feather>Blog</button>
+            <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+        </ng-container>
+        <ng-template #galleryView>
+            <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
+        </ng-template>
+    </div>
+    <form [formGroup]="searchBlogs" class="tool-search" (ngSubmit)="searchFor()" *ngIf="listView">
+        <div class="search-bar">
+            <input type="text" formControlName="query" class="search-input" placeholder="Search blogs...">
+            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
+<ng-container *ngIf="listView; else showGallery">
+    <ng-container *ngIf="userBlogsData !== null">
+        <div class="blog-list" *ngIf="userBlogsData.totalDocs !== 0; else noBlogs">
+            <div class="blog-item" *ngFor="let blog of userBlogsData.docs | paginate: {
+                itemsPerPage: userBlogsData.limit,
+                currentPage: pageNum,
+                totalItems: userBlogsData.totalDocs
+            }">
+                <div class="blog-check">
+                    <button  matTooltip="Published (click to unpublish)" matTooltipClass="offprint-tooltip" class="check-published" (click)="setPublishStatus(blog._id, blog.published)" *ngIf="blog.published; else blogUnpublished">
+                        <i-feather name="check-circle"></i-feather>
+                    </button>
+                    <ng-template #blogUnpublished>
+                        <button  matTooltip="Unpublished (click to publish)" matTooltipClass="offprint-tooltip" class="check-unpublished" (click)="setPublishStatus(blog._id, blog.published)">
+                            <i-feather name="circle"></i-feather>
+                        </button>
+                    </ng-template>
+                </div>
+                <div class="blog-info">
+                    <div class="info">
+                        <h3 *ngIf="blog.published; else unpubTitle"><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h3>
+                        <ng-template #unpubTitle>
+                            <h3><a>{{ blog.title }}</a></h3>
+                        </ng-template>
+                        <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }} word{{ blog.stats.words | pluralize }}</h4><span>//</span>
+                        <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }} view{{ blog.stats.views | pluralize }}</h4><span>//</span>
+                        <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }} comment{{ blog.stats.comments | pluralize }}</h4><span>//</span>
+                        <h4 title="Created On"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                    </div>
+                </div>
+                <div class="blog-control-buttons">
+                    <button matTooltip="Preview" matTooltipClass="offprint-tooltip" class="blog-controls top" (click)="openPreview(blog)"><i-feather name="eye"></i-feather></button>
+                    <button matTooltip="Edit" matTooltipClass="offprint-tooltip" class="blog-controls mid" (click)="openEditForm(blog)"><i-feather name="edit-3"></i-feather></button>
+                    <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="blog-controls bottom" (click)="askDelete(blog._id)"><i-feather name="trash-2"></i-feather></button>
+                </div>
+            </div>
+        </div>
+        <ng-template #noBlogs>
+            <h4 style="text-align: center;">You haven't created any works yet.</h4>
+        </ng-template>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+    </ng-container>
+</ng-container>
+
+<ng-template #showGallery>
+    <div class="blog-feed" *ngIf="blogsData.totalDocs !== 0; else noGalleryBlogs">
+        <div class="blog-container" *ngFor="let blog of blogsData.docs | paginate: {
+            itemsPerPage: blogsData.limit,
+            currentPage: pageNum,
+            totalItems: blogsData.totalDocs
+        }">
+            <div class="blog-box">
+                <div class="content-controls-container" *ngIf="currentUser">
+                    <span class="content-controls">
+                        <a class="meta" title="Report"><i-feather name="flag"></i-feather></a>
+                    </span>
+                </div>
+                <div class="blog-header">
+                    <h1 class="header"><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h1>
+                    <div style="text-align: center;">
+                        <h2 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h2>
+                        <span>//</span>
+                        <h2 class="subtitle">{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h2>
+                        <span>//</span>
+                        <h2 class="subtitle">{{ blog.stats.words }} word{{ blog.stats.words | pluralize }}</h2>
+                    </div>
+                </div>
+                <div class="blog-content">
+                    <ng-container *ngIf="!blog.usesNewEditor">
+                        <quill-view [content]="blog.body" format="json"></quill-view>
+                    </ng-container>
+                    <ng-container *ngIf="blog.usesNewEditor">
+                        <div [innerHtml]="blog.body | safeHtml"></div>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="blog-footer">
+                <div style="text-align: center;">
+                    <a class="button" [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog', blog._id]">Continue Reading</a>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <ng-template #noGalleryBlogs>
+        <div class="empty">
+            <h3>There's nothing here...</h3>
+            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to list view and add a new blog?</p>
+            <ng-template #notSameUser>
+                <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+            </ng-template>
+        </div>
+    </ng-template>
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+</ng-template>

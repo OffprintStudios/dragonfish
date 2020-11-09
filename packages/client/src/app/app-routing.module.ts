@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent, CollectionsComponent,
-    BlogsComponent, InboxComponent, HistoryPageComponent, AlertsComponent } from './pages/home';
+import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
   
-import { PortfolioComponent, PortHomeComponent, PortBlogComponent, PortBlogPageComponent,
-  WorksComponent, PortCollectionsComponent, PortCollectionPageComponent, SettingsComponent } from './pages/portfolio';
+import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
+  WorksComponent, PortCollectionPageComponent, SettingsComponent,
+  BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
+  HistoryComponent, MyStuffComponent, WorkFormComponent, BlogFormComponent} from './pages/portfolio';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -20,7 +21,7 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver} from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver } from './resolvers';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -28,11 +29,6 @@ const routes: Routes = [
       {path: '', children: [
         {path: 'latest', component: LatestComponent},
         {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
-        {path: 'collections', canActivate: [AuthGuard], component: CollectionsComponent, resolve: {feedData: MyCollectionsResolver}, runGuardsAndResolvers: 'always'},
-        {path: 'history', canActivate: [AuthGuard], component: HistoryPageComponent},
-        {path: 'blogs', canActivate: [AuthGuard], component: BlogsComponent, resolve: {feedData: MyBlogsResolver}, runGuardsAndResolvers: 'always'},
-        {path: 'conversations', canActivate: [AuthGuard], component: InboxComponent},
-        {path: 'alerts', canActivate: [AuthGuard], component: AlertsComponent},
         {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
       ]}
     ]},
@@ -42,11 +38,19 @@ const routes: Routes = [
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
-      {path: 'blog', component: PortBlogComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
+        {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
+        {path: 'new-work', component: WorkFormComponent, canActivate: [AuthGuard]},
+        {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+      ]},
+      {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'collections', component: PortCollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'collections', component: CollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'history', component: HistoryComponent, canActivate: [AuthGuard]},
+      {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
+      {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
@@ -70,7 +74,7 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver,
     ]
 })
 export class AppRoutingModule {}

@@ -13,7 +13,7 @@ import * as lodash from 'lodash';
 export class NewsService {
     constructor(@InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>) {}
 
-        /**
+    /**
      * Creates a new newspost and saves it to the database.
      * 
      * @param user The user creating the post

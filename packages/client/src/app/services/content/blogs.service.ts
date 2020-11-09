@@ -5,8 +5,10 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import * as models from '@pulp-fiction/models/blogs';
+import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
+import { Types } from 'mongoose';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +24,9 @@ export class BlogsService {
    *
    * @param info The blog's information.
    */
-  public createBlog(info: models.CreateBlog) {
-    return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
+  public createBlog(info: BlogForm, parentId?: Types.ObjectId) {
+    if (parentId) {
+      return this.http.put<models.Blog>(`${this.url}/create-blog?parentId=${parentId}`, info, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 201) {
           this.alertsService.success('Blog successfully created.');
@@ -31,6 +34,16 @@ export class BlogsService {
       }), catchError(err => {
         return throwError(err);
       }));
+    } else {
+      return this.http.put<models.Blog>(`${this.url}/create-blog`, info, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        if (res.status === 201) {
+          this.alertsService.success('Blog successfully created.');
+        }
+      }), catchError(err => {
+        return throwError(err);
+      }));
+    }
   }
 
   /**
@@ -40,7 +53,6 @@ export class BlogsService {
   public fetchUserBlogs(pageNum: number) {
     return this.http.get<PaginateResult<models.Blog>>(`${this.url}/fetch-user-blogs/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
-        console.log(res.body);
         return res.body;
       }), catchError(err => {
         return throwError(err);
@@ -68,8 +80,8 @@ export class BlogsService {
    * 
    * @param blogId The ID of the blog we're changing status on
    */
-  public setPublishStatus(publishStatus: models.SetPublishStatus) {
-    return this.http.patch(`${this.url}/set-publish-status`, publishStatus, {observe: 'response', withCredentials: true})
+  public changePublishStatus(contentId: string, pubChange: PubChange) {
+    return this.http.patch(`${this.url}/set-publish-status/${contentId}`, pubChange, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Blog status updated.');
@@ -84,11 +96,12 @@ export class BlogsService {
    * 
    * @param blogInfo The updated blog info
    */
-  public editBlog(blogInfo: models.EditBlog) {
-    return this.http.patch(`${this.url}/edit-blog`, blogInfo, {observe: 'response', withCredentials: true})
+  public editBlog(blogId: string, blogInfo: BlogForm) {
+    return this.http.patch<BlogsContentModel>(`${this.url}/edit-blog/${blogId}`, blogInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         if (res.status === 200) {
           this.alertsService.success('Changes saved successfully.');
+          return res.body;
         }
       }), catchError(err => {
         return throwError(err);

@@ -22,7 +22,7 @@ export class NewEditorComponent implements OnInit {
   editor = CKEditor;
   config: Object = {    
     toolbar: [ 'heading', '|', 
-      'bold', 'italic', 'underline', 'strikethrough', 'fontSize', 'fontColor', '|', 
+      'bold', 'italic', 'underline', 'strikethrough', '|', 'fontSize', 'fontColor', 'highlight', '|', 
       'bulletedlist', 'numberedlist', '|',
       'alignment', 'indent', 'outdent', '|', 
       'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
