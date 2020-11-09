@@ -1,7 +1,7 @@
 import { NotificationSourceKind } from './notification-source-kind';
 import { PublishStatus } from './publish-status';
 
-export interface UnpublishedNotification {
+export interface NotificationQueueItem {
     _id: string;
 
     /**
