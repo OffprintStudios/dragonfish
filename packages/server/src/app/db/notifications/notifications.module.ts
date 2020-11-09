@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NotificationSchema } from './notifications.schema';
-import { UnpublishedNotificationDocument, UnpublishedNotificationSchema } from './unpublished-notifications.schema';
+import { NotificationQueueDocument, NotificationQueueSchema } from './notification-queue.schema';
 import { NotificationsService } from './notifications.service';
 import { NotificationSubscriptionSchema } from './notification-subscriptions.schema';
 import { HookNextFunction } from 'mongoose';
@@ -17,10 +17,10 @@ import { HookNextFunction } from 'mongoose';
         }
       },
       {
-        name: 'UnpublishedNotification',
+        name: 'NotificationQueue',
         useFactory: () => {
-          const schema = UnpublishedNotificationSchema;
-          schema.pre<UnpublishedNotificationDocument>('save', async function(next: HookNextFunction) {
+          const schema = NotificationQueueSchema;
+          schema.pre<NotificationQueueDocument>('save', async function(next: HookNextFunction) {
             this.set('createdAt', Date.now());
             this.set('updatedAt', Date.now());
             return next();

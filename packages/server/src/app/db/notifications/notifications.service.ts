@@ -5,7 +5,7 @@ import { Model, Types } from 'mongoose';
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 
 import { NotificationDocument } from './notifications.schema';
-import { UnpublishedNotificationDocument } from './unpublished-notifications.schema';
+import { NotificationQueueDocument } from './notification-queue.schema';
 import { UnsubscribeResult } from './unsubscribe-result.model';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
@@ -19,9 +19,9 @@ export class NotificationsService {
     private currentWakeup: Promise<void>;
 
     constructor(@InjectModel('Notification') private readonly notificationModel: Model<NotificationDocument>,
-        @InjectModel('UnpublishedNotification') private readonly unpubNotifModel: Model<UnpublishedNotificationDocument>,
+        @InjectModel('NotificationQueue') private readonly notificationQueueModel: Model<NotificationQueueDocument>,
         @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>) {
-        // Schedule intial wakeup of the unpublished notifications queue processor
+        // Schedule intial wakeup of the notification queue processor
         this.beginProcessing();
         console.log("Notifications service constructor complete");
     }
@@ -33,7 +33,7 @@ export class NotificationsService {
     async queueNotification(notification: CreateNotification): Promise<void> {
         // Add it to the unpublished notification queue, where it'll (eventually)
         // be processed.
-        await new this.unpubNotifModel(notification).save();
+        await new this.notificationQueueModel(notification).save();
     }
 
     /**
@@ -180,11 +180,11 @@ export class NotificationsService {
         
         const tickStart = process.hrtime();
         let processed: number = 0;
-        let toPublish: UnpublishedNotificationDocument;
+        let toPublish: NotificationQueueDocument;
 
-        // Note: Since UnpublishedNotifications is a capped collection, an unsorted .find() 
+        // Note: Since NotificationQueue is a capped collection, an unsorted .find() 
         // is guaranteed to get documents in original insertion order.
-        while ((toPublish = await this.unpubNotifModel.findOneAndUpdate(
+        while ((toPublish = await this.notificationQueueModel.findOneAndUpdate(
             { publishStatus: PublishStatus.NotStarted },
             { $set: { publishStatus: PublishStatus.InProgress, updatedAt: new Date(Date.now()) } },
             { new: true }
@@ -210,7 +210,7 @@ export class NotificationsService {
                     }));
                 await this.notificationModel.insertMany(publishableNotifications);
 
-                // Mark the notification in the Unpublished collection as "Published"
+                // Mark the notification in the NotificationQueue collection as "Published"
                 toPublish.publishStatus = PublishStatus.Published;
                 await toPublish.save();
 
@@ -228,9 +228,9 @@ export class NotificationsService {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    console.error(`Error processing unpublished notification - ${error.name}: ${error.message}\n${error.stack}`);
+                    console.error(`Error processing notification from queue - ${error.name}: ${error.message}\n${error.stack}`);
                 } else {
-                    console.error(`Error processing unpublished notification - ${error}`);
+                    console.error(`Error processing notification from queue - ${error}`);
                 }
                 
                 break;
@@ -252,7 +252,7 @@ export class NotificationsService {
     /** Put unpublished notifications that have been "In Progress" for more than 10 seconds back into the queue. */
     private async cleanUpStaleNotifications(): Promise<void> {
         const nowMinus10s = new Date(Date.now() - (10 * 1000));
-        const staleNotifications: UnpublishedNotificationDocument[] = await this.unpubNotifModel.find(
+        const staleNotifications: NotificationQueueDocument[] = await this.notificationQueueModel.find(
             { publishStatus: PublishStatus.InProgress, updatedAt: { $lte: nowMinus10s } }
         );
         await Promise.all(staleNotifications.map(x => {

@@ -402,10 +402,13 @@ export class WorksService {
      * @param workId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(workId: string, authorId: string): Promise<void> {
-        //@ts-ignore
-        const workToApprove = await this.workModel.findOne({_id: workId, author: authorId})
-                                                  .where('aduit.isDeleted', false);
+    async approveWork(workId: string, authorId: string): Promise<void> {        
+        const workToApprove = await this.workModel.findOne({
+            _id: workId, 
+            //@ts-ignore
+            author: authorId,
+            'audit.isDeleted': false
+        });           
         workToApprove.audit.published = models.ApprovalStatus.Approved;
         workToApprove.audit.publishedOn = new Date();
         await workToApprove.save();

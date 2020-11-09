@@ -1,5 +1,5 @@
 export enum PublishStatus {
-    NotStarted = 'NotStarted',
-    InProgress = 'InProgress',
-    Published =  '_Published'
+    NotStarted = 0,
+    InProgress = 1,
+    Published =  2
 }

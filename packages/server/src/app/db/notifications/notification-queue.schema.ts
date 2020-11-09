@@ -1,16 +1,16 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-import { NotificationSourceKind, PublishStatus, UnpublishedNotification } from '@pulp-fiction/models/notifications';
+import { NotificationSourceKind, PublishStatus, NotificationQueueItem } from '@pulp-fiction/models/notifications';
 
 const FiveMB: number = 5_242_880; // Even this is probably overkill
 
 @Schema({    
     'timestamps': true,
     capped: { size: FiveMB },
-    collection: 'unpublished_notifications'
+    collection: 'notification_queue'
 })
-export class UnpublishedNotificationDocument extends Document implements UnpublishedNotification {
+export class NotificationQueueDocument extends Document implements NotificationQueueItem {
     @Prop({required: true})
     sourceId: string;
 
@@ -23,7 +23,7 @@ export class UnpublishedNotificationDocument extends Document implements Unpubli
     @Prop({type: String, enum: Object.keys(NotificationSourceKind)})
     sourceParentKind?: NotificationSourceKind | undefined;
 
-    @Prop({required: true, type: String, enum: Object.keys(PublishStatus), default: 'NotStarted'})
+    @Prop({required: true, type: Number, default: 0})
     publishStatus: PublishStatus
 
     @Prop({required: true})
@@ -37,4 +37,4 @@ export class UnpublishedNotificationDocument extends Document implements Unpubli
     updatedAt: Date;
 }
 
-export const UnpublishedNotificationSchema = SchemaFactory.createForClass(UnpublishedNotificationDocument);
+export const NotificationQueueSchema = SchemaFactory.createForClass(NotificationQueueDocument);

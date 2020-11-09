@@ -66,6 +66,16 @@ export class CommentsService {
         
         let doc = await newComment.save();
         await this.worksService.addComment(workId);
+
+        // Sent notification to work author
+        await this.notificationsService.queueNotification({
+            sourceId: doc._id,
+            sourceKind: NotificationSourceKind.Comment,
+            sourceParentId: workId,
+            sourceParentKind: NotificationSourceKind.Work,
+            title: `${user.username} posted a new comment on one of your works!` // todo: some way to identify the work. IDs? Names?
+        })
+
         return doc;
     }
 
