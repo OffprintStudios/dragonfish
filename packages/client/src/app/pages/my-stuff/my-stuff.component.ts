@@ -5,9 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { AuthService } from '../../../services/auth';
-import { BlogsService } from '../../../services/content';
-import { MyStuffService } from '../../../services/user';
+import { AuthService } from '../../services/auth';
+import { BlogsService } from '../../services/content';
+import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
 
 @Component({

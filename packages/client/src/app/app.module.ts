@@ -28,10 +28,10 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
-  HistoryComponent as HistoryPageComponent, MyStuffComponent } from './pages/portfolio';
+  HistoryComponent as HistoryPageComponent } from './pages/portfolio';
 
-import { BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/portfolio/my-stuff';
+import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
+  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';

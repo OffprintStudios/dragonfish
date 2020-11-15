@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 
 import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse } from '@pulp-fiction/models/content';
-import { ProseService } from '../../../../services/user';
+import { ProseService } from '../../../services/user';
 
 @Component({
     selector: 'prose-form',

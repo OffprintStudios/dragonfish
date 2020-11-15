@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { WorkKind, CreatePoetry, PoetryForm, Genres, ContentRating, WorkStatus } from '@pulp-fiction/models/content';
-import { PoetryService } from '../../../../services/user';
+import { PoetryService } from '../../../services/user';
 
 @Component({
   selector: 'poetry-form',

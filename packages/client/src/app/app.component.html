@@ -41,6 +41,7 @@
         <a matRipple [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Groups</span></a>
         <a matRipple [routerLink]="['/news']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hash"></i-feather></span><span>News</span></a>
         <ng-container *ngIf="currentUser">
+          <a matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hard-drive"></i-feather></span><span>My Stuff</span></a>
           <a matRipple [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a>
         </ng-container>
       </div>
