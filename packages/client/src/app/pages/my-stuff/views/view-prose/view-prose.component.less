@@ -124,7 +124,7 @@ div.view-container {
             div.section-box {
                 display: flex;
                 flex-direction: column;
-                height: 85px;
+                height: 45px;
                 width: 150px;
                 cursor: pointer;
                 margin-top: 0.5rem;
@@ -136,43 +136,24 @@ div.view-container {
                 border-bottom: 1px solid var(--site-borders);
 
                 &.active {
-                    border-color: var(--site-accent);
-
-                    div.section-title {
-                        color: whitesmoke;
-                        background: var(--site-accent);
-                    }
+                    color: whitesmoke;
+                    background: var(--site-accent);
                 }
 
                 &:hover {
+                    color: whitesmoke;
+                    background: var(--site-accent);
                     border-color: var(--site-accent);
-
-                    div.section-title {
-                        color: whitesmoke;
-                        background: var(--site-accent);
-                    }
-                }
-
-                div.section-preview {
-                    flex: 1;
-                    padding: 4px;
-                    div.html-description {
-                        display: block;
-                        height: 60px;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        font-size: 5px;
-                    }
                 }
 
                 div.section-title {
-                    font-size: 12px;
+                    font-size: 16px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     text-align: center;
                     padding: 2px;
-                    border-bottom: 1px solid var(--site-borders);
+                    margin-top: 0.75rem;
                 }
             }
         }
