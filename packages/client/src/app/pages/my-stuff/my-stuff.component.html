@@ -112,10 +112,12 @@
         
     <!--User has content-->
     <ng-template #hasContent>
-        <div class="content-grid">
-            <ng-container *ngFor="let content of myContent">
-                <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
-            </ng-container>
+        <div class="content-block">
+            <div class="content-grid">
+                <ng-container *ngFor="let content of myContent">
+                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                </ng-container>
+            </div>
         </div>
     </ng-template>
 </ng-container>
