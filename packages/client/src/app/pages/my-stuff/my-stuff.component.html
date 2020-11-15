@@ -30,11 +30,6 @@
         </ng-template>
         <span class="tool-divider"></span>
 
-        <button matRipple class="tool disabled" [matTooltip]="'Add Chapter'" [matTooltipClass]="'offprint-tooltip'">
-            <i-feather name="plus"></i-feather>Chapter
-        </button>
-        <span class="tool-divider"></span>
-
         <!--Content tools-->
         <ng-container *ngIf="itemSelected; else noItem">
             <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
