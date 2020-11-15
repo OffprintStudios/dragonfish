@@ -29,19 +29,19 @@
         <span class="stat-divider"></span>
         <ng-container [ngSwitch]="content.audit.published">
             <span *ngSwitchCase="pubStatus.Published" class="stat-block" [matTooltip]="'Published'" [matTooltipClass]="'offprint-tooltip'">
-                <i-feather class="stat-icon" name="book-open"></i-feather>
+                <i-feather class="stat-icon" name="check-circle"></i-feather>
             </span>
             <span *ngSwitchCase="pubStatus.Unpublished" class="stat-block" [matTooltip]="'Unpublished'" [matTooltipClass]="'offprint-tooltip'">
-                <i-feather class="stat-icon" name="book"></i-feather>
+                <i-feather class="stat-icon" name="circle"></i-feather>
             </span>
             <span *ngSwitchCase="pubStatus.Pending" class="stat-block" [matTooltip]="'Pending'" [matTooltipClass]="'offprint-tooltip'">
                 <i-feather class="stat-icon" name="clock"></i-feather>
             </span>
             <span *ngSwitchCase="pubStatus.Rejected" class="stat-block" [matTooltip]="'Rejected'" [matTooltipClass]="'offprint-tooltip'">
-                <i-feather class="stat-icon" name="x"></i-feather>
+                <i-feather class="stat-icon" name="x-circle"></i-feather>
             </span>
             <span *ngSwitchCase="pubStatus.ApprovedUnpublished" class="stat-block" [matTooltip]="'Approved (Unpublished)'" [matTooltipClass]="'offprint-tooltip'">
-                <i-feather class="stat-icon" name="book"></i-feather>
+                <i-feather class="stat-icon" name="circle"></i-feather>
             </span>
         </ng-container>
     </div>
