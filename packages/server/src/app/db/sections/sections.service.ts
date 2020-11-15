@@ -92,6 +92,6 @@ export class SectionsService {
      * @param sectionIds A work's list of sections
      */
     async fetchSectionsList(sectionIds: string[]): Promise<SectionsDocument[]> {
-        return await this.sectionModel.find({'_id': {$in: sectionIds}, 'audit.isDeleted': false});
+        return await this.sectionModel.find({'_id': {$in: sectionIds}, 'audit.isDeleted': false}).sort({'createdAt': -1});
     }
 }
