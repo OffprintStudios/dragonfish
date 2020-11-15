@@ -1,6 +1,6 @@
 import { Controller, Get, Post, UseGuards, Request, NotFoundException, InternalServerErrorException, HttpCode, BadRequestException } from '@nestjs/common';
 
-import { MarkReadRequest, Notification, NotificationSourceKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { MarkReadRequest, NotificationBase, NotificationKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
 import { Roles } from '@pulp-fiction/models/users';
 import { NotificationsService } from '../../db/notifications/notifications.service';
 import { UnsubscribeResult } from '../../db/notifications/unsubscribe-result.model';
@@ -13,14 +13,14 @@ export class NotificationController {
 
     @Get('getNotifications')
     @UseGuards(RolesGuard([Roles.User]))
-    async getNotifications(@Request() req: any): Promise<Notification[]> {
+    async getNotifications(@Request() req: any): Promise<NotificationBase[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getAllNotifications(userId);
     }
 
     @Get('getUnreadNotifications')
     @UseGuards(RolesGuard([Roles.User]))
-    async getUnreadNotifications(@Request() req: any): Promise<Notification[]> {
+    async getUnreadNotifications(@Request() req: any): Promise<NotificationBase[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getUnreadNotifications(userId);
     }
@@ -47,7 +47,7 @@ export class NotificationController {
 
     @Post('subscribe')
     @UseGuards(RolesGuard([Roles.User]))
-    async subscribe(@Request() req: any, sourceId: string, sourceKind: NotificationSourceKind): Promise<void> {
+    async subscribe(@Request() req: any, sourceId: string, sourceKind: NotificationKind): Promise<void> {
         const userId: string = req.user.sub;
         await this.notificationsService.subscribe(userId, sourceId, sourceKind);
     }
@@ -55,7 +55,7 @@ export class NotificationController {
     @Post('unsubscribe')
     @HttpCode(200) // because a successful unsubscribe doesn't "create" anything, don't return Created
     @UseGuards(RolesGuard([Roles.User]))
-    async unsubscribe(@Request() req: any, sourceId: string, sourceKind: NotificationSourceKind): Promise<void> {
+    async unsubscribe(@Request() req: any, sourceId: string, sourceKind: NotificationKind): Promise<void> {
         const userId: string = req.user.sub;
         const result: UnsubscribeResult = await this.notificationsService.unsubscribe(userId, sourceId, sourceKind);
         if (result === UnsubscribeResult.NotFound) {

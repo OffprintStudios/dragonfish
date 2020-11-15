@@ -8,12 +8,16 @@ import { BlogsContentDocument } from './blogs-content.document';
 import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
+import { NotificationsService } from '../../notifications/notifications.service';
+import { CreateBlogNotification } from '@pulp-fiction/models/notifications/create-notification.model';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
 
 
 @Injectable()
 export class BlogsService {
     constructor(@InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
-        private readonly usersService: UsersService) {}
+        private readonly usersService: UsersService,
+        private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new blogpost and saves it to the database. Returns the newly
@@ -30,7 +34,19 @@ export class BlogsService {
             'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
         });
 
-        return await newBlog.save();
+        const savedBlog = await newBlog.save();
+
+        const blogNotification: CreateBlogNotification = {
+            authorId: 'test',
+            authorName: 'test',                        
+            sourceId: savedBlog.id,
+            kind: NotificationKind.BlogNotification,
+            title: savedBlog.title,
+
+        };
+        await this.notificationsService.queueNotification(blogNotification);
+
+        return savedBlog;
     }
 
     /**

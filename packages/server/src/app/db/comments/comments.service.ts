@@ -10,7 +10,7 @@ import { WorksService } from '../works/works.service';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
-import { NotificationSourceKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class CommentsService {
@@ -38,14 +38,7 @@ export class CommentsService {
         let doc = await newComment.save();
         await this.blogsService.addComment(blogId);
 
-        // Send notification to blog author
-        await this.notificationsService.queueNotification({
-            sourceId: doc._id,
-            sourceKind: NotificationSourceKind.Comment,
-            sourceParentId: blogId,
-            sourceParentKind: NotificationSourceKind.Blog,
-            title: `${user.username} posted a new comment on your blog!` // todo: add in blog title here?
-        });
+        // Todo: Send notification to author
 
         return doc;
     }
@@ -70,9 +63,7 @@ export class CommentsService {
         // Sent notification to work author
         await this.notificationsService.queueNotification({
             sourceId: doc._id,
-            sourceKind: NotificationSourceKind.Comment,
-            sourceParentId: workId,
-            sourceParentKind: NotificationSourceKind.Work,
+            kind: NotificationKind.CommentNotification,                        
             title: `${user.username} posted a new comment on one of your works!` // todo: some way to identify the work. IDs? Names?
         })
 

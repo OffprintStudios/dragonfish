@@ -13,7 +13,6 @@ import { isNullOrUndefined } from 'util';
 import { HistoryService } from '../history/history.service';
 import { RatingOption } from '@pulp-fiction/models/history';
 import { NotificationsService } from '../notifications/notifications.service';
-import { NotificationSourceKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class WorksService {
@@ -309,17 +308,6 @@ export class WorksService {
         
         if (updatedSection.published === true && pubStatus.oldPub === false) { // if newly published
             await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": updatedSection.stats.words}});
-
-            // If work is public, and publishing a new section, send a notification
-            if (thisWork.audit.published === models.ApprovalStatus.Approved) {                
-                this.notificationsService.queueNotification({
-                    sourceId: sectionId,
-                    sourceKind: NotificationSourceKind.Section,
-                    sourceParentId: workId,
-                    sourceParentKind: NotificationSourceKind.Work,
-                    title: `New section: '${updatedSection.title}' posted to ${thisWork.title} by ${thisWork.author.username}!`
-                })
-            }
         } else if (updatedSection.published === false && pubStatus.oldPub === true) { // if unpublished
             await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -updatedSection.stats.words}});
         }
@@ -415,13 +403,6 @@ export class WorksService {
 
         const workCount = await this.getWorkCount(authorId);
         await this.usersService.updateWorkCount(authorId, workCount);
-
-        // Send notification of newly-published work
-        await this.notificationsService.queueNotification({
-            sourceId: workId,
-            sourceKind: NotificationSourceKind.Work,
-            title: `New work from ${workToApprove.author.username}: ${workToApprove.title}!`
-        });
     }
 
     /**

@@ -1,12 +1,24 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateNotification, NotificationSourceKind, PublishStatus, Notification, NotificationSubscription } from '@pulp-fiction/models/notifications';
 import { Model, Types } from 'mongoose';
-import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 
+import { CreateNotification, NotificationKind, NotificationBase, NotificationSubscription, BlogNotificationInfo} from '@pulp-fiction/models/notifications';
+
+import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 import { NotificationDocument } from './notifications.schema';
 import { NotificationQueueDocument } from './notification-queue.schema';
 import { UnsubscribeResult } from './unsubscribe-result.model';
+import { PublishStatus } from './notificationQueue/publish-status';
+import { WorkNotificationDocument, SectionNotificationDocument, BlogNotificationDocument, 
+    CommentNotificationDocument, NewsPostNotificationDocument, PMThreadNotificationDocument,
+    PMReplyNotificationDocument} from './publishedNotifications';
+import { BlogNotificationQueueDocument } from './notificationQueue/blog-notification-queue.document';
+import { WorkNotificationQueueDocument } from './notificationQueue/work-notification-queue.document';
+import { SectionNotificationQueueDocument } from './notificationQueue/section-notification-queue.document';
+import { CommentNotificationQueueDocument } from './notificationQueue/comment-notification-queue.document';
+import { NewsPostNotificationQueueDocument } from './notificationQueue/news-post-notification-queue.document';
+import { PMThreadNotificationQueueDocument } from './notificationQueue/pm-thread-notification-queue.document';
+import { PMReplyNotificationQueueDocument } from './notificationQueue/pm-reply-notification-queue.document';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
 const MAX_MS_PER_WAKEUP: number = 100;
@@ -19,11 +31,26 @@ export class NotificationsService {
     private currentWakeup: Promise<void>;
 
     constructor(@InjectModel('Notification') private readonly notificationModel: Model<NotificationDocument>,
+        @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>,
+        
         @InjectModel('NotificationQueue') private readonly notificationQueueModel: Model<NotificationQueueDocument>,
-        @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>) {
+        @InjectModel('WorkNotificationQueueItem') private readonly workNotificationQueueModel: Model<WorkNotificationQueueDocument>,
+        @InjectModel('SectionNotificationQueueItem') private readonly sectionNotificationQueueModel: Model<SectionNotificationQueueDocument>,
+        @InjectModel('BlogNotificationQueueItem') private readonly blogNotificationQueueModel: Model<BlogNotificationQueueDocument>,
+        @InjectModel('CommentNotificationQueueItem') private readonly commentNotificationQueueModel: Model<CommentNotificationQueueDocument>,
+        @InjectModel('NewsPostNotificationQueueItem') private readonly newsPostNotificationQueueModel: Model<NewsPostNotificationQueueDocument>,
+        @InjectModel('PMThreadNotificationQueueItem') private readonly pmThreadNotificationQueueModel: Model<PMThreadNotificationQueueDocument>,
+        @InjectModel('PMReplyNotificationQueueItem') private readonly pmReplyNotificationQueueModel: Model<PMReplyNotificationQueueDocument>,
+
+        @InjectModel('WorkNotification') private readonly workNotificationModel: Model<WorkNotificationDocument>,
+        @InjectModel('SectionNotification') private readonly sectionNotificationModel: Model<SectionNotificationDocument>,
+        @InjectModel('BlogNotification') private readonly blogNotificationModel: Model<BlogNotificationDocument>,
+        @InjectModel('CommentNotification') private readonly commentNotificationModel: Model<CommentNotificationDocument>,
+        @InjectModel('NewsPostNotification') private readonly newsPostNotificationModel: Model<NewsPostNotificationDocument>,
+        @InjectModel('PMThreadNotification') private readonly pmThreadNotificationModel: Model<PMThreadNotificationDocument>,
+        @InjectModel('PMReplyNotification') private readonly pmReplyNotificationModel: Model<PMReplyNotificationDocument>,) {
         // Schedule intial wakeup of the notification queue processor
-        this.beginProcessing();
-        console.log("Notifications service constructor complete");
+        this.beginProcessing();        
     }
 
     /**
@@ -33,14 +60,43 @@ export class NotificationsService {
     async queueNotification(notification: CreateNotification): Promise<void> {
         // Add it to the unpublished notification queue, where it'll (eventually)
         // be processed.
-        await new this.notificationQueueModel(notification).save();
+        switch (notification.kind) {
+            case NotificationKind.BlogNotification: {
+                await new this.blogNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.CommentNotification: {
+                await new this.commentNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.NewsPostNotification: {
+                await new this.newsPostNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.PMReplyNotification: {
+                await new this.pmReplyNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.PMThreadNotification: {
+                await new this.pmThreadNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.SectionNotification: {
+                await new this.sectionNotificationQueueModel(notification).save();
+                break;
+            }
+            case NotificationKind.WorkNotification: {
+                await new this.workNotificationQueueModel(notification).save();
+                break;
+            }
+        }
     }
 
     /**
      * Get all unread notifications for the given user.
      * @param userId The ID of the user to retreive notifications for.
      */
-    async getUnreadNotifications(userId: string): Promise<Notification[]> {
+    async getUnreadNotifications(userId: string): Promise<NotificationBase[]> {
         return await this.notificationModel.find({
             destinationUserId: userId,
             read: false
@@ -51,7 +107,7 @@ export class NotificationsService {
      * Get *all* of a user's notifications.
      * @param userId The ID of the user to retreive notifications for.
      */
-    async getAllNotifications(userId: string): Promise<Notification[]> {
+    async getAllNotifications(userId: string): Promise<NotificationBase[]> {
         return await this.notificationModel.find({
             destinationUserId: userId
         });
@@ -81,12 +137,12 @@ export class NotificationsService {
      * Subscribes a user to a notification source.
      * @param userId The user to subscribe
      * @param sourceId The ID of the thing the user would like to subscribe to
-     * @param sourceKind The kind of notifications the notification source emits
+     * @param notificationKind The kind of notifications the notification source emits
      */
-    async subscribe(userId: string, sourceId: string, sourceKind: NotificationSourceKind): Promise<void> {
+    async subscribe(userId: string, sourceId: string, notificationKind: NotificationKind): Promise<void> {
         const existingSubscription = await this.subscriptionModel.findOne({
             userId: userId, 
-            notificationSourceKind: sourceKind, 
+            notificationKind: notificationKind, 
             notificationSourceId: sourceId
         });
 
@@ -98,7 +154,7 @@ export class NotificationsService {
         await new this.subscriptionModel({
             'userId': userId,
             'notificationSourceId': sourceId,
-            'notificationSourceKind': sourceKind
+            'notificationSourceKind': notificationKind
         }).save();       
     }
 
@@ -116,15 +172,15 @@ export class NotificationsService {
      * Unsubscribes a user from a notification source.
      * @param userId The user to unsubscribe.
      * @param sourceId The ID of the thing the user would like to unsubscribe from
-     * @param sourceKind The kind of notifications the notification source emits
+     * @param notificationKind The kind of notifications the notification source emits
      * @returns `UnsubscribeResult.NotFound` if the user was not subscribed to the given sourceId and sourceKind. 
      * `UnsubscribeResult.Failure` on other errors. `UnsubscribeResult.Success` on success.
      */
-    async unsubscribe(userId: string, sourceId: string, sourceKind: NotificationSourceKind): Promise<UnsubscribeResult> {
+    async unsubscribe(userId: string, sourceId: string, notificationKind: NotificationKind): Promise<UnsubscribeResult> {
         const deleteResult = await this.subscriptionModel.deleteOne({
             userId: userId,
             notificationSourceId: sourceId,
-            notificationSourceKind: sourceKind
+            notificationKind: notificationKind
         });        
         if (deleteResult.ok !== 1) {
             return UnsubscribeResult.Failure;
@@ -192,22 +248,13 @@ export class NotificationsService {
             try {
                 // Get all the users subscribed to its sourceId from the notificationSubscription collection
                 const subscribers = await this.subscriptionModel.find(
-                    { notificationSourceId: toPublish.sourceId, notificationSourceKind: toPublish.sourceKind }
+                    { notificationSourceId: toPublish.sourceId, notificationKind: toPublish.kind }
                 );
-
+                
                 // Publish this notification to all subscribers.
-                const publishableNotifications = subscribers.map(x =>
-                    new this.notificationModel({
-                        destinationUserId: x.userId,
-                        sourceId: toPublish.sourceId,
-                        sourceKind: toPublish.sourceKind,
-                        title: toPublish.title,
-                        body: toPublish.body,
-                        sourceParentId: toPublish.sourceParentId,
-                        sourceParentKind: toPublish.sourceParentKind,
-                        createdAt: toPublish.createdAt,
-                        updatedAt: new Date(Date.now()),
-                    }));
+                const publishableNotifications: NotificationDocument[] = subscribers.map(x =>
+                    this.getSpecificNotificationModel(x, toPublish)
+                );
                 await this.notificationModel.insertMany(publishableNotifications);
 
                 // Mark the notification in the NotificationQueue collection as "Published"
@@ -247,6 +294,70 @@ export class NotificationsService {
                 await this.currentWakeup;
             },
             5000);
+    }
+
+    private getSpecificNotificationModel(subscription: NotificationSubscriptionDocument, toPublish: NotificationQueueDocument): NotificationDocument {
+        const commonProperties: NotificationBase = {
+            _id: undefined,
+            destinationUserId: subscription.userId,
+            sourceId: toPublish.sourceId,
+            kind: toPublish.kind,
+            title: toPublish.title,
+            read: false,
+            createdAt: toPublish.createdAt,
+            updatedAt: new Date(Date.now()),
+        };
+
+        switch (subscription.notificationKind) {            
+            case NotificationKind.BlogNotification: {
+                const queuedBlogNotification = toPublish as BlogNotificationQueueDocument;  
+
+                return new this.blogNotificationModel({
+                   ...commonProperties,                   
+                   authorId: queuedBlogNotification.authorId,
+                   authorName: queuedBlogNotification.authorName,
+                });
+            }
+            case NotificationKind.CommentNotification: {
+                return new this.commentNotificationModel({
+                    ...commonProperties,
+                    //comment-specific stuff
+                })
+            }
+            case NotificationKind.NewsPostNotification: {
+                return new this.newsPostNotificationModel({
+                    ...commonProperties,
+                    //newspost-specific stuff
+                })
+            }
+            case NotificationKind.PMReplyNotification: {
+                return new this.pmReplyNotificationModel({
+                    ...commonProperties,
+                    //pm reply-specific stuff
+                })
+            }
+            case NotificationKind.PMThreadNotification: {
+                return new this.pmThreadNotificationModel({
+                    ...commonProperties,
+                    //pm thread-specific stuff
+                })
+            }
+            case NotificationKind.SectionNotification: {
+                return new this.sectionNotificationModel({
+                    ...commonProperties,
+                    // section-specific stuff
+                })
+            }
+            case NotificationKind.WorkNotification: {
+                return new this.workNotificationModel ({
+                    ...commonProperties,
+                    // work-specific stuff
+                })
+            }
+            default: {
+                throw new Error(`Unsupported NotificationKind: ${subscription.notificationKind}`);
+            }
+        }
     }
 
     /** Put unpublished notifications that have been "In Progress" for more than 10 seconds back into the queue. */

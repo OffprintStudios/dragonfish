@@ -1,7 +1,13 @@
-export { NotificationSourceKind } from './notification-source-kind';
-export { Notification } from './notification.model';
-export { NotificationQueueItem } from './notification-queue-item.model';
+export { NotificationKind } from './notification-kind';
 export { NotificationSubscription } from './notification-subscription.model';
 export { CreateNotification } from './create-notification.model';
-export { PublishStatus } from './publish-status';
 export { MarkReadRequest } from './mark-read-request.model';
+
+export { NotificationBase } from './notification-base.model';
+export { BlogNotificationInfo } from './blog-notification-info.model';
+export { CommentNotificationInfo } from './comment-notification-info.model';
+export { NewsPostNotificationInfo } from './news-post-notification-info.model';
+export { PMReplyNotificationInfo } from './pm-reply-notification-info.model';
+export { PMThreadNotificationInfo } from './pm-thread-notification-info.model';
+export { SectionNotificationInfo } from './section-notification-info.model';
+export { WorkNotificationInfo } from './work-notification-info.model';
