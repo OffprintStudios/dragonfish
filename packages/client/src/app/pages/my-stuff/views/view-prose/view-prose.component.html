@@ -160,7 +160,7 @@
                     </ng-container>
                     <ng-template #selectSection>
                         <ng-container *ngIf="selectedSection; else nothingSelected">
-                            <section-item [section]="selectedSection"></section-item>
+                            <section-item [section]="selectedSection" [contentId]="myProse._id"></section-item>
                         </ng-container>
                         <ng-template #nothingSelected>
                             <div class="empty">

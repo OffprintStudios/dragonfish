@@ -5,10 +5,15 @@
                 <button matRipple class="left active"><i-feather name="eye"></i-feather>preview</button>
                 <button matRipple class="mid" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
                 <button matRipple class="right disabled"><i-feather name="save"></i-feather>save</button>
-                <button matRipple class="single"><i-feather name="circle"></i-feather>publish</button>
+                <ng-container *ngIf="section.published === true; else notPublishedPreview">
+                    <button matRipple class="single active" (click)="publishSection()"><i-feather name="check-circle"></i-feather>published</button>
+                </ng-container>
+                <ng-template #notPublishedPreview>
+                    <button matRipple class="single" (click)="publishSection()"><i-feather name="circle"></i-feather>unpublished</button>
+                </ng-template>
             </div>
             <div class="form-buttons">
-                <button matRipple class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
+                <button matRipple class="single" style="margin-left: 0;" (click)="deleteSection()"><i-feather name="trash-2"></i-feather>delete</button>
             </div>
         </ng-container>
         <ng-template #editModeButtons>
@@ -16,10 +21,15 @@
                 <button matRipple class="left" (click)="switchView()"><i-feather name="eye"></i-feather>preview</button>
                 <button matRipple class="mid active" (click)="switchView()"><i-feather name="edit-3"></i-feather>edit</button>
                 <button matRipple class="right"><i-feather name="save"></i-feather>save</button>
-                <button matRipple class="single"><i-feather name="circle"></i-feather>publish</button>
+                <ng-container *ngIf="section.published === true; else notPublishedEditMode">
+                    <button matRipple class="single active" (click)="publishSection()"><i-feather name="check-circle"></i-feather>published</button>
+                </ng-container>
+                <ng-template #notPublishedEditMode>
+                    <button matRipple class="single" (click)="publishSection()"><i-feather name="circle"></i-feather>unpublished</button>
+                </ng-template>
             </div>
             <div class="form-buttons">
-                <button matRipple class="single" style="margin-left: 0;"><i-feather name="trash-2"></i-feather>delete</button>
+                <button matRipple class="single" style="margin-left: 0;" (click)="deleteSection()"><i-feather name="trash-2"></i-feather>delete</button>
             </div>
         </ng-template>
     </div>

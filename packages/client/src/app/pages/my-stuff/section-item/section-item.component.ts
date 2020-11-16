@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SectionsService } from '../../../services/user';
-import { SectionForm } from '@pulp-fiction/models/sections';
+import { PublishSection, SectionForm } from '@pulp-fiction/models/sections';
 import { SectionItem } from '../viewmodels';
 
 @Component({
@@ -12,6 +12,7 @@ import { SectionItem } from '../viewmodels';
     styleUrls: ['./section-item.component.less']
 })
 export class SectionItemComponent implements OnInit, OnChanges {
+    @Input() contentId: string;
     @Input() section: SectionItem;
     @Input() selected: boolean;
     @Output() selectItem = new EventEmitter<boolean>();
@@ -80,14 +81,23 @@ export class SectionItemComponent implements OnInit, OnChanges {
             authorsNotePos: this.fields.authorsNotePos.value
         };
 
-        
+        this.sectionsService.editSection(this.contentId, this.section._id, sectionInfo).subscribe(sec => {
+            this.section = sec as SectionItem;
+        });
     }
 
     deleteSection() {
-
+        location.reload();
     }
 
     publishSection() {
-        
+        const pubSection: PublishSection = {
+            oldPub: !this.section.published,
+            newPub: this.section.published
+        };
+
+        this.sectionsService.publishSection(this.contentId, this.section._id, pubSection).subscribe(sec => {
+            this.section = sec as SectionItem;
+        });
     }
 }
