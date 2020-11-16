@@ -87,7 +87,9 @@ export class SectionItemComponent implements OnInit, OnChanges {
     }
 
     deleteSection() {
-        location.reload();
+        this.sectionsService.deleteSection(this.contentId, this.section._id).subscribe(() => {
+            location.reload();
+        });
     }
 
     pubUnpub() {
