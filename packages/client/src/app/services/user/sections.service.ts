@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Section, SectionForm } from '@pulp-fiction/models/sections';
+import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
 import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
 
 @Injectable({
@@ -34,15 +34,30 @@ export class SectionsService {
       }));
   }
 
-  public editSection(sectionId: string, sectionInfo: SectionForm) {
-
+  public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm) {
+    return this.http.patch<Section>(`${this.url}/edit-section?contentId=${contentId}&sectionId=${sectionId}`, sectionInfo, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
   }
 
-  public deleteSection(sectionId: string) {
-
+  public deleteSection(contentId: string, sectionId: string) {
+    return this.http.patch<Section>(`${this.url}/delete-section?contentId=${contentId}&sectionId=${sectionId}`, {}, {observe: 'response', withCredentials: true})
+    .pipe(map(res => {
+      return res.body;
+    }), catchError(err => {
+      return throwError(err);
+    }));
   }
 
-  public publishSection(sectionId: string) {
-
+  public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection) {
+    return this.http.patch<Section>(`${this.url}/publish-section?contentId=${contentId}&sectionId=${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        return throwError(err);
+      }));
   }
 }
