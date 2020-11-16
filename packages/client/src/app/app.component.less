@@ -33,8 +33,13 @@ div.nav {
               }
               div.user-menu-dropdown {
                   color: whitesmoke;
-                  display: inline-block;
+                  display: inline;
                   border-bottom: 1px solid whitesmoke;
+
+                  @media (max-width: 992px) { //--large
+                      display:inline-block;
+                  }
+
                   a.menu-icon {
                       color: whitesmoke;
 
@@ -48,7 +53,7 @@ div.nav {
                           width: 20px;
                           height: 20px;
 
-                          @media (max-width: 992px) {
+                          @media (max-width: 992px) { //--large
                               margin-left: 0.5rem;
                           }
                       }
