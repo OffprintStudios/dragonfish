@@ -33,4 +33,16 @@ export class SectionsService {
         return throwError(err);
       }));
   }
+
+  public editSection(sectionId: string, sectionInfo: SectionForm) {
+
+  }
+
+  public deleteSection(sectionId: string) {
+
+  }
+
+  public publishSection(sectionId: string) {
+
+  }
 }

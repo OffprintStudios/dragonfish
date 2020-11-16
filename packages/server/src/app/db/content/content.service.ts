@@ -191,7 +191,10 @@ export class ContentService {
         } else {
             const sec = await this.sectionsService.deleteSection(sectionId);
             if (sec.published === true) {
-                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': -sec.stats.words}});
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {
+                    $inc: {'stats.totWords': -sec.stats.words},
+                    $pull: {'sections': sec._id}
+                }, {strict: false});
             }
             return;
         }

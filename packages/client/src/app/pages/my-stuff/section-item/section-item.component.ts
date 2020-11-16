@@ -1,5 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+import { SectionsService } from '../../../services/user';
+import { SectionForm } from '@pulp-fiction/models/sections';
 import { SectionItem } from '../viewmodels';
 
 @Component({
@@ -21,7 +25,9 @@ export class SectionItemComponent implements OnInit, OnChanges {
         authorsNotePos: new FormControl(null)
     });
 
-    constructor() {}
+    constructor(private snackBar: MatSnackBar, private sectionsService: SectionsService) {}
+
+    get fields() { return this.editForm.controls; }
 
     ngOnInit(): void {
         this.editForm.setValue({
@@ -53,5 +59,35 @@ export class SectionItemComponent implements OnInit, OnChanges {
         } else {
             this.previewMode = true;
         }
+    }
+
+    saveChanges() {
+        if (this.fields.title.invalid) {
+            this.snackBar.open(`Titles must be between 3 and 100 characters.`);
+            return;
+        }
+
+        if (this.fields.body.invalid) {
+            this.snackBar.open(`Body text must be more than 3 characters long.`);
+            return;
+        }
+
+        const sectionInfo: SectionForm = {
+            title: this.fields.title.value,
+            body: this.fields.body.value,
+            usesNewEditor: true,
+            authorsNote: this.fields.authorsNote.value,
+            authorsNotePos: this.fields.authorsNotePos.value
+        };
+
+        
+    }
+
+    deleteSection() {
+
+    }
+
+    publishSection() {
+        
     }
 }

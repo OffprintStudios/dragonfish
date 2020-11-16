@@ -70,7 +70,7 @@ export class SectionsService {
      * @param sectionId The section ID
      */
     async deleteSection(sectionId: string): Promise<SectionsDocument> {
-        return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {'audit.isDeleted': true});
+        return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {'audit.isDeleted': true}, {new: true});
     }
 
     /**
