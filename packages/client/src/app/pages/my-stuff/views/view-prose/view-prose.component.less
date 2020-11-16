@@ -135,6 +135,18 @@ div.view-container {
                 border-top: 1px solid var(--site-borders);
                 border-bottom: 1px solid var(--site-borders);
 
+                &.disabled {
+                    background: var(--site-controls-background);
+                    cursor: not-allowed;
+                    color: var(--site-text-color);
+
+                    &:hover {
+                        background: var(--site-controls-background);
+                        cursor: not-allowed;
+                        color: var(--site-text-color);
+                    }
+                }
+
                 &.active {
                     color: whitesmoke;
                     background: var(--site-accent);

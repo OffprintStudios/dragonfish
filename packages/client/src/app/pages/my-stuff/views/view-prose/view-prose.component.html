@@ -103,16 +103,34 @@
         <!--After loading, display something-->
         <ng-template #viewSections>
             <div class="sections-list">
-                <div class="add-section" (click)="addSection()">
-                    <i-feather name="plus"></i-feather><span class="button-text">SECTION</span>
-                </div>
-                <ng-container *ngFor="let section of mySections">
-                    <div class="section-box" [ngClass]="{'active': section.selected}" (click)="selectThisSection(section)">
-                        <div class="section-title">
-                            {{ section.title }}
-                        </div>
+                <ng-container *ngIf="!editMode; else disabledAddButton">
+                    <div class="add-section" (click)="addSection()">
+                        <i-feather name="plus"></i-feather><span class="button-text">SECTION</span>
                     </div>
                 </ng-container>
+                <ng-template #disabledAddButton>
+                    <div class="add-section" (click)="exitEditMode()">
+                        <i-feather name="chevron-left"></i-feather><span class="button-text">BACK</span>
+                    </div>
+                </ng-template>
+                <ng-container *ngIf="!editMode; else disabledSections">
+                    <ng-container *ngFor="let section of mySections">
+                        <div class="section-box" [ngClass]="{'active': section.selected}" (click)="selectThisSection(section)">
+                            <div class="section-title">
+                                {{ section.title }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-template #disabledSections>
+                    <ng-container *ngFor="let section of mySections">
+                        <div class="section-box disabled">
+                            <div class="section-title">
+                                {{ section.title }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-template>
             </div>
             <div class="section-container">
                 <ng-container *ngIf="editMode; else viewMode">

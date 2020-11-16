@@ -41,6 +41,10 @@ export class ViewProseComponent implements OnInit {
         this.location.back();
     }
 
+    exitEditMode() {
+        this.editMode = false;
+    }
+
     get fields() { return this.sectionForm.controls; }
 
     private fetchData() {
@@ -52,6 +56,10 @@ export class ViewProseComponent implements OnInit {
     }
 
     addSection() {
+        if (this.selectedSection) {
+            this.selectedSection.selected = false;
+            this.selectedSection = null;
+        }
         this.editMode = true;
     }
 
