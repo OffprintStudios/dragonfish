@@ -33,7 +33,7 @@ div.nav {
               }
               div.user-menu-dropdown {
                   color: whitesmoke;
-                  display: inline;
+                  display: inline-block;
                   border-bottom: 1px solid whitesmoke;
                   a.menu-icon {
                       color: whitesmoke;
@@ -47,6 +47,10 @@ div.nav {
                           position: relative;
                           width: 20px;
                           height: 20px;
+
+                          @media (max-width: 992px) {
+                              margin-left: 0.5rem;
+                          }
                       }
   
                       span.stat-counter {
