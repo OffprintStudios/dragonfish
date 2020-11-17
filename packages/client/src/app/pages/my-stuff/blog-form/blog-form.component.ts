@@ -25,8 +25,7 @@ export class BlogFormComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(3)])
   });
 
-  constructor(private route: ActivatedRoute, private blogsService: BlogsService, private location: Location, private snackBar: MatSnackBar,
-    private stuffService: MyStuffService) { }
+  constructor(private route: ActivatedRoute, private blogsService: BlogsService, private location: Location, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     const blogInfo = this.route.snapshot.data.blogData as BlogsContentModel;

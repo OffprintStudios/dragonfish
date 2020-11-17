@@ -46,7 +46,9 @@ const routes: Routes = [
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
       {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},

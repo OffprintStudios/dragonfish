@@ -23,7 +23,7 @@ export class ProseService {
   }
 
   public editProse(contentId: string, proseInfo: CreateProse) {
-    return this.http.patch<void>(`${this.url}/edit-prose?contentId=${contentId}`, proseInfo, {observe: 'response', withCredentials: true})
+    return this.http.patch<ProseContent>(`${this.url}/edit-prose?contentId=${contentId}`, proseInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {

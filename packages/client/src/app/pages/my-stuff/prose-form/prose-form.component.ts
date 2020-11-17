@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
-import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse } from '@pulp-fiction/models/content';
+import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse, ProseContent } from '@pulp-fiction/models/content';
 import { ProseService } from '../../../services/user';
 
 @Component({
@@ -13,6 +14,8 @@ import { ProseService } from '../../../services/user';
 })
 export class ProseFormComponent implements OnInit {
     formTitle = `Create New Prose`;
+    currProse: ProseContent;
+    editMode = false;
 
     categories = WorkKind;
     genres = Genres;
@@ -29,9 +32,25 @@ export class ProseFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private proseService: ProseService, private snackBar: MatSnackBar, private location: Location) {}
+    constructor(private route: ActivatedRoute, private proseService: ProseService, private snackBar: MatSnackBar, private location: Location) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+      const data = this.route.snapshot.data.proseData as ProseContent;
+      if (data) {
+        this.currProse = data;
+        this.editMode = true;
+        this.formTitle = `Editing "${this.currProse.title}"`
+        this.proseForm.setValue({
+          title: this.currProse.title,
+          desc: this.currProse.desc,
+          body: this.currProse.body,
+          category: this.currProse.meta.category,
+          genres: this.currProse.meta.genres,
+          rating: this.currProse.meta.rating,
+          status: this.currProse.meta.status
+        });
+      }
+    }
 
     get fields() { return this.proseForm.controls; }
 
@@ -63,8 +82,23 @@ export class ProseFormComponent implements OnInit {
             status: this.fields.status.value
         };
 
-        this.proseService.createProse(proseInfo).subscribe(() => {
+        if (this.editMode === false) {
+          this.proseService.createProse(proseInfo).subscribe(() => {
             this.location.back();
-        });
+          });
+        } else {
+          this.proseService.editProse(this.currProse._id, proseInfo).subscribe(prose => {
+            this.currProse = prose;
+            this.proseForm.setValue({
+              title: this.currProse.title,
+              desc: this.currProse.desc,
+              body: this.currProse.body,
+              category: this.currProse.meta.category,
+              genres: this.currProse.meta.genres,
+              rating: this.currProse.meta.rating,
+              status: this.currProse.meta.status
+            });
+          });
+        }
     }
 }

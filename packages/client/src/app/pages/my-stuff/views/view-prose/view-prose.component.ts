@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ProseContent, PubStatus } from '@pulp-fiction/models/content';
-import { SectionsService } from 'packages/client/src/app/services/user';
+import { MyStuffService, SectionsService } from 'packages/client/src/app/services/user';
 import { SectionItem } from '../../viewmodels';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SectionForm } from '@pulp-fiction/models/sections';
@@ -30,7 +30,8 @@ export class ViewProseComponent implements OnInit {
         authorsNotePos: new FormControl(null)
     });
 
-    constructor(private sectionsService: SectionsService, public route: ActivatedRoute, private location: Location, private snackBar: MatSnackBar) {}
+    constructor(private stuffService: MyStuffService, private sectionsService: SectionsService, public route: ActivatedRoute, 
+        private router: Router, private location: Location, private snackBar: MatSnackBar) {}
 
     ngOnInit(): void {
         this.myProse = this.route.snapshot.data.proseData as ProseContent;
@@ -102,5 +103,19 @@ export class ViewProseComponent implements OnInit {
             this.sectionForm.reset();
             this.fetchData();
         });
+    }
+
+    deleteWork() {
+        if (confirm(`Are you sure you want to delete this? This action is irreversible.`)) {
+            this.stuffService.deleteOne(this.myProse._id).subscribe(() => {
+                this.router.navigate(['/my-stuff']);
+            });
+        } else {
+            return;
+        }
+    }
+
+    editWork() {
+        this.router.navigate(['/my-stuff/edit-prose'], {queryParams: {contentId: this.myProse._id, kind: this.myProse.kind}, queryParamsHandling: 'merge'});
     }
 }

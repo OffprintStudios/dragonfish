@@ -39,8 +39,8 @@ export class ProseService {
      * @param proseId The prose ID
      * @param proseInfo The prose info
      */
-    async editProse(user: JwtPayload, proseId: string, proseInfo: CreateProse): Promise<void> {
-        return await this.proseModel.updateOne({'_id': proseId, 'author': user.sub}, {
+    async editProse(user: JwtPayload, proseId: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
+        return await this.proseModel.findOneAndUpdate({'_id': proseId, 'author': user.sub}, {
             'title': await sanitizeHtml(proseInfo.title),
             'desc': await sanitizeHtml(proseInfo.desc),
             'body': await sanitizeHtml(proseInfo.body),
@@ -48,6 +48,6 @@ export class ProseService {
             'meta.genres': proseInfo.genres,
             'meta.rating': proseInfo.rating,
             'meta.status': proseInfo.status
-        });
+        }, {new: true});
     }
 }
