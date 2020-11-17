@@ -50,4 +50,15 @@ export class ProseService {
             'meta.status': proseInfo.status
         }, {new: true});
     }
+
+    /**
+     * Updates the cover art of the specified prose.
+     * 
+     * @param user The author of this prose
+     * @param proseId The prose ID
+     * @param coverArt The new cover art
+     */
+    async updateCoverArt(user: JwtPayload, proseId: string, coverArt: string): Promise<ProseContentDocument> {
+        return await this.proseModel.findOneAndUpdate({ "_id": proseId, "author": user.sub, "audit.isDeleted": false}, {"meta.coverArt": coverArt}, {new: true});
+    }
 }

@@ -53,4 +53,15 @@ export class PoetryService {
             'meta.status': poetryInfo.status
         });
     }
+
+    /**
+     * Updates the cover art of the specified poetry.
+     * 
+     * @param user The author of this poetry
+     * @param poetryId The poetry ID
+     * @param coverArt The new cover art
+     */
+    async updateCoverArt(user: JwtPayload, poetryId: string, coverArt: string): Promise<PoetryContentDocument> {
+        return await this.poetryModel.findOneAndUpdate({ "_id": poetryId, "author": user.sub, "audit.isDeleted": false}, {"meta.coverArt": coverArt}, {new: true});
+    }
 }
