@@ -35,6 +35,11 @@ div.nav {
                   color: whitesmoke;
                   display: inline;
                   border-bottom: 1px solid whitesmoke;
+
+                  @media (max-width: 992px) { //--large
+                      display:inline-block;
+                  }
+
                   a.menu-icon {
                       color: whitesmoke;
 
@@ -47,6 +52,10 @@ div.nav {
                           position: relative;
                           width: 20px;
                           height: 20px;
+
+                          @media (max-width: 992px) { //--large
+                              margin-left: 0.5rem;
+                          }
                       }
   
                       span.stat-counter {
@@ -80,6 +89,20 @@ div.nav {
               img {
                 max-width: 300px;
                 max-height: 300px;
+
+                @media (max-width: 992px) { //--large
+                    max-width: 250px;
+                    max-height: 250px;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
+                }
+
+                @media (max-width: 640px) { //--small
+                    max-width: 200px;
+                    max-height: 200px;
+                    margin-left: 0.5rem;
+                    margin-right: 0.5rem;
+                }
               }
 
               h2 {
