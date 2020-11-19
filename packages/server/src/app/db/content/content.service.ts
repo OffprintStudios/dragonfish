@@ -168,9 +168,9 @@ export class ContentService {
         } else {
             const sec = await this.sectionsService.publishSection(sectionId, pubStatus);
             if (sec.published === true && pubStatus.oldPub === false) { // if newly published
-                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': sec.stats.words}});
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.meta.words': sec.stats.words}}, {strict: false});
             } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
-                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.totWords': -sec.stats.words}});
+                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {'stats.meta.words': -sec.stats.words}}, {strict: false});
             }
             return sec;
         }

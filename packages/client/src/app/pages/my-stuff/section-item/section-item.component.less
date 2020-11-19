@@ -4,10 +4,18 @@ div.form-container {
     div.form-header {
         display: flex;
         flex-direction: row;
+        align-items: center;
+        padding-bottom: 5px;
+        border-bottom: 1px solid var(--site-borders);
+
+        div.form-stats {
+            flex: 1;
+            text-align: center;
+        }
 
         div.form-buttons {
-            border-bottom: 1px solid var(--site-borders);
             button {
+                margin-bottom: 0;
                 padding-left: 1rem;
                 padding-right: 1rem;
 
@@ -51,10 +59,6 @@ div.form-container {
                 &.right {
                     border-radius: 0 4px 4px 0;
                 }
-            }
-
-            &.left {
-                flex: 1;
             }
         }
     }

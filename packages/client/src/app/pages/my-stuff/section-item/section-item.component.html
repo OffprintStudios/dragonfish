@@ -20,6 +20,10 @@
             </ng-template>
         </div>
 
+        <div class="form-stats">
+            <span>{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>
+        </div>
+
         <div class="form-buttons">
             <button matRipple class="single" style="margin-left: 0; margin-right: 0;" (click)="deleteSection()"><i-feather name="trash-2"></i-feather>delete</button>
         </div>
