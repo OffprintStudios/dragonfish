@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { PaginateModel, Types } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
@@ -9,7 +9,6 @@ import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { NotificationsService } from '../../notifications/notifications.service';
-import { CreateBlogNotification } from '@pulp-fiction/models/notifications/create-notification.model';
 import { NotificationKind } from '@pulp-fiction/models/notifications';
 
 
@@ -36,15 +35,8 @@ export class BlogsService {
 
         const savedBlog = await newBlog.save();
 
-        const blogNotification: CreateBlogNotification = {
-            authorId: 'test',
-            authorName: 'test',                        
-            sourceId: savedBlog.id,
-            kind: NotificationKind.BlogNotification,
-            title: savedBlog.title,
-
-        };
-        await this.notificationsService.queueNotification(blogNotification);
+        // Subscribe the author to comments on their new blog
+        await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);
 
         return savedBlog;
     }

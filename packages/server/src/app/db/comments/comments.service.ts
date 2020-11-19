@@ -10,7 +10,7 @@ import { WorksService } from '../works/works.service';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
-import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { CreateCommentNotification, NotificationKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class CommentsService {
@@ -38,7 +38,17 @@ export class CommentsService {
         let doc = await newComment.save();
         await this.blogsService.addComment(blogId);
 
-        // Todo: Send notification to author
+        const blogTitle = (await this.contentService.fetchOne(blogId, commentInfo.commentParentKind)).title;
+        const notification: CreateCommentNotification = {
+            kind: NotificationKind.CommentNotification,
+            sourceId: blogId,
+            commenterId: user.sub,
+            commenterName: user.username,
+            parentId: blogId,
+            parentKind: commentInfo.commentParentKind,
+            parentTitle: blogTitle            
+        };
+        await this.notificationsService.queueNotification(notification);
 
         return doc;
     }
@@ -58,14 +68,7 @@ export class CommentsService {
         });
         
         let doc = await newComment.save();
-        await this.worksService.addComment(workId);
-
-        // Sent notification to work author
-        await this.notificationsService.queueNotification({
-            sourceId: doc._id,
-            kind: NotificationKind.CommentNotification,                        
-            title: `${user.username} posted a new comment on one of your works!` // todo: some way to identify the work. IDs? Names?
-        })
+        await this.worksService.addComment(workId);    
 
         return doc;
     }
@@ -86,6 +89,19 @@ export class CommentsService {
 
         let doc = await newComment.save();
         await this.contentService.addComment(contentId);
+
+        const contentTitle = (await this.contentService.fetchOne(contentId, commentInfo.commentParentKind)).title;
+        const notification: CreateCommentNotification = {
+            kind: NotificationKind.CommentNotification,
+            sourceId: contentId,
+            commenterId: user.sub,
+            commenterName: user.username,
+            parentId: contentId,
+            parentKind: commentInfo.commentParentKind,
+            parentTitle: contentTitle            
+        };
+        await this.notificationsService.queueNotification(notification);
+
         return doc;
     }
 

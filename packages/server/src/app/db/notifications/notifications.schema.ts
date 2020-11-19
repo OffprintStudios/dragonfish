@@ -1,13 +1,17 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 
 import { NotificationKind, NotificationBase } from '@pulp-fiction/models/notifications';
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
+import { Model } from 'mongoose';
+import { BlogNotificationDocument, SectionNotificationDocument, WorkNotificationDocument } from './publishedNotifications';
+import { NotificationEnumConverters } from './notification-enum-converters';
 
 @Schema({    
     'timestamps': true,
     autoIndex: true,
-    'discriminatorKey': 'ndKind'
+    'discriminatorKey': 'ndKind',
+    toJSON: { getters: true }
 })
 export class NotificationDocument extends Document implements NotificationBase {    
     @Prop({required: true, index: true})
@@ -16,11 +20,11 @@ export class NotificationDocument extends Document implements NotificationBase {
     @Prop({required: true})
     sourceId: string;
 
-    @Prop({required: true, type: String, enum: Object.keys(NotificationDocumentKind), default: NotificationDocumentKind.NDKCommentNotification})
-    ndKind: NotificationDocumentKind
-
-    @Prop({required: true})
-    title: string;
+    // Gotta do these naming and type shenanaigans because Mongo discriminator names must be unique.
+    @Prop({alias: 'ndKind', required: true, type: String, enum: Object.keys(NotificationDocumentKind),         
+        get: ndk => NotificationEnumConverters.ndkAsNotificationKind(ndk),
+        set: notifKind => NotificationEnumConverters.notificationKindAsNDK(notifKind)})
+    kind: NotificationKind
 
     @Prop({required: true})
     read: boolean;
@@ -30,59 +34,26 @@ export class NotificationDocument extends Document implements NotificationBase {
 
     @Prop()
     updatedAt: Date
-
-    // Why not just use NotificationKind as our discriminator?
-    // Because MongoDB discriminator names must be globally unique.
-    public get kind(): NotificationKind {
-        switch (this.ndKind) {
-            case NotificationDocumentKind.NDKBlogNotification: {
-                return NotificationKind.BlogNotification;
-            }
-            case NotificationDocumentKind.NDKCommentNotification: {
-                return NotificationKind.CommentNotification;
-            }
-            case NotificationDocumentKind.NDKNewsPostNotification: {
-                return NotificationKind.NewsPostNotification;
-            }
-            case NotificationDocumentKind.NDKPMReplyNotification: {
-                return NotificationKind.PMReplyNotification;
-            }
-            case NotificationDocumentKind.NDKPMThreadNotification: {
-                return NotificationKind.PMThreadNotification;
-            }
-            case NotificationDocumentKind.NDKSectionNotification: {
-                return NotificationKind.SectionNotification;
-            }
-            case NotificationDocumentKind.NDKWorkNotification: {
-                return NotificationKind.WorkNotification;
-            }
-        }
-    }
-    public set kind(kind: NotificationKind) {
-        switch (kind) {
-            case NotificationKind.BlogNotification: {
-                this.ndKind = NotificationDocumentKind.NDKBlogNotification;
-            }
-            case NotificationKind.CommentNotification: {
-                this.ndKind = NotificationDocumentKind.NDKCommentNotification;
-            }
-            case NotificationKind.NewsPostNotification: {
-                this.ndKind = NotificationDocumentKind.NDKNewsPostNotification;
-            }
-            case NotificationKind.PMReplyNotification: {
-                this.ndKind = NotificationDocumentKind.NDKPMReplyNotification;
-            }
-            case NotificationKind.PMThreadNotification: {
-                this.ndKind = NotificationDocumentKind.NDKPMThreadNotification;
-            }
-            case NotificationKind.SectionNotification: {
-                this.ndKind = NotificationDocumentKind.NDKSectionNotification;
-            }
-            case NotificationKind.WorkNotification: {
-                this.ndKind = NotificationDocumentKind.NDKWorkNotification;
-            }
-        }
-    }
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
+
+// Builders for sub-schemas
+export function getWorkNotificationSubSchema(notificationModel: Model<NotificationDocument>): Model<WorkNotificationDocument> {
+    return notificationModel.discriminator(NotificationDocumentKind.NDKWorkNotification, new MongooseSchema({
+        // WorkNotifications
+      }));
+}
+
+export function getSectionNotificationSubSchema(notificationModel: Model<NotificationDocument>): Model<SectionNotificationDocument> {
+    return notificationModel.discriminator(NotificationDocumentKind.NDKSectionNotification, new MongooseSchema({
+        // Section notifications
+      }));
+}
+
+export function getBlogNotificationSubSchema(notificationModel: Model<NotificationDocument>): Model<BlogNotificationDocument> {
+    return notificationModel.discriminator(NotificationDocumentKind.NDKBlogNotification, new MongooseSchema({      
+        authorId: {type: String, trim: true, required: true},
+        authorName: {type: String, required: true},
+      }));
+}

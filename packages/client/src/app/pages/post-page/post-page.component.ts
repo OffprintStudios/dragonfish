@@ -18,7 +18,7 @@ export class PostPageComponent implements OnInit {
   category = NewsCategory;
 
   pageNum = 1; // For comments pages
-  itemKind = ItemKind.Content; // Sets the item kind for comments
+  itemKind = ItemKind.NewsContent; // Sets the item kind for comments
 
   constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; })

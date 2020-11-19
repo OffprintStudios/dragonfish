@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { HookNextFunction, Schema } from 'mongoose';
 
-import { NotificationSchema } from './notifications.schema';
+import { getBlogNotificationSubSchema, getSectionNotificationSubSchema, getWorkNotificationSubSchema, NotificationSchema } from './notifications.schema';
 import { NotificationQueueDocument, NotificationQueueSchema } from './notification-queue.schema';
 import { NotificationsService } from './notifications.service';
 import { NotificationSubscriptionSchema } from './notification-subscriptions.schema';
 import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 const NOTIFICATION_MOODEL: string = 'Notification';
 const NOTIFICATION_QUEUE_MODEL: string = 'NotificationQueue';
@@ -18,7 +19,7 @@ const NOTIFICATION_QUEUE_MODEL: string = 'NotificationQueue';
       {
         name: NOTIFICATION_MOODEL,
         useFactory: () => {
-          const schema = NotificationSchema;
+          const schema = NotificationSchema;          
           return schema;
         }
       },
@@ -71,7 +72,11 @@ const NOTIFICATION_QUEUE_MODEL: string = 'NotificationQueue';
   {
     provide: getModelToken('CommentNotificationQueueItem'),
     useFactory: notificationQueueModel => notificationQueueModel.discriminator(NotificationQueueDocumentKind.NQDKCommentNotification, new Schema({
-      // Comment notifications
+      commenterName: { type: String, required: true },
+      commenterId: { type: String, required: true, trim: true },
+      parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.WorkContent},
+      parentId: { type: String, required: true, trim: true},
+      parentTitle: { type: String, required: true }
     })),
     inject: [getModelToken(NOTIFICATION_QUEUE_MODEL)]
   },
@@ -101,30 +106,27 @@ const NOTIFICATION_QUEUE_MODEL: string = 'NotificationQueue';
   // All the Notification models
   {
     provide: getModelToken('WorkNotification'),
-    useFactory: notificationModel => notificationModel.discriminator(NotificationDocumentKind.NDKWorkNotification, new Schema({
-      // WorkNotifications
-    })),
+    useFactory: notificationModel => getWorkNotificationSubSchema(notificationModel),
     inject: [getModelToken(NOTIFICATION_MOODEL)]
   },
   {
     provide: getModelToken('SectionNotification'),
-    useFactory: notificationModel => notificationModel.discriminator(NotificationDocumentKind.NDKSectionNotification, new Schema({
-      // Section notifications
-    })),
+    useFactory: notificationModel => getSectionNotificationSubSchema(notificationModel),
     inject: [getModelToken(NOTIFICATION_MOODEL)]
   },
   {
     provide: getModelToken('BlogNotification'),
-    useFactory: notificationModel => notificationModel.discriminator(NotificationDocumentKind.NDKBlogNotification, new Schema({      
-      authorId: {type: String, trim: true, required: true},
-      authorName: {type: String, required: true},
-    })),
+    useFactory: notificationModel => getBlogNotificationSubSchema(notificationModel),
     inject: [getModelToken(NOTIFICATION_MOODEL)]
   },
   {
     provide: getModelToken('CommentNotification'),
     useFactory: notificationModel => notificationModel.discriminator(NotificationDocumentKind.NDKCommentNotification, new Schema({
-      // Comment notifications
+      commenterName: { type: String, required: true },
+      commenterId: { type: String, required: true, trim: true },
+      parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.WorkContent},
+      parentId: { type: String, required: true, trim: true},
+      parentTitle: { type: String, required: true }
     })),
     inject: [getModelToken(NOTIFICATION_MOODEL)]
   },

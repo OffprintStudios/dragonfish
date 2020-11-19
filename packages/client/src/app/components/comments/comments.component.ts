@@ -8,6 +8,7 @@ import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateCo
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'comments',
@@ -74,7 +75,7 @@ export class CommentsComponent implements OnInit {
         this.emitPageChange.emit(pageNum);
         this.loading = false;
       });
-    } else if (this.itemKind === ItemKind.Content) {
+    } else /* Presuming this comments component lives on piece of new-Content: */ {
       this.commentsService.getContentComments(this.itemId, pageNum).subscribe(comments => {
         this.comments = comments;
         this.pageNum = pageNum;
@@ -157,8 +158,17 @@ export class CommentsComponent implements OnInit {
       return;
     }
 
+    const contentKind: ContentKind = 
+      this.itemKind === ItemKind.Blog ? ContentKind.BlogContent
+      : this.itemKind === ItemKind.BlogContent ? ContentKind.BlogContent
+      : this.itemKind === ItemKind.Work ? ContentKind.WorkContent
+      : this.itemKind === ItemKind.WorkContent ? ContentKind.WorkContent
+      : this.itemKind === ItemKind.NewsContent ? ContentKind.NewsContent
+      : ContentKind.WorkContent;
+
     const comm: CreateComment = {
-      body: this.newCommentFields.body.value
+      body: this.newCommentFields.body.value,
+      commentParentKind: contentKind         
     };
 
     if (this.itemKind === ItemKind.Blog) {
@@ -171,7 +181,7 @@ export class CommentsComponent implements OnInit {
         this.newCommentForm.reset();
         this.fetchData(this.pageNum);
       });
-    } else if (this.itemKind === ItemKind.Content) {
+    } else /* Presuming this comment is being made on a piece of new-Content  */ {
       this.commentsService.addContentComment(this.itemId, comm).subscribe(() => {
         this.fetchData(this.pageNum);
       });

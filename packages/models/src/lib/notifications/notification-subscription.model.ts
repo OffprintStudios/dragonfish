@@ -1,4 +1,10 @@
+import { NotificationKind } from './notification-kind';
+
 export interface NotificationSubscription {
+    /**
+     * The ID of the user subscribed to the notification source.
+     */
+    userId: string,    
 
     /**
      * The ID of the thing that triggered the notification.
@@ -6,7 +12,7 @@ export interface NotificationSubscription {
     notificationSourceId: string;
 
     /**
-     * The ID of the user subscribed to the notification source.
+     * The kind of thing that we are subscribing to notifications for.
      */
-    userId: string,    
+    notificationKind: NotificationKind;
 }

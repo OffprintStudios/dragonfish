@@ -10,8 +10,7 @@ export interface NotificationQueueItem {
      */
     sourceId: string;
     kind: NotificationKind;    
-    publishStatus: PublishStatus;
-    title: string;
+    publishStatus: PublishStatus;    
     createdAt: Date;
     updatedAt: Date;
 }

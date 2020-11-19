@@ -2,7 +2,7 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { CreateNotification, NotificationKind, NotificationBase, NotificationSubscription, BlogNotificationInfo} from '@pulp-fiction/models/notifications';
+import { CreateNotification, NotificationKind, NotificationBase, NotificationSubscription, BlogNotificationInfo, CommentNotificationInfo} from '@pulp-fiction/models/notifications';
 
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 import { NotificationDocument } from './notifications.schema';
@@ -19,6 +19,8 @@ import { CommentNotificationQueueDocument } from './notificationQueue/comment-no
 import { NewsPostNotificationQueueDocument } from './notificationQueue/news-post-notification-queue.document';
 import { PMThreadNotificationQueueDocument } from './notificationQueue/pm-thread-notification-queue.document';
 import { PMReplyNotificationQueueDocument } from './notificationQueue/pm-reply-notification-queue.document';
+import { NotificationEnumConverters } from './notification-enum-converters';
+import { queue } from 'rxjs/internal/scheduler/queue';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
 const MAX_MS_PER_WAKEUP: number = 100;
@@ -32,8 +34,8 @@ export class NotificationsService {
 
     constructor(@InjectModel('Notification') private readonly notificationModel: Model<NotificationDocument>,
         @InjectModel('NotificationSubscription') private readonly subscriptionModel: Model<NotificationSubscriptionDocument>,
-        
         @InjectModel('NotificationQueue') private readonly notificationQueueModel: Model<NotificationQueueDocument>,
+        
         @InjectModel('WorkNotificationQueueItem') private readonly workNotificationQueueModel: Model<WorkNotificationQueueDocument>,
         @InjectModel('SectionNotificationQueueItem') private readonly sectionNotificationQueueModel: Model<SectionNotificationQueueDocument>,
         @InjectModel('BlogNotificationQueueItem') private readonly blogNotificationQueueModel: Model<BlogNotificationQueueDocument>,
@@ -151,11 +153,12 @@ export class NotificationsService {
             return;
         }
        
-        await new this.subscriptionModel({
-            'userId': userId,
-            'notificationSourceId': sourceId,
-            'notificationSourceKind': notificationKind
-        }).save();       
+        const subscription: NotificationSubscription = {
+            userId: userId,
+            notificationKind: notificationKind,
+            notificationSourceId: sourceId
+        };
+        await new this.subscriptionModel(subscription).save();       
     }
 
     /**
@@ -246,7 +249,7 @@ export class NotificationsService {
             { new: true }
         )) !== null) {
             try {
-                // Get all the users subscribed to its sourceId from the notificationSubscription collection
+                // Get all the users subscribed to its sourceId from the notificationSubscription collection                
                 const subscribers = await this.subscriptionModel.find(
                     { notificationSourceId: toPublish.sourceId, notificationKind: toPublish.kind }
                 );
@@ -301,8 +304,7 @@ export class NotificationsService {
             _id: undefined,
             destinationUserId: subscription.userId,
             sourceId: toPublish.sourceId,
-            kind: toPublish.kind,
-            title: toPublish.title,
+            kind: toPublish.kind,            
             read: false,
             createdAt: toPublish.createdAt,
             updatedAt: new Date(Date.now()),
@@ -319,10 +321,18 @@ export class NotificationsService {
                 });
             }
             case NotificationKind.CommentNotification: {
+                const queuedCommentNotification = toPublish as CommentNotificationQueueDocument;
+                const commentInfo: CommentNotificationInfo = {
+                    commenterId: queuedCommentNotification.commenterId,
+                    commenterName: queuedCommentNotification.commenterName,
+                    parentId: queuedCommentNotification.parentId,
+                    parentKind: queuedCommentNotification.parentKind,
+                    parentTitle: queuedCommentNotification.parentTitle,
+                };
                 return new this.commentNotificationModel({
                     ...commonProperties,
-                    //comment-specific stuff
-                })
+                    ...commentInfo
+                });
             }
             case NotificationKind.NewsPostNotification: {
                 return new this.newsPostNotificationModel({
