@@ -23,7 +23,7 @@ jobs:
             ref: ${{ github.event.client_payload.sha }}
 
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1.4.3
+        uses: actions/setup-node@v1
         with:
           node-version: 14.6.0
            
