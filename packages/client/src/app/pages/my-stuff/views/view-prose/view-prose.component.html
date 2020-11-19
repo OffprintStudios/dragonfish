@@ -116,6 +116,14 @@
                 <ng-container *ngIf="!editMode; else disabledSections">
                     <ng-container *ngFor="let section of mySections">
                         <div class="section-box" [ngClass]="{'active': section.selected}" (click)="selectThisSection(section)">
+                            <div class="section-indicator">
+                                <ng-container *ngIf="section.published; else sectionUnpublished">
+                                    <i-feather name="check-circle"></i-feather>
+                                </ng-container>
+                                <ng-template #sectionUnpublished>
+                                    <i-feather name="circle"></i-feather>
+                                </ng-template>
+                            </div>
                             <div class="section-title">
                                 {{ section.title }}
                             </div>
