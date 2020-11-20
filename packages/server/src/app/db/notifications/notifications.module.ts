@@ -21,11 +21,6 @@ import { NotificationSubscriptionSchema } from './notification-subscriptions.sch
         name: 'NotificationQueue',
         useFactory: () => {
           const schema = NotificationQueueSchema;
-          // schema.pre<NotificationQueueDocument>('save', async function(next: HookNextFunction) {
-          //   this.set('createdAt', Date.now());
-          //   this.set('updatedAt', Date.now());
-          //   return next();
-          // });
           return schema;
         }
       },
