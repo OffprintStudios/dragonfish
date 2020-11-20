@@ -118,4 +118,8 @@ export class ViewProseComponent implements OnInit {
     editWork() {
         this.router.navigate(['/my-stuff/edit-prose'], {queryParams: {contentId: this.myProse._id, kind: this.myProse.kind}, queryParamsHandling: 'merge'});
     }
+
+    uploadCoverart() {
+        
+    }
 }
