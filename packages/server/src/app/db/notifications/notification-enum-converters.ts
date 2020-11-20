@@ -2,6 +2,8 @@ import { NotificationKind } from '@pulp-fiction/models/notifications';
 import { NotificationQueueDocumentKind } from "./notificationQueue/notification-queue-document-kind";
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
 
+// Contains a variety of helper functions to converted between document-specific
+// discriminators and NotificationKind.
 export namespace NotificationEnumConverters {
 
     // NotificationQueueDocument kind converters

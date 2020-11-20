@@ -299,77 +299,6 @@ export class NotificationsService {
             5000);
     }
 
-    private getSpecificNotificationModel(subscription: NotificationSubscriptionDocument, toPublish: NotificationQueueDocument): NotificationDocument {
-        const commonProperties: NotificationBase = {
-            _id: undefined,
-            destinationUserId: subscription.userId,
-            sourceId: toPublish.sourceId,
-            kind: toPublish.kind,            
-            read: false,
-            createdAt: toPublish.createdAt,
-            updatedAt: new Date(Date.now()),
-        };
-
-        switch (subscription.notificationKind) {            
-            case NotificationKind.BlogNotification: {
-                const queuedBlogNotification = toPublish as BlogNotificationQueueDocument;  
-
-                return new this.blogNotificationModel({
-                   ...commonProperties,                   
-                   authorId: queuedBlogNotification.authorId,
-                   authorName: queuedBlogNotification.authorName,
-                });
-            }
-            case NotificationKind.CommentNotification: {
-                const queuedCommentNotification = toPublish as CommentNotificationQueueDocument;
-                const commentInfo: CommentNotificationInfo = {
-                    commenterId: queuedCommentNotification.commenterId,
-                    commenterName: queuedCommentNotification.commenterName,
-                    parentId: queuedCommentNotification.parentId,
-                    parentKind: queuedCommentNotification.parentKind,
-                    parentTitle: queuedCommentNotification.parentTitle,
-                };
-                return new this.commentNotificationModel({
-                    ...commonProperties,
-                    ...commentInfo
-                });
-            }
-            case NotificationKind.NewsPostNotification: {
-                return new this.newsPostNotificationModel({
-                    ...commonProperties,
-                    //newspost-specific stuff
-                })
-            }
-            case NotificationKind.PMReplyNotification: {
-                return new this.pmReplyNotificationModel({
-                    ...commonProperties,
-                    //pm reply-specific stuff
-                })
-            }
-            case NotificationKind.PMThreadNotification: {
-                return new this.pmThreadNotificationModel({
-                    ...commonProperties,
-                    //pm thread-specific stuff
-                })
-            }
-            case NotificationKind.SectionNotification: {
-                return new this.sectionNotificationModel({
-                    ...commonProperties,
-                    // section-specific stuff
-                })
-            }
-            case NotificationKind.WorkNotification: {
-                return new this.workNotificationModel ({
-                    ...commonProperties,
-                    // work-specific stuff
-                })
-            }
-            default: {
-                throw new Error(`Unsupported NotificationKind: ${subscription.notificationKind}`);
-            }
-        }
-    }
-
     /** Put unpublished notifications that have been "In Progress" for more than 10 seconds back into the queue. */
     private async cleanUpStaleNotifications(): Promise<void> {
         const nowMinus10s = new Date(Date.now() - (10 * 1000));
@@ -380,6 +309,109 @@ export class NotificationsService {
             x.publishStatus = PublishStatus.NotStarted;
             return x.save();
         }));
+    }
+
+    private getSpecificNotificationModel(subscription: NotificationSubscriptionDocument, toPublish: NotificationQueueDocument): NotificationDocument {
+        const commonProperties: NotificationBase = {
+            _id: undefined,
+            destinationUserId: subscription.userId,
+            sourceId: toPublish.sourceId,
+            kind: toPublish.kind,            
+            read: false,
+            createdAt: toPublish.createdAt,
+            updatedAt: new Date(Date.now()),
+        };        
+
+        switch (subscription.notificationKind) {            
+            case NotificationKind.BlogNotification: {
+                return this.getBlogNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.CommentNotification: {
+                return this.getCommentNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.NewsPostNotification: {
+                return this.getNewsPostNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.PMReplyNotification: {
+                return this.getPMReplyNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.PMThreadNotification: {
+                return this.getPMThreadNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.SectionNotification: {
+                return this.getSectionNotification(toPublish, commonProperties);
+            }
+            case NotificationKind.WorkNotification: {
+                return this.getWorkNotification(toPublish, commonProperties);
+            }
+            default: {
+                throw new Error(`Unsupported NotificationKind: ${subscription.notificationKind}`);
+            }
+        }
+    }
+
+    private getCommentNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedCommentNotification = toPublish as CommentNotificationQueueDocument;
+        const commentInfo: CommentNotificationInfo = {
+            commenterId: queuedCommentNotification.commenterId,
+            commenterName: queuedCommentNotification.commenterName,
+            parentId: queuedCommentNotification.parentId,
+            parentKind: queuedCommentNotification.parentKind,
+            parentTitle: queuedCommentNotification.parentTitle,
+        };
+
+        return new this.commentNotificationModel({
+            ...commonProperties,
+            ...commentInfo
+        });
+    }
+
+    private getBlogNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedBlogNotification = toPublish as BlogNotificationQueueDocument;
+        const blogInfo: BlogNotificationInfo = {
+            authorId: queuedBlogNotification.authorId,
+            authorName: queuedBlogNotification.authorName,
+        };
+
+        return new this.blogNotificationModel({
+            ...commonProperties,
+            ...blogInfo,
+        });
+    }
+    
+    private getNewsPostNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedNewsPostNotification = toPublish as NewsPostNotificationQueueDocument;
+        return new this.newsPostNotificationModel({
+            ...commonProperties,
+        });
+    }
+
+    private getPMReplyNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedPMReplyNotification = toPublish as PMReplyNotificationQueueDocument;
+        return new this.pmReplyNotificationModel({
+            ...commonProperties,
+        });
+    }
+    
+    private getPMThreadNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedPMThreadNotification = toPublish as PMThreadNotificationQueueDocument;
+        return new this.pmThreadNotificationModel({
+            ...commonProperties,
+        });
+    }
+    
+    private getSectionNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedSectionNotification = toPublish as SectionNotificationQueueDocument;
+        return new this.sectionNotificationModel({
+            ...commonProperties,
+        });
+    }
+    
+    private getWorkNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
+        const queuedWorkNotification = toPublish as WorkNotificationQueueDocument;
+        return new this.workNotificationModel({
+            ...commonProperties,
+        });
     }
 }
 
