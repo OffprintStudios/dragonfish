@@ -7,8 +7,8 @@ import { WorksService } from '../../../db/works/works.service';
 import { UsersService } from '../../../db/users/users.service';
 import { OptionalAuthGuard } from '../../../guards';
 import { CollectionsService } from '../../../db/collections/collections.service';
-import { BlogsService, ContentService } from '../../../db/content';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentService } from '../../../db/content';
+import { BlogsService } from '../../../db/blogs/blogs.service';
 
 
 @Controller('portfolio')
@@ -26,15 +26,13 @@ export class PortfolioController {
 
     @Get('get-blogs-list/:userId/:pageNum')
     async getBlogsList(@Param('userId') userId: string, @Param('pageNum') pageNum: number) {
-        //return await this.blogsService.getPubBlogList(userId, pageNum);
+        return await this.blogsService.getPubBlogList(userId, pageNum);
     }
 
     @UseGuards(OptionalAuthGuard)
     @Get('get-blog/:blogId')
-    async getBlog(@Request() req: any, @Param('blogId') blogId: string) {
-        console.log("Getting one blog.");
-        return await this.contentService.fetchOne(blogId, ContentKind.BlogContent, req.user);
-        //return await this.blogsService.getOneBlog(blogId, req.user);
+    async getBlog(@Request() req: any, @Param('blogId') blogId: string) {                
+        return await this.blogsService.getOneBlog(blogId, req.user);
     }
 
     @Get('get-works-list/:userId/:pageNum')

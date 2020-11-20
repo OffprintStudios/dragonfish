@@ -1,15 +1,16 @@
-import { Schema, Prop, SchemaFactory, getModelToken } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Provider } from '@nestjs/common';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Model, Document, Schema as MongooseSchema } from 'mongoose';
 
 import { NotificationKind, NotificationBase } from '@pulp-fiction/models/notifications';
+
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
-import { Model } from 'mongoose';
 import { BlogNotificationDocument, CommentNotificationDocument, NewsPostNotificationDocument, PMReplyNotificationDocument, PMThreadNotificationDocument, SectionNotificationDocument, WorkNotificationDocument } from './publishedNotifications';
 import { NotificationEnumConverters } from './notification-enum-converters';
-import { ContentKind } from '@pulp-fiction/models/content';
-import { Provider } from '@nestjs/common';
-import { getSubSchemaProvider, NOTIFICATION_MOODEL_TOKEN } from './notifications.module';
+import { getSubSchemaProvider } from './notifications.module';
 import { SubSchemas } from './sub-schemas';
+
+const NOTIFICATION_MOODEL_TOKEN: string = 'Notification';
 
 @Schema({    
     'timestamps': true,
@@ -57,48 +58,48 @@ export const NotificationSubSchemaProviders: Provider[] = [
 function getWorkNotificationSubSchema(model: Model<NotificationDocument>): Model<WorkNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKWorkNotification, 
-        new MongooseSchema(SubSchemas.WorkNotification)
+        new MongooseSchema(SubSchemas.getWorkNotification())
     );
 }
 
 function getSectionNotificationSubSchema(model: Model<NotificationDocument>): Model<SectionNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKSectionNotification,
-        new MongooseSchema(SubSchemas.SectionNotification)
+        new MongooseSchema(SubSchemas.getSectionNotification())
     );
 }
 
 function getBlogNotificationSubSchema(model: Model<NotificationDocument>): Model<BlogNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKBlogNotification, 
-        new MongooseSchema(SubSchemas.BlogNotification)
+        new MongooseSchema(SubSchemas.getBlogNotification())
     );
 }
 
 function getCommentNotificationSubSchema(model: Model<NotificationDocument>): Model<CommentNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKCommentNotification, 
-        new MongooseSchema(SubSchemas.CommentNotification)
+        new MongooseSchema(SubSchemas.getCommentNotification())
     );
 }
 
 function getNewsPostNotificationSubSchema(model: Model<NotificationDocument>): Model<NewsPostNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKNewsPostNotification,
-        new MongooseSchema(SubSchemas.NewsPostNotification)
+        new MongooseSchema(SubSchemas.getNewsPostNotification())
     );
 }
 
 function getPMThreadNotificationSubSchema(model: Model<NotificationDocument>): Model<PMThreadNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKPMThreadNotification,
-        new MongooseSchema(SubSchemas.PMThreadNotification)
+        new MongooseSchema(SubSchemas.getPMThreadNotification())
     );
 }
 
 function getPMReplyNotificationSubSchema(model: Model<NotificationDocument>): Model<PMReplyNotificationDocument> {
     return model.discriminator(
         NotificationDocumentKind.NDKPMReplyNotification,
-        new MongooseSchema(SubSchemas.PMReplyNotification)
+        new MongooseSchema(SubSchemas.getPMReplyNotification())
     );
 }

@@ -1,31 +1,24 @@
 import { Document, Model } from 'mongoose';
 import { Module, Provider } from '@nestjs/common';
 import { getModelToken, MongooseModule } from '@nestjs/mongoose';
-import { Schema } from 'mongoose';
-
-import { ContentKind } from '@pulp-fiction/models/content';
 
 import { NotificationSchema, NotificationSubSchemaProviders} from './notifications.schema';
 import { NotificationQueueSchema, NotificationQueueSubSchemaProviders } from './notification-queue.schema';
 import { NotificationsService } from './notifications.service';
 import { NotificationSubscriptionSchema } from './notification-subscriptions.schema';
-import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
-
-export const NOTIFICATION_MOODEL_TOKEN: string = 'Notification';
-export const NOTIFICATION_QUEUE_MODEL_TOKEN: string = 'NotificationQueue';
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: NOTIFICATION_MOODEL_TOKEN,
+        name: 'Notification',
         useFactory: () => {
           const schema = NotificationSchema;          
           return schema;
         }
       },
       {
-        name: NOTIFICATION_QUEUE_MODEL_TOKEN,
+        name: 'NotificationQueue',
         useFactory: () => {
           const schema = NotificationQueueSchema;
           // schema.pre<NotificationQueueDocument>('save', async function(next: HookNextFunction) {

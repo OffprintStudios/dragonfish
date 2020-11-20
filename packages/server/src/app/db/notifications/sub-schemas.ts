@@ -7,36 +7,50 @@ import { SchemaDefinition } from 'mongoose';
  */
 export namespace SubSchemas {
 
-    export const WorkNotification: SchemaDefinition = {
-        // TBD
-    };
-
-    export const SectionNotification: SchemaDefinition = {
-        // TBD
-    };    
-
-    export const BlogNotification: SchemaDefinition = {
-        authorId: { type: String, trim: true, required: true },
-        authorName: { type: String, required: true },
-    };
-
-    export const CommentNotification: SchemaDefinition = {
-        commenterName: { type: String, required: true },
-        commenterId: { type: String, required: true, trim: true },
-        parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.WorkContent },
-        parentId: { type: String, required: true, trim: true },
-        parentTitle: { type: String, required: true }
+    export function getWorkNotification(): SchemaDefinition {
+        return {
+            // TBD
+        };
     }
 
-    export const NewsPostNotification: SchemaDefinition = {
-        // TBD
-    };
+    export function getSectionNotification(): SchemaDefinition {
+        return {
+            // TBD
+        };
+    }
 
-    export const PMThreadNotification: SchemaDefinition = {
-        // TBD
-    };
+    export function getBlogNotification(): SchemaDefinition {
+        return {
+            authorId: { type: String, trim: true, required: true },
+            authorName: { type: String, required: true },
+        };
+    }
 
-    export const PMReplyNotification: SchemaDefinition = {
-        // TBD
+    export function getCommentNotification(): SchemaDefinition {
+        return {
+            commentId: { type: String, required: true, trim: true },
+            commenterName: { type: String, required: true },
+            commenterId: { type: String, required: true, trim: true },
+            parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.WorkContent },            
+            parentTitle: { type: String, required: true }
+        };
+    }
+
+    export function getNewsPostNotification(): SchemaDefinition {
+        return {
+            // TBD
+        };
+    }
+
+    export function getPMThreadNotification(): SchemaDefinition {
+        return {
+            // TBD
+        };
+    }
+
+    export function getPMReplyNotification(): SchemaDefinition {
+        return {
+            // TBD
+        };
     }
 }

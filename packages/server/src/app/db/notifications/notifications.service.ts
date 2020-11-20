@@ -19,8 +19,6 @@ import { CommentNotificationQueueDocument } from './notificationQueue/comment-no
 import { NewsPostNotificationQueueDocument } from './notificationQueue/news-post-notification-queue.document';
 import { PMThreadNotificationQueueDocument } from './notificationQueue/pm-thread-notification-queue.document';
 import { PMReplyNotificationQueueDocument } from './notificationQueue/pm-reply-notification-queue.document';
-import { NotificationEnumConverters } from './notification-enum-converters';
-import { queue } from 'rxjs/internal/scheduler/queue';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
 const MAX_MS_PER_WAKEUP: number = 100;
@@ -353,9 +351,9 @@ export class NotificationsService {
     private getCommentNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
         const queuedCommentNotification = toPublish as CommentNotificationQueueDocument;
         const commentInfo: CommentNotificationInfo = {
+            commentId: queuedCommentNotification.commentId,
             commenterId: queuedCommentNotification.commenterId,
-            commenterName: queuedCommentNotification.commenterName,
-            parentId: queuedCommentNotification.parentId,
+            commenterName: queuedCommentNotification.commenterName,            
             parentKind: queuedCommentNotification.parentKind,
             parentTitle: queuedCommentNotification.parentTitle,
         };

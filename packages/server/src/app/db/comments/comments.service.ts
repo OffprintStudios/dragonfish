@@ -42,9 +42,9 @@ export class CommentsService {
         const notification: CreateCommentNotification = {
             kind: NotificationKind.CommentNotification,
             sourceId: blogId,
+            commentId: doc._id,
             commenterId: user.sub,
-            commenterName: user.username,
-            parentId: blogId,
+            commenterName: user.username,            
             parentKind: commentInfo.commentParentKind,
             parentTitle: blogTitle            
         };
@@ -92,11 +92,11 @@ export class CommentsService {
 
         const contentTitle = (await this.contentService.fetchOne(contentId, commentInfo.commentParentKind)).title;
         const notification: CreateCommentNotification = {
+            commentId: doc._id,
             kind: NotificationKind.CommentNotification,
             sourceId: contentId,
             commenterId: user.sub,
-            commenterName: user.username,
-            parentId: contentId,
+            commenterName: user.username,            
             parentKind: commentInfo.commentParentKind,
             parentTitle: contentTitle            
         };

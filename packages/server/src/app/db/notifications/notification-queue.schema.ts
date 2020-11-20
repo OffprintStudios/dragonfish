@@ -1,26 +1,26 @@
+import { Provider } from '@nestjs/common';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Model, Document, Schema as MongooseSchema } from 'mongoose';
 
-import { NotificationBase, NotificationKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
 
+import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
+import { WorkNotificationQueueDocument, SectionNotificationQueueDocument, BlogNotificationQueueDocument, CommentNotificationQueueDocument, NewsPostNotificationQueueDocument, PMThreadNotificationQueueDocument, PMReplyNotificationQueueDocument } from './notificationQueue';
+import { NotificationEnumConverters } from './notification-enum-converters';
 import { NotificationQueueItem } from './notificationQueue/notification-queue-item.model';
 import { PublishStatus } from './notificationQueue/publish-status';
-import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
-import { NotificationEnumConverters } from './notification-enum-converters';
-import { getSubSchemaProvider, NOTIFICATION_QUEUE_MODEL_TOKEN } from './notifications.module';
-import { Model } from 'mongoose';
-import { Provider } from '@nestjs/common';
+import { getSubSchemaProvider } from './notifications.module';
 import { SubSchemas } from './sub-schemas';
 
 const FiveMB: number = 5_242_880; // Even this is probably overkill
+const NOTIFICATION_QUEUE_MODEL_TOKEN: string = 'NotificationQueue';
 
-@Schema({    
+@Schema({
     timestamps: true,
     capped: { size: FiveMB },
     collection: 'notification_queue',
     discriminatorKey: 'nqdKind',
-    toJSON: { getters: true }
-})
+    toJSON: { getters: true }})
 export class NotificationQueueDocument extends Document implements NotificationQueueItem {
     @Prop({required: true})
     sourceId: string;
@@ -55,51 +55,51 @@ export const NotificationQueueSubSchemaProviders: Provider[] = [
 ];
 
 // Builders for sub-schemas
-function getWorkNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getWorkNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<WorkNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKWorkNotification,
-        new MongooseSchema(SubSchemas.WorkNotification)
+        new MongooseSchema(SubSchemas.getWorkNotification())
     );
 }
 
-function getSectionNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getSectionNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<SectionNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKSectionNotification,
-        new MongooseSchema(SubSchemas.SectionNotification)
+        new MongooseSchema(SubSchemas.getSectionNotification())
     );
 }
 
-function getBlogNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getBlogNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<BlogNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKBlogNotification,
-        new MongooseSchema(SubSchemas.BlogNotification)
+        new MongooseSchema(SubSchemas.getBlogNotification())
     );
 }
 
-function getCommentNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getCommentNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<CommentNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKCommentNotification,
-        new MongooseSchema(SubSchemas.CommentNotification)
+        new MongooseSchema(SubSchemas.getCommentNotification())
     );
 }
 
-function getNewsPostNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getNewsPostNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NewsPostNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKNewsPostNotification,
-        new MongooseSchema(SubSchemas.NewsPostNotification)
+        new MongooseSchema(SubSchemas.getNewsPostNotification())
     );
 }
 
-function getPMThreadNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getPMThreadNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<PMThreadNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKPMThreadNotification,
-        new MongooseSchema(SubSchemas.PMThreadNotification)
+        new MongooseSchema(SubSchemas.getPMThreadNotification())
     );
 }
 
-function getPMReplyNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<NotificationQueueDocument> {
+function getPMReplyNotificationSubSchema(model: Model<NotificationQueueDocument>): Model<PMReplyNotificationQueueDocument> {
     return model.discriminator(
         NotificationQueueDocumentKind.NQDKPMReplyNotification,
-        new MongooseSchema(SubSchemas.PMReplyNotification)
+        new MongooseSchema(SubSchemas.getPMReplyNotification())
     );
 }
