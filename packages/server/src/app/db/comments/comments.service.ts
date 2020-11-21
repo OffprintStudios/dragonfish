@@ -38,7 +38,7 @@ export class CommentsService {
         let doc = await newComment.save();
         await this.blogsService.addComment(blogId);
 
-        const blogTitle = (await this.contentService.fetchOne(blogId, commentInfo.commentParentKind)).title;
+        const blogTitle = (await this.contentService.fetchOnePublished(blogId, commentInfo.commentParentKind)).title;
         const notification: CreateCommentNotification = {
             kind: NotificationKind.CommentNotification,
             sourceId: blogId,
@@ -90,7 +90,7 @@ export class CommentsService {
         let doc = await newComment.save();
         await this.contentService.addComment(contentId);
 
-        const contentTitle = (await this.contentService.fetchOne(contentId, commentInfo.commentParentKind)).title;
+        const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind)).title;
         const notification: CreateCommentNotification = {
             commentId: doc._id,
             kind: NotificationKind.CommentNotification,
