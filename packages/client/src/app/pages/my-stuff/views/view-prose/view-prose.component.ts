@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { ProseContent, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ProseContent, PubStatus } from '@pulp-fiction/models/content';
 import { MyStuffService, SectionsService } from 'packages/client/src/app/services/user';
 import { SectionItem } from '../../viewmodels';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SectionForm } from '@pulp-fiction/models/sections';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadCoverartComponent } from 'packages/client/src/app/components/modals/works';
 
 @Component({
     selector: 'view-prose',
@@ -20,6 +22,7 @@ export class ViewProseComponent implements OnInit {
     pubStatus = PubStatus;
     loadingSections = false;
     editMode = false;
+    addEditIcon = false;
 
     selectedSection: SectionItem;
 
@@ -31,7 +34,7 @@ export class ViewProseComponent implements OnInit {
     });
 
     constructor(private stuffService: MyStuffService, private sectionsService: SectionsService, public route: ActivatedRoute, 
-        private router: Router, private location: Location, private snackBar: MatSnackBar) {}
+        private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.myProse = this.route.snapshot.data.proseData as ProseContent;
@@ -120,6 +123,9 @@ export class ViewProseComponent implements OnInit {
     }
 
     uploadCoverart() {
-        
+        const dialogRef = this.dialog.open(UploadCoverartComponent, {data: {kind: ContentKind.ProseContent, contentId: this.myProse._id}});
+        dialogRef.afterClosed().subscribe(() => {
+            location.reload();
+        });
     }
 }

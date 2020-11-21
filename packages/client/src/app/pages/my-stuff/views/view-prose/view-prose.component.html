@@ -58,9 +58,17 @@
 <div class="view-container">
     <div class="view-info">
         <div class="view-coverart">
-            <div class="add-coverart" [matTooltip]="'Add Cover Art'" [matTooltipClass]="'offprint-tooltip'">
-                <i-feather name="plus"></i-feather>
-            </div>
+            <ng-container *ngIf="myProse.meta.coverArt; else uploadArt">
+                <div class="edit-coverart" [matTooltip]="'Edit Cover Art'" [matTooltipClass]="'offprint-tooltip'" (mouseenter)="addEditIcon = true" (mouseleave)="addEditIcon = false" (click)="uploadCoverart()">
+                    <span class="edit-icon" *ngIf="addEditIcon"><i-feather name="edit-3"></i-feather></span>
+                    <img [src]="myProse.meta.coverArt">
+                </div>
+            </ng-container>
+            <ng-template #uploadArt>
+                <div class="add-coverart" [matTooltip]="'Add Cover Art'" [matTooltipClass]="'offprint-tooltip'" (click)="uploadCoverart()">
+                    <i-feather name="plus"></i-feather>
+                </div>
+            </ng-template>
         </div>
         <div class="view-header">
             <div class="view-title">
@@ -77,20 +85,20 @@
             <div class="view-description">
                 <div class="html-description" [innerHtml]="myProse.body | safeHtml"></div>
             </div>
-            <div class="view-stats">
-                <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | date:'mediumDate' }}</span>
-                <span class="divider">//</span>
-                <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myProse.stats.comments | abbreviate }}</span>
-                <span class="divider">//</span>
-                <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ myProse.stats.views | abbreviate }}</span>
-                <span class="divider">//</span>
-                <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-up"></i-feather>{{ myProse.stats.likes | abbreviate }}</span>
-                <span class="divider">//</span>
-                <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myProse.stats.dislikes | abbreviate }}</span>
-                <span class="divider">//</span>
-                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myProse.stats.words | abbreviate }}</span>
-            </div>
         </div>
+    </div>
+    <div class="view-stats">
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | date:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myProse.stats.comments | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ myProse.stats.views | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-up"></i-feather>{{ myProse.stats.likes | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myProse.stats.dislikes | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myProse.stats.words | abbreviate }}</span>
     </div>
     <div class="view-sections">
         <!--Loading sections-->
