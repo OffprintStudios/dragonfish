@@ -31,7 +31,7 @@ export namespace SubSchemas {
             commentId: { type: String, required: true, trim: true },
             commenterName: { type: String, required: true },
             commenterId: { type: String, required: true, trim: true },
-            parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.WorkContent },            
+            parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.ProseContent },            
             parentTitle: { type: String, required: true }
         };
     }
