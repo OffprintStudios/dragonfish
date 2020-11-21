@@ -1,1 +1,0 @@
-export { ContentItem } from './content-item.model';

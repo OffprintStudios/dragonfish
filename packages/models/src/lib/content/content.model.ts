@@ -1,6 +1,7 @@
 import { UserInfo } from '../users';
 import { PubStatus } from './pub-status.enum';
 import { ContentKind } from './content-kind.enum';
+import { ContentRating } from '../works';
 
 export interface ContentModel {
     readonly _id: string;
@@ -8,6 +9,10 @@ export interface ContentModel {
     title: string;
     desc: string;
     body: string;
+    meta: {
+        rating: ContentRating;
+        warnings: string[];
+    };
     readonly stats: {
         words: number;
         readonly views: number;

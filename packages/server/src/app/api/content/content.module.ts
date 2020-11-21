@@ -3,7 +3,6 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
-// import { BlogsModule } from '../../db/blogs/blogs.module';
 import { WorksModule } from '../../db/works/works.module';
 import { PortfolioController } from './portfolio/portfolio.controller';
 import { UsersModule } from '../../db/users/users.module';
@@ -20,11 +19,15 @@ import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
 import { ContentController } from './content.controller';
+import { ProseController } from './prose/prose.controller';
+import { PoetryController } from './poetry/poetry.controller';
+import { SectionsModule } from '../../db/sections/sections.module';
+import { SectionsController } from './sections/sections.controller';
 
 @Module({
   imports: [
-    /*BlogsModule,*/ WorksModule, UsersModule, ImagesModule, CollectionsModule,
-    HistoryModule, CommentsModule, MessagesModule, ContentCollectionModule,
+    WorksModule, UsersModule, ImagesModule, CollectionsModule, HistoryModule, CommentsModule,
+    MessagesModule, ContentCollectionModule, SectionsModule,
     JwtModule.registerAsync({
       useFactory: () => ({
         secret: getJwtSecretKey(),
@@ -35,7 +38,8 @@ import { ContentController } from './content.controller';
   controllers: [
     BlogsController, WorksController, PortfolioController, 
     CollectionsController, HistoryController, CommentsController, 
-    MessagesController, NewsController, ContentController
+    MessagesController, NewsController, ContentController, ProseController,
+    PoetryController, SectionsController
   ]
 })
 export class ContentModule {}

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
 
@@ -8,6 +8,7 @@ import { AlertsService } from '../../../../modules/alerts';
 import { HttpError } from '../../../../models/site';
 import { WorksService } from '../../../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-upload-coverart',
@@ -39,13 +40,21 @@ export class UploadCoverartComponent implements OnInit {
   newImageAdded: boolean = true;
 
   constructor(private authService: AuthService, private worksService: WorksService, 
-    private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>) {
+    private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: {kind: ContentKind, contentId: string}) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
-    this.workId = this.worksService.thisWorkId;
-    this.uploader = new FileUploader({
-      url: `/api/content/works/upload-coverart/${this.workId}`,
-      itemAlias: 'coverart'
-    });
+
+    if (this.data.kind === ContentKind.ProseContent) {
+      this.uploader = new FileUploader({
+        url: `/api/content/prose/upload-coverart/${this.data.contentId}`,
+        itemAlias: 'coverart'
+      });
+    } else if (this.data.kind === ContentKind.PoetryContent) {
+      this.uploader = new FileUploader({
+        url: `/api/content/poetry/upload-coverart/${this.data.contentId}`,
+        itemAlias: 'coverart'
+      });
+    }
   }
 
   ngOnInit(): void {

@@ -16,11 +16,10 @@ export class NewsController {
     @UseGuards(OptionalAuthGuard)
     @Get('news-post/:postId')
     async getNewsPost(@Request() req: any, @Param('postId') postId: string) {
-        return await this.contentService.fetchOne(
+        return await this.contentService.fetchOnePublished(
             postId, // the contentId of the post
             ContentKind.NewsContent, // fetch only a news post
             req.user, // add a view if there's a user
-            true // fetch only a published post
         );
     }
 }

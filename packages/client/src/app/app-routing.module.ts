@@ -6,7 +6,10 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, PortCollectionPageComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent, MyStuffComponent, WorkFormComponent, BlogFormComponent} from './pages/portfolio';
+  HistoryComponent } from './pages/portfolio';
+
+import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
+  ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
   
@@ -37,12 +40,17 @@ const routes: Routes = [
     {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'always'},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
+    {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
+      {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
+      {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
+      {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
+      {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+    ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
-      {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
-        {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
-        {path: 'new-work', component: WorkFormComponent, canActivate: [AuthGuard]},
-        {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
-      ]},
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},

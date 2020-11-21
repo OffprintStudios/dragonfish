@@ -1,0 +1,102 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <!--Go back-->
+        <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
+        <span class="tool-divider"></span>
+
+        <button matRipple class="tool disabled">
+            <i-feather name="circle"></i-feather>Unpublished
+        </button>
+        <span class="tool-divider"></span>
+        <!--Content tools-->
+        <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="x"></i-feather>
+        </button>
+        <button matRipple class="tool mid disabled" matTooltip="Edit" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="edit-3"></i-feather>
+        </button>
+        <button matRipple class="tool end disabled" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="trash-2"></i-feather>
+        </button>
+        <span class="tool-divider"></span>
+
+        <!--Filtering tools-->
+        <button matRipple class="tool left disabled" matTooltip="List View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="list"></i-feather>
+        </button>
+        <button matRipple class="tool mid disabled" matTooltip="Icon View" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="grid"></i-feather>
+        </button>
+        <button matRipple class="tool end disabled" matTooltip="Filter" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="filter"></i-feather>
+        </button>
+    </div>
+    <form class="tool-search">
+        <div class="search-bar">
+            <input type="text" class="search-input disabled" placeholder="Search your stuff..." disabled>
+            <button matRipple class="search-submit disabled" type="submit"><i-feather name="search"></i-feather></button>
+        </div>
+    </form>
+</div>
+
+<ng-container *ngIf="createBlogMode; else previewMode">
+    <div class="form-container">
+        <div class="form-header">
+            <h3>{{ formTitle }}</h3>
+            <button class="form-button" (click)="submitForm()">Save</button>
+        </div>
+        <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+            </mat-form-field>
+    
+            <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+        </form>
+    </div>
+</ng-container>
+
+<ng-template #previewMode>
+    <div class="form-container">
+        <div class="form-header">
+            <button class="form-button left" [ngClass]="{'selected': !editMode}" (click)="switchView()">Preview</button>
+            <button class="form-button right" [ngClass]="{'selected': editMode}" (click)="switchView()">Edit</button>
+            <div style="flex: 1; text-align: right;">
+                <button class="form-button save" *ngIf="editMode" (click)="submitForm()">Save</button>
+            </div>
+        </div>
+    
+        <ng-container *ngIf="editMode; else previewBlog">
+            <form [formGroup]="blogForm" (ngSubmit)="submitForm()" *ngIf="editMode">
+                <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                </mat-form-field>
+        
+                <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+            </form>
+        </ng-container>
+    
+        <ng-template #previewBlog>
+            <div class="post-container" *ngIf="currBlog">
+                <div class="post-header">
+                    <h1>{{ currBlog.title }}</h1>
+                    <div class="post-cat">
+                        <div class="info">
+                            <span>by <a [routerLink]="['/portfolio', $any(currBlog.author)._id, $any(currBlog.author).username | slugify]">{{ $any(currBlog.author).username }}</a></span>
+                            <span class="divider" *ngIf="currBlog.audit.publishedOn">//</span>
+                            <span>{{ currBlog.audit.publishedOn | date:'fullDate' }}</span>
+                        </div>
+                        <div class="post-tools">
+                            <button matRipple><i-feather name="thumbs-up"></i-feather></button>
+                            <button matRipple class="end"><i-feather name="thumbs-down"></i-feather></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div class="html-description" [innerHtml]="currBlog.body | safeHtml"></div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>

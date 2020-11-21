@@ -16,69 +16,11 @@ export class WorksController {
     async fetchUserWorks(@Request() req: any, @Param('pageNum') pageNum: number) {
         return await this.worksService.fetchUserWorks(req.user, pageNum);
     }
-
-    @UseGuards(AuthGuard)
-    @Put('create-work')
-    async createWork(@Request() req: any, @Body() newWork: models.CreateWork) {
-        this.validateWork(newWork);       
-        return await this.worksService.createNewWork(req.user, newWork);
-    }
-
-    @UseGuards(OptionalAuthGuard)
-    @Get('get-work/:workId')
-    async getWork(@Request() req: any, @Param('workId') workId: string) {
-        return await this.worksService.findOneWorkById(workId, req.user);
-    }
-
-    @UseGuards(AuthGuard)
-    @Patch('edit-work')
-    async editWork(@Request() req: any, @Body() workInfo: models.EditWork) {
-        this.validateWork(workInfo);
-        return await this.worksService.editWork(req.user, workInfo);
-    }
-
+    
     @UseGuards(AuthGuard)
     @Patch('delete-work/:workId')
     async deleteWork(@Request() req: any, @Param('workId') workId: string) {
         return await this.worksService.deleteWork(req.user, workId);
-    }
-
-    @UseGuards(AuthGuard)
-    @Put('create-section/:workId')
-    async createSection(@Request() req: any, @Param('workId') workId: string, @Body() newSection: models.CreateSection) {
-        this.validateSection(newSection);
-        return await this.worksService.createNewSection(req.user, workId, newSection);
-    }
-
-    @UseGuards(AuthGuard)
-    @Get('get-section-for-user/:workId/:sectionId')
-    async getSectionForUser(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
-        return await this.worksService.getSectionForUser(req.user, workId, sectionId);
-    }
-
-    @UseGuards(AuthGuard)
-    @Patch('edit-section/:workId/:sectionId')
-    async editSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() someEdits: models.EditSection) {
-        this.validateSection(someEdits);
-        return await this.worksService.editSection(req.user, workId, sectionId, someEdits);
-    }
-
-    @UseGuards(AuthGuard)
-    @Patch('set-publishing-status/:workId/:sectionId')
-    async setPubStatus(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string, @Body() pubStatus: models.PublishSection) {
-        return await this.worksService.publishSection(req.user, workId, sectionId, pubStatus);
-    }
-
-    @UseGuards(OptionalAuthGuard)
-    @Get('fetch-section/:workId/:sectionId')
-    async fetchSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
-        return await this.worksService.findOneSectionById(workId, sectionId);
-    }
-
-    @UseGuards(AuthGuard)
-    @Patch('delete-section/:workId/:sectionId')
-    async deleteSection(@Request() req: any, @Param('workId') workId: string, @Param('sectionId') sectionId: string) {
-        return await this.worksService.deleteSection(req.user, workId, sectionId);
     }
 
     @UseGuards(AuthGuard)

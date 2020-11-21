@@ -161,10 +161,10 @@ export class CommentsComponent implements OnInit {
     const contentKind: ContentKind = 
       this.itemKind === ItemKind.Blog ? ContentKind.BlogContent
       : this.itemKind === ItemKind.BlogContent ? ContentKind.BlogContent
-      : this.itemKind === ItemKind.Work ? ContentKind.WorkContent
-      : this.itemKind === ItemKind.WorkContent ? ContentKind.WorkContent
+      : this.itemKind === ItemKind.ProseContent ? ContentKind.ProseContent
+      : this.itemKind === ItemKind.PoetryContent ? ContentKind.PoetryContent
       : this.itemKind === ItemKind.NewsContent ? ContentKind.NewsContent
-      : ContentKind.WorkContent;
+      : ContentKind.ProseContent;
 
     const comm: CreateComment = {
       body: this.newCommentFields.body.value,

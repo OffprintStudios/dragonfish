@@ -1,0 +1,8 @@
+<div class="ratings">
+    <ng-container [ngSwitch]="rating">
+        <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone large" *ngSwitchDefault>E</div>
+        <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen large" *ngSwitchCase="'Teen'">T</div>
+        <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature large" *ngSwitchCase="'Mature'">M</div>
+        <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit large" *ngSwitchCase="'Explicit'">X</div>
+    </ng-container>
+</div>

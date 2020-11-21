@@ -5,16 +5,18 @@ import { generate } from 'shortid';
 
 import { ContentService } from './content.service';
 import { NewsService } from './news/news.service';
-import { WorksService } from './works/works.service';
 import { BlogsService } from './blogs/blogs.service';
+import { SectionsModule } from '../sections/sections.module';
 import { ContentDocument, ContentSchema } from './content.schema';
-import { NewsCategory } from '@pulp-fiction/models/content';
+import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@pulp-fiction/models/content';
 import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
+import { ProseService } from './prose/prose.service';
+import { PoetryService } from './poetry/poetry.service';
 
 @Module({
   imports: [
-    UsersModule, NotificationsModule,
+    UsersModule, NotificationsModule, SectionsModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'Content',
@@ -35,7 +37,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     ])
   ],
   providers: [
-    ContentService, NewsService, WorksService, BlogsService,
+    ContentService, NewsService, BlogsService, ProseService, PoetryService,
     {
       provide: getModelToken('NewsContent'),
       useFactory: contentModel => contentModel.discriminator('NewsContent', new Schema({
@@ -57,8 +59,44 @@ import { NotificationsModule } from '../notifications/notifications.module';
         }
       })),
       inject: [getModelToken('Content')]
+    },
+    {
+      provide: getModelToken('ProseContent'),
+      useFactory: contentModel => contentModel.discriminator('ProseContent', new Schema({
+        sections: {type: [String], ref: 'Section', default: null, autopopulate: {
+          select: '_id title published stats.words createdAt',
+          match: {'audit.isDeleted': false}
+        }},
+        meta: {
+          category: {type: String, enum: Object.keys(WorkKind), required: true},
+          fandoms: {type: [String], default: null},
+          genres: {type: [String], enum: Object.keys(Genres), required: true},
+          status: {type: String, enum: Object.keys(WorkStatus), required: true},
+          coverArt: {type: String, trim: true, default: null}
+        }
+      })),
+      inject: [getModelToken('Content')]
+    },
+    {
+      provide: getModelToken('PoetryContent'),
+      useFactory: contentModel => contentModel.discriminator('PoetryContent', new Schema({
+        sections: {type: [String], ref: 'Section', default: null, autopopulate: {
+          select: '_id title published stats.words createdAt',
+          match: {'audit.isDeleted': false}
+        }},
+        meta: {
+          category: {type: String, enum: Object.keys(WorkKind), required: true},
+          form: {type: String, enum: Object.keys(PoetryForm), required: true},
+          collection: {type: Boolean, default: false},
+          fandoms: {type: [String], default: null},
+          genres: {type: [String], enum: Object.keys(Genres), required: true},
+          status: {type: String, enum: Object.keys(WorkStatus), required: true},
+          coverArt: {type: String, trim: true, default: null}
+        }
+      })),
+      inject: [getModelToken('Content')]
     }
   ],
-  exports: [ContentService, NewsService, BlogsService, /* WorksService */]
+  exports: [ContentService, NewsService, BlogsService, ProseService, PoetryService]
 })
 export class ContentModule {}
