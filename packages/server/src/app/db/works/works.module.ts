@@ -6,6 +6,7 @@ import { WorksSchema } from './works.schema';
 import { SectionsSchema } from './sections.schema';
 import { WorksService } from './works.service';
 import { HistoryModule } from '../history/history.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { HistoryModule } from '../history/history.module';
       {name: 'Work', schema: WorksSchema},
       {name: 'Section', schema: SectionsSchema},
     ]),
-    UsersModule, HistoryModule
+    UsersModule, HistoryModule, NotificationsModule
   ],
   providers: [WorksService],
   exports: [WorksService]

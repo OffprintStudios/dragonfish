@@ -8,6 +8,7 @@ import { CommentsService } from './comments.service';
 import { BlogsModule } from '../blogs/blogs.module';
 import { WorksModule } from '../works/works.module';
 import { ContentModule } from '../content/content.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ContentModule } from '../content/content.module';
     MongooseModule.forFeature([
       {name: 'Comment', schema: CommentsSchema},
     ]),
+    NotificationsModule
   ],
   providers: [
     CommentsService,

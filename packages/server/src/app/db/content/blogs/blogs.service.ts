@@ -1,19 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { PaginateModel, Types } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
 import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
+import { NotificationsService } from '../../notifications/notifications.service';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
 
 
 @Injectable()
 export class BlogsService {
     constructor(@InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
-        private readonly usersService: UsersService) {}
+        private readonly usersService: UsersService,
+        private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new blogpost and saves it to the database. Returns the newly
@@ -30,7 +33,12 @@ export class BlogsService {
             'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
         });
 
-        return await newBlog.save();
+        const savedBlog = await newBlog.save();
+
+        // Subscribe the author to comments on their new blog
+        await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);
+
+        return savedBlog;
     }
 
     /**

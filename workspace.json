@@ -164,6 +164,7 @@
           "builder": "@nrwl/node:execute",
           "options": {
             "buildTarget": "server:build",
+            "inspect": true,
             "port": 9229
           }
         },

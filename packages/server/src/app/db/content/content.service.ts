@@ -20,7 +20,7 @@ export class ContentService {
      * @param user (Optional) The user making this request
      * @param isPublished (Optional) Check to determine if the document should be published or not
      */
-    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload, isPublished?: boolean): Promise<ContentDocument> {
         let query = {'_id': contentId, 'kind': kind, 'audit.isDeleted': false};
         if (isPublished) {
             switch (kind) {

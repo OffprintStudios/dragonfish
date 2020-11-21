@@ -9,6 +9,8 @@ import { BlogsService } from '../blogs/blogs.service';
 import { WorksService } from '../works/works.service';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
+import { NotificationsService } from '../notifications/notifications.service';
+import { CreateCommentNotification, NotificationKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class CommentsService {
@@ -16,7 +18,8 @@ export class CommentsService {
         @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
         @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
         @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
-        private readonly blogsService: BlogsService, private readonly worksService: WorksService, private readonly contentService: ContentService) {}
+        private readonly blogsService: BlogsService, private readonly worksService: WorksService, 
+        private readonly contentService: ContentService, private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new comment that belongs to a blog.
@@ -34,6 +37,19 @@ export class CommentsService {
 
         let doc = await newComment.save();
         await this.blogsService.addComment(blogId);
+
+        const blogTitle = (await this.contentService.fetchOne(blogId, commentInfo.commentParentKind)).title;
+        const notification: CreateCommentNotification = {
+            kind: NotificationKind.CommentNotification,
+            sourceId: blogId,
+            commentId: doc._id,
+            commenterId: user.sub,
+            commenterName: user.username,            
+            parentKind: commentInfo.commentParentKind,
+            parentTitle: blogTitle            
+        };
+        await this.notificationsService.queueNotification(notification);
+
         return doc;
     }
 
@@ -52,7 +68,8 @@ export class CommentsService {
         });
         
         let doc = await newComment.save();
-        await this.worksService.addComment(workId);
+        await this.worksService.addComment(workId);    
+
         return doc;
     }
 
@@ -72,6 +89,19 @@ export class CommentsService {
 
         let doc = await newComment.save();
         await this.contentService.addComment(contentId);
+
+        const contentTitle = (await this.contentService.fetchOne(contentId, commentInfo.commentParentKind)).title;
+        const notification: CreateCommentNotification = {
+            commentId: doc._id,
+            kind: NotificationKind.CommentNotification,
+            sourceId: contentId,
+            commenterId: user.sub,
+            commenterName: user.username,            
+            parentKind: commentInfo.commentParentKind,
+            parentTitle: contentTitle            
+        };
+        await this.notificationsService.queueNotification(notification);
+
         return doc;
     }
 

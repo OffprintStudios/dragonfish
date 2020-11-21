@@ -57,7 +57,9 @@ WorksSchema.plugin(MongooseAutopopulate);
 WorksSchema.plugin(MongoosePaginate);
 
 WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
-    this.set('_id', generate());
+    if (!this._id) {
+        this.set('_id', generate());
+    }
     this.set('title', await sanitizeHtml(this.title));
     this.set('shortDesc', await sanitizeHtml(this.shortDesc));
     this.set('longDesc', await sanitizeHtml(this.longDesc));

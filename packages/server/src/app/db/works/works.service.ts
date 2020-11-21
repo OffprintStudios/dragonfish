@@ -12,13 +12,15 @@ import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined } from 'util';
 import { HistoryService } from '../history/history.service';
 import { RatingOption } from '@pulp-fiction/models/history';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class WorksService {
     constructor(
         @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>,
         @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
-        private readonly usersService: UsersService, private readonly histService: HistoryService) {}
+        private readonly usersService: UsersService, private readonly histService: HistoryService,
+        private readonly notificationsService: NotificationsService) {}
     
     /* Work and Section creation*/
     
@@ -293,22 +295,24 @@ export class WorksService {
      * @param sectionId The section itself
      * @param pubStatus The new section publishing status
      */
-    async publishSection(user: any, workId: string, sectionId: string, pubStatus: models.PublishSection) {
+    async publishSection(user: any, workId: string, sectionId: string, pubStatus: models.PublishSection): Promise<documents.SectionDocument> {
         //@ts-ignore
-        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId}).where("audit.isDeleted", false);
+        const thisWork = await this.workModel.findOne({ "_id": workId, "author": user.sub, "sections": sectionId})
+                                             .where("audit.isDeleted", false);
 
         if (isNullOrUndefined(thisWork)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {
-            return await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }, {new: true}).where("audit.isDeleted", false).then(async sec => {
-                if (sec.published === true && pubStatus.oldPub === false) { // if newly published
-                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": sec.stats.words}});
-                } else if (sec.published === false && pubStatus.oldPub === true) { // if unpublished
-                    await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -sec.stats.words}});
-                }
-                return sec;
-            });
+        } 
+
+        const updatedSection = await this.sectionModel.findOneAndUpdate({ "_id": sectionId }, { "published": pubStatus.newPub }, {new: true}).where("audit.isDeleted", false);        
+        
+        if (updatedSection.published === true && pubStatus.oldPub === false) { // if newly published
+            await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": updatedSection.stats.words}});
+        } else if (updatedSection.published === false && pubStatus.oldPub === true) { // if unpublished
+            await this.workModel.findByIdAndUpdate(thisWork._id, {$inc: {"stats.totWords": -updatedSection.stats.words}});
         }
+
+        return updatedSection;        
     }
 
     /**
@@ -386,10 +390,17 @@ export class WorksService {
      * @param workId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(workId: string, authorId: string): Promise<void> {
-        //@ts-ignore
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved, "audit.publishedOn": new Date()})
-            .where("audit.isDeleted", false);
+    async approveWork(workId: string, authorId: string): Promise<void> {        
+        const workToApprove = await this.workModel.findOne({
+            _id: workId, 
+            //@ts-ignore
+            author: authorId,
+            'audit.isDeleted': false
+        });           
+        workToApprove.audit.published = models.ApprovalStatus.Approved;
+        workToApprove.audit.publishedOn = new Date();
+        await workToApprove.save();
+
         const workCount = await this.getWorkCount(authorId);
         await this.usersService.updateWorkCount(authorId, workCount);
     }

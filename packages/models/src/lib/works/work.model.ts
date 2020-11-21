@@ -22,8 +22,8 @@ export interface Work {
     readonly sections?: SectionInfo[];
     readonly audit: {
         readonly hasComments: boolean;
-        readonly published: ApprovalStatus;
-        readonly publishedOn: Date;
+        published: ApprovalStatus;
+        publishedOn: Date;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
