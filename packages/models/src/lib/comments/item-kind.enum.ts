@@ -1,5 +1,7 @@
 export enum ItemKind {
     Blog = 'Blog',
     Work = 'Work',
-    Content = 'Content'
+    BlogContent = 'BlogContent',
+    WorkContent = 'WorkContent',
+    NewsContent = 'NewsContent',
 }

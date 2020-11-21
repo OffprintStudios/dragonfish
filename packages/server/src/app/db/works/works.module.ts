@@ -5,13 +5,14 @@ import { UsersModule } from '../users/users.module';
 import { WorksSchema } from './works.schema';
 import { WorksService } from './works.service';
 import { HistoryModule } from '../history/history.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       {name: 'Work', schema: WorksSchema},
     ]),
-    UsersModule, HistoryModule
+    UsersModule, HistoryModule, NotificationsModule
   ],
   providers: [WorksService],
   exports: [WorksService]

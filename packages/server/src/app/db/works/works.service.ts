@@ -9,13 +9,16 @@ import * as documents from './models';
 import { UsersService } from '../users/users.service';
 import { HistoryService } from '../history/history.service';
 import { RatingOption } from '@pulp-fiction/models/history';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class WorksService {
     constructor(
         @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>,
-        private readonly usersService: UsersService, private readonly histService: HistoryService) {}
-
+        @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
+        private readonly usersService: UsersService, private readonly histService: HistoryService,
+        private readonly notificationsService: NotificationsService) {}
+  
     /**
      * Grabs all a user's works and returns them in an array. Used only
      * for a user's own works list.
@@ -147,10 +150,17 @@ export class WorksService {
      * @param workId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(workId: string, authorId: string): Promise<void> {
-        //@ts-ignore
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Approved, "audit.publishedOn": new Date()})
-            .where("audit.isDeleted", false);
+    async approveWork(workId: string, authorId: string): Promise<void> {        
+        const workToApprove = await this.workModel.findOne({
+            _id: workId, 
+            //@ts-ignore
+            author: authorId,
+            'audit.isDeleted': false
+        });           
+        workToApprove.audit.published = models.ApprovalStatus.Approved;
+        workToApprove.audit.publishedOn = new Date();
+        await workToApprove.save();
+
         const workCount = await this.getWorkCount(authorId);
         await this.usersService.updateWorkCount(authorId, workCount);
     }

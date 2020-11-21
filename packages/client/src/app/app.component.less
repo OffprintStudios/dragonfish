@@ -35,6 +35,11 @@ div.nav {
                   color: whitesmoke;
                   display: inline;
                   border-bottom: 1px solid whitesmoke;
+
+                  @media (max-width: 992px) { //--large
+                      display:inline-block;
+                  }
+
                   a.menu-icon {
                       color: whitesmoke;
 
@@ -47,6 +52,10 @@ div.nav {
                           position: relative;
                           width: 20px;
                           height: 20px;
+
+                          @media (max-width: 992px) { //--large
+                              margin-left: 0.5rem;
+                          }
                       }
   
                       span.stat-counter {
@@ -80,6 +89,20 @@ div.nav {
               img {
                 max-width: 300px;
                 max-height: 300px;
+
+                @media (max-width: 992px) { //--large
+                    max-width: 250px;
+                    max-height: 250px;
+                    margin-left: 1rem;
+                    margin-right: 1rem;
+                }
+
+                @media (max-width: 640px) { //--small
+                    max-width: 200px;
+                    max-height: 200px;
+                    margin-left: 0.5rem;
+                    margin-right: 0.5rem;
+                }
               }
 
               h2 {
@@ -119,7 +142,7 @@ nav {
   max-width: 80%;
   margin: 0 auto 0 auto;
 
-  @media (max-width: 1150px) {
+  @media (max-width: 1150px) { //--xlarge
       max-width: 95%;
   }
 
@@ -150,6 +173,22 @@ nav {
           margin-left: 0.25rem;
           margin-right: 0.25rem;
 
+          @media(max-width: 992px) { //--large
+              /* half laptop */
+              font-size: 15px;
+              padding: 5px 8px;
+          }
+
+          @media(max-width: 640px) { //--small
+              font-size: 10px;
+              padding: 5px 5px;
+          }
+
+          @media(max-width: 481px) { //--xsmall
+              font-size: 10px;
+              padding: 5px 5px;
+          }
+
           &:hover {
               color: whitesmoke;
               background-color: var(--site-accent);
@@ -169,6 +208,14 @@ nav {
                   width: 20px;
                   top: 0.25rem;
                   stroke-width: 1;
+              }
+
+              @media(max-width: 640px) { //--small
+                  margin-right: 0.5rem;
+              }
+
+              @media(max-width: 481px) { //--xsmall
+                  margin-right: 0.25rem;
               }
           }
       }

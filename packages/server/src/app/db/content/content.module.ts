@@ -10,12 +10,13 @@ import { SectionsModule } from '../sections/sections.module';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@pulp-fiction/models/content';
 import { UsersModule } from '../users/users.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { ProseService } from './prose/prose.service';
 import { PoetryService } from './poetry/poetry.service';
 
 @Module({
   imports: [
-    UsersModule, SectionsModule,
+    UsersModule, NotificationsModule, SectionsModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'Content',
