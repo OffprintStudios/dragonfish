@@ -25,7 +25,7 @@ export class PoetryService {
   }
 
   public editPoetry(contentId: string, poetryInfo: CreatePoetry) {
-    return this.http.patch<void>(`${this.url}/edit-poetry?contentId=${contentId}`, poetryInfo, {observe: 'response', withCredentials: true})
+    return this.http.patch<PoetryContent>(`${this.url}/edit-poetry?contentId=${contentId}`, poetryInfo, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {

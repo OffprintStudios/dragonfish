@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
-import { PoetryContent, PubStatus, ContentKind } from '@pulp-fiction/models/content';
+import { PoetryContent, PubStatus, ContentKind, PoetryForm } from '@pulp-fiction/models/content';
 import { SectionForm } from '@pulp-fiction/models/sections';
 import { UploadCoverartComponent } from '../../../../components/modals/works';
 import { MyStuffService, SectionsService } from '../../../../services/user';
@@ -23,6 +23,7 @@ export class ViewPoetryComponent implements OnInit {
     loadingSections = false;
     editMode = false;
     addEditIcon = false;
+    forms = PoetryForm;
 
     selectedSection: SectionItem;
 
@@ -119,7 +120,7 @@ export class ViewPoetryComponent implements OnInit {
     }
 
     editWork() {
-        this.router.navigate(['/my-stuff/edit-prose'], {queryParams: {contentId: this.myPoetry._id, kind: this.myPoetry.kind}, queryParamsHandling: 'merge'});
+        this.router.navigate(['/my-stuff/edit-poetry'], {queryParams: {contentId: this.myPoetry._id, kind: this.myPoetry.kind}, queryParamsHandling: 'merge'});
     }
 
     uploadCoverart() {

@@ -41,8 +41,8 @@ export class PoetryService {
      * @param poetryId The poetry ID
      * @param poetryInfo The poetry info
      */
-    async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<void> {
-        return await this.poetryModel.updateOne({'_id': poetryId, 'author': user.sub}, {
+    async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
+        return await this.poetryModel.findOneAndUpdate({'_id': poetryId, 'author': user.sub}, {
             'title': await sanitizeHtml(poetryInfo.title),
             'desc': await sanitizeHtml(poetryInfo.desc),
             'body': await sanitizeHtml(poetryInfo.body),
@@ -51,7 +51,7 @@ export class PoetryService {
             'meta.genres': poetryInfo.genres,
             'meta.rating': poetryInfo.rating,
             'meta.status': poetryInfo.status
-        });
+        }, {new: true});
     }
 
     /**

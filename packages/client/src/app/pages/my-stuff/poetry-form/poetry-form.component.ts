@@ -3,8 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { WorkKind, CreatePoetry, PoetryForm, Genres, ContentRating, WorkStatus } from '@pulp-fiction/models/content';
+import { WorkKind, CreatePoetry, PoetryForm, Genres, 
+  ContentRating, WorkStatus, PoetryContent } from '@pulp-fiction/models/content';
 import { PoetryService } from '../../../services/user';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'poetry-form',
@@ -13,6 +15,8 @@ import { PoetryService } from '../../../services/user';
 })
 export class PoetryFormComponent implements OnInit {
     formTitle = `Create New Poetry`;
+    currPoetry: PoetryContent;
+    editMode = false;
 
     categories = WorkKind;
     forms = PoetryForm;
@@ -32,9 +36,28 @@ export class PoetryFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private poetryService: PoetryService, private snackBar: MatSnackBar, private location: Location) {}
+    constructor(private poetryService: PoetryService, private snackBar: MatSnackBar, private location: Location,
+      private route: ActivatedRoute) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+      const data = this.route.snapshot.data.poetryData as PoetryContent;
+      if (data) {
+        this.currPoetry = data;
+        this.editMode = true;
+        this.formTitle = `Editing "${this.currPoetry.title}"`
+        this.isCollection = this.currPoetry.meta.collection;
+        this.poetryForm.setValue({
+          title: this.currPoetry.title,
+          desc: this.currPoetry.desc,
+          body: this.currPoetry.body,
+          category: this.currPoetry.meta.category,
+          form: this.currPoetry.meta.form,
+          genres: this.currPoetry.meta.genres,
+          rating: this.currPoetry.meta.rating,
+          status: this.currPoetry.meta.status
+        });
+      }
+    }
 
     get fields() { return this.poetryForm.controls; }
 
@@ -68,8 +91,24 @@ export class PoetryFormComponent implements OnInit {
           status: this.fields.status.value
       };
 
-      this.poetryService.createPoetry(poetryInfo).subscribe(() => {
+      if (this.editMode === false) {
+        this.poetryService.createPoetry(poetryInfo).subscribe(() => {
           this.location.back();
-      });
+        });
+      } else {
+        this.poetryService.editPoetry(this.currPoetry._id, poetryInfo).subscribe(poetry => {
+          this.currPoetry = poetry;
+          this.poetryForm.setValue({
+            title: this.currPoetry.title,
+            desc: this.currPoetry.desc,
+            body: this.currPoetry.body,
+            category: this.currPoetry.meta.category,
+            form: this.currPoetry.meta.form,
+            genres: this.currPoetry.meta.genres,
+            rating: this.currPoetry.meta.rating,
+            status: this.currPoetry.meta.status
+          });
+        })
+      }
   }
 }
