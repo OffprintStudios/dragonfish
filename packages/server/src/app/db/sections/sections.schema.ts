@@ -6,7 +6,7 @@ import { Section, AuthorsNotePos } from '@pulp-fiction/models/sections';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'sections'})
 export class SectionsDocument extends Document implements Section {
-    @Prop({default: generate()})
+    @Prop({type: String})
     readonly _id: string;
 
     @Prop({trim: true, required: true})
@@ -43,10 +43,10 @@ export class SectionsDocument extends Document implements Section {
     @Prop({default: false})
     usesNewEditor: boolean; // this gets removed after QuillJS is nuked from orbit
 
-    @Prop({default: Date.now()})
+    @Prop()
     createdAt: Date;
 
-    @Prop({default: Date.now()})
+    @Prop()
     updatedAt: Date;
 }
 

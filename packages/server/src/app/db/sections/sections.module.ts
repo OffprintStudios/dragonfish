@@ -32,9 +32,6 @@ import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter
               : await countQuillWords(await sanitizeHtml(this.body));
             this.set('stats.words', wordCount);
 
-            this.set('createdAt', Date.now());
-            this.set('updatedAt', Date.now());
-
             return next();
           });
           return schema;
