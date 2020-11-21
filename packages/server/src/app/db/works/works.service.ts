@@ -15,9 +15,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 export class WorksService {
     constructor(
         @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>,
-        @InjectModel('Section') private readonly sectionModel: Model<documents.SectionDocument>,
-        private readonly usersService: UsersService, private readonly histService: HistoryService,
-        private readonly notificationsService: NotificationsService) {}
+        private readonly usersService: UsersService, private readonly histService: HistoryService) {}
   
     /**
      * Grabs all a user's works and returns them in an array. Used only
