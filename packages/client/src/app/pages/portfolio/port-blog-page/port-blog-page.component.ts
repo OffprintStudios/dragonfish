@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../services/auth';
 import { BlogsService, PortfolioService } from '../../../services/content';
-import { EditBlogComponent } from '../../../components/modals/blogs';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ItemKind } from '@pulp-fiction/models/comments';
@@ -95,9 +94,6 @@ export class PortBlogPageComponent implements OnInit {
    * Opens the edit form for this blog.
    */
   openEditForm() {
-    const dialogRef = this.dialog.open(EditBlogComponent, {data: {blogData: this.blogData}});
-    dialogRef.afterClosed().subscribe(() => {
-      this.fetchData();
-    });
+    
   }
 }
