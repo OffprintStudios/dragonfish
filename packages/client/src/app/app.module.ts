@@ -42,7 +42,6 @@ import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
 import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { WorkFormComponent } from './components/content-forms';
-import { CreateBlogComponent, PreviewBlogComponent, EditBlogComponent } from './components/modals/blogs';
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
@@ -94,8 +93,8 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, HistoryPageComponent, EditBlogComponent,
-    PortfolioComponent, PortHomeComponent, PortBlogPageComponent, NewWorkComponent, EditWorkComponent, WorkPageComponent, 
+    SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
+    NewWorkComponent, EditWorkComponent, WorkPageComponent, 
     SectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
@@ -145,8 +144,7 @@ const toolbarOptions = [
     SlugifyPipe
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, CreateBlogComponent, PreviewBlogComponent, EditBlogComponent,
-    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, CreateBlogComponent,
+    UserMenuComponent, SearchMenuComponent, NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, 
     AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
