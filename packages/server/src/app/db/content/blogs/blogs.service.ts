@@ -30,6 +30,7 @@ export class BlogsService {
             'author': user.sub,
             'title': await sanitizeHtml(blogInfo.title),
             'body': await sanitizeHtml(blogInfo.body),
+            'meta.rating': blogInfo.rating,
             'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
         });
 
@@ -55,6 +56,7 @@ export class BlogsService {
         return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
             'title': await sanitizeHtml(blogInfo.title),
             'body': await sanitizeHtml(blogInfo.body),
+            'meta.rating': blogInfo.rating,
             'stats.words': wordcount
         }, {new: true});
     }
