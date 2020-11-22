@@ -10,6 +10,7 @@ import { Constants, Title } from '../../../shared';
 import { PortBlogs } from '../../../models/site';
 import { MatDialog } from '@angular/material/dialog';
 import { BlogsService } from '../../../services/content';
+import { BlogsContentModel } from '@pulp-fiction/models/content';
 
 @Component({
     selector: 'port-blogs',
@@ -19,15 +20,9 @@ import { BlogsService } from '../../../services/content';
 export class BlogsComponent implements OnInit {
     currentUser: FrontendUser;
     portUser: FrontendUser;
-    blogsData: PaginateResult<Blog>
-    userBlogsData: PaginateResult<Blog>
+    blogsData: PaginateResult<BlogsContentModel>
 
     pageNum = 1;
-    listView = false;
-
-    searchBlogs = new FormGroup({
-        query: new FormControl('')
-    });
 
     constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private dialog: MatDialog, private blogsService: BlogsService) {
         this.authService.currUser.subscribe(x => {
@@ -40,9 +35,7 @@ export class BlogsComponent implements OnInit {
         Title.setThreePartTitle(this.portUser.username, Constants.BLOGS);
 
         this.route.data.subscribe(data => {
-            const feedData = data.feedData as PortBlogs;
-            this.blogsData = feedData.blogs;
-            this.userBlogsData = feedData.userBlogs;
+            this.blogsData = data.feedData as PaginateResult<BlogsContentModel>;
         });
     }
 
