@@ -10,7 +10,7 @@ import { ContentKind } from '@pulp-fiction/models/content';
   providedIn: 'root'
 })
 export class ContentService {
-  private url: `/api/content`;
+  private url = `/api/content`;
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
@@ -33,10 +33,13 @@ export class ContentService {
       route = `${this.url}/fetch-all-published?pageNum=${pageNum}&kind=${kind}`;
     }
 
+    console.log(route);
+
     return this.http.get<any>(route, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {
+        console.log(err);
         this.snackBar.open(`Something went wrong fetching this content. Try again in a little bit.`);
         return throwError(err);
       }));
