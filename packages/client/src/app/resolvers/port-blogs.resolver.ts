@@ -1,25 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { BlogsContentModel, ContentKind } from '@pulp-fiction/models/content';
 import { Observable, zip, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { PortBlogs } from '../models/site';
-import { AuthService } from '../services/auth';
-import { BlogsService, PortfolioService } from '../services/content';
+import { BlogsService, ContentService } from '../services/content';
 
 @Injectable()
-export class PortBlogsResolver implements Resolve<PortBlogs> {
-    currentUser: FrontendUser
+export class PortBlogsResolver implements Resolve<BlogsContentModel[]> {
     pageNum: number = 1;
 
-    constructor (private portService: PortfolioService, private blogsService: BlogsService, private authService: AuthService) {
-        this.authService.currUser.subscribe(x => {
-            this.currentUser = x;
-        });
-    }
+    constructor (private contentService: ContentService, private blogsService: BlogsService) {}
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PortBlogs> {
+    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<BlogsContentModel[]> {
         const userId = route.parent.paramMap.get('id');
         const pageNum = +route.queryParamMap.get('page');
 
@@ -27,28 +19,6 @@ export class PortBlogsResolver implements Resolve<PortBlogs> {
             this.pageNum = pageNum;
         }
 
-        const blogsList = this.portService.getBlogList(userId, this.pageNum);
-        const userBlogs = this.blogsService.fetchUserBlogs(this.pageNum);
-
-        if (this.currentUser) {
-            const userBlogsList = this.blogsService.fetchUserBlogs(this.pageNum);
-
-            return zip(blogsList, userBlogsList).pipe(map(value => {
-                const portBlogs: PortBlogs = {
-                    blogs: value[0],
-                    userBlogs: value[1]
-                };
-    
-                return portBlogs;
-            }));
-        } else {
-            return zip(blogsList, of(null)).pipe(map(value => {
-                const portBlogs: PortBlogs = {
-                    blogs: value[0],
-                    userBlogs: value[1]
-                };
-                return portBlogs;
-            }));
-        }
+        return this.contentService.fetchAllPublished(this.pageNum, ContentKind.BlogContent, userId) as Observable<BlogsContentModel[]>;
     }
 }

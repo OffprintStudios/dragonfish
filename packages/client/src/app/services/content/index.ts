@@ -8,3 +8,4 @@ export { CommentsService } from './comments.service';
 export { MessagesService } from './messages.service';
 export { NewsService } from './news.service';
 export { BrowseService } from './browse.service';
+export { ContentService } from './content.service';
