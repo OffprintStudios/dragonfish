@@ -4,9 +4,8 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
-import { BlogForm, BlogsContentModel } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, ContentRating } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
-import { MyStuffService } from 'packages/client/src/app/services/user';
 
 @Component({
   selector: 'pulp-fiction-blog-form',
@@ -17,6 +16,7 @@ export class BlogFormComponent implements OnInit {
   currBlog: BlogsContentModel;
   editMode = false;
   createBlogMode = true;
+  ratings = ContentRating;
 
   formTitle: string = `Create a Blog`;
 
@@ -36,7 +36,8 @@ export class BlogFormComponent implements OnInit {
       this.formTitle = `Viewing "${this.currBlog.title}"`;
       this.blogForm.setValue({
         title: this.currBlog.title,
-        body: this.currBlog.body
+        body: this.currBlog.body,
+        rating: this.currBlog.meta.rating
       });
     } else {
       this.createBlogMode = true;
@@ -86,7 +87,8 @@ export class BlogFormComponent implements OnInit {
         this.currBlog = data;
         this.blogForm.setValue({
           title: this.currBlog.title,
-          body: this.currBlog.body
+          body: this.currBlog.body,
+          rating: this.currBlog.meta.rating
         });
         this.editMode = false;
       });

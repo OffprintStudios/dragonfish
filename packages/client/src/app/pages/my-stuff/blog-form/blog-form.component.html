@@ -46,11 +46,23 @@
             <button class="form-button" (click)="submitForm()">Save</button>
         </div>
         <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Title</mat-label>
-                <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
-            </mat-form-field>
-    
+            <div class="row">
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                    </mat-form-field>
+                </div>
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Rating</mat-label>
+                        <mat-select [formControlName]="'rating'">
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
             <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
         </form>
     </div>
@@ -68,10 +80,22 @@
     
         <ng-container *ngIf="editMode; else previewBlog">
             <form [formGroup]="blogForm" (ngSubmit)="submitForm()" *ngIf="editMode">
-                <mat-form-field style="width: 100%;" appearance="outline">
-                    <mat-label>Title</mat-label>
-                    <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
-                </mat-form-field>
+                <div class="row">
+                    <div class="six columns">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Title</mat-label>
+                            <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                        </mat-form-field>
+                    </div>
+                    <div class="six columns">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Rating</mat-label>
+                            <mat-select [formControlName]="'rating'">
+                                <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
         
                 <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
             </form>
@@ -80,6 +104,7 @@
         <ng-template #previewBlog>
             <div class="post-container" *ngIf="currBlog">
                 <div class="post-header">
+                    <rating-icon [rating]="currBlog.meta.rating"></rating-icon>
                     <h1>{{ currBlog.title }}</h1>
                     <div class="post-cat">
                         <div class="info">
