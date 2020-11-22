@@ -39,7 +39,6 @@ export class ContentService {
       .pipe(map(res => {
         return res.body;
       }), catchError(err => {
-        console.log(err);
         this.snackBar.open(`Something went wrong fetching this content. Try again in a little bit.`);
         return throwError(err);
       }));
