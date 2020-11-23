@@ -1,38 +1,31 @@
-<ng-container *ngIf="loading">
-    <div class="loader">
-        <div class="lds-dual-ring"></div>
-    </div>
-</ng-container>
-
-<div class="blog-container" *ngIf="!loading">
-    <div class="content-controls-container" *ngIf="currentUserIsSame(); else notThisUser">
-        <a class="meta" title="Edit" (click)="openEditForm()"><i-feather name="edit-3"></i-feather></a>
-        <a class="meta" title="Delete" (click)="askDelete()"><i-feather name="trash-2"></i-feather></a>
-    </div>
-    <ng-template #notThisUser>
-        <div class="content-controls-container" *ngIf="currentUser">
-            <a class="meta" title="Flag Content"><i-feather name="flag"></i-feather></a>
+<div class="post-container">
+    <div class="post-header">
+        <rating-icon [rating]="blogData.meta.rating"></rating-icon>
+        <h1>{{ blogData.title }}</h1>
+        <div class="post-cat">
+            <div class="info">
+                <span>{{ blogData.audit.publishedOn | date:'fullDate' }}</span>
+                <span class="divider" *ngIf="blogData.audit.publishedOn">//</span>
+                <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</span>
+                <span class="divider">//</span>
+                <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span>
+            </div>
+            <div class="post-tools">
+                <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
+            </div>
         </div>
-    </ng-template>
-    <div class="blog-header">
-        <h1 class="title">{{ blogData.title }}</h1>
-        <div style="text-align: center;">
-            <h2 class="subtitle"><i-feather name="calendar"></i-feather>{{ blogData.createdAt | date:'short' }}</h2>
-            <span>//</span>
-            <h2 class="subtitle">{{ blogData.stats.views }} view{{ blogData.stats.views | pluralize }}</h2>
-            <span>//</span>
-            <h2 class="subtitle">{{ blogData.stats.words }} word{{ blogData.stats.words | pluralize }}</h2>
-       </div>
     </div>
-    <div class="blog-body">
-        <ng-container *ngIf="!blogData.usesNewEditor">
-            <quill-view [content]="blogData.body" format="json"></quill-view>
-        </ng-container>
-        <ng-container *ngIf="blogData.usesNewEditor">
-            <div [innerHtml]="blogData.body | safeHtml"></div>
-        </ng-container>
+    <div class="post-body">
+        <div class="html-description" [innerHtml]="blogData.body | safeHtml"></div>
     </div>
 </div>
+
+<mat-menu xPosition="before" #moreItems="matMenu">
+    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+</mat-menu>
 
 <ng-container *ngIf="!loading">
     <comments [itemId]="blogData._id"

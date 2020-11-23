@@ -4,9 +4,8 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
-import { BlogForm, BlogsContentModel } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, ContentRating } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
-import { MyStuffService } from 'packages/client/src/app/services/user';
 
 @Component({
   selector: 'pulp-fiction-blog-form',
@@ -17,12 +16,14 @@ export class BlogFormComponent implements OnInit {
   currBlog: BlogsContentModel;
   editMode = false;
   createBlogMode = true;
+  ratings = ContentRating;
 
   formTitle: string = `Create a Blog`;
 
   blogForm = new FormGroup({
     title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-    body: new FormControl('', [Validators.required, Validators.minLength(3)])
+    body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    rating: new FormControl(null, [Validators.required])
   });
 
   constructor(private route: ActivatedRoute, private blogsService: BlogsService, private location: Location, private snackBar: MatSnackBar) { }
@@ -35,7 +36,8 @@ export class BlogFormComponent implements OnInit {
       this.formTitle = `Viewing "${this.currBlog.title}"`;
       this.blogForm.setValue({
         title: this.currBlog.title,
-        body: this.currBlog.body
+        body: this.currBlog.body,
+        rating: this.currBlog.meta.rating
       });
     } else {
       this.createBlogMode = true;
@@ -65,19 +67,15 @@ export class BlogFormComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.fields.title.invalid) {
-      this.snackBar.open(`Blog titles must be between 3 and 100 characters.`)
-      return;
-    }
-
-    if (this.fields.body.invalid) {
-      this.snackBar.open(`Blog body text must be at least 3 characters.`)
+    if (this.blogForm.invalid) {
+      this.snackBar.open(`Something's not right with the data you entered.`)
       return;
     }
 
     const formData: BlogForm = {
       title: this.fields.title.value,
-      body: this.fields.body.value
+      body: this.fields.body.value,
+      rating: this.fields.rating.value
     };
 
     if (this.createBlogMode) {
@@ -89,7 +87,8 @@ export class BlogFormComponent implements OnInit {
         this.currBlog = data;
         this.blogForm.setValue({
           title: this.currBlog.title,
-          body: this.currBlog.body
+          body: this.currBlog.body,
+          rating: this.currBlog.meta.rating
         });
         this.editMode = false;
       });

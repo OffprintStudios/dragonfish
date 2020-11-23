@@ -73,21 +73,12 @@ export class ContentService {
      * @param pageNum The current page
      * @param kind The kind of document to fetch
      */
-    async fetchAllPublished(pageNum: number, kind: ContentKind): Promise<PaginateResult<ContentDocument>> {
-        let query = {'kind': kind, 'audit.isDeleted': false};
+    async fetchAllPublished(pageNum: number, kind: ContentKind, userId?: string): Promise<PaginateResult<ContentDocument>> {
+        let query = {'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Published};
         let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
-        switch (kind) {
-            case ContentKind.BlogContent:
-                query['audit.published'] = true;
-                break;
-            case ContentKind.PoetryContent || ContentKind.ProseContent:
-                // change query parameters for works
-                break;
-            case ContentKind.NewsContent:
-                query['audit.published'] = true;
-                break;
-            default:
-                throw new BadRequestException(`The document kind you requested does not exist.`);
+        
+        if (userId) {
+            query['author'] = userId;
         }
 
         return await this.contentModel.paginate(query, paginateOptions);

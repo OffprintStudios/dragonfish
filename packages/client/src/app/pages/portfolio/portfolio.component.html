@@ -66,12 +66,7 @@
                         <span class="link-icon">
                             <i-feather name="feather"></i-feather>
                         </span>
-                        <ng-container *ngIf="currentUser && currentUserIsSame(); else notMyWorks">
-                            My Works
-                        </ng-container>
-                        <ng-template #notMyWorks>
-                            Works
-                        </ng-template>
+                        Works
                         <i-feather class="end-point" name="chevron-right"></i-feather>
                     </a>
                 </li>
@@ -80,12 +75,7 @@
                         <span class="link-icon">
                             <i-feather name="coffee"></i-feather>
                         </span>
-                        <ng-container *ngIf="currentUser && currentUserIsSame(); else notMyBlogs">
-                            My Blogs
-                        </ng-container>
-                        <ng-template #notMyBlogs>
-                            Blog
-                        </ng-template>
+                        Blogs
                         <i-feather class="end-point" name="chevron-right"></i-feather>
                     </a>
                 </li>
