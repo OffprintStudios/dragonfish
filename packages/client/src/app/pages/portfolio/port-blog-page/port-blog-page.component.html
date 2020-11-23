@@ -1,4 +1,31 @@
+<div class="post-container">
+    <div class="post-header">
+        <rating-icon [rating]="blogData.meta.rating"></rating-icon>
+        <h1>{{ blogData.title }}</h1>
+        <div class="post-cat">
+            <div class="info">
+                <span>{{ blogData.audit.publishedOn | date:'fullDate' }}</span>
+                <span class="divider" *ngIf="blogData.audit.publishedOn">//</span>
+                <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</span>
+                <span class="divider">//</span>
+                <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span>
+            </div>
+            <div class="post-tools">
+                <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
+            </div>
+        </div>
+    </div>
+    <div class="post-body">
+        <div class="html-description" [innerHtml]="blogData.body | safeHtml"></div>
+    </div>
+</div>
 
+<mat-menu #moreItems="matMenu">
+    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+</mat-menu>
 
 <ng-container *ngIf="!loading">
     <comments [itemId]="blogData._id"
