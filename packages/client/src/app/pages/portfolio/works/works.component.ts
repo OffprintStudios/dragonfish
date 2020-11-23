@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
+import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { Work, ApprovalStatus, Categories } from '@pulp-fiction/models/works';
-import { EditWorkComponent } from '../../../components/modals/works';
 import { PortWorks } from '../../../models/site';
 import { QueueService } from '../../../services/admin';
 import { AuthService } from '../../../services/auth';
@@ -22,11 +21,11 @@ import { calculateApprovalRating } from '../../../util/functions';
 export class WorksComponent implements OnInit {
     currentUser: FrontendUser;
     portUser: FrontendUser;
-    worksData: PaginateResult<Work>
-    userWorksData: PaginateResult<Work>
+    proseData: PaginateResult<ProseContent>;
+    poetryData: PaginateResult<PoetryContent>;
     pageNum = 1;
 
-    listView = false;
+    poetryView = false;
     addingNewWork = false;
 
     searchWorks = new FormGroup({
@@ -46,8 +45,8 @@ export class WorksComponent implements OnInit {
 
         this.route.data.subscribe(data => {
             const feedData = data.feedData as PortWorks;
-            this.worksData = feedData.works;
-            this.userWorksData = feedData.userWorks;
+            this.proseData = feedData.prose;
+            this.poetryData = feedData.poetry;
         });
     }
 
@@ -80,137 +79,29 @@ export class WorksComponent implements OnInit {
      * Switches the view
      */
     switchView() {
-        if (this.listView === true) {
-            this.listView = false;
+        if (this.poetryView === true) {
+            this.poetryView = false;
             this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
         } else {
-            this.listView = true;
+            this.poetryView = true;
             this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
         }
     }
 
-      /**
-   * Toggles the new work form.
-   */
-  toggleNewWorkForm() {
-    if (this.addingNewWork === true) {
-      this.addingNewWork = false;
-    } else {
-      this.addingNewWork = true;
-    }
-  }
-
-  /**
-   * Closes the form if adding the work succeeded.
-   * 
-   * @param event Success check
-   */
-  onSubmit(event: boolean) {
-    if (event === true) {
-      this.addingNewWork = false;
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-    }
-  }
-
-  /**
-   * Cancels adding a new work
-   * 
-   * @param event The cancel event
-   */
-  cancelNewWork(event: boolean) {
-    if (event === true) {
-      this.addingNewWork = false;
-    }
-  }
-
     /**
-     * Calculates a work's approval rating.
-     * 
-     * @param likes Number of likes
-     * @param dislikes Number of dislikes
-     */
-    calcApprovalRating(likes: number, dislikes: number) {
-        return calculateApprovalRating(likes, dislikes);
-    }
-
-    /**
-     * Checks to see if the works array is empty.
-     */
-    isWorksEmpty() {
-        if (this.worksData.totalDocs === 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-  /**
-   * Confirms that the user really wants to delete their work. If true, send the request
-   * to the backend. If false, do nothing.
-   * 
-   * @param workId The ID of the work we're deleting
-   */
-  askDelete(workId: string) {
-    if (confirm('Are you sure you want to delete this work? This action is irreversible.')) {
-      this.worksService.deleteWork(workId).subscribe(() => {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-        return;
-      }, err => {
-        console.log(err);
-        return;
-      });
-    } else {
-      return;
-    }
-  }
-
-  /**
-   * Returns true if the approval status of a work is Approved. Otherwise, returns false.
-   * 
-   * TEMPORARY FUNCTION ONLY. FUTURE UPDATE WILL INCLUDE MULTIPLE STATUS SUPPORT.
-   * 
-   * @param approvalStatus The work's approval status
-   */
-  checkStatus(approvalStatus: ApprovalStatus) {
-    if (ApprovalStatus[approvalStatus] === ApprovalStatus.Approved) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Submits a work to the queue.
-   * 
-   * @param work The work we're submitting.
-   */
-  submitWorkToQueue(work: Work) {
-    if (work.meta.category !== Categories.Poetry && work.stats.totWords < 750) {
-      alert(`Works must have a total published word count of at least 750 words.`);
-      return;
-    }
-
-    this.queueService.submitWork(work._id).subscribe(() => {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-    });
-  }
-
-    /**
-   * Opens the edit work form modal.
-   * 
-   * @param work The work to edit
-   */
-  openEditWorkForm(work: Work) {
-    const editWorkRef = this.dialog.open(EditWorkComponent, {data: {workData: work}});
-    editWorkRef.afterClosed().subscribe(() => {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
-    });
-  }
-
-    /**
-     * Searches through a user's works
+     * TODO: implement search functionality here
      */
     searchFor() {
-        return;
+      return;
+    }
+
+    /**
+     * Calculates the approval rating based on number of likes and dislikes.
+     * 
+     * @param likes The number of likes
+     * @param dislikes The number of dislikes
+     */
+    calcApprovalRating(likes: number, dislikes: number) {
+      return calculateApprovalRating(likes, dislikes);
     }
 }

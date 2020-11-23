@@ -1,15 +1,15 @@
-<div class="tools" *ngIf="currentUser && currentUserIsSame()">
+<div class="tools">
     <div class="tool-buttons">
-        <ng-container *ngIf="listView; else galleryView">
-            <button matRipple class="tool left" (click)="switchView()"><i-feather name="grid"></i-feather>Gallery</button>
-            <button matRipple class="tool mid" (click)="toggleNewWorkForm()"><i-feather name="plus"></i-feather>Work</button>
-            <button matRipple class="tool end"><i-feather name="filter"></i-feather>Filter</button>
+        <ng-container *ngIf="poetryView; else proseView">
+            <button matRipple class="tool left" (click)="switchView()"><i-feather name="book-open"></i-feather>Prose</button>
+            <button matRipple class="tool end active"><i-feather name="feather"></i-feather>Poetry</button>
         </ng-container>
-        <ng-template #galleryView>
-            <button matRipple class="tool" (click)="switchView()"><i-feather name="list"></i-feather>List</button>
+        <ng-template #proseView>
+            <button matRipple class="tool left active"><i-feather name="book-open"></i-feather>Prose</button>
+            <button matRipple class="tool end" (click)="switchView()"><i-feather name="feather"></i-feather>Poetry</button>
         </ng-template>
     </div>
-    <form [formGroup]="searchWorks" class="tool-search" (ngSubmit)="searchFor()" *ngIf="listView">
+    <form [formGroup]="searchWorks" class="tool-search" (ngSubmit)="searchFor()">
         <div class="search-bar">
             <input type="text" formControlName="query" class="search-input" placeholder="Search works...">
             <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
@@ -17,91 +17,26 @@
     </form>
 </div>
 
-<ng-container *ngIf="listView; else showGallery">
-    <div class="new-work-form">
-        <work-form [username]="currentUser.username" [toggle]="addingNewWork" (onSubmit)="onSubmit($event)" (onCancel)="cancelNewWork($event)"></work-form>
-    </div>
-    <ng-container *ngIf="userWorksData !== null">
-        <div class="work-list" *ngIf="userWorksData.totalDocs !== 0; else noWorks">
-            <div class="work-item" *ngFor="let work of userWorksData.docs | paginate: {
-                itemsPerPage: userWorksData.limit,
-                currentPage: pageNum,
-                totalItems: userWorksData.totalDocs
-            }">
-                <div class="work-check" [ngSwitch]="work.audit.published">
-                    <button title="Revoke submission" class="check-published" *ngSwitchCase="'Approved'">
-                        <i-feather name="book-open"></i-feather>
-                    </button>
-                    <button title="Pending" class="check-unpublished" *ngSwitchCase="'Pending'">
-                        <i-feather name="clock"></i-feather>
-                    </button>
-                    <button title="Rejected" class="check-unpublished" (click)="submitWorkToQueue(work)" *ngSwitchCase="'Rejected'">
-                        <i-feather name="x"></i-feather>
-                    </button>
-                    <button title="Submit" class="check-unpublished" (click)="submitWorkToQueue(work)" *ngSwitchDefault>
-                        <i-feather name="book"></i-feather>
-                    </button>
-                </div>
-                <img class="work-coverart" *ngIf="work.meta.coverArt" [src]="work.meta.coverArt">
-                <div class="work-info">
-                    <div class="info">
-                        <ng-container [ngSwitch]="work.meta.rating">
-                            <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
-                            <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                            <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                            <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
-                        </ng-container>
-                        <h3><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h3>
-                        <br>
-                        <h4>{{ work.meta.category | fixCategories }}</h4><span>//</span>
-                        <h4>{{ work.meta.genres | separateEntities:work.meta.category }}</h4><span *ngIf="work.meta.fandoms.length > 0">//</span>
-                        <h4 *ngIf="work.meta.fandoms.length > 0">{{ work.meta.fandoms | separateEntities }}</h4>
-                        <div class="stats">                                
-                            <h4>{{ work.meta.status }}</h4><span>//</span>
-                            <h4 title="Likes"><i-feather name="thumbs-up"></i-feather>{{ work.stats.likes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Dislikes"><i-feather name="thumbs-down"></i-feather>{{ work.stats.dislikes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="work-control-buttons">
-                    <button matTooltip="Edit" matTooltipClass="offprint-tooltip" class="work-controls" style="border-right: 0;" (click)="openEditWorkForm(work)"><i-feather name="edit-3"></i-feather></button>
-                    <button matTooltip="Delete" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="askDelete(work._id)"><i-feather name="trash-2"></i-feather></button>
-                </div>
-            </div>
-        </div>
-        <ng-template #noWorks>
-            <h4 style="text-align: center;">You haven't created any works yet.</h4>
-        </ng-template>
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-    </ng-container>
-</ng-container>
-<ng-template #showGallery>
-    <div class="works-feed" *ngIf="worksData.totalDocs !== 0; else noGalleryWorks">
-        <ng-container *ngFor="let work of worksData.docs | paginate: {
-            itemsPerPage: worksData.limit,
+<ng-container *ngIf="poetryView; else showProse">
+    <div class="works-feed" *ngIf="poetryData.totalDocs !== 0; else noGalleryWorks">
+        <ng-container *ngFor="let work of poetryData.docs | paginate: {
+            itemsPerPage: poetryData.limit,
             currentPage: pageNum,
-            totalItems: worksData.totalDocs
+            totalItems: poetryData.totalDocs
         }">
             <div class="work-container">
                 <!--Header-->
                 <div class="work-header">
-                    <ng-container [ngSwitch]="work.meta.rating">
-                        <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
-                        <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                        <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                        <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
-                    </ng-container>                            
+                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                      
                     <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
                     <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
-                    <div class="approval" title="Approval Rating">
-                        <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%
-                    </div>
                     <div class="category-genre">
-                        {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
+                        <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                        <span class="divider">//</span>
+                        <span class="tag">{{ work.meta.category }}</span>
+                        <span class="divider">//</span>
+                        <span class="tag">{{ work.meta.genres | separateEntities }}</span>
+                        <span class="tag right"><i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%</span>
                     </div>                            
                 </div>
 
@@ -111,7 +46,7 @@
                         <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
                     </div>
                     <div>
-                        {{ work.shortDesc }}
+                        {{ work.desc }}
                     </div>
                 </div>
 
@@ -119,8 +54,8 @@
                 <div class="work-stats">
                     <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
                     <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
-                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | abbreviate }}<span>//</span>
-                    <i-feather name="calendar" title="Created At"></i-feather>{{ work.createdAt | date:'shortDate' }}<span>//</span>
+                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
+                    <i-feather name="calendar" title="Published On"></i-feather>{{ work.meta.publishedOn | date:'shortDate' }}<span>//</span>
                     {{ work.meta.status }}
                 </div>
             </div>
@@ -129,7 +64,63 @@
     <ng-template #noGalleryWorks>
         <div class="empty">
             <h3>There's nothing here...</h3>
-            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to list view and add a new work?</p>
+            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new poetry?</p>
+            <ng-template #notSameUser>
+                <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+            </ng-template>
+        </div>
+    </ng-template>
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+</ng-container>
+
+<ng-template #showProse>
+    <div class="works-feed" *ngIf="proseData.totalDocs !== 0; else noGalleryWorks">
+        <ng-container *ngFor="let work of proseData.docs | paginate: {
+            itemsPerPage: proseData.limit,
+            currentPage: pageNum,
+            totalItems: proseData.totalDocs
+        }">
+            <div class="work-container">
+                <!--Header-->
+                <div class="work-header">
+                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                      
+                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
+                    <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
+                    <div class="category-genre">
+                        <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                        <span class="divider">//</span>
+                        <span class="tag">{{ work.meta.category }}</span>
+                        <span class="divider">//</span>
+                        <span class="tag">{{ work.meta.genres | separateEntities }}</span>
+                        <span class="tag right"><i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%</span>
+                    </div>                            
+                </div>
+
+                <!--Short description-->
+                <div class="short-description">
+                    <div *ngIf="work.meta.coverArt">
+                        <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
+                    </div>
+                    <div>
+                        {{ work.desc }}
+                    </div>
+                </div>
+
+                <!--Work stats-->
+                <div class="work-stats">
+                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
+                    <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
+                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
+                    <i-feather name="calendar" title="Published On"></i-feather>{{ work.meta.publishedOn | date:'shortDate' }}<span>//</span>
+                    {{ work.meta.status }}
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <ng-template #noGalleryWorks>
+        <div class="empty">
+            <h3>There's nothing here...</h3>
+            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new prose?</p>
             <ng-template #notSameUser>
                 <p>Check back later to see if {{ portUser.username }} adds anything!</p>
             </ng-template>
