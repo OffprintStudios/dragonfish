@@ -114,9 +114,10 @@
                             <span class="divider">//</span>
                             <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currBlog.stats.comments }}</span>
                         </div>
-                        <div class="post-tools">
-                            <button matRipple><i-feather name="thumbs-up"></i-feather></button>
-                            <button matRipple class="end"><i-feather name="thumbs-down"></i-feather></button>
+                        <div class="post-tools preview">
+                            <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currBlog.stats.likes | abbreviate }}</span></button>
+                            <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currBlog.stats.dislikes | abbreviate }}</span></button>
+                            <button matRipple class="end"><i-feather class="more" name="more-vertical"></i-feather></button>
                         </div>
                     </div>
                 </div>
