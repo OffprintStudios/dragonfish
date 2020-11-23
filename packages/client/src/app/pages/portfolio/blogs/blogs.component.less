@@ -30,21 +30,6 @@ div.blog-feed {
                     font-weight: 400;
                     margin-bottom: 0;
                 }
-                h2.subtitle {
-                    display: inline-block;
-                    font-size: 20px;
-                    font-style: italic;
-                    margin-bottom: 0;
-                    color: var(--site-text-color);
-
-                    i-feather {
-                        position: relative;
-                        width: 20px;
-                        height: 20px;
-                        top: 0.25rem;
-                        margin-right: 0.75rem;
-                    }
-                }
 
                 div.post-cat {
                     display: flex;
@@ -57,6 +42,13 @@ div.blog-feed {
         
                     div.info {
                         flex: 1;
+
+                        i-feather {
+                            position: relative;
+                            width: 16px;
+                            margin-right: 0.25rem;
+                            top: 0.25rem;
+                        }
                     }
         
                     div.post-tools {
@@ -66,12 +58,41 @@ div.blog-feed {
                                 margin-right: 0.15rem;
                             }
                         }
+
+                        &.preview {
+                            button {
+                                cursor: initial;
+                                &:hover {
+                                    background-color: var(--site-background);
+                                    color: var(--site-text-color);
+
+                                    i-feather {
+                                        color: var(--site-text-color);
+                                        &.more {
+                                            fill: var(--site-text-color);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         button {
                             margin-bottom: 0;
                             padding: 5px 10px;
                             border-top: none;
                             border-bottom: none;
                             border-radius: 0;
+                            font-size: 18px;
+                            font-weight: normal;
+
+                            span.button-text {
+                                position: relative;
+                                top: -0.35rem;
+                            }
+
+                            &.mid {
+                                border-left: none;
+                            }
         
                             &.end {
                                 border-left: none;
@@ -82,6 +103,21 @@ div.blog-feed {
                                 position: relative;
                                 top: 0.1rem;
                                 stroke-width: 1;
+                                margin-right: 0.25rem;
+
+                                &.more {
+
+                                    margin-right: 0;
+                                    fill: var(--site-text-color);
+                                }
+                            }
+
+                            &:hover {
+                                i-feather {
+                                    &.more {
+                                        fill: whitesmoke;
+                                    }
+                                }
                             }
                         }
                     }
@@ -96,7 +132,7 @@ div.blog-feed {
         div.blog-footer {
             padding: 5px;
             border-top: 1px solid var(--site-borders);
-            margin: 0 auto 2rem auto;
+            margin: 0 auto 0 auto;
             width: 95%;
             a.button {
                 margin-bottom: 0;

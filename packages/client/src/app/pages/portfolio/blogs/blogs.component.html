@@ -6,10 +6,20 @@
     }">
         <div class="blog-box">
             <div class="blog-header">
+                <rating-icon [rating]="blog.meta.rating"></rating-icon>
                 <h1 class="header"><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h1>
                 <div class="post-cat">
                     <div class="info">
                         <span>{{ blog.audit.publishedOn | date:'fullDate' }}</span>
+                        <span class="divider">//</span>
+                        <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blog.stats.views }}</span>
+                        <span class="divider">//</span>
+                        <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments }}</span>
+                    </div>
+                    <div class="post-tools preview">
+                        <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blog.stats.likes | abbreviate }}</span></button>
+                        <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blog.stats.dislikes | abbreviate }}</span></button>
+                        <button matRipple class="end"><i-feather class="more" name="more-vertical"></i-feather></button>
                     </div>
                 </div>
             </div>
