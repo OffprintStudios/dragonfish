@@ -95,6 +95,7 @@
     "sanitize-html": "^1.27.3",
     "shortid": "^2.2.15",
     "validator": "^13.1.1",
+    "voca": "^1.4.0",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {

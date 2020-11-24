@@ -24,7 +24,8 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver } from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver } from './resolvers';
+import { ProsePageComponent } from './pages/content-views';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -63,6 +64,7 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
+    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'always'},
     {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
       {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
@@ -82,7 +84,7 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver,
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver
     ]
 })
 export class AppRoutingModule {}

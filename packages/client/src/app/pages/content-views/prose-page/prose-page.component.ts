@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { ProseContent } from '@pulp-fiction/models/content';
 
 @Component({
     selector: 'prose-page',
@@ -6,7 +9,13 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./prose-page.component.less']
 })
 export class ProsePageComponent implements OnInit {
-    constructor() {}
+    currProse: ProseContent;
 
-    ngOnInit(): void {}
+    constructor(private route: ActivatedRoute) {}
+
+    ngOnInit(): void {
+        this.route.data.subscribe(data => {
+            this.currProse = data.proseData as ProseContent;
+        });
+    }
 }
