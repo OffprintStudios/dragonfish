@@ -94,14 +94,4 @@ export class WorksComponent implements OnInit {
     searchFor() {
       return;
     }
-
-    /**
-     * Calculates the approval rating based on number of likes and dislikes.
-     * 
-     * @param likes The number of likes
-     * @param dislikes The number of dislikes
-     */
-    calcApprovalRating(likes: number, dislikes: number) {
-      return calculateApprovalRating(likes, dislikes);
-    }
 }
