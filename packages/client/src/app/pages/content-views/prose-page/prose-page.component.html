@@ -1,3 +1,36 @@
-prose page works!
-
-{{ currProse.title }}
+<div class="view-container">
+    <div class="view-info">
+        <div class="view-coverart" *ngIf="currProse.meta.coverArt">
+            <img [src]="currProse.meta.coverArt">
+        </div>
+        <div class="view-header">
+            <div class="view-title">
+                <rating-icon [rating]="currProse.meta.rating" [size]="'large'"></rating-icon>
+                <h2>{{ currProse.title }}</h2>
+            </div>
+            <div class="view-tags">
+                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                <span class="divider">//</span>
+                <span class="tag">{{ currProse.meta.category }}</span>
+                <span class="divider">//</span>
+                <span class="tag">{{ currProse.meta.genres | separateEntities }}</span>
+            </div>
+            <div class="view-description">
+                <div class="html-description" [innerHtml]="currProse.body | safeHtml"></div>
+            </div>
+        </div>
+    </div>
+    <div class="view-stats">
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.createdAt | date:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ currProse.stats.views | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-up"></i-feather>{{ currProse.stats.likes | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ currProse.stats.dislikes | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
+    </div>
+</div>
