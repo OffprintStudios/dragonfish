@@ -48,6 +48,7 @@ import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.com
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
 import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
+import { WorkCardComponent } from './components/work-card/work-card.component';
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
 
 import { NetworkInputComponent } from './components/network-input/network-input.component';
@@ -104,7 +105,7 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
-    SectionItemComponent
+    SectionItemComponent, WorkCardComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

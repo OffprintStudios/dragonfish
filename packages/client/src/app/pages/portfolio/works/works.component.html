@@ -24,41 +24,7 @@
             currentPage: pageNum,
             totalItems: poetryData.totalDocs
         }">
-            <div class="work-container">
-                <!--Header-->
-                <div class="work-header">
-                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                      
-                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
-                    <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
-                    <div class="category-genre">
-                        <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
-                        <span class="divider">//</span>
-                        <span class="tag">{{ work.meta.category }}</span>
-                        <span class="divider">//</span>
-                        <span class="tag">{{ work.meta.genres | separateEntities }}</span>
-                        <span class="tag right"><i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%</span>
-                    </div>                            
-                </div>
-
-                <!--Short description-->
-                <div class="short-description">
-                    <div *ngIf="work.meta.coverArt">
-                        <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
-                    </div>
-                    <div>
-                        {{ work.desc }}
-                    </div>
-                </div>
-
-                <!--Work stats-->
-                <div class="work-stats">
-                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
-                    <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
-                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
-                    <i-feather name="calendar" title="Published On"></i-feather>{{ work.meta.publishedOn | date:'shortDate' }}<span>//</span>
-                    {{ work.meta.status }}
-                </div>
-            </div>
+            <work-card [content]="work" [showAuthor]="false"></work-card>
         </ng-container>
     </div>
     <ng-template #noGalleryWorks>
@@ -80,41 +46,7 @@
             currentPage: pageNum,
             totalItems: proseData.totalDocs
         }">
-            <div class="work-container">
-                <!--Header-->
-                <div class="work-header">
-                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                      
-                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
-                    <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
-                    <div class="category-genre">
-                        <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
-                        <span class="divider">//</span>
-                        <span class="tag">{{ work.meta.category }}</span>
-                        <span class="divider">//</span>
-                        <span class="tag">{{ work.meta.genres | separateEntities }}</span>
-                        <span class="tag right"><i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%</span>
-                    </div>                            
-                </div>
-
-                <!--Short description-->
-                <div class="short-description">
-                    <div *ngIf="work.meta.coverArt">
-                        <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
-                    </div>
-                    <div>
-                        {{ work.desc }}
-                    </div>
-                </div>
-
-                <!--Work stats-->
-                <div class="work-stats">
-                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
-                    <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
-                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
-                    <i-feather name="calendar" title="Published On"></i-feather>{{ work.meta.publishedOn | date:'shortDate' }}<span>//</span>
-                    {{ work.meta.status }}
-                </div>
-            </div>
+            <work-card [content]="work" [showAuthor]="false"></work-card>
         </ng-container>
     </div>
     <ng-template #noGalleryWorks>
