@@ -1,0 +1,7 @@
+<ng-container *ngIf="loading; else doneLoading">
+    <mat-progress-spinner></mat-progress-spinner>
+</ng-container>
+
+<ng-template #doneLoading>
+    section view works!
+</ng-template>

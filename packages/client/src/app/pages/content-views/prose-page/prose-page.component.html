@@ -31,7 +31,7 @@
             <ng-container *ngFor="let section of currProse.sections; let i = index">
                 <li>
                     <ng-container *ngIf="section.published === true">
-                        <a>
+                        <a [routerLink]="[i + 1, section.title | slugify]">
                             <div class="section-title">
                                 {{ section.title }}
                             </div>

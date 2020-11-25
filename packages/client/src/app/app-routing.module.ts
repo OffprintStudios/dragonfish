@@ -24,7 +24,7 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver } from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 const routes: Routes = [
@@ -87,7 +87,7 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver
     ]
 })
 export class AppRoutingModule {}

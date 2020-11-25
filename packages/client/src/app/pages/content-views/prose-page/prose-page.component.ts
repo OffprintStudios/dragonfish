@@ -18,7 +18,6 @@ export class ProsePageComponent implements OnInit {
         this.route.data.subscribe(data => {
             this.currProse = data.proseData as ProseContent;
             const sections = this.currProse.sections as SectionInfo[];
-            this.contentService.publishedSections = sections.filter(x => {return x.published === true});
         });
     }
 }
