@@ -64,7 +64,7 @@ import { PoetryService } from './poetry/poetry.service';
       provide: getModelToken('ProseContent'),
       useFactory: contentModel => contentModel.discriminator('ProseContent', new Schema({
         sections: {type: [String], ref: 'Section', default: null, autopopulate: {
-          select: '_id title published stats.words createdAt',
+          select: '_id title published stats.words audit.publishedOn createdAt updatedAt',
           match: {'audit.isDeleted': false}
         }},
         meta: {
@@ -81,7 +81,7 @@ import { PoetryService } from './poetry/poetry.service';
       provide: getModelToken('PoetryContent'),
       useFactory: contentModel => contentModel.discriminator('PoetryContent', new Schema({
         sections: {type: [String], ref: 'Section', default: null, autopopulate: {
-          select: '_id title published stats.words createdAt',
+          select: '_id title published stats.words audit.publishedOn createdAt updatedAt',
           match: {'audit.isDeleted': false}
         }},
         meta: {

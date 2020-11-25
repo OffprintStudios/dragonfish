@@ -6,7 +6,7 @@
         <div class="view-header">
             <div class="view-title">
                 <rating-icon [rating]="currProse.meta.rating" [size]="'large'"></rating-icon>
-                <h2>{{ currProse.title }}</h2>
+                <h2>{{ currProse.title }}<span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span></h2>
             </div>
             <div class="view-tags">
                 <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
@@ -27,7 +27,27 @@
         </div>
     </div>
     <div class="view-sections">
-        
+        <ul>
+            <li *ngFor="let section of currProse.sections; let i = index">
+                <ng-container *ngIf="i < 5">
+                    <ng-container *ngIf="section.published === true">
+                        <a>
+                            <div class="section-title">
+                                {{ section.title }}
+                            </div>
+                            <div class="section-info">
+                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
+                                <span class="divider">//</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | date:'mediumDate'}}</span>
+                            </div>
+                            <div class="section-button">
+                                <button><i-feather name="chevron-right"></i-feather></button>
+                            </div>
+                        </a>
+                    </ng-container>
+                </ng-container>
+            </li>
+        </ul>
     </div>
     <div class="view-stats">
         <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>
