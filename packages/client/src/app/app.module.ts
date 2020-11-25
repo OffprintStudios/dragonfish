@@ -37,7 +37,7 @@ import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } fr
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-import { ProsePageComponent, PoetryPageComponent } from './pages/content-views';
+import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -106,7 +106,7 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
-    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent
+    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
