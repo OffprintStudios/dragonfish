@@ -1,7 +1,7 @@
 <div class="view-container">
     <div class="view-info">
         <div class="view-coverart" *ngIf="currProse.meta.coverArt">
-            <img [src]="currProse.meta.coverArt">
+            <img class="big-art" [src]="currProse.meta.coverArt">
         </div>
         <div class="view-header">
             <div class="view-title">
@@ -21,9 +21,13 @@
                 </div>
             </div>
             <div class="view-description">
+                <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt">
                 <div class="html-description" [innerHtml]="currProse.body | safeHtml"></div>
             </div>
         </div>
+    </div>
+    <div class="view-sections">
+        
     </div>
     <div class="view-stats">
         <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>

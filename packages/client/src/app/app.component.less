@@ -18,6 +18,12 @@ div.nav {
           align-items: center;
           max-width: 80%;
 
+          @media (max-width: 1150px) {
+              padding-top: 10px;
+              padding-bottom: 10px;
+              max-width: 95%;
+          }
+
           div.user-menu-nav {
               vertical-align: middle;
 
@@ -112,7 +118,11 @@ div.nav {
                   margin-bottom: 0;
                   font-style: italic;
                   font-size: 20px;
-              }
+
+                  @media (max-width: 1150px) {
+                      display: none;
+                  }
+            }
           }
 
           div.search-menu {
