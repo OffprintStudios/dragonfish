@@ -11,7 +11,7 @@ import { ProseContent } from '@pulp-fiction/models/content';
 export class ProsePageComponent implements OnInit {
     currProse: ProseContent;
 
-    constructor(private route: ActivatedRoute) {}
+    constructor(public route: ActivatedRoute) {}
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {

@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <div class="view-sections">
+    <div class="view-sections" *ngIf="route.children.length === 0">
         <ul>
             <ng-container *ngFor="let section of currProse.sections; let i = index">
                 <li>
@@ -64,3 +64,5 @@
     <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
     <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
 </mat-menu>
+
+<router-outlet></router-outlet>
