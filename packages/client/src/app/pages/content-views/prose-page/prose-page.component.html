@@ -28,8 +28,8 @@
     </div>
     <div class="view-sections">
         <ul>
-            <li *ngFor="let section of currProse.sections; let i = index">
-                <ng-container *ngIf="i < 5">
+            <ng-container *ngFor="let section of currProse.sections; let i = index">
+                <li>
                     <ng-container *ngIf="section.published === true">
                         <a>
                             <div class="section-title">
@@ -45,8 +45,8 @@
                             </div>
                         </a>
                     </ng-container>
-                </ng-container>
-            </li>
+                </li>
+            </ng-container>
         </ul>
     </div>
     <div class="view-stats">

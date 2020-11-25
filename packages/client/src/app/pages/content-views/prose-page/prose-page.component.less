@@ -154,6 +154,10 @@ div.view-container {
         border-radius: 4px;
         margin-bottom: 1.5rem;
 
+        @media (max-width: 1150px) {
+            width: 95%;
+        }
+
         ul {
             list-style-type: none;
             margin: 0;
@@ -164,6 +168,7 @@ div.view-container {
                     flex-direction: row;
                     align-items: center;
                     color: var(--site-text-color);
+                    cursor: pointer;
 
                     &:hover {
                         color: whitesmoke;
