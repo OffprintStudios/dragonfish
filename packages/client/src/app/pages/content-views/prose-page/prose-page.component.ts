@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { ProseContent } from '@pulp-fiction/models/content';
+import { ProseContent, SectionInfo } from '@pulp-fiction/models/content';
+import { ContentService } from '../../../services/content';
 
 @Component({
     selector: 'prose-page',
@@ -11,11 +12,13 @@ import { ProseContent } from '@pulp-fiction/models/content';
 export class ProsePageComponent implements OnInit {
     currProse: ProseContent;
 
-    constructor(public route: ActivatedRoute) {}
+    constructor(public route: ActivatedRoute, private contentService: ContentService) {}
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
             this.currProse = data.proseData as ProseContent;
+            const sections = this.currProse.sections as SectionInfo[];
+            this.contentService.publishedSections = sections.filter(x => {return x.published === true});
         });
     }
 }

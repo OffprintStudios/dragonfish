@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind, SectionInfo } from '@pulp-fiction/models/content';
 import { Section } from '@pulp-fiction/models/sections';
 
 @Injectable({
@@ -12,6 +12,7 @@ import { Section } from '@pulp-fiction/models/sections';
 })
 export class ContentService {
   private url = `/api/content`;
+  public publishedSections: SectionInfo[];
 
   constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 
