@@ -6,7 +6,7 @@
     }">
         <div class="blog-box">
             <div class="blog-header">
-                <rating-icon [rating]="blog.meta.rating"></rating-icon>
+                <rating-icon [rating]="blog.meta.rating" [size]="'large'"></rating-icon>
                 <h1 class="header"><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h1>
                 <div class="post-cat">
                     <div class="info">
