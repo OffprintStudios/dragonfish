@@ -5,6 +5,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ContentKind } from '@pulp-fiction/models/content';
+import { Section } from '@pulp-fiction/models/sections';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,16 @@ export class ContentService {
         return res.body;
       }), catchError(err => {
         this.snackBar.open(`Something went wrong fetching this content. Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+  public fetchOneSection(sectionId: string) {
+    return this.http.get<Section>(`${this.url}/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
         return throwError(err);
       }));
   }

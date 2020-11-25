@@ -11,6 +11,11 @@ import { isNullOrUndefined } from '../../../util';
 export class SectionsController {
     constructor(private readonly sectionsService: SectionsService, private readonly contentService: ContentService) {}
 
+    @Get('fetch-one-by-id')
+    async fetchOneById(@Query('sectionId') sectionId: string, @Query('published') published: boolean) {
+        return await this.sectionsService.fetchSectionById(sectionId, published);
+    }
+
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-content-sections')
     async fetchUserContentSections(@Request() req: any, @Query('contentId') contentId: string) {
