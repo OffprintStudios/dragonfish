@@ -39,6 +39,14 @@ export class SectionViewComponent implements OnInit {
         });
     }
 
+    goToNext() {
+
+    }
+
+    goToPrev() {
+        
+    }
+
     changeSection(section: SectionInfo) {
         const sectionIndex = this.sections.indexOf(section);
         this.router.navigate([`${sectionIndex + 1}/${v.slugify(section.title)}`], {relativeTo: this.route.parent})
