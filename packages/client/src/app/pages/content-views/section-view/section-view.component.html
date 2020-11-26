@@ -1,7 +1,19 @@
-<ng-container *ngIf="loading; else doneLoading">
-    <mat-progress-spinner></mat-progress-spinner>
-</ng-container>
+<ng-container *ngIf="!loading">
+    <div class="section-container">
+        <div class="section-title">
+            <div class="title">
+                <h2>{{ thisSection.title }}</h2>
+            </div>
+            <div class="section-tools">
+                <button matRipple class="tool" [matTooltip]="'More'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="moreMenu"><i-feather name="more-vertical"></i-feather></button>
+            </div>
+        </div>
+        <div class="section-main">
+            <div class="section-body" [innerHTML]="thisSection.body | safeHtml"></div>
+        </div>
+    </div>
 
-<ng-template #doneLoading>
-    section view works!
-</ng-template>
+    <mat-menu #moreMenu="matMenu" xPosition="before">
+        <button mat-menu-item><i-feather name="download-cloud"></i-feather>Download</button>
+    </mat-menu>
+</ng-container>

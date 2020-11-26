@@ -1,0 +1,37 @@
+div.section-container {
+    width: 75%;
+    margin: 2rem auto 0 auto;
+
+    @media (max-width: 1150px) {
+        width: 90%;
+    }
+
+    div.section-title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--site-borders);
+
+        div.title {
+            flex: 1;
+            h2 {
+                font-size: 4rem;
+                margin-bottom: 0;
+            }
+        }
+
+        div.section-tools {
+            button.tool {
+                margin-bottom: 0;
+                padding-left: 5px;
+                padding-right: 5px;
+
+                i-feather {
+                    position: relative;
+                    top: 0.55rem;
+                }
+            }
+        }
+    }
+}
