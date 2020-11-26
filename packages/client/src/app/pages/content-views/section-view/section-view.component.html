@@ -4,8 +4,13 @@
             <div class="title">
                 <h2>{{ thisSection.title }}</h2>
             </div>
-            <div class="section-tools">
-                <button matRipple class="tool" [matTooltip]="'More'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="moreMenu"><i-feather name="more-vertical"></i-feather></button>
+            <div class="section-selector">
+                <button matRipple class="selector left"><i-feather name="chevron-left"></i-feather></button>
+                <div class="section-list-menu" [matMenuTriggerFor]="sectionList">
+                    <span class="text">Sections</span>
+                    <span class="icon"><i-feather name="chevron-down"></i-feather></span>
+                </div>
+                <button matRipple class="selector right"><i-feather name="chevron-right"></i-feather></button>
             </div>
         </div>
         <div class="section-main">
@@ -13,7 +18,9 @@
         </div>
     </div>
 
-    <mat-menu #moreMenu="matMenu" xPosition="before">
-        <button mat-menu-item><i-feather name="download-cloud"></i-feather>Download</button>
+    <mat-menu #sectionList="matMenu" xPosition="before">
+        <ng-container *ngFor="let sec of sections">
+            <button mat-menu-item (click)="changeSection(sec)">{{ sec.title }}</button>
+        </ng-container>
     </mat-menu>
 </ng-container>
