@@ -1,5 +1,5 @@
 export enum UnsubscribeResult {
-    Success,
-    NotFound,
-    Failure
+    Success = "Success",
+    NotFound = "NotFound",
+    Failure = "Failure",
 }
