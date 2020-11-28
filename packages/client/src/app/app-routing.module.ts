@@ -38,7 +38,7 @@ const routes: Routes = [
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
     {path: 'groups', component: GroupsComponent},
-    {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'always'},
+    {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'paramsChange'},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
@@ -53,7 +53,7 @@ const routes: Routes = [
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'always', component: PortBlogPageComponent},
+      {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: PortCollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
@@ -64,11 +64,11 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
-    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'always', children: [
+    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent},
-    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
+    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'paramsChange', children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
       {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
     ]},
