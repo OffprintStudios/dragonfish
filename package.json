@@ -69,6 +69,7 @@
     "@types/sanitize-html": "^1.23.3",
     "@types/shortid": "^0.0.29",
     "@types/uuid": "^8.3.0",
+    "@types/voca": "^1.4.0",
     "angular-feather": "^6.0.10",
     "argon2": "^0.27.0",
     "aws-sdk": "^2.738.0",
@@ -95,6 +96,7 @@
     "sanitize-html": "^1.27.3",
     "shortid": "^2.2.15",
     "validator": "^13.1.1",
+    "voca": "^1.4.0",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {

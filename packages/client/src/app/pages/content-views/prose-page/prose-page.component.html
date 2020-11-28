@@ -1,0 +1,71 @@
+<div class="view-container">
+    <div class="view-info">
+        <div class="view-coverart" *ngIf="currProse.meta.coverArt">
+            <img class="big-art" [src]="currProse.meta.coverArt">
+        </div>
+        <div class="view-header">
+            <div class="view-title">
+                <rating-icon [rating]="currProse.meta.rating" [size]="'large'"></rating-icon>
+                <div class="view-title-info">
+                    <h2><a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a></h2>
+                    <span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span>
+                </div>  
+            </div>
+            <div class="view-tags">
+                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                <span class="divider">//</span>
+                <span class="tag">{{ currProse.meta.category }}</span>
+                <span class="divider">//</span>
+                <span class="tag">{{ currProse.meta.genres | separateEntities }}</span>
+                <div class="view-tools">
+                    <button matRipple class="tool left"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currProse.stats.likes | abbreviate }}</span></button>
+                    <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currProse.stats.likes | abbreviate }}</span></button>
+                    <button matRipple class="tool left" [matMenuTriggerFor]="moreMenu"><i-feather name="more-vertical" class="more"></i-feather></button>
+                </div>
+            </div>
+            <div class="view-description">
+                <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt">
+                <div class="html-description" [innerHtml]="currProse.body | safeHtml"></div>
+            </div>
+        </div>
+    </div>
+    <div class="view-sections" *ngIf="route.children.length === 0">
+        <ul>
+            <ng-container *ngFor="let section of currProse.sections; let i = index">
+                <li>
+                    <ng-container *ngIf="section.published === true">
+                        <a [routerLink]="[i + 1, section.title | slugify]">
+                            <div class="section-title">
+                                {{ section.title }}
+                            </div>
+                            <div class="section-info">
+                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
+                                <span class="divider">//</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | date:'mediumDate'}}</span>
+                            </div>
+                            <div class="section-button">
+                                <button><i-feather name="chevron-right"></i-feather></button>
+                            </div>
+                        </a>
+                    </ng-container>
+                </li>
+            </ng-container>
+        </ul>
+    </div>
+    <div class="view-stats">
+        <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="bar-chart-2"></i-feather>{{ currProse.stats.views | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | date:'mediumDate' }}</span>
+    </div>
+</div>
+
+<mat-menu #moreMenu="matMenu" xPosition="before">
+    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+</mat-menu>
+
+<router-outlet></router-outlet>

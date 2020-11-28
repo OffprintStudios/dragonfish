@@ -18,6 +18,12 @@ div.nav {
           align-items: center;
           max-width: 80%;
 
+          @media (max-width: 1150px) {
+              padding-top: 10px;
+              padding-bottom: 10px;
+              max-width: 95%;
+          }
+
           div.user-menu-nav {
               vertical-align: middle;
 
@@ -30,14 +36,19 @@ div.nav {
                   font-size: 0;
                   vertical-align: middle;
                   cursor: pointer;
+
+                  @media (max-width: 1150px) {
+                      max-width: 35px;
+                      max-height: 35px;
+                  }
               }
               div.user-menu-dropdown {
                   color: whitesmoke;
                   display: inline;
                   border-bottom: 1px solid whitesmoke;
 
-                  @media (max-width: 992px) { //--large
-                      display:inline-block;
+                  @media (max-width: 1150px) { //--large
+                      display: none;
                   }
 
                   a.menu-icon {
@@ -112,14 +123,17 @@ div.nav {
                   margin-bottom: 0;
                   font-style: italic;
                   font-size: 20px;
-              }
+
+                  @media (max-width: 1150px) {
+                      display: none;
+                  }
+            }
           }
 
           div.search-menu {
               vertical-align: middle;
 
               button.search {
-                  margin-bottom: 0;
                   margin-bottom: 0;
                   background-color: var(--site-accent);
                   color: whitesmoke;
@@ -128,6 +142,35 @@ div.nav {
 
                   &:hover {
                       background-color: var(--site-accent-hover);
+                  }
+
+                  @media (max-width: 1150px) {
+                      display: none;
+                  }
+              }
+
+              button.search-mobile {
+                  display: none;
+                  margin-bottom: 0;
+                  background-color: var(--site-accent);
+                  border: 1px solid whitesmoke;
+                  box-shadow: none;
+                  padding-left: 5px;
+                  padding-right: 5px;
+
+                  &:hover {
+                      background-color: var(--site-accent-hover);
+                  }
+
+                  i-feather {
+                      position: relative;
+                      stroke-width: 1;
+                      color: whitesmoke;
+                      top: 0.5rem;
+                  }
+
+                  @media (max-width: 1150px) {
+                      display: block;
                   }
               }
           }

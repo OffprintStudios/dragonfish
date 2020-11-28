@@ -21,6 +21,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   imports: [
@@ -45,7 +46,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatSlideToggleModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatExpansionModule
   ],
   exports: [
     FlexLayoutModule,
@@ -69,7 +71,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatSlideToggleModule,
     MatChipsModule,
     MatAutocompleteModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule {}

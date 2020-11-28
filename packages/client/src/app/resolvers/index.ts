@@ -13,3 +13,5 @@ export { PortCollectionsResolver } from './port-collections.resolver';
 export { CollectionPageResolver } from './collection-page.resolver';
 export { MyStuffResolver } from './my-stuff.resolver';
 export { ViewContentResolver } from './view-content.resolver';
+export { ViewProseResolver } from './view-prose.resolver';
+export { SectionResolver } from './section.resolver';

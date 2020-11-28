@@ -24,7 +24,8 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver } from './resolvers';
+  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver } from './resolvers';
+import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -63,6 +64,10 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
+    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'always', children: [
+      {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
+    ]},
+    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent},
     {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'always', children: [    
       {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
       {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
@@ -82,7 +87,7 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver,
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver
     ]
 })
 export class AppRoutingModule {}

@@ -1,7 +1,7 @@
+import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { Work } from '@pulp-fiction/models/works';
 
 export interface PortWorks {
-    works: PaginateResult<Work>,
-    userWorks: PaginateResult<Work>
+    prose: PaginateResult<ProseContent>,
+    poetry: PaginateResult<PoetryContent>
 }
