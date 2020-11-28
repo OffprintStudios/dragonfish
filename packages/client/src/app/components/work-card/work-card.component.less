@@ -1,0 +1,107 @@
+div.card-container {
+    display: flex;
+    flex-direction: column;
+    background: var(--site-accent);
+    border: 1px solid var(--site-borders);
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: var(--site-dropshadow);
+    min-height: 30rem;
+
+    @media(max-width: 400px) {
+        width: 95%;
+    }
+
+    div.card-header {
+        margin-bottom: 0;
+        h3 {
+            font-weight: 500;
+            font-size: 26px;
+            margin-bottom: 0;
+            a {
+                cursor: pointer;
+                color: whitesmoke;
+
+                &:hover {
+                    background: var(--site-accent-hover);
+                }
+            }
+        }
+
+        div.card-tags {
+            display: flex;
+            flex-direction: row;
+            padding: 5px 10px;
+            color: whitesmoke;
+            font-size: 14px;
+            border-top: 1px solid whitesmoke;
+            border-bottom: 1px solid whitesmoke;
+
+            span.divider {
+                margin: 0 0.25rem 0 0.5rem;
+            }
+            
+            span.tag {
+                i-feather {
+                    position: relative;
+                    width: 16px;
+                    stroke-width: 1;
+                    margin-right: 0.25rem;
+                    top: 0.25rem;
+            
+                    &.kind {
+                        width: 16px;
+                        top: 0.4rem;
+                    }
+                }
+
+                &.end {
+                    flex: 1;
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    div.card-body {
+        flex-grow: 1;
+        color: whitesmoke;
+        font-size: 14px;
+        margin-top: 1.5rem;
+
+        img.cover-art {
+            float: left;                    
+            max-height: 150px;
+            max-width: 100px;                    
+            margin-right: 1.5rem;
+        }
+    }
+
+    div.card-footer {
+        padding-top: 5px;
+        border-top: 1px solid whitesmoke;
+        text-align: right;
+        font-size: 11px;
+        color: whitesmoke;
+        a.work-stat-button {
+            color: whitesmoke;
+            text-decoration: none;
+            padding: 2px;
+            &:hover {
+                background-color: var(--site-accent-hover);
+            }
+        }
+        span {
+            margin: 0 0.25rem 0 0.25rem;
+        }
+
+        i-feather {
+            position: relative;
+            width: 13px;
+            height: 13px;
+            stroke-width: 1;
+            top: 0.25rem;
+            margin-right: 0.25rem;
+        }
+    }
+}

@@ -9,6 +9,7 @@ import { ContentRating } from '@pulp-fiction/models/content';
 })
 export class RatingIconComponent implements OnInit {
     @Input() rating: ContentRating;
+    @Input() size: string;
 
     constructor() {}
 

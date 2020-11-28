@@ -1,0 +1,34 @@
+<div class="card-container">
+    <!--Header-->
+    <div class="card-header">
+        <rating-icon [rating]="content.meta.rating" [size]="'small'"></rating-icon>
+        <h3><a (click)="navigateToWork(content.kind)">{{ content.title }}</a></h3>
+        <div class="card-tags">
+            <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+            <span class="divider">//</span>
+            <span class="tag">{{ content.meta.category }}</span>
+            <span class="divider">//</span>
+            <span class="tag">{{ content.meta.genres | separateEntities }}</span>
+            <span class="tag end"><i-feather name="heart"></i-feather>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
+        </div>
+    </div>
+
+    <!--Body-->
+    <div class="card-body">
+        <div *ngIf="content.meta.coverArt">
+            <img class="cover-art bordered-cover-art" [src]="content.meta.coverArt">
+        </div>
+        <div>
+            {{ content.desc }}
+        </div>
+    </div>
+
+    <!--Footer-->
+    <div class="card-footer">
+        <i-feather name="bar-chart-2" title="Views"></i-feather>{{ content.stats.views | abbreviate }}<span>//</span>
+        <i-feather name="message-circle" title="Comments"></i-feather>{{ content.stats.comments | abbreviate }}<span>//</span>
+        <i-feather name="pen-tool" title="Words"></i-feather>{{ content.stats.words | abbreviate }}<span>//</span>
+        <i-feather name="calendar" title="Published On"></i-feather>{{ content.meta.publishedOn | date:'shortDate' }}<span>//</span>
+        {{ content.meta.status }}
+    </div>
+</div>

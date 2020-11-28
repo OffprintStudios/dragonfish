@@ -5,11 +5,15 @@ import { PaginateModel } from 'mongoose';
 import { CreatePoetry } from '@pulp-fiction/models/content';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
+
 import { PoetryContentDocument } from './poetry-content.document';
+import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
 export class PoetryService {
-    constructor(@InjectModel('PoetryContent') private readonly poetryModel: PaginateModel<PoetryContentDocument>) {}
+    constructor(@InjectModel('PoetryContent') private readonly poetryModel: PaginateModel<PoetryContentDocument>,
+        private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new work of poetry for the provided author given `poetryInfo` and adds it to the database.
@@ -18,7 +22,7 @@ export class PoetryService {
      * @param poetryInfo The poetry info
      */
     async createPoetry(user: JwtPayload, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
-        const newProse = new this.poetryModel({
+        const newPoetry = new this.poetryModel({
             'author': user.sub,
             'title': await sanitizeHtml(poetryInfo.title),
             'desc': await sanitizeHtml(poetryInfo.desc),
@@ -31,7 +35,12 @@ export class PoetryService {
             'meta.status': poetryInfo.status
         })
 
-        return await newProse.save();
+        const savedPoetry: PoetryContentDocument = await newPoetry.save();
+
+        // Subscribe author to comments on their new poetry
+        this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);
+
+        return savedPoetry;
     }
 
     /**

@@ -37,6 +37,7 @@ import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } fr
 import { RegisterComponent } from './pages/account';
 import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
+import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -48,6 +49,7 @@ import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.com
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
 import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
+import { WorkCardComponent } from './components/work-card/work-card.component';
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
 
 import { NetworkInputComponent } from './components/network-input/network-input.component';
@@ -104,7 +106,7 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
-    SectionItemComponent
+    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
