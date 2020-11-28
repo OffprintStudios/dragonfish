@@ -1,19 +1,24 @@
+import { PaginateModel, PaginateResult, Types } from 'mongoose';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
 import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
-import { Types } from 'mongoose';
-import { PaginateModel, PaginateResult } from 'mongoose';
-import { isNullOrUndefined } from '../../util';
-import { SectionsService } from '../sections/sections.service';
 
+import { isNullOrUndefined } from '../../util';
+import { NotificationsService } from '../notifications/notifications.service';
+import { SectionsService } from '../sections/sections.service';
 import { ContentDocument } from './content.schema';
+import { NotificationKind } from '@pulp-fiction/models/notifications/notification-kind';
+import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
+import { SectionsDocument } from '../sections/sections.schema';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
-        private readonly sectionsService: SectionsService) {}
+        private readonly sectionsService: SectionsService,
+        private readonly notificationsService: NotificationsService) {}
 
     /**
      * Fetches one unpublished item from the content collection via ID and ContentKind. 
@@ -59,7 +64,7 @@ export class ContentService {
      * 
      * @param user The user making the request
      */
-    async fetchAll(user: JwtPayload) {
+    async fetchAll(user: JwtPayload): Promise<ContentDocument[]> {
         return await this.contentModel.find({
             'author': user.sub, 
             'audit.isDeleted': false, 
@@ -87,11 +92,20 @@ export class ContentService {
     /**
      * Sets the `isDeleted` flag of a piece of content belonging to the specified user to `true`.
      * 
-     * @param user The owner fo this content
+     * @param user The owner of this content
      * @param contentId The content's ID
      */
     async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
-        return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.isDeleted': true});
+        await this.contentModel.updateOne({_id: contentId, author: user.sub}, {'audit.isDeleted': true});
+
+        // Unsubscribe the user from comments on the now-deleted work
+        const unsubResult: UnsubscribeResult = await this.notificationsService.unsubscribe(user.sub, contentId, NotificationKind.CommentNotification);
+        if (unsubResult !== UnsubscribeResult.Success) {
+            console.error(`Failed to unsubscribe user '${user.username}' (ID: ${user.sub}) from notifications on content with ID: '${contentId}'. Reason: ${unsubResult}`);
+        }
+        
+        // TODO: Once users have the ability to subscribe to things, we need to unsubscribe _all_ subscribers to this piece of content.
+        // ...maybe work for another background queue processor
     }
 
     /* Sections for Prose, Poetry, and Scripts */
@@ -103,17 +117,15 @@ export class ContentService {
      * @param contentId The content ID
      * @param sectionInfo The new section's info
      */
-    async createSection(user: JwtPayload, contentId: string, sectionInfo: SectionForm) {
+    async createSection(user: JwtPayload, contentId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
         const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
 
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            return await this.sectionsService.createNewSection(sectionInfo).then(async sec => {
-                await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$push: {'sections': sec._id}}, {strict: false});
-
-                return sec;
-            });
+            const sec: SectionsDocument = await this.sectionsService.createNewSection(sectionInfo);
+            await this.contentModel.updateOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {$push: {'sections': sec._id}}, {strict: false});
+            return sec;            
         }
     }
 
@@ -125,20 +137,19 @@ export class ContentService {
      * @param sectionId The section ID
      * @param sectionInfo The new section info
      */
-    async editSection(user: JwtPayload, contentId: string, sectionId: string, sectionInfo: SectionForm) {
+    async editSection(user: JwtPayload, contentId: string, sectionId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
         const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
 
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            return await this.sectionsService.editSection(sectionId, sectionInfo).then(async sec => {
-                if (sec.published === true) {
-                    await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": -sectionInfo.oldWords}}).then(async () => {
-                        await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": sec.stats.words}});
-                    });
-                }
-                return sec;
-            });
+            const sec: SectionsDocument = await this.sectionsService.editSection(sectionId, sectionInfo);
+            if (sec.published === true) {
+                await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": -sectionInfo.oldWords}})
+                await this.contentModel.updateOne({ "_id": contentId, 'author': user.sub, 'audit.isDeleted': false}, {$inc: {"stats.words": sec.stats.words}});                    
+            }
+
+            return sec;            
         }
     }
 
@@ -151,7 +162,7 @@ export class ContentService {
      * @param sectionId The section ID
      * @param pubStatus The publishing status for this section
      */
-    async publishSection(user: JwtPayload, contentId: string, sectionId: string, pubStatus: PublishSection) {
+    async publishSection(user: JwtPayload, contentId: string, sectionId: string, pubStatus: PublishSection): Promise<SectionsDocument> {
         const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
 
         if (isNullOrUndefined(work)) {
@@ -186,8 +197,7 @@ export class ContentService {
                     $inc: {'stats.totWords': -sec.stats.words},
                     $pull: {'sections': sec._id}
                 }, {strict: false});
-            }
-            return;
+            }            
         }
     }
 
@@ -197,7 +207,7 @@ export class ContentService {
      * @param user The author of the content
      * @param contentId The content ID
      */
-    async fetchUserContentSections(user: JwtPayload, contentId: string) {
+    async fetchUserContentSections(user: JwtPayload, contentId: string): Promise<SectionsDocument[]> {
         const work = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
         
         if (isNullOrUndefined(work)) {
@@ -214,7 +224,7 @@ export class ContentService {
      * 
      * @param contentId The content's ID
      */
-    async addComment(contentId: string) {
+    async addComment(contentId: string): Promise<any> {
         return await this.contentModel.updateOne({"_id": contentId}, {
             $inc: {"stats.comments": 1}
         });
@@ -225,7 +235,7 @@ export class ContentService {
      * 
      * @param contentId The content's ID
      */
-    async incrementViewCount(contentId: string) {
+    async incrementViewCount(contentId: string): Promise<any> {
         return await this.contentModel.updateOne({'_id': contentId}, {
             $inc: {'stats.views': 1}
         });
@@ -237,7 +247,7 @@ export class ContentService {
      * @param user The owner of the content
      * @param contentId The content's ID
      */
-    async setIsChild(user: JwtPayload, contentId: string, parent: Types.ObjectId) {
+    async setIsChild(user: JwtPayload, contentId: string, parent: Types.ObjectId): Promise<any> {
         return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.childOf': parent});
     }
 }

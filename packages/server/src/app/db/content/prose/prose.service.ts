@@ -4,12 +4,15 @@ import { PaginateModel } from 'mongoose';
 
 import { CreateProse } from '@pulp-fiction/models/content';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ProseContentDocument } from './prose-content.document';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { ProseContentDocument } from './prose-content.document';
+import { NotificationsService } from '../../notifications/notifications.service';
+import { NotificationKind } from '@pulp-fiction/models/notifications';
 
 @Injectable()
 export class ProseService {
-    constructor(@InjectModel('ProseContent') private readonly proseModel: PaginateModel<ProseContentDocument>) {}
+    constructor(@InjectModel('ProseContent') private readonly proseModel: PaginateModel<ProseContentDocument>,
+        private readonly notificationsService: NotificationsService) {}
 
     /**
      * Creates a new work of prose for the provided author given `proseInfo` and adds it to the database.
@@ -29,7 +32,12 @@ export class ProseService {
             'meta.status': proseInfo.status
         })
 
-        return await newProse.save();
+        const savedProse: ProseContentDocument = await newProse.save();
+
+        // Subscribe author to comments on their new prose document
+        this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);
+
+        return savedProse;
     }
 
     /**
