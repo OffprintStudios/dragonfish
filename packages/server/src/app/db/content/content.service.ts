@@ -13,11 +13,13 @@ import { ContentDocument } from './content.schema';
 import { NotificationKind } from '@pulp-fiction/models/notifications/notification-kind';
 import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
         private readonly sectionsService: SectionsService,
+        private readonly usersService: UsersService,
         private readonly notificationsService: NotificationsService) {}
 
     /**
@@ -217,6 +219,46 @@ export class ContentService {
 
             return await this.sectionsService.fetchSectionsList(workContent.sections);
         }
+    }
+
+    /* Works Publishing */
+    /**
+     * Sets the approval status of a work to Approved.
+     * 
+     * @param contentId The work to approve
+     * @param authorId The author of the work
+     */
+    async approveWork(contentId: string, authorId: string): Promise<void> {        
+        const contentToApprove = await this.contentModel.findOne({
+            '_id': contentId,
+            'author': authorId,
+            'audit.isDeleted': false
+        });
+
+        contentToApprove.audit.published = PubStatus.Published;
+        contentToApprove.audit.publishedOn = new Date();
+        await contentToApprove.save();
+        await this.usersService.changeWorkCount(authorId, true);
+    }
+
+    /**
+     * Sets the approval status of a work to Rejected.
+     * 
+     * @param contentId The work to reject
+     * @param authorId The author of the work
+     */
+    async rejectWork(contentId: string, authorId: string): Promise<void> {
+        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Rejected});
+    }
+
+    /**
+     * Sets the approval status of a work to Pending.
+     * 
+     * @param contentId The work to set to pending
+     * @param authorId The author of the work
+     */
+    async pendingWork(contentId: string, authorId: string): Promise<void> {
+        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Rejected});
     }
 
     /**
