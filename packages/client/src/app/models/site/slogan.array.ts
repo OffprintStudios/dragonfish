@@ -15,7 +15,7 @@ export const slogans: string[] = [
     "Originally part of a larger publication",
     "We may or may not be Futurama fans",
     "Acquitted by a Jury of Our Peers",
-    `Crime-free since ${new Date().toString()}`,
+    `Crime-free since ${new Date().toLocaleString()}`,
     "May contain nuts",
     "On-Brand",
     `Don't think about it too hard`,
