@@ -50,7 +50,7 @@
                         <h4 title="Word Count"><i-feather name="pen-tool"></i-feather>{{ post.stats.words | toLocaleString }} word{{ post.stats.words | pluralize }}</h4><span>//</span>
                         <h4 title="Views"><i-feather name="eye"></i-feather>{{ post.stats.views | toLocaleString }} view{{ post.stats.views | pluralize }}</h4><span>//</span>
                         <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ post.stats.comments | toLocaleString }} comment{{ post.stats.comments | pluralize }}</h4><span>//</span>
-                        <h4 title="Created On"><i-feather name="calendar"></i-feather>{{ post.createdAt | date:'short' }}</h4>
+                        <h4 title="Created On"><i-feather name="calendar"></i-feather>{{ post.createdAt | localedate:'short' }}</h4>
                     </div>
                 </div>
                 <div class="post-control-buttons">
