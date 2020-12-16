@@ -93,7 +93,7 @@
         </div>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | date:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | localedate:'mediumDate' }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{ forms[myPoetry.meta.form] }}</span>
         <span class="divider">//</span>

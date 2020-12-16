@@ -87,7 +87,7 @@
                             </div>
                             <div>
                                 <div class="section-stats">
-                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | localedate:'mediumDate'}}
                                 </div>
                             </div>
                             <div>
@@ -107,7 +107,7 @@
                             </div>
                             <div>
                                 <div class="section-stats">
-                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | localedate:'mediumDate'}}
                                 </div>
                             </div>
                             <div>
@@ -128,7 +128,7 @@
                             </div>
                             <div>
                                 <div class="section-stats" style="margin-right: 2rem;">
-                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | date:'mediumDate'}}
+                                    {{ section.words | toLocaleString }} word{{ section.words | pluralize }}<span>//</span>{{ section.createdAt | localedate:'mediumDate'}}
                                 </div>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
         <span class="divider">//</span>
         <div class="stat-block" title="Published On">
             <span class="stat-icon"><i-feather name="calendar"></i-feather></span>
-            <span class="stat-number">{{ workData.audit.publishedOn | date:'mediumDate' }}</span>
+            <span class="stat-number">{{ workData.audit.publishedOn | localedate:'mediumDate' }}</span>
         </div>
         <span class="divider">//</span>
         <div class="stat-block">

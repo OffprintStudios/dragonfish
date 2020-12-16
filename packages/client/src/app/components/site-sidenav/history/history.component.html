@@ -11,8 +11,8 @@
                 <h5>{{ $any(item.work).meta.category | fixCategories }}</h5><span>//</span><h5>{{ $any(item.work).meta.genres | separateEntities:$any(item.work).meta.category }}</h5>
             </div>
             <div class="viewed-on">
-                <span>{{ item.viewedOn | date:'shortDate' }}</span>
-                <span>{{ item.viewedOn | date: 'shortTime' }}</span>
+                <span>{{ item.viewedOn | localedate: 'shortDate' }}</span>
+                <span>{{ item.viewedOn | localedate: 'shortTime' }}</span>
             </div>
         </div>
     </div>
