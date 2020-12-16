@@ -14,12 +14,14 @@ import { NotificationKind } from '@pulp-fiction/models/notifications/notificatio
 import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
 import { UsersService } from '../users/users.service';
+import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
         private readonly sectionsService: SectionsService,
         private readonly usersService: UsersService,
+        private readonly queueService: ApprovalQueueService,
         private readonly notificationsService: NotificationsService) {}
 
     /**
@@ -222,6 +224,24 @@ export class ContentService {
     }
 
     /* Works Publishing */
+
+    /**
+     * Submits a piece of content to the approval queue.
+     * 
+     * @param user The author of the content
+     * @param contentId The content to submit
+     */
+    async submitForApproval(user: JwtPayload, contentId: string): Promise<void> {
+        const thisContent = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false});
+
+        if (thisContent.kind !== ContentKind.PoetryContent && thisContent.stats.words < 750) {
+            throw new BadRequestException(`Content that isn't poetry needs to have a minimum wordcount of 750. `);
+        }
+
+        await this.pendingWork(contentId, user.sub);
+        await this.queueService.addOneWork(contentId);
+    }
+
     /**
      * Sets the approval status of a work to Approved.
      * 
@@ -258,7 +278,7 @@ export class ContentService {
      * @param authorId The author of the work
      */
     async pendingWork(contentId: string, authorId: string): Promise<void> {
-        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Rejected});
+        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Pending});
     }
 
     /**

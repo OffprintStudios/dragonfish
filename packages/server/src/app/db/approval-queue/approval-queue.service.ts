@@ -2,39 +2,34 @@ import { Injectable, BadRequestException, ConflictException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateResult } from 'mongoose';
 
-import * as documents from './models/approval-queue-document.model';
+import { ApprovalQueueDocument } from './approval-queue.schema';
 import { WorksService } from '../works/works.service';
 import { Categories } from '@pulp-fiction/models/works';
+import { ContentModel } from '@pulp-fiction/models/content';
 
 @Injectable()
 export class ApprovalQueueService {
-    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<documents.ApprovalQueueDocument>,
+    constructor(@InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<ApprovalQueueDocument>,
         private readonly worksService: WorksService) {}
 
     /**
      * Adds a new entry to the Approval Queue
      * 
      * @param user The author of the work
-     * @param workId The work's ID
+     * @param contentId The work's ID
      */
-    async addOneWork(user: any, workId: string): Promise<documents.ApprovalQueueDocument> {
-        const verifiedWork = await this.worksService.fetchOneUserWorkForQueue(user, workId);
-        if (verifiedWork.meta.category !== Categories.Poetry && verifiedWork.stats.totWords < 750) {
-            throw new BadRequestException(`Works need to have a minimum published word count of 750.`);
-        } else {
-            const newQueueEntry = new this.approvalQueue({
-                workToApprove: verifiedWork._id,
-            });
-            return await this.worksService.pendingWork(verifiedWork._id, user.sub).then(async () => {
-                return await newQueueEntry.save();
-            });
-        }
+    async addOneWork(contentId: string): Promise<void> {
+        const newQueueEntry = new this.approvalQueue({
+            workToApprove: contentId
+        });
+
+        await newQueueEntry.save();
     }
 
     /**
      * Fetches the entire queue.
      */
-    async fetchAll(pageNum: number): Promise<PaginateResult<documents.ApprovalQueueDocument>> {
+    async fetchAll(pageNum: number): Promise<PaginateResult<ApprovalQueueDocument>> {
         return await this.approvalQueue.paginate({}, {
             sort: {'createdAt': -1},
             page: pageNum,
@@ -47,7 +42,7 @@ export class ApprovalQueueService {
      * 
      * @param user The claimant
      */
-    async fetchForMod(user: any, pageNum: number): Promise<PaginateResult<documents.ApprovalQueueDocument>> {
+    async fetchForMod(user: any, pageNum: number): Promise<PaginateResult<ApprovalQueueDocument>> {
         return await this.approvalQueue.paginate({'claimedBy': user.sub}, {
             sort: {'createdAt': -1},
             page: pageNum,
