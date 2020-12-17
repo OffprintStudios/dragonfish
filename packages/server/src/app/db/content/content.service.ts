@@ -248,7 +248,7 @@ export class ContentService {
      * @param contentId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(contentId: string, authorId: string): Promise<void> {        
+    async approveWork(docId: string, modId: string, contentId: string, authorId: string): Promise<void> {        
         const contentToApprove = await this.contentModel.findOne({
             '_id': contentId,
             'author': authorId,
@@ -258,6 +258,7 @@ export class ContentService {
         contentToApprove.audit.published = PubStatus.Published;
         contentToApprove.audit.publishedOn = new Date();
         await contentToApprove.save();
+        await this.queueService.removeFromQueue(docId, modId);
         await this.usersService.changeWorkCount(authorId, true);
     }
 
@@ -267,8 +268,9 @@ export class ContentService {
      * @param contentId The work to reject
      * @param authorId The author of the work
      */
-    async rejectWork(contentId: string, authorId: string): Promise<void> {
+    async rejectWork(docId: string, modId: string, contentId: string, authorId: string): Promise<void> {
         await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Rejected});
+        await this.queueService.removeFromQueue(docId, modId);
     }
 
     /**

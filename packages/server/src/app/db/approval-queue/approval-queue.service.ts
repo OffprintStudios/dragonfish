@@ -67,30 +67,12 @@ export class ApprovalQueueService {
     }
 
     /**
-     * Approves a work and then removes it from the Approval Queue
+     * Removes a queue document from the collection after it's been processed.
      * 
-     * @param user The claimant
-     * @param docId The queue document
-     * @param workId The work to approve
-     * @param authorId The author of the work
+     * @param docId The document to remove
+     * @param claimedBy The user who claimed it
      */
-    async approveWork(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        await this.worksService.approveWork(workId, authorId).then(async () => {
-            await this.approvalQueue.deleteOne({"_id": docId, "claimedBy": user.sub});
-        });
-    }
-
-    /**
-     * Rejects a work and then removes it from the Approval Queue
-     * 
-     * @param user The claimant
-     * @param docId The queue document
-     * @param workId The work to reject
-     * @param authorId The author of the work
-     */
-    async rejectWork(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        await this.worksService.rejectWork(workId, authorId).then(async () => {
-            await this.approvalQueue.deleteOne({"_id": docId, "claimedBy": user.sub});
-        });
+    async removeFromQueue(docId: string, claimedBy: string) {
+        await this.approvalQueue.deleteOne({'_id': docId, 'claimedBy': claimedBy});
     }
 }
