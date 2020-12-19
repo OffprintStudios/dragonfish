@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Work } from '@pulp-fiction/models/works';
+import { ProseContent } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
+
 import { calculateApprovalRating } from '../../util/functions';
-
 import { Constants, Title } from '../../shared';
-
-type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
 
 @Component({
   selector: 'app-browse',
@@ -15,7 +13,7 @@ type LoadingState = 'notstarted' | 'loading' | 'success' | 'failure';
   styleUrls: ['./browse.component.less']
 })
 export class BrowseComponent implements OnInit {
-  works: PaginateResult<Work>;
+  works: PaginateResult<ProseContent>;
 
   pageNum = 1;
 
