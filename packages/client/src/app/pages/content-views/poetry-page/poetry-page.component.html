@@ -16,7 +16,7 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currPoetry.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ currPoetry.meta.genres | separateEntities }}</span>
+                <span class="tag">{{ currPoetry.meta.genres | separateGenres }}</span>
                 <div class="view-tools">
                     <button matRipple class="tool left"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currPoetry.stats.likes | abbreviate }}</span></button>
                     <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currPoetry.stats.likes | abbreviate }}</span></button>

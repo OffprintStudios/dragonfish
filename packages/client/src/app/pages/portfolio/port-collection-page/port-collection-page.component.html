@@ -34,9 +34,9 @@
                                     </div>
                                     <div class="category-genre">
                                         {{ entry.work.meta.category | fixCategories }}<span>//</span>
-                                        {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                        {{ entry.work.meta.genres | separateGenres }}
                                         <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
-                                            <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                            <span>//</span>{{ entry.work.meta.fandoms | joinStrings }}
                                         </ng-container>
                                     </div>                            
                                 </div>
@@ -104,9 +104,9 @@
                                 </div>
                                 <div class="category-genre">
                                     {{ entry.work.meta.category | fixCategories }}<span>//</span>
-                                    {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                    {{ entry.work.meta.genres | separateGenres }}
                                     <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
-                                        <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                        <span>//</span>{{ entry.work.meta.fandoms | joinStrings }}
                                     </ng-container>
                                 </div>                            
                             </div>
