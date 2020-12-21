@@ -54,4 +54,13 @@ export class MyStuffService {
         return throwError(err);
       }));
   }
+
+  public publishOne(contentId: string) {
+    return this.http.patch(`${this.url}/publish-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        return throwError(err);
+      }));
+  }
 }

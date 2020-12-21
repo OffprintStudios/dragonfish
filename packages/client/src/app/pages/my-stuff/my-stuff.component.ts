@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
@@ -31,7 +32,7 @@ export class MyStuffComponent implements OnInit {
   });
 
   constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private blogService: BlogsService, private dialog: MatDialog) {
+    private blogService: BlogsService, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -131,6 +132,15 @@ export class MyStuffComponent implements OnInit {
 
       this.blogService.changePublishStatus(content._id, pubChange as PubChange).subscribe(() => {
         content.audit.published = this.pubStatus.Published;
+      });
+    } else if (content.kind === ContentKind.ProseContent || content.kind === ContentKind.PoetryContent) {
+      if (content.kind === ContentKind.ProseContent && content.stats.words < 750) {
+        this.snackBar.open(`Prose must have a minimum of 750 words in total before submitting to the queue.`);
+        return;
+      }
+
+      this.stuffService.publishOne(content._id).subscribe(() => {
+        content.audit.published = this.pubStatus.Pending;
       });
     }
   }
