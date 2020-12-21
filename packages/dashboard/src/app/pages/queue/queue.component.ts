@@ -6,7 +6,8 @@ import { QueueService } from '../../services/contrib/queue';
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-queue',
@@ -19,6 +20,7 @@ export class QueueComponent implements OnInit {
   loading = false; // loading check
   queue: PaginateResult<ApprovalQueue>; // the approval queue
   queueForMod: PaginateResult<ApprovalQueue>; // the approval queue for a single mod
+  contentKind = ContentKind;
 
   pageNum = 1;
 
@@ -52,8 +54,13 @@ export class QueueComponent implements OnInit {
     });
   }
 
-  getOffprintWorkLink(workId: string, workNameSlug: string) {
-    return `https://offprint.net/work/${workId}/${workNameSlug}`;
+  getOffprintWorkLink(entry: ApprovalQueue, workNameSlug: string) {
+    let thisWork = entry.workToApprove as ContentModel;
+    if (thisWork.kind === ContentKind.ProseContent) {
+      return `https://offprint.net/prose/${thisWork._id}/${workNameSlug}`;
+    } else if (thisWork.kind === ContentKind.PoetryContent) {
+      return `https://offprint.net/poetry/${thisWork._id}/${workNameSlug}`;
+    }
   }
 
   getOffprintUserLink(userId: string, usernameSlug: string) {
@@ -124,7 +131,8 @@ export class QueueComponent implements OnInit {
    */
   checkIfClaimedByThisUser(entry: ApprovalQueue) {
     if (entry.claimedBy !== null) {
-      if (entry.claimedBy._id === this.currentUser._id) {
+      let whoClaimedThis = entry.claimedBy as UserInfo;
+      if (whoClaimedThis._id === this.currentUser._id) {
         return true;
       } else {
         return false;
@@ -152,10 +160,12 @@ export class QueueComponent implements OnInit {
    * @param work The work to approve
    */
   approveWork(entry: ApprovalQueue) {
+    let thisWork = entry.workToApprove as ContentModel;
+    let thisWorksAuthor = thisWork.author as UserInfo;
     const decision: Decision = {
       docId: entry._id,
-      workId: entry.workToApprove._id,
-      authorId: entry.workToApprove.author._id
+      workId: thisWork._id,
+      authorId: thisWorksAuthor._id
     };
 
     this.queueService.approveWork(decision).subscribe(() => {
@@ -170,10 +180,12 @@ export class QueueComponent implements OnInit {
    * @param work The work to reject
    */
   rejectWork(entry: ApprovalQueue) {
+    let thisWork = entry.workToApprove as ContentModel;
+    let thisWorksAuthor = thisWork.author as UserInfo;
     const decision: Decision = {
       docId: entry._id,
-      workId: entry.workToApprove._id,
-      authorId: entry.workToApprove.author._id
+      workId: thisWork._id,
+      authorId: thisWorksAuthor._id
     };
 
     this.queueService.rejectWork(decision).subscribe(() => {
