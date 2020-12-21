@@ -249,15 +249,10 @@ export class ContentService {
      * @param authorId The author of the work
      */
     async approveWork(docId: string, modId: string, contentId: string, authorId: string): Promise<void> {        
-        const contentToApprove = await this.contentModel.findOne({
-            '_id': contentId,
-            'author': authorId,
-            'audit.isDeleted': false
+        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {
+            'audit.published': PubStatus.Published,
+            'audit.publishedOn': new Date()
         });
-
-        contentToApprove.audit.published = PubStatus.Published;
-        contentToApprove.audit.publishedOn = new Date();
-        await contentToApprove.save();
         await this.queueService.removeFromQueue(docId, modId);
         await this.usersService.changeWorkCount(authorId, true);
     }
