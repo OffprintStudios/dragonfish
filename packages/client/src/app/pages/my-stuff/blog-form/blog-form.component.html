@@ -104,7 +104,7 @@
         <ng-template #previewBlog>
             <div class="post-container" *ngIf="currBlog">
                 <div class="post-header">
-                    <rating-icon [rating]="currBlog.meta.rating"></rating-icon>
+                    <rating-icon [rating]="currBlog.meta.rating" [size]="'large'"></rating-icon>
                     <h1>{{ currBlog.title }}</h1>
                     <div class="post-cat">
                         <div class="info">
