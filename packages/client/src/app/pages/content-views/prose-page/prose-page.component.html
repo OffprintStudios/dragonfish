@@ -41,7 +41,7 @@
                             <div class="section-info">
                                 <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
                                 <span class="divider">//</span>
-                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | date:'mediumDate'}}</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | localedate:'mediumDate'}}</span>
                             </div>
                             <div class="section-button">
                                 <button><i-feather name="chevron-right"></i-feather></button>
@@ -59,7 +59,7 @@
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | date:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | localedate:'mediumDate' }}</span>
     </div>
 </div>
 

@@ -88,7 +88,7 @@
         </div>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | date:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | localedate:'mediumDate' }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myProse.stats.comments | abbreviate }}</span>
         <span class="divider">//</span>

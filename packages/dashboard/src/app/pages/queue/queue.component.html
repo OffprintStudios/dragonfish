@@ -108,7 +108,7 @@
                                     <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
                                     <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
                                     <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
-                                    <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
+                                    <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | localedate:'short' }}</h4>
                                 </div>
                             </div>
                         </div>

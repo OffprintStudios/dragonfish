@@ -114,7 +114,7 @@
                     <h1>{{ currBlog.title }}</h1>
                     <div class="post-cat">
                         <div class="info">
-                            <span>{{ currBlog.audit.publishedOn | date:'fullDate' }}</span>
+                            <span>{{ currBlog.audit.publishedOn | localedate:'fullDate' }}</span>
                             <span class="divider" *ngIf="currBlog.audit.publishedOn">//</span>
                             <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</span>
                             <span class="divider">//</span>

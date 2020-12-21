@@ -27,7 +27,7 @@
                         <h3><a [routerLink]="['/portfolio', $any(blog.author)._id, $any(blog.author).username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h3>
                         <h4>by <a [routerLink]="['/portfolio', $any(blog.author)._id, $any(blog.author).username | slugify]">{{ $any(blog.author).username }}</a></h4>
                         <div>
-                            <h4 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | date:'short' }}</h4>
+                            <h4 class="subtitle"><i-feather name="calendar"></i-feather>{{ blog.createdAt | localedate:'short' }}</h4>
                             <span>//</span>
                             <h4 class="subtitle">{{ blog.stats.views }} view{{ blog.stats.views | pluralize }}</h4>
                             <span>//</span>
