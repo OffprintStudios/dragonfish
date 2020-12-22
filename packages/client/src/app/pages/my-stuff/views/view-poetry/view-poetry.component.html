@@ -9,7 +9,7 @@
             <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
                 <i-feather name="check-circle"></i-feather>Published
             </button>
-            <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool">
+            <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="submitToQueue()">
                 <i-feather name="circle"></i-feather>Unpublished
             </button>
             <button *ngSwitchCase="pubStatus.Pending" matRipple class="tool">

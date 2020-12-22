@@ -1,26 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ApprovalQueueService } from '../../../db/approval-queue/approval-queue.service';
-import { WorksService } from '../../../db/works/works.service';
+import { ContentService } from '../../../db/content';
 
 @Injectable()
 export class QueueService {
-    constructor(private approvalQueueService: ApprovalQueueService,
-        private worksService: WorksService) {}
-
-    /**
-     * Submits a work to the queue.
-     * 
-     * @param user The author of the work
-     * @param workId The work's ID
-     */
-    /*async submitWork(user: any, workId: string) {
-        let publishedSections = (await this.worksService.findOneWorkById(workId)).sections
-            .filter(x => x.published);
-        if (!publishedSections || publishedSections.length < 1) {
-            throw new BadRequestException("Your work must contain at least one published section before it can be submitted.");
-        }
-        return await this.approvalQueueService.addOneWork(user, workId);
-    }*/
+    constructor(private approvalQueueService: ApprovalQueueService, private contentService: ContentService) {}
 
     /**
      * Fetches the entire queue.
@@ -57,7 +41,7 @@ export class QueueService {
      * @param authorId The author of the work
      */
     async approveWork(user: any, docId: string, workId: string, authorId: string) {
-        return await this.approvalQueueService.approveWork(user, docId, workId, authorId);
+        return await this.contentService.approveWork(docId, user.sub, workId, authorId);
     }
 
     /**
@@ -69,6 +53,6 @@ export class QueueService {
      * @param authorId The author of the work
      */
     async rejectWork(user: any, docId: string, workId: string, authorId: string) {
-        return await this.approvalQueueService.rejectWork(user, docId, workId, authorId);
+        return await this.contentService.rejectWork(docId, user.sub, workId, authorId);
     }
 }

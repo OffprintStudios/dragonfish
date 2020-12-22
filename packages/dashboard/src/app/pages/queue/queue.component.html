@@ -40,22 +40,27 @@
                                     <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
                                     <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
                                 </ng-container>
-                                <h3><a [href]="getOffprintWorkLink(entry.workToApprove._id, entry.workToApprove.title | slugify)">{{ entry.workToApprove.title }}</a></h3>                                
+                                <h3><a [href]="getOffprintWorkLink(entry, entry.workToApprove.title | slugify)">{{ entry.workToApprove.title }}</a></h3>                                
                                 <h4 class="author-byline">by <a [href]="getOffprintUserLink(entry.workToApprove.author._id, entry.workToApprove.author.username | slugify)">
-                                    {{ entry.workToApprove.author.username }}
+                                    {{ entry.workToApprove.author.username }} 
                                 </a></h4>
                             </div>
                             <div class="info-bits">
-                                <h4>{{ entry.workToApprove.meta.category | fixCategories }}</h4><span>//</span>
-                                <h4>{{ entry.workToApprove.meta.genres | separateEntities:entry.workToApprove.meta.category }}</h4><span *ngIf="entry.workToApprove.meta.fandoms.length > 0">//</span>
-                                <h4 *ngIf="entry.workToApprove.meta.fandoms.length > 0">{{ entry.workToApprove.meta.fandoms | separateEntities }}</h4>
+                                <ng-container [ngSwitch]="entry.workToApprove.kind">
+                                    <ng-container *ngSwitchCase="contentKind.ProseContent">
+                                        <h4 [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open"></i-feather></h4><span>//</span>
+                                    </ng-container>
+                                    <ng-container *ngSwitchCase="contentKind.PoetryContent">
+                                        <h4 [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather"></i-feather></h4><span>//</span>
+                                    </ng-container>
+                                </ng-container>
+                                <h4>{{ entry.workToApprove.meta.category }}</h4><span>//</span>
+                                <h4>{{ entry.workToApprove.meta.genres | separateEntities }}</h4>
                             </div>
                             <div class="stats">
                                 <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
-                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.totWords | toLocaleString }} word{{ entry.workToApprove.stats.totWords | pluralize }}</h4><span>//</span>
-                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ entry.workToApprove.stats.views | toLocaleString }} view{{ entry.workToApprove.stats.views | pluralize}}</h4><span>//</span>
-                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ entry.workToApprove.stats.comments | toLocaleString }} comment{{ entry.workToApprove.stats.comments | pluralize }}</h4><span>//</span>
-                                <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | localedate:'short' }}</h4>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.words | toLocaleString }} word{{ entry.workToApprove.stats.words | pluralize }}</h4><span>//</span>
+                                <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
                             </div>
                         </div>
                     </div>

@@ -55,4 +55,14 @@ export class ContentController {
 
         return await this.contentService.deleteOne(req.user, contentId);
     }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('publish-one')
+    async publishOne(@Request() req: any, @Query('contentId') contentId: string) {
+        if (isNullOrUndefined(contentId)) {
+            throw new BadRequestException(`You must include the content ID.`);
+        }
+
+        return await this.contentService.submitForApproval(req.user, contentId);
+    }
 }

@@ -77,6 +77,17 @@ export class ViewProseComponent implements OnInit {
         this.selectedSection = section;
     }
 
+    submitToQueue() {
+        if (this.myProse.stats.words < 750) {
+            this.snackBar.open(`Prose must have a minimum of 750 words in total before submitting to the queue.`);
+            return;
+        }
+    
+        this.stuffService.publishOne(this.myProse._id).subscribe(() => {
+            this.myProse.audit.published = this.pubStatus.Pending;
+        });
+    }
+
     submitForm() {
         if (this.fields.title.invalid) {
             this.snackBar.open(`Chapter titles need to be between 3 and 100 characters long.`);

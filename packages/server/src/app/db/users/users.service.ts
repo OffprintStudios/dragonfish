@@ -212,6 +212,20 @@ export class UsersService {
     }
 
     /**
+     * Increments a user's work count if the addOne flag is true. Decrements the same count if false.
+     * 
+     * @param user The user to update
+     * @param addOne Whether to add one or subtract one
+     */
+    async changeWorkCount(user: string, addOne: boolean): Promise<void> {
+        if (addOne === true) {
+            await this.userModel.updateOne({'_id': user}, {$inc: {'stats.works': 1}});
+        } else {
+            await this.userModel.updateOne({'_id': user}, {$inc: {'stats.works': -1}});
+        }
+    }
+
+    /**
      * Updates a user's username, and ensures that the new username is not already in use.
      * @param userId The user's ID.
      * @param newUsername The user's proposed new username.

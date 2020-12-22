@@ -13,10 +13,11 @@ import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { ProseService } from './prose/prose.service';
 import { PoetryService } from './poetry/poetry.service';
+import { ApprovalQueueModule } from '../approval-queue/approval-queue.module';
 
 @Module({
   imports: [
-    UsersModule, NotificationsModule, SectionsModule,
+    UsersModule, NotificationsModule, SectionsModule, ApprovalQueueModule,
     MongooseModule.forFeatureAsync([
       {
         name: 'Content',
