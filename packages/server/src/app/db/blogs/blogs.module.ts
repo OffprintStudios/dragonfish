@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { BlogsSchema } from './blogs.schema';
-import { BlogsService } from './blogs.service';
+import { OldBlogsService } from './blogs.service';
 import { UsersModule } from '../users/users.module';
 
 @Module({
@@ -10,7 +10,7 @@ import { UsersModule } from '../users/users.module';
     MongooseModule.forFeature([{name: 'Blog', schema: BlogsSchema}]),
     UsersModule,
   ],
-  providers: [BlogsService],
-  exports: [BlogsService]
+  providers: [OldBlogsService],
+  exports: [OldBlogsService]
 })
-export class BlogsModule {}
+export class OldBlogsModule {}
