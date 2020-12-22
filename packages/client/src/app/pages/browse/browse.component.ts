@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ProseContent } from '@pulp-fiction/models/content';
+import { ContentModel, ProseContent } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
 import { calculateApprovalRating } from '../../util/functions';
@@ -13,7 +13,7 @@ import { Constants, Title } from '../../shared';
   styleUrls: ['./browse.component.less']
 })
 export class BrowseComponent implements OnInit {
-  works: PaginateResult<ProseContent>;
+  works: PaginateResult<ContentModel>;
 
   pageNum = 1;
 
@@ -21,7 +21,7 @@ export class BrowseComponent implements OnInit {
 
   ngOnInit(): void {
     Title.setTwoPartTitle(Constants.BROWSE);  
-    this.route.data.subscribe(data => {
+    this.route.data.subscribe(data => {      
       this.works = data.feedData;
     });
   }

@@ -20,8 +20,11 @@
             <div class="work-container">
                 <!--Header-->
                 <div class="work-header">
-                    <rating-icon [rating]="work.meta.rating" [size]="small"></rating-icon>                          
-                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
+                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                          
+                    <h1 [ngSwitch]="work.kind">
+                        <a *ngSwitchCase="'ProseContent'" [routerLink]="['/prose', work._id, work.title | slugify]">{{ work.title }}</a>
+                        <a *ngSwitchCase="'PoetryContent'" [routerLink]="['/poetry', work._id, work.title | slugify]">{{ work.title }}</a>
+                    </h1>                            
                     <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
                     <div class="approval" title="Approval Rating">
                         <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%

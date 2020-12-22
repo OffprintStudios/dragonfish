@@ -38,7 +38,7 @@ export class ContentController {
     }
 
     @Get('fetch-all-published')
-    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind) {
+    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind[]) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }

@@ -8,6 +8,9 @@ import { WorkPageData } from '../models/site';
 import { AuthService } from '../services/auth';
 import { HistoryService, LocalSectionsService, WorksService } from '../services/content';
 
+
+// This resolver is obsolete. 
+// TODO: Delete.
 @Injectable()
 export class WorkPageResolver implements Resolve<WorkPageData> {
     currentUser: FrontendUser;

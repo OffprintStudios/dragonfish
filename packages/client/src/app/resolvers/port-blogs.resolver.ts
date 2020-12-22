@@ -20,6 +20,6 @@ export class PortBlogsResolver implements Resolve<PaginateResult<BlogsContentMod
             this.pageNum = pageNum;
         }
 
-        return this.contentService.fetchAllPublished(this.pageNum, ContentKind.BlogContent, userId) as Observable<PaginateResult<BlogsContentModel>>;
+        return this.contentService.fetchAllPublished(this.pageNum, [ContentKind.BlogContent], userId) as Observable<PaginateResult<BlogsContentModel>>;
     }
 }
