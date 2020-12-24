@@ -20,19 +20,17 @@
             <div class="work-container">
                 <!--Header-->
                 <div class="work-header">
-                    <ng-container [ngSwitch]="work.meta.rating">
-                        <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
-                        <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                        <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                        <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
-                    </ng-container>                            
-                    <h1><a [routerLink]="['/work', work._id, work.title | slugify]">{{ work.title }}</a></h1>                            
+                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                          
+                    <h1 [ngSwitch]="work.kind">
+                        <a *ngSwitchCase="'ProseContent'" [routerLink]="['/prose', work._id, work.title | slugify]">{{ work.title }}</a>
+                        <a *ngSwitchCase="'PoetryContent'" [routerLink]="['/poetry', work._id, work.title | slugify]">{{ work.title }}</a>
+                    </h1>                            
                     <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
                     <div class="approval" title="Approval Rating">
                         <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%
                     </div>
                     <div class="category-genre">
-                        {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
+                        {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateGenres }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | joinStrings }}</ng-container>
                     </div>                            
                 </div>
 
@@ -42,7 +40,7 @@
                         <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
                     </div>
                     <div>
-                        {{ work.shortDesc }}
+                        {{ work.desc }}
                     </div>
                 </div>
 
@@ -50,7 +48,7 @@
                 <div class="work-stats">
                     <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
                     <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
-                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | abbreviate }}<span>//</span>
+                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
                     <i-feather name="calendar" title="Published On"></i-feather>{{ work.audit.publishedOn | localedate: 'mediumDate' }}<span>//</span>
                     {{ work.meta.status }}
                 </div>

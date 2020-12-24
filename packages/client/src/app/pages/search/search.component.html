@@ -51,7 +51,7 @@
                                             <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%
                                         </div>
                                         <div class="category-genre">
-                                            {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
+                                            {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateGenres }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | joinStrings }}</ng-container>
                                         </div>                            
                                     </div>
             

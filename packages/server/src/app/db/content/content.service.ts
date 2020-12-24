@@ -80,10 +80,10 @@ export class ContentService {
      * Fetches all published documents based on kind, limited by page number.
      * 
      * @param pageNum The current page
-     * @param kind The kind of document to fetch
+     * @param kinds The kind of document to fetch
      */
-    async fetchAllPublished(pageNum: number, kind: ContentKind, userId?: string): Promise<PaginateResult<ContentDocument>> {
-        let query = {'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Published};
+    async fetchAllPublished(pageNum: number, kinds: ContentKind[], userId?: string): Promise<PaginateResult<ContentDocument>> {
+        let query = {'kind': {$in: kinds}, 'audit.isDeleted': false, 'audit.published': PubStatus.Published};
         let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
         
         if (userId) {

@@ -10,7 +10,7 @@ export class NewsController {
 
     @Get('news-feed/:pageNum')
     async getNewsFeed(@Param('pageNum') pageNum: number) {
-        return await this.contentService.fetchAllPublished(pageNum, ContentKind.NewsContent);
+        return await this.contentService.fetchAllPublished(pageNum, [ContentKind.NewsContent]);
     }
 
     @UseGuards(OptionalAuthGuard)
