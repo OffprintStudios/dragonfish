@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, ParsedResponseHeaders, FileItem } from 'ng2-file-upload';
-import { CookieService } from 'ngx-cookie';
+import { CookieOptions, CookieService } from 'ngx-cookie';
 
 import { AlertsService } from '../../modules/alerts';
 import { HttpError } from '../../models/site';
@@ -261,14 +261,16 @@ export class AuthService {
    * @param enableExplicit Enable explicit check
    */
   public setContentFilter(enableMature: boolean, enableExplicit: boolean) {
+    let options: CookieOptions = {expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))}
+
     if (enableMature === true && enableExplicit === false) {
-      this.cookies.put('contentFilter', ContentFilter.MatureEnabled);
+      this.cookies.put('contentFilter', ContentFilter.MatureEnabled, options);
     } else if (enableMature === false && enableExplicit === true) {
-      this.cookies.put('contentFilter', ContentFilter.ExplicitEnabled);
+      this.cookies.put('contentFilter', ContentFilter.ExplicitEnabled, options);
     } else if (enableMature === true && enableExplicit === true) {
-      this.cookies.put('contentFilter', ContentFilter.Everything);
+      this.cookies.put('contentFilter', ContentFilter.Everything, options);
     } else if (enableMature === false && enableExplicit === false) {
-      this.cookies.put('contentFilter', ContentFilter.Default);
+      this.cookies.put('contentFilter', ContentFilter.Default, options);
     }
 
     location.reload();
