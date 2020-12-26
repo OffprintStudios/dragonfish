@@ -8,7 +8,7 @@ import { SearchService } from './search.service';
 export class SearchController {
     constructor(private readonly searchService: SearchService) {}
 
-    @Get('get-initial-results')
+    /*@Get('get-initial-results')
     async getInitialResults(@Query('query') query: string, @Cookies('contentFilter') contentFilter: ContentFilter) {
         return await this.searchService.fetchInitialResults(query, contentFilter);
     }
@@ -26,5 +26,5 @@ export class SearchController {
     @Get('get-work-results')
     async getWorkResults(@Query('query') query: string, @Query('pageNum') pageNum: number, @Cookies('contentFilter') contentFilter: ContentFilter) {
         return await this.searchService.searchWorks(query, pageNum, contentFilter);
-    }
+    }*/
 }
