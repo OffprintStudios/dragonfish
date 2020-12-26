@@ -5,8 +5,6 @@ import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/comments';
-import { BlogsService } from '../blogs/blogs.service';
-import { WorksService } from '../works/works.service';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
@@ -15,63 +13,8 @@ import { CreateCommentNotification, NotificationKind } from '@pulp-fiction/model
 @Injectable()
 export class CommentsService {
     constructor(@InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
-        @InjectModel('BlogComment') private readonly blogCommentModel: PaginateModel<documents.BlogCommentDocument>,
-        @InjectModel('WorkComment') private readonly workCommentModel: PaginateModel<documents.WorkCommentDocument>,
         @InjectModel('ContentComment') private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
-        private readonly blogsService: BlogsService, private readonly worksService: WorksService, 
         private readonly contentService: ContentService, private readonly notificationsService: NotificationsService) {}
-
-    /**
-     * Creates a new comment that belongs to a blog.
-     * 
-     * @param user A user's JWT payload
-     * @param blogId The blog the comment belongs to
-     * @param commentInfo The comment's info
-     */
-    async createBlogComment(user: any, blogId: string, commentInfo: models.CreateComment): Promise<documents.BlogCommentDocument> {
-        const newComment = new this.blogCommentModel({
-            user: user.sub,
-            blogId: blogId,
-            body: commentInfo.body
-        });
-
-        let doc = await newComment.save();
-        await this.blogsService.addComment(blogId);
-
-        const blogTitle = (await this.contentService.fetchOnePublished(blogId, commentInfo.commentParentKind)).title;
-        const notification: CreateCommentNotification = {
-            kind: NotificationKind.CommentNotification,
-            sourceId: blogId,
-            commentId: doc._id,
-            commenterId: user.sub,
-            commenterName: user.username,            
-            parentKind: commentInfo.commentParentKind,
-            parentTitle: blogTitle            
-        };
-        await this.notificationsService.queueNotification(notification);
-
-        return doc;
-    }
-
-    /**
-     * Creates a new comment that belongs to a work.
-     * 
-     * @param user A user's JWT payload
-     * @param workId The work the comment belongs to
-     * @param commentInfo The comment's info
-     */
-    async createWorkComment(user: any, workId: string, commentInfo: models.CreateComment): Promise<documents.WorkCommentDocument> {
-        const newComment = new this.workCommentModel({
-            user: user.sub,
-            workId: workId,
-            body: commentInfo.body
-        });
-        
-        let doc = await newComment.save();
-        await this.worksService.addComment(workId);    
-
-        return doc;
-    }
 
     /**
      * Creates a new comment that belongs to some content.
@@ -103,34 +46,6 @@ export class CommentsService {
         await this.notificationsService.queueNotification(notification);
 
         return doc;
-    }
-
-    /**
-     * Grabs the comments belonging to this blog.
-     * 
-     * @param blogId The blog that these comments belong to
-     * @param pageNum The current page
-     */
-    async getBlogComments(blogId: string, pageNum: number): Promise<PaginateResult<documents.BlogCommentDocument>> {
-        return await this.blogCommentModel.paginate({"blogId": blogId}, {
-            sort: {"createdAt": 1},
-            page: pageNum,
-            limit: 25
-        });
-    }
-
-    /**
-     * Grabs the comments belonging to this work.
-     * 
-     * @param workId The work that these comments belong to
-     * @param pageNum The current page
-     */
-    async getWorkComments(workId: string, pageNum: number): Promise<PaginateResult<documents.WorkCommentDocument>> {
-        return await this.workCommentModel.paginate({"workId": workId}, {
-            sort: {"createdAt": 1},
-            page: pageNum,
-            limit: 25
-        });
     }
 
     /**

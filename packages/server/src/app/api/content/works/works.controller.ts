@@ -23,15 +23,6 @@ export class WorksController {
         return await this.worksService.deleteWork(req.user, workId);
     }
 
-    @UseGuards(AuthGuard)
-    @UseInterceptors(FileInterceptor('coverart'))
-    @Post('upload-coverart/:workId')
-    async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {
-        const coverArtUrl = await this.imagesService.upload(coverArtImage, workId, 'coverart');
-        const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
-        return await this.worksService.updateCoverArt(req.user, coverArt, workId);
-    }
-
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-like')
     async setLike(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
