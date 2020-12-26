@@ -37,11 +37,11 @@ export class CollectionsComponent implements OnInit {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
         Title.setThreePartTitle(this.portUser.username, Constants.COLLECTIONS);
 
-        this.route.data.subscribe(data => {
+        /* this.route.data.subscribe(data => {
             const feedData = data.feedData as PortCollections;
             this.collsData = feedData.collections;
             this.userCollsData = feedData.userCollections;
-        });
+        });*/
     }
 
     /**

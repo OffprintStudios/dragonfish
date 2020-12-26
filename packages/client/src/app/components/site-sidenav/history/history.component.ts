@@ -13,7 +13,7 @@ export class HistoryComponent implements OnInit {
   histItems: History[];
 
   constructor(private historyService: HistoryService) {
-    this.fetchData();
+    // this.fetchData();
   }
 
   ngOnInit(): void {

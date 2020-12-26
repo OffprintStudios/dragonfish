@@ -1,11 +1,11 @@
-import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Post, Body } from '@nestjs/common';
+import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch } from '@nestjs/common';
+import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { isNullOrUndefined } from '../../util';
-import { Types } from 'mongoose';
 
 @Controller()
 export class ContentController {
@@ -38,12 +38,12 @@ export class ContentController {
     }
 
     @Get('fetch-all-published')
-    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind[]) {
+    async fetchAllPublished(@Request() req: any, @Cookies('contentFilter') filter: ContentFilter, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind[]) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }
 
-        return await this.contentService.fetchAllPublished(pageNum, kind, userId);
+        return await this.contentService.fetchAllPublished(pageNum, kind, filter, userId);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
