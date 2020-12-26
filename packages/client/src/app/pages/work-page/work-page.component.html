@@ -23,11 +23,11 @@
                         {{ workData.meta.category | fixCategories }}<span>//</span>
                     </div>
                     <div>
-                        {{ workData.meta.genres | separateEntities:workData.meta.category }}
+                        {{ workData.meta.genres | separateGenres }}
                     </div>
                     <div>
                         <ng-container *ngIf="workData.meta.fandoms.length > 0">
-                            <span>//</span>{{ workData.meta.fandoms | separateEntities }}
+                            <span>//</span>{{ workData.meta.fandoms | joinStrings }}
                         </ng-container>
                     </div>
                     <div class="approval">

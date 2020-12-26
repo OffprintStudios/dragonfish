@@ -19,10 +19,12 @@ import { CookieModule } from 'ngx-cookie';
 import { Ng2FittextModule } from 'ng2-fittext';
 import { IconsModule } from '@pulp-fiction/icons';
 
-import { SlugifyPipe, PluralizePipe, SeparateEntitiesPipe, FixCategoriesPipe,
-  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, TruncatePipe, LocaleDatePipe } from './pipes';
+import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
+  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
+  TruncatePipe, LocaleDatePipe, JoinStringsPipe } from './pipes';
 import { AlertsModule, NagBarModule } from './modules';
-import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, brMatcher, textNodeMatcher } from './util/quill';
+import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
+  brMatcher, textNodeMatcher } from './util/quill';
 
 import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
 
@@ -97,7 +99,7 @@ const toolbarOptions = [
     BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
     NewWorkComponent, EditWorkComponent, WorkPageComponent, 
-    SectionPageComponent, SeparateEntitiesPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
+    SectionPageComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,

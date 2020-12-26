@@ -80,7 +80,7 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ myProse.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ myProse.meta.genres | separateEntities }}</span>
+                <span class="tag">{{ myProse.meta.genres | separateGenres }}</span>
             </div>
             <div class="view-description">
                 <div class="html-description" [innerHtml]="myProse.body | safeHtml"></div>

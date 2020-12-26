@@ -24,8 +24,8 @@ export class PortWorksResolver implements Resolve<PortWorks> {
             this.pageNum = pageNum;
         }
 
-        const proseList = this.contentService.fetchAllPublished(this.pageNum, ContentKind.ProseContent, userId);
-        const poetryList = this.contentService.fetchAllPublished(this.pageNum, ContentKind.PoetryContent, userId);
+        const proseList = this.contentService.fetchAllPublished(this.pageNum, [ContentKind.ProseContent], userId);
+        const poetryList = this.contentService.fetchAllPublished(this.pageNum, [ContentKind.PoetryContent], userId);
 
         return zip(proseList, poetryList).pipe(map(value => {
             const portWorks: PortWorks = {
