@@ -30,6 +30,10 @@ export class WorksService {
         })
     }
 
+    async findOneById(user: any, workId: string): Promise<documents.WorkDocument> {
+        return await this.workModel.findById(workId).where('author', user.sub).where('audit.isDeleted', false);
+    }
+
     /**
      * Finds the first six matches given the provided search parameters.
      * For use with the initial page of search results.

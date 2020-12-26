@@ -17,8 +17,8 @@ export class OldBlogsService {
      *
      * @param blogId The incoming blog ID.
      */
-    async findOneById(blogId: string): Promise<models.Blog> {
-        return await this.blogModel.findById(blogId).where('audit.isDeleted', false);
+    async findOneById(user: any, blogId: string): Promise<models.Blog> {
+        return await this.blogModel.findById(blogId).where('author', user.sub).where('audit.isDeleted', false);
     }
 
     /**
