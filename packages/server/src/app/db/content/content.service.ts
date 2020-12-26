@@ -84,7 +84,7 @@ export class ContentService {
      */
     async fetchAllPublished(pageNum: number, kinds: ContentKind[], filter: ContentFilter, userId?: string): Promise<PaginateResult<ContentDocument>> {
         let query = {'kind': {$in: kinds}, 'audit.isDeleted': false, 'audit.published': PubStatus.Published};
-        let filteredQuery = this.determineContentFilter(query, filter);
+        let filteredQuery = await this.determineContentFilter(query, filter);
         let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
         
         if (userId) {
