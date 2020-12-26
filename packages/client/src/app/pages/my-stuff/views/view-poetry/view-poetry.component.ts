@@ -78,6 +78,19 @@ export class ViewPoetryComponent implements OnInit {
         this.selectedSection = section;
     }
 
+    submitToQueue() {
+        if (this.myPoetry.meta.collection === true) {
+            if (this.myPoetry.sections && this.myPoetry.sections.length === 0) {
+                this.snackBar.open(`Poetry collections must have at least one section added.`);
+                return;
+            }
+        }
+
+        this.stuffService.publishOne(this.myPoetry._id).subscribe(() => {
+            this.myPoetry.audit.published = this.pubStatus.Pending;
+        });
+    }
+
     submitForm() {
         if (this.fields.title.invalid) {
             this.snackBar.open(`Chapter titles need to be between 3 and 100 characters long.`);

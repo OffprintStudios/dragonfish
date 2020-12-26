@@ -4,9 +4,15 @@
         <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
         <span class="tool-divider"></span>
 
-        <button matRipple class="tool disabled">
-            <i-feather name="circle"></i-feather>Unpublished
-        </button>
+        <ng-container [ngSwitch]="currBlog.audit.published">
+            <button matRipple *ngSwitchCase="pubStatus.Unpublished" class="tool" (click)="changePubStatus()">
+                <i-feather name="circle"></i-feather>Unpublished
+            </button>
+            <button matRipple *ngSwitchCase="pubStatus.Published" class="tool active" (click)="changePubStatus()">
+                <i-feather name="check-circle"></i-feather>Published
+            </button>
+        </ng-container>
+
         <span class="tool-divider"></span>
         <!--Content tools-->
         <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
@@ -104,11 +110,11 @@
         <ng-template #previewBlog>
             <div class="post-container" *ngIf="currBlog">
                 <div class="post-header">
-                    <rating-icon [rating]="currBlog.meta.rating"></rating-icon>
+                    <rating-icon [rating]="currBlog.meta.rating" [size]="'large'"></rating-icon>
                     <h1>{{ currBlog.title }}</h1>
                     <div class="post-cat">
                         <div class="info">
-                            <span>{{ currBlog.audit.publishedOn | date:'fullDate' }}</span>
+                            <span>{{ currBlog.audit.publishedOn | localedate:'fullDate' }}</span>
                             <span class="divider" *ngIf="currBlog.audit.publishedOn">//</span>
                             <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</span>
                             <span class="divider">//</span>

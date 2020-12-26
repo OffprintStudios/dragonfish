@@ -4,7 +4,7 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 
-import { BlogForm, BlogsContentModel, ContentRating } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, ContentRating, PubStatus, PubChange } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
 
 @Component({
@@ -17,6 +17,7 @@ export class BlogFormComponent implements OnInit {
   editMode = false;
   createBlogMode = true;
   ratings = ContentRating;
+  pubStatus = PubStatus;
 
   formTitle: string = `Create a Blog`;
 
@@ -64,6 +65,17 @@ export class BlogFormComponent implements OnInit {
     } else {
       this.location.back();
     }
+  }
+
+  changePubStatus() {
+    let pubChange: PubChange = {
+      oldStatus: this.currBlog.audit.published,
+      newStatus: this.currBlog.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished
+    };
+    
+    this.blogsService.changePublishStatus(this.currBlog._id, pubChange as PubChange).subscribe(() => {
+      this.currBlog.audit.published = this.currBlog.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished;
+    });
   }
 
   submitForm() {

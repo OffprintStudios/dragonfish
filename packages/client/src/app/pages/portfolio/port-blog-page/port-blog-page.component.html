@@ -4,7 +4,7 @@
         <h1>{{ blogData.title }}</h1>
         <div class="post-cat">
             <div class="info">
-                <span>{{ blogData.audit.publishedOn | date:'fullDate' }}</span>
+                <span>{{ blogData.audit.publishedOn | localedate:'fullDate' }}</span>
                 <span class="divider" *ngIf="blogData.audit.publishedOn">//</span>
                 <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</span>
                 <span class="divider">//</span>

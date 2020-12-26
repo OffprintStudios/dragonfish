@@ -16,7 +16,7 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currPoetry.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ currPoetry.meta.genres | separateEntities }}</span>
+                <span class="tag">{{ currPoetry.meta.genres | separateGenres }}</span>
                 <div class="view-tools">
                     <button matRipple class="tool left"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currPoetry.stats.likes | abbreviate }}</span></button>
                     <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currPoetry.stats.likes | abbreviate }}</span></button>
@@ -46,7 +46,7 @@
                             <div class="section-info">
                                 <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
                                 <span class="divider">//</span>
-                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | date:'mediumDate'}}</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | localedate:'mediumDate'}}</span>
                             </div>
                             <div class="section-button">
                                 <button><i-feather name="chevron-right"></i-feather></button>
@@ -66,7 +66,7 @@
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currPoetry.stats.words | abbreviate }}</span>
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currPoetry.audit.publishedOn | date:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currPoetry.audit.publishedOn | localedate:'mediumDate' }}</span>
     </div>
 </div>
 

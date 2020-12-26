@@ -34,9 +34,9 @@
                                     </div>
                                     <div class="category-genre">
                                         {{ entry.work.meta.category | fixCategories }}<span>//</span>
-                                        {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                        {{ entry.work.meta.genres | separateGenres }}
                                         <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
-                                            <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                            <span>//</span>{{ entry.work.meta.fandoms | joinStrings }}
                                         </ng-container>
                                     </div>                            
                                 </div>
@@ -56,7 +56,7 @@
                                     <i-feather name="bar-chart-2" title="Views"></i-feather>{{ entry.work.stats.views | abbreviate }}<span>//</span>
                                     <i-feather name="message-circle" title="Comments"></i-feather>{{ entry.work.stats.comments | abbreviate }}<span>//</span>
                                     <i-feather name="pen-tool" title="Words"></i-feather>{{ entry.work.stats.totWords | abbreviate }}<span>//</span>
-                                    <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | date:'shortDate' }}<span>//</span>
+                                    <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | localedate:'shortDate' }}<span>//</span>
                                     {{ entry.work.meta.status }}
                                 </div>
                             </div>
@@ -104,9 +104,9 @@
                                 </div>
                                 <div class="category-genre">
                                     {{ entry.work.meta.category | fixCategories }}<span>//</span>
-                                    {{ entry.work.meta.genres | separateEntities:entry.work.meta.category }}
+                                    {{ entry.work.meta.genres | separateGenres }}
                                     <ng-container *ngIf="entry.work.meta.fandoms.length > 0">
-                                        <span>//</span>{{ entry.work.meta.fandoms | separateEntities }}
+                                        <span>//</span>{{ entry.work.meta.fandoms | joinStrings }}
                                     </ng-container>
                                 </div>                            
                             </div>
@@ -126,7 +126,7 @@
                                 <i-feather name="bar-chart-2" title="Views"></i-feather>{{ entry.work.stats.views | abbreviate }}<span>//</span>
                                 <i-feather name="message-circle" title="Comments"></i-feather>{{ entry.work.stats.comments | abbreviate }}<span>//</span>
                                 <i-feather name="pen-tool" title="Words"></i-feather>{{ entry.work.stats.totWords | abbreviate }}<span>//</span>
-                                <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | date:'shortDate' }}<span>//</span>
+                                <i-feather name="calendar" title="Created At"></i-feather>{{ entry.work.createdAt | localedate:'shortDate' }}<span>//</span>
                                 {{ entry.work.meta.status }}
                             </div>
                         </div>

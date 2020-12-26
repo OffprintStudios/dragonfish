@@ -10,7 +10,7 @@
                 <h1 class="header"><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'blog', blog._id]">{{ blog.title }}</a></h1>
                 <div class="post-cat">
                     <div class="info">
-                        <span>{{ blog.audit.publishedOn | date:'fullDate' }}</span>
+                        <span>{{ blog.audit.publishedOn | localedate:'fullDate' }}</span>
                         <span class="divider">//</span>
                         <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blog.stats.views }}</span>
                         <span class="divider">//</span>

@@ -38,7 +38,7 @@ export class ContentController {
     }
 
     @Get('fetch-all-published')
-    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind) {
+    async fetchAllPublished(@Request() req: any, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind[]) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }
@@ -54,5 +54,15 @@ export class ContentController {
         }
 
         return await this.contentService.deleteOne(req.user, contentId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('publish-one')
+    async publishOne(@Request() req: any, @Query('contentId') contentId: string) {
+        if (isNullOrUndefined(contentId)) {
+            throw new BadRequestException(`You must include the content ID.`);
+        }
+
+        return await this.contentService.submitForApproval(req.user, contentId);
     }
 }

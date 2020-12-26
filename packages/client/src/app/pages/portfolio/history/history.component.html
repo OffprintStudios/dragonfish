@@ -29,8 +29,8 @@
                             <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.work).author._id, $any(doc.work).author.username | slugify]">{{ $any(doc.work).author.username }}</a></h4>
                             <br>
                             <h4>{{ $any(doc.work).meta.category | fixCategories }}</h4><span>//</span>
-                            <h4>{{ $any(doc.work).meta.genres | separateEntities:$any(doc.work).meta.category }}</h4><span *ngIf="$any(doc.work).meta.fandoms.length > 0">//</span>
-                            <h4 *ngIf="$any(doc.work).meta.fandoms.length > 0">{{ $any(doc.work).meta.fandoms | separateEntities }}</h4>
+                            <h4>{{ $any(doc.work).meta.genres | separateGenres }}</h4><span *ngIf="$any(doc.work).meta.fandoms.length > 0">//</span>
+                            <h4 *ngIf="$any(doc.work).meta.fandoms.length > 0">{{ $any(doc.work).meta.fandoms | joinStrings }}</h4>
                             <div class="stats">                                
                                 <h4>{{ $any(doc.work).meta.status }}</h4><span>//</span>
                                 <h4 title="Approval Rating"><i-feather name="heart"></i-feather>{{ calcApprovalRating($any(doc.work).stats.likes, $any(doc.work).stats.dislikes) }}%</h4><span>//</span>
@@ -38,7 +38,7 @@
                                 <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ $any(doc.work).stats.views | toLocaleString }}</h4><span>//</span>
                                 <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.work).stats.comments | toLocaleString }}</h4>
                                 <ng-container *ngIf="$any(doc.work).audit.publishedOn">
-                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | date:'short' }}</h4>
+                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | localedate:'short' }}</h4>
                                 </ng-container>
                             </div>
                         </div>

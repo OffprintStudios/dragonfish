@@ -37,7 +37,7 @@
                             <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%
                         </div>
                         <div class="category-genre">
-                            {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateEntities:work.meta.category }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | separateEntities }}</ng-container>
+                            {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateGenres }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | joinStrings }}</ng-container>
                         </div>                            
                     </div>
 
@@ -56,7 +56,7 @@
                         <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
                         <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
                         <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.totWords | abbreviate }}<span>//</span>
-                        <i-feather name="calendar" title="Published On"></i-feather>{{ work.audit.publishedOn | date:'mediumDate' }}<span>//</span>
+                        <i-feather name="calendar" title="Published On"></i-feather>{{ work.audit.publishedOn | localedate:'mediumDate' }}<span>//</span>
                         {{ work.meta.status }}
                     </div>
                 </div>

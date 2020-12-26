@@ -8,7 +8,7 @@
             <span class="divider">//</span>
             <span class="tag">{{ content.meta.category }}</span>
             <span class="divider">//</span>
-            <span class="tag">{{ content.meta.genres | separateEntities }}</span>
+            <span class="tag">{{ content.meta.genres | separateGenres }}</span>
             <span class="tag end"><i-feather name="heart"></i-feather>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
         </div>
     </div>
@@ -28,7 +28,7 @@
         <i-feather name="bar-chart-2" title="Views"></i-feather>{{ content.stats.views | abbreviate }}<span>//</span>
         <i-feather name="message-circle" title="Comments"></i-feather>{{ content.stats.comments | abbreviate }}<span>//</span>
         <i-feather name="pen-tool" title="Words"></i-feather>{{ content.stats.words | abbreviate }}<span>//</span>
-        <i-feather name="calendar" title="Published On"></i-feather>{{ content.meta.publishedOn | date:'shortDate' }}<span>//</span>
+        <i-feather name="calendar" title="Published On"></i-feather>{{ content.meta.publishedOn | localedate:'shortDate' }}<span>//</span>
         {{ content.meta.status }}
     </div>
 </div>

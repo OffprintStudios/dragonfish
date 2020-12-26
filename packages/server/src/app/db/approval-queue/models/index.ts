@@ -1,1 +1,0 @@
-export { ApprovalQueueDocument } from './approval-queue-document.model';
