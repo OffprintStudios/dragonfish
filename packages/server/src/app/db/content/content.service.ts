@@ -88,7 +88,7 @@ export class ContentService {
         let paginateOptions = {sort: {'audit.publishedOn': -1}, page: pageNum, limit: 15};
         
         if (userId) {
-            query['author'] = userId;
+            filteredQuery['author'] = userId;
         }
 
         return await this.contentModel.paginate(filteredQuery, paginateOptions);
