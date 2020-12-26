@@ -15,6 +15,8 @@ import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
 import { UsersService } from '../users/users.service';
 import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
+import { MigrationForm } from '@pulp-fiction/models/migration';
+import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 @Injectable()
 export class ContentService {
@@ -345,5 +347,57 @@ export class ContentService {
         }
 
         return query;
+    }
+
+    async migrateBlog(user: JwtPayload, formData: MigrationForm) {
+        return await this.contentModel.insertMany([{
+            '_id': formData._id,
+            'author': user.sub,
+            'title': await sanitizeHtml(formData.title),
+            'body': await sanitizeHtml(formData.body),
+            'meta.rating': formData.meta.rating,
+            'meta.warnings': [],
+            'stats.words': formData.stats.words,
+            'stats.views': formData.stats.views,
+            'stats.likes': formData.stats.likes,
+            'stats.dislikes': formData.stats.dislikes,
+            'stats.comments': formData.stats.comments,
+            'audit.published': formData.published,
+            'audit.publishedOn': formData.publishedOn,
+            'audit.hasComments': true,
+            'audit.isDeleted': false,
+            'kind': ContentKind.BlogContent,
+            'createdAt': formData.createdAt,
+            'updatedAt': formData.updatedAt
+        }]);
+    }
+
+    async migrateWork(user: JwtPayload, formData: MigrationForm) {
+        return await this.contentModel.insertMany([{
+            '_id': formData._id,
+            'author': user.sub,
+            'title': await sanitizeHtml(formData.title),
+            'desc': await sanitizeHtml(formData.desc),
+            'body': await sanitizeHtml(formData.body),
+            'sections': formData.sections,
+            'meta.rating': formData.meta.rating,
+            'meta.warnings': [],
+            'meta.category': formData.meta.category,
+            'meta.genres': formData.meta.genres,
+            'meta.status': formData.meta.status,
+            'meta.coverArt': formData.meta.coverArt,
+            'stats.words': formData.stats.words,
+            'stats.views': formData.stats.views,
+            'stats.likes': formData.stats.likes,
+            'stats.dislikes': formData.stats.dislikes,
+            'stats.comments': formData.stats.comments,
+            'audit.published': formData.published,
+            'audit.publishedOn': formData.publishedOn,
+            'audit.hasComments': true,
+            'audit.isDeleted': false,
+            'kind': ContentKind.ProseContent,
+            'createdAt': formData.createdAt,
+            'updatedAt': formData.updatedAt
+        }]);
     }
 }

@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtPayload } from '@pulp-fiction/models/auth';
+import { ContentKind } from '@pulp-fiction/models/content';
+import { MigrationForm } from '@pulp-fiction/models/migration';
 
 import { OldBlogsService } from '../../db/blogs/blogs.service';
 import { ContentService } from '../../db/content';
@@ -25,5 +27,16 @@ export class MigrationService {
 
     async fetchOneWork(user: JwtPayload, workId: string) {
         return await this.worksService.findOneById(user, workId);
+    }
+
+    async saveMigration(user: JwtPayload, formData: MigrationForm) {
+        switch (formData.kind) {
+            case ContentKind.BlogContent:
+                return;
+            case ContentKind.ProseContent:
+                return;
+            default:
+                throw new BadRequestException(`Migration can only apply to prose and blogs.`);
+        }
     }
 }
