@@ -17,42 +17,7 @@
             currentPage: pageNum,
             totalItems: works.totalDocs
         }">
-            <div class="work-container">
-                <!--Header-->
-                <div class="work-header">
-                    <rating-icon [rating]="work.meta.rating" [size]="'small'"></rating-icon>                          
-                    <h1 [ngSwitch]="work.kind">
-                        <a *ngSwitchCase="'ProseContent'" [routerLink]="['/prose', work._id, work.title | slugify]">{{ work.title }}</a>
-                        <a *ngSwitchCase="'PoetryContent'" [routerLink]="['/poetry', work._id, work.title | slugify]">{{ work.title }}</a>
-                    </h1>                            
-                    <h2>by <a [routerLink]="['/portfolio', work.author._id, work.author.username | slugify]">{{ work.author.username }}</a></h2>
-                    <div class="approval" title="Approval Rating">
-                        <i-feather name="heart"></i-feather>{{ calcApprovalRating(work.stats.likes, work.stats.dislikes) }}%
-                    </div>
-                    <div class="category-genre">
-                        {{ work.meta.category | fixCategories }}<span>//</span>{{ work.meta.genres | separateGenres }}<ng-container *ngIf="work.meta.fandoms.length > 0"><span>//</span>{{ work.meta.fandoms | joinStrings }}</ng-container>
-                    </div>                            
-                </div>
-
-                <!--Short description-->
-                <div class="short-description">
-                    <div *ngIf="work.meta.coverArt">
-                        <img class="cover-art bordered-cover-art" [src]="work.meta.coverArt">
-                    </div>
-                    <div>
-                        {{ work.desc }}
-                    </div>
-                </div>
-
-                <!--Work stats-->
-                <div class="work-stats">
-                    <i-feather name="bar-chart-2" title="Views"></i-feather>{{ work.stats.views | abbreviate }}<span>//</span>
-                    <i-feather name="message-circle" title="Comments"></i-feather>{{ work.stats.comments | abbreviate }}<span>//</span>
-                    <i-feather name="pen-tool" title="Words"></i-feather>{{ work.stats.words | abbreviate }}<span>//</span>
-                    <i-feather name="calendar" title="Published On"></i-feather>{{ work.audit.publishedOn | localedate: 'mediumDate' }}<span>//</span>
-                    {{ work.meta.status }}
-                </div>
-            </div>
+            <work-card [content]="work" [showAuthor]="true"></work-card>
         </div>
     </div>
     <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>

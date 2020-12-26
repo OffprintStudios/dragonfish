@@ -1,16 +1,17 @@
 import { Controller, Request, Param, Get, UseGuards } from '@nestjs/common';
+import { Cookies } from '@nestjsplus/cookies';
 
 import { ContentService } from '../../../db/content/content.service';
 import { OptionalAuthGuard } from '../../../guards';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind } from '@pulp-fiction/models/content';
 
 @Controller('news')
 export class NewsController {
     constructor(private readonly contentService: ContentService) {}
 
     @Get('news-feed/:pageNum')
-    async getNewsFeed(@Param('pageNum') pageNum: number) {
-        return await this.contentService.fetchAllPublished(pageNum, [ContentKind.NewsContent]);
+    async getNewsFeed(@Param('pageNum') pageNum: number, @Cookies('contentFilter') filter: ContentFilter) {
+        return await this.contentService.fetchAllPublished(pageNum, [ContentKind.NewsContent], filter);
     }
 
     @UseGuards(OptionalAuthGuard)

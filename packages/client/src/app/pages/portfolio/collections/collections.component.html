@@ -1,4 +1,10 @@
-<div class="tools" *ngIf="currentUser && currentUserIsSame()">
+<div style="text-align: center; margin-top: 2rem;">
+    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
+    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
+    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
+</div>
+
+<!--<div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
         <button matRipple class="tool" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
     </div>
@@ -114,4 +120,4 @@
             <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-template>
     </div>
-</ng-template>
+</ng-template>-->

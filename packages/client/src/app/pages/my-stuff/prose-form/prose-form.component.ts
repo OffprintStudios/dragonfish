@@ -24,7 +24,7 @@ export class ProseFormComponent implements OnInit {
 
     proseForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
+        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),

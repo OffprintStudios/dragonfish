@@ -1,5 +1,5 @@
 export class Constants {
-    public static siteVersion: string = '0.4.2';
+    public static siteVersion: string = '0.5.0';
 
     public static NOTIFICATIONS: string = "Notifications";
     public static BLOGS: string = "Blogs";
@@ -9,8 +9,7 @@ export class Constants {
     public static GROUPS: string = "Groups";
     public static HISTORY: string = "History";
     public static INBOX: string = "Inbox";
-    public static MY_BLOGS: string = "My Blogs";
-    public static MY_WORKS: string = "My Works";
+    public static MY_STUFF: string = "My Stuff";
     public static NEWS: string = "News";
     public static NEW_SECTION: string = "New section";
     public static OFFPRINT: string = "Offprint";

@@ -27,7 +27,7 @@ export class PoetryFormComponent implements OnInit {
 
     poetryForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
+        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         category: new FormControl(null, [Validators.required]),
         form: new FormControl(null, [Validators.required]),

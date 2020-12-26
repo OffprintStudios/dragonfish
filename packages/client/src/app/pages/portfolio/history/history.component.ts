@@ -26,7 +26,7 @@ export class HistoryComponent implements OnInit {
       this.currentUser = x;
     });
 
-    this.fetchData(this.pageNum);
+    // this.fetchData(this.pageNum);
   }
 
   ngOnInit(): void {
