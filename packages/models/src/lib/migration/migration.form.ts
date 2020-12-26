@@ -5,6 +5,7 @@ export interface MigrationForm {
     readonly author: string;
     readonly desc?: string;
     readonly body: string;
+    readonly sections?: string[];
     readonly rating: ContentRating;
     readonly stats: {
         readonly words: number;
