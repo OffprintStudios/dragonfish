@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { InjectModel } from '@nestjs/mongoose';
 
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind, PubStatus, ContentRating } from '@pulp-fiction/models/content';
 import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
 
 import { isNullOrUndefined } from '../../util';
@@ -249,5 +249,41 @@ export class ContentService {
      */
     async setIsChild(user: JwtPayload, contentId: string, parent: Types.ObjectId): Promise<any> {
         return await this.contentModel.updateOne({'_id': contentId, 'author': user.sub}, {'audit.childOf': parent});
+    }
+
+    /**
+     * Determines which settings to apply on the content filter by checking a user's filter settings.
+     * 
+     * @param query The query to add to
+     * @param filter The current filter settings
+     */
+    async determineContentFilter(query: any, filter: ContentFilter) {
+        switch (filter) {
+            case ContentFilter.Everything: 
+                query = query;
+                break;
+            case ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}, 
+                    {'meta.rating': ContentRating.Mature}
+                ];
+                break;
+            case ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}, 
+                    {'meta.rating': ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}
+                ];
+                break;
+        }
+
+        return query;
     }
 }
