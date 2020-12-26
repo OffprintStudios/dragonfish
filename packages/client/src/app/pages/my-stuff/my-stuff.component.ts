@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth';
 import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
+import { Constants, Title } from '../../shared';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -42,6 +43,8 @@ export class MyStuffComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.myContent = data.stuffData as ContentItem[];
     });
+
+    Title.setTwoPartTitle(Constants.MY_STUFF);
   }
 
   /**
