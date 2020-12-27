@@ -7,6 +7,7 @@ import { WorksModule } from '../../db/works/works.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { ContentModule } from '../../db/content';
 import { MigrationService } from './migration.service';
+import { MigrationController } from './migration.controller';
 
 @Module({
     imports: [
@@ -19,6 +20,6 @@ import { MigrationService } from './migration.service';
         }),
     ],
     providers: [MigrationService],
-    controllers: []
+    controllers: [MigrationController]
 })
 export class MigrationModule {}
