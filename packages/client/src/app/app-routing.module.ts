@@ -26,6 +26,7 @@ import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
   PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
+import { MigrationComponent } from './pages/migration/migration.component';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -81,6 +82,7 @@ const routes: Routes = [
     ]},
     {path: 'site-staff', component: SiteStaffComponent},
     {path: 'docs/:docId', component: DocsPageComponent},
+    {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard]}
 ];
 
 @NgModule({
