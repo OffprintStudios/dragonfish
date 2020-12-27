@@ -26,7 +26,9 @@ import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
   PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
+
 import { MigrationComponent } from './pages/migration/migration.component';
+import { MigrationResolver } from './pages/migration/migration.resolver';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -82,7 +84,7 @@ const routes: Routes = [
     ]},
     {path: 'site-staff', component: SiteStaffComponent},
     {path: 'docs/:docId', component: DocsPageComponent},
-    {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard]}
+    {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always'}
 ];
 
 @NgModule({
@@ -91,7 +93,8 @@ const routes: Routes = [
     providers: [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
+      MigrationResolver
     ]
 })
 export class AppRoutingModule {}

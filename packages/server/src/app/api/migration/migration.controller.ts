@@ -10,14 +10,14 @@ export class MigrationController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-works')
-    async fetchWorks(@Request() req: any, @Query('pageNum') pageNum: number) {
-        return await this.migrationService.fetchWorks(req.user, pageNum);
+    async fetchWorks(@Request() req: any) {
+        return await this.migrationService.fetchWorks(req.user);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-blogs')
-    async fetchBlogs(@Request() req: any, @Query('pageNum') pageNum: number) {
-        return await this.migrationService.fetchBlogs(req.user, pageNum);
+    async fetchBlogs(@Request() req: any) {
+        return await this.migrationService.fetchBlogs(req.user);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

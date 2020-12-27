@@ -22,12 +22,8 @@ export class WorksService {
      * 
      * @param user The user whose works we're fetching.
      */
-    async fetchUserWorks(user: any, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        return await this.workModel.paginate({'author': user.sub, 'audit.isDeleted': false}, {
-            sort: {'createdAt': -1},
-            page: pageNum,
-            limit: 15
-        })
+    async fetchUserWorks(user: any): Promise<documents.WorkDocument[]> {
+        return await this.workModel.find({'author': user.sub, 'audit.isDeleted': false}).sort({'createdAt': -1});
     }
 
     async findOneById(user: any, workId: string): Promise<documents.WorkDocument> {

@@ -13,12 +13,12 @@ export class MigrationService {
         private readonly worksService: WorksService, 
         private readonly blogsService: OldBlogsService) {}
 
-    async fetchWorks(user: JwtPayload, pageNum: number) {
-        return await this.worksService.fetchUserWorks(user, pageNum);
+    async fetchWorks(user: JwtPayload) {
+        return await this.worksService.fetchUserWorks(user);
     }
 
-    async fetchBlogs(user: JwtPayload, pageNum: number) {
-        return await this.blogsService.fetchUserBlogs(user, pageNum);
+    async fetchBlogs(user: JwtPayload) {
+        return await this.blogsService.fetchUserBlogs(user);
     }
 
     async fetchOneBlog(user: JwtPayload, blogId: string) {

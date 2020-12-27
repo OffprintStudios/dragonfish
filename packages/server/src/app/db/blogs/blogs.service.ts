@@ -27,12 +27,8 @@ export class OldBlogsService {
      *
      * @param user The user whose blogs are being requested.
      */
-    async fetchUserBlogs(user: any, pageNum: number): Promise<PaginateResult<documents.BlogDocument>> {
-        return await this.blogModel.paginate({'author': user.sub, 'audit.isDeleted': false}, {
-            sort: {'createdAt': -1},
-            page: pageNum,
-            limit: 15,
-        });
+    async fetchUserBlogs(user: any): Promise<documents.BlogDocument[]> {
+        return await this.blogModel.find({'author': user.sub, 'audit.isDeleted': false}).sort({'createdAt': -1});
     }
 
     /**
