@@ -11,8 +11,6 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
-  
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
   
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
@@ -22,7 +20,7 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver, NewsFeedResolver, 
+import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
   PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
@@ -70,10 +68,6 @@ const routes: Routes = [
     {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {poetryData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/sectionTitle', component: SectionViewComponent}
     ]},
-    {path: 'work/:workId/:title', component: WorkPageComponent, resolve: {workData: WorkPageResolver}, runGuardsAndResolvers: 'paramsChange', children: [    
-      {path: ':sectionNum/:sectionTitle', component: SectionPageComponent},    
-      {path: 'new-section', canActivate: [AuthGuard], component: NewSectionComponent}
-    ]},
     {path: 'search', component: SearchComponent, children: [
       {path: 'users', component: FindUsersComponent},
       {path: 'blogs', component: FindBlogsComponent},
@@ -87,7 +81,7 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
     exports: [RouterModule],
     providers: [
-      WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
+      BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver
     ]
