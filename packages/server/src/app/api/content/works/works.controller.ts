@@ -14,7 +14,7 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Get('fetch-user-works/:pageNum')
     async fetchUserWorks(@Request() req: any, @Param('pageNum') pageNum: number) {
-        return await this.worksService.fetchUserWorks(req.user, pageNum);
+        return await this.worksService.fetchUserWorks(req.user);
     }
     
     @UseGuards(AuthGuard)
