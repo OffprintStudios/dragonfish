@@ -103,6 +103,18 @@
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
     <!--User nas nothing-->
+    <div class="migration-notice">
+        <div class="migration-prompt">
+            <h4>Looking for something?</h4>
+            <p>
+                Not to worry! Let's bring some of your old stuff over, shall we?
+            </p>
+        </div>
+        <div class="migration-button">
+            <button matRipple>View Old Content</button>
+        </div>
+    </div>
+
     <ng-container *ngIf="myContent.length === 0; else hasContent">
         <div class="empty">
             <h3>It's pretty lonely here...</h3>
