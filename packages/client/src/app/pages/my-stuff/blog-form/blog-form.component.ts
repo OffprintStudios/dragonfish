@@ -31,6 +31,7 @@ export class BlogFormComponent implements OnInit {
 
   ngOnInit(): void {
     const blogInfo = this.route.snapshot.data.blogData as BlogsContentModel;
+    console.log(blogInfo);
     if (blogInfo) {
       this.createBlogMode = false;
       this.currBlog = blogInfo;
