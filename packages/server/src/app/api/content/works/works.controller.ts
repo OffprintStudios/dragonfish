@@ -14,22 +14,13 @@ export class WorksController {
     @UseGuards(AuthGuard)
     @Get('fetch-user-works/:pageNum')
     async fetchUserWorks(@Request() req: any, @Param('pageNum') pageNum: number) {
-        return await this.worksService.fetchUserWorks(req.user, pageNum);
+        return await this.worksService.fetchUserWorks(req.user);
     }
     
     @UseGuards(AuthGuard)
     @Patch('delete-work/:workId')
     async deleteWork(@Request() req: any, @Param('workId') workId: string) {
         return await this.worksService.deleteWork(req.user, workId);
-    }
-
-    @UseGuards(AuthGuard)
-    @UseInterceptors(FileInterceptor('coverart'))
-    @Post('upload-coverart/:workId')
-    async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('workId') workId: string) {
-        const coverArtUrl = await this.imagesService.upload(coverArtImage, workId, 'coverart');
-        const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
-        return await this.worksService.updateCoverArt(req.user, coverArt, workId);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

@@ -4,15 +4,17 @@
         <button matRipple class="tool" [matTooltip]="'Go Back'" [matTooltipClass]="'offprint-tooltip'" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
         <span class="tool-divider"></span>
 
-        <ng-container [ngSwitch]="currBlog.audit.published">
-            <button matRipple *ngSwitchCase="pubStatus.Unpublished" class="tool" (click)="changePubStatus()">
-                <i-feather name="circle"></i-feather>Unpublished
-            </button>
-            <button matRipple *ngSwitchCase="pubStatus.Published" class="tool active" (click)="changePubStatus()">
-                <i-feather name="check-circle"></i-feather>Published
-            </button>
+        <ng-container *ngIf="currBlog">
+            <ng-container [ngSwitch]="currBlog.audit.published">
+                <button matRipple *ngSwitchCase="pubStatus.Unpublished" class="tool" (click)="changePubStatus()">
+                    <i-feather name="circle"></i-feather>Unpublished
+                </button>
+                <button matRipple *ngSwitchCase="pubStatus.Published" class="tool active" (click)="changePubStatus()">
+                    <i-feather name="check-circle"></i-feather>Published
+                </button>
+            </ng-container>
         </ng-container>
-
+        
         <span class="tool-divider"></span>
         <!--Content tools-->
         <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">

@@ -10,31 +10,9 @@ export class CommentsController {
     constructor(private readonly commentsService: CommentsService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Put('add-blog-comment/:blogId')
-    async addBlogComment(@Request() req: any, @Param('blogId') blogId: string, @Body() commentInfo: CreateComment) {
-        return await this.commentsService.createBlogComment(req.user, blogId, commentInfo);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Put('add-work-comment/:workId')
-    async addWorkComment(@Request() req: any, @Param('workId') workId: string, @Body() commentInfo: CreateComment) {
-        return await this.commentsService.createWorkComment(req.user, workId, commentInfo);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
     @Put('add-content-comment/:contentId')
     async addContentComment(@Request() req: any, @Param('contentId') contentId: string, @Body() commentInfo: CreateComment) {
         return await this.commentsService.createContentComment(req.user, contentId, commentInfo);
-    }
-
-    @Get('get-blog-comments/:blogId/:pageNum')
-    async getBlogComments(@Param('blogId') blogId: string, @Param('pageNum') pageNum: number) {
-        return await this.commentsService.getBlogComments(blogId, pageNum);
-    }
-
-    @Get('get-work-comments/:workId/:pageNum')
-    async getWorkComments(@Param('workId') workId: string, @Param('pageNum') pageNum: number) {
-        return await this.commentsService.getWorkComments(workId, pageNum);
     }
 
     @Get('get-content-comments/:contentId/:pageNum')

@@ -9,6 +9,7 @@ import { ImagesModule } from './api/images/images.module';
 import { BrowseModule } from './api/browse/browse.module';
 import { DashboardModule } from './api/dashboard/dashboard.module';
 import { NotificationsModule } from './db/notifications/notifications.module';
+import { MigrationModule } from './api/migration/migration.module';
 
 const routes: Routes = [
     {path: 'api', children: [
@@ -18,7 +19,8 @@ const routes: Routes = [
         {path: 'search', module: SearchModule},
         {path: 'images', module: ImagesModule},
         {path: 'browse', module: BrowseModule},
-        {path: 'dashboard', module: DashboardModule}
+        {path: 'dashboard', module: DashboardModule},
+        {path: 'migration', module: MigrationModule}
     ]}
 ];
 
@@ -33,6 +35,7 @@ const routes: Routes = [
         BrowseModule,
         DashboardModule,
         NotificationsModule,
+        MigrationModule
     ]
 })
 export class AppRoutingModule {}

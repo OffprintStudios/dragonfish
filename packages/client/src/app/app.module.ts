@@ -37,7 +37,6 @@ import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormCo
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
-import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 
@@ -62,6 +61,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
 import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
+
+import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -98,8 +99,7 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
-    NewWorkComponent, EditWorkComponent, WorkPageComponent, 
-    SectionPageComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
+    NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
@@ -108,7 +108,8 @@ const toolbarOptions = [
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
-    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe
+    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

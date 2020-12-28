@@ -19,7 +19,7 @@ export interface Work {
         readonly views: number;
         readonly comments: number;
     };
-    readonly sections?: SectionInfo[];
+    readonly sections?: string[] | SectionInfo[];
     readonly audit: {
         readonly hasComments: boolean;
         published: ApprovalStatus;

@@ -14,8 +14,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 @Injectable()
 export class WorksService {
     constructor(
-        @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>,
-        private readonly usersService: UsersService, private readonly histService: HistoryService) {}
+        @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>, private readonly histService: HistoryService) {}
   
     /**
      * Grabs all a user's works and returns them in an array. Used only
@@ -23,22 +22,14 @@ export class WorksService {
      * 
      * @param user The user whose works we're fetching.
      */
-    async fetchUserWorks(user: any, pageNum: number): Promise<PaginateResult<documents.WorkDocument>> {
-        return await this.workModel.paginate({'author': user.sub, 'audit.isDeleted': false}, {
-            sort: {'createdAt': -1},
-            page: pageNum,
-            limit: 15
-        })
+    async fetchUserWorks(user: any): Promise<documents.WorkDocument[]> {
+        return await this.workModel.find({'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false}).sort({'createdAt': -1});
     }
 
-    /**
-     * Fetches one work for the Approval Queue.
-     * 
-     * @param user The author of the work
-     * @param workId The work's ID
-     */
-    async fetchOneUserWorkForQueue(user: any, workId: string) {
-        return await this.workModel.findOne({"_id": workId, "author": user.sub}).where("audit.isDeleted", false);
+    async findOneById(user: any, workId: string): Promise<documents.WorkDocument> {
+        const thisWork = await this.workModel.findOne({'_id': workId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+        console.log(thisWork.sections);
+        return thisWork;
     }
 
     /**
@@ -119,81 +110,14 @@ export class WorksService {
     }
 
     /**
-     * Sets the isDeleted flag of a work to true to perform a soft deletion. Then, updates
-     * the count of published works on the user's document.
+     * FOR MIGRATION PURPOSES ONLY: Completely removes a work from the database. To be
+     * used only after migration of the work has occurred.
      * 
      * @param user The author of the work
      * @param workId The work we're deleting
      */
     async deleteWork(user: any, workId: string): Promise<void> {
-        await this.workModel.findOneAndUpdate({"_id": workId, "author": user.sub}, {"audit.isDeleted": true});
-        const workCount = await this.getWorkCount(user.sub);
-        await this.usersService.updateWorkCount(user.sub, workCount);
-    }
-
-    /**
-     * Adds a comment to a work.
-     * 
-     * @param workId The work to update
-     */
-    async addComment(workId: string) {
-        await this.workModel.updateOne({"_id": workId, "audit.isDeleted": false, "audit.published": models.ApprovalStatus.Approved}, {
-            $inc: {"stats.comments": 1}
-        });
-    }
-
-    /**
-     * Sets the approval status of a work to Approved.
-     * 
-     * @param workId The work to approve
-     * @param authorId The author of the work
-     */
-    async approveWork(workId: string, authorId: string): Promise<void> {        
-        const workToApprove = await this.workModel.findOne({
-            _id: workId, 
-            //@ts-ignore
-            author: authorId,
-            'audit.isDeleted': false
-        });           
-        workToApprove.audit.published = models.ApprovalStatus.Approved;
-        workToApprove.audit.publishedOn = new Date();
-        await workToApprove.save();
-
-        const workCount = await this.getWorkCount(authorId);
-        await this.usersService.updateWorkCount(authorId, workCount);
-    }
-
-    /**
-     * Sets the approval status of a work to Rejected.
-     * 
-     * @param workId The work to reject
-     * @param authorId The author of the work
-     */
-    async rejectWork(workId: string, authorId: string): Promise<void> {
-        //@ts-ignore
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Rejected}).where("audit.isDeleted", false);
-    }
-
-    /**
-     * Sets the approval status of a work to Pending.
-     * 
-     * @param workId The work to set to pending
-     * @param authorId The author of the work
-     */
-    async pendingWork(workId: string, authorId: string): Promise<void> {
-        //@ts-ignore
-        await this.workModel.updateOne({"_id": workId, "author": authorId}, {"audit.published": models.ApprovalStatus.Pending}).where("audit.isDeleted", false);
-    }
-
-    /**
-     * Updates the coverart of the specified work.
-     * 
-     * @param user The author of the work
-     * @param coverArt The new cover art
-     * @param workId The work's ID
-     */
-    async updateCoverArt(user: any, coverArt: string, workId: string): Promise<models.Work> {
-        return await this.workModel.findOneAndUpdate({ "_id": workId, "author": user.sub }, {"meta.coverArt": coverArt}, {new: true}).where("audit.isDeleted", false);
+        await this.workModel.deleteOne({'_id': workId, 'author': user.sub});
     }
 
     /**
@@ -268,16 +192,6 @@ export class WorksService {
         }
 
         return await this.workModel.paginate(query, paginateOptions);
-    }
-
-    /**
-     * Gets the count of published, non-deleted works from the db.
-     */
-    async getWorkCount(authorId: string): Promise<number> {
-        //@ts-ignore
-        return await this.workModel.countDocuments({author: authorId})
-            .where("audit.isDeleted", false)
-            .where('audit.published', models.ApprovalStatus.Approved);
     }
 
     /**
