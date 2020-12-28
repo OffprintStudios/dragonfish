@@ -63,7 +63,7 @@ import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, W
   HistoryComponent } from './components/site-sidenav';
 import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
 
-import { MigrationComponent } from './pages/migration/migration.component';
+import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -111,7 +111,7 @@ const toolbarOptions = [
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

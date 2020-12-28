@@ -27,8 +27,7 @@ import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver
   PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
-import { MigrationComponent } from './pages/migration/migration.component';
-import { MigrationResolver } from './pages/migration/migration.resolver';
+import { MigrationComponent, MigrationResolver } from './pages/migration';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
