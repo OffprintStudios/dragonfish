@@ -59,21 +59,25 @@ div.view-container {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-    
-                h2 {
-                    flex: 1;
-                    position: relative;
-                    top: 0.4rem;
-                    font-weight: 700;
-                    font-size: 36px;
-                    margin-bottom: 0;
-                }
 
-                span.byline {
-                    color: var(--site-text-color);
-                    font-size: 15px;
-                    font-weight: 300;
-                    font-style: italic;
+                div.view-title-info {
+                    flex: 1;
+                    h2 {
+                        position: relative;
+                        top: 0.4rem;
+                        font-weight: 700;
+                        font-size: 42px;
+                        margin-bottom: 0;
+                        display: inline-block;
+                    }
+                    span.byline {
+                        color: var(--site-text-color);
+                        font-size: 15px;
+                        font-weight: 300;
+                        font-style: italic;
+                        display: inline-block;
+                        margin-left: 1rem;
+                    }
                 }
             }
     
