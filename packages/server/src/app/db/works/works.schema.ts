@@ -34,10 +34,7 @@ export const WorksSchema = new Schema({
         views: {type: Number, default: 0},
         comments: {type: Number, default: 0},
     },
-    sections: [{type: String, ref: 'Section', autopopulate: {
-        select: '_id title published stats.words createdAt',
-        match: {'audit.isDeleted': false},
-    }}],
+    sections: {type: [String], ref: 'Section', default: null},
     audit: {
         hasComments: {type: Boolean, default: true},
         published: {type: String, enum: Object.keys(models.ApprovalStatus), default: 'NotSubmitted'},

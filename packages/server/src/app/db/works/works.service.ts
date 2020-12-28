@@ -27,7 +27,9 @@ export class WorksService {
     }
 
     async findOneById(user: any, workId: string): Promise<documents.WorkDocument> {
-        return await this.workModel.findOne({'_id': workId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+        const thisWork = await this.workModel.findOne({'_id': workId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+        console.log(thisWork.sections);
+        return thisWork;
     }
 
     /**
