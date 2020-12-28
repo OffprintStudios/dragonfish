@@ -96,7 +96,7 @@ const routes: Routes = [
       WorkPageResolver, BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver
     ]
 })
 export class AppRoutingModule {}
