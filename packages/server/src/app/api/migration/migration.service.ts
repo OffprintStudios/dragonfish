@@ -32,10 +32,14 @@ export class MigrationService {
     async saveMigration(user: JwtPayload, formData: MigrationForm) {
         switch (formData.kind) {
             case ContentKind.BlogContent:
-                await this.contentService.migrateBlog(user, formData);
+                await this.contentService.migrateBlog(user, formData).then(() =>{
+                    this.blogsService.deleteBlog(user, formData._id);
+                });
                 return;
             case ContentKind.ProseContent:
-                await this.contentService.migrateWork(user, formData);
+                await this.contentService.migrateWork(user, formData).then(() => {
+                    this.worksService.deleteWork(user, formData._id);
+                });
                 return;
             default:
                 throw new BadRequestException(`Migration can only apply to prose and blogs.`);
