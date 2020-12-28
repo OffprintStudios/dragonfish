@@ -37,7 +37,6 @@ import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormCo
 
 import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
-import { WorkPageComponent, SectionPageComponent, NewSectionComponent } from './pages/work-page';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 
@@ -100,8 +99,7 @@ const toolbarOptions = [
     NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
-    NewWorkComponent, EditWorkComponent, WorkPageComponent, 
-    SectionPageComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, NewSectionComponent, UploadAvatarComponent, 
+    NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
