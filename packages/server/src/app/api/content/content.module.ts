@@ -11,7 +11,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { CollectionsModule } from '../../db/collections/collections.module';
 import { CollectionsController } from './collections/collections.controller';
 import { HistoryController } from './history/history.controller';
-import { HistoryModule } from '../../db/history/history.module';
+import { ReadingHistoryModule } from '../../db/reading-history/reading-history.module';
 import { CommentsModule } from '../../db/comments/comments.module';
 import { CommentsController } from './comments/comments.controller';
 import { MessagesController } from './messages/messages.controller';
@@ -26,7 +26,7 @@ import { SectionsController } from './sections/sections.controller';
 
 @Module({
   imports: [
-    WorksModule, UsersModule, ImagesModule, CollectionsModule, HistoryModule, CommentsModule,
+    WorksModule, UsersModule, ImagesModule, CollectionsModule, ReadingHistoryModule, CommentsModule,
     MessagesModule, ContentCollectionModule, SectionsModule,
     JwtModule.registerAsync({
       useFactory: () => ({

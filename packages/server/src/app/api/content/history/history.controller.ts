@@ -2,11 +2,11 @@ import { Controller, UseGuards, Request, Param, Get, Post, Patch } from '@nestjs
 
 import { RolesGuard } from '../../../guards';
 import { Roles } from '@pulp-fiction/models/users';
-import { HistoryService } from '../../../db/history/history.service';
+import { ReadingHistoryService } from '../../../db/reading-history/reading-history.service';
 
 @Controller('history')
 export class HistoryController {
-    constructor(private readonly histService: HistoryService) {}
+    constructor(private readonly histService: ReadingHistoryService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-history/:pageNum')
