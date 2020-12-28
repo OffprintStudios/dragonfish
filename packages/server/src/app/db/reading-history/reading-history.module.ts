@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Schema, HookNextFunction } from 'mongoose';
+import { HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 
 import { ReadingHistoryDocument, ReadingHistorySchema } from './reading-history.schema';

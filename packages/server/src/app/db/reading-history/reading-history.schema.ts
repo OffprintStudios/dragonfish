@@ -1,11 +1,11 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { ContentModel } from '@pulp-fiction/models/content';
-import { RatingOption } from '@pulp-fiction/models/history';
+import { RatingOption, ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'reading_history'})
-export class ReadingHistoryDocument extends Document {
+export class ReadingHistoryDocument extends Document implements ReadingHistory {
     @Prop({default: generate()})
     readonly _id: string;
 
