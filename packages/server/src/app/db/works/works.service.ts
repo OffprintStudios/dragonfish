@@ -23,11 +23,11 @@ export class WorksService {
      * @param user The user whose works we're fetching.
      */
     async fetchUserWorks(user: any): Promise<documents.WorkDocument[]> {
-        return await this.workModel.find({'author': user.sub, 'audit.isDeleted': false}).sort({'createdAt': -1});
+        return await this.workModel.find({'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false}).sort({'createdAt': -1});
     }
 
     async findOneById(user: any, workId: string): Promise<documents.WorkDocument> {
-        return await this.workModel.findById(workId).where('author', user.sub).where('audit.isDeleted', false);
+        return await this.workModel.findOne({'_id': workId, 'author': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
     }
 
     /**
