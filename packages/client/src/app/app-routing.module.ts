@@ -27,7 +27,7 @@ import { BlogPageResolver, PortfolioResolver, WorkPageResolver, PostPageResolver
   PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
-import { MigrationComponent, MigrationResolver } from './pages/migration';
+import { MigrateBlogComponent, MigrateWorkComponent, MigrationComponent, MigrationResolver } from './pages/migration';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
@@ -83,7 +83,10 @@ const routes: Routes = [
     ]},
     {path: 'site-staff', component: SiteStaffComponent},
     {path: 'docs/:docId', component: DocsPageComponent},
-    {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always'}
+    {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always', children: [
+      {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard]},
+      {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard]}
+    ]}
 ];
 
 @NgModule({

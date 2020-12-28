@@ -21,7 +21,7 @@ export class MigrationComponent implements OnInit {
 
     columnsToDisplay = ['title', 'createdAt'];
     
-    constructor(private authService: AuthService, private route: ActivatedRoute) {
+    constructor(private authService: AuthService, public route: ActivatedRoute) {
         this.authService.currUser.subscribe(x => { this.currentUser = x; });
     }
 
