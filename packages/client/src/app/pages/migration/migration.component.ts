@@ -18,6 +18,8 @@ export class MigrationComponent implements OnInit {
 
     myWorks: Work[];
     myBlogs: Blog[];
+
+    columnsToDisplay = ['title', 'createdAt'];
     
     constructor(private authService: AuthService, private route: ActivatedRoute) {
         this.authService.currUser.subscribe(x => { this.currentUser = x; });
@@ -27,5 +29,13 @@ export class MigrationComponent implements OnInit {
         const data = this.route.snapshot.data.contentData as MigrationModel;
         this.myWorks = data.works;
         this.myBlogs = data.blogs;
+    }
+
+    switchView() {
+        if (this.workView === true) {
+            this.workView = false;
+        } else {
+            this.workView = true;
+        }
     }
 }
