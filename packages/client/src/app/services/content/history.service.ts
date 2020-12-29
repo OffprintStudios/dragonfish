@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
@@ -18,7 +19,7 @@ export class HistoryService {
    * Fetches a user's entire history.
    */
   public fetchUserHistory(pageNum: number) {
-    return this.http.get<PaginateResult<History>>(`${this.url}/fetch-user-history/${pageNum}`, {observe: 'response', withCredentials: true})
+    return this.http.get<PaginateResult<ReadingHistory>>(`${this.url}/fetch-user-history/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(hist => {
         return hist.body;
       }), catchError(err => {
@@ -31,7 +32,7 @@ export class HistoryService {
    * Fetches a user's history for their sidenav.
    */
   public fetchUserSidenavHistory() {
-    return this.http.get<History[]>(`${this.url}/fetch-user-sidenav-history`, {observe: 'response', withCredentials: true})
+    return this.http.get<ReadingHistory[]>(`${this.url}/fetch-user-sidenav-history`, {observe: 'response', withCredentials: true})
     .pipe(map(hist => {
       return hist.body;
     }), catchError(err => {
@@ -44,7 +45,7 @@ export class HistoryService {
    * Fetches one history doc without updating the viewedOn date.
    */
   public fetchOneHistDoc(workId: string) {
-    return this.http.get<History>(`${this.url}/fetch-one-hist-doc/${workId}`, {observe: 'response', withCredentials: true})
+    return this.http.get<ReadingHistory>(`${this.url}/fetch-one-hist-doc/${workId}`, {observe: 'response', withCredentials: true})
       .pipe(map(hist => {
         return hist.body;
       }), catchError(err => {
@@ -59,7 +60,7 @@ export class HistoryService {
    * @param workId The work to parse
    */
   public addOrUpdateHistory(workId: string) {
-    return this.http.post<History>(`${this.url}/add-or-update-history/${workId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.post<ReadingHistory>(`${this.url}/add-or-update-history/${workId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(hist => {
         return hist.body;
       }), catchError(err => {
