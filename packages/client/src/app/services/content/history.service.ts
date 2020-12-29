@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { History } from '@pulp-fiction/models/history';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AlertsService } from '../../modules/alerts';
 
