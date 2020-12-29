@@ -133,7 +133,21 @@ div.view-container {
         div.sections-list {
             border-right: 1px solid var(--site-borders);
             width: 150px;
-            height: 1000px;
+            max-height: 1000px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+
+			div.sections-list::-webkit-scrollbar {
+				width: 4px;
+			}
+			div.sections-list::-webkit-scrollbar-track {
+				background: transparent;
+				box-shadow: none
+			}
+			div.sections-list::-webkit-scrollbar-thumb {
+				border-radius: 5px;
+				background: grey; 
+			}
 
             div.add-section {
                 cursor: pointer;
