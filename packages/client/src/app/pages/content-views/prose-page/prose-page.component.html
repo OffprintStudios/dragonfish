@@ -19,7 +19,7 @@
                 <span class="tag">{{ currProse.meta.genres | separateGenres }}</span>
                 <div class="view-tools">
                     <button matRipple class="tool left"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currProse.stats.likes | abbreviate }}</span></button>
-                    <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currProse.stats.likes | abbreviate }}</span></button>
+                    <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currProse.stats.dislikes | abbreviate }}</span></button>
                     <button matRipple class="tool left" [matMenuTriggerFor]="moreMenu"><i-feather name="more-vertical" class="more"></i-feather></button>
                 </div>
             </div>
