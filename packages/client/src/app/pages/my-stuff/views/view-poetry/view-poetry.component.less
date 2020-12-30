@@ -129,6 +129,27 @@ div.view-container {
     div.view-sections {
         display: flex;
         flex-direction: row;
+		
+		ul {
+			max-height: 500px;
+			overflow-y: scroll;
+			overflow-x: hidden;
+			scrollbar-width: thin;
+			
+			::-webkit-scrollbar {
+				width: 4px;
+			}
+			
+			::-webkit-scrollbar-track {
+				background: transparent;
+				box-shadow: none
+			}
+			
+			::-webkit-scrollbar-thumb {
+				border-radius: 5px;
+				background: grey; 
+			}
+		}
 
         div.sections-list {
             border-right: 1px solid var(--site-borders);
@@ -138,14 +159,14 @@ div.view-container {
 			overflow-x: hidden;
 			scrollbar-width: thin;
 
-			div.sections-list::-webkit-scrollbar {
+			::-webkit-scrollbar {
 				width: 4px;
 			}
-			div.sections-list::-webkit-scrollbar-track {
+			::-webkit-scrollbar-track {
 				background: transparent;
 				box-shadow: none
 			}
-			div.sections-list::-webkit-scrollbar-thumb {
+			::-webkit-scrollbar-thumb {
 				border-radius: 5px;
 				background: grey; 
 			}
