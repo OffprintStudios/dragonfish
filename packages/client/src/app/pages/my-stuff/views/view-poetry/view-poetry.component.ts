@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import { PoetryContent, PubStatus, ContentKind, PoetryForm } from '@pulp-fiction/models/content';
-import { SectionForm } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { UploadCoverartComponent } from '../../../../components/modals/works';
 import { MyStuffService, SectionsService } from '../../../../services/user';
 import { SectionItem } from '../../viewmodels';
@@ -24,6 +24,9 @@ export class ViewPoetryComponent implements OnInit {
     editMode = false;
     addEditIcon = false;
     forms = PoetryForm;
+
+    selectedPos = AuthorsNotePos.Bottom;
+    authorsNotePosOptions = AuthorsNotePos;
 
     selectedSection: SectionItem;
 
@@ -111,7 +114,7 @@ export class ViewPoetryComponent implements OnInit {
             title: this.fields.title.value,
             body: this.fields.body.value,
             authorsNote: this.fields.authorsNote.value,
-            authorsNotePos: undefined,
+            authorsNotePos: this.fields.authorsNotePos.value,
             usesNewEditor: true
         };
 

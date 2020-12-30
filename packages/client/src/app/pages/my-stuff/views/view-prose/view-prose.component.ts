@@ -7,7 +7,7 @@ import { ContentKind, ProseContent, PubStatus } from '@pulp-fiction/models/conte
 import { MyStuffService, SectionsService } from 'packages/client/src/app/services/user';
 import { SectionItem } from '../../viewmodels';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SectionForm } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadCoverartComponent } from 'packages/client/src/app/components/modals/works';
 
@@ -23,6 +23,9 @@ export class ViewProseComponent implements OnInit {
     loadingSections = false;
     editMode = false;
     addEditIcon = false;
+
+    selectedPos = AuthorsNotePos.Bottom;
+    authorsNotePosOptions = AuthorsNotePos;
 
     selectedSection: SectionItem;
 
@@ -108,7 +111,7 @@ export class ViewProseComponent implements OnInit {
             title: this.fields.title.value,
             body: this.fields.body.value,
             authorsNote: this.fields.authorsNote.value,
-            authorsNotePos: undefined,
+            authorsNotePos: this.fields.authorsNotePos.value,
             usesNewEditor: true
         };
 
