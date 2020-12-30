@@ -11,8 +11,24 @@
                 <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span>
             </div>
             <div class="post-tools">
-                <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
-                <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                <ng-container *ngIf="currentUser; else noUser">
+                    <ng-container *ngIf="histData.ratingOption === 'NoVote'">
+                        <button matRipple (click)="setLike(blogData._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                        <button matRipple class="mid" (click)="setDislike(blogData._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                    </ng-container>
+                    <ng-container *ngIf="histData.ratingOption === 'Liked'">
+                        <button matRipple class="active" (click)="setNoVote(blogData._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                        <button matRipple class="mid" (click)="setDislike(blogData._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                    </ng-container>
+                    <ng-container *ngIf="histData.ratingOption === 'Disliked'">
+                        <button matRipple (click)="setLike(blogData._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                        <button matRipple class="mid active" (click)="setNoVote(blogData._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                    </ng-container>
+                </ng-container>
+                <ng-template #noUser>
+                    <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
+                    <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
+                </ng-template>
                 <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
             </div>
         </div>

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { ContentKind, ContentModel, SectionInfo } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel, SectionInfo, SetRating } from '@pulp-fiction/models/content';
 import { Section } from '@pulp-fiction/models/sections';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
@@ -54,6 +54,51 @@ export class ContentService {
         return res.body;
       }), catchError(err => {
         this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
+        return throwError(err);
+      }));
+  }
+
+    /**
+   * Sets a user's rating to Liked.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setLike(setRating: SetRating) {
+    return this.http.patch<void>(`${this.url}/set-like`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.snackBar.open(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sets a user's rating to Disliked.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setDislike(setRating: SetRating) {
+    return this.http.patch<void>(`${this.url}/set-dislike`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.snackBar.open(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  /**
+   * Sets a user's rating to NoVote.
+   * 
+   * @param setRating Information to set the new rating
+   */
+  public setNoVote(setRating: SetRating) {
+    return this.http.patch<void>(`${this.url}/set-no-vote`, setRating, {observe: 'response', withCredentials: true})
+      .pipe(map(() => {
+        return;
+      }), catchError(err => {
+        this.snackBar.open(err.error.message);
         return throwError(err);
       }));
   }
