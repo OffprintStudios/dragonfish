@@ -6,15 +6,11 @@ import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 
 import * as models from '@pulp-fiction/models/works';
 import * as documents from './models';
-import { UsersService } from '../users/users.service';
-import { HistoryService } from '../history/history.service';
-import { RatingOption } from '@pulp-fiction/models/history';
-import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class WorksService {
     constructor(
-        @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>, private readonly histService: HistoryService) {}
+        @InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>) {}
   
     /**
      * Grabs all a user's works and returns them in an array. Used only
@@ -201,86 +197,5 @@ export class WorksService {
         return await this.workModel.countDocuments()
             .where("audit.published", models.ApprovalStatus.Approved)
             .where("audit.isDeleted", false);
-    }
-
-    /**
-     * Changes the rating of a user to a Like.
-     * 
-     * @param userId The user making the change
-     * @param workId The work in question
-     * @param oldRatingOption A user's old rating option
-     */
-    async setLike(userId: string, workId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was a dislike
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': 1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setLike(userId, workId);
-                });
-
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': -1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved);
-
-        } else if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was already a like
-            throw new ConflictException(`You've already upvoted this work!`);
-        } else {
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': 1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setLike(userId, workId);
-                });
-        }
-    }
-
-    /**
-     * Changes the rating of a user to a Dislike
-     * 
-     * @param userId The user making the change
-     * @param workId The work in question
-     * @param oldRatingOption A user's old rating option
-     */
-    async setDislike(userId: string, workId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was a like
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': 1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setDislike(userId, workId);
-                });
-
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': -1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved);
-
-        } else if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was already a dislike
-            throw new ConflictException(`You've already downvoted this work!`);
-        } else {
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': 1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setDislike(userId, workId);
-                });
-        }
-    }
-
-    /**
-     * Changes the rating of a user to NoVote
-     * 
-     * @param userId The user making the change
-     * @param workId The work in question
-     * @param oldRatingOption A user's old rating option
-     */
-    async setNoVote(userId: string, workId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was a like
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.likes': -1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setNoVote(userId, workId);
-                });
-        } else if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was a dislike
-            await this.workModel.updateOne({'_id': workId}, {$inc: {'stats.dislikes': -1}})
-                .where('audit.published').equals(models.ApprovalStatus.Approved).then(async () => {
-                    await this.histService.setNoVote(userId, workId);
-                });
-        }
     }
 }

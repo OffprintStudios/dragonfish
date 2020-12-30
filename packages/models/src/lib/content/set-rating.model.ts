@@ -1,6 +1,6 @@
 import { RatingOption } from '../reading-history';
 
-export interface SetApprovalRating {
+export interface SetRating {
     readonly workId: string;
     readonly oldApprovalRating: RatingOption;
 }
