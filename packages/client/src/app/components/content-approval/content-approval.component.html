@@ -1,0 +1,26 @@
+<div class="approval-buttons">
+    <ng-container *ngIf="currentUser; else noUser">
+        <ng-container *ngIf="histData.ratingOption === 'NoVote'">
+            <button matRipple (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }}</span></button>
+            <button matRipple class="mid" (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }}</span></button>
+        </ng-container>
+        <ng-container *ngIf="histData.ratingOption === 'Liked'">
+            <button matRipple class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }}</span></button>
+            <button matRipple class="mid" (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }}</span></button>
+        </ng-container>
+        <ng-container *ngIf="histData.ratingOption === 'Disliked'">
+            <button matRipple (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }}</span></button>
+            <button matRipple class="mid active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }}</span></button>
+        </ng-container>
+    </ng-container>
+    <ng-template #noUser>
+        <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }}</span></button>
+        <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }}</span></button>
+    </ng-template>
+    <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
+</div>
+
+<mat-menu xPosition="before" #moreItems="matMenu">
+    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+</mat-menu>

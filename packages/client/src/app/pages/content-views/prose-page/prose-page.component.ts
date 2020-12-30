@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProseContent, SectionInfo } from '@pulp-fiction/models/content';
-import { ContentService } from '../../../services/content';
+import { ProseContent, SectionInfo, SetRating } from '@pulp-fiction/models/content';
+import { RatingOption, ReadingHistory } from '@pulp-fiction/models/reading-history';
+import { FrontendUser } from '@pulp-fiction/models/users';
+import { ContentPage } from '../../../models/site';
+import { AuthService } from '../../../services/auth';
+
+import { Title } from '../../../shared';
 
 @Component({
     selector: 'prose-page',
@@ -10,16 +15,38 @@ import { ContentService } from '../../../services/content';
     styleUrls: ['./prose-page.component.less']
 })
 export class ProsePageComponent implements OnInit {
+    currentUser: FrontendUser;
+
     currProse: ProseContent;
+    histData: ReadingHistory;
     pageNum = 1;
 
-    constructor(public route: ActivatedRoute, private router: Router) {}
+    constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
+            this.auth.currUser.subscribe(x => { this.currentUser = x; });
+            this.fetchData();
+    }
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
-            this.currProse = data.proseData as ProseContent;
-            const sections = this.currProse.sections as SectionInfo[];
+            const pageData = data.proseData as ContentPage;
+            this.currProse = pageData.content as ProseContent;
+            
+            if (pageData.history !== null) {
+                this.histData = pageData.history;
+            }
         });
+
+        Title.setTwoPartTitle(this.currProse.title);
+    }
+
+    /**
+     * Fetches the current page of comments.
+     */
+    private fetchData() {
+        const queryParams = this.route.snapshot.queryParamMap;    
+        if (queryParams.get('page') !== null) {
+            this.pageNum = +queryParams.get('page');
+        }
     }
 
     

@@ -8,6 +8,7 @@ export { SectionInfo } from './section-info.model';
 export { WorkKind } from './work-kind.enum';
 export { WorkStatus } from './work-status.enum';
 export { ContentFilter } from './content-filter.enum';
+export { SetRating } from './set-rating.model';
 
 export * from './news';
 export * from './blogs';
