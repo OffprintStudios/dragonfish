@@ -43,8 +43,31 @@
                     <mat-label>Title</mat-label>
                     <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
                 </mat-form-field>
-    
-                <editor [parentForm]="editForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+
+                <ng-container *ngIf="!section.usesNewEditor; else usesNewEditor">
+                    <quill-pulp-fiction-editor [parentForm]="editForm" [controlName]="'body'" [minLength]="3" [height]="'750px'"></quill-pulp-fiction-editor>
+                </ng-container>
+                <ng-template #usesNewEditor>
+                    <editor [parentForm]="editForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                </ng-template>
+
+                <div class="authors-note">
+                    <div class="header">
+                        <h2>Author's Note</h2>
+                        <mat-form-field style="margin: 0;" appearance="outline">
+                            <mat-label>Position</mat-label>
+                            <mat-select [formControlName]="'authorsNotePos'">
+                                <mat-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">{{ pos.value }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <ng-container *ngIf="!section.usesNewEditor; else authorsNoteEditor">
+                        <quill-pulp-fiction-editor [parentForm]="editForm" [controlName]="'authorsNote'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
+                    </ng-container>
+                    <ng-template #authorsNoteEditor>
+                        <editor [parentForm]="editForm" [controlName]="'authorsNote'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                    </ng-template>
+                </div>
             </form>
         </div>
     </ng-template>

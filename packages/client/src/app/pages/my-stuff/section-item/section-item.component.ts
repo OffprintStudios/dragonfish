@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SectionsService } from '../../../services/user';
-import { PublishSection, SectionForm } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, PublishSection, SectionForm } from '@pulp-fiction/models/sections';
 import { SectionItem } from '../viewmodels';
 
 @Component({
@@ -18,6 +18,7 @@ export class SectionItemComponent implements OnInit, OnChanges {
     @Output() selectItem = new EventEmitter<boolean>();
 
     previewMode = true;
+    authorsNotePosOptions = AuthorsNotePos;
 
     editForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
