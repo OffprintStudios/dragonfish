@@ -88,11 +88,16 @@ export class SectionItemComponent implements OnInit, OnChanges {
             body: bodyValue,
             usesNewEditor: true,
             authorsNote: authorsNoteValue,
-            authorsNotePos: this.fields.authorsNotePos.value
+            authorsNotePos: this.fields.authorsNotePos.value,
+            oldWords: this.section.stats.words
         };
 
         this.sectionsService.editSection(this.contentId, this.section._id, sectionInfo).subscribe(sec => {
             this.section = sec as SectionItem;
+            this.switchView();
+            this.snackBar.open(`Your changes have been saved!`);
+        }, err => {
+            this.snackBar.open(`Something went wrong saving this section!`);
         });
     }
 
