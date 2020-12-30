@@ -1,11 +1,9 @@
-import { Controller, UseGuards, Request, Get, Post, Body, Put, Param, Patch, UploadedFile, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { Controller, UseGuards, Request, Get, Param, Patch, BadRequestException } from '@nestjs/common';
 
 import * as models from '@pulp-fiction/models/works';
 import { WorksService } from '../../../db/works/works.service';
-import { AuthGuard, OptionalAuthGuard, RolesGuard } from '../../../guards';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '../../../guards';
 import { ImagesService } from '../../../api/images/images.service';
-import { Roles } from '@pulp-fiction/models/users';
 
 @Controller('works')
 export class WorksController {
@@ -21,24 +19,6 @@ export class WorksController {
     @Patch('delete-work/:workId')
     async deleteWork(@Request() req: any, @Param('workId') workId: string) {
         return await this.worksService.deleteWork(req.user, workId);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-like')
-    async setLike(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
-        return await this.worksService.setLike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-dislike')
-    async setDislike(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
-        return await this.worksService.setDislike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-no-vote')
-    async setNoVote(@Request() req: any, @Body() setRating: models.SetApprovalRating) {
-        return await this.worksService.setNoVote(req.user.sub, setRating.workId, setRating.oldApprovalRating);
     }
 
     /**

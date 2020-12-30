@@ -3,8 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { SectionsService } from '../../../services/user';
-import { PublishSection, SectionForm } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, PublishSection, SectionForm } from '@pulp-fiction/models/sections';
 import { SectionItem } from '../viewmodels';
+import { getQuillHtml } from '../../../util/functions';
 
 @Component({
     selector: 'section-item',
@@ -18,6 +19,7 @@ export class SectionItemComponent implements OnInit, OnChanges {
     @Output() selectItem = new EventEmitter<boolean>();
 
     previewMode = true;
+    authorsNotePosOptions = AuthorsNotePos;
 
     editForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -73,11 +75,19 @@ export class SectionItemComponent implements OnInit, OnChanges {
             return;
         }
 
+        const bodyValue = this.section.usesNewEditor 
+            ? this.fields.body.value
+            : getQuillHtml(document.querySelector("quill-editor"));
+
+        const authorsNoteValue = this.section.usesNewEditor 
+            ? this.fields.authorsNote.value
+            : getQuillHtml(document.querySelector("div.authors-note"));
+
         const sectionInfo: SectionForm = {
             title: this.fields.title.value,
-            body: this.fields.body.value,
+            body: bodyValue,
             usesNewEditor: true,
-            authorsNote: this.fields.authorsNote.value,
+            authorsNote: authorsNoteValue,
             authorsNotePos: this.fields.authorsNotePos.value
         };
 

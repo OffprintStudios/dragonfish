@@ -16,8 +16,8 @@ export interface ContentModel {
     readonly stats: {
         words: number;
         readonly views: number;
-        readonly likes: number;
-        readonly dislikes: number;
+        likes: number;
+        dislikes: number;
         readonly comments: number;
     };
     audit: {

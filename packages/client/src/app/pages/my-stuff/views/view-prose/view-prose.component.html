@@ -162,6 +162,19 @@
                             </mat-form-field>
 
                             <editor [parentForm]="sectionForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+
+                            <div class="authors-note">
+                                <div class="header">
+                                    <h2>Author's Note</h2>
+                                    <mat-form-field style="margin: 0;" appearance="outline">
+                                        <mat-label>Position</mat-label>
+                                        <mat-select [formControlName]="'authorsNotePos'" [(ngModel)]="selectedPos">
+                                            <mat-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">{{ pos.value }}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <editor [parentForm]="sectionForm" [controlName]="'authorsNote'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                            </div>
                         </form>
                     </div>
                 </ng-container>

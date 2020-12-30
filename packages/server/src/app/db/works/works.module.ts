@@ -4,7 +4,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from '../users/users.module';
 import { WorksSchema } from './works.schema';
 import { WorksService } from './works.service';
-import { HistoryModule } from '../history/history.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
@@ -12,7 +11,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
     MongooseModule.forFeature([
       {name: 'Work', schema: WorksSchema},
     ]),
-    UsersModule, HistoryModule, NotificationsModule
+    UsersModule, NotificationsModule
   ],
   providers: [WorksService],
   exports: [WorksService]

@@ -1,5 +1,5 @@
 import { PaginateModel, PaginateResult, Types } from 'mongoose';
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { JwtPayload } from '@pulp-fiction/models/auth';
@@ -17,6 +17,8 @@ import { UsersService } from '../users/users.service';
 import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
 import { MigrationForm } from '@pulp-fiction/models/migration';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { ReadingHistoryService } from '../reading-history/reading-history.service';
+import { RatingOption } from '@pulp-fiction/models/reading-history';
 
 @Injectable()
 export class ContentService {
@@ -24,7 +26,8 @@ export class ContentService {
         private readonly sectionsService: SectionsService,
         private readonly usersService: UsersService,
         private readonly queueService: ApprovalQueueService,
-        private readonly notificationsService: NotificationsService) {}
+        private readonly notificationsService: NotificationsService,
+        private readonly histService: ReadingHistoryService) {}
 
     /**
      * Fetches one unpublished item from the content collection via ID and ContentKind. 
@@ -279,6 +282,79 @@ export class ContentService {
      */
     async pendingWork(contentId: string, authorId: string): Promise<void> {
         await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Pending});
+    }
+
+    /**
+     * Changes the rating of a user to a Like.
+     * 
+     * @param user The user making the change
+     * @param contentId The content in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setLike(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was a dislike
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': 1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setLike(user, contentId);
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': -1}})
+                .where('audit.published').equals(PubStatus.Published);
+
+        } else if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was already a like
+            throw new ConflictException(`You've already upvoted this content!`);
+        } else {
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': 1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setLike(user, contentId);
+        }
+    }
+
+    /**
+     * Changes the rating of a user to a Dislike
+     * 
+     * @param user The user making the change
+     * @param contentId The content in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setDislike(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was a like
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': 1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setDislike(user, contentId);
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': -1}})
+                .where('audit.published').equals(PubStatus.Published);
+
+        } else if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was already a dislike
+            throw new ConflictException(`You've already downvoted this content!`);
+        } else {
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': 1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setDislike(user, contentId);
+        }
+    }
+
+    /**
+     * Changes the rating of a user to NoVote
+     * 
+     * @param user The user making the change
+     * @param contentId The content in question
+     * @param oldRatingOption A user's old rating option
+     */
+    async setNoVote(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
+        if (oldRatingOption === RatingOption.Liked) {
+            // If the old rating option was a like
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': -1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setNoVote(user, contentId);
+        } else if (oldRatingOption === RatingOption.Disliked) {
+            // If the old rating option was a dislike
+            await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': -1}})
+                .where('audit.published').equals(PubStatus.Published);
+            await this.histService.setNoVote(user, contentId);
+        }
     }
 
     /**

@@ -11,9 +11,7 @@
                 <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span>
             </div>
             <div class="post-tools">
-                <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ blogData.stats.likes | abbreviate }}</span></button>
-                <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ blogData.stats.dislikes | abbreviate }}</span></button>
-                <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
+                <content-approval [content]="blogData" [histData]="histData"></content-approval>
             </div>
         </div>
     </div>
@@ -21,11 +19,6 @@
         <div class="html-description" [innerHtml]="blogData.body | safeHtml"></div>
     </div>
 </div>
-
-<mat-menu xPosition="before" #moreItems="matMenu">
-    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
-    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
-</mat-menu>
 
 <ng-container *ngIf="!loading">
     <comments [itemId]="blogData._id"

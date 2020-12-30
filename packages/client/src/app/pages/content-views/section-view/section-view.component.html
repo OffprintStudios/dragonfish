@@ -24,7 +24,19 @@
             </div>
         </div>
         <div class="section-main">
+            <ng-container *ngIf="thisSection.authorsNotePos === authorsNotePosOptions.Top; else posBottom">
+                <div class="authors-note-box">
+                    <h3>A word from the author&mdash;</h3>
+                    <div class="html-description" [innerHTML]="thisSection.authorsNote | safeHtml"></div>
+                </div>
+            </ng-container>
             <div class="section-body" [innerHTML]="thisSection.body | safeHtml"></div>
+            <ng-template #posBottom>
+                <div class="authors-note-box">
+                    <h3>A word from the author&mdash;</h3>
+                    <div class="html-description" [innerHTML]="thisSection.authorsNote | safeHtml"></div>
+                </div>
+            </ng-template>
         </div>
     </div>
 

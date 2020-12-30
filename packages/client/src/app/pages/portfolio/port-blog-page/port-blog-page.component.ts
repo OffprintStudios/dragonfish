@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../services/auth';
-import { BlogsService, PortfolioService } from '../../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { Blog } from '@pulp-fiction/models/blogs';
-import { ItemKind } from '@pulp-fiction/models/comments';
-
 import { Title } from '../../../shared';
-import { BlogsContentModel } from '@pulp-fiction/models/content';
+import { BlogsContentModel, SetRating } from '@pulp-fiction/models/content';
+import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
+import { ContentPage } from '../../../models/site';
+import { ContentService, HistoryService } from '../../../services/content';
 
 @Component({
   selector: 'app-port-blog-page',
@@ -20,9 +18,9 @@ export class PortBlogPageComponent implements OnInit {
   currentUser: FrontendUser; // The currently logged-in user
   portUserName: string; // The username for this portfolio
   blogData: BlogsContentModel; // The blog we're displaying
+  histData: ReadingHistory; // The current user's reading history
   loading = false; // Loading check for fetching data
   pageNum = 1; // Comments page
-  itemKind = ItemKind.Blog;
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
@@ -32,12 +30,18 @@ export class PortBlogPageComponent implements OnInit {
   ngOnInit(): void {
     const params = this.route.parent.snapshot.paramMap;
     this.portUserName = params.get('username');
-    this.blogData = this.route.snapshot.data.blogData as BlogsContentModel;
+    this.route.data.subscribe(data => {
+      const pageData = data.blogData as ContentPage;
+      this.blogData = pageData.content as BlogsContentModel;
+      if (pageData.history !== null) {
+        this.histData = pageData.history;
+      }
+    });
     Title.setTwoPartTitle(this.blogData.title);
   }
 
   /**
-   * Fetches the blog from the backend.
+   * Fetches the current page of comments.
    */
   private fetchData() {
     const queryParams = this.route.snapshot.queryParamMap;    
