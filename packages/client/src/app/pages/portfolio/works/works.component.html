@@ -1,62 +1,21 @@
-<div class="tools">
-    <div class="tool-buttons">
-        <ng-container *ngIf="poetryView; else proseView">
-            <button matRipple class="tool left" (click)="switchView()"><i-feather name="book-open"></i-feather>Prose</button>
-            <button matRipple class="tool end active"><i-feather name="feather"></i-feather>Poetry</button>
-        </ng-container>
-        <ng-template #proseView>
-            <button matRipple class="tool left active"><i-feather name="book-open"></i-feather>Prose</button>
-            <button matRipple class="tool end" (click)="switchView()"><i-feather name="feather"></i-feather>Poetry</button>
+<div class="works-feed" *ngIf="contentData.totalDocs !== 0; else noGalleryWorks">
+    <ng-container *ngFor="let work of contentData.docs | paginate: {
+        itemsPerPage: contentData.limit,
+        currentPage: pageNum,
+        totalItems: contentData.totalDocs
+    }">
+        <work-card [content]="work" [showAuthor]="false"></work-card>
+    </ng-container>
+</div>
+<ng-template #noGalleryWorks>
+    <div class="empty">
+        <h3>There's nothing here...</h3>
+        <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new prose or poetry?</p>
+        <ng-template #notSameUser>
+            <p>Check back later to see if {{ portUser.username }} adds anything!</p>
         </ng-template>
     </div>
-    <form [formGroup]="searchWorks" class="tool-search" (ngSubmit)="searchFor()">
-        <div class="search-bar">
-            <input type="text" formControlName="query" class="search-input" placeholder="Search works...">
-            <button matRipple class="search-submit" type="submit"><i-feather name="search"></i-feather></button>
-        </div>
-    </form>
-</div>
-
-<ng-container *ngIf="poetryView; else showProse">
-    <div class="works-feed" *ngIf="poetryData.totalDocs !== 0; else noGalleryWorks">
-        <ng-container *ngFor="let work of poetryData.docs | paginate: {
-            itemsPerPage: poetryData.limit,
-            currentPage: pageNum,
-            totalItems: poetryData.totalDocs
-        }">
-            <work-card [content]="work" [showAuthor]="false"></work-card>
-        </ng-container>
-    </div>
-    <ng-template #noGalleryWorks>
-        <div class="empty">
-            <h3>There's nothing here...</h3>
-            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new poetry?</p>
-            <ng-template #notSameUser>
-                <p>Check back later to see if {{ portUser.username }} adds anything!</p>
-            </ng-template>
-        </div>
-    </ng-template>
+</ng-template>
+<ng-container *ngIf="contentData.totalDocs > 0">
     <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
 </ng-container>
-
-<ng-template #showProse>
-    <div class="works-feed" *ngIf="proseData.totalDocs !== 0; else noGalleryWorks">
-        <ng-container *ngFor="let work of proseData.docs | paginate: {
-            itemsPerPage: proseData.limit,
-            currentPage: pageNum,
-            totalItems: proseData.totalDocs
-        }">
-            <work-card [content]="work" [showAuthor]="false"></work-card>
-        </ng-container>
-    </div>
-    <ng-template #noGalleryWorks>
-        <div class="empty">
-            <h3>There's nothing here...</h3>
-            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new prose?</p>
-            <ng-template #notSameUser>
-                <p>Check back later to see if {{ portUser.username }} adds anything!</p>
-            </ng-template>
-        </div>
-    </ng-template>
-    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-</ng-template>
