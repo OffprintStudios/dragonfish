@@ -115,6 +115,7 @@ export class SectionItemComponent implements OnInit, OnChanges {
 
         this.sectionsService.publishSection(this.contentId, this.section._id, pubStatus).subscribe(sec => {
             this.section = sec as SectionItem;
+            location.reload();
         });
     }
 }
