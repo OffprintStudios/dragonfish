@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
+import { ContentModel, PoetryContent, ProseContent } from '@pulp-fiction/models/content';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
@@ -21,16 +21,8 @@ import { calculateApprovalRating } from '../../../util/functions';
 export class WorksComponent implements OnInit {
     currentUser: FrontendUser;
     portUser: FrontendUser;
-    proseData: PaginateResult<ProseContent>;
-    poetryData: PaginateResult<PoetryContent>;
+    contentData: PaginateResult<ContentModel>;
     pageNum = 1;
-
-    poetryView = false;
-    addingNewWork = false;
-
-    searchWorks = new FormGroup({
-        query: new FormControl('')
-    });
 
     constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
         private worksService: WorksService, private queueService: QueueService, private dialog: MatDialog) {
@@ -44,9 +36,7 @@ export class WorksComponent implements OnInit {
         Title.setThreePartTitle(this.portUser.username, Constants.WORKS);
 
         this.route.data.subscribe(data => {
-            const feedData = data.feedData as PortWorks;
-            this.proseData = feedData.prose;
-            this.poetryData = feedData.poetry;
+            this.contentData = data.feedData as PaginateResult<ContentModel>;
         });
     }
 
@@ -73,25 +63,5 @@ export class WorksComponent implements OnInit {
                 }
             }
         }
-    }
-
-    /**
-     * Switches the view
-     */
-    switchView() {
-        if (this.poetryView === true) {
-            this.poetryView = false;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
-        } else {
-            this.poetryView = true;
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: 1}, queryParamsHandling: 'merge'});
-        }
-    }
-
-    /**
-     * TODO: implement search functionality here
-     */
-    searchFor() {
-      return;
     }
 }

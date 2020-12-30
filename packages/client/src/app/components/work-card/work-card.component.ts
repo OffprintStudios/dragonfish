@@ -14,17 +14,11 @@ export class WorkCardComponent implements OnInit {
     @Input() content: any;
     @Input() showAuthor: boolean;
 
-    constructor(private router: Router) {}
+    contentKind = ContentKind;
+
+    constructor() {}
 
     ngOnInit(): void {}
-
-    navigateToWork(kind: ContentKind) {
-        if (kind === ContentKind.ProseContent) {
-            this.router.navigate(['/prose', this.content._id, v.slugify(this.content.title)]);
-        } else if (kind === ContentKind.PoetryContent) {
-            this.router.navigate(['/poetry', this.content._id, v.slugify(this.content.title)]);
-        }
-    }
 
     calcApprovalRating(likes: number, dislikes: number) {
         return calculateApprovalRating(likes, dislikes);
