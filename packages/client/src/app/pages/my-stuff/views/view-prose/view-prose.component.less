@@ -136,20 +136,22 @@ div.view-container {
 			overflow-x: hidden;
 			scrollbar-width: thin;
 			
-			::-webkit-scrollbar {
+		}
+			
+		ul::-webkit-scrollbar {
 				width: 4px;
 			}
 			
-			::-webkit-scrollbar-track {
+		ul::-webkit-scrollbar-track {
 				background: transparent;
 				box-shadow: none
 			}
 			
-			::-webkit-scrollbar-thumb {
+		ul::-webkit-scrollbar-thumb {
 				border-radius: 5px;
 				background: grey; 
 			}
-		}
+		
 
         div.sections-list {
             border-right: 1px solid var(--site-borders);
@@ -158,15 +160,16 @@ div.view-container {
 			overflow-y: scroll;
 			overflow-x: hidden;
 			scrollbar-width: thin;
+			
 
-			::-webkit-scrollbar {
+			div.sections-list::-webkit-scrollbar {
 				width: 4px;
 			}
-			::-webkit-scrollbar-track {
+			div.sections-list::-webkit-scrollbar-track {
 				background: transparent;
 				box-shadow: none
 			}
-			::-webkit-scrollbar-thumb {
+			div.sections-list::-webkit-scrollbar-thumb {
 				border-radius: 5px;
 				background: grey; 
 			}
