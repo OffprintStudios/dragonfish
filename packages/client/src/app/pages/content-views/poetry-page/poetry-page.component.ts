@@ -31,6 +31,7 @@ export class PoetryPageComponent implements OnInit {
     ngOnInit(): void {
         this.route.data.subscribe(data => {
             const pageData = data.poetryData as ContentPage;
+            console.log(pageData);
             this.currPoetry = pageData.content as PoetryContent;
 
             if (pageData.history !== null) {
