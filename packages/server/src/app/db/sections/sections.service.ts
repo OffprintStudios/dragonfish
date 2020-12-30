@@ -38,16 +38,14 @@ export class SectionsService {
      * @param sectionInfo The new section information
      */
     async editSection(sectionId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
-        return await this.sectionModel.findOneAndUpdate({'_id': sectionId}, {
-            'title': await sanitizeHtml(sectionInfo.title),
-            'body': await sanitizeHtml(sectionInfo.body),
-            'authorsNote': await sanitizeHtml(sectionInfo.authorsNote),
-            'authorsNotePos': sectionInfo.authorsNotePos,
-            'stats.words': sectionInfo.usesNewEditor
-                ? await countPlaintextWords(await stripAllHtml(sectionInfo.body))
-                : await countQuillWords(await sanitizeHtml(sectionInfo.body)),
-            'usesNewEditor': sectionInfo.usesNewEditor
-        }, {new: true});
+        const thisSection = await this.sectionModel.findById(sectionId);
+        thisSection.title = sectionInfo.title;
+        thisSection.body = sectionInfo.body;
+        thisSection.authorsNote = sectionInfo.authorsNote;
+        thisSection.authorsNotePos = sectionInfo.authorsNotePos;
+        thisSection.usesNewEditor = sectionInfo.usesNewEditor;
+
+        return await thisSection.save();
     }
 
     /**

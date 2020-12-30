@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { ContentKind, ProseContent, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ProseContent, PubStatus, WorkStatus } from '@pulp-fiction/models/content';
 import { MyStuffService, SectionsService } from 'packages/client/src/app/services/user';
 import { SectionItem } from '../../viewmodels';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,6 +20,7 @@ export class ViewProseComponent implements OnInit {
     myProse: ProseContent;
     mySections: SectionItem[];
     pubStatus = PubStatus;
+    contentStatus = WorkStatus;
     loadingSections = false;
     editMode = false;
     addEditIcon = false;

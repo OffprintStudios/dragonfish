@@ -88,8 +88,6 @@
         </div>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | localedate:'mediumDate' }}</span>
-        <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myProse.stats.comments | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ myProse.stats.views | abbreviate }}</span>
@@ -99,6 +97,10 @@
         <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myProse.stats.dislikes | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myProse.stats.words | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | localedate:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[myProse.meta.status] }}</span>
     </div>
     <div class="view-sections">
         <!--Loading sections-->
