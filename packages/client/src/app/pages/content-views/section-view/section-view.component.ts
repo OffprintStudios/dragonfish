@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ContentService } from '../../../services/content';
 import { ContentModel, SectionInfo } from '@pulp-fiction/models/content';
-import { Section } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, Section } from '@pulp-fiction/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
 
@@ -18,6 +18,8 @@ export class SectionViewComponent implements OnInit {
     currIndex: number;
     indexNext: number;
     indexPrev: number;
+
+    authorsNotePosOptions = AuthorsNotePos;
 
     constructor(private contentService: ContentService, private route: ActivatedRoute, private router: Router) {
         this.fetchData();
