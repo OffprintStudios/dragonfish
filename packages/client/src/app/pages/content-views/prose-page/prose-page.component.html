@@ -58,6 +58,8 @@
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | localedate:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currProse.meta.status] }}</span>
     </div>
 </div>
 

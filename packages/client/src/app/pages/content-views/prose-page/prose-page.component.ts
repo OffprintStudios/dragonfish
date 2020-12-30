@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProseContent, SectionInfo, SetRating } from '@pulp-fiction/models/content';
+import { ProseContent, SectionInfo, SetRating, WorkStatus } from '@pulp-fiction/models/content';
 import { RatingOption, ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
@@ -20,6 +20,8 @@ export class ProsePageComponent implements OnInit {
     currProse: ProseContent;
     histData: ReadingHistory;
     pageNum = 1;
+
+    contentStatus = WorkStatus;
 
     constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
             this.auth.currUser.subscribe(x => { this.currentUser = x; });
