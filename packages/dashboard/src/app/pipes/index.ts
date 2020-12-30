@@ -7,3 +7,4 @@ export { ToLocaleStringPipe } from './to-locale-string.pipe';
 export { AbbreviateNumbersPipe } from './abbreviate-numbers.pipe';
 export { SafeHtmlPipe } from './safe-html.pipe';
 export { TruncatePipe } from './truncate-text.pipe';
+export { LocaleDatePipe } from './locale-date.pipe';
