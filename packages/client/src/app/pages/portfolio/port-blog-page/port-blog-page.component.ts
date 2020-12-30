@@ -22,8 +22,7 @@ export class PortBlogPageComponent implements OnInit {
   loading = false; // Loading check for fetching data
   pageNum = 1; // Comments page
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router, private hist: HistoryService,
-    private contentService: ContentService) {
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
     this.fetchData();
   }
@@ -61,75 +60,5 @@ export class PortBlogPageComponent implements OnInit {
     } else {
       this.router.navigate([], {relativeTo: this.route});
     }
-  }
-
-    /**
-    * Sets this user's rating as Liked.
-    * 
-    * @param workId This work ID
-    * @param currRating The current user's rating
-    */
-   setLike(workId: string, currRating: RatingOption) {
-    const ratingOptions: SetRating = {
-      workId: workId,
-      oldApprovalRating: currRating
-    };
-
-    this.contentService.setLike(ratingOptions).subscribe(() => {
-      this.histData.ratingOption = RatingOption.Liked;
-
-      if (currRating === RatingOption.Disliked) {
-        this.blogData.stats.dislikes -= 1;
-      } else {
-        this.blogData.stats.likes += 1;
-      }
-    });
-  }
-
-  /**
-   * Sets this user's rating as Disliked.
-   * 
-   * @param workId This work ID
-   * @param currRating The current user's rating
-   */
-  setDislike(workId: string, currRating: RatingOption) {
-    const ratingOptions: SetRating = {
-      workId: workId,
-      oldApprovalRating: currRating
-    };
-
-    this.contentService.setDislike(ratingOptions).subscribe(() => {
-      this.histData.ratingOption = RatingOption.Disliked;
-
-      if (currRating === RatingOption.Disliked) {
-        this.blogData.stats.likes -= 1;
-      } else {
-        this.blogData.stats.dislikes += 1;
-      }
-    });
-  }
-
-
-  /**
-   * Sets this user's rating as NoVote.
-   * 
-   * @param workId This work ID
-   * @param currRating The current user's rating
-   */
-  setNoVote(workId: string, currRating: RatingOption) {
-    const ratingOptions: SetRating = {
-      workId: workId,
-      oldApprovalRating: currRating
-    };
-
-    this.contentService.setNoVote(ratingOptions).subscribe(() => {
-      this.histData.ratingOption = RatingOption.NoVote;
-
-      if (currRating === RatingOption.Liked) {
-        this.blogData.stats.likes -= 1;
-      } else if (currRating === RatingOption.Disliked) {
-        this.blogData.stats.dislikes -= 1;
-      }
-    });
   }
 }
