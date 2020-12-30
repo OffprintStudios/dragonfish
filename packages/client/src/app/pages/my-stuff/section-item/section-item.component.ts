@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SectionsService } from '../../../services/user';
 import { AuthorsNotePos, PublishSection, SectionForm } from '@pulp-fiction/models/sections';
 import { SectionItem } from '../viewmodels';
+import { getQuillHtml } from '../../../util/functions';
 
 @Component({
     selector: 'section-item',
@@ -74,11 +75,19 @@ export class SectionItemComponent implements OnInit, OnChanges {
             return;
         }
 
+        const bodyValue = this.section.usesNewEditor 
+            ? this.fields.body.value
+            : getQuillHtml(document.querySelector("quill-editor"));
+
+        const authorsNoteValue = this.section.usesNewEditor 
+            ? this.fields.authorsNote.value
+            : getQuillHtml(document.querySelector("div.authors-note"));
+
         const sectionInfo: SectionForm = {
             title: this.fields.title.value,
-            body: this.fields.body.value,
+            body: bodyValue,
             usesNewEditor: true,
-            authorsNote: this.fields.authorsNote.value,
+            authorsNote: authorsNoteValue,
             authorsNotePos: this.fields.authorsNotePos.value
         };
 
