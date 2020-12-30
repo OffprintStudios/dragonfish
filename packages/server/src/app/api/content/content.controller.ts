@@ -69,18 +69,21 @@ export class ContentController {
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-like')
     async setLike(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setLike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
+        console.log(setRating);
+        return await this.contentService.setLike(req.user, setRating.workId, setRating.oldApprovalRating);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-dislike')
     async setDislike(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setDislike(req.user.sub, setRating.workId, setRating.oldApprovalRating);
+        console.log(setRating);
+        return await this.contentService.setDislike(req.user, setRating.workId, setRating.oldApprovalRating);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-no-vote')
     async setNoVote(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setNoVote(req.user.sub, setRating.workId, setRating.oldApprovalRating);
+        console.log(setRating);
+        return await this.contentService.setNoVote(req.user, setRating.workId, setRating.oldApprovalRating);
     }
 }
