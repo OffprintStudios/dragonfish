@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
-import { PoetryContent, PubStatus, ContentKind, PoetryForm } from '@pulp-fiction/models/content';
+import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
 import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { UploadCoverartComponent } from '../../../../components/modals/works';
 import { MyStuffService, SectionsService } from '../../../../services/user';
@@ -20,6 +20,7 @@ export class ViewPoetryComponent implements OnInit {
     myPoetry: PoetryContent;
     mySections: SectionItem[];
     pubStatus = PubStatus;
+    contentStatus = WorkStatus;
     loadingSections = false;
     editMode = false;
     addEditIcon = false;

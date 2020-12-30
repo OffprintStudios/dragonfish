@@ -16,7 +16,9 @@ import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter
         useFactory: () => {
           const schema = SectionsSchema;
           schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
-            this.set('_id', generate());
+            if (!this._id) {
+              this.set('_id', generate());
+            }
             this.set('title', await sanitizeHtml(this.title));
             this.set('body', await sanitizeHtml(this.body));
             if (this.authorsNote) {
@@ -30,7 +32,7 @@ import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter
             const wordCount = this.usesNewEditor
               ? await countPlaintextWords(await stripAllHtml(this.body))
               : await countQuillWords(await sanitizeHtml(this.body));
-            this.set('stats.words', wordCount);
+            this.set('stats.words', Number(wordCount));
 
             return next();
           });

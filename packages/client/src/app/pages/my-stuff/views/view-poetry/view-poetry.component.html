@@ -93,8 +93,6 @@
         </div>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | localedate:'mediumDate' }}</span>
-        <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{ forms[myPoetry.meta.form] }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myPoetry.stats.comments | abbreviate }}</span>
@@ -106,6 +104,10 @@
         <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myPoetry.stats.dislikes | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myPoetry.stats.words | abbreviate }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | localedate:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[myPoetry.meta.status] }}</span>
     </div>
     <ng-container *ngIf="myPoetry.meta.collection; else noSections">
         <div class="view-sections">
