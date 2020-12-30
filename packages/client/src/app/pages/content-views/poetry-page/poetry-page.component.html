@@ -68,11 +68,6 @@
     </div>
 </div>
 
-<mat-menu #moreMenu="matMenu" xPosition="before">
-    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
-    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
-</mat-menu>
-
 <ng-container *ngIf="currPoetry.meta.collection; else singlePoem">
     <router-outlet></router-outlet>
 </ng-container>
