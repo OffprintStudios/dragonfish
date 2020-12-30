@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Constants, Title } from '../../../shared';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { History } from '@pulp-fiction/models/history';
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
 import { HistoryService } from '../../../services/content';
@@ -16,7 +16,7 @@ import { calculateApprovalRating } from '../../../util/functions';
 export class HistoryComponent implements OnInit {
   currentUser: FrontendUser;
 
-  histList: PaginateResult<History>;
+  histList: PaginateResult<ReadingHistory>;
   loading = false;
 
   pageNum = 1;

@@ -18,9 +18,7 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currProse.meta.genres | separateGenres }}</span>
                 <div class="view-tools">
-                    <button matRipple class="tool left"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currProse.stats.likes | abbreviate }}</span></button>
-                    <button matRipple class="tool left"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currProse.stats.dislikes | abbreviate }}</span></button>
-                    <button matRipple class="tool left" [matMenuTriggerFor]="moreMenu"><i-feather name="more-vertical" class="more"></i-feather></button>
+                    <content-approval [content]="currProse" [histData]="histData"></content-approval>
                 </div>
             </div>
             <div class="view-description">
@@ -62,11 +60,6 @@
         <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | localedate:'mediumDate' }}</span>
     </div>
 </div>
-
-<mat-menu #moreMenu="matMenu" xPosition="before">
-    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
-    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
-</mat-menu>
 
 <router-outlet></router-outlet>
 

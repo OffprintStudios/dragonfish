@@ -1,9 +1,9 @@
-import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch } from '@nestjs/common';
+import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body } from '@nestjs/common';
 import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { ContentFilter, ContentKind } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind, SetRating } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { isNullOrUndefined } from '../../util';
 
@@ -64,5 +64,23 @@ export class ContentController {
         }
 
         return await this.contentService.submitForApproval(req.user, contentId);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-like')
+    async setLike(@Request() req: any, @Body() setRating: SetRating) {
+        return await this.contentService.setLike(req.user, setRating.workId, setRating.oldApprovalRating);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-dislike')
+    async setDislike(@Request() req: any, @Body() setRating: SetRating) {
+        return await this.contentService.setDislike(req.user, setRating.workId, setRating.oldApprovalRating);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('set-no-vote')
+    async setNoVote(@Request() req: any, @Body() setRating: SetRating) {
+        return await this.contentService.setNoVote(req.user, setRating.workId, setRating.oldApprovalRating);
     }
 }
