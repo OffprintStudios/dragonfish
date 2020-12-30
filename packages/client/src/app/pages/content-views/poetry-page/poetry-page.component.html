@@ -65,6 +65,8 @@
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currPoetry.stats.words | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currPoetry.audit.publishedOn | localedate:'mediumDate' }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currPoetry.meta.status] }}</span>
     </div>
 </div>
 

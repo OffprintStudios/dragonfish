@@ -13,7 +13,9 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 export class ViewPoetryResolver implements Resolve<ContentPage> {
     currentUser: FrontendUser;
 
-    constructor (private contentService: ContentService, private auth: AuthService, private hist: HistoryService) { }
+    constructor (private contentService: ContentService, private auth: AuthService, private hist: HistoryService) {
+        this.auth.currUser.subscribe(x => { this.currentUser = x; });
+    }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<ContentPage> {
         const poetryId = route.paramMap.get('poetryId');
