@@ -14,6 +14,8 @@ export class WorkCardComponent implements OnInit {
     @Input() content: any;
     @Input() showAuthor: boolean;
 
+    contentKind = ContentKind;
+
     constructor(private router: Router) {}
 
     ngOnInit(): void {}
