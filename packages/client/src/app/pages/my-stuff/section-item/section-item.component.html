@@ -33,7 +33,19 @@
             <div class="body-header">
                 <h2>{{ section.title }}</h2>
             </div>
+            <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Top; else posBottom">
+                <div class="authors-note-box">
+                    <h3>A word from the author&mdash;</h3>
+                    <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                </div>
+            </ng-container>
             <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+            <ng-template #posBottom>
+                <div class="authors-note-box">
+                    <h3>A word from the author&mdash;</h3>
+                    <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                </div>
+            </ng-template>
         </div>
     </ng-container>
     <ng-template #editMode>
