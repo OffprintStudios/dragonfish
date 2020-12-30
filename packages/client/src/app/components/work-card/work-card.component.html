@@ -2,7 +2,12 @@
     <!--Header-->
     <div class="card-header">
         <rating-icon [rating]="content.meta.rating" [size]="'small'"></rating-icon>
-        <h3><a (click)="navigateToWork(content.kind)">{{ content.title }}</a></h3>
+        <ng-container *ngIf="content.kind === contentKind.PoetryContent">
+            <h3><a [routerLink]="['/poetry', content._id, content.title | slugify]">{{ content.title }}</a></h3>
+        </ng-container>
+        <ng-container *ngIf="content.kind === contentKind.ProseContent">
+            <h3><a [routerLink]="['/prose', content._id, content.title | slugify]">{{ content.title }}</a></h3>
+        </ng-container>
         <h4 *ngIf="showAuthor === true">by <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify]">{{ content.author.username }}</a></h4>
         <div class="card-tags">
             <ng-container *ngIf="content.kind === contentKind.PoetryContent">
