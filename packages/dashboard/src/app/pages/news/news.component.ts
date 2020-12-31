@@ -4,7 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { NewsContentModel } from '@pulp-fiction/models/content';
+import { NewsContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../services/auth';
 import { NewsService } from '../../services/contrib/news';
@@ -18,6 +18,7 @@ export class NewsComponent implements OnInit {
   currentUser: FrontendUser;
 
   posts: PaginateResult<NewsContentModel>;
+  pubStatus = PubStatus;
   pageNum: number = 1;
 
   searchForm = new FormGroup({
@@ -52,9 +53,15 @@ export class NewsComponent implements OnInit {
    * @param postId The post ID
    * @param pubStatus The new pubStatus
    */
-  setPublishStatus(postId: string, pubStatus: boolean) {
-    this.newsService.setPublishStatus(postId, pubStatus).subscribe(() => {
-      this.fetchData(this.pageNum);
-    });
+  setPublishStatus(postId: string, pubStatus: PubStatus) {
+    if (pubStatus === PubStatus.Published) {
+      this.newsService.setPublishStatus(postId, PubStatus.Unpublished).subscribe(() => {
+        this.fetchData(this.pageNum);
+      });
+    } else if (pubStatus === PubStatus.Unpublished) {
+      this.newsService.setPublishStatus(postId, PubStatus.Published).subscribe(() => {
+        this.fetchData(this.pageNum);
+      })
+    }
   }
 }

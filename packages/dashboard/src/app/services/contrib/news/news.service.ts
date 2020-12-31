@@ -5,7 +5,7 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { NewsContentModel, NewsForm } from '@pulp-fiction/models/content';
+import { NewsContentModel, NewsForm, PubStatus } from '@pulp-fiction/models/content';
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +81,7 @@ export class NewsService {
    * @param postId The post to publish/unpublish
    * @param pubStatus The pubstatus to change to
    */
-  public setPublishStatus(postId: string, pubStatus: boolean) {
+  public setPublishStatus(postId: string, pubStatus: PubStatus) {
     return this.http.patch<NewsContentModel>(`${this.url}/set-publish-status/${postId}`, {pubStatus}, {observe: 'response', withCredentials: true})
       .pipe(map(res => {
         return res.body;
