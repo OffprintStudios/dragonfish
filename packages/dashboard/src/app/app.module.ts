@@ -32,7 +32,7 @@ import { EditNewsPostResolver } from './resolvers';
     PostFormComponent, NewEditorComponent, pipes.AbbreviateNumbersPipe, pipes.FixCategoriesPipe,
     pipes.PluralizePipe, pipes.SafeHtmlPipe, pipes.SeparateEntitiesPipe, pipes.SlugifyPipe,
     pipes.StringifyMetaPipe, pipes.ToLocaleStringPipe, pipes.TruncatePipe, CreateDocComponent,
-    EditDocComponent,
+    EditDocComponent, pipes.LocaleDatePipe,
     PreviewPostComponent
   ],
   imports: [
