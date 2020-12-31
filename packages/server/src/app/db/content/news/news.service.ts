@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { NewsForm, PubStatus } from '@pulp-fiction/models/content';
+import { ContentRating, NewsForm, PubStatus } from '@pulp-fiction/models/content';
 import { Roles, UserInfo } from '@pulp-fiction/models/users';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
@@ -27,6 +27,7 @@ export class NewsService {
                 'desc': await sanitizeHtml(postInfo.desc),
                 'body': await sanitizeHtml(postInfo.body),
                 'meta.category': postInfo.category,
+                'meta.rating': ContentRating.Everyone,
                 'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
             });
     
