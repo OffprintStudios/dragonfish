@@ -97,17 +97,8 @@ export class PoetryFormComponent implements OnInit {
         });
       } else {
         this.poetryService.editPoetry(this.currPoetry._id, poetryInfo).subscribe(poetry => {
-          this.currPoetry = poetry;
-          this.poetryForm.setValue({
-            title: this.currPoetry.title,
-            desc: this.currPoetry.desc,
-            body: this.currPoetry.body,
-            category: this.currPoetry.meta.category,
-            form: this.currPoetry.meta.form,
-            genres: this.currPoetry.meta.genres,
-            rating: this.currPoetry.meta.rating,
-            status: this.currPoetry.meta.status
-          });
+          this.snackBar.open(`Changes saved successfully!`);
+          this.location.back();
         })
       }
   }
