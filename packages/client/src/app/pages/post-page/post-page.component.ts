@@ -5,6 +5,8 @@ import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ItemKind } from '@pulp-fiction/models/comments';
 import { AuthService } from '../../services/auth';
+import { ContentPage } from '../../models/site';
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 
 @Component({
   selector: 'pulp-fiction-post-page',
@@ -15,6 +17,7 @@ export class PostPageComponent implements OnInit {
   currentUser: FrontendUser;
 
   currPost: NewsContentModel;
+  histData: ReadingHistory;
   category = NewsCategory;
 
   pageNum = 1; // For comments pages
@@ -27,6 +30,14 @@ export class PostPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.currPost = this.route.snapshot.data.postData as NewsContentModel;
+
+    this.route.data.subscribe(data => {
+      const pageData = data.postData as ContentPage;
+      this.currPost = pageData.content as NewsContentModel;
+      if (pageData.history !== null) {
+        this.histData = pageData.history;
+      }
+    })
   }
 
   private fetchData() {

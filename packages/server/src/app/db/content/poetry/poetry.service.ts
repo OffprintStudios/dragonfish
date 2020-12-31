@@ -4,8 +4,9 @@ import { PaginateModel } from 'mongoose';
 
 import { CreatePoetry } from '@pulp-fiction/models/content';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { countPlaintextWords } from '@pulp-fiction/word_counter';
 
 import { PoetryContentDocument } from './poetry-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
@@ -27,13 +28,14 @@ export class PoetryService {
             'title': await sanitizeHtml(poetryInfo.title),
             'desc': await sanitizeHtml(poetryInfo.desc),
             'body': await sanitizeHtml(poetryInfo.body),
+            'stats.words': poetryInfo.collection ? 0 : await countPlaintextWords(await stripAllHtml(await sanitizeHtml(poetryInfo.body))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
             'meta.genres': poetryInfo.genres,
             'meta.rating': poetryInfo.rating,
             'meta.status': poetryInfo.status
-        })
+        });
 
         const savedPoetry: PoetryContentDocument = await newPoetry.save();
 
@@ -51,16 +53,30 @@ export class PoetryService {
      * @param poetryInfo The poetry info
      */
     async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
-        return await this.poetryModel.findOneAndUpdate({'_id': poetryId, 'author': user.sub}, {
-            'title': await sanitizeHtml(poetryInfo.title),
-            'desc': await sanitizeHtml(poetryInfo.desc),
-            'body': await sanitizeHtml(poetryInfo.body),
-            'meta.category': poetryInfo.category,
-            'meta.form': poetryInfo.form,
-            'meta.genres': poetryInfo.genres,
-            'meta.rating': poetryInfo.rating,
-            'meta.status': poetryInfo.status
-        }, {new: true});
+        if (poetryInfo.collection === true) {
+            return await this.poetryModel.findOneAndUpdate({'_id': poetryId, 'author': user.sub}, {
+                'title': await sanitizeHtml(poetryInfo.title),
+                'desc': await sanitizeHtml(poetryInfo.desc),
+                'body': await sanitizeHtml(poetryInfo.body),
+                'meta.category': poetryInfo.category,
+                'meta.form': poetryInfo.form,
+                'meta.genres': poetryInfo.genres,
+                'meta.rating': poetryInfo.rating,
+                'meta.status': poetryInfo.status
+            }, {new: true});
+        } else {
+            return await this.poetryModel.findOneAndUpdate({'_id': poetryId, 'author': user.sub}, {
+                'title': await sanitizeHtml(poetryInfo.title),
+                'desc': await sanitizeHtml(poetryInfo.desc),
+                'body': await sanitizeHtml(poetryInfo.body),
+                'stats.words': await countPlaintextWords(await stripAllHtml(await sanitizeHtml(poetryInfo.body))),
+                'meta.category': poetryInfo.category,
+                'meta.form': poetryInfo.form,
+                'meta.genres': poetryInfo.genres,
+                'meta.rating': poetryInfo.rating,
+                'meta.status': poetryInfo.status
+            }, {new: true});
+        }
     }
 
     /**
