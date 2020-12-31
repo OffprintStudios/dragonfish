@@ -11,8 +11,7 @@
                 <span>{{ currPost.audit.publishedOn | localedate:'fullDate' }}</span>
             </div>
             <div class="post-tools">
-                <button><i-feather name="thumbs-up"></i-feather></button>
-                <button class="end"><i-feather name="thumbs-down"></i-feather></button>
+                <content-approval [content]="currPost" [histData]="histData"></content-approval>
             </div>
         </div>
     </div>

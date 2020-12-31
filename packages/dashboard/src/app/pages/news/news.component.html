@@ -35,11 +35,11 @@
                 totalItems: posts.totalDocs
             }">
                 <div class="post-check">
-                    <button (click)="setPublishStatus(post._id, false)" matTooltip="Published (click to unpublish)" matTooltipClass="offprint-tooltip" class="check-published" *ngIf="post.audit.published; else blogUnpublished">
+                    <button (click)="setPublishStatus(post._id, pubStatus.Published)" matTooltip="Published (click to unpublish)" matTooltipClass="offprint-tooltip" class="check-published" *ngIf="post.audit.published === 'Published'; else blogUnpublished">
                         <i-feather name="check-circle"></i-feather>
                     </button>
                     <ng-template #blogUnpublished>
-                        <button (click)="setPublishStatus(post._id, true)" matTooltip="Unpublished (click to publish)" matTooltipClass="offprint-tooltip" class="check-unpublished">
+                        <button (click)="setPublishStatus(post._id, pubStatus.Unpublished)" matTooltip="Unpublished (click to publish)" matTooltipClass="offprint-tooltip" class="check-unpublished">
                             <i-feather name="circle"></i-feather>
                         </button>
                     </ng-template>

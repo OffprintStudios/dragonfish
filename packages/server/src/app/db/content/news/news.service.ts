@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { NewsForm } from '@pulp-fiction/models/content';
+import { NewsForm, PubStatus } from '@pulp-fiction/models/content';
 import { Roles, UserInfo } from '@pulp-fiction/models/users';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
@@ -110,7 +110,7 @@ export class NewsService {
      * @param postId The post itself
      * @param isPublished The publish flag
      */
-    async setPublishStatus(user: JwtPayload, postId: string, isPublished: boolean): Promise<NewsContentDocument> {
+    async setPublishStatus(user: JwtPayload, postId: string, isPublished: PubStatus): Promise<NewsContentDocument> {
         const postToPublish = await this.newsModel.findById(postId);
         const authorInfo = postToPublish.author as UserInfo;
         if (authorInfo._id === user.sub) {
