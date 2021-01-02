@@ -5,37 +5,53 @@ export class LocaleDatePipe implements PipeTransform  {
     transform(value: Date | string, format: string): string {
         const date = new Date(value);
         var options: Intl.DateTimeFormatOptions;
-        var output: string;
 
         switch (format) {
             case 'short':
+                options = { year: '2-digit', month: 'numeric', day: 'numeric',
+                    hour12: true, hour: 'numeric', minute: '2-digit' };
+                break;
             case 'shortDate':
                 options = { year: '2-digit', month: 'numeric', day: 'numeric' };
+                break;
+            case 'shortTime':
+                options = { hour12: true, hour: 'numeric', minute: '2-digit' };
+                break;
+            case 'medium':
+                options = { year: 'numeric', month: 'short', day: 'numeric',
+                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' };
+                break;
+            case 'mediumDate':
+                options = { year: 'numeric', month: 'short', day: 'numeric' };
+                break;
+            case 'mediumTime':
+                options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' };
+                break;
+            case 'long':
+                options = { year: 'numeric', month: 'long', day: 'numeric',
+                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
+                    timeZoneName: 'short' };
                 break;
             case 'longDate':
                 options = { year: 'numeric', month: 'long', day: 'numeric' };
                 break;
+            case 'longTime':
+                options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
+                    timeZoneName: 'short' };
+                break;
+            case 'full':
+                options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
+                    timeZoneName: 'long' };
+                break;
             case 'fullDate':
                 options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                 break;
-            case 'medium':
-            case 'mediumDate':
-            default:
-                options = { year: 'numeric', month: 'short', day: 'numeric' };
+            case 'fullTime':
+                options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit', timeZoneName: 'long' };
+                break;
         }
 
-        output = date.toLocaleDateString(undefined, options);
-
-        // Add time
-        if (format === 'short') {
-            options = { hour12: true, hour: 'numeric', minute: '2-digit' };
-            output += " " + date.toLocaleTimeString(undefined, options);
-        }
-        else if (format === 'medium') {
-            options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' };
-            output += " " + date.toLocaleTimeString(undefined, options);
-        }
-
-        return output;
+        return date.toLocaleDateString(undefined, options);
     }
 }
