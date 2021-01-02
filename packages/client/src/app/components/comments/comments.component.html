@@ -72,7 +72,7 @@
                         <span class="comm-id"><a [routerLink]="['./']" [queryParams]="{page: pageNum}" [fragment]="'comment-' + comment._id">#{{ (pageNum - 1) * comments.limit + 1 + i }}</a></span>
                         <span class="divider">//</span>
                         <span class="comm-created-at" title="Created On">
-                            <i-feather name="calendar"></i-feather>{{ comment.createdAt | localedate: 'mediumDate'}}, {{ comment.createdAt | localedate: 'mediumTime' }}
+                            <i-feather name="calendar"></i-feather>{{ comment.createdAt | localedate: 'medium'}}
                         </span>
                         <span class="comm-controls" *ngIf="currentUserIsSame(comment.user._id); else notThisUser">
                             <ng-container *ngIf="comment.isEditing; else notEditButton">
