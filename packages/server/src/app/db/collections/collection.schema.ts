@@ -1,4 +1,5 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { ContentModel } from '@pulp-fiction/models/content';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
@@ -16,10 +17,8 @@ export class CollectionDocument extends Document {
     @Prop({trim: true, required: true})
     desc: string;
 
-    @Prop({type: [String], ref: 'Content', default: [], autopopulate: {
-        select: '_id title author stats.words stats.views'
-    }})
-    contains: string[];
+    @Prop({type: [String], ref: 'Content', default: [], autopopulate: true})
+    contains: string[] | ContentModel[];
 
     @Prop(raw({
         isPublic: {type: Boolean, default: false},

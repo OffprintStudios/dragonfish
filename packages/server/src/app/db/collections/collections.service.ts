@@ -6,23 +6,21 @@ import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
 import { CreateCollection, EditCollection } from '@pulp-fiction/models/collections';
 import { CollectionDocument } from './collection.schema';
-import { CollectionItemDocument } from './collection-item.schema';
 import { isNullOrUndefined } from '../../util';
 
 @Injectable()
 export class CollectionsService {
-    constructor(@InjectModel('Collection') private readonly collModel: PaginateModel<CollectionDocument>,
-        @InjectModel('CollectionItem') private readonly collItemModel: PaginateModel<CollectionItemDocument>) {}
+    constructor(@InjectModel('Collection') private readonly collModel: PaginateModel<CollectionDocument>) {}
 
     /**
      * Creates a collection and saves it to the database.
      * 
-     * @param user The owner of the collection
+     * @param userId The owner of the collection
      * @param collForm The collection's information
      */
-    async createCollection(user: JwtPayload, collForm: CreateCollection): Promise<CollectionDocument> {
+    async createCollection(userId: string, collForm: CreateCollection): Promise<CollectionDocument> {
         const newCollection = new this.collModel({
-            'owner': user.sub,
+            'owner': userId,
             'name': collForm.name,
             'desc': await sanitizeHtml(collForm.desc),
         });
@@ -43,25 +41,30 @@ export class CollectionsService {
         if (isNullOrUndefined(thisCollection)) {
             throw new NotFoundException(`The collection you're trying to add to doesn't exist.`);
         }
-
-        const newCollectionItem = new this.collItemModel({
-            'belongsTo': collId,
-            'content': contentId
-        });
-
-        thisCollection.contains.push(contentId);
-        await newCollectionItem.save();
+        const currArray = thisCollection.contains as string[];
+        currArray.push(contentId);
+        thisCollection.contains = currArray;
         return await thisCollection.save();
     }
 
-    async removeFromCollection(user: JwtPayload, collId: string, collItemId: string, contentId: string) {
+    /**
+     * Removes a piece of content from a collection. Also deletes the `collItem` document associated with it.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection ID
+     * @param collItemId The item ID to delete
+     * @param contentId The content being removed
+     */
+    async removeFromCollection(user: JwtPayload, collId: string, contentId: string): Promise<CollectionDocument> {
         const thisCollection = await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
 
         if (isNullOrUndefined(thisCollection)) {
             throw new NotFoundException(`The collection you're trying to add to doesn't exist.`);
         }
-
-        const newCollContainsArray = thisCollection.contains.filter(val => { return val !== contentId});
+        const currArray = thisCollection.contains as string[];
+        const newCollContainsArray = currArray.filter(val => { return val !== contentId});
+        thisCollection.contains = newCollContainsArray;
+        return await thisCollection.save();
     }
 
     /**
@@ -107,8 +110,8 @@ export class CollectionsService {
      * @param collId The collection to fetch
      * @param getPublic Determines whether to get public or private collections
      */
-    async getOneCollection(user: JwtPayload, collId: string, getPublic: boolean): Promise<CollectionDocument> {
-        if (getPublic === true) {
+    async getOneCollection(user: JwtPayload, collId: string, getPublic?: boolean): Promise<CollectionDocument> {
+        if (getPublic) {
             return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isPublic': true, 'audit.isDeleted': false});
         } else {
             return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});
