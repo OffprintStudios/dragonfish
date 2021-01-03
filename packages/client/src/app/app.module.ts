@@ -18,6 +18,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { CookieModule } from 'ngx-cookie';
 import { Ng2FittextModule } from 'ng2-fittext';
 import { IconsModule } from '@pulp-fiction/icons';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 
 import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
@@ -116,6 +118,7 @@ const toolbarOptions = [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
+    LoadingBarModule, LoadingBarHttpClientModule,
     CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',
