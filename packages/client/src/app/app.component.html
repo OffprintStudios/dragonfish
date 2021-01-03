@@ -1,4 +1,3 @@
-
 <mat-sidenav-container>
   <mat-sidenav [fixedInViewport]="true" [(opened)]="sidenavOpened" #sidenav>
     <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
@@ -31,6 +30,8 @@
         </div>
       </header>
     </div>
+
+    <mat-progress-bar [mode]="'determinate'" [value]="loader.value$ | async"></mat-progress-bar>
     
     <nav>
       <div class="nav-items">
