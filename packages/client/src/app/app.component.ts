@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import * as lodash from 'lodash';
+import { LoadingBarService } from '@ngx-loading-bar/core';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
@@ -30,7 +31,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   rotatingSlogan: string;
 
   constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService) {
+    private nagBarService: NagBarService, public loader: LoadingBarService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
