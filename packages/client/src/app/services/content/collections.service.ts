@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { AlertsService } from '../../modules/alerts';
-import { Collection, CreateCollection, EditCollection } from '@pulp-fiction/models/collections';
+import { Collection, CollectionForm } from '@pulp-fiction/models/collections';
 import { PaginateResult } from '@pulp-fiction/models/util';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class CollectionsService {
    * 
    * @param collInfo A collection's info
    */
-  public createCollection(collInfo: CreateCollection) {
+  public createCollection(collInfo: CollectionForm) {
     return this.http.put<void>(`${this.url}/create-collection`, collInfo, {observe: 'response', withCredentials: true}) 
       .pipe(map(() => {
         this.alertsService.success(`Collection successfully created.`);
@@ -84,7 +84,7 @@ export class CollectionsService {
    * @param collId A collection's ID
    * @param collInfo The new collection info
    */
-  public editCollection(collId: string, collInfo: EditCollection) {
+  public editCollection(collId: string, collInfo: CollectionForm) {
     return this.http.patch<void>(`${this.url}/edit-collection/${collId}`, collInfo, {observe: 'response', withCredentials: true})
       .pipe(map(()=> {
         this.alertsService.success(`Edits saved successfully.`);

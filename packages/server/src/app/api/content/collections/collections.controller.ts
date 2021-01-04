@@ -2,7 +2,7 @@ import { Controller, UseGuards, Request, Param, Body, Get, Put, Patch, Query, Ba
 
 import { RolesGuard } from '../../../guards';
 import { Roles } from '@pulp-fiction/models/users';
-import { CreateCollection, EditCollection } from '@pulp-fiction/models/collections';
+import { CollectionForm } from '@pulp-fiction/models/collections';
 import { CollectionsService } from '../../../db/collections/collections.service';
 import { isNullOrUndefined } from '../../../util';
 
@@ -45,13 +45,13 @@ export class CollectionsController {
     
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-collection')
-    async createCollection(@Request() req: any, @Body() collInfo: CreateCollection) {
+    async createCollection(@Request() req: any, @Body() collInfo: CollectionForm) {
         return await this.collsService.createCollection(req.user.sub, collInfo);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-collection')
-    async editCollection(@Request() req: any, @Query('collId') collId: string, @Body() collInfo: EditCollection) {
+    async editCollection(@Request() req: any, @Query('collId') collId: string, @Body() collInfo: CollectionForm) {
         if (isNullOrUndefined(collId)) {
             throw new BadRequestException(`This request requires the collection ID.`);
         }

@@ -4,7 +4,7 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { CreateCollection, EditCollection } from '@pulp-fiction/models/collections';
+import { CollectionForm } from '@pulp-fiction/models/collections';
 import { CollectionDocument } from './collection.schema';
 import { isNullOrUndefined } from '../../util';
 
@@ -18,7 +18,7 @@ export class CollectionsService {
      * @param userId The owner of the collection
      * @param collForm The collection's information
      */
-    async createCollection(userId: string, collForm: CreateCollection): Promise<CollectionDocument> {
+    async createCollection(userId: string, collForm: CollectionForm): Promise<CollectionDocument> {
         const newCollection = new this.collModel({
             'owner': userId,
             'name': collForm.name,
@@ -125,7 +125,7 @@ export class CollectionsService {
      * @param collId The collection ID
      * @param collInfo The new collection info
      */
-    async editCollection(user: JwtPayload, collId: string, collInfo: EditCollection): Promise<CollectionDocument> {
+    async editCollection(user: JwtPayload, collId: string, collInfo: CollectionForm): Promise<CollectionDocument> {
         const thisCollection = await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});
 
         if (isNullOrUndefined(thisCollection)) {

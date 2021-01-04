@@ -1,10 +1,11 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Collection } from '@pulp-fiction/models/collections';
 import { ContentModel } from '@pulp-fiction/models/content';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'collections'})
-export class CollectionDocument extends Document {
+export class CollectionDocument extends Document implements Collection {
     @Prop({default: generate()})
     readonly _id: string;
 
