@@ -2,7 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CollectionsService, WorksService } from '../../../../services/content';
-import { Collection, WorkInfo } from '@pulp-fiction/models/collections';
+import { Collection } from '@pulp-fiction/models/collections';
+
 
 @Component({
   selector: 'app-add-to-collection',
@@ -30,12 +31,12 @@ export class AddToCollectionComponent implements OnInit {
   checkIfInCollection(coll: Collection) {
     let isThere = null;
 
-    coll.details.forEach((entry) => {
+    /*coll.details.forEach((entry) => {
       let thisWork = entry.work as WorkInfo;
       if (thisWork._id === this.workId) {
         isThere = thisWork;
       }
-    });
+    });*/
 
     if (isThere) {
       return true;

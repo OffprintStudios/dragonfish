@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CollectionsService } from '../../../../services/content';
-import { CreateCollection } from '@pulp-fiction/models/collections';
+import { CollectionForm } from '@pulp-fiction/models/collections';
 
 @Component({
   selector: 'app-create-collection',
@@ -42,10 +42,9 @@ export class CreateCollectionComponent implements OnInit {
       return;
     }
 
-    const newCollection: CreateCollection = {
+    const newCollection: CollectionForm = {
       name: this.fields.name.value,
-      desc: this.fields.desc.value,
-      public: this.fields.public.value
+      desc: this.fields.desc.value
     };
 
     this.collsService.createCollection(newCollection).subscribe(() => {
