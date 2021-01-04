@@ -4,9 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
-  WorksComponent, PortCollectionPageComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, NotificationsComponent, ConversationsComponent,
-  HistoryComponent } from './pages/portfolio';
+  WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
+  NotificationsComponent, ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
@@ -21,8 +20,12 @@ import { AuthGuard } from './services/auth';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
-  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortBlogsResolver,
-  PortWorksResolver, PortCollectionsResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver } from './resolvers';
+  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
+  PortWorksResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
+  SectionResolver, ViewPoetryResolver } from './resolvers';
+
+import { CollectionsResolver } from './pages/portfolio/collections';
+
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
@@ -55,7 +58,7 @@ const routes: Routes = [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'collections', component: CollectionsComponent, /*resolve: {feedData: PortCollectionsResolver},*/ runGuardsAndResolvers: 'always'},
+      {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       // {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard]},
       {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
@@ -88,9 +91,9 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
-      MyWorksResolver, MyBlogsResolver, MyCollectionsResolver, PortWorksResolver, PortBlogsResolver, PortCollectionsResolver,
+      MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver
     ]
 })
 export class AppRoutingModule {}
