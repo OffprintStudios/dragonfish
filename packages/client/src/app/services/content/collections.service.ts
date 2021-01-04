@@ -35,8 +35,28 @@ export class CollectionsService {
   /**
    * Fetches a user's collections.
    */
-  public fetchUserCollections(pageNum: number) {
-    return this.http.get<PaginateResult<Collection>>(`${this.url}/fetch-user-collections/${pageNum}`, {observe: 'response', withCredentials: true})
+  public getAllCollections(pageNum: number) {
+    return this.http.get<PaginateResult<Collection>>(`${this.url}/get-all-collections?pageNum=${pageNum}`, {observe: 'response', withCredentials: true})
+      .pipe(map(colls => {
+        return colls.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  public getOneCollection(collId: string, getPublic: boolean) {
+    return this.http.get<Collection>(`${this.url}/get-one-collection?collId=${collId}&getPublic=${getPublic}`, {observe: 'response', withCredentials: true})
+      .pipe(map(coll => {
+        return coll.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  public getPublicCollections(pageNum: number) {
+    return this.http.get<PaginateResult<Collection>>(`${this.url}/get-public-collections?pageNum=${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
       }), catchError(err => {
@@ -49,7 +69,7 @@ export class CollectionsService {
    * Fetches a user's collections without pagination.
    */
   public fetchUserCollectionsNoPaginate() {
-    return this.http.get<Collection[]>(`${this.url}/fetch-user-collections-no-paginate`, {observe: 'response', withCredentials: true})
+    return this.http.get<Collection[]>(`${this.url}/get-all-collections-no-paginate`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
       }), catchError(err => {

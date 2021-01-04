@@ -38,7 +38,7 @@ export class CollectionsController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-user-collections-no-paginate')
+    @Get('get-all-collections-no-paginate')
     async fetchUserCollectionsNoPaginate(@Request() req: any) {
         return await this.collsService.getUserCollectionsNoPaginate(req.user);
     }
