@@ -3,24 +3,22 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { Blog } from '@pulp-fiction/models/blogs';
-import { BlogsService } from '../../../services/content';
+import { HistoryService } from '../../../services/content';
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 
 @Injectable()
-export class HistoryResolver implements Resolve<PaginateResult<Blog>> {
+export class HistoryResolver implements Resolve<PaginateResult<ReadingHistory>> {
     pageNum: number = 1;
 
-    constructor (private blogsService: BlogsService) { }
+    constructor (private hist: HistoryService) { }
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Blog>> {
+    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ReadingHistory>> {
         const pageNum = +route.queryParamMap.get('page');
 
         if (pageNum) {
             this.pageNum = pageNum;
         }
 
-        console.log(pageNum);
-
-        return this.blogsService.fetchUserBlogs(this.pageNum);
+        return this.hist.fetchUserHistory(this.pageNum);
     }
 }
