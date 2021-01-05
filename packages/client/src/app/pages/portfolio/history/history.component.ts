@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants, Title } from '../../../shared';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { Constants, Title } from '../../../shared';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
 import { HistoryService } from '../../../services/content';
 import { calculateApprovalRating } from '../../../util/functions';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-history',
@@ -17,12 +19,12 @@ export class HistoryComponent implements OnInit {
   currentUser: FrontendUser;
 
   histList: PaginateResult<ReadingHistory>;
-  loading = false;
+  contentKind = ContentKind;
 
   pageNum = 1;
 
-  constructor(private authService: AuthService, private histService: HistoryService) {
-    this.authService.currUser.subscribe(x => {
+  constructor(private auth: AuthService, private hist: HistoryService, private route: ActivatedRoute, private router: Router) {
+    this.auth.currUser.subscribe(x => {
       this.currentUser = x;
     });
 
@@ -31,18 +33,19 @@ export class HistoryComponent implements OnInit {
 
   ngOnInit(): void {
     Title.setTwoPartTitle(Constants.HISTORY);
+    this.route.data.subscribe(data => {
+      this.histList = data.histData as PaginateResult<ReadingHistory>;
+    });
   }
 
   /**
-   * Fetches the history list.
+   * Handles page changing
+   * 
+   * @param event The new page
    */
-  fetchData(pageNum: number) {
-    this.loading = true;
-    this.histService.fetchUserHistory(pageNum).subscribe(hists => {
-      this.histList = hists;
-      this.pageNum = pageNum;
-      this.loading = false;
-    });
+  onPageChange(event: number) {
+    this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+    this.pageNum = event;
   }
 
   /**
@@ -52,8 +55,8 @@ export class HistoryComponent implements OnInit {
    */
   askDelete(histId: string) {
     if (confirm(`Are you sure you want to delete this? This action cannot be reversed.`)) {
-      this.histService.changeVisibility(histId).subscribe(() => {
-        this.fetchData(this.pageNum);
+      this.hist.changeVisibility(histId).subscribe(() => {
+        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
       });
     } else {
       return;
