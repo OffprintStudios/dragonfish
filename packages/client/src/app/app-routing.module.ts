@@ -24,6 +24,8 @@ import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver
   PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
   SectionResolver, ViewPoetryResolver } from './resolvers';
 
+import { HistoryResolver } from './pages/portfolio/history';
+
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
@@ -42,7 +44,7 @@ const routes: Routes = [
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
     {path: 'groups', component: GroupsComponent},
     {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'paramsChange'},
-    {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'always', component: PostPageComponent},
+    {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
@@ -60,7 +62,7 @@ const routes: Routes = [
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'history', component: HistoryComponent, canActivate: [AuthGuard]},
+      {path: 'history', component: HistoryComponent, canActivate: [AuthGuard], resolve: {histData: HistoryResolver}, runGuardsAndResolvers: 'always'},
       {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
       {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
@@ -87,13 +89,13 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload'})],
+    imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
     exports: [RouterModule],
     providers: [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver
     ]
 })
 export class AppRoutingModule {}

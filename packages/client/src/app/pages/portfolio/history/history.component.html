@@ -1,10 +1,10 @@
 <div class="history-container">
     <div class="works-list">
-        <div class="loader" *ngIf="loading">
-            <div class="lds-dual-ring"></div>
+        <div class="empty" *ngIf="isHistoryEmpty()">
+            <h3>You haven't read anything yet.</h3>
+            <p>Browse around for Prose, Poetry, Blogs, and News and it'll all show up here.</p>
         </div>
-        <h4 style="text-align: center;" *ngIf="isHistoryEmpty()">You haven't created any works yet.</h4>
-        <ng-container *ngIf="!loading && !isHistoryEmpty()">
+        <ng-container *ngIf="!isHistoryEmpty()">
             <div class="work-list">
                 <div class="work-item" *ngFor="let doc of histList.docs | paginate: {
                     itemsPerPage: histList.limit,
@@ -16,42 +16,46 @@
                             <i-feather name="trash-2"></i-feather>
                         </button>
                     </div>
-                    <img class="work-coverart" *ngIf="$any(doc.work).meta.coverArt" [src]="$any(doc.work).meta.coverArt">
+                    <img class="work-coverart" *ngIf="$any(doc.content).meta.coverArt" [src]="$any(doc.content).meta.coverArt">
                     <div class="work-info">
                         <div class="info">
-                            <ng-container [ngSwitch]="$any(doc.work).meta.rating">
-                                <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
-                                <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
-                                <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
-                                <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
-                            </ng-container>
-                            <h3><a [routerLink]="['/work', $any(doc.work)._id, $any(doc.work).title | slugify]">{{ $any(doc.work).title }}</a></h3>
-                            <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.work).author._id, $any(doc.work).author.username | slugify]">{{ $any(doc.work).author.username }}</a></h4>
+                            <rating-icon [rating]="$any(doc.content).meta.rating" [size]="'small'"></rating-icon>
+                            <h3>
+                                <ng-container [ngSwitch]="$any(doc.content).kind">
+                                    <a *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(doc.content).author._id, $any(doc.content).author.username | slugify, 'blog', $any(doc.content)._id]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.NewsContent" [routerLink]="['/post', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                </ng-container>
+                            </h3>
+                            <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.content).author._id, $any(doc.content).author.username | slugify]">{{ $any(doc.content).author.username }}</a></h4>
                             <br>
-                            <h4>{{ $any(doc.work).meta.category | fixCategories }}</h4><span>//</span>
-                            <h4>{{ $any(doc.work).meta.genres | separateGenres }}</h4><span *ngIf="$any(doc.work).meta.fandoms.length > 0">//</span>
-                            <h4 *ngIf="$any(doc.work).meta.fandoms.length > 0">{{ $any(doc.work).meta.fandoms | joinStrings }}</h4>
+                            <ng-container [ngSwitch]="$any(doc.content).kind">
+                                <h4 *ngSwitchCase="contentKind.ProseContent" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open"></i-feather></h4>
+                                <h4 *ngSwitchCase="contentKind.PoetryContent" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather"></i-feather></h4>
+                                <h4 *ngSwitchCase="contentKind.BlogContent" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="coffee"></i-feather> Blog</h4>
+                                <h4 *ngSwitchCase="contentKind.NewsContent" [matTooltip]="'News'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="globe"></i-feather> News</h4>
+                            </ng-container>
+                            <ng-container *ngIf="$any(doc.content).kind === contentKind.ProseContent || $any(doc.content).kind === contentKind.PoetryContent">
+                                <span>//</span>
+                                <h4>{{ $any(doc.content).meta.category | fixCategories }}</h4><span>//</span>
+                                <h4>{{ $any(doc.content).meta.genres | separateGenres }}</h4>
+                            </ng-container>
                             <div class="stats">                                
-                                <h4>{{ $any(doc.work).meta.status }}</h4><span>//</span>
-                                <h4 title="Approval Rating"><i-feather name="heart"></i-feather>{{ calcApprovalRating($any(doc.work).stats.likes, $any(doc.work).stats.dislikes) }}%</h4><span>//</span>
-                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ $any(doc.work).stats.totWords | toLocaleString }}</h4><span>//</span>
-                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ $any(doc.work).stats.views | toLocaleString }}</h4><span>//</span>
-                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.work).stats.comments | toLocaleString }}</h4>
-                                <ng-container *ngIf="$any(doc.work).audit.publishedOn">
-                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.work).audit.publishedOn | localedate:'short' }}</h4>
+                                <h4>{{ $any(doc.content).meta.status }}</h4><span>//</span>
+                                <h4 title="Approval Rating"><i-feather name="heart"></i-feather>{{ calcApprovalRating($any(doc.content).stats.likes, $any(doc.content).stats.dislikes) }}%</h4><span>//</span>
+                                <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ $any(doc.content).stats.words | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ $any(doc.content).stats.views | toLocaleString }}</h4><span>//</span>
+                                <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ $any(doc.content).stats.comments | toLocaleString }}</h4>
+                                <ng-container *ngIf="$any(doc.content).audit.publishedOn">
+                                    <span>//</span><h4 title="Published On"><i-feather name="calendar"></i-feather>{{ $any(doc.content).audit.publishedOn | localedate:'short' }}</h4>
                                 </ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <pagination-controls (pageChange)="fetchData($event)" previousLabel="" nextLabel=""></pagination-controls>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
-    </div>
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-        <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-        <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be re-enabled!</p>
     </div>
 </div>
