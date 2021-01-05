@@ -33,6 +33,7 @@ import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/h
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
+import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
@@ -112,7 +113,7 @@ const toolbarOptions = [
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

@@ -21,10 +21,10 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
   BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
-  PortWorksResolver, CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
+  PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
   SectionResolver, ViewPoetryResolver } from './resolvers';
 
-import { CollectionsResolver } from './pages/portfolio/collections';
+import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
@@ -59,7 +59,7 @@ const routes: Routes = [
       {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PortBlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
-      // {path: 'collection/:collId', component: PortCollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard]},
       {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
       {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
