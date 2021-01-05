@@ -24,6 +24,8 @@ import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver
   PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
   SectionResolver, ViewPoetryResolver } from './resolvers';
 
+import { HistoryResolver } from './pages/portfolio/history';
+
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
@@ -93,7 +95,7 @@ const routes: Routes = [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver
     ]
 })
 export class AppRoutingModule {}
