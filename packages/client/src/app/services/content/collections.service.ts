@@ -68,7 +68,7 @@ export class CollectionsService {
   /**
    * Fetches a user's collections without pagination.
    */
-  public fetchUserCollectionsNoPaginate() {
+  public getAllCollectionsNoPaginate() {
     return this.http.get<Collection[]>(`${this.url}/get-all-collections-no-paginate`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;

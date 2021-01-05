@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
 import { ContentKind, SetRating } from '@pulp-fiction/models/content';
-import { ContentService, HistoryService } from '../../services/content';
+import { ContentService } from '../../services/content';
 import { AuthService } from '../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { MatDialog } from '@angular/material/dialog';
+import { AddToCollectionComponent } from '../modals/collections';
 
 @Component({
     selector: 'content-approval',
@@ -17,11 +19,18 @@ export class ContentApprovalComponent implements OnInit {
     currentUser: FrontendUser;
     contentKind = ContentKind;
 
-    constructor(private contentService: ContentService, private auth: AuthService) {
+    constructor(private contentService: ContentService, private auth: AuthService, private dialog: MatDialog) {
         this.auth.currUser.subscribe(x => { this.currentUser = x; })
     }
 
     ngOnInit(): void {}
+
+    /**
+     * Opens the Add To Collection dialog box.
+     */
+    openAddToCollectionDialog() {
+        const dialogRef = this.dialog.open(AddToCollectionComponent, {data: {content: this.content}});
+    }
 
     /**
      * Sets this user's rating as Liked.

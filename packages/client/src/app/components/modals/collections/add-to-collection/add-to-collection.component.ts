@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CollectionsService, WorksService } from '../../../../services/content';
 import { Collection } from '@pulp-fiction/models/collections';
+import { ContentModel } from '@pulp-fiction/models/content';
+import { StringDecoder } from 'string_decoder';
 
 
 @Component({
@@ -11,17 +13,27 @@ import { Collection } from '@pulp-fiction/models/collections';
   styleUrls: ['./add-to-collection.component.less']
 })
 export class AddToCollectionComponent implements OnInit {
-  workId: string;
-
+  currContent: ContentModel;
   collections: Collection[];
 
-  constructor(private collsService: CollectionsService, private worksService: WorksService,
-    private dialogRef: MatDialogRef<AddToCollectionComponent>, @Inject(MAT_DIALOG_DATA) private data: any) {
-    this.workId = this.worksService.thisWorkId;
-    this.collections = this.collsService.thisUsersCollections;
-  }
+  loading = false;
+
+  constructor(private collsService: CollectionsService, private dialogRef: MatDialogRef<AddToCollectionComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: {content: ContentModel}) {
+      this.fetchData();
+    }
 
   ngOnInit(): void {
+    this.currContent = this.data.content;
+  }
+
+  private fetchData() {
+    this.loading = true;
+    this.collsService.getAllCollectionsNoPaginate().subscribe(colls => {
+      this.collections = colls;
+      console.log(this.collections);
+      this.loading = false;
+    });
   }
 
   /**
@@ -31,12 +43,11 @@ export class AddToCollectionComponent implements OnInit {
   checkIfInCollection(coll: Collection) {
     let isThere = null;
 
-    /*coll.details.forEach((entry) => {
-      let thisWork = entry.work as WorkInfo;
-      if (thisWork._id === this.workId) {
-        isThere = thisWork;
+    coll.contains.forEach((entry) => {
+      if (entry === this.currContent._id) {
+        isThere = entry;
       }
-    });*/
+    });
 
     if (isThere) {
       return true;
@@ -51,7 +62,7 @@ export class AddToCollectionComponent implements OnInit {
    * @param coll The collection in question
    */
   addToCollection(coll: Collection) {
-    this.collsService.addWork(coll._id, this.workId).subscribe(() => {
+    this.collsService.addWork(coll._id, this.currContent._id).subscribe(() => {
       this.dialogRef.close();
     });
   }
@@ -62,7 +73,7 @@ export class AddToCollectionComponent implements OnInit {
    * @param coll The collection in question
    */
   removeFromCollection(coll: Collection) {
-    this.collsService.removeWork(coll._id, this.workId).subscribe(() => {
+    this.collsService.removeWork(coll._id, this.currContent._id).subscribe(() => {
       this.dialogRef.close();
     });
   }
