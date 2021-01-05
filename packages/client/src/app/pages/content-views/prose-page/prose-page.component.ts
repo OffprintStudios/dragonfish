@@ -63,4 +63,15 @@ export class ProsePageComponent implements OnInit {
         this.router.navigate([], {relativeTo: this.route});
         }
     }
+
+    /**
+     * Old prose won't have a publishedOn value, so createdAt is used instead
+     * @param section 
+     */
+    getPublishedDate(section: SectionInfo): Date {
+        if (section.audit.publishedOn === null) {
+            return section.createdAt;
+        }
+        return section.audit.publishedOn;
+    }
 }
