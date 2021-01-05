@@ -64,7 +64,6 @@ export class CollectionsService {
         }
         const currArray = thisCollection.contains as ContentModel[];
         const newCollContainsArray = currArray.filter(val => { return val._id !== contentId});
-        console.log(newCollContainsArray);
         thisCollection.contains = newCollContainsArray;
         return await thisCollection.save();
     }
