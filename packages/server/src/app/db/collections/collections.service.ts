@@ -7,6 +7,7 @@ import { JwtPayload } from '@pulp-fiction/models/auth';
 import { CollectionForm } from '@pulp-fiction/models/collections';
 import { CollectionDocument } from './collection.schema';
 import { isNullOrUndefined } from '../../util';
+import { ContentModel } from '@pulp-fiction/models/content';
 
 @Injectable()
 export class CollectionsService {
@@ -61,8 +62,9 @@ export class CollectionsService {
         if (isNullOrUndefined(thisCollection)) {
             throw new NotFoundException(`The collection you're trying to add to doesn't exist.`);
         }
-        const currArray = thisCollection.contains as string[];
-        const newCollContainsArray = currArray.filter(val => { return val !== contentId});
+        const currArray = thisCollection.contains as ContentModel[];
+        const newCollContainsArray = currArray.filter(val => { return val._id !== contentId});
+        console.log(newCollContainsArray);
         thisCollection.contains = newCollContainsArray;
         return await thisCollection.save();
     }

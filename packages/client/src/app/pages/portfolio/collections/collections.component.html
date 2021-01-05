@@ -47,7 +47,7 @@
                     <ng-template #displayWorks>
                         <ul>
                             <li *ngFor="let entry of collection.contains | slice:0:5">
-                                <a [routerLink]="['/work', entry._id, entry.title | slugify]">{{ entry.title }}<span class="end-point">{{ entry.stats.totWords | abbreviate }} word{{ entry.stats.totWords | pluralize }}</span></a>
+                                <a [routerLink]="['/work', entry._id, entry.title | slugify]">{{ entry.title }}<span class="end-point">{{ entry.stats.words | abbreviate }} word{{ entry.stats.words | pluralize }}</span></a>
                             </li>
                         </ul>
                     </ng-template>

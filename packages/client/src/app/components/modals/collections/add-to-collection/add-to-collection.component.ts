@@ -44,7 +44,8 @@ export class AddToCollectionComponent implements OnInit {
     let isThere = null;
 
     coll.contains.forEach((entry) => {
-      if (entry === this.currContent._id) {
+      const thisContent = entry as ContentModel;
+      if (thisContent._id === this.currContent._id) {
         isThere = entry;
       }
     });
