@@ -111,9 +111,10 @@ export class CollectionsService {
      * @param collId The collection to fetch
      * @param getPublic Determines whether to get public or private collections
      */
-    async getOneCollection(user: JwtPayload, collId: string, getPublic?: boolean): Promise<CollectionDocument> {
-        if (getPublic) {
-            return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isPublic': true, 'audit.isDeleted': false});
+    async getOneCollection(user: JwtPayload, collId: string, getPublic: boolean): Promise<CollectionDocument> {
+        console.log(`CollectionID: ${collId}, GetPublic: ${getPublic}`);
+        if (getPublic === true) {
+            return await this.collModel.findOne({'_id': collId, 'audit.isPublic': true, 'audit.isDeleted': false});
         } else {
             return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});
         }

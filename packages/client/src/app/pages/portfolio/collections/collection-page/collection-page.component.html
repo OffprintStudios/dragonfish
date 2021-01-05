@@ -1,1 +1,12 @@
-collection page works!
+<div class="tools" *ngIf="currentUser && currentUserIsSame()">
+    <div class="tool-buttons">
+        <button matRipple class="tool left"><i-feather name="edit-3"></i-feather>Edit</button>
+        <button matRipple class="tool end"><i-feather name="trash-2"></i-feather>Delete</button>
+    </div>
+</div>
+
+<div class="content-feed">
+    <ng-container *ngFor="let content of collData.contains">
+        <work-card [content]="content" [showAuthor]="false"></work-card>
+    </ng-container>
+</div>

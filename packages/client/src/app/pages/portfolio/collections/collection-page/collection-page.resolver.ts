@@ -21,6 +21,7 @@ export class CollectionPageResolver implements Resolve<Collection> {
 
         if (this.currentUser) {
             if (this.currentUser._id === userId) {
+                console.log(`this user`);
                 return this.collsService.getOneCollection(collectionId, false);
             }
         }
