@@ -18,7 +18,14 @@
 </mat-dialog-content>
 <mat-dialog-actions>
     <div class="actions">
-        <button class="create" type="submit" (click)="submitCollection()">Create</button>
+        <button class="create" type="submit" (click)="submitCollection()">
+            <ng-container *ngIf="editMode; else createMode">
+                Save
+            </ng-container>
+            <ng-template #createMode>
+                Create
+            </ng-template>
+        </button>
         <button (click)="askCancel()">Cancel</button>
     </div>
 </mat-dialog-actions>

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CollectionsService } from '../../../../services/content';
-import { CollectionForm } from '@pulp-fiction/models/collections';
+import { CollectionForm, Collection } from '@pulp-fiction/models/collections';
 
 @Component({
   selector: 'app-create-collection',
@@ -12,15 +12,29 @@ import { CollectionForm } from '@pulp-fiction/models/collections';
   styleUrls: ['./create-collection.component.less']
 })
 export class CreateCollectionComponent implements OnInit {
+  editMode = false;
+  currColl: Collection;
+
   createCollectionForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
     desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)])
   });
 
   constructor(private collsService: CollectionsService, private snackbar: MatSnackBar, 
-    private dialogRef: MatDialogRef<CreateCollectionComponent>) { }
+    private dialogRef: MatDialogRef<CreateCollectionComponent>, @Inject(MAT_DIALOG_DATA) private data: {currColl: Collection}) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.data) {
+      this.editMode = true;
+      this.currColl = this.data.currColl;
+      this.createCollectionForm.setValue({
+        name: this.currColl.name,
+        desc: this.currColl.desc
+      });
+    } else {
+      this.editMode = false;
+    }
+  }
 
   /**
    * Create collection form getter.
@@ -41,16 +55,20 @@ export class CreateCollectionComponent implements OnInit {
       return;
     }
 
-    const newCollection: CollectionForm = {
+    const collForm: CollectionForm = {
       name: this.fields.name.value,
       desc: this.fields.desc.value
     };
 
-    console.log(newCollection);
-
-    this.collsService.createCollection(newCollection).subscribe(() => {
-      this.dialogRef.close();
-    });
+    if (this.editMode === true) {
+      this.collsService.editCollection(this.currColl._id, collForm).subscribe(() => {
+        this.dialogRef.close();
+      });
+    } else {
+      this.collsService.createCollection(collForm).subscribe(() => {
+        this.dialogRef.close();
+      });
+    }
   }
 
   /**

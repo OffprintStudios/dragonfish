@@ -63,7 +63,7 @@
 
 <mat-menu xPosition="before" #optionsMenu="matMenu">
     <ng-template matMenuContent let-coll="coll">
-        <button mat-menu-item><i-feather name="edit-3"></i-feather>Edit</button>
+        <button mat-menu-item (click)="openEditCollectionModal(coll)"><i-feather name="edit-3"></i-feather>Edit</button>
         <button mat-menu-item (click)="askDelete(coll._id)"><i-feather name="trash-2"></i-feather>Delete</button>
     </ng-template>
 </mat-menu>

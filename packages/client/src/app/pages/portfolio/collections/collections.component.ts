@@ -70,6 +70,19 @@ export class CollectionsComponent implements OnInit {
     }
 
     /**
+     * Opens the create collection modal in edit mode.
+     * 
+     * @param coll The collection to edit
+     */
+    openEditCollectionModal(coll: Collection) {
+        const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {currColl: coll}});
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+        });
+    }
+
+    /**
      * Sets a collection to public or private depending on the value of the setPublic boolean.
      * 
      * @param collId The collection's ID
