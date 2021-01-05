@@ -1,16 +1,58 @@
-<div style="text-align: center; margin-top: 2rem;">
-    <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-    <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-    <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be available!</p>
-</div>
-
-<!--<div class="tools" *ngIf="currentUser && currentUserIsSame()">
+<div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
         <button matRipple class="tool" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
     </div>
 </div>
 
-<ng-container *ngIf="currentUser && currentUserIsSame(); else notUser">
+<div class="collections-container">
+    <ng-container *ngIf="collsData.totalDocs === 0; else hasColls">
+        <div class="empty">
+            <ng-container *ngIf="currentUser && currentUserIsSame(); else notUser">
+                <h3>You haven't created any collections yet.</h3>
+                <p>Why not make your first one by hitting the Add Collection button?</p>
+            </ng-container>
+            <ng-template #notUser>
+                <h3>{{ portUser.username }} hasn't created any collections yet.</h3>
+                <p>Check back later to see if they do!</p>
+            </ng-template>
+        </div>
+    </ng-container>
+    <ng-template #hasColls>
+        <div class="collections-grid">
+            <div class="collections-box" *ngFor="let collection of collsData.docs | paginate: {itemsPerPage: collsData.limit, currentPage: pageNum, totalItems: collsData.totalDocs}">
+                <div class="coll-header">
+                    <div class="header">
+                        <h3><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'collection', collection._id]">{{ collection.name }}</a></h3>
+                    </div>
+                </div>
+                <div class="coll-desc">
+                    {{ collection.desc }}
+                </div>
+                <div class="coll-list">
+                    <ng-container *ngIf="collection.contains.length === 0; else displayWorks">
+                        <div class="empty">
+                            <h3>Nothing's been added yet.</h3>
+                            <p>Check back later when {{ portUser.username }} adds something!</p>
+                        </div>
+                    </ng-container>
+                    <ng-template #displayWorks>
+                        <ul>
+                            <li *ngFor="let entry of collection.contains | slice:0:5">
+                                <a [routerLink]="['/work', entry._id, entry.title | slugify]">{{ entry.title }}<span class="end-point">{{ entry.stats.totWords | abbreviate }} word{{ entry.stats.totWords | pluralize }}</span></a>
+                            </li>
+                        </ul>
+                    </ng-template>
+                </div>
+                <div class="coll-footer">
+                    {{ collection.contains.length | toLocaleString }} work{{ collection.contains.length | pluralize }}
+                </div>
+            </div>
+        </div>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+    </ng-template>
+</div>
+
+<!--<ng-container *ngIf="currentUser && currentUserIsSame(); else notUser">
     <div class="collections-container">
         <ng-container *ngIf="userCollsData.totalDocs === 0; else hasColls">
             <div class="empty">
