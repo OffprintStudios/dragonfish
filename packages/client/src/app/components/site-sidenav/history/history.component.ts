@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../../../services/content';
 
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'sidenav-history',
@@ -11,9 +12,10 @@ import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 export class HistoryComponent implements OnInit {
   loading = false;
   histItems: ReadingHistory[];
+  contentKind = ContentKind;
 
   constructor(private historyService: HistoryService) {
-    // this.fetchData();
+    this.fetchData();
   }
 
   ngOnInit(): void {

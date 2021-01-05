@@ -20,7 +20,14 @@
                     <div class="work-info">
                         <div class="info">
                             <rating-icon [rating]="$any(doc.content).meta.rating" [size]="'small'"></rating-icon>
-                            <h3><a [routerLink]="['/work', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a></h3>
+                            <h3>
+                                <ng-container [ngSwitch]="$any(doc.content).kind">
+                                    <a *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(doc.content).author._id, $any(doc.content).author.username | slugify, 'blog', $any(doc.content)._id]">{{ $any(doc.content).title }}</a>
+                                    <a *ngSwitchCase="contentKind.NewsContent" [routerLink]="['/post', $any(doc.content)._id, $any(doc.content).title | slugify]">{{ $any(doc.content).title }}</a>
+                                </ng-container>
+                            </h3>
                             <h4 class="author-byline">by <a [routerLink]="['/portfolio', $any(doc.content).author._id, $any(doc.content).author.username | slugify]">{{ $any(doc.content).author.username }}</a></h4>
                             <br>
                             <ng-container [ngSwitch]="$any(doc.content).kind">

@@ -1,29 +1,36 @@
-<div style="margin-top: 1.25rem; text-align: center;">
-    <h4 style="color: whitesmoke;">Pardon the dust!</h4>
-    <p style="color: whitesmoke; font-style: italic;">
-        Looks like you came here a bit too early.
-    </p>
-    <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
-        Keep an eye on the patch notes to find out when<br>this feature will be available!
-    </p>
-</div>
-
-<!--<ng-container *ngIf="histItems && histItems.length !== 0; else noHistory">
+<ng-container *ngIf="histItems && histItems.length !== 0; else noHistory">
     <div class="hist-container">
         <div class="hist-item" *ngFor="let item of histItems">
-            <div class="work-cover" *ngIf="$any(item.work).meta.coverArt">
-                <img [src]="$any(item.work).meta.coverArt" />
+            <div class="work-cover" *ngIf="$any(item.content).meta.coverArt">
+                <img [src]="$any(item.content).meta.coverArt" />
             </div>
             <div class="work-info">
                 <h4>
-                    <a [routerLink]="['/work', $any(item.work)._id, $any(item.work).title | slugify]">{{ $any(item.work).title }}</a>
+                    <ng-container [ngSwitch]="$any(item.content).kind">
+                        <a *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', $any(item.content)._id, $any(item.content).title | slugify]">{{ $any(item.content).title }}</a>
+                        <a *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', $any(item.content)._id, $any(item.content).title | slugify]">{{ $any(item.content).title }}</a>
+                        <a *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(item.content).author._id, $any(item.content).author.username | slugify, 'blog', $any(item.content)._id]">{{ $any(item.content).title }}</a>
+                        <a *ngSwitchCase="contentKind.NewsContent" [routerLink]="['/post', $any(item.content)._id, $any(item.content).title | slugify]">{{ $any(item.content).title }}</a>
+                    </ng-container>
                 </h4>
-                <h5>{{ $any(item.work).meta.category | fixCategories }}</h5><span>//</span><h5>{{ $any(item.work).meta.genres | separateGenres }}</h5>
+                <ng-container [ngSwitch]="$any(item.content).kind">
+                    <h5 *ngSwitchCase="contentKind.ProseContent" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open"></i-feather></h5>
+                    <h5 *ngSwitchCase="contentKind.PoetryContent" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather"></i-feather></h5>
+                    <h5 *ngSwitchCase="contentKind.BlogContent" [matTooltip]="'Blog'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="coffee"></i-feather> Blog</h5>
+                    <h5 *ngSwitchCase="contentKind.NewsContent" [matTooltip]="'News'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="globe"></i-feather> News</h5>
+                </ng-container>
+                <ng-container *ngIf="$any(item.content).kind === contentKind.ProseContent || $any(item.content).kind === contentKind.PoetryContent">
+                    <span>//</span>
+                    <h5>{{ $any(item.content).meta.category | fixCategories }}</h5><span>//</span>
+                    <h5>{{ $any(item.content).meta.genres | separateGenres }}</h5>
+                </ng-container>
             </div>
             <div class="viewed-on">
                 <span>{{ item.viewedOn | localedate: 'shortDate' }}</span>
-                <span>{{ item.viewedOn | localedate: 'shortTime' }}</span>
             </div>
+        </div>
+        <div class="hist-footer">
+            <button matRipple [routerLink]="['']">See All History</button>
         </div>
     </div>
 </ng-container>
@@ -35,4 +42,4 @@
             Browse around a bit!<br>This list will populate automatically.
         </p>
     </div>
-</ng-template>-->
+</ng-template>
