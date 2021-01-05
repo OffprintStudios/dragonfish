@@ -21,6 +21,8 @@
 </div>
 
 <mat-menu xPosition="before" #moreItems="matMenu">
-    <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    <ng-container *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent">
+        <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
+    </ng-container>
     <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
 </mat-menu>

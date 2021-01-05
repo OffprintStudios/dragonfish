@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
-import { SetRating } from '@pulp-fiction/models/content';
+import { ContentKind, SetRating } from '@pulp-fiction/models/content';
 import { ContentService, HistoryService } from '../../services/content';
 import { AuthService } from '../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -15,6 +15,7 @@ export class ContentApprovalComponent implements OnInit {
     @Input() histData: ReadingHistory;
 
     currentUser: FrontendUser;
+    contentKind = ContentKind;
 
     constructor(private contentService: ContentService, private auth: AuthService) {
         this.auth.currUser.subscribe(x => { this.currentUser = x; })
