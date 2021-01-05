@@ -30,9 +30,10 @@ import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler,
 
 import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, PortCollectionPageComponent, WorksComponent, SettingsComponent,
+import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
+import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
@@ -106,13 +107,13 @@ const toolbarOptions = [
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
-    AddToCollectionComponent, AbbreviateNumbersPipe, PortCollectionPageComponent, NewPolicyNagComponent, CommentsComponent,
+    AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

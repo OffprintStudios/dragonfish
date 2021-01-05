@@ -91,6 +91,7 @@ div.collections-container {
                     }
                     a {
                         margin-bottom: 0;
+                        cursor: pointer;
                         i-feather {
                             position: relative;
                             stroke-width: 1;
@@ -100,6 +101,7 @@ div.collections-container {
 
                 div.delete-coll {
                     a {
+                        cursor: pointer;
                         margin-bottom: 0;
                         i-feather {
                             position: relative;
@@ -111,14 +113,22 @@ div.collections-container {
         }
 
         div.coll-desc {
-            text-align: center;
             font-style: italic;
             border-bottom: 1px solid var(--site-borders);
+            padding: 5px 10px;
         }
 
         div.coll-list {
             flex: 1;
             margin-top: 1rem;
+
+            div.empty {
+                margin-top: 0;
+                h3 {
+                    font-size: 24px;
+                }
+            }
+
             ul {
                 list-style-type: none;
                 margin: 0 auto;

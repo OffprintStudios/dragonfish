@@ -1,40 +1,81 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 
-import * as documents from './models';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { CreateCollection, EditCollection } from '@pulp-fiction/models/collections';
+import { CollectionForm } from '@pulp-fiction/models/collections';
+import { CollectionDocument } from './collection.schema';
+import { isNullOrUndefined } from '../../util';
+import { ContentModel } from '@pulp-fiction/models/content';
 
 @Injectable()
 export class CollectionsService {
-    constructor(@InjectModel('Collection') private readonly collectionModel: PaginateModel<documents.CollectionDocument>) {}
+    constructor(@InjectModel('Collection') private readonly collModel: PaginateModel<CollectionDocument>) {}
 
     /**
      * Creates a collection and saves it to the database.
      * 
-     * @param user The owner of the collection
-     * @param collInfo The collection's information
+     * @param userId The owner of the collection
+     * @param collForm The collection's information
      */
-    async createCollection(userId: string, collInfo: CreateCollection): Promise<documents.CollectionDocument> {
-        const newCollection = new this.collectionModel({
-            'user': userId,
-            'name': await sanitizeHtml(collInfo.name),
-            'desc': await sanitizeHtml(collInfo.desc),
-            'audit.isPublic': collInfo.public,
+    async createCollection(userId: string, collForm: CollectionForm): Promise<CollectionDocument> {
+        const newCollection = new this.collModel({
+            'owner': userId,
+            'name': collForm.name,
+            'desc': await sanitizeHtml(collForm.desc),
         });
 
         return await newCollection.save();
     }
 
     /**
+     * Adds a piece of content to a collection.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection's ID
+     * @param contentId The content being added to it
+     */
+    async addToCollection(user: JwtPayload, collId: string, contentId: string): Promise<CollectionDocument> {
+        const thisCollection = await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(thisCollection)) {
+            throw new NotFoundException(`The collection you're trying to add to doesn't exist.`);
+        }
+        const currArray = thisCollection.contains as string[];
+        currArray.push(contentId);
+        thisCollection.contains = currArray;
+        return await thisCollection.save();
+    }
+
+    /**
+     * Removes a piece of content from a collection. Also deletes the `collItem` document associated with it.
+     * 
+     * @param user The owner of the collection
+     * @param collId The collection ID
+     * @param collItemId The item ID to delete
+     * @param contentId The content being removed
+     */
+    async removeFromCollection(user: JwtPayload, collId: string, contentId: string): Promise<CollectionDocument> {
+        const thisCollection = await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false}, {autopopulate: false});
+
+        if (isNullOrUndefined(thisCollection)) {
+            throw new NotFoundException(`The collection you're trying to add to doesn't exist.`);
+        }
+        const currArray = thisCollection.contains as ContentModel[];
+        const newCollContainsArray = currArray.filter(val => { return val._id !== contentId});
+        thisCollection.contains = newCollContainsArray;
+        return await thisCollection.save();
+    }
+
+    /**
      * Gets all undeleted collections belonging to a single user.
      * 
      * @param user The owner of these collections
+     * @param pageNum The page of results to fetch
      */
-    async getUserCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<documents.CollectionDocument>> {
-        return await this.collectionModel.paginate({'user': user.sub, 'audit.isDeleted': false}, {
+    async getAllCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<CollectionDocument>> {
+        return await this.collModel.paginate({'owner': user.sub, 'audit.isDeleted': false}, {
             sort: {'createdAt': -1},
             page: pageNum,
             limit: 15
@@ -46,17 +87,17 @@ export class CollectionsService {
      * 
      * @param user The owner of these collections
      */
-    async getUserCollectionsNoPaginate(user: JwtPayload): Promise<documents.CollectionDocument[]>{
-        return await this.collectionModel.find({'user': user.sub, 'audit.isDeleted': false});
+    async getUserCollectionsNoPaginate(user: JwtPayload): Promise<CollectionDocument[]>{
+        return await this.collModel.find({'owner': user.sub, 'audit.isDeleted': false});
     }
 
     /**
      * Fetches all public collections that a user has.
      * 
-     * @param userId The owner of the portfolio
+     * @param user The owner of the portfolio
      */
-    async getPortfolioCollections(userId: string, pageNum: number): Promise<PaginateResult<documents.CollectionDocument>> {
-        return await this.collectionModel.paginate({'user': userId, 'audit.isPublic': true, 'audit.isDeleted': false}, {
+    async getPublicCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<CollectionDocument>> {
+        return await this.collModel.paginate({'owner': user.sub, 'audit.isPublic': true, 'audit.isDeleted': false}, {
             sort: {'createdAt': -1},
             page: pageNum,
             limit: 15
@@ -68,11 +109,15 @@ export class CollectionsService {
      * 
      * @param userId The owner of the portfolio
      * @param collId The collection to fetch
+     * @param getPublic Determines whether to get public or private collections
      */
-    async getOnePortCollection(userId: string, collId: string): Promise<documents.CollectionDocument> {
-        return await this.collectionModel.findOne({'_id': collId})
-            .where('user').equals(userId)
-            .where('audit.isDeleted').equals(false);
+    async getOneCollection(user: JwtPayload, collId: string, getPublic: boolean): Promise<CollectionDocument> {
+        console.log(`CollectionID: ${collId}, GetPublic: ${getPublic}`);
+        if (getPublic === true) {
+            return await this.collModel.findOne({'_id': collId, 'audit.isPublic': true, 'audit.isDeleted': false});
+        } else {
+            return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});
+        }
     }
 
     /**
@@ -82,38 +127,17 @@ export class CollectionsService {
      * @param collId The collection ID
      * @param collInfo The new collection info
      */
-    async editCollection(user: JwtPayload, collId: string, collInfo: EditCollection): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId}, {
-            'name': await sanitizeHtml(collInfo.name),
-            'desc': await sanitizeHtml(collInfo.desc),
-            'audit.isPublic': collInfo.public,
-        })
-        .where('user').equals(user.sub)
-        .where('audit.isDeleted').equals(false);
-    }
+    async editCollection(user: JwtPayload, collId: string, collInfo: CollectionForm): Promise<CollectionDocument> {
+        const thisCollection = await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});
 
-    /**
-     * Adds a work to the collection.
-     * 
-     * @param user The owner of the collection
-     * @param collId The collection ID
-     * @param workId The work to add
-     */
-    async addWorkToCollection(user: JwtPayload, collId: string, workId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {$push: {'details': { 'work': workId, 'addedOn': new Date()}}});
-    }
+        if (isNullOrUndefined(thisCollection)) {
+            throw new NotFoundException(`The collection you wanted to edit cannot be found.`);
+        }
 
-    /**
-     * Removes a work from the collection.
-     * 
-     * @param user The owner of the collection
-     * @param collId The collection ID
-     * @param workId The work to remove
-     */
-    async removeWorkFromCollection(user: JwtPayload, collId: string, workId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId, 'user': user.sub}, {
-            $pull: {'details': { 'work': workId }}
-        });
+        thisCollection.name = collInfo.name;
+        thisCollection.desc = collInfo.desc;
+
+        return await thisCollection.save();
     }
 
     /**
@@ -123,8 +147,7 @@ export class CollectionsService {
      * @param collId The collection to delete
      */
     async deleteCollection(user: JwtPayload, collId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isDeleted': true})
-            .where('user').equals(user.sub);
+        return await this.collModel.updateOne({'_id': collId, 'owner': user.sub}, {'audit.isDeleted': true});
     }
 
     /**
@@ -134,8 +157,7 @@ export class CollectionsService {
      * @param collId The collection to make public
      */
     async setPublic(user: JwtPayload, collId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isPublic': true})
-            .where('user').equals(user.sub);
+        return await this.collModel.updateOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false}, {'audit.isPublic': true});
     }
 
     /**
@@ -145,7 +167,6 @@ export class CollectionsService {
      * @param collId The collection to make private
      */
     async setPrivate(user: JwtPayload, collId: string): Promise<void> {
-        return await this.collectionModel.updateOne({'_id': collId}, {'audit.isPublic': false})
-            .where('user').equals(user.sub);
+        return await this.collModel.updateOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false}, {'audit.isPublic': false});
     }
 }

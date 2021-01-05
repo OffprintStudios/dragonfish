@@ -1,0 +1,24 @@
+<div class="collection-page-header">
+    <div class="coll-name">
+        <div class="set-coll-visibility" *ngIf="currentUser && currentUserIsSame()">
+            <ng-container [ngSwitch]="collData.audit.isPublic">
+                <a matTooltip="Public (click to set to private)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collData._id, false)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
+                <a matTooltip="Private (click to set to public)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collData._id, true)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
+            </ng-container>
+        </div>
+        <h2>{{ collData.name }}</h2>
+        <div class="coll-tools" *ngIf="currentUser && currentUserIsSame()">
+            <button matRipple class="tool left" (click)="openEditCollectionModal(collData)"><i-feather name="edit-3"></i-feather>Edit</button>
+            <button matRipple class="tool end" (click)="askDelete(collData._id)"><i-feather name="trash-2"></i-feather>Delete</button>
+        </div>
+    </div>
+    <div class="coll-desc">
+        {{ collData.desc }}
+    </div>
+</div>
+
+<div class="content-feed">
+    <ng-container *ngFor="let content of collData.contains">
+        <work-card [content]="content" [showAuthor]="false"></work-card>
+    </ng-container>
+</div>

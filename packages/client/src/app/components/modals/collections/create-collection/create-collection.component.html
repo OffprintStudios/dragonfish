@@ -4,22 +4,28 @@
     </div>
     <div class="create-collection-body">
         <form [formGroup]="createCollectionForm">
-            <label for="name">Collection Name</label>
-            <input type="text" class="u-full-width" formControlName="name" placeholder="Collection name" />
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="A Brand New Collection" formControlName="name">
+            </mat-form-field>
 
-            <label for="desc">Collection Description</label>
-            <textarea class="u-full-width" formControlName="desc"></textarea>
-
-            <label>
-                <input type="checkbox" formControlName="public">
-                <span class="label-body">Set to Public</span>
-            </label>
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Description</mat-label>
+                <textarea matInput placeholder="Full of all the things I love" formControlName="desc"></textarea>
+            </mat-form-field>
         </form>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>
     <div class="actions">
-        <button class="create" type="submit" (click)="submitCollection()">Create</button>
+        <button class="create" type="submit" (click)="submitCollection()">
+            <ng-container *ngIf="editMode; else createMode">
+                Save
+            </ng-container>
+            <ng-template #createMode>
+                Create
+            </ng-template>
+        </button>
         <button (click)="askCancel()">Cancel</button>
     </div>
 </mat-dialog-actions>

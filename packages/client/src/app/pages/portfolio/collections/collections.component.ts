@@ -6,8 +6,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
-import { CollectionsService, PortfolioService } from '../../../services/content';
-import { PortCollections, PortWorks } from '../../../models/site';
+import { CollectionsService } from '../../../services/content';
 import { Title, Constants } from '../../../shared';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
@@ -20,14 +19,13 @@ export class CollectionsComponent implements OnInit {
     currentUser: FrontendUser;
     portUser: FrontendUser;
     collsData: PaginateResult<Collection>;
-    userCollsData: PaginateResult<Collection>;
 
     pageNum = 1;
     submitting = false;
     listView = false;
 
     constructor(private route: ActivatedRoute, private router: Router, private collsService: CollectionsService,
-        private portService: PortfolioService, private authService: AuthService, private dialog: MatDialog) {
+        private authService: AuthService, private dialog: MatDialog) {
             this.authService.currUser.subscribe(x => {
                 this.currentUser = x;
             });
@@ -37,11 +35,9 @@ export class CollectionsComponent implements OnInit {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
         Title.setThreePartTitle(this.portUser.username, Constants.COLLECTIONS);
 
-        /* this.route.data.subscribe(data => {
-            const feedData = data.feedData as PortCollections;
-            this.collsData = feedData.collections;
-            this.userCollsData = feedData.userCollections;
-        });*/
+        this.route.data.subscribe(data => {
+            this.collsData = data.feedData as PaginateResult<Collection>;
+        });
     }
 
     /**
@@ -66,7 +62,24 @@ export class CollectionsComponent implements OnInit {
      * Opens the create collection modal
      */
     openCreateCollectionModal() {
-        this.dialog.open(CreateCollectionComponent);
+        const dialogRef = this.dialog.open(CreateCollectionComponent);
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+        });
+    }
+
+    /**
+     * Opens the create collection modal in edit mode.
+     * 
+     * @param coll The collection to edit
+     */
+    openEditCollectionModal(coll: Collection) {
+        const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {currColl: coll}});
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+        });
     }
 
     /**

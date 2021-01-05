@@ -6,7 +6,7 @@ import { generate } from 'shortid';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'reading_history'})
 export class ReadingHistoryDocument extends Document implements ReadingHistory {
-    @Prop({default: generate()})
+    @Prop()
     readonly _id: string;
 
     @Prop({ref: 'User', required: true, index: true})

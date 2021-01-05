@@ -7,7 +7,7 @@ import validator from 'validator';
 
 import * as documents from './models';
 import * as models from '@pulp-fiction/models/users';
-import { CreateCollection } from '@pulp-fiction/models/collections';
+import { CollectionForm } from '@pulp-fiction/models/collections';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
@@ -64,10 +64,9 @@ export class UsersService {
         const newUser = await new this.userModel(newUserInfo).save();              
         await this.useInviteCode(storedInviteCode._id, newUser._id);
             
-        const newFavColl: CreateCollection = {
+        const newFavColl: CollectionForm = {
             name: 'Favorites',
-            desc: `For the stories I'd rather never forget.`,
-            public: false
+            desc: `For the stories I'd rather never forget.`
         };
         await this.collsService.createCollection(newUser._id, newFavColl);
 
