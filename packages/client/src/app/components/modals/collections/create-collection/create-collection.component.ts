@@ -14,8 +14,7 @@ import { CollectionForm } from '@pulp-fiction/models/collections';
 export class CreateCollectionComponent implements OnInit {
   createCollectionForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
-    desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
-    public: new FormControl(false)
+    desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)])
   });
 
   constructor(private collsService: CollectionsService, private snackbar: MatSnackBar, 
@@ -46,6 +45,8 @@ export class CreateCollectionComponent implements OnInit {
       name: this.fields.name.value,
       desc: this.fields.desc.value
     };
+
+    console.log(newCollection);
 
     this.collsService.createCollection(newCollection).subscribe(() => {
       this.dialogRef.close();

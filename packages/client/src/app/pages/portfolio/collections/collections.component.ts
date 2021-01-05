@@ -6,7 +6,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { AuthService } from '../../../services/auth';
-import { CollectionsService, PortfolioService } from '../../../services/content';
+import { CollectionsService } from '../../../services/content';
 import { Title, Constants } from '../../../shared';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
@@ -25,7 +25,7 @@ export class CollectionsComponent implements OnInit {
     listView = false;
 
     constructor(private route: ActivatedRoute, private router: Router, private collsService: CollectionsService,
-        private portService: PortfolioService, private authService: AuthService, private dialog: MatDialog) {
+        private authService: AuthService, private dialog: MatDialog) {
             this.authService.currUser.subscribe(x => {
                 this.currentUser = x;
             });
@@ -62,7 +62,11 @@ export class CollectionsComponent implements OnInit {
      * Opens the create collection modal
      */
     openCreateCollectionModal() {
-        this.dialog.open(CreateCollectionComponent);
+        const dialogRef = this.dialog.open(CreateCollectionComponent);
+
+        dialogRef.afterClosed().subscribe(() => {
+            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+        });
     }
 
     /**

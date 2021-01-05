@@ -23,7 +23,7 @@ import { CollectionsService } from './collections.service';
             }
 
             this.set('name', await sanitizeHtml(this.name));
-            this.set('desc', await sanitizeHtml(this.name));
+            this.set('desc', await sanitizeHtml(this.desc));
 
             return next();
           });

@@ -6,7 +6,7 @@ import { generate } from 'shortid';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'collections'})
 export class CollectionDocument extends Document implements Collection {
-    @Prop({default: generate()})
+    @Prop()
     readonly _id: string;
 
     @Prop({type: String, ref: 'User', required: true})
