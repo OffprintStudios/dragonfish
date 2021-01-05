@@ -1,6 +1,9 @@
 <div class="history-container">
     <div class="works-list">
-        <h4 style="text-align: center;" *ngIf="isHistoryEmpty()">You haven't created any works yet.</h4>
+        <div class="empty" *ngIf="isHistoryEmpty()">
+            <h3>You haven't read anything yet.</h3>
+            <p>Browse around for Prose, Poetry, Blogs, and News and it'll all show up here.</p>
+        </div>
         <ng-container *ngIf="!isHistoryEmpty()">
             <div class="work-list">
                 <div class="work-item" *ngFor="let doc of histList.docs | paginate: {
@@ -47,11 +50,5 @@
             </div>
             <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
-    </div>
-
-    <div style="text-align: center; margin-top: 2rem;">
-        <h3 style="margin-bottom: 0;">Pardon the dust!</h3>
-        <p style="margin-top: 0; margin-bottom: 0; font-style: italic;">Looks like you came here a bit too early.</p>
-        <p style="margin-top: 0; font-style: italic;">Keep an eye on the patch notes to find out when this feature will be re-enabled!</p>
     </div>
 </div>
