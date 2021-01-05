@@ -85,7 +85,7 @@ export class CollectionsService {
    * @param collInfo The new collection info
    */
   public editCollection(collId: string, collInfo: CollectionForm) {
-    return this.http.patch<void>(`${this.url}/edit-collection/${collId}`, collInfo, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/edit-collection?collId=${collId}`, collInfo, {observe: 'response', withCredentials: true})
       .pipe(map(()=> {
         this.alertsService.success(`Edits saved successfully.`);
         return;
@@ -101,7 +101,7 @@ export class CollectionsService {
    * @param collId The collection ID
    */
   public deleteCollection(collId: string) {
-    return this.http.patch<void>(`${this.url}/delete-collection/${collId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/delete-collection?collId=${collId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Collection deleted successfully.`);
         return;
@@ -118,7 +118,7 @@ export class CollectionsService {
    * @param workId The work
    */
   public addWork(collId: string, workId: string) {
-    return this.http.patch<void>(`${this.url}/add-work/${collId}/${workId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/add-content?collId=${collId}&contentId=${workId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Work added to collection.`);
         return;
@@ -135,7 +135,7 @@ export class CollectionsService {
    * @param workId The work
    */
   public removeWork(collId: string, workId: string) {
-    return this.http.patch<void>(`${this.url}/remove-work/${collId}/${workId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/remove-content?collId=${collId}&contentId=${workId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.alertsService.success(`Work removed from collection.`);
         return;
@@ -151,7 +151,7 @@ export class CollectionsService {
    * @param collId The collection's ID
    */
   public setToPublic(collId: string) {
-    return this.http.patch<void>(`${this.url}/set-public/${collId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/set-public?collId=${collId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         return;
       }), catchError(err => {
@@ -166,7 +166,7 @@ export class CollectionsService {
    * @param collId The collection's ID
    */
   public setToPrivate(collId: string) {
-    return this.http.patch<void>(`${this.url}/set-private/${collId}`, {}, {observe: 'response', withCredentials: true})
+    return this.http.patch<void>(`${this.url}/set-private?collId=${collId}`, {}, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         return;
       }), catchError(err => {
