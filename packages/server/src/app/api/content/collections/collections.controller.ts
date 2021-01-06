@@ -21,7 +21,7 @@ export class CollectionsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('get-one-collection')
-    async getOneCollection(@Request() req: any, @Query('collId') collId: string, @Query('getPublic') getPublic: boolean) {
+    async getOneCollection(@Request() req: any, @Query('collId') collId: string, @Query('getPublic') getPublic: string) {
         if (isNullOrUndefined(collId) || isNullOrUndefined(getPublic)) {
             throw new BadRequestException(`This request requires the collection ID and whether or not to grab a private collection.`);
         }
@@ -30,11 +30,11 @@ export class CollectionsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('get-public-collections')
-    async getPublicCollections(@Request() req: any, @Query('pageNum') pageNum: number) {
+    async getPublicCollections(@Request() req: any, @Query('userId') userId: string, @Query('pageNum') pageNum: number) {
         if (isNullOrUndefined(pageNum)) {
             throw new BadRequestException(`This request must include the page number.`);
         }
-        return await this.collsService.getPublicCollections(req.user, pageNum);
+        return await this.collsService.getPublicCollections(userId, pageNum);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

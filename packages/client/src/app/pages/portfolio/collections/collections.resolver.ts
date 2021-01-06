@@ -30,9 +30,11 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
         if (this.currentUser) {
             if (this.currentUser._id === userId) {
                 return this.collsService.getAllCollections(this.pageNum);
+            } else {
+                return this.collsService.getPublicCollections(userId, this.pageNum);
             }
+        } else {
+            return this.collsService.getPublicCollections(userId, this.pageNum);
         }
-
-        return this.collsService.getPublicCollections(this.pageNum);
     }
 }

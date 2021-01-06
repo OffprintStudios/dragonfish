@@ -96,8 +96,8 @@ export class CollectionsService {
      * 
      * @param user The owner of the portfolio
      */
-    async getPublicCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<CollectionDocument>> {
-        return await this.collModel.paginate({'owner': user.sub, 'audit.isPublic': true, 'audit.isDeleted': false}, {
+    async getPublicCollections(userId: string, pageNum: number): Promise<PaginateResult<CollectionDocument>> {
+        return await this.collModel.paginate({'owner': userId, 'audit.isPublic': true, 'audit.isDeleted': false}, {
             sort: {'createdAt': -1},
             page: pageNum,
             limit: 15
@@ -111,8 +111,8 @@ export class CollectionsService {
      * @param collId The collection to fetch
      * @param getPublic Determines whether to get public or private collections
      */
-    async getOneCollection(user: JwtPayload, collId: string, getPublic: boolean): Promise<CollectionDocument> {
-        if (getPublic === true) {
+    async getOneCollection(user: JwtPayload, collId: string, getPublic: string): Promise<CollectionDocument> {
+        if (getPublic === 'true') {
             return await this.collModel.findOne({'_id': collId, 'audit.isPublic': true, 'audit.isDeleted': false});
         } else {
             return await this.collModel.findOne({'_id': collId, 'owner': user.sub, 'audit.isDeleted': false});

@@ -55,8 +55,8 @@ export class CollectionsService {
       }));
   }
 
-  public getPublicCollections(pageNum: number) {
-    return this.http.get<PaginateResult<Collection>>(`${this.url}/get-public-collections?pageNum=${pageNum}`, {observe: 'response', withCredentials: true})
+  public getPublicCollections(userId: string, pageNum: number) {
+    return this.http.get<PaginateResult<Collection>>(`${this.url}/get-public-collections?userId=${userId}&pageNum=${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(colls => {
         return colls.body;
       }), catchError(err => {

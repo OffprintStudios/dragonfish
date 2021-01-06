@@ -28,7 +28,9 @@ export class PortfolioComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.portUser = this.route.snapshot.data.portData as FrontendUser;
+    this.route.data.subscribe(data => {
+      this.portUser = data.portData as FrontendUser;
+    });
     Title.setTwoPartTitle(this.portUser.username);
   }
 

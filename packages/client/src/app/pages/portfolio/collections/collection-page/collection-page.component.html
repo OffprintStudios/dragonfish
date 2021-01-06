@@ -18,7 +18,15 @@
 </div>
 
 <div class="content-feed">
-    <ng-container *ngFor="let content of collData.contains">
-        <work-card [content]="content" [showAuthor]="false"></work-card>
+    <ng-container *ngIf="collData.contains.length === 0; else hasContent">
+        <div class="empty">
+            <h3>Nothing's been added yet</h3>
+            <p>Come back later to see if that changes!</p>
+        </div>
     </ng-container>
+    <ng-template #hasContent>
+        <ng-container *ngFor="let content of collData.contains">
+            <work-card [content]="content" [showAuthor]="false"></work-card>
+        </ng-container>
+    </ng-template>
 </div>
