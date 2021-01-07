@@ -5,10 +5,12 @@
         </div>
         <div class="view-header">
             <div class="view-title">
-                <rating-icon [rating]="currProse.meta.rating" [size]="'large'"></rating-icon>
+                <rating-icon [rating]="currProse.meta.rating" [size]="ratingSize"></rating-icon>
                 <div class="view-title-info">
-                    <h2><a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a></h2>
-                    <span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span>
+                    <h2>
+                        <a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a>
+                        <span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span>
+                    </h2>
                 </div>  
             </div>
             <div class="view-tags">

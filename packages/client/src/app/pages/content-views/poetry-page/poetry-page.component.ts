@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { PoetryContent, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
@@ -20,6 +20,7 @@ export class PoetryPageComponent implements OnInit {
     currPoetry: PoetryContent;
     histData: ReadingHistory;
     pageNum = 1;
+    ratingSize = 'large';
 
     poetryForm = PoetryForm;
     contentStatus = WorkStatus;
@@ -40,6 +41,20 @@ export class PoetryPageComponent implements OnInit {
         });
 
         Title.setTwoPartTitle(this.currPoetry.title);
+    }
+
+    /**
+     * Changes the size of the rating icon depending on the size of the window.
+     * 
+     * @param event Window resize event
+     */
+    @HostListener('window:resize', ['$event'])
+    onResize(event?) {
+        if (window.innerWidth < 1000) {
+            this.ratingSize = 'small';
+        } else {
+            this.ratingSize = 'large';
+        }
     }
 
     /**

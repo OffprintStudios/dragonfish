@@ -68,14 +68,28 @@ div.view-container {
                         font-size: 42px;
                         margin-bottom: 0;
                         display: inline-block;
-                    }
-                    span.byline {
-                        color: var(--site-text-color);
-                        font-size: 15px;
-                        font-weight: 300;
-                        font-style: italic;
-                        display: inline-block;
-                        margin-left: 1rem;
+
+                        @media (max-width: 1000px) {
+                            font-size: 36px;
+                        }
+
+                        @media (max-width: 700px) {
+                            font-size: 26px;
+                        }
+
+                        span.byline {
+                            color: var(--site-text-color);
+                            font-size: 18px;
+                            font-weight: 300;
+                            font-style: italic;
+                            display: inline-block;
+                            margin-left: 1rem;
+    
+                            @media (max-width: 700px) {
+                                font-size: 13px;
+                                margin-left: 0;
+                            }
+                        }
                     }
                 }
             }
