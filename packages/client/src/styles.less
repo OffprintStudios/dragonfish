@@ -260,12 +260,22 @@ div.html-description {
 
 /* Buttons and Inputs */
 a.button, button,
-input[type=text], input[type=password], 
+input[type=text],
 input[type=email], input[type=submit], select {
     border: 1px solid var(--site-borders);
     background-color: var(--site-background);
     border-radius: 4px;
     color: var(--site-text-color);
+}
+
+input[type=password] {
+    border: none;
+    height: 24px;
+    padding: 0;
+
+    &:focus {
+        border: none;
+    }
 }
 
 a.button-primary, button.button-primary,
@@ -315,7 +325,7 @@ button:focus {
     }
 }
 
-input[type=text]:focus, input[type=password]:focus,
+input[type=text]:focus,
 input[type=email]:focus, select:focus {
     border: 1px solid var(--site-accent);
 }
