@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { first } from 'rxjs/operators';
+import { validate } from 'email-validator';
 import { Constants } from '../../shared';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
@@ -12,6 +13,7 @@ import { ConversationsComponent } from './conversations/conversations.component'
 import { HistoryComponent } from './history/history.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { WatchingComponent } from './watching/watching.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'site-sidenav',
@@ -31,12 +33,12 @@ export class SiteSidenavComponent implements OnInit {
   siteVersion = Constants.siteVersion;
 
   loginForm = new FormGroup({
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    email: new FormControl(''),
+    password: new FormControl(''),
     rememberMe: new FormControl(false),
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService, private router: Router) {
+  constructor(private authService: AuthService, private alertsService: AlertsService, private router: Router, private snackBar: MatSnackBar) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -64,23 +66,31 @@ export class SiteSidenavComponent implements OnInit {
    * Submits the login form to the backend.
    */
   onLoginSubmit() {
-    if (this.loginForm.invalid) {
+    const validEmail: boolean = validate(this.loginFields.email.value);
+
+    if (this.loginFields.email.value === null || this.loginFields.email.value === undefined || !validEmail) {
+      this.snackBar.open(`You must enter your email.`);
       return;
-    } else {
-      this.loadingLogin = true;
-      const credentials: LoginUser = {
-        email: this.loginFields.email.value, 
-        password: this.loginFields.password.value, 
-        rememberMe: this.loginFields.rememberMe.value
-      };
-      this.authService.login(credentials).pipe(first()).subscribe(() => {
-        this.loadingLogin = false;
-        this.router.navigate(['/home/latest']);
-      }, err => {
-        this.loadingLogin = false;
-        this.alertsService.error(err.error.message);
-      })
     }
+
+    if (this.loginFields.password.value === null || this.loginFields.password.value === undefined || this.loginFields.password.value === '') {
+      this.snackBar.open(`You must enter your password.`);
+      return;
+    }
+
+    this.loadingLogin = true;
+    const credentials: LoginUser = {
+      email: this.loginFields.email.value, 
+      password: this.loginFields.password.value, 
+      rememberMe: this.loginFields.rememberMe.value
+    };
+    this.authService.login(credentials).pipe(first()).subscribe(() => {
+      this.loadingLogin = false;
+      this.router.navigate(['/home/latest']);
+    }, err => {
+      this.loadingLogin = false;
+      this.alertsService.error(err.error.message);
+    })
   }
 
   /**

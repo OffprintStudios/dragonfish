@@ -16,6 +16,10 @@ div.user-menu {
     min-width: 40rem;
     height: 100%;
 
+    @media (max-width: 750px) {
+        min-width: 30rem;
+    }
+
     div.login-form {
         flex-grow: 1;
         padding: 1.5rem;
@@ -27,15 +31,6 @@ div.user-menu {
     
         form {
             margin-bottom: 0;
-            input[type=email],input[type=password] {
-                box-shadow: none;
-                border: 1px solid whitesmoke;
-                color: whitesmoke;
-                background-color: var(--site-accent-hover);
-                &::placeholder {
-                    color: whitesmoke;
-                }
-            }
             p {
                 text-align: center;
                 a {
@@ -56,6 +51,12 @@ div.user-menu {
                         border-color: whitesmoke transparent whitesmoke transparent;
                     }
                 }
+            }
+
+            button.login {
+                width: 100%;
+                margin-top: 4rem;
+                border: 1px solid whitesmoke;
             }
         }
     }
@@ -102,6 +103,7 @@ div.user-menu {
         div.close-sidenav {
             a.close-button {
                 color: whitesmoke;
+                cursor: pointer;
 
                 &:hover {
                     color: var(--site-accent-hover);
