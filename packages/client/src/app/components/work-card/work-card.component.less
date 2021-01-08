@@ -8,40 +8,55 @@ div.card-container {
     box-shadow: var(--site-dropshadow);
     min-height: 30rem;
 
-    @media(max-width: 400px) {
-        width: 95%;
+    @media(max-width: 900px) {
+        width: 90%;
+        margin: 0 auto;
     }
 
     div.card-header {
         margin-bottom: 0;
-        h3 {
-            font-weight: 500;
-            font-size: 26px;
-            margin-bottom: 0;
-            display: inline-block;
-            a {
-                cursor: pointer;
-                color: whitesmoke;
 
-                &:hover {
-                    background: var(--site-accent-hover);
+        div.card-title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            h3 {
+                font-weight: 500;
+                font-size: 26px;
+                margin-bottom: 0;
+                display: inline-block;
+                @media (max-width: 900px) {
+                    font-size: 22px;
                 }
-            }
-        }
+                a {
+                    cursor: pointer;
+                    color: whitesmoke;
+    
+                    &:hover {
+                        background: var(--site-accent-hover);
+                    }
+                }
 
-        h4 {
-            font-weight: 300;
-            font-size: 16px;
-            font-style: italic;
-            display: inline-block;
-            margin: 0 0 0 0.75rem;
-            color: whitesmoke;
-            a {
-                cursor: pointer;
-                color: whitesmoke;
-
-                &:hover {
-                    background: var(--site-accent-hover);
+                span.byline {
+                    font-weight: 300;
+                    font-size: 16px;
+                    font-style: italic;
+                    display: inline-block;
+                    margin: 0 0 0 0.75rem;
+                    color: whitesmoke;
+        
+                    @media (max-width: 900px) {
+                        font-size: 14px;
+                        margin: 0;
+                    }
+                    a {
+                        cursor: pointer;
+                        color: whitesmoke;
+        
+                        &:hover {
+                            background: var(--site-accent-hover);
+                        }
+                    }
                 }
             }
         }
@@ -50,8 +65,9 @@ div.card-container {
             display: flex;
             flex-direction: row;
             padding: 5px 10px;
+            align-items: center;
             color: whitesmoke;
-            font-size: 14px;
+            font-size: 12px;
             border-top: 1px solid whitesmoke;
             border-bottom: 1px solid whitesmoke;
 
@@ -76,6 +92,20 @@ div.card-container {
                 &.end {
                     flex: 1;
                     text-align: right;
+                }
+            }
+
+            span.genres {
+                @media (max-width: 700px) {
+                    display: none;
+                }
+            }
+
+            span.genres-mobile {
+                display: none;
+                cursor: pointer;
+                @media (max-width: 700px) {
+                    display: block;
                 }
             }
         }

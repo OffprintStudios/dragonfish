@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as v from 'voca';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind, Genres } from '@pulp-fiction/models/content';
 
 import { calculateApprovalRating } from '../../util/functions';
 
@@ -15,6 +15,7 @@ export class WorkCardComponent implements OnInit {
     @Input() showAuthor: boolean;
 
     contentKind = ContentKind;
+    contentGenres = Genres;
 
     constructor() {}
 
