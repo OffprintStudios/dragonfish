@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { first } from 'rxjs/operators';
-import { validate } from 'email-validator';
 import { Constants } from '../../shared';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
@@ -66,9 +65,7 @@ export class SiteSidenavComponent implements OnInit {
    * Submits the login form to the backend.
    */
   onLoginSubmit() {
-    const validEmail: boolean = validate(this.loginFields.email.value);
-
-    if (this.loginFields.email.value === null || this.loginFields.email.value === undefined || !validEmail) {
+    if (this.loginFields.email.value === null || this.loginFields.email.value === undefined) {
       this.snackBar.open(`You must enter your email.`);
       return;
     }
@@ -89,7 +86,7 @@ export class SiteSidenavComponent implements OnInit {
       this.router.navigate(['/home/latest']);
     }, err => {
       this.loadingLogin = false;
-      this.alertsService.error(err.error.message);
+      this.snackBar.open(err.error.message);
     })
   }
 
