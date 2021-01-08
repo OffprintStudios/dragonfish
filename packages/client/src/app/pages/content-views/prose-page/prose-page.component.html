@@ -18,7 +18,8 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currProse.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ currProse.meta.genres | separateGenres }}</span>
+                <span class="tag genres">{{ currProse.meta.genres | separateGenres }}</span>
+                <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu">Genres <i-feather name="chevron-down"></i-feather></span>
                 <div class="view-tools">
                     <content-approval [content]="currProse" [histData]="histData"></content-approval>
                 </div>
@@ -64,6 +65,10 @@
         <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currProse.meta.status] }}</span>
     </div>
 </div>
+
+<mat-menu xPosition="after" #genresMenu="matMenu">
+    <button mat-menu-item *ngFor="let genre of currProse.meta.genres | keyvalue">{{ contentGenres[genre.value] }}</button>
+</mat-menu>
 
 <router-outlet></router-outlet>
 

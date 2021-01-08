@@ -18,7 +18,8 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currPoetry.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ currPoetry.meta.genres | separateGenres }}</span>
+                <span class="tag genres">{{ currPoetry.meta.genres | separateGenres }}</span>
+                <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu">Genres <i-feather name="chevron-down"></i-feather></span>
                 <div class="view-tools">
                     <content-approval [content]="currPoetry" [histData]="histData"></content-approval>
                 </div>
@@ -71,6 +72,10 @@
         <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currPoetry.meta.status] }}</span>
     </div>
 </div>
+
+<mat-menu xPosition="after" #genresMenu="matMenu">
+    <button mat-menu-item *ngFor="let genre of currPoetry.meta.genres | keyvalue">{{ contentGenres[genre.value] }}</button>
+</mat-menu>
 
 <ng-container *ngIf="currPoetry.meta.collection; else singlePoem">
     <router-outlet></router-outlet>

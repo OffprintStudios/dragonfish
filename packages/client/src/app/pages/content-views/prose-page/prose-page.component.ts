@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
+import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
@@ -23,6 +23,7 @@ export class ProsePageComponent implements OnInit {
     ratingSize = 'large';
 
     contentStatus = WorkStatus;
+    contentGenres = Genres;
 
     constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
             this.auth.currUser.subscribe(x => { this.currentUser = x; });

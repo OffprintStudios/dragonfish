@@ -86,7 +86,7 @@ div.view-container {
                             margin-left: 1rem;
     
                             @media (max-width: 700px) {
-                                font-size: 13px;
+                                font-size: 16px;
                                 margin-left: 0;
                             }
                         }
@@ -104,39 +104,29 @@ div.view-container {
 
                 @media (max-width: 1150px) {
                     margin-top: 0.25rem;
+                    font-size: 14px;
+
+                    i-feather {
+                        font-size: 15px;
+                    }
                 }
 
                 div.view-tools {
                     flex: 1;
                     text-align: right;
+                }
 
-                    button.tool {
-                        margin-bottom: 0;
-                        padding: 5px 10px;
-                        border-radius: 0;
-                        border: none;
-                        font-size: 18px;
-                        font-weight: normal;
+                span.genres {
+                    @media (max-width: 700px) {
+                        display: none;
+                    }
+                }
 
-                        span.button-text {
-                            position: relative;
-                            top: -0.5rem;
-                        }
-
-                        i-feather {
-                            position: relative;
-                            stroke-width: 1;
-                            top: -0.05rem;
-                            margin-right: 0.25rem;
-
-                            &.more {
-                                stroke-width: 2;
-                            }
-                        }
-
-                        &.left {
-                            border-left: 1px solid var(--site-borders);
-                        }
+                span.genres-mobile {
+                    display: none;
+                    cursor: pointer;
+                    @media (max-width: 700px) {
+                        display: block;
                     }
                 }
             }
@@ -210,6 +200,12 @@ div.view-container {
                     div.section-title {
                         flex: 1;
                         margin-left: 1rem;
+                    }
+
+                    div.section-info {
+                        @media (max-width: 700px) {
+                            display: none;
+                        }
                     }
     
                     div.section-button {
