@@ -5,10 +5,9 @@
 
 <ng-template #registration>
 
-<div class="row" style="margin: 0 auto; max-width: 80%;">
+<div class="row register-body">
     <div class="six columns">
-        <h2 style="margin-bottom: 0;">Welcome to the Offprint Alpha, ver. {{ siteVersion }}!</h2>
-        <hr style="margin-top: 0;">
+        <h3 class="form-header">Welcome to Offprint!</h3>
         <p>
             Hey there!
         </p>
@@ -38,15 +37,34 @@
     <div class="six columns">
         <h3 class="form-header">Register</h3>
         <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
-            <div class="warning" *ngIf="registerFields.email.invalid && (registerFields.email.dirty || registerFields.email.touched)">Enter a valid email address.</div>
-            <input type="email" formControlName="email" class="u-full-width" placeholder="Email address" required>
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Email Address</mat-label>
+                <input matInput placeholder="someone@email.com" formControlName="email">
+                <mat-error *ngIf="registerFields.email.invalid && (registerFields.email.dirty || registerFields.email.touched)">Please enter a valid email address.</mat-error>
+            </mat-form-field>
             
-            <div class="warning" *ngIf="registerFields.username.invalid && (registerFields.username.dirty || registerFields.username.touched)">Enter a username between 3 and 50 characters.</div>
-            <input type="text" formControlName="username" class="u-full-width" placeholder="Username" required>
-            
-            <input type="password" formControlName="password" class="u-full-width" placeholder="Password" required>
-            <input type="password" formControlName="repeatPassword" class="u-full-width" placeholder="Repeat password" required>
-            <input type="text" formControlName="inviteCode" class="u-full-width" placeholder="Invite code" required/>
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Username</mat-label>
+                <input matInput placeholder="JaneDoe" formControlName="username">
+                <mat-error *ngIf="registerFields.username.invalid && (registerFields.username.dirty || registerFields.username.touched)">Usernames must be between 3 and 50 characters.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="password">
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Repeat Password</mat-label>
+                <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="repeatPassword">
+                <mat-error *ngIf="registerFields.repeatPassword.value !== registerFields.password.value">The passwords you entered don't match.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-label>Invite Code</mat-label>
+                <input matInput placeholder="Your Invite Code" formControlName="inviteCode">
+            </mat-form-field>
+
             <label>
                 <input type="checkbox" formControlName="tosCheck" required>
                 <span class="label-body">I agree to the <a [routerLink]="['/docs/terms-and-privacy']">Offprint Terms of Service and Privacy Policy</a>, and <a [routerLink]="['/docs/code-of-conduct']">Code of Conduct</a>.</span>
@@ -58,7 +76,7 @@
             <div class="loader" *ngIf="loadingRegister">
                 <div class="lds-dual-ring"></div>
             </div>
-            <button type="submit" [disabled]="!registerForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingRegister">Sign up</button>
+            <button matRipple type="submit" [disabled]="!registerForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingRegister">Sign up</button>
         </form>
     </div>
 </div>

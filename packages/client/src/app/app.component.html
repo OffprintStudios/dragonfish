@@ -17,9 +17,10 @@
           <ng-template #signUp>
             <div class="user-menu-nav">
               <button matRipple class="login" (click)="sidenav.toggle()">Join / Log In</button>
+              <button matRipple class="mobile-login" (click)="sidenav.toggle()"><i-feather name="log-in"></i-feather></button>
             </div>
           </ng-template>
-          <div class="site-logo">
+          <div class="site-logo" [routerLink]="['/home/latest']">
             <img src="assets/icons/logo.png">
             <h2>{{ rotatingSlogan }}</h2>
           </div>
@@ -64,7 +65,6 @@
               <p> Here's some useful tips to get you started:</p>
               <ul>
                 <li><a [routerLink]="['/docs/what-is-offprint']">What is Offprint?</a></li>
-                <li><a [routerLink]="['/docs/latest-patch-notes']">Latest Patch Notes</a></li>
                 <li><a [routerLink]="['/docs/connect-with-offprint']">Connect with Offprint</a></li>
                 <li><a [routerLink]="['/docs/omnibus']">The Offprint Omnibus</a></li>
                 <li><a [routerLink]="['/docs/code-of-conduct']">Code of Conduct</a></li>
