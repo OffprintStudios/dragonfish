@@ -51,7 +51,6 @@ export class AuthService {
         });
         return user.body;
       }), catchError(err => {
-        console.log(err);
         return throwError(err);
       }));
   }
@@ -74,7 +73,6 @@ export class AuthService {
         });
         return user.body;
       }), catchError(err => {
-        this.alertsService.error(err.error.message);
         return throwError(err);
       }));
   }
