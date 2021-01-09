@@ -5,6 +5,7 @@ import { Work } from '@pulp-fiction/models/works';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { SearchService } from '../../../services/utility';
 import { calculateApprovalRating } from '../../../util/functions';
+import { ContentModel } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-find-works',
@@ -12,7 +13,7 @@ import { calculateApprovalRating } from '../../../util/functions';
   styleUrls: ['./find-works.component.less']
 })
 export class FindWorksComponent implements OnInit {
-  results: PaginateResult<Work>;
+  results: PaginateResult<ContentModel>;
   query: string;
   pageNum = 1;
   constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) {}
