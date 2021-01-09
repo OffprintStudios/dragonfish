@@ -1,37 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { InitialResults } from '@pulp-fiction/models/util';
 
 import { calculateApprovalRating } from '../../util/functions';
 import { SearchService } from '../../services/utility';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { InitialResults } from '../../services/utility/models';
-
 import { Constants, Title } from '../../shared';
+import { ContentKind } from '@pulp-fiction/models/content';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.less']
 })
-export class SearchComponent implements OnInit {
-  initialQuery: string;
-
+export class SearchComponent implements OnInit {  
   searchForm = new FormGroup({
     query: new FormControl('', Validators.required)
   });
 
-  initialResults: InitialResults;
+  searchResults: InitialResults;
 
   constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParamMap;    
     if (queryParams.get('query') !== null) {
-      this.initialQuery = queryParams.get('query');
+      const query = queryParams.get('query');
       this.searchForm.setValue({
-        query: this.initialQuery
+        query: query
       });
-      this.fetchData(this.initialQuery);
+      this.fetchData(query);
     }
     
     Title.setTwoPartTitle(Constants.SEARCH);
@@ -42,8 +41,7 @@ export class SearchComponent implements OnInit {
   private fetchData(query: string) {
     this.router.navigate([], {relativeTo: this.route, queryParams: {query: query}, queryParamsHandling: 'merge'});
     this.searchService.getInitialResults(query).subscribe(results => {
-      this.initialResults = results;
-      console.log(this.initialResults);
+      this.searchResults = results;      
     });
   }
 

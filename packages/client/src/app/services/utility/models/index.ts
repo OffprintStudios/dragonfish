@@ -1,1 +1,0 @@
-export { InitialResults } from './initial-results.model';

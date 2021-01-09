@@ -308,27 +308,17 @@ export class UsersService {
     }
 
     /**
-     * Finds the first six matches given the provided search parameters.
-     * For use with the initial page of search results.
-     * 
-     * @param query The relevant search parameters
-     */
-    async findInitialRelatedUsers(query: string): Promise<documents.UserDocument[]>{
-        return await this.userModel.find({$text: {$search: query}})
-            .select('-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted')
-            .limit(6);
-    }
-
-    /**
      * Finds any related users given the provided search parameters.
      * 
      * @param query The relevant search parameters
+     * @param pageNum The page of results to retrieve
+     * @param maxPerPage The maximum number of results per page
      */
-    async findRelatedUsers(query: string, pageNum: number): Promise<PaginateResult<documents.UserDocument>> {
+    async findRelatedUsers(query: string, pageNum: number, maxPerPage: number): Promise<PaginateResult<documents.UserDocument>> {
         return await this.userModel.paginate({$text: {$search: "\"" + query + "\""}}, {
             select: '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted',
             page: pageNum,
-            limit: 15
+            limit: maxPerPage
         });
     }
 

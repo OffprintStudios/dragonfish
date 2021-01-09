@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Blog } from '@pulp-fiction/models/blogs';
+import { ContentModel } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { SearchService } from '../../../services/utility';
 
@@ -11,7 +11,7 @@ import { SearchService } from '../../../services/utility';
   styleUrls: ['./find-blogs.component.less']
 })
 export class FindBlogsComponent implements OnInit {
-  results: PaginateResult<Blog>;
+  results: PaginateResult<ContentModel>;
   query: string;
   pageNum: number = 1;
 

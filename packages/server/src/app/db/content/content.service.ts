@@ -1,4 +1,4 @@
-import { PaginateModel, PaginateResult, Types } from 'mongoose';
+import { PaginateModel, PaginateResult, PaginateOptions, Types } from 'mongoose';
 import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -116,6 +116,29 @@ export class ContentService {
         
         // TODO: Once users have the ability to subscribe to things, we need to unsubscribe _all_ subscribers to this piece of content.
         // ...maybe work for another background queue processor
+    }
+
+    /**
+     * Finds content related to the the user's query.
+     * @param query The string the user searched for.
+     * @param pageNum The page of results to retrieve.
+     * @param maxPerPage The maximum number of results per page.
+     * @param filter The content filter to apply to returned results.
+     */
+    async findRelatedContent(query: string, kinds: ContentKind[], pageNum: number, maxPerPage: number, filter: ContentFilter): Promise<PaginateResult<ContentDocument>> {
+        const paginateOptions: PaginateOptions = {
+            page: pageNum,
+            limit: maxPerPage
+        };
+        let paginateQuery = {
+            $text: {$search: query}, 
+            'audit.published': PubStatus.Published, 
+            'audit.isDeleted': false,
+            'kind': {$in: kinds} 
+        };
+        this.determineContentFilter(paginateQuery, filter);
+
+        return await this.contentModel.paginate(paginateQuery, paginateOptions);
     }
 
     /* Sections for Prose, Poetry, and Scripts */
