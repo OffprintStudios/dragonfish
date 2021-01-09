@@ -5,10 +5,12 @@
         </div>
         <div class="view-header">
             <div class="view-title">
-                <rating-icon [rating]="currPoetry.meta.rating" [size]="'large'"></rating-icon>
+                <rating-icon [rating]="currPoetry.meta.rating" [size]="ratingSize"></rating-icon>
                 <div class="view-title-info">
-                    <h2><a [routerLink]="['/prose', currPoetry._id, currPoetry.title | slugify]">{{ currPoetry.title }}</a></h2>
-                    <span class="byline">by <a [routerLink]="['/portfolio', $any(currPoetry.author)._id, $any(currPoetry.author).username | slugify]">{{ $any(currPoetry.author).username }}</a></span>
+                    <h2>
+                        <a [routerLink]="['/prose', currPoetry._id, currPoetry.title | slugify]">{{ currPoetry.title }}</a>
+                        <span class="byline">by <a [routerLink]="['/portfolio', $any(currPoetry.author)._id, $any(currPoetry.author).username | slugify]">{{ $any(currPoetry.author).username }}</a></span>
+                    </h2>
                 </div>  
             </div>
             <div class="view-tags">
@@ -16,7 +18,8 @@
                 <span class="divider">//</span>
                 <span class="tag">{{ currPoetry.meta.category }}</span>
                 <span class="divider">//</span>
-                <span class="tag">{{ currPoetry.meta.genres | separateGenres }}</span>
+                <span class="tag genres">{{ currPoetry.meta.genres | separateGenres }}</span>
+                <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu">Genres <i-feather name="chevron-down"></i-feather></span>
                 <div class="view-tools">
                     <content-approval [content]="currPoetry" [histData]="histData"></content-approval>
                 </div>
@@ -69,6 +72,10 @@
         <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currPoetry.meta.status] }}</span>
     </div>
 </div>
+
+<mat-menu xPosition="after" #genresMenu="matMenu">
+    <button mat-menu-item *ngFor="let genre of currPoetry.meta.genres | keyvalue">{{ contentGenres[genre.value] }}</button>
+</mat-menu>
 
 <ng-container *ngIf="currPoetry.meta.collection; else singlePoem">
     <router-outlet></router-outlet>
