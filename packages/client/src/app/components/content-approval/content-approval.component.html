@@ -20,14 +20,38 @@
     <button matRipple class="end" [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
 </div>
 
+<div class="approval-buttons-mobile">
+    <button matRipple [matMenuTriggerFor]="moreItems"><i-feather class="more" name="more-vertical"></i-feather></button>
+</div>
+
 <mat-menu xPosition="before" #moreItems="matMenu">
     <ng-container *ngIf="currentUser; else noUserMenu">
+        <div class="mobile-menu">
+            <ng-container [ngSwitch]="histData.ratingOption">
+                <ng-container *ngSwitchCase="'NoVote'">
+                    <button mat-menu-item (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }} like{{ content.stats.likes | pluralize }}</span></button>
+                    <button mat-menu-item (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }} dislike{{ content.stats.dislikes | pluralize }}</span></button>
+                </ng-container>
+                <ng-container *ngSwitchCase="'Liked'">
+                    <button mat-menu-item class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }} like{{ content.stats.likes | pluralize }}</span></button>
+                    <button mat-menu-item  (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }} dislike{{ content.stats.dislikes | pluralize }}</span></button>
+                </ng-container>
+                <ng-container *ngSwitchCase="'Disliked'">
+                    <button mat-menu-item (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }} like{{ content.stats.likes | pluralize }}</span></button>
+                    <button mat-menu-item class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }} dislike{{ content.stats.dislikes | pluralize }}</span></button>
+                </ng-container>
+            </ng-container>
+        </div>
         <ng-container *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent">
             <button mat-menu-item (click)="openAddToCollectionDialog()"><i-feather name="folder-plus"></i-feather>Add to Collection</button>
         </ng-container>
         <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
     </ng-container>
     <ng-template #noUserMenu>
+        <div class="mobile-menu">
+            <button mat-menu-item><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ content.stats.likes | abbreviate }} like{{ content.stats.likes | pluralize }}</span></button>
+            <button mat-menu-item class="mid active"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ content.stats.dislikes | abbreviate }} dislike{{ content.stats.dislikes | pluralize }}</span></button>
+        </div>
         <ng-container *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent">
             <button mat-menu-item><i-feather name="folder-plus"></i-feather>Add to Collection</button>
         </ng-container>

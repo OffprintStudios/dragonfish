@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProseContent, SectionInfo, SetRating, WorkStatus } from '@pulp-fiction/models/content';
-import { RatingOption, ReadingHistory } from '@pulp-fiction/models/reading-history';
+import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
 import { AuthService } from '../../../services/auth';
@@ -20,11 +20,14 @@ export class ProsePageComponent implements OnInit {
     currProse: ProseContent;
     histData: ReadingHistory;
     pageNum = 1;
+    ratingSize = 'large';
 
     contentStatus = WorkStatus;
+    contentGenres = Genres;
 
     constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
             this.auth.currUser.subscribe(x => { this.currentUser = x; });
+            this.onResize()
             this.fetchData();
     }
 
@@ -39,6 +42,20 @@ export class ProsePageComponent implements OnInit {
         });
 
         Title.setTwoPartTitle(this.currProse.title);
+    }
+
+    /**
+     * Changes the size of the rating icon depending on the size of the window.
+     * 
+     * @param event Window resize event
+     */
+    @HostListener('window:resize', ['$event'])
+    onResize(event?) {
+        if (window.innerWidth < 1000) {
+            this.ratingSize = 'small';
+        } else {
+            this.ratingSize = 'large';
+        }
     }
 
     /**

@@ -1,4 +1,8 @@
 div.approval-buttons {
+    @media (max-width: 700px) {
+        display: none;
+    }
+
     button {
         margin-bottom: 0;
         padding: 5px 10px;
@@ -78,6 +82,100 @@ div.approval-buttons {
                     }
                 }
             }
+        }
+    }
+}
+
+div.approval-buttons-mobile {
+    display: none;
+
+    @media (max-width: 700px) {
+        display: block;
+    }
+    button {
+        margin-bottom: 0;
+        padding: 5px 10px;
+        border-top: none;
+        border-bottom: none;
+        border-left: 1px solid var(--site-borders);
+        border-right: none;
+        border-radius: 0;
+        font-size: 18px;
+        font-weight: normal;
+    
+        &.active {
+            color: whitesmoke;
+            background: var(--site-accent);
+    
+            i-feather {
+                color: whitesmoke;
+            }
+    
+            &:hover {
+                background: var(--site-accent-hover);
+            }
+        }
+    
+        i-feather {
+            position: relative;
+            top: 0.1rem;
+            stroke-width: 1;
+            margin-right: 0.25rem;
+    
+            &.more {
+    
+                margin-right: 0;
+                fill: var(--site-text-color);
+            }
+        }
+    
+        &:hover {
+            i-feather {
+                &.more {
+                    fill: whitesmoke;
+                }
+            }
+        }
+    }
+    
+    span.comments {
+        i-feather {
+            stroke-width: 1;
+            margin-right: 0.15rem;
+        }
+    }
+    
+    &.preview {
+        button {
+            cursor: initial;
+            &:hover {
+                background-color: var(--site-background);
+                color: var(--site-text-color);
+    
+                i-feather {
+                    color: var(--site-text-color);
+                    &.more {
+                        fill: var(--site-text-color);
+                    }
+                }
+            }
+        }
+    }
+}
+
+div.mobile-menu {
+    display: none;
+
+    @media (max-width: 700px) {
+        display: block;
+    }
+
+    button.active {
+        background-color: var(--site-accent);
+        color: whitesmoke;
+
+        i-feather {
+            color: whitesmoke;
         }
     }
 }
