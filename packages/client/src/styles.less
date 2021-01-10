@@ -423,11 +423,10 @@ span.label-body {
 
 /* Page toolbar */
 div.tools {
-    width: 80%;
-    margin: 0 auto 2rem auto;
+    width: 90%;
+    margin: 2.5rem auto 2rem auto;
     border: 1px solid var(--site-borders);
-    border-radius: 0px 0px 4px 4px;
-    border-top: none;
+    border-radius: 4px;
     background: var(--site-controls-background);
     padding: 5px;
     display: flex;
@@ -520,6 +519,10 @@ div.tools {
                 border-bottom-left-radius: 4px;
                 border-top-right-radius: 0;
                 border-bottom-right-radius: 0;
+
+                @media (max-width: 1000px) {
+                    display: none;
+                }
             }
 
             button.search-submit {
@@ -530,6 +533,10 @@ div.tools {
                 margin-bottom: 0;
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
+
+                @media (max-width: 1000px) {
+                    border-radius: 4px;
+                }
 
                 i-feather {
                     height: 16px;
