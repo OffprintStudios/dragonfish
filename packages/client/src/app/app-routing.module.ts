@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { BrowseComponent, GroupsComponent, PostPageComponent } from './pages';
+import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
   
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
   
@@ -38,7 +38,7 @@ const routes: Routes = [
       {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
-    {path: 'groups', component: GroupsComponent},
+    {path: 'social', component: SocialComponent},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
