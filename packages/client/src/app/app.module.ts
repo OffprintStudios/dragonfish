@@ -45,7 +45,6 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
-import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
 import { WorkFormComponent } from './components/content-forms';
 import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -101,8 +100,7 @@ const toolbarOptions = [
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
     NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
+    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
     NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
@@ -154,7 +152,7 @@ const toolbarOptions = [
     SlugifyPipe
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, 
+    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, 
     AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
