@@ -45,7 +45,7 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
-import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
+import { UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
@@ -100,7 +100,7 @@ const toolbarOptions = [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
     NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
-    NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
+    SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     DocsPageComponent, SiteStaffComponent, CreateCollectionComponent, SocialComponent,
@@ -151,7 +151,7 @@ const toolbarOptions = [
     SlugifyPipe
   ],
   entryComponents: [
-    NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, 
+    UploadAvatarComponent, UploadCoverartComponent, 
     AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
