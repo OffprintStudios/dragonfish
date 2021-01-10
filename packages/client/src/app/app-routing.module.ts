@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
@@ -34,13 +34,7 @@ import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, Migrat
 
 const routes: Routes = [
     {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent, children: [
-      {path: '', children: [
-        {path: 'latest', component: LatestComponent},
-        {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
-        {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
-      ]}
-    ]},
+    {path: 'home', component: HomeComponent, children: []},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
     {path: 'groups', component: GroupsComponent},
     {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'paramsChange'},

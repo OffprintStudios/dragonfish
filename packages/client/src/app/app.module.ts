@@ -28,7 +28,7 @@ import { AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
   brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, WatchingPageComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
@@ -100,7 +100,7 @@ const toolbarOptions = [
 @NgModule({
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
-    NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
+    NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
     BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
     SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
     NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
