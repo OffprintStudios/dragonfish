@@ -1,5 +1,5 @@
 export class Constants {
-    public static siteVersion: string = '0.5.4';
+    public static siteVersion: string = '0.5.5';
 
     public static NOTIFICATIONS: string = "Notifications";
     public static BLOGS: string = "Blogs";
