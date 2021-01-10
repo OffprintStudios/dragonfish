@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
+import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
   
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
   
@@ -33,17 +33,12 @@ import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from '.
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 
 const routes: Routes = [
-    {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
+    {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, children: [
-      {path: '', children: [
-        {path: 'latest', component: LatestComponent},
-        {path: 'watching', canActivate: [AuthGuard], component: WatchingPageComponent},
-        {path: '', redirectTo: '/home/latest', pathMatch: 'full'},
-      ]}
+      {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
-    {path: 'groups', component: GroupsComponent},
-    {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'paramsChange'},
+    {path: 'social', component: SocialComponent},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
@@ -73,7 +68,7 @@ const routes: Routes = [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {poetryData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
-      {path: ':sectionNum/sectionTitle', component: SectionViewComponent}
+      {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
       {path: 'users', component: FindUsersComponent},

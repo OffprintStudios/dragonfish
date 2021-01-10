@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
-import { Constants, Title } from '../../shared';
+import { Constants, Title } from '../../../shared';
 
 @Component({
   selector: 'app-news',

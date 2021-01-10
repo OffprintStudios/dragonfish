@@ -5,8 +5,6 @@ import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
-import { PortfolioService } from '../../services/content';
-import { StartConversationComponent } from '../../components/portfolio/start-conversation/start-conversation.component';
 
 import { Title } from '../../shared';
 
@@ -88,9 +86,9 @@ export class PortfolioComponent implements OnInit {
   /**
    * Opens the new message dialog
    */
-  startNewConversation() {
+  /*startNewConversation() {
     if (this.portUserId) {
       this.dialog.open(StartConversationComponent, {data: {userId: this.portUserId}});
     }
-  }
+  }*/
 }

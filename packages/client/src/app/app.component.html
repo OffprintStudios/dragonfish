@@ -37,9 +37,9 @@
         <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
           <a class="nav-link" matRipple href="https://dashboard.offprint.net/"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
         </ng-container>
-        <a class="nav-link" matRipple [routerLink]="['/home/latest']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
+        <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
         <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 
-        <a class="nav-link" matRipple [routerLink]="['/groups']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a>
+        <a class="nav-link" matRipple [routerLink]="['/social']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a>
         <ng-container *ngIf="currentUser">
           <a class="nav-link" matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hard-drive"></i-feather></span><span>My Stuff</span></a>
           <a class="nav-link" matRipple [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a>

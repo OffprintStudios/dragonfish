@@ -28,7 +28,7 @@ import { AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
   brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, LatestComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
@@ -38,16 +38,14 @@ import { CollectionPageComponent } from './pages/portfolio/collections';
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
-import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
+import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
-import { UserMenuComponent, SearchMenuComponent } from './components/dropdowns';
-import { WorkFormComponent } from './components/content-forms';
-import { NewWorkComponent, EditWorkComponent, UploadCoverartComponent } from './components/modals/works';
+import { UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
@@ -63,7 +61,7 @@ import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
-import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
+import { StartConversationComponent } from './components/modals/portfolio/start-conversation/start-conversation.component';
 import { ContentApprovalComponent } from './components/content-approval';
 
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
@@ -99,18 +97,17 @@ const toolbarOptions = [
 
 @NgModule({
   declarations: [
-    AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent, GroupsComponent,
-    NewsComponent, RegisterComponent, LatestComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, SettingsComponent, UserMenuComponent,
-    SearchMenuComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
-    NewWorkComponent, EditWorkComponent, SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
+    AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
+    NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
+    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
+    SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
-    DocsPageComponent, SiteStaffComponent, CreateCollectionComponent,
+    DocsPageComponent, SiteStaffComponent, CreateCollectionComponent, SocialComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    WorkFormComponent, PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
+    PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent
@@ -154,8 +151,7 @@ const toolbarOptions = [
     SlugifyPipe
   ],
   entryComponents: [
-    UserMenuComponent, SearchMenuComponent, NewWorkComponent, EditWorkComponent, UploadAvatarComponent, UploadCoverartComponent, 
-    AddToCollectionComponent, StartConversationComponent
+    UploadAvatarComponent, UploadCoverartComponent, AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })
