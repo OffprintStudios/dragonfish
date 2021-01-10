@@ -31,6 +31,7 @@ import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
+import { DashComponent } from './pages/dash';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -80,7 +81,8 @@ const routes: Routes = [
     {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
-    ]}
+    ]},
+    {path: 'dash', component: DashComponent}
 ];
 
 @NgModule({

@@ -1,0 +1,1 @@
+export { DashComponent } from './dash.component';

@@ -42,6 +42,7 @@ import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
+import { DashComponent } from './pages/dash';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -110,7 +111,8 @@ const toolbarOptions = [
     PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
+    DashComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
