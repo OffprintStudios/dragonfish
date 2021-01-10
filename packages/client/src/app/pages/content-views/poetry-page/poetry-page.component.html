@@ -8,7 +8,7 @@
                 <rating-icon [rating]="currPoetry.meta.rating" [size]="ratingSize"></rating-icon>
                 <div class="view-title-info">
                     <h2>
-                        <a [routerLink]="['/prose', currPoetry._id, currPoetry.title | slugify]">{{ currPoetry.title }}</a>
+                        <a [routerLink]="['/poetry', currPoetry._id, currPoetry.title | slugify]">{{ currPoetry.title }}</a>
                         <span class="byline">by <a [routerLink]="['/portfolio', $any(currPoetry.author)._id, $any(currPoetry.author).username | slugify]">{{ $any(currPoetry.author).username }}</a></span>
                     </h2>
                 </div>  

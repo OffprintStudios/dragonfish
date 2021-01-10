@@ -68,7 +68,7 @@ const routes: Routes = [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {poetryData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
-      {path: ':sectionNum/sectionTitle', component: SectionViewComponent}
+      {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
       {path: 'users', component: FindUsersComponent},
