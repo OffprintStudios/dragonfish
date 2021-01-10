@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit {
     };
     this.authService.register(credentials).pipe(first()).subscribe(() => {
       this.loadingRegister = false;
-      this.router.navigate(['/home/latest']);
+      this.router.navigate(['/home']);
     }, err => {
       this.loadingRegister = false;
       this.alertsService.error(err.error.message);

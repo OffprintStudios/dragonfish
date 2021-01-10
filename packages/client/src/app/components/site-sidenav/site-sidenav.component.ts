@@ -83,7 +83,7 @@ export class SiteSidenavComponent implements OnInit {
     };
     this.authService.login(credentials).pipe(first()).subscribe(() => {
       this.loadingLogin = false;
-      this.router.navigate(['/home/latest']);
+      this.router.navigate(['/home']);
     }, err => {
       this.loadingLogin = false;
       this.snackBar.open(err.error.message);
@@ -102,7 +102,7 @@ export class SiteSidenavComponent implements OnInit {
    */
   logout() {
     this.authService.logout();
-    this.router.navigate(['/home/latest']).then(() => {
+    this.router.navigate(['/home']).then(() => {
       location.reload();
     });
   }
