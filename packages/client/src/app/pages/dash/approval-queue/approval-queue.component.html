@@ -1,0 +1,68 @@
+<div class="tools">
+    <div class="tool-buttons">
+        <button matRipple class="tool left"><i-feather name="filter"></i-feather>Filter</button>
+        <button matRipple class="tool end" (click)="forceRefresh()"><i-feather name="refresh-cw"></i-feather>Refresh</button>
+    </div>
+</div>
+
+<div class="approval-queue-container">
+    <div class="queue-list">
+        <h4 style="text-align: center;" *ngIf="queueIsEmpty()">Surprisingly, no one's submitted anything yet.</h4>
+        <div class="work-list" *ngIf="queue && queue.docs">
+            <div class="work-item" *ngFor="let entry of queue.docs | paginate: {
+                itemsPerPage: queue.limit,
+                currentPage: pageNum,
+                totalItems: queue.totalDocs
+            }">
+                <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
+                    <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
+                </div>
+                <div class="work-info">
+                    <div class="info">
+                        <div class="work-header">
+                            <ng-container [ngSwitch]="entry.workToApprove.meta.rating">
+                                <div matTooltip="Everyone" matTooltipClass="offprint-tooltip" class="rating everyone small" *ngSwitchDefault>E</div>
+                                <div matTooltip="Teen" matTooltipClass="offprint-tooltip" class="rating teen small" *ngSwitchCase="'Teen'">T</div>
+                                <div matTooltip="Mature" matTooltipClass="offprint-tooltip" class="rating mature small" *ngSwitchCase="'Mature'">M</div>
+                                <div matTooltip="Explicit" matTooltipClass="offprint-tooltip" class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>                                
+                            </ng-container>
+                            <h3><a [href]="getOffprintWorkLink(entry, entry.workToApprove.title | slugify)">{{ entry.workToApprove.title }}</a></h3>                                
+                            <h4 class="author-byline">by <a [href]="getOffprintUserLink(entry.workToApprove.author._id, entry.workToApprove.author.username | slugify)">
+                                {{ entry.workToApprove.author.username }} 
+                            </a></h4>
+                        </div>
+                        <div class="info-bits">
+                            <ng-container [ngSwitch]="entry.workToApprove.kind">
+                                <ng-container *ngSwitchCase="contentKind.ProseContent">
+                                    <h4 [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open"></i-feather></h4><span>//</span>
+                                </ng-container>
+                                <ng-container *ngSwitchCase="contentKind.PoetryContent">
+                                    <h4 [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather"></i-feather></h4><span>//</span>
+                                </ng-container>
+                            </ng-container>
+                            <h4>{{ entry.workToApprove.meta.category }}</h4><span>//</span>
+                            <h4>{{ entry.workToApprove.meta.genres | separateGenres }}</h4>
+                        </div>
+                        <div class="stats">
+                            <h4>{{ entry.workToApprove.meta.status }}</h4><span>//</span>
+                            <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ entry.workToApprove.stats.words | toLocaleString }} word{{ entry.workToApprove.stats.words | pluralize }}</h4><span>//</span>
+                            <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ entry.workToApprove.updatedAt | date:'short' }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
+                    <img matTooltip="Claimed by {{entry.claimedBy.username}}" matTooltipClass="offprint-tooltip" class="claimed-avatar" src="{{ entry.claimedBy.profile.avatar }}">
+                </div>
+                <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
+                    <button matTooltip="Claim work" matTooltipClass="offprint-tooltip" class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
+                </div>
+                <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
+                    <button matTooltip="Approve work" matTooltipClass="offprint-tooltip" class="work-controls top" style="border-right: 0;" (click)="approveWork(entry)"><i-feather name="check"></i-feather></button>
+                    <button matTooltip="Reject work" matTooltipClass="offprint-tooltip" class="work-controls right" (click)="rejectWork(entry)"><i-feather name="x"></i-feather></button>
+                </div>
+            </div>
+        </div>
+
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel="" *ngIf="!queueIsEmpty()"></pagination-controls>
+    </div>
+</div>
