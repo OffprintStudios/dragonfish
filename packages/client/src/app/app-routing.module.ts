@@ -33,6 +33,8 @@ import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from '.
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, DocsManagementComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
+import { ApprovalQueueResolver } from './pages/dash/approval-queue';
+
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, children: [
@@ -84,7 +86,7 @@ const routes: Routes = [
     ]},
     {path: 'dash', component: DashComponent, children: [
       {path: 'overview', component: OverviewComponent},
-      {path: 'approval-queue', component: ApprovalQueueComponent},
+      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always'},
       {path: 'group-queue', component: GroupQueueComponent},
       {path: 'news-management', component: NewsManagementComponent},
       {path: 'docs-management', component: DocsManagementComponent},
@@ -102,7 +104,8 @@ const routes: Routes = [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
+      ApprovalQueueResolver
     ]
 })
 export class AppRoutingModule {}
