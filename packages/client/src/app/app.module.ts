@@ -42,7 +42,8 @@ import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
-import { DashComponent } from './pages/dash';
+import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
+  DocsManagementComponent, ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -112,7 +113,8 @@ const toolbarOptions = [
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
-    DashComponent
+    DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, DocsManagementComponent,
+    ReportsComponent, UsersManagementComponent, AuditLogComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

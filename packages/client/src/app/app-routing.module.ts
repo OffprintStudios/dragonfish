@@ -31,7 +31,7 @@ import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
-import { DashComponent } from './pages/dash';
+import { ApprovalQueueComponent, AuditLogComponent, DashComponent, DocsManagementComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -82,7 +82,17 @@ const routes: Routes = [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
     ]},
-    {path: 'dash', component: DashComponent}
+    {path: 'dash', component: DashComponent, children: [
+      {path: 'overview', component: OverviewComponent},
+      {path: 'approval-queue', component: ApprovalQueueComponent},
+      {path: 'group-queue', component: GroupQueueComponent},
+      {path: 'news-management', component: NewsManagementComponent},
+      {path: 'docs-management', component: DocsManagementComponent},
+      {path: 'reports', component: ReportsComponent},
+      {path: 'users-management', component: UsersManagementComponent},
+      {path: 'audit-log', component: AuditLogComponent},
+      {path: '', redirectTo: '/dash/overview', pathMatch: 'full'}
+    ]}
 ];
 
 @NgModule({
