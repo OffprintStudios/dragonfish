@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
+import { BrowseComponent, GroupsComponent, PostPageComponent } from './pages';
   
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
   
@@ -34,10 +34,11 @@ import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, Migrat
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent, children: []},
+    {path: 'home', component: HomeComponent, children: [
+      {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
+    ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
     {path: 'groups', component: GroupsComponent},
-    {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver }, runGuardsAndResolvers: 'paramsChange'},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [

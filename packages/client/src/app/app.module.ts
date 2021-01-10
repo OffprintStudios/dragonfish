@@ -28,7 +28,7 @@ import { AlertsModule, NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
   brMatcher, textNodeMatcher } from './util/quill';
 
-import { HomeComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
@@ -38,7 +38,7 @@ import { CollectionPageComponent } from './pages/portfolio/collections';
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
-import { BrowseComponent, GroupsComponent, NewsComponent, PostPageComponent } from './pages';
+import { BrowseComponent, GroupsComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
