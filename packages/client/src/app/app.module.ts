@@ -61,7 +61,7 @@ import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
-import { StartConversationComponent } from './components/portfolio/start-conversation/start-conversation.component';
+import { StartConversationComponent } from './components/modals/portfolio/start-conversation/start-conversation.component';
 import { ContentApprovalComponent } from './components/content-approval';
 
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
@@ -151,8 +151,7 @@ const toolbarOptions = [
     SlugifyPipe
   ],
   entryComponents: [
-    UploadAvatarComponent, UploadCoverartComponent, 
-    AddToCollectionComponent, StartConversationComponent
+    UploadAvatarComponent, UploadCoverartComponent, AddToCollectionComponent, StartConversationComponent
   ],
   bootstrap: [AppComponent],
 })
