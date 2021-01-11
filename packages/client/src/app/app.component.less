@@ -210,7 +210,7 @@ nav {
     background: linear-gradient(180deg, var(--site-accent-hover), var(--site-accent));
     text-align: center;
     border-bottom: 1px solid var(--site-borders);
-    box-shadow: var(--site-dropshadow);
+    box-shadow: 0 4px 2px -2px var(--site-dropshadow);
 
     div.nav-list {
         display: flex;
@@ -246,6 +246,7 @@ nav {
             }
 
             &:hover {
+				transition: 0.125s;
                 background: var(--site-accent-hover);
             }
 
