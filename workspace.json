@@ -29,7 +29,8 @@
               "packages/client/src/custom-style.scss",
               "packages/client/src/styles.less"
             ],
-            "allowedCommonJsDependencies": ["lodash", "numeral"]
+            "allowedCommonJsDependencies": ["lodash", "numeral"],
+            "scripts": ["node_modules/marked/lib/marked.js"]
           },
           "configurations": {
             "production": {
