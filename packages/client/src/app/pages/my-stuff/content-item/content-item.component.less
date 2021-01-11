@@ -8,6 +8,7 @@ div.content-box {
     margin: 0.75rem;
     cursor: pointer;
     color: var(--site-text-color);
+	overflow: hidden;
 
     &.selected {
         border: 1px solid var(--site-accent);
@@ -21,6 +22,7 @@ div.content-box {
         margin: 0 auto;
         top: -1.9rem;
         border-radius: 0 0 4px 4px;
+		background-image: linear-gradient(rgba(255, 255, 255, .37), var(--site-background));
         backdrop-filter: blur(7px);
 
         i-feather {
@@ -60,10 +62,22 @@ div.content-box {
         div.html-description {
             display: block;
             height: 175px;
-            overflow: hidden;
+            overflow: auto;
+			scrollbar-width: thin;
             text-overflow: ellipsis;
             font-size: 10px;
         }
+		div.html-description::-webkit-scrollbar {
+			width: 4px;
+		}
+		div.html-description::-webkit-scrollbar-track {
+			background: transparent;
+			box-shadow: none
+		}
+		div.html-description::-webkit-scrollbar-thumb {
+			border-radius: 5px;
+			background: grey; 
+		}
     }
 
     div.content-description {
