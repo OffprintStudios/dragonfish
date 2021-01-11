@@ -35,6 +35,7 @@ import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueCom
 
 import { ApprovalQueueResolver } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
+import { Roles } from '@pulp-fiction/models/users';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -85,17 +86,17 @@ const routes: Routes = [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
     ]},
-    {path: 'dash', component: DashComponent, children: [
-      {path: 'overview', component: OverviewComponent},
-      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'group-queue', component: GroupQueueComponent},
-      {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always', children: [
-        {path: 'create-post', component: PostFormComponent},
-        {path: 'edit-post/:postId', component: PostFormComponent, resolve: {postData: PostFormResolver}, runGuardsAndResolvers: 'always'}
+    {path: 'dash', component: DashComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
+      {path: 'overview', component: OverviewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'group-queue', component: GroupQueueComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}, children: [
+        {path: 'create-post', component: PostFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+        {path: 'edit-post/:postId', component: PostFormComponent, resolve: {postData: PostFormResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}}
       ]},
-      {path: 'reports', component: ReportsComponent},
-      {path: 'users-management', component: UsersManagementComponent},
-      {path: 'audit-log', component: AuditLogComponent},
+      {path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'users-management', component: UsersManagementComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'audit-log', component: AuditLogComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
       {path: '', redirectTo: '/dash/overview', pathMatch: 'full'}
     ]}
 ];
