@@ -1,3 +1,38 @@
+div.portfolio-header {
+    width: 90%;
+    margin: 0 auto 0 auto;
+    border: 1px solid var(--site-borders);
+    border-radius: 0px 0px 4px 4px;
+    border-top: none;
+    box-shadow: var(--site-dropshadow);
+    font-size: 0;
+
+    div.portfolio-user-info {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        div.port-avatar {
+            padding: 5px;
+            text-align: center;
+            img {
+                width: 250px;
+                height: 250px;
+                border-radius: 50%;
+                border: 1px solid whitesmoke;
+            }
+        }
+
+        div.port-user {
+            flex: 1;
+            h1.username {
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+
 /*div.port-container {
     display: flex;
     flex-direction: row;
