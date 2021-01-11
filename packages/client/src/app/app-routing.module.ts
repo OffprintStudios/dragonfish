@@ -31,7 +31,7 @@ import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
-import { ApprovalQueueComponent, AuditLogComponent, DashComponent, DocsManagementComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
+import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
 import { ApprovalQueueResolver } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
@@ -93,7 +93,6 @@ const routes: Routes = [
         {path: 'create-post', component: PostFormComponent},
         {path: 'edit-post/:postId', component: PostFormComponent, resolve: {postData: PostFormResolver}, runGuardsAndResolvers: 'always'}
       ]},
-      {path: 'docs-management', component: DocsManagementComponent},
       {path: 'reports', component: ReportsComponent},
       {path: 'users-management', component: UsersManagementComponent},
       {path: 'audit-log', component: AuditLogComponent},

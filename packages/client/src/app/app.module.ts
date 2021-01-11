@@ -43,7 +43,7 @@ import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
-  DocsManagementComponent, ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
+  ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { PostFormComponent } from './pages/dash/news-management';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
@@ -114,7 +114,7 @@ const toolbarOptions = [
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
-    DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, DocsManagementComponent,
+    DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent
   ],
   imports: [
