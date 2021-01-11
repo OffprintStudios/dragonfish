@@ -34,6 +34,7 @@ import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, Migrat
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, DocsManagementComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
 import { ApprovalQueueResolver } from './pages/dash/approval-queue';
+import { NewsManagementResolver } from './pages/dash/news-management';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -88,7 +89,7 @@ const routes: Routes = [
       {path: 'overview', component: OverviewComponent},
       {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always'},
       {path: 'group-queue', component: GroupQueueComponent},
-      {path: 'news-management', component: NewsManagementComponent},
+      {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always'},
       {path: 'docs-management', component: DocsManagementComponent},
       {path: 'reports', component: ReportsComponent},
       {path: 'users-management', component: UsersManagementComponent},
@@ -105,7 +106,7 @@ const routes: Routes = [
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
-      ApprovalQueueResolver
+      ApprovalQueueResolver, NewsManagementResolver
     ]
 })
 export class AppRoutingModule {}
