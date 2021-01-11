@@ -20,6 +20,7 @@ import { Ng2FittextModule } from 'ng2-fittext';
 import { IconsModule } from '@pulp-fiction/icons';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
@@ -42,6 +43,10 @@ import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
+import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
+  ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
+import { PostFormComponent } from './pages/dash/news-management';
+import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent } from './pages/docs';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -110,13 +115,16 @@ const toolbarOptions = [
     PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent
+    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
+    DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
+    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule,
+    MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',

@@ -35,7 +35,7 @@
     <nav>
       <div class="nav-list">
         <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
-          <a class="nav-link" matRipple href="https://dashboard.offprint.net/"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
+          <a class="nav-link" matRipple [routerLink]="['/dash']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
         </ng-container>
         <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
         <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 
@@ -59,12 +59,11 @@
           <div class="grid-container thirds">
             <div>
               <h1>Help</h1>
-              <p> Here's some useful tips to get you started:</p>
+              <p> Here's some useful things to get you started:</p>
               <ul>
-                <li><a [routerLink]="['/docs/what-is-offprint']">What is Offprint?</a></li>
-                <li><a [routerLink]="['/docs/connect-with-offprint']">Connect with Offprint</a></li>
-                <li><a [routerLink]="['/docs/omnibus']">The Offprint Omnibus</a></li>
-                <li><a [routerLink]="['/docs/code-of-conduct']">Code of Conduct</a></li>
+                <li><a [routerLink]="['/what-is-offprint']">What is Offprint?</a></li>
+                <li><a [routerLink]="['/omnibus']">The Offprint Omnibus</a></li>
+                <li><a [routerLink]="['/code-of-conduct']">Code of Conduct</a></li>
               </ul>
             </div>
             <div>
@@ -77,7 +76,7 @@
                 &copy;2020 Offprint Studios
               </p>
               <ul>
-                <li><a [routerLink]="['/docs/terms-and-privacy']">Terms of Service & Privacy Policy</a></li>
+                <li><a [routerLink]="['/terms-of-service']">Terms of Service & Privacy Policy</a></li>
                 <li><a [routerLink]="['/docs/open-source-licenses']">Open Source Licenses</a></li>
                 <li><a [routerLink]="['/site-staff']">Site Staff</a></li>
                 <li><a [routerLink]="['/supporters']">Patreon Supporters</a></li>
