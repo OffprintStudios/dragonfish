@@ -20,6 +20,7 @@ import { Ng2FittextModule } from 'ng2-fittext';
 import { IconsModule } from '@pulp-fiction/icons';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
@@ -122,6 +123,7 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule,
+    MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
       format: 'json',
