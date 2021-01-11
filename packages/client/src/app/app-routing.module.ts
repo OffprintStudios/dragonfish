@@ -31,6 +31,11 @@ import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } 
 import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
+import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
+
+import { ApprovalQueueResolver } from './pages/dash/approval-queue';
+import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
+import { Roles } from '@pulp-fiction/models/users';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -80,6 +85,19 @@ const routes: Routes = [
     {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
+    ]},
+    {path: 'dash', component: DashComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
+      {path: 'overview', component: OverviewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'group-queue', component: GroupQueueComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}, children: [
+        {path: 'create-post', component: PostFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+        {path: 'edit-post/:postId', component: PostFormComponent, resolve: {postData: PostFormResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}}
+      ]},
+      {path: 'reports', component: ReportsComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'users-management', component: UsersManagementComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: 'audit-log', component: AuditLogComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
+      {path: '', redirectTo: '/dash/overview', pathMatch: 'full'}
     ]}
 ];
 
@@ -90,7 +108,8 @@ const routes: Routes = [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
-      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver
+      MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
+      ApprovalQueueResolver, NewsManagementResolver, PostFormResolver
     ]
 })
 export class AppRoutingModule {}
