@@ -46,6 +46,7 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { PostFormComponent } from './pages/dash/news-management';
+import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent } from './pages/docs';
 
 import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
 
@@ -116,7 +117,7 @@ const toolbarOptions = [
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
-    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent
+    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
