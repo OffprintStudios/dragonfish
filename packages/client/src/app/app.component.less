@@ -23,6 +23,17 @@ div.nav {
 
           div.user-menu-nav {
               vertical-align: middle;
+              i-feather.menu-hint {
+                color: whitesmoke;
+                position: relative;
+                top: 0.9rem;
+                margin-right: 1rem;
+                cursor: pointer;
+
+                @media (max-width: 1150px) {
+                    display: none;
+                }
+              }
 
               img.user-menu-avatar {
                   max-width: 50px;
@@ -32,7 +43,6 @@ div.nav {
                   border-radius: 50%;
                   font-size: 0;
                   vertical-align: middle;
-                  cursor: pointer;
 
                   @media (max-width: 1150px) {
                       max-width: 35px;

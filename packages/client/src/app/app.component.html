@@ -8,7 +8,8 @@
       <header>
         <div class="nav-box">
           <div class="user-menu-nav" *ngIf="currentUser; else signUp">
-            <img matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
+            <i-feather matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="menu-hint" name="menu" (click)="sidenav.toggle()"></i-feather>
+            <img class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
             <div class="user-menu-dropdown">
               <a matTooltip="Alerts" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'notifications']"><i-feather name="bell"></i-feather><span class="stat-counter">0</span></a>
               <a matTooltip="Inbox" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'conversations']"><i-feather name="message-circle"></i-feather><span class="stat-counter">0</span></a>
