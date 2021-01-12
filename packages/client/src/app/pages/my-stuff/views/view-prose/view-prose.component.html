@@ -24,7 +24,23 @@
         </ng-container>
         <span class="tool-divider"></span>
 
+        <!--Content tools-->
+        <button matRipple class="tool" (click)="editWork()">
+            <i-feather name="edit-3"></i-feather>Edit
+        </button>
+        <span class="tool-divider"></span>
+        <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+            <i-feather class="no-text" name="x"></i-feather>
+        </button>
+        <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'">
+            <i-feather class="no-text" name="share"></i-feather>
+        </button>
+        <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip" (click)="deleteWork()">
+            <i-feather class="no-text" name="trash-2"></i-feather>
+        </button>
+
         <!--Filtering tools-->
+        <span class="tool-divider"></span>
         <button matRipple class="tool left disabled" matTooltip="List View" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="list"></i-feather>
         </button>
@@ -35,17 +51,6 @@
             <i-feather class="no-text" name="filter"></i-feather>
         </button>
         <span class="tool-divider"></span>
-
-        <!--Content tools-->
-        <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
-            <i-feather class="no-text" name="x"></i-feather>
-        </button>
-        <button matRipple class="tool mid" matTooltip="Edit" matTooltipClass="offprint-tooltip" (click)="editWork()">
-            <i-feather class="no-text" name="edit-3"></i-feather>
-        </button>
-        <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip" (click)="deleteWork()">
-            <i-feather class="no-text" name="trash-2"></i-feather>
-        </button>
     </div>
     <form class="tool-search">
         <div class="search-bar">
