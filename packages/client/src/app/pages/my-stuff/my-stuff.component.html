@@ -32,11 +32,15 @@
 
         <!--Content tools-->
         <ng-container *ngIf="itemSelected; else noItem">
+            <button matRipple class="tool" (click)="viewContent(currSelectedContent)">
+                <i-feather name="edit-3"></i-feather>Edit
+            </button>
+            <span class="tool-divider"></span>
             <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
-            <button matRipple class="tool mid" (click)="viewContent(currSelectedContent)" matTooltip="Edit" matTooltipClass="offprint-tooltip">
-                <i-feather class="no-text" name="edit-3"></i-feather>
+            <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currSelectedContent}">
+                <i-feather class="no-text" name="share"></i-feather>
             </button>
             <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="trash-2"></i-feather>
@@ -44,11 +48,15 @@
             <span class="tool-divider"></span>
         </ng-container>
         <ng-template #noItem>
+            <button matRipple class="tool disabled">
+                <i-feather name="edit-3"></i-feather>Edit
+            </button>
+            <span class="tool-divider"></span>
             <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
-            <button matRipple class="tool mid disabled" matTooltip="Edit" matTooltipClass="offprint-tooltip">
-                <i-feather class="no-text" name="edit-3"></i-feather>
+            <button matRipple class="tool mid disabled" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'">
+                <i-feather class="no-text" name="share"></i-feather>
             </button>
             <button matRipple class="tool end disabled" matTooltip="Delete" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="trash-2"></i-feather>
@@ -86,6 +94,19 @@
     <button mat-menu-item>By Name</button>
     <button mat-menu-item>By Kind</button>
     <button mat-menu-item>By Date Added</button>
+</mat-menu>
+
+<mat-menu #shareMenu="matMenu">
+    <ng-template matMenuContent let-content="content">
+        <ng-container *ngIf="content.audit.published === 'Published'">
+            <ng-container [ngSwitch]="content.kind">
+                <button mat-menu-item *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(content.author)._id, $any(content.author).username | slugify, 'blog', content._id]">Go to Public Page</button>
+                <button mat-menu-item *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
+                <button mat-menu-item *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', content._id, content.title | slugify]">Go to Public Page</button>
+            </ng-container>
+        </ng-container>
+        <button mat-menu-item (click)="getShareLink(content)">Copy Share Link</button>
+    </ng-template>
 </mat-menu>
 
 <!--<div class="folder-routing">

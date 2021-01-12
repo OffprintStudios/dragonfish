@@ -10,6 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadCoverartComponent } from 'packages/client/src/app/components/modals/works';
+import { UserInfo } from '@pulp-fiction/models/users';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { slugify } from 'voca';
 
 @Component({
     selector: 'view-prose',
@@ -38,7 +41,7 @@ export class ViewProseComponent implements OnInit {
     });
 
     constructor(private stuffService: MyStuffService, private sectionsService: SectionsService, public route: ActivatedRoute, 
-        private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog) {}
+        private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
         this.myProse = this.route.snapshot.data.proseData as ProseContent;
@@ -91,6 +94,16 @@ export class ViewProseComponent implements OnInit {
             this.myProse.audit.published = this.pubStatus.Pending;
         });
     }
+
+    getShareLink() {
+        if (this.myProse.audit.published !== PubStatus.Published) {
+          this.snackBar.open(`Links can only be generated for published content.`);
+          return;
+        }
+        this.clipboard.copy(`https://offprint.net/prose/${this.myProse._id}/${slugify(this.myProse.title)}`);
+        this.snackBar.open(`Copied link!`);
+        return;
+      }
 
     submitForm() {
         if (this.fields.title.invalid) {
