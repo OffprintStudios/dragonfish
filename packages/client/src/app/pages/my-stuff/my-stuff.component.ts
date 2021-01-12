@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
 import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
@@ -145,6 +145,29 @@ export class MyStuffComponent implements OnInit {
       this.stuffService.publishOne(content._id).subscribe(() => {
         content.audit.published = this.pubStatus.Pending;
       });
+    }
+  }
+
+  getLink(content: ContentModel, titleSlug: string, authorSlug: string) {
+    if (content.audit.published !== PubStatus.Published) {
+      this.snackBar.open(`Links can only be generated for published content.`);
+      return;
+    }
+
+    const authorInfo = content.author as UserInfo;
+
+    if (content.kind === ContentKind.BlogContent) {
+      //this.snackBar.open(`Copied link!`);
+      return `https://offprint.net/portfolio/${authorInfo._id}/${authorSlug}/blog/${titleSlug}`;
+    } else if (content.kind === ContentKind.ProseContent) {
+      //this.snackBar.open(`Copied link!`);
+      return `https://offprint.net/prose/${content._id}/${titleSlug}`;
+    } else if (content.kind === ContentKind.PoetryContent) {
+      //this.snackBar.open(`Copied link!`);
+      return `https://offprint.net/poetry/${content._id}/${titleSlug}`;
+    } else {
+      //this.snackBar.open(`Content Kind does not exist.`);
+      return;
     }
   }
 }
