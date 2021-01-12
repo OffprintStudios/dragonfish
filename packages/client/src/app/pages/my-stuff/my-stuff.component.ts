@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
@@ -11,6 +12,7 @@ import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
 import { Constants, Title } from '../../shared';
+import { slugify } from 'voca';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -33,7 +35,7 @@ export class MyStuffComponent implements OnInit {
   });
 
   constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private blogService: BlogsService, private dialog: MatDialog, private snackBar: MatSnackBar) {
+    private blogService: BlogsService, private dialog: MatDialog, private snackBar: MatSnackBar, private clipboard: Clipboard) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
@@ -148,7 +150,7 @@ export class MyStuffComponent implements OnInit {
     }
   }
 
-  getLink(content: ContentModel, titleSlug: string, authorSlug: string) {
+  getShareLink(content: ContentModel) {
     if (content.audit.published !== PubStatus.Published) {
       this.snackBar.open(`Links can only be generated for published content.`);
       return;
@@ -157,17 +159,17 @@ export class MyStuffComponent implements OnInit {
     const authorInfo = content.author as UserInfo;
 
     if (content.kind === ContentKind.BlogContent) {
-      //this.snackBar.open(`Copied link!`);
-      return `https://offprint.net/portfolio/${authorInfo._id}/${authorSlug}/blog/${titleSlug}`;
+      this.clipboard.copy(`https://offprint.net/portfolio/${authorInfo._id}/${slugify(authorInfo.username)}/blog/${slugify(content.title)}`);
     } else if (content.kind === ContentKind.ProseContent) {
-      //this.snackBar.open(`Copied link!`);
-      return `https://offprint.net/prose/${content._id}/${titleSlug}`;
+      this.clipboard.copy(`https://offprint.net/prose/${content._id}/${slugify(content.title)}`);
     } else if (content.kind === ContentKind.PoetryContent) {
-      //this.snackBar.open(`Copied link!`);
-      return `https://offprint.net/poetry/${content._id}/${titleSlug}`;
+      this.clipboard.copy(`https://offprint.net/poetry/${content._id}/${slugify(content.title)}`);
     } else {
-      //this.snackBar.open(`Content Kind does not exist.`);
+      this.snackBar.open(`Content Kind does not exist.`);
       return;
     }
+
+    this.snackBar.open(`Copied link!`);
+    return;
   }
 }
