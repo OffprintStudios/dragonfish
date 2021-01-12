@@ -58,6 +58,7 @@ import { CommentsComponent } from './components/comments';
 import { EditorComponent } from './components/editor';
 import { WorkCardComponent } from './components/work-card/work-card.component';
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
+import { RoleBadgeComponent } from './components/role-badge/role-badge.component';
 
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
@@ -117,7 +118,8 @@ const toolbarOptions = [
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
-    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent
+    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
+    AboutOffprintComponent, RoleBadgeComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

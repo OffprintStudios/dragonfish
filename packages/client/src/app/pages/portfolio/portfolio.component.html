@@ -1,135 +1,46 @@
-<div class="port-container">
-    <div class="port-sidebar">
+<div class="portfolio-header">
+    <div class="portfolio-user-info">
         <div class="port-avatar">
             <img [src]="portUser.profile.avatar">
-            <div class="port-username" style="width: 100%;">
-                <h3 [fittext]="true" [maxFontSize]="50" [minFontSize]="20">{{ portUser.username }}</h3>
-                <ng-container [ngSwitch]="determineProminentRole(portUser.roles)">
-                    <div class="role admin" *ngSwitchCase="'Admin'">
-                        Admin
-                    </div>
-                    <div class="role moderator" *ngSwitchCase="'Moderator'">
-                        Moderator
-                    </div>
-                    <div class="role chat-moderator" *ngSwitchCase="'ChatModerator'">
-                        Chat Moderator
-                    </div>
-                    <div class="role contributor" *ngSwitchCase="'Contributor'">
-                        Contributor
-                    </div>
-                    <div class="role work-approver" *ngSwitchCase="'WorkApprover'">
-                        Work Approver
-                    </div>
-                    <div class="role vip" *ngSwitchCase="'VIP'">
-                        VIP
-                    </div>
-                    <div class="role supporter" *ngSwitchCase="'Supporter'">
-                        Supporter
-                    </div>
-                </ng-container>
-                <p>{{ portUser.profile.bio }}</p>
-            </div>
-            <div class="port-stats">
-                <div class="works" matTooltip="Works" matTooltipClass="offprint-tooltip">
-                    <span class="icon"><i-feather name="feather"></i-feather></span>
-                    <span class="stat">{{ portUser.stats.works | abbreviate }}</span>
-                </div>
-                <div class="blogs" matTooltip="Blogs" matTooltipClass="offprint-tooltip">
-                    <span class="icon"><i-feather name="coffee"></i-feather></span>
-                    <span class="stat">{{ portUser.stats.blogs | abbreviate }}</span>
-                </div>
-                <div class="watchers" matTooltip="Watchers" matTooltipClass="offprint-tooltip">
-                    <span class="icon"><i-feather name="eye"></i-feather></span>
-                    <span class="stat">{{ portUser.stats.watchers | abbreviate }}</span>
-                </div>
-            </div>
         </div>
-        <div class="port-controls" *ngIf="currentUser && !currentUserIsSame()">
-            <button class="control left" matTooltip="Start a Conversation" matTooltipClass="offprint-tooltip"><i-feather name="message-circle"></i-feather></button>
-            <button class="control mid" matTooltip="Send Friend Request" matTooltipClass="offprint-tooltip"><i-feather name="user-plus"></i-feather></button>
-            <button class="control mid" matTooltip="Watch" matTooltipClass="offprint-tooltip"><i-feather name="eye"></i-feather></button>
-            <button class="control right" matTooltip="Report" matTooltipClass="offprint-tooltip"><i-feather name="flag"></i-feather></button>
+        <div class="port-user">
+            <h1 class="username">{{ portUser.username }}</h1>
+            <h3 class="bio" *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h3>
+            <role-badge [roles]="portUser.roles"></role-badge>
         </div>
-        <div class="port-nav">
-            <ul class="navigation-list">
-                <li>
-                    <a [routerLink]="['home']" routerLinkActive="router-link-active">
-                        <span class="link-icon">
-                            <i-feather name="home"></i-feather>
-                        </span>
-                        Home
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['works']" routerLinkActive="router-link-active">
-                        <span class="link-icon">
-                            <i-feather name="feather"></i-feather>
-                        </span>
-                        Works
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['blogs']" routerLinkActive="router-link-active">
-                        <span class="link-icon">
-                            <i-feather name="coffee"></i-feather>
-                        </span>
-                        Blogs
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
-                <li>
-                    <a [routerLink]="['collections']" routerLinkActive="router-link-active">
-                        <span class="link-icon">
-                            <i-feather name="bookmark"></i-feather>
-                        </span>
-                        Collections
-                        <i-feather class="end-point" name="chevron-right"></i-feather>
-                    </a>
-                </li>
-                <ng-container *ngIf="currentUser && currentUserIsSame()">
-                    <li>
-                        <a [routerLink]="['history']" routerLinkActive="router-link-active">
-                            <span class="link-icon">
-                                <i-feather name="layers"></i-feather>
-                            </span>
-                            Reading History
-                            <i-feather class="end-point" name="chevron-right"></i-feather>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['notifications']" routerLinkActive="router-link-active">
-                            <span class="link-icon">
-                                <i-feather name="bell"></i-feather>
-                            </span>
-                            Notifications
-                            <i-feather class="end-point" name="chevron-right"></i-feather>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['conversations']" routerLinkActive="router-link-active">
-                            <span class="link-icon">
-                                <i-feather name="message-circle"></i-feather>
-                            </span>
-                            Conversations
-                            <i-feather class="end-point" name="chevron-right"></i-feather>
-                        </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['settings']" routerLinkActive="router-link-active">
-                            <span class="link-icon">
-                                <i-feather name="settings"></i-feather>
-                            </span>
-                            Settings
-                            <i-feather class="end-point" name="chevron-right"></i-feather>
-                        </a>
-                    </li>
-                </ng-container>
-            </ul>
+        <div class="port-controls">
+            <div class="social-controls">
+                <button class="control top" matTooltip="Watch" matTooltipClass="offprint-tooltip" [matTooltipPosition]="'left'"><i-feather name="eye"></i-feather></button>
+                <button class="control mid" matTooltip="Add Friend" matTooltipClass="offprint-tooltip" [matTooltipPosition]="'left'"><i-feather name="user-plus"></i-feather></button>
+                <button class="control bottom" matTooltip="Send a Message" matTooltipClass="offprint-tooltip" [matTooltipPosition]="'left'"><i-feather name="message-circle"></i-feather></button>
+            </div>
+            <button class="control solo" matTooltip="Report" matTooltipClass="offprint-tooltip" [matTooltipPosition]="'left'"><i-feather name="flag"></i-feather></button>
+        </div>
+        <div class="port-controls mobile">
+            <button [matMenuTriggerFor]="optionsMenu" class="control solo" [matTooltip]="'Controls'" [matTooltipClass]="'offprint-tooltip'" [matTooltipPosition]="'left'"><i-feather name="more-vertical"></i-feather></button>
         </div>
     </div>
-    <div class="port-body">
-        <router-outlet></router-outlet>
+    <div class="portfolio-nav">
+        <a [routerLink]="['home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span>Home</a>
+        <a [routerLink]="['works']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="feather"></i-feather></span>{{ portUser.stats.works }} Work{{ portUser.stats.works | pluralize }}</a>
+        <a [routerLink]="['blogs']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="coffee"></i-feather></span>{{ portUser.stats.blogs }} Blog{{ portUser.stats.blogs | pluralize }}</a>
+        <a [routerLink]="['collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections</a>
+        <ng-container *ngIf="currentUser && currentUserIsSame()">
+            <a [routerLink]="['history']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="layers"></i-feather></span>History</a>
+            <a [routerLink]="['notifications']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bell"></i-feather></span>Notifications</a>
+            <a [routerLink]="['conversations']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="message-circle"></i-feather></span>Messages</a>
+            <a [routerLink]="['settings']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="settings"></i-feather></span>Settings</a>
+        </ng-container>
     </div>
+</div>
+
+<mat-menu xPosition="before" #optionsMenu="matMenu">
+    <button mat-menu-item><i-feather name="eye"></i-feather>Watch</button>
+    <button mat-menu-item><i-feather name="user-plus"></i-feather>Add Friend</button>
+    <button mat-menu-item><i-feather name="message-circle"></i-feather>Send a Message</button>
+    <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+</mat-menu>
+
+<div class="portfolio-body">
+    <router-outlet></router-outlet>
 </div>
