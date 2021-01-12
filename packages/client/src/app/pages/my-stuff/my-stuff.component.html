@@ -98,10 +98,12 @@
 
 <mat-menu #shareMenu="matMenu">
     <ng-template matMenuContent let-content="content">
-        <ng-container [ngSwitch]="content.kind">
-            <button mat-menu-item *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(content.author)._id, $any(content.author).username | slugify, 'blog', content._id]">Go to Public Page</button>
-            <button mat-menu-item *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
-            <button mat-menu-item *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', content._id, content.title | slugify]">Go to Public Page</button>
+        <ng-container *ngIf="content.audit.published === 'Published'">
+            <ng-container [ngSwitch]="content.kind">
+                <button mat-menu-item *ngSwitchCase="contentKind.BlogContent" [routerLink]="['/portfolio', $any(content.author)._id, $any(content.author).username | slugify, 'blog', content._id]">Go to Public Page</button>
+                <button mat-menu-item *ngSwitchCase="contentKind.ProseContent" [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
+                <button mat-menu-item *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', content._id, content.title | slugify]">Go to Public Page</button>
+            </ng-container>
         </ng-container>
         <button mat-menu-item (click)="getShareLink(content)">Copy Share Link</button>
     </ng-template>

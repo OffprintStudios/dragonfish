@@ -62,7 +62,9 @@
 
 <mat-menu #shareMenu="matMenu">
     <ng-template matMenuContent let-content="content">
-        <button mat-menu-item [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
+        <ng-container *ngIf="content.audit.published === 'Published'">
+            <button mat-menu-item [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
+        </ng-container>
         <button mat-menu-item (click)="getShareLink()">Copy Share Link</button>
     </ng-template>
 </mat-menu>
