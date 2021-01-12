@@ -13,6 +13,11 @@ div.portfolio-header {
         margin-top: 1.25rem;
     }
 
+    @media (max-width: 1000px) {
+        width: 95%;
+        margin-top: 1.25rem;
+    }
+
     div.portfolio-user-info {
         display: flex;
         flex-direction: row;
@@ -150,7 +155,7 @@ div.portfolio-header {
         background: linear-gradient(180deg, var(--site-accent-hover), var(--site-accent));
         font-size: 18px;
 
-        @media (max-width: 700px) {
+        @media (max-width: 1150px) {
             display: block;
             white-space: nowrap;
             overflow-x: scroll;
@@ -170,6 +175,11 @@ div.portfolio-header {
                 display: inline-block;
                 padding: 6px 12px;
                 font-size: 14px;
+            }
+
+            @media (max-width: 1150px) {
+                display: inline-block;
+                font-size: 18px;
             }
 
             &:hover {
