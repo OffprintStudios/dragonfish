@@ -39,7 +39,7 @@
             <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
-            <button matRipple class="tool mid" [matTooltip]="'Get Share Link'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currSelectedContent}">
+            <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currSelectedContent}">
                 <i-feather class="no-text" name="share"></i-feather>
             </button>
             <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">

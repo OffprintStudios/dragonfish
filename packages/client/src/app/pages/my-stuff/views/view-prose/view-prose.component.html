@@ -32,7 +32,7 @@
         <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="x"></i-feather>
         </button>
-        <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'">
+        <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: myProse}">
             <i-feather class="no-text" name="share"></i-feather>
         </button>
         <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip" (click)="deleteWork()">
@@ -59,6 +59,13 @@
         </div>
     </form>
 </div>
+
+<mat-menu #shareMenu="matMenu">
+    <ng-template matMenuContent let-content="content">
+        <button mat-menu-item [routerLink]="['/prose', content._id, content.title | slugify]">Go to Public Page</button>
+        <button mat-menu-item (click)="getShareLink()">Copy Share Link</button>
+    </ng-template>
+</mat-menu>
 
 <div class="view-container">
     <div class="view-info">
