@@ -66,7 +66,8 @@ export class UsersService {
             
         const newFavColl: CollectionForm = {
             name: 'Favorites',
-            desc: `For the stories I'd rather never forget.`
+            desc: `For the stories I'd rather never forget.`,
+            public: false
         };
         await this.collsService.createCollection(newUser._id, newFavColl);
 
