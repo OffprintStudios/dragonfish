@@ -374,8 +374,6 @@ export class UsersService {
             {"audit.roles": "WorkApprover"}
         ]});
 
-        console.log(userList);
-
         let frontendUserList = Array<models.FrontendUser>();
         userList.forEach(async user => {
             frontendUserList.push(await this.buildFrontendUser(user));
