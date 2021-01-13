@@ -4,3 +4,5 @@ export { CodeOfConductComponent } from './code-of-conduct/code-of-conduct.compon
 export { AboutOffprintComponent } from './about-offprint/about-offprint.component';
 export { SiteStaffComponent } from './site-staff/site-staff.component';
 export { SiteStaffResolver } from './site-staff/site-staff.resolver';
+export { SupportersComponent } from './supporters/supporters.component';
+export { SupportersResolver } from './supporters/supporters.resolver';

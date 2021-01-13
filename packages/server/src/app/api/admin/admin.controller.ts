@@ -10,4 +10,9 @@ export class AdminController {
     async getSiteStaff(): Promise<FrontendUser[]> {
         return await this.usersService.getSiteStaff();
     }
+
+    @Get('supporters')
+    async getSupporters(): Promise<FrontendUser[]> {
+        return await this.usersService.getSupporters();
+    }
 }
