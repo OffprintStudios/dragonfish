@@ -6,7 +6,7 @@
         <div class="port-user">
             <h1 class="username">{{ portUser.username }}</h1>
             <h3 class="bio" *ngIf="portUser.profile.bio">{{ portUser.profile.bio }}</h3>
-            <role-badge [roles]="portUser.roles"></role-badge>
+            <role-badge [roles]="portUser.roles" [isCentered]="false"></role-badge>
         </div>
         <div class="port-controls">
             <div class="social-controls">
