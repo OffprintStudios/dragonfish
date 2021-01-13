@@ -2,8 +2,8 @@
     <div class="user-avatar">
         <img [src]="user.profile.avatar">
     </div>
-    <div class="user-info">
-        <h2 [fittext]="true" [maxFontSize]="50" [minFontSize]="20"><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h2>
+    <div class="user-info" #infoContainer>
+        <h2 [fittext]="true" [activateOnResize]="true" [container]="infoContainer"><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h2>
         <role-badge [roles]="user.roles"></role-badge>
         <h3>{{ user.profile.bio }}</h3>
     </div>
