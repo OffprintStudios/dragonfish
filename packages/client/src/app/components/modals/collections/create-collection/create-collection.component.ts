@@ -17,7 +17,8 @@ export class CreateCollectionComponent implements OnInit {
 
   createCollectionForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
-    desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)])
+    desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
+    public: new FormControl(false)
   });
 
   constructor(private collsService: CollectionsService, private snackbar: MatSnackBar, 
@@ -29,7 +30,8 @@ export class CreateCollectionComponent implements OnInit {
       this.currColl = this.data.currColl;
       this.createCollectionForm.setValue({
         name: this.currColl.name,
-        desc: this.currColl.desc
+        desc: this.currColl.desc,
+        public: this.currColl.audit.isPublic
       });
     } else {
       this.editMode = false;
@@ -57,7 +59,8 @@ export class CreateCollectionComponent implements OnInit {
 
     const collForm: CollectionForm = {
       name: this.fields.name.value,
-      desc: this.fields.desc.value
+      desc: this.fields.desc.value,
+      public: this.fields.public.value
     };
 
     if (this.editMode === true) {

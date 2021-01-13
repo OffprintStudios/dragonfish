@@ -13,6 +13,10 @@
                 <mat-label>Description</mat-label>
                 <textarea matInput placeholder="Full of all the things I love" formControlName="desc"></textarea>
             </mat-form-field>
+
+            <div class="private-toggle">
+                <span class="before-text">Private</span><mat-slide-toggle formControlName="rememberMe">Public</mat-slide-toggle>
+            </div>
         </form>
     </div>
 </mat-dialog-content>
