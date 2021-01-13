@@ -42,6 +42,16 @@ export class SectionItemComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(): void {
+        // First, clear the contents of the Body and Author's Note. This is because
+        // Quill REALLY struggles when making large changes. However, going to
+        // or from an empty string is very fast.
+        this.editForm.setValue({
+            title: "",
+            body: "",
+            authorsNote: "",
+            authorsNotePos: AuthorsNotePos.Bottom
+        });
+
         this.editForm.setValue({
             title: this.section.title,
             body: this.section.body,
