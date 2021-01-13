@@ -366,4 +366,21 @@ export class UsersService {
     async getUserCount(): Promise<number> {
         return await this.userModel.estimatedDocumentCount().where("audit.isDeleted", false);
     }
+
+    async getSiteStaff(): Promise<models.FrontendUser[]> {
+        const userList = await this.userModel.find({"audit.isDeleted": false, $or: [
+            {"audit.roles": "Admin"},
+            {"audit.roles": "Moderator"},
+            {"audit.roles": "WorkApprover"}
+        ]});
+
+        console.log(userList);
+
+        let frontendUserList = Array<models.FrontendUser>();
+        userList.forEach(async user => {
+            frontendUserList.push(await this.buildFrontendUser(user));
+        });
+
+        return frontendUserList;
+    }
 }
