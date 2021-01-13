@@ -11,7 +11,7 @@ div.nav {
           display: flex;
           flex-direction: row;
           margin: 0 auto 0 auto;
-          justify-content: space-between;
+          //justify-content: space-between;
           align-items: center;
           max-width: 80%;
 
@@ -68,8 +68,8 @@ div.nav {
                       i-feather {
                           margin-left: 1rem;
                           position: relative;
-                          width: 20px;
-                          height: 20px;
+                          width: 16px;
+                          height: 16px;
 
                           @media (max-width: 992px) { //--large
                               margin-left: 0.5rem;
@@ -80,7 +80,7 @@ div.nav {
                           position: relative;
                           top: -0.5rem;
                           margin-left: 0.5rem;
-                          font-size: 20px;
+                          font-size: 16px;
                       }
                   }
               }
@@ -129,11 +129,12 @@ div.nav {
 
           div.site-logo {
               position: relative;
-              vertical-align: middle;
               text-align: center;
+              justify-self: center;
               flex: 1;
               font-size: 0;
               cursor: pointer;
+              margin-left: 2rem;
               img {
                 max-width: 300px;
                 max-height: 300px;
@@ -164,6 +165,10 @@ div.nav {
                   @media (max-width: 1150px) {
                       display: none;
                   }
+            }
+
+            @media (max-width: 1150px) {
+                margin-left: 0;
             }
           }
 
