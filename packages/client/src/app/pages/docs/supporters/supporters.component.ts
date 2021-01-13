@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FrontendUser } from '@pulp-fiction/models/users';
 
 @Component({
     selector: 'supporters',
@@ -6,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./supporters.component.less']
 })
 export class SupportersComponent implements OnInit {
-    constructor() {}
+    supporters: FrontendUser[];
 
-    ngOnInit(): void {}
+    constructor(private route: ActivatedRoute) {}
+
+    ngOnInit(): void {
+        this.supporters = this.route.snapshot.data.supporterData as FrontendUser[];
+    }
 }
