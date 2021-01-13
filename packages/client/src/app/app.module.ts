@@ -47,7 +47,7 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { PostFormComponent } from './pages/dash/news-management';
-import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent } from './pages/docs';
+import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent, SupportersComponent } from './pages/docs';
 
 import { UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -119,7 +119,7 @@ const toolbarOptions = [
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
-    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent
+    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

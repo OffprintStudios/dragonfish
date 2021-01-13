@@ -35,7 +35,8 @@ import { ApprovalQueueResolver } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
 import { Roles } from '@pulp-fiction/models/users';
 
-import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver } from './pages/docs';
+import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver,
+  SupportersComponent, SupportersResolver } from './pages/docs';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -85,6 +86,7 @@ const routes: Routes = [
     {path: 'what-is-offprint', component: AboutOffprintComponent},
     {path: 'code-of-conduct', component: CodeOfConductComponent},
     {path: 'site-staff', component: SiteStaffComponent, resolve: {staffData: SiteStaffResolver}, runGuardsAndResolvers: 'always'},
+    {path: 'supporters', component: SupportersComponent, resolve: {supporterData: SupportersResolver}, runGuardsAndResolvers: 'always'},
     {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
@@ -112,7 +114,7 @@ const routes: Routes = [
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
-      ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver
+      ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver
     ]
 })
 export class AppRoutingModule {}
