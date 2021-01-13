@@ -47,9 +47,7 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { PostFormComponent } from './pages/dash/news-management';
-import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent } from './pages/docs';
-
-import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
+import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent } from './pages/docs';
 
 import { UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -110,7 +108,7 @@ const toolbarOptions = [
     SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
-    DocsPageComponent, SiteStaffComponent, CreateCollectionComponent, SocialComponent,
+    SiteStaffComponent, CreateCollectionComponent, SocialComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,

@@ -12,8 +12,6 @@ import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComp
   
 import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
   
-import { SiteStaffComponent } from './pages/docs-page';
-  
 import { RegisterComponent } from './pages/account';
   
 import { AuthGuard } from './services/auth';
@@ -37,7 +35,7 @@ import { ApprovalQueueResolver } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
 import { Roles } from '@pulp-fiction/models/users';
 
-import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent } from './pages/docs';
+import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent } from './pages/docs';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
