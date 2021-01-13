@@ -9,6 +9,7 @@ import { Roles } from '@pulp-fiction/models/users';
 })
 export class RoleBadgeComponent implements OnInit {
     @Input() roles: Roles[];
+    @Input() isCentered: boolean;
 
     constructor() {}
 
@@ -19,7 +20,7 @@ export class RoleBadgeComponent implements OnInit {
      * 
      * @param roles The roles to check
      */
-    determineProminentRole() {
+    determineProminentRole(): Roles {
         // this will totally need retooling to figure out a much better way to verify what the top-level
         // role is
         const hasAdmin = lodash.intersection([Roles.Admin], this.roles);
@@ -46,6 +47,14 @@ export class RoleBadgeComponent implements OnInit {
             return Roles.Supporter;
         } else {
             return Roles.User;
+        }
+    }
+
+    determineCentering() {
+        if (this.isCentered === true) {
+            return {'margin': '0 auto 1.5rem auto'};
+        } else {
+            return {'margin': '0 0 1.5rem 0'};
         }
     }
 }

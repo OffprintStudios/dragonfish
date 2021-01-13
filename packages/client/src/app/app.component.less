@@ -22,7 +22,9 @@ div.nav {
           }
 
           div.user-menu-nav {
+              width: 135px;
               vertical-align: middle;
+              text-align: left;
               i-feather.menu-hint {
                 color: whitesmoke;
                 position: relative;
@@ -134,7 +136,6 @@ div.nav {
               flex: 1;
               font-size: 0;
               cursor: pointer;
-              margin-left: 2rem;
               img {
                 max-width: 300px;
                 max-height: 300px;
@@ -166,21 +167,16 @@ div.nav {
                       display: none;
                   }
             }
-
-            @media (max-width: 1150px) {
-                margin-left: 0;
-            }
           }
 
           div.search-menu {
-              vertical-align: middle;
-
+              width: 135px;
+              text-align: right;
               button.search {
                   margin-bottom: 0;
                   background-color: var(--site-accent);
                   color: whitesmoke;
                   border: 1px solid whitesmoke;
-                  box-shadow: none;
 
                   &:hover {
                       background-color: var(--site-accent-hover);
@@ -196,9 +192,9 @@ div.nav {
                   margin-bottom: 0;
                   background-color: var(--site-accent);
                   border: 1px solid whitesmoke;
-                  box-shadow: none;
                   padding-left: 5px;
                   padding-right: 5px;
+                  float: right;
 
                   &:hover {
                       background-color: var(--site-accent-hover);
