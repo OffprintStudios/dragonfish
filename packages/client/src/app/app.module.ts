@@ -47,9 +47,7 @@ import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from '.
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { PostFormComponent } from './pages/dash/news-management';
-import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent } from './pages/docs';
-
-import { DocsPageComponent, SiteStaffComponent } from './pages/docs-page';
+import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent } from './pages/docs';
 
 import { UploadCoverartComponent } from './components/modals/works';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -60,6 +58,7 @@ import { EditorComponent } from './components/editor';
 import { WorkCardComponent } from './components/work-card/work-card.component';
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
 import { RoleBadgeComponent } from './components/role-badge/role-badge.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
 
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
@@ -110,7 +109,7 @@ const toolbarOptions = [
     SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
-    DocsPageComponent, SiteStaffComponent, CreateCollectionComponent, SocialComponent,
+    SiteStaffComponent, CreateCollectionComponent, SocialComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
@@ -120,7 +119,7 @@ const toolbarOptions = [
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
-    AboutOffprintComponent, RoleBadgeComponent
+    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 

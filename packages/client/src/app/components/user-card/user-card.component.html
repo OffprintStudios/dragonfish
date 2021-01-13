@@ -1,0 +1,24 @@
+<div class="user-card-container">
+    <div class="user-avatar">
+        <img [src]="user.profile.avatar">
+    </div>
+    <div class="user-info" #infoContainer>
+        <h2 [fittext]="true" [activateOnResize]="true" [container]="infoContainer"><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h2>
+        <role-badge [roles]="user.roles"></role-badge>
+        <h3>{{ user.profile.bio }}</h3>
+    </div>
+    <div class="user-stats">
+        <div class="works" matTooltip="Works" matTooltipClass="offprint-tooltip">
+            <span class="icon"><i-feather name="feather"></i-feather></span>
+            <span class="stat">{{ user.stats.works | abbreviate }}</span>
+        </div>
+        <div class="blogs" matTooltip="Blogs" matTooltipClass="offprint-tooltip">
+            <span class="icon"><i-feather name="coffee"></i-feather></span>
+            <span class="stat">{{ user.stats.blogs | abbreviate }}</span>
+        </div>
+        <div class="watchers" matTooltip="Watchers" matTooltipClass="offprint-tooltip">
+            <span class="icon"><i-feather name="eye"></i-feather></span>
+            <span class="stat">{{ user.stats.watchers | abbreviate }}</span>
+        </div>
+    </div>
+</div>
