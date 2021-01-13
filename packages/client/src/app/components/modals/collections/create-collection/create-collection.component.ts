@@ -63,8 +63,6 @@ export class CreateCollectionComponent implements OnInit {
       public: this.fields.public.value
     };
 
-    console.log(collForm);
-
     if (this.editMode === true) {
       this.collsService.editCollection(this.currColl._id, collForm).subscribe(() => {
         this.dialogRef.close();

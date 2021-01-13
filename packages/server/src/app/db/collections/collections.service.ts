@@ -20,8 +20,6 @@ export class CollectionsService {
      * @param collForm The collection's information
      */
     async createCollection(userId: string, collForm: CollectionForm): Promise<CollectionDocument> {
-        console.log(collForm);
-        
         const newCollection = new this.collModel({
             'owner': userId,
             'name': collForm.name,
