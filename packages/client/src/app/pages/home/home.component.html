@@ -3,6 +3,7 @@
         <div class="home-news-header">
             <h3 class="header">All the Latest</h3>
             <button class="see-more" [routerLink]="['/home/news']">See More</button>
+            <button class="see-more-mobile" [routerLink]="['/home/news']"><i-feather name="arrow-right"></i-feather></button>
         </div>
         <ngu-carousel #newsCarousel [inputs]="newsOptions" [dataSource]="initialPosts">
             <ngu-tile *nguCarouselDef="let post; let i = index">

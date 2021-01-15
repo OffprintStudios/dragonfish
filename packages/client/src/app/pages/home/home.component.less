@@ -17,11 +17,41 @@ div.home-news {
         flex-direction: row;
         align-items: center;
         border-bottom: 1px solid var(--site-borders);
+
+        @media (max-width: 700px) {
+            padding: 0 1.5rem 0 1.5rem;
+        }
+
         h3.header {
             font-weight: 500;
             font-size: 36px;
             margin: 0;
             flex: 1;
+
+            @media (max-width: 700px) {
+                font-size: 26px;
+            }
+        }
+
+        button.see-more {
+            @media (max-width: 700px) {
+                display: none;
+            }
+        }
+
+        button.see-more-mobile {
+            display: none;
+            padding: 5px 10px;
+
+            i-feather {
+                position: relative;
+                top: -0.04rem;
+                stroke-width: 1;
+            }
+
+            @media (max-width: 700px) {
+                display: block;
+            }
         }
     }
 
@@ -84,11 +114,13 @@ div.home-news {
         &.left {
             left: 0;
             border-left: none;
+            box-shadow: 10px 0px 10px 1px rgba(0,0,0,0.2);
         }
 
         &.right {
             right: 0;
             border-right: none;
+            box-shadow: -10px 0px 10px 1px rgba(0,0,0,0.2);
         }
 
         i-feather {
