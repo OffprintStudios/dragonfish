@@ -7,18 +7,10 @@ import { NewsContentModel } from '@pulp-fiction/models/content';
 import { NewsService } from '../../services/content';
 
 @Injectable()
-export class HomePageResolver implements Resolve<PaginateResult<NewsContentModel>> {
-    pageNum: number = 1;
-
+export class HomePageResolver implements Resolve<NewsContentModel[]> {
     constructor (private newsService: NewsService) { }
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<NewsContentModel>> {
-        const pageNum = +route.queryParamMap.get('page');
-
-        if (pageNum) {
-            this.pageNum = pageNum;
-        }
-
-        return this.newsService.getNewsFeed(this.pageNum);
+    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<NewsContentModel[]> {
+        return this.newsService.getInitialPosts();
     }
 }
