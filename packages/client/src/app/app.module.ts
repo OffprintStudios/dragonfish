@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
 import { MaterialModule } from '@pulp-fiction/material';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -123,7 +122,7 @@ const toolbarOptions = [
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
-    AlertsModule, FileUploadModule, NgSelectModule, ImageCropperModule, NgxPaginationModule,
+    AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule,
     MarkdownModule.forRoot(),
