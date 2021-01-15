@@ -1,5 +1,9 @@
+import { Injectable } from '@angular/core';
 import { NguCarouselConfig } from '@ngu/carousel';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class CarouselOptionsManager {
     private newsConfig: NguCarouselConfig = {
         grid: {xs: 1, sm: 1, md: 3, lg: 3, all: 0},
