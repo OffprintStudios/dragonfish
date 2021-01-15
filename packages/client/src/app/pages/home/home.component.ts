@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Constants } from '../../shared/constants';
+import { Title } from '../../shared';
 
 @Component({
   selector: 'app-home',
@@ -15,5 +16,7 @@ export class HomeComponent implements OnInit {
   constructor(private authService: AuthService) {
     this.authService.currUser.subscribe(x => this.currentUser = x);
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    Title.setTwoPartTitle(Constants.HOME);
+  }
 }
