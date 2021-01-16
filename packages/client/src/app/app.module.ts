@@ -21,6 +21,7 @@ import { IconsModule } from '@pulp-fiction/icons';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';
+import { NguCarouselModule } from '@ngu/carousel';
 
 import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
@@ -124,7 +125,7 @@ const toolbarOptions = [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
-    LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule,
+    LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({

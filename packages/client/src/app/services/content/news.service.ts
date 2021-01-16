@@ -16,6 +16,19 @@ export class NewsService {
   constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
 
   /**
+   * Gets the inital posts for the home page.
+   */
+  public getInitialPosts() {
+    return this.http.get<NewsContentModel[]>(`${this.url}/initial-posts`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(`${err.error.message}`);
+        return throwError(err);
+      }));
+  }
+
+  /**
    * Fetches a page of news results.
    * 
    * @param pageNum The current page

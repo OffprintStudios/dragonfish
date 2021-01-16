@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentRating, NewsForm, PubStatus } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentRating, NewsContentModel, NewsForm, PubStatus } from '@pulp-fiction/models/content';
 import { Roles, UserInfo } from '@pulp-fiction/models/users';
 import { countPlaintextWords } from '@pulp-fiction/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
@@ -122,6 +122,51 @@ export class NewsService {
         } else {
             throw new UnauthorizedException(`You don't have permission to publish this.`);
         }
+    }
+
+    /**
+     * Fetches for the home page.
+     */
+    async fetchForHome(filter: ContentFilter): Promise<NewsContentModel[]> {
+        let query = {'audit.isDeleted': false, 'audit.published': PubStatus.Published};
+        let filteredQuery = await this.determineContentFilter(query, filter);
+        return await this.newsModel.find(filteredQuery).sort({'audit.publishedOn': -1}).limit(6);
+    }
+
+    /**
+     * Determines which settings to apply on the content filter by checking a user's filter settings.
+     * 
+     * @param query The query to add to
+     * @param filter The current filter settings
+     */
+    async determineContentFilter(query: any, filter: ContentFilter) {
+        switch (filter) {
+            case ContentFilter.Everything: 
+                query = query;
+                break;
+            case ContentFilter.MatureEnabled:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}, 
+                    {'meta.rating': ContentRating.Mature}
+                ];
+                break;
+            case ContentFilter.ExplicitEnabled:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}, 
+                    {'meta.rating': ContentRating.Explicit}
+                ];
+                break;
+            default:
+                query['$or'] = [
+                    {'meta.rating': ContentRating.Everyone}, 
+                    {'meta.rating': ContentRating.Teen}
+                ];
+                break;
+        }
+
+        return query;
     }
 
     /**
