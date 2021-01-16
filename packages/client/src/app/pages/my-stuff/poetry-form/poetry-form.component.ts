@@ -40,7 +40,7 @@ export class PoetryFormComponent implements OnInit {
       private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-      const data = this.route.snapshot.data.poetryData as PoetryContent;
+      const data = this.route.snapshot.data.contentData as PoetryContent;
       if (data) {
         this.currPoetry = data;
         this.editMode = true;

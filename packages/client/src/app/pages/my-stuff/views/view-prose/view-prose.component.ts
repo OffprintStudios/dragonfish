@@ -44,7 +44,7 @@ export class ViewProseComponent implements OnInit {
         private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
-        this.myProse = this.route.snapshot.data.proseData as ProseContent;
+        this.myProse = this.route.snapshot.data.contentData as ProseContent;
         this.fetchData();
     }
 

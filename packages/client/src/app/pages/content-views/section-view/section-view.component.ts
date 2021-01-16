@@ -5,6 +5,8 @@ import { AuthorsNotePos, Section } from '@pulp-fiction/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
 
+import { Title } from '../../../shared';
+
 @Component({
     selector: 'section-view',
     templateUrl: './section-view.component.html',
@@ -21,6 +23,8 @@ export class SectionViewComponent implements OnInit {
 
     authorsNotePosOptions = AuthorsNotePos;
 
+    currContent: ContentModel;
+
     constructor(private contentService: ContentService, private route: ActivatedRoute, private router: Router) {
         this.fetchData();
     }
@@ -29,6 +33,10 @@ export class SectionViewComponent implements OnInit {
 
     private fetchData() {
         this.loading = true;
+
+        const pageData = this.route.parent.snapshot.data.contentData;
+        this.currContent = pageData.content as ContentModel;
+
         this.route.paramMap.subscribe(params => {
             this.currIndex = +params.get('sectionNum') - 1;
             this.indexNext = this.currIndex + 1;
@@ -37,6 +45,8 @@ export class SectionViewComponent implements OnInit {
             this.contentService.fetchOneSection(this.sections[this.currIndex]._id).subscribe(data => {
                 this.thisSection = data;
                 this.loading = false;
+
+                Title.setThreePartTitle(this.currContent.title, this.thisSection.title);
             });
         });
     }
