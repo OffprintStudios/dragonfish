@@ -2408,6 +2408,13 @@
     enhanced-resolve "5.3.1"
     webpack-sources "2.0.1"
 
+"@ngu/carousel@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@ngu/carousel/-/carousel-3.0.2.tgz#e0349e32344655a63fce82c580560365a06c09fd"
+  integrity sha512-EGvCs0LoStIKJoJfQWGeEs1RYHOgxZiSiqi6Thr7F9NVPvJkkwxlSh40uA6AQoWIv6WWhhNr1Imrbp27NZGs6Q==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngx-loading-bar/core@^5.1.1":
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/@ngx-loading-bar/core/-/core-5.1.1.tgz#eb95bbdd9d880c9dd93ae089c47b37cfd63b0b18"
