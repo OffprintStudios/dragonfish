@@ -33,7 +33,7 @@ export class ProsePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
-            const pageData = data.proseData as ContentPage;
+            const pageData = data.contentData as ContentPage;
             this.currProse = pageData.content as ProseContent;
             
             if (pageData.history !== null) {

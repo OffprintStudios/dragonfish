@@ -45,7 +45,7 @@ export class ViewPoetryComponent implements OnInit {
         private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
-        this.myPoetry = this.route.snapshot.data.poetryData as PoetryContent;
+        this.myPoetry = this.route.snapshot.data.contentData as PoetryContent;
         this.fetchData();
     }
 

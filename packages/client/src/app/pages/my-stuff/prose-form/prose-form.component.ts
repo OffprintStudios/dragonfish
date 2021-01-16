@@ -35,7 +35,7 @@ export class ProseFormComponent implements OnInit {
     constructor(private route: ActivatedRoute, private proseService: ProseService, private snackBar: MatSnackBar, private location: Location) {}
 
     ngOnInit(): void {
-      const data = this.route.snapshot.data.proseData as ProseContent;
+      const data = this.route.snapshot.data.contentData as ProseContent;
       if (data) {
         this.currProse = data;
         this.editMode = true;
