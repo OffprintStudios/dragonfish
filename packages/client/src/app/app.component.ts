@@ -11,6 +11,7 @@ import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
+import { NotificationsService } from './services/user';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -31,12 +32,14 @@ export class AppComponent implements OnInit, AfterViewInit {
   rotatingSlogan: string;
 
   constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService) {
+    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
 
     this.fetchFrontPageStats();
+
+    this.notif.getNotificationStream().subscribe(data => console.log(data));
 
     // Sets the current site theme based on user preference
     if (this.currentUser) {
