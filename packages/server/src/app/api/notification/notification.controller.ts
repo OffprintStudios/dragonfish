@@ -7,7 +7,7 @@ import { UnsubscribeResult } from '../../db/notifications/unsubscribe-result.mod
 import { RolesGuard } from '../../guards';
 
 
-@Controller('notification')
+@Controller()
 export class NotificationController {
     constructor(private readonly notificationsService: NotificationsService) {}
 
