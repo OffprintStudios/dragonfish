@@ -33,7 +33,7 @@ import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler,
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, NotificationsComponent as PortNotifications, ConversationsComponent as PortConversations,
+  BlogsComponent, CollectionsComponent, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
 import { CollectionPageComponent } from './pages/portfolio/collections';
 
@@ -113,7 +113,7 @@ const toolbarOptions = [
     AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
     EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    PostPageComponent, PortNotifications, PortConversations, MyStuffComponent, BlogFormComponent, 
+    PostPageComponent, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
     SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
