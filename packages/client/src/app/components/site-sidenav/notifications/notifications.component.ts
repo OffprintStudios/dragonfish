@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { NotificationBase, NotificationKind } from '@pulp-fiction/models/notifications';
 import { NotificationsService } from '../../../services/user';
 
 @Component({
@@ -12,6 +12,7 @@ export class NotificationsComponent implements OnInit {
 
   unread: NotificationBase[];
   read: NotificationBase[];
+  unreadTotal = 0;
 
   viewRead = false;
 
@@ -37,6 +38,8 @@ export class NotificationsComponent implements OnInit {
     this.loading = true;
     this.notif.getAllNotifications().subscribe(data => {
       this.unread = data.filter(val => { return val.read !== true });
+      console.log(this.unread);
+      this.unreadTotal = this.unread.length;
       this.read = data.filter(val => { return val.read === true });
     });
   }

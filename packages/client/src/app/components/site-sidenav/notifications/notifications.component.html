@@ -2,26 +2,54 @@
     <div class="notifications-header">
         <div class="view-toggle">
             <ng-container *ngIf="viewRead; else viewUnread">
-                <button class="control left" (click)="switchView()">Unread</button>
-                <button class="control right active">Read</button>
+                <button matRipple class="control left" (click)="switchView()">Unread</button>
+                <button matRipple class="control right active">Read</button>
             </ng-container>
             <ng-template #viewUnread>
-                <button class="control left active">Unread</button>
-                <button class="control right" (click)="switchView()">Read</button>
+                <button matRipple class="control left active">Unread</button>
+                <button matRipple class="control right" (click)="switchView()">Read</button>
             </ng-template>
         </div>
-        <button class="control">Mark As Read</button>
+        <button matRipple class="control disabled">Mark As Read</button>
     </div>
     <div class="notifications-container">
         <ng-container *ngIf="viewRead; else listUnread">
-            <ng-container *ngFor="let notif of read">
-
-            </ng-container>
+            <ul class="notif-list">
+                <ng-container *ngFor="let notif of read">
+                    <li>
+                        <a>
+                            <span class="notif-type">
+                                <i-feather name="message-circle"></i-feather>
+                            </span>
+                            <span class="notif-body">
+                                {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
+                            </span>
+                            <span class="notif-time">
+                                {{ notif.createdAt | localedate: 'shortTime'}}
+                            </span>
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
         </ng-container>
         <ng-template #listUnread>
-            <ng-container *ngFor="let notif of unread">
-
-            </ng-container>
+            <ul class="notif-list">
+                <ng-container *ngFor="let notif of unread">
+                    <li>
+                        <a>
+                            <span class="notif-type">
+                                <i-feather name="message-circle"></i-feather>
+                            </span>
+                            <span class="notif-body">
+                                {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
+                            </span>
+                            <span class="notif-time">
+                                {{ notif.createdAt | date: 'shortTime'}}
+                            </span>
+                        </a>
+                    </li>
+                </ng-container>
+            </ul>
         </ng-template>
     </div>
 </ng-container>

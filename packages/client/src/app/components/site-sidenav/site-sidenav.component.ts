@@ -31,6 +31,8 @@ export class SiteSidenavComponent implements OnInit {
   loadingLogin = false;
   siteVersion = Constants.siteVersion;
 
+  notifCount: number = 0;
+
   loginForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
@@ -53,6 +55,7 @@ export class SiteSidenavComponent implements OnInit {
       this.histComponent.fetchData();
     } else if (event.index === 3) {
       this.notifComponent.fetchData();
+      this.notifCount = this.notifComponent.unreadTotal;
     }
   }
 
