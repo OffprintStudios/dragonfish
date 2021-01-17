@@ -1,0 +1,40 @@
+div.notifications-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid whitesmoke;
+    margin-top: 1.5rem;
+
+    button.control {
+        padding: 5px 10px;
+        line-height: 20px;
+
+        &.left {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        &.right {
+            border-left: none;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        &.active {
+            background: var(--site-accent);
+            
+            &:hover {
+                background: var(--site-accent-hover);
+            }
+        }
+    }
+
+    div.view-toggle {
+        flex: 1;
+        text-align: left;
+    }
+}
+
+div.notifications-container {
+    
+}

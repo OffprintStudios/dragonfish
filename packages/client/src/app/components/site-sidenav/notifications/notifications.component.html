@@ -1,9 +1,36 @@
-<div style="margin-top: 1.25rem; text-align: center;">
-    <h4 style="color: whitesmoke;">Pardon the dust!</h4>
-    <p style="color: whitesmoke; font-style: italic;">
-        Looks like you came here a bit too early.
-    </p>
-    <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
-        Keep an eye on the patch notes to find out when<br>this feature will be available!
-    </p>
-</div>
+<ng-container *ngIf="unread && read; else noNotifications">
+    <div class="notifications-header">
+        <div class="view-toggle">
+            <ng-container *ngIf="viewRead; else viewUnread">
+                <button class="control left">Unread</button>
+                <button class="control right active">Read</button>
+            </ng-container>
+            <ng-template #viewUnread>
+                <button class="control left active">Unread</button>
+                <button class="control right">Read</button>
+            </ng-template>
+        </div>
+        <button class="control">Mark As Read</button>
+    </div>
+    <div class="notifications-container">
+        <ng-container *ngIf="viewRead; else listUnread">
+            <ng-container *ngFor="let notif of read">
+
+            </ng-container>
+        </ng-container>
+        <ng-template #listUnread>
+            <ng-container *ngFor="let notif of unread">
+                
+            </ng-container>
+        </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #noNotifications>
+    <div style="margin-top: 1.25rem; text-align: center;">
+        <h4 style="color: whitesmoke;">Nothing's happened yet</h4>
+        <p style="color: whitesmoke; font-style: italic;">
+            Check back when something happens!
+        </p>
+    </div>
+</ng-template>

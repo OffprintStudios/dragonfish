@@ -52,7 +52,7 @@ export class SiteSidenavComponent implements OnInit {
     } else if (event.index === 2) {
       this.histComponent.fetchData();
     } else if (event.index === 3) {
-      // do something for notifications
+      this.notifComponent.fetchData();
     }
   }
 
