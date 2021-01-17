@@ -2,20 +2,28 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { EventSourcePolyfill } from 'ng-event-source';
 
 import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { FrontendUser } from '@pulp-fiction/models/users';
+import { AuthService } from '../auth';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NotificationsService {
+    private currentUser: FrontendUser;
     private url = `/api/notifications`;
 
-    constructor(private http: HttpClient, private zone: NgZone) {}
+    constructor(private http: HttpClient, private zone: NgZone, private auth: AuthService) {
+        this.auth.currUser.subscribe(x => { this.currentUser = x; });
+    }
 
-    public getNotificationStream(): Observable<MessageEvent> {
+    public getNotificationStream(): Observable<any> {
         return new Observable(observer => {
-            const eventSource = new EventSource(`${this.url}/sse`, {withCredentials: true});
+            const eventSource = new EventSourcePolyfill(`${this.url}/sse`, {
+                headers: {'Authorization': 'Bearer ' + this.currentUser.token}
+            });
 
             eventSource.onmessage = event => {
                 this.zone.run(() => {
