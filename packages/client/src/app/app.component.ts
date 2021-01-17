@@ -1,5 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { interval } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
@@ -39,7 +41,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fetchFrontPageStats();
 
-    this.notif.getNotificationStream().subscribe(data => console.log(data));
+    interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
+      console.log(data);
+    });
 
     // Sets the current site theme based on user preference
     if (this.currentUser) {
