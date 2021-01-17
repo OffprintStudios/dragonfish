@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ContentKind } from '@pulp-fiction/models/content';
 import { NotificationBase, NotificationKind } from '@pulp-fiction/models/notifications';
 import { NotificationsService } from '../../../services/user';
 
@@ -13,6 +14,7 @@ export class NotificationsComponent implements OnInit {
   unread: NotificationBase[];
   read: NotificationBase[];
   unreadTotal = 0;
+  parentKind = ContentKind;
 
   viewRead = false;
 
