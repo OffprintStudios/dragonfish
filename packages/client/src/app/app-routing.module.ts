@@ -52,10 +52,10 @@ const routes: Routes = [
       {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
@@ -69,10 +69,10 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
-    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
-    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {poetryData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
