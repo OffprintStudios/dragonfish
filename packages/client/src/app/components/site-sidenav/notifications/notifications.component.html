@@ -2,12 +2,12 @@
     <div class="notifications-header">
         <div class="view-toggle">
             <ng-container *ngIf="viewRead; else viewUnread">
-                <button class="control left">Unread</button>
+                <button class="control left" (click)="switchView()">Unread</button>
                 <button class="control right active">Read</button>
             </ng-container>
             <ng-template #viewUnread>
                 <button class="control left active">Unread</button>
-                <button class="control right">Read</button>
+                <button class="control right" (click)="switchView()">Read</button>
             </ng-template>
         </div>
         <button class="control">Mark As Read</button>
@@ -20,7 +20,7 @@
         </ng-container>
         <ng-template #listUnread>
             <ng-container *ngFor="let notif of unread">
-                
+
             </ng-container>
         </ng-template>
     </div>

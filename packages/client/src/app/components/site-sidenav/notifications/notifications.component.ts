@@ -23,7 +23,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   switchView() {
-    if (this.viewRead = true) {
+    if (this.viewRead === true) {
       this.viewRead = false;
     } else {
       this.viewRead = true;
