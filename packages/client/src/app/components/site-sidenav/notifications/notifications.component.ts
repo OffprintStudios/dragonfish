@@ -40,7 +40,6 @@ export class NotificationsComponent implements OnInit {
     this.loading = true;
     this.notif.getAllNotifications().subscribe(data => {
       this.unread = data.filter(val => { return val.read !== true });
-      console.log(this.unread);
       this.unreadTotal = this.unread.length;
       this.read = data.filter(val => { return val.read === true });
     });
