@@ -44,13 +44,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     this.fetchFrontPageStats();
 
-    interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
-      this.notifications = data;
-    });
-
-    // Sets the current site theme based on user preference
     if (this.currentUser) {
-        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
+        // Sets the current site theme based on user preference
+        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);
+
+        // Starts fetching notifications updates from the server
+        interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
+          this.notifications = data;
+        });  
     }
 
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
