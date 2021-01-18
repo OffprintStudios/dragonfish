@@ -11,8 +11,8 @@ export namespace Auth {
         constructor (public payload: CreateUser) {}
     }
 
-    export class LogOut {
-        static readonly type = '[Auth] LogOut';
+    export class Logout {
+        static readonly type = '[Auth] Logout';
         constructor () {}
     }
 }

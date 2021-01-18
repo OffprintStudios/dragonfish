@@ -1,4 +1,5 @@
-import { State, Action, StateContext } from '@ngxs/store';
+import { State, Action, StateContext, Selector } from '@ngxs/store';
+import { tap } from 'rxjs/operators';
 import { Auth } from './auth.actions';
 import { AuthService } from './services';
 
@@ -7,7 +8,6 @@ import { Injectable } from '@angular/core';
 
 export interface AuthStateModel {
     user: FrontendUser | null;
-    isLoggedIn: boolean;
     token: string | null;
     error?: string;
 }
@@ -16,7 +16,6 @@ export interface AuthStateModel {
     name: 'auth',
     defaults: {
         user: null,
-        isLoggedIn: false,
         token: null
     }
 })
@@ -24,18 +23,47 @@ export interface AuthStateModel {
 export class AuthState {
     constructor(private auth: AuthService) {}
 
-    @Action(Auth.Login)
-    login() {
+    /* Actions */
 
+    @Action(Auth.Login)
+    login(ctx: StateContext<AuthStateModel>, action: Auth.Login) {
+        return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
+            ctx.patchState({
+                user: result,
+                token: result.token
+            });
+        }));
     }
 
     @Action(Auth.Register)
-    register() {
-
+    register(ctx: StateContext<AuthStateModel>, action: Auth.Register) {
+        return this.auth.register(action.payload).pipe(tap((result: FrontendUser) => {
+            ctx.patchState({
+                user: result,
+                token: result.token
+            });
+        }));
     }
 
-    @Action(Auth.LogOut)
-    logout() {
+    @Action(Auth.Logout)
+    logout(ctx: StateContext<AuthStateModel>, action: Auth.Logout) {
+        return this.auth.logout().pipe(tap((_) => {
+            ctx.patchState({
+                user: null,
+                token: null
+            });
+        }));
+    }
 
+    /* Selectors */
+    
+    @Selector()
+    static token (state: AuthStateModel): string | null {
+        return state.token;
+    }
+
+    @Selector()
+    static isLoggedIn (state: AuthStateModel): boolean {
+        return !!state.token;
     }
 }

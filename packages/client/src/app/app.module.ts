@@ -134,7 +134,7 @@ const toolbarOptions = [
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), 
     NgxsStoragePluginModule.forRoot({
-      key: ['auth']
+      key: ['auth.token', 'auth.user']
     }),
     NgxsModule.forRoot([AuthState]), 
     MarkdownModule.forRoot(),

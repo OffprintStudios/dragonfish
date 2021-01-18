@@ -55,9 +55,7 @@ export class AuthService {
      * Logs the user out, sets the user object to null, removes their info from localStorage, and
      * navigates to home.
      */
-    public logout(): void {
-        // Fire and forget. If this fails, it doesn't matter to the user, 
-        // and we don't want to leak that fact anyway.
-        this.http.get(`${this.url}/logout`, { withCredentials: true }).subscribe();
+    public logout(): Observable<void> {
+        return this.http.get<void>(`${this.url}/logout`, { withCredentials: true });
     }
 }
