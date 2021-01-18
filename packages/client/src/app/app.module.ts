@@ -78,6 +78,7 @@ import { StartConversationComponent } from './components/modals/portfolio/start-
 import { ContentApprovalComponent } from './components/content-approval';
 
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -133,7 +134,7 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), 
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'auth.user', 'global.filter']
     }),

@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngxs/store';
+import { Store, Select } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
+import { Observable, Subscription } from 'rxjs';
 import { Constants } from '../../shared';
-import { Auth } from '../../shared/auth';
+import { Auth, AuthState } from '../../shared/auth';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
@@ -29,7 +30,10 @@ export class SiteSidenavComponent implements OnInit {
 
   @Output() closeSidenav = new EventEmitter<boolean>();
 
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   loadingLogin = false;
   siteVersion = Constants.siteVersion;
 
@@ -43,7 +47,9 @@ export class SiteSidenavComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar,
       private store: Store) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+          this.currentUser = x;
+        });
   }
 
   ngOnInit(): void {
@@ -90,7 +96,7 @@ export class SiteSidenavComponent implements OnInit {
 
     this.store.dispatch([new Auth.Login(credentials), new Navigate(['/home'])]).subscribe(() => {
       this.loadingLogin = false;
-      this.closeSidenav.emit(true);
+      location.reload();
     }, err => {
       this.loadingLogin = false;
       this.snackBar.open(err.error.message);
@@ -109,7 +115,7 @@ export class SiteSidenavComponent implements OnInit {
    */
   logout() {
     this.authService.logout();
-    this.router.navigate(['/home']).then(() => {
+    this.store.dispatch(new Navigate(['/home'])).subscribe(() => {
       location.reload();
     });
   }
