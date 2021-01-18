@@ -134,11 +134,11 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
+    NgxsModule.forRoot([AuthState, GlobalState]),
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'auth.user', 'global.filter']
     }),
-    NgxsModule.forRoot([AuthState, GlobalState]), 
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
