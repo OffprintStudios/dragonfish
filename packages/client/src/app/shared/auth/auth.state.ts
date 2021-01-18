@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth } from './auth.actions';
 import { AuthStateModel } from './auth-state.model';
 import { AuthService } from './services';
@@ -18,7 +19,7 @@ import { Global } from '../global/global.actions';
 })
 @Injectable()
 export class AuthState {
-    constructor(private auth: AuthService) {}
+    constructor(private auth: AuthService, private snackBar: MatSnackBar) {}
 
     /* Actions */
 
@@ -61,12 +62,30 @@ export class AuthState {
      * @param action Action to Perform
      */
     @Action(Auth.Logout)
-    logout(ctx: StateContext<AuthStateModel>, action: Auth.Logout): Observable<void> {
+    logout(ctx: StateContext<AuthStateModel>, _action: Auth.Logout): Observable<void> {
         return this.auth.logout().pipe(tap((_) => {
             ctx.patchState({
                 user: null,
                 token: null
             });
+        }));
+    }
+
+    @Action(Auth.RefreshToken)
+    refreshToken(ctx: StateContext<AuthStateModel>, _action: Auth.RefreshToken): Observable<FrontendUser> {
+        return this.auth.refreshToken().pipe(tap((result: FrontendUser | null) => {
+            if (result === null) {
+                ctx.patchState({
+                    user: null,
+                    token: null
+                });
+                this.snackBar.open(`Your token has expired, and you've been logged out.`);
+            } else {
+                ctx.patchState({
+                    user: result,
+                    token: result.token
+                });
+            }
         }));
     }
 

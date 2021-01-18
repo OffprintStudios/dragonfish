@@ -58,4 +58,21 @@ export class AuthService {
     public logout(): Observable<void> {
         return this.http.get<void>(`${this.url}/logout`, { withCredentials: true });
     }
+
+    /**
+     * Refreshes the current user token with new User info.
+     * If refresh fails, 
+     */
+    public refreshToken(): Observable<FrontendUser | null> {
+        return this.http.get<FrontendUser>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
+            .pipe(map(user => {
+                return user.body;
+            }), catchError(err => {
+                if (err.status === 403) {
+                    // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious          
+                    return null;          
+                }
+                return throwError(err);
+            }));
+    }
 }

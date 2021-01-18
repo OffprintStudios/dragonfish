@@ -15,4 +15,9 @@ export namespace Auth {
         static readonly type = '[Auth] Logout';
         constructor () {}
     }
+
+    export class RefreshToken {
+        static readonly type = '[Auth] Refresh Token';
+        constructor () {}
+    }
 }
