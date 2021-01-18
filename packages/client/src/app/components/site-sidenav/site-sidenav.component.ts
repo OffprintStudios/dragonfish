@@ -2,17 +2,17 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { first } from 'rxjs/operators';
 import { Constants } from '../../shared';
+import { Auth } from '../../shared/auth';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
 import { AuthService } from '../../services/auth';
-import { AlertsService } from '../../modules/alerts';
 import { ConversationsComponent } from './conversations/conversations.component';
 import { HistoryComponent } from './history/history.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { WatchingComponent } from './watching/watching.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'site-sidenav',
@@ -39,7 +39,8 @@ export class SiteSidenavComponent implements OnInit {
     rememberMe: new FormControl(false),
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService, private router: Router, private snackBar: MatSnackBar) {
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar,
+      private store: Store) {
     this.authService.currUser.subscribe(x => { this.currentUser = x; });
   }
 
@@ -84,13 +85,15 @@ export class SiteSidenavComponent implements OnInit {
       password: this.loginFields.password.value, 
       rememberMe: this.loginFields.rememberMe.value
     };
-    this.authService.login(credentials).pipe(first()).subscribe(() => {
+
+    this.store.dispatch(new Auth.Login(credentials)).subscribe(() => {
       this.loadingLogin = false;
       this.router.navigate(['/home']);
+      this.closeSidenav.emit(true);
     }, err => {
       this.loadingLogin = false;
       this.snackBar.open(err.error.message);
-    })
+    });
   }
 
   /**
