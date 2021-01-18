@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, Inject, Renderer2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Theme, Themes } from '../../../models/site';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Theme, Themes } from '../../../models/site';
 export class GlobalService {
     private wrapper = document.querySelector('html');
 
-    constructor () {}
+    constructor (@Inject(DOCUMENT) private doc: Document, private renderer: Renderer2) {}
 
     public async changeTheme(pref: Themes.Preference): Promise<void> {
         switch (pref) {
@@ -27,6 +27,8 @@ export class GlobalService {
     }
 
     private async setThemeValues(newTheme: Theme): Promise<void> {
+        
+
         this.wrapper.style.setProperty('--site-accent', newTheme.accent);
         this.wrapper.style.setProperty('--site-accent-hover', newTheme.accentHover);
         this.wrapper.style.setProperty('--site-accent-light', newTheme.accentLight);
