@@ -22,6 +22,8 @@ export interface AuthStateModel {
 })
 @Injectable()
 export class AuthState {
+    constructor(private auth: AuthService) {}
+
     @Action(Auth.Login)
     login() {
 
