@@ -6,7 +6,7 @@ import { GlobalService } from './services';
 import { GlobalStateModel } from './global-state.model';
 import { Global } from './global.actions';
 
-import { Themes } from '../../models/site';
+import { Themes } from '@pulp-fiction/models/users';
 import { ContentFilter } from '@pulp-fiction/models/content';
 
 @State<GlobalStateModel>({
