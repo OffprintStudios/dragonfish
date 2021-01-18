@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { interval } from 'rxjs';
+import { interval, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
@@ -15,19 +15,23 @@ import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { Select } from '@ngxs/store';
+import { AuthState } from './shared/auth';
 
 @Component({
   selector: 'pulp-fiction-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
+  currentUser: FrontendUser;
 
   sidenavOpened: boolean;
 
   title = 'offprint';
-  currentUser: FrontendUser;
 
   loading = false;
   loadingLogin = false;
@@ -38,11 +42,12 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
     private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
-    this.authService.currUser.subscribe(x => {
-      this.currentUser = x;
-    });
 
     this.fetchFrontPageStats();
+
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
 
     if (this.currentUser) {
         // Sets the current site theme based on user preference
@@ -57,7 +62,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
   }
   
-  ngOnInit() {
+  ngOnInit(): void {
     this.router.events.subscribe(event => {
       this.sidenavOpened = false;
       if (event instanceof NavigationEnd) {
@@ -69,7 +74,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   /**
    * Initializes the global dropdown menus.
    */
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
       // Initialize the ToS nagbar if we need to
       if (!this.currentUser) {
         this.authService.currUser.subscribe(x => {
@@ -88,6 +93,13 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.checkUserPolicies(this.currentUser);
         });
       }
+  }
+
+  /**
+   * 
+   */
+  ngOnDestroy(): void {
+    this.currentUserSubscription.unsubscribe();
   }
 
   /**

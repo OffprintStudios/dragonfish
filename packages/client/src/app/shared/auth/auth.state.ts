@@ -1,16 +1,11 @@
+import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { Auth } from './auth.actions';
+import { AuthStateModel } from './auth-state.model';
 import { AuthService } from './services';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { Injectable } from '@angular/core';
-
-export interface AuthStateModel {
-    user: FrontendUser | null;
-    token: string | null;
-    error?: string;
-}
 
 @State<AuthStateModel>({
     name: 'auth',
@@ -56,6 +51,11 @@ export class AuthState {
     }
 
     /* Selectors */
+
+    @Selector()
+    static user (state: AuthStateModel): FrontendUser | null {
+        return state.user;
+    }
     
     @Selector()
     static token (state: AuthStateModel): string | null {
