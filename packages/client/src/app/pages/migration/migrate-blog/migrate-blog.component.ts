@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription, throwError } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { AuthState } from '../../../shared/auth';
 
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ContentKind, ContentRating, PubStatus } from '@pulp-fiction/models/content';
 import { getQuillHtml } from 'packages/client/src/app/util/functions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MigrationForm } from '@pulp-fiction/models/migration';
-import { AuthService } from '../../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 
 @Component({
     selector: 'migrate-blog',
@@ -19,6 +20,8 @@ import { map, catchError } from 'rxjs/operators';
     styleUrls: ['./migrate-blog.component.less']
 })
 export class MigrateBlogComponent implements OnInit {
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     myBlog: Blog;
@@ -30,8 +33,10 @@ export class MigrateBlogComponent implements OnInit {
         rating: new FormControl(null, [Validators.required])
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private auth: AuthService, private router: Router) {
-        this.auth.currUser.subscribe(x => { this.currentUser = x; });
+    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     ngOnInit(): void {

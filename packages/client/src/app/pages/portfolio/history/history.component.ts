@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../shared/auth';
 
 import { Constants, Title } from '../../../shared';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { HistoryService } from '../../../services/content';
 import { calculateApprovalRating } from '../../../util/functions';
 import { ContentKind } from '@pulp-fiction/models/content';
@@ -16,6 +18,8 @@ import { ContentKind } from '@pulp-fiction/models/content';
   styleUrls: ['./history.component.less']
 })
 export class HistoryComponent implements OnInit {
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
   histList: PaginateResult<ReadingHistory>;
@@ -23,8 +27,8 @@ export class HistoryComponent implements OnInit {
 
   pageNum = 1;
 
-  constructor(private auth: AuthService, private hist: HistoryService, private route: ActivatedRoute, private router: Router) {
-    this.auth.currUser.subscribe(x => {
+  constructor(private hist: HistoryService, private route: ActivatedRoute, private router: Router) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
 

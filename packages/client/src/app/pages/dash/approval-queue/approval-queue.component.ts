@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../shared/auth';
+
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Decision } from '@pulp-fiction/models/contrib';
@@ -14,6 +18,8 @@ import { ApprovalQueueService } from './approval-queue.service';
     styleUrls: ['./approval-queue.component.less']
 })
 export class ApprovalQueueComponent implements OnInit {
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     queue: PaginateResult<ApprovalQueue>;
@@ -21,8 +27,8 @@ export class ApprovalQueueComponent implements OnInit {
 
     pageNum = 1;
 
-    constructor(private auth: AuthService, private queueService: ApprovalQueueService, private route: ActivatedRoute, private router: Router) {
-        this.auth.currUser.subscribe(x => {
+    constructor(private queueService: ApprovalQueueService, private route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }

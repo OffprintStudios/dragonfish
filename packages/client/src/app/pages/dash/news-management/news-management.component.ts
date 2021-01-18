@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../shared/auth';
+
 import { NewsContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
@@ -12,14 +16,16 @@ import { NewsManagementService } from './news-management.service';
     styleUrls: ['./news-management.component.less']
 })
 export class NewsManagementComponent implements OnInit {
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     posts: PaginateResult<NewsContentModel>;
     pubStatus = PubStatus;
     pageNum: number = 1;
 
-    constructor(private newsService: NewsManagementService, private auth: AuthService, public route: ActivatedRoute, private router: Router) {
-        this.auth.currUser.subscribe(x => {
+    constructor(private newsService: NewsManagementService, public route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }

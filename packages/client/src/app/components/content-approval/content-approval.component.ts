@@ -1,10 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../shared/auth';
+
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
 import { ContentKind, SetRating } from '@pulp-fiction/models/content';
 import { ContentService } from '../../services/content';
 import { AuthService } from '../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { MatDialog } from '@angular/material/dialog';
+
 import { AddToCollectionComponent } from '../modals/collections';
 
 @Component({
@@ -16,11 +21,15 @@ export class ContentApprovalComponent implements OnInit {
     @Input() content: any;
     @Input() histData: ReadingHistory;
 
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
     contentKind = ContentKind;
 
-    constructor(private contentService: ContentService, private auth: AuthService, private dialog: MatDialog) {
-        this.auth.currUser.subscribe(x => { this.currentUser = x; })
+    constructor(private contentService: ContentService, private dialog: MatDialog) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     ngOnInit(): void {}

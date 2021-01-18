@@ -4,8 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie';
 import * as lodash from 'lodash';
-import { Observable, of } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { AuthState } from '../../../shared/auth';
 
 import { AuthService } from '../../../services/auth';
 import { AlertsService } from '../../../modules/alerts';
@@ -22,6 +24,8 @@ import { Constants, Title } from '../../../shared';
   styleUrls: ['./settings.component.less']
 })
 export class SettingsComponent implements OnInit {
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
   themePrefOptions = [
@@ -65,88 +69,88 @@ export class SettingsComponent implements OnInit {
 
   constructor(private authService: AuthService, private alertsService: AlertsService, private dialog: MatDialog,
     private snackbar: MatSnackBar, private cookies: CookieService) {
-    this.authService.currUser.subscribe(x => {
-      let themePrefIndex = 0;
+      this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        let themePrefIndex = 0;
 
-      switch (x.profile.themePref) {
-        case 'crimson':
-          themePrefIndex = 0;
-          break;
-        case 'dark-crimson':
-          themePrefIndex = 1;
-          break;
-        case 'aqua':
-          themePrefIndex = 2;
-          break;
-        case 'dark-aqua':
-          themePrefIndex = 3;
-          break;
-        case 'royal':
-          themePrefIndex = 4;
-          break;
-        case 'dark-royal':
-          themePrefIndex = 5;
-          break;
-        case 'steel':
-          themePrefIndex = 6;
-          break;
-        case 'midnight-field':
-          themePrefIndex = 7;
-          break;
-        case 'autumn':
-          themePrefIndex = 8;
-          break;
-        case 'dusk-autumn':
-          themePrefIndex = 9;
-          break;
-      }
-
-      this.changeProfileForm.setValue({
-        newThemePref: this.themePrefOptions[themePrefIndex],
-        newBio: x.profile.bio
-      });
-
-      this.updateTagline.setValue({
-        newTagline: x.profile.tagline
-      });
-
-      const contentFilterSetting: ContentFilter = this.cookies.get('contentFilter') as ContentFilter;
-      if (contentFilterSetting !== null && contentFilterSetting !== undefined) {
-        switch (contentFilterSetting) {
-          case ContentFilter.Default:
-            this.setContentFilter.setValue({
-              enableMature: false,
-              enableExplicit: false
-            });
+        switch (x.profile.themePref) {
+          case 'crimson':
+            themePrefIndex = 0;
             break;
-          case ContentFilter.Everything:
-            this.setContentFilter.setValue({
-              enableMature: true,
-              enableExplicit: true
-            });
+          case 'dark-crimson':
+            themePrefIndex = 1;
             break;
-          case ContentFilter.MatureEnabled:
-            this.setContentFilter.setValue({
-              enableMature: true,
-              enableExplicit: false
-            });
+          case 'aqua':
+            themePrefIndex = 2;
             break;
-          case ContentFilter.ExplicitEnabled:
-            this.setContentFilter.setValue({
-              enableMature: false,
-              enableExplicit: true
-            });
+          case 'dark-aqua':
+            themePrefIndex = 3;
+            break;
+          case 'royal':
+            themePrefIndex = 4;
+            break;
+          case 'dark-royal':
+            themePrefIndex = 5;
+            break;
+          case 'steel':
+            themePrefIndex = 6;
+            break;
+          case 'midnight-field':
+            themePrefIndex = 7;
+            break;
+          case 'autumn':
+            themePrefIndex = 8;
+            break;
+          case 'dusk-autumn':
+            themePrefIndex = 9;
             break;
         }
-      } else {
-        this.setContentFilter.setValue({
-          enableMature: false,
-          enableExplicit: false
+  
+        this.changeProfileForm.setValue({
+          newThemePref: this.themePrefOptions[themePrefIndex],
+          newBio: x.profile.bio
         });
-      }
-
-      this.currentUser = x;
-    });
+  
+        this.updateTagline.setValue({
+          newTagline: x.profile.tagline
+        });
+  
+        const contentFilterSetting: ContentFilter = this.cookies.get('contentFilter') as ContentFilter;
+        if (contentFilterSetting !== null && contentFilterSetting !== undefined) {
+          switch (contentFilterSetting) {
+            case ContentFilter.Default:
+              this.setContentFilter.setValue({
+                enableMature: false,
+                enableExplicit: false
+              });
+              break;
+            case ContentFilter.Everything:
+              this.setContentFilter.setValue({
+                enableMature: true,
+                enableExplicit: true
+              });
+              break;
+            case ContentFilter.MatureEnabled:
+              this.setContentFilter.setValue({
+                enableMature: true,
+                enableExplicit: false
+              });
+              break;
+            case ContentFilter.ExplicitEnabled:
+              this.setContentFilter.setValue({
+                enableMature: false,
+                enableExplicit: true
+              });
+              break;
+          }
+        } else {
+          this.setContentFilter.setValue({
+            enableMature: false,
+            enableExplicit: false
+          });
+        }
+  
+        this.currentUser = x;
+      });
   }
 
   ngOnInit(): void {

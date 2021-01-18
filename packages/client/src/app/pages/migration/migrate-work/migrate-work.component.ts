@@ -3,21 +3,25 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { throwError } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { AuthState } from '../../../shared/auth';
 
 import { ApprovalStatus, Categories, Work } from '@pulp-fiction/models/works';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { WorkKind, Genres, ContentRating, WorkStatus, ContentKind, PubStatus } from '@pulp-fiction/models/content';
-import { AuthService } from '../../../services/auth';
 import { MigrationForm } from '@pulp-fiction/models/migration';
 import { getQuillHtml } from '../../../util/functions';
+
 @Component({
     selector: 'migrate-work',
     templateUrl: './migrate-work.component.html',
     styleUrls: ['./migrate-work.component.less']
 })
 export class MigrateWorkComponent implements OnInit {
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     currWork: Work;
@@ -37,8 +41,8 @@ export class MigrateWorkComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private auth: AuthService, private router: Router) {
-        this.auth.currUser.subscribe(x => {
+    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }

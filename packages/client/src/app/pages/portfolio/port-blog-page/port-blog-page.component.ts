@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../shared/auth';
 
-import { AuthService } from '../../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Title } from '../../../shared';
-import { BlogsContentModel, SetRating } from '@pulp-fiction/models/content';
-import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
+import { BlogsContentModel } from '@pulp-fiction/models/content';
+import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { ContentPage } from '../../../models/site';
-import { ContentService, HistoryService } from '../../../services/content';
 
 @Component({
   selector: 'app-port-blog-page',
@@ -15,15 +16,20 @@ import { ContentService, HistoryService } from '../../../services/content';
   styleUrls: ['./port-blog-page.component.less']
 })
 export class PortBlogPageComponent implements OnInit {
-  currentUser: FrontendUser; // The currently logged-in user
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
+  currentUser: FrontendUser;
+
   portUserName: string; // The username for this portfolio
   blogData: BlogsContentModel; // The blog we're displaying
   histData: ReadingHistory; // The current user's reading history
   loading = false; // Loading check for fetching data
   pageNum = 1; // Comments page
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
     this.fetchData();
   }
 

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, zip, of } from 'rxjs';
+import { Observable, Subscription, zip, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Select } from '@ngxs/store';
+import { AuthState } from '../shared/auth';
 
 import { ContentPage } from '../models/site';
 import { ContentKind, PoetryContent, SectionInfo } from '@pulp-fiction/models/content';
@@ -11,10 +13,14 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 
 @Injectable()
 export class ViewPoetryResolver implements Resolve<ContentPage> {
+    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     constructor (private contentService: ContentService, private auth: AuthService, private hist: HistoryService) {
-        this.auth.currUser.subscribe(x => { this.currentUser = x; });
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<ContentPage> {

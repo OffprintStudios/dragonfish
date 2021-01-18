@@ -3,6 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageCroppedEvent, Dimensions } from 'ngx-image-cropper';
 import { FileUploader } from 'ng2-file-upload';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../../shared/auth';
 
 import { AlertsService } from '../../../../modules/alerts';
 import { AuthService } from '../../../../services/auth';
@@ -15,6 +18,8 @@ import { FrontendUser } from '@pulp-fiction/models/users';
   styleUrls: ['./upload-avatar.component.less']
 })
 export class UploadAvatarComponent implements OnInit {
+  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
   imageChangedEvent: Event;
@@ -31,7 +36,9 @@ export class UploadAvatarComponent implements OnInit {
   });
 
   constructor(private authService: AuthService, private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
   }
 
   ngOnInit(): void {
