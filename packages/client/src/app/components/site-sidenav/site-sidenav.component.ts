@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -45,8 +44,7 @@ export class SiteSidenavComponent implements OnInit {
     rememberMe: new FormControl(false),
   });
 
-  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar,
-      private store: Store) {
+  constructor(private snackBar: MatSnackBar, private store: Store) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
           this.currentUser = x;
         });
@@ -114,8 +112,7 @@ export class SiteSidenavComponent implements OnInit {
    * Calls the logout method from AuthService.
    */
   logout() {
-    this.authService.logout();
-    this.store.dispatch(new Navigate(['/home'])).subscribe(() => {
+    this.store.dispatch([new Auth.Logout(), new Navigate(['/home'])]).subscribe(() => {
       location.reload();
     });
   }
