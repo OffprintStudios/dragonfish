@@ -20,6 +20,12 @@ export class AuthState {
 
     /* Actions */
 
+    /**
+     * Logs a user in, then updates the current state with that user's credentials.
+     * 
+     * @param ctx State Context
+     * @param action Action to Perform
+     */
     @Action(Auth.Login)
     login(ctx: StateContext<AuthStateModel>, action: Auth.Login) {
         return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
@@ -30,6 +36,12 @@ export class AuthState {
         }));
     }
 
+    /**
+     * Registers a new user, then updates the current state with that user's credentials.
+     * 
+     * @param ctx State Context
+     * @param action Action to Perform
+     */
     @Action(Auth.Register)
     register(ctx: StateContext<AuthStateModel>, action: Auth.Register) {
         return this.auth.register(action.payload).pipe(tap((result: FrontendUser) => {
@@ -40,6 +52,12 @@ export class AuthState {
         }));
     }
 
+    /**
+     * Logs out the current user, then resets the state.
+     * 
+     * @param ctx State Context
+     * @param action Action to Perform
+     */
     @Action(Auth.Logout)
     logout(ctx: StateContext<AuthStateModel>, action: Auth.Logout) {
         return this.auth.logout().pipe(tap((_) => {

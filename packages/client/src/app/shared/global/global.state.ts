@@ -20,7 +20,7 @@ export class GlobalState {
     /* Actions */
 
     @Action(Global.ChangeTheme)
-    changeTheme() {
+    changeTheme(ctx: StateContext<GlobalStateModel>) {
 
     }
 
