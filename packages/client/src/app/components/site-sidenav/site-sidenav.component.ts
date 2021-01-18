@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
 import { Constants } from '../../shared';
 import { Auth } from '../../shared/auth';
 
@@ -11,8 +14,7 @@ import { ConversationsComponent } from './conversations/conversations.component'
 import { HistoryComponent } from './history/history.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { WatchingComponent } from './watching/watching.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngxs/store';
+
 
 @Component({
   selector: 'site-sidenav',
@@ -86,9 +88,8 @@ export class SiteSidenavComponent implements OnInit {
       rememberMe: this.loginFields.rememberMe.value
     };
 
-    this.store.dispatch(new Auth.Login(credentials)).subscribe(() => {
+    this.store.dispatch([new Auth.Login(credentials), new Navigate(['/home'])]).subscribe(() => {
       this.loadingLogin = false;
-      this.router.navigate(['/home']);
       this.closeSidenav.emit(true);
     }, err => {
       this.loadingLogin = false;
