@@ -7,8 +7,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Constants, Title } from '../../../shared';
 import { AuthState, Auth } from '../../../shared/auth';
-import { AuthService } from '../../../services/auth';
-import { first } from 'rxjs/operators';
 import { FrontendUser, CreateUser } from '@pulp-fiction/models/users';
 
 
@@ -34,7 +32,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ageCheck: new FormControl(false, Validators.requiredTrue),
   });
 
-  constructor(private authService: AuthService, private store: Store, private snackBar: MatSnackBar) {
+  constructor( private store: Store, private snackBar: MatSnackBar) {
     this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
