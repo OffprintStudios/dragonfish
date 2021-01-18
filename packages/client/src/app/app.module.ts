@@ -5,6 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -126,6 +130,8 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsStoragePluginModule.forRoot(),
+    NgxsModule.forRoot([]), 
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
