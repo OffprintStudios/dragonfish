@@ -1,4 +1,4 @@
-import { Injectable, Inject, Renderer2 } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Theme, Themes } from '../../../models/site';
 
@@ -8,7 +8,7 @@ import { Theme, Themes } from '../../../models/site';
 export class GlobalService {
     private wrapper = document.querySelector('html');
 
-    constructor (@Inject(DOCUMENT) private doc: Document, private renderer: Renderer2) {}
+    constructor (@Inject(DOCUMENT) private doc: Document) {}
 
     public async changeTheme(pref: Themes.Preference): Promise<void> {
         switch (pref) {
