@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
      */
     canActivate(next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
         // @ts-ignore
-        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => user);
+        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => state.auth.user);
 
         if (currentUser && currentUser.token) {
             if (next.data.roles) {
@@ -55,7 +55,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
      */
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         // @ts-ignore
-        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => user);
+        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => state.auth.user);
     
         if (currentUser && currentUser.token) {
             if (next.data.roles) {

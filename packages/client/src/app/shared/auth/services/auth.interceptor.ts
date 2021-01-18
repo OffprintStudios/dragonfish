@@ -23,7 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
      * @param next Passes the request along to the next handler
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = this.store.selectSnapshot<string>((state: AuthState) => token);
+        // @ts-ignore
+        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
         if (token === null) {
             return next.handle(req);
         }

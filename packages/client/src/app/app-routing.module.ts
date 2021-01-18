@@ -14,7 +14,7 @@ import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
   
 import { RegisterComponent } from './pages/account';
   
-import { AuthGuard } from './services/auth';
+import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 

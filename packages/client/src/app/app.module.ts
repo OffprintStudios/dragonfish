@@ -11,11 +11,11 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 import { AuthState } from './shared/auth';
+import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './services/auth';
 import { MaterialModule } from '@pulp-fiction/material';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
