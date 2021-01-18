@@ -4,8 +4,9 @@ import { interval, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { Store } from '@ngxs/store';
 
-import { FrontendUser, Roles } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, Themes } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { spookySlogans, slogans, Theme } from './models/site';
 // import { PredefinedThemes } from './models/site/theme';
@@ -17,6 +18,7 @@ import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
 import { Select } from '@ngxs/store';
 import { AuthState } from './shared/auth';
+import { GlobalState, Global } from './shared/global';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -25,6 +27,10 @@ import { AuthState } from './shared/auth';
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
+  @Select(GlobalState.theme) currentTheme$: Observable<Themes.Preference>;
+  currentThemeSubscription: Subscription;
+  currentTheme: Themes.Preference;
+
   @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
@@ -41,7 +47,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   notifications: NotificationBase[];
 
   constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
+    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService,
+    private store: Store) {
 
     this.fetchFrontPageStats();
 
@@ -49,9 +56,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
       this.currentUser = x;
     });
 
+    this.currentThemeSubscription = this.currentTheme$.subscribe(x => {
+      this.currentTheme = x;
+    });
+
     if (this.currentUser) {
         // Sets the current site theme based on user preference
-        // this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);
+        this.store.dispatch(new Global.ChangeTheme(this.currentUser.profile.themePref));
 
         // Starts fetching notifications updates from the server
         interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
@@ -96,7 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /**
-   * 
+   * Unsubscribes from everything.
    */
   ngOnDestroy(): void {
     this.currentUserSubscription.unsubscribe();

@@ -6,6 +6,8 @@ import { AuthStateModel } from './auth-state.model';
 import { AuthService } from './services';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { Observable } from 'rxjs';
+import { Global } from '../global/global.actions';
 
 @State<AuthStateModel>({
     name: 'auth',
@@ -27,8 +29,9 @@ export class AuthState {
      * @param action Action to Perform
      */
     @Action(Auth.Login)
-    login(ctx: StateContext<AuthStateModel>, action: Auth.Login) {
+    login(ctx: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
         return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
+            ctx.dispatch(new Global.ChangeTheme(result.profile.themePref));
             ctx.patchState({
                 user: result,
                 token: result.token
@@ -43,7 +46,7 @@ export class AuthState {
      * @param action Action to Perform
      */
     @Action(Auth.Register)
-    register(ctx: StateContext<AuthStateModel>, action: Auth.Register) {
+    register(ctx: StateContext<AuthStateModel>, action: Auth.Register): Observable<FrontendUser> {
         return this.auth.register(action.payload).pipe(tap((result: FrontendUser) => {
             ctx.patchState({
                 user: result,
@@ -59,7 +62,7 @@ export class AuthState {
      * @param action Action to Perform
      */
     @Action(Auth.Logout)
-    logout(ctx: StateContext<AuthStateModel>, action: Auth.Logout) {
+    logout(ctx: StateContext<AuthStateModel>, action: Auth.Logout): Observable<void> {
         return this.auth.logout().pipe(tap((_) => {
             ctx.patchState({
                 user: null,

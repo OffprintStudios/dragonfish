@@ -1,4 +1,5 @@
 import { Roles } from './roles.enum';
+import { Themes } from './theme';
 
 export interface FrontendUser {
     readonly _id: string;
@@ -7,7 +8,7 @@ export interface FrontendUser {
     readonly agreedToPolicies: boolean;
     readonly profile: {
         readonly avatar: string;
-        readonly themePref: string;
+        readonly themePref: Themes.Preference;
         readonly bio: string | null;
         readonly tagline: string | null;
     };
