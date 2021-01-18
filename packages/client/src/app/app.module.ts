@@ -11,6 +11,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
 import { AuthState } from './shared/auth';
+import { GlobalState } from './shared/global';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -136,7 +137,7 @@ const toolbarOptions = [
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'auth.user']
     }),
-    NgxsModule.forRoot([AuthState]), 
+    NgxsModule.forRoot([AuthState, GlobalState]), 
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({

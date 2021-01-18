@@ -8,7 +8,7 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { spookySlogans, slogans, Theme } from './models/site';
-import { PredefinedThemes } from './models/site/theme';
+// import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.currentUser) {
         // Sets the current site theme based on user preference
-        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);
+        // this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);
 
         // Starts fetching notifications updates from the server
         interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
