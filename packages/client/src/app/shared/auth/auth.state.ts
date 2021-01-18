@@ -23,12 +23,17 @@ export interface AuthStateModel {
 @Injectable()
 export class AuthState {
     @Action(Auth.Login)
-    login(){
+    login() {
 
     }
 
     @Action(Auth.Register)
     register() {
+
+    }
+
+    @Action(Auth.LogOut)
+    logout() {
 
     }
 }
