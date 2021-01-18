@@ -31,7 +31,6 @@ export class AuthState {
     @Action(Auth.Login)
     login(ctx: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
         return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
-            ctx.dispatch(new Global.ChangeTheme(result.profile.themePref));
             ctx.patchState({
                 user: result,
                 token: result.token

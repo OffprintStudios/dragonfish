@@ -6,10 +6,9 @@ import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Store } from '@ngxs/store';
 
-import { FrontendUser, Roles, Themes } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
 import { AuthService } from './services/auth';
 import { spookySlogans, slogans, Theme } from './models/site';
-// import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
@@ -27,9 +26,6 @@ import { GlobalState, Global } from './shared/global';
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
-  @Select(GlobalState.theme) currentTheme$: Observable<Themes.Preference>;
-  currentThemeSubscription: Subscription;
-  currentTheme: Themes.Preference;
 
   @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
@@ -55,14 +51,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
-
-    this.currentThemeSubscription = this.currentTheme$.subscribe(x => {
-      this.currentTheme = x;
-    });
-
+    
     if (this.currentUser) {
         // Sets the current site theme based on user preference
-        this.store.dispatch(new Global.ChangeTheme(this.currentUser.profile.themePref));
+        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);   
 
         // Starts fetching notifications updates from the server
         interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {

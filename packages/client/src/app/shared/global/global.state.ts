@@ -6,13 +6,11 @@ import { GlobalService } from './services';
 import { GlobalStateModel } from './global-state.model';
 import { Global } from './global.actions';
 
-import { Themes } from '@pulp-fiction/models/users';
 import { ContentFilter } from '@pulp-fiction/models/content';
 
 @State<GlobalStateModel>({
     name: 'global',
     defaults: {
-        theme: Themes.Preference.Crimson,
         filter: ContentFilter.Default
     }
 })
@@ -22,22 +20,8 @@ export class GlobalState {
 
     /* Actions */
 
-    @Action(Global.ChangeTheme)
-    changeTheme(ctx: StateContext<GlobalStateModel>, action: Global.ChangeTheme) {
-        ctx.patchState({
-            theme: action.pref
-        })
-    }
-
     @Action(Global.SetContentFilter)
     setContentFilter(ctx: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
 
-    }
-
-    /* Selectors */
-
-    @Selector()
-    static theme (state: GlobalStateModel): Themes.Preference {
-        return state.theme;
     }
 }

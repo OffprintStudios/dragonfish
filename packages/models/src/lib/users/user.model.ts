@@ -1,6 +1,5 @@
 import { Roles } from './roles.enum';
 import { AuditSession } from './audit-session.model';
-import { Themes } from './theme';
 
 export interface User {
     readonly _id: string;
@@ -10,7 +9,7 @@ export interface User {
     readonly agreedToPolicies: boolean;
     readonly profile: {
         readonly avatar: string;
-        readonly themePref: Themes.Preference;
+        readonly themePref: string;
         readonly bio: string | null;
         readonly tagline: string | null;
     };

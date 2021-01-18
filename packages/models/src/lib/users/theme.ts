@@ -41,162 +41,125 @@ export interface Theme {
     codeBackground: string,
 }
 
-export namespace Themes {
-    export class Crimson implements Theme {
-        static readonly key = 'crimson';
-
-        readonly accent = '#DD4C4F';
-        readonly accentHover = '#933235';
-        readonly accentLight = '#EA7C7C';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080'; // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
-        readonly codeBackground = '#F0F0F0';
-    }
-
-    export class DarkCrimson implements Theme {
-        static readonly key = 'dark-crimson';
-
-        readonly accent = '#DD4C4F';
-        readonly accentHover = '#933235';
-        readonly accentLight = '#EA7C7C';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080'; // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
-        readonly codeBackground = '#F0F0F0';
-    }
-
-    export class Aqua implements Theme {
-        static readonly key = 'aqua';
-        
-        readonly accent = '#5098D6';
-        readonly accentHover = '#316399';
-        readonly accentLight = '#A2CDEF';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080'; // aka gray
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
-        readonly codeBackground = '#F0F0F0';
-    }
-
-    export class DarkAqua implements Theme {
-        static readonly key = 'dark-aqua';
-
-        readonly accent = '#5098D6';
-        readonly accentHover = '#316399';
-        readonly accentLight = '#A2CDEF';
-        readonly background = '#272727';
-        readonly textColor = '#F5F5F5'; // aka whitesmoke
-        readonly borders = '#FFFFFF'; // aka white
-        readonly controlsBackground = '#3A3A3A';
-        readonly codeBackground = '#3A3A3A';
-    }
-
-    export class Royal implements Theme {
-        static readonly key = 'royal';
-
-        readonly accent = '#9A4EAE';
-        readonly accentHover = '#4E2A84';
-        readonly accentLight = '#C987DB';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080'; // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
-        readonly codeBackground = '#F0F0F0';
-    }
-
-    export class DarkRoyal implements Theme {
-        static readonly key = 'dark-royal';
-        
-        readonly accent = '#9A4EAE';
-        readonly accentHover = '#4E2A84';
-        readonly accentLight = '#C987DB';
-        readonly background = '#272727';
-        readonly textColor = '#F5F5F5'; // aka whitesmoke
-        readonly borders = '#FFFFFF'; // aka white
-        readonly controlsBackground = '#3A3A3A';
-        readonly codeBackground = '#3A3A3A';
-    }
-
-    export class Steel implements Theme {
-        static readonly key = 'steel';
-
-        readonly accent = '#3B3F44';
-        readonly accentHover = '#3C8028';
-        readonly accentLight = '#8EC67B';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080';  // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
-        readonly codeBackground = '#F0F0F0';
-    }
-    
-    export class MidnightField implements Theme {
-        static readonly key = 'midnight-field';
-
-        readonly accent = '#3C8028';
-        readonly accentHover = '#3B3F44';
-        readonly accentLight = '#8EC67B';
-        readonly background = '#272727';
-        readonly textColor = '#F5F5F5'; //aka whitesmoke
-        readonly borders = '#FFFFFF'; // aka white
-        readonly controlsBackground = '#3A3A3A';
-        readonly codeBackground = '#3A3A3A';
-    }
-
-    export class Autumn implements Theme {
-        static readonly key = 'autumn';
-
-        readonly accent = '#D16D2B';
-        readonly accentHover = '#AC4731';
-        readonly accentLight = '#F69325';
-        readonly background = '#FBFBFB';
-        readonly textColor = '#000000'; //aka black
-        readonly borders = '#808080'; // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey 
-        readonly codeBackground = '#F0F0F0';
-    }
-
-    export class DuskAutumn implements Theme {
-        static readonly key = 'dusk-autumn';
-
-        readonly accent = '#D16D2B';
-        readonly accentHover = '#AC4731';
-        readonly accentLight = '#F69325';
-        readonly background = '#272727';
-        readonly textColor = '#F5F5F5'; // aka whitesmoke
-        readonly borders = '#FFFFFF'; // aka white
-        readonly controlsBackground = '#3A3A3A';
-        readonly codeBackground = '#3A3A3A';
-    }
-
-    export enum Preference {
-        Crimson = 'crimson',
-        DarkCrimson = 'dark-crimson',
-        Aqua = 'aqua',
-        DarkAqua = 'dark-aqua',
-        Royal = 'royal',
-        DarkRoyal = 'dark-royal',
-        Steel = 'steel',
-        MidnightField = 'midnight-field',
-        Autumn = 'autumn',
-        DuskAutumn = 'dusk-autumn'
-    }
+export const Crimson: Theme = {
+    accent: '#DD4C4F',
+    accentHover: '#933235',
+    accentLight: '#EA7C7C',
+    background: '#FBFBFB',
+    textColor: '#000000', // aka black
+    borders: '#808080', // aka grey
+    controlsBackground: '#D3D3D3', // aka lightgrey
+    codeBackground: '#F0F0F0',
 }
 
-/*
-export const PredefinedThemes = Record<string; Theme> = {
-    'crimson' = Crimson;
-    'dark-crimson' = DarkCrimson;
-    'aqua' = Aqua;
-    'dark-aqua' = DarkAqua;
-    'royal' = Royal;
-    'dark-royal' = DarkRoyal;
-    'steel' = Steel;
-    'midnight-field' = MidnightField;
-    'autumn' = Autumn;
-    'dusk-autumn' = DuskAutumn
+export const DarkCrimson: Theme = {
+    accent: '#DD4C4F',
+    accentHover: '#933235',
+    accentLight: '#E58E8E',
+    background: '#272727',
+    textColor: '#F5F5F5', // aka WhiteSmoke
+    borders: '#FFFFFF', // aka White
+    controlsBackground: '#3A3A3A',
+    codeBackground: '#3A3A3A',
 }
-*/
+
+export const Aqua: Theme = {
+    accent: '#5098D6',
+    accentHover: '#316399',
+    accentLight: '#A2CDEF',
+    background: '#FBFBFB',
+    textColor: '#000000', // aka black
+    borders: '#808080', // aka gray
+    controlsBackground: '#D3D3D3', // aka lightgrey
+    codeBackground: '#F0F0F0',
+}
+
+export const DarkAqua: Theme = {
+    accent: '#5098D6',
+    accentHover: '#316399',
+    accentLight: '#A2CDEF',
+    background: '#272727',
+    textColor: '#F5F5F5', // aka whitesmoke
+    borders: '#FFFFFF', // aka white
+    controlsBackground: '#3A3A3A',
+    codeBackground: '#3A3A3A',
+}
+
+export const Royal: Theme = {
+    accent: '#9A4EAE',
+    accentHover: '#4E2A84',
+    accentLight: '#C987DB',
+    background: '#FBFBFB',
+    textColor: '#000000', // aka black
+    borders: '#808080', // aka grey
+    controlsBackground: '#D3D3D3', // aka lightgrey
+    codeBackground: '#F0F0F0',
+}
+
+export const DarkRoyal: Theme = {
+    accent: '#9A4EAE',
+    accentHover: '#4E2A84',
+    accentLight: '#C987DB',
+    background: '#272727',
+    textColor: '#F5F5F5', // aka whitesmoke
+    borders: '#FFFFFF', // aka white
+    controlsBackground: '#3A3A3A',
+    codeBackground: '#3A3A3A',
+}
+
+export const Steel: Theme = {
+    accent: '#3B3F44',
+    accentHover: '#3C8028',
+    accentLight: '#8EC67B',
+    background: '#FBFBFB',
+    textColor: '#000000', // aka black
+    borders: '#808080',  // aka grey
+    controlsBackground: '#D3D3D3', // aka lightgrey
+    codeBackground: '#F0F0F0',
+}
+
+export const MidnightField: Theme = {
+    accent: '#3C8028',
+    accentHover: '#3B3F44',
+    accentLight: '#8EC67B',
+    background: '#272727',
+    textColor: '#F5F5F5', //aka whitesmoke
+    borders: '#FFFFFF', // aka white
+    controlsBackground: '#3A3A3A',
+    codeBackground: '#3A3A3A',
+}
+
+export const Autumn: Theme = {
+    accent: '#D16D2B',
+    accentHover: '#AC4731',
+    accentLight: '#F69325',
+    background: '#FBFBFB',
+    textColor: '#000000', //aka black
+    borders: '#808080', // aka grey
+    controlsBackground: '#D3D3D3', // aka lightgrey 
+    codeBackground: '#F0F0F0',
+}
+
+export const DuskAutumn: Theme = {
+    accent: '#D16D2B',
+    accentHover: '#AC4731',
+    accentLight: '#F69325',
+    background: '#272727',
+    textColor: '#F5F5F5', // aka whitesmoke
+    borders: '#FFFFFF', // aka white
+    controlsBackground: '#3A3A3A',
+    codeBackground: '#3A3A3A',
+}
+
+export const PredefinedThemes: Record<string, Theme> = {
+    'crimson': Crimson,
+    'dark-crimson': DarkCrimson,
+    'aqua': Aqua,
+    'dark-aqua': DarkAqua,
+    'royal': Royal,
+    'dark-royal': DarkRoyal,
+    'steel': Steel,
+    'midnight-field': MidnightField,
+    'autumn': Autumn,
+    'dusk-autumn': DuskAutumn
+}
