@@ -10,6 +10,8 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 
+import { AuthState } from './shared/auth';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/auth';
@@ -131,7 +133,7 @@ const toolbarOptions = [
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsStoragePluginModule.forRoot(),
-    NgxsModule.forRoot([]), 
+    NgxsModule.forRoot([AuthState]), 
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
