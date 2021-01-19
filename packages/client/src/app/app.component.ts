@@ -38,6 +38,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   rotatingSlogan: string;
 
   notifications: NotificationBase[];
+  numNotifs: number = 0;
 
   constructor(private router: Router, private statsService: StatsService,
     private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // Starts fetching notifications updates from the server
         interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
           this.notifications = data;
+          this.numNotifs = this.notifications.length;
         });  
     }
 
