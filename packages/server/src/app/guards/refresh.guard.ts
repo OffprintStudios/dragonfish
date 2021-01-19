@@ -24,8 +24,6 @@ export class RefreshGuard implements CanActivate {
     } else {
       throw new UnauthorizedException(`You don't have permission to do that.`);
     }
-
-    console.log(bearerToken);
     
     // Verifying that the token is legitimate.
     let verifiedToken; 

@@ -76,12 +76,12 @@ export class AuthController {
 
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
-    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<string> {
+    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<{newToken: string}> {
         const refreshToken = cookies['refreshToken'];
         if (refreshToken) {
             if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
                 // If the refresh token is valid, let's generate a new JWT.
-                return this.authService.refreshLogin(req.user);
+                return {newToken: await this.authService.refreshLogin(req.user)};
             } else {
                 throw new ForbiddenException(`Your login has expired. Please log back in.`);
             }

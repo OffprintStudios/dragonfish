@@ -64,10 +64,12 @@ export class AuthService {
      * If refresh fails, 
      */
     public refreshToken(): Observable<string | null> {
-        return this.http.get<string>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
+        return this.http.get<{newToken: string}>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
             .pipe(map(user => {
-                return user.body;
+                console.log(user.body);
+                return user.body.newToken;
             }), catchError(err => {
+                console.log(`Response Error: ${JSON.stringify(err)}`);
                 if (err.status === 403) {
                     // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious          
                     return null;          

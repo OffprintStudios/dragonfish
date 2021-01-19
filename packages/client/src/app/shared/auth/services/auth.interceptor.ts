@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
         return next.handle(req)                
             .pipe(catchError(error => {
                 // If this was a 401, refresh and try again before failing out.
-                if (error instanceof HttpErrorResponse && error.status == 401) {
+                if (error instanceof HttpErrorResponse && error.status === 401) {
                     return this.tryRefresh(req, next);
                 } else {
                     return throwError(error);
@@ -42,10 +42,10 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     private tryRefresh(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.isRefreshing) {
+        if (this.isRefreshing === true) {
             // Sit and wait for the refresh attempt currently in-progress.
             return this.refreshTokenSubject.pipe(
-                filter(token => token != null),
+                filter(token => token !== null),
                 take(1),
                 switchMap(jwt => {
                     return next.handle(this.addToken(req, jwt));
@@ -55,12 +55,14 @@ export class AuthInterceptor implements HttpInterceptor {
 
         this.isRefreshing = true;
         this.refreshTokenSubject.next(null);
-        
-        return this.store.dispatch(new Auth.RefreshToken()).pipe(switchMap((token: string) => {
-            console.log(token);
-            this.isRefreshing = false;
-            this.refreshTokenSubject.next(token);
-            return next.handle(this.addToken(req, token));
+
+        return this.store.dispatch(new Auth.RefreshToken()).pipe(switchMap(() => {
+            // @ts-ignore
+            return this.store.selectOnce<string>((state: AuthState) => state.auth.token).pipe(switchMap((token: string) => {
+                this.isRefreshing = false;
+                this.refreshTokenSubject.next(token);
+                return next.handle(this.addToken(req, token));
+            }));
         }));
     }
 
