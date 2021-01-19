@@ -64,6 +64,7 @@ export class NotificationsComponent implements OnInit {
     };
 
     this.notif.markAsRead(request).subscribe(() => {
+      this.selectedNotifs = [];
       this.fetchData();
     }, () => {
       this.snackBar.open(`Something went wrong with your request! Try again in a little bit.`);
