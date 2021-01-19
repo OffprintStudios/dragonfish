@@ -25,10 +25,9 @@ export class NotificationsComponent implements OnInit {
     this.fetchData();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
-  switchView() {
+  switchView(): void {
     if (this.viewRead === true) {
       this.viewRead = false;
     } else {
@@ -49,13 +48,11 @@ export class NotificationsComponent implements OnInit {
     });
   }
 
-  selectNotif(notifId: string) {
+  selectNotif(notifId: string): void {
     this.selectedNotifs.push(notifId);
-    console.log(this.selectedNotifs);
   }
 
-  deselectNotif(notifId: string) {
+  deselectNotif(notifId: string): void {
     this.selectedNotifs = this.selectedNotifs.filter(val => { return val !== notifId});
-    console.log(this.selectedNotifs);
   }
 }
