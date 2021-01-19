@@ -63,8 +63,8 @@ export class AuthService {
      * Refreshes the current user token with new User info.
      * If refresh fails, 
      */
-    public refreshToken(): Observable<FrontendUser | null> {
-        return this.http.get<FrontendUser>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
+    public refreshToken(): Observable<string | null> {
+        return this.http.get<string>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
             .pipe(map(user => {
                 return user.body;
             }), catchError(err => {

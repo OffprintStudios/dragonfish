@@ -62,8 +62,8 @@ export class AuthState {
     }
 
     @Action(Auth.RefreshToken)
-    refreshToken({ patchState, dispatch }: StateContext<AuthStateModel>, _action: Auth.RefreshToken): Observable<FrontendUser> {
-        return this.auth.refreshToken().pipe(tap((result: FrontendUser | null) => {
+    refreshToken({ patchState, dispatch }: StateContext<AuthStateModel>, _action: Auth.RefreshToken): Observable<string> {
+        return this.auth.refreshToken().pipe(tap((result: string | null) => {
             if (result === null) {
                 dispatch(new User.SetUser(null));
                 patchState({
@@ -72,7 +72,7 @@ export class AuthState {
                 this.snackBar.open(`Your token has expired, and you've been logged out.`);
             } else {
                 patchState({
-                    token: result.token
+                    token: result
                 });
             }
         }));

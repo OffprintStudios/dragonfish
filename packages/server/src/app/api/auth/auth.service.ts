@@ -5,6 +5,7 @@ import { verify, argon2id } from 'argon2';
 import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
 import { UsersService } from '../../db/users/users.service';
 import { JwtPayload } from '@pulp-fiction/models/auth';
+import { String } from 'aws-sdk/clients/appstream';
 
 @Injectable()
 export class AuthService {
@@ -81,14 +82,15 @@ export class AuthService {
      * 
      * @param user A user's JWT payload
      */
-    async refreshLogin(user: JwtPayload): Promise<FrontendUser> {
+    async refreshLogin(user: JwtPayload): Promise<string> {
         const validatedUser = await this.usersService.findOneById(user.sub);
         const newPayload: JwtPayload = {
             username: validatedUser.username,
             roles: validatedUser.audit.roles,
             sub: validatedUser._id
         };
-        return this.usersService.buildFrontendUser(validatedUser, this.jwtService.sign(newPayload));
+
+        return this.jwtService.sign(newPayload);
     }
 
     /**

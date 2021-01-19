@@ -76,7 +76,7 @@ export class AuthController {
 
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
-    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<models.FrontendUser> {
+    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<string> {
         const refreshToken = cookies['refreshToken'];
         if (refreshToken) {
             if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
