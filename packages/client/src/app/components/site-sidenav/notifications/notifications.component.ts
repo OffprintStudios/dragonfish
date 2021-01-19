@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { ContentKind } from '@pulp-fiction/models/content';
-import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { MarkReadRequest } from '@pulp-fiction/models/notifications';
 import { NotificationsService } from '../../../services/user';
 import { NotificationSelect } from './notification-select.model';
 
@@ -21,7 +23,7 @@ export class NotificationsComponent implements OnInit {
 
   viewRead = false;
 
-  constructor(private notif: NotificationsService) {
+  constructor(private notif: NotificationsService, private snackBar: MatSnackBar) {
     this.fetchData();
   }
 
@@ -54,5 +56,17 @@ export class NotificationsComponent implements OnInit {
 
   deselectNotif(notifId: string): void {
     this.selectedNotifs = this.selectedNotifs.filter(val => { return val !== notifId});
+  }
+
+  markAsRead(): void {
+    const request: MarkReadRequest = {
+      ids: this.selectedNotifs
+    };
+
+    this.notif.markAsRead(request).subscribe(() => {
+      this.fetchData();
+    }, () => {
+      this.snackBar.open(`Something went wrong with your request! Try again in a little bit.`);
+    });
   }
 }
