@@ -48,4 +48,14 @@ export class NotificationsComponent implements OnInit {
       this.loading = false;
     });
   }
+
+  selectNotif(notifId: string) {
+    this.selectedNotifs.push(notifId);
+    console.log(this.selectedNotifs);
+  }
+
+  deselectNotif(notifId: string) {
+    this.selectedNotifs = this.selectedNotifs.filter(val => { return val !== notifId});
+    console.log(this.selectedNotifs);
+  }
 }

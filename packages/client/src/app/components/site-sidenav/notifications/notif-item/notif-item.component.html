@@ -11,5 +11,12 @@
         </span>
     </a>
 
-    <button matRipple class="check-notif"><i-feather name="circle"></i-feather></button>
+    <ng-container *ngIf="notif.read !== true">
+        <ng-container *ngIf="notif.selected === true; else notSelected">
+            <button matRipple class="check-notif" (click)="deselectNotif()"><i-feather name="check-circle"></i-feather></button>
+        </ng-container>
+        <ng-template #notSelected>
+            <button matRipple class="check-notif" (click)="selectNotif()"><i-feather name="circle"></i-feather></button>
+        </ng-template>
+    </ng-container>    
 </div>

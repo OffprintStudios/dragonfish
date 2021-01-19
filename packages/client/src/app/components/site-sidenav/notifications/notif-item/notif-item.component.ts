@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { slugify } from 'voca';
 import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
@@ -12,13 +12,14 @@ import { ContentKind } from '@pulp-fiction/models/content';
 })
 export class NotifItemComponent implements OnInit {
     @Input() notif: any; // this is `any` because different notification documents have different fields
-    @Output() onSelected: string;
+    @Output() onSelected: EventEmitter<string> = new EventEmitter<string>();
+    @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private store: Store) {}
 
     ngOnInit(): void {}
 
-    sendTo() {
+    sendTo(): void {
         switch (this.notif.parentKind) {
             case ContentKind.ProseContent:
                 this.store.dispatch(new Navigate([`/prose/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]));
@@ -33,5 +34,15 @@ export class NotifItemComponent implements OnInit {
                 this.store.dispatch(new Navigate([`/post/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]));
                 break;
         }
+    }
+
+    selectNotif(): void {
+        this.notif.selected = true;
+        this.onSelected.emit(this.notif._id);
+    }
+
+    deselectNotif(): void {
+        this.notif.selected = false;
+        this.onDeselected.emit(this.notif._id);
     }
 }
