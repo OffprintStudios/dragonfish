@@ -6,6 +6,7 @@ import { Store } from '@ngxs/store';
 import * as lodash from 'lodash';
 
 import { AuthState } from '../auth.state';
+import { JwtPayload } from '@pulp-fiction/models/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
 @Injectable({
@@ -26,11 +27,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
      */
     canActivate(next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
         // @ts-ignore
-        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => state.auth.user);
+        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+        const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
-        if (currentUser && currentUser.token) {
+        if (token) {
             if (next.data.roles) {
-                const hasRoles = lodash.intersection(next.data.roles, currentUser.roles);
+                const hasRoles = lodash.intersection(next.data.roles, decodedToken.roles);
                 if (hasRoles.length === 0) {
                     this.snackBar.open(`You don't have permission to do that.`);
                     return false;
@@ -55,11 +57,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
      */
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         // @ts-ignore
-        const currentUser = this.store.selectSnapshot<FrontendUser>((state: AuthState) => state.auth.user);
+        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+        const decodedToken: JwtPayload = this.helper.decodeToken(token);
     
-        if (currentUser && currentUser.token) {
+        if (token) {
             if (next.data.roles) {
-                const hasRoles = lodash.intersection(next.data.roles, currentUser.roles);
+                const hasRoles = lodash.intersection(next.data.roles, decodedToken.roles);
         
                 if (hasRoles.length === 0) {
                     this.snackBar.open(`You don't have permission to do that.`);

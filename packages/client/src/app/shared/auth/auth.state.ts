@@ -8,14 +8,13 @@ import { AuthService } from './services';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Observable } from 'rxjs';
-import { User, UserState } from '../user';
+import { User } from '../user';
 
 @State<AuthStateModel>({
     name: 'auth',
     defaults: {
         token: null
-    },
-    children: [UserState]
+    }
 })
 @Injectable()
 export class AuthState {
@@ -25,63 +24,54 @@ export class AuthState {
 
     /**
      * Logs a user in, then updates the current state with that user's credentials.
-     * 
-     * @param ctx State Context
-     * @param action Action to Perform
      */
     @Action(Auth.Login)
-    login(ctx: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
+    login({ patchState, dispatch }: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
         return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
-            ctx.patchState({
+            dispatch(new User.SetUser(result));
+            patchState({
                 token: result.token
             });
-            ctx.dispatch(new User.SetUser(result));
         }));
     }
 
     /**
      * Registers a new user, then updates the current state with that user's credentials.
-     * 
-     * @param ctx State Context
-     * @param action Action to Perform
      */
     @Action(Auth.Register)
-    register(ctx: StateContext<AuthStateModel>, action: Auth.Register): Observable<FrontendUser> {
+    register({ patchState, dispatch }: StateContext<AuthStateModel>, action: Auth.Register): Observable<FrontendUser> {
         return this.auth.register(action.payload).pipe(tap((result: FrontendUser) => {
-            ctx.patchState({
+            dispatch(new User.SetUser(result));
+            patchState({
                 token: result.token
             });
-            ctx.dispatch(new User.SetUser(result));
         }));
     }
 
     /**
      * Logs out the current user, then resets the state.
-     * 
-     * @param ctx State Context
-     * @param action Action to Perform
      */
     @Action(Auth.Logout)
-    logout(ctx: StateContext<AuthStateModel>, _action: Auth.Logout): Observable<void> {
+    logout({ patchState, dispatch }: StateContext<AuthStateModel>, _action: Auth.Logout): Observable<void> {
         return this.auth.logout().pipe(tap((_) => {
-            ctx.patchState({
+            dispatch(new User.SetUser(null));
+            patchState({
                 token: null
             });
-            ctx.dispatch(new User.SetUser(null));
         }));
     }
 
     @Action(Auth.RefreshToken)
-    refreshToken(ctx: StateContext<AuthStateModel>, _action: Auth.RefreshToken): Observable<FrontendUser> {
+    refreshToken({ patchState, dispatch }: StateContext<AuthStateModel>, _action: Auth.RefreshToken): Observable<FrontendUser> {
         return this.auth.refreshToken().pipe(tap((result: FrontendUser | null) => {
             if (result === null) {
-                ctx.patchState({
+                dispatch(new User.SetUser(null));
+                patchState({
                     token: null
                 });
-                ctx.dispatch(new User.SetUser(null));
                 this.snackBar.open(`Your token has expired, and you've been logged out.`);
             } else {
-                ctx.patchState({
+                patchState({
                     token: result.token
                 });
             }
