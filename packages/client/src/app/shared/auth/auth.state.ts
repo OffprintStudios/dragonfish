@@ -8,7 +8,6 @@ import { AuthService } from './services';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Observable } from 'rxjs';
-import { Global } from '../global/global.actions';
 
 @State<AuthStateModel>({
     name: 'auth',

@@ -13,6 +13,7 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
+import { UserState } from './shared/user';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -134,7 +135,7 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState]),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState]),
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'auth.user', 'global.filter']
     }),
