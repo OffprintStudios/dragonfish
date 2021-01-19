@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 import { Observable, Subscription } from 'rxjs';
 
 import { Genres, PoetryContent, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
@@ -17,7 +17,7 @@ import { Title } from '../../../shared';
     styleUrls: ['./poetry-page.component.less']
 })
 export class PoetryPageComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

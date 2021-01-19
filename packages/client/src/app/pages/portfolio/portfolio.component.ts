@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import * as lodash from 'lodash';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
 
@@ -19,7 +19,7 @@ export class PortfolioComponent implements OnInit {
   portUser: FrontendUser; // The user whose portfolio this is
   portUserId: string; // Their ID, fetched from the route parameters
 
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 

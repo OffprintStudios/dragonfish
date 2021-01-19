@@ -4,10 +4,10 @@ import { interval, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
-import { Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
+import { UserState } from './shared/user';
 
 import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
-import { AuthService } from './services/auth';
 import { spookySlogans, slogans, Theme } from './models/site';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
@@ -15,9 +15,6 @@ import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
-import { Select } from '@ngxs/store';
-import { AuthState } from './shared/auth';
-import { GlobalState, Global } from './shared/global';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -27,7 +24,7 @@ import { GlobalState, Global } from './shared/global';
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
 
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
@@ -42,9 +39,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
   notifications: NotificationBase[];
 
-  constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService,
-    private store: Store) {
+  constructor(private router: Router, private statsService: StatsService,
+    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
 
     this.fetchFrontPageStats();
 
@@ -80,7 +76,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
       // Initialize the ToS nagbar if we need to
       if (!this.currentUser) {
-        this.authService.currUser.subscribe(x => {
+        this.currentUser$.subscribe(x => {
         // This is wrapped in setTimeout because it's called by ngAfterInit,
         // and if we modify the UI before that finishes, Angular errors out.
         // So allow one render tick to progress before we try.

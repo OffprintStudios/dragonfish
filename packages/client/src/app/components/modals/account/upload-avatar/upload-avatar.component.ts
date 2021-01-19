@@ -3,9 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ImageCroppedEvent, Dimensions } from 'ngx-image-cropper';
 import { FileUploader } from 'ng2-file-upload';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../../shared/auth';
+import { User, UserState } from '../../../../shared/user';
 
 import { HttpError } from '../../../../models/site';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -16,7 +16,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
   styleUrls: ['./upload-avatar.component.less']
 })
 export class UploadAvatarComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
@@ -33,7 +33,7 @@ export class UploadAvatarComponent implements OnInit {
     itemAlias: 'avatar'
   });
 
-  constructor(private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar) {
+  constructor(private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar, private store: Store) {
     this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
@@ -90,16 +90,14 @@ export class UploadAvatarComponent implements OnInit {
     this.uploading = true;
     this.uploader.clearQueue();
     this.uploader.addToQueue([this.fileToReturn]);
-    /*this.authService.changeAvatar(this.uploader).subscribe(
-      () => {
-        this.uploading = false;
-        this.snackbar.open('Avatar uploaded successfully!');
-        this.dialogRef.close();
-      },
-      (error: HttpError) => {
-        this.uploading = false;
-        this.snackbar.open(`Uh-oh! Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
-      },
-    );*/
+
+    this.store.dispatch(new User.ChangeAvatar(this.uploader)).subscribe(() => {
+      this.uploading = false;
+      this.snackbar.open(`Avatar uploaded successfully!`);
+      this.dialogRef.close();
+    }, (error: HttpError) => {
+      this.uploading = false;
+      this.snackbar.open(`Uh-oh! Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
+    });
   }
 }

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
 import { ContentKind, SetRating } from '@pulp-fiction/models/content';
@@ -20,7 +20,7 @@ export class ContentApprovalComponent implements OnInit {
     @Input() content: any;
     @Input() histData: ReadingHistory;
 
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
     contentKind = ContentKind;

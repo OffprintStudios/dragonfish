@@ -6,7 +6,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { slugify } from 'voca';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
@@ -21,7 +21,7 @@ import { Constants, Title } from '../../shared';
   styleUrls: ['./my-stuff.component.less']
 })
 export class MyStuffComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 

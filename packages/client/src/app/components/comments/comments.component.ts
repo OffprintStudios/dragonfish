@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef }
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select } from '@ngxs/store';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 import { Observable, Subscription } from 'rxjs';
 import * as lodash from 'lodash';
 
@@ -27,7 +27,7 @@ export class CommentsComponent implements OnInit {
 
   @ViewChild('newCommentSection') newCommentSection: ElementRef;
 
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
   loading = false;

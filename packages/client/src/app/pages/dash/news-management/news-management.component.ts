@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 
 import { NewsContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { NewsManagementService } from './news-management.service';
 
 @Component({
@@ -16,7 +15,7 @@ import { NewsManagementService } from './news-management.service';
     styleUrls: ['./news-management.component.less']
 })
 export class NewsManagementComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

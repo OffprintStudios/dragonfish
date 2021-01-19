@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, Subscription, of, zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Select } from '@ngxs/store';
-import { AuthState } from '../shared/auth';
+import { UserState } from '../shared/user';
 
 import { BlogsContentModel, ContentKind } from '@pulp-fiction/models/content';
 import { ContentService, HistoryService } from '../services/content';
@@ -12,7 +12,7 @@ import { ContentPage } from '../models/site';
 
 @Injectable()
 export class BlogPageResolver implements Resolve<ContentPage> {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

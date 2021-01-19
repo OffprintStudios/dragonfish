@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
@@ -15,7 +15,7 @@ import { BlogsContentModel } from '@pulp-fiction/models/content';
     styleUrls: ['./blogs.component.less']
 })
 export class BlogsComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ContentKind, ContentRating, PubStatus } from '@pulp-fiction/models/content';
@@ -20,7 +20,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
     styleUrls: ['./migrate-blog.component.less']
 })
 export class MigrateBlogComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

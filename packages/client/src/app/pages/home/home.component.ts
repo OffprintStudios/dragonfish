@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { CarouselOptionsManager } from './carousel-options-manager';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -16,7 +16,7 @@ import { NewsContentModel } from '@pulp-fiction/models/content';
   styleUrls: ['./home.component.less']
 })
 export class HomeComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 
 import { Constants, Title } from '../../../shared';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -18,7 +18,7 @@ import { ContentKind } from '@pulp-fiction/models/content';
   styleUrls: ['./history.component.less']
 })
 export class HistoryComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../../shared/auth';
+import { UserState } from '../../../../shared/user';
 
 import { Collection } from '@pulp-fiction/models/collections';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -17,7 +17,7 @@ import { CollectionsService } from 'packages/client/src/app/services/content';
     styleUrls: ['./collection-page.component.less']
 })
 export class CollectionPageComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 

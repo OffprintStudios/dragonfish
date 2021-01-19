@@ -4,12 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CookieService } from 'ngx-cookie';
 import * as lodash from 'lodash';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AuthState } from '../../../shared/auth';
+import { User, UserState } from '../../../shared/user';
 
-import { AlertsService } from '../../../modules/alerts';
 import { UploadAvatarComponent } from '../../../components/modals/account';
 import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
 import { ContentFilter } from '@pulp-fiction/models/works';
@@ -23,7 +22,7 @@ import { Constants, Title } from '../../../shared';
   styleUrls: ['./settings.component.less']
 })
 export class SettingsComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
@@ -66,8 +65,7 @@ export class SettingsComponent implements OnInit {
     enableExplicit: new FormControl(false)
   });
 
-  constructor(private alertsService: AlertsService, private dialog: MatDialog,
-    private snackbar: MatSnackBar, private cookies: CookieService) {
+  constructor(private dialog: MatDialog, private snackbar: MatSnackBar, private cookies: CookieService, private store: Store) {
       this.currentUserSubscription = this.currentUser$.subscribe(x => {
         let themePrefIndex = 0;
 
@@ -166,27 +164,27 @@ export class SettingsComponent implements OnInit {
       currentPassword: password,
       newEmail: newEmail
     };
-    /*return this.authService.changeEmail(changeRequest)
-      .pipe(map(x => {
-        if (x) {
-          this.alertsService.success("Email successfully changed!");
-          return x.email;          
-        } else {
-          return null;
-        }
-      }), catchError(_ => {
-        return of(null);
-      }));*/
+
+    return this.store.dispatch(new User.ChangeEmail(changeRequest)).pipe(map(x => {
+      if (x) {
+        this.snackbar.open(`Email successfully changed!`);
+        return x.email;
+      } else {
+        return null;
+      }
+    }), catchError(_ => {
+      return of(null);
+    }));
   }
 
   submitChangePasswordForm() {
     if (this.passwordFields.newPassword.invalid || this.passwordFields.confirmNewPassword.invalid) {
-      this.alertsService.warn(`Password fields cannot be empty.`);
+      this.snackbar.open(`Password fields cannot be empty.`);
       return;
     }
 
     if (this.passwordFields.newPassword.value !== this.passwordFields.confirmNewPassword.value) {
-      this.alertsService.warn('Your new password doesn\'t match.');
+      this.snackbar.open('Your new password doesn\'t match.');
       return;
     }
 
@@ -195,14 +193,14 @@ export class SettingsComponent implements OnInit {
       newPassword: this.passwordFields.newPassword.value,
     };
 
-    /*this.authService.changePassword(newPasswordInfo).subscribe(() => {
+    this.store.dispatch(new User.ChangePassword(newPasswordInfo)).subscribe(() => {
       location.reload();
-    });*/
+    });
   }
 
   submitProfileForm() {
     if (this.changeProfileFields.newBio.invalid) {
-      this.alertsService.warn(`Bios must be between 3 and 50 characters.`);
+      this.snackbar.open(`Bios must be between 3 and 50 characters.`);
       return;
     }
 
@@ -211,9 +209,9 @@ export class SettingsComponent implements OnInit {
       bio: this.changeProfileFields.newBio.value,
     };
 
-    /* this.authService.changeProfile(newProfileInfo).subscribe(() => {
+    this.store.dispatch(new User.ChangeProfile(newProfileInfo)).subscribe(() => {
       location.reload();
-    });*/
+    });
   }
 
   changeAvatar() {
@@ -240,9 +238,9 @@ export class SettingsComponent implements OnInit {
       newTagline: this.updateTaglineFields.newTagline.value
     };
 
-    /*this.authService.updateTagline(taglineInfo).subscribe(() => {
+    this.store.dispatch(new User.UpdateTagline(taglineInfo)).subscribe(() => {
       location.reload();
-    });*/
+    });
   }
 
   submitContentFilter() {

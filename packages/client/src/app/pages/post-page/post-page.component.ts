@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ItemKind } from '@pulp-fiction/models/comments';
-import { AuthService } from '../../services/auth';
 import { ContentPage } from '../../models/site';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 
@@ -17,7 +16,7 @@ import { ReadingHistory } from '@pulp-fiction/models/reading-history';
   styleUrls: ['./post-page.component.less']
 })
 export class PostPageComponent implements OnInit {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
@@ -28,7 +27,7 @@ export class PostPageComponent implements OnInit {
   pageNum = 1; // For comments pages
   itemKind = ItemKind.NewsContent; // Sets the item kind for comments
 
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });

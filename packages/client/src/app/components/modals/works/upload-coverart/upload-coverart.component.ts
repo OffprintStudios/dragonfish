@@ -4,7 +4,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthState } from '../../../../shared/auth';
+import { UserState } from '../../../../shared/user';
 
 import { AlertsService } from '../../../../modules/alerts';
 import { HttpError } from '../../../../models/site';
@@ -20,7 +20,7 @@ import { ContentKind } from '@pulp-fiction/models/content';
 export class UploadCoverartComponent implements OnInit {
   workId: string;
 
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 

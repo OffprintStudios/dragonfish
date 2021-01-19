@@ -6,7 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Constants, Title } from '../../../shared';
-import { AuthState, Auth } from '../../../shared/auth';
+import { Auth } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 import { FrontendUser, CreateUser } from '@pulp-fiction/models/users';
 
 
@@ -16,9 +17,10 @@ import { FrontendUser, CreateUser } from '@pulp-fiction/models/users';
   styleUrls: ['./register.component.less']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   loadingRegister = false;
   siteVersion = Constants.siteVersion;
 

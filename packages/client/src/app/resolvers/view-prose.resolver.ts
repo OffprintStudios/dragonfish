@@ -3,21 +3,20 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, Subscription, zip, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Select } from '@ngxs/store';
-import { AuthState } from '../shared/auth';
+import { UserState } from '../shared/user';
 
 import { ContentKind, SectionInfo } from '@pulp-fiction/models/content';
 import { ContentService, HistoryService } from '../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { AuthService } from '../services/auth';
 import { ContentPage } from '../models/site';
 
 @Injectable()
 export class ViewProseResolver implements Resolve<ContentPage> {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    constructor (private contentService: ContentService, private auth: AuthService, private hist: HistoryService) {
+    constructor (private contentService: ContentService, private hist: HistoryService) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });

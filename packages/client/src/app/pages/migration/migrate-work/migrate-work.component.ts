@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AuthState } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
 
 import { ApprovalStatus, Categories, Work } from '@pulp-fiction/models/works';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -20,7 +20,7 @@ import { getQuillHtml } from '../../../util/functions';
     styleUrls: ['./migrate-work.component.less']
 })
 export class MigrateWorkComponent implements OnInit {
-    @Select(AuthState.user) currentUser$: Observable<FrontendUser>;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
