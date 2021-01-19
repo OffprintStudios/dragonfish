@@ -194,9 +194,7 @@ export class SettingsComponent implements OnInit {
       newPassword: this.passwordFields.newPassword.value,
     };
 
-    this.store.dispatch(new User.ChangePassword(newPasswordInfo)).subscribe(() => {
-      location.reload();
-    });
+    this.store.dispatch(new User.ChangePassword(newPasswordInfo)).subscribe();
   }
 
   submitProfileForm() {
@@ -210,9 +208,7 @@ export class SettingsComponent implements OnInit {
       bio: this.changeProfileFields.newBio.value,
     };
 
-    this.store.dispatch(new User.ChangeProfile(newProfileInfo)).subscribe(() => {
-      location.reload();
-    });
+    this.store.dispatch(new User.ChangeProfile(newProfileInfo)).subscribe();
   }
 
   changeAvatar() {
@@ -239,9 +235,7 @@ export class SettingsComponent implements OnInit {
       newTagline: this.updateTaglineFields.newTagline.value
     };
 
-    this.store.dispatch(new User.UpdateTagline(taglineInfo)).subscribe(() => {
-      location.reload();
-    });
+    this.store.dispatch(new User.UpdateTagline(taglineInfo)).subscribe();
   }
 
   submitContentFilter() {
