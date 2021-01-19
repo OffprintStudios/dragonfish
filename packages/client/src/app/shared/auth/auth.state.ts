@@ -8,13 +8,14 @@ import { AuthService } from './services';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Observable } from 'rxjs';
+import { User, UserState } from '../user';
 
 @State<AuthStateModel>({
     name: 'auth',
     defaults: {
-        user: null,
         token: null
-    }
+    },
+    children: [UserState]
 })
 @Injectable()
 export class AuthState {
@@ -32,9 +33,9 @@ export class AuthState {
     login(ctx: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
         return this.auth.login(action.payload).pipe(tap((result: FrontendUser) => {
             ctx.patchState({
-                user: result,
                 token: result.token
             });
+            ctx.dispatch(new User.SetUser(result));
         }));
     }
 
@@ -48,9 +49,9 @@ export class AuthState {
     register(ctx: StateContext<AuthStateModel>, action: Auth.Register): Observable<FrontendUser> {
         return this.auth.register(action.payload).pipe(tap((result: FrontendUser) => {
             ctx.patchState({
-                user: result,
                 token: result.token
             });
+            ctx.dispatch(new User.SetUser(result));
         }));
     }
 
@@ -64,9 +65,9 @@ export class AuthState {
     logout(ctx: StateContext<AuthStateModel>, _action: Auth.Logout): Observable<void> {
         return this.auth.logout().pipe(tap((_) => {
             ctx.patchState({
-                user: null,
                 token: null
             });
+            ctx.dispatch(new User.SetUser(null));
         }));
     }
 
@@ -75,13 +76,12 @@ export class AuthState {
         return this.auth.refreshToken().pipe(tap((result: FrontendUser | null) => {
             if (result === null) {
                 ctx.patchState({
-                    user: null,
                     token: null
                 });
+                ctx.dispatch(new User.SetUser(null));
                 this.snackBar.open(`Your token has expired, and you've been logged out.`);
             } else {
                 ctx.patchState({
-                    user: result,
                     token: result.token
                 });
             }
@@ -89,11 +89,6 @@ export class AuthState {
     }
 
     /* Selectors */
-
-    @Selector()
-    static user (state: AuthStateModel): FrontendUser | null {
-        return state.user;
-    }
     
     @Selector()
     static token (state: AuthStateModel): string | null {

@@ -6,7 +6,7 @@ import { FileUploader } from "ng2-file-upload";
 export namespace User {
     export class SetUser {
         static readonly type = '[User] SetUser';
-        constructor (public user: FrontendUser) {}
+        constructor (public user: FrontendUser | null) {}
     }
 
     export class ChangeEmail {
