@@ -1,0 +1,15 @@
+<div class="notif-item">
+    <a class="notification-link" (click)="sendTo()">
+        <span class="notif-type">
+            <i-feather name="message-circle"></i-feather>
+        </span>
+        <span class="notif-body">
+            {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
+        </span>
+        <span class="notif-time">
+            {{ notif.createdAt | date: 'shortTime'}}
+        </span>
+    </a>
+
+    <button matRipple class="check-notif"><i-feather name="circle"></i-feather></button>
+</div>
