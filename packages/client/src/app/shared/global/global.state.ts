@@ -21,7 +21,11 @@ export class GlobalState {
     /* Actions */
 
     @Action(Global.SetContentFilter)
-    setContentFilter(ctx: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
-
+    async setContentFilter({ patchState }: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
+        return await this.globalService.setContentFilter(action.enableMature, action.enableExplicit).then(filter => {
+            patchState({
+                filter: filter
+            });
+        });
     }
 }

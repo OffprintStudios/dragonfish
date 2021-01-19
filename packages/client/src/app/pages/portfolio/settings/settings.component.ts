@@ -14,6 +14,7 @@ import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, Update
 import { ContentFilter } from '@pulp-fiction/models/works';
 
 import { Constants, Title } from '../../../shared';
+import { Global } from '../../../shared/global';
 
 
 @Component({
@@ -244,6 +245,8 @@ export class SettingsComponent implements OnInit {
   }
 
   submitContentFilter() {
-      // this.authService.setContentFilter(this.setFilterFields.enableMature.value, this.setFilterFields.enableExplicit.value);
+      this.store.dispatch(new Global.SetContentFilter(this.setFilterFields.enableMature.value, this.setFilterFields.enableExplicit.value)).subscribe(() => {
+        location.reload();
+      });
   }
 }
