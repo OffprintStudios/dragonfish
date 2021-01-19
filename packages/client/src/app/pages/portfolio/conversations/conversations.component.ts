@@ -7,7 +7,6 @@ import { AuthState } from '../../../shared/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { MessageThread } from '@pulp-fiction/models/messages';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { MessagesService } from '../../../services/content';
 
 @Component({

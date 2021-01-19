@@ -7,8 +7,6 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { AuthState } from '../../../../shared/auth';
 
-import { AlertsService } from '../../../../modules/alerts';
-import { AuthService } from '../../../../services/auth';
 import { HttpError } from '../../../../models/site';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
@@ -35,7 +33,7 @@ export class UploadAvatarComponent implements OnInit {
     itemAlias: 'avatar'
   });
 
-  constructor(private authService: AuthService, private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar) {
+  constructor(private dialogRef: MatDialogRef<UploadAvatarComponent>, private snackbar: MatSnackBar) {
     this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
@@ -92,7 +90,7 @@ export class UploadAvatarComponent implements OnInit {
     this.uploading = true;
     this.uploader.clearQueue();
     this.uploader.addToQueue([this.fileToReturn]);
-    this.authService.changeAvatar(this.uploader).subscribe(
+    /*this.authService.changeAvatar(this.uploader).subscribe(
       () => {
         this.uploading = false;
         this.snackbar.open('Avatar uploaded successfully!');
@@ -102,6 +100,6 @@ export class UploadAvatarComponent implements OnInit {
         this.uploading = false;
         this.snackbar.open(`Uh-oh! Failed to upload your avatar. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
       },
-    );
+    );*/
   }
 }

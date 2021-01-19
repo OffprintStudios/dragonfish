@@ -9,7 +9,6 @@ import { Observable, Subscription, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AuthState } from '../../../shared/auth';
 
-import { AuthService } from '../../../services/auth';
 import { AlertsService } from '../../../modules/alerts';
 import { UploadAvatarComponent } from '../../../components/modals/account';
 import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
@@ -67,7 +66,7 @@ export class SettingsComponent implements OnInit {
     enableExplicit: new FormControl(false)
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService, private dialog: MatDialog,
+  constructor(private alertsService: AlertsService, private dialog: MatDialog,
     private snackbar: MatSnackBar, private cookies: CookieService) {
       this.currentUserSubscription = this.currentUser$.subscribe(x => {
         let themePrefIndex = 0;
@@ -162,12 +161,12 @@ export class SettingsComponent implements OnInit {
   get updateTaglineFields() { return this.updateTagline.controls; }
   get setFilterFields() { return this.setContentFilter.controls; }
 
-  changeEmail = (newEmail: string, password: string): Observable<string> => {
+  changeEmail (newEmail: string, password: string) {
     const changeRequest: ChangeEmail = {
       currentPassword: password,
       newEmail: newEmail
     };
-    return this.authService.changeEmail(changeRequest)
+    /*return this.authService.changeEmail(changeRequest)
       .pipe(map(x => {
         if (x) {
           this.alertsService.success("Email successfully changed!");
@@ -177,8 +176,8 @@ export class SettingsComponent implements OnInit {
         }
       }), catchError(_ => {
         return of(null);
-      }));
-  };
+      }));*/
+  }
 
   submitChangePasswordForm() {
     if (this.passwordFields.newPassword.invalid || this.passwordFields.confirmNewPassword.invalid) {
@@ -196,9 +195,9 @@ export class SettingsComponent implements OnInit {
       newPassword: this.passwordFields.newPassword.value,
     };
 
-    this.authService.changePassword(newPasswordInfo).subscribe(() => {
+    /*this.authService.changePassword(newPasswordInfo).subscribe(() => {
       location.reload();
-    });
+    });*/
   }
 
   submitProfileForm() {
@@ -212,9 +211,9 @@ export class SettingsComponent implements OnInit {
       bio: this.changeProfileFields.newBio.value,
     };
 
-    this.authService.changeProfile(newProfileInfo).subscribe(() => {
+    /* this.authService.changeProfile(newProfileInfo).subscribe(() => {
       location.reload();
-    });
+    });*/
   }
 
   changeAvatar() {
@@ -241,12 +240,12 @@ export class SettingsComponent implements OnInit {
       newTagline: this.updateTaglineFields.newTagline.value
     };
 
-    this.authService.updateTagline(taglineInfo).subscribe(() => {
+    /*this.authService.updateTagline(taglineInfo).subscribe(() => {
       location.reload();
-    });
+    });*/
   }
 
   submitContentFilter() {
-      this.authService.setContentFilter(this.setFilterFields.enableMature.value, this.setFilterFields.enableExplicit.value);
+      // this.authService.setContentFilter(this.setFilterFields.enableMature.value, this.setFilterFields.enableExplicit.value);
   }
 }

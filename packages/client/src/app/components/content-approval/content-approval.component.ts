@@ -7,7 +7,6 @@ import { AuthState } from '../../shared/auth';
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
 import { ContentKind, SetRating } from '@pulp-fiction/models/content';
 import { ContentService } from '../../services/content';
-import { AuthService } from '../../services/auth';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
 import { AddToCollectionComponent } from '../modals/collections';
