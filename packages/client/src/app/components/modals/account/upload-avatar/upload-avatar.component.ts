@@ -5,6 +5,7 @@ import { ImageCroppedEvent, Dimensions } from 'ngx-image-cropper';
 import { FileUploader } from 'ng2-file-upload';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
+import { AuthState } from '../../../../shared/auth';
 import { User, UserState } from '../../../../shared/user';
 
 import { HttpError } from '../../../../models/site';
@@ -86,7 +87,9 @@ export class UploadAvatarComponent implements OnInit {
   }
 
   uploadAvatar() {
-    this.uploader.authToken = `Bearer ${this.currentUser.token}`;
+    // @ts-ignore
+    const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+    this.uploader.authToken = `Bearer ${token}`;
     this.uploading = true;
     this.uploader.clearQueue();
     this.uploader.addToQueue([this.fileToReturn]);
