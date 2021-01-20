@@ -19,7 +19,6 @@ export class ApproveProseComponent implements OnInit {
     ngOnInit(): void {
         this.currDoc = cloneDeep(this.route.snapshot.data.contentData) as ApprovalQueue;
         this.currProse = cloneDeep(this.currDoc.workToApprove) as ProseContent;
-        console.log(this.currProse);
     }
 
     /**
