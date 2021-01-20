@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
@@ -10,7 +11,6 @@ import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { ApprovalQueueService } from './approval-queue.service';
 
 @Component({
     selector: 'approval-queue',
@@ -27,7 +27,7 @@ export class ApprovalQueueComponent implements OnInit {
 
     pageNum = 1;
 
-    constructor(private store: Store, private route: ActivatedRoute, private router: Router) {
+    constructor(private store: Store, public route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
@@ -49,24 +49,35 @@ export class ApprovalQueueComponent implements OnInit {
         this.pageNum = event;
     }
 
-    getOffprintWorkLink(entry: ApprovalQueue, workNameSlug: string) {
-        let thisWork = entry.workToApprove as ContentModel;
-        if (thisWork.kind === ContentKind.ProseContent) {
-            return `https://offprint.net/prose/${thisWork._id}/${workNameSlug}`;
-        } else if (thisWork.kind === ContentKind.PoetryContent) {
-            return `https://offprint.net/poetry/${thisWork._id}/${workNameSlug}`;
-        }
-    }
-    
-    getOffprintUserLink(userId: string, usernameSlug: string) {
-        return `https://offprint.net/portfolio/${userId}/${usernameSlug}`;
+    /**
+     * Goes to the appropriate content view for the following queue entry.
+     * 
+     * @param entry The approval queue entry
+     */
+    goToContentView(entry: ApprovalQueue, authorId: string) {
+        this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
+            const content: ContentModel = entry.workToApprove as ContentModel;
+            if (content.kind === ContentKind.ProseContent) {
+                this.router.navigate(['view-prose']);
+            } else if (content.kind === ContentKind.PoetryContent) {
+                this.router.navigate(['view-poetry']);
+            } else {
+                this.snackBar.open(`...what's this doing here?`);
+            }
+        })
     }
 
+    /**
+     * Forces a refresh of the current page of the queue.
+     */
     forceRefresh() {
         // eventually, none of this will be necessary and items will be updated in-place.
         this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     }
 
+    /**
+     * Checks to see if the queue is empty.
+     */
     queueIsEmpty() {
         if (this.queue.docs.length === 0) {
             return true;
@@ -75,6 +86,11 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Checks to see if this entry has been claimed by anyone.
+     * 
+     * @param entry The approval queue entry
+     */
     checkIfClaimed(entry: ApprovalQueue) {
         if (entry.claimedBy === null || entry.claimedBy === undefined) {
             return false;
@@ -83,6 +99,11 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Checks to see if the provided entry is claimed by the currently signed in user.
+     * 
+     * @param entry The approval queue entry
+     */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             let whoClaimedThis = entry.claimedBy as UserInfo;
@@ -96,6 +117,11 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Claims an entry to the queue.
+     * 
+     * @param entry The approval queue entry
+     */
     claimWork(entry: ApprovalQueue) {
         this.store.dispatch(new AQNamespace.ClaimWork(entry)).subscribe(() => {
             this.forceRefresh();
