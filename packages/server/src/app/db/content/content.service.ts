@@ -36,12 +36,23 @@ export class ContentService {
      * @param kind A content's Kind
      * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, userId: string): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentDocument> {
         if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
-            return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false}, {autopopulate: false});
+            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false}, {autopopulate: false});
         } else {
-            return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false});
+            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false});
         }
+    }
+
+    /**
+     * Fetches a pending work from the database. For use by admins/moderators/work approvers via the dashboard.
+     * 
+     * @param contentId The content ID
+     * @param kind The content kind
+     * @param userId The owner of the content
+     */
+    async fetchOnePending(contentId: string, kind: ContentKind, userId: string): Promise<ContentDocument> {
+        return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Published});
     }
 
     /**

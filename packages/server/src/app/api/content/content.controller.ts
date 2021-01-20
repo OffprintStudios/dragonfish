@@ -18,7 +18,7 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOne(contentId, kind, req.user.sub);
+        return await this.contentService.fetchOne(contentId, kind, req.user);
     }
 
     @UseGuards(OptionalAuthGuard)
