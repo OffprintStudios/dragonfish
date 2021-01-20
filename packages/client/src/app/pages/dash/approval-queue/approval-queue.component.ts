@@ -194,6 +194,8 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * Goes back to the previous page.
      */
     goBack() {
-        this.location.back();
+        this.store.dispatch(new AQNamespace.SelectWork(null)).subscribe(() => {
+            this.location.back();
+        });
     }
 }

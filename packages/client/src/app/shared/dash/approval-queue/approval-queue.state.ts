@@ -15,7 +15,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { DIR_DOCUMENT_FACTORY } from '@angular/cdk/bidi/dir-document-token';
 
 @State<ApprovalQueueStateModel>({
-    name: 'approval_queue',
+    name: 'approvalQueue',
     defaults: {
         currPageDocs: null,
         claimedDocs: [],

@@ -20,7 +20,7 @@ export namespace AQNamespace {
 
     export class SelectWork {
         static readonly type = '[ApprovalQueue] SelectWork';
-        constructor (public doc: ApprovalQueue) {}
+        constructor (public doc: ApprovalQueue | null) {}
     }
 
     export class ApproveWork {
