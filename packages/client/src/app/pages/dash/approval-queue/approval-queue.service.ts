@@ -7,6 +7,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 
 @Injectable({
   providedIn: 'root'
@@ -87,5 +88,22 @@ export class ApprovalQueueService {
       this.snackBar.open(`Something went wrong! Try again in a little bit.`);
       return throwError(err);
     }));
+  }
+
+  /**
+   * Fetches a piece of content for viewing.
+   * 
+   * @param contentId The content ID
+   * @param kind The content kind
+   * @param userId The owner of the content
+   */
+  public viewContent(contentId: string, kind: ContentKind, userId: string) {
+    return this.http.get<ContentModel>(`${this.url}/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }))
   }
 }
