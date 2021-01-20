@@ -141,7 +141,7 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState]),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'user.currUser', 'global.filter']
     }),
