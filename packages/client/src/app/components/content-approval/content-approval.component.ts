@@ -10,6 +10,7 @@ import { ContentService } from '../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
 import { AddToCollectionComponent } from '../modals/collections';
+import { cloneDeep } from 'lodash';
 
 @Component({
     selector: 'content-approval',
@@ -31,7 +32,10 @@ export class ContentApprovalComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.content = cloneDeep(this.content);
+        this.histData = cloneDeep(this.histData);
+    }
 
     /**
      * Opens the Add To Collection dialog box.

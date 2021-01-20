@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { cloneDeep } from 'lodash';
 
 import { ContentKind, ProseContent, PubStatus, WorkStatus } from '@pulp-fiction/models/content';
 import { MyStuffService, SectionsService } from 'packages/client/src/app/services/user';
@@ -10,7 +11,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadCoverartComponent } from 'packages/client/src/app/components/modals/works';
-import { UserInfo } from '@pulp-fiction/models/users';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { slugify } from 'voca';
 
@@ -37,14 +37,14 @@ export class ViewProseComponent implements OnInit {
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         authorsNote: new FormControl('', [Validators.minLength(3)]),
-        authorsNotePos: new FormControl(null)
+        authorsNotePos: new FormControl(AuthorsNotePos.Bottom)
     });
 
     constructor(private stuffService: MyStuffService, private sectionsService: SectionsService, public route: ActivatedRoute, 
         private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
-        this.myProse = this.route.snapshot.data.contentData as ProseContent;
+        this.myProse = cloneDeep(this.route.snapshot.data.contentData) as ProseContent;
         this.fetchData();
     }
 
@@ -131,7 +131,12 @@ export class ViewProseComponent implements OnInit {
 
         this.sectionsService.createSection(this.myProse._id, sectionForm).subscribe(() => {
             this.editMode = false;
-            this.sectionForm.reset();
+            this.sectionForm.setValue({
+                title: '',
+                body: '',
+                authorsNote: '',
+                authorsNotePos: AuthorsNotePos.Bottom
+            });
             this.fetchData();
         });
     }
