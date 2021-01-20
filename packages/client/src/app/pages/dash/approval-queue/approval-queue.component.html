@@ -15,7 +15,7 @@
             <button matRipple class="tool end disabled"><i-feather name="x"></i-feather>Reject</button>
         </ng-container>
         <ng-template #contentViewTools>
-            <button matRipple class="tool"><i-feather name="chevron-left"></i-feather>Back</button>
+            <button matRipple class="tool" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
             <span class="tool-divider"></span>
     
             <button matRipple class="tool disabled">Claims<i-feather name="chevron-down" class="on-right"></i-feather></button>
@@ -25,8 +25,8 @@
             <button matRipple class="tool end disabled" [matTooltip]="'Refresh'" [matTooltipClass]="'offprint-tooltip'" (click)="forceRefresh()"><i-feather name="refresh-cw" class="no-text"></i-feather></button>
             <span class="tool-divider"></span>
     
-            <button matRipple class="tool left"><i-feather name="check"></i-feather>Approve</button>
-            <button matRipple class="tool end"><i-feather name="x"></i-feather>Reject</button>
+            <button matRipple class="tool left" (click)="approveWork()"><i-feather name="check"></i-feather>Approve</button>
+            <button matRipple class="tool end" (click)="rejectWork()"><i-feather name="x"></i-feather>Reject</button>
         </ng-template>
     </div>
 </div>

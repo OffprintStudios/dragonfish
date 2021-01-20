@@ -72,7 +72,8 @@ export class ApprovalQueueState {
     approveWork({ setState }: StateContext<ApprovalQueueStateModel>, { decision }: AQNamespace.ApproveWork) {
         return this.queueService.approveWork(decision).pipe(tap((_result: void) => {
             setState(patch({
-                claimedDocs: removeItem<ApprovalQueue>(doc => doc._id === decision.docId)
+                claimedDocs: removeItem<ApprovalQueue>(doc => doc._id === decision.docId),
+                selectedDoc: null
             }));
         }));
     }
@@ -81,7 +82,8 @@ export class ApprovalQueueState {
     rejectWork({ setState }: StateContext<ApprovalQueueStateModel>, { decision }: AQNamespace.RejectWork) {
         return this.queueService.rejectWork(decision).pipe(tap((_result: void) => {
             setState(patch({
-                claimedDocs: removeItem<ApprovalQueue>(doc => doc._id === decision.docId)
+                claimedDocs: removeItem<ApprovalQueue>(doc => doc._id === decision.docId),
+                selectedDoc: null
             }));
         }));
     }

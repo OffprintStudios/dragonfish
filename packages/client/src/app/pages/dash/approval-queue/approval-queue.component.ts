@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
-import { AQNamespace } from '../../../shared/dash/approval-queue';
+import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
 
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
@@ -17,19 +18,27 @@ import { PaginateResult } from '@pulp-fiction/models/util';
     templateUrl: './approval-queue.component.html',
     styleUrls: ['./approval-queue.component.less']
 })
-export class ApprovalQueueComponent implements OnInit {
+export class ApprovalQueueComponent implements OnInit, OnDestroy {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
+    @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
+    selectedDocSubscription: Subscription;
+    selectedDoc: ApprovalQueue;
 
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
 
     pageNum = 1;
 
-    constructor(private store: Store, public route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar) {
+    constructor(private store: Store, public route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private location: Location) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
+        });
+
+        this.selectedDocSubscription = this.selectedDoc$.subscribe(x => {
+            this.selectedDoc = x;
         });
     }
 
@@ -37,6 +46,11 @@ export class ApprovalQueueComponent implements OnInit {
         this.route.data.subscribe(data => {
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
+    }
+
+    ngOnDestroy(): void {
+        this.currentUserSubscription.unsubscribe();
+        this.selectedDocSubscription.unsubscribe();
     }
 
     /**
@@ -134,18 +148,22 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The entry to approve
      * @param work The work to approve
      */
-    approveWork(entry: ApprovalQueue) {
-        let thisWork = entry.workToApprove as ContentModel;
-        let thisWorksAuthor = thisWork.author as UserInfo;
-        const decision: Decision = {
-            docId: entry._id,
-            workId: thisWork._id,
-            authorId: thisWorksAuthor._id
-        };
-
-        this.store.dispatch(new AQNamespace.ApproveWork(decision)).subscribe(() => {
-            this.forceRefresh();
-        });
+    approveWork() {
+        if (this.selectedDoc !== null) {
+            let thisWork = this.selectedDoc.workToApprove as ContentModel;
+            let thisWorksAuthor = thisWork.author as UserInfo;
+            const decision: Decision = {
+                docId: this.selectedDoc._id,
+                workId: thisWork._id,
+                authorId: thisWorksAuthor._id
+            };
+    
+            this.store.dispatch(new AQNamespace.ApproveWork(decision)).subscribe(() => {
+                this.forceRefresh();
+            });
+        } else {
+            this.snackBar.open(`Nothing is currently selected!`);
+        }
     }
 
     /**
@@ -154,17 +172,28 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The entry to reject
      * @param work The work to reject
      */
-    rejectWork(entry: ApprovalQueue) {
-        let thisWork = entry.workToApprove as ContentModel;
-        let thisWorksAuthor = thisWork.author as UserInfo;
-        const decision: Decision = {
-            docId: entry._id,
-            workId: thisWork._id,
-            authorId: thisWorksAuthor._id
-        };
+    rejectWork() {
+        if (this.selectedDoc !== null) {
+            let thisWork = this.selectedDoc.workToApprove as ContentModel;
+            let thisWorksAuthor = thisWork.author as UserInfo;
+            const decision: Decision = {
+                docId: this.selectedDoc._id,
+                workId: thisWork._id,
+                authorId: thisWorksAuthor._id
+            };
+    
+            this.store.dispatch(new AQNamespace.RejectWork(decision)).subscribe(() => {
+                this.forceRefresh();
+            });
+        } else {
+            this.snackBar.open(`Nothing is currently selected!`);
+        }
+    }
 
-        this.store.dispatch(new AQNamespace.RejectWork(decision)).subscribe(() => {
-            this.forceRefresh();
-        });
+    /**
+     * Goes back to the previous page.
+     */
+    goBack() {
+        this.location.back();
     }
 }
