@@ -32,7 +32,7 @@ export class QueueService {
      * @param user The user claiming this work for review
      * @param docId The document ID of the queue entry
      */
-    async claimWork(user: any, docId: string): Promise<void> {
+    async claimWork(user: any, docId: string): Promise<ApprovalQueue> {
         return await this.approvalQueueService.claimWork(user, docId);
     }
 
