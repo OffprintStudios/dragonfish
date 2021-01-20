@@ -31,7 +31,7 @@ import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from '.
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
-import { ApprovalQueueResolver } from './pages/dash/approval-queue';
+import { ApprovalQueueResolver, ApprovePoetryComponent, ApproveProseComponent } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
 import { Roles } from '@pulp-fiction/models/users';
 
@@ -92,7 +92,10 @@ const routes: Routes = [
     ]},
     {path: 'dash', component: DashComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
       {path: 'overview', component: OverviewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
-      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
+        {path: 'view-prose', component: ApproveProseComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+        {path: 'view-poetry', component: ApprovePoetryComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}}
+      ]},
       {path: 'group-queue', component: GroupQueueComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
       {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}, children: [
         {path: 'create-post', component: PostFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
