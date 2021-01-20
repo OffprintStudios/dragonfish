@@ -58,9 +58,9 @@ export class ApprovalQueueComponent implements OnInit {
         this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
             const content: ContentModel = entry.workToApprove as ContentModel;
             if (content.kind === ContentKind.ProseContent) {
-                this.router.navigate(['view-prose']);
+                this.router.navigate(['view-prose'], {relativeTo: this.route});
             } else if (content.kind === ContentKind.PoetryContent) {
-                this.router.navigate(['view-poetry']);
+                this.router.navigate(['view-poetry'], {relativeTo: this.route});
             } else {
                 this.snackBar.open(`...what's this doing here?`);
             }
