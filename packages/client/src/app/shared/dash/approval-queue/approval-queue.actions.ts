@@ -18,6 +18,11 @@ export namespace AQNamespace {
         constructor (public doc: ApprovalQueue) {}
     }
 
+    export class SelectWork {
+        static readonly type = '[ApprovalQueue] SelectWork';
+        constructor (public doc: ApprovalQueue) {}
+    }
+
     export class ApproveWork {
         static readonly type = '[ApprovalQueue] ApproveWork';
         constructor (public decision: Decision) {}
