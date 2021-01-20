@@ -12,6 +12,7 @@ import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'approval-queue',
@@ -68,7 +69,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * 
      * @param entry The approval queue entry
      */
-    goToContentView(entry: ApprovalQueue, authorId: string) {
+    goToContentView(entry: ApprovalQueue) {
         this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
             const content: ContentModel = entry.workToApprove as ContentModel;
             if (content.kind === ContentKind.ProseContent) {
@@ -158,9 +159,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
                 authorId: thisWorksAuthor._id
             };
     
-            this.store.dispatch(new AQNamespace.ApproveWork(decision)).subscribe(() => {
-                this.forceRefresh();
-            });
+            this.store.dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }
@@ -182,9 +181,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
                 authorId: thisWorksAuthor._id
             };
     
-            this.store.dispatch(new AQNamespace.RejectWork(decision)).subscribe(() => {
-                this.forceRefresh();
-            });
+            this.store.dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }
@@ -194,8 +191,6 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * Goes back to the previous page.
      */
     goBack() {
-        this.store.dispatch(new AQNamespace.SelectWork(null)).subscribe(() => {
-            this.location.back();
-        });
+        this.store.dispatch(new Navigate(['/dash/approval-queue'])).subscribe();
     }
 }

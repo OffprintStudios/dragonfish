@@ -28,7 +28,7 @@
             <ng-container *ngFor="let section of currProse.sections; let i = index">
                 <li>
                     <ng-container *ngIf="section.published === true">
-                        <a [routerLink]="[i + 1, section.title | slugify]">
+                        <a [routerLink]="[i + 1]">
                             <div class="section-title">
                                 {{ section.title }}
                             </div>
@@ -47,10 +47,6 @@
         </ul>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>
-        <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="bar-chart-2"></i-feather>{{ currProse.stats.views | abbreviate }}</span>
-        <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
         <span class="divider">//</span>
         <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.createdAt | localedate:'mediumDate' }}</span>
@@ -58,3 +54,5 @@
         <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currProse.meta.status] }}</span>
     </div>
 </div>
+
+<router-outlet></router-outlet>

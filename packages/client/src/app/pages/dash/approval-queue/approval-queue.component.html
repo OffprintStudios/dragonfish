@@ -78,7 +78,7 @@
                     <button matTooltip="Claim work" matTooltipClass="offprint-tooltip" class="work-controls-single" (click)="claimWork(entry)"><i-feather name="plus-square"></i-feather></button>
                 </div>
                 <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
-                    <button [matTooltip]="'View Content'" [matTooltipClass]="'offprint-tooltip'" class="work-controls-single" (click)="goToContentView(entry, entry.workToApprove.author._id)"><i-feather name="chevron-right"></i-feather></button>
+                    <button [matTooltip]="'View Content'" [matTooltipClass]="'offprint-tooltip'" class="work-controls-single" (click)="goToContentView(entry)"><i-feather name="chevron-right"></i-feather></button>
                 </div>
             </div>
         </div>
