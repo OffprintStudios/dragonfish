@@ -52,7 +52,7 @@ export class ContentService {
      * @param userId The owner of the content
      */
     async fetchOnePending(contentId: string, kind: ContentKind, userId: string): Promise<ContentDocument> {
-        return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Published});
+        return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Pending});
     }
 
     /**
