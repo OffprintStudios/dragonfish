@@ -81,6 +81,7 @@ import { ContentApprovalComponent } from './components/content-approval';
 
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { environment } from '../environments/environment';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -140,7 +141,7 @@ const toolbarOptions = [
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'user.currUser', 'global.filter']
     }),
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
