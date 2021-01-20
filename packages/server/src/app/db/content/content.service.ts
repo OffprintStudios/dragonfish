@@ -36,11 +36,11 @@ export class ContentService {
      * @param kind A content's Kind
      * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, userId: string): Promise<ContentDocument> {
         if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
-            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false}, {autopopulate: false});
+            return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false}, {autopopulate: false});
         } else {
-            return await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'kind': kind, 'audit.isDeleted': false});
+            return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false});
         }
     }
 
