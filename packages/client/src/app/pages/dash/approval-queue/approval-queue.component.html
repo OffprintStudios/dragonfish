@@ -1,7 +1,17 @@
 <div class="tools">
     <div class="tool-buttons">
-        <button matRipple class="tool left"><i-feather name="filter"></i-feather>Filter</button>
-        <button matRipple class="tool end" (click)="forceRefresh()"><i-feather name="refresh-cw"></i-feather>Refresh</button>
+        <button matRipple class="tool disabled"><i-feather name="chevron-left"></i-feather>Back</button>
+        <span class="tool-divider"></span>
+
+        <button matRipple class="tool disabled">Claims<i-feather name="chevron-down" class="on-right"></i-feather></button>
+        <span class="tool-divider"></span>
+
+        <button matRipple class="tool left" [matTooltip]="'Filter'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="filter" class="no-text"></i-feather></button>
+        <button matRipple class="tool end" [matTooltip]="'Refresh'" [matTooltipClass]="'offprint-tooltip'" (click)="forceRefresh()"><i-feather name="refresh-cw" class="no-text"></i-feather></button>
+        <span class="tool-divider"></span>
+
+        <button matRipple class="tool left disabled"><i-feather name="check"></i-feather>Approve</button>
+        <button matRipple class="tool end disabled"><i-feather name="x"></i-feather>Reject</button>
     </div>
 </div>
 
