@@ -34,6 +34,7 @@ export class ApprovalQueueComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
+            console.log(data.queueData);
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
     }

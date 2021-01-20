@@ -16,6 +16,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 @State<ApprovalQueueStateModel>({
     name: 'approval_queue',
     defaults: {
+        currPageDocs: null,
         claimedDocs: [],
         selectedDoc: null
     }
@@ -33,10 +34,12 @@ export class ApprovalQueueState {
             if (currUser !== null) {
                 // current behavior will reset the `claimedDocs` every time the page changes; this will be addressed 
                 // in a future update to determine if docs have already been added to the array
-                const ownedDocs = result.docs.filter((doc: any) => { return doc.claimedBy._id === currUser._id });
+                const ownedDocs = result.docs.filter((doc: any) => { return doc.claimedBy !== null && doc.claimedBy._id === currUser._id });
                 patchState({
+                    currPageDocs: result,
                     claimedDocs: ownedDocs
                 });
+                return 
             } else {
                 this.snackBar.open(`Action forbidden.`);
             }
@@ -90,7 +93,17 @@ export class ApprovalQueueState {
     /* Selectors */
 
     @Selector()
+    static currPageDocs (state: ApprovalQueueStateModel): PaginateResult<ApprovalQueue> | null {
+        return state.currPageDocs;
+    }
+
+    @Selector()
     static claimedDocs (state: ApprovalQueueStateModel): ApprovalQueue[] {
         return state.claimedDocs;
+    }
+
+    @Selector()
+    static selectedDoc (state: ApprovalQueueStateModel): ApprovalQueue | null {
+        return state.selectedDoc;
     }
 }
