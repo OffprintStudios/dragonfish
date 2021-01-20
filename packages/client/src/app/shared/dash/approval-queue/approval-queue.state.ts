@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { append, patch, removeItem } from '@ngxs/store/operators';
+import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AQNamespace } from './approval-queue.actions';
@@ -12,6 +12,7 @@ import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { UserState } from '../../user';
 import { FrontendUser } from '@pulp-fiction/models/users';
+import { DIR_DOCUMENT_FACTORY } from '@angular/cdk/bidi/dir-document-token';
 
 @State<ApprovalQueueStateModel>({
     name: 'approval_queue',

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
+import { AQNamespace } from '../../../shared/dash/approval-queue';
 
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
@@ -26,7 +27,7 @@ export class ApprovalQueueComponent implements OnInit {
 
     pageNum = 1;
 
-    constructor(private queueService: ApprovalQueueService, private route: ActivatedRoute, private router: Router) {
+    constructor(private store: Store, private route: ActivatedRoute, private router: Router) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
@@ -34,7 +35,6 @@ export class ApprovalQueueComponent implements OnInit {
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
-            console.log(data.queueData);
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
     }
@@ -63,6 +63,7 @@ export class ApprovalQueueComponent implements OnInit {
     }
 
     forceRefresh() {
+        // eventually, none of this will be necessary and items will be updated in-place.
         this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     }
 
@@ -96,7 +97,7 @@ export class ApprovalQueueComponent implements OnInit {
     }
 
     claimWork(entry: ApprovalQueue) {
-        this.queueService.claimWork(entry._id).subscribe(() => {
+        this.store.dispatch(new AQNamespace.ClaimWork(entry)).subscribe(() => {
             this.forceRefresh();
         });
     }
@@ -116,7 +117,7 @@ export class ApprovalQueueComponent implements OnInit {
             authorId: thisWorksAuthor._id
         };
 
-        this.queueService.approveWork(decision).subscribe(() => {
+        this.store.dispatch(new AQNamespace.ApproveWork(decision)).subscribe(() => {
             this.forceRefresh();
         });
     }
@@ -136,7 +137,7 @@ export class ApprovalQueueComponent implements OnInit {
             authorId: thisWorksAuthor._id
         };
 
-        this.queueService.rejectWork(decision).subscribe(() => {
+        this.store.dispatch(new AQNamespace.RejectWork(decision)).subscribe(() => {
             this.forceRefresh();
         });
     }
