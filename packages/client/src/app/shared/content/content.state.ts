@@ -34,11 +34,6 @@ export class ContentState {
 
     }
 
-    @Action(Content.FetchRelatedHistory)
-    fetchRelatedHistory() {
-
-    }
-
     @Action(Content.FetchAll)
     fetchAll() {
 
