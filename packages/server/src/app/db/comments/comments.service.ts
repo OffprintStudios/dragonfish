@@ -34,7 +34,7 @@ export class CommentsService {
         await this.contentService.addComment(contentId);
 
         const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind)).title;
-        const notification: CreateCommentNotification = {
+        const notification: CreateCommentNotification = {                        
             commentId: doc._id,
             kind: NotificationKind.CommentNotification,
             sourceId: contentId,

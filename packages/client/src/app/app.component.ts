@@ -15,6 +15,7 @@ import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { Constants } from './shared';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -54,7 +55,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);   
 
         // Starts fetching notifications updates from the server
-        interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
+        interval(Constants.FIVE_MINUTES).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
           this.notifications = data;
           this.numNotifs = this.notifications.length;
         });  
