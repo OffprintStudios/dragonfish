@@ -1,6 +1,8 @@
 export class Constants {
     public static siteVersion: string = '0.6.0';
 
+    public static FIVE_MINUTES: number = 300000;
+
     public static HOME: string = "Home";
     public static NOTIFICATIONS: string = "Notifications";
     public static BLOGS: string = "Blogs";

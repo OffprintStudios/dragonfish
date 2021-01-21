@@ -5,10 +5,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+
+import { AuthState } from './shared/auth';
+import { AuthInterceptor } from './shared/auth/services';
+import { GlobalState } from './shared/global';
+import { UserState } from './shared/user';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './services/auth';
 import { MaterialModule } from '@pulp-fiction/material';
 import { QuillModule } from 'ngx-quill';
 import * as QuillNamespace from 'quill';
@@ -67,10 +75,13 @@ import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
+import { NotifItemComponent } from './components/site-sidenav/notifications/notif-item/notif-item.component';
 import { StartConversationComponent } from './components/modals/portfolio/start-conversation/start-conversation.component';
 import { ContentApprovalComponent } from './components/content-approval';
 
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
+import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
+import { environment } from '../environments/environment';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -119,13 +130,18 @@ const toolbarOptions = [
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
-    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent
+    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
+    NgxsModule.forRoot([AuthState, GlobalState, UserState]),
+    NgxsStoragePluginModule.forRoot({
+      key: ['auth.token', 'user.currUser', 'global.filter']
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({

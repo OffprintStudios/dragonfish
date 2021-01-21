@@ -1,12 +1,15 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Select } from '@ngxs/store';
+import { UserState } from '../../shared/user';
+import { Observable, Subscription } from 'rxjs';
 import * as lodash from 'lodash';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { Comment, BlogComment, WorkComment, UserInfoComments, ItemKind, CreateComment, EditComment } from '@pulp-fiction/models/comments';
+import { Comment, BlogComment, WorkComment, UserInfoComments, 
+  ItemKind, CreateComment, EditComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../services/auth';
 import { CommentsService } from '../../services/content';
 import { ContentKind } from '@pulp-fiction/models/content';
 
@@ -24,6 +27,8 @@ export class CommentsComponent implements OnInit {
 
   @ViewChild('newCommentSection') newCommentSection: ElementRef;
 
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
   loading = false;
   comments: PaginateResult<Comment> | PaginateResult<BlogComment> | PaginateResult<WorkComment>;
@@ -36,8 +41,10 @@ export class CommentsComponent implements OnInit {
     body: new FormControl('', [Validators.required, Validators.minLength(10)])
   });
 
-  constructor(private authService: AuthService, private commentsService: CommentsService, private snackbar: MatSnackBar) { 
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+  constructor(private commentsService: CommentsService, private snackbar: MatSnackBar) { 
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+  });
   }
 
   ngOnInit(): void {

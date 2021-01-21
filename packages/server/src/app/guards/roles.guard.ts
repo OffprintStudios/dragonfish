@@ -37,7 +37,7 @@ export const RolesGuard = (requiredRoles: Roles[]) => {
       // Verifying that the token is legitimate.
       let verifiedToken: JwtPayload; 
       try {
-        verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: true});
+        verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: false});
       } catch(err) {
         if (err instanceof TokenExpiredError) {
           throw new UnauthorizedException("Your token has expired.");

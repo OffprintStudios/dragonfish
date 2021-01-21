@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { ContentKind } from '@pulp-fiction/models/content';
-import { NotificationBase, NotificationKind } from '@pulp-fiction/models/notifications';
+import { MarkReadRequest } from '@pulp-fiction/models/notifications';
 import { NotificationsService } from '../../../services/user';
+import { NotificationSelect } from './notification-select.model';
 
 @Component({
   selector: 'sidenav-notifications',
@@ -11,21 +14,22 @@ import { NotificationsService } from '../../../services/user';
 export class NotificationsComponent implements OnInit {
   loading: boolean = false;
 
-  unread: NotificationBase[];
-  read: NotificationBase[];
+  unread: NotificationSelect[];
+  read: NotificationSelect[];
   unreadTotal = 0;
   parentKind = ContentKind;
 
+  selectedNotifs: string[] = [];
+
   viewRead = false;
 
-  constructor(private notif: NotificationsService) {
+  constructor(private notif: NotificationsService, private snackBar: MatSnackBar) {
     this.fetchData();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
-  switchView() {
+  switchView(): void {
     if (this.viewRead === true) {
       this.viewRead = false;
     } else {
@@ -39,10 +43,31 @@ export class NotificationsComponent implements OnInit {
   public fetchData(): void {
     this.loading = true;
     this.notif.getAllNotifications().subscribe(data => {
-      this.unread = data.filter(val => { return val.read !== true });
+      this.unread = data.filter(val => { return val.read !== true }) as NotificationSelect[];
       this.unreadTotal = this.unread.length;
-      this.read = data.filter(val => { return val.read === true });
+      this.read = data.filter(val => { return val.read === true }) as NotificationSelect[];
+      this.loading = false;
     });
   }
 
+  selectNotif(notifId: string): void {
+    this.selectedNotifs.push(notifId);
+  }
+
+  deselectNotif(notifId: string): void {
+    this.selectedNotifs = this.selectedNotifs.filter(val => { return val !== notifId});
+  }
+
+  markAsRead(): void {
+    const request: MarkReadRequest = {
+      ids: this.selectedNotifs
+    };
+
+    this.notif.markAsRead(request).subscribe(() => {
+      this.selectedNotifs = [];
+      this.fetchData();
+    }, _err => {
+      this.snackBar.open(`Something went wrong with your request! Try again in a little bit.`);
+    });
+  }
 }

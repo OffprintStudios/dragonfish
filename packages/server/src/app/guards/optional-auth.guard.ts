@@ -30,7 +30,7 @@ export class OptionalAuthGuard implements CanActivate {
       // Verifying that the token is legitimate.
       let verifiedToken; 
       try {
-        verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken);
+        verifiedToken = this.jwtService.verify<JwtPayload>(bearerToken, {ignoreExpiration: false});
       } catch(err) {
         if (err instanceof TokenExpiredError) {
           throw new UnauthorizedException("Your token has expired.");

@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { Blog, SetPublishStatus } from '@pulp-fiction/models/blogs';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { Constants, Title } from '../../../shared';
-import { PortBlogs } from '../../../models/site';
-import { MatDialog } from '@angular/material/dialog';
-import { BlogsService } from '../../../services/content';
 import { BlogsContentModel } from '@pulp-fiction/models/content';
 
 @Component({
@@ -18,14 +15,17 @@ import { BlogsContentModel } from '@pulp-fiction/models/content';
     styleUrls: ['./blogs.component.less']
 })
 export class BlogsComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
     portUser: FrontendUser;
     blogsData: PaginateResult<BlogsContentModel>
 
     pageNum = 1;
 
-    constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService, private dialog: MatDialog, private blogsService: BlogsService) {
-        this.authService.currUser.subscribe(x => {
+    constructor(private route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }

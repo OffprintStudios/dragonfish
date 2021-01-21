@@ -1,68 +1,31 @@
 <ng-container *ngIf="unread && read; else noNotifications">
     <div class="notifications-header">
-        <div class="view-toggle">
-            <ng-container *ngIf="viewRead; else viewUnread">
+        <ng-container *ngIf="viewRead; else viewUnread">
+            <div class="view-toggle">
                 <button matRipple class="control left" (click)="switchView()">Unread</button>
                 <button matRipple class="control right active">Read</button>
-            </ng-container>
-            <ng-template #viewUnread>
+            </div>
+            <button matRipple class="control disabled">Mark As Read</button>
+        </ng-container>
+        <ng-template #viewUnread>
+            <div class="view-toggle">
                 <button matRipple class="control left active">Unread</button>
                 <button matRipple class="control right" (click)="switchView()">Read</button>
+            </div>
+            <ng-container *ngIf="selectedNotifs.length === 0; else someNotifs">
+                <button matRipple class="control disabled">Mark As Read</button>
+            </ng-container>
+            <ng-template #someNotifs>
+                <button matRipple class="control" (click)="markAsRead()">Mark As Read</button>
             </ng-template>
-        </div>
-        <button matRipple class="control disabled">Mark As Read</button>
+        </ng-template>
     </div>
     <div class="notifications-container">
         <ng-container *ngIf="viewRead; else listUnread">
             <ul class="notif-list">
                 <ng-container *ngFor="let notif of read">
                     <li>
-                        <ng-container [ngSwitch]="$any(notif).parentKind">
-                            <a *ngSwitchCase="parentKind.ProseContent" [routerLink]="['/prose', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.PoetryContent" [routerLink]="['/poetry', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.BlogContent" [routerLink]="['/portfolio', notif.destinationUserId, 'a-human', 'blog', notif.sourceId]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.NewsContent" [routerLink]="['/post', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                        </ng-container>
+                        <notif-item [notif]="notif"></notif-item>
                     </li>
                 </ng-container>
             </ul>
@@ -71,52 +34,7 @@
             <ul class="notif-list">
                 <ng-container *ngFor="let notif of unread">
                     <li>
-                        <ng-container [ngSwitch]="$any(notif).parentKind">
-                            <a *ngSwitchCase="parentKind.ProseContent" [routerLink]="['/prose', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.PoetryContent" [routerLink]="['/poetry', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.BlogContent" [routerLink]="['/portfolio', notif.destinationUserId, 'a-human', 'blog', notif.sourceId]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                            <a *ngSwitchCase="parentKind.NewsContent" [routerLink]="['/post', notif.sourceId, $any(notif).parentTitle | slugify]">
-                                <span class="notif-type">
-                                    <i-feather name="message-circle"></i-feather>
-                                </span>
-                                <span class="notif-body">
-                                    {{ $any(notif).commenterName }} commented on {{ $any(notif).parentTitle }}
-                                </span>
-                                <span class="notif-time">
-                                    {{ notif.createdAt | date: 'shortTime'}}
-                                </span>
-                            </a>
-                        </ng-container>
+                        <notif-item [notif]="notif" (onSelected)="selectNotif($event)" (onDeselected)="deselectNotif($event)"></notif-item>
                     </li>
                 </ng-container>
             </ul>

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Constants, Title } from '../../../shared';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { MessageThread } from '@pulp-fiction/models/messages';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { MessagesService } from '../../../services/content';
 
 @Component({
@@ -13,13 +15,18 @@ import { MessagesService } from '../../../services/content';
   styleUrls: ['./conversations.component.less']
 })
 export class ConversationsComponent implements OnInit {
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   threads: PaginateResult<MessageThread>;
 
   pageNum: number = 1;
 
-  constructor(private authService: AuthService, private messageService: MessagesService) {
-    this.authService.currUser.subscribe(x => {this.currentUser = x;});
+  constructor(private messageService: MessagesService) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
     // this.fetchData(this.pageNum);
   }
 

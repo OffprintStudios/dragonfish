@@ -7,3 +7,4 @@ export { PortCollections } from './port-collections';
 export { CollPage } from './coll-page';
 export { spookySlogans } from './spooky-slogan.array';
 export { ContentPage } from './content-page';
+export * from './theme';

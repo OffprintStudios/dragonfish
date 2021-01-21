@@ -1,11 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { UserState } from '../../../shared/user';
+import { Observable, Subscription } from 'rxjs';
 
 import { Genres, PoetryContent, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
-import { AuthService } from '../../../services/auth';
 
 import { Title } from '../../../shared';
 
@@ -15,6 +17,8 @@ import { Title } from '../../../shared';
     styleUrls: ['./poetry-page.component.less']
 })
 export class PoetryPageComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     currPoetry: PoetryContent;
@@ -26,8 +30,10 @@ export class PoetryPageComponent implements OnInit {
     contentStatus = WorkStatus;
     contentGenres = Genres;
 
-    constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
-        this.auth.currUser.subscribe(x => { this.currentUser = x; })
+    constructor(public route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
         this.fetchData();
     }
 

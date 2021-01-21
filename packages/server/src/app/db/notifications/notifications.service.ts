@@ -351,6 +351,7 @@ export class NotificationsService {
     private getCommentNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
         const queuedCommentNotification = toPublish as CommentNotificationQueueDocument;
         const commentInfo: CommentNotificationInfo = {
+            ...commonProperties,
             commentId: queuedCommentNotification.commentId,
             commenterId: queuedCommentNotification.commenterId,
             commenterName: queuedCommentNotification.commenterName,            
@@ -358,8 +359,7 @@ export class NotificationsService {
             parentTitle: queuedCommentNotification.parentTitle,
         };
 
-        return new this.commentNotificationModel({
-            ...commonProperties,
+        return new this.commentNotificationModel({            
             ...commentInfo
         });
     }
@@ -367,12 +367,12 @@ export class NotificationsService {
     private getBlogNotification(toPublish: NotificationQueueDocument, commonProperties: NotificationBase) {
         const queuedBlogNotification = toPublish as BlogNotificationQueueDocument;
         const blogInfo: BlogNotificationInfo = {
+            ...commonProperties,
             authorId: queuedBlogNotification.authorId,
             authorName: queuedBlogNotification.authorName,
         };
 
-        return new this.blogNotificationModel({
-            ...commonProperties,
+        return new this.blogNotificationModel({            
             ...blogInfo,
         });
     }

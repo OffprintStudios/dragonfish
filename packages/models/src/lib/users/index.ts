@@ -11,6 +11,7 @@ export { ChangeEmail } from './change-email.model';
 export { ChangeUsername } from './change-username.model';
 export { UpdateTagline } from './update-tagline.model';
 export { UserInfo } from './user-info.model';
+export * from './theme';
 
 // Delete after the Offprint Alpha ends
 export { InviteCodes } from './invite-codes.model';

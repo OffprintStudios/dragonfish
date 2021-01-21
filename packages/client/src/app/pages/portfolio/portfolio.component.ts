@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import * as lodash from 'lodash';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../shared/user';
 
 import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { AuthService } from '../../services/auth';
 
 import { Title } from '../../shared';
 
@@ -17,10 +19,12 @@ export class PortfolioComponent implements OnInit {
   portUser: FrontendUser; // The user whose portfolio this is
   portUserId: string; // Their ID, fetched from the route parameters
 
-  currentUser: FrontendUser; // The currently logged-in user
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
+  currentUser: FrontendUser;
 
-  constructor(private authService: AuthService, public route: ActivatedRoute, public dialog: MatDialog) {
-    this.authService.currUser.subscribe(x => {
+  constructor(public route: ActivatedRoute, public dialog: MatDialog) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
   }

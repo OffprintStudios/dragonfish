@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { slugify } from 'voca';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../shared/user';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
-import { AuthService } from '../../services/auth';
 import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
 import { Constants, Title } from '../../shared';
-import { slugify } from 'voca';
 
 @Component({
   selector: 'pulp-fiction-my-stuff',
@@ -20,7 +21,10 @@ import { slugify } from 'voca';
   styleUrls: ['./my-stuff.component.less']
 })
 export class MyStuffComponent implements OnInit {
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   myContent: ContentItem[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
@@ -34,9 +38,9 @@ export class MyStuffComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private blogService: BlogsService, private dialog: MatDialog, private snackBar: MatSnackBar, private clipboard: Clipboard) {
-    this.authService.currUser.subscribe(x => {
+  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, 
+    private blogService: BlogsService, private snackBar: MatSnackBar, private clipboard: Clipboard) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
   }

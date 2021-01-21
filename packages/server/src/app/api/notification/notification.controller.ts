@@ -1,5 +1,5 @@
 import { Controller, Get, Post, UseGuards, Request, NotFoundException, 
-    InternalServerErrorException, HttpCode, BadRequestException, Sse, MessageEvent, Query } from '@nestjs/common';
+    InternalServerErrorException, HttpCode, BadRequestException, Sse, MessageEvent, Query, Body } from '@nestjs/common';
 
 import { MarkReadRequest, NotificationBase, NotificationKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
 import { Roles } from '@pulp-fiction/models/users';
@@ -42,7 +42,7 @@ export class NotificationController {
 
     @Post('mark-as-read')
     @UseGuards(RolesGuard([Roles.User]))
-    async markAsRead(@Request() req: any, toMark: MarkReadRequest): Promise<void> {
+    async markAsRead(@Request() req: any, @Body() toMark: MarkReadRequest): Promise<void> {
         const userId: string = req.user.sub;
         if (!toMark.ids) {
             throw new BadRequestException(undefined, "The 'ids' field of the request body must not be null.");
@@ -62,7 +62,7 @@ export class NotificationController {
 
     @Post('subscribe')
     @UseGuards(RolesGuard([Roles.User]))
-    async subscribe(@Request() req: any, @Query('sourceId') sourceId: string, sourceKind: NotificationKind): Promise<void> {
+    async subscribe(@Request() req: any, @Query('sourceId') sourceId: string, @Query('sourceKind') sourceKind: NotificationKind): Promise<void> {
         if (isNullOrUndefined(sourceId)) {
             throw new BadRequestException(`This request must include the source ID.`);
         }
@@ -74,7 +74,7 @@ export class NotificationController {
     @Post('unsubscribe')
     @HttpCode(200) // because a successful unsubscribe doesn't "create" anything, don't return Created
     @UseGuards(RolesGuard([Roles.User]))
-    async unsubscribe(@Request() req: any, @Query('sourceId') sourceId: string, sourceKind: NotificationKind): Promise<void> {
+    async unsubscribe(@Request() req: any, @Query('sourceId') sourceId: string, @Query('sourceKind') sourceKind: NotificationKind): Promise<void> {
         if (isNullOrUndefined(sourceId)) {
             throw new BadRequestException(`This request must include the source ID.`);
         }
