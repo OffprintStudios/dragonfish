@@ -52,6 +52,10 @@ export class LocaleDatePipe implements PipeTransform  {
                 break;
         }
 
-        return date.toLocaleDateString(undefined, options);
+        if (format === 'shortTime' || format === 'mediumTime' || format === 'longTime' || format === 'fullTime') {
+            return date.toLocaleTimeString(undefined, options);
+        } else {
+            return date.toLocaleDateString(undefined, options);
+        }
     }
 }
