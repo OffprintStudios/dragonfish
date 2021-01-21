@@ -8,7 +8,7 @@ import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
 import { BrowseModule } from './api/browse/browse.module';
 import { DashboardModule } from './api/dashboard/dashboard.module';
-import { NotificationsModule } from './db/notifications/notifications.module';
+import { NotificationModule } from './api/notification/notification.module';
 import { MigrationModule } from './api/migration/migration.module';
 
 const routes: Routes = [
@@ -20,6 +20,7 @@ const routes: Routes = [
         {path: 'images', module: ImagesModule},
         {path: 'browse', module: BrowseModule},
         {path: 'dashboard', module: DashboardModule},
+        {path: 'notifications', module: NotificationModule},
         {path: 'migration', module: MigrationModule}
     ]}
 ];
@@ -34,7 +35,7 @@ const routes: Routes = [
         ImagesModule,
         BrowseModule,
         DashboardModule,
-        NotificationsModule,
+        NotificationModule,
         MigrationModule
     ]
 })

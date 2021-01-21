@@ -27,7 +27,6 @@
         <a [routerLink]="['collections']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections</a>
         <ng-container *ngIf="currentUser && currentUserIsSame()">
             <a [routerLink]="['history']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="layers"></i-feather></span>History</a>
-            <a [routerLink]="['notifications']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="bell"></i-feather></span>Notifications</a>
             <a [routerLink]="['conversations']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="message-circle"></i-feather></span>Messages</a>
             <a [routerLink]="['settings']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="settings"></i-feather></span>Settings</a>
         </ng-container>

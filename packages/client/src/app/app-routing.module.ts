@@ -5,7 +5,7 @@ import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent }
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
-  NotificationsComponent, ConversationsComponent, HistoryComponent } from './pages/portfolio';
+  ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
@@ -64,7 +64,6 @@ const routes: Routes = [
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard], resolve: {histData: HistoryResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
       {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
       {path: 'home', component: PortHomeComponent},

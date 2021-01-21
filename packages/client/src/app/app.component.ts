@@ -1,5 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { interval } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 
@@ -11,6 +13,8 @@ import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
+import { NotificationsService } from './services/user';
+import { NotificationBase } from '@pulp-fiction/models/notifications';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -30,13 +34,19 @@ export class AppComponent implements OnInit, AfterViewInit {
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
+  notifications: NotificationBase[];
+
   constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService) {
+    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
     this.authService.currUser.subscribe(x => {
       this.currentUser = x;
     });
 
     this.fetchFrontPageStats();
+
+    interval(300000).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
+      this.notifications = data;
+    });
 
     // Sets the current site theme based on user preference
     if (this.currentUser) {

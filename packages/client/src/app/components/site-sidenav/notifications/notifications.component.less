@@ -1,0 +1,97 @@
+div.notifications-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid whitesmoke;
+    margin-top: 1.5rem;
+
+    button.control {
+        padding: 5px 10px;
+        line-height: 20px;
+
+        &.left {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        &.right {
+            border-left: none;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+
+        &.active {
+            background: var(--site-accent);
+            
+            &:hover {
+                background: var(--site-accent-hover);
+            }
+        }
+
+        &.disabled {
+            background: grey;
+            color: black;
+            cursor: not-allowed;
+        };
+    }
+
+    div.view-toggle {
+        flex: 1;
+        text-align: left;
+    }
+}
+
+div.notifications-container {
+    ul.notif-list {
+        width: 100%;
+        margin-top: 1rem;
+        margin-left: 0;
+        list-style-type: none;
+
+        li {
+            text-align: left;
+            width: 100%;
+            margin-bottom: 0;
+            border-bottom: 1px solid whitesmoke;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            a {
+                color: whitesmoke;
+                padding: 5px 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                cursor: pointer;
+
+                &:hover {
+                    background: var(--site-accent-hover);
+                }
+
+                span.notif-type {
+                    text-align: left;
+                    margin-right: 0.75rem;
+
+                    i-feather {
+                        position: relative;
+                        width: 18px;
+                        top: 0.25rem;
+                    }
+                }
+
+                span.notif-body {
+                    flex: 1;
+                    font-size: 14px;
+                }
+
+                span.notif-time {
+                    text-align: right;
+                    margin-left: 0.75rem;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
