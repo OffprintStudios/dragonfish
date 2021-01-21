@@ -11,6 +11,11 @@ export namespace Content {
         constructor (public pageNum: number, public kinds: ContentKind[], public userId?: string) {}
     }
 
+    export class SetPubSections {
+        static readonly type = '[Content] SetPubSections';
+        constructor () {}
+    }
+
     export class FetchSection {
         static readonly type = '[Content] FetchSection';
         constructor (public sectionId: string) {}

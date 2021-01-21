@@ -9,6 +9,12 @@ import { ContentService } from './services';
 import { ContentModel } from '@pulp-fiction/models/content';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 
+/**
+ * ## ContentState
+ * 
+ * Actions related to **published** content being fetched for display. Does not
+ * deal with unpublished content creation and display.
+ */
 @State<ContentStateModel>({
     name: 'content',
     defaults: {
