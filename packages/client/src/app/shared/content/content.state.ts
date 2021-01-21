@@ -13,13 +13,14 @@ import { ReadingHistory } from '@pulp-fiction/models/reading-history';
  * ## ContentState
  * 
  * Actions related to **published** content being fetched for display. Does not
- * deal with unpublished content creation and display.
+ * deal with unpublished content, content creation, and the display of such items.
  */
 @State<ContentStateModel>({
     name: 'content',
     defaults: {
         currContent: null,
-        currHistDoc: null
+        currHistDoc: null,
+        currSections: null
     }
 })
 @Injectable()
@@ -33,8 +34,18 @@ export class ContentState {
 
     }
 
+    @Action(Content.FetchRelatedHistory)
+    fetchRelatedHistory() {
+
+    }
+
     @Action(Content.FetchAll)
     fetchAll() {
+
+    }
+
+    @Action(Content.SetSections)
+    setSections() {
 
     }
 

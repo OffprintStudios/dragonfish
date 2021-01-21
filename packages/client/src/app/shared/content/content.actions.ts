@@ -6,12 +6,17 @@ export namespace Content {
         constructor (public contentId: string, public kind: ContentKind) {}
     }
 
+    export class FetchRelatedHistory {
+        static readonly type = '[Content] FetchRelatedHistory';
+        constructor () {}
+    }
+
     export class FetchAll {
         static readonly type = '[Content] FetchAll';
         constructor (public pageNum: number, public kinds: ContentKind[], public userId?: string) {}
     }
 
-    export class SetPubSections {
+    export class SetSections {
         static readonly type = '[Content] SetPubSections';
         constructor () {}
     }
