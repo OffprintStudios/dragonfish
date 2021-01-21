@@ -15,6 +15,7 @@ import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
+import { ContentState } from './shared/content';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -141,7 +142,7 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState], {developmentMode: !environment.production}),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
       key: ['auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc']
     }),
