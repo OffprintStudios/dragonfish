@@ -5,7 +5,6 @@ import { verify, argon2id } from 'argon2';
 import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
 import { UsersService } from '../../db/users/users.service';
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { String } from 'aws-sdk/clients/appstream';
 
 @Injectable()
 export class AuthService {
