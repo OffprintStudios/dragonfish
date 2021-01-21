@@ -1,3 +1,4 @@
+import { ContentKind } from '../content';
 import { BlogNotificationInfo } from './blog-notification-info.model';
 import { CommentNotificationInfo } from './comment-notification-info.model';
 import { NewsPostNotificationInfo } from './news-post-notification-info.model';
@@ -15,10 +16,35 @@ export interface CreateNotification {
     kind: NotificationKind;    
 }
 
-export interface CreateWorkNotification extends CreateNotification, WorkNotificationInfo { }
-export interface CreateSectionNotification extends CreateNotification, SectionNotificationInfo { }
-export interface CreateBlogNotification extends CreateNotification, BlogNotificationInfo { }
-export interface CreateCommentNotification extends CreateNotification, CommentNotificationInfo { }
-export interface CreateNewsPostNotification extends CreateNotification, NewsPostNotificationInfo { }
-export interface CreatePMThreadNotification extends CreateNotification, PMThreadNotificationInfo { }
-export interface CreatePMReplyNotification extends CreateNotification, PMReplyNotificationInfo { }
+export interface CreateWorkNotification extends CreateNotification {
+
+ }
+
+export interface CreateSectionNotification extends CreateNotification { 
+
+}
+
+export interface CreateBlogNotification extends CreateNotification { 
+    authorId: string;
+    authorName: string;
+}
+
+export interface CreateCommentNotification extends CreateNotification {
+    commentId: string;
+    commenterName: string;
+    commenterId: string;
+    parentKind: ContentKind;    
+    parentTitle: string;
+ }
+
+export interface CreateNewsPostNotification extends CreateNotification { 
+
+}
+
+export interface CreatePMThreadNotification extends CreateNotification { 
+
+}
+
+export interface CreatePMReplyNotification extends CreateNotification { 
+    
+}

@@ -34,14 +34,13 @@ export class AuthService {
             }));
     }
 
-      /**
-   * Sends a returning user's credentials to the backend to be verified.
-   * If the response is successful, the `user` is returned and their info
-   * is set in local storage. Otherwise, sends the backend error to all
-   * subscribed observables.
-   *
-   * @param credentials A user's credentials.
-   */
+    /**
+     * Sends a returning user's credentials to the backend to be verified.
+     * If the response is successful, the `user` is returned. Otherwise, sends the backend error to all
+     * subscribed observables.
+     *
+     * @param credentials A user's credentials.
+     */
     public login(credentials: LoginUser): Observable<FrontendUser> {
         return this.http.post<FrontendUser>(`${this.url}/login`, credentials, { withCredentials: true, observe: 'response' })
             .pipe(map(user => {
@@ -52,8 +51,7 @@ export class AuthService {
     }
 
     /**
-     * Logs the user out, sets the user object to null, removes their info from localStorage, and
-     * navigates to home.
+     * Logs the user out.
      */
     public logout(): Observable<void> {
         return this.http.get<void>(`${this.url}/logout`, { withCredentials: true });
@@ -61,7 +59,7 @@ export class AuthService {
 
     /**
      * Refreshes the current user token with new User info.
-     * If refresh fails, 
+     * If refresh fails, return `null`.
      */
     public refreshToken(): Observable<string | null> {
         return this.http.get<{newToken: string}>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })

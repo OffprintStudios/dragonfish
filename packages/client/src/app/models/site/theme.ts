@@ -185,18 +185,3 @@ export namespace Themes {
         DuskAutumn = 'dusk-autumn'
     }
 }
-
-/*
-export const PredefinedThemes = Record<string; Theme> = {
-    'crimson' = Crimson;
-    'dark-crimson' = DarkCrimson;
-    'aqua' = Aqua;
-    'dark-aqua' = DarkAqua;
-    'royal' = Royal;
-    'dark-royal' = DarkRoyal;
-    'steel' = Steel;
-    'midnight-field' = MidnightField;
-    'autumn' = Autumn;
-    'dusk-autumn' = DuskAutumn
-}
-*/
