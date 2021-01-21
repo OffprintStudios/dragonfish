@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
+import { cloneDeep } from 'lodash';
 
 import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
@@ -40,10 +41,10 @@ export class ProsePageComponent implements OnInit {
     ngOnInit(): void {
         this.route.data.subscribe(data => {
             const pageData = data.contentData as ContentPage;
-            this.currProse = pageData.content as ProseContent;
+            this.currProse = cloneDeep(pageData.content) as ProseContent;
             
             if (pageData.history !== null) {
-                this.histData = pageData.history;
+                this.histData = cloneDeep(pageData.history);
             }
         });
 

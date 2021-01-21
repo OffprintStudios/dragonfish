@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { cloneDeep } from 'lodash';
 
 import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
 import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { UploadCoverartComponent } from '../../../../components/modals/works';
 import { MyStuffService, SectionsService } from '../../../../services/user';
 import { SectionItem } from '../../viewmodels';
-import { UserInfo } from '@pulp-fiction/models/users';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { slugify } from 'voca';
 
@@ -45,7 +45,7 @@ export class ViewPoetryComponent implements OnInit {
         private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
-        this.myPoetry = this.route.snapshot.data.contentData as PoetryContent;
+        this.myPoetry = cloneDeep(this.route.snapshot.data.contentData) as PoetryContent;
         this.fetchData();
     }
 

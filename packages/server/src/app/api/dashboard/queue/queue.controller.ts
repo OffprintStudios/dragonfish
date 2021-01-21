@@ -1,9 +1,10 @@
-import { Body, Controller, Request, Get, Param, Patch, Post, UseGuards, BadRequestException } from '@nestjs/common';
+import { Body, Controller, Request, Get, Param, Patch, UseGuards, BadRequestException, Query } from '@nestjs/common';
 import { Roles } from '@pulp-fiction/models/users';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { RolesGuard } from '../../../guards';
 import { QueueService } from './queue.service';
-import { WorksService } from '../../../db/works/works.service';
+import { ContentKind } from '@pulp-fiction/models/content';
+import { isNullOrUndefined } from '../../../util';
 
 @Controller('queue')
 export class QueueController {
@@ -19,6 +20,16 @@ export class QueueController {
         @Get('get-queue-for-mod/:pageNum')
         async getQueueForMod(@Request() req: any, @Param('pageNum') pageNum: number) {
             return await this.queueService.getQueueForMod(req.user, pageNum);
+        }
+
+        @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
+        @Get('view-content')
+        async viewContent(@Request() _req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind, @Query('userId') userId: string) {
+            if (isNullOrUndefined(contentId) || isNullOrUndefined(kind) || isNullOrUndefined(userId)) {
+                throw new BadRequestException(`This request requires the content ID, content kind, and userId of the content you're looking for.`);
+            }
+
+            return await this.queueService.fetchOne(contentId, kind, userId);
         }
     
         @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))

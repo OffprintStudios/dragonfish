@@ -1,34 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Select } from '@ngxs/store';
+import { Location } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
+import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
 
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Decision } from '@pulp-fiction/models/contrib';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { ApprovalQueueService } from './approval-queue.service';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'approval-queue',
     templateUrl: './approval-queue.component.html',
     styleUrls: ['./approval-queue.component.less']
 })
-export class ApprovalQueueComponent implements OnInit {
+export class ApprovalQueueComponent implements OnInit, OnDestroy {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
+    @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
+    selectedDocSubscription: Subscription;
+    selectedDoc: ApprovalQueue;
 
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
 
     pageNum = 1;
 
-    constructor(private queueService: ApprovalQueueService, private route: ActivatedRoute, private router: Router) {
+    constructor(private store: Store, public route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private location: Location) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
+        });
+
+        this.selectedDocSubscription = this.selectedDoc$.subscribe(x => {
+            this.selectedDoc = x;
         });
     }
 
@@ -36,6 +47,11 @@ export class ApprovalQueueComponent implements OnInit {
         this.route.data.subscribe(data => {
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
+    }
+
+    ngOnDestroy(): void {
+        this.currentUserSubscription.unsubscribe();
+        this.selectedDocSubscription.unsubscribe();
     }
 
     /**
@@ -48,23 +64,35 @@ export class ApprovalQueueComponent implements OnInit {
         this.pageNum = event;
     }
 
-    getOffprintWorkLink(entry: ApprovalQueue, workNameSlug: string) {
-        let thisWork = entry.workToApprove as ContentModel;
-        if (thisWork.kind === ContentKind.ProseContent) {
-            return `https://offprint.net/prose/${thisWork._id}/${workNameSlug}`;
-        } else if (thisWork.kind === ContentKind.PoetryContent) {
-            return `https://offprint.net/poetry/${thisWork._id}/${workNameSlug}`;
-        }
-    }
-    
-    getOffprintUserLink(userId: string, usernameSlug: string) {
-        return `https://offprint.net/portfolio/${userId}/${usernameSlug}`;
+    /**
+     * Goes to the appropriate content view for the following queue entry.
+     * 
+     * @param entry The approval queue entry
+     */
+    goToContentView(entry: ApprovalQueue) {
+        this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
+            const content: ContentModel = entry.workToApprove as ContentModel;
+            if (content.kind === ContentKind.ProseContent) {
+                this.router.navigate(['view-prose'], {relativeTo: this.route});
+            } else if (content.kind === ContentKind.PoetryContent) {
+                this.router.navigate(['view-poetry'], {relativeTo: this.route});
+            } else {
+                this.snackBar.open(`...what's this doing here?`);
+            }
+        })
     }
 
+    /**
+     * Forces a refresh of the current page of the queue.
+     */
     forceRefresh() {
+        // eventually, none of this will be necessary and items will be updated in-place.
         this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
     }
 
+    /**
+     * Checks to see if the queue is empty.
+     */
     queueIsEmpty() {
         if (this.queue.docs.length === 0) {
             return true;
@@ -73,6 +101,11 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Checks to see if this entry has been claimed by anyone.
+     * 
+     * @param entry The approval queue entry
+     */
     checkIfClaimed(entry: ApprovalQueue) {
         if (entry.claimedBy === null || entry.claimedBy === undefined) {
             return false;
@@ -81,6 +114,11 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Checks to see if the provided entry is claimed by the currently signed in user.
+     * 
+     * @param entry The approval queue entry
+     */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             let whoClaimedThis = entry.claimedBy as UserInfo;
@@ -94,8 +132,13 @@ export class ApprovalQueueComponent implements OnInit {
         }
     }
 
+    /**
+     * Claims an entry to the queue.
+     * 
+     * @param entry The approval queue entry
+     */
     claimWork(entry: ApprovalQueue) {
-        this.queueService.claimWork(entry._id).subscribe(() => {
+        this.store.dispatch(new AQNamespace.ClaimWork(entry)).subscribe(() => {
             this.forceRefresh();
         });
     }
@@ -106,18 +149,20 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The entry to approve
      * @param work The work to approve
      */
-    approveWork(entry: ApprovalQueue) {
-        let thisWork = entry.workToApprove as ContentModel;
-        let thisWorksAuthor = thisWork.author as UserInfo;
-        const decision: Decision = {
-            docId: entry._id,
-            workId: thisWork._id,
-            authorId: thisWorksAuthor._id
-        };
-
-        this.queueService.approveWork(decision).subscribe(() => {
-            this.forceRefresh();
-        });
+    approveWork() {
+        if (this.selectedDoc !== null) {
+            let thisWork = this.selectedDoc.workToApprove as ContentModel;
+            let thisWorksAuthor = thisWork.author as UserInfo;
+            const decision: Decision = {
+                docId: this.selectedDoc._id,
+                workId: thisWork._id,
+                authorId: thisWorksAuthor._id
+            };
+    
+            this.store.dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
+        } else {
+            this.snackBar.open(`Nothing is currently selected!`);
+        }
     }
 
     /**
@@ -126,17 +171,26 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The entry to reject
      * @param work The work to reject
      */
-    rejectWork(entry: ApprovalQueue) {
-        let thisWork = entry.workToApprove as ContentModel;
-        let thisWorksAuthor = thisWork.author as UserInfo;
-        const decision: Decision = {
-            docId: entry._id,
-            workId: thisWork._id,
-            authorId: thisWorksAuthor._id
-        };
+    rejectWork() {
+        if (this.selectedDoc !== null) {
+            let thisWork = this.selectedDoc.workToApprove as ContentModel;
+            let thisWorksAuthor = thisWork.author as UserInfo;
+            const decision: Decision = {
+                docId: this.selectedDoc._id,
+                workId: thisWork._id,
+                authorId: thisWorksAuthor._id
+            };
+    
+            this.store.dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
+        } else {
+            this.snackBar.open(`Nothing is currently selected!`);
+        }
+    }
 
-        this.queueService.rejectWork(decision).subscribe(() => {
-            this.forceRefresh();
-        });
+    /**
+     * Goes back to the previous page.
+     */
+    goBack() {
+        this.store.dispatch(new Navigate(['/dash/approval-queue'])).subscribe();
     }
 }

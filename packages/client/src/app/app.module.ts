@@ -14,6 +14,7 @@ import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
+import { ApprovalQueueState } from './shared/dash/approval-queue';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -54,6 +55,8 @@ import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksCompo
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
+import { ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/dash/approval-queue';
+
 import { PostFormComponent } from './pages/dash/news-management';
 import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent, SupportersComponent } from './pages/docs';
 
@@ -130,16 +133,17 @@ const toolbarOptions = [
     MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
-    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent
+    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
+    ApproveProseComponent, ApproveSectionViewComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState]),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
-      key: ['auth.token', 'user.currUser', 'global.filter']
+      key: ['auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc']
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),

@@ -22,7 +22,7 @@ export class ContentItemComponent implements OnInit {
 
     select() {
         this.selectItem.emit(this.content);
-        this.content.selected = true;
+        this.content.isSelected = true;
         this.selected = true;
     }
 

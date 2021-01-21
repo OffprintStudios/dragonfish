@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Decision } from '@pulp-fiction/models/contrib';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class ApprovalQueueService {
   /**
    * Gets the entire queue.
    */
-  public getQueue(pageNum: number) {
+  public getQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
     return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/get-queue/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(entries => {
         return entries.body;
@@ -32,7 +33,7 @@ export class ApprovalQueueService {
   /**
    * Gets the claimed works from one moderator.
    */
-  public getQueueForMod(pageNum: number) {
+  public getQueueForMod(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
     return this.http.get<PaginateResult<ApprovalQueue>>(`${this.url}/get-queue-for-mod/${pageNum}`, {observe: 'response', withCredentials: true})
       .pipe(map(entries => {
         return entries.body;
@@ -47,10 +48,10 @@ export class ApprovalQueueService {
    * 
    * @param docId The document to claim
    */
-  public claimWork(docId: string) {
-    return this.http.patch(`${this.url}/claim-work/${docId}`, {}, {observe: 'response', withCredentials: true})
-      .pipe(map(() => {
-        return;
+  public claimWork(docId: string): Observable<ApprovalQueue> {
+    return this.http.patch<ApprovalQueue>(`${this.url}/claim-work/${docId}`, {}, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
       }), catchError(err => {
         this.snackBar.open(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
@@ -62,7 +63,7 @@ export class ApprovalQueueService {
    * 
    * @param decision Info about the decision.
    */
-  public approveWork(decision: Decision) {
+  public approveWork(decision: Decision): Observable<void> {
     return this.http.patch(`${this.url}/approve-work`, decision, {observe: 'response', withCredentials: true})
       .pipe(map(() => {
         this.snackBar.open(`Decision successfully submitted!`);
@@ -78,7 +79,7 @@ export class ApprovalQueueService {
    * 
    * @param decision Info about the decision.
    */
-  public rejectWork(decision: Decision) {
+  public rejectWork(decision: Decision): Observable<void> {
     return this.http.patch(`${this.url}/reject-work`, decision, {observe: 'response', withCredentials: true})
     .pipe(map(() => {
       this.snackBar.open(`Decision successfully submitted!`);
@@ -87,5 +88,22 @@ export class ApprovalQueueService {
       this.snackBar.open(`Something went wrong! Try again in a little bit.`);
       return throwError(err);
     }));
+  }
+
+  /**
+   * Fetches a piece of content for viewing.
+   * 
+   * @param contentId The content ID
+   * @param kind The content kind
+   * @param userId The owner of the content
+   */
+  public viewContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
+    return this.http.get<ContentModel>(`${this.url}/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(`Something went wrong! Try again in a little bit.`);
+        return throwError(err);
+      }))
   }
 }

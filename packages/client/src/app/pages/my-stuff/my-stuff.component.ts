@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { slugify } from 'voca';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../shared/user';
+import { cloneDeep } from 'lodash';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
@@ -20,7 +21,7 @@ import { Constants, Title } from '../../shared';
   templateUrl: './my-stuff.component.html',
   styleUrls: ['./my-stuff.component.less']
 })
-export class MyStuffComponent implements OnInit {
+export class MyStuffComponent implements OnInit, OnDestroy {
   @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
@@ -47,10 +48,14 @@ export class MyStuffComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.myContent = data.stuffData as ContentItem[];
+      this.myContent = cloneDeep(data.stuffData) as ContentItem[];
     });
 
     Title.setTwoPartTitle(Constants.MY_STUFF);
+  }
+
+  ngOnDestroy(): void {
+    this.currentUserSubscription.unsubscribe();
   }
 
   /**
@@ -60,13 +65,13 @@ export class MyStuffComponent implements OnInit {
    */
   selectItem(content: ContentItem) {
     if (this.currSelectedContent === null || this.currSelectedContent === undefined) {
-      content.selected = true;
+      content.isSelected = true;
       this.itemSelected = true;
       this.currSelectedContent = content;
     } else {
       if (this.currSelectedContent._id !== content._id) {
-        this.currSelectedContent.selected = false;
-        content.selected = true;
+        this.currSelectedContent.isSelected = false;
+        content.isSelected = true;
         this.itemSelected = true;
         this.currSelectedContent = content;
       } else {
@@ -79,7 +84,7 @@ export class MyStuffComponent implements OnInit {
    * Deselects any currently-selected content and sets all appropriate fields to false and empty.
    */
   deselect() {
-    this.currSelectedContent.selected = false;
+    this.currSelectedContent.isSelected = false;
     this.itemSelected = false;
     this.currSelectedContent = null;
   }
