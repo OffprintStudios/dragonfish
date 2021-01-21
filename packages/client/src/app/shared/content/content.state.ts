@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
-import { zip, of } from 'rxjs';
+import { Observable, zip, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -33,15 +33,13 @@ export class ContentState {
     /* Actions */
 
     @Action(Content.FetchOne)
-    fetchOne({ patchState }: StateContext<ContentStateModel>, { contentId, kind }: Content.FetchOne) {
+    fetchOne({ patchState, dispatch }: StateContext<ContentStateModel>, { contentId, kind }: Content.FetchOne): Observable<[ContentModel, any]> {
         const currUser: FrontendUser | null = this.store.selectSnapshot(UserState.currUser);
         const thisContent = this.contentService.fetchOne(contentId, kind).pipe(tap(val => {
             if (val.kind === ContentKind.PoetryContent || val.kind === ContentKind.ProseContent) {
                 const anyContent = val as any;
                 const theseSections = anyContent.sections as SectionInfo[];
-                patchState({
-                    currSections: theseSections.filter(x => {return x.published === true}) as SectionInfo[]
-                });
+                dispatch(new Content.SetSections(theseSections));
             }
         }));
 
@@ -70,8 +68,10 @@ export class ContentState {
     }
 
     @Action(Content.SetSections)
-    setSections() {
-
+    setSections({ patchState }: StateContext<ContentStateModel>, { sections }: Content.SetSections): void {
+        patchState({
+            currSections: sections.filter(x => {return x.published === true}) as SectionInfo[]
+        });
     }
 
     @Action(Content.FetchSection)
@@ -104,5 +104,10 @@ export class ContentState {
     @Selector()
     static currHistDoc(state: ContentStateModel): ReadingHistory {
         return state.currHistDoc;
+    }
+
+    @Selector()
+    static currSections(state: ContentStateModel): SectionInfo[] {
+        return state.currSections;
     }
 }
