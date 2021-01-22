@@ -1,9 +1,10 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { Cookies } from '@nestjsplus/cookies';
+import { PaginateResult } from 'mongoose';
 
 import { ContentModel } from '@pulp-fiction/models/content';
 import { User } from '@pulp-fiction/models/users';
-import { InitialResults, PaginateResult } from '@pulp-fiction/models/util';
+import { InitialResults } from '@pulp-fiction/models/util';
 import { ContentFilter } from '@pulp-fiction/models/works';
 
 import { SearchService } from './search.service';
