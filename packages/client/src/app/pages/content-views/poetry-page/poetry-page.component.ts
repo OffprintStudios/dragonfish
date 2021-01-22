@@ -10,6 +10,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
 
 import { Title } from '../../../shared';
+import { ContentState } from '../../../shared/content';
 
 @Component({
     selector: 'poetry-page',
@@ -21,8 +22,8 @@ export class PoetryPageComponent implements OnInit {
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    currPoetry: PoetryContent;
-    histData: ReadingHistory;
+    @Select(ContentState.currContent) currContent$: Observable<PoetryContent>;
+
     pageNum = 1;
     ratingSize = 'large';
 
@@ -38,16 +39,9 @@ export class PoetryPageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe(data => {
-            const pageData = data.contentData as ContentPage;
-            this.currPoetry = pageData.content as PoetryContent;
-
-            if (pageData.history !== null) {
-                this.histData = pageData.history;
-            }
+        this.currContent$.subscribe(x => {
+            Title.setTwoPartTitle(x.title);
         });
-
-        Title.setTwoPartTitle(this.currPoetry.title);
     }
 
     /**
