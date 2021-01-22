@@ -11,6 +11,7 @@ import { ContentKind, ContentModel, SectionInfo } from '@pulp-fiction/models/con
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { UserState } from '../user';
+import { PaginateResult } from '@pulp-fiction/models/util';
 
 /**
  * ## ContentState
@@ -21,6 +22,7 @@ import { UserState } from '../user';
 @State<ContentStateModel>({
     name: 'content',
     defaults: {
+        currPageContent: null,
         currContent: null,
         currHistDoc: null,
         currSections: null
@@ -35,7 +37,7 @@ export class ContentState {
     @Action(Content.FetchOne)
     fetchOne({ patchState, dispatch }: StateContext<ContentStateModel>, { contentId, kind }: Content.FetchOne): Observable<[ContentModel, any]> {
         const currUser: FrontendUser | null = this.store.selectSnapshot(UserState.currUser);
-        const thisContent = this.contentService.fetchOne(contentId, kind).pipe(tap(val => {
+        const thisContent = this.contentService.fetchOne(contentId, kind).pipe(tap((val: ContentModel) => {
             if (val.kind === ContentKind.PoetryContent || val.kind === ContentKind.ProseContent) {
                 const anyContent = val as any;
                 const theseSections = anyContent.sections as SectionInfo[];
@@ -46,14 +48,14 @@ export class ContentState {
         if (currUser !== null) {
             const thisHistory = this.contentService.fetchRelatedHistory(contentId);
 
-            return zip(thisContent, thisHistory).pipe(tap(val => {
+            return zip(thisContent, thisHistory).pipe(tap((val: [ContentModel, ReadingHistory]) => {
                 patchState({
                     currContent: val[0],
                     currHistDoc: val[1]
                 });
             }));
         } else {
-            return zip(thisContent, of(null)).pipe(tap(val => {
+            return zip(thisContent, of(null)).pipe(tap((val: [ContentModel, any]) => {
                 patchState({
                     currContent: val[0],
                     currHistDoc: val[1]
@@ -63,8 +65,12 @@ export class ContentState {
     }
 
     @Action(Content.FetchAll)
-    fetchAll() {
-
+    fetchAll({ patchState }: StateContext<ContentStateModel>, { pageNum, kinds, userId }: Content.FetchAll) {
+        return this.contentService.fetchAll(pageNum, kinds, userId).pipe(tap((val: PaginateResult<ContentModel>) => {
+            patchState({
+                currPageContent: val
+            });
+        }));
     }
 
     @Action(Content.SetSections)
@@ -95,6 +101,11 @@ export class ContentState {
     }
 
     /* Selectors */
+
+    @Selector()
+    static currPageContent(state: ContentStateModel): PaginateResult<ContentModel> {
+        return state.currPageContent;
+    }
 
     @Selector()
     static currContent(state: ContentStateModel): ContentModel {
