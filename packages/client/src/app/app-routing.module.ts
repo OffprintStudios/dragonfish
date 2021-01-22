@@ -26,7 +26,7 @@ import { HistoryResolver } from './pages/portfolio/history';
 
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
 
-import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
+import { ContentViewResolver, PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
@@ -71,10 +71,10 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
-    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'prose/:contentId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
-    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'poetry/:contentId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
@@ -123,7 +123,7 @@ const routes: Routes = [
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
-      HomePageResolver, ApproveContentResolver
+      HomePageResolver, ApproveContentResolver, ContentViewResolver
     ]
 })
 export class AppRoutingModule {}
