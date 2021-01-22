@@ -8,6 +8,4 @@ export { PortWorksResolver } from './port-works.resolver';
 export { PortBlogsResolver } from './port-blogs.resolver';
 export { MyStuffResolver } from './my-stuff.resolver';
 export { ViewContentResolver } from './view-content.resolver';
-export { ViewProseResolver } from './view-prose.resolver';
 export { SectionResolver } from './section.resolver';
-export { ViewPoetryResolver } from './view-poetry.resolver';

@@ -18,9 +18,8 @@ import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
-  MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
-  PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
-  SectionResolver, ViewPoetryResolver } from './resolvers';
+  MyWorksResolver, MyBlogsResolver, PortBlogsResolver, PortWorksResolver, MyStuffResolver, 
+  ViewContentResolver, SectionResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
 
@@ -120,7 +119,7 @@ const routes: Routes = [
     providers: [
       BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver, SectionResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
       HomePageResolver, ApproveContentResolver, ContentViewResolver
