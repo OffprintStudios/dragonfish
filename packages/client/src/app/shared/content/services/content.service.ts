@@ -98,10 +98,10 @@ export class ContentService {
      * 
      * @param setRating Information to set the new rating
      */
-    public setLike(setRating: SetRating) {
-        return this.http.patch<void>(`${this.url}/set-like`, setRating, {observe: 'response', withCredentials: true})
-            .pipe(map(() => {
-                return;
+    public setLike(setRating: SetRating): Observable<ReadingHistory> {
+        return this.http.patch<ReadingHistory>(`${this.url}/set-like`, setRating, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
             }), catchError(err => {
                 this.snackBar.open(err.error.message);
                 return throwError(err);
@@ -113,10 +113,10 @@ export class ContentService {
      * 
      * @param setRating Information to set the new rating
      */
-    public setDislike(setRating: SetRating) {
-        return this.http.patch<void>(`${this.url}/set-dislike`, setRating, {observe: 'response', withCredentials: true})
-            .pipe(map(() => {
-                return;
+    public setDislike(setRating: SetRating): Observable<ReadingHistory> {
+        return this.http.patch<ReadingHistory>(`${this.url}/set-dislike`, setRating, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
             }), catchError(err => {
                 this.snackBar.open(err.error.message);
                 return throwError(err);
@@ -128,10 +128,10 @@ export class ContentService {
      * 
      * @param setRating Information to set the new rating
      */
-    public setNoVote(setRating: SetRating) {
-        return this.http.patch<void>(`${this.url}/set-no-vote`, setRating, {observe: 'response', withCredentials: true})
-            .pipe(map(() => {
-                return;
+    public setNoVote(setRating: SetRating): Observable<ReadingHistory> {
+        return this.http.patch<ReadingHistory>(`${this.url}/set-no-vote`, setRating, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
             }), catchError(err => {
                 this.snackBar.open(err.error.message);
                 return throwError(err);

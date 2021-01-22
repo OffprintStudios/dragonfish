@@ -99,37 +99,49 @@ export class ContentState {
     }
 
     @Action(Content.SetLike)
-    setLike({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
-        return this.contentService.setLike(setRating).pipe(tap((_val: void) => {
+    setLike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
+        return this.contentService.setLike(setRating).pipe(tap((val: ReadingHistory) => {
             if (setRating.oldApprovalRating === RatingOption.Disliked) {
                 dispatch(new Content.IncrementLikes());
                 dispatch(new Content.DecrementDislikes());
             } else {
                 dispatch(new Content.IncrementLikes());
             }
+
+            patchState({
+                currHistDoc: val
+            });
         }));
     }
 
     @Action(Content.SetDislike)
-    setDislike({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
-        return this.contentService.setDislike(setRating).pipe(tap((_val: void) => {
+    setDislike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
+        return this.contentService.setDislike(setRating).pipe(tap((val: ReadingHistory) => {
             if (setRating.oldApprovalRating === RatingOption.Liked) {
                 dispatch(new Content.IncrementDislikes());
                 dispatch(new Content.DecrementLikes());
             } else {
                 dispatch(new Content.IncrementDislikes());
             }
+
+            patchState({
+                currHistDoc: val
+            });
         }));
     }
 
     @Action(Content.SetNoVote)
-    setNoVote({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetNoVote) {
-        return this.contentService.setNoVote(setRating).pipe(tap((_val: void) => {
+    setNoVote({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetNoVote) {
+        return this.contentService.setNoVote(setRating).pipe(tap((val: ReadingHistory) => {
             if (setRating.oldApprovalRating === RatingOption.Liked) {
                 dispatch(new Content.DecrementLikes());
             } else if (setRating.oldApprovalRating === RatingOption.Disliked) {
                 dispatch(new Content.DecrementDislikes());
             }
+
+            patchState({
+                currHistDoc: val
+            });
         }));
     }
 
