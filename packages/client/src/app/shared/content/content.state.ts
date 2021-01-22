@@ -8,10 +8,12 @@ import { Content } from './content.actions';
 import { ContentStateModel } from './content-state.model';
 import { ContentService } from './services';
 import { ContentKind, ContentModel, SectionInfo } from '@pulp-fiction/models/content';
+import { RatingOption } from '@pulp-fiction/models/reading-history';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { UserState } from '../user';
 import { PaginateResult } from '@pulp-fiction/models/util';
+import { Section } from '@pulp-fiction/models/sections';
 
 /**
  * ## ContentState
@@ -25,7 +27,10 @@ import { PaginateResult } from '@pulp-fiction/models/util';
         currPageContent: null,
         currContent: null,
         currHistDoc: null,
-        currSections: null
+        currSections: null,
+        currSection: null,
+        likes: 0,
+        dislikes: 0
     }
 })
 @Injectable()
@@ -51,14 +56,18 @@ export class ContentState {
             return zip(thisContent, thisHistory).pipe(tap((val: [ContentModel, ReadingHistory]) => {
                 patchState({
                     currContent: val[0],
-                    currHistDoc: val[1]
+                    currHistDoc: val[1],
+                    likes: val[0].stats.likes,
+                    dislikes: val[0].stats.dislikes
                 });
             }));
         } else {
             return zip(thisContent, of(null)).pipe(tap((val: [ContentModel, any]) => {
                 patchState({
                     currContent: val[0],
-                    currHistDoc: val[1]
+                    currHistDoc: val[1],
+                    likes: val[0].stats.likes,
+                    dislikes: val[0].stats.dislikes
                 });
             }));
         }
@@ -81,23 +90,75 @@ export class ContentState {
     }
 
     @Action(Content.FetchSection)
-    fetchSection() {
-
+    fetchSection({ patchState }: StateContext<ContentStateModel>, { sectionId }: Content.FetchSection) {
+        return this.contentService.fetchSection(sectionId).pipe(tap((val: Section) => {
+            patchState({
+                currSection: val
+            });
+        }));
     }
 
     @Action(Content.SetLike)
-    setLike() {
-
+    setLike({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
+        return this.contentService.setLike(setRating).pipe(tap((_val: void) => {
+            if (setRating.oldApprovalRating === RatingOption.Disliked) {
+                dispatch(new Content.IncrementLikes());
+                dispatch(new Content.DecrementDislikes());
+            } else {
+                dispatch(new Content.IncrementLikes());
+            }
+        }));
     }
 
     @Action(Content.SetDislike)
-    setDislike() {
-
+    setDislike({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
+        return this.contentService.setDislike(setRating).pipe(tap((_val: void) => {
+            if (setRating.oldApprovalRating === RatingOption.Liked) {
+                dispatch(new Content.IncrementDislikes());
+                dispatch(new Content.DecrementLikes());
+            } else {
+                dispatch(new Content.IncrementDislikes());
+            }
+        }));
     }
 
     @Action(Content.SetNoVote)
-    setNoVote() {
+    setNoVote({ dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetNoVote) {
+        return this.contentService.setNoVote(setRating).pipe(tap((_val: void) => {
+            if (setRating.oldApprovalRating === RatingOption.Liked) {
+                dispatch(new Content.DecrementLikes());
+            } else if (setRating.oldApprovalRating === RatingOption.Disliked) {
+                dispatch(new Content.DecrementDislikes());
+            }
+        }));
+    }
 
+    @Action(Content.IncrementLikes)
+    incrementLikes({ getState, patchState }: StateContext<ContentStateModel>) {
+        patchState({
+            likes: getState().likes + 1
+        });
+    }
+
+    @Action(Content.DecrementLikes)
+    decrementLikes({ getState, patchState }: StateContext<ContentStateModel>) {
+        patchState({
+            likes: getState().likes - 1
+        });
+    }
+
+    @Action(Content.IncrementDislikes)
+    incrementDislikes({ getState, patchState }: StateContext<ContentStateModel>) {
+        patchState({
+            dislikes: getState().dislikes + 1
+        });
+    }
+
+    @Action(Content.DecrementDislikes)
+    decrementDislikes({ getState, patchState }: StateContext<ContentStateModel>) {
+        patchState({
+            dislikes: getState().dislikes - 1
+        });
     }
 
     /* Selectors */
@@ -120,5 +181,20 @@ export class ContentState {
     @Selector()
     static currSections(state: ContentStateModel): SectionInfo[] {
         return state.currSections;
+    }
+
+    @Selector()
+    static currSection(state: ContentStateModel): Section {
+        return state.currSection;
+    }
+
+    @Selector()
+    static likes(state: ContentStateModel): number {
+        return state.likes;
+    }
+
+    @Selector()
+    static dislikes(state: ContentStateModel): number {
+        return state.dislikes;
     }
 }

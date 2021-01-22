@@ -35,4 +35,24 @@ export namespace Content {
         static readonly type = '[Content] Set No Vote';
         constructor (public setRating: SetRating) {}
     }
+
+    export class IncrementLikes {
+        static readonly type = '[Content] Increment Likes';
+        constructor () {}
+    }
+
+    export class DecrementLikes {
+        static readonly type = '[Content] Decrement Likes';
+        constructor () {}
+    }
+
+    export class IncrementDislikes {
+        static readonly type = '[Content] Increment Dislikes';
+        constructor () {}
+    }
+
+    export class DecrementDislikes {
+        static readonly type = '[Content] Decrement Dislikes';
+        constructor () {}
+    }
 }
