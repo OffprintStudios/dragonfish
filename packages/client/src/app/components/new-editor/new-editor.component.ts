@@ -25,7 +25,7 @@ export class NewEditorComponent implements OnInit {
       'bold', 'italic', 'underline', 'strikethrough', '|', 'fontSize', 'fontColor', 'highlight', '|', 
       'bulletedlist', 'numberedlist', '|',
       'alignment', 'indent', 'outdent', '|', 
-      'horizontalline', 'blockquote', 'link', 'insertImage', 'mediaEmbed', '|',
+      'horizontalline', 'blockquote', 'link', 'insertImage', '|',
       'undo', 'redo'],
     placeholder: 'Keeping you on the edge of your seats...',
     heading: {
