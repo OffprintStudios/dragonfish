@@ -1,4 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { PaginateResult } from '@pulp-fiction/models/util';
 import { ApprovalQueueService } from '../../../db/approval-queue/approval-queue.service';
 import { ContentService } from '../../../db/content';
 
@@ -9,7 +13,7 @@ export class QueueService {
     /**
      * Fetches the entire queue.
      */
-    async getQueue(pageNum: number) {
+    async getQueue(pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
         return await this.approvalQueueService.fetchAll(pageNum);
     }
 
@@ -18,7 +22,7 @@ export class QueueService {
      * 
      * @param user The claimant
      */
-    async getQueueForMod(user: any, pageNum: number) {
+    async getQueueForMod(user: any, pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
         return await this.approvalQueueService.fetchForMod(user, pageNum);
     }
 
@@ -28,7 +32,7 @@ export class QueueService {
      * @param user The user claiming this work for review
      * @param docId The document ID of the queue entry
      */
-    async claimWork(user: any, docId: string) {
+    async claimWork(user: any, docId: string): Promise<ApprovalQueue> {
         return await this.approvalQueueService.claimWork(user, docId);
     }
 
@@ -40,7 +44,7 @@ export class QueueService {
      * @param workId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(user: any, docId: string, workId: string, authorId: string) {
+    async approveWork(user: any, docId: string, workId: string, authorId: string): Promise<void> {
         return await this.contentService.approveWork(docId, user.sub, workId, authorId);
     }
 
@@ -52,7 +56,18 @@ export class QueueService {
      * @param workId The work to reject
      * @param authorId The author of the work
      */
-    async rejectWork(user: any, docId: string, workId: string, authorId: string) {
+    async rejectWork(user: any, docId: string, workId: string, authorId: string): Promise<void> {
         return await this.contentService.rejectWork(docId, user.sub, workId, authorId);
+    }
+
+    /**
+     * Fetches a piece of content for review.
+     * 
+     * @param contentId The content ID
+     * @param kind The content kind
+     * @param userId The user associated with this work
+     */
+    async fetchOne(contentId: string, kind: ContentKind, userId: string): Promise<ContentModel> {
+        return await this.contentService.fetchOnePending(contentId, kind, userId);
     }
 }

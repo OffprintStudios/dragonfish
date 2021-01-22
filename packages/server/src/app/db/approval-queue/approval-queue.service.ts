@@ -56,11 +56,11 @@ export class ApprovalQueueService {
      * @param user The user claiming this work for review
      * @param docId The document ID of the queue entry
      */
-    async claimWork(user: any, docId: string): Promise<void> {
+    async claimWork(user: any, docId: string): Promise<ApprovalQueueDocument> {
         const thisEntry = await this.approvalQueue.findById(docId);
 
         if (thisEntry.claimedBy === null) {
-            await this.approvalQueue.updateOne({'_id': docId}, {'claimedBy': user.sub});
+            return await this.approvalQueue.findOneAndUpdate({'_id': docId}, {'claimedBy': user.sub}, {new: true});
         } else {
             throw new ConflictException(`Someone has already claimed this work!`);
         }

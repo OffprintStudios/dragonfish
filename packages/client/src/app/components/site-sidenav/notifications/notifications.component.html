@@ -1,9 +1,52 @@
-<div style="margin-top: 1.25rem; text-align: center;">
-    <h4 style="color: whitesmoke;">Pardon the dust!</h4>
-    <p style="color: whitesmoke; font-style: italic;">
-        Looks like you came here a bit too early.
-    </p>
-    <p style="color: whitesmoke; font-style: italic; margin-top: 0;">
-        Keep an eye on the patch notes to find out when<br>this feature will be available!
-    </p>
-</div>
+<ng-container *ngIf="unread && read; else noNotifications">
+    <div class="notifications-header">
+        <ng-container *ngIf="viewRead; else viewUnread">
+            <div class="view-toggle">
+                <button matRipple class="control left" (click)="switchView()">Unread</button>
+                <button matRipple class="control right active">Read</button>
+            </div>
+            <button matRipple class="control disabled">Mark As Read</button>
+        </ng-container>
+        <ng-template #viewUnread>
+            <div class="view-toggle">
+                <button matRipple class="control left active">Unread</button>
+                <button matRipple class="control right" (click)="switchView()">Read</button>
+            </div>
+            <ng-container *ngIf="selectedNotifs.length === 0; else someNotifs">
+                <button matRipple class="control disabled">Mark As Read</button>
+            </ng-container>
+            <ng-template #someNotifs>
+                <button matRipple class="control" (click)="markAsRead()">Mark As Read</button>
+            </ng-template>
+        </ng-template>
+    </div>
+    <div class="notifications-container">
+        <ng-container *ngIf="viewRead; else listUnread">
+            <ul class="notif-list">
+                <ng-container *ngFor="let notif of read">
+                    <li>
+                        <notif-item [notif]="notif"></notif-item>
+                    </li>
+                </ng-container>
+            </ul>
+        </ng-container>
+        <ng-template #listUnread>
+            <ul class="notif-list">
+                <ng-container *ngFor="let notif of unread">
+                    <li>
+                        <notif-item [notif]="notif" (onSelected)="selectNotif($event)" (onDeselected)="deselectNotif($event)"></notif-item>
+                    </li>
+                </ng-container>
+            </ul>
+        </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #noNotifications>
+    <div style="margin-top: 1.25rem; text-align: center;">
+        <h4 style="color: whitesmoke;">Nothing's happened yet</h4>
+        <p style="color: whitesmoke; font-style: italic;">
+            Check back when something happens!
+        </p>
+    </div>
+</ng-template>

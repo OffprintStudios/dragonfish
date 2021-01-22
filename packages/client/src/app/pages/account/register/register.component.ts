@@ -1,19 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Select, Store } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { Observable, Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Constants, Title } from '../../../shared';
-import { AuthService } from '../../../services/auth';
-import { Router } from '@angular/router';
-import { AlertsService } from '../../../modules/alerts';
-import { first } from 'rxjs/operators';
-import { FrontendUser, CreateUser, LoginUser } from '@pulp-fiction/models/users';
+import { Auth } from '../../../shared/auth';
+import { UserState } from '../../../shared/user';
+import { FrontendUser, CreateUser } from '@pulp-fiction/models/users';
+
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.less']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   loadingRegister = false;
   siteVersion = Constants.siteVersion;
 
@@ -27,13 +34,18 @@ export class RegisterComponent implements OnInit {
     ageCheck: new FormControl(false, Validators.requiredTrue),
   });
 
-  constructor(private authService: AuthService, private router: Router, 
-    private alertsService: AlertsService) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+  constructor( private store: Store, private snackBar: MatSnackBar) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     Title.setTwoPartTitle(Constants.REGISTER);
+  }
+
+  ngOnDestroy(): void {
+    this.currentUserSubscription.unsubscribe();
   }
 
   get registerFields() { return this.registerForm.controls; }
@@ -47,7 +59,7 @@ export class RegisterComponent implements OnInit {
 
     if (this.registerFields.password.value !== this.registerFields.repeatPassword.value) {
       this.loadingRegister = false;
-      this.alertsService.warn('Your passwords don\'t match!');
+      this.snackBar.open('Your passwords don\'t match!');
       return;
     }
 
@@ -58,12 +70,12 @@ export class RegisterComponent implements OnInit {
       inviteCode: this.registerFields.inviteCode.value,
       agreedToPolicies: this.registerFields.tosCheck.value
     };
-    this.authService.register(credentials).pipe(first()).subscribe(() => {
+
+    this.store.dispatch([new Auth.Register(credentials), new Navigate(['/home'])]).subscribe(() => {
       this.loadingRegister = false;
-      this.router.navigate(['/home']);
     }, err => {
       this.loadingRegister = false;
-      this.alertsService.error(err.error.message);
+      this.snackBar.open(err.error.message);
     });
   }
 }

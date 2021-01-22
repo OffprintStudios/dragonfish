@@ -4,10 +4,16 @@ import { Cookies } from '@nestjsplus/cookies';
 import { ContentService } from '../../../db/content/content.service';
 import { OptionalAuthGuard } from '../../../guards';
 import { ContentFilter, ContentKind } from '@pulp-fiction/models/content';
+import { NewsService } from '../../../db/content';
 
 @Controller('news')
 export class NewsController {
-    constructor(private readonly contentService: ContentService) {}
+    constructor(private readonly contentService: ContentService, private readonly newsService: NewsService) {}
+
+    @Get('initial-posts')
+    async getInitialPosts(@Cookies('contentFilter') filter: ContentFilter) {
+        return await this.newsService.fetchForHome(filter);
+    }
 
     @Get('news-feed/:pageNum')
     async getNewsFeed(@Param('pageNum') pageNum: number, @Cookies('contentFilter') filter: ContentFilter) {

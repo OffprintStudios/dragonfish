@@ -2,10 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../../shared/user';
+
 import { Collection } from '@pulp-fiction/models/collections';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { CreateCollectionComponent } from 'packages/client/src/app/components/modals/collections';
-import { AuthService } from 'packages/client/src/app/services/auth';
 import { CollectionsService } from 'packages/client/src/app/services/content';
 
 @Component({
@@ -14,16 +17,19 @@ import { CollectionsService } from 'packages/client/src/app/services/content';
     styleUrls: ['./collection-page.component.less']
 })
 export class CollectionPageComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
     portUser: FrontendUser;
 
     collData: Collection;
 
-    constructor(private auth: AuthService, private route: ActivatedRoute, private dialog: MatDialog, private router: Router,
+    constructor(private route: ActivatedRoute, private dialog: MatDialog, private router: Router,
         private collsService: CollectionsService, private location: Location) {
-        this.auth.currUser.subscribe(x => {
-            this.currentUser = x;
-        });
+            this.currentUserSubscription = this.currentUser$.subscribe(x => {
+                this.currentUser = x;
+            });
     }
 
     ngOnInit(): void {

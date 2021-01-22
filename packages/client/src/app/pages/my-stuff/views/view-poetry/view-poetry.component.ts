@@ -4,12 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
+import { cloneDeep } from 'lodash';
 
 import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
 import { AuthorsNotePos, SectionForm } from '@pulp-fiction/models/sections';
 import { UploadCoverartComponent } from '../../../../components/modals/works';
 import { MyStuffService, SectionsService } from '../../../../services/user';
 import { SectionItem } from '../../viewmodels';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { slugify } from 'voca';
 
 @Component({
     selector: 'view-poetry',
@@ -39,10 +42,10 @@ export class ViewPoetryComponent implements OnInit {
     });
 
     constructor(private stuffService: MyStuffService, private sectionsService: SectionsService, public route: ActivatedRoute, 
-        private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog) {}
+        private router: Router, private location: Location, private snackBar: MatSnackBar, private dialog: MatDialog, private clipboard: Clipboard) {}
 
     ngOnInit(): void {
-        this.myPoetry = this.route.snapshot.data.poetryData as PoetryContent;
+        this.myPoetry = cloneDeep(this.route.snapshot.data.contentData) as PoetryContent;
         this.fetchData();
     }
 
@@ -94,6 +97,16 @@ export class ViewPoetryComponent implements OnInit {
             this.myPoetry.audit.published = this.pubStatus.Pending;
         });
     }
+
+    getShareLink() {
+        if (this.myPoetry.audit.published !== PubStatus.Published) {
+          this.snackBar.open(`Links can only be generated for published content.`);
+          return;
+        }
+        this.clipboard.copy(`https://offprint.net/prose/${this.myPoetry._id}/${slugify(this.myPoetry.title)}`);
+        this.snackBar.open(`Copied link!`);
+        return;
+      }
 
     submitForm() {
         if (this.fields.title.invalid) {

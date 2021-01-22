@@ -33,7 +33,8 @@
         </mat-tab>
         <mat-tab>
             <ng-template mat-tab-label>
-              <i-feather matTooltip="Alerts" matTooltipClass="offprint-tooltip" name="bell"></i-feather>
+              <i-feather matTooltip="Notifications" matTooltipClass="offprint-tooltip" name="bell"></i-feather>
+              <span [matBadge]="notifCount" [matBadgeOverlap]="true" *ngIf="notifCount > 0"></span>
             </ng-template>
             <sidenav-notifications></sidenav-notifications>
           </mat-tab>

@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { AuthService } from 'packages/client/src/app/services/auth';
-import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../../shared/user';
 
 import { CollectionsService } from '../../../../services/content';
 import { Collection } from '@pulp-fiction/models/collections';
 
 @Injectable()
 export class CollectionPageResolver implements Resolve<Collection> {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    constructor (private collsService: CollectionsService, private auth: AuthService) {
-        this.auth.currUser.subscribe(x => { this.currentUser = x; })
+    constructor (private collsService: CollectionsService) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<Collection> {

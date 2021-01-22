@@ -11,7 +11,7 @@ div.nav {
           display: flex;
           flex-direction: row;
           margin: 0 auto 0 auto;
-          justify-content: space-between;
+          //justify-content: space-between;
           align-items: center;
           max-width: 80%;
 
@@ -22,7 +22,20 @@ div.nav {
           }
 
           div.user-menu-nav {
+              width: 135px;
               vertical-align: middle;
+              text-align: left;
+              i-feather.menu-hint {
+                color: whitesmoke;
+                position: relative;
+                top: 0.9rem;
+                margin-right: 1rem;
+                cursor: pointer;
+
+                @media (max-width: 1150px) {
+                    display: none;
+                }
+              }
 
               img.user-menu-avatar {
                   max-width: 50px;
@@ -32,7 +45,6 @@ div.nav {
                   border-radius: 50%;
                   font-size: 0;
                   vertical-align: middle;
-                  cursor: pointer;
 
                   @media (max-width: 1150px) {
                       max-width: 35px;
@@ -58,8 +70,8 @@ div.nav {
                       i-feather {
                           margin-left: 1rem;
                           position: relative;
-                          width: 20px;
-                          height: 20px;
+                          width: 16px;
+                          height: 16px;
 
                           @media (max-width: 992px) { //--large
                               margin-left: 0.5rem;
@@ -70,7 +82,7 @@ div.nav {
                           position: relative;
                           top: -0.5rem;
                           margin-left: 0.5rem;
-                          font-size: 20px;
+                          font-size: 16px;
                       }
                   }
               }
@@ -119,8 +131,8 @@ div.nav {
 
           div.site-logo {
               position: relative;
-              vertical-align: middle;
               text-align: center;
+              justify-self: center;
               flex: 1;
               font-size: 0;
               cursor: pointer;
@@ -158,14 +170,13 @@ div.nav {
           }
 
           div.search-menu {
-              vertical-align: middle;
-
+              width: 135px;
+              text-align: right;
               button.search {
                   margin-bottom: 0;
                   background-color: var(--site-accent);
                   color: whitesmoke;
                   border: 1px solid whitesmoke;
-                  box-shadow: none;
 
                   &:hover {
                       background-color: var(--site-accent-hover);
@@ -181,9 +192,9 @@ div.nav {
                   margin-bottom: 0;
                   background-color: var(--site-accent);
                   border: 1px solid whitesmoke;
-                  box-shadow: none;
                   padding-left: 5px;
                   padding-right: 5px;
+                  float: right;
 
                   &:hover {
                       background-color: var(--site-accent-hover);
@@ -209,8 +220,6 @@ nav {
     width: 100%;
     background: linear-gradient(180deg, var(--site-accent-hover), var(--site-accent));
     text-align: center;
-    border-bottom: 1px solid var(--site-borders);
-    box-shadow: 0 4px 2px -2px var(--site-dropshadow);
 
     div.nav-list {
         display: flex;

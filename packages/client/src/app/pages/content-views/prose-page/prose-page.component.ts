@@ -1,11 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../shared/user';
+import { cloneDeep } from 'lodash';
 
 import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
-import { AuthService } from '../../../services/auth';
 
 import { Title } from '../../../shared';
 
@@ -15,6 +18,8 @@ import { Title } from '../../../shared';
     styleUrls: ['./prose-page.component.less']
 })
 export class ProsePageComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     currProse: ProseContent;
@@ -25,19 +30,21 @@ export class ProsePageComponent implements OnInit {
     contentStatus = WorkStatus;
     contentGenres = Genres;
 
-    constructor(public route: ActivatedRoute, private router: Router, private auth: AuthService) {
-            this.auth.currUser.subscribe(x => { this.currentUser = x; });
-            this.onResize()
-            this.fetchData();
+    constructor(public route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
+        this.onResize()
+        this.fetchData();
     }
 
     ngOnInit(): void {
         this.route.data.subscribe(data => {
-            const pageData = data.proseData as ContentPage;
-            this.currProse = pageData.content as ProseContent;
+            const pageData = data.contentData as ContentPage;
+            this.currProse = cloneDeep(pageData.content) as ProseContent;
             
             if (pageData.history !== null) {
-                this.histData = pageData.history;
+                this.histData = cloneDeep(pageData.history);
             }
         });
 

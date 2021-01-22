@@ -1,18 +1,20 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store, Select } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { Observable, Subscription } from 'rxjs';
 import { Constants } from '../../shared';
+import { Auth } from '../../shared/auth';
+import { UserState } from '../../shared/user';
 
 import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
-import { AuthService } from '../../services/auth';
-import { AlertsService } from '../../modules/alerts';
 import { ConversationsComponent } from './conversations/conversations.component';
 import { HistoryComponent } from './history/history.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { WatchingComponent } from './watching/watching.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'site-sidenav',
@@ -27,9 +29,14 @@ export class SiteSidenavComponent implements OnInit {
 
   @Output() closeSidenav = new EventEmitter<boolean>();
 
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   loadingLogin = false;
   siteVersion = Constants.siteVersion;
+
+  notifCount: number = 0;
 
   loginForm = new FormGroup({
     email: new FormControl(''),
@@ -37,8 +44,10 @@ export class SiteSidenavComponent implements OnInit {
     rememberMe: new FormControl(false),
   });
 
-  constructor(private authService: AuthService, private alertsService: AlertsService, private router: Router, private snackBar: MatSnackBar) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+  constructor(private snackBar: MatSnackBar, private store: Store) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+          this.currentUser = x;
+        });
   }
 
   ngOnInit(): void {
@@ -52,7 +61,8 @@ export class SiteSidenavComponent implements OnInit {
     } else if (event.index === 2) {
       this.histComponent.fetchData();
     } else if (event.index === 3) {
-      // do something for notifications
+      this.notifComponent.fetchData();
+      this.notifCount = this.notifComponent.unreadTotal;
     }
   }
 
@@ -81,13 +91,14 @@ export class SiteSidenavComponent implements OnInit {
       password: this.loginFields.password.value, 
       rememberMe: this.loginFields.rememberMe.value
     };
-    this.authService.login(credentials).pipe(first()).subscribe(() => {
+
+    this.store.dispatch([new Auth.Login(credentials), new Navigate(['/home'])]).subscribe(() => {
       this.loadingLogin = false;
-      this.router.navigate(['/home']);
+      location.reload();
     }, err => {
       this.loadingLogin = false;
       this.snackBar.open(err.error.message);
-    })
+    });
   }
 
   /**
@@ -101,8 +112,7 @@ export class SiteSidenavComponent implements OnInit {
    * Calls the logout method from AuthService.
    */
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/home']).then(() => {
+    this.store.dispatch([new Auth.Logout(), new Navigate(['/home'])]).subscribe(() => {
       location.reload();
     });
   }

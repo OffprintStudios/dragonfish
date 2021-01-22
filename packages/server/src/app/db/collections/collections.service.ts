@@ -24,6 +24,7 @@ export class CollectionsService {
             'owner': userId,
             'name': collForm.name,
             'desc': await sanitizeHtml(collForm.desc),
+            'audit.isPublic': collForm.public
         });
 
         return await newCollection.save();
@@ -135,6 +136,7 @@ export class CollectionsService {
 
         thisCollection.name = collInfo.name;
         thisCollection.desc = collInfo.desc;
+        thisCollection.audit.isPublic = collInfo.public;
 
         return await thisCollection.save();
     }

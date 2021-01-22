@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../shared/user';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { AuthService } from '../../services/auth';
 import { Work } from '@pulp-fiction/models/works';
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +15,10 @@ import { MigrationModel } from './migration.model';
     styleUrls: ['./migration.component.less']
 })
 export class MigrationComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
     workView = true;
 
     myWorks: Work[];
@@ -21,8 +26,10 @@ export class MigrationComponent implements OnInit {
 
     columnsToDisplay = ['title', 'createdAt'];
     
-    constructor(private authService: AuthService, public route: ActivatedRoute) {
-        this.authService.currUser.subscribe(x => { this.currentUser = x; });
+    constructor(public route: ActivatedRoute) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     ngOnInit(): void {

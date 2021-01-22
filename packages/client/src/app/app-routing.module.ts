@@ -1,22 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
+import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent } from './pages/home';
   
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
-  NotificationsComponent, ConversationsComponent, HistoryComponent } from './pages/portfolio';
+  ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
 import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
   
-import { SiteStaffComponent } from './pages/docs-page';
-  
 import { RegisterComponent } from './pages/account';
   
-import { AuthGuard } from './services/auth';
+import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
@@ -33,15 +31,16 @@ import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from '.
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
 
-import { ApprovalQueueResolver } from './pages/dash/approval-queue';
+import { ApprovalQueueResolver, ApproveContentResolver, ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
 import { Roles } from '@pulp-fiction/models/users';
 
-import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent } from './pages/docs';
+import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver,
+  SupportersComponent, SupportersResolver } from './pages/docs';
 
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
-    {path: 'home', component: HomeComponent, children: [
+    {path: 'home', component: HomeComponent, resolve: {homeData: HomePageResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
@@ -53,10 +52,10 @@ const routes: Routes = [
       {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard], resolve: {blogData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {proseData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {poetryData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
+      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
@@ -65,16 +64,15 @@ const routes: Routes = [
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard], resolve: {histData: HistoryResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard]},
       {path: 'conversations', component: ConversationsComponent, canActivate: [AuthGuard]},
       {path: 'settings', component: SettingsComponent, canActivate: [AuthGuard]},
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
-    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {proseData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
-    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {poetryData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
@@ -86,14 +84,22 @@ const routes: Routes = [
     {path: 'omnibus', component: OmnibusComponent},
     {path: 'what-is-offprint', component: AboutOffprintComponent},
     {path: 'code-of-conduct', component: CodeOfConductComponent},
-    {path: 'site-staff', component: SiteStaffComponent},
+    {path: 'site-staff', component: SiteStaffComponent, resolve: {staffData: SiteStaffResolver}, runGuardsAndResolvers: 'always'},
+    {path: 'supporters', component: SupportersComponent, resolve: {supporterData: SupportersResolver}, runGuardsAndResolvers: 'always'},
     {path: 'migration', component: MigrationComponent, canActivate: [AuthGuard], resolve: {contentData: MigrationResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'work/:workId', component: MigrateWorkComponent, canActivate: [AuthGuard], resolve: {workData: MigrateWorkResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:blogId', component: MigrateBlogComponent, canActivate: [AuthGuard], resolve: {blogData: MigrateBlogResolver}, runGuardsAndResolvers: 'always'}
     ]},
     {path: 'dash', component: DashComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
       {path: 'overview', component: OverviewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
-      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}},
+      {path: 'approval-queue', component: ApprovalQueueComponent, resolve: {queueData: ApprovalQueueResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, children: [
+        {path: 'view-prose', component: ApproveProseComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, resolve: {contentData: ApproveContentResolver}, runGuardsAndResolvers: 'always', children: [
+          {path: ':sectionNum', component: ApproveSectionViewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}}
+        ]},
+        {path: 'view-poetry', component: ApprovePoetryComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}, resolve: {contentData: ApproveContentResolver}, runGuardsAndResolvers: 'always', children: [
+          {path: ':sectionNum', component: ApproveSectionViewComponent, canActivate: [AuthGuard], data: {roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin]}}
+        ]}
+      ]},
       {path: 'group-queue', component: GroupQueueComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
       {path: 'news-management', component: NewsManagementComponent, resolve: {newsData: NewsManagementResolver}, runGuardsAndResolvers: 'always', canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}, children: [
         {path: 'create-post', component: PostFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Moderator, Roles.Admin]}},
@@ -114,7 +120,8 @@ const routes: Routes = [
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
-      ApprovalQueueResolver, NewsManagementResolver, PostFormResolver
+      ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
+      HomePageResolver, ApproveContentResolver
     ]
 })
 export class AppRoutingModule {}

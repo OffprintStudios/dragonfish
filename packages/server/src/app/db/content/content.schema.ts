@@ -23,7 +23,7 @@ export class ContentDocument extends Document implements ContentModel {
     body: string;
 
     @Prop(raw({
-        rating: {type: String, enum: Object.keys(ContentRating), required: true},
+        rating: {type: String, enum: Object.keys(ContentRating), required: true, index: true},
         warnings: {type: [String], default: null}
     }))
     meta: {

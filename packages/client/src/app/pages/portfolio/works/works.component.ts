@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ContentModel, PoetryContent, ProseContent } from '@pulp-fiction/models/content';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../shared/user';
 
+import { ContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { PortWorks } from '../../../models/site';
-import { QueueService } from '../../../services/admin';
-import { AuthService } from '../../../services/auth';
-import { WorksService } from '../../../services/content';
 import { Constants, Title } from '../../../shared';
-import { calculateApprovalRating } from '../../../util/functions';
 
 @Component({
     selector: 'port-works',
@@ -19,14 +15,16 @@ import { calculateApprovalRating } from '../../../util/functions';
     styleUrls: ['./works.component.less']
 })
 export class WorksComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
     portUser: FrontendUser;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
-        private worksService: WorksService, private queueService: QueueService, private dialog: MatDialog) {
-        this.authService.currUser.subscribe(x => {
+    constructor(private route: ActivatedRoute, private router: Router) {
+        this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }

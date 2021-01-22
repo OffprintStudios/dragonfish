@@ -3,49 +3,49 @@
     <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div class="nav">
-      <nag-bar></nag-bar>
-      <header>
-        <div class="nav-box">
-          <div class="user-menu-nav" *ngIf="currentUser; else signUp">
-            <img matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
-            <div class="user-menu-dropdown">
-              <a matTooltip="Alerts" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'notifications']"><i-feather name="bell"></i-feather><span class="stat-counter">0</span></a>
-              <a matTooltip="Inbox" matTooltipClass="offprint-tooltip" class="menu-icon" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify, 'conversations']"><i-feather name="message-circle"></i-feather><span class="stat-counter">0</span></a>
+    <div style="box-shadow: var(--site-dropshadow);">
+      <div class="nav">
+        <nag-bar></nag-bar>
+        <header>
+          <div class="nav-box">
+            <div class="user-menu-nav" *ngIf="currentUser; else signUp">
+              <i-feather matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="menu-hint" name="menu" (click)="sidenav.toggle()"></i-feather>
+              <img class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
+              <span [matBadge]="numNotifs | abbreviate" [matBadgeOverlap]="true"></span>
+            </div>
+            <ng-template #signUp>
+              <div class="user-menu-nav">
+                <button matRipple class="login" (click)="sidenav.toggle()">Log In</button>
+                <button matRipple class="mobile-login" (click)="sidenav.toggle()"><i-feather name="log-in"></i-feather></button>
+              </div>
+            </ng-template>
+            <div class="site-logo" [routerLink]="['/home/latest']">
+              <img src="assets/icons/logo.png">
+              <h2>{{ rotatingSlogan }}</h2>
+            </div>
+            <div class="search-menu">
+              <button matRipple class="search" [routerLink]="['/search']">Search</button>
+              <button matRipple class="search-mobile" [routerLink]="['/search']"><i-feather name="search"></i-feather></button>
             </div>
           </div>
-          <ng-template #signUp>
-            <div class="user-menu-nav">
-              <button matRipple class="login" (click)="sidenav.toggle()">Join / Log In</button>
-              <button matRipple class="mobile-login" (click)="sidenav.toggle()"><i-feather name="log-in"></i-feather></button>
-            </div>
-          </ng-template>
-          <div class="site-logo" [routerLink]="['/home/latest']">
-            <img src="assets/icons/logo.png">
-            <h2>{{ rotatingSlogan }}</h2>
-          </div>
-          <div class="search-menu">
-            <button matRipple class="search" [routerLink]="['/search']">Search</button>
-            <button matRipple class="search-mobile" [routerLink]="['/search']"><i-feather name="search"></i-feather></button>
-          </div>
-        </div>
-      </header>
-    </div>
-    <mat-progress-bar [mode]="'determinate'" [value]="loader.value$ | async"></mat-progress-bar>
-    <nav>
-      <div class="nav-list">
-        <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
-          <a class="nav-link" matRipple [routerLink]="['/dash']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
-        </ng-container>
-        <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
-        <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 
-        <a class="nav-link" matRipple [routerLink]="['/social']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a>
-        <ng-container *ngIf="currentUser">
-          <a class="nav-link" matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hard-drive"></i-feather></span><span>My Stuff</span></a>
-          <a class="nav-link" matRipple [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a>
-        </ng-container>
+        </header>
       </div>
-    </nav>
+      <mat-progress-bar [mode]="'determinate'" [value]="loader.value$ | async"></mat-progress-bar>
+      <nav>
+        <div class="nav-list">
+          <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
+            <a class="nav-link" matRipple [routerLink]="['/dash']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
+          </ng-container>
+          <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
+          <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 
+          <a class="nav-link" matRipple [routerLink]="['/social']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a>
+          <ng-container *ngIf="currentUser">
+            <a class="nav-link" matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hard-drive"></i-feather></span><span>My Stuff</span></a>
+            <a class="nav-link" matRipple [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a>
+          </ng-container>
+        </div>
+      </nav>
+    </div>
     
     <div class="main-stage">
       <alert></alert>
@@ -77,9 +77,9 @@
               </p>
               <ul>
                 <li><a [routerLink]="['/terms-of-service']">Terms of Service & Privacy Policy</a></li>
-                <li><a [routerLink]="['/docs/open-source-licenses']">Open Source Licenses</a></li>
+                <li><a [routerLink]="['/open-source-licenses']">Open Source Licenses</a></li>
                 <li><a [routerLink]="['/site-staff']">Site Staff</a></li>
-                <li><a [routerLink]="['/supporters']">Patreon Supporters</a></li>
+                <li><a [routerLink]="['/supporters']">Patreon Supporters & Contributors</a></li>
               </ul>
             </div>
             <div>

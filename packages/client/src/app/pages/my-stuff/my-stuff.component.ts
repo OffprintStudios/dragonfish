@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { slugify } from 'voca';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../shared/user';
+import { cloneDeep } from 'lodash';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { AuthService } from '../../services/auth';
+import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
 import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
@@ -17,8 +21,11 @@ import { Constants, Title } from '../../shared';
   templateUrl: './my-stuff.component.html',
   styleUrls: ['./my-stuff.component.less']
 })
-export class MyStuffComponent implements OnInit {
+export class MyStuffComponent implements OnInit, OnDestroy {
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
+
   myContent: ContentItem[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
@@ -32,19 +39,23 @@ export class MyStuffComponent implements OnInit {
     query: new FormControl('')
   });
 
-  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, private authService: AuthService,
-    private blogService: BlogsService, private dialog: MatDialog, private snackBar: MatSnackBar) {
-    this.authService.currUser.subscribe(x => {
+  constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, 
+    private blogService: BlogsService, private snackBar: MatSnackBar, private clipboard: Clipboard) {
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
       this.currentUser = x;
     });
   }
 
   ngOnInit(): void {
     this.route.data.subscribe(data => {
-      this.myContent = data.stuffData as ContentItem[];
+      this.myContent = cloneDeep(data.stuffData) as ContentItem[];
     });
 
     Title.setTwoPartTitle(Constants.MY_STUFF);
+  }
+
+  ngOnDestroy(): void {
+    this.currentUserSubscription.unsubscribe();
   }
 
   /**
@@ -54,13 +65,13 @@ export class MyStuffComponent implements OnInit {
    */
   selectItem(content: ContentItem) {
     if (this.currSelectedContent === null || this.currSelectedContent === undefined) {
-      content.selected = true;
+      content.isSelected = true;
       this.itemSelected = true;
       this.currSelectedContent = content;
     } else {
       if (this.currSelectedContent._id !== content._id) {
-        this.currSelectedContent.selected = false;
-        content.selected = true;
+        this.currSelectedContent.isSelected = false;
+        content.isSelected = true;
         this.itemSelected = true;
         this.currSelectedContent = content;
       } else {
@@ -73,7 +84,7 @@ export class MyStuffComponent implements OnInit {
    * Deselects any currently-selected content and sets all appropriate fields to false and empty.
    */
   deselect() {
-    this.currSelectedContent.selected = false;
+    this.currSelectedContent.isSelected = false;
     this.itemSelected = false;
     this.currSelectedContent = null;
   }
@@ -146,5 +157,28 @@ export class MyStuffComponent implements OnInit {
         content.audit.published = this.pubStatus.Pending;
       });
     }
+  }
+
+  getShareLink(content: ContentModel) {
+    if (content.audit.published !== PubStatus.Published) {
+      this.snackBar.open(`Links can only be generated for published content.`);
+      return;
+    }
+
+    const authorInfo = content.author as UserInfo;
+
+    if (content.kind === ContentKind.BlogContent) {
+      this.clipboard.copy(`https://offprint.net/portfolio/${authorInfo._id}/${slugify(authorInfo.username)}/blog/${slugify(content.title)}`);
+    } else if (content.kind === ContentKind.ProseContent) {
+      this.clipboard.copy(`https://offprint.net/prose/${content._id}/${slugify(content.title)}`);
+    } else if (content.kind === ContentKind.PoetryContent) {
+      this.clipboard.copy(`https://offprint.net/poetry/${content._id}/${slugify(content.title)}`);
+    } else {
+      this.snackBar.open(`Content Kind does not exist.`);
+      return;
+    }
+
+    this.snackBar.open(`Copied link!`);
+    return;
   }
 }

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Collection } from '@pulp-fiction/models/collections';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AuthService } from '../../../services/auth';
 import { CollectionsService } from '../../../services/content';
 import { Title, Constants } from '../../../shared';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
@@ -16,7 +18,10 @@ import { CreateCollectionComponent } from '../../../components/modals/collection
     styleUrls: ['./collections.component.less']
 })
 export class CollectionsComponent implements OnInit {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
     portUser: FrontendUser;
     collsData: PaginateResult<Collection>;
 
@@ -25,8 +30,8 @@ export class CollectionsComponent implements OnInit {
     listView = false;
 
     constructor(private route: ActivatedRoute, private router: Router, private collsService: CollectionsService,
-        private authService: AuthService, private dialog: MatDialog) {
-            this.authService.currUser.subscribe(x => {
+        private dialog: MatDialog) {
+            this.currentUserSubscription = this.currentUser$.subscribe(x => {
                 this.currentUser = x;
             });
         }

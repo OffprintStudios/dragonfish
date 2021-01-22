@@ -1,52 +1,70 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { interval, Observable, Subscription } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
+import { Select } from '@ngxs/store';
+import { UserState } from './shared/user';
 
-import { FrontendUser, Roles } from '@pulp-fiction/models/users';
-import { AuthService } from './services/auth';
+import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
 import { spookySlogans, slogans, Theme } from './models/site';
-import { PredefinedThemes } from './models/site/theme';
 import { StatsService } from './services/admin';
 import { FrontPageStats } from '@pulp-fiction/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
+import { NotificationsService } from './services/user';
+import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { Constants } from './shared';
 
 @Component({
   selector: 'pulp-fiction-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
+
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
+  currentUser: FrontendUser;
 
   sidenavOpened: boolean;
 
   title = 'offprint';
-  currentUser: FrontendUser;
 
   loading = false;
   loadingLogin = false;
   footerStats: FrontPageStats;
   rotatingSlogan: string;
 
-  constructor(private router: Router, private authService: AuthService, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService) {
-    this.authService.currUser.subscribe(x => {
-      this.currentUser = x;
-    });
+  notifications: NotificationBase[];
+  numNotifs: number = 0;
+
+  constructor(private router: Router, private statsService: StatsService,
+    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
 
     this.fetchFrontPageStats();
 
-    // Sets the current site theme based on user preference
+    this.currentUserSubscription = this.currentUser$.subscribe(x => {
+      this.currentUser = x;
+    });
+    
     if (this.currentUser) {
-        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);     
+        // Sets the current site theme based on user preference
+        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);   
+
+        // Starts fetching notifications updates from the server
+        interval(Constants.FIVE_MINUTES).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
+          this.notifications = data;
+          this.numNotifs = this.notifications.length;
+        });  
     }
 
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
   }
   
-  ngOnInit() {
+  ngOnInit(): void {
     this.router.events.subscribe(event => {
       this.sidenavOpened = false;
       if (event instanceof NavigationEnd) {
@@ -58,10 +76,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   /**
    * Initializes the global dropdown menus.
    */
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
       // Initialize the ToS nagbar if we need to
       if (!this.currentUser) {
-        this.authService.currUser.subscribe(x => {
+        this.currentUser$.subscribe(x => {
         // This is wrapped in setTimeout because it's called by ngAfterInit,
         // and if we modify the UI before that finishes, Angular errors out.
         // So allow one render tick to progress before we try.
@@ -77,6 +95,13 @@ export class AppComponent implements OnInit, AfterViewInit {
             this.checkUserPolicies(this.currentUser);
         });
       }
+  }
+
+  /**
+   * Unsubscribes from everything.
+   */
+  ngOnDestroy(): void {
+    this.currentUserSubscription.unsubscribe();
   }
 
   /**

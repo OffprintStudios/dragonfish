@@ -66,7 +66,8 @@ export class UsersService {
             
         const newFavColl: CollectionForm = {
             name: 'Favorites',
-            desc: `For the stories I'd rather never forget.`
+            desc: `For the stories I'd rather never forget.`,
+            public: false
         };
         await this.collsService.createCollection(newUser._id, newFavColl);
 
@@ -365,5 +366,42 @@ export class UsersService {
      */
     async getUserCount(): Promise<number> {
         return await this.userModel.estimatedDocumentCount().where("audit.isDeleted", false);
+    }
+
+    /**
+     * Fetches the list of site staff.
+     */
+    async getSiteStaff(): Promise<models.FrontendUser[]> {
+        const userList = await this.userModel.find({"audit.isDeleted": false, $or: [
+            {"audit.roles": "Admin"},
+            {"audit.roles": "Moderator"},
+            {"audit.roles": "WorkApprover"},
+            {"audit.roles": "ChatModerator"}
+        ]});
+
+        let frontendUserList = Array<models.FrontendUser>();
+        userList.forEach(async user => {
+            frontendUserList.push(await this.buildFrontendUser(user));
+        });
+
+        return frontendUserList;
+    }
+
+    /**
+     * Fetches the list of contributors and patreon supporters.
+     */
+    async getSupporters(): Promise<models.FrontendUser[]> {
+        const userList = await this.userModel.find({"audit.isDeleted": false, $or: [
+            {"audit.roles": "Contributor"},
+            {"audit.roles": "VIP"},
+            {"audit.roles": "Supporter"}
+        ]});
+
+        let frontendUserList = Array<models.FrontendUser>();
+        userList.forEach(async user => {
+            frontendUserList.push(await this.buildFrontendUser(user));
+        });
+
+        return frontendUserList;
     }
 }

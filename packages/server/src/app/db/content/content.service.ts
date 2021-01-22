@@ -45,6 +45,17 @@ export class ContentService {
     }
 
     /**
+     * Fetches a pending work from the database. For use by admins/moderators/work approvers via the dashboard.
+     * 
+     * @param contentId The content ID
+     * @param kind The content kind
+     * @param userId The owner of the content
+     */
+    async fetchOnePending(contentId: string, kind: ContentKind, userId: string): Promise<ContentDocument> {
+        return await this.contentModel.findOne({'_id': contentId, 'author': userId, 'kind': kind, 'audit.isDeleted': false, 'audit.published': PubStatus.Pending});
+    }
+
+    /**
      * Fetches one published item from the content collection via ID and ContentKind.
      * 
      * @param contentId A content's ID

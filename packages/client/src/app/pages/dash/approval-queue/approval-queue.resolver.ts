@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { Store } from '@ngxs/store';
 
+import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { ApprovalQueueService } from './approval-queue.service';
 
 @Injectable()
 export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQueue>> {
     pageNum: number = 1;
 
-    constructor (private queueService: ApprovalQueueService) {}
+    constructor (private store: Store) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ApprovalQueue>> {
         const pageNum = +route.queryParamMap.get('page');
@@ -19,6 +21,8 @@ export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQue
             this.pageNum = pageNum;
         }
         
-        return this.queueService.getQueue(this.pageNum);
+        return this.store.dispatch(new AQNamespace.GetQueue(this.pageNum)).pipe(switchMap(() => {
+            return this.store.selectOnce<PaginateResult<ApprovalQueue>>(ApprovalQueueState.currPageDocs);
+        }));
     }
 }

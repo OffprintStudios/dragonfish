@@ -2,8 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
+import { Select } from '@ngxs/store';
+import { Observable, Subscription } from 'rxjs';
+import { UserState } from '../../../../shared/user';
 
-import { AuthService } from '../../../../services/auth';
 import { AlertsService } from '../../../../modules/alerts';
 import { HttpError } from '../../../../models/site';
 import { WorksService } from '../../../../services/content';
@@ -18,6 +20,8 @@ import { ContentKind } from '@pulp-fiction/models/content';
 export class UploadCoverartComponent implements OnInit {
   workId: string;
 
+  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+  currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
   imageChangedEvent: Event;
@@ -39,10 +43,11 @@ export class UploadCoverartComponent implements OnInit {
    */
   newImageAdded: boolean = true;
 
-  constructor(private authService: AuthService, private worksService: WorksService, 
-    private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
+  constructor(private worksService: WorksService, private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
     @Inject(MAT_DIALOG_DATA) private data: {kind: ContentKind, contentId: string}) {
-    this.authService.currUser.subscribe(x => { this.currentUser = x; });
+      this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUser = x;
+      });
 
     if (this.data.kind === ContentKind.ProseContent) {
       this.uploader = new FileUploader({
