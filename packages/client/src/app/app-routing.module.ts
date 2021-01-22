@@ -18,7 +18,7 @@ import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
-  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
+  MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
   PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
   SectionResolver, ViewPoetryResolver } from './resolvers';
 
@@ -38,12 +38,14 @@ import { Roles } from '@pulp-fiction/models/users';
 import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver,
   SupportersComponent, SupportersResolver } from './pages/docs';
 
+import { BrowseResolver } from './pages/browse';
+
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, resolve: {homeData: HomePageResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
-    {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
+    {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseResolver}, runGuardsAndResolvers: 'always'},
     {path: 'social', component: SocialComponent},
     {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
@@ -116,7 +118,7 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
     exports: [RouterModule],
     providers: [
-      BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
+      BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,

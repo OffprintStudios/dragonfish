@@ -42,6 +42,8 @@ import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler,
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
+import { BrowseComponent } from './pages/browse';
+
 import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
@@ -50,7 +52,7 @@ import { CollectionPageComponent } from './pages/portfolio/collections';
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
-import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
+import { SocialComponent, PostPageComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
