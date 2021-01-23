@@ -13,9 +13,6 @@ export class ContentViewResolver implements Resolve<void> {
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot) {
         const contentId = route.paramMap.get('contentId');
 
-        console.log(`Content ID: ${contentId}`);
-        console.log(`Current Path: ${route.url}`);
-
         if (route.url[0].path === 'prose') {
             return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.ProseContent));
         } else if (route.url[0].path === 'poetry') {

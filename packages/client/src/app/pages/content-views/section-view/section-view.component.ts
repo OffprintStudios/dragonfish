@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentService } from '../../../services/content';
 import { ContentModel, SectionInfo } from '@pulp-fiction/models/content';
 import { AuthorsNotePos, Section } from '@pulp-fiction/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, zip } from 'rxjs';
+import { Select, Store } from '@ngxs/store';
 import { slugify } from 'voca';
 
 import { Title } from '../../../shared';
+import { Content, ContentState } from '../../../shared/content';
+
 
 @Component({
     selector: 'section-view',
@@ -13,6 +16,10 @@ import { Title } from '../../../shared';
     styleUrls: ['./section-view.component.less']
 })
 export class SectionViewComponent implements OnInit {
+    @Select(ContentState.currContent) currContent$: Observable<ContentModel>;
+    @Select(ContentState.currSection) currSection$: Observable<Section>;
+
+    currContent: ContentModel;
     sections: SectionInfo[];
     thisSection: Section;
     loading = false;
@@ -23,9 +30,7 @@ export class SectionViewComponent implements OnInit {
 
     authorsNotePosOptions = AuthorsNotePos;
 
-    currContent: ContentModel;
-
-    constructor(private contentService: ContentService, private route: ActivatedRoute, private router: Router) {
+    constructor(private store: Store, private route: ActivatedRoute, private router: Router) {
         this.fetchData();
     }
 
@@ -34,19 +39,23 @@ export class SectionViewComponent implements OnInit {
     private fetchData() {
         this.loading = true;
 
-        const pageData = this.route.parent.snapshot.data.contentData;
-        this.currContent = pageData.content as ContentModel;
-
         this.route.paramMap.subscribe(params => {
+            // @ts-ignore
+            this.sections = this.store.selectSnapshot<SectionInfo[]>((state: ContentState) => state.content.currSections);
+            console.log(this.sections);
+
             this.currIndex = +params.get('sectionNum') - 1;
             this.indexNext = this.currIndex + 1;
             this.indexPrev = this.currIndex - 1;
-            this.sections = this.contentService.publishedSections;
-            this.contentService.fetchOneSection(this.sections[this.currIndex]._id).subscribe(data => {
-                this.thisSection = data;
+
+            this.store.dispatch(new Content.FetchSection(this.sections[this.currIndex]._id)).subscribe(() => {
                 this.loading = false;
 
-                Title.setThreePartTitle(this.currContent.title, this.thisSection.title);
+                zip(this.currContent$, this.currSection$).subscribe(val => {
+                    this.currContent = val[0];
+                    this.thisSection = val[1];
+                    Title.setThreePartTitle(this.currContent.title, this.thisSection.title);
+                });
             });
         });
     }
