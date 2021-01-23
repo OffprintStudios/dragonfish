@@ -101,6 +101,7 @@ export class ContentState {
     @Action(Content.SetLike)
     setLike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
         return this.contentService.setLike(setRating).pipe(tap((val: ReadingHistory) => {
+            console.log(val);
             if (setRating.oldApprovalRating === RatingOption.Disliked) {
                 dispatch(new Content.IncrementLikes());
                 dispatch(new Content.DecrementDislikes());
@@ -117,6 +118,7 @@ export class ContentState {
     @Action(Content.SetDislike)
     setDislike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
         return this.contentService.setDislike(setRating).pipe(tap((val: ReadingHistory) => {
+            console.log(val);
             if (setRating.oldApprovalRating === RatingOption.Liked) {
                 dispatch(new Content.IncrementDislikes());
                 dispatch(new Content.DecrementLikes());
@@ -133,6 +135,7 @@ export class ContentState {
     @Action(Content.SetNoVote)
     setNoVote({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetNoVote) {
         return this.contentService.setNoVote(setRating).pipe(tap((val: ReadingHistory) => {
+            console.log(val);
             if (setRating.oldApprovalRating === RatingOption.Liked) {
                 dispatch(new Content.DecrementLikes());
             } else if (setRating.oldApprovalRating === RatingOption.Disliked) {

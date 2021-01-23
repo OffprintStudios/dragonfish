@@ -330,7 +330,6 @@ export class ContentService {
             // If the old rating option was a dislike
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': 1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setLike(user, contentId);
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': -1}})
                 .where('audit.published').equals(PubStatus.Published);
 
@@ -340,8 +339,9 @@ export class ContentService {
         } else {
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': 1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setLike(user, contentId);
         }
+
+        return await this.histService.setLike(user, contentId);
     }
 
     /**
@@ -356,7 +356,6 @@ export class ContentService {
             // If the old rating option was a like
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': 1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setDislike(user, contentId);
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': -1}})
                 .where('audit.published').equals(PubStatus.Published);
 
@@ -366,8 +365,9 @@ export class ContentService {
         } else {
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': 1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setDislike(user, contentId);
         }
+
+        return await this.histService.setDislike(user, contentId);
     }
 
     /**
@@ -382,13 +382,13 @@ export class ContentService {
             // If the old rating option was a like
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.likes': -1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setNoVote(user, contentId);
         } else if (oldRatingOption === RatingOption.Disliked) {
             // If the old rating option was a dislike
             await this.contentModel.updateOne({'_id': contentId}, {$inc: {'stats.dislikes': -1}})
                 .where('audit.published').equals(PubStatus.Published);
-            await this.histService.setNoVote(user, contentId);
         }
+
+        return await this.histService.setNoVote(user, contentId);
     }
 
     /**
