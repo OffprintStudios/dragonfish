@@ -10,7 +10,7 @@ import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
+import { BrowseComponent, SocialComponent } from './pages';
   
 import { RegisterComponent } from './pages/account';
   
@@ -25,7 +25,7 @@ import { HistoryResolver } from './pages/portfolio/history';
 
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
 
-import { ContentViewResolver, PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
+import { ContentViewResolver, PoetryPageComponent, ProsePageComponent, PostPageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
@@ -46,7 +46,7 @@ const routes: Routes = [
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseResolver}, runGuardsAndResolvers: 'always'},
     {path: 'social', component: SocialComponent},
-    {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
+    {path: 'post/:contentId/:postTitle', resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
