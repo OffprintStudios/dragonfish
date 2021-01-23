@@ -17,9 +17,8 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
-  MyWorksResolver, MyBlogsResolver, PortBlogsResolver, PortWorksResolver, MyStuffResolver, 
-  ViewContentResolver, SectionResolver } from './resolvers';
+import { PortfolioResolver, NewsFeedResolver, MyWorksResolver, MyBlogsResolver, PortBlogsResolver, 
+  PortWorksResolver, MyStuffResolver, ViewContentResolver, SectionResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
 
@@ -117,7 +116,7 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
     exports: [RouterModule],
     providers: [
-      BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseResolver,
+      PortfolioResolver, NewsFeedResolver, BrowseResolver,
       MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver, SectionResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
