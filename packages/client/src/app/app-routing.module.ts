@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent } from './pages/home';
+import { NewsResolver } from './pages/home/news';
   
 import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
@@ -17,7 +18,7 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { PortfolioResolver, NewsFeedResolver, MyWorksResolver, MyBlogsResolver,
+import { PortfolioResolver, MyWorksResolver, MyBlogsResolver,
   MyStuffResolver, ViewContentResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
@@ -42,7 +43,7 @@ import { BlogsResolver } from './pages/portfolio/blogs';
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, resolve: {homeData: HomePageResolver}, runGuardsAndResolvers: 'always', children: [
-      {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
+      {path: 'news', component: NewsComponent, resolve: {feedData: NewsResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
     {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseResolver}, runGuardsAndResolvers: 'always'},
     {path: 'social', component: SocialComponent},
@@ -117,8 +118,8 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
     exports: [RouterModule],
     providers: [
-      PortfolioResolver, NewsFeedResolver, BrowseResolver,
-      MyWorksResolver, MyBlogsResolver,
+      PortfolioResolver, BrowseResolver,
+      MyWorksResolver, MyBlogsResolver, NewsResolver,
       CollectionPageResolver, MyStuffResolver, ViewContentResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
