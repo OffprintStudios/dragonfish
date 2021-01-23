@@ -146,7 +146,10 @@ const toolbarOptions = [
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
-      key: ['auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc']
+      key: [
+        'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 
+        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
+      ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),

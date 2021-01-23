@@ -6,11 +6,9 @@ import { UserState } from '../../shared/user';
 
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
 import { ContentKind, ContentModel, SetRating } from '@pulp-fiction/models/content';
-import { ContentService } from '../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
 import { AddToCollectionComponent } from '../modals/collections';
-import { cloneDeep } from 'lodash';
 import { Content, ContentState } from '../../shared/content';
 
 @Component({

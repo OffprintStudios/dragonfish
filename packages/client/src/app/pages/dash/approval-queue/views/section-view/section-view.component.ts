@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentService } from '../../../../../services/content';
-import { ContentModel, SectionInfo } from '@pulp-fiction/models/content';
+import { SectionInfo } from '@pulp-fiction/models/content';
 import { AuthorsNotePos, Section } from '@pulp-fiction/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
-import { slugify } from 'voca';
 
-import { Title } from '../../../../../shared';
+import { Select, Store } from '@ngxs/store';
+import { ContentState } from 'packages/client/src/app/shared/content';
+import { Observable, zip } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { ApprovalQueueState, AQNamespace } from 'packages/client/src/app/shared/dash/approval-queue';
 
 @Component({
     selector: 'section-view',
@@ -13,8 +15,10 @@ import { Title } from '../../../../../shared';
     styleUrls: ['./section-view.component.less']
 })
 export class SectionViewComponent implements OnInit {
+    @Select(ApprovalQueueState.selectedDocSections) currSections$: Observable<SectionInfo[]>;
+    @Select(ApprovalQueueState.selectedDocSection) currSection$: Observable<Section>;
+    
     sections: SectionInfo[];
-    thisSection: Section;
     loading = false;
 
     currIndex: number;
@@ -23,7 +27,7 @@ export class SectionViewComponent implements OnInit {
 
     authorsNotePosOptions = AuthorsNotePos;
 
-    constructor(private contentService: ContentService, private route: ActivatedRoute, private router: Router) {
+    constructor(private store: Store, private route: ActivatedRoute, private router: Router) {
         this.fetchData();
     }
 
@@ -36,9 +40,11 @@ export class SectionViewComponent implements OnInit {
             this.currIndex = +params.get('sectionNum') - 1;
             this.indexNext = this.currIndex + 1;
             this.indexPrev = this.currIndex - 1;
-            this.sections = this.contentService.publishedSections;
-            this.contentService.fetchOneSection(this.sections[this.currIndex]._id).subscribe(data => {
-                this.thisSection = data;
+
+            this.currSections$.pipe(take(1)).subscribe(val => {
+                this.sections = val;
+
+                this.store.dispatch(new AQNamespace.FetchSection(this.sections[this.currIndex]._id)).subscribe();
                 this.loading = false;
             });
         });

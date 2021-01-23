@@ -42,7 +42,6 @@ export class SectionViewComponent implements OnInit {
         this.route.paramMap.subscribe(params => {
             // @ts-ignore
             this.sections = this.store.selectSnapshot<SectionInfo[]>((state: ContentState) => state.content.currSections);
-            console.log(this.sections);
 
             this.currIndex = +params.get('sectionNum') - 1;
             this.indexNext = this.currIndex + 1;
