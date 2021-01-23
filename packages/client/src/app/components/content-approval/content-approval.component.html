@@ -2,15 +2,15 @@
     <ng-container *ngIf="currHistDoc$ | async as histData; else noHistory">
         <div class="approval-buttons">
             <ng-container [ngSwitch]="histData.ratingOption">
-                <ng-container *ngSwitchCase="histData.ratingOption === 'NoVote'">
+                <ng-container *ngSwitchCase="ratingOption.NoVote">
                     <button matRipple (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }}</span></button>
                     <button matRipple class="mid" (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }}</span></button>
                 </ng-container>
-                <ng-container *ngSwitchCase="histData.ratingOption === 'Liked'">
+                <ng-container *ngSwitchCase="ratingOption.Liked">
                     <button matRipple class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }}</span></button>
                     <button matRipple class="mid" (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }}</span></button>
                 </ng-container>
-                <ng-container *ngSwitchCase="histData.ratingOption === 'Disliked'">
+                <ng-container *ngSwitchCase="ratingOption.Disliked">
                     <button matRipple (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }}</span></button>
                     <button matRipple class="mid active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }}</span></button>
                 </ng-container>
@@ -25,15 +25,15 @@
         <mat-menu xPosition="before" #moreItems="matMenu">
             <div class="mobile-menu">
                 <ng-container [ngSwitch]="histData.ratingOption">
-                    <ng-container *ngSwitchCase="'NoVote'">
+                    <ng-container *ngSwitchCase="ratingOption.NoVote">
                         <button mat-menu-item (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }} like{{ likes$ | async | pluralize }}</span></button>
                         <button mat-menu-item (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }} dislike{{ dislikes$ | async | pluralize }}</span></button>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Liked'">
+                    <ng-container *ngSwitchCase="ratingOption.Liked">
                         <button mat-menu-item class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }} like{{ likes$ | async | pluralize }}</span></button>
                         <button mat-menu-item  (click)="setDislike(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }} dislike{{ dislikes$ | async | pluralize }}</span></button>
                     </ng-container>
-                    <ng-container *ngSwitchCase="'Disliked'">
+                    <ng-container *ngSwitchCase="ratingOption.Disliked">
                         <button mat-menu-item (click)="setLike(content._id, histData.ratingOption)"><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ likes$ | async | abbreviate }} like{{ likes$ | async | pluralize }}</span></button>
                         <button mat-menu-item class="active" (click)="setNoVote(content._id, histData.ratingOption)"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ dislikes$ | async | abbreviate }} dislike{{ dislikes$ | async | pluralize }}</span></button>
                     </ng-container>

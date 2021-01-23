@@ -29,6 +29,7 @@ export class ContentApprovalComponent implements OnInit {
     @Select(ContentState.dislikes) dislikes$: Observable<number>;
 
     contentKind = ContentKind;
+    ratingOption = RatingOption;
 
     constructor(private store: Store, private dialog: MatDialog) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
