@@ -22,6 +22,8 @@ export class ContentViewResolver implements Resolve<void> {
             return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.PoetryContent));
         } else if (route.url[0].path === 'post') {
             return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.NewsContent));
+        } else if (route.url[0].path === 'blog') {
+            return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.BlogContent));
         }
     }
 }
