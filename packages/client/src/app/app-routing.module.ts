@@ -18,11 +18,11 @@ import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
 import { PortfolioResolver, NewsFeedResolver, MyWorksResolver, MyBlogsResolver,
-  PortWorksResolver, MyStuffResolver, ViewContentResolver, SectionResolver } from './resolvers';
+  MyStuffResolver, ViewContentResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
-
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
+import { WorksResolver } from './pages/portfolio/works';
 
 import { ContentViewResolver, PoetryPageComponent, ProsePageComponent, PostPageComponent, SectionViewComponent } from './pages/content-views';
 
@@ -61,7 +61,7 @@ const routes: Routes = [
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: BlogsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'blog/:contentId', resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', component: BlogPageComponent},
-      {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'works', component: WorksComponent, resolve: {feedData: WorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard], resolve: {histData: HistoryResolver}, runGuardsAndResolvers: 'always'},
@@ -118,11 +118,11 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
       PortfolioResolver, NewsFeedResolver, BrowseResolver,
-      MyWorksResolver, MyBlogsResolver, PortWorksResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver, SectionResolver,
+      MyWorksResolver, MyBlogsResolver,
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
-      HomePageResolver, ApproveContentResolver, ContentViewResolver, BlogsResolver
+      HomePageResolver, ApproveContentResolver, ContentViewResolver, BlogsResolver, WorksResolver
     ]
 })
 export class AppRoutingModule {}

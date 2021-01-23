@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { BlogsContentModel, ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

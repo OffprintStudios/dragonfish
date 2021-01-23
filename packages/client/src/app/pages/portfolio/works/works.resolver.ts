@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { Observable } from 'rxjs';
-
-import { ContentService } from '../services/content';
+import { switchMap } from 'rxjs/operators';
+import { Content, ContentState } from '../../../shared/content';
 
 @Injectable()
-export class PortWorksResolver implements Resolve<PaginateResult<ContentModel>> {
+export class WorksResolver implements Resolve<PaginateResult<ContentModel>> {
     pageNum: number = 1;
 
-    constructor (private contentService: ContentService) {}
+    constructor (private store: Store) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ContentModel>> {
         const userId = route.parent.paramMap.get('id');
@@ -20,6 +21,8 @@ export class PortWorksResolver implements Resolve<PaginateResult<ContentModel>> 
             this.pageNum = pageNum;
         }
 
-        return this.contentService.fetchAllPublished(this.pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent], userId);
+        return this.store.dispatch(new Content.FetchAll(this.pageNum, [ContentKind.ProseContent, ContentKind.PoetryContent], userId)).pipe(switchMap(() => {
+            return this.store.selectOnce<PaginateResult<ContentModel>>(ContentState.currPageContent)
+        }));
     }
 }
