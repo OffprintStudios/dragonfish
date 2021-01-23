@@ -4,15 +4,16 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { append, patch, removeItem } from '@ngxs/store/operators';
 
-import { AQNamespace } from './approval-queue.actions';
-import { ApprovalQueueStateModel } from './approval-queue-state.model';
-import { ApprovalQueueService } from './services';
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 import { PaginateResult } from '@dragonfish/models/util';
-import { UserState } from '../../user';
 import { FrontendUser } from '@dragonfish/models/users';
 import { PoetryContent, ProseContent, SectionInfo } from '@dragonfish/models/content';
 import { Section } from '@dragonfish/models/sections';
+
+import { AQNamespace } from './approval-queue.actions';
+import { ApprovalQueueStateModel } from './approval-queue-state.model';
+import { UserState } from '../../user';
+import { NetworkService } from '../../../services';
 import { Alerts } from '../../alerts';
 
 @State<ApprovalQueueStateModel>({
@@ -27,7 +28,7 @@ import { Alerts } from '../../alerts';
 })
 @Injectable()
 export class ApprovalQueueState {
-    constructor(private queueService: ApprovalQueueService, private store: Store) {}
+    constructor(private networkService: NetworkService, private store: Store) {}
 
     /* Actions */
 
@@ -36,7 +37,7 @@ export class ApprovalQueueState {
         { patchState, dispatch }: StateContext<ApprovalQueueStateModel>,
         { pageNum }: AQNamespace.GetQueue,
     ): Observable<PaginateResult<ApprovalQueue>> {
-        return this.queueService.getQueue(pageNum).pipe(
+        return this.networkService.fetchApprovalQueue(pageNum).pipe(
             tap((result: PaginateResult<ApprovalQueue>) => {
                 const currUser: FrontendUser | null = this.store.selectSnapshot(UserState.currUser);
                 if (currUser !== null) {
@@ -67,7 +68,7 @@ export class ApprovalQueueState {
         { setState }: StateContext<ApprovalQueueStateModel>,
         { doc }: AQNamespace.ClaimWork,
     ): Observable<ApprovalQueue> {
-        return this.queueService.claimWork(doc._id).pipe(
+        return this.networkService.claimWork(doc._id).pipe(
             tap((result: ApprovalQueue) => {
                 setState(
                     patch({
@@ -89,7 +90,7 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.FetchSection)
     fetchSection({ patchState }: StateContext<ApprovalQueueStateModel>, { sectionId }: AQNamespace.FetchSection) {
-        return this.queueService.fetchSection(sectionId).pipe(
+        return this.networkService.fetchSection(sectionId).pipe(
             tap((val: Section) => {
                 patchState({
                     selectedDocSection: val,
@@ -100,7 +101,7 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.ApproveWork)
     approveWork({ setState }: StateContext<ApprovalQueueStateModel>, { decision }: AQNamespace.ApproveWork) {
-        return this.queueService.approveWork(decision).pipe(
+        return this.networkService.approveWork(decision).pipe(
             tap((_result: void) => {
                 setState(
                     patch({
@@ -114,7 +115,7 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.RejectWork)
     rejectWork({ setState }: StateContext<ApprovalQueueStateModel>, { decision }: AQNamespace.RejectWork) {
-        return this.queueService.rejectWork(decision).pipe(
+        return this.networkService.rejectWork(decision).pipe(
             tap((_result: void) => {
                 setState(
                     patch({

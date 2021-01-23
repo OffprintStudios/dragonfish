@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { CollectionsService } from '../../../../services/content';
+import { NetworkService } from '../../../../services';
 import { CollectionForm, Collection } from '@dragonfish/models/collections';
 
 @Component({
@@ -22,7 +22,7 @@ export class CreateCollectionComponent implements OnInit {
     });
 
     constructor(
-        private collsService: CollectionsService,
+        private networkService: NetworkService,
         private snackbar: MatSnackBar,
         private dialogRef: MatDialogRef<CreateCollectionComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { currColl: Collection },
@@ -70,11 +70,11 @@ export class CreateCollectionComponent implements OnInit {
         };
 
         if (this.editMode === true) {
-            this.collsService.editCollection(this.currColl._id, collForm).subscribe(() => {
+            this.networkService.editCollection(this.currColl._id, collForm).subscribe(() => {
                 this.dialogRef.close();
             });
         } else {
-            this.collsService.createCollection(collForm).subscribe(() => {
+            this.networkService.createCollection(collForm).subscribe(() => {
                 this.dialogRef.close();
             });
         }

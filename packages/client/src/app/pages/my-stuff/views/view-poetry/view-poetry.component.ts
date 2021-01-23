@@ -4,8 +4,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { MyStuffState } from '../../../../shared/my-stuff';
-import { SectionsState, SectionsStateModel } from '../../../../shared/my-stuff/sections';
 
 import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@dragonfish/models/content';
 import { AuthorsNotePos, Section, SectionForm } from '@dragonfish/models/sections';
@@ -13,6 +11,8 @@ import { UploadCoverartComponent } from '../../components';
 import { MyStuffService } from '../../my-stuff.service';
 import { SectionItem } from '../../viewmodels';
 import { AlertsService } from 'packages/client/src/app/shared/alerts';
+import { MyStuffState } from 'packages/client/src/app/shared/my-stuff';
+import { SectionsState, SectionsStateModel } from 'packages/client/src/app/shared/my-stuff/sections';
 
 @Component({
     selector: 'view-poetry',

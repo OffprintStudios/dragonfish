@@ -35,7 +35,7 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { PortfolioResolver, MyWorksResolver, MyBlogsResolver } from './resolvers';
+import { PortfolioResolver, MyBlogsResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
@@ -389,8 +389,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
         PortfolioResolver,
-        BrowseResolver,
-        MyWorksResolver,
+        BrowseResolver,        
         MyBlogsResolver,
         NewsResolver,
         CollectionPageResolver,

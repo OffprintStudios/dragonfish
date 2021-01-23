@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { InitialResults } from '@dragonfish/models/util';
+import { ContentKind } from '@dragonfish/models/content';
 
 import { calculateApprovalRating } from '../../util/functions';
 import { SearchService } from '../../services/utility';
 import { Constants, Title } from '../../shared';
-import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
     selector: 'app-search',

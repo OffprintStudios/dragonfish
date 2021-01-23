@@ -8,7 +8,7 @@ import { UserState } from '../../../shared/user';
 import { FrontendUser } from '@dragonfish/models/users';
 import { Collection } from '@dragonfish/models/collections';
 import { PaginateResult } from '@dragonfish/models/util';
-import { CollectionsService } from '../../../services/content';
+import { NetworkService } from '../../../services';
 import { Title, Constants } from '../../../shared';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
@@ -32,7 +32,7 @@ export class CollectionsComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private collsService: CollectionsService,
+        private networkService: NetworkService,
         private dialog: MatDialog,
     ) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
@@ -112,7 +112,7 @@ export class CollectionsComponent implements OnInit {
     setPublicPrivate(collId: string, setPublic: boolean) {
         if (setPublic) {
             this.submitting = true;
-            this.collsService.setToPublic(collId).subscribe(() => {
+            this.networkService.setCollectionToPublic(collId).subscribe(() => {
                 this.submitting = false;
                 this.router.navigate([], {
                     relativeTo: this.route,
@@ -122,7 +122,7 @@ export class CollectionsComponent implements OnInit {
             });
         } else {
             this.submitting = true;
-            this.collsService.setToPrivate(collId).subscribe(() => {
+            this.networkService.setCollectionToPrivate(collId).subscribe(() => {
                 this.submitting = false;
                 this.router.navigate([], {
                     relativeTo: this.route,
@@ -140,7 +140,7 @@ export class CollectionsComponent implements OnInit {
      */
     askDelete(collId: string) {
         if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
-            this.collsService.deleteCollection(collId).subscribe(() => {
+            this.networkService.deleteCollection(collId).subscribe(() => {
                 this.router.navigate([], {
                     relativeTo: this.route,
                     queryParams: { page: this.pageNum },

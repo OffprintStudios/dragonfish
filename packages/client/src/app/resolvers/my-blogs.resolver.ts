@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 
 import { PaginateResult } from '@dragonfish/models/util';
 import { Blog } from '@dragonfish/models/blogs';
-import { BlogsService } from '../services/content';
+import { NetworkService } from '../services';
 
 @Injectable()
 export class MyBlogsResolver implements Resolve<PaginateResult<Blog>> {
     pageNum: number = 1;
 
-    constructor(private blogsService: BlogsService) {}
+    constructor(private networkService: NetworkService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Blog>> {
         const pageNum = +route.queryParamMap.get('page');
@@ -21,6 +21,6 @@ export class MyBlogsResolver implements Resolve<PaginateResult<Blog>> {
 
         console.log(pageNum);
 
-        return this.blogsService.fetchUserBlogs(this.pageNum);
+        return this.networkService.fetchUserBlogs(this.pageNum);
     }
 }

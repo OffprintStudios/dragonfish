@@ -7,7 +7,7 @@ import { UserState } from '../../../shared/user';
 import { FrontendUser } from '@dragonfish/models/users';
 import { MessageThread } from '@dragonfish/models/messages';
 import { PaginateResult } from '@dragonfish/models/util';
-import { MessagesService } from '../../../services/content';
+import { NetworkService } from '../../../services';
 
 @Component({
     selector: 'port-conversations',
@@ -23,7 +23,7 @@ export class ConversationsComponent implements OnInit {
 
     pageNum: number = 1;
 
-    constructor(private messageService: MessagesService) {
+    constructor(private networkService: NetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -35,7 +35,7 @@ export class ConversationsComponent implements OnInit {
     }
 
     private fetchData(pageNum: number) {
-        this.messageService.fetchUserThreads(pageNum).subscribe((threads) => {
+        this.networkService.fetchUserThreads(pageNum).subscribe((threads) => {
             this.threads = threads;
             this.pageNum = pageNum;
         });

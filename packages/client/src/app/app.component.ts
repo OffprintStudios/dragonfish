@@ -10,7 +10,7 @@ import { UserState } from './shared/user';
 
 import { FrontendUser, Roles, PredefinedThemes } from '@dragonfish/models/users';
 import { spookySlogans, slogans, Theme } from './models/site';
-import { StatsService } from './services/admin';
+import { NetworkService } from './services';
 import { FrontPageStats } from '@dragonfish/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
@@ -47,7 +47,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private router: Router,
-        private statsService: StatsService,
+        private networkService: NetworkService,
         private nagBarService: NagBarService,
         public loader: LoadingBarService,
         private notif: NotificationsService,
@@ -122,7 +122,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private fetchFrontPageStats() {
         this.loading = true;
-        this.statsService.fetchFrontPageStats().subscribe((stats) => {
+        this.networkService.fetchFrontPageStats().subscribe((stats) => {
             this.footerStats = stats;
             this.loading = false;
         });

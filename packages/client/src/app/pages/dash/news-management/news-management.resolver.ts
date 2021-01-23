@@ -3,14 +3,14 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { PaginateResult } from '@dragonfish/models/util';
-import { NewsManagementService } from './news-management.service';
+import { NetworkService } from '../../../services';
 import { NewsContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class NewsManagementResolver implements Resolve<PaginateResult<NewsContentModel>> {
     pageNum: number = 1;
 
-    constructor(private newsService: NewsManagementService) {}
+    constructor(private networkService: NetworkService) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -22,6 +22,6 @@ export class NewsManagementResolver implements Resolve<PaginateResult<NewsConten
             this.pageNum = pageNum;
         }
 
-        return this.newsService.fetchAll(this.pageNum);
+        return this.networkService.fetchAllNewsposts(this.pageNum);
     }
 }

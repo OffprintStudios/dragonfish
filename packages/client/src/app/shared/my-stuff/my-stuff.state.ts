@@ -6,10 +6,10 @@ import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 
 import { MyStuff } from './my-stuff.actions';
 import { MyStuffStateModel } from './my-stuff-state.model';
-import { MyStuffService } from './services';
-import { ContentKind, ContentModel } from '@dragonfish/models/content';
+import { ContentModel } from '@dragonfish/models/content';
 import { Alerts } from '../alerts';
 import { SectionsState } from './sections';
+import { NetworkService } from '../../services';
 
 @State<MyStuffStateModel>({
     name: 'myStuff',
@@ -22,11 +22,11 @@ import { SectionsState } from './sections';
 })
 @Injectable()
 export class MyStuffState {
-    constructor(private stuffService: MyStuffService) {}
+    constructor(private networkService: NetworkService) {}
 
     @Action(MyStuff.SetFiles)
     public setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
-        return this.stuffService.fetchAll().pipe(
+        return this.networkService.fetchAllMyStuff().pipe(
             tap((result: ContentModel[]) => {
                 patchState({
                     myStuff: result,
@@ -51,7 +51,7 @@ export class MyStuffState {
         { getState, patchState, dispatch }: StateContext<MyStuffStateModel>,
         { kind, formInfo }: MyStuff.CreateContent,
     ): Observable<ContentModel> {
-        return this.stuffService.createContent(kind, formInfo).pipe(
+        return this.networkService.createContent(kind, formInfo).pipe(
             tap((result: ContentModel) => {
                 dispatch(new Alerts.Success(`Content saved!`));
                 patchState({
@@ -70,7 +70,7 @@ export class MyStuffState {
         { setState, dispatch }: StateContext<MyStuffStateModel>,
         { contentId, kind, formInfo }: MyStuff.SaveContent,
     ): Observable<ContentModel> {
-        return this.stuffService.saveContent(contentId, kind, formInfo).pipe(
+        return this.networkService.saveContent(contentId, kind, formInfo).pipe(
             tap((result: ContentModel) => {
                 dispatch(new Alerts.Success(`Changes saved!`));
                 setState(
@@ -92,7 +92,7 @@ export class MyStuffState {
         { setState, dispatch }: StateContext<MyStuffStateModel>,
         { contentId }: MyStuff.DeleteContent,
     ): Observable<void> {
-        return this.stuffService.deleteOne(contentId).pipe(
+        return this.networkService.deleteOneMyStuff(contentId).pipe(
             tap((_res: void) => {
                 setState(
                     patch({
@@ -113,7 +113,7 @@ export class MyStuffState {
         { setState, dispatch }: StateContext<MyStuffStateModel>,
         { contentId, pubChange }: MyStuff.PublishContent,
     ): Observable<ContentModel> {
-        return this.stuffService.publishOne(contentId, pubChange).pipe(
+        return this.networkService.publishOneMyStuff(contentId, pubChange).pipe(
             tap((result: ContentModel) => {
                 setState(
                     patch({
@@ -134,7 +134,7 @@ export class MyStuffState {
         { setState, dispatch }: StateContext<MyStuffStateModel>,
         { uploader }: MyStuff.UploadCoverArt,
     ): Observable<ContentModel> {
-        return this.stuffService.uploadCoverart(uploader).pipe(
+        return this.networkService.changeImage(uploader).pipe(
             tap((result: ContentModel) => {
                 setState(
                     patch({

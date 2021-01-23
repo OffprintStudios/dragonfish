@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MyStuffState } from '../../../../shared/my-stuff';
 
 import {
     WorkKind,
@@ -16,6 +15,8 @@ import {
 } from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
+import { MyStuffState } from 'packages/client/src/app/shared/my-stuff';
+
 
 @UntilDestroy()
 @Component({

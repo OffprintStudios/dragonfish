@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { ContentRating, NewsCategory, NewsContentModel, NewsForm } from '@dragonfish/models/content';
-import { NewsManagementService } from '../news-management.service';
+import { NetworkService } from '../../../../services';
 
 @Component({
     selector: 'post-form',
@@ -29,7 +29,7 @@ export class PostFormComponent implements OnInit {
     });
 
     constructor(
-        private newsService: NewsManagementService,
+        private networkService: NetworkService,
         private snackBar: MatSnackBar,
         private route: ActivatedRoute,
         private location: Location,
@@ -95,7 +95,7 @@ export class PostFormComponent implements OnInit {
 
         if (this.editMode) {
             if (this.currPost) {
-                this.newsService.editNewspost(this.currPost._id, formData).subscribe(() => {
+                this.networkService.editNewspost(this.currPost._id, formData).subscribe(() => {
                     this.snackBar.open(`Changes saved!`);
                     this.location.back();
                 });
@@ -104,7 +104,7 @@ export class PostFormComponent implements OnInit {
                 return;
             }
         } else {
-            this.newsService.createNewspost(formData).subscribe(() => {
+            this.networkService.createNewspost(formData).subscribe(() => {
                 this.snackBar.open(`Post saved successfully!`);
                 this.location.back();
             });

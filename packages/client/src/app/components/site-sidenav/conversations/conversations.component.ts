@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { MessageThread } from '@dragonfish/models/messages';
-import { MessagesService } from '../../../services/content';
+import { NetworkService } from '../../../services';
 
 @Component({
     selector: 'sidenav-conversations',
@@ -12,7 +12,7 @@ export class ConversationsComponent implements OnInit {
     loading = false;
     activeConvos: MessageThread[];
 
-    constructor(private messageService: MessagesService) {
+    constructor(private networkService: NetworkService) {
         this.fetchData();
     }
 
@@ -24,7 +24,7 @@ export class ConversationsComponent implements OnInit {
     fetchData() {
         this.loading = true;
 
-        this.messageService.fetchUserSidenavThreads().subscribe((threads) => {
+        this.networkService.fetchUserSidenavThreads().subscribe((threads) => {
             this.activeConvos = threads;
             this.loading = false;
         });

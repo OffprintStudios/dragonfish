@@ -9,7 +9,7 @@ import { UserState } from '../../../../shared/user';
 import { Collection } from '@dragonfish/models/collections';
 import { FrontendUser } from '@dragonfish/models/users';
 import { CreateCollectionComponent } from 'packages/client/src/app/components/modals/collections';
-import { CollectionsService } from 'packages/client/src/app/services/content';
+import { NetworkService } from 'packages/client/src/app/services';
 
 @Component({
     selector: 'collection-page',
@@ -29,7 +29,7 @@ export class CollectionPageComponent implements OnInit {
         private route: ActivatedRoute,
         private dialog: MatDialog,
         private router: Router,
-        private collsService: CollectionsService,
+        private networkService: NetworkService,
         private location: Location,
     ) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
@@ -73,7 +73,7 @@ export class CollectionPageComponent implements OnInit {
      */
     askDelete(collId: string) {
         if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
-            this.collsService.deleteCollection(collId).subscribe(() => {
+            this.networkService.deleteCollection(collId).subscribe(() => {
                 this.location.back();
             });
         } else {
@@ -89,11 +89,11 @@ export class CollectionPageComponent implements OnInit {
      */
     setPublicPrivate(collId: string, setPublic: boolean) {
         if (setPublic) {
-            this.collsService.setToPublic(collId).subscribe(() => {
+            this.networkService.setCollectionToPublic(collId).subscribe(() => {
                 this.router.navigate([], { relativeTo: this.route, queryParamsHandling: 'merge' });
             });
         } else {
-            this.collsService.setToPrivate(collId).subscribe(() => {
+            this.networkService.setCollectionToPrivate(collId).subscribe(() => {
                 this.router.navigate([], { relativeTo: this.route, queryParamsHandling: 'merge' });
             });
         }

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CreateInitialMessage } from '@dragonfish/models/messages';
-import { MessagesService } from '../../../../services/content';
+import { NetworkService } from '../../../../services';
 import { AlertsService } from '../../../../shared/alerts';
 
 @Component({
@@ -20,7 +20,7 @@ export class StartConversationComponent implements OnInit {
     });
 
     constructor(
-        private messageService: MessagesService,
+        private networkService: NetworkService,
         private alertsService: AlertsService,
         private dialogRef: MatDialogRef<StartConversationComponent>,
         @Inject(MAT_DIALOG_DATA) private data: any,
@@ -55,7 +55,7 @@ export class StartConversationComponent implements OnInit {
             recipient: this.data.userId,
         };
 
-        this.messageService.createNewPrivateThread(newMessage).subscribe(() => {
+        this.networkService.createNewPrivateThread(newMessage).subscribe(() => {
             this.dialogRef.close();
         });
     }

@@ -3,16 +3,17 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { ContentKind, ContentModel } from '@dragonfish/models/content';
-import { MyStuffService } from '../services/user';
+
+import { NetworkService } from '../services';
 
 @Injectable()
 export class ViewContentResolver implements Resolve<ContentModel> {
-    constructor(private stuffService: MyStuffService) {}
+    constructor(private networkService: NetworkService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<ContentModel> {
         const contentId = route.queryParamMap.get('contentId');
         const kind = route.queryParamMap.get('kind') as ContentKind;
 
-        return this.stuffService.fetchOne(contentId, kind);
+        return this.networkService.fetchOneMyStuff(contentId, kind);
     }
 }
