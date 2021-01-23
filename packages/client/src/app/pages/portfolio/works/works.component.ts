@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
+import { ContentState } from '../../../shared/content';
 
 import { ContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -19,6 +20,8 @@ export class WorksComponent implements OnInit {
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
+    @Select(ContentState.currPageContent) currPageContent$: Observable<PaginateResult<ContentModel>>;
+
     portUser: FrontendUser;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
@@ -32,10 +35,6 @@ export class WorksComponent implements OnInit {
     ngOnInit(): void {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
         Title.setThreePartTitle(this.portUser.username, Constants.WORKS);
-
-        this.route.data.subscribe(data => {
-            this.contentData = data.feedData as PaginateResult<ContentModel>;
-        });
     }
 
     /**
