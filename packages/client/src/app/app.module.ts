@@ -44,7 +44,7 @@ import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/hom
 
 import { BrowseComponent } from './pages/browse';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
+import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
 import { CollectionPageComponent } from './pages/portfolio/collections';
@@ -122,7 +122,7 @@ const toolbarOptions = [
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
     NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
+    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, BlogPageComponent, 
     SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,

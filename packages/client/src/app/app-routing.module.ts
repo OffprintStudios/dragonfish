@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent } from './pages/home';
   
-import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
+import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
   ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
@@ -60,7 +60,7 @@ const routes: Routes = [
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
       {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PortBlogPageComponent},
+      {path: 'blog/:contentId', resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', component: BlogPageComponent},
       {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
