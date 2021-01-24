@@ -16,6 +16,7 @@ import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-na
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
 import { Constants } from './shared';
+import { MetadataService } from './services/utility';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -42,7 +43,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   numNotifs: number = 0;
 
   constructor(private router: Router, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService, private notif: NotificationsService) {
+    private nagBarService: NagBarService, public loader: LoadingBarService, 
+    private notif: NotificationsService, private metadata: MetadataService) {
 
     this.fetchFrontPageStats();
 
@@ -62,6 +64,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
+
+    this.metadata.initTags();
   }
   
   ngOnInit(): void {
