@@ -1,1 +1,0 @@
-export { EditNewsPostResolver } from './edit-news-post.resolver';
