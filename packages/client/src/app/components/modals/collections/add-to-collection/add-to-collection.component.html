@@ -22,10 +22,15 @@
             </ng-container>
         </ng-container>
         <ng-template #noCollections>
-            <div class="empty">
+            <div class="empty" *ngIf="!loading; else isLoading">
                 <h3>You haven't made any collections yet.</h3>
                 <p>Head over to the Collections page in your portfolio to get started!</p>
             </div>
+            <ng-template #isLoading>
+                <div class="loader">
+                    <div class="lds-dual-ring"></div>
+                </div>
+            </ng-template>
         </ng-template>
     </div>
 </mat-dialog-content>
