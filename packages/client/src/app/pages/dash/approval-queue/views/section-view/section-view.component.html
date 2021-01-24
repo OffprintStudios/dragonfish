@@ -1,4 +1,4 @@
-<ng-container *ngIf="!loading">
+<ng-container *ngIf="!loading && currSection$ | async as thisSection">
     <div class="section-container">
         <div class="section-selector-mobile">
             <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">

@@ -13,13 +13,17 @@ import { PaginateResult } from '@pulp-fiction/models/util';
 import { UserState } from '../../user';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { DIR_DOCUMENT_FACTORY } from '@angular/cdk/bidi/dir-document-token';
+import { PoetryContent, ProseContent, SectionInfo } from '@pulp-fiction/models/content';
+import { Section } from '@pulp-fiction/models/sections';
 
 @State<ApprovalQueueStateModel>({
     name: 'approvalQueue',
     defaults: {
         currPageDocs: null,
         claimedDocs: [],
-        selectedDoc: null
+        selectedDoc: null,
+        selectedDocSections: null,
+        selectedDocSection: null
     }
 })
 @Injectable()
@@ -63,9 +67,20 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.SelectWork)
     selectWork({ patchState }: StateContext<ApprovalQueueStateModel>, { doc }: AQNamespace.SelectWork): void {
+        const work = doc.workToApprove as ProseContent | PoetryContent;
         patchState({
-            selectedDoc: doc
+            selectedDoc: doc,
+            selectedDocSections: work.sections as SectionInfo[]
         });
+    }
+
+    @Action(AQNamespace.FetchSection)
+    fetchSection({ patchState }: StateContext<ApprovalQueueStateModel>, { sectionId }: AQNamespace.FetchSection) {
+        return this.queueService.fetchSection(sectionId).pipe(tap((val: Section) => {
+            patchState({
+                selectedDocSection: val
+            });
+        }));
     }
 
     @Action(AQNamespace.ApproveWork)
@@ -108,5 +123,15 @@ export class ApprovalQueueState {
     @Selector()
     static selectedDoc (state: ApprovalQueueStateModel): ApprovalQueue | null {
         return state.selectedDoc;
+    }
+
+    @Selector()
+    static selectedDocSections (state: ApprovalQueueStateModel): SectionInfo[] | null {
+        return state.selectedDocSections;
+    }
+
+    @Selector()
+    static selectedDocSection (state: ApprovalQueueStateModel): Section | null {
+        return state.selectedDocSection;
     }
 }

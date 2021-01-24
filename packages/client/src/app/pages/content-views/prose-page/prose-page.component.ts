@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
+import { ContentState } from '../../../shared/content';
 import { cloneDeep } from 'lodash';
 
 import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
@@ -11,6 +12,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentPage } from '../../../models/site';
 
 import { Title } from '../../../shared';
+
 
 @Component({
     selector: 'prose-page',
@@ -22,8 +24,8 @@ export class ProsePageComponent implements OnInit {
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    currProse: ProseContent;
-    histData: ReadingHistory;
+    @Select(ContentState.currContent) currContent$: Observable<ProseContent>;
+
     pageNum = 1;
     ratingSize = 'large';
 
@@ -39,16 +41,9 @@ export class ProsePageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe(data => {
-            const pageData = data.contentData as ContentPage;
-            this.currProse = cloneDeep(pageData.content) as ProseContent;
-            
-            if (pageData.history !== null) {
-                this.histData = cloneDeep(pageData.history);
-            }
+        this.currContent$.subscribe(x => {
+            Title.setTwoPartTitle(x.title);
         });
-
-        Title.setTwoPartTitle(this.currProse.title);
     }
 
     /**

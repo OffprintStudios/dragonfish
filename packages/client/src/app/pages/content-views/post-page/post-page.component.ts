@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../shared/user';
+import { UserState } from '../../../shared/user';
+import { ContentState } from '../../../shared/content';
+import { Title } from '../../../shared/title';
 
 import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ItemKind } from '@pulp-fiction/models/comments';
-import { ContentPage } from '../../models/site';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 
 @Component({
   selector: 'pulp-fiction-post-page',
@@ -20,8 +20,7 @@ export class PostPageComponent implements OnInit {
   currentUserSubscription: Subscription;
   currentUser: FrontendUser;
 
-  currPost: NewsContentModel;
-  histData: ReadingHistory;
+  @Select(ContentState.currContent) currContent$: Observable<NewsContentModel>;
   category = NewsCategory;
 
   pageNum = 1; // For comments pages
@@ -35,15 +34,9 @@ export class PostPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currPost = this.route.snapshot.data.postData as NewsContentModel;
-
-    this.route.data.subscribe(data => {
-      const pageData = data.postData as ContentPage;
-      this.currPost = pageData.content as NewsContentModel;
-      if (pageData.history !== null) {
-        this.histData = pageData.history;
-      }
-    })
+    this.currContent$.subscribe(x => {
+      Title.setTwoPartTitle(x.title);
+    });
   }
 
   private fetchData() {

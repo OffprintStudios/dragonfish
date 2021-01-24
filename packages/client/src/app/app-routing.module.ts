@@ -2,31 +2,30 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent } from './pages/home';
+import { NewsResolver } from './pages/home/news';
   
-import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent,
+import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   WorksComponent, SettingsComponent, BlogsComponent, CollectionsComponent, 
   ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
   ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
   
-import { BrowseComponent, PostPageComponent, SocialComponent } from './pages';
+import { BrowseComponent, SocialComponent } from './pages';
   
 import { RegisterComponent } from './pages/account';
   
 import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, 
-  BrowseFeedResolver, MyWorksResolver, MyBlogsResolver, PortBlogsResolver,
-  PortWorksResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, 
-  SectionResolver, ViewPoetryResolver } from './resolvers';
+import { PortfolioResolver, MyWorksResolver, MyBlogsResolver,
+  MyStuffResolver, ViewContentResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
-
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
+import { WorksResolver } from './pages/portfolio/works';
 
-import { PoetryPageComponent, ProsePageComponent, SectionViewComponent } from './pages/content-views';
+import { ContentViewResolver, PoetryPageComponent, ProsePageComponent, PostPageComponent, SectionViewComponent } from './pages/content-views';
 
 import { MigrateBlogComponent, MigrateBlogResolver, MigrateWorkComponent, MigrateWorkResolver, MigrationComponent, MigrationResolver } from './pages/migration';
 import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueComponent, NewsManagementComponent, OverviewComponent, ReportsComponent, UsersManagementComponent } from './pages/dash';
@@ -38,14 +37,17 @@ import { Roles } from '@pulp-fiction/models/users';
 import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver,
   SupportersComponent, SupportersResolver } from './pages/docs';
 
+import { BrowseResolver } from './pages/browse';
+import { BlogsResolver } from './pages/portfolio/blogs';
+
 const routes: Routes = [
     {path: '', redirectTo: '/home', pathMatch: 'full'},
     {path: 'home', component: HomeComponent, resolve: {homeData: HomePageResolver}, runGuardsAndResolvers: 'always', children: [
-      {path: 'news', component: NewsComponent, resolve: {feedData: NewsFeedResolver}, runGuardsAndResolvers: 'paramsChange'}
+      {path: 'news', component: NewsComponent, resolve: {feedData: NewsResolver}, runGuardsAndResolvers: 'paramsChange'}
     ]},
-    {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseFeedResolver}, runGuardsAndResolvers: 'always'},
+    {path: 'browse', component: BrowseComponent, resolve: {feedData: BrowseResolver}, runGuardsAndResolvers: 'always'},
     {path: 'social', component: SocialComponent},
-    {path: 'post/:postId/:postTitle', resolve: {postData: PostPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
+    {path: 'post/:contentId/:postTitle', resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', component: PostPageComponent},
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, runGuardsAndResolvers: 'always', children: [
       {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
@@ -58,9 +60,9 @@ const routes: Routes = [
       {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard], resolve: {contentData: ViewContentResolver}, runGuardsAndResolvers: 'always'}
     ]},
     {path: 'portfolio/:id/:username', resolve: {portData: PortfolioResolver}, runGuardsAndResolvers: 'always', component: PortfolioComponent, children: [
-      {path: 'blogs', component: BlogsComponent, resolve: {feedData: PortBlogsResolver}, runGuardsAndResolvers: 'always'},
-      {path: 'blog/:blogId', resolve: {blogData: BlogPageResolver}, runGuardsAndResolvers: 'paramsChange', component: PortBlogPageComponent},
-      {path: 'works', component: WorksComponent, resolve: {feedData: PortWorksResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'blogs', component: BlogsComponent, resolve: {feedData: BlogsResolver}, runGuardsAndResolvers: 'always'},
+      {path: 'blog/:contentId', resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', component: BlogPageComponent},
+      {path: 'works', component: WorksComponent, resolve: {feedData: WorksResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collections', component: CollectionsComponent, resolve: {feedData: CollectionsResolver}, runGuardsAndResolvers: 'always'},
       {path: 'collection/:collId', component: CollectionPageComponent, resolve: {collData: CollectionPageResolver}, runGuardsAndResolvers: 'always'},
       {path: 'history', component: HistoryComponent, canActivate: [AuthGuard], resolve: {histData: HistoryResolver}, runGuardsAndResolvers: 'always'},
@@ -69,10 +71,10 @@ const routes: Routes = [
       {path: 'home', component: PortHomeComponent},
       {path: '', redirectTo: 'home', pathMatch: 'full'}
     ]},
-    {path: 'prose/:proseId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ViewProseResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'prose/:contentId/:proseTitle', component: ProsePageComponent, resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
-    {path: 'poetry/:poetryId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ViewPoetryResolver}, runGuardsAndResolvers: 'paramsChange', children: [
+    {path: 'poetry/:contentId/:poetryTitle', component: PoetryPageComponent, resolve: {contentData: ContentViewResolver}, runGuardsAndResolvers: 'paramsChange', children: [
       {path: ':sectionNum/:sectionTitle', component: SectionViewComponent}
     ]},
     {path: 'search', component: SearchComponent, children: [
@@ -116,12 +118,12 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes, {anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', scrollPositionRestoration: 'enabled'})],
     exports: [RouterModule],
     providers: [
-      BlogPageResolver, PortfolioResolver, PostPageResolver, NewsFeedResolver, BrowseFeedResolver,
-      MyWorksResolver, MyBlogsResolver, PortWorksResolver, PortBlogsResolver,
-      CollectionPageResolver, MyStuffResolver, ViewContentResolver, ViewProseResolver, SectionResolver, ViewPoetryResolver,
+      PortfolioResolver, BrowseResolver,
+      MyWorksResolver, MyBlogsResolver, NewsResolver,
+      CollectionPageResolver, MyStuffResolver, ViewContentResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
-      HomePageResolver, ApproveContentResolver
+      HomePageResolver, ApproveContentResolver, ContentViewResolver, BlogsResolver, WorksResolver
     ]
 })
 export class AppRoutingModule {}

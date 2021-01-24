@@ -79,10 +79,10 @@ export class ReadingHistoryService {
      * @param user The owner of the history document
      * @param contentId The content associated with it
      */
-    async setLike(user: JwtPayload, contentId: string): Promise<void> {
-        return await this.histModel.updateOne({'owner': user.sub, 'content': contentId}, {
+    async setLike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
+        return await this.histModel.findOneAndUpdate({'owner': user.sub, 'content': contentId}, {
             'ratingOption': RatingOption.Liked
-        });
+        }, {new: true});
     }
 
     /**
@@ -91,10 +91,10 @@ export class ReadingHistoryService {
      * @param user The owner of the history document
      * @param contentId The content associated with it
      */
-    async setDislike(user: JwtPayload, contentId: string): Promise<void> {
-        return await this.histModel.updateOne({'owner': user.sub, 'content': contentId}, {
+    async setDislike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
+        return await this.histModel.findOneAndUpdate({'owner': user.sub, 'content': contentId}, {
             'ratingOption': RatingOption.Disliked
-        });
+        }, {new: true});
     }
 
     /**
@@ -103,10 +103,10 @@ export class ReadingHistoryService {
      * @param user The owner of the history document
      * @param contentId The content associated with it
      */
-    async setNoVote(user: JwtPayload, contentId: string): Promise<void> {
-        return await this.histModel.updateOne({'owner': user.sub, 'content': contentId}, {
+    async setNoVote(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
+        return await this.histModel.findOneAndUpdate({'owner': user.sub, 'content': contentId}, {
             'ratingOption': RatingOption.NoVote
-        });
+        }, {new: true});
     }
 
     /**

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PortBlogPageComponent } from './port-blog-page.component';
+import { BlogPageComponent } from './blog-page.component';
 
 describe('PortBlogPageComponent', () => {
-  let component: PortBlogPageComponent;
-  let fixture: ComponentFixture<PortBlogPageComponent>;
+  let component: BlogPageComponent;
+  let fixture: ComponentFixture<BlogPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PortBlogPageComponent ]
+      declarations: [ BlogPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PortBlogPageComponent);
+    fixture = TestBed.createComponent(BlogPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

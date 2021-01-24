@@ -8,6 +8,7 @@ import { Decision } from '@pulp-fiction/models/contrib';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { Section } from '@pulp-fiction/models/sections';
 
 @Injectable({
   providedIn: 'root'
@@ -105,5 +106,20 @@ export class ApprovalQueueService {
         this.snackBar.open(`Something went wrong! Try again in a little bit.`);
         return throwError(err);
       }))
+  }
+
+  /**
+   * Fetches one section from the API using the provided `sectionID`.
+   * 
+   * @param sectionId The section ID
+   */
+  public fetchSection(sectionId: string): Observable<Section> {
+    return this.http.get<Section>(`/api/content/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
+      }), catchError(err => {
+        this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
+        return throwError(err);
+      }));
   }
 }

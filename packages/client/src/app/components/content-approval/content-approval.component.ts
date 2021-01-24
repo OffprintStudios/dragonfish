@@ -1,16 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../shared/user';
 
 import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
-import { ContentKind, SetRating } from '@pulp-fiction/models/content';
-import { ContentService } from '../../services/content';
+import { ContentKind, ContentModel, SetRating } from '@pulp-fiction/models/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 
 import { AddToCollectionComponent } from '../modals/collections';
-import { cloneDeep } from 'lodash';
+import { Content, ContentState } from '../../shared/content';
 
 @Component({
     selector: 'content-approval',
@@ -18,30 +17,32 @@ import { cloneDeep } from 'lodash';
     styleUrls: ['./content-approval.component.less']
 })
 export class ContentApprovalComponent implements OnInit {
-    @Input() content: any;
-    @Input() histData: ReadingHistory;
-
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
-    contentKind = ContentKind;
 
-    constructor(private contentService: ContentService, private dialog: MatDialog) {
+    @Select(ContentState.currContent) currContent$: Observable<ContentModel>;
+    @Select(ContentState.currHistDoc) currHistDoc$: Observable<ReadingHistory>;
+    @Select(ContentState.likes) likes$: Observable<number>;
+    @Select(ContentState.dislikes) dislikes$: Observable<number>;
+
+    contentKind = ContentKind;
+    ratingOption = RatingOption;
+
+    constructor(private store: Store, private dialog: MatDialog) {
         this.currentUserSubscription = this.currentUser$.subscribe(x => {
             this.currentUser = x;
         });
     }
 
     ngOnInit(): void {
-        this.content = cloneDeep(this.content);
-        this.histData = cloneDeep(this.histData);
     }
 
     /**
      * Opens the Add To Collection dialog box.
      */
-    openAddToCollectionDialog() {
-        const dialogRef = this.dialog.open(AddToCollectionComponent, {data: {content: this.content}});
+    openAddToCollectionDialog(content: ContentModel) {
+        const dialogRef = this.dialog.open(AddToCollectionComponent, {data: {content: content}});
     }
 
     /**
@@ -56,14 +57,7 @@ export class ContentApprovalComponent implements OnInit {
             oldApprovalRating: currRating
         };
 
-        this.contentService.setLike(ratingOptions).subscribe(() => {
-            this.histData.ratingOption = RatingOption.Liked;
-            if (currRating === RatingOption.Disliked) {
-                this.content.stats.dislikes -= 1;
-            } else {
-                this.content.stats.likes += 1;
-            }
-        });
+        this.store.dispatch(new Content.SetLike(ratingOptions)).subscribe();
     }
 
     /**
@@ -78,14 +72,7 @@ export class ContentApprovalComponent implements OnInit {
             oldApprovalRating: currRating
         };
 
-        this.contentService.setDislike(ratingOptions).subscribe(() => {
-            this.histData.ratingOption = RatingOption.Disliked;
-            if (currRating === RatingOption.Liked) {
-                this.content.stats.likes -= 1;
-            } else {
-                this.content.stats.dislikes += 1;
-            }
-        });
+        this.store.dispatch(new Content.SetDislike(ratingOptions)).subscribe();
     }
 
     /**
@@ -100,13 +87,6 @@ export class ContentApprovalComponent implements OnInit {
             oldApprovalRating: currRating
         };
 
-        this.contentService.setNoVote(ratingOptions).subscribe(() => {
-            this.histData.ratingOption = RatingOption.NoVote;
-            if (currRating === RatingOption.Liked) {
-                this.content.stats.likes -= 1;
-            } else if (currRating === RatingOption.Disliked) {
-                this.content.stats.dislikes -= 1;
-            }
-        });
+        this.store.dispatch(new Content.SetNoVote(ratingOptions)).subscribe();
     }
 }

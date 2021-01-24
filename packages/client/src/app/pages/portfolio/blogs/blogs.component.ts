@@ -8,6 +8,7 @@ import { FrontendUser } from '@pulp-fiction/models/users';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { Constants, Title } from '../../../shared';
 import { BlogsContentModel } from '@pulp-fiction/models/content';
+import { ContentState } from '../../../shared/content';
 
 @Component({
     selector: 'port-blogs',
@@ -18,6 +19,8 @@ export class BlogsComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
+
+    @Select(ContentState.currPageContent) currPageContent$: Observable<PaginateResult<BlogsContentModel>>;
 
     portUser: FrontendUser;
     blogsData: PaginateResult<BlogsContentModel>
@@ -33,10 +36,6 @@ export class BlogsComponent implements OnInit {
     ngOnInit(): void {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
         Title.setThreePartTitle(this.portUser.username, Constants.BLOGS);
-
-        this.route.data.subscribe(data => {
-            this.blogsData = data.feedData as PaginateResult<BlogsContentModel>;
-        });
     }
 
     /**

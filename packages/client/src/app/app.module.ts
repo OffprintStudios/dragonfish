@@ -15,6 +15,7 @@ import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
+import { ContentState } from './shared/content';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,7 +42,9 @@ import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler,
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
-import { PortfolioComponent, PortHomeComponent, PortBlogPageComponent, WorksComponent, SettingsComponent,
+import { BrowseComponent } from './pages/browse';
+
+import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponent, SettingsComponent,
   BlogsComponent, CollectionsComponent, ConversationsComponent as PortConversations,
   HistoryComponent as HistoryPageComponent } from './pages/portfolio';
 import { CollectionPageComponent } from './pages/portfolio/collections';
@@ -49,10 +52,10 @@ import { CollectionPageComponent } from './pages/portfolio/collections';
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
   ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
-import { BrowseComponent, SocialComponent, PostPageComponent } from './pages';
+import { SocialComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-import { ProsePageComponent, PoetryPageComponent, SectionViewComponent } from './pages/content-views';
+import { ProsePageComponent, PoetryPageComponent, PostPageComponent, SectionViewComponent } from './pages/content-views';
 import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
   ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
 import { ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/dash/approval-queue';
@@ -119,7 +122,7 @@ const toolbarOptions = [
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
     NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, PortBlogPageComponent, 
+    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, BlogPageComponent, 
     SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
     BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
@@ -141,9 +144,12 @@ const toolbarOptions = [
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState], {developmentMode: !environment.production}),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
-      key: ['auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc']
+      key: [
+        'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 
+        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
+      ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     MarkdownModule.forRoot(),
