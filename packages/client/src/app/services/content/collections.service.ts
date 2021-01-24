@@ -45,10 +45,20 @@ export class CollectionsService {
       }));
   }
 
-  public getOneCollection(collId: string, getPublic: boolean) {
-    return this.http.get<Collection>(`${this.url}/get-one-collection?collId=${collId}&getPublic=${getPublic}`, {observe: 'response', withCredentials: true})
+  public getOneCollection(collId: string) {
+    return this.http.get<Collection>(`${this.url}/get-one-collection?collId=${collId}`, {observe: 'response', withCredentials: true})
       .pipe(map(coll => {
         return coll.body;
+      }), catchError(err => {
+        this.alertsService.error(err.error.message);
+        return throwError(err);
+      }));
+  }
+
+  public getOnePublicCollection(userId: string, collId: string) {
+    return this.http.get<Collection>(`${this.url}/get-one-public-collection?userId=${userId}&collId=${collId}`, {observe: 'response', withCredentials: true})
+      .pipe(map(res => {
+        return res.body;
       }), catchError(err => {
         this.alertsService.error(err.error.message);
         return throwError(err);

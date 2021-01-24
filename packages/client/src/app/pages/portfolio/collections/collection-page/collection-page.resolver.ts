@@ -26,12 +26,12 @@ export class CollectionPageResolver implements Resolve<Collection> {
 
         if (this.currentUser) {
             if (this.currentUser._id === userId) {
-                return this.collsService.getOneCollection(collectionId, false);
+                return this.collsService.getOneCollection(collectionId);
             } else {
-                return this.collsService.getOneCollection(collectionId, true);
+                return this.collsService.getOnePublicCollection(userId, collectionId);
             }
         } else {
-            return this.collsService.getOneCollection(collectionId, true);
+            return this.collsService.getOnePublicCollection(userId, collectionId);
         }
     }
 }
