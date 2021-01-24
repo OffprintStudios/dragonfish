@@ -2,9 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../../shared/user';
+import { AuthState } from '../../../../shared/auth';
 
 import { AlertsService } from '../../../../modules/alerts';
 import { HttpError } from '../../../../models/site';
@@ -44,7 +45,7 @@ export class UploadCoverartComponent implements OnInit {
   newImageAdded: boolean = true;
 
   constructor(private worksService: WorksService, private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: {kind: ContentKind, contentId: string}) {
+    @Inject(MAT_DIALOG_DATA) private data: {kind: ContentKind, contentId: string}, private store: Store) {
       this.currentUserSubscription = this.currentUser$.subscribe(x => {
         this.currentUser = x;
       });
@@ -136,7 +137,9 @@ export class UploadCoverartComponent implements OnInit {
   }
 
   uploadCoverArt() {
-    this.uploader.authToken = `Bearer ${this.currentUser.token}`;
+    // @ts-ignore
+    const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+    this.uploader.authToken = `Bearer ${token}`;
     this.loading = true;
     this.uploader.clearQueue();
     this.uploader.addToQueue([this.fileToReturn]);
