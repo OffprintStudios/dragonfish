@@ -37,9 +37,8 @@ export class CollectionsController {
         return await this.collsService.getOnePublicCollection(userId, collId);
     }
 
-    @UseGuards(RolesGuard([Roles.User]))
     @Get('get-public-collections')
-    async getPublicCollections(@Request() req: any, @Query('userId') userId: string, @Query('pageNum') pageNum: number) {
+    async getPublicCollections(@Query('userId') userId: string, @Query('pageNum') pageNum: number) {
         if (isNullOrUndefined(pageNum)) {
             throw new BadRequestException(`This request must include the page number.`);
         }
