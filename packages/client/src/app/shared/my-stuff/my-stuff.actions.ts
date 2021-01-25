@@ -7,6 +7,11 @@ export namespace MyStuff {
         constructor () {}
     }
 
+    export class SetCurrentContent {
+        static readonly type = '[My Stuff] Set Current Content';
+        constructor (public content: ContentModel) {}
+    }
+
     export class CreateContent {
         static readonly type = '[My Stuff] Create Content';
         constructor (public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}

@@ -30,8 +30,15 @@ export class MyStuffState {
         }));
     }
 
+    @Action(MyStuff.SetCurrentContent)
+    setCurrentContent({ patchState }: StateContext<MyStuffStateModel>, { content }: MyStuff.SetCurrentContent): void {
+        patchState({
+            currContent: content
+        });
+    }
+
     @Action(MyStuff.CreateContent)
-    createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent) {
+    createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent): Observable<ContentModel> {
         return this.stuffService.createContent(kind, formInfo).pipe(tap((result: ContentModel) => {
             patchState({
                 myStuff: [...getState().myStuff, result]
@@ -43,7 +50,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.SaveContent)
-    saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent) {
+    saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
         return this.stuffService.saveContent(contentId, kind, formInfo).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result)
@@ -55,7 +62,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.DeleteContent)
-    deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent) {
+    deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent): Observable<void> {
         return this.stuffService.deleteOne(contentId).pipe(tap((_res: void) => {
             setState(patch({
                 myStuff: removeItem<ContentModel>(content => content._id === contentId)
@@ -67,7 +74,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.PublishContent)
-    publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.PublishContent) {
+    publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.PublishContent): Observable<ContentModel> {
         return this.stuffService.publishOne(contentId).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result)
@@ -79,7 +86,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.UploadCoverArt)
-    uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { kind, uploader }: MyStuff.UploadCoverArt) {
+    uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { kind, uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
         if (kind === ContentKind.BlogContent || kind === ContentKind.NewsContent) {
             dispatch(new Alerts.Error(`Incorrect content type for this action.`));
             return;
