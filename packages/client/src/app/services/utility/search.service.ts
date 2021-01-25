@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { InitialResults, PaginateResult } from '@pulp-fiction/models/util';
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 import { User } from '@pulp-fiction/models/users';
 import { BlogsContentModel, ContentModel, ProseContent } from '@pulp-fiction/models/content';
 

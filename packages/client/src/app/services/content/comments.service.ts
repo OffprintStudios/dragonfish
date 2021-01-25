@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { BlogComment, WorkComment, ContentComment, CreateComment, EditComment } from '@pulp-fiction/models/comments';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 
 @Injectable({
   providedIn: 'root'

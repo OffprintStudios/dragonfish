@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { ReadingHistory } from '@pulp-fiction/models/reading-history';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 
 @Injectable({
   providedIn: 'root'

@@ -39,7 +39,7 @@ import { NguCarouselModule } from '@ngu/carousel';
 import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
   TruncatePipe, LocaleDatePipe, JoinStringsPipe } from './pipes';
-import { AlertsModule, NagBarModule } from './modules';
+import { NagBarModule } from './modules';
 import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
   brMatcher, textNodeMatcher } from './util/quill';
 
@@ -144,7 +144,7 @@ const toolbarOptions = [
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
-    AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
+    FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState], {developmentMode: !environment.production}),
