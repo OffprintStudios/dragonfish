@@ -50,6 +50,11 @@
     <div class="main-stage">
     
       <div class="container">
+        <button (click)="success('success!')">Success</button>
+        <button (click)="error('error!')">Error</button>
+        <button (click)="info('info!')">Info</button>
+        <button (click)="warning('warning!')">Warning</button>
+
         <router-outlet></router-outlet>
       </div>
     

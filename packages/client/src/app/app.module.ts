@@ -18,6 +18,7 @@ import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
 import { MyStuffState } from './shared/my-stuff';
+import { AlertsState, AlertsComponent } from './shared/alerts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -139,14 +140,14 @@ const toolbarOptions = [
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
     AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
-    ApproveProseComponent, ApproveSectionViewComponent
+    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     AlertsModule, FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState], {developmentMode: !environment.production}),
+    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState], {developmentMode: !environment.production}),
     NgxsStoragePluginModule.forRoot({
       key: [
         'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 

@@ -5,6 +5,7 @@ import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Select } from '@ngxs/store';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { UserState } from './shared/user';
 
 import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
@@ -17,6 +18,7 @@ import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
 import { Constants } from './shared';
 import { MetadataService } from './services/utility';
+import { Alerts } from './shared/alerts';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -134,6 +136,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     document.documentElement.style.setProperty('--site-controls-background', newTheme.controlsBackground);
     document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
   }
+
+  @Dispatch() success = (message: string) => new Alerts.Success(message);
+  @Dispatch() error = (message: string) => new Alerts.Error(message);
+  @Dispatch() info = (message: string) => new Alerts.Info(message);
+  @Dispatch() warning = (message: string) => new Alerts.Warning(message);
 
   /**
    * Checks to see if the currently logged-in user has agreed to the site's policies.
