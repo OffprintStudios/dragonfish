@@ -137,11 +137,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
   }
 
-  @Dispatch() success = (message: string) => new Alerts.Success(message);
-  @Dispatch() error = (message: string) => new Alerts.Error(message);
-  @Dispatch() info = (message: string) => new Alerts.Info(message);
-  @Dispatch() warning = (message: string) => new Alerts.Warning(message);
-
   /**
    * Checks to see if the currently logged-in user has agreed to the site's policies.
    * 
