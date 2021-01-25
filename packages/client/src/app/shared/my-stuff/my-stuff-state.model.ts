@@ -1,3 +1,5 @@
+import { ContentModel } from "@pulp-fiction/models/content";
+
 export interface MyStuffStateModel {
-    myStuff: string[] | null;
+    myStuff: ContentModel[] | null;
 }
