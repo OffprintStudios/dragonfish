@@ -21,8 +21,7 @@
       "@pulp-fiction/html_sanitizer": ["packages/html_sanitizer/src/index.ts"],
       "@pulp-fiction/material": ["packages/material/src/index.ts"],
       "@pulp-fiction/icons": ["packages/icons/src/index.ts"],
-      "@pulp-fiction/loading": ["packages/loading/src/index.ts"],
-      "@pulp-fiction/alerts": ["packages/alerts/src/index.ts"]
+      "@pulp-fiction/loading": ["packages/loading/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
