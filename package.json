@@ -58,6 +58,7 @@
     "@ngu/carousel": "^3.0.2",
     "@ngx-loading-bar/core": "^5.1.1",
     "@ngx-loading-bar/http-client": "^5.1.1",
+    "@ngxs-labs/dispatch-decorator": "^2.1.0",
     "@ngxs/devtools-plugin": "^3.7.1",
     "@ngxs/logger-plugin": "^3.7.1",
     "@ngxs/router-plugin": "^3.7.1",
