@@ -83,42 +83,6 @@ export class MyStuffService {
     }
 
     /**
-     * Sends a request to save the current form information for the relevant piece of content.
-     * 
-     * @param contentId The content ID
-     * @param kind The content kind
-     * @param formInfo The form information
-     */
-    public saveContent(contentId: string, kind: ContentKind, formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {
-        let fetchUrl = `${this.url}`;
-
-        switch (kind) {
-            case ContentKind.BlogContent:
-                fetchUrl = `${fetchUrl}/blogs/edit-blog?contentId=${contentId}`;
-                break;
-            case ContentKind.NewsContent:
-                fetchUrl = `${fetchUrl}/news/edit-post?contentId=${contentId}`;
-                break;
-            case ContentKind.PoetryContent:
-                fetchUrl = `${fetchUrl}/poetry/edit-poetry?contentId=${contentId}`;
-                break;
-            case ContentKind.ProseContent:
-                fetchUrl = `${fetchUrl}/prose/edit-prose?contentId=${contentId}`;
-                break;
-            default:
-                this.snackBar.open(`Invalid content kind.`);
-                return;
-        }
-
-        return this.http.patch<ContentModel>(`${fetchUrl}`, formInfo, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
-    }
-
-    /**
      * Sends a request to delete the specified content.
      * 
      * @param contentId The content to delete
