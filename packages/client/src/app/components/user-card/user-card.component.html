@@ -5,7 +5,7 @@
     <div class="user-info" #infoContainer>
         <h2 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="36"><a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a></h2>
         <role-badge [roles]="user.roles" [isCentered]="true"></role-badge>
-        <h3>{{ user.profile.bio }}</h3>
+        <h3 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="20">{{ user.profile.bio }}</h3>
     </div>
     <div class="user-stats">
         <div class="works" matTooltip="Works" matTooltipClass="offprint-tooltip">
