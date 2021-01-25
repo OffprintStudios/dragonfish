@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { append, patch, removeItem } from '@ngxs/store/operators';
 
 import { AQNamespace } from './approval-queue.actions';
 import { ApprovalQueueStateModel } from './approval-queue-state.model';
@@ -12,9 +11,9 @@ import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
 import { PaginateResult } from '@pulp-fiction/models/util';
 import { UserState } from '../../user';
 import { FrontendUser } from '@pulp-fiction/models/users';
-import { DIR_DOCUMENT_FACTORY } from '@angular/cdk/bidi/dir-document-token';
 import { PoetryContent, ProseContent, SectionInfo } from '@pulp-fiction/models/content';
 import { Section } from '@pulp-fiction/models/sections';
+import { Alerts } from '../../alerts';
 
 @State<ApprovalQueueStateModel>({
     name: 'approvalQueue',
@@ -28,12 +27,12 @@ import { Section } from '@pulp-fiction/models/sections';
 })
 @Injectable()
 export class ApprovalQueueState {
-    constructor (private queueService: ApprovalQueueService, private snackBar: MatSnackBar, private store: Store) {}
+    constructor (private queueService: ApprovalQueueService, private store: Store) {}
 
     /* Actions */
 
     @Action(AQNamespace.GetQueue)
-    getQueue({ patchState }: StateContext<ApprovalQueueStateModel>, { pageNum }: AQNamespace.GetQueue): Observable<PaginateResult<ApprovalQueue>> {
+    getQueue({ patchState, dispatch }: StateContext<ApprovalQueueStateModel>, { pageNum }: AQNamespace.GetQueue): Observable<PaginateResult<ApprovalQueue>> {
         return this.queueService.getQueue(pageNum).pipe(tap((result: PaginateResult<ApprovalQueue>) => {
             const currUser: FrontendUser | null = this.store.selectSnapshot(UserState.currUser);
             if (currUser !== null) {
@@ -46,14 +45,14 @@ export class ApprovalQueueState {
                 });
                 return 
             } else {
-                this.snackBar.open(`Action forbidden.`);
+                dispatch(new Alerts.Error(`This action is forbidden.`));
             }
         }));
     }
 
     @Action(AQNamespace.GetQueueForMod)
-    getQueueForMod(_ctx: StateContext<ApprovalQueueStateModel>, _action: AQNamespace.GetQueueForMod) {
-        this.snackBar.open(`Action not yet supported.`);
+    getQueueForMod({ dispatch }: StateContext<ApprovalQueueStateModel>, _action: AQNamespace.GetQueueForMod) {
+        dispatch(new Alerts.Info(`Action not yet supported.`));
     }
 
     @Action(AQNamespace.ClaimWork)
@@ -104,8 +103,8 @@ export class ApprovalQueueState {
     }
 
     @Action(AQNamespace.ViewContent)
-    viewContent() {
-        this.snackBar.open(`Action not yet supported.`);
+    viewContent({ dispatch }: StateContext<ApprovalQueueStateModel>) {
+        dispatch(new Alerts.Info(`Action not yet supported.`));
     }
 
     /* Selectors */

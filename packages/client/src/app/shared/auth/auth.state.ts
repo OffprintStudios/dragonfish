@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Auth } from './auth.actions';
 import { AuthStateModel } from './auth-state.model';
 import { AuthService } from './services';
@@ -9,6 +8,7 @@ import { AuthService } from './services';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { Observable } from 'rxjs';
 import { User } from '../user';
+import { Alerts } from '../alerts';
 
 @State<AuthStateModel>({
     name: 'auth',
@@ -18,7 +18,7 @@ import { User } from '../user';
 })
 @Injectable()
 export class AuthState {
-    constructor(private auth: AuthService, private snackBar: MatSnackBar) {}
+    constructor(private auth: AuthService) {}
 
     /* Actions */
 
@@ -69,7 +69,7 @@ export class AuthState {
                 patchState({
                     token: null
                 });
-                this.snackBar.open(`Your token has expired, and you've been logged out.`);
+                dispatch(new Alerts.Info(`Your token has expired, and you've been logged out.`));
             } else {
                 patchState({
                     token: result
