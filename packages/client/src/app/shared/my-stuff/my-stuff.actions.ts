@@ -1,4 +1,5 @@
 import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm } from "@pulp-fiction/models/content";
+import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {
     export class SetFiles {
@@ -13,11 +14,21 @@ export namespace MyStuff {
 
     export class SaveContent {
         static readonly type = '[My Stuff] Save Content';
-        constructor (public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
+        constructor (public contentId: string, public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
+    }
+
+    export class DeleteContent {
+        static readonly type = '[My Stuff] Delete Content';
+        constructor (public contentId: string) {}
+    }
+
+    export class PublishContent {
+        static readonly type = '[My Stuff] Publish Content';
+        constructor (public contentId: string) {}
     }
 
     export class UploadCoverArt {
         static readonly type = '[My Stuff] Upload Cover Art';
-        constructor (public kind: ContentKind) {}
+        constructor (public kind: ContentKind, public uploader: FileUploader) {}
     }
 }

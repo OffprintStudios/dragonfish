@@ -83,6 +83,43 @@ export class MyStuffService {
     }
 
     /**
+     * Sends a request to create a piece of content to the backend, with the route determined by its
+     * `ContentKind`. 
+     * 
+     * @param kind The content kind
+     * @param formInfo The form information
+     */
+    public saveContent(contentId: string, kind: ContentKind, formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm): Observable<ContentModel> {
+        let fetchUrl = `${this.url}`;
+
+        switch (kind) {
+            case ContentKind.BlogContent:
+                fetchUrl = `${fetchUrl}/blogs/edit-blog?contentId=${contentId}`;
+                break;
+            case ContentKind.NewsContent:
+                fetchUrl = `${fetchUrl}/news/edit-post?contentId=${contentId}`;
+                break;
+            case ContentKind.PoetryContent:
+                fetchUrl = `${fetchUrl}/poetry/edit-poetry?contentId=${contentId}`;
+                break;
+            case ContentKind.ProseContent:
+                fetchUrl = `${fetchUrl}/prose/edit-prose?contentId=${contentId}`;
+                break;
+            default:
+                this.snackBar.open(`Invalid content kind.`);
+                return;
+        }
+
+        return this.http.patch<ContentModel>(`${fetchUrl}`, formInfo, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+
+
+    /**
      * Sends a request to delete the specified content.
      * 
      * @param contentId The content to delete
@@ -103,10 +140,10 @@ export class MyStuffService {
      * @param contentId The content to publish
      * @returns Observable
      */
-    public publishOne(contentId: string): Observable<void> {
-        return this.http.patch(`${this.url}/publish-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
-            .pipe(map(() => {
-                return;
+    public publishOne(contentId: string): Observable<ContentModel> {
+        return this.http.patch<ContentModel>(`${this.url}/publish-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
             }), catchError(err => {
                 return throwError(err);
             }));
@@ -118,8 +155,8 @@ export class MyStuffService {
      * @param uploader The file uploader
      * @returns Observable
      */
-    public uploadCoverart(uploader: FileUploader): Observable<void> {
-        return new Observable<void>(observer => {
+    public uploadCoverart(uploader: FileUploader): Observable<ContentModel> {
+        return new Observable<ContentModel>(observer => {
             uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = this.tryParseJsonHttpError(response);
@@ -136,7 +173,7 @@ export class MyStuffService {
                 // If we ever need to retun the modified work, the return type on this
                 // should change to Observable<models.Work>, and we'd need to JSON parse
                 // the response and return it in .next() here.
-                observer.next()
+                observer.next(JSON.parse(response));
                 observer.complete();
             };      
     
