@@ -15,16 +15,16 @@ export class AlertsComponent implements OnInit {
     ngOnInit(): void {
         switch (this.data.type) {
             case AlertType.Success:
-                document.documentElement.style.setProperty('--alert-color', 'rgb(60,128,40)');
+                document.documentElement.style.setProperty('--alert-color', 'rgb(60, 128, 40)');
                 break;
             case AlertType.Error:
-                document.documentElement.style.setProperty('--alert-color', '#DD4C4F');
+                document.documentElement.style.setProperty('--alert-color', 'rgb(221, 76, 79)');
                 break;
             case AlertType.Info:
-                document.documentElement.style.setProperty('--alert-color', 'rgb(80,154,233)');
+                document.documentElement.style.setProperty('--alert-color', 'rgb(80, 154, 233)');
                 break;
             case AlertType.Warning:
-                document.documentElement.style.setProperty('--alert-color', '#d9a107')
+                document.documentElement.style.setProperty('--alert-color', 'rgb(217, 161, 7)');
         }
     }
 }
