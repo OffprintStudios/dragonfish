@@ -107,6 +107,7 @@
     "rxjs": "~6.5.5",
     "sanitize-html": "^1.27.3",
     "shortid": "^2.2.15",
+    "tslib": "^2.0.0",
     "validator": "^13.1.1",
     "voca": "^1.4.0",
     "zone.js": "^0.10.2"

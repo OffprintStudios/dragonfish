@@ -334,6 +334,32 @@
           }
         }
       }
+    },
+    "alerts": {
+      "projectType": "library",
+      "root": "packages/alerts",
+      "sourceRoot": "packages/alerts/src",
+      "prefix": "pulp-fiction",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "packages/alerts/tsconfig.lib.json",
+              "packages/alerts/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!packages/alerts/**/*"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/alerts"],
+          "options": {
+            "jestConfig": "packages/alerts/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -346,6 +372,9 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "less"
     }
   },
   "defaultProject": "client"
