@@ -10,7 +10,7 @@
                 <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
                     <i-feather name="check-circle"></i-feather>Published
                 </button>
-                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool">
+                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="publishOne(currContent._id)">
                     <i-feather name="circle"></i-feather>Unpublished
                 </button>
                 <button *ngSwitchCase="pubStatus.Pending" matRipple class="tool">
@@ -26,7 +26,7 @@
             <span class="tool-divider"></span>
             
             <!--Editing-->
-            <button matRipple class="tool">
+            <button matRipple class="tool" (click)="viewContent(currContent)">
                 <i-feather name="edit-3"></i-feather>Edit
             </button>
             <span class="tool-divider"></span>
@@ -38,7 +38,7 @@
             <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currContent}">
                 <i-feather class="no-text" name="share"></i-feather>
             </button>
-            <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+            <button matRipple class="tool end" matTooltip="Delete" matTooltipClass="offprint-tooltip" (click)="deleteContent(currContent._id)">
                 <i-feather class="no-text" name="trash-2"></i-feather>
             </button>
             <span class="tool-divider"></span>
@@ -105,7 +105,7 @@
                 <button mat-menu-item *ngSwitchCase="contentKind.PoetryContent" [routerLink]="['/poetry', content._id, content.title | slugify]">Go to Public Page</button>
             </ng-container>
         </ng-container>
-        <button mat-menu-item>Copy Share Link</button>
+        <button mat-menu-item (click)="getShareLink(content)">Copy Share Link</button>
     </ng-template>
 </mat-menu>
 
