@@ -78,9 +78,9 @@ export class NewsFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.saveContent(contentId, ContentKind.BlogContent, formData);
+            this.saveContent(contentId, ContentKind.NewsContent, formData);
         } else {
-            this.createContent(ContentKind.BlogContent, formData);
+            this.createContent(ContentKind.NewsContent, formData);
         }
     }
 

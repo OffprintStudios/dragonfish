@@ -54,6 +54,7 @@ const routes: Routes = [
       {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
+      {path: 'view-post', component: NewsFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
       {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard]},
       {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard]},
       {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard]},

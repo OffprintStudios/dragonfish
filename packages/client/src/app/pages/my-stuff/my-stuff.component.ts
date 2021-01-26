@@ -113,6 +113,8 @@ export class MyStuffComponent implements OnInit {
     viewContent(content: ContentModel) {
         if (content.kind === ContentKind.BlogContent) {
             this.router.navigate(['view-blog'], {relativeTo: this.route});
+        } else if (content.kind === ContentKind.NewsContent) {
+            this.router.navigate(['view-post'], {relativeTo: this.route});
         } else if (content.kind === ContentKind.ProseContent) {
             this.router.navigate(['view-prose'], {relativeTo: this.route});
         } else if (content.kind === ContentKind.PoetryContent) {
