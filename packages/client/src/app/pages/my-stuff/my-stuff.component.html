@@ -1,8 +1,14 @@
 <div class="tools">
     <div class="tool-buttons">
         <!--Creation-->
-        <button matRipple class="tool" [matTooltip]="'Create Content'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
-        <span class="tool-divider"></span>
+        <ng-container *ngIf="route.children.length === 0; else goHome">
+            <button matRipple class="tool" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
+            <span class="tool-divider"></span>
+        </ng-container>
+        <ng-template #goHome>
+            <button matRipple class="tool" (click)="navigation(['/my-stuff'])"><i-feather name="chevron-left"></i-feather>Back</button>
+            <span class="tool-divider"></span>
+        </ng-template>
 
         <ng-container *ngIf="currContent$ | async as currContent; else noContentSelected">
             <!--Publishing-->
@@ -123,10 +129,12 @@
 </div>
 
 <mat-menu #createMenu="matMenu">
-    <button mat-menu-item [routerLink]="['new-prose']"><i-feather name="book-open"></i-feather>Add Prose</button>
-    <button mat-menu-item [routerLink]="['new-poetry']"><i-feather name="feather"></i-feather>Add Poetry</button>
+    <button mat-menu-item (click)="createContent(contentKind.ProseContent)"><i-feather name="book-open"></i-feather>Add Prose</button>
+    <button mat-menu-item (click)="createContent(contentKind.PoetryContent)"><i-feather name="feather"></i-feather>Add Poetry</button>
+    <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Nonfiction</button>-->
     <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Script</button>-->
-    <button mat-menu-item [routerLink]="['new-blog']"><i-feather name="coffee"></i-feather>Add Blog</button>
+    <button mat-menu-item (click)="createContent(contentKind.BlogContent)"><i-feather name="coffee"></i-feather>Add Blog</button>
+    <button mat-menu-item (click)="createContent(contentKind.NewsContent)"><i-feather name="globe"></i-feather>Add Newspost</button>
 </mat-menu>
 
 <mat-menu #filterMenu="matMenu">

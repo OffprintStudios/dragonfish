@@ -12,6 +12,7 @@ import { Constants, Title } from '../../shared';
 import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../shared/alerts';
 import { UserInfo } from '@pulp-fiction/models/users';
+import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'my-stuff',
@@ -107,4 +108,38 @@ export class MyStuffComponent implements OnInit {
             this.router.navigate(['view-poetry']);
         }
     }
+
+    /**
+     * Navigates to a creation form based on the content kind. Clears any currently selected content
+     * first.
+     * 
+     * @param kind The kind requested
+     */
+    createContent(kind: ContentKind) {
+        switch (kind) {
+            case ContentKind.BlogContent:
+                this.deselect();
+                this.navigation(['/my-stuff/new-blog']);
+                break;
+            case ContentKind.NewsContent:
+                this.deselect();
+                this.navigation(['/my-stuff/new-post']);
+                break;
+            case ContentKind.PoetryContent:
+                this.deselect();
+                this.navigation(['/my-stuff/new-poetry']);
+                break;
+            case ContentKind.ProseContent:
+                this.deselect();
+                this.navigation(['/my-stuff/new-prose']);
+                break;
+        }
+    }
+
+    /**
+     * Navigates to a specified route.
+     * 
+     * @param url The requested URL
+     */
+    @Dispatch() navigation = (url: string[]) => new Navigate(url);
 }
