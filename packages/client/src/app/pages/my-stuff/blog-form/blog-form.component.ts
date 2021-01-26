@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Location } from '@angular/common';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
 
-import { BlogForm, BlogsContentModel, ContentRating, PubStatus, PubChange } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, ContentRating, PubStatus, PubChange, ContentKind } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
+import { AlertsService } from '../../../shared/alerts';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { Navigate } from '@ngxs/router-plugin';
+
 
 @Component({
     selector: 'pulp-fiction-blog-form',
@@ -13,9 +18,8 @@ import { BlogsService } from 'packages/client/src/app/services/content';
     styleUrls: ['./blog-form.component.less']
 })
 export class BlogFormComponent implements OnInit {
-    currBlog: BlogsContentModel;
+    @Select(MyStuffState.currContent) currContent$: Observable<BlogsContentModel>;
     editMode = false;
-    createBlogMode = true;
     ratings = ContentRating;
     pubStatus = PubStatus;
 
@@ -27,23 +31,26 @@ export class BlogFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required])
     });
 
-    constructor(private route: ActivatedRoute, private blogsService: BlogsService, private snackBar: MatSnackBar) { }
+    constructor(private route: ActivatedRoute, private blogsService: BlogsService, private alerts: AlertsService) { }
 
     ngOnInit(): void {
-        const blogInfo = this.route.snapshot.data.blogData as BlogsContentModel;
-        console.log(blogInfo);
-        if (blogInfo) {
-            this.createBlogMode = false;
-            this.currBlog = blogInfo;
-            this.formTitle = `Viewing "${this.currBlog.title}"`;
-            this.blogForm.setValue({
-                title: this.currBlog.title,
-                body: this.currBlog.body,
-                rating: this.currBlog.meta.rating
-            });
-        } else {
-            this.createBlogMode = true;
-        }
+        this.currContent$.subscribe(content => {
+            if (content !== null) {
+                this.formTitle = `Viewing "${content.title}"`;
+                this.blogForm.setValue({
+                    title: content.title,
+                    body: content.body,
+                    rating: content.meta.rating
+                });
+            } else {
+                this.formTitle = `Create a Blog`;
+                this.blogForm.setValue({
+                    title: '',
+                    body: '',
+                    rating: null
+                });
+            }
+        });
     }
 
     get fields() { return this.blogForm.controls; }
@@ -56,20 +63,9 @@ export class BlogFormComponent implements OnInit {
         }
     }
 
-    changePubStatus() {
-        let pubChange: PubChange = {
-            oldStatus: this.currBlog.audit.published,
-            newStatus: this.currBlog.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished
-        };
-    
-        this.blogsService.changePublishStatus(this.currBlog._id, pubChange as PubChange).subscribe(() => {
-            this.currBlog.audit.published = this.currBlog.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished;
-        });
-    }
-
-    submitForm() {
+    submitForm(contentId?: string) {
         if (this.blogForm.invalid) {
-            this.snackBar.open(`Something's not right with the data you entered.`)
+            this.alerts.warn(`Something's not right with the data you entered.`)
             return;
         }
 
@@ -79,20 +75,20 @@ export class BlogFormComponent implements OnInit {
             rating: this.fields.rating.value
         };
 
-        if (this.createBlogMode) {
-            this.blogsService.createBlog(formData).subscribe(() => {
-                // this.location.back();
-            });
+        if (contentId) {
+            this.saveContent(contentId, ContentKind.BlogContent, formData);
         } else {
-            this.blogsService.editBlog(this.currBlog._id, formData).subscribe(data => {
-                this.currBlog = data;
-                this.blogForm.setValue({
-                    title: this.currBlog.title,
-                    body: this.currBlog.body,
-                    rating: this.currBlog.meta.rating
-                });
-                this.editMode = false;
-            });
+            this.createContent(ContentKind.BlogContent, formData);
         }
+    }
+
+    @Dispatch()
+    private createContent(kind: ContentKind, formInfo: BlogForm) {
+        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
+    }
+
+    @Dispatch()
+    private saveContent(contentId: string, kind: ContentKind, formInfo: BlogForm) {
+        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

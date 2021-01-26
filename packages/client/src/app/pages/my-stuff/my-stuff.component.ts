@@ -101,11 +101,11 @@ export class MyStuffComponent implements OnInit {
      */
     viewContent(content: ContentModel) {
         if (content.kind === ContentKind.BlogContent) {
-            this.router.navigate(['view-blog']);
+            this.router.navigate(['view-blog'], {relativeTo: this.route});
         } else if (content.kind === ContentKind.ProseContent) {
-            this.router.navigate(['view-prose']);
+            this.router.navigate(['view-prose'], {relativeTo: this.route});
         } else if (content.kind === ContentKind.PoetryContent) {
-            this.router.navigate(['view-poetry']);
+            this.router.navigate(['view-poetry'], {relativeTo: this.route});
         }
     }
 
@@ -134,6 +134,14 @@ export class MyStuffComponent implements OnInit {
                 this.navigation(['/my-stuff/new-prose']);
                 break;
         }
+    }
+
+    /**
+     * Goes back to the My Stuff page.
+     */
+    goBack() {
+        this.navigation(['/my-stuff']);
+        this.deselect();
     }
 
     /**

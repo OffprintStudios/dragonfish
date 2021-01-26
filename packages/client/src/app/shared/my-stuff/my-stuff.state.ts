@@ -41,6 +41,7 @@ export class MyStuffState {
     @Action(MyStuff.CreateContent)
     createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent): Observable<ContentModel> {
         return this.stuffService.createContent(kind, formInfo).pipe(tap((result: ContentModel) => {
+            dispatch(new Alerts.Success(`Content saved!`));
             patchState({
                 myStuff: [...getState().myStuff, result]
             });
@@ -53,6 +54,7 @@ export class MyStuffState {
     @Action(MyStuff.SaveContent)
     saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
         return this.stuffService.saveContent(contentId, kind, formInfo).pipe(tap((result: ContentModel) => {
+            dispatch(new Alerts.Success(`Changes saved!`));
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
                 currContent: result

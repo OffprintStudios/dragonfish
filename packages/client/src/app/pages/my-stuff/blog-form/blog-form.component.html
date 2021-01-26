@@ -1,44 +1,15 @@
-<ng-container *ngIf="createBlogMode; else previewMode">
-    <div class="form-container">
-        <div class="form-header">
-            <h3>{{ formTitle }}</h3>
-            <button class="form-button" (click)="submitForm()">Save</button>
-        </div>
-        <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
-            <div class="row">
-                <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
-                        <mat-label>Title</mat-label>
-                        <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
-                    </mat-form-field>
-                </div>
-                <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
-                        <mat-label>Rating</mat-label>
-                        <mat-select [formControlName]="'rating'">
-                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-            </div>
-
-            <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
-        </form>
-    </div>
-</ng-container>
-
-<ng-template #previewMode>
+<ng-container *ngIf="currContent$ | async as currBlog; else createMode">
     <div class="form-container">
         <div class="form-header">
             <button class="form-button left" [ngClass]="{'selected': !editMode}" (click)="switchView()">Preview</button>
             <button class="form-button right" [ngClass]="{'selected': editMode}" (click)="switchView()">Edit</button>
             <div style="flex: 1; text-align: right;">
-                <button class="form-button save" *ngIf="editMode" (click)="submitForm()">Save</button>
+                <button class="form-button save" *ngIf="editMode" (click)="submitForm(currBlog._id)">Save</button>
             </div>
         </div>
     
         <ng-container *ngIf="editMode; else previewBlog">
-            <form [formGroup]="blogForm" (ngSubmit)="submitForm()" *ngIf="editMode">
+            <form [formGroup]="blogForm" (ngSubmit)="submitForm(currBlog._id)" *ngIf="editMode">
                 <div class="row">
                     <div class="six columns">
                         <mat-form-field style="width: 100%;" appearance="outline">
@@ -85,5 +56,34 @@
                 </div>
             </div>
         </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #createMode>
+    <div class="form-container">
+        <div class="form-header">
+            <h3>{{ formTitle }}</h3>
+            <button class="form-button" (click)="submitForm()">Save</button>
+        </div>
+        <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                    </mat-form-field>
+                </div>
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Rating</mat-label>
+                        <mat-select [formControlName]="'rating'">
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+        </form>
     </div>
 </ng-template>
