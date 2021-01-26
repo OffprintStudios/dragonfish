@@ -4,7 +4,7 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { FrontPageStats } from '@pulp-fiction/models/stats';
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 
 @Injectable({
   providedIn: 'root'

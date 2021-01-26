@@ -5,6 +5,7 @@ import { flatMap } from 'rxjs/operators';
 import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Select } from '@ngxs/store';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { UserState } from './shared/user';
 
 import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
@@ -17,6 +18,7 @@ import { NotificationsService } from './services/user';
 import { NotificationBase } from '@pulp-fiction/models/notifications';
 import { Constants } from './shared';
 import { MetadataService } from './services/utility';
+import { Alerts } from './shared/alerts';
 
 @Component({
   selector: 'pulp-fiction-root',

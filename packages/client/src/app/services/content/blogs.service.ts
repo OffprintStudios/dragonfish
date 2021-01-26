@@ -7,7 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 import * as models from '@pulp-fiction/models/blogs';
 import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
 import { PaginateResult } from '@pulp-fiction/models/util';
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 import { Types } from 'mongoose';
 
 @Injectable({

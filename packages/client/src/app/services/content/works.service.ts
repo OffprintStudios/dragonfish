@@ -5,7 +5,7 @@ import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { AlertsService } from '../../modules/alerts';
+import { AlertsService } from '../../shared/alerts';
 import { HttpError } from '../..//models/site';
 import { CreateWork, CreateSection, EditSection, EditWork, Section, 
   PublishSection, SectionInfo, Work, SetApprovalRating } from '@pulp-fiction/models/works';

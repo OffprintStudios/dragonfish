@@ -4,9 +4,8 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import * as lodash from 'lodash';
 
-import { AlertsService } from '../../modules/alerts';
-import { Doc, CreateDoc, EditDoc } from '@pulp-fiction/models/docs';
-import { Roles } from '@pulp-fiction/models/users';
+import { AlertsService } from '../../shared/alerts';
+import { Doc } from '@pulp-fiction/models/docs';
 
 @Injectable({
   providedIn: 'root'

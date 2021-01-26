@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import { Observable, zip, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { tap } from 'rxjs/operators';
 
 import { Content } from './content.actions';
 import { ContentStateModel } from './content-state.model';
@@ -35,7 +34,7 @@ import { Section } from '@pulp-fiction/models/sections';
 })
 @Injectable()
 export class ContentState {
-    constructor (private contentService: ContentService, private snackBar: MatSnackBar, private store: Store) {}
+    constructor (private contentService: ContentService, private store: Store) {}
 
     /* Actions */
 

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { from, Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { State, Action, StateContext } from '@ngxs/store';
 import { GlobalService } from './services';
 import { GlobalStateModel } from './global-state.model';
 import { Global } from './global.actions';

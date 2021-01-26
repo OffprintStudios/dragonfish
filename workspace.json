@@ -346,6 +346,9 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nrwl/angular:component": {
+      "style": "less"
     }
   },
   "defaultProject": "client"

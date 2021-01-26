@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CreateInitialMessage } from '@pulp-fiction/models/messages';
 import { MessagesService } from '../../../../services/content';
-import { AlertsService } from '../../../../modules/alerts';
+import { AlertsService } from '../../../../shared/alerts';
 
 @Component({
   selector: 'pulp-fiction-start-conversation',

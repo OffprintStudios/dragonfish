@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../../shared/user';
 import { AuthState } from '../../../../shared/auth';
 
-import { AlertsService } from '../../../../modules/alerts';
+import { AlertsService } from '../../../../shared/alerts';
 import { HttpError } from '../../../../models/site';
 import { WorksService } from '../../../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
