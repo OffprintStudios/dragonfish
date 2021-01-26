@@ -3,8 +3,10 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select } from '@ngxs/store';
 import { ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
 
+@UntilDestroy()
 @Component({
     selector: 'content-item',
     templateUrl: './content-item.component.html',
@@ -21,7 +23,7 @@ export class ContentItemComponent implements OnInit {
     pubStatus = PubStatus;
 
     constructor() {
-        this.currContent$.subscribe(x => {
+        this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
             if (x !== null) {
                 if (x._id === this.content._id) {
                     this.selected = true;

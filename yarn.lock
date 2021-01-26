@@ -2398,6 +2398,16 @@
     reflect-metadata "^0.1.13"
     rxjs "^6.5.4"
 
+"@ngneat/until-destroy@^8.0.3":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-8.0.3.tgz#d27523d71fb3941a1c22a22e2eb9c86629dfc7cb"
+  integrity sha512-mHU118pETO+71yeKKr8HTwCP+4X/tYSYxgMNYZSJ7oiOAujHc8Rwz7TQpAFCM1trkCZEEe6fKKzQZ0V3cZFkJw==
+  dependencies:
+    glob "^7.1.6"
+    minimist "1.2.5"
+    ts-morph "^7.1.2"
+    tslib "^2.0.0"
+
 "@ngtools/webpack@11.0.5":
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-11.0.5.tgz#9d1abb9f9a5e72c014b5ed3e0c2cefe2a4175b30"
@@ -9901,7 +9911,7 @@ minimatch@3.0.4, minimatch@^3.0.4:
   dependencies:
     brace-expansion "^1.1.7"
 
-minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
+minimist@1.2.5, minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
@@ -13581,7 +13591,7 @@ ts-loader@5.4.5:
     micromatch "^3.1.4"
     semver "^5.0.1"
 
-ts-morph@^7.0.0:
+ts-morph@^7.0.0, ts-morph@^7.1.2:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/ts-morph/-/ts-morph-7.3.0.tgz#1777b893d9573b3522108b43159b5ba2515ffde7"
   integrity sha512-BUKSoz7AFSKPcYTZODbICW2mOthAN4vc5juD6FL1lD/dLwZ0WvrC3zqBM3/X6f5gHxq3yaz+HmanHGaWm0ddbQ==
