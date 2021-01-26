@@ -3,11 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
-import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
+import { MyStuff, MyStuffState } from '../../../../shared/my-stuff';
 
 import { BlogForm, BlogsContentModel, ContentRating, PubStatus, PubChange, ContentKind } from '@pulp-fiction/models/content';
 import { BlogsService } from 'packages/client/src/app/services/content';
-import { AlertsService } from '../../../shared/alerts';
+import { AlertsService } from '../../../../shared/alerts';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Navigate } from '@ngxs/router-plugin';
 
