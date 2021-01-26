@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { MyStuff, MyStuffState } from '../../../../shared/my-stuff';
 
-import { BlogForm, BlogsContentModel, ContentRating, PubStatus, PubChange, ContentKind } from '@pulp-fiction/models/content';
-import { BlogsService } from 'packages/client/src/app/services/content';
+import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Navigate } from '@ngxs/router-plugin';
@@ -31,7 +29,7 @@ export class BlogFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required])
     });
 
-    constructor(private route: ActivatedRoute, private blogsService: BlogsService, private alerts: AlertsService) { }
+    constructor(private alerts: AlertsService) { }
 
     ngOnInit(): void {
         this.currContent$.subscribe(content => {
@@ -89,6 +87,7 @@ export class BlogFormComponent implements OnInit {
 
     @Dispatch()
     private saveContent(contentId: string, kind: ContentKind, formInfo: BlogForm) {
+        this.editMode = false;
         return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

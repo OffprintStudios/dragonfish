@@ -9,7 +9,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
-  ViewProseComponent, ViewPoetryComponent, MyStuffResolver } from './pages/my-stuff';
+  ViewProseComponent, ViewPoetryComponent, MyStuffResolver, NewsFormComponent } from './pages/my-stuff';
   
 import { BrowseComponent, SocialComponent } from './pages';
   
@@ -50,6 +50,7 @@ const routes: Routes = [
     {path: 'register', component: RegisterComponent},
     {path: 'my-stuff', component: MyStuffComponent, canActivate: [AuthGuard], resolve: {stuffData: MyStuffResolver}, children: [
       {path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
+      {path: 'new-post', component: NewsFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
       {path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard]},

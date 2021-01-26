@@ -1,0 +1,159 @@
+div.form-container {
+    width: 85%;
+    margin: 0 auto;
+
+    div.form-header {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid var(--site-borders);
+        margin-bottom: 2rem;
+        h3 {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        button.form-button {
+            &.left {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &.right {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            &.save {
+                margin-left: 1rem;
+            }
+
+            &.selected {
+                background-color: var(--site-accent);
+                color: whitesmoke;
+
+                &:hover {
+                    background-color: var(--site-accent-hover);
+                    color: whitesmoke;
+                }
+            }
+        }
+    }
+}
+
+div.post-container {
+    width: 85%;
+    margin: 2rem auto 0 auto;
+    padding: 10px;
+
+    div.post-header {
+        margin-bottom: 1.5rem;
+        h1 {
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 28px;
+            font-style: italic;
+        }
+        div.post-cat {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-top: 1px solid var(--site-borders);
+            border-bottom: 1px solid var(--site-borders);
+            padding-left: 5px;
+            padding-right: 5px;
+
+            div.info {
+                flex: 1;
+
+                i-feather {
+                    position: relative;
+                    width: 16px;
+                    margin-right: 0.25rem;
+                    top: 0.25rem;
+                }
+            }
+
+            div.post-tools {
+                span.comments {
+                    i-feather {
+                        stroke-width: 1;
+                        margin-right: 0.15rem;
+                    }
+                }
+
+                &.preview {
+                    button {
+                        cursor: initial;
+                        &:hover {
+                            background-color: var(--site-background);
+                            color: var(--site-text-color);
+
+                            i-feather {
+                                color: var(--site-text-color);
+                                &.more {
+                                    fill: var(--site-text-color);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                button {
+                    margin-bottom: 0;
+                    padding: 5px 10px;
+                    border-top: none;
+                    border-bottom: none;
+                    border-radius: 0;
+                    font-size: 18px;
+                    font-weight: normal;
+
+                    span.button-text {
+                        position: relative;
+                        top: -0.35rem;
+                    }
+
+                    &.mid {
+                        border-left: none;
+                    }
+
+                    &.end {
+                        border-left: none;
+                        border-right: none;
+                    }
+
+                    i-feather {
+                        position: relative;
+                        top: 0.1rem;
+                        stroke-width: 1;
+                        margin-right: 0.25rem;
+
+                        &.more {
+
+                            margin-right: 0;
+                            fill: var(--site-text-color);
+                        }
+                    }
+
+                    &:hover {
+                        i-feather {
+                            &.more {
+                                fill: whitesmoke;
+                            }
+                        }
+                    }
+                }
+            }
+
+            span.divider {
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }
+        }
+    }
+}

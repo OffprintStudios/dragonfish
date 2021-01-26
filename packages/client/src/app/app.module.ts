@@ -53,7 +53,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponen
 import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
+  ViewPoetryComponent, ViewProseComponent, SectionItemComponent, NewsFormComponent } from './pages/my-stuff';
 
 import { SocialComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -140,7 +140,7 @@ const toolbarOptions = [
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
     AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
-    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent
+    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent, NewsFormComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
