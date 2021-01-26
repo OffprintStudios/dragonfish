@@ -9,7 +9,7 @@ export namespace MyStuff {
 
     export class SetCurrentContent {
         static readonly type = '[My Stuff] Set Current Content';
-        constructor (public content: ContentModel) {}
+        constructor (public content: ContentModel | null) {}
     }
 
     export class CreateContent {

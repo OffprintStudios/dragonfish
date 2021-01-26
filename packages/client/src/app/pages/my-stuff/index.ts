@@ -1,5 +1,4 @@
 export { MyStuffComponent } from './my-stuff.component';
-export { OldMyStuffComponent } from './old-my-stuff.component';
 export { MyStuffPageService } from './my-stuff-page.service';
 export { MyStuffResolver } from './my-stuff.resolver';
 export { BlogFormComponent } from './blog-form/blog-form.component';

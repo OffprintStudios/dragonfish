@@ -32,7 +32,7 @@
             <span class="tool-divider"></span>
 
             <!--General Tools-->
-            <button matRipple class="tool left" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
+            <button matRipple class="tool left" matTooltip="Deselect" matTooltipClass="offprint-tooltip" (click)="deselect()">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
             <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currContent}">

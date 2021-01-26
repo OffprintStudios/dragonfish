@@ -3,8 +3,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Select } from '@ngxs/store';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
-import { MyStuffState } from '../../shared/my-stuff';
+import { MyStuff, MyStuffState } from '../../shared/my-stuff';
 import { Constants, Title } from '../../shared';
 
 import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
@@ -33,5 +34,5 @@ export class MyStuffComponent implements OnInit {
         Title.setTwoPartTitle(Constants.MY_STUFF);
     }
 
-    
+    @Dispatch() deselect = () => new MyStuff.SetCurrentContent(null);
 }

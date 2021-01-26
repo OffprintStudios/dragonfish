@@ -1,6 +1,9 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
-import { ContentItem } from '../viewmodels';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { Select } from '@ngxs/store';
+import { ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
+import { Observable } from 'rxjs';
+import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
 
 @Component({
     selector: 'content-item',
@@ -8,26 +11,37 @@ import { ContentItem } from '../viewmodels';
     styleUrls: ['./content-item.component.less']
 })
 export class ContentItemComponent implements OnInit {
-    @Input() content: ContentItem;
-    @Input() selected: boolean;
-    @Output() selectItem = new EventEmitter<ContentItem>();
-    @Output() viewItem = new EventEmitter<ContentItem>();
+    @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
+
+    @Input() content: ContentModel;
+    selected: boolean = false;
 
     contentKind = ContentKind;
     pubStatus = PubStatus;
 
-    constructor() {}
+    constructor() {
+        this.currContent$.subscribe(x => {
+            if (x !== null) {
+                if (x._id === this.content._id) {
+                    this.selected = true;
+                } else {
+                    this.selected = false;
+                }
+            } else {
+                this.selected = false;
+            }
+        });
+    }
 
     ngOnInit(): void {}
 
-    select() {
-        this.selectItem.emit(this.content);
-        this.content.isSelected = true;
-        this.selected = true;
+    @Dispatch()
+    setCurrContent() {
+        return new MyStuff.SetCurrentContent(this.content);
     }
 
     view() {
         this.selected = false;
-        this.viewItem.emit(this.content);
+        // this.viewItem.emit(this.content);
     }
 }
