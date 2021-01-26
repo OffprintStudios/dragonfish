@@ -153,7 +153,8 @@ const toolbarOptions = [
     NgxsStoragePluginModule.forRoot({
       key: [
         'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 
-        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
+        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection',
+        'myStuff'
       ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
