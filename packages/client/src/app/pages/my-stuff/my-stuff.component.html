@@ -26,15 +26,29 @@
             <span class="tool-divider"></span>
             
             <!--Editing-->
-            <button matRipple class="tool" (click)="viewContent(currContent)">
-                <i-feather name="edit-3"></i-feather>Edit
-            </button>
+            <ng-container *ngIf="route.children.length === 0; else notOnHomeEdit">
+                <button matRipple class="tool" (click)="viewContent(currContent)">
+                    <i-feather name="edit-3"></i-feather>Edit
+                </button>
+            </ng-container>
+            <ng-template #notOnHomeEdit>
+                <button matRipple class="tool">
+                    <i-feather name="edit-3"></i-feather>Edit
+                </button>
+            </ng-template>
             <span class="tool-divider"></span>
 
             <!--General Tools-->
-            <button matRipple class="tool left" matTooltip="Deselect" matTooltipClass="offprint-tooltip" (click)="deselect()">
-                <i-feather class="no-text" name="x"></i-feather>
-            </button>
+            <ng-container *ngIf="route.children.length === 0; else notOnHomeDeselect">
+                <button matRipple class="tool left" matTooltip="Deselect" matTooltipClass="offprint-tooltip" (click)="deselect()">
+                    <i-feather class="no-text" name="x"></i-feather>
+                </button>
+            </ng-container>
+            <ng-template #notOnHomeDeselect>
+                <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip" (click)="deselect()">
+                    <i-feather class="no-text" name="x"></i-feather>
+                </button>
+            </ng-template>
             <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currContent}">
                 <i-feather class="no-text" name="share"></i-feather>
             </button>
