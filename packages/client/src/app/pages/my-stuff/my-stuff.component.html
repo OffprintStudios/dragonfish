@@ -1,15 +1,16 @@
-<div class="tools" *ngIf="route.children.length === 0">
+<div class="tools">
     <div class="tool-buttons">
-        <!--Creation tools-->
+        <!--Creation-->
         <button matRipple class="tool" [matTooltip]="'Create Content'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="createMenu"><i-feather name="loader"></i-feather>Create</button>
         <span class="tool-divider"></span>
-        
-        <ng-container *ngIf="itemSelected; else noItemSelected">
-            <ng-container [ngSwitch]="currSelectedContent.audit.published">
+
+        <ng-container *ngIf="currContent$ | async as currContent; else noContentSelected">
+            <!--Publishing-->
+            <ng-container [ngSwitch]="currContent.audit.published">
                 <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
                     <i-feather name="check-circle"></i-feather>Published
                 </button>
-                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="publishContent(currSelectedContent)">
+                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="publishContent(currContent)">
                     <i-feather name="circle"></i-feather>Unpublished
                 </button>
                 <button *ngSwitchCase="pubStatus.Pending" matRipple class="tool">
@@ -22,36 +23,34 @@
                     <i-feather name="circle"></i-feather>Approved
                 </button>
             </ng-container>
-        </ng-container>
-        <ng-template #noItemSelected>
-            <button matRipple class="tool disabled">
-                <i-feather name="circle"></i-feather>Unpublished
-            </button>
-        </ng-template>
-        <span class="tool-divider"></span>
-
-        <!--Content tools-->
-        <ng-container *ngIf="itemSelected; else noItem">
-            <button matRipple class="tool" (click)="viewContent(currSelectedContent)">
+            <span class="tool-divider"></span>
+            
+            <!--Editing-->
+            <button matRipple class="tool" (click)="viewContent(currContent)">
                 <i-feather name="edit-3"></i-feather>Edit
             </button>
             <span class="tool-divider"></span>
+
+            <!--General Tools-->
             <button matRipple class="tool left" (click)="deselect()" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
-            <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currSelectedContent}">
+            <button matRipple class="tool mid" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'" [matMenuTriggerFor]="shareMenu" [matMenuTriggerData]="{content: currContent}">
                 <i-feather class="no-text" name="share"></i-feather>
             </button>
-            <button matRipple class="tool end" (click)="deleteContent(currSelectedContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
+            <button matRipple class="tool end" (click)="deleteContent(currContent)" matTooltip="Delete" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="trash-2"></i-feather>
             </button>
             <span class="tool-divider"></span>
         </ng-container>
-        <ng-template #noItem>
-            <button matRipple class="tool disabled">
-                <i-feather name="edit-3"></i-feather>Edit
-            </button>
+        <ng-template #noContentSelected>
+            <!--Content Management-->
+            <button matRipple class="tool disabled"><i-feather name="circle"></i-feather>Unpublished</button>
             <span class="tool-divider"></span>
+
+            <button matRipple class="tool disabled"><i-feather name="edit-3"></i-feather>Edit</button>
+            <span class="tool-divider"></span>
+
             <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
                 <i-feather class="no-text" name="x"></i-feather>
             </button>
@@ -64,7 +63,7 @@
             <span class="tool-divider"></span>
         </ng-template>
 
-        <!--Filtering tools-->
+            <!--Filtering Tools-->
         <button matRipple class="tool left" [ngClass]="{'active': !isIconView}" matTooltip="List View" matTooltipClass="offprint-tooltip">
             <i-feather class="no-text" name="list"></i-feather>
         </button>
@@ -75,6 +74,7 @@
             <i-feather class="no-text" name="filter"></i-feather>
         </button>
     </div>
+
     <form [formGroup]="searchStuff" class="tool-search">
         <div class="search-bar">
             <input type="text" formControlName="query" class="search-input" placeholder="Search your stuff...">
@@ -123,36 +123,38 @@
 </div>-->
 
 <ng-container *ngIf="route.children.length === 0; else openedForms">
-    <!--User nas nothing-->
-    <div class="migration-notice">
-        <div class="migration-prompt">
-            <h4>Looking for something?</h4>
-            <p>
-                Not to worry! Let's bring some of your old stuff over, shall we?
-            </p>
-        </div>
-        <div class="migration-button">
-            <button matRipple [routerLink]="['/migration']">View Old Content</button>
-        </div>
-    </div>
-
-    <ng-container *ngIf="myContent.length === 0; else hasContent">
-        <div class="empty">
-            <h3>It's pretty lonely here...</h3>
-            <p>Why not add some content by hitting the create button?</p>
-        </div>
-    </ng-container>
-        
-    <!--User has content-->
-    <ng-template #hasContent>
-        <div class="content-block">
-            <div class="content-grid">
-                <ng-container *ngFor="let content of myContent">
-                    <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
-                </ng-container>
+    <ng-container *ngIf="myStuff$ | async as myContent">
+        <!--User nas nothing-->
+        <div class="migration-notice">
+            <div class="migration-prompt">
+                <h4>Looking for something?</h4>
+                <p>
+                    Not to worry! Let's bring some of your old stuff over, shall we?
+                </p>
+            </div>
+            <div class="migration-button">
+                <button matRipple [routerLink]="['/migration']">View Old Content</button>
             </div>
         </div>
-    </ng-template>
+
+        <ng-container *ngIf="myContent.length === 0; else hasContent">
+            <div class="empty">
+                <h3>It's pretty lonely here...</h3>
+                <p>Why not add some content by hitting the create button?</p>
+            </div>
+        </ng-container>
+        
+        <!--User has content-->
+        <ng-template #hasContent>
+            <div class="content-block">
+                <div class="content-grid">
+                    <ng-container *ngFor="let content of myContent">
+                        <content-item [content]="content" [selected]="itemSelected" (selectItem)="selectItem($event)" (viewItem)="viewContent($event)"></content-item>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-template>
+    </ng-container>
 </ng-container>
 
 <ng-template #openedForms>

@@ -9,7 +9,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
-  ViewProseComponent, ViewPoetryComponent } from './pages/my-stuff';
+  ViewProseComponent, ViewPoetryComponent, MyStuffResolver } from './pages/my-stuff';
   
 import { BrowseComponent, SocialComponent } from './pages';
   
@@ -18,8 +18,7 @@ import { RegisterComponent } from './pages/account';
 import { AuthGuard } from './shared/auth/services';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
 
-import { PortfolioResolver, MyWorksResolver, MyBlogsResolver,
-  MyStuffResolver, ViewContentResolver } from './resolvers';
+import { PortfolioResolver, MyWorksResolver, MyBlogsResolver, ViewContentResolver } from './resolvers';
 
 import { HistoryResolver } from './pages/portfolio/history';
 import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';

@@ -5,12 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { slugify } from 'voca';
 import { Select } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../shared/user';
-import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
+import { MyStuffState } from '../../shared/my-stuff';
 
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
+import { UserInfo } from '@pulp-fiction/models/users';
 import { BlogsService } from '../../services/content';
 import { MyStuffService } from '../../services/user';
 import { ContentItem } from './viewmodels';
@@ -21,12 +20,10 @@ import { Constants, Title } from '../../shared';
   templateUrl: './my-stuff.component.html',
   styleUrls: ['./my-stuff.component.less']
 })
-export class MyStuffComponent implements OnInit, OnDestroy {
-  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-  currentUserSubscription: Subscription;
-  currentUser: FrontendUser;
+export class MyStuffComponent implements OnInit {
+  @Select(MyStuffState.myStuff) myStuff$: Observable<ContentModel[]>;
+  @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
 
-  myContent: ContentItem[];
   contentKind = ContentKind;
   pubStatus = PubStatus;
 
@@ -40,22 +37,10 @@ export class MyStuffComponent implements OnInit, OnDestroy {
   });
 
   constructor(private stuffService: MyStuffService, public route: ActivatedRoute, private router: Router, 
-    private blogService: BlogsService, private snackBar: MatSnackBar, private clipboard: Clipboard) {
-    this.currentUserSubscription = this.currentUser$.subscribe(x => {
-      this.currentUser = x;
-    });
-  }
+    private blogService: BlogsService, private snackBar: MatSnackBar, private clipboard: Clipboard) { }
 
   ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.myContent = cloneDeep(data.stuffData) as ContentItem[];
-    });
-
     Title.setTwoPartTitle(Constants.MY_STUFF);
-  }
-
-  ngOnDestroy(): void {
-    this.currentUserSubscription.unsubscribe();
   }
 
   /**

@@ -9,6 +9,7 @@ import { MyStuffStateModel } from './my-stuff-state.model';
 import { MyStuffService } from './services';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Alerts } from '../alerts';
+import { UserStateModel } from '../user';
 
 @State<MyStuffStateModel>({
     name: 'myStuff',
@@ -53,7 +54,8 @@ export class MyStuffState {
     saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
         return this.stuffService.saveContent(contentId, kind, formInfo).pipe(tap((result: ContentModel) => {
             setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result)
+                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
+                currContent: result
             }));
         }), catchError(err => {
             dispatch(new Alerts.Error(err.error.message));
@@ -65,7 +67,8 @@ export class MyStuffState {
     deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent): Observable<void> {
         return this.stuffService.deleteOne(contentId).pipe(tap((_res: void) => {
             setState(patch({
-                myStuff: removeItem<ContentModel>(content => content._id === contentId)
+                myStuff: removeItem<ContentModel>(content => content._id === contentId),
+                currContent: null
             }));
         }), catchError(err => {
             dispatch(new Alerts.Error(err.error.message));
@@ -77,7 +80,8 @@ export class MyStuffState {
     publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.PublishContent): Observable<ContentModel> {
         return this.stuffService.publishOne(contentId).pipe(tap((result: ContentModel) => {
             setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result)
+                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
+                currContent: result
             }));
         }), catchError(err => {
             dispatch(new Alerts.Error(err.error.message));
@@ -94,11 +98,24 @@ export class MyStuffState {
 
         return this.stuffService.uploadCoverart(uploader).pipe(tap((result: ContentModel) => {
             setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result)
+                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
+                currContent: result
             }));
         }), catchError(err => {
             dispatch(new Alerts.Error(`Something went wrong! Try again in a little bit.`));
             return throwError(err);
         }));
+    }
+
+    /* Selectors */
+
+    @Selector()
+    static myStuff(state: MyStuffStateModel): ContentModel[] {
+        return state.myStuff;
+    }
+
+    @Selector()
+    static currContent(state: MyStuffStateModel): ContentModel {
+        return state.currContent;
     }
 }
