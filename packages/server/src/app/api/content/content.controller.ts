@@ -1,9 +1,9 @@
-import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body } from '@nestjs/common';
+import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body, Put } from '@nestjs/common';
 import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { ContentFilter, ContentKind, SetRating } from '@pulp-fiction/models/content';
+import { BlogForm, ContentFilter, ContentKind, CreatePoetry, CreateProse, NewsForm, PubChange, SetRating } from '@pulp-fiction/models/content';
 import { Roles } from '@pulp-fiction/models/users';
 import { isNullOrUndefined } from '../../util';
 
@@ -47,6 +47,26 @@ export class ContentController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
+    @Put('create-one')
+    async createOne(@Request() req: any, @Query('kind') kind: ContentKind, @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+        if (isNullOrUndefined(kind)) {
+            throw new BadRequestException(`You must include the content kind with this request.`);
+        }
+
+        return await this.contentService.createOne(req.user, kind, formInfo);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Patch('save-changes')
+    async saveChanges(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind, @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+        if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
+            throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
+        }
+
+        return await this.contentService.saveChanges(req.user, contentId, formInfo);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-one')
     async deleteOne(@Request() req: any, @Query('contentId') contentId: string) {
         if (isNullOrUndefined(contentId)) {
@@ -58,12 +78,12 @@ export class ContentController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-one')
-    async publishOne(@Request() req: any, @Query('contentId') contentId: string) {
+    async publishOne(@Request() req: any, @Query('contentId') contentId: string, @Body() pubChange?: PubChange) {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID.`);
         }
 
-        return await this.contentService.submitForApproval(req.user, contentId);
+        return await this.contentService.publishOne(req.user, contentId, pubChange);
     }
 
     @UseGuards(RolesGuard([Roles.User]))

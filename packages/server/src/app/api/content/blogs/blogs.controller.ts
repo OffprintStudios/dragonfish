@@ -1,8 +1,9 @@
-import { Controller, UseGuards, Request, Put, Body, Patch, BadRequestException, Param } from '@nestjs/common';
+import { Controller, UseGuards, Request, Put, Body, Patch, BadRequestException, Param, Query } from '@nestjs/common';
 
 import { BlogForm, PubChange } from '@pulp-fiction/models/content';
 import { ContentService, BlogsService } from '../../../db/content';
 import { AuthGuard } from '../../../guards';
+import { isNullOrUndefined } from '../../../util';
 
 @Controller('blogs')
 export class BlogsController {
@@ -34,15 +35,18 @@ export class BlogsController {
     }
 
     @UseGuards(AuthGuard)
-    @Patch('edit-blog/:blogId')
-    async editBlog(@Request() req: any, @Param('blogId') blogId: string, @Body() editBlog: BlogForm) {
+    @Patch('edit-blog')
+    async editBlog(@Request() req: any, @Query('contentId') contentId: string, @Body() editBlog: BlogForm) {
+        if (isNullOrUndefined(contentId)) {
+            throw new BadRequestException(`This request requires the content ID.`);
+        }
+
         if (editBlog.title.length < 3 || editBlog.title.length > 100) {
             throw new BadRequestException("Your blog title must be between 3 and 100 characters.");
         }
         if (editBlog.body.length < 3) {
             throw new BadRequestException("Your blog body text must be at least 3 characters long.");
         }
-        return await this.blogsService.editBlog(req.user, blogId, editBlog);
+        return await this.blogsService.editBlog(req.user, contentId, editBlog);
     }
-
 }

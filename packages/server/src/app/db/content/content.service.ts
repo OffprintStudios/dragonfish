@@ -3,7 +3,7 @@ import { BadRequestException, ConflictException, Injectable, UnauthorizedExcepti
 import { InjectModel } from '@nestjs/mongoose';
 
 import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentFilter, ContentKind, PubStatus, ContentRating } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind, PubStatus, ContentRating, PubChange, BlogForm, CreatePoetry, CreateProse, NewsForm } from '@pulp-fiction/models/content';
 import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
 
 import { isNullOrUndefined } from '../../util';
@@ -19,10 +19,18 @@ import { MigrationForm } from '@pulp-fiction/models/migration';
 import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
 import { ReadingHistoryService } from '../reading-history/reading-history.service';
 import { RatingOption } from '@pulp-fiction/models/reading-history';
+import { NewsService } from './news/news.service';
+import { PoetryService } from './poetry/poetry.service';
+import { ProseService } from './prose/prose.service';
+import { BlogsService } from './blogs/blogs.service';
 
 @Injectable()
 export class ContentService {
     constructor(@InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
+        private readonly blogsService: BlogsService,
+        private readonly newsService: NewsService,
+        private readonly poetryService: PoetryService,
+        private readonly proseService: ProseService,
         private readonly sectionsService: SectionsService,
         private readonly usersService: UsersService,
         private readonly queueService: ApprovalQueueService,
@@ -87,8 +95,7 @@ export class ContentService {
     async fetchAll(user: JwtPayload): Promise<ContentDocument[]> {
         return await this.contentModel.find({
             'author': user.sub, 
-            'audit.isDeleted': false, 
-            'kind': {$ne: ContentKind.NewsContent}
+            'audit.isDeleted': false
         }).sort({'createdAt': 1});
     }
 
@@ -108,6 +115,83 @@ export class ContentService {
         }
 
         return await this.contentModel.paginate(filteredQuery, paginateOptions);
+    }
+
+    /**
+     * Routes a request for creating some content to the appropriate API functions, given the specified 
+     * `ContentKind`.
+     * 
+     * @param user The author of the content
+     * @param kind The content kind
+     * @param formInfo The form information
+     */
+    async createOne(user: JwtPayload, kind: ContentKind, formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+        switch (kind) {
+            case ContentKind.BlogContent:
+                return await this.blogsService.createNewBlog(user, formInfo as BlogForm);
+            case ContentKind.NewsContent:
+                return await this.newsService.createNewPost(user, formInfo as NewsForm);
+            case ContentKind.PoetryContent:
+                return await this.poetryService.createPoetry(user, formInfo as CreatePoetry);
+            case ContentKind.ProseContent:
+                return await this.proseService.createProse(user, formInfo as CreateProse);
+        }
+    }
+
+    /**
+     * Checks to see if a piece of content exists with the correct user and content ID. If so, routes
+     * the function to dedicated editing functions across the API. If not, throws an `UnauthorizedException`.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param formInfo The form information
+     */
+    async saveChanges(user: JwtPayload, contentId: string, formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+        const content = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false});
+
+        if (isNullOrUndefined(content)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            switch (content.kind) {
+                case ContentKind.BlogContent:
+                    return await this.blogsService.editBlog(user, contentId, formInfo as BlogForm);
+                case ContentKind.NewsContent:
+                    return await this.newsService.editPost(user, contentId, formInfo as NewsForm);
+                case ContentKind.PoetryContent:
+                    return await this.poetryService.editPoetry(user, contentId, formInfo as CreatePoetry);
+                case ContentKind.ProseContent:
+                    return await this.proseService.editProse(user, contentId, formInfo as CreateProse);
+            }
+        }
+    }
+
+    /**
+     * Checks to see if a piece of content exists with the correct user and content ID. If so, routes
+     * the function to dedicated publishing functions across the API. If not, throw an `UnauthorizedException`.
+     * 
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param pubChange (Optional) Publishing status updates for Blogs and Newsposts
+     */
+    async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange) {
+        const content = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false});
+
+        if (isNullOrUndefined(content)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            switch (content.kind) {
+                case ContentKind.BlogContent:
+                    return await this.blogsService.changePublishStatus(user, contentId, pubChange);
+                case ContentKind.NewsContent:
+                    return await this.newsService.setPublishStatus(user, contentId, pubChange);
+                case ContentKind.PoetryContent:
+                    return await this.submitForApproval(user, contentId);
+                case ContentKind.ProseContent:
+                    return await this.submitForApproval(user, contentId);
+                default:
+                    throw new BadRequestException(`Invalid content kind.`);
+            }
+        }
     }
 
     /**
