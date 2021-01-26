@@ -79,8 +79,8 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.PublishContent)
-    publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.PublishContent): Observable<ContentModel> {
-        return this.stuffService.publishOne(contentId).pipe(tap((result: ContentModel) => {
+    publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, pubChange }: MyStuff.PublishContent): Observable<ContentModel> {
+        return this.stuffService.publishOne(contentId, pubChange).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
                 currContent: result

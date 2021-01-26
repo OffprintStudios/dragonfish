@@ -13,10 +13,10 @@
         <ng-container *ngIf="currContent$ | async as currContent; else noContentSelected">
             <!--Publishing-->
             <ng-container [ngSwitch]="currContent.audit.published">
-                <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active">
+                <button *ngSwitchCase="pubStatus.Published" matRipple class="tool active" (click)="publishOne(currContent)">
                     <i-feather name="check-circle"></i-feather>Published
                 </button>
-                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="publishOne(currContent._id)">
+                <button *ngSwitchCase="pubStatus.Unpublished" matRipple class="tool" (click)="publishOne(currContent)">
                     <i-feather name="circle"></i-feather>Unpublished
                 </button>
                 <button *ngSwitchCase="pubStatus.Pending" matRipple class="tool">

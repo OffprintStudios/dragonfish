@@ -1,4 +1,4 @@
-import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm } from "@pulp-fiction/models/content";
+import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm, PubChange } from "@pulp-fiction/models/content";
 import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {
@@ -29,7 +29,7 @@ export namespace MyStuff {
 
     export class PublishContent {
         static readonly type = '[My Stuff] Publish Content';
-        constructor (public contentId: string) {}
+        constructor (public contentId: string, public pubChange?: PubChange) {}
     }
 
     export class UploadCoverArt {

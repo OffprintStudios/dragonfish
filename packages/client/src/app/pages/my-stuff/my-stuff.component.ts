@@ -11,7 +11,7 @@ import { MyStuff, MyStuffState } from '../../shared/my-stuff';
 import { UserState } from '../../shared/user';
 import { Constants, Title } from '../../shared';
 
-import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
+import { ContentModel, ContentKind, PubStatus, PubChange } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../shared/alerts';
 import { FrontendUser, Roles, UserInfo } from '@pulp-fiction/models/users';
 import { Navigate } from '@ngxs/router-plugin';
@@ -54,11 +54,40 @@ export class MyStuffComponent implements OnInit {
     @Dispatch() deselect = () => new MyStuff.SetCurrentContent(null);
 
     /**
-     * Sends a request to publish the specified content given its ID.
+     * Sends a request to publish the specified content given its info.
      * 
-     * @param contentId The content ID
+     * @param content The content to publish
      */
-    @Dispatch() publishOne = (contentId: string) => new MyStuff.PublishContent(contentId);
+    @Dispatch()
+    publishOne(content: ContentModel) {
+        const pubChange: PubChange = {
+            oldStatus: content.audit.published,
+            newStatus: content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished
+        };
+        
+        console.log(content);
+
+        switch (content.kind) {
+            case ContentKind.BlogContent:
+                return new MyStuff.PublishContent(content._id, pubChange);
+            case ContentKind.NewsContent:
+                return new MyStuff.PublishContent(content._id, pubChange);
+            case ContentKind.PoetryContent: {
+                if (content.audit.published !== PubStatus.Unpublished) {
+                    return new MyStuff.PublishContent(content._id);
+                } else {
+                    return;
+                }
+            }
+            case ContentKind.ProseContent: {
+                if (content.audit.published !== PubStatus.Unpublished) {
+                    return new MyStuff.PublishContent(content._id);
+                } else {
+                    return;
+                }
+            }
+        }
+    }
 
     /**
      * Asks if a user really wants to delete the specified content. If yes,
