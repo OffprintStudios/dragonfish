@@ -134,7 +134,7 @@
     <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Nonfiction</button>-->
     <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Script</button>-->
     <button mat-menu-item (click)="createContent(contentKind.BlogContent)"><i-feather name="coffee"></i-feather>Add Blog</button>
-    <button mat-menu-item (click)="createContent(contentKind.NewsContent)"><i-feather name="globe"></i-feather>Add Newspost</button>
+    <button mat-menu-item (click)="createContent(contentKind.NewsContent)" *ngIf="checkIsAllowed()"><i-feather name="globe"></i-feather>Add Newspost</button>
 </mat-menu>
 
 <mat-menu #filterMenu="matMenu">

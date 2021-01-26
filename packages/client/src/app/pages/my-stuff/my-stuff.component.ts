@@ -2,24 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Select } from '@ngxs/store';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
 import { slugify } from 'voca';
 import { MyStuff, MyStuffState } from '../../shared/my-stuff';
+import { UserState } from '../../shared/user';
 import { Constants, Title } from '../../shared';
 
 import { ContentModel, ContentKind, PubStatus } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../shared/alerts';
-import { UserInfo } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, UserInfo } from '@pulp-fiction/models/users';
 import { Navigate } from '@ngxs/router-plugin';
+import { isAllowed } from '../../util/functions';
 
+@UntilDestroy()
 @Component({
     selector: 'my-stuff',
     templateUrl: './my-stuff.component.html',
     styleUrls: ['./my-stuff.component.less']
 })
 export class MyStuffComponent implements OnInit {
+    @Select(UserState.currUser) private currUser$: Observable<FrontendUser>;
+    private currentUser: FrontendUser;
+
     @Select(MyStuffState.myStuff) myStuff$: Observable<ContentModel[]>;
     @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
     contentKind = ContentKind;
@@ -31,7 +38,11 @@ export class MyStuffComponent implements OnInit {
     });
 
     constructor (public route: ActivatedRoute, private clipboard: Clipboard, 
-        private alerts: AlertsService, private router: Router) {}
+        private alerts: AlertsService, private router: Router) {
+            this.currUser$.pipe(untilDestroyed(this)).subscribe(x => {
+                this.currentUser = x;
+            });
+        }
 
     ngOnInit(): void {
         Title.setTwoPartTitle(Constants.MY_STUFF);
@@ -150,4 +161,11 @@ export class MyStuffComponent implements OnInit {
      * @param url The requested URL
      */
     @Dispatch() navigation = (url: string[]) => new Navigate(url);
+
+    /**
+     * Checks to see if the currently signed in user is allowed to access the newspost form.
+     */
+    checkIsAllowed() {
+        return isAllowed(this.currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
+    }
 }
