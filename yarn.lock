@@ -2438,6 +2438,13 @@
   dependencies:
     tslib "^1.10.0"
 
+"@ngxs-labs/data@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-4.1.1.tgz#abaf0e7d1bdde9b592275a586a6b6a75c5b94178"
+  integrity sha512-T9hcH/KkdoX1DJGV3jfh3ciiCYsg9vRYeJ2E6e8ZNRuSiLZ2kaAmVBl+uIKTZedTcMznK+DvvgHg18fc+Paogg==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngxs-labs/dispatch-decorator@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@ngxs-labs/dispatch-decorator/-/dispatch-decorator-2.1.0.tgz#d35a21566b9786ccff094c3227935f9d7bf45444"
@@ -6191,6 +6198,11 @@ detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
+
+dexie@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.3.tgz#ede63849dfe5f07e13e99bb72a040e8ac1d29dab"
+  integrity sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw==
 
 dicer@0.2.5:
   version "0.2.5"
