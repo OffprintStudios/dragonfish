@@ -14,6 +14,7 @@ export class ContentItemComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
 
     @Input() content: ContentModel;
+    @Output() viewItem = new EventEmitter<ContentModel>();
     selected: boolean = false;
 
     contentKind = ContentKind;
@@ -41,7 +42,6 @@ export class ContentItemComponent implements OnInit {
     }
 
     view() {
-        this.selected = false;
-        // this.viewItem.emit(this.content);
+        this.viewItem.emit(this.content);
     }
 }
