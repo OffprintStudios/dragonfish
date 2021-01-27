@@ -9,7 +9,6 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsDataPluginModule } from '@ngxs-labs/data';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 
 import { AuthState } from './shared/auth';
@@ -159,7 +158,7 @@ const toolbarOptions = [
       ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(), NgxsDataPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
