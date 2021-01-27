@@ -84,10 +84,6 @@ export class MigrateWorkComponent implements OnInit {
             return;
         }
 
-        const bodyValue = this.currWork.usesNewEditor 
-            ? this.fields.body.value
-            : getQuillHtml(document.querySelector("quill-editor"));
-
         let publishStatus: PubStatus = PubStatus.Unpublished;
 
         switch (this.currWork.audit.published) {
@@ -116,7 +112,7 @@ export class MigrateWorkComponent implements OnInit {
             title: this.fields.title.value,
             author: this.currentUser._id,
             desc: this.fields.desc.value,
-            body: bodyValue,
+            body: this.fields.body.value,
             sections: this.currWork.sections as any,
             meta: {
                 rating: this.fields.rating.value,

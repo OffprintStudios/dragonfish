@@ -60,12 +60,7 @@
                     <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
                 </mat-form-field>
 
-                <ng-container *ngIf="!section.usesNewEditor; else usesNewEditor">
-                    <quill-pulp-fiction-editor [parentForm]="editForm" [controlName]="'body'" [minLength]="3" [height]="'750px'"></quill-pulp-fiction-editor>
-                </ng-container>
-                <ng-template #usesNewEditor>
-                    <editor [parentForm]="editForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
-                </ng-template>
+                <editor [parentForm]="editForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
 
                 <div class="authors-note">
                     <div class="header">
@@ -77,12 +72,8 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <ng-container *ngIf="!section.usesNewEditor; else authorsNoteEditor">
-                        <quill-pulp-fiction-editor [parentForm]="editForm" [controlName]="'authorsNote'" [minLength]="3" [height]="'300px'"></quill-pulp-fiction-editor>
-                    </ng-container>
-                    <ng-template #authorsNoteEditor>
-                        <editor [parentForm]="editForm" [controlName]="'authorsNote'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
-                    </ng-template>
+
+                    <editor [parentForm]="editForm" [controlName]="'authorsNote'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
                 </div>
             </form>
         </div>

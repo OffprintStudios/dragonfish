@@ -9,7 +9,6 @@ import { UserState } from '../../../shared/user';
 
 import { Blog } from '@pulp-fiction/models/blogs';
 import { ContentKind, ContentRating, PubStatus } from '@pulp-fiction/models/content';
-import { getQuillHtml } from 'packages/client/src/app/util/functions';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MigrationForm } from '@pulp-fiction/models/migration';
 import { FrontendUser } from '@pulp-fiction/models/users';
@@ -56,15 +55,11 @@ export class MigrateBlogComponent implements OnInit {
             return;
         }
 
-        const bodyValue = this.myBlog.usesNewEditor 
-            ? this.fields.body.value
-            : getQuillHtml(document.querySelector("quill-editor"));
-
         const contentBlog: MigrationForm = {
             _id: this.myBlog._id,
             title: this.fields.title.value,
             author: this.currentUser._id,
-            body: bodyValue,
+            body: this.fields.body.value,
             meta: {
                 rating: this.fields.rating.value
             },
