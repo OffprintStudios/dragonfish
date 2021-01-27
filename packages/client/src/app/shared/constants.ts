@@ -1,5 +1,5 @@
 export class Constants {
-    public static siteVersion: string = '0.6.0';
+    public static siteVersion: string = '0.6.1';
 
     public static FIVE_MINUTES: number = 300000;
 

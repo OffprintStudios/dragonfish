@@ -11,12 +11,12 @@
     </div>
     <div *ngSwitchCase="alertType.Info" class="alert">
         <span class="alert-icon"><i-feather name="info"></i-feather></span>
-        <span class="alert-title">Head's up:</span>
+        <span class="alert-title">Heads Up:</span>
         {{ data.message }}
     </div>
     <div *ngSwitchCase="alertType.Warning" class="alert">
         <span class="alert-icon"><i-feather name="alert-triangle"></i-feather></span>
-        <span class="alert-title">Something's Up...</span>
+        <span class="alert-title">Whoops!</span>
         {{ data.message }}
     </div>
 </ng-container>
