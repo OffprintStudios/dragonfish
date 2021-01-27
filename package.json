@@ -30,6 +30,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-ru/common": "^15.58.1",
     "@angular/animations": "11.0.5",
     "@angular/cdk": "^10.2.0",
     "@angular/common": "11.0.5",

@@ -22,7 +22,9 @@ export class ContentItemComponent implements OnInit {
     contentKind = ContentKind;
     pubStatus = PubStatus;
 
-    constructor() {
+    constructor() {}
+
+    ngOnInit(): void {
         this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
             if (x !== null) {
                 if (x._id === this.content._id) {
@@ -35,8 +37,6 @@ export class ContentItemComponent implements OnInit {
             }
         });
     }
-
-    ngOnInit(): void {}
 
     @Dispatch()
     setCurrContent() {
