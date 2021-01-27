@@ -71,7 +71,7 @@ export class NewsService {
             return await this.newsModel.findOneAndUpdate({'_id': postId, 'author': user.sub}, {
                 'audit.published': pubChange.newStatus,
                 'audit.publishedOn': new Date()
-            });
+            }, {new: true});
         } else {
             throw new UnauthorizedException(`You don't have permission to publish this.`);
         }

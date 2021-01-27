@@ -23,6 +23,8 @@ import { NewsService } from './news/news.service';
 import { PoetryService } from './poetry/poetry.service';
 import { ProseService } from './prose/prose.service';
 import { BlogsService } from './blogs/blogs.service';
+import { BlogsContentDocument } from './blogs/blogs-content.document';
+import { NewsContentDocument } from './news/news-content.document';
 
 @Injectable()
 export class ContentService {
@@ -173,7 +175,7 @@ export class ContentService {
      * @param contentId The content ID
      * @param pubChange (Optional) Publishing status updates for Blogs and Newsposts
      */
-    async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange) {
+    async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentDocument | BlogsContentDocument | NewsContentDocument> {
         const content = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false});
 
         if (isNullOrUndefined(content)) {
@@ -355,15 +357,15 @@ export class ContentService {
      * @param user The author of the content
      * @param contentId The content to submit
      */
-    async submitForApproval(user: JwtPayload, contentId: string): Promise<void> {
+    async submitForApproval(user: JwtPayload, contentId: string): Promise<ContentDocument> {
         const thisContent = await this.contentModel.findOne({'_id': contentId, 'author': user.sub, 'audit.isDeleted': false});
 
         if (thisContent.kind !== ContentKind.PoetryContent && thisContent.stats.words < 750) {
             throw new BadRequestException(`Content that isn't poetry needs to have a minimum wordcount of 750. `);
         }
 
-        await this.pendingWork(contentId, user.sub);
         await this.queueService.addOneWork(contentId);
+        return await this.pendingWork(contentId, user.sub); 
     }
 
     /**
@@ -398,8 +400,8 @@ export class ContentService {
      * @param contentId The work to set to pending
      * @param authorId The author of the work
      */
-    async pendingWork(contentId: string, authorId: string): Promise<void> {
-        await this.contentModel.updateOne({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Pending});
+    async pendingWork(contentId: string, authorId: string): Promise<ContentDocument> {
+        return await this.contentModel.findOneAndUpdate({'_id': contentId, 'author': authorId, 'audit.isDeleted': false}, {'audit.published': PubStatus.Pending}, {new: true});
     }
 
     /**
