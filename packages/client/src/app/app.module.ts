@@ -116,7 +116,7 @@ import { environment } from '../environments/environment';
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([
       AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
-    ], {developmentMode: !environment.production}),
+    ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
     NgxsStoragePluginModule.forRoot({
       key: [
         'auth', 'user', 'global', 'myStuff', 'approvalQueue.selectedDoc', 
