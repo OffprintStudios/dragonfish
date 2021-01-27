@@ -19,6 +19,7 @@ import { NotificationBase } from '@pulp-fiction/models/notifications';
 import { Constants } from './shared';
 import { MetadataService } from './services/utility';
 import { Alerts } from './shared/alerts';
+import { isAllowed } from './util/functions';
 
 @Component({
   selector: 'pulp-fiction-root',
@@ -159,21 +160,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * In order to access the contributor page
-   */
-  checkUserRolesForContribMenu() {
-    if (this.currentUser) {
-      const allowedRoles = [Roles.Admin, Roles.Moderator, Roles.Contributor, Roles.WorkApprover];
-      const hasRoles = lodash.intersection(allowedRoles, this.currentUser.roles);
-
-      if (hasRoles.length === 0) {
-        return false;
-      } else {
-        return true;
-      }
-    } else {
-      return false;
+    /**
+    * In order to access the contributor page
+    */
+    checkUserRolesForContribMenu() {
+        if (this.currentUser) {
+            return isAllowed(this.currentUser.roles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
+        } else {
+            return false;
+        }
     }
-  }
 }
