@@ -145,13 +145,6 @@
     ora "4.0.3"
     rxjs "6.5.4"
 
-"@angular-ru/common@^15.58.1":
-  version "15.58.1"
-  resolved "https://registry.yarnpkg.com/@angular-ru/common/-/common-15.58.1.tgz#cdae0d23310b1aebe170939827c5a05a55f757a0"
-  integrity sha512-2Xl/IdPPo0SKbSVNBqn/784EURpPqfGlyrOTsOwzkgo+nZRbfOW4Q6/0EdkAfbwcMzShblqy4zbAU2oWohG9WA==
-  dependencies:
-    tslib "^2.0.0"
-
 "@angular/animations@11.0.5":
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-11.0.5.tgz#44157c8bbb3f20ce1d3d6386eae956659cefd9d7"
@@ -2445,31 +2438,17 @@
   dependencies:
     tslib "^1.10.0"
 
-"@ngx-pwa/local-storage@^11.1.0":
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-11.1.0.tgz#45b2f64863550bd91e4836263d559ee1a2ca405c"
-  integrity sha512-c+we+UT8Sx3IJM+cIsqfueQmbbp0u5cM7ztRnoEf6BeGsaJIzS+kDXBdJwVGVLepN7jPizGa2owLJBhEpuEVRQ==
-  dependencies:
-    tslib "^2.0.0"
-
-"@ngxs-labs/async-storage-plugin@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/async-storage-plugin/-/async-storage-plugin-0.1.1.tgz#72799f22067f71ce6017e562343c8fae87e42e13"
-  integrity sha512-Jl+dN4D3VsOt8LAUsEFTmYitkIbDecm8A6CL3d83s1G8C11+w4g8/su9W8H588GaDuz9GLcj1f64ioytCJ4hkA==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs-labs/data@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-4.1.1.tgz#abaf0e7d1bdde9b592275a586a6b6a75c5b94178"
-  integrity sha512-T9hcH/KkdoX1DJGV3jfh3ciiCYsg9vRYeJ2E6e8ZNRuSiLZ2kaAmVBl+uIKTZedTcMznK+DvvgHg18fc+Paogg==
-  dependencies:
-    tslib "^2.0.0"
-
 "@ngxs-labs/dispatch-decorator@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@ngxs-labs/dispatch-decorator/-/dispatch-decorator-2.1.0.tgz#d35a21566b9786ccff094c3227935f9d7bf45444"
   integrity sha512-0O+1b2ILLs9enA0PmRzlA6IJTP9mMdeB/GRdH56lhXk5eSNpFM5TGtEVvAgOnUn17Lo99JfuBMOsfgFZUU4ecw==
+  dependencies:
+    tslib "^1.9.0"
+
+"@ngxs-labs/emitter@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ngxs-labs/emitter/-/emitter-2.0.0.tgz#83413b17b87154856dfcd83895d6d26cf4698bb2"
+  integrity sha512-CecS9FPVf9oubzkJC/Zgn3+6XUOY8vimrMjL4ICd3CdR75NpOMmTytMEtDYXjvDptNy8ni+Eywzk3qGg4j+p0w==
   dependencies:
     tslib "^1.9.0"
 
@@ -6219,11 +6198,6 @@ detect-node@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
-
-dexie@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.3.tgz#ede63849dfe5f07e13e99bb72a040e8ac1d29dab"
-  integrity sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw==
 
 dicer@0.2.5:
   version "0.2.5"

@@ -9,10 +9,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsDataPluginModule } from '@ngxs-labs/data';
-import { NgxsAsyncStoragePlugin, NgxsAsyncStoragePluginModule } from '@ngxs-labs/async-storage-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
-import { StorageModule } from '@ngx-pwa/local-storage';
 
 import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
@@ -56,7 +53,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponen
 import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent, SectionItemComponent, NewsFormComponent } from './pages/my-stuff';
+  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
 
 import { SocialComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -94,7 +91,6 @@ import { ContentApprovalComponent } from './components/content-approval';
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
-import { StorageService } from './services/utility';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -144,7 +140,7 @@ const toolbarOptions = [
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
     AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
-    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent, NewsFormComponent
+    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
@@ -153,10 +149,15 @@ const toolbarOptions = [
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([
       AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
-    ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
-    NgxsAsyncStoragePluginModule.forRoot(StorageService), NgxsReduxDevtoolsPluginModule.forRoot(), 
-    NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(), NgxsDataPluginModule.forRoot(), 
+    ], {developmentMode: !environment.production}),
+    NgxsStoragePluginModule.forRoot({
+      key: [
+        'auth', 'user', 'global', 'myStuff', 'approvalQueue.selectedDoc', 
+        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
+      ]
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({
