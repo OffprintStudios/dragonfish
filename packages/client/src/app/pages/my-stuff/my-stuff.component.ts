@@ -67,24 +67,13 @@ export class MyStuffComponent implements OnInit {
         
         console.log(content);
 
-        switch (content.kind) {
-            case ContentKind.BlogContent:
-                return new MyStuff.PublishContent(content._id, pubChange);
-            case ContentKind.NewsContent:
-                return new MyStuff.PublishContent(content._id, pubChange);
-            case ContentKind.PoetryContent: {
-                if (content.audit.published !== PubStatus.Unpublished) {
-                    return new MyStuff.PublishContent(content._id);
-                } else {
-                    return;
-                }
-            }
-            case ContentKind.ProseContent: {
-                if (content.audit.published !== PubStatus.Unpublished) {
-                    return new MyStuff.PublishContent(content._id);
-                } else {
-                    return;
-                }
+        if (content.kind === ContentKind.BlogContent || content.kind === ContentKind.NewsContent) {
+            return new MyStuff.PublishContent(content._id, pubChange);
+        } else if (content.kind === ContentKind.PoetryContent || content.kind === ContentKind.ProseContent) {
+            if (content.audit.published === PubStatus.Unpublished) {
+                return new MyStuff.PublishContent(content._id);
+            } else {
+                return;
             }
         }
     }
