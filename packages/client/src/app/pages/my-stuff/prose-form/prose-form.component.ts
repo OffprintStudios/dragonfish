@@ -1,21 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Navigate } from '@ngxs/router-plugin';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
 
-import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse, ProseContent } from '@pulp-fiction/models/content';
+import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse, ProseContent, ContentKind } from '@pulp-fiction/models/content';
 import { ProseService } from '../../../services/user';
+import { AlertsService } from '../../../shared/alerts';
 
+@UntilDestroy()
 @Component({
     selector: 'prose-form',
     templateUrl: './prose-form.component.html',
     styleUrls: ['./prose-form.component.less']
 })
 export class ProseFormComponent implements OnInit {
+    @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
     formTitle = `Create New Prose`;
-    currProse: ProseContent;
-    editMode = false;
 
     categories = WorkKind;
     genres = Genres;
@@ -32,43 +36,40 @@ export class ProseFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private route: ActivatedRoute, private proseService: ProseService, private snackBar: MatSnackBar, private location: Location) {}
+    constructor(private proseService: ProseService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
-      const data = this.route.snapshot.data.contentData as ProseContent;
-      if (data) {
-        this.currProse = data;
-        this.editMode = true;
-        this.formTitle = `Editing "${this.currProse.title}"`
-        this.proseForm.setValue({
-          title: this.currProse.title,
-          desc: this.currProse.desc,
-          body: this.currProse.body,
-          category: this.currProse.meta.category,
-          genres: this.currProse.meta.genres,
-          rating: this.currProse.meta.rating,
-          status: this.currProse.meta.status
+        this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
+            if (content !== null) {
+                this.formTitle = `Editing "${content.title}"`;
+                this.proseForm.setValue({
+                    title: content.title,
+                    desc: content.desc,
+                    body: content.body,
+                    category: content.meta.category,
+                    genres: content.meta.genres,
+                    rating: content.meta.rating,
+                    status: content.meta.status
+                });
+            } else {
+                this.proseForm.setValue({
+                    title: '',
+                    desc: '',
+                    body: '',
+                    category: null,
+                    genres: [],
+                    rating: null,
+                    status: null
+                });
+            }
         });
-      }
     }
 
     get fields() { return this.proseForm.controls; }
 
-    goBack() {
-        if (this.proseForm.dirty && this.proseForm.touched) {
-          if (confirm(`Are you sure you want to go back? Any unsaved changes will be lost.`)) {
-            this.location.back();
-          } else {
-            return;
-          }
-        } else {
-          this.location.back();
-        }
-      }
-
-    submitForm() {
+    submitForm(contentId?: string) {
         if (this.proseForm.invalid) {
-            this.snackBar.open(`Looks like something's wrong with the stuff you've entered.`);
+            this.alerts.warn(`Looks like something's wrong with the stuff you've entered.`);
             return;
         }
 
@@ -82,23 +83,20 @@ export class ProseFormComponent implements OnInit {
             status: this.fields.status.value
         };
 
-        if (this.editMode === false) {
-          this.proseService.createProse(proseInfo).subscribe(() => {
-            this.location.back();
-          });
+        if (contentId) {
+            this.saveContent(contentId, ContentKind.ProseContent, proseInfo);
         } else {
-          this.proseService.editProse(this.currProse._id, proseInfo).subscribe(prose => {
-            this.currProse = prose;
-            this.proseForm.setValue({
-              title: this.currProse.title,
-              desc: this.currProse.desc,
-              body: this.currProse.body,
-              category: this.currProse.meta.category,
-              genres: this.currProse.meta.genres,
-              rating: this.currProse.meta.rating,
-              status: this.currProse.meta.status
-            });
-          });
+            this.createContent(ContentKind.ProseContent, proseInfo);
         }
+    }
+
+    @Dispatch()
+    private createContent(kind: ContentKind, formInfo: CreateProse) {
+        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
+    }
+
+    @Dispatch()
+    private saveContent(contentId: string, kind: ContentKind, formInfo: CreateProse) {
+        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }
