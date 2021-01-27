@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { NgxsDataRepository } from '@ngxs-labs/data/repositories';
+import { StateRepository, DataAction, Payload } from '@ngxs-labs/data/decorators';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 
 import { MyStuff } from './my-stuff.actions';
@@ -9,8 +11,8 @@ import { MyStuffStateModel } from './my-stuff-state.model';
 import { MyStuffService } from './services';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Alerts } from '../alerts';
-import { UserStateModel } from '../user';
 
+@StateRepository()
 @State<MyStuffStateModel>({
     name: 'myStuff',
     defaults: {
@@ -19,15 +21,28 @@ import { UserStateModel } from '../user';
     }
 })
 @Injectable()
-export class MyStuffState {
-    constructor (private stuffService: MyStuffService) {}
+export class MyStuffState extends NgxsDataRepository<MyStuffStateModel> {
+    constructor (private stuffService: MyStuffService) {
+        super();
+    }
 
-    @Action(MyStuff.SetFiles)
+    /*@Action(MyStuff.SetFiles)
     setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
         return this.stuffService.fetchAll().pipe(tap((result: ContentModel[]) => {
             patchState({
                 myStuff: result
             });
+        }));
+    }*/
+
+    @DataAction()
+    public setFiles(): Observable<void> {
+        return this.stuffService.fetchAll().pipe(tap((result: ContentModel[]) => {
+            this.ctx.patchState({
+                myStuff: result
+            });
+        }), map(() => {
+            return;
         }));
     }
 

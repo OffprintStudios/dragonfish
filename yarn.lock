@@ -145,6 +145,13 @@
     ora "4.0.3"
     rxjs "6.5.4"
 
+"@angular-ru/common@^15.58.1":
+  version "15.58.1"
+  resolved "https://registry.yarnpkg.com/@angular-ru/common/-/common-15.58.1.tgz#cdae0d23310b1aebe170939827c5a05a55f757a0"
+  integrity sha512-2Xl/IdPPo0SKbSVNBqn/784EURpPqfGlyrOTsOwzkgo+nZRbfOW4Q6/0EdkAfbwcMzShblqy4zbAU2oWohG9WA==
+  dependencies:
+    tslib "^2.0.0"
+
 "@angular/animations@11.0.5":
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-11.0.5.tgz#44157c8bbb3f20ce1d3d6386eae956659cefd9d7"
@@ -2437,6 +2444,13 @@
   integrity sha512-ZWPHsjixuVFYzIb/vF39dLkLaMKdcGbm0p8HzBwbvefNpxDHpy+dxnD2GwJCHjdEpm+KuxHfyVDgaJRiajXUrw==
   dependencies:
     tslib "^1.10.0"
+
+"@ngxs-labs/data@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-4.1.1.tgz#abaf0e7d1bdde9b592275a586a6b6a75c5b94178"
+  integrity sha512-T9hcH/KkdoX1DJGV3jfh3ciiCYsg9vRYeJ2E6e8ZNRuSiLZ2kaAmVBl+uIKTZedTcMznK+DvvgHg18fc+Paogg==
+  dependencies:
+    tslib "^2.0.0"
 
 "@ngxs-labs/dispatch-decorator@^2.1.0":
   version "2.1.0"
