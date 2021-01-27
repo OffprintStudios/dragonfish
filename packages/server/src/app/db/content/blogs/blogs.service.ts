@@ -81,6 +81,6 @@ export class BlogsService {
         return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
             'audit.published': pubChange.newStatus,
             'audit.publishedOn': new Date()
-        });
+        }, {new: true});
     }
 }
