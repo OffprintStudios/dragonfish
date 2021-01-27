@@ -30,6 +30,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-ru/common": "^15.58.1",
     "@angular/animations": "11.0.5",
     "@angular/cdk": "^10.2.0",
     "@angular/common": "11.0.5",
@@ -59,8 +60,8 @@
     "@ngu/carousel": "^3.0.2",
     "@ngx-loading-bar/core": "^5.1.1",
     "@ngx-loading-bar/http-client": "^5.1.1",
+    "@ngxs-labs/data": "^4.1.1",
     "@ngxs-labs/dispatch-decorator": "^2.1.0",
-    "@ngxs-labs/emitter": "^2.0.0",
     "@ngxs/devtools-plugin": "^3.7.1",
     "@ngxs/logger-plugin": "^3.7.1",
     "@ngxs/router-plugin": "^3.7.1",
