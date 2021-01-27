@@ -10,7 +10,9 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsDataPluginModule } from '@ngxs-labs/data';
+import { NgxsAsyncStoragePlugin, NgxsAsyncStoragePluginModule } from '@ngxs-labs/async-storage-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
+import { StorageModule } from '@ngx-pwa/local-storage';
 
 import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
@@ -92,6 +94,7 @@ import { ContentApprovalComponent } from './components/content-approval';
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
+import { StorageService } from './services/utility';
 
 const Quill: any = QuillNamespace;
 const icons = Quill.import('ui/icons');
@@ -150,16 +153,10 @@ const toolbarOptions = [
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([
       AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
-    ], {developmentMode: !environment.production}),
-    NgxsStoragePluginModule.forRoot({
-      key: [
-        'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 
-        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection',
-        'myStuff'
-      ]
-    }),
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(), NgxsDataPluginModule.forRoot(),
+    ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
+    NgxsAsyncStoragePluginModule.forRoot(StorageService), NgxsReduxDevtoolsPluginModule.forRoot(), 
+    NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(), NgxsDataPluginModule.forRoot(), 
     MarkdownModule.forRoot(),
     CookieModule.forRoot(),
     QuillModule.forRoot({

@@ -60,6 +60,8 @@
     "@ngu/carousel": "^3.0.2",
     "@ngx-loading-bar/core": "^5.1.1",
     "@ngx-loading-bar/http-client": "^5.1.1",
+    "@ngx-pwa/local-storage": "^11.1.0",
+    "@ngxs-labs/async-storage-plugin": "^0.1.1",
     "@ngxs-labs/data": "^4.1.1",
     "@ngxs-labs/dispatch-decorator": "^2.1.0",
     "@ngxs/devtools-plugin": "^3.7.1",

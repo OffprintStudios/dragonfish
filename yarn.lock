@@ -2445,6 +2445,20 @@
   dependencies:
     tslib "^1.10.0"
 
+"@ngx-pwa/local-storage@^11.1.0":
+  version "11.1.0"
+  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-11.1.0.tgz#45b2f64863550bd91e4836263d559ee1a2ca405c"
+  integrity sha512-c+we+UT8Sx3IJM+cIsqfueQmbbp0u5cM7ztRnoEf6BeGsaJIzS+kDXBdJwVGVLepN7jPizGa2owLJBhEpuEVRQ==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngxs-labs/async-storage-plugin@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@ngxs-labs/async-storage-plugin/-/async-storage-plugin-0.1.1.tgz#72799f22067f71ce6017e562343c8fae87e42e13"
+  integrity sha512-Jl+dN4D3VsOt8LAUsEFTmYitkIbDecm8A6CL3d83s1G8C11+w4g8/su9W8H588GaDuz9GLcj1f64ioytCJ4hkA==
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngxs-labs/data@^4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-4.1.1.tgz#abaf0e7d1bdde9b592275a586a6b6a75c5b94178"
