@@ -10,7 +10,6 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
-import { NgxsDataPluginModule } from '@ngxs-labs/data';
 
 import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
@@ -124,7 +123,7 @@ import { environment } from '../environments/environment';
       ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(), NgxsDataPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(),
     MarkdownModule.forRoot(),
     CookieModule.forRoot()
   ],

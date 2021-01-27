@@ -19,7 +19,7 @@ import { Alerts } from '../alerts';
 })
 @Injectable()
 export class MyStuffState {
-    constructor (private stuffService: MyStuffService) {}
+    constructor (private stuffService: MyStuffService) { }
 
     @Action(MyStuff.SetFiles)
     setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
