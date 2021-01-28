@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Select } from '@ngxs/store';
+import { MyStuffState } from '../../../../shared/my-stuff';
+import { Observable } from 'rxjs';
 import { cloneDeep } from 'lodash';
 
 import { ContentKind, ProseContent, PubStatus, WorkStatus } from '@pulp-fiction/models/content';
@@ -20,6 +23,7 @@ import { slugify } from 'voca';
     styleUrls: ['./view-prose.component.less']
 })
 export class ViewProseComponent implements OnInit {
+    @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
     myProse: ProseContent;
     mySections: SectionItem[];
     pubStatus = PubStatus;
