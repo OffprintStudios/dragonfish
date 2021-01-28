@@ -9,13 +9,15 @@ import { MyStuffStateModel } from './my-stuff-state.model';
 import { MyStuffService } from './services';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Alerts } from '../alerts';
+import { SectionsState } from './sections';
 
 @State<MyStuffStateModel>({
     name: 'myStuff',
     defaults: {
         myStuff: [],
         currContent: null
-    }
+    },
+    children: [SectionsState]
 })
 @Injectable()
 export class MyStuffState {

@@ -3,37 +3,37 @@ import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {
     export class SetFiles {
-        static readonly type = '[My Stuff] Set Files';
+        static readonly type = '[MyStuff] Set Files';
         constructor () {}
     }
 
     export class SetCurrentContent {
-        static readonly type = '[My Stuff] Set Current Content';
+        static readonly type = '[MyStuff] Set Current Content';
         constructor (public content: ContentModel | null) {}
     }
 
     export class CreateContent {
-        static readonly type = '[My Stuff] Create Content';
+        static readonly type = '[MyStuff] Create Content';
         constructor (public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
     }
 
     export class SaveContent {
-        static readonly type = '[My Stuff] Save Content';
+        static readonly type = '[MyStuff] Save Content';
         constructor (public contentId: string, public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
     }
 
     export class DeleteContent {
-        static readonly type = '[My Stuff] Delete Content';
+        static readonly type = '[MyStuff] Delete Content';
         constructor (public contentId: string) {}
     }
 
     export class PublishContent {
-        static readonly type = '[My Stuff] Publish Content';
+        static readonly type = '[MyStuff] Publish Content';
         constructor (public contentId: string, public pubChange?: PubChange) {}
     }
 
     export class UploadCoverArt {
-        static readonly type = '[My Stuff] Upload Cover Art';
+        static readonly type = '[MyStuff] Upload Cover Art';
         constructor (public kind: ContentKind, public uploader: FileUploader) {}
     }
 }

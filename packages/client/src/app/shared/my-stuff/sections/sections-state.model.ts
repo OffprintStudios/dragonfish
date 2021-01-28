@@ -1,3 +1,6 @@
+import { Section } from "@pulp-fiction/models/sections";
+
 export interface SectionsStateModel {
-    currSection: string;
+    sections: Section[];
+    currSection: Section;
 }

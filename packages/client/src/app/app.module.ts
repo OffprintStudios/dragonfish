@@ -87,6 +87,7 @@ import { ContentApprovalComponent } from './components/content-approval';
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
+import { SectionsState } from './shared/my-stuff/sections';
 
 @NgModule({
   declarations: [
@@ -115,11 +116,11 @@ import { environment } from '../environments/environment';
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([
-      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
+      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState, SectionsState
     ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
     NgxsStoragePluginModule.forRoot({
       key: [
-        'auth', 'user', 'global', 'myStuff.currContent', 'approvalQueue.selectedDoc', 
+        'auth', 'user', 'global', 'myStuff.currContent', 'myStuff.sections.currSection', 'approvalQueue.selectedDoc', 
         'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
       ]
     }),
