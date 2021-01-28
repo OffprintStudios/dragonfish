@@ -9,6 +9,7 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
+import { NgxsDataPluginModule } from '@ngxs-labs/data';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 
 import { AuthState } from './shared/auth';
@@ -122,10 +123,9 @@ import { environment } from '../environments/environment';
         'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
       ]
     }),
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(),
-    MarkdownModule.forRoot(),
-    CookieModule.forRoot()
+    NgxsDataPluginModule.forRoot(), NgxsReduxDevtoolsPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(), MarkdownModule.forRoot(), CookieModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot({disabled: environment.production}),
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},
