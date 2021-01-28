@@ -12,23 +12,7 @@ import { ImagesService } from '../../images/images.service';
 @Controller('poetry')
 export class PoetryController {
     constructor(private readonly poetryService: PoetryService, private readonly imagesService: ImagesService) {}
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Put('create-poetry')
-    async createProse(@Request() req: any, @Body() poetryInfo: CreatePoetry) {
-        return await this.poetryService.createPoetry(req.user, poetryInfo);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('edit-poetry')
-    async editProse(@Request() req: any, @Query('contentId') contentId: string, @Body() poetryInfo: CreatePoetry) {
-        if (isNullOrUndefined(contentId)) {
-            throw new BadRequestException(`The content ID is required.`);
-        }
-
-        return await this.poetryService.editPoetry(req.user, contentId, poetryInfo);
-    }
-
+    
     @UseGuards(RolesGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('upload-coverart/:poetryId')

@@ -85,19 +85,11 @@ export class SectionItemComponent implements OnInit, OnChanges {
             return;
         }
 
-        const bodyValue = this.section.usesNewEditor 
-            ? this.fields.body.value
-            : getQuillHtml(document.querySelector("quill-editor"));
-
-        const authorsNoteValue = this.section.usesNewEditor 
-            ? this.fields.authorsNote.value
-            : getQuillHtml(document.querySelector("div.authors-note"));
-
         const sectionInfo: SectionForm = {
             title: this.fields.title.value,
-            body: bodyValue,
+            body: this.fields.body.value,
             usesNewEditor: true,
-            authorsNote: authorsNoteValue,
+            authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
             oldWords: this.section.stats.words
         };

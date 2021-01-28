@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { NewsController } from './news/news.controller';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { UsersModule } from '../../db/users/users.module';
 import { ApprovalQueueModule } from '../../db/approval-queue/approval-queue.module';
@@ -22,7 +21,7 @@ import { ContentModule } from '../../db/content';
       }),
     }),
   ],
-  controllers: [NewsController, QueueController, DocsController],
+  controllers: [QueueController, DocsController],
   providers: [QueueService],
 })
 export class DashboardModule {}

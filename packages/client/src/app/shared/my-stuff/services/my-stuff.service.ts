@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
-import { ContentModel, ContentKind, CreateProse, BlogForm, CreatePoetry, NewsForm, BlogsContentModel, NewsContentModel, PoetryContent, ProseContent } from '@pulp-fiction/models/content';
+import { ContentModel, ContentKind, CreateProse, 
+    BlogForm, CreatePoetry, NewsForm, PubChange } from '@pulp-fiction/models/content';
 import { HttpError } from '../../../models/site';
 
 @Injectable({
@@ -14,7 +14,7 @@ import { HttpError } from '../../../models/site';
 export class MyStuffService {
     private url = `/api/content`;
 
-    constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
+    constructor(private http: HttpClient) {}
 
     /**
      * Fetches one piece of content from the backend.
@@ -54,33 +54,30 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public createContent(kind: ContentKind, formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm): Observable<ContentModel> {
-        let fetchUrl = `${this.url}`;
-
-        switch (kind) {
-            case ContentKind.BlogContent:
-                fetchUrl = `${fetchUrl}/blogs/create-blog`;
-                break;
-            case ContentKind.NewsContent:
-                fetchUrl = `${fetchUrl}/news/create-post`;
-                break;
-            case ContentKind.PoetryContent:
-                fetchUrl = `${fetchUrl}/poetry/create-poetry`;
-                break;
-            case ContentKind.ProseContent:
-                fetchUrl = `${fetchUrl}/prose/create-prose`;
-                break;
-            default:
-                this.snackBar.open(`Invalid content kind.`);
-                return;
-        }
-
-        return this.http.put<ContentModel>(`${fetchUrl}`, formInfo, {observe: 'response', withCredentials: true})
+        return this.http.put<ContentModel>(`${this.url}/create-one?kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
                 return throwError(err);
             }));
     }
+
+    /**
+     * Sends a request to create a piece of content to the backend, with the route determined by its
+     * `ContentKind`. 
+     * 
+     * @param kind The content kind
+     * @param formInfo The form information
+     */
+    public saveContent(contentId: string, kind: ContentKind, formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm): Observable<ContentModel> {
+        return this.http.patch<ContentModel>(`${this.url}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+
 
     /**
      * Sends a request to delete the specified content.
@@ -101,12 +98,13 @@ export class MyStuffService {
      * Sends a request to publish the specified content.
      * 
      * @param contentId The content to publish
+     * @param pubChange (Optional) Used for blog and newspost publishing changes
      * @returns Observable
      */
-    public publishOne(contentId: string): Observable<void> {
-        return this.http.patch(`${this.url}/publish-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
-            .pipe(map(() => {
-                return;
+    public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
+        return this.http.patch<ContentModel>(`${this.url}/publish-one?contentId=${contentId}`, pubChange, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
             }), catchError(err => {
                 return throwError(err);
             }));
@@ -118,8 +116,8 @@ export class MyStuffService {
      * @param uploader The file uploader
      * @returns Observable
      */
-    public uploadCoverart(uploader: FileUploader): Observable<void> {
-        return new Observable<void>(observer => {
+    public uploadCoverart(uploader: FileUploader): Observable<ContentModel> {
+        return new Observable<ContentModel>(observer => {
             uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = this.tryParseJsonHttpError(response);
@@ -136,7 +134,7 @@ export class MyStuffService {
                 // If we ever need to retun the modified work, the return type on this
                 // should change to Observable<models.Work>, and we'd need to JSON parse
                 // the response and return it in .next() here.
-                observer.next()
+                observer.next(JSON.parse(response));
                 observer.complete();
             };      
     

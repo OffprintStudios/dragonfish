@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { BlogsController } from './blogs/blogs.controller';
 import { WorksController } from './works/works.controller';
 import { WorksModule } from '../../db/works/works.module';
 import { PortfolioController } from './portfolio/portfolio.controller';
@@ -36,7 +35,7 @@ import { SectionsController } from './sections/sections.controller';
     }),
   ],
   controllers: [
-    BlogsController, WorksController, PortfolioController, 
+    WorksController, PortfolioController, 
     CollectionsController, HistoryController, CommentsController, 
     MessagesController, NewsController, ContentController, ProseController,
     PoetryController, SectionsController

@@ -1,33 +1,49 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ContentKind, PubStatus } from '@pulp-fiction/models/content';
-import { ContentItem } from '../viewmodels';
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
+import { Select } from '@ngxs/store';
+import { ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
+import { Observable } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
 
+@UntilDestroy()
 @Component({
     selector: 'content-item',
     templateUrl: './content-item.component.html',
     styleUrls: ['./content-item.component.less']
 })
 export class ContentItemComponent implements OnInit {
-    @Input() content: ContentItem;
-    @Input() selected: boolean;
-    @Output() selectItem = new EventEmitter<ContentItem>();
-    @Output() viewItem = new EventEmitter<ContentItem>();
+    @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
+
+    @Input() content: ContentModel;
+    @Output() viewItem = new EventEmitter<ContentModel>();
+    selected: boolean = false;
 
     contentKind = ContentKind;
     pubStatus = PubStatus;
 
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
+            if (x !== null) {
+                if (x._id === this.content._id) {
+                    this.selected = true;
+                } else {
+                    this.selected = false;
+                }
+            } else {
+                this.selected = false;
+            }
+        });
+    }
 
-    select() {
-        this.selectItem.emit(this.content);
-        this.content.isSelected = true;
-        this.selected = true;
+    @Dispatch()
+    setCurrContent() {
+        return new MyStuff.SetCurrentContent(this.content);
     }
 
     view() {
-        this.selected = false;
         this.viewItem.emit(this.content);
     }
 }

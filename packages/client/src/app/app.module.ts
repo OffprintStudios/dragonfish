@@ -23,8 +23,6 @@ import { AlertsState, AlertsComponent } from './shared/alerts';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from '@pulp-fiction/material';
-import { QuillModule } from 'ngx-quill';
-import * as QuillNamespace from 'quill';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -40,8 +38,6 @@ import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
   StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
   TruncatePipe, LocaleDatePipe, JoinStringsPipe } from './pipes';
 import { NagBarModule } from './modules';
-import { Divider, dividerHandler, TextSoftBreakBlot, shiftEnterHandler, 
-  brMatcher, textNodeMatcher } from './util/quill';
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
@@ -53,7 +49,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponen
 import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent, SectionItemComponent } from './pages/my-stuff';
+  ViewPoetryComponent, ViewProseComponent, SectionItemComponent, NewsFormComponent } from './pages/my-stuff';
 
 import { SocialComponent } from './pages';
 import { RegisterComponent } from './pages/account';
@@ -80,7 +76,6 @@ import { UserCardComponent } from './components/user-card/user-card.component';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
-import { NewEditorComponent } from './components/new-editor';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
   HistoryComponent } from './components/site-sidenav';
@@ -92,35 +87,6 @@ import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from '
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
 
-const Quill: any = QuillNamespace;
-const icons = Quill.import('ui/icons');
-icons.bold = '<i class="fas fa-bold"></i>';
-icons.italic = '<i class="fas fa-italic"></i>';
-icons.underline = '<i class="fas fa-underline"></i>';
-icons.strike = '<i class="fas fa-strikethrough"></i>';
-icons.link = '<i class="fas fa-link"></i>';
-icons.code = '<i class="fas fa-code"></i>';
-icons.blockquote = '<i class="fas fa-quote-right"></i>';
-icons.clean = '<i class="fas fa-eraser"></i>';
-icons.center = '<i class="fas fa-align-center"></i>';
-icons.right = '<i class="fas fa-align-right"></i>';
-icons.justify = '<i class="fas fa-align-justify"></i>';
-icons.video = '<i class="fas fa-video"></i>';
-icons.image = '<i class="fas fa-image"></i>';
-icons.ordered = '<i class="fas fa-list-ol"></i>';
-icons.bullet = '<i class="fas fa-list"></i>';
-icons.divider = '—';
-
-Quill.register(Divider);
-Quill.register('blots/text', TextSoftBreakBlot);
-
-const toolbarOptions = [
-  [{header: []}, 'bold', 'italic', 'underline', 'strike'],
-  ['divider', 'link', 'blockquote', 'code', 'clean'],
-  [{align: 'center'}, {align: 'right'}, {align: 'justify'}],
-  [{list: 'ordered'}, {list: 'bullet'}],
-];
-
 @NgModule({
   declarations: [
     AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
@@ -131,7 +97,7 @@ const toolbarOptions = [
     FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
     SiteStaffComponent, CreateCollectionComponent, SocialComponent,
     AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
-    EditorComponent, NewEditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
+    EditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
     NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
     PostPageComponent, PortConversations, MyStuffComponent, BlogFormComponent, 
     ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
@@ -140,50 +106,26 @@ const toolbarOptions = [
     DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
     ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
     AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
-    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent
+    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent, NewsFormComponent
   ],
   imports: [
     BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
     FileUploadModule, ImageCropperModule, NgxPaginationModule,
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState], {developmentMode: !environment.production}),
+    NgxsModule.forRoot([
+      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
+    ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
     NgxsStoragePluginModule.forRoot({
       key: [
-        'auth.token', 'user.currUser', 'global.filter', 'approvalQueue.selectedDoc', 
+        'auth', 'user', 'global', 'myStuff.currContent', 'approvalQueue.selectedDoc', 
         'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
       ]
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
     NgxsDispatchPluginModule.forRoot(),
     MarkdownModule.forRoot(),
-    CookieModule.forRoot(),
-    QuillModule.forRoot({
-      format: 'json',
-      modules: {
-        toolbar: {
-          container: toolbarOptions,
-          handlers: {
-            'divider': dividerHandler,            
-          }
-        },
-        keyboard: {
-          bindings: {
-            "shift enter": {
-              key: 13,
-              shiftKey: true,
-              handler: shiftEnterHandler
-            }
-          }
-        },
-        clipboard: {
-          matchers: [           
-            [ Node.TEXT_NODE, textNodeMatcher ],
-            [ "BR", brMatcher ]
-          ],          
-        }
-      },
-    }),
+    CookieModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},

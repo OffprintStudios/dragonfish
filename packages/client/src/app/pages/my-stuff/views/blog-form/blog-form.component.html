@@ -1,0 +1,89 @@
+<ng-container *ngIf="currContent$ | async as currBlog; else createMode">
+    <div class="form-container">
+        <div class="form-header">
+            <button class="form-button left" [ngClass]="{'selected': !editMode}" (click)="switchView()">Preview</button>
+            <button class="form-button right" [ngClass]="{'selected': editMode}" (click)="switchView()">Edit</button>
+            <div style="flex: 1; text-align: right;">
+                <button class="form-button save" *ngIf="editMode" (click)="submitForm(currBlog._id)">Save</button>
+            </div>
+        </div>
+    
+        <ng-container *ngIf="editMode; else previewBlog">
+            <form [formGroup]="blogForm" (ngSubmit)="submitForm(currBlog._id)" *ngIf="editMode">
+                <div class="row">
+                    <div class="six columns">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Title</mat-label>
+                            <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                        </mat-form-field>
+                    </div>
+                    <div class="six columns">
+                        <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-label>Rating</mat-label>
+                            <mat-select [formControlName]="'rating'">
+                                <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+        
+                <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+            </form>
+        </ng-container>
+    
+        <ng-template #previewBlog>
+            <div class="post-container" *ngIf="currBlog">
+                <div class="post-header">
+                    <rating-icon [rating]="currBlog.meta.rating" [size]="'large'"></rating-icon>
+                    <h1>{{ currBlog.title }}</h1>
+                    <div class="post-cat">
+                        <div class="info">
+                            <span>{{ currBlog.audit.publishedOn | localedate:'fullDate' }}</span>
+                            <span class="divider" *ngIf="currBlog.audit.publishedOn">//</span>
+                            <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</span>
+                            <span class="divider">//</span>
+                            <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currBlog.stats.comments }}</span>
+                        </div>
+                        <div class="post-tools preview">
+                            <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currBlog.stats.likes | abbreviate }}</span></button>
+                            <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currBlog.stats.dislikes | abbreviate }}</span></button>
+                            <button matRipple class="end"><i-feather class="more" name="more-vertical"></i-feather></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-body">
+                    <div class="html-description" [innerHtml]="currBlog.body | safeHtml"></div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #createMode>
+    <div class="form-container">
+        <div class="form-header">
+            <h3>{{ formTitle }}</h3>
+            <button class="form-button" (click)="submitForm()">Save</button>
+        </div>
+        <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                    </mat-form-field>
+                </div>
+                <div class="six columns">
+                    <mat-form-field style="width: 100%;" appearance="outline">
+                        <mat-label>Rating</mat-label>
+                        <mat-select [formControlName]="'rating'">
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <editor [parentForm]="blogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+        </form>
+    </div>
+</ng-template>

@@ -21,11 +21,6 @@
             </div>
         </div>
 
-        <ng-container *ngIf="!myBlog.usesNewEditor; else usesNewEditor">
-            <quill-pulp-fiction-editor [parentForm]="migrateBlogForm" [controlName]="'body'" [minLength]="3" [height]="'1000px'"></quill-pulp-fiction-editor>
-        </ng-container>
-        <ng-template #usesNewEditor>
-            <editor [parentForm]="migrateBlogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
-        </ng-template>
+        <editor [parentForm]="migrateBlogForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
     </form>
 </div>

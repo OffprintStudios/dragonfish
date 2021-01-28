@@ -1,5 +1,5 @@
 export enum WorkKind {
     Original = 'Original',
-    Nonfiction = 'Nonfiction',
+    // Nonfiction = 'Nonfiction',
     Fanwork = 'Fanwork'
 }

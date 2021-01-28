@@ -71,16 +71,16 @@ export class BlogsService {
      * @param blogId The blog's ID
      * @param pubStatus Object for change in publishing status
      */
-    async changePublishStatus(user: JwtPayload, blogId: string, pubChange: PubChange): Promise<void> {
-        await this.blogsModel.updateOne({'_id': blogId, 'author': user.sub}, {
-            'audit.published': pubChange.newStatus,
-            'audit.publishedOn': new Date()
-        });
-
+    async changePublishStatus(user: JwtPayload, blogId: string, pubChange: PubChange): Promise<BlogsContentDocument> {
         if (pubChange.oldStatus === PubStatus.Unpublished && pubChange.newStatus === PubStatus.Published) {
             await this.usersService.changeBlogCount(user, true);
         } else if (pubChange.oldStatus === PubStatus.Published && pubChange.newStatus === PubStatus.Unpublished) {
             await this.usersService.changeBlogCount(user, false);
         }
+
+        return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
+            'audit.published': pubChange.newStatus,
+            'audit.publishedOn': new Date()
+        }, {new: true});
     }
 }
