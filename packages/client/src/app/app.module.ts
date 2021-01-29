@@ -120,7 +120,7 @@ import { SectionsState } from './shared/my-stuff/sections';
     ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
     NgxsStoragePluginModule.forRoot({
       key: [
-        'auth', 'user', 'global', 'myStuff.currContent', 'myStuff.sections.currSection', 'approvalQueue.selectedDoc', 
+        'auth', 'user', 'global', 'myStuff.currContent', 'myStuff.currContentWordCount', 'myStuff.sections.currSection', 'approvalQueue.selectedDoc', 
         'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
       ]
     }),

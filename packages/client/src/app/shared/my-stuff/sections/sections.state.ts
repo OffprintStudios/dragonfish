@@ -85,9 +85,9 @@ export class SectionsState {
 
     @Action(Sections.Delete)
     public delete({ setState }: StateContext<SectionsStateModel>, { contentId, sectionId }: Sections.Delete) {
-        return this.stuffService.deleteSection(contentId, sectionId).pipe(tap((result: Section) => {
+        return this.stuffService.deleteSection(contentId, sectionId).pipe(tap((_result: Section) => {
             setState(patch({
-                sections: removeItem<Section>(section => section._id === result._id),
+                sections: removeItem<Section>(section => section._id === sectionId),
                 currSection: null
             }));
         }), catchError(err => {
