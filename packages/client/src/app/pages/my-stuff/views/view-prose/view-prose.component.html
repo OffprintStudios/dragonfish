@@ -18,6 +18,7 @@
                 <div class="view-title">
                     <rating-icon [rating]="myProse.meta.rating" [size]="'large'"></rating-icon>
                     <h2>{{ myProse.title }}</h2>
+                    <button class="edit-button" [routerLink]="['/my-stuff/edit-prose']"><i-feather name="edit-3"></i-feather></button>
                 </div>
                 <div class="view-tags">
                     <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>

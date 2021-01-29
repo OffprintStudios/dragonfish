@@ -38,7 +38,7 @@
                 </button>
             </ng-container>
             <ng-template #notOnHomeEdit>
-                <button matRipple class="tool">
+                <button matRipple class="tool disabled">
                     <i-feather name="edit-3"></i-feather>Edit
                 </button>
             </ng-template>
@@ -121,7 +121,7 @@
     <ng-template #childRouteForm>
         <form [formGroup]="searchStuff" class="tool-search">
             <div class="search-bar">
-                <input type="text" formControlName="query" class="search-input disabled" placeholder="Search your stuff...">
+                <input type="text" formControlName="query" class="search-input disabled" placeholder="Search your stuff..." disabled>
                 <button matRipple class="search-submit disabled" type="submit"><i-feather name="search"></i-feather></button>
             </div>
         </form>
