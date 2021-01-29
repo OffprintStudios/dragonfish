@@ -20,6 +20,7 @@ import { UploadCoverartComponent } from 'packages/client/src/app/components/moda
 })
 export class ViewProseComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
+    @Select(MyStuffState.currContentWordCount) currContentWordCount$: Observable<number>;
     @Select(SectionsState) sectionsState$: Observable<SectionsStateModel>;
     pubStatus = PubStatus;
     contentStatus = WorkStatus;
@@ -38,11 +39,7 @@ export class ViewProseComponent implements OnInit {
 
     constructor(public route: ActivatedRoute, private alerts: AlertsService, private dialog: MatDialog, private stuff: MyStuffService) {}
 
-    ngOnInit(): void {
-        this.sectionsState$.subscribe(x => {
-            console.log(x);
-        });
-    }
+    ngOnInit(): void {}
 
     exitEditMode() {
         this.editMode = false;

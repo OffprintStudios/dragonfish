@@ -36,7 +36,8 @@ export class MyStuffState {
     @Action(MyStuff.SetCurrentContent)
     public setCurrentContent({ patchState }: StateContext<MyStuffStateModel>, { content }: MyStuff.SetCurrentContent): void {
         patchState({
-            currContent: content
+            currContent: content,
+            currContentWordCount: content === null ? 0 : content.stats.words
         });
     }
 
@@ -112,8 +113,16 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.UpdateWordcount)
-    public updateWordcount() {
-        
+    public updateWordcount({ getState, patchState }: StateContext<MyStuffStateModel>, { section, pubStatus }: MyStuff.UpdateWordcount) {
+        if (section.published === true && pubStatus.oldPub === false) { // if newly published
+            patchState({
+                currContentWordCount: getState().currContentWordCount + section.stats.words
+            });
+        } else if (section.published === false && pubStatus.oldPub === true) { // if unpublished
+            patchState({
+                currContentWordCount: getState().currContentWordCount - section.stats.words
+            });
+        };
     }
 
     /* Selectors */
@@ -126,5 +135,10 @@ export class MyStuffState {
     @Selector()
     public static currContent(state: MyStuffStateModel): ContentModel {
         return state.currContent;
+    }
+
+    @Selector()
+    public static currContentWordCount(state: MyStuffStateModel): number {
+        return state.currContentWordCount;
     }
 }

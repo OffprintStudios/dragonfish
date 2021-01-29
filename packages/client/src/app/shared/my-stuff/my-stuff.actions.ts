@@ -1,4 +1,5 @@
 import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm, PubChange } from "@pulp-fiction/models/content";
+import { PublishSection, Section } from "@pulp-fiction/models/sections";
 import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {
@@ -41,6 +42,6 @@ export namespace MyStuff {
 
     export class UpdateWordcount {
         static readonly type = '[MyStuff] Update Wordcount';
-        constructor () {}
+        constructor (public section: Section, public pubStatus: PublishSection) {}
     }
 }

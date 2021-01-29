@@ -9,6 +9,7 @@ import { SectionsStateModel } from './sections-state.model';
 import { MyStuffService } from '../services';
 import { Section } from '@pulp-fiction/models/sections';
 import { AlertsService } from '../../alerts';
+import { MyStuff } from '../my-stuff.actions';
 
 @State<SectionsStateModel>({
     name: 'sections',
@@ -69,12 +70,13 @@ export class SectionsState {
     }
 
     @Action(Sections.Publish)
-    public publish({ setState }: StateContext<SectionsStateModel>, { contentId, sectionId, pubStatus }: Sections.Publish) {
+    public publish({ setState, dispatch }: StateContext<SectionsStateModel>, { contentId, sectionId, pubStatus }: Sections.Publish) {
         return this.stuffService.publishSection(contentId, sectionId, pubStatus).pipe(tap((result: Section) => {
             setState(patch({
                 sections: updateItem<Section>(section => section._id === result._id, result),
                 currSection: result
             }));
+            dispatch(new MyStuff.UpdateWordcount(result, pubStatus));
         }), catchError(err => {
             this.alerts.error(err.error);
             return throwError(err);

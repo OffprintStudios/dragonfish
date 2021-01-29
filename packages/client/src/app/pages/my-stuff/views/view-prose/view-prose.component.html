@@ -40,8 +40,10 @@
             <span class="divider">//</span>
             <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myProse.stats.dislikes | abbreviate }}</span>
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myProse.stats.words | abbreviate }}</span>
-            <span class="divider">//</span>
+            <ng-container *ngIf="currContentWordCount$ | async as wordCount">
+                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ wordCount | abbreviate }}</span>
+                <span class="divider">//</span>
+            </ng-container>
             <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myProse.createdAt | localedate:'mediumDate' }}</span>
             <span class="divider">//</span>
             <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[myProse.meta.status] }}</span>
