@@ -2,6 +2,8 @@ import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsFor
 import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {
+    export type FormType = CreateProse | CreatePoetry | BlogForm | NewsForm;
+
     export class SetFiles {
         static readonly type = '[MyStuff] Set Files';
         constructor () {}
@@ -14,12 +16,12 @@ export namespace MyStuff {
 
     export class CreateContent {
         static readonly type = '[MyStuff] Create Content';
-        constructor (public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
+        constructor (public kind: ContentKind, public formInfo: FormType) {}
     }
 
     export class SaveContent {
         static readonly type = '[MyStuff] Save Content';
-        constructor (public contentId: string, public kind: ContentKind, public formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm) {}
+        constructor (public contentId: string, public kind: ContentKind, public formInfo: FormType) {}
     }
 
     export class DeleteContent {

@@ -1,10 +1,10 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Select } from '@ngxs/store';
 import { ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
 import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
+import { MyStuffState } from '../../../shared/my-stuff';
+import { MyStuffService } from '../my-stuff.service';
 
 @UntilDestroy()
 @Component({
@@ -22,7 +22,7 @@ export class ContentItemComponent implements OnInit {
     contentKind = ContentKind;
     pubStatus = PubStatus;
 
-    constructor() {}
+    constructor(private stuff: MyStuffService) {}
 
     ngOnInit(): void {
         this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
@@ -38,9 +38,8 @@ export class ContentItemComponent implements OnInit {
         });
     }
 
-    @Dispatch()
     setCurrContent() {
-        return new MyStuff.SetCurrentContent(this.content);
+        this.stuff.setCurrContent(this.content);
     }
 
     view() {

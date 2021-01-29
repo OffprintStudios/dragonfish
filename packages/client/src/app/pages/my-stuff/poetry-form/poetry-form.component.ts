@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
-import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
+import { MyStuffState } from '../../../shared/my-stuff';
 
 import { WorkKind, CreatePoetry, PoetryForm, Genres, 
   ContentRating, WorkStatus, PoetryContent, ContentKind } from '@pulp-fiction/models/content';
-import { PoetryService } from '../../../services/user';
-import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '../../../shared/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MyStuffService } from '../my-stuff.service';
 
 @UntilDestroy()
 @Component({
@@ -41,7 +38,7 @@ export class PoetryFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private poetryService: PoetryService, private alerts: AlertsService) {}
+    constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
         this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
@@ -95,19 +92,9 @@ export class PoetryFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.saveContent(contentId, ContentKind.PoetryContent, poetryInfo);
+            this.stuff.saveContent(contentId, ContentKind.PoetryContent, poetryInfo);
         } else {
-            this.createContent(ContentKind.PoetryContent, poetryInfo);
+            this.stuff.createContent(ContentKind.PoetryContent, poetryInfo);
         }
-    }
-
-    @Dispatch()
-    private createContent(kind: ContentKind, formInfo: CreatePoetry) {
-        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
-    }
-
-    @Dispatch()
-    private saveContent(contentId: string, kind: ContentKind, formInfo: CreatePoetry) {
-        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

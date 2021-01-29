@@ -16,6 +16,7 @@ import { AlertsService } from '../../shared/alerts';
 import { FrontendUser, Roles, UserInfo } from '@pulp-fiction/models/users';
 import { Navigate } from '@ngxs/router-plugin';
 import { isAllowed } from '../../util/functions';
+import { MyStuffService } from './my-stuff.service';
 
 @UntilDestroy()
 @Component({
@@ -37,8 +38,8 @@ export class MyStuffComponent implements OnInit {
       query: new FormControl('')
     });
 
-    constructor (public route: ActivatedRoute, private clipboard: Clipboard, 
-        private alerts: AlertsService, private router: Router) {
+    constructor (public route: ActivatedRoute, private clipboard: Clipboard, private alerts: AlertsService, private router: Router,
+        private stuffService: MyStuffService) {
             this.currUser$.pipe(untilDestroyed(this)).subscribe(x => {
                 this.currentUser = x;
             });
@@ -58,20 +59,17 @@ export class MyStuffComponent implements OnInit {
      * 
      * @param content The content to publish
      */
-    @Dispatch()
     publishOne(content: ContentModel) {
         const pubChange: PubChange = {
             oldStatus: content.audit.published,
             newStatus: content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished
         };
-        
-        console.log(content);
 
         if (content.kind === ContentKind.BlogContent || content.kind === ContentKind.NewsContent) {
-            return new MyStuff.PublishContent(content._id, pubChange);
+            this.stuffService.publishContent(content._id, pubChange)
         } else if (content.kind === ContentKind.PoetryContent || content.kind === ContentKind.ProseContent) {
             if (content.audit.published === PubStatus.Unpublished) {
-                return new MyStuff.PublishContent(content._id);
+                this.stuffService.publishContent(content._id);
             } else {
                 return;
             }
@@ -85,10 +83,9 @@ export class MyStuffComponent implements OnInit {
      * 
      * @param contentId The content ID
      */
-    @Dispatch() 
     deleteContent(contentId: string) {
         if (confirm(`Are you sure you want to delete this? This action is irreversible.`)) {
-            return new MyStuff.DeleteContent(contentId);
+            this.stuffService.deleteContent(contentId);
         } else {
             return;
         }

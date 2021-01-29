@@ -9,6 +9,7 @@ import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
 import { MyStuffState, MyStuff } from '../../../../shared/my-stuff';
 import { ContentRating, ContentKind, NewsForm } from '@pulp-fiction/models/content';
 import { AlertsService } from 'packages/client/src/app/shared/alerts';
+import { MyStuffService } from '../../my-stuff.service';
 
 @UntilDestroy()
 @Component({
@@ -30,7 +31,7 @@ export class NewsFormComponent implements OnInit {
         category: new FormControl(null, [Validators.required])
     });
 
-    constructor(private alerts: AlertsService) {}
+    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
 
     ngOnInit(): void {
         this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
@@ -78,20 +79,10 @@ export class NewsFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.saveContent(contentId, ContentKind.NewsContent, formData);
+            this.editMode = false;
+            this.stuff.saveContent(contentId, ContentKind.NewsContent, formData);
         } else {
-            this.createContent(ContentKind.NewsContent, formData);
+            this.stuff.createContent(ContentKind.NewsContent, formData);
         }
-    }
-
-    @Dispatch()
-    private createContent(kind: ContentKind, formInfo: NewsForm) {
-        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
-    }
-
-    @Dispatch()
-    private saveContent(contentId: string, kind: ContentKind, formInfo: NewsForm) {
-        this.editMode = false;
-        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

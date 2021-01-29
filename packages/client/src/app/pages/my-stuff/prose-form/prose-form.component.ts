@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { MyStuff, MyStuffState } from '../../../shared/my-stuff';
+import { MyStuffState } from '../../../shared/my-stuff';
 
-import { WorkKind, Genres, ContentRating, WorkStatus, CreateProse, ProseContent, ContentKind } from '@pulp-fiction/models/content';
-import { ProseService } from '../../../services/user';
+import { WorkKind, Genres, ContentRating, WorkStatus, 
+    CreateProse, ProseContent, ContentKind } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../../shared/alerts';
+import { MyStuffService } from '../my-stuff.service';
 
 @UntilDestroy()
 @Component({
@@ -36,7 +35,7 @@ export class ProseFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private proseService: ProseService, private alerts: AlertsService) {}
+    constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
         this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
@@ -84,19 +83,9 @@ export class ProseFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.saveContent(contentId, ContentKind.ProseContent, proseInfo);
+            this.stuff.saveContent(contentId, ContentKind.ProseContent, proseInfo);
         } else {
-            this.createContent(ContentKind.ProseContent, proseInfo);
+            this.stuff.createContent(ContentKind.ProseContent, proseInfo);
         }
-    }
-
-    @Dispatch()
-    private createContent(kind: ContentKind, formInfo: CreateProse) {
-        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
-    }
-
-    @Dispatch()
-    private saveContent(contentId: string, kind: ContentKind, formInfo: CreateProse) {
-        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

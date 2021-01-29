@@ -1,22 +1,24 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
-import { SectionsService } from '../../../services/user';
-import { AuthorsNotePos, PublishSection, SectionForm } from '@pulp-fiction/models/sections';
-import { SectionItem } from '../viewmodels';
-import { getQuillHtml } from '../../../util/functions';
+import { AuthorsNotePos, PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { SectionsState } from '../../../shared/my-stuff/sections';
+import { AlertsService } from '../../../shared/alerts';
+import { MyStuffService } from '../my-stuff.service';
 
+@UntilDestroy()
 @Component({
     selector: 'section-item',
     templateUrl: './section-item.component.html',
     styleUrls: ['./section-item.component.less']
 })
-export class SectionItemComponent implements OnInit, OnChanges {
+export class SectionItemComponent implements OnInit {
+    @Select(SectionsState.currSection) currSection$: Observable<Section>
+
     @Input() contentId: string;
-    @Input() section: SectionItem;
-    @Input() selected: boolean;
-    @Output() selectItem = new EventEmitter<boolean>();
 
     previewMode = true;
     authorsNotePosOptions = AuthorsNotePos;
@@ -28,42 +30,28 @@ export class SectionItemComponent implements OnInit, OnChanges {
         authorsNotePos: new FormControl(null)
     });
 
-    constructor(private snackBar: MatSnackBar, private sectionsService: SectionsService) {}
+    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
 
     get fields() { return this.editForm.controls; }
 
     ngOnInit(): void {
-        this.editForm.setValue({
-            title: this.section.title,
-            body: this.section.body,
-            authorsNote: this.section.authorsNote,
-            authorsNotePos: this.section.authorsNotePos
+        this.currSection$.pipe(untilDestroyed(this)).subscribe(x => {
+            if (x !== null) {
+                this.editForm.setValue({
+                    title: x.title,
+                    body: x.body,
+                    authorsNote: x.authorsNote,
+                    authorsNotePos: x.authorsNotePos
+                });
+            } else {
+                this.editForm.setValue({
+                    title: '',
+                    body: '',
+                    authorsNote: '',
+                    authorsNotePos: null
+                });
+            }
         });
-    }
-
-    ngOnChanges(): void {
-        // First, clear the contents of the Body and Author's Note. This is because
-        // Quill REALLY struggles when making large changes. However, going to
-        // or from an empty string is very fast.
-        this.editForm.setValue({
-            title: "",
-            body: "",
-            authorsNote: "",
-            authorsNotePos: AuthorsNotePos.Bottom
-        });
-
-        this.editForm.setValue({
-            title: this.section.title,
-            body: this.section.body,
-            authorsNote: this.section.authorsNote,
-            authorsNotePos: this.section.authorsNotePos
-        });
-    }
-
-    select() {
-        this.selectItem.emit(true);
-        this.section.selected = true;
-        this.selected = true;
     }
 
     switchView() {
@@ -74,14 +62,14 @@ export class SectionItemComponent implements OnInit, OnChanges {
         }
     }
 
-    saveChanges() {
+    saveChanges(section: Section) {
         if (this.fields.title.invalid) {
-            this.snackBar.open(`Titles must be between 3 and 100 characters.`);
+            this.alerts.warn(`Titles must be between 3 and 100 characters.`);
             return;
         }
 
         if (this.fields.body.invalid) {
-            this.snackBar.open(`Body text must be more than 3 characters long.`);
+            this.alerts.warn(`Body text must be more than 3 characters long.`);
             return;
         }
 
@@ -91,33 +79,22 @@ export class SectionItemComponent implements OnInit, OnChanges {
             usesNewEditor: true,
             authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
-            oldWords: this.section.stats.words
+            oldWords: section.stats.words
         };
 
-        this.sectionsService.editSection(this.contentId, this.section._id, sectionInfo).subscribe(sec => {
-            this.section = sec as SectionItem;
-            this.switchView();
-            this.snackBar.open(`Your changes have been saved!`);
-        }, err => {
-            this.snackBar.open(`Something went wrong saving this section!`);
-        });
+        this.stuff.saveSection(this.contentId, section._id, sectionInfo);
     }
 
-    deleteSection() {
-        this.sectionsService.deleteSection(this.contentId, this.section._id).subscribe(() => {
-            location.reload();
-        });
+    delete(sectionId: string) {
+        this.stuff.deleteSection(this.contentId, sectionId);
     }
 
-    pubUnpub() {
+    pubUnpub(section: Section) {
         const pubStatus: PublishSection = {
-            oldPub: this.section.published,
-            newPub: !this.section.published
+            oldPub: section.published,
+            newPub: !section.published
         }
 
-        this.sectionsService.publishSection(this.contentId, this.section._id, pubStatus).subscribe(sec => {
-            this.section = sec as SectionItem;
-            location.reload();
-        });
+        this.stuff.publishSection(this.contentId, section._id, pubStatus);
     }
 }

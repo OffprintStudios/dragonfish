@@ -45,7 +45,8 @@ export class SectionsState {
         return this.stuffService.createSection(contentId, sectionInfo).pipe(tap((result: Section) => {
             this.alerts.success(`Section created!`);
             patchState({
-                sections: [...getState().sections, result]
+                sections: [...getState().sections, result],
+                currSection: result
             });
         }), catchError(err => {
             this.alerts.error(err.error);

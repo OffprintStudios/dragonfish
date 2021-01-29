@@ -9,3 +9,6 @@ export { BlogFormComponent } from './views/blog-form/blog-form.component';
 export { NewsFormComponent } from './views/news-form/news-form.component';
 export { ViewProseComponent } from './views/view-prose/view-prose.component';
 export { ViewPoetryComponent } from './views/view-poetry/view-poetry.component';
+export { ViewSectionsResolver } from './views/view-sections.resolver';
+
+export { MyStuffService } from './my-stuff.service';

@@ -9,7 +9,7 @@ import { PortfolioComponent, PortHomeComponent, BlogPageComponent,
   ConversationsComponent, HistoryComponent } from './pages/portfolio';
 
 import { MyStuffComponent, ProseFormComponent, BlogFormComponent, PoetryFormComponent,
-  ViewProseComponent, ViewPoetryComponent, MyStuffResolver, NewsFormComponent } from './pages/my-stuff';
+  ViewProseComponent, ViewPoetryComponent, MyStuffResolver, NewsFormComponent, ViewSectionsResolver } from './pages/my-stuff';
   
 import { BrowseComponent, SocialComponent } from './pages';
   
@@ -55,8 +55,8 @@ const routes: Routes = [
       {path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]},
       {path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard]},
       {path: 'view-post', component: NewsFormComponent, canActivate: [AuthGuard], data: {roles: [Roles.Contributor, Roles.Moderator, Roles.Admin]}},
-      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard]},
-      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard]},
+      {path: 'view-prose', component: ViewProseComponent, canActivate: [AuthGuard], resolve: {sectionData: ViewSectionsResolver}},
+      {path: 'view-poetry', component: ViewPoetryComponent, canActivate: [AuthGuard], resolve: {sectionData: ViewSectionsResolver}},
       {path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard]},
       {path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard]}
     ]},
@@ -121,7 +121,7 @@ const routes: Routes = [
     providers: [
       PortfolioResolver, BrowseResolver,
       MyWorksResolver, MyBlogsResolver, NewsResolver,
-      CollectionPageResolver, MyStuffResolver,
+      CollectionPageResolver, MyStuffResolver, ViewSectionsResolver,
       MigrationResolver, MigrateWorkResolver, MigrateBlogResolver, CollectionsResolver, HistoryResolver,
       ApprovalQueueResolver, NewsManagementResolver, PostFormResolver, SiteStaffResolver, SupportersResolver,
       HomePageResolver, ApproveContentResolver, ContentViewResolver, BlogsResolver, WorksResolver
