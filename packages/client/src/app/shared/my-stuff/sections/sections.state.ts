@@ -25,7 +25,7 @@ export class SectionsState {
     public setAll({ patchState }: StateContext<SectionsStateModel>, { contentId }: Sections.SetAll) {
         return this.stuffService.fetchSections(contentId).pipe(tap((result: Section[]) => {
             patchState({
-                sections: result
+                sections: result.reverse()
             });
         }), catchError(err => {
             this.alerts.error(err.error);

@@ -38,4 +38,9 @@ export namespace MyStuff {
         static readonly type = '[MyStuff] Upload Cover Art';
         constructor (public kind: ContentKind, public uploader: FileUploader) {}
     }
+
+    export class UpdateWordcount {
+        static readonly type = '[MyStuff] Update Wordcount';
+        constructor () {}
+    }
 }

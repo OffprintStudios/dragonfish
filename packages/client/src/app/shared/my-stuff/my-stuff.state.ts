@@ -15,7 +15,8 @@ import { SectionsState } from './sections';
     name: 'myStuff',
     defaults: {
         myStuff: [],
-        currContent: null
+        currContent: null,
+        currContentWordCount: 0
     },
     children: [SectionsState]
 })
@@ -108,6 +109,11 @@ export class MyStuffState {
             dispatch(new Alerts.Error(`Something went wrong! Try again in a little bit.`));
             return throwError(err);
         }));
+    }
+
+    @Action(MyStuff.UpdateWordcount)
+    public updateWordcount() {
+        
     }
 
     /* Selectors */
