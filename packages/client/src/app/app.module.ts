@@ -63,7 +63,7 @@ import { ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewCompon
 import { PostFormComponent } from './pages/dash/news-management';
 import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent, SupportersComponent } from './pages/docs';
 
-import { UploadCoverartComponent } from './components/modals/works';
+import { UploadCoverartComponent } from './pages/my-stuff/components';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';

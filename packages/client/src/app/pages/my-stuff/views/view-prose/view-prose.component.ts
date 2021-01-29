@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SectionsState, SectionsStateModel } from 'packages/client/src/app/shared/my-stuff/sections';
 import { AlertsService } from 'packages/client/src/app/shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
-import { UploadCoverartComponent } from 'packages/client/src/app/components/modals/works';
+import { UploadCoverartComponent } from '../../components';
 
 @Component({
     selector: 'view-prose',

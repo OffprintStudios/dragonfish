@@ -1,0 +1,1 @@
+export { UploadCoverartComponent } from './upload-coverart/upload-coverart.component';

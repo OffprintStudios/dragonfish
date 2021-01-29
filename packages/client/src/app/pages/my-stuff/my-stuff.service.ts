@@ -43,8 +43,8 @@ export class MyStuffService {
     }
 
     @Dispatch()
-    public uploadCoverArt(kind: ContentKind, uploader: FileUploader) {
-        return new MyStuff.UploadCoverArt(kind, uploader);
+    public uploadCoverArt(uploader: FileUploader) {
+        return new MyStuff.UploadCoverArt(uploader);
     }
 
     @Dispatch()

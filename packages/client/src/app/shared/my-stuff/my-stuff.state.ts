@@ -95,12 +95,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.UploadCoverArt)
-    public uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { kind, uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
-        if (kind === ContentKind.BlogContent || kind === ContentKind.NewsContent) {
-            dispatch(new Alerts.Error(`Incorrect content type for this action.`));
-            return;
-        }
-
+    public uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
         return this.stuffService.uploadCoverart(uploader).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
