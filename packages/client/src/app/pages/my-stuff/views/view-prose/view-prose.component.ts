@@ -83,6 +83,7 @@ export class ViewProseComponent implements OnInit {
         };
 
         this.stuff.createSection(contentId, sectionForm);
+        this.editMode = false;
     }
 
     uploadCoverart(contentId: string) {
