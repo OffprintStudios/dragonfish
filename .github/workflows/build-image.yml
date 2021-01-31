@@ -28,6 +28,6 @@ jobs:
 
       - name: Push to DigitalOcean
         uses: ripplr-io/docr-docker-publish@v1
-          with:
-            image_path: pulp-fiction-containers/pulp-fiction:${{ github.events.inputs.version }} # required
-            sha_size: '8'
+        with:
+          image_path: pulp-fiction-containers/pulp-fiction:${{ github.events.inputs.version }} # required
+          sha_size: '8'
