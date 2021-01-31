@@ -1,0 +1,32 @@
+name: Build Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Image Version',
+        required: true
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the Latest Master
+        uses: actions/checkout@v2
+
+      - name: Build Image
+        run: docker build -f .render/production.Dockerfile -t pulp-fiction:test .
+
+      - name: Install Doctl
+        uses: digitalocean/action-doctl@v2
+          with: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to the Offprint DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Push to DigitalOcean
+        uses: ripplr-io/docr-docker-publish@v1
+          with:
+            image_path: pulp-fiction-containers/pulp-fiction:${{ github.events.inputs.version }} # required
+            sha_size: '8'
