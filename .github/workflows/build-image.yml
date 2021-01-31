@@ -20,7 +20,8 @@ jobs:
 
       - name: Install Doctl
         uses: digitalocean/action-doctl@v2
-          with: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          with: 
+            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: Log in to the Offprint DO Container Registry
         run: doctl registry login --expiry-seconds 600
