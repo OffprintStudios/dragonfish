@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Image
-        run: docker build -f .render/production.Dockerfile -t pulp-fiction:test .
+        run: docker build -f .render/testing-deployment.Dockerfile -t pulp-fiction:test .
 
       - name: Install Doctl
         uses: digitalocean/action-doctl@v2
