@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Image
-        run: docker build -f .render/testing-deployment.Dockerfile -t pulp-fiction/test .
+        run: docker build -f .render/testing-deployment.Dockerfile -t registry.digitalocean.com/pulp-fiction-containers/test:env .
 
       - name: Install Doctl
         uses: digitalocean/action-doctl@v2
@@ -26,11 +26,6 @@ jobs:
       - name: Log in to the Offprint DO Container Registry
         run: doctl registry login --expiry-seconds 600
 
-      - name: Tag Image
-        run: 
-          docker tag pulp-fiction/test \ 
-          registry.digitalocean.com/my-sample-registry/my-sample-page:${{github.event.inputs.version }}
-
       - name: Push to DigitalOcean
-        run: docker push registry.digitalocean.com/pulp-fiction-containers/pulp-fiction:${{ github.event.inputs.version }}
+        run: docker push registry.digitalocean.com/pulp-fiction-containers/test:env
         
