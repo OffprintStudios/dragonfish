@@ -27,5 +27,5 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Push to DigitalOcean
-        run: docker push registry.digitalocean.com/pulp-fiction-containers/pulp-fiction:${{ github.event.inputs.version }}
+        run: docker push pulp-fiction/test
         
