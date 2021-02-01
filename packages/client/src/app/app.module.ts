@@ -10,6 +10,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
+import { NgxsSelectSnapshotModule } from '@ngxs-labs/select-snapshot';
 
 import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
@@ -62,7 +63,7 @@ import { ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewCompon
 import { PostFormComponent } from './pages/dash/news-management';
 import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent, SupportersComponent } from './pages/docs';
 
-import { UploadCoverartComponent } from './components/modals/works';
+import { UploadCoverartComponent } from './pages/my-stuff/components';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
@@ -86,6 +87,7 @@ import { ContentApprovalComponent } from './components/content-approval';
 import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
+import { SectionsState } from './shared/my-stuff/sections';
 
 @NgModule({
   declarations: [
@@ -114,18 +116,17 @@ import { environment } from '../environments/environment';
     NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
     LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
     NgxsModule.forRoot([
-      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState
+      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState, SectionsState
     ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
     NgxsStoragePluginModule.forRoot({
       key: [
-        'auth', 'user', 'global', 'myStuff.currContent', 'approvalQueue.selectedDoc', 
+        'auth', 'user', 'global', 'myStuff.currContent', 'myStuff.currContentWordCount', 'myStuff.sections.currSection', 'approvalQueue.selectedDoc', 
         'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
       ]
     }),
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(),
-    MarkdownModule.forRoot(),
-    CookieModule.forRoot()
+    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
+    NgxsDispatchPluginModule.forRoot(), MarkdownModule.forRoot(), CookieModule.forRoot(),
+    NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsSelectSnapshotModule.forRoot()
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},

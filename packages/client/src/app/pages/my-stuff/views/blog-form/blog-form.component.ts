@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
-import { MyStuff, MyStuffState } from '../../../../shared/my-stuff';
+import { MyStuffState } from '../../../../shared/my-stuff';
 
 import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@pulp-fiction/models/content';
 import { AlertsService } from '../../../../shared/alerts';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
-import { Navigate } from '@ngxs/router-plugin';
-
+import { MyStuffService } from '../../my-stuff.service';
 
 @Component({
     selector: 'pulp-fiction-blog-form',
@@ -29,7 +27,7 @@ export class BlogFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required])
     });
 
-    constructor(private alerts: AlertsService) { }
+    constructor(private alerts: AlertsService, private stuff: MyStuffService) { }
 
     ngOnInit(): void {
         this.currContent$.subscribe(content => {
@@ -74,20 +72,10 @@ export class BlogFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.saveContent(contentId, ContentKind.BlogContent, formData);
+            this.stuff.saveContent(contentId, ContentKind.BlogContent, formData);
+            this.editMode = false;
         } else {
-            this.createContent(ContentKind.BlogContent, formData);
+            this.stuff.createContent(ContentKind.BlogContent, formData);
         }
-    }
-
-    @Dispatch()
-    private createContent(kind: ContentKind, formInfo: BlogForm) {
-        return [new MyStuff.CreateContent(kind, formInfo), new Navigate(['/my-stuff'])];
-    }
-
-    @Dispatch()
-    private saveContent(contentId: string, kind: ContentKind, formInfo: BlogForm) {
-        this.editMode = false;
-        return new MyStuff.SaveContent(contentId, kind, formInfo);
     }
 }

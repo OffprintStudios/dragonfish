@@ -2445,6 +2445,11 @@
   dependencies:
     tslib "^1.9.0"
 
+"@ngxs-labs/select-snapshot@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@ngxs-labs/select-snapshot/-/select-snapshot-2.0.1.tgz#823a62666ca36aa8f6de42911aac5368606db256"
+  integrity sha512-trFLg1W/Knju/sx41cSEW7GEdXhdP3VA+ZyfQChm2DK6+yE6MpUvAGyxMEp6Vt1yA83GFDpds1jLY1PES1U9wA==
+
 "@ngxs/devtools-plugin@^3.7.1":
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/@ngxs/devtools-plugin/-/devtools-plugin-3.7.1.tgz#e0abb97f0fb239236b135f15b82704289c96774b"

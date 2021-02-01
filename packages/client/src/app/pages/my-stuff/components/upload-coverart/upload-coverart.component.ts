@@ -8,10 +8,9 @@ import { UserState } from '../../../../shared/user';
 import { AuthState } from '../../../../shared/auth';
 
 import { AlertsService } from '../../../../shared/alerts';
-import { HttpError } from '../../../../models/site';
-import { WorksService } from '../../../../services/content';
 import { FrontendUser } from '@pulp-fiction/models/users';
 import { ContentKind } from '@pulp-fiction/models/content';
+import { MyStuffService } from '../../my-stuff.service';
 
 @Component({
   selector: 'app-upload-coverart',
@@ -44,7 +43,7 @@ export class UploadCoverartComponent implements OnInit {
    */
   newImageAdded: boolean = true;
 
-  constructor(private worksService: WorksService, private alertsService: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
+  constructor(private stuff: MyStuffService, private alerts: AlertsService, private dialogRef: MatDialogRef<UploadCoverartComponent>,
     @Inject(MAT_DIALOG_DATA) private data: {kind: ContentKind, contentId: string}, private store: Store) {
       this.currentUserSubscription = this.currentUser$.subscribe(x => {
         this.currentUser = x;
@@ -115,7 +114,7 @@ export class UploadCoverartComponent implements OnInit {
   }
 
   loadImageFailed(): void {
-    this.alertsService.error(`Seems like we can't load the image. Is something wrong with it? We only support PNG, JPEG and GIF.`);
+    this.alerts.error(`Seems like we can't load the image. Is something wrong with it? We only support PNG, JPEG and GIF.`);
   }
 
   base64ToFile(data: any, filename: string): File {
@@ -143,17 +142,10 @@ export class UploadCoverartComponent implements OnInit {
     this.loading = true;
     this.uploader.clearQueue();
     this.uploader.addToQueue([this.fileToReturn]);
-    this.worksService.changeCoverArt(this.uploader).subscribe(
-      () => {
-        this.loading = false;
-        this.alertsService.success('Cover art uploaded successfully!');
-        this.dialogRef.close();
-      },
-      (error: HttpError) => {
-        this.loading = false;        
-        this.alertsService.error(`Failed to upload your cover art. ${error.message} (HTTP ${error.statusCode} ${error.error})`);
-      },
-    );
+
+    this.stuff.uploadCoverArt(this.uploader);
+    this.loading = false;
+    this.dialogRef.close();
   }
 
   snapCropperToBorders(event: ImageCroppedEvent): void {     

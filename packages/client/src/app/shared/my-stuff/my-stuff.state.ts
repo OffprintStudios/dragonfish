@@ -9,20 +9,23 @@ import { MyStuffStateModel } from './my-stuff-state.model';
 import { MyStuffService } from './services';
 import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
 import { Alerts } from '../alerts';
+import { SectionsState } from './sections';
 
 @State<MyStuffStateModel>({
     name: 'myStuff',
     defaults: {
         myStuff: [],
-        currContent: null
-    }
+        currContent: null,
+        currContentWordCount: 0
+    },
+    children: [SectionsState]
 })
 @Injectable()
 export class MyStuffState {
     constructor (private stuffService: MyStuffService) { }
 
     @Action(MyStuff.SetFiles)
-    setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
+    public setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
         return this.stuffService.fetchAll().pipe(tap((result: ContentModel[]) => {
             patchState({
                 myStuff: result
@@ -31,14 +34,15 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.SetCurrentContent)
-    setCurrentContent({ patchState }: StateContext<MyStuffStateModel>, { content }: MyStuff.SetCurrentContent): void {
+    public setCurrentContent({ patchState }: StateContext<MyStuffStateModel>, { content }: MyStuff.SetCurrentContent): void {
         patchState({
-            currContent: content
+            currContent: content,
+            currContentWordCount: content === null ? 0 : content.stats.words
         });
     }
 
     @Action(MyStuff.CreateContent)
-    createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent): Observable<ContentModel> {
+    public createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent): Observable<ContentModel> {
         return this.stuffService.createContent(kind, formInfo).pipe(tap((result: ContentModel) => {
             dispatch(new Alerts.Success(`Content saved!`));
             patchState({
@@ -51,7 +55,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.SaveContent)
-    saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
+    public saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
         return this.stuffService.saveContent(contentId, kind, formInfo).pipe(tap((result: ContentModel) => {
             dispatch(new Alerts.Success(`Changes saved!`));
             setState(patch({
@@ -65,7 +69,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.DeleteContent)
-    deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent): Observable<void> {
+    public deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent): Observable<void> {
         return this.stuffService.deleteOne(contentId).pipe(tap((_res: void) => {
             setState(patch({
                 myStuff: removeItem<ContentModel>(content => content._id === contentId),
@@ -78,7 +82,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.PublishContent)
-    publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, pubChange }: MyStuff.PublishContent): Observable<ContentModel> {
+    public publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, pubChange }: MyStuff.PublishContent): Observable<ContentModel> {
         return this.stuffService.publishOne(contentId, pubChange).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
@@ -91,12 +95,7 @@ export class MyStuffState {
     }
 
     @Action(MyStuff.UploadCoverArt)
-    uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { kind, uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
-        if (kind === ContentKind.BlogContent || kind === ContentKind.NewsContent) {
-            dispatch(new Alerts.Error(`Incorrect content type for this action.`));
-            return;
-        }
-
+    public uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
         return this.stuffService.uploadCoverart(uploader).pipe(tap((result: ContentModel) => {
             setState(patch({
                 myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
@@ -108,15 +107,33 @@ export class MyStuffState {
         }));
     }
 
+    @Action(MyStuff.UpdateWordcount)
+    public updateWordcount({ getState, patchState }: StateContext<MyStuffStateModel>, { section, pubStatus }: MyStuff.UpdateWordcount) {
+        if (section.published === true && pubStatus.oldPub === false) { // if newly published
+            patchState({
+                currContentWordCount: getState().currContentWordCount + section.stats.words
+            });
+        } else if (section.published === false && pubStatus.oldPub === true) { // if unpublished
+            patchState({
+                currContentWordCount: getState().currContentWordCount - section.stats.words
+            });
+        };
+    }
+
     /* Selectors */
 
     @Selector()
-    static myStuff(state: MyStuffStateModel): ContentModel[] {
+    public static myStuff(state: MyStuffStateModel): ContentModel[] {
         return state.myStuff;
     }
 
     @Selector()
-    static currContent(state: MyStuffStateModel): ContentModel {
+    public static currContent(state: MyStuffStateModel): ContentModel {
         return state.currContent;
+    }
+
+    @Selector()
+    public static currContentWordCount(state: MyStuffStateModel): number {
+        return state.currContentWordCount;
     }
 }

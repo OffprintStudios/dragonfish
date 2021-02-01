@@ -7,6 +7,7 @@ import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { ContentModel, ContentKind, CreateProse, 
     BlogForm, CreatePoetry, NewsForm, PubChange } from '@pulp-fiction/models/content';
 import { HttpError } from '../../../models/site';
+import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
 
 @Injectable({
     providedIn: 'root'
@@ -140,6 +141,83 @@ export class MyStuffService {
     
             uploader.uploadAll();
         });   
+    }
+
+    /**
+     * Fetches the sections belonging to the specified piece of content given its ID.
+     * 
+     * @param contentId The content ID
+     */
+    public fetchSections(contentId: string): Observable<Section[]> {
+        return this.http.get<Section[]>(`${this.url}/sections/fetch-user-content-sections?contentId=${contentId}`, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+
+    /**
+     * Sends a request to create a new section for the specified piece of content, given the content's ID
+     * and the new section info.
+     * 
+     * @param contentId The content ID
+     * @param sectionInfo The info for the new section
+     */
+    public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
+        return this.http.put<Section>(`${this.url}/sections/create-section?contentId=${contentId}`, sectionInfo, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+    
+    /**
+     * Sends a request to save any edits to the specified section, belonging to the specified content.
+     * 
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param sectionInfo The info to save
+     */
+    public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
+        return this.http.patch<Section>(`${this.url}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`, sectionInfo, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+    
+    /**
+     * Sends a request to delete the specified section, belonging to the specified content.
+     * 
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     */
+    public deleteSection(contentId: string, sectionId: string): Observable<Section> {
+        return this.http.patch<Section>(`${this.url}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`, {}, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
+    }
+    
+    /**
+     * Sends a request to flip the current publishing status of the specified section.
+     * 
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param pubStatus The publishing status
+     */
+    public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
+        return this.http.patch<Section>(`${this.url}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
+            .pipe(map(res => {
+                return res.body;
+            }), catchError(err => {
+                return throwError(err);
+            }));
     }
 
     /**
