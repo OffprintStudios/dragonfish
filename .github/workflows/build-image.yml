@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build Image
-        run: docker build -f .render/testing-deployment.Dockerfile -t pulp-fiction/test .
+        run: docker build -f .render/testing-deployment.Dockerfile -t registry.digitalocean.com/pulp-fiction-containers/test:env .
 
       - name: Install Doctl
         uses: digitalocean/action-doctl@v2
@@ -27,5 +27,5 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Push to DigitalOcean
-        run: docker push pulp-fiction/test
+        run: docker push registry.digitalocean.com/pulp-fiction-containers/test:env
         
