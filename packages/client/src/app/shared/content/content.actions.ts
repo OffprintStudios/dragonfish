@@ -1,4 +1,4 @@
-import { ContentKind, SectionInfo, SetRating } from "@pulp-fiction/models/content";
+import { ContentKind, SectionInfo, SetRating } from "@dragonfish/models/content";
 
 export namespace Content {
     export class FetchOne {

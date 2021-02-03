@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Navigate } from '@ngxs/router-plugin';
 
-import { ContentKind, ContentModel, PubChange } from '@pulp-fiction/models/content';
-import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { ContentKind, ContentModel, PubChange } from '@dragonfish/models/content';
+import { PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 import { FileUploader } from 'ng2-file-upload';
 import { MyStuff } from '../../shared/my-stuff';
 import { Sections } from '../../shared/my-stuff/sections';

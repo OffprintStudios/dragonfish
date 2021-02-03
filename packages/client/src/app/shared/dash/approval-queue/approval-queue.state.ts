@@ -7,12 +7,12 @@ import { append, patch, removeItem } from '@ngxs/store/operators';
 import { AQNamespace } from './approval-queue.actions';
 import { ApprovalQueueStateModel } from './approval-queue-state.model';
 import { ApprovalQueueService } from './services';
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
+import { PaginateResult } from '@dragonfish/models/util';
 import { UserState } from '../../user';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { PoetryContent, ProseContent, SectionInfo } from '@pulp-fiction/models/content';
-import { Section } from '@pulp-fiction/models/sections';
+import { FrontendUser } from '@dragonfish/models/users';
+import { PoetryContent, ProseContent, SectionInfo } from '@dragonfish/models/content';
+import { Section } from '@dragonfish/models/sections';
 import { Alerts } from '../../alerts';
 
 @State<ApprovalQueueStateModel>({

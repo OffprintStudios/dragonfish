@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { MyStuffState } from '../../../../shared/my-stuff';
 
-import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@pulp-fiction/models/content';
+import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
 
 @Component({
-    selector: 'pulp-fiction-blog-form',
+    selector: 'dragonfish-blog-form',
     templateUrl: './blog-form.component.html',
     styleUrls: ['./blog-form.component.less']
 })

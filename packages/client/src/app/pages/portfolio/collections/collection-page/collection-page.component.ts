@@ -6,8 +6,8 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../../shared/user';
 
-import { Collection } from '@pulp-fiction/models/collections';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { Collection } from '@dragonfish/models/collections';
+import { FrontendUser } from '@dragonfish/models/users';
 import { CreateCollectionComponent } from 'packages/client/src/app/components/modals/collections';
 import { CollectionsService } from 'packages/client/src/app/services/content';
 

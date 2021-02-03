@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 import { ApprovalQueueState } from '../../../../shared/dash/approval-queue';
 
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 
 @Injectable()
 export class ApproveContentResolver implements Resolve<ApprovalQueue> {

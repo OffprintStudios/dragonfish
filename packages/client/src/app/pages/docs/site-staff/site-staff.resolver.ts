@@ -4,9 +4,9 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, zip, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Work } from '@pulp-fiction/models/works';
-import { Blog } from '@pulp-fiction/models/blogs';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { Work } from '@dragonfish/models/works';
+import { Blog } from '@dragonfish/models/blogs';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()
 export class SiteStaffResolver implements Resolve<FrontendUser[]> {

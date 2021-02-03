@@ -1,4 +1,4 @@
-import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { NotificationBase } from '@dragonfish/models/notifications';
 
 export interface NotificationSelect extends NotificationBase {
     selected: boolean;

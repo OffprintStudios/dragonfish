@@ -8,8 +8,8 @@ import { UserState } from '../../../../shared/user';
 import { AuthState } from '../../../../shared/auth';
 
 import { AlertsService } from '../../../../shared/alerts';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
+import { ContentKind } from '@dragonfish/models/content';
 import { MyStuffService } from '../../my-stuff.service';
 
 @Component({

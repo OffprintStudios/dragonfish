@@ -5,8 +5,8 @@ import { Observable, zip, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { MigrationModel } from './migration.model';
-import { Work } from '@pulp-fiction/models/works';
-import { Blog } from '@pulp-fiction/models/blogs';
+import { Work } from '@dragonfish/models/works';
+import { Blog } from '@dragonfish/models/blogs';
 
 @Injectable()
 export class MigrationResolver implements Resolve<MigrationModel> {

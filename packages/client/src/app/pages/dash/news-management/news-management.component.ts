@@ -4,9 +4,9 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 
-import { NewsContentModel, PubStatus } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { NewsContentModel, PubStatus } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
+import { PaginateResult } from '@dragonfish/models/util';
 import { NewsManagementService } from './news-management.service';
 
 @Component({

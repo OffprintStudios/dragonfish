@@ -31,7 +31,7 @@ import { ApprovalQueueComponent, AuditLogComponent, DashComponent, GroupQueueCom
 
 import { ApprovalQueueResolver, ApproveContentResolver, ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/dash/approval-queue';
 import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 
 import { AboutOffprintComponent, CodeOfConductComponent, OmnibusComponent, TosComponent, SiteStaffComponent, SiteStaffResolver,
   SupportersComponent, SupportersResolver } from './pages/docs';

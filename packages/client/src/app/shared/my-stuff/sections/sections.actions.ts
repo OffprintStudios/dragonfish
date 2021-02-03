@@ -1,4 +1,4 @@
-import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 
 export namespace Sections {
     export class SetAll {

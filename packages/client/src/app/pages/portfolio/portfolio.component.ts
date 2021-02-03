@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../shared/user';
 
-import { FrontendUser, Roles } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles } from '@dragonfish/models/users';
 
 import { Title } from '../../shared';
 

@@ -6,13 +6,13 @@ import { tap } from 'rxjs/operators';
 import { Content } from './content.actions';
 import { ContentStateModel } from './content-state.model';
 import { ContentService } from './services';
-import { ContentKind, ContentModel, SectionInfo } from '@pulp-fiction/models/content';
-import { RatingOption } from '@pulp-fiction/models/reading-history';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { ContentKind, ContentModel, SectionInfo } from '@dragonfish/models/content';
+import { RatingOption } from '@dragonfish/models/reading-history';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
+import { FrontendUser } from '@dragonfish/models/users';
 import { UserState } from '../user';
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Section } from '@pulp-fiction/models/sections';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Section } from '@dragonfish/models/sections';
 
 /**
  * ## ContentState

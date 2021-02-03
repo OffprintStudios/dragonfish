@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 
-import { ContentModel } from '@pulp-fiction/models/content';
+import { ContentModel } from '@dragonfish/models/content';
 import { MyStuffState } from '../../../shared/my-stuff';
 import { Sections } from '../../../shared/my-stuff/sections';
 

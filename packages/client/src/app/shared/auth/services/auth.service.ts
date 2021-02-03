@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { FrontendUser, CreateUser, LoginUser } from '@pulp-fiction/models/users';
+import { FrontendUser, CreateUser, LoginUser } from '@dragonfish/models/users';
 
 /**
  * ## AuthService

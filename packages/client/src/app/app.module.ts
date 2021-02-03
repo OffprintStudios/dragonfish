@@ -23,13 +23,13 @@ import { AlertsState, AlertsComponent } from './shared/alerts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaterialModule } from '@pulp-fiction/material';
+import { MaterialModule } from '@dragonfish/material';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CookieModule } from 'ngx-cookie';
 import { Ng2FittextModule } from 'ng2-fittext';
-import { IconsModule } from '@pulp-fiction/icons';
+import { IconsModule } from '@dragonfish/icons';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';

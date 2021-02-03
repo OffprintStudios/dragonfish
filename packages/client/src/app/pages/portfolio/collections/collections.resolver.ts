@@ -4,10 +4,10 @@ import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { UserState } from '../../../shared/user';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 import { CollectionsService } from '../../../services/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Collection } from '@pulp-fiction/models/collections';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Collection } from '@dragonfish/models/collections';
 
 @Injectable()
 export class CollectionsResolver implements Resolve<PaginateResult<Collection>> {

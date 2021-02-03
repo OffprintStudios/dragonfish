@@ -4,9 +4,9 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../../shared/user';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 import { Title } from '../../../../shared';
-import { BlogsContentModel } from '@pulp-fiction/models/content';
+import { BlogsContentModel } from '@dragonfish/models/content';
 import { ContentState } from 'packages/client/src/app/shared/content';
 
 @Component({

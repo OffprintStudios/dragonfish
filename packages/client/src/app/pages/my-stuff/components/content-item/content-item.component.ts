@@ -1,6 +1,6 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { ContentKind, ContentModel, PubStatus } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel, PubStatus } from '@dragonfish/models/content';
 import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffState } from '../../../../shared/my-stuff';

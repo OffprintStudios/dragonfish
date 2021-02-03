@@ -6,8 +6,8 @@ import { EventSourcePolyfill } from 'ng-event-source';
 import { Select } from '@ngxs/store';
 import { UserState } from '../../shared/user';
 
-import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@pulp-fiction/models/notifications';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@dragonfish/models/notifications';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable({
     providedIn: 'root'

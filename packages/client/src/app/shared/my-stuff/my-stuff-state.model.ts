@@ -1,4 +1,4 @@
-import { ContentModel } from "@pulp-fiction/models/content";
+import { ContentModel } from "@dragonfish/models/content";
 
 export interface MyStuffStateModel {
     myStuff: ContentModel[];

@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { BlogComment, WorkComment, ContentComment, CreateComment, EditComment } from '@pulp-fiction/models/comments';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { BlogComment, WorkComment, ContentComment, CreateComment, EditComment } from '@dragonfish/models/comments';
+import { PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
 
 @Injectable({

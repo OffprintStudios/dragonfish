@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { User } from './user.actions';
 import { UserStateModel } from './user-state.model';
 import { UserService } from './services';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 import { Alerts } from '../alerts';
 
 @State<UserStateModel>({

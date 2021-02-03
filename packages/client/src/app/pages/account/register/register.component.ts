@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Constants, Title } from '../../../shared';
 import { Auth } from '../../../shared/auth';
 import { UserState } from '../../../shared/user';
-import { FrontendUser, CreateUser } from '@pulp-fiction/models/users';
+import { FrontendUser, CreateUser } from '@dragonfish/models/users';
 
 
 @Component({

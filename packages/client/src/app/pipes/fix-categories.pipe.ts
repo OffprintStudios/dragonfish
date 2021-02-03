@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WorkKind } from '@pulp-fiction/models/content';
-import { Categories } from '@pulp-fiction/models/works';
+import { WorkKind } from '@dragonfish/models/content';
+import { Categories } from '@dragonfish/models/works';
 
 @Pipe({ name: 'fixCategories' })
 export class FixCategoriesPipe implements PipeTransform {

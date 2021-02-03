@@ -1,6 +1,6 @@
 import { FrontendUser, ChangeEmail as EmailForm, ChangePassword as PasswordForm, 
     ChangeProfile as ProfileForm, ChangeUsername as UsernameForm, 
-    UpdateTagline as TaglineForm } from "@pulp-fiction/models/users";
+    UpdateTagline as TaglineForm } from "@dragonfish/models/users";
 import { FileUploader } from "ng2-file-upload";
 
 export namespace User {

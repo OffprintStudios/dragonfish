@@ -7,11 +7,11 @@ import { Observable, Subscription, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { UserState } from '../../../shared/user';
 
-import { Blog } from '@pulp-fiction/models/blogs';
-import { ContentKind, ContentRating, PubStatus } from '@pulp-fiction/models/content';
+import { Blog } from '@dragonfish/models/blogs';
+import { ContentKind, ContentRating, PubStatus } from '@dragonfish/models/content';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MigrationForm } from '@pulp-fiction/models/migration';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { MigrationForm } from '@dragonfish/models/migration';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Component({
     selector: 'migrate-blog',

@@ -5,9 +5,9 @@ import { map, catchError } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import { ContentModel, ContentKind, CreateProse, 
-    BlogForm, CreatePoetry, NewsForm, PubChange } from '@pulp-fiction/models/content';
+    BlogForm, CreatePoetry, NewsForm, PubChange } from '@dragonfish/models/content';
 import { HttpError } from '../../../models/site';
-import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 
 @Injectable({
     providedIn: 'root'

@@ -1,7 +1,7 @@
-import { ApprovalQueue } from "@pulp-fiction/models/approval-queue";
-import { ContentKind, ContentModel } from "@pulp-fiction/models/content";
-import { Decision } from "@pulp-fiction/models/contrib";
-import { Section } from "@pulp-fiction/models/sections";
+import { ApprovalQueue } from "@dragonfish/models/approval-queue";
+import { ContentKind, ContentModel } from "@dragonfish/models/content";
+import { Decision } from "@dragonfish/models/contrib";
+import { Section } from "@dragonfish/models/sections";
 
 export namespace AQNamespace {
     export class GetQueue {

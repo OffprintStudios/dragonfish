@@ -1,4 +1,4 @@
-import { Collection } from '@pulp-fiction/models/collections';
+import { Collection } from '@dragonfish/models/collections';
 
 export interface CollPage {
     collection: Collection;

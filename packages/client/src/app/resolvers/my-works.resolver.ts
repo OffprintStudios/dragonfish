@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Work } from '@pulp-fiction/models/works';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Work } from '@dragonfish/models/works';
 import { WorksService } from '../services/content';
 
 @Injectable()

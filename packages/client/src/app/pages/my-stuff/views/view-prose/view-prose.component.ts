@@ -5,8 +5,8 @@ import { Select } from '@ngxs/store';
 import { MyStuffState } from '../../../../shared/my-stuff';
 import { Observable } from 'rxjs';
 
-import { ContentKind, ProseContent, PubStatus, WorkStatus } from '@pulp-fiction/models/content';
-import { AuthorsNotePos, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { ContentKind, ProseContent, PubStatus, WorkStatus } from '@dragonfish/models/content';
+import { AuthorsNotePos, Section, SectionForm } from '@dragonfish/models/sections';
 import { MatDialog } from '@angular/material/dialog';
 import { SectionsState, SectionsStateModel } from 'packages/client/src/app/shared/my-stuff/sections';
 import { AlertsService } from 'packages/client/src/app/shared/alerts';

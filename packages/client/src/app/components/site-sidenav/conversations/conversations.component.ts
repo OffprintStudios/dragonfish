@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { MessageThread } from '@pulp-fiction/models/messages';
+import { MessageThread } from '@dragonfish/models/messages';
 import { MessagesService } from '../../../services/content';
 
 @Component({

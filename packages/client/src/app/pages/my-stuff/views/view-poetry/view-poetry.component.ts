@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { MyStuffState } from '../../../../shared/my-stuff';
 import { SectionsState, SectionsStateModel } from '../../../../shared/my-stuff/sections';
 
-import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
-import { AuthorsNotePos, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { PoetryContent, PubStatus, ContentKind, PoetryForm, WorkStatus } from '@dragonfish/models/content';
+import { AuthorsNotePos, Section, SectionForm } from '@dragonfish/models/sections';
 import { UploadCoverartComponent } from '../../components';
 import { MyStuffService } from '../../my-stuff.service';
 import { SectionItem } from '../../viewmodels';

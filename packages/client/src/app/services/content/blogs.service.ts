@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import * as models from '@pulp-fiction/models/blogs';
-import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import * as models from '@dragonfish/models/blogs';
+import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
 import { Types } from 'mongoose';
 

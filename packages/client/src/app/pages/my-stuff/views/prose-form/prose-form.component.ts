@@ -6,7 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffState } from '../../../../shared/my-stuff';
 
 import { WorkKind, Genres, ContentRating, WorkStatus, 
-    CreateProse, ProseContent, ContentKind } from '@pulp-fiction/models/content';
+    CreateProse, ProseContent, ContentKind } from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
 

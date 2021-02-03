@@ -5,8 +5,8 @@ import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
 import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { PaginateResult } from '@dragonfish/models/util';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 
 @Injectable()
 export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQueue>> {

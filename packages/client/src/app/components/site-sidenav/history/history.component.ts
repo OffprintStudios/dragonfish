@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HistoryService } from '../../../services/content';
 
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
+import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
   selector: 'sidenav-history',

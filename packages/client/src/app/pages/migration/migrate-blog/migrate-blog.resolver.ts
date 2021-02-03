@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Blog } from '@pulp-fiction/models/blogs';
+import { Blog } from '@dragonfish/models/blogs';
 
 @Injectable()
 export class MigrateBlogResolver implements Resolve<Blog> {

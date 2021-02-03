@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
+import { NewsCategory, NewsContentModel } from '@dragonfish/models/content';
 import { Constants, Title } from '../../../shared';
 
 @Component({

@@ -7,7 +7,7 @@ import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 import { MyStuff } from './my-stuff.actions';
 import { MyStuffStateModel } from './my-stuff-state.model';
 import { MyStuffService } from './services';
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel } from '@dragonfish/models/content';
 import { Alerts } from '../alerts';
 import { SectionsState } from './sections';
 

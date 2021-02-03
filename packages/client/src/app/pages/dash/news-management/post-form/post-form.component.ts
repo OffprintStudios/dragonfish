@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { ContentRating, NewsCategory, NewsContentModel, NewsForm } from '@pulp-fiction/models/content';
+import { ContentRating, NewsCategory, NewsContentModel, NewsForm } from '@dragonfish/models/content';
 import { NewsManagementService } from '../news-management.service';
 
 @Component({

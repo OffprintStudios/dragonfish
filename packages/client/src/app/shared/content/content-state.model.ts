@@ -1,7 +1,7 @@
-import { ContentModel, SectionInfo } from '@pulp-fiction/models/content';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { Section } from '@pulp-fiction/models/sections';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ContentModel, SectionInfo } from '@dragonfish/models/content';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
+import { Section } from '@dragonfish/models/sections';
+import { PaginateResult } from '@dragonfish/models/util';
 
 export interface ContentStateModel {
     currPageContent: PaginateResult<ContentModel> | null;

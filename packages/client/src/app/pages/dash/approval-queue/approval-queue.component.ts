@@ -7,11 +7,11 @@ import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
 
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
-import { Decision } from '@pulp-fiction/models/contrib';
-import { FrontendUser, UserInfo } from '@pulp-fiction/models/users';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
+import { ContentKind, ContentModel } from '@dragonfish/models/content';
+import { Decision } from '@dragonfish/models/contrib';
+import { FrontendUser, UserInfo } from '@dragonfish/models/users';
+import { PaginateResult } from '@dragonfish/models/util';
 import { Navigate } from '@ngxs/router-plugin';
 
 @Component({

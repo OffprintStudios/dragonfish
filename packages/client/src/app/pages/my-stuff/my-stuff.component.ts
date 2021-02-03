@@ -11,9 +11,9 @@ import { MyStuff, MyStuffState } from '../../shared/my-stuff';
 import { UserState } from '../../shared/user';
 import { Constants, Title } from '../../shared';
 
-import { ContentModel, ContentKind, PubStatus, PubChange } from '@pulp-fiction/models/content';
+import { ContentModel, ContentKind, PubStatus, PubChange } from '@dragonfish/models/content';
 import { AlertsService } from '../../shared/alerts';
-import { FrontendUser, Roles, UserInfo } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, UserInfo } from '@dragonfish/models/users';
 import { Navigate } from '@ngxs/router-plugin';
 import { isAllowed } from '../../util/functions';
 import { MyStuffService } from './my-stuff.service';

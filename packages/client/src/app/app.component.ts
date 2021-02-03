@@ -8,21 +8,21 @@ import { Select } from '@ngxs/store';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { UserState } from './shared/user';
 
-import { FrontendUser, Roles, PredefinedThemes } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles, PredefinedThemes } from '@dragonfish/models/users';
 import { spookySlogans, slogans, Theme } from './models/site';
 import { StatsService } from './services/admin';
-import { FrontPageStats } from '@pulp-fiction/models/stats';
+import { FrontPageStats } from '@dragonfish/models/stats';
 import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
-import { NotificationBase } from '@pulp-fiction/models/notifications';
+import { NotificationBase } from '@dragonfish/models/notifications';
 import { Constants } from './shared';
 import { MetadataService } from './services/utility';
 import { Alerts } from './shared/alerts';
 import { isAllowed } from './util/functions';
 
 @Component({
-  selector: 'pulp-fiction-root',
+  selector: 'dragonfish-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })

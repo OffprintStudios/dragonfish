@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { PaginateResult } from '@dragonfish/models/util';
 import { NewsManagementService } from './news-management.service';
-import { NewsContentModel } from '@pulp-fiction/models/content';
+import { NewsContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class NewsManagementResolver implements Resolve<PaginateResult<NewsContentModel>> {

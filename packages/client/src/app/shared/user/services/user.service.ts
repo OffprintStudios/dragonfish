@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
-import { FrontendUser, ChangeEmail, ChangeUsername, ChangePassword, ChangeProfile, UpdateTagline } from '@pulp-fiction/models/users';
+import { FrontendUser, ChangeEmail, ChangeUsername, ChangePassword, ChangeProfile, UpdateTagline } from '@dragonfish/models/users';
 import { HttpError } from '../../../models/site';
 
 @Injectable({

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ContentKind, ContentModel } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Content, ContentState } from '../../../shared/content';

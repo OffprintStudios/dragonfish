@@ -4,9 +4,9 @@ import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../shared/user';
 
-import { ReadingHistory, RatingOption } from '@pulp-fiction/models/reading-history';
-import { ContentKind, ContentModel, SetRating } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { ReadingHistory, RatingOption } from '@dragonfish/models/reading-history';
+import { ContentKind, ContentModel, SetRating } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
 
 import { AddToCollectionComponent } from '../modals/collections';
 import { Content, ContentState } from '../../shared/content';
