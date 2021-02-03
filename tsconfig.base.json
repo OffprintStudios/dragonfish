@@ -1,28 +1,27 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@pulp-fiction/models/*": ["packages/models/src/lib/*"],
-      "@pulp-fiction/word_counter": ["packages/word_counter/src/index.ts"],
-      "@pulp-fiction/html_sanitizer": ["packages/html_sanitizer/src/index.ts"],
-      "@pulp-fiction/material": ["packages/material/src/index.ts"],
-      "@pulp-fiction/icons": ["packages/icons/src/index.ts"],
-      "@pulp-fiction/loading": ["packages/loading/src/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@dragonfish/word_counter": ["packages/word_counter/src/index.ts"],
+            "@dragonfish/html_sanitizer": ["packages/html_sanitizer/src/index.ts"],
+            "@dragonfish/material": ["packages/material/src/index.ts"],
+            "@dragonfish/icons": ["packages/icons/src/index.ts"],
+            "@dragonfish/models/*": ["libraries/models/src/lib/*"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

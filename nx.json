@@ -1,55 +1,55 @@
 {
-  "npmScope": "pulp-fiction",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
+    "npmScope": "dragonfish",
+    "affected": {
+        "defaultBase": "master"
     },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+    "implicitDependencies": {
+        "workspace.json": "*",
+        "package.json": {
+            "dependencies": "*",
+            "devDependencies": "*"
+        },
+        "tsconfig.base.json": "*",
+        "tslint.json": "*",
+        "nx.json": "*"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nrwl/workspace/tasks-runners/default",
+            "options": {
+                "cacheableOperations": ["build", "lint", "test", "e2e"]
+            }
+        }
+    },
+    "projects": {
+        "client": {
+            "tags": []
+        },
+        "client-e2e": {
+            "tags": [],
+            "implicitDependencies": ["client"]
+        },
+        "server": {
+            "tags": []
+        },
+        "word_counter": {
+            "tags": []
+        },
+        "html_sanitizer": {
+            "tags": []
+        },
+        "material": {
+            "tags": []
+        },
+        "icons": {
+            "tags": []
+        },
+        "models": {
+            "tags": []
+        }
+    },
+    "workspaceLayout": {
+        "appsDir": "packages",
+        "libsDir": "libraries"
     }
-  },
-  "projects": {
-    "client": {
-      "tags": []
-    },
-    "client-e2e": {
-      "tags": [],
-      "implicitDependencies": ["client"]
-    },
-    "server": {
-      "tags": []
-    },
-    "models": {
-      "tags": []
-    },
-    "word_counter": {
-      "tags": []
-    },
-    "html_sanitizer": {
-      "tags": []
-    },
-    "material": {
-      "tags": []
-    },
-    "icons": {
-      "tags": []
-    }
-  },
-  "workspaceLayout": {
-    "appsDir": "packages",
-    "libsDir": "packages"
-  }
 }
