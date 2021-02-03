@@ -6,7 +6,6 @@ import { ContentModule } from './api/content/content.module';
 import { AdminModule } from './api/admin/admin.module';
 import { SearchModule } from './api/search/search.module';
 import { ImagesModule } from './api/images/images.module';
-import { BrowseModule } from './api/browse/browse.module';
 import { DashboardModule } from './api/dashboard/dashboard.module';
 import { NotificationModule } from './api/notification/notification.module';
 import { MigrationModule } from './api/migration/migration.module';
@@ -18,7 +17,6 @@ const routes: Routes = [
         {path: 'admin', module: AdminModule},
         {path: 'search', module: SearchModule},
         {path: 'images', module: ImagesModule},
-        {path: 'browse', module: BrowseModule},
         {path: 'dashboard', module: DashboardModule},
         {path: 'notifications', module: NotificationModule},
         {path: 'migration', module: MigrationModule}
@@ -33,7 +31,6 @@ const routes: Routes = [
         AdminModule,
         SearchModule,
         ImagesModule,
-        BrowseModule,
         DashboardModule,
         NotificationModule,
         MigrationModule

@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 import { PaginateResult } from 'mongoose';
 
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { ContentKind, ContentModel } from '@dragonfish/models/content';
 import { ApprovalQueueService } from '../../../db/approval-queue/approval-queue.service';
 import { ContentService } from '../../../db/content';
 

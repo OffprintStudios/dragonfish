@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidV4} from 'uuid';
 
-import { MessageThread, MessageThreadUser } from '@pulp-fiction/models/messages';
+import { MessageThread, MessageThreadUser } from '@dragonfish/models/messages';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'message_threads'})
 export class MessageThreadDocument extends Document implements MessageThread {

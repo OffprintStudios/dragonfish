@@ -4,8 +4,8 @@ import { Model, PaginateModel, PaginateResult } from 'mongoose';
 
 import { ApprovalQueueDocument } from './approval-queue.schema';
 import { WorksService } from '../works/works.service';
-import { Categories } from '@pulp-fiction/models/works';
-import { ContentModel } from '@pulp-fiction/models/content';
+import { Categories } from '@dragonfish/models/works';
+import { ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class ApprovalQueueService {

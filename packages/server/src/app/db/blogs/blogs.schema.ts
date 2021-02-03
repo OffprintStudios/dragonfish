@@ -1,9 +1,9 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { generate } from 'shortid';
-import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 
 import * as documents from './models/blog-document.model';
 

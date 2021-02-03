@@ -3,7 +3,7 @@ import { Cookies } from '@nestjsplus/cookies';
 
 import { ContentService } from '../../../db/content/content.service';
 import { OptionalAuthGuard } from '../../../guards';
-import { ContentFilter, ContentKind } from '@pulp-fiction/models/content';
+import { ContentFilter, ContentKind } from '@dragonfish/models/content';
 import { NewsService } from '../../../db/content';
 
 @Controller('news')

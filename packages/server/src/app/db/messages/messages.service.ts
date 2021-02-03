@@ -5,8 +5,8 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import { MessageDocument } from './message.schema';
 import { MessageThreadDocument } from './message-thread.schema';
 
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
-import { CreateInitialMessage, CreateResponse } from '@pulp-fiction/models/messages';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import { CreateInitialMessage, CreateResponse } from '@dragonfish/models/messages';
 import { isNullOrUndefined } from '../../util';
 
 @Injectable()

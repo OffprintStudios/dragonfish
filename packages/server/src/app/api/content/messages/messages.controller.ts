@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Request, Param, Get, Put, Body } from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
-import { Roles } from '@pulp-fiction/models/users';
-import { CreateResponse, CreateInitialMessage } from '@pulp-fiction/models/messages';
+import { Roles } from '@dragonfish/models/users';
+import { CreateResponse, CreateInitialMessage } from '@dragonfish/models/messages';
 import { MessagesService } from '../../../db/messages/messages.service';
 
 @Controller('messages')

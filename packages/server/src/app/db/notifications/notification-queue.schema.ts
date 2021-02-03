@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Model, Document, Schema as MongooseSchema } from 'mongoose';
 
-import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@dragonfish/models/notifications';
 
 import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
 import { WorkNotificationQueueDocument, SectionNotificationQueueDocument, BlogNotificationQueueDocument, CommentNotificationQueueDocument, NewsPostNotificationQueueDocument, PMThreadNotificationQueueDocument, PMReplyNotificationQueueDocument } from './notificationQueue';

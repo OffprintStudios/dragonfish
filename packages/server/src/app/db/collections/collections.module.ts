@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 

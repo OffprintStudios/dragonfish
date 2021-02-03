@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Blog } from '@pulp-fiction/models/blogs';
+import { Blog } from '@dragonfish/models/blogs';
 
 export interface BlogDocument extends Blog, Document {
     readonly _id: string;   

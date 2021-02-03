@@ -1,4 +1,4 @@
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 import { SchemaDefinition } from 'mongoose';
 
 /**

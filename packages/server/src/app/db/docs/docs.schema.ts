@@ -1,11 +1,11 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
-import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
 
 import * as documents from './models';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 
 export const DocsSchema = new Schema({
     _id: {type: String, default: generate()},

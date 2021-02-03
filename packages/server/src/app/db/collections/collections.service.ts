@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { CollectionForm } from '@pulp-fiction/models/collections';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { CollectionForm } from '@dragonfish/models/collections';
 import { CollectionDocument } from './collection.schema';
 import { isNullOrUndefined } from '../../util';
-import { ContentModel } from '@pulp-fiction/models/content';
+import { ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class CollectionsService {

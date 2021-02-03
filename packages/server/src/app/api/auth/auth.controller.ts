@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 import { UsersService } from '../../db/users/users.service';
 import { ImagesService } from '../images/images.service';
 import { RolesGuard, RefreshGuard } from '../../guards';
-import * as models from '@pulp-fiction/models/users';
+import * as models from '@dragonfish/models/users';
 
 @Controller('')
 export class AuthController {

@@ -3,9 +3,9 @@ import { generate } from 'shortid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 
-import * as models from '@pulp-fiction/models/works';
+import * as models from '@dragonfish/models/works';
 import * as documents from './models';
 
 /**

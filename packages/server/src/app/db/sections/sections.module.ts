@@ -3,10 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
 import { SectionsService } from './sections.service';
-import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter';
+import { countPlaintextWords, countQuillWords } from '@dragonfish/word_counter';
 
 @Module({
   imports: [

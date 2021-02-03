@@ -2,23 +2,23 @@ import { PaginateModel, PaginateResult, PaginateOptions, Types } from 'mongoose'
 import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentFilter, ContentKind, PubStatus, ContentRating, PubChange, BlogForm, CreatePoetry, CreateProse, NewsForm } from '@pulp-fiction/models/content';
-import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { ContentFilter, ContentKind, PubStatus, ContentRating, PubChange, BlogForm, CreatePoetry, CreateProse, NewsForm } from '@dragonfish/models/content';
+import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
 import { SectionsService } from '../sections/sections.service';
 import { ContentDocument } from './content.schema';
-import { NotificationKind } from '@pulp-fiction/models/notifications/notification-kind';
+import { NotificationKind } from '@dragonfish/models/notifications/notification-kind';
 import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
 import { UsersService } from '../users/users.service';
 import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
-import { MigrationForm } from '@pulp-fiction/models/migration';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { MigrationForm } from '@dragonfish/models/migration';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { ReadingHistoryService } from '../reading-history/reading-history.service';
-import { RatingOption } from '@pulp-fiction/models/reading-history';
+import { RatingOption } from '@dragonfish/models/reading-history';
 import { NewsService } from './news/news.service';
 import { PoetryService } from './poetry/poetry.service';
 import { ProseService } from './prose/prose.service';

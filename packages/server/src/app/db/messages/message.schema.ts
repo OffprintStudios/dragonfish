@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidV4 } from 'uuid';
 
-import { Message, MessageUser } from '@pulp-fiction/models/messages';
+import { Message, MessageUser } from '@dragonfish/models/messages';
 
 @Schema()
 export class MessageDocument extends Document implements Message {

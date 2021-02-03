@@ -2,13 +2,13 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as lodash from 'lodash';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
-import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
 
 import * as documents from './models';
-import * as models from '@pulp-fiction/models/docs';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { Roles } from '@pulp-fiction/models/users';
+import * as models from '@dragonfish/models/docs';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { Roles } from '@dragonfish/models/users';
 
 @Injectable()
 export class DocsService {

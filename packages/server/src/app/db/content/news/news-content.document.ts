@@ -1,4 +1,4 @@
-import { NewsContentModel } from '@pulp-fiction/models/content';
+import { NewsContentModel } from '@dragonfish/models/content';
 import { Document } from 'mongoose';
 
 export interface NewsContentDocument extends NewsContentModel, Document {

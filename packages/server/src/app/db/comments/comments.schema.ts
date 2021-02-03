@@ -1,11 +1,11 @@
 import { Schema, HookNextFunction, model } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { generate } from 'shortid';
 
 import { CommentDocument } from './models';
-import { ContentAction } from '@pulp-fiction/models/comments';
+import { ContentAction } from '@dragonfish/models/comments';
 
 export const CommentHistorySchema = new Schema({
     oldBody: {type: String, required: true, trim: true},

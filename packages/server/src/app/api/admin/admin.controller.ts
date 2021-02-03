@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 import { UsersService } from '../../db/users/users.service';
 
 @Controller()

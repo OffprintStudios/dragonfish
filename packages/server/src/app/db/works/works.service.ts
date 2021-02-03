@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
-import { countQuillWords, countPlaintextWords } from '@pulp-fiction/word_counter';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
+import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 
-import * as models from '@pulp-fiction/models/works';
+import * as models from '@dragonfish/models/works';
 import * as documents from './models';
 
 @Injectable()

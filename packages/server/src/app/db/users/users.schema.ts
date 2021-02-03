@@ -1,9 +1,9 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { generate } from 'shortid';
 import { hash, argon2id } from 'argon2';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 import { AuditSessionSchema } from './audit-session.schema';
 import { UserDocument } from './models';
 

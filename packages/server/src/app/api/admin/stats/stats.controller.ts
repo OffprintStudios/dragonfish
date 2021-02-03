@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 
 import { UsersService } from '../../../db/users/users.service';
 import { WorksService } from '../../../db/works/works.service';
-import { FrontPageStats } from '@pulp-fiction/models/stats';
+import { FrontPageStats } from '@dragonfish/models/stats';
 
 @Controller('stats')
 export class StatsController {

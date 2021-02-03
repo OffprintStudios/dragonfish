@@ -2,7 +2,7 @@ import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 
-import { CreateNotification, NotificationKind, NotificationBase, NotificationSubscription, BlogNotificationInfo, CommentNotificationInfo} from '@pulp-fiction/models/notifications';
+import { CreateNotification, NotificationKind, NotificationBase, NotificationSubscription, BlogNotificationInfo, CommentNotificationInfo} from '@dragonfish/models/notifications';
 
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 import { NotificationDocument } from './notifications.schema';

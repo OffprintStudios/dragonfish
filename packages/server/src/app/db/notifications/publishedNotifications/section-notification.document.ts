@@ -1,4 +1,4 @@
-import { SectionNotificationInfo } from '@pulp-fiction/models/notifications';
+import { SectionNotificationInfo } from '@dragonfish/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 

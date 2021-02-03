@@ -1,8 +1,8 @@
 import { Controller, Get, Post, UseGuards, Request, NotFoundException, 
     InternalServerErrorException, HttpCode, BadRequestException, Sse, MessageEvent, Query, Body } from '@nestjs/common';
 
-import { MarkReadRequest, NotificationBase, NotificationKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
-import { Roles } from '@pulp-fiction/models/users';
+import { MarkReadRequest, NotificationBase, NotificationKind, NotificationSubscription } from '@dragonfish/models/notifications';
+import { Roles } from '@dragonfish/models/users';
 import { interval, Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotificationsService } from '../../db/notifications/notifications.service';

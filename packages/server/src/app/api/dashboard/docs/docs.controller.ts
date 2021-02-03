@@ -1,6 +1,6 @@
 import { Body, Controller, Request, Get, Param, Patch, Put, UseGuards } from '@nestjs/common';
-import { Roles } from '@pulp-fiction/models/users';
-import { CreateDoc, EditDoc } from '@pulp-fiction/models/docs';
+import { Roles } from '@dragonfish/models/users';
+import { CreateDoc, EditDoc } from '@dragonfish/models/docs';
 import { DocsService } from '../../../db/docs/docs.service';
 import { RolesGuard } from '../../../guards';
 

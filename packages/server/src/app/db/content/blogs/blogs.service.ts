@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtPayload } from '@pulp-fiction/models/auth';
+import { JwtPayload } from '@dragonfish/models/auth';
 import { PaginateModel, PaginateResult, PaginateOptions } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
-import { BlogForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
-import { countPlaintextWords } from '@pulp-fiction/word_counter';
+import { BlogForm, PubChange, PubStatus } from '@dragonfish/models/content';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { countPlaintextWords } from '@dragonfish/word_counter';
 import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@pulp-fiction/models/notifications';
-import { ContentFilter } from '@pulp-fiction/models/works';
+import { NotificationKind } from '@dragonfish/models/notifications';
+import { ContentFilter } from '@dragonfish/models/works';
 
 
 @Injectable()

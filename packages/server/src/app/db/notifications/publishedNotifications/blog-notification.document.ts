@@ -1,4 +1,4 @@
-import { BlogNotificationInfo } from '@pulp-fiction/models/notifications';
+import { BlogNotificationInfo } from '@dragonfish/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 export interface BlogNotificationDocument extends BlogNotificationInfo, NotificationDocument {

@@ -2,9 +2,9 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { ContentModel } from '@pulp-fiction/models/content';
-import { UserInfo } from '@pulp-fiction/models/users';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
+import { ContentModel } from '@dragonfish/models/content';
+import { UserInfo } from '@dragonfish/models/users';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'approval_queue'})
 export class ApprovalQueueDocument extends Document implements ApprovalQueue {

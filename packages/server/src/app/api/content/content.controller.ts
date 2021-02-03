@@ -3,8 +3,8 @@ import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { BlogForm, ContentFilter, ContentKind, CreatePoetry, CreateProse, NewsForm, PubChange, SetRating } from '@pulp-fiction/models/content';
-import { Roles } from '@pulp-fiction/models/users';
+import { BlogForm, ContentFilter, ContentKind, CreatePoetry, CreateProse, NewsForm, PubChange, SetRating } from '@dragonfish/models/content';
+import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
 
 @Controller()

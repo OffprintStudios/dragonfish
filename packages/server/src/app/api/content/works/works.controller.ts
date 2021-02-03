@@ -1,6 +1,6 @@
 import { Controller, UseGuards, Request, Get, Param, Patch, BadRequestException } from '@nestjs/common';
 
-import * as models from '@pulp-fiction/models/works';
+import * as models from '@dragonfish/models/works';
 import { WorksService } from '../../../db/works/works.service';
 import { AuthGuard } from '../../../guards';
 import { ImagesService } from '../../../api/images/images.service';

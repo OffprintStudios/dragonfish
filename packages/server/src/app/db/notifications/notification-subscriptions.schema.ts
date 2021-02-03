@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { NotificationKind, NotificationSubscription } from '@pulp-fiction/models/notifications';
+import { NotificationKind, NotificationSubscription } from '@dragonfish/models/notifications';
 import { Document } from 'mongoose';
 
 @Schema({

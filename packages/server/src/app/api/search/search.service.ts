@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer'
-import { ContentFilter } from '@pulp-fiction/models/works';
-import { InitialResults } from '@pulp-fiction/models/util';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer'
+import { ContentFilter } from '@dragonfish/models/works';
+import { InitialResults } from '@dragonfish/models/util';
 
 import { UsersService } from '../../db/users/users.service';
 import { BlogsService, ContentService } from '../../db/content';
-import { User } from '@pulp-fiction/models/users';
-import { BlogsContentModel, ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { User } from '@dragonfish/models/users';
+import { BlogsContentModel, ContentKind, ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class SearchService {
