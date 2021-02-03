@@ -38,13 +38,13 @@
         "html_sanitizer": {
             "tags": []
         },
-        "material": {
+        "models": {
             "tags": []
         },
         "icons": {
             "tags": []
         },
-        "models": {
+        "material": {
             "tags": []
         }
     },

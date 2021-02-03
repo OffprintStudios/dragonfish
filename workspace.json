@@ -23,7 +23,7 @@
                         "aot": true,
                         "assets": ["packages/client/src/favicon.ico", "packages/client/src/assets"],
                         "styles": ["packages/client/src/custom-style.scss", "packages/client/src/styles.less"],
-                        "allowedCommonJsDependencies": ["lodash", "numeral"],
+                        "allowedCommonJsDependencies": ["lodash", "numeral", "hammerjs"],
                         "scripts": ["node_modules/marked/lib/marked.js"]
                     },
                     "configurations": {
@@ -237,59 +237,6 @@
                 }
             }
         },
-        "material": {
-            "projectType": "library",
-            "root": "packages/material",
-            "sourceRoot": "packages/material/src",
-            "prefix": "pulp-fiction",
-            "architect": {
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": ["packages/material/tsconfig.lib.json", "packages/material/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!packages/material/**/*"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "options": {
-                        "jestConfig": "packages/material/jest.config.js",
-                        "tsConfig": "packages/material/tsconfig.spec.json",
-                        "passWithNoTests": true,
-                        "setupFile": "packages/material/src/test-setup.ts"
-                    }
-                }
-            },
-            "schematics": {
-                "@nrwl/angular:component": {
-                    "style": "less"
-                }
-            }
-        },
-        "icons": {
-            "root": "packages/icons",
-            "sourceRoot": "packages/icons/src",
-            "projectType": "library",
-            "schematics": {},
-            "architect": {
-                "lint": {
-                    "builder": "@nrwl/linter:lint",
-                    "options": {
-                        "linter": "eslint",
-                        "tsConfig": ["packages/icons/tsconfig.lib.json", "packages/icons/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**", "!packages/icons/**/*"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "options": {
-                        "jestConfig": "packages/icons/jest.config.js",
-                        "tsConfig": "packages/icons/tsconfig.spec.json",
-                        "passWithNoTests": true
-                    }
-                }
-            }
-        },
         "models": {
             "root": "libraries/models",
             "sourceRoot": "libraries/models/src",
@@ -306,6 +253,52 @@
                     "outputs": ["coverage/libraries/models"],
                     "options": {
                         "jestConfig": "libraries/models/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "icons": {
+            "projectType": "library",
+            "root": "libraries/icons",
+            "sourceRoot": "libraries/icons/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["libraries/icons/tsconfig.lib.json", "libraries/icons/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!libraries/icons/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/icons"],
+                    "options": {
+                        "jestConfig": "libraries/icons/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "material": {
+            "projectType": "library",
+            "root": "libraries/material",
+            "sourceRoot": "libraries/material/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@angular-devkit/build-angular:tslint",
+                    "options": {
+                        "tsConfig": ["libraries/material/tsconfig.lib.json", "libraries/material/tsconfig.spec.json"],
+                        "exclude": ["**/node_modules/**", "!libraries/material/**/*"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/material"],
+                    "options": {
+                        "jestConfig": "libraries/material/jest.config.js",
                         "passWithNoTests": true
                     }
                 }
