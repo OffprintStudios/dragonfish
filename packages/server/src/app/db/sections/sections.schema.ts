@@ -6,7 +6,7 @@ import { Section, AuthorsNotePos } from '@dragonfish/models/sections';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'sections' })
 export class SectionsDocument extends Document implements Section {
-    @Prop({default: () => nanoid()})
+    @Prop({ default: () => nanoid() })
     readonly _id: string;
 
     @Prop({ trim: true, required: true })

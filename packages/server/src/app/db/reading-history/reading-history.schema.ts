@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'reading_history' })
 export class ReadingHistoryDocument extends Document implements ReadingHistory {
-    @Prop({default: () => nanoid()})
+    @Prop({ default: () => nanoid() })
     readonly _id: string;
 
     @Prop({ ref: 'User', required: true, index: true })

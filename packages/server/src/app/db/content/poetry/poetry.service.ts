@@ -29,9 +29,7 @@ export class PoetryService {
             title: sanitizeHtml(poetryInfo.title),
             desc: sanitizeHtml(poetryInfo.desc),
             body: sanitizeHtml(poetryInfo.body),
-            'stats.words': poetryInfo.collection
-                ? 0
-                : countWords(stripTags(sanitizeHtml(poetryInfo.body))),
+            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
