@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { hash, argon2id } from 'argon2';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 
 import { Roles } from '@dragonfish/models/users';
 import { AuditSessionSchema } from './audit-session.schema';

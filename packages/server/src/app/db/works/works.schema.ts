@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 
 import * as models from '@dragonfish/models/works';
 import * as documents from './models';

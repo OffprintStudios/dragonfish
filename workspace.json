@@ -134,7 +134,6 @@
                         "main": "packages/server/src/main.ts",
                         "tsConfig": "packages/server/tsconfig.app.json",
                         "assets": ["packages/server/src/assets"],
-                        "webpackConfig": "packages/server/webpack.config.js",
                         "maxWorkers": 1,
                         "memoryLimit": 1024
                     },
@@ -175,65 +174,6 @@
                         "tsConfig": "packages/server/tsconfig.spec.json",
                         "passWithNoTests": true
                     }
-                }
-            }
-        },
-        "word_counter": {
-            "root": "packages/word_counter",
-            "sourceRoot": "packages/word_counter/src",
-            "projectType": "library",
-            "schematics": {},
-            "architect": {
-                "lint": {
-                    "builder": "@nrwl/linter:lint",
-                    "options": {
-                        "linter": "eslint",
-                        "tsConfig": [
-                            "packages/word_counter/tsconfig.lib.json",
-                            "packages/word_counter/tsconfig.spec.json"
-                        ],
-                        "exclude": ["**/node_modules/**", "!packages/word_counter/**/*"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "options": {
-                        "jestConfig": "packages/word_counter/jest.config.js",
-                        "tsConfig": "packages/word_counter/tsconfig.spec.json",
-                        "passWithNoTests": true
-                    }
-                }
-            }
-        },
-        "html_sanitizer": {
-            "projectType": "library",
-            "root": "packages/html_sanitizer",
-            "sourceRoot": "packages/html_sanitizer/src",
-            "prefix": "pulp-fiction",
-            "architect": {
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": [
-                            "packages/html_sanitizer/tsconfig.lib.json",
-                            "packages/html_sanitizer/tsconfig.spec.json"
-                        ],
-                        "exclude": ["**/node_modules/**", "!packages/html_sanitizer/**/*"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "options": {
-                        "jestConfig": "packages/html_sanitizer/jest.config.js",
-                        "tsConfig": "packages/html_sanitizer/tsconfig.spec.json",
-                        "passWithNoTests": true,
-                        "setupFile": "packages/html_sanitizer/src/test-setup.ts"
-                    }
-                }
-            },
-            "schematics": {
-                "@nrwl/angular:component": {
-                    "style": "less"
                 }
             }
         },

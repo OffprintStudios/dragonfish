@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction, model } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 import { nanoid } from 'nanoid';
 
 import { CommentDocument } from './models';
@@ -56,7 +56,7 @@ CommentsSchema.plugin(MongooseAutopopulate);
 CommentsSchema.plugin(MongoosePaginate);
 
 CommentsSchema.pre<CommentDocument>('save', async function (next: HookNextFunction) {
-    this.set('body', await sanitizeHtml(this.body));
+    this.set('body', sanitizeHtml(this.body));
     this.set('createdAt', new Date());
     this.set('updatedAt', new Date());
 
