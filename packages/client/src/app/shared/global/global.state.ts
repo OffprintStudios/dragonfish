@@ -9,20 +9,20 @@ import { ContentFilter } from '@dragonfish/models/content';
 @State<GlobalStateModel>({
     name: 'global',
     defaults: {
-        filter: ContentFilter.Default
-    }
+        filter: ContentFilter.Default,
+    },
 })
 @Injectable()
 export class GlobalState {
-    constructor (private globalService: GlobalService) {}
+    constructor(private globalService: GlobalService) {}
 
     /* Actions */
 
     @Action(Global.SetContentFilter)
     async setContentFilter({ patchState }: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
-        return await this.globalService.setContentFilter(action.enableMature, action.enableExplicit).then(filter => {
+        return await this.globalService.setContentFilter(action.enableMature, action.enableExplicit).then((filter) => {
             patchState({
-                filter: filter
+                filter: filter,
             });
         });
     }

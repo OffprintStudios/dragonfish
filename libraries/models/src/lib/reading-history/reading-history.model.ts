@@ -1,5 +1,5 @@
-import { ContentModel } from "../content";
-import { RatingOption } from "./rating-option.enum";
+import { ContentModel } from '../content';
+import { RatingOption } from './rating-option.enum';
 
 export interface ReadingHistory {
     readonly _id: string;

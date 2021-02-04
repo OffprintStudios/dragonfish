@@ -1,7 +1,7 @@
-import {Pagination} from './pagination';
+import { Pagination } from './pagination';
 
 export interface SearchResults<T> {
-    matches: T[],
-    pagination: Pagination,
-    totalPages: number
+    matches: T[];
+    pagination: Pagination;
+    totalPages: number;
 }

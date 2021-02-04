@@ -3,19 +3,38 @@
         <div class="home-news-header">
             <h3 class="header">All the Latest</h3>
             <button class="see-more" [routerLink]="['/home/news']">See More</button>
-            <button class="see-more-mobile" [routerLink]="['/home/news']"><i-feather name="arrow-right"></i-feather></button>
+            <button class="see-more-mobile" [routerLink]="['/home/news']">
+                <i-feather name="arrow-right"></i-feather>
+            </button>
         </div>
         <ngu-carousel #newsCarousel [inputs]="newsOptions" [dataSource]="initialPosts">
             <ngu-tile *nguCarouselDef="let post; let i = index">
                 <div class="post">
                     <div class="post-header">
-                        <h4><a [routerLink]="['/post', post._id, post.title | slugify]">{{ post.title }}</a></h4>
+                        <h4>
+                            <a [routerLink]="['/post', post._id, post.title | slugify]">{{ post.title }}</a>
+                        </h4>
                     </div>
                     <div class="post-byline">
-                        <span class="text">by <a [routerLink]="['/portfolio', $any(post.author)._id, $any(post.author).username | slugify]">{{ $any(post.author).username }}</a></span>
-                        <span style="float: right;">
-                            <span class="text"><i-feather name="eye" style="margin-right: 0.25rem;"></i-feather>{{ post.stats.views }}</span><span class="divider">//</span>
-                            <span class="text"><i-feather name="message-circle"></i-feather>{{ post.stats.comments }}</span>
+                        <span class="text"
+                            >by
+                            <a
+                                [routerLink]="[
+                                    '/portfolio',
+                                    $any(post.author)._id,
+                                    $any(post.author).username | slugify
+                                ]"
+                                >{{ $any(post.author).username }}</a
+                            ></span
+                        >
+                        <span style="float: right">
+                            <span class="text"
+                                ><i-feather name="eye" style="margin-right: 0.25rem"></i-feather
+                                >{{ post.stats.views }}</span
+                            ><span class="divider">//</span>
+                            <span class="text"
+                                ><i-feather name="message-circle"></i-feather>{{ post.stats.comments }}</span
+                            >
                         </span>
                     </div>
                     <div class="post-body">
@@ -23,43 +42,50 @@
                     </div>
                 </div>
             </ngu-tile>
-            <button NguCarouselPrev [ngStyle]="{'display': newsCarousel.isLast ? 'block' : 'none'}" class="carousel-button left"><i-feather name="chevron-left"></i-feather></button>
-            <button NguCarouselNext [ngStyle]="{'display': newsCarousel.isFirst ? 'block' : 'none'}" class="carousel-button right"><i-feather name="chevron-right"></i-feather></button>
+            <button
+                NguCarouselPrev
+                [ngStyle]="{ display: newsCarousel.isLast ? 'block' : 'none' }"
+                class="carousel-button left"
+            >
+                <i-feather name="chevron-left"></i-feather>
+            </button>
+            <button
+                NguCarouselNext
+                [ngStyle]="{ display: newsCarousel.isFirst ? 'block' : 'none' }"
+                class="carousel-button right"
+            >
+                <i-feather name="chevron-right"></i-feather>
+            </button>
         </ngu-carousel>
     </div>
     <div class="latest-splash">
         <div class="row">
-            <div class="six columns">            
+            <div class="six columns">
                 <app-beatriz-hero class="beatriz-splash"></app-beatriz-hero>
             </div>
             <div class="six columns">
-                <h2 style="margin-bottom: 0;">Welcome to the Offprint Alpha, ver. {{ siteVersion }}!</h2>
-                <hr style="margin-top: 0;">
+                <h2 style="margin-bottom: 0">Welcome to the Offprint Alpha, ver. {{ siteVersion }}!</h2>
+                <hr style="margin-top: 0" />
+                <p>Hey there!</p>
                 <p>
-                    Hey there!
-                </p>
-                <p>
-                    Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, 
-                    friendly, and open community of writers and readers. 
+                    Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, friendly, and
+                    open community of writers and readers.
                 </p>
                 <p>
-                    The site is currently under heavy active development, so there's a lot of stuff still 
-                    missing or even completely broken. Want to sign up? <a href="https://forms.gle/VBHoKhneJzg34GSA8">Click here</a> to add your name
-                    to the list!
+                    The site is currently under heavy active development, so there's a lot of stuff still missing or
+                    even completely broken. Want to sign up?
+                    <a href="https://forms.gle/VBHoKhneJzg34GSA8">Click here</a> to add your name to the list!
                 </p>
                 <p>
-                    If you want to contribute&mdash;or just want to give us a star&mdash;check out our 
-                    <a href="https://github.com/Figments/pulp-fiction">GitHub</a> repository. We also have 
-                    a community <a href="https://discord.gg/9cnSwfn">Discord server</a> if you want to chat 
-                    about the site, or writing in general. And if you want to throw some money our way, to 
-                    help fund Offprint's development, <a href="https://www.patreon.com/offprintstudios?fan_landing=true">we have a Patreon</a>!
+                    If you want to contribute&mdash;or just want to give us a star&mdash;check out our
+                    <a href="https://github.com/Figments/pulp-fiction">GitHub</a> repository. We also have a community
+                    <a href="https://discord.gg/9cnSwfn">Discord server</a> if you want to chat about the site, or
+                    writing in general. And if you want to throw some money our way, to help fund Offprint's
+                    development,
+                    <a href="https://www.patreon.com/offprintstudios?fan_landing=true">we have a Patreon</a>!
                 </p>
-                <p>
-                    With all that said, see you guys on the flip side!
-                </p>
-                <p style="text-align: right;">
-                    &mdash;Offprint Studios
-                </p>
+                <p>With all that said, see you guys on the flip side!</p>
+                <p style="text-align: right">&mdash;Offprint Studios</p>
             </div>
         </div>
     </div>

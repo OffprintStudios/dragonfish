@@ -37,7 +37,7 @@ export interface UserInfoComments {
         readonly tagline: string;
     };
     readonly audit: {
-        readonly roles: Roles[]
+        readonly roles: Roles[];
     };
 }
 

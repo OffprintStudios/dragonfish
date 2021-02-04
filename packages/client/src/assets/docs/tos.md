@@ -6,12 +6,13 @@ By accessing the website at https://offprint.net, you are agreeing to be bound b
 
 ## 2. Use License
 
-A.  Permission is granted to temporarily download one copy of the materials (information or software) on Offprint Studios' website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
-- modify or copy the materials;
-- use the materials for any commercial purpose, or for any public display (commercial or non-commercial);
-- attempt to decompile or reverse engineer any software contained on Offprint Studios' website;
-- remove any copyright or other proprietary notations from the materials; or
-- transfer the materials to another person or "mirror" the materials on any other server.
+A. Permission is granted to temporarily download one copy of the materials (information or software) on Offprint Studios' website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:
+
+-   modify or copy the materials;
+-   use the materials for any commercial purpose, or for any public display (commercial or non-commercial);
+-   attempt to decompile or reverse engineer any software contained on Offprint Studios' website;
+-   remove any copyright or other proprietary notations from the materials; or
+-   transfer the materials to another person or "mirror" the materials on any other server.
 
 B. This license shall automatically terminate if you violate any of these restrictions and may be terminated by Offprint Studios at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.
 
@@ -58,17 +59,19 @@ We may also collect data about the device you’re using to access our website. 
 ### Personal Information
 
 We may ask for personal information, such as your:
-- Email
+
+-   Email
 
 ## 2. Legal Bases For Processing
 
 We will process your personal information lawfully, fairly and in a transparent manner. We collect and process information about you only where we have legal bases for doing so.
 
 These legal bases depend on the services you use and how you use them, meaning we collect and use your information only where:
-- it’s necessary for the performance of a contract to which you are a party or to take steps at your request before entering into such a contract (for example, when we provide a service you request from us);
-- it satisfies a legitimate interest (which is not overridden by your data protection interests), such as for research and development, to market and promote our services, and to protect our legal rights and interests;
-- you give us consent to do so for a specific purpose (for example, you might consent to us sending you our newsletter); or
-- we need to process your data to comply with a legal obligation.
+
+-   it’s necessary for the performance of a contract to which you are a party or to take steps at your request before entering into such a contract (for example, when we provide a service you request from us);
+-   it satisfies a legitimate interest (which is not overridden by your data protection interests), such as for research and development, to market and promote our services, and to protect our legal rights and interests;
+-   you give us consent to do so for a specific purpose (for example, you might consent to us sending you our newsletter); or
+-   we need to process your data to comply with a legal obligation.
 
 Where you consent to our use of information about you for a specific purpose, you have the right to change your mind at any time (but this will not affect any processing that has already taken place).
 
@@ -77,14 +80,16 @@ We don’t keep personal information for longer than is necessary. While we reta
 ## 3. Collection & Use of Information
 
 We may collect, hold, use and disclose information for the following purposes and personal information will not be further processed in a manner that is incompatible with these purposes:
-- to enable you to access and use our website, associated applications and associated social media platforms;to contact and communicate with you;for internal record keeping and administrative purposes; andto comply with our legal obligations and resolve any disputes that we may have.
+
+-   to enable you to access and use our website, associated applications and associated social media platforms;to contact and communicate with you;for internal record keeping and administrative purposes; andto comply with our legal obligations and resolve any disputes that we may have.
 
 ## 4. Disclosure of Personal Information to Third Parties
 
 We may disclose personal information to:
-- our employees, contractors and/or related entities;
-- courts, tribunals, regulatory authorities and law enforcement officers, as required by law, in connection with any actual or prospective legal proceedings, or in order to establish, exercise or defend our legal rights; and
-- third parties to collect and process data.
+
+-   our employees, contractors and/or related entities;
+-   courts, tribunals, regulatory authorities and law enforcement officers, as required by law, in connection with any actual or prospective legal proceedings, or in order to establish, exercise or defend our legal rights; and
+-   third parties to collect and process data.
 
 ## 5. International Transfers of Personal Information
 

@@ -5,8 +5,15 @@ import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffState } from '../../../../shared/my-stuff';
 
-import { WorkKind, Genres, ContentRating, WorkStatus, 
-    CreateProse, ProseContent, ContentKind } from '@dragonfish/models/content';
+import {
+    WorkKind,
+    Genres,
+    ContentRating,
+    WorkStatus,
+    CreateProse,
+    ProseContent,
+    ContentKind,
+} from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
 
@@ -14,7 +21,7 @@ import { MyStuffService } from '../../my-stuff.service';
 @Component({
     selector: 'prose-form',
     templateUrl: './prose-form.component.html',
-    styleUrls: ['./prose-form.component.less']
+    styleUrls: ['./prose-form.component.less'],
 })
 export class ProseFormComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
@@ -32,13 +39,13 @@ export class ProseFormComponent implements OnInit {
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
         rating: new FormControl(null, [Validators.required]),
-        status: new FormControl(null, [Validators.required])
+        status: new FormControl(null, [Validators.required]),
     });
 
     constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
+        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
             if (content !== null) {
                 this.formTitle = `Editing "${content.title}"`;
                 this.proseForm.setValue({
@@ -48,7 +55,7 @@ export class ProseFormComponent implements OnInit {
                     category: content.meta.category,
                     genres: content.meta.genres,
                     rating: content.meta.rating,
-                    status: content.meta.status
+                    status: content.meta.status,
                 });
             } else {
                 this.proseForm.setValue({
@@ -58,13 +65,15 @@ export class ProseFormComponent implements OnInit {
                     category: null,
                     genres: [],
                     rating: null,
-                    status: null
+                    status: null,
                 });
             }
         });
     }
 
-    get fields() { return this.proseForm.controls; }
+    get fields() {
+        return this.proseForm.controls;
+    }
 
     submitForm(contentId?: string) {
         if (this.proseForm.invalid) {
@@ -72,14 +81,14 @@ export class ProseFormComponent implements OnInit {
             return;
         }
 
-        const proseInfo: CreateProse ={
+        const proseInfo: CreateProse = {
             title: this.fields.title.value,
             desc: this.fields.desc.value,
             body: this.fields.body.value,
             category: this.fields.category.value,
             genres: this.fields.genres.value,
             rating: this.fields.rating.value,
-            status: this.fields.status.value
+            status: this.fields.status.value,
         };
 
         if (contentId) {

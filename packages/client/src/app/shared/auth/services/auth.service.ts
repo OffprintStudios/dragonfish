@@ -7,11 +7,11 @@ import { FrontendUser, CreateUser, LoginUser } from '@dragonfish/models/users';
 
 /**
  * ## AuthService
- * 
+ *
  * Manages API calls and processes return values for user authentication.
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AuthService {
     private url: string = `/api/auth`;
@@ -26,12 +26,16 @@ export class AuthService {
      * @param credentials A user's credentials.
      */
     public register(credentials: CreateUser): Observable<FrontendUser> {
-        return this.http.post<FrontendUser>(`${this.url}/register`, credentials, { observe: 'response', withCredentials: true })
-            .pipe(map(user => {
-                return user.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .post<FrontendUser>(`${this.url}/register`, credentials, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((user) => {
+                    return user.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     /**
@@ -42,12 +46,16 @@ export class AuthService {
      * @param credentials A user's credentials.
      */
     public login(credentials: LoginUser): Observable<FrontendUser> {
-        return this.http.post<FrontendUser>(`${this.url}/login`, credentials, { withCredentials: true, observe: 'response' })
-            .pipe(map(user => {
-                return user.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .post<FrontendUser>(`${this.url}/login`, credentials, { withCredentials: true, observe: 'response' })
+            .pipe(
+                map((user) => {
+                    return user.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     /**
@@ -62,17 +70,21 @@ export class AuthService {
      * If refresh fails, return `null`.
      */
     public refreshToken(): Observable<string | null> {
-        return this.http.get<{newToken: string}>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
-            .pipe(map(user => {
-                console.log(user.body);
-                return user.body.newToken;
-            }), catchError(err => {
-                console.log(`Response Error: ${JSON.stringify(err)}`);
-                if (err.status === 403) {
-                    // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious          
-                    return null;          
-                }
-                return throwError(err);
-            }));
+        return this.http
+            .get<{ newToken: string }>(`${this.url}/refresh-token`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((user) => {
+                    console.log(user.body);
+                    return user.body.newToken;
+                }),
+                catchError((err) => {
+                    console.log(`Response Error: ${JSON.stringify(err)}`);
+                    if (err.status === 403) {
+                        // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious
+                        return null;
+                    }
+                    return throwError(err);
+                }),
+            );
     }
 }

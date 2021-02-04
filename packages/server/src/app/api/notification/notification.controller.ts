@@ -1,7 +1,25 @@
-import { Controller, Get, Post, UseGuards, Request, NotFoundException, 
-    InternalServerErrorException, HttpCode, BadRequestException, Sse, MessageEvent, Query, Body } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    UseGuards,
+    Request,
+    NotFoundException,
+    InternalServerErrorException,
+    HttpCode,
+    BadRequestException,
+    Sse,
+    MessageEvent,
+    Query,
+    Body,
+} from '@nestjs/common';
 
-import { MarkReadRequest, NotificationBase, NotificationKind, NotificationSubscription } from '@dragonfish/models/notifications';
+import {
+    MarkReadRequest,
+    NotificationBase,
+    NotificationKind,
+    NotificationSubscription,
+} from '@dragonfish/models/notifications';
 import { Roles } from '@dragonfish/models/users';
 import { interval, Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -9,7 +27,6 @@ import { NotificationsService } from '../../db/notifications/notifications.servi
 import { UnsubscribeResult } from '../../db/notifications/unsubscribe-result.model';
 import { RolesGuard } from '../../guards';
 import { isNullOrUndefined } from '../../util';
-
 
 @Controller()
 export class NotificationController {
@@ -21,9 +38,11 @@ export class NotificationController {
         const userId: string = req.user.sub;
         const observeNotif = from(this.notificationsService.getUnreadNotifications(userId));
 
-        return observeNotif.pipe(map(notifData => {
-            return {data: notifData}
-        }));
+        return observeNotif.pipe(
+            map((notifData) => {
+                return { data: notifData };
+            }),
+        );
     }
 
     @Get('all-notifications')
@@ -48,7 +67,10 @@ export class NotificationController {
             throw new BadRequestException(undefined, "The 'ids' field of the request body must not be null.");
         }
         if (toMark.ids.length === 0) {
-            throw new BadRequestException(undefined, "The 'ids' field of the reuqest body must contain at least one ID.");
+            throw new BadRequestException(
+                undefined,
+                "The 'ids' field of the reuqest body must contain at least one ID.",
+            );
         }
         await this.notificationsService.markAsRead(userId, toMark.ids);
     }
@@ -62,7 +84,11 @@ export class NotificationController {
 
     @Post('subscribe')
     @UseGuards(RolesGuard([Roles.User]))
-    async subscribe(@Request() req: any, @Query('sourceId') sourceId: string, @Query('sourceKind') sourceKind: NotificationKind): Promise<void> {
+    async subscribe(
+        @Request() req: any,
+        @Query('sourceId') sourceId: string,
+        @Query('sourceKind') sourceKind: NotificationKind,
+    ): Promise<void> {
         if (isNullOrUndefined(sourceId)) {
             throw new BadRequestException(`This request must include the source ID.`);
         }
@@ -74,7 +100,11 @@ export class NotificationController {
     @Post('unsubscribe')
     @HttpCode(200) // because a successful unsubscribe doesn't "create" anything, don't return Created
     @UseGuards(RolesGuard([Roles.User]))
-    async unsubscribe(@Request() req: any, @Query('sourceId') sourceId: string, @Query('sourceKind') sourceKind: NotificationKind): Promise<void> {
+    async unsubscribe(
+        @Request() req: any,
+        @Query('sourceId') sourceId: string,
+        @Query('sourceKind') sourceKind: NotificationKind,
+    ): Promise<void> {
         if (isNullOrUndefined(sourceId)) {
             throw new BadRequestException(`This request must include the source ID.`);
         }
@@ -82,9 +112,9 @@ export class NotificationController {
         const userId: string = req.user.sub;
         const result: UnsubscribeResult = await this.notificationsService.unsubscribe(userId, sourceId, sourceKind);
         if (result === UnsubscribeResult.NotFound) {
-            throw new NotFoundException(undefined, "No subscription with those details found.");
+            throw new NotFoundException(undefined, 'No subscription with those details found.');
         } else if (result === UnsubscribeResult.Failure) {
             throw new InternalServerErrorException();
-        }        
+        }
     }
 }

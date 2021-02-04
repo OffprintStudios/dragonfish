@@ -8,14 +8,15 @@ import { NotificationsModule } from '../../db/notifications/notifications.module
 
 @Module({
     imports: [
-        NotificationsModule, UsersModule,
+        NotificationsModule,
+        UsersModule,
         JwtModule.registerAsync({
             useFactory: () => ({
-              secret: getJwtSecretKey(),
-              signOptions: {expiresIn: JWT_EXPIRATION},
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
             }),
         }),
     ],
-    controllers: [NotificationController]
+    controllers: [NotificationController],
 })
 export class NotificationModule {}

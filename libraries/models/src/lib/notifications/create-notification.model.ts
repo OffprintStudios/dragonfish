@@ -13,18 +13,14 @@ export interface CreateNotification {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
-    kind: NotificationKind;    
+    kind: NotificationKind;
 }
 
-export interface CreateWorkNotification extends CreateNotification {
+export interface CreateWorkNotification extends CreateNotification {}
 
- }
+export interface CreateSectionNotification extends CreateNotification {}
 
-export interface CreateSectionNotification extends CreateNotification { 
-
-}
-
-export interface CreateBlogNotification extends CreateNotification { 
+export interface CreateBlogNotification extends CreateNotification {
     authorId: string;
     authorName: string;
 }
@@ -33,18 +29,12 @@ export interface CreateCommentNotification extends CreateNotification {
     commentId: string;
     commenterName: string;
     commenterId: string;
-    parentKind: ContentKind;    
+    parentKind: ContentKind;
     parentTitle: string;
- }
-
-export interface CreateNewsPostNotification extends CreateNotification { 
-
 }
 
-export interface CreatePMThreadNotification extends CreateNotification { 
+export interface CreateNewsPostNotification extends CreateNotification {}
 
-}
+export interface CreatePMThreadNotification extends CreateNotification {}
 
-export interface CreatePMReplyNotification extends CreateNotification { 
-    
-}
+export interface CreatePMReplyNotification extends CreateNotification {}

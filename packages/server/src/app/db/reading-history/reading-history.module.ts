@@ -20,11 +20,11 @@ import { ReadingHistoryService } from './reading-history.service';
                         return next();
                     });
                     return schema;
-                }
-            }
-        ])
+                },
+            },
+        ]),
     ],
     exports: [ReadingHistoryService],
-    providers: [ReadingHistoryService]
+    providers: [ReadingHistoryService],
 })
 export class ReadingHistoryModule {}

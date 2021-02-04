@@ -5,7 +5,7 @@ import { Roles } from '@dragonfish/models/users';
 @Component({
     selector: 'role-badge',
     templateUrl: './role-badge.component.html',
-    styleUrls: ['./role-badge.component.less']
+    styleUrls: ['./role-badge.component.less'],
 })
 export class RoleBadgeComponent implements OnInit {
     @Input() roles: Roles[];
@@ -17,7 +17,7 @@ export class RoleBadgeComponent implements OnInit {
 
     /**
      * Checks to see what the prominent role for this user is so it can be displayed.
-     * 
+     *
      * @param roles The roles to check
      */
     determineProminentRole(): Roles {
@@ -52,9 +52,9 @@ export class RoleBadgeComponent implements OnInit {
 
     determineCentering() {
         if (this.isCentered === true) {
-            return {'margin': '0 auto 1.5rem auto'};
+            return { margin: '0 auto 1.5rem auto' };
         } else {
-            return {'margin': '0 0 1.5rem 0'};
+            return { margin: '0 0 1.5rem 0' };
         }
     }
 }

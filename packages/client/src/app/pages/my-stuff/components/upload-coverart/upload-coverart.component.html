@@ -1,6 +1,14 @@
 <h1 mat-dialog-title>Change Cover Art</h1>
 <mat-dialog-content>
-    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" ng2FileSelect [uploader]="uploader" #coverartInput/>
+    <input
+        type="file"
+        style="display: none"
+        (change)="fileChangeEvent($event)"
+        accept="image/png, image/jpeg, image/jpg"
+        ng2FileSelect
+        [uploader]="uploader"
+        #coverartInput
+    />
 
     <image-cropper
         [imageChangedEvent]="imageChangedEvent"
@@ -11,8 +19,9 @@
         imageQuality="95"
         [(cropper)]="cropperDimensions"
         (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"        
-        (loadImageFailed)="loadImageFailed()"></image-cropper>
+        (imageLoaded)="imageLoaded()"
+        (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
 </mat-dialog-content>
 <mat-dialog-actions>
     <ng-template #isLoading>

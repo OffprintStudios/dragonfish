@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { WorkMetadata, Categories, GenresFiction, GenresPoetry, Fandoms } from '@dragonfish/models/works';
 
-
-@Pipe({name: 'stringifyMeta'})
+@Pipe({ name: 'stringifyMeta' })
 export class StringifyMetaPipe implements PipeTransform {
     /**
      * Transforms a work's _meta_ object into a string suitable for display to the client.
@@ -11,13 +10,14 @@ export class StringifyMetaPipe implements PipeTransform {
      */
     transform(value: WorkMetadata) {
         const categoryString: string = Categories[value.category];
-        if (Categories[value.category] === Categories.Poetry) {            
+        if (Categories[value.category] === Categories.Poetry) {
             return `${categoryString} // ${GenresPoetry[value.genres[0]]}`;
         }
-        
-        const genreString: string = value.genres.length === 1 
-            ? GenresFiction[value.genres[0]]
-            : [GenresFiction[value.genres[0]], GenresFiction[value.genres[1]]].join(', ');
+
+        const genreString: string =
+            value.genres.length === 1
+                ? GenresFiction[value.genres[0]]
+                : [GenresFiction[value.genres[0]], GenresFiction[value.genres[1]]].join(', ');
 
         if (Categories[value.category] === Categories.OriginalFiction) {
             return `${categoryString} // ${genreString}`;
@@ -26,9 +26,8 @@ export class StringifyMetaPipe implements PipeTransform {
             return `${categoryString} // ${genreString}`;
         }
 
-        const fandomString: string = value.fandoms.length === 1
-            ? Fandoms[value.fandoms[0]]
-            : value.fandoms.map(x => Fandoms[x]).join(', ');
+        const fandomString: string =
+            value.fandoms.length === 1 ? Fandoms[value.fandoms[0]] : value.fandoms.map((x) => Fandoms[x]).join(', ');
 
         return `${categoryString} // ${genreString} // ${fandomString}`;
     }

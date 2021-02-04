@@ -15,17 +15,17 @@ export enum GenresFiction {
     Erotica = 'Erotica',
     // Essay = 'Essay',
     // Journalism = 'Journalism',
-    // Biography = 'Biography', 
+    // Biography = 'Biography',
     // Memoir = 'Memoir',
 }
-export enum GenresPoetry {        
+export enum GenresPoetry {
     Limerick = 'Limerick',
     Haiku = 'Haiku',
     Sonnet = 'Sonnet',
     Ballad = 'Ballad',
     Ode = 'Ode',
     FreeVerse = 'Free Verse',
-    FixedVerse = 'Fixed Verse'
+    FixedVerse = 'Fixed Verse',
 }
 
 export const MAX_GENRES_PER_FICTION: number = 3;

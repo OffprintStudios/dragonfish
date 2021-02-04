@@ -13,7 +13,7 @@ export interface NotificationBase {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
-    kind: NotificationKind;        
+    kind: NotificationKind;
     read: boolean;
     createdAt: Date;
     updatedAt: Date;

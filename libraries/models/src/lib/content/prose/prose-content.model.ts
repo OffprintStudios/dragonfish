@@ -15,5 +15,5 @@ export interface ProseContent extends ContentModel {
         warnings: string[];
         status: WorkStatus;
         coverArt?: string;
-    }
+    };
 }

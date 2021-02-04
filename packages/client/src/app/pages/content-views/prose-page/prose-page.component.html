@@ -2,31 +2,47 @@
     <div class="view-container">
         <div class="view-info">
             <div class="view-coverart" *ngIf="currProse.meta.coverArt">
-                <img class="big-art" [src]="currProse.meta.coverArt">
+                <img class="big-art" [src]="currProse.meta.coverArt" />
             </div>
             <div class="view-header">
                 <div class="view-title">
                     <rating-icon [rating]="currProse.meta.rating" [size]="ratingSize"></rating-icon>
                     <div class="view-title-info">
                         <h2>
-                            <a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a>
-                            <span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span>
+                            <a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{
+                                currProse.title
+                            }}</a>
+                            <span class="byline"
+                                >by
+                                <a
+                                    [routerLink]="[
+                                        '/portfolio',
+                                        $any(currProse.author)._id,
+                                        $any(currProse.author).username | slugify
+                                    ]"
+                                    >{{ $any(currProse.author).username }}</a
+                                ></span
+                            >
                         </h2>
-                    </div>  
+                    </div>
                 </div>
                 <div class="view-tags">
-                    <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                    <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"
+                        ><i-feather name="book-open" class="kind"></i-feather
+                    ></span>
                     <span class="divider">//</span>
                     <span class="tag">{{ currProse.meta.category }}</span>
                     <span class="divider">//</span>
                     <span class="tag genres">{{ currProse.meta.genres | separateGenres }}</span>
-                    <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu">Genres <i-feather name="chevron-down"></i-feather></span>
+                    <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu"
+                        >Genres <i-feather name="chevron-down"></i-feather
+                    ></span>
                     <div class="view-tools">
                         <content-approval></content-approval>
                     </div>
                 </div>
                 <div class="view-description">
-                    <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt">
+                    <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt" />
                     <div class="html-description" [innerHtml]="currProse.body | safeHtml"></div>
                 </div>
             </div>
@@ -41,9 +57,18 @@
                                     {{ section.title }}
                                 </div>
                                 <div class="section-info">
-                                    <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
+                                    <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                                        ><i-feather name="pen-tool"></i-feather
+                                        >{{ section.stats.words | abbreviate }}</span
+                                    >
                                     <span class="divider">//</span>
-                                    <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ getPublishedDate(section) | localedate:'mediumDate'}}</span>
+                                    <span
+                                        class="tag"
+                                        [matTooltip]="'Published On'"
+                                        [matTooltipClass]="'offprint-tooltip'"
+                                        ><i-feather name="calendar"></i-feather
+                                        >{{ getPublishedDate(section) | localedate: 'mediumDate' }}</span
+                                    >
                                 </div>
                                 <div class="section-button">
                                     <button><i-feather name="chevron-right"></i-feather></button>
@@ -55,28 +80,43 @@
             </ul>
         </div>
         <div class="view-stats">
-            <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="message-circle"></i-feather>{{ currProse.stats.comments | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="bar-chart-2"></i-feather>{{ currProse.stats.views | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="bar-chart-2"></i-feather>{{ currProse.stats.views | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.audit.publishedOn | localedate:'mediumDate' }}</span>
+            <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="calendar"></i-feather
+                >{{ currProse.audit.publishedOn | localedate: 'mediumDate' }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currProse.meta.status] }}</span>
+            <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{
+                contentStatus[currProse.meta.status]
+            }}</span>
         </div>
     </div>
-    
+
     <mat-menu xPosition="after" #genresMenu="matMenu">
-        <button mat-menu-item *ngFor="let genre of currProse.meta.genres | keyvalue">{{ contentGenres[genre.value] }}</button>
+        <button mat-menu-item *ngFor="let genre of currProse.meta.genres | keyvalue">
+            {{ contentGenres[genre.value] }}
+        </button>
     </mat-menu>
-    
+
     <router-outlet></router-outlet>
-    
+
     <ng-container *ngIf="route.children.length === 0">
-        <comments [itemId]="currProse._id"
-                  [itemKind]="currProse.kind"
-                  [pageNum]="pageNum" 
-                  (emitPageChange)="onPageChange($event)"></comments>
+        <comments
+            [itemId]="currProse._id"
+            [itemKind]="currProse.kind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></comments>
     </ng-container>
 </ng-container>

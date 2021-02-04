@@ -7,13 +7,8 @@ import { WorksService } from './works.service';
 import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
-  imports: [
-    MongooseModule.forFeature([
-      {name: 'Work', schema: WorksSchema},
-    ]),
-    UsersModule, NotificationsModule
-  ],
-  providers: [WorksService],
-  exports: [WorksService]
+    imports: [MongooseModule.forFeature([{ name: 'Work', schema: WorksSchema }]), UsersModule, NotificationsModule],
+    providers: [WorksService],
+    exports: [WorksService],
 })
 export class WorksModule {}

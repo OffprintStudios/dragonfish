@@ -1,4 +1,4 @@
-import { ContentKind, ContentRating, Genres, PubStatus, WorkKind, WorkStatus } from "../content";
+import { ContentKind, ContentRating, Genres, PubStatus, WorkKind, WorkStatus } from '../content';
 
 export interface MigrationForm {
     readonly _id: string;

@@ -4,27 +4,27 @@ import { RatingOption, ReadingHistory } from '@dragonfish/models/reading-history
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
-@Schema({timestamps: true, autoIndex: true, collection: 'reading_history'})
+@Schema({ timestamps: true, autoIndex: true, collection: 'reading_history' })
 export class ReadingHistoryDocument extends Document implements ReadingHistory {
     @Prop()
     readonly _id: string;
 
-    @Prop({ref: 'User', required: true, index: true})
+    @Prop({ ref: 'User', required: true, index: true })
     readonly owner: string;
 
-    @Prop({type: String, ref: 'Content', required: true, autopopulate: true})
+    @Prop({ type: String, ref: 'Content', required: true, autopopulate: true })
     readonly content: string | ContentModel;
 
-    @Prop({required: true})
+    @Prop({ required: true })
     readonly viewedOn: Date;
 
-    @Prop({type: [String], ref: 'Section', default: null})
+    @Prop({ type: [String], ref: 'Section', default: null })
     sectionsRead: string[];
 
-    @Prop({type: String, enum: Object.keys(RatingOption), default: RatingOption.NoVote})
+    @Prop({ type: String, enum: Object.keys(RatingOption), default: RatingOption.NoVote })
     ratingOption: RatingOption;
 
-    @Prop({default: true})
+    @Prop({ default: true })
     visible: boolean;
 
     @Prop()

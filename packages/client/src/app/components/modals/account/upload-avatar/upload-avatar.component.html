@@ -1,7 +1,15 @@
 <mat-dialog-content>
     <h1>Change Avatar</h1>
-    <hr>
-    <input type="file" style="display: none;" (change)="fileChangeEvent($event)" accept="image/png, image/jpeg, image/jpg" ng2FileSelect [uploader]="uploader" #avatarInput/>
+    <hr />
+    <input
+        type="file"
+        style="display: none"
+        (change)="fileChangeEvent($event)"
+        accept="image/png, image/jpeg, image/jpg"
+        ng2FileSelect
+        [uploader]="uploader"
+        #avatarInput
+    />
 
     <image-cropper
         [imageChangedEvent]="imageChangedEvent"
@@ -13,13 +21,16 @@
         (imageCropped)="imageCropped($event)"
         (imageLoaded)="imageLoaded()"
         (cropperReady)="cropperReady($event)"
-        (loadImageFailed)="loadImageFailed()"></image-cropper>
+        (loadImageFailed)="loadImageFailed()"
+    ></image-cropper>
 </mat-dialog-content>
 <mat-dialog-actions>
     <div class="actions" *ngIf="!uploading; else isUploading">
         <button (click)="avatarInput.click()">Select Avatar</button>
-        <button style="margin-left: 2rem;" class="button-primary" *ngIf="croppedImage !== ''" (click)="uploadAvatar()">Upload</button>
-        <button style="margin-left: 2rem;" type="button" (click)="cancel()">Cancel</button>
+        <button style="margin-left: 2rem" class="button-primary" *ngIf="croppedImage !== ''" (click)="uploadAvatar()">
+            Upload
+        </button>
+        <button style="margin-left: 2rem" type="button" (click)="cancel()">Cancel</button>
     </div>
     <ng-template #isUploading>
         <div class="loader" *ngIf="uploading">

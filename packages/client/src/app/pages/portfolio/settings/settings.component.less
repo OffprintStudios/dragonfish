@@ -45,53 +45,53 @@ div.settings-container {
             form {
                 flex: 1;
             }
-                div.settings-card-content {
-                    flex: 1;
+            div.settings-card-content {
+                flex: 1;
+                margin-bottom: 1.5rem;
+                h1 {
+                    font-size: 30px;
+                    text-align: center;
+                    font-weight: 400;
                     margin-bottom: 1.5rem;
-                    h1 {
-                        font-size: 30px;
-                        text-align: center;
-                        font-weight: 400;
-                        margin-bottom: 1.5rem;
-                    }
-                    img {
-                        width: 130px;
-                        height: 130px;
-                        margin: 0 auto;
-                        border-radius: 50%;
-                        border: 1px solid var(--site-borders);
-                        object-fit: cover;
-                        object-position: 50% 50%; // Determines the viewport position
-                        display: block;
-                        text-align: center;
-                    }
-                    textarea {
-                        color: var(--site-text-color);
-                    }
-
-                    span.toggles {
-                        display: block;
-                        width: 100%;
-                        text-align: center;
-                    }
                 }
-                div.settings-card-footer {
-                    position: relative;
-                    border-top: 1px solid var(--site-borders);
-                    button {
-                        margin-top: 1rem;
-                        width: 100%;
-                    }
+                img {
+                    width: 130px;
+                    height: 130px;
+                    margin: 0 auto;
+                    border-radius: 50%;
+                    border: 1px solid var(--site-borders);
+                    object-fit: cover;
+                    object-position: 50% 50%; // Determines the viewport position
+                    display: block;
+                    text-align: center;
+                }
+                textarea {
+                    color: var(--site-text-color);
+                }
+
+                span.toggles {
+                    display: block;
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+            div.settings-card-footer {
+                position: relative;
+                border-top: 1px solid var(--site-borders);
+                button {
+                    margin-top: 1rem;
+                    width: 100%;
                 }
             }
         }
+    }
 
     div.loader {
-        position: relative;        
+        position: relative;
         margin-right: 0;
         margin-top: 1rem;
         text-align: center;
-    
+
         .lds-dual-ring {
             margin-right: 0.5rem;
         }

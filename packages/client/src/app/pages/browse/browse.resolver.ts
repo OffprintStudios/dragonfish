@@ -12,7 +12,7 @@ import { Content, ContentState } from '../../shared/content';
 export class BrowseResolver implements Resolve<PaginateResult<ContentModel>> {
     pageNum: number = 1;
 
-    constructor(private store: Store) { }
+    constructor(private store: Store) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ContentModel>> {
         const pageNum = +route.queryParamMap.get('page');
@@ -21,9 +21,12 @@ export class BrowseResolver implements Resolve<PaginateResult<ContentModel>> {
             this.pageNum = pageNum;
         }
 
-        return this.store.dispatch(new Content.FetchAll(this.pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent]))
-            .pipe(switchMap(() => {
-                return this.store.selectOnce<PaginateResult<ContentModel>>(ContentState.currPageContent);
-            }));
+        return this.store
+            .dispatch(new Content.FetchAll(this.pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent]))
+            .pipe(
+                switchMap(() => {
+                    return this.store.selectOnce<PaginateResult<ContentModel>>(ContentState.currPageContent);
+                }),
+            );
     }
 }

@@ -6,5 +6,5 @@ export enum ContentWarning {
     Nudity = 'N',
     SexualContent = 'SC',
     Rape = 'R',
-    MentalHealth = 'MH'
+    MentalHealth = 'MH',
 }

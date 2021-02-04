@@ -34,7 +34,11 @@
             <ul class="notif-list">
                 <ng-container *ngFor="let notif of unread">
                     <li>
-                        <notif-item [notif]="notif" (onSelected)="selectNotif($event)" (onDeselected)="deselectNotif($event)"></notif-item>
+                        <notif-item
+                            [notif]="notif"
+                            (onSelected)="selectNotif($event)"
+                            (onDeselected)="deselectNotif($event)"
+                        ></notif-item>
                     </li>
                 </ng-container>
             </ul>
@@ -43,10 +47,8 @@
 </ng-container>
 
 <ng-template #noNotifications>
-    <div style="margin-top: 1.25rem; text-align: center;">
-        <h4 style="color: whitesmoke;">Nothing's happened yet</h4>
-        <p style="color: whitesmoke; font-style: italic;">
-            Check back when something happens!
-        </p>
+    <div style="margin-top: 1.25rem; text-align: center">
+        <h4 style="color: whitesmoke">Nothing's happened yet</h4>
+        <p style="color: whitesmoke; font-style: italic">Check back when something happens!</p>
     </div>
 </ng-template>

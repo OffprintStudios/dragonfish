@@ -14,8 +14,8 @@ export class CollectionPageResolver implements Resolve<Collection> {
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    constructor (private collsService: CollectionsService) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(private collsService: CollectionsService) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }

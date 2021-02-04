@@ -13,7 +13,7 @@ import { Constants, Title } from '../../../shared';
 @Component({
     selector: 'port-works',
     templateUrl: './works.component.html',
-    styleUrls: ['./works.component.less']
+    styleUrls: ['./works.component.less'],
 })
 export class WorksComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -27,7 +27,7 @@ export class WorksComponent implements OnInit {
     pageNum = 1;
 
     constructor(private route: ActivatedRoute, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
@@ -39,11 +39,15 @@ export class WorksComponent implements OnInit {
 
     /**
      * Handles page changing
-     * 
+     *
      * @param event The new page
      */
     onPageChange(event: number) {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event },
+            queryParamsHandling: 'merge',
+        });
         this.pageNum = event;
     }
 
@@ -56,7 +60,7 @@ export class WorksComponent implements OnInit {
                 if (this.currentUser._id === this.portUser._id) {
                     return true;
                 } else {
-                return false;
+                    return false;
                 }
             }
         }

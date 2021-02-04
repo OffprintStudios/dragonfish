@@ -35,33 +35,84 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';
 import { NguCarouselModule } from '@ngu/carousel';
 
-import { SlugifyPipe, PluralizePipe, SeparateGenresPipe, FixCategoriesPipe,
-  StringifyMetaPipe, ToLocaleStringPipe, AbbreviateNumbersPipe, SafeHtmlPipe, 
-  TruncatePipe, LocaleDatePipe, JoinStringsPipe } from './pipes';
+import {
+    SlugifyPipe,
+    PluralizePipe,
+    SeparateGenresPipe,
+    FixCategoriesPipe,
+    StringifyMetaPipe,
+    ToLocaleStringPipe,
+    AbbreviateNumbersPipe,
+    SafeHtmlPipe,
+    TruncatePipe,
+    LocaleDatePipe,
+    JoinStringsPipe,
+} from './pipes';
 import { NagBarModule } from './modules';
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
 import { BrowseComponent } from './pages/browse';
 
-import { PortfolioComponent, PortHomeComponent, BlogPageComponent, WorksComponent, SettingsComponent,
-  BlogsComponent, CollectionsComponent, ConversationsComponent as PortConversations,
-  HistoryComponent as HistoryPageComponent } from './pages/portfolio';
+import {
+    PortfolioComponent,
+    PortHomeComponent,
+    BlogPageComponent,
+    WorksComponent,
+    SettingsComponent,
+    BlogsComponent,
+    CollectionsComponent,
+    ConversationsComponent as PortConversations,
+    HistoryComponent as HistoryPageComponent,
+} from './pages/portfolio';
 import { CollectionPageComponent } from './pages/portfolio/collections';
 
-import { MyStuffComponent, BlogFormComponent, ContentItemComponent, PoetryFormComponent, ProseFormComponent,
-  ViewPoetryComponent, ViewProseComponent, SectionItemComponent, NewsFormComponent } from './pages/my-stuff';
+import {
+    MyStuffComponent,
+    BlogFormComponent,
+    ContentItemComponent,
+    PoetryFormComponent,
+    ProseFormComponent,
+    ViewPoetryComponent,
+    ViewProseComponent,
+    SectionItemComponent,
+    NewsFormComponent,
+} from './pages/my-stuff';
 
 import { SocialComponent } from './pages';
 import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-import { ProsePageComponent, PoetryPageComponent, PostPageComponent, SectionViewComponent } from './pages/content-views';
-import { DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent,
-  ReportsComponent, UsersManagementComponent, AuditLogComponent } from './pages/dash';
-import { ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/dash/approval-queue';
+import {
+    ProsePageComponent,
+    PoetryPageComponent,
+    PostPageComponent,
+    SectionViewComponent,
+} from './pages/content-views';
+import {
+    DashComponent,
+    OverviewComponent,
+    ApprovalQueueComponent,
+    GroupQueueComponent,
+    NewsManagementComponent,
+    ReportsComponent,
+    UsersManagementComponent,
+    AuditLogComponent,
+} from './pages/dash';
+import {
+    ApprovePoetryComponent,
+    ApproveProseComponent,
+    ApproveSectionViewComponent,
+} from './pages/dash/approval-queue';
 
 import { PostFormComponent } from './pages/dash/news-management';
-import { TosComponent, CodeOfConductComponent, OmnibusComponent, AboutOffprintComponent, SiteStaffComponent, SupportersComponent } from './pages/docs';
+import {
+    TosComponent,
+    CodeOfConductComponent,
+    OmnibusComponent,
+    AboutOffprintComponent,
+    SiteStaffComponent,
+    SupportersComponent,
+} from './pages/docs';
 
 import { UploadCoverartComponent } from './pages/my-stuff/components';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -78,8 +129,13 @@ import { NetworkInputComponent } from './components/network-input/network-input.
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { SiteSidenavComponent, ConversationsComponent, NotificationsComponent, WatchingComponent,
-  HistoryComponent } from './components/site-sidenav';
+import {
+    SiteSidenavComponent,
+    ConversationsComponent,
+    NotificationsComponent,
+    WatchingComponent,
+    HistoryComponent,
+} from './components/site-sidenav';
 import { NotifItemComponent } from './components/site-sidenav/notifications/notif-item/notif-item.component';
 import { StartConversationComponent } from './components/modals/portfolio/start-conversation/start-conversation.component';
 import { ContentApprovalComponent } from './components/content-approval';
@@ -90,52 +146,163 @@ import { environment } from '../environments/environment';
 import { SectionsState } from './shared/my-stuff/sections';
 
 @NgModule({
-  declarations: [
-    AppComponent, SlugifyPipe, PluralizePipe, HomeComponent, BrowseComponent,
-    NewsComponent, RegisterComponent, CollectionsComponent, WatchingComponent,
-    BlogsComponent, WorksComponent, SettingsComponent, HistoryPageComponent, PortfolioComponent, PortHomeComponent, BlogPageComponent, 
-    SeparateGenresPipe, JoinStringsPipe, FixCategoriesPipe, UploadAvatarComponent, 
-    BeatrizHeroComponent, UploadCoverartComponent, SearchComponent, FindUsersComponent,
-    FindWorksComponent, FindBlogsComponent, StringifyMetaPipe, ToLocaleStringPipe, NetworkInputComponent,
-    SiteStaffComponent, CreateCollectionComponent, SocialComponent,
-    AddToCollectionComponent, AbbreviateNumbersPipe, NewPolicyNagComponent, CommentsComponent,
-    EditorComponent, SafeHtmlPipe, SiteSidenavComponent, ConversationsComponent,
-    NotificationsComponent, WatchingPageComponent, HistoryComponent, StartConversationComponent, TruncatePipe,
-    PostPageComponent, PortConversations, MyStuffComponent, BlogFormComponent, 
-    ContentItemComponent, ProseFormComponent, PoetryFormComponent, ViewProseComponent, RatingIconComponent, ViewPoetryComponent,
-    SectionItemComponent, WorkCardComponent, ProsePageComponent, PoetryPageComponent, SectionViewComponent, LocaleDatePipe,
-    MigrationComponent, MigrateWorkComponent, MigrateBlogComponent, ContentApprovalComponent, CollectionPageComponent,
-    DashComponent, OverviewComponent, ApprovalQueueComponent, GroupQueueComponent, NewsManagementComponent, 
-    ReportsComponent, UsersManagementComponent, AuditLogComponent, PostFormComponent, TosComponent, CodeOfConductComponent, OmnibusComponent, 
-    AboutOffprintComponent, RoleBadgeComponent, UserCardComponent, SupportersComponent, NotifItemComponent, ApprovePoetryComponent,
-    ApproveProseComponent, ApproveSectionViewComponent, AlertsComponent, NewsFormComponent
-  ],
-  imports: [
-    BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, IconsModule, 
-    FileUploadModule, ImageCropperModule, NgxPaginationModule,
-    NagBarModule, BrowserAnimationsModule, CKEditorModule, MaterialModule, Ng2FittextModule,
-    LoadingBarModule, LoadingBarHttpClientModule, ClipboardModule, NguCarouselModule,
-    NgxsModule.forRoot([
-      AuthState, GlobalState, UserState, ApprovalQueueState, ContentState, MyStuffState, AlertsState, SectionsState
-    ], {developmentMode: !environment.production, selectorOptions: {suppressErrors: false, injectContainerState: false}}),
-    NgxsStoragePluginModule.forRoot({
-      key: [
-        'auth', 'user', 'global', 'myStuff.currContent', 'myStuff.currContentWordCount', 'myStuff.sections.currSection', 'approvalQueue.selectedDoc', 
-        'approvalQueue.selectedDocSections', 'approvalQueue.selectedDocSection'
-      ]
-    }),
-    NgxsReduxDevtoolsPluginModule.forRoot(), NgxsRouterPluginModule.forRoot(),
-    NgxsDispatchPluginModule.forRoot(), MarkdownModule.forRoot(), CookieModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot({disabled: environment.production}), NgxsSelectSnapshotModule.forRoot()
-  ],
-  providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true,},
-    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}},
-    SlugifyPipe
-  ],
-  entryComponents: [
-    UploadAvatarComponent, UploadCoverartComponent, AddToCollectionComponent, StartConversationComponent
-  ],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        SlugifyPipe,
+        PluralizePipe,
+        HomeComponent,
+        BrowseComponent,
+        NewsComponent,
+        RegisterComponent,
+        CollectionsComponent,
+        WatchingComponent,
+        BlogsComponent,
+        WorksComponent,
+        SettingsComponent,
+        HistoryPageComponent,
+        PortfolioComponent,
+        PortHomeComponent,
+        BlogPageComponent,
+        SeparateGenresPipe,
+        JoinStringsPipe,
+        FixCategoriesPipe,
+        UploadAvatarComponent,
+        BeatrizHeroComponent,
+        UploadCoverartComponent,
+        SearchComponent,
+        FindUsersComponent,
+        FindWorksComponent,
+        FindBlogsComponent,
+        StringifyMetaPipe,
+        ToLocaleStringPipe,
+        NetworkInputComponent,
+        SiteStaffComponent,
+        CreateCollectionComponent,
+        SocialComponent,
+        AddToCollectionComponent,
+        AbbreviateNumbersPipe,
+        NewPolicyNagComponent,
+        CommentsComponent,
+        EditorComponent,
+        SafeHtmlPipe,
+        SiteSidenavComponent,
+        ConversationsComponent,
+        NotificationsComponent,
+        WatchingPageComponent,
+        HistoryComponent,
+        StartConversationComponent,
+        TruncatePipe,
+        PostPageComponent,
+        PortConversations,
+        MyStuffComponent,
+        BlogFormComponent,
+        ContentItemComponent,
+        ProseFormComponent,
+        PoetryFormComponent,
+        ViewProseComponent,
+        RatingIconComponent,
+        ViewPoetryComponent,
+        SectionItemComponent,
+        WorkCardComponent,
+        ProsePageComponent,
+        PoetryPageComponent,
+        SectionViewComponent,
+        LocaleDatePipe,
+        MigrationComponent,
+        MigrateWorkComponent,
+        MigrateBlogComponent,
+        ContentApprovalComponent,
+        CollectionPageComponent,
+        DashComponent,
+        OverviewComponent,
+        ApprovalQueueComponent,
+        GroupQueueComponent,
+        NewsManagementComponent,
+        ReportsComponent,
+        UsersManagementComponent,
+        AuditLogComponent,
+        PostFormComponent,
+        TosComponent,
+        CodeOfConductComponent,
+        OmnibusComponent,
+        AboutOffprintComponent,
+        RoleBadgeComponent,
+        UserCardComponent,
+        SupportersComponent,
+        NotifItemComponent,
+        ApprovePoetryComponent,
+        ApproveProseComponent,
+        ApproveSectionViewComponent,
+        AlertsComponent,
+        NewsFormComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        IconsModule,
+        FileUploadModule,
+        ImageCropperModule,
+        NgxPaginationModule,
+        NagBarModule,
+        BrowserAnimationsModule,
+        CKEditorModule,
+        MaterialModule,
+        Ng2FittextModule,
+        LoadingBarModule,
+        LoadingBarHttpClientModule,
+        ClipboardModule,
+        NguCarouselModule,
+        NgxsModule.forRoot(
+            [
+                AuthState,
+                GlobalState,
+                UserState,
+                ApprovalQueueState,
+                ContentState,
+                MyStuffState,
+                AlertsState,
+                SectionsState,
+            ],
+            {
+                developmentMode: !environment.production,
+                selectorOptions: { suppressErrors: false, injectContainerState: false },
+            },
+        ),
+        NgxsStoragePluginModule.forRoot({
+            key: [
+                'auth',
+                'user',
+                'global',
+                'myStuff.currContent',
+                'myStuff.currContentWordCount',
+                'myStuff.sections.currSection',
+                'approvalQueue.selectedDoc',
+                'approvalQueue.selectedDocSections',
+                'approvalQueue.selectedDocSection',
+            ],
+        }),
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+        NgxsRouterPluginModule.forRoot(),
+        NgxsDispatchPluginModule.forRoot(),
+        MarkdownModule.forRoot(),
+        CookieModule.forRoot(),
+        NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
+        NgxsSelectSnapshotModule.forRoot(),
+    ],
+    providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+        SlugifyPipe,
+    ],
+    entryComponents: [
+        UploadAvatarComponent,
+        UploadCoverartComponent,
+        AddToCollectionComponent,
+        StartConversationComponent,
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -8,16 +8,16 @@ import { UsersModule } from '../../db/users/users.module';
 import { WorksModule } from '../../db/works/works.module';
 
 @Module({
-  imports: [
-    UsersModule,
-    WorksModule,
-    JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: getJwtSecretKey(),
-        signOptions: {expiresIn: JWT_EXPIRATION},
-      }),
-    }),
-  ],
-  controllers: [StatsController, AdminController]
+    imports: [
+        UsersModule,
+        WorksModule,
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
+        }),
+    ],
+    controllers: [StatsController, AdminController],
 })
 export class AdminModule {}

@@ -5,28 +5,29 @@ import { User } from '../../shared/user';
 import { NagBarService } from '../../modules/nag-bar';
 
 @Component({
-  selector: 'app-new-policy-nag',
-  templateUrl: './new-policy-nag.component.html',
-  styleUrls: ['./new-policy-nag.component.less']
+    selector: 'app-new-policy-nag',
+    templateUrl: './new-policy-nag.component.html',
+    styleUrls: ['./new-policy-nag.component.less'],
 })
 export class NewPolicyNagComponent implements OnInit {
-  loading = false;
+    loading = false;
 
-  constructor(private nagBarService: NagBarService, private store: Store) { }
+    constructor(private nagBarService: NagBarService, private store: Store) {}
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {}
 
-  onSubmitClicked(): void {
-    // set agree locally and with the server, then close the bar
-    this.loading = true;
+    onSubmitClicked(): void {
+        // set agree locally and with the server, then close the bar
+        this.loading = true;
 
-    this.store.dispatch(new User.AgreeToPolicies()).subscribe(() => {
-      this.loading = false;
-      this.nagBarService.clearCurrentConent();
-    }, err => {
-      this.loading = false;
-    });
-  }
-
+        this.store.dispatch(new User.AgreeToPolicies()).subscribe(
+            () => {
+                this.loading = false;
+                this.nagBarService.clearCurrentConent();
+            },
+            (err) => {
+                this.loading = false;
+            },
+        );
+    }
 }

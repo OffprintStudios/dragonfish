@@ -4,18 +4,19 @@
     </div>
     <div class="create-collection-body">
         <form [formGroup]="createCollectionForm">
-            <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Name</mat-label>
-                <input matInput placeholder="A Brand New Collection" formControlName="name">
+                <input matInput placeholder="A Brand New Collection" formControlName="name" />
             </mat-form-field>
 
-            <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Description</mat-label>
                 <textarea matInput placeholder="Full of all the things I love" formControlName="desc"></textarea>
             </mat-form-field>
 
             <div class="private-toggle">
-                <span class="before-text">Private</span><mat-slide-toggle formControlName="public">Public</mat-slide-toggle>
+                <span class="before-text">Private</span
+                ><mat-slide-toggle formControlName="public">Public</mat-slide-toggle>
             </div>
         </form>
     </div>
@@ -23,12 +24,8 @@
 <mat-dialog-actions>
     <div class="actions">
         <button class="create" type="submit" (click)="submitCollection()">
-            <ng-container *ngIf="editMode; else createMode">
-                Save
-            </ng-container>
-            <ng-template #createMode>
-                Create
-            </ng-template>
+            <ng-container *ngIf="editMode; else createMode"> Save </ng-container>
+            <ng-template #createMode> Create </ng-template>
         </button>
         <button (click)="askCancel()">Cancel</button>
     </div>

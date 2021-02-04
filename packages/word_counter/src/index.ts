@@ -4,9 +4,9 @@
 let word_counter_promise = import('./lib/word_counter');
 
 /** Counts the number of words in the given JSON blob full of Quill deltas.
-* @param {string} bodyText A JSON blob made of Quill Deltas.
-* @returns {number} The number of words in the submitted text.
-*/
+ * @param {string} bodyText A JSON blob made of Quill Deltas.
+ * @returns {number} The number of words in the submitted text.
+ */
 export async function countQuillWords(bodyText: string): Promise<number> {
     let wasm_module = await word_counter_promise;
     return wasm_module.count_quill_words(bodyText);
@@ -21,4 +21,3 @@ export async function countPlaintextWords(bodyText: string): Promise<number> {
     let wasm_module = await word_counter_promise;
     return wasm_module.count_plaintext_words(bodyText);
 }
-

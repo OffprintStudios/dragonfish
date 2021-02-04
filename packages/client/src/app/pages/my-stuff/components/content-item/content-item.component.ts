@@ -10,7 +10,7 @@ import { MyStuffService } from '../../my-stuff.service';
 @Component({
     selector: 'content-item',
     templateUrl: './content-item.component.html',
-    styleUrls: ['./content-item.component.less']
+    styleUrls: ['./content-item.component.less'],
 })
 export class ContentItemComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
@@ -25,7 +25,7 @@ export class ContentItemComponent implements OnInit {
     constructor(private stuff: MyStuffService) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
+        this.currContent$.pipe(untilDestroyed(this)).subscribe((x) => {
             if (x !== null) {
                 if (x._id === this.content._id) {
                     this.selected = true;

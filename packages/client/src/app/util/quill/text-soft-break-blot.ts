@@ -11,11 +11,11 @@ interface QuillRange {
 
 /**
  * Extends and **replaces** the base Quill TextBlot. It gives it
- * the capacity to handle single line breaks, which are represented as the 
+ * the capacity to handle single line breaks, which are represented as the
  * Unicode LINE SEPARATOR (U+2028) character.
  */
 export class TextSoftBreakBlot extends TextBlot {
-    // These two fields are "inherited" from TextBlot, but because we 
+    // These two fields are "inherited" from TextBlot, but because we
     // can't import it traditionally, we have to shadow them manually.
     protected text: string;
     public domNode!: Text;
@@ -52,24 +52,17 @@ function toDeltaText(domText: string): string {
     // Text node content that ends in \n\n is rendered as two blank lines.
     // Convert to one line separator, and let the second \n be handled
     // by Quill closing the text block.
-    return domText
-        .replace(/\n\n$/, LINE_SEPARATOR)
-        .replace(/\n/g, LINE_SEPARATOR);
+    return domText.replace(/\n\n$/, LINE_SEPARATOR).replace(/\n/g, LINE_SEPARATOR);
 }
 
 function toDomText(deltaText: string): string {
-    return deltaText
-        .replace(new RegExp(`${LINE_SEPARATOR}$`), '\n\n')
-        .replace(new RegExp(LINE_SEPARATOR, 'g'), '\n');
+    return deltaText.replace(new RegExp(`${LINE_SEPARATOR}$`), '\n\n').replace(new RegExp(LINE_SEPARATOR, 'g'), '\n');
 }
 
 export function shiftEnterHandler(this: any, range: QuillRange) {
     this.quill.history.cutoff();
     // wrap this in cutoff()s so it gets seen as a single change
-    const delta = new Delta()
-        .retain(range.index)
-        .delete(range.length)
-        .insert(LINE_SEPARATOR);
+    const delta = new Delta().retain(range.index).delete(range.length).insert(LINE_SEPARATOR);
     this.quill.updateContents(delta, Quill.sources.USER);
 
     this.quill.history.cutoff();
@@ -89,7 +82,7 @@ export function textNodeMatcher(node: any, delta: any) {
     // This code is almost identical to the default TextMatcher code--
     // just with extra calls to toDeltaText().
     let text = node.data;
-    // Going to comment this out for now--it actually seems to result in 
+    // Going to comment this out for now--it actually seems to result in
     // WORSE imports from external sources (and Word).
     // Word represents empty line with <o:p>&nbsp;</o:p>
     // if (node.parentNode.tagName === 'O:P') {

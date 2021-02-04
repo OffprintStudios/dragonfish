@@ -16,7 +16,7 @@ export class DocsService {
 
     /**
      * Creates a new site document and adds it to the Docs collection.
-     * 
+     *
      * @param user The admin creating the doc
      * @param docInfo The doc's info
      */
@@ -25,18 +25,18 @@ export class DocsService {
         const hasRoles = lodash.intersection(user.roles, requiredRole);
         if (hasRoles.length > 0) {
             const newDoc = new this.docModel({
-                "_id": docInfo._id,
-                "contributors": [user.sub],
-                "docName": docInfo.docName,
-                "docDescription": docInfo.docDescription,
-                "docBody": docInfo.docBody,
-                "audit.approvedRoles": docInfo.approvedRoles,
-                "audit.lastUpdatedBy": user.sub,
+                _id: docInfo._id,
+                contributors: [user.sub],
+                docName: docInfo.docName,
+                docDescription: docInfo.docDescription,
+                docBody: docInfo.docBody,
+                'audit.approvedRoles': docInfo.approvedRoles,
+                'audit.lastUpdatedBy': user.sub,
 
                 // Delete this when we're all migrated.
-                "usesNewEditor": docInfo.usesNewEditor
+                usesNewEditor: docInfo.usesNewEditor,
             });
-    
+
             return await newDoc.save();
         } else {
             throw new UnauthorizedException(`You don't have permission to create a new document.`);
@@ -45,20 +45,20 @@ export class DocsService {
 
     /**
      * Fetches a site document from the database.
-     * 
+     *
      * @param docId The doc to fetch
      */
     async fetchDoc(docId: string): Promise<models.Doc> {
-        return await this.docModel.findById(docId).where("audit.isDeleted", false);
+        return await this.docModel.findById(docId).where('audit.isDeleted', false);
     }
 
     /**
      * Fetches a doc for editing. Only to be used from the dashboard service.
-     * 
+     *
      * @param docId The doc to fetch for edits
      */
     async fetchDocForEdit(user: JwtPayload, docId: string): Promise<models.Doc> {
-        const thisDoc = await this.docModel.findById(docId).where("audit.isDeleted", false);
+        const thisDoc = await this.docModel.findById(docId).where('audit.isDeleted', false);
         const rolesIntersection = lodash.intersection(user.roles, thisDoc.audit.approvedRoles);
         if (rolesIntersection.length === 0) {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
@@ -76,12 +76,12 @@ export class DocsService {
 
     /**
      * Edits a site document and updates who last edited it.
-     * 
+     *
      * @param user The user making the edits
      * @param docInfo The new doc info
      */
     async editDoc(user: JwtPayload, docInfo: models.EditDoc): Promise<void> {
-        const thisDoc = await this.docModel.findById(docInfo._id).where("audit.isDeleted", false);
+        const thisDoc = await this.docModel.findById(docInfo._id).where('audit.isDeleted', false);
         const rolesIntersection = lodash.intersection(user.roles, thisDoc.audit.approvedRoles);
         if (rolesIntersection.length === 0) {
             throw new UnauthorizedException(`You don't have permission to edit this document.`);
@@ -89,20 +89,23 @@ export class DocsService {
             const wordCount = docInfo.usesNewEditor
                 ? await countPlaintextWords(await stripAllHtml(docInfo.docBody))
                 : await countQuillWords(await sanitizeHtml(docInfo.docBody));
-            return await this.docModel.updateOne({"_id": docInfo._id}, {
-                "docTitle": await sanitizeHtml(docInfo.docTitle),
-                "docBody": await sanitizeHtml(docInfo.docBody),
-                "words": wordCount,
-                "lastUpdatedBy": user.sub,
+            return await this.docModel.updateOne(
+                { _id: docInfo._id },
+                {
+                    docTitle: await sanitizeHtml(docInfo.docTitle),
+                    docBody: await sanitizeHtml(docInfo.docBody),
+                    words: wordCount,
+                    lastUpdatedBy: user.sub,
 
-                "usesNewEditor": docInfo.usesNewEditor
-            });
-        } 
+                    usesNewEditor: docInfo.usesNewEditor,
+                },
+            );
+        }
     }
 
     /**
      * Soft deletes a site document, removing it from view on the main site.
-     * 
+     *
      * @param user The admin making this change
      * @param docId The document to delete
      */
@@ -110,10 +113,13 @@ export class DocsService {
         const requiredRole: Roles[] = [Roles.Admin];
         const hasRoles = lodash.intersection(user.roles, requiredRole);
         if (hasRoles.length > 0) {
-            return await this.docModel.updateOne({"_id": docId}, {
-                "audit.lastUpdatedBy": user.sub,
-                "audit.isDeleted": true
-            });
+            return await this.docModel.updateOne(
+                { _id: docId },
+                {
+                    'audit.lastUpdatedBy': user.sub,
+                    'audit.isDeleted': true,
+                },
+            );
         } else {
             throw new UnauthorizedException(`You don't have permission to delete this document.`);
         }

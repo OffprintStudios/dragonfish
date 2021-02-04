@@ -7,7 +7,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()
 export class PortfolioResolver implements Resolve<FrontendUser> {
-    constructor (private portService: PortfolioService) { }
+    constructor(private portService: PortfolioService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<FrontendUser> {
         const userId = route.paramMap.get('id');

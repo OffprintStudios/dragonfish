@@ -12,12 +12,13 @@ import { NotificationsService } from '../../notifications/notifications.service'
 import { NotificationKind } from '@dragonfish/models/notifications';
 import { ContentFilter } from '@dragonfish/models/works';
 
-
 @Injectable()
 export class BlogsService {
-    constructor(@InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
+    constructor(
+        @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         private readonly usersService: UsersService,
-        private readonly notificationsService: NotificationsService) {}
+        private readonly notificationsService: NotificationsService,
+    ) {}
 
     /**
      * Creates a new blogpost and saves it to the database. Returns the newly
@@ -25,14 +26,14 @@ export class BlogsService {
      *
      * @param user The user making the blog.
      * @param blogInfo The blog's information.
-     */  
+     */
     async createNewBlog(user: JwtPayload, blogInfo: BlogForm): Promise<BlogsContentDocument> {
         const newBlog = new this.blogsModel({
-            'author': user.sub,
-            'title': await sanitizeHtml(blogInfo.title),
-            'body': await sanitizeHtml(blogInfo.body),
+            author: user.sub,
+            title: await sanitizeHtml(blogInfo.title),
+            body: await sanitizeHtml(blogInfo.body),
             'meta.rating': blogInfo.rating,
-            'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body))
+            'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body)),
         });
 
         const savedBlog = await newBlog.save();
@@ -54,19 +55,23 @@ export class BlogsService {
     async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
         const wordcount = await countPlaintextWords(await stripAllHtml(blogInfo.body));
 
-        return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
-            'title': await sanitizeHtml(blogInfo.title),
-            'body': await sanitizeHtml(blogInfo.body),
-            'meta.rating': blogInfo.rating,
-            'stats.words': wordcount
-        }, {new: true});
+        return await this.blogsModel.findOneAndUpdate(
+            { _id: blogId, author: user.sub },
+            {
+                title: await sanitizeHtml(blogInfo.title),
+                body: await sanitizeHtml(blogInfo.body),
+                'meta.rating': blogInfo.rating,
+                'stats.words': wordcount,
+            },
+            { new: true },
+        );
     }
 
     /**
      * Changes the publishing status of the specified blog. If there was a change in the publishing status,
      * like from true to false, then change the blog count on the specified user accordingly. Otherwise, do
      * nothing.
-     * 
+     *
      * @param user The author of the blog
      * @param blogId The blog's ID
      * @param pubStatus Object for change in publishing status
@@ -78,9 +83,13 @@ export class BlogsService {
             await this.usersService.changeBlogCount(user, false);
         }
 
-        return await this.blogsModel.findOneAndUpdate({'_id': blogId, 'author': user.sub}, {
-            'audit.published': pubChange.newStatus,
-            'audit.publishedOn': new Date()
-        }, {new: true});
+        return await this.blogsModel.findOneAndUpdate(
+            { _id: blogId, author: user.sub },
+            {
+                'audit.published': pubChange.newStatus,
+                'audit.publishedOn': new Date(),
+            },
+            { new: true },
+        );
     }
 }

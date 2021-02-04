@@ -7,23 +7,27 @@ import { FrontPageStats } from '@dragonfish/models/stats';
 import { AlertsService } from '../../shared/alerts';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class StatsService {
-  private url = `/api/admin/stats`;
+    private url = `/api/admin/stats`;
 
-  constructor(private http: HttpClient, private alertsService: AlertsService) { }
+    constructor(private http: HttpClient, private alertsService: AlertsService) {}
 
-  /**
-   * Fetches the stats for the footer.
-   */
-  public fetchFrontPageStats() {
-    return this.http.get<FrontPageStats>(`${this.url}/front-page-stats`, {observe: 'response', withCredentials: true})
-      .pipe(map(res => {
-        return res.body;
-      }), catchError(err => {
-        this.alertsService.error(`Error retrieving frontpage stats.`);
-        return throwError(err);
-      }));
-  }
+    /**
+     * Fetches the stats for the footer.
+     */
+    public fetchFrontPageStats() {
+        return this.http
+            .get<FrontPageStats>(`${this.url}/front-page-stats`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    this.alertsService.error(`Error retrieving frontpage stats.`);
+                    return throwError(err);
+                }),
+            );
+    }
 }

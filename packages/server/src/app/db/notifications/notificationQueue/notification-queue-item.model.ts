@@ -9,8 +9,8 @@ export interface NotificationQueueItem {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
-    kind: NotificationKind;    
-    publishStatus: PublishStatus;    
+    kind: NotificationKind;
+    publishStatus: PublishStatus;
     createdAt: Date;
     updatedAt: Date;
 }

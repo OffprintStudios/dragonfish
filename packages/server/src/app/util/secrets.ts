@@ -1,10 +1,10 @@
 /**
- * The secret key used to sign JWTs. Obtained from the 
+ * The secret key used to sign JWTs. Obtained from the
  * JWT_SECRET environment variable.
  */
 export function getJwtSecretKey(): string {
     return process.env.JWT_SECRET;
-} 
+}
 
 /**
  * The amount of time, in seconds, before a JWT expires.

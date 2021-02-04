@@ -8,24 +8,28 @@ import { AlertsService } from '../../shared/alerts';
 import { Doc } from '@dragonfish/models/docs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class DocsService {
-  private url = `/api/dashboard/docs`;
+    private url = `/api/dashboard/docs`;
 
-  constructor(private http: HttpClient, private alertsService: AlertsService) {}
+    constructor(private http: HttpClient, private alertsService: AlertsService) {}
 
-  /**
-   * Fetches a doc for display on a document page
-   * @param docId The doc to fetch
-   */
-  public fetchOne(docId: string) {
-    return this.http.get<Doc>(`${this.url}/fetch-one/${docId}`, {observe: 'response', withCredentials: true})
-      .pipe(map(doc => {
-        return doc.body;
-      }), catchError(err => {
-        this.alertsService.error(`The doc you're looking for can't be found.`);
-        return throwError(err);
-      }));
-  }
+    /**
+     * Fetches a doc for display on a document page
+     * @param docId The doc to fetch
+     */
+    public fetchOne(docId: string) {
+        return this.http
+            .get<Doc>(`${this.url}/fetch-one/${docId}`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((doc) => {
+                    return doc.body;
+                }),
+                catchError((err) => {
+                    this.alertsService.error(`The doc you're looking for can't be found.`);
+                    return throwError(err);
+                }),
+            );
+    }
 }

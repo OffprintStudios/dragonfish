@@ -17,7 +17,7 @@ import { AlertsService } from 'packages/client/src/app/shared/alerts';
 @Component({
     selector: 'view-poetry',
     templateUrl: './view-poetry.component.html',
-    styleUrls: ['./view-poetry.component.less']
+    styleUrls: ['./view-poetry.component.less'],
 })
 export class ViewPoetryComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<PoetryContent>;
@@ -39,18 +39,25 @@ export class ViewPoetryComponent implements OnInit {
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         authorsNote: new FormControl('', [Validators.minLength(3)]),
-        authorsNotePos: new FormControl(null)
+        authorsNotePos: new FormControl(null),
     });
 
-    constructor(private stuff: MyStuffService, public route: ActivatedRoute, private alerts: AlertsService, private dialog: MatDialog) {}
+    constructor(
+        private stuff: MyStuffService,
+        public route: ActivatedRoute,
+        private alerts: AlertsService,
+        private dialog: MatDialog,
+    ) {}
 
-    ngOnInit(): void { }
+    ngOnInit(): void {}
 
     exitEditMode() {
         this.editMode = false;
     }
 
-    get fields() { return this.sectionForm.controls; }
+    get fields() {
+        return this.sectionForm.controls;
+    }
 
     addSection() {
         this.editMode = true;
@@ -81,7 +88,7 @@ export class ViewPoetryComponent implements OnInit {
             body: this.fields.body.value,
             authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
-            usesNewEditor: true
+            usesNewEditor: true,
         };
 
         this.stuff.createSection(contentId, sectionForm);
@@ -89,6 +96,6 @@ export class ViewPoetryComponent implements OnInit {
     }
 
     uploadCoverart(contentId: string) {
-        this.dialog.open(UploadCoverartComponent, {data: {kind: ContentKind.PoetryContent, contentId: contentId}});
+        this.dialog.open(UploadCoverartComponent, { data: { kind: ContentKind.PoetryContent, contentId: contentId } });
     }
 }

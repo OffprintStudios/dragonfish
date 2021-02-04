@@ -6,19 +6,31 @@
                 <div class="view-title-info">
                     <h2>
                         <a>{{ currPoetry.title }}</a>
-                        <span class="byline">by <a [routerLink]="['/portfolio', $any(currPoetry.author)._id, $any(currPoetry.author).username | slugify]">{{ $any(currPoetry.author).username }}</a></span>
+                        <span class="byline"
+                            >by
+                            <a
+                                [routerLink]="[
+                                    '/portfolio',
+                                    $any(currPoetry.author)._id,
+                                    $any(currPoetry.author).username | slugify
+                                ]"
+                                >{{ $any(currPoetry.author).username }}</a
+                            ></span
+                        >
                     </h2>
-                </div>  
+                </div>
             </div>
             <div class="view-tags">
-                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather" class="kind"></i-feather></span>
+                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
+                    ><i-feather name="feather" class="kind"></i-feather
+                ></span>
                 <span class="divider">//</span>
                 <span class="tag">{{ currPoetry.meta.category }}</span>
                 <span class="divider">//</span>
                 <span class="tag genres">{{ currPoetry.meta.genres | separateGenres }}</span>
             </div>
             <div class="view-description">
-                <img class="little-art" [src]="currPoetry.meta.coverArt" *ngIf="currPoetry.meta.coverArt">
+                <img class="little-art" [src]="currPoetry.meta.coverArt" *ngIf="currPoetry.meta.coverArt" />
                 <ng-container *ngIf="currPoetry.meta.collection; else singlePoemDesc">
                     <div class="html-description" [innerHtml]="currPoetry.body | safeHtml"></div>
                 </ng-container>
@@ -38,9 +50,14 @@
                                 {{ section.title }}
                             </div>
                             <div class="section-info">
-                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
+                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span
+                                >
                                 <span class="divider">//</span>
-                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ section.audit.publishedOn | localedate:'mediumDate'}}</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="calendar"></i-feather
+                                    >{{ section.audit.publishedOn | localedate: 'mediumDate' }}</span
+                                >
                             </div>
                             <div class="section-button">
                                 <button><i-feather name="chevron-right"></i-feather></button>
@@ -52,13 +69,21 @@
         </ul>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{ poetryForm[currPoetry.meta.form] }}</span>
+        <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{
+            poetryForm[currPoetry.meta.form]
+        }}</span>
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currPoetry.stats.words | abbreviate }}</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="pen-tool"></i-feather>{{ currPoetry.stats.words | abbreviate }}</span
+        >
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Created At'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currPoetry.createdAt | localedate:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Created At'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="calendar"></i-feather>{{ currPoetry.createdAt | localedate: 'mediumDate' }}</span
+        >
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currPoetry.meta.status] }}</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{
+            contentStatus[currPoetry.meta.status]
+        }}</span>
     </div>
 </div>
 

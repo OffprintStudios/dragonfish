@@ -7,7 +7,7 @@ import { MessagesService } from '../../../db/messages/messages.service';
 
 @Controller('messages')
 export class MessagesController {
-    constructor (private readonly messageService: MessagesService) {}
+    constructor(private readonly messageService: MessagesService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-threads/:pageNum')

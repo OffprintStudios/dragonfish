@@ -12,16 +12,20 @@ import { WorksModule } from '../../db/works/works.module';
 import { ContentModule } from '../../db/content';
 
 @Module({
-  imports: [
-    ContentModule, UsersModule, ApprovalQueueModule, DocsModule, WorksModule,
-    JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: getJwtSecretKey(),
-        signOptions: {expiresIn: JWT_EXPIRATION},
-      }),
-    }),
-  ],
-  controllers: [QueueController, DocsController],
-  providers: [QueueService],
+    imports: [
+        ContentModule,
+        UsersModule,
+        ApprovalQueueModule,
+        DocsModule,
+        WorksModule,
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
+        }),
+    ],
+    controllers: [QueueController, DocsController],
+    providers: [QueueService],
 })
 export class DashboardModule {}

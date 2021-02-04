@@ -5,52 +5,65 @@
             <button class="form-button" (click)="submitForm(currProse._id)">Save</button>
         </div>
         <form [formGroup]="proseForm" (ngSubmit)="submitForm(currProse._id)">
-            <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Title</mat-label>
-                <input matInput placeholder="My Next Great Masterpiece" formControlName="title">
+                <input matInput placeholder="My Next Great Masterpiece" formControlName="title" />
             </mat-form-field>
-    
+
             <div class="row">
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Category</mat-label>
                         <mat-select [formControlName]="'category'">
-                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{ category.value }}</mat-option>
+                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{
+                                category.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Genre(s)</mat-label>
                         <mat-select [formControlName]="'genres'" multiple>
-                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{ genre.value }}</mat-option>
+                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{
+                                genre.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-    
-            <mat-form-field style="width: 100%;" appearance="outline">
+
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Short Description</mat-label>
-                <input matInput placeholder="One of the best things never told" formControlName="desc">
+                <input matInput placeholder="One of the best things never told" formControlName="desc" />
             </mat-form-field>
-    
+
             <label>Long Description</label>
-            <editor [parentForm]="proseForm" [controlName]="'body'" [minHeight]="'300px'" [maxHeight]="'300px'"></editor>
-    
-            <div class="row" style="margin-top: 2rem;">
+            <editor
+                [parentForm]="proseForm"
+                [controlName]="'body'"
+                [minHeight]="'300px'"
+                [maxHeight]="'300px'"
+            ></editor>
+
+            <div class="row" style="margin-top: 2rem">
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Rating</mat-label>
                         <mat-select [formControlName]="'rating'">
-                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{
+                                rating.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Status</mat-label>
                         <mat-select [formControlName]="'status'">
-                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{ status.value }}</mat-option>
+                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{
+                                status.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -66,52 +79,65 @@
             <button class="form-button" (click)="submitForm()">Save</button>
         </div>
         <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
-            <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Title</mat-label>
-                <input matInput placeholder="My Next Great Masterpiece" formControlName="title">
+                <input matInput placeholder="My Next Great Masterpiece" formControlName="title" />
             </mat-form-field>
-    
+
             <div class="row">
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Category</mat-label>
                         <mat-select [formControlName]="'category'">
-                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{ category.value }}</mat-option>
+                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{
+                                category.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Genre(s)</mat-label>
                         <mat-select [formControlName]="'genres'" multiple>
-                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{ genre.value }}</mat-option>
+                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{
+                                genre.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-    
-            <mat-form-field style="width: 100%;" appearance="outline">
+
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Short Description</mat-label>
-                <input matInput placeholder="One of the best things never told" formControlName="desc">
+                <input matInput placeholder="One of the best things never told" formControlName="desc" />
             </mat-form-field>
-    
+
             <label>Long Description</label>
-            <editor [parentForm]="proseForm" [controlName]="'body'" [minHeight]="'300px'" [maxHeight]="'300px'"></editor>
-    
-            <div class="row" style="margin-top: 2rem;">
+            <editor
+                [parentForm]="proseForm"
+                [controlName]="'body'"
+                [minHeight]="'300px'"
+                [maxHeight]="'300px'"
+            ></editor>
+
+            <div class="row" style="margin-top: 2rem">
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Rating</mat-label>
                         <mat-select [formControlName]="'rating'">
-                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{ rating.value }}</mat-option>
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{
+                                rating.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="six columns">
-                    <mat-form-field style="width: 100%;" appearance="outline">
+                    <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Status</mat-label>
                         <mat-select [formControlName]="'status'">
-                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{ status.value }}</mat-option>
+                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{
+                                status.value
+                            }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>

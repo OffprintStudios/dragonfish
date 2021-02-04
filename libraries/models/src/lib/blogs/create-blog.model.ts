@@ -6,4 +6,3 @@ export interface CreateBlog {
     // Remove this once we've migrated away from Quill
     readonly usesNewEditor: boolean;
 }
- 

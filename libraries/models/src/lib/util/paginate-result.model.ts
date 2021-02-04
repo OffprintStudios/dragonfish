@@ -12,6 +12,8 @@ export class PaginateResult<T> {
     public readonly meta?: any;
 
     public removeDoc(docId: string) {
-        this.docs = this.docs.filter((x: any) => { return x._id !== docId });
+        this.docs = this.docs.filter((x: any) => {
+            return x._id !== docId;
+        });
     }
 }

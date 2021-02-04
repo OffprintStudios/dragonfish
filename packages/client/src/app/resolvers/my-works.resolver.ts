@@ -10,7 +10,7 @@ import { WorksService } from '../services/content';
 export class MyWorksResolver implements Resolve<PaginateResult<Work>> {
     pageNum: number = 1;
 
-    constructor (private worksService: WorksService) { }
+    constructor(private worksService: WorksService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Work>> {
         const pageNum = +route.queryParamMap.get('page');

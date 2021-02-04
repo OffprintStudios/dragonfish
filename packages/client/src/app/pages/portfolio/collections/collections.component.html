@@ -1,6 +1,8 @@
 <div class="tools" *ngIf="currentUser && currentUserIsSame()">
     <div class="tool-buttons">
-        <button matRipple class="tool" (click)="openCreateCollectionModal()"><i-feather name="plus"></i-feather>Collection</button>
+        <button matRipple class="tool" (click)="openCreateCollectionModal()">
+            <i-feather name="plus"></i-feather>Collection
+        </button>
     </div>
 </div>
 
@@ -19,19 +21,51 @@
     </ng-container>
     <ng-template #hasColls>
         <div class="collections-grid">
-            <div class="collections-box" *ngFor="let collection of collsData.docs | paginate: {itemsPerPage: collsData.limit, currentPage: pageNum, totalItems: collsData.totalDocs}">
+            <div
+                class="collections-box"
+                *ngFor="
+                    let collection of collsData.docs
+                        | paginate
+                            : { itemsPerPage: collsData.limit, currentPage: pageNum, totalItems: collsData.totalDocs }
+                "
+            >
                 <div class="coll-header">
                     <div class="set-coll-visibility" *ngIf="currentUser && currentUserIsSame()">
                         <ng-container [ngSwitch]="collection.audit.isPublic">
-                            <a matTooltip="Public (click to set to private)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collection._id, false)" *ngSwitchCase="true"><i-feather name="unlock"></i-feather></a>
-                            <a matTooltip="Private (click to set to public)" matTooltipClass="offprint-tooltip" (click)="setPublicPrivate(collection._id, true)" *ngSwitchDefault><i-feather name="lock"></i-feather></a>
+                            <a
+                                matTooltip="Public (click to set to private)"
+                                matTooltipClass="offprint-tooltip"
+                                (click)="setPublicPrivate(collection._id, false)"
+                                *ngSwitchCase="true"
+                                ><i-feather name="unlock"></i-feather
+                            ></a>
+                            <a
+                                matTooltip="Private (click to set to public)"
+                                matTooltipClass="offprint-tooltip"
+                                (click)="setPublicPrivate(collection._id, true)"
+                                *ngSwitchDefault
+                                ><i-feather name="lock"></i-feather
+                            ></a>
                         </ng-container>
                     </div>
                     <div class="header">
-                        <h3><a [routerLink]="['/portfolio', portUser._id, portUser.username | slugify, 'collection', collection._id]">{{ collection.name }}</a></h3>
+                        <h3>
+                            <a
+                                [routerLink]="[
+                                    '/portfolio',
+                                    portUser._id,
+                                    portUser.username | slugify,
+                                    'collection',
+                                    collection._id
+                                ]"
+                                >{{ collection.name }}</a
+                            >
+                        </h3>
                     </div>
                     <div class="delete-coll" *ngIf="currentUser && currentUserIsSame()">
-                        <a [matMenuTriggerFor]="optionsMenu" [matMenuTriggerData]="{coll: collection}"><i-feather name="more-vertical"></i-feather></a>
+                        <a [matMenuTriggerFor]="optionsMenu" [matMenuTriggerData]="{ coll: collection }"
+                            ><i-feather name="more-vertical"></i-feather
+                        ></a>
                     </div>
                 </div>
                 <div class="coll-desc">
@@ -46,8 +80,15 @@
                     </ng-container>
                     <ng-template #displayWorks>
                         <ul>
-                            <li *ngFor="let entry of collection.contains | slice:0:5">
-                                <a [routerLink]="['/work', entry._id, entry.title | slugify]">{{ entry.title }}<span class="end-point">{{ entry.stats.words | abbreviate }} word{{ entry.stats.words | pluralize }}</span></a>
+                            <li *ngFor="let entry of collection.contains | slice: 0:5">
+                                <a [routerLink]="['/work', entry._id, entry.title | slugify]"
+                                    >{{ entry.title
+                                    }}<span class="end-point"
+                                        >{{ entry.stats.words | abbreviate }} word{{
+                                            entry.stats.words | pluralize
+                                        }}</span
+                                    ></a
+                                >
                             </li>
                         </ul>
                     </ng-template>

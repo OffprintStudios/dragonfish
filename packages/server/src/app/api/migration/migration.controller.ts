@@ -6,7 +6,7 @@ import { MigrationForm } from '@dragonfish/models/migration';
 
 @Controller()
 export class MigrationController {
-    constructor (private readonly migrationService: MigrationService) {}
+    constructor(private readonly migrationService: MigrationService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-works')

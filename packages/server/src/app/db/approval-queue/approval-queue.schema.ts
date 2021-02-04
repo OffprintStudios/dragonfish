@@ -6,17 +6,22 @@ import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 import { ContentModel } from '@dragonfish/models/content';
 import { UserInfo } from '@dragonfish/models/users';
 
-@Schema({timestamps: true, autoIndex: true, collection: 'approval_queue'})
+@Schema({ timestamps: true, autoIndex: true, collection: 'approval_queue' })
 export class ApprovalQueueDocument extends Document implements ApprovalQueue {
-    @Prop({default: generate()})
+    @Prop({ default: generate() })
     readonly _id: string;
 
-    @Prop({type: String, ref: 'Content', required: true, autopopulate: true})
+    @Prop({ type: String, ref: 'Content', required: true, autopopulate: true })
     readonly workToApprove: string | ContentModel;
 
-    @Prop({type: String, ref: 'User', default: null, autopopulate: {
-        select: '_id username profile.avatar audit.roles'
-    }})
+    @Prop({
+        type: String,
+        ref: 'User',
+        default: null,
+        autopopulate: {
+            select: '_id username profile.avatar audit.roles',
+        },
+    })
     claimedBy: string | UserInfo;
 
     @Prop()

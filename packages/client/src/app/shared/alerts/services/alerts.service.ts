@@ -3,7 +3,7 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Alerts } from '../alerts.actions';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class AlertsService {
     @Dispatch()

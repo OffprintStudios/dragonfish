@@ -1,6 +1,6 @@
-import {Pagination} from './pagination';
+import { Pagination } from './pagination';
 
 export interface SearchParameters {
-    text: string,
-    pagination: Pagination
+    text: string;
+    pagination: Pagination;
 }

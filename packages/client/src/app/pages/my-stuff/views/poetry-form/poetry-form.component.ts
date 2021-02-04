@@ -4,17 +4,25 @@ import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { MyStuffState } from '../../../../shared/my-stuff';
 
-import { WorkKind, CreatePoetry, PoetryForm, Genres, 
-  ContentRating, WorkStatus, PoetryContent, ContentKind } from '@dragonfish/models/content';
+import {
+    WorkKind,
+    CreatePoetry,
+    PoetryForm,
+    Genres,
+    ContentRating,
+    WorkStatus,
+    PoetryContent,
+    ContentKind,
+} from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffService } from '../../my-stuff.service';
 
 @UntilDestroy()
 @Component({
-  selector: 'poetry-form',
-  templateUrl: './poetry-form.component.html',
-  styleUrls: ['./poetry-form.component.less']
+    selector: 'poetry-form',
+    templateUrl: './poetry-form.component.html',
+    styleUrls: ['./poetry-form.component.less'],
 })
 export class PoetryFormComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<PoetryContent>;
@@ -35,13 +43,13 @@ export class PoetryFormComponent implements OnInit {
         form: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
         rating: new FormControl(null, [Validators.required]),
-        status: new FormControl(null, [Validators.required])
+        status: new FormControl(null, [Validators.required]),
     });
 
     constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe(content => {
+        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
             if (content !== null) {
                 this.formTitle = `Editing "${content.title}"`;
                 this.isCollection = content.meta.collection;
@@ -54,7 +62,7 @@ export class PoetryFormComponent implements OnInit {
                     form: content.meta.form,
                     genres: content.meta.genres,
                     rating: content.meta.rating,
-                    status: content.meta.status
+                    status: content.meta.status,
                 });
             } else {
                 this.poetryForm.setValue({
@@ -65,13 +73,15 @@ export class PoetryFormComponent implements OnInit {
                     form: null,
                     genres: [],
                     rating: null,
-                    status: null
+                    status: null,
                 });
             }
         });
     }
 
-    get fields() { return this.poetryForm.controls; }
+    get fields() {
+        return this.poetryForm.controls;
+    }
 
     submitForm(contentId?: string) {
         if (this.poetryForm.invalid) {
@@ -79,7 +89,7 @@ export class PoetryFormComponent implements OnInit {
             return;
         }
 
-        const poetryInfo: CreatePoetry ={
+        const poetryInfo: CreatePoetry = {
             title: this.fields.title.value,
             desc: this.fields.desc.value,
             body: this.fields.body.value,
@@ -88,7 +98,7 @@ export class PoetryFormComponent implements OnInit {
             form: this.fields.form.value,
             genres: this.fields.genres.value,
             rating: this.fields.rating.value,
-            status: this.fields.status.value
+            status: this.fields.status.value,
         };
 
         if (contentId) {

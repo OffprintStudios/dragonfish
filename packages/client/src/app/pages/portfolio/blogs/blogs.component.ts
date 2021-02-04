@@ -13,7 +13,7 @@ import { ContentState } from '../../../shared/content';
 @Component({
     selector: 'port-blogs',
     templateUrl: './blogs.component.html',
-    styleUrls: ['./blogs.component.less']
+    styleUrls: ['./blogs.component.less'],
 })
 export class BlogsComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -23,12 +23,12 @@ export class BlogsComponent implements OnInit {
     @Select(ContentState.currPageContent) currPageContent$: Observable<PaginateResult<BlogsContentModel>>;
 
     portUser: FrontendUser;
-    blogsData: PaginateResult<BlogsContentModel>
+    blogsData: PaginateResult<BlogsContentModel>;
 
     pageNum = 1;
 
     constructor(private route: ActivatedRoute, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
@@ -40,11 +40,15 @@ export class BlogsComponent implements OnInit {
 
     /**
      * Handles page changing
-     * 
+     *
      * @param event The new page
      */
     onPageChange(event: number) {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event },
+            queryParamsHandling: 'merge',
+        });
         this.pageNum = event;
     }
 
@@ -54,4 +58,4 @@ export class BlogsComponent implements OnInit {
     currentUserIsSame() {
         return this.currentUser && this.portUser && this.currentUser._id === this.portUser._id;
     }
-  }
+}

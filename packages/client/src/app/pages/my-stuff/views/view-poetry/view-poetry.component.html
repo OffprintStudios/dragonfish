@@ -3,13 +3,25 @@
         <div class="view-info">
             <div class="view-coverart">
                 <ng-container *ngIf="myPoetry.meta.coverArt; else uploadArt">
-                    <div class="edit-coverart" [matTooltip]="'Edit Cover Art'" [matTooltipClass]="'offprint-tooltip'" (mouseenter)="addEditIcon = true" (mouseleave)="addEditIcon = false" (click)="uploadCoverart()">
+                    <div
+                        class="edit-coverart"
+                        [matTooltip]="'Edit Cover Art'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                        (mouseenter)="addEditIcon = true"
+                        (mouseleave)="addEditIcon = false"
+                        (click)="uploadCoverart()"
+                    >
                         <span class="edit-icon" *ngIf="addEditIcon"><i-feather name="edit-3"></i-feather></span>
-                        <img [src]="myPoetry.meta.coverArt">
+                        <img [src]="myPoetry.meta.coverArt" />
                     </div>
                 </ng-container>
                 <ng-template #uploadArt>
-                    <div class="add-coverart" [matTooltip]="'Add Cover Art'" [matTooltipClass]="'offprint-tooltip'" (click)="uploadCoverart()">
+                    <div
+                        class="add-coverart"
+                        [matTooltip]="'Add Cover Art'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                        (click)="uploadCoverart()"
+                    >
                         <i-feather name="plus"></i-feather>
                     </div>
                 </ng-template>
@@ -18,10 +30,14 @@
                 <div class="view-title">
                     <rating-icon [rating]="myPoetry.meta.rating" [size]="'large'"></rating-icon>
                     <h2>{{ myPoetry.title }}</h2>
-                    <button class="edit-button" [routerLink]="['/my-stuff/edit-poetry']"><i-feather name="edit-3"></i-feather></button>
+                    <button class="edit-button" [routerLink]="['/my-stuff/edit-poetry']">
+                        <i-feather name="edit-3"></i-feather>
+                    </button>
                 </div>
                 <div class="view-tags">
-                    <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather" class="kind"></i-feather></span>
+                    <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
+                        ><i-feather name="feather" class="kind"></i-feather
+                    ></span>
                     <span class="divider">//</span>
                     <span class="tag">{{ myPoetry.meta.category }}</span>
                     <span class="divider">//</span>
@@ -38,21 +54,37 @@
             </div>
         </div>
         <div class="view-stats">
-            <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{ forms[myPoetry.meta.form] }}</span>
+            <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{
+                forms[myPoetry.meta.form]
+            }}</span>
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ myPoetry.stats.comments | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="message-circle"></i-feather>{{ myPoetry.stats.comments | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ myPoetry.stats.views | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="eye"></i-feather>{{ myPoetry.stats.views | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-up"></i-feather>{{ myPoetry.stats.likes | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="thumbs-up"></i-feather>{{ myPoetry.stats.likes | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="thumbs-down"></i-feather>{{ myPoetry.stats.dislikes | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="thumbs-down"></i-feather>{{ myPoetry.stats.dislikes | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ myPoetry.stats.words | abbreviate }}</span>
+            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="pen-tool"></i-feather>{{ myPoetry.stats.words | abbreviate }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | localedate:'mediumDate' }}</span>
+            <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"
+                ><i-feather name="calendar"></i-feather>{{ myPoetry.createdAt | localedate: 'mediumDate' }}</span
+            >
             <span class="divider">//</span>
-            <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[myPoetry.meta.status] }}</span>
+            <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{
+                contentStatus[myPoetry.meta.status]
+            }}</span>
         </div>
     </div>
     <ng-container *ngIf="myPoetry.meta.collection; else singlePoem">
@@ -71,7 +103,13 @@
                     </ng-template>
                     <ng-container *ngIf="!editMode; else disabledSections">
                         <ng-container *ngFor="let section of sectionsState.sections">
-                            <div class="section-box" [ngClass]="{'active': sectionsState.currSection && sectionsState.currSection._id === section._id}" (click)="setCurrSection(section)">
+                            <div
+                                class="section-box"
+                                [ngClass]="{
+                                    active: sectionsState.currSection && sectionsState.currSection._id === section._id
+                                }"
+                                (click)="setCurrSection(section)"
+                            >
                                 <div class="section-indicator">
                                     <ng-container *ngIf="section.published; else sectionUnpublished">
                                         <i-feather name="check-circle"></i-feather>
@@ -105,23 +143,41 @@
                             <button (click)="submitForm(myPoetry._id)">Save</button>
                         </div>
                         <form [formGroup]="sectionForm" (ngSubmit)="submitForm(myPoetry._id)">
-                            <mat-form-field style="width: 100%;" appearance="outline">
+                            <mat-form-field style="width: 100%" appearance="outline">
                                 <mat-label>Title</mat-label>
-                                <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'">
+                                <input
+                                    matInput
+                                    placeholder="The Beginning Of A Great Adventure"
+                                    [formControlName]="'title'"
+                                />
                             </mat-form-field>
 
-                            <editor [parentForm]="sectionForm" [controlName]="'body'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                            <editor
+                                [parentForm]="sectionForm"
+                                [controlName]="'body'"
+                                [minHeight]="'750px'"
+                                [maxHeight]="'750px'"
+                            ></editor>
                             <div class="authors-note">
                                 <div class="header">
                                     <h2>Author's Note</h2>
-                                    <mat-form-field style="margin: 0;" appearance="outline">
+                                    <mat-form-field style="margin: 0" appearance="outline">
                                         <mat-label>Position</mat-label>
                                         <mat-select [formControlName]="'authorsNotePos'" [(ngModel)]="selectedPos">
-                                            <mat-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">{{ pos.value }}</mat-option>
+                                            <mat-option
+                                                *ngFor="let pos of authorsNotePosOptions | keyvalue"
+                                                [value]="pos.key"
+                                                >{{ pos.value }}</mat-option
+                                            >
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
-                                <editor [parentForm]="sectionForm" [controlName]="'authorsNote'" [minHeight]="'750px'" [maxHeight]="'750px'"></editor>
+                                <editor
+                                    [parentForm]="sectionForm"
+                                    [controlName]="'authorsNote'"
+                                    [minHeight]="'750px'"
+                                    [maxHeight]="'750px'"
+                                ></editor>
                             </div>
                         </form>
                     </div>

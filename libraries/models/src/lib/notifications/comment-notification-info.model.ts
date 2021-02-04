@@ -5,6 +5,6 @@ export interface CommentNotificationInfo extends NotificationBase {
     commentId: string;
     commenterName: string;
     commenterId: string;
-    parentKind: ContentKind;    
+    parentKind: ContentKind;
     parentTitle: string;
 }

@@ -5,5 +5,5 @@ export enum PoetryForm {
     Ballad = 'Ballad',
     Ode = 'Ode',
     FreeVerse = 'Free Verse',
-    FixedVerse = 'Fixed Verse'
+    FixedVerse = 'Fixed Verse',
 }

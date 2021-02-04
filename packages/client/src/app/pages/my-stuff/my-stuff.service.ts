@@ -9,7 +9,7 @@ import { MyStuff } from '../../shared/my-stuff';
 import { Sections } from '../../shared/my-stuff/sections';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class MyStuffService {
     @Dispatch()

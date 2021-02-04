@@ -10,30 +10,44 @@
                 <ng-container *ngIf="content.kind === contentKind.ProseContent">
                     <a [routerLink]="['/prose', content._id, content.title | slugify]">{{ content.title }}</a>
                 </ng-container>
-                <span class="byline" *ngIf="showAuthor === true">by <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify]">{{ content.author.username }}</a></span>
+                <span class="byline" *ngIf="showAuthor === true"
+                    >by
+                    <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify]">{{
+                        content.author.username
+                    }}</a></span
+                >
             </h3>
         </div>
         <div class="card-tags">
             <ng-container *ngIf="content.kind === contentKind.PoetryContent">
-                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="feather" class="kind"></i-feather></span>
+                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
+                    ><i-feather name="feather" class="kind"></i-feather
+                ></span>
                 <span class="divider">//</span>
             </ng-container>
             <ng-container *ngIf="content.kind === contentKind.ProseContent">
-                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"
+                    ><i-feather name="book-open" class="kind"></i-feather
+                ></span>
                 <span class="divider">//</span>
             </ng-container>
             <span class="tag">{{ content.meta.category }}</span>
             <span class="divider">//</span>
             <span class="tag genres">{{ content.meta.genres | separateGenres }}</span>
-            <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu">Genres <i-feather name="chevron-down"></i-feather></span>
-            <span class="tag end"><i-feather name="heart"></i-feather>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
+            <span class="tag genres-mobile" [matMenuTriggerFor]="genresMenu"
+                >Genres <i-feather name="chevron-down"></i-feather
+            ></span>
+            <span class="tag end"
+                ><i-feather name="heart"></i-feather
+                >{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span
+            >
         </div>
     </div>
 
     <!--Body-->
     <div class="card-body">
         <div *ngIf="content.meta.coverArt">
-            <img class="cover-art bordered-cover-art" [src]="content.meta.coverArt">
+            <img class="cover-art bordered-cover-art" [src]="content.meta.coverArt" />
         </div>
         <div>
             {{ content.desc }}
@@ -43,9 +57,10 @@
     <!--Footer-->
     <div class="card-footer">
         <i-feather name="bar-chart-2" title="Views"></i-feather>{{ content.stats.views | abbreviate }}<span>//</span>
-        <i-feather name="message-circle" title="Comments"></i-feather>{{ content.stats.comments | abbreviate }}<span>//</span>
-        <i-feather name="pen-tool" title="Words"></i-feather>{{ content.stats.words | abbreviate }}<span>//</span>
-        <i-feather name="calendar" title="Published On"></i-feather>{{ content.audit.publishedOn | localedate:'shortDate' }}<span>//</span>
+        <i-feather name="message-circle" title="Comments"></i-feather>{{ content.stats.comments | abbreviate
+        }}<span>//</span> <i-feather name="pen-tool" title="Words"></i-feather>{{ content.stats.words | abbreviate
+        }}<span>//</span> <i-feather name="calendar" title="Published On"></i-feather
+        >{{ content.audit.publishedOn | localedate: 'shortDate' }}<span>//</span>
         {{ content.meta.status }}
     </div>
 </div>

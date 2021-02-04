@@ -12,8 +12,8 @@ export interface EditWork {
     readonly category: Categories;
     readonly fandoms?: Fandoms[];
     readonly genres: Genres[];
-    readonly rating: ContentRating,
-    readonly status: WorkStatus,
+    readonly rating: ContentRating;
+    readonly status: WorkStatus;
 
     // Remove this once we've migrated all sections from Quill
     readonly usesNewEditor: boolean;

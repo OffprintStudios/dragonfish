@@ -17,7 +17,7 @@ import { Navigate } from '@ngxs/router-plugin';
 @Component({
     selector: 'approval-queue',
     templateUrl: './approval-queue.component.html',
-    styleUrls: ['./approval-queue.component.less']
+    styleUrls: ['./approval-queue.component.less'],
 })
 export class ApprovalQueueComponent implements OnInit, OnDestroy {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -33,18 +33,24 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     pageNum = 1;
 
-    constructor(private store: Store, public route: ActivatedRoute, private router: Router, private snackBar: MatSnackBar, private location: Location) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(
+        private store: Store,
+        public route: ActivatedRoute,
+        private router: Router,
+        private snackBar: MatSnackBar,
+        private location: Location,
+    ) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
 
-        this.selectedDocSubscription = this.selectedDoc$.subscribe(x => {
+        this.selectedDocSubscription = this.selectedDoc$.subscribe((x) => {
             this.selectedDoc = x;
         });
     }
 
     ngOnInit(): void {
-        this.route.data.subscribe(data => {
+        this.route.data.subscribe((data) => {
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
     }
@@ -56,30 +62,34 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Handles page changing
-     * 
+     *
      * @param event The new page
      */
     onPageChange(event: number) {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event },
+            queryParamsHandling: 'merge',
+        });
         this.pageNum = event;
     }
 
     /**
      * Goes to the appropriate content view for the following queue entry.
-     * 
+     *
      * @param entry The approval queue entry
      */
     goToContentView(entry: ApprovalQueue) {
         this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
             const content: ContentModel = entry.workToApprove as ContentModel;
             if (content.kind === ContentKind.ProseContent) {
-                this.router.navigate(['view-prose'], {relativeTo: this.route});
+                this.router.navigate(['view-prose'], { relativeTo: this.route });
             } else if (content.kind === ContentKind.PoetryContent) {
-                this.router.navigate(['view-poetry'], {relativeTo: this.route});
+                this.router.navigate(['view-poetry'], { relativeTo: this.route });
             } else {
                 this.snackBar.open(`...what's this doing here?`);
             }
-        })
+        });
     }
 
     /**
@@ -87,7 +97,11 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      */
     forceRefresh() {
         // eventually, none of this will be necessary and items will be updated in-place.
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: this.pageNum },
+            queryParamsHandling: 'merge',
+        });
     }
 
     /**
@@ -103,7 +117,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Checks to see if this entry has been claimed by anyone.
-     * 
+     *
      * @param entry The approval queue entry
      */
     checkIfClaimed(entry: ApprovalQueue) {
@@ -116,7 +130,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Checks to see if the provided entry is claimed by the currently signed in user.
-     * 
+     *
      * @param entry The approval queue entry
      */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
@@ -134,7 +148,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Claims an entry to the queue.
-     * 
+     *
      * @param entry The approval queue entry
      */
     claimWork(entry: ApprovalQueue) {
@@ -145,7 +159,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Approves a work.
-     * 
+     *
      * @param entry The entry to approve
      * @param work The work to approve
      */
@@ -156,10 +170,12 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
             const decision: Decision = {
                 docId: this.selectedDoc._id,
                 workId: thisWork._id,
-                authorId: thisWorksAuthor._id
+                authorId: thisWorksAuthor._id,
             };
-    
-            this.store.dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
+
+            this.store
+                .dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dash/approval-queue'])])
+                .subscribe();
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }
@@ -167,7 +183,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
 
     /**
      * Rejects a work.
-     * 
+     *
      * @param entry The entry to reject
      * @param work The work to reject
      */
@@ -178,10 +194,12 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
             const decision: Decision = {
                 docId: this.selectedDoc._id,
                 workId: thisWork._id,
-                authorId: thisWorksAuthor._id
+                authorId: thisWorksAuthor._id,
             };
-    
-            this.store.dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dash/approval-queue'])]).subscribe();
+
+            this.store
+                .dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dash/approval-queue'])])
+                .subscribe();
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }

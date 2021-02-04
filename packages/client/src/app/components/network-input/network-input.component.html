@@ -1,10 +1,11 @@
 <div class="network-input-container">
-    <input 
+    <input
         [type]="inputType"
         [placeholder]="inputPlaceholder"
         [ngClass]="inputClasses"
         [readonly]="currentState === _InputState.Default || currentState === _InputState.Uploading"
-        [(ngModel)]="inputValue">
+        [(ngModel)]="inputValue"
+    />
     <!-- In the "Default" state: -->
     <a class="button" (click)="beginEditing()" *ngIf="currentState === _InputState.Default">
         <i-feather name="edit-3"></i-feather>
@@ -24,9 +25,11 @@
     </div>
 </div>
 
-<input *ngIf="currentState === _InputState.Editing"
+<input
+    *ngIf="currentState === _InputState.Editing"
     type="password"
     placeholder="Current Password"
     [ngClass]="passwordBoxClasses"
     [(ngModel)]="passwordValue"
-    required>
+    required
+/>

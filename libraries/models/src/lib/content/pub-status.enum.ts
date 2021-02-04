@@ -3,5 +3,5 @@ export enum PubStatus {
     ApprovedUnpublished = 'ApprovedUnpublished',
     Pending = 'Pending',
     Rejected = 'Rejected',
-    Unpublished = 'Unpublished'
+    Unpublished = 'Unpublished',
 }

@@ -14,7 +14,7 @@ import { Content, ContentState } from '../../shared/content';
 @Component({
     selector: 'content-approval',
     templateUrl: './content-approval.component.html',
-    styleUrls: ['./content-approval.component.less']
+    styleUrls: ['./content-approval.component.less'],
 })
 export class ContentApprovalComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -30,31 +30,30 @@ export class ContentApprovalComponent implements OnInit {
     ratingOption = RatingOption;
 
     constructor(private store: Store, private dialog: MatDialog) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
 
-    ngOnInit(): void {
-    }
+    ngOnInit(): void {}
 
     /**
      * Opens the Add To Collection dialog box.
      */
     openAddToCollectionDialog(content: ContentModel) {
-        const dialogRef = this.dialog.open(AddToCollectionComponent, {data: {content: content}});
+        const dialogRef = this.dialog.open(AddToCollectionComponent, { data: { content: content } });
     }
 
     /**
      * Sets this user's rating as Liked.
-     * 
+     *
      * @param contentId The content ID
      * @param currRating The current rating
      */
     setLike(contentId: string, currRating: RatingOption) {
         const ratingOptions: SetRating = {
             workId: contentId,
-            oldApprovalRating: currRating
+            oldApprovalRating: currRating,
         };
 
         this.store.dispatch(new Content.SetLike(ratingOptions)).subscribe();
@@ -62,14 +61,14 @@ export class ContentApprovalComponent implements OnInit {
 
     /**
      * Sets this user's rating as Disliked.
-     * 
+     *
      * @param contentId The content ID
      * @param currRating The current rating
      */
     setDislike(contentId: string, currRating: RatingOption) {
         const ratingOptions: SetRating = {
             workId: contentId,
-            oldApprovalRating: currRating
+            oldApprovalRating: currRating,
         };
 
         this.store.dispatch(new Content.SetDislike(ratingOptions)).subscribe();
@@ -77,14 +76,14 @@ export class ContentApprovalComponent implements OnInit {
 
     /**
      * Sets this user's rating as NoVote.
-     * 
+     *
      * @param contentId The content ID
      * @param currRating The current rating
      */
     setNoVote(contentId: string, currRating: RatingOption) {
         const ratingOptions: SetRating = {
             workId: contentId,
-            oldApprovalRating: currRating
+            oldApprovalRating: currRating,
         };
 
         this.store.dispatch(new Content.SetNoVote(ratingOptions)).subscribe();

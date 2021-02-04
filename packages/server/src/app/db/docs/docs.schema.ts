@@ -7,28 +7,40 @@ import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
 import * as documents from './models';
 import { Roles } from '@dragonfish/models/users';
 
-export const DocsSchema = new Schema({
-    _id: {type: String, default: generate()},
-    contributors: {type: [String], ref: 'User', autopopulate: {
-        select: '_id username profile.avatar',
-    }},
-    docName: {type: String, required: true, trim: true},
-    docDescription: {type: String, required: true, trim: true},
-    docBody: {type: String, required: true, trim: true},
-    words: {type: Number, default: 0},
-    audit: {
-        approvedRoles: {type: [String], enum: Object.keys(Roles), required: true},
-        lastUpdatedBy: {type: String, ref: 'User', default: null, autopopulate: {
-            select: '_id username profile.avatar',
-        }},
-        isDeleted: {type: Boolean, default: false},
-    },
-    createdAt: {type: Date, default: Date.now()},
-    updatedAt: {type: Date, default: Date.now()},
+export const DocsSchema = new Schema(
+    {
+        _id: { type: String, default: generate() },
+        contributors: {
+            type: [String],
+            ref: 'User',
+            autopopulate: {
+                select: '_id username profile.avatar',
+            },
+        },
+        docName: { type: String, required: true, trim: true },
+        docDescription: { type: String, required: true, trim: true },
+        docBody: { type: String, required: true, trim: true },
+        words: { type: Number, default: 0 },
+        audit: {
+            approvedRoles: { type: [String], enum: Object.keys(Roles), required: true },
+            lastUpdatedBy: {
+                type: String,
+                ref: 'User',
+                default: null,
+                autopopulate: {
+                    select: '_id username profile.avatar',
+                },
+            },
+            isDeleted: { type: Boolean, default: false },
+        },
+        createdAt: { type: Date, default: Date.now() },
+        updatedAt: { type: Date, default: Date.now() },
 
-    // Remove once we've migrated away from Quill
-    usesNewEditor: {type: Boolean, default: false}
-}, {timestamps: true, autoIndex: true, collection: 'docs'});
+        // Remove once we've migrated away from Quill
+        usesNewEditor: { type: Boolean, default: false },
+    },
+    { timestamps: true, autoIndex: true, collection: 'docs' },
+);
 
 DocsSchema.plugin(MongooseAutopopulate);
 
