@@ -59,8 +59,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return this.store.dispatch(new Auth.RefreshToken()).pipe(
             switchMap(() => {
-                // @ts-ignore
                 return this.store
+                    // @ts-ignore
                     .selectOnce<string>((state: AuthState) => state.auth.token)
                     .pipe(
                         switchMap((token: string) => {
