@@ -1,8 +1,6 @@
 import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, PaginateModel, PaginateResult } from 'mongoose';
-import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { PaginateModel, PaginateResult } from 'mongoose';
 
 import * as models from '@dragonfish/models/works';
 import * as documents from './models';

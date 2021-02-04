@@ -5,9 +5,8 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import { MessageDocument } from './message.schema';
 import { MessageThreadDocument } from './message-thread.schema';
 
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 import { CreateInitialMessage, CreateResponse } from '@dragonfish/models/messages';
-import { isNullOrUndefined } from '../../util';
 
 @Injectable()
 export class MessagesService {
@@ -24,7 +23,7 @@ export class MessagesService {
      */
     async createNewPrivateThread(user: any, initialMessage: CreateInitialMessage): Promise<void> {
         const newThread = new this.messageThreadModel({
-            name: await sanitizeHtml(initialMessage.name),
+            name: sanitizeHtml(initialMessage.name),
             users: [user.sub, initialMessage.recipient],
         });
 
@@ -32,14 +31,14 @@ export class MessagesService {
             const newMessage = new this.messageModel({
                 threadId: doc._id,
                 user: user.sub,
-                body: await sanitizeHtml(initialMessage.body),
+                body: sanitizeHtml(initialMessage.body),
             });
 
             await newMessage.save().then(async () => {
                 await this.messageThreadModel.findByIdAndUpdate(doc._id, {
                     $inc: { 'meta.numMessages': 1 },
                     'meta.userWhoRepliedLast': user.sub,
-                    'meta.lastMessage': await sanitizeHtml(initialMessage.body),
+                    'meta.lastMessage': sanitizeHtml(initialMessage.body),
                 });
             });
         });
@@ -55,7 +54,7 @@ export class MessagesService {
         const newResponse = new this.messageModel({
             threadId: response.threadId,
             user: user.sub,
-            body: await sanitizeHtml(response.body),
+            body: sanitizeHtml(response.body),
         });
 
         return await newResponse.save().then(async (doc) => {

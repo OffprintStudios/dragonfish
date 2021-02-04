@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 import { ContentFilter } from '@dragonfish/models/works';
 import { InitialResults } from '@dragonfish/models/util';
 
@@ -15,7 +15,7 @@ export class SearchService {
     constructor(private readonly usersService: UsersService, private readonly contentService: ContentService) {}
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
-        const parsedQuery = `"${await sanitizeHtml(query)}"`;
+        const parsedQuery = `"${sanitizeHtml(query)}"`;
 
         const [initialUsers, initialBlogs, initialContent] = await Promise.all([
             this.usersService.findRelatedUsers(parsedQuery, 1, 6),
@@ -38,7 +38,7 @@ export class SearchService {
     }
 
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>> {
-        const parsedQuery = `"${await sanitizeHtml(query)}"`;
+        const parsedQuery = `"${sanitizeHtml(query)}"`;
         return await this.usersService.findRelatedUsers(parsedQuery, pageNum, 15);
     }
 
@@ -47,7 +47,7 @@ export class SearchService {
         pageNum: number,
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${await sanitizeHtml(query)}"`;
+        const parsedQuery = `"${sanitizeHtml(query)}"`;
         return await this.contentService.findRelatedContent(
             parsedQuery,
             [ContentKind.BlogContent],
@@ -62,7 +62,7 @@ export class SearchService {
         pageNum: number,
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${await sanitizeHtml(query)}"`;
+        const parsedQuery = `"${sanitizeHtml(query)}"`;
         return await this.contentService.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],

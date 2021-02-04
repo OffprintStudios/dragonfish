@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 
 import * as models from '@dragonfish/models/blogs';
 import * as documents from './models/blog-document.model';

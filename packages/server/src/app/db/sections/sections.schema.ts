@@ -1,12 +1,12 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { generate } from 'shortid';
+import { nanoid } from 'nanoid';
 
 import { Section, AuthorsNotePos } from '@dragonfish/models/sections';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'sections' })
 export class SectionsDocument extends Document implements Section {
-    @Prop({ type: String })
+    @Prop({ default: () => nanoid() })
     readonly _id: string;
 
     @Prop({ trim: true, required: true })

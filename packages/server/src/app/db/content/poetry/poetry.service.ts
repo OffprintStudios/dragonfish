@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
+import * as sanitizeHtml from 'sanitize-html';
+import { countWords, stripTags } from 'voca';
 
 import { CreatePoetry } from '@dragonfish/models/content';
 import { JwtPayload } from '@dragonfish/models/auth';
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 import { NotificationKind } from '@dragonfish/models/notifications';
-import { countPlaintextWords } from '@dragonfish/word_counter';
-
 import { PoetryContentDocument } from './poetry-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
 
@@ -27,12 +26,10 @@ export class PoetryService {
     async createPoetry(user: JwtPayload, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         const newPoetry = new this.poetryModel({
             author: user.sub,
-            title: await sanitizeHtml(poetryInfo.title),
-            desc: await sanitizeHtml(poetryInfo.desc),
-            body: await sanitizeHtml(poetryInfo.body),
-            'stats.words': poetryInfo.collection
-                ? 0
-                : await countPlaintextWords(await stripAllHtml(await sanitizeHtml(poetryInfo.body))),
+            title: sanitizeHtml(poetryInfo.title),
+            desc: sanitizeHtml(poetryInfo.desc),
+            body: sanitizeHtml(poetryInfo.body),
+            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
@@ -61,9 +58,9 @@ export class PoetryService {
             return await this.poetryModel.findOneAndUpdate(
                 { _id: poetryId, author: user.sub },
                 {
-                    title: await sanitizeHtml(poetryInfo.title),
-                    desc: await sanitizeHtml(poetryInfo.desc),
-                    body: await sanitizeHtml(poetryInfo.body),
+                    title: sanitizeHtml(poetryInfo.title),
+                    desc: sanitizeHtml(poetryInfo.desc),
+                    body: sanitizeHtml(poetryInfo.body),
                     'meta.category': poetryInfo.category,
                     'meta.form': poetryInfo.form,
                     'meta.genres': poetryInfo.genres,
@@ -76,10 +73,10 @@ export class PoetryService {
             return await this.poetryModel.findOneAndUpdate(
                 { _id: poetryId, author: user.sub },
                 {
-                    title: await sanitizeHtml(poetryInfo.title),
-                    desc: await sanitizeHtml(poetryInfo.desc),
-                    body: await sanitizeHtml(poetryInfo.body),
-                    'stats.words': await countPlaintextWords(await stripAllHtml(await sanitizeHtml(poetryInfo.body))),
+                    title: sanitizeHtml(poetryInfo.title),
+                    desc: sanitizeHtml(poetryInfo.desc),
+                    body: sanitizeHtml(poetryInfo.body),
+                    'stats.words': countWords(stripTags(sanitizeHtml(poetryInfo.body))),
                     'meta.category': poetryInfo.category,
                     'meta.form': poetryInfo.form,
                     'meta.genres': poetryInfo.genres,

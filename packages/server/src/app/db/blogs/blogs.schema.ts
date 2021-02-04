@@ -1,9 +1,9 @@
 import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
-import { generate } from 'shortid';
-import { countQuillWords, countPlaintextWords } from '@dragonfish/word_counter';
+import { nanoid } from 'nanoid';
+import * as sanitizeHtml from 'sanitize-html';
+import { countWords, stripTags } from 'voca';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 
 import * as documents from './models/blog-document.model';
 
@@ -12,7 +12,7 @@ import * as documents from './models/blog-document.model';
  */
 export const BlogsSchema = new Schema(
     {
-        _id: { type: String, default: generate() },
+        _id: { type: String, default: () => nanoid() },
         author: {
             type: String,
             ref: 'User',
@@ -49,14 +49,11 @@ BlogsSchema.plugin(MongooseAutopopulate);
 BlogsSchema.plugin(MongoosePaginate);
 
 BlogsSchema.pre<documents.BlogDocument>('save', async function (next: HookNextFunction) {
-    this.set('_id', generate());
-    this.set('title', await sanitizeHtml(this.title));
-    this.set('body', await sanitizeHtml(this.body));
+    this.set('title', sanitizeHtml(this.title));
+    this.set('body', sanitizeHtml(this.body));
     this.set('published', this.published);
 
-    const wordCount = this.usesNewEditor
-        ? await countPlaintextWords(await stripAllHtml(this.body))
-        : await countQuillWords(await sanitizeHtml(this.body));
+    const wordCount = countWords(stripTags(sanitizeHtml(this.body)));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

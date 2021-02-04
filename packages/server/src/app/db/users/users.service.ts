@@ -2,14 +2,12 @@ import { Injectable, ConflictException, BadRequestException, InternalServerError
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { hash, argon2id } from 'argon2';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 import validator from 'validator';
 
 import * as documents from './models';
 import * as models from '@dragonfish/models/users';
 import { CollectionForm } from '@dragonfish/models/collections';
-import { SearchParameters } from '../../api/search/models/search-parameters';
-import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
 import { createHash } from 'crypto';
 import { CollectionsService } from '../collections/collections.service';
@@ -57,8 +55,8 @@ export class UsersService {
             throw new BadRequestException('Your username must be between 3 and 50 characters.');
         }
 
-        const existingUsername = await this.userModel.findOne({ username: await sanitizeHtml(newUserInfo.username) });
-        const existingEmail = await this.userModel.findOne({ email: await sanitizeHtml(newUserInfo.email) });
+        const existingUsername = await this.userModel.findOne({ username: sanitizeHtml(newUserInfo.username) });
+        const existingEmail = await this.userModel.findOne({ email: sanitizeHtml(newUserInfo.email) });
         if (!isNullOrUndefined(existingUsername) || !isNullOrUndefined(existingEmail)) {
             throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
@@ -239,7 +237,7 @@ export class UsersService {
      * @param newUsername The user's proposed new username.
      */
     async changeUsername(userId: string, newUsername: string): Promise<models.User> {
-        const existingUsername = await this.userModel.findOne({ username: await sanitizeHtml(newUsername) });
+        const existingUsername = await this.userModel.findOne({ username: sanitizeHtml(newUsername) });
         if (!isNullOrUndefined(existingUsername)) {
             throw new ConflictException(`This username is already in use. Please use another.`);
         }
@@ -252,7 +250,7 @@ export class UsersService {
      * @param newEmail The user's proposed new email address.
      */
     async changeEmail(userId: string, newEmail: string): Promise<models.User> {
-        const existingEmail = await this.userModel.findOne({ email: await sanitizeHtml(newEmail) });
+        const existingEmail = await this.userModel.findOne({ email: sanitizeHtml(newEmail) });
         if (!isNullOrUndefined(existingEmail)) {
             throw new ConflictException(`That email is already in use. Please use another.`);
         }

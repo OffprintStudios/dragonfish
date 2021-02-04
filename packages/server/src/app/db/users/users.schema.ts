@@ -1,7 +1,7 @@
 import { Schema, HookNextFunction } from 'mongoose';
-import { generate } from 'shortid';
+import { nanoid } from 'nanoid';
 import { hash, argon2id } from 'argon2';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 
 import { Roles } from '@dragonfish/models/users';
 import { AuditSessionSchema } from './audit-session.schema';
@@ -9,7 +9,7 @@ import { UserDocument } from './models';
 
 export const UsersSchema = new Schema(
     {
-        _id: { type: String, default: generate() },
+        _id: { type: String, default: () => nanoid() },
         email: { type: String, trim: true, required: [true, 'You must provide a valid email.'], unique: true },
         username: { type: String, trim: true, required: [true, 'You must provide a valid username.'], unique: true },
         password: { type: String, trim: true, required: true },
@@ -50,7 +50,6 @@ UsersSchema.pre<UserDocument>('save', async function (next: HookNextFunction) {
     }
     try {
         const hashedPw = await hash(user.password, { type: argon2id });
-        user.set('_id', generate());
         user.set('email', await sanitizeHtml(user.email));
         user.set('username', await sanitizeHtml(user.username));
         user.set('password', hashedPw);

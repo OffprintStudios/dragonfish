@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 
 import * as documents from './models';
 import * as models from '@dragonfish/models/comments';
@@ -94,7 +94,7 @@ export class CommentsService {
             return await this.commentModel.updateOne(
                 { _id: commentId, user: user.sub },
                 {
-                    body: await sanitizeHtml(commentInfo.body),
+                    body: sanitizeHtml(commentInfo.body),
                     $push: {
                         history: {
                             oldBody: oldBody,

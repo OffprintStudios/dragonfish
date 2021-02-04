@@ -16,8 +16,6 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@dragonfish/word_counter": ["packages/word_counter/src/index.ts"],
-            "@dragonfish/html_sanitizer": ["packages/html_sanitizer/src/index.ts"],
             "@dragonfish/models/*": ["libraries/models/src/lib/*"],
             "@dragonfish/icons": ["libraries/icons/src/index.ts"],
             "@dragonfish/material": ["libraries/material/src/index.ts"]
