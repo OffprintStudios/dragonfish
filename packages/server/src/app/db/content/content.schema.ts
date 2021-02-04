@@ -1,11 +1,11 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { ContentModel, ContentKind, PubStatus, ContentRating } from '@dragonfish/models/content';
 import { Document } from 'mongoose';
-import { generate } from 'shortid';
+import { nanoid } from 'nanoid';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'content', discriminatorKey: 'kind' })
 export class ContentDocument extends Document implements ContentModel {
-    @Prop({ default: generate() })
+    @Prop({ default: () => nanoid() })
     readonly _id: string;
 
     @Prop({

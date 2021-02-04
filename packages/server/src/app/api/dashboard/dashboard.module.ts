@@ -4,9 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { UsersModule } from '../../db/users/users.module';
 import { ApprovalQueueModule } from '../../db/approval-queue/approval-queue.module';
-import { DocsModule } from '../../db/docs/docs.module';
 import { QueueController } from './queue/queue.controller';
-import { DocsController } from './docs/docs.controller';
 import { QueueService } from './queue/queue.service';
 import { WorksModule } from '../../db/works/works.module';
 import { ContentModule } from '../../db/content';
@@ -16,7 +14,6 @@ import { ContentModule } from '../../db/content';
         ContentModule,
         UsersModule,
         ApprovalQueueModule,
-        DocsModule,
         WorksModule,
         JwtModule.registerAsync({
             useFactory: () => ({
@@ -25,7 +22,7 @@ import { ContentModule } from '../../db/content';
             }),
         }),
     ],
-    controllers: [QueueController, DocsController],
+    controllers: [QueueController],
     providers: [QueueService],
 })
 export class DashboardModule {}

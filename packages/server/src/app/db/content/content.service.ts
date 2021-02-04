@@ -1,6 +1,7 @@
 import { PaginateModel, PaginateResult, PaginateOptions, Types } from 'mongoose';
 import { BadRequestException, ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as sanitizeHtml from 'sanitize-html';
 
 import { JwtPayload } from '@dragonfish/models/auth';
 import {
@@ -26,7 +27,6 @@ import { SectionsDocument } from '../sections/sections.schema';
 import { UsersService } from '../users/users.service';
 import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
 import { MigrationForm } from '@dragonfish/models/migration';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { ReadingHistoryService } from '../reading-history/reading-history.service';
 import { RatingOption } from '@dragonfish/models/reading-history';
 import { NewsService } from './news/news.service';
@@ -684,8 +684,8 @@ export class ContentService {
             {
                 _id: formData._id,
                 author: user.sub,
-                title: await sanitizeHtml(formData.title),
-                body: await sanitizeHtml(formData.body),
+                title: sanitizeHtml(formData.title),
+                body: sanitizeHtml(formData.body),
                 'meta.rating': formData.meta.rating,
                 'meta.warnings': [],
                 'stats.words': formData.stats.words,
@@ -709,9 +709,9 @@ export class ContentService {
             {
                 _id: formData._id,
                 author: user.sub,
-                title: await sanitizeHtml(formData.title),
-                desc: await sanitizeHtml(formData.desc),
-                body: await sanitizeHtml(formData.body),
+                title: sanitizeHtml(formData.title),
+                desc: sanitizeHtml(formData.desc),
+                body: sanitizeHtml(formData.body),
                 sections: formData.sections,
                 'meta.rating': formData.meta.rating,
                 'meta.warnings': [],

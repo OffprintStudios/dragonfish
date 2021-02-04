@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { Schema, HookNextFunction } from 'mongoose';
-import { generate } from 'shortid';
 
 import { ContentService } from './content.service';
 import { NewsService } from './news/news.service';
@@ -31,12 +30,6 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
                     schema.index({ title: 'text' });
                     schema.plugin(require('mongoose-autopopulate'));
                     schema.plugin(require('mongoose-paginate-v2'));
-                    schema.pre<ContentDocument>('save', async function (next: HookNextFunction) {
-                        this.set('_id', generate());
-                        this.set('createdAt', new Date());
-                        this.set('updatedAt', new Date());
-                        return next();
-                    });
                     return schema;
                 },
             },
