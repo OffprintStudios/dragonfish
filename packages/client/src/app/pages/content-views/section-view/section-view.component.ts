@@ -39,8 +39,8 @@ export class SectionViewComponent implements OnInit {
         this.loading = true;
 
         this.route.paramMap.subscribe((params) => {
-            // @ts-ignore
             this.sections = this.store.selectSnapshot<SectionInfo[]>(
+                // @ts-ignore
                 (state: ContentState) => state.content.currSections,
             );
 
