@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import * as lodash from 'lodash';
 
 import { AlertsService } from '../../shared/alerts';
-import { Doc } from '@pulp-fiction/models/docs';
+import { Doc } from '@dragonfish/models/docs';
 
 @Injectable({
   providedIn: 'root'

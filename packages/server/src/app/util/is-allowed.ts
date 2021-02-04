@@ -1,5 +1,5 @@
 import { intersection } from 'lodash';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 
 export function isAllowed(requestRoles: Roles[], requiredRoles: Roles[]) {
     const hasRoles: Roles[] = intersection(requestRoles, requiredRoles);

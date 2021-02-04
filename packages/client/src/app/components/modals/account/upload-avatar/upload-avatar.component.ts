@@ -9,7 +9,7 @@ import { AuthState } from '../../../../shared/auth';
 import { User, UserState } from '../../../../shared/user';
 
 import { HttpError } from '../../../../models/site';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Component({
   selector: 'app-upload-avatar',

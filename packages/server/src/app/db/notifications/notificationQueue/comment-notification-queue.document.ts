@@ -1,4 +1,4 @@
-import { CommentNotificationInfo } from '@pulp-fiction/models/notifications';
+import { CommentNotificationInfo } from '@dragonfish/models/notifications';
 import { NotificationQueueDocument } from '../notification-queue.schema';
 
 export interface CommentNotificationQueueDocument extends NotificationQueueDocument, CommentNotificationInfo {

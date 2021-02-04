@@ -8,10 +8,10 @@ import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { UserState } from '../../../shared/user';
 
-import { ApprovalStatus, Categories, Work } from '@pulp-fiction/models/works';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { WorkKind, Genres, ContentRating, WorkStatus, ContentKind, PubStatus } from '@pulp-fiction/models/content';
-import { MigrationForm } from '@pulp-fiction/models/migration';
+import { ApprovalStatus, Categories, Work } from '@dragonfish/models/works';
+import { FrontendUser } from '@dragonfish/models/users';
+import { WorkKind, Genres, ContentRating, WorkStatus, ContentKind, PubStatus } from '@dragonfish/models/content';
+import { MigrationForm } from '@dragonfish/models/migration';
 import { getQuillHtml } from '../../../util/functions';
 
 @Component({

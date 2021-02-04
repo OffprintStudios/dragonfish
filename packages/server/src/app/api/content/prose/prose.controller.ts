@@ -2,8 +2,8 @@ import { Controller, UseInterceptors, Put, UseGuards, Request,
     Body, Patch, Query, BadRequestException, UploadedFile, Post, Param } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
-import { CreateProse } from '@pulp-fiction/models/content';
-import { Roles } from '@pulp-fiction/models/users';
+import { CreateProse } from '@dragonfish/models/content';
+import { Roles } from '@dragonfish/models/users';
 import { ContentService, ProseService } from '../../../db/content';
 import { RolesGuard } from '../../../guards';
 import { isNullOrUndefined } from '../../../util';

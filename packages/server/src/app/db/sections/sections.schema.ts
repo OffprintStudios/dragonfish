@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 
-import { Section, AuthorsNotePos } from '@pulp-fiction/models/sections';
+import { Section, AuthorsNotePos } from '@dragonfish/models/sections';
 
 @Schema({timestamps: true, autoIndex: true, collection: 'sections'})
 export class SectionsDocument extends Document implements Section {

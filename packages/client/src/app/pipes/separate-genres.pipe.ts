@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Genres } from '@pulp-fiction/models/content';
+import { Genres } from '@dragonfish/models/content';
 
 @Pipe({name: 'separateGenres'})
 export class SeparateGenresPipe implements PipeTransform {

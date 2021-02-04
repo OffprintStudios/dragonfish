@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, Patch, Put, Query, Request, UseGuards } from '@nestjs/common';
 
-import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
-import { Roles } from '@pulp-fiction/models/users';
+import { SectionForm, PublishSection } from '@dragonfish/models/sections';
+import { Roles } from '@dragonfish/models/users';
 import { ContentService } from '../../../db/content';
 import { SectionsService } from '../../../db/sections/sections.service';
 import { RolesGuard } from '../../../guards';

@@ -1,14 +1,16 @@
-# Pulp Fiction
+# Dragonfish
+
+> Fire in its own way.
 
 This is the backend repository for the Offprint fiction website.
 
 It's still very much a work in progress.
 
 ## Build Status
-|Pulp Fiction|Build|Test|Production|
+|Dragonfish|Build|Test|Production|
 |------------|-----|----|----------|
-|Server|![Build Server (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Server%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
-|Client|![Build Client (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Client%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
+|Server|![Build Server (Dev)](https://github.com/OffprintStudios/dragonfish/workflows/Build%20Server%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg)|
+|Client|![Build Client (Dev)](https://github.com/OffprintStudios/dragonfish/workflows/Build%20Client%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg)|
 
 ## Setting up the dev environment
 
@@ -33,7 +35,7 @@ Once you've installed and verified that these dependencies are working as expect
 
 - Create a file named `.env` at the root of the repository
 - Copy  the contents of `sample.env` to your new `.env`
-- Edit `.env` to set DATABASE_URL=mongodb://localhost:27017
+- Edit `.env` to set MONGO_URL=mongodb://localhost:27017
 - Edit `.env` to set JWT_SECRET to an *actual* secret, such as a plain random string
 - If you intend to test out image functionality, fill in the DIGITALOCEAN_SPACES_* variables with your information
 

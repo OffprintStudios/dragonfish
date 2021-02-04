@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentFilter, ContentRating, NewsContentModel, NewsForm, PubChange, PubStatus } from '@pulp-fiction/models/content';
-import { Roles } from '@pulp-fiction/models/users';
-import { countPlaintextWords } from '@pulp-fiction/word_counter';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { ContentFilter, ContentRating, NewsContentModel, NewsForm, PubChange, PubStatus } from '@dragonfish/models/content';
+import { Roles } from '@dragonfish/models/users';
+import { countPlaintextWords } from '@dragonfish/word_counter';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { NewsContentDocument } from './news-content.document';
 import { isAllowed } from '../../../util';

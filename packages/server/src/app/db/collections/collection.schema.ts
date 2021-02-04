@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Collection } from '@pulp-fiction/models/collections';
-import { ContentModel } from '@pulp-fiction/models/content';
+import { Collection } from '@dragonfish/models/collections';
+import { ContentModel } from '@dragonfish/models/content';
 import { Document } from 'mongoose';
 import { generate } from 'shortid';
 

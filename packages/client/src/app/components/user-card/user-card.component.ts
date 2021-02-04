@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Component({
     selector: 'user-card',

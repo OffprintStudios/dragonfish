@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from '@nestjs/jwt';
 import {TokenExpiredError} from 'jsonwebtoken';
 
-import { JwtPayload } from '@pulp-fiction/models/auth';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
 export class OptionalAuthGuard implements CanActivate {

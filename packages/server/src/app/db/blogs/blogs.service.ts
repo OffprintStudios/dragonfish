@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 
-import * as models from '@pulp-fiction/models/blogs';
+import * as models from '@dragonfish/models/blogs';
 import * as documents from './models/blog-document.model';
 import { UsersService } from '../users/users.service';
 

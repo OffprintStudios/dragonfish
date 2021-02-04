@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { MyStuffState } from '../../../../shared/my-stuff';
 
 import { WorkKind, CreatePoetry, PoetryForm, Genres, 
-  ContentRating, WorkStatus, PoetryContent, ContentKind } from '@pulp-fiction/models/content';
+  ContentRating, WorkStatus, PoetryContent, ContentKind } from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffService } from '../../my-stuff.service';

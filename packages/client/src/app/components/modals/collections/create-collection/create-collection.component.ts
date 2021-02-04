@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CollectionsService } from '../../../../services/content';
-import { CollectionForm, Collection } from '@pulp-fiction/models/collections';
+import { CollectionForm, Collection } from '@dragonfish/models/collections';
 
 @Component({
   selector: 'app-create-collection',

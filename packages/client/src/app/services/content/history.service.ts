@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
+import { PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
 
 @Injectable({

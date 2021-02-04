@@ -1,7 +1,7 @@
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { SectionInfo } from '@pulp-fiction/models/content';
-import { Section } from '@pulp-fiction/models/sections';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
+import { SectionInfo } from '@dragonfish/models/content';
+import { Section } from '@dragonfish/models/sections';
+import { PaginateResult } from '@dragonfish/models/util';
 
 export interface ApprovalQueueStateModel {
     currPageDocs: PaginateResult<ApprovalQueue> | null;

@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Blog } from '@pulp-fiction/models/blogs';
-import { Work } from '@pulp-fiction/models/works';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Collection } from '@pulp-fiction/models/collections';
+import { Blog } from '@dragonfish/models/blogs';
+import { Work } from '@dragonfish/models/works';
+import { FrontendUser } from '@dragonfish/models/users';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Collection } from '@dragonfish/models/collections';
 
 @Injectable({
   providedIn: 'root'

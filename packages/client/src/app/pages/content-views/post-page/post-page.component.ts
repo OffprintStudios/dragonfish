@@ -6,12 +6,12 @@ import { UserState } from '../../../shared/user';
 import { ContentState } from '../../../shared/content';
 import { Title } from '../../../shared/title';
 
-import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { ItemKind } from '@pulp-fiction/models/comments';
+import { NewsCategory, NewsContentModel } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
+import { ItemKind } from '@dragonfish/models/comments';
 
 @Component({
-  selector: 'pulp-fiction-post-page',
+  selector: 'dragonfish-post-page',
   templateUrl: './post-page.component.html',
   styleUrls: ['./post-page.component.less']
 })

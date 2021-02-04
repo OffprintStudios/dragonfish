@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Request, Param, Get, Post, Patch } from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 import { ReadingHistoryService } from '../../../db/reading-history/reading-history.service';
 
 @Controller('history')

@@ -2,10 +2,10 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
-import { ContentModel } from '@pulp-fiction/models/content';
-import { User } from '@pulp-fiction/models/users';
-import { InitialResults } from '@pulp-fiction/models/util';
-import { ContentFilter } from '@pulp-fiction/models/works';
+import { ContentModel } from '@dragonfish/models/content';
+import { User } from '@dragonfish/models/users';
+import { InitialResults } from '@dragonfish/models/util';
+import { ContentFilter } from '@dragonfish/models/works';
 
 import { SearchService } from './search.service';
 

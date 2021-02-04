@@ -2,11 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 
-import { CreatePoetry } from '@pulp-fiction/models/content';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer';
-import { NotificationKind } from '@pulp-fiction/models/notifications';
-import { countPlaintextWords } from '@pulp-fiction/word_counter';
+import { CreatePoetry } from '@dragonfish/models/content';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { NotificationKind } from '@dragonfish/models/notifications';
+import { countPlaintextWords } from '@dragonfish/word_counter';
 
 import { PoetryContentDocument } from './poetry-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';

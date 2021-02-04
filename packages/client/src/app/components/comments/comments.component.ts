@@ -6,12 +6,12 @@ import { UserState } from '../../shared/user';
 import { Observable, Subscription } from 'rxjs';
 import * as lodash from 'lodash';
 
-import { FrontendUser, Roles } from '@pulp-fiction/models/users';
+import { FrontendUser, Roles } from '@dragonfish/models/users';
 import { Comment, BlogComment, WorkComment, UserInfoComments, 
-  ItemKind, CreateComment, EditComment } from '@pulp-fiction/models/comments';
-import { PaginateResult } from '@pulp-fiction/models/util';
+  ItemKind, CreateComment, EditComment } from '@dragonfish/models/comments';
+import { PaginateResult } from '@dragonfish/models/util';
 import { CommentsService } from '../../services/content';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
   selector: 'comments',

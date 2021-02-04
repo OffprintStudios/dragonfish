@@ -1,5 +1,5 @@
-import { Work } from '@pulp-fiction/models/works';
-import { Blog } from '@pulp-fiction/models/blogs';
+import { Work } from '@dragonfish/models/works';
+import { Blog } from '@dragonfish/models/blogs';
 
 export interface MigrationModel {
     works: Work[],

@@ -7,7 +7,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { Sections } from './sections.actions';
 import { SectionsStateModel } from './sections-state.model';
 import { MyStuffService } from '../services';
-import { Section } from '@pulp-fiction/models/sections';
+import { Section } from '@dragonfish/models/sections';
 import { AlertsService } from '../../alerts';
 import { MyStuff } from '../my-stuff.actions';
 

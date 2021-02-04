@@ -1,5 +1,5 @@
 import {Document} from "mongoose";
 
-import { SearchUser } from '@pulp-fiction/models/users';
+import { SearchUser } from '@dragonfish/models/users';
 
 export interface SearchUserDocument extends SearchUser, Document { }

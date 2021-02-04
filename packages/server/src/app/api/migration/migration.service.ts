@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { ContentKind } from '@pulp-fiction/models/content';
-import { MigrationForm } from '@pulp-fiction/models/migration';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { ContentKind } from '@dragonfish/models/content';
+import { MigrationForm } from '@dragonfish/models/migration';
 
 import { OldBlogsService } from '../../db/blogs/blogs.service';
 import { ContentService } from '../../db/content';

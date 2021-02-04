@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService, CookieOptions } from 'ngx-cookie';
 
-import { ContentFilter } from '@pulp-fiction/models/content';
+import { ContentFilter } from '@dragonfish/models/content';
 
 @Injectable({
     providedIn: 'root'

@@ -1,5 +1,5 @@
-import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm, PubChange } from "@pulp-fiction/models/content";
-import { PublishSection, Section } from "@pulp-fiction/models/sections";
+import { BlogForm, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm, PubChange } from "@dragonfish/models/content";
+import { PublishSection, Section } from "@dragonfish/models/sections";
 import { FileUploader } from "ng2-file-upload";
 
 export namespace MyStuff {

@@ -1,4 +1,4 @@
-import { PoetryContent } from '@pulp-fiction/models/content';
+import { PoetryContent } from '@dragonfish/models/content';
 import { Document } from 'mongoose';
 
 export interface PoetryContentDocument extends PoetryContent, Document {

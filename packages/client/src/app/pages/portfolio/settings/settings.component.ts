@@ -10,8 +10,8 @@ import { map, catchError } from 'rxjs/operators';
 import { User, UserState } from '../../../shared/user';
 
 import { UploadAvatarComponent } from '../../../components/modals/account';
-import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@pulp-fiction/models/users';
-import { ContentFilter } from '@pulp-fiction/models/works';
+import { ChangeEmail, ChangePassword, ChangeProfile, FrontendUser, Roles, UpdateTagline } from '@dragonfish/models/users';
+import { ContentFilter } from '@dragonfish/models/works';
 
 import { Constants, Title } from '../../../shared';
 import { Global } from '../../../shared/global';

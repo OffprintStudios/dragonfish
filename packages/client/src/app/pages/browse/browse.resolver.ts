@@ -3,8 +3,8 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { ContentKind, ContentModel } from '@pulp-fiction/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
+import { ContentKind, ContentModel } from '@dragonfish/models/content';
 import { Store } from '@ngxs/store';
 import { Content, ContentState } from '../../shared/content';
 

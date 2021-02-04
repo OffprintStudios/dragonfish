@@ -6,8 +6,8 @@ import { Store } from '@ngxs/store';
 import * as lodash from 'lodash';
 
 import { AuthState } from '../auth.state';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable({
     providedIn: 'root'

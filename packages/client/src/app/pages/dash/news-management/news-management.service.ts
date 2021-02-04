@@ -4,8 +4,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { NewsContentModel, NewsForm, PubStatus } from '@pulp-fiction/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
+import { NewsContentModel, NewsForm, PubStatus } from '@dragonfish/models/content';
 
 @Injectable({
   providedIn: 'root'

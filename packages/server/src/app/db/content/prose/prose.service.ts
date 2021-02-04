@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 
-import { CreateProse } from '@pulp-fiction/models/content';
-import { JwtPayload } from '@pulp-fiction/models/auth';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { CreateProse } from '@dragonfish/models/content';
+import { JwtPayload } from '@dragonfish/models/auth';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { ProseContentDocument } from './prose-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@dragonfish/models/notifications';
 
 @Injectable()
 export class ProseService {

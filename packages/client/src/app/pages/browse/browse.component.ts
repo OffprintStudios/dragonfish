@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { ContentModel, ProseContent } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ContentModel, ProseContent } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
 
 import { calculateApprovalRating } from '../../util/functions';
 import { Constants, Title } from '../../shared';

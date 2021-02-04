@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Component({
     selector: 'site-staff',

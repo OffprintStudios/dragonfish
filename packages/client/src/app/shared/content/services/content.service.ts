@@ -4,10 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { ContentModel, ContentKind, SetRating } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Section } from '@pulp-fiction/models/sections';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
+import { ContentModel, ContentKind, SetRating } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Section } from '@dragonfish/models/sections';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 @Injectable({
     providedIn: 'root'

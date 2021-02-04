@@ -5,9 +5,9 @@ import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 import { ContentState } from '../../../shared/content';
 
-import { ContentModel } from '@pulp-fiction/models/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ContentModel } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
+import { PaginateResult } from '@dragonfish/models/util';
 import { Constants, Title } from '../../../shared';
 
 @Component({

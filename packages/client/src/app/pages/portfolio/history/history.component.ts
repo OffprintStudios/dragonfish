@@ -5,12 +5,12 @@ import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 
 import { Constants, Title } from '../../../shared';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { FrontendUser } from '@dragonfish/models/users';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
+import { PaginateResult } from '@dragonfish/models/util';
 import { HistoryService } from '../../../services/content';
 import { calculateApprovalRating } from '../../../util/functions';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
   selector: 'app-history',

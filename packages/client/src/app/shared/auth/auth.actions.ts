@@ -1,4 +1,4 @@
-import { LoginUser, CreateUser } from '@pulp-fiction/models/users';
+import { LoginUser, CreateUser } from '@dragonfish/models/users';
 
 export namespace Auth {
     export class Login {

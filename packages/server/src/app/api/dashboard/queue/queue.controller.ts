@@ -1,9 +1,9 @@
 import { Body, Controller, Request, Get, Param, Patch, UseGuards, BadRequestException, Query } from '@nestjs/common';
-import { Roles } from '@pulp-fiction/models/users';
-import { Decision } from '@pulp-fiction/models/contrib';
+import { Roles } from '@dragonfish/models/users';
+import { Decision } from '@dragonfish/models/contrib';
 import { RolesGuard } from '../../../guards';
 import { QueueService } from './queue.service';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 import { isNullOrUndefined } from '../../../util';
 
 @Controller('queue')

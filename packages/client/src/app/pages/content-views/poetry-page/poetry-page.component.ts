@@ -4,10 +4,8 @@ import { Select } from '@ngxs/store';
 import { UserState } from '../../../shared/user';
 import { Observable, Subscription } from 'rxjs';
 
-import { Genres, PoetryContent, PoetryForm, WorkStatus } from '@pulp-fiction/models/content';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { ContentPage } from '../../../models/site';
+import { Genres, PoetryContent, PoetryForm, WorkStatus } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
 
 import { Title } from '../../../shared';
 import { ContentState } from '../../../shared/content';

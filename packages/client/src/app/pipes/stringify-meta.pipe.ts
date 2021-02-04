@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { WorkMetadata, Categories, GenresFiction, GenresPoetry, Fandoms } from '@pulp-fiction/models/works';
+import { WorkMetadata, Categories, GenresFiction, GenresPoetry, Fandoms } from '@dragonfish/models/works';
 
 
 @Pipe({name: 'stringifyMeta'})

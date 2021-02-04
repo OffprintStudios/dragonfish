@@ -9,7 +9,7 @@ import { Constants } from '../../shared';
 import { Auth } from '../../shared/auth';
 import { UserState } from '../../shared/user';
 
-import { FrontendUser, LoginUser } from '@pulp-fiction/models/users';
+import { FrontendUser, LoginUser } from '@dragonfish/models/users';
 import { ConversationsComponent } from './conversations/conversations.component';
 import { HistoryComponent } from './history/history.component';
 import { NotificationsComponent } from './notifications/notifications.component';

@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 
 import * as documents from './models';
-import * as models from '@pulp-fiction/models/comments';
+import * as models from '@dragonfish/models/comments';
 import { ContentService } from '../content/content.service';
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
-import { CreateCommentNotification, NotificationKind } from '@pulp-fiction/models/notifications';
+import { CreateCommentNotification, NotificationKind } from '@dragonfish/models/notifications';
 
 @Injectable()
 export class CommentsService {

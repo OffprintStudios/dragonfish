@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ContentModel } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { ContentModel } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
 import { SearchService } from '../../../services/utility';
 
 @Component({

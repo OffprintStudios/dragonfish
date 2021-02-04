@@ -1,5 +1,5 @@
-import { PaginateResult } from '@pulp-fiction/models/util';
-import { Blog } from '@pulp-fiction/models/blogs';
+import { PaginateResult } from '@dragonfish/models/util';
+import { Blog } from '@dragonfish/models/blogs';
 
 export interface PortBlogs {
     blogs: PaginateResult<Blog>;

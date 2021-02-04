@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { BlogsContentModel, ContentKind, ContentModel, PoetryContent, ProseContent } from '@pulp-fiction/models/content';
+import { BlogsContentModel, ContentKind, ContentModel, PoetryContent, ProseContent } from '@dragonfish/models/content';
 
 @Injectable({
   providedIn: 'root'

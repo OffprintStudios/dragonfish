@@ -1,8 +1,8 @@
 import { Controller, Get, Put, UseGuards, Request, Query, Body } from '@nestjs/common';
 import { RolesGuard } from '../../guards';
 import { MigrationService } from './migration.service';
-import { Roles } from '@pulp-fiction/models/users';
-import { MigrationForm } from '@pulp-fiction/models/migration';
+import { Roles } from '@dragonfish/models/users';
+import { MigrationForm } from '@dragonfish/models/migration';
 
 @Controller()
 export class MigrationController {

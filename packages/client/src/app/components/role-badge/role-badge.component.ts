@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as lodash from 'lodash';
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 
 @Component({
     selector: 'role-badge',

@@ -2,18 +2,18 @@ import { Injectable, ConflictException, BadRequestException, InternalServerError
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { hash, argon2id } from 'argon2';
-import { sanitizeHtml } from '@pulp-fiction/html_sanitizer';
+import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import validator from 'validator';
 
 import * as documents from './models';
-import * as models from '@pulp-fiction/models/users';
-import { CollectionForm } from '@pulp-fiction/models/collections';
+import * as models from '@dragonfish/models/users';
+import { CollectionForm } from '@dragonfish/models/collections';
 import { SearchParameters } from '../../api/search/models/search-parameters';
 import { SearchResults } from '../../api/search/models/search-results';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
 import { createHash } from 'crypto';
 import { CollectionsService } from '../collections/collections.service';
-import { JwtPayload } from '@pulp-fiction/models/auth';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
 export class UsersService {

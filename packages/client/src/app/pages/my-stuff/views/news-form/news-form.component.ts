@@ -5,9 +5,9 @@ import { Select } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
-import { NewsCategory, NewsContentModel } from '@pulp-fiction/models/content';
+import { NewsCategory, NewsContentModel } from '@dragonfish/models/content';
 import { MyStuffState, MyStuff } from '../../../../shared/my-stuff';
-import { ContentRating, ContentKind, NewsForm } from '@pulp-fiction/models/content';
+import { ContentRating, ContentKind, NewsForm } from '@dragonfish/models/content';
 import { AlertsService } from 'packages/client/src/app/shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
 

@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { InitialResults, PaginateResult } from '@pulp-fiction/models/util';
+import { InitialResults, PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
-import { User } from '@pulp-fiction/models/users';
-import { BlogsContentModel, ContentModel, ProseContent } from '@pulp-fiction/models/content';
+import { User } from '@dragonfish/models/users';
+import { BlogsContentModel, ContentModel, ProseContent } from '@dragonfish/models/content';
 
 @Injectable({
   providedIn: 'root'

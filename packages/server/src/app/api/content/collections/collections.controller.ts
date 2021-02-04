@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Request, Param, Body, Get, Put, Patch, Query, BadRequestException } from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
-import { Roles } from '@pulp-fiction/models/users';
-import { CollectionForm } from '@pulp-fiction/models/collections';
+import { Roles } from '@dragonfish/models/users';
+import { CollectionForm } from '@dragonfish/models/collections';
 import { CollectionsService } from '../../../db/collections/collections.service';
 import { isNullOrUndefined } from '../../../util';
 

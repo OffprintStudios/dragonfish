@@ -5,7 +5,7 @@ import { Auth } from './auth.actions';
 import { AuthStateModel } from './auth-state.model';
 import { AuthService } from './services';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 import { Observable } from 'rxjs';
 import { User } from '../user';
 import { Alerts } from '../alerts';

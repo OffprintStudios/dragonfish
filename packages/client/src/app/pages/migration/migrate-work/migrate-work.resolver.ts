@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Work } from '@pulp-fiction/models/works';
+import { Work } from '@dragonfish/models/works';
 
 @Injectable()
 export class MigrateWorkResolver implements Resolve<Work> {

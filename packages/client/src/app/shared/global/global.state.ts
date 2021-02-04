@@ -4,7 +4,7 @@ import { GlobalService } from './services';
 import { GlobalStateModel } from './global-state.model';
 import { Global } from './global.actions';
 
-import { ContentFilter } from '@pulp-fiction/models/content';
+import { ContentFilter } from '@dragonfish/models/content';
 
 @State<GlobalStateModel>({
     name: 'global',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
-import { ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
+import { ProseContent, SectionInfo, WorkStatus } from '@dragonfish/models/content';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 
 @Component({
     selector: 'approve-prose',

@@ -4,12 +4,9 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 import { ContentState } from '../../../shared/content';
-import { cloneDeep } from 'lodash';
 
-import { Genres, ProseContent, SectionInfo, WorkStatus } from '@pulp-fiction/models/content';
-import { ReadingHistory } from '@pulp-fiction/models/reading-history';
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { ContentPage } from '../../../models/site';
+import { Genres, ProseContent, SectionInfo, WorkStatus } from '@dragonfish/models/content';
+import { FrontendUser } from '@dragonfish/models/users';
 
 import { Title } from '../../../shared';
 

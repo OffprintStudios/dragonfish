@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
     ServeStaticModule.forRoot({rootPath: join(__dirname, './static')}),
     MongooseModule.forRootAsync({
       useFactory: () => ({
-        uri: process.env.DATABASE_URL,
+        uri: process.env.MONGO_URL,
         useCreateIndex: true,
         useNewUrlParser: true,
         useUnifiedTopology: true,

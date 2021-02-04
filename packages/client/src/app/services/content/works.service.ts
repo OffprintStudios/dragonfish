@@ -8,8 +8,8 @@ import { map, catchError } from 'rxjs/operators';
 import { AlertsService } from '../../shared/alerts';
 import { HttpError } from '../..//models/site';
 import { CreateWork, CreateSection, EditSection, EditWork, Section, 
-  PublishSection, SectionInfo, Work, SetApprovalRating } from '@pulp-fiction/models/works';
-import { PaginateResult } from '@pulp-fiction/models/util';
+  PublishSection, SectionInfo, Work, SetApprovalRating } from '@dragonfish/models/works';
+import { PaginateResult } from '@dragonfish/models/util';
 
 @Injectable({
   providedIn: 'root'

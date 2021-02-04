@@ -1,11 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { CollectionsService, WorksService } from '../../../../services/content';
-import { Collection } from '@pulp-fiction/models/collections';
-import { ContentModel } from '@pulp-fiction/models/content';
-import { StringDecoder } from 'string_decoder';
-
+import { CollectionsService } from '../../../../services/content';
+import { Collection } from '@dragonfish/models/collections';
+import { ContentModel } from '@dragonfish/models/content';
 
 @Component({
   selector: 'app-add-to-collection',

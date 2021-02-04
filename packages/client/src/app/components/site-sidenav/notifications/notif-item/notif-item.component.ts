@@ -3,7 +3,7 @@ import { slugify } from 'voca';
 import { Store } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
     selector: 'notif-item',

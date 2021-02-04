@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { PortfolioService } from '../services/content';
-import { FrontendUser } from '@pulp-fiction/models/users';
+import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()
 export class PortfolioResolver implements Resolve<FrontendUser> {

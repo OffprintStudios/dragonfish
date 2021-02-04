@@ -4,7 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
-import { PoetryContent, CreatePoetry } from '@pulp-fiction/models/content';
+import { PoetryContent, CreatePoetry } from '@dragonfish/models/content';
 import { HttpError } from '../../models/site';
 
 @Injectable({

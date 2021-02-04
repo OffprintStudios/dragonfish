@@ -4,7 +4,7 @@ import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
 import { Content } from '../../shared/content';
-import { ContentKind } from '@pulp-fiction/models/content';
+import { ContentKind } from '@dragonfish/models/content';
 
 @Injectable()
 export class ContentViewResolver implements Resolve<void> {

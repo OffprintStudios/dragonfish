@@ -1,4 +1,4 @@
-import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@dragonfish/models/notifications';
 import { NotificationQueueDocumentKind } from "./notificationQueue/notification-queue-document-kind";
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
 

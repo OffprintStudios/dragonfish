@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentModel, SectionInfo } from '@pulp-fiction/models/content';
-import { AuthorsNotePos, Section } from '@pulp-fiction/models/sections';
+import { ContentModel, SectionInfo } from '@dragonfish/models/content';
+import { AuthorsNotePos, Section } from '@dragonfish/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, zip } from 'rxjs';
 import { Select, Store } from '@ngxs/store';

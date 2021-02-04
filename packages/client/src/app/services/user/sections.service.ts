@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
-import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
+import { PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
+import { PoetryContent, ProseContent } from '@dragonfish/models/content';
 
 @Injectable({
   providedIn: 'root'

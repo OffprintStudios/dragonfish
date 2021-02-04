@@ -8,7 +8,7 @@ import { NewsService } from './news/news.service';
 import { BlogsService } from './blogs/blogs.service';
 import { SectionsModule } from '../sections/sections.module';
 import { ContentDocument, ContentSchema } from './content.schema';
-import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@pulp-fiction/models/content';
+import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@dragonfish/models/content';
 import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 import { ProseService } from './prose/prose.service';

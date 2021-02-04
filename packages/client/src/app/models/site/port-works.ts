@@ -1,5 +1,5 @@
-import { PoetryContent, ProseContent } from '@pulp-fiction/models/content';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { PoetryContent, ProseContent } from '@dragonfish/models/content';
+import { PaginateResult } from '@dragonfish/models/util';
 
 export interface PortWorks {
     prose: PaginateResult<ProseContent>,

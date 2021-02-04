@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { FrontPageStats } from '@pulp-fiction/models/stats';
+import { FrontPageStats } from '@dragonfish/models/stats';
 import { AlertsService } from '../../shared/alerts';
 
 @Injectable({

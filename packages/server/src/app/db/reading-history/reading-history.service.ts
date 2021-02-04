@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtPayload } from '@pulp-fiction/models/auth';
+import { JwtPayload } from '@dragonfish/models/auth';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { isNullOrUndefined } from '../../util';
 import { ReadingHistoryDocument } from './reading-history.schema';
-import { RatingOption } from '@pulp-fiction/models/reading-history';
+import { RatingOption } from '@dragonfish/models/reading-history';
 
 @Injectable()
 export class ReadingHistoryService {

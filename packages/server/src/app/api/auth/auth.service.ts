@@ -2,9 +2,9 @@ import { Injectable, UnauthorizedException, InternalServerErrorException, NotFou
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 
-import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@pulp-fiction/models/users';
+import { User, FrontendUser, ChangePassword, ChangeProfile, ChangeEmail, ChangeUsername, UpdateTagline } from '@dragonfish/models/users';
 import { UsersService } from '../../db/users/users.service';
-import { JwtPayload } from '@pulp-fiction/models/auth';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
 export class AuthService {

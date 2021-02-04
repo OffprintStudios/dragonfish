@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ContentKind } from '@pulp-fiction/models/content';
-import { MarkReadRequest } from '@pulp-fiction/models/notifications';
+import { ContentKind } from '@dragonfish/models/content';
+import { MarkReadRequest } from '@dragonfish/models/notifications';
 import { NotificationsService } from '../../../services/user';
 import { NotificationSelect } from './notification-select.model';
 

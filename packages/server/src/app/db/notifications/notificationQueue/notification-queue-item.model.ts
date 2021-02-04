@@ -1,4 +1,4 @@
-import { NotificationKind } from '@pulp-fiction/models/notifications';
+import { NotificationKind } from '@dragonfish/models/notifications';
 import { PublishStatus } from './publish-status';
 
 // Base interface

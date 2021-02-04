@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { ContentRating } from '@pulp-fiction/models/content';
+import { ContentRating } from '@dragonfish/models/content';
 
 @Component({
     selector: 'rating-icon',

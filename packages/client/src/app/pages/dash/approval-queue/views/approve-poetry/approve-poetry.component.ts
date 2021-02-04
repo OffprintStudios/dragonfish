@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
 
-import { ApprovalQueue } from '@pulp-fiction/models/approval-queue';
-import { PoetryContent, SectionInfo, PoetryForm } from '@pulp-fiction/models/content';
-import { WorkStatus } from '@pulp-fiction/models/works';
+import { ApprovalQueue } from '@dragonfish/models/approval-queue';
+import { PoetryContent, SectionInfo, PoetryForm } from '@dragonfish/models/content';
+import { WorkStatus } from '@dragonfish/models/works';
 
 @Component({
     selector: 'approve-poetry',

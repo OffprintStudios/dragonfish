@@ -1,8 +1,8 @@
 import { Controller, UseGuards, Request, Param, Body, Get, Put, Patch, Post } from '@nestjs/common';
 
-import { Roles } from '@pulp-fiction/models/users';
+import { Roles } from '@dragonfish/models/users';
 import { RolesGuard } from '../../../guards';
-import { CreateComment, EditComment } from '@pulp-fiction/models/comments';
+import { CreateComment, EditComment } from '@dragonfish/models/comments';
 import { CommentsService } from '../../../db/comments/comments.service';
 
 @Controller('comments')

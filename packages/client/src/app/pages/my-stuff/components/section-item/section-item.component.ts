@@ -4,7 +4,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
-import { AuthorsNotePos, PublishSection, Section, SectionForm } from '@pulp-fiction/models/sections';
+import { AuthorsNotePos, PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 import { SectionsState } from '../../../../shared/my-stuff/sections';
 import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';

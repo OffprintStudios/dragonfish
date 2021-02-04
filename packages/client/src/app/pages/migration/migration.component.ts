@@ -3,9 +3,9 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../shared/user';
 
-import { FrontendUser } from '@pulp-fiction/models/users';
-import { Work } from '@pulp-fiction/models/works';
-import { Blog } from '@pulp-fiction/models/blogs';
+import { FrontendUser } from '@dragonfish/models/users';
+import { Work } from '@dragonfish/models/works';
+import { Blog } from '@dragonfish/models/blogs';
 import { ActivatedRoute } from '@angular/router';
 import { MigrationModel } from './migration.model';
 

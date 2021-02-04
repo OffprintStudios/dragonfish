@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { sanitizeHtml, stripAllHtml } from '@pulp-fiction/html_sanitizer'
-import { SectionForm, PublishSection } from '@pulp-fiction/models/sections';
+import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer'
+import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 import { SectionsDocument } from './sections.schema';
-import { countPlaintextWords, countQuillWords } from '@pulp-fiction/word_counter';
+import { countPlaintextWords, countQuillWords } from '@dragonfish/word_counter';
 
 @Injectable()
 export class SectionsService {

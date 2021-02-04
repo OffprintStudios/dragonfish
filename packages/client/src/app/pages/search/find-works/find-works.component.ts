@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Work } from '@pulp-fiction/models/works';
-import { PaginateResult } from '@pulp-fiction/models/util';
+import { Work } from '@dragonfish/models/works';
+import { PaginateResult } from '@dragonfish/models/util';
 import { SearchService } from '../../../services/utility';
 import { calculateApprovalRating } from '../../../util/functions';
-import { ContentModel } from '@pulp-fiction/models/content';
+import { ContentModel } from '@dragonfish/models/content';
 
 @Component({
   selector: 'app-find-works',
