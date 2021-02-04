@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
+import * as sanitizeHtml from 'sanitize-html';
 
 import { CreateProse } from '@dragonfish/models/content';
 import { JwtPayload } from '@dragonfish/models/auth';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
 import { ProseContentDocument } from './prose-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/models/notifications';
@@ -25,9 +25,9 @@ export class ProseService {
     async createProse(user: JwtPayload, proseInfo: CreateProse): Promise<ProseContentDocument> {
         const newProse = new this.proseModel({
             author: user.sub,
-            title: await sanitizeHtml(proseInfo.title),
-            desc: await sanitizeHtml(proseInfo.desc),
-            body: await sanitizeHtml(proseInfo.body),
+            title: sanitizeHtml(proseInfo.title),
+            desc: sanitizeHtml(proseInfo.desc),
+            body: sanitizeHtml(proseInfo.body),
             'meta.category': proseInfo.category,
             'meta.genres': proseInfo.genres,
             'meta.rating': proseInfo.rating,
@@ -53,9 +53,9 @@ export class ProseService {
         return await this.proseModel.findOneAndUpdate(
             { _id: proseId, author: user.sub },
             {
-                title: await sanitizeHtml(proseInfo.title),
-                desc: await sanitizeHtml(proseInfo.desc),
-                body: await sanitizeHtml(proseInfo.body),
+                title: sanitizeHtml(proseInfo.title),
+                desc: sanitizeHtml(proseInfo.desc),
+                body: sanitizeHtml(proseInfo.body),
                 'meta.category': proseInfo.category,
                 'meta.genres': proseInfo.genres,
                 'meta.rating': proseInfo.rating,
