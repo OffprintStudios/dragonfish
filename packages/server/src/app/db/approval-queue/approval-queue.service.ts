@@ -1,11 +1,9 @@
-import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 
 import { ApprovalQueueDocument } from './approval-queue.schema';
 import { WorksService } from '../works/works.service';
-import { Categories } from '@dragonfish/models/works';
-import { ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class ApprovalQueueService {
