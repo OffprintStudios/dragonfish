@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@dragonfish/models/auth';
-import { PaginateModel, PaginateResult, PaginateOptions } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { UsersService } from '../../users/users.service';
 
 import { BlogsContentDocument } from './blogs-content.document';
 import { BlogForm, PubChange, PubStatus } from '@dragonfish/models/content';
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
-import { countPlaintextWords } from '@dragonfish/word_counter';
+import * as sanitizeHtml from 'sanitize-html';
+import { stripTags, countWords } from 'voca';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/models/notifications';
-import { ContentFilter } from '@dragonfish/models/works';
 
 @Injectable()
 export class BlogsService {
@@ -30,10 +29,10 @@ export class BlogsService {
     async createNewBlog(user: JwtPayload, blogInfo: BlogForm): Promise<BlogsContentDocument> {
         const newBlog = new this.blogsModel({
             author: user.sub,
-            title: await sanitizeHtml(blogInfo.title),
-            body: await sanitizeHtml(blogInfo.body),
+            title: sanitizeHtml(blogInfo.title),
+            body: sanitizeHtml(blogInfo.body),
             'meta.rating': blogInfo.rating,
-            'stats.words': await countPlaintextWords(await stripAllHtml(blogInfo.body)),
+            'stats.words': countWords(stripTags(blogInfo.body)),
         });
 
         const savedBlog = await newBlog.save();
@@ -53,13 +52,13 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
-        const wordcount = await countPlaintextWords(await stripAllHtml(blogInfo.body));
+        const wordcount = countWords(stripTags(blogInfo.body));
 
         return await this.blogsModel.findOneAndUpdate(
             { _id: blogId, author: user.sub },
             {
-                title: await sanitizeHtml(blogInfo.title),
-                body: await sanitizeHtml(blogInfo.body),
+                title: sanitizeHtml(blogInfo.title),
+                body: sanitizeHtml(blogInfo.body),
                 'meta.rating': blogInfo.rating,
                 'stats.words': wordcount,
             },
