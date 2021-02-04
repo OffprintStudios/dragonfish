@@ -24,9 +24,9 @@ async function bootstrap() {
     app.use(cookieParser());
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
-    app.use(csurf({cookie: true}));
+    app.use(csurf({ cookie: true }));
     app.use(helmet());
-    app.enableCors({origin: process.env.ORIGIN, credentials: true});
+    app.enableCors({ origin: process.env.ORIGIN, credentials: true });
     app.use(require('prerender-node').set('prerenderToken', process.env.PRERENDER_TOKEN));
 
     // this is to make sure the XSRF-TOKEN is being set correctly
@@ -39,7 +39,10 @@ async function bootstrap() {
         .setTitle(`Dragonfish`)
         .setDescription(`"Fire in its own way"--The official Offprint API.`)
         .setVersion(`1.0`)
-        .addTag(`offprint`)
+        .addTag(`auth`)
+        .addTag(`user`)
+        .addTag(`content`)
+        .addTag(`search`)
         .build();
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);

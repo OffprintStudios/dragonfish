@@ -14,6 +14,7 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
 import * as lodash from 'lodash';
@@ -34,6 +35,7 @@ export class AuthController {
 
     /* Login and Registration*/
 
+    @ApiTags('auth')
     @SetCookies()
     @Post('register')
     async register(@Request() req: any, @Body() newUser: models.CreateUser): Promise<models.FrontendUser> {
@@ -43,6 +45,7 @@ export class AuthController {
         return this.authService.login(addedUser, req, sessionId, newSession.expires);
     }
 
+    @ApiTags('auth')
     @SetCookies()
     @Post('login')
     async login(
@@ -68,37 +71,7 @@ export class AuthController {
         }
     }
 
-    @SetCookies()
-    @Post('login-dashboard')
-    async loginDashboard(@Request() req: any, @Body() loginUser: models.LoginUser, @Cookies() cookies: any) {
-        // Check for stray sessions from previous logout attempts that the server never received
-        let oldSessionId: string | null = cookies['refreshToken'];
-
-        const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
-
-        let hasRoles = lodash.intersection(verifiedUser.audit.roles, [
-            models.Roles.Admin,
-            models.Roles.Moderator,
-            models.Roles.Contributor,
-            models.Roles.WorkApprover,
-        ]);
-        if (hasRoles.length > 0) {
-            if (oldSessionId) {
-                await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
-            }
-
-            if (loginUser.rememberMe) {
-                const sessionId = uuidV4();
-                const newSession = await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
-                return this.authService.login(verifiedUser, req, sessionId, newSession.expires);
-            } else {
-                return this.authService.login(verifiedUser, req);
-            }
-        } else {
-            throw new UnauthorizedException(`You don't have permission to access the dashboard.`);
-        }
-    }
-
+    @ApiTags('auth')
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
     async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<{ newToken: string }> {
@@ -115,6 +88,7 @@ export class AuthController {
         }
     }
 
+    @ApiTags('auth')
     @UseGuards(RefreshGuard)
     @SetCookies()
     @Get('logout')
@@ -126,12 +100,14 @@ export class AuthController {
 
     /* Account settings */
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('change-email')
     async changeEmail(@Request() req: any, @Body() changeEmailRequest: models.ChangeEmail) {
         return await this.authService.changeEmail(req.user, changeEmailRequest);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('change-username')
     async changeUsername(@Request() req: any, @Body() changeUsernameRequest: models.ChangeUsername) {
@@ -140,12 +116,14 @@ export class AuthController {
         //return await this.authService.changeUsername(req.user, changeUsernameRequest);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('change-password')
     async changePassword(@Request() req: any, @Body() newPassword: models.ChangePassword) {
         return await this.authService.changePassword(req.user, newPassword);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('update-profile')
     async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
@@ -155,12 +133,14 @@ export class AuthController {
         return await this.authService.updateProfile(req.user, newProfile);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @Post('agree-to-policies')
     async agreeToPolicies(@Request() req: any): Promise<models.FrontendUser> {
         return await this.authService.agreeToPolicies(req.user);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.User]))
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
@@ -170,6 +150,7 @@ export class AuthController {
         return await this.authService.updateAvatar(req.user, avatar);
     }
 
+    @ApiTags('user')
     @UseGuards(RolesGuard([models.Roles.Admin, models.Roles.Moderator, models.Roles.ChatModerator]))
     @Patch('update-tagline')
     async updateTagline(@Request() req: any, @Body() tagline: models.UpdateTagline) {
