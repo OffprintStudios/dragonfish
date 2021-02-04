@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 import { HookNextFunction } from 'mongoose';
-import { generate } from 'shortid';
 
 import { CollectionDocument, CollectionSchema } from './collection.schema';
 import { CollectionsService } from './collections.service';
@@ -18,12 +17,8 @@ import { CollectionsService } from './collections.service';
                     schema.plugin(require('mongoose-autopopulate'));
                     schema.plugin(require('mongoose-paginate-v2'));
                     schema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
-                        if (!this._id) {
-                            this.set('_id', generate());
-                        }
-
-                        this.set('name', await sanitizeHtml(this.name));
-                        this.set('desc', await sanitizeHtml(this.desc));
+                        this.set('name', sanitizeHtml(this.name));
+                        this.set('desc', sanitizeHtml(this.desc));
 
                         return next();
                     });

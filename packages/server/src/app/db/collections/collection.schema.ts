@@ -2,11 +2,11 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Collection } from '@dragonfish/models/collections';
 import { ContentModel } from '@dragonfish/models/content';
 import { Document } from 'mongoose';
-import { generate } from 'shortid';
+import { nanoid } from 'nanoid';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'collections' })
 export class CollectionDocument extends Document implements Collection {
-    @Prop()
+    @Prop({ default: () => nanoid() })
     readonly _id: string;
 
     @Prop({ type: String, ref: 'User', required: true })

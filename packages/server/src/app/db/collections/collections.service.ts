@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import { sanitizeHtml } from '@dragonfish/html_sanitizer';
+import * as sanitizeHtml from 'sanitize-html';
 
 import { JwtPayload } from '@dragonfish/models/auth';
 import { CollectionForm } from '@dragonfish/models/collections';
@@ -23,7 +23,7 @@ export class CollectionsService {
         const newCollection = new this.collModel({
             owner: userId,
             name: collForm.name,
-            desc: await sanitizeHtml(collForm.desc),
+            desc: sanitizeHtml(collForm.desc),
             'audit.isPublic': collForm.public,
         });
 
