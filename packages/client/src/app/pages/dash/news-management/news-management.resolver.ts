@@ -10,15 +10,18 @@ import { NewsContentModel } from '@dragonfish/models/content';
 export class NewsManagementResolver implements Resolve<PaginateResult<NewsContentModel>> {
     pageNum: number = 1;
 
-    constructor (private newsService: NewsManagementService) {}
+    constructor(private newsService: NewsManagementService) {}
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<NewsContentModel>> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        routerState: RouterStateSnapshot,
+    ): Observable<PaginateResult<NewsContentModel>> {
         const pageNum = +route.queryParamMap.get('page');
 
         if (pageNum) {
             this.pageNum = pageNum;
         }
-        
+
         return this.newsService.fetchAll(this.pageNum);
     }
 }

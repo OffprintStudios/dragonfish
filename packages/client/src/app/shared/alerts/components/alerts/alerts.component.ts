@@ -5,7 +5,7 @@ import { AlertsStateModel, AlertType } from '../../models';
 @Component({
     selector: 'alerts',
     templateUrl: './alerts.component.html',
-    styleUrls: ['./alerts.component.less']
+    styleUrls: ['./alerts.component.less'],
 })
 export class AlertsComponent implements OnInit {
     public alertType = AlertType;

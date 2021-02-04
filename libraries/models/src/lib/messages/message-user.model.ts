@@ -7,6 +7,6 @@ export interface MessageUser {
         readonly avatar: string;
     };
     readonly audit: {
-        readonly roles: Roles[]
+        readonly roles: Roles[];
     };
 }

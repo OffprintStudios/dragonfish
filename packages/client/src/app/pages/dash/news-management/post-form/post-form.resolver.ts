@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { NewsContentModel } from '@dragonfish/models/content'
+import { NewsContentModel } from '@dragonfish/models/content';
 import { NewsManagementService } from '../news-management.service';
 
 @Injectable()

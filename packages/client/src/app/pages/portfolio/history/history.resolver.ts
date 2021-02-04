@@ -10,9 +10,12 @@ import { ReadingHistory } from '@dragonfish/models/reading-history';
 export class HistoryResolver implements Resolve<PaginateResult<ReadingHistory>> {
     pageNum: number = 1;
 
-    constructor (private hist: HistoryService) { }
+    constructor(private hist: HistoryService) {}
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ReadingHistory>> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        routerState: RouterStateSnapshot,
+    ): Observable<PaginateResult<ReadingHistory>> {
         const pageNum = +route.queryParamMap.get('page');
 
         if (pageNum) {

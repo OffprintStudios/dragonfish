@@ -11,7 +11,11 @@ export class CommentsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Put('add-content-comment/:contentId')
-    async addContentComment(@Request() req: any, @Param('contentId') contentId: string, @Body() commentInfo: CreateComment) {
+    async addContentComment(
+        @Request() req: any,
+        @Param('contentId') contentId: string,
+        @Body() commentInfo: CreateComment,
+    ) {
         return await this.commentsService.createContentComment(req.user, contentId, commentInfo);
     }
 

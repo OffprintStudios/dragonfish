@@ -7,7 +7,7 @@ import { MyStuffService } from '../services/user';
 
 @Injectable()
 export class ViewContentResolver implements Resolve<ContentModel> {
-    constructor (private stuffService: MyStuffService) { }
+    constructor(private stuffService: MyStuffService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<ContentModel> {
         const contentId = route.queryParamMap.get('contentId');

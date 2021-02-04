@@ -1,25 +1,25 @@
 <ng-container *ngIf="currContent$ | async as currPost; else createMode">
     <div class="form-container">
         <div class="form-header">
-            <button class="form-button left" [ngClass]="{'selected': !editMode}" (click)="switchView()">Preview</button>
-            <button class="form-button right" [ngClass]="{'selected': editMode}" (click)="switchView()">Edit</button>
-            <div style="flex: 1; text-align: right;">
+            <button class="form-button left" [ngClass]="{ selected: !editMode }" (click)="switchView()">Preview</button>
+            <button class="form-button right" [ngClass]="{ selected: editMode }" (click)="switchView()">Edit</button>
+            <div style="flex: 1; text-align: right">
                 <button class="form-button save" *ngIf="editMode" (click)="submitForm(currPost._id)">Save</button>
             </div>
         </div>
-    
+
         <ng-container *ngIf="editMode; else previewBlog">
             <form [formGroup]="postForm" (ngSubmit)="submitForm(currPost._id)" *ngIf="editMode">
-                <mat-form-field style="width: 100%;" appearance="outline">
+                <mat-form-field style="width: 100%" appearance="outline">
                     <mat-label>Title</mat-label>
-                    <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                    <input matInput placeholder="There's Something I Gotta Say..." formControlName="title" />
                 </mat-form-field>
-    
+
                 <div class="row">
                     <div class="six columns">
                         <mat-form-field style="width: 100%" appearance="outline">
                             <mat-label>Description</mat-label>
-                            <input matInput placeholder="There's something afoot..." formControlName="desc">
+                            <input matInput placeholder="There's something afoot..." formControlName="desc" />
                         </mat-form-field>
                     </div>
                     <div class="six columns">
@@ -32,12 +32,17 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-                </div>  
-        
-                <editor [parentForm]="postForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+                </div>
+
+                <editor
+                    [parentForm]="postForm"
+                    [controlName]="'body'"
+                    [minHeight]="'1000px'"
+                    [maxHeight]="'1000px'"
+                ></editor>
             </form>
         </ng-container>
-    
+
         <ng-template #previewBlog>
             <div class="post-container" *ngIf="currPost">
                 <div class="post-header">
@@ -45,16 +50,28 @@
                     <h1>{{ currPost.title }}</h1>
                     <div class="post-cat">
                         <div class="info">
-                            <span>{{ currPost.audit.publishedOn | localedate:'fullDate' }}</span>
+                            <span>{{ currPost.audit.publishedOn | localedate: 'fullDate' }}</span>
                             <span class="divider" *ngIf="currPost.audit.publishedOn">//</span>
-                            <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ currPost.stats.views }}</span>
+                            <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"
+                                ><i-feather name="eye"></i-feather>{{ currPost.stats.views }}</span
+                            >
                             <span class="divider">//</span>
-                            <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ currPost.stats.comments }}</span>
+                            <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"
+                                ><i-feather name="message-circle"></i-feather>{{ currPost.stats.comments }}</span
+                            >
                         </div>
                         <div class="post-tools preview">
-                            <button matRipple><i-feather name="thumbs-up"></i-feather><span class="button-text">{{ currPost.stats.likes | abbreviate }}</span></button>
-                            <button matRipple class="mid"><i-feather name="thumbs-down"></i-feather><span class="button-text">{{ currPost.stats.dislikes | abbreviate }}</span></button>
-                            <button matRipple class="end"><i-feather class="more" name="more-vertical"></i-feather></button>
+                            <button matRipple>
+                                <i-feather name="thumbs-up"></i-feather
+                                ><span class="button-text">{{ currPost.stats.likes | abbreviate }}</span>
+                            </button>
+                            <button matRipple class="mid">
+                                <i-feather name="thumbs-down"></i-feather
+                                ><span class="button-text">{{ currPost.stats.dislikes | abbreviate }}</span>
+                            </button>
+                            <button matRipple class="end">
+                                <i-feather class="more" name="more-vertical"></i-feather>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -73,16 +90,16 @@
             <button class="form-button" (click)="submitForm()">Save</button>
         </div>
         <form [formGroup]="postForm" (ngSubmit)="submitForm()">
-            <mat-form-field style="width: 100%;" appearance="outline">
+            <mat-form-field style="width: 100%" appearance="outline">
                 <mat-label>Title</mat-label>
-                <input matInput placeholder="There's Something I Gotta Say..." formControlName="title">
+                <input matInput placeholder="There's Something I Gotta Say..." formControlName="title" />
             </mat-form-field>
 
             <div class="row">
                 <div class="six columns">
                     <mat-form-field style="width: 100%" appearance="outline">
                         <mat-label>Description</mat-label>
-                        <input matInput placeholder="There's something afoot..." formControlName="desc">
+                        <input matInput placeholder="There's something afoot..." formControlName="desc" />
                     </mat-form-field>
                 </div>
                 <div class="six columns">
@@ -95,9 +112,14 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>  
-    
-            <editor [parentForm]="postForm" [controlName]="'body'" [minHeight]="'1000px'" [maxHeight]="'1000px'"></editor>
+            </div>
+
+            <editor
+                [parentForm]="postForm"
+                [controlName]="'body'"
+                [minHeight]="'1000px'"
+                [maxHeight]="'1000px'"
+            ></editor>
         </form>
     </div>
 </ng-template>

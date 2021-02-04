@@ -3,7 +3,7 @@ export enum Fandoms {
     LittleWitchAcademia = 'Little Witch Academia',
     StarTrek = 'Star Trek',
     DoctorWho = 'Doctor Who',
-    StarWars = 'Star Wars', 
+    StarWars = 'Star Wars',
     Marvel = 'Marvel',
     Dc = 'DC',
     HarryPotter = 'Harry Potter',
@@ -65,7 +65,7 @@ export enum Fandoms {
     AnimalCrossing = 'Animal Crossing',
     PowerRangers = 'Power Rangers',
     CultistSimulator = 'Cultist Simulator',
-    Other = 'Other' // placeholder for fandoms that haven't been added yet
+    Other = 'Other', // placeholder for fandoms that haven't been added yet
 }
 
 export const MAX_FANDOMS_PER_STORY: number = 5;

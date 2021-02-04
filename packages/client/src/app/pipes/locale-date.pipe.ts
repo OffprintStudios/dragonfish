@@ -1,15 +1,21 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({name: 'localedate'})
-export class LocaleDatePipe implements PipeTransform  {
+@Pipe({ name: 'localedate' })
+export class LocaleDatePipe implements PipeTransform {
     transform(value: Date | string, format: string): string {
         const date = new Date(value);
         var options: Intl.DateTimeFormatOptions;
 
         switch (format) {
             case 'short':
-                options = { year: '2-digit', month: 'numeric', day: 'numeric',
-                    hour12: true, hour: 'numeric', minute: '2-digit' };
+                options = {
+                    year: '2-digit',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                };
                 break;
             case 'shortDate':
                 options = { year: '2-digit', month: 'numeric', day: 'numeric' };
@@ -18,8 +24,15 @@ export class LocaleDatePipe implements PipeTransform  {
                 options = { hour12: true, hour: 'numeric', minute: '2-digit' };
                 break;
             case 'medium':
-                options = { year: 'numeric', month: 'short', day: 'numeric',
-                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' };
+                options = {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                };
                 break;
             case 'mediumDate':
                 options = { year: 'numeric', month: 'short', day: 'numeric' };
@@ -28,21 +41,41 @@ export class LocaleDatePipe implements PipeTransform  {
                 options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit' };
                 break;
             case 'long':
-                options = { year: 'numeric', month: 'long', day: 'numeric',
-                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
-                    timeZoneName: 'short' };
+                options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'short',
+                };
                 break;
             case 'longDate':
                 options = { year: 'numeric', month: 'long', day: 'numeric' };
                 break;
             case 'longTime':
-                options = { hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
-                    timeZoneName: 'short' };
+                options = {
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'short',
+                };
                 break;
             case 'full':
-                options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-                    hour12: true, hour: 'numeric', minute: '2-digit', second: '2-digit',
-                    timeZoneName: 'long' };
+                options = {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour12: true,
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZoneName: 'long',
+                };
                 break;
             case 'fullDate':
                 options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

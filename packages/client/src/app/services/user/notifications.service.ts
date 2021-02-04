@@ -10,7 +10,7 @@ import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@dr
 import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NotificationsService {
     @Select(UserState.currUser) private currentUser$: Observable<FrontendUser>;
@@ -20,24 +20,24 @@ export class NotificationsService {
     private url = `/api/notifications`;
 
     constructor(private http: HttpClient, private zone: NgZone) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
 
     public getNotificationStream(): Observable<any> {
-        return new Observable(observer => {
+        return new Observable((observer) => {
             const eventSource = new EventSourcePolyfill(`${this.url}/sse`, {
-                headers: {'Authorization': 'Bearer ' + this.currentUser.token}
+                headers: { Authorization: 'Bearer ' + this.currentUser.token },
             });
 
-            eventSource.onmessage = event => {
+            eventSource.onmessage = (event) => {
                 this.zone.run(() => {
                     observer.next(event);
                 });
             };
 
-            eventSource.onerror = error => {
+            eventSource.onerror = (error) => {
                 this.zone.run(() => {
                     observer.error(error);
                 });
@@ -46,56 +46,91 @@ export class NotificationsService {
     }
 
     public getAllNotifications(): Observable<NotificationBase[]> {
-        return this.http.get<NotificationBase[]>(`${this.url}/all-notifications`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError (err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<NotificationBase[]>(`${this.url}/all-notifications`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     public getUnreadNotifications(): Observable<NotificationBase[]> {
-        return this.http.get<NotificationBase[]>(`${this.url}/unread-notifications`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError (err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<NotificationBase[]>(`${this.url}/unread-notifications`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     public markAsRead(toMark: MarkReadRequest): Observable<void> {
-        return this.http.post<void>(`${this.url}/mark-as-read`, toMark, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return;
-            }), catchError (err => {
-                return throwError(err);
-            }));
+        return this.http
+            .post<void>(`${this.url}/mark-as-read`, toMark, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     public getSubscriptions(): Observable<NotificationSubscription[]> {
-        return this.http.get<NotificationSubscription[]>(`${this.url}/unread-notifications`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError (err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<NotificationSubscription[]>(`${this.url}/unread-notifications`, {
+                observe: 'response',
+                withCredentials: true,
+            })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     public subscribe(sourceId: string): Observable<void> {
-        return this.http.post<void>(`${this.url}/subscribe?sourceId=${sourceId}`, {}, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .post<void>(
+                `${this.url}/subscribe?sourceId=${sourceId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            )
+            .pipe(
+                map((res) => {
+                    return;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     public unsubscribe(sourceId: string): Observable<void> {
-        return this.http.post<void>(`${this.url}/unsubscribe?sourceId=${sourceId}`, {}, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .post<void>(
+                `${this.url}/unsubscribe?sourceId=${sourceId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            )
+            .pipe(
+                map((res) => {
+                    return;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 }

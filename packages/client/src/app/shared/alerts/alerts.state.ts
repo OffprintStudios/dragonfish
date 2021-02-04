@@ -11,46 +11,46 @@ import { AlertsStateModel } from './models/alerts-state.model';
     name: 'alerts',
     defaults: {
         message: null,
-        type: null
-    }
+        type: null,
+    },
 })
 @Injectable()
 export class AlertsState {
-    constructor (private snackBar: MatSnackBar) {}
+    constructor(private snackBar: MatSnackBar) {}
 
     @Action(Alerts.Success)
     success({ patchState, getState }: StateContext<AlertsStateModel>, { message }: Alerts.Success) {
         patchState({
             message: message,
-            type: AlertType.Success
-        })
-        this.snackBar.openFromComponent(AlertsComponent, {data: getState()});
+            type: AlertType.Success,
+        });
+        this.snackBar.openFromComponent(AlertsComponent, { data: getState() });
     }
 
     @Action(Alerts.Error)
     error({ patchState, getState }: StateContext<AlertsStateModel>, { message }: Alerts.Error) {
         patchState({
             message: message,
-            type: AlertType.Error
-        })
-        this.snackBar.openFromComponent(AlertsComponent, {data: getState()});
+            type: AlertType.Error,
+        });
+        this.snackBar.openFromComponent(AlertsComponent, { data: getState() });
     }
 
     @Action(Alerts.Info)
     info({ patchState, getState }: StateContext<AlertsStateModel>, { message }: Alerts.Info) {
         patchState({
             message: message,
-            type: AlertType.Info
-        })
-        this.snackBar.openFromComponent(AlertsComponent, {data: getState()});
+            type: AlertType.Info,
+        });
+        this.snackBar.openFromComponent(AlertsComponent, { data: getState() });
     }
 
     @Action(Alerts.Warning)
     warning({ patchState, getState }: StateContext<AlertsStateModel>, { message }: Alerts.Warning) {
         patchState({
             message: message,
-            type: AlertType.Warning
-        })
-        this.snackBar.openFromComponent(AlertsComponent, {data: getState()});
+            type: AlertType.Warning,
+        });
+        this.snackBar.openFromComponent(AlertsComponent, { data: getState() });
     }
 }

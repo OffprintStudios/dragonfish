@@ -5,7 +5,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 @Component({
     selector: 'supporters',
     templateUrl: './supporters.component.html',
-    styleUrls: ['./supporters.component.less']
+    styleUrls: ['./supporters.component.less'],
 })
 export class SupportersComponent implements OnInit {
     supporters: FrontendUser[];

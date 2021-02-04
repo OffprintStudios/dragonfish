@@ -7,20 +7,18 @@ import { UsersModule } from '../../db/users/users.module';
 import { ImagesModule } from '../images/images.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 
-
 @Module({
-  imports: [
-    UsersModule, ImagesModule,
-    JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: getJwtSecretKey(),
-        signOptions: {expiresIn: JWT_EXPIRATION},
-      }),
-    }),
-  ],
-  providers: [
-    AuthService,
-  ],
-  controllers: [AuthController]
+    imports: [
+        UsersModule,
+        ImagesModule,
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
+        }),
+    ],
+    providers: [AuthService],
+    controllers: [AuthController],
 })
 export class AuthModule {}

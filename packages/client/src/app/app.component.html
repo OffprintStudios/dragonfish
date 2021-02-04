@@ -1,106 +1,148 @@
 <mat-sidenav-container>
-  <mat-sidenav [fixedInViewport]="true" [(opened)]="sidenavOpened" #sidenav>
-    <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <div style="box-shadow: var(--site-dropshadow);">
-      <div class="nav">
-        <nag-bar></nag-bar>
-        <header>
-          <div class="nav-box">
-            <div class="user-menu-nav" *ngIf="currentUser; else signUp">
-              <i-feather matTooltip="Open menu" matTooltipClass="offprint-tooltip" class="menu-hint" name="menu" (click)="sidenav.toggle()"></i-feather>
-              <img class="user-menu-avatar" (click)="sidenav.toggle()" [src]="currentUser.profile.avatar"/>
-              <span [matBadge]="numNotifs | abbreviate" [matBadgeOverlap]="true"></span>
+    <mat-sidenav [fixedInViewport]="true" [(opened)]="sidenavOpened" #sidenav>
+        <site-sidenav (closeSidenav)="onCloseClicked($event)"></site-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div style="box-shadow: var(--site-dropshadow)">
+            <div class="nav">
+                <nag-bar></nag-bar>
+                <header>
+                    <div class="nav-box">
+                        <div class="user-menu-nav" *ngIf="currentUser; else signUp">
+                            <i-feather
+                                matTooltip="Open menu"
+                                matTooltipClass="offprint-tooltip"
+                                class="menu-hint"
+                                name="menu"
+                                (click)="sidenav.toggle()"
+                            ></i-feather>
+                            <img
+                                class="user-menu-avatar"
+                                (click)="sidenav.toggle()"
+                                [src]="currentUser.profile.avatar"
+                            />
+                            <span [matBadge]="numNotifs | abbreviate" [matBadgeOverlap]="true"></span>
+                        </div>
+                        <ng-template #signUp>
+                            <div class="user-menu-nav">
+                                <button matRipple class="login" (click)="sidenav.toggle()">Log In</button>
+                                <button matRipple class="mobile-login" (click)="sidenav.toggle()">
+                                    <i-feather name="log-in"></i-feather>
+                                </button>
+                            </div>
+                        </ng-template>
+                        <div class="site-logo" [routerLink]="['/home/latest']">
+                            <img src="assets/icons/logo.png" />
+                            <h2>{{ rotatingSlogan }}</h2>
+                        </div>
+                        <div class="search-menu">
+                            <button matRipple class="search" [routerLink]="['/search']">Search</button>
+                            <button matRipple class="search-mobile" [routerLink]="['/search']">
+                                <i-feather name="search"></i-feather>
+                            </button>
+                        </div>
+                    </div>
+                </header>
             </div>
-            <ng-template #signUp>
-              <div class="user-menu-nav">
-                <button matRipple class="login" (click)="sidenav.toggle()">Log In</button>
-                <button matRipple class="mobile-login" (click)="sidenav.toggle()"><i-feather name="log-in"></i-feather></button>
-              </div>
-            </ng-template>
-            <div class="site-logo" [routerLink]="['/home/latest']">
-              <img src="assets/icons/logo.png">
-              <h2>{{ rotatingSlogan }}</h2>
-            </div>
-            <div class="search-menu">
-              <button matRipple class="search" [routerLink]="['/search']">Search</button>
-              <button matRipple class="search-mobile" [routerLink]="['/search']"><i-feather name="search"></i-feather></button>
-            </div>
-          </div>
-        </header>
-      </div>
-      <mat-progress-bar [mode]="'determinate'" [value]="loader.value$ | async"></mat-progress-bar>
-      <nav>
-        <div class="nav-list">
-          <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
-            <a class="nav-link" matRipple [routerLink]="['/dash']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a>
-          </ng-container>
-          <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a>
-          <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a> 
-          <a class="nav-link" matRipple [routerLink]="['/social']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a>
-          <ng-container *ngIf="currentUser">
-            <a class="nav-link" matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="hard-drive"></i-feather></span><span>My Stuff</span></a>
-            <a class="nav-link" matRipple [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]" routerLinkActive="router-link-active"><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a>
-          </ng-container>
+            <mat-progress-bar [mode]="'determinate'" [value]="loader.value$ | async"></mat-progress-bar>
+            <nav>
+                <div class="nav-list">
+                    <ng-container *ngIf="currentUser && checkUserRolesForContribMenu()">
+                        <a class="nav-link" matRipple [routerLink]="['/dash']" routerLinkActive="router-link-active"
+                            ><span class="link-icon"><i-feather name="grid"></i-feather></span><span>Dash</span></a
+                        >
+                    </ng-container>
+                    <a class="nav-link" matRipple [routerLink]="['/home']" routerLinkActive="router-link-active"
+                        ><span class="link-icon"><i-feather name="home"></i-feather></span><span>Home</span></a
+                    >
+                    <a class="nav-link" matRipple [routerLink]="['/browse']" routerLinkActive="router-link-active"
+                        ><span class="link-icon"><i-feather name="map"></i-feather></span><span>Browse</span></a
+                    >
+                    <a class="nav-link" matRipple [routerLink]="['/social']" routerLinkActive="router-link-active"
+                        ><span class="link-icon"><i-feather name="users"></i-feather></span><span>Social</span></a
+                    >
+                    <ng-container *ngIf="currentUser">
+                        <a class="nav-link" matRipple [routerLink]="['/my-stuff']" routerLinkActive="router-link-active"
+                            ><span class="link-icon"><i-feather name="hard-drive"></i-feather></span
+                            ><span>My Stuff</span></a
+                        >
+                        <a
+                            class="nav-link"
+                            matRipple
+                            [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"
+                            routerLinkActive="router-link-active"
+                            ><span class="link-icon"><i-feather name="user"></i-feather></span>Portfolio</a
+                        >
+                    </ng-container>
+                </div>
+            </nav>
         </div>
-      </nav>
-    </div>
-    
-    <div class="main-stage">
-    
-      <div class="container">
-        <router-outlet></router-outlet>
-      </div>
-    
-      <div class="container footer">
-        <footer>
-          <div class="grid-container thirds">
-            <div>
-              <h1>Help</h1>
-              <p> Here's some useful things to get you started:</p>
-              <ul>
-                <li><a [routerLink]="['/what-is-offprint']">What is Offprint?</a></li>
-                <li><a [routerLink]="['/omnibus']">The Offprint Omnibus</a></li>
-                <li><a [routerLink]="['/code-of-conduct']">Code of Conduct</a></li>
-              </ul>
+
+        <div class="main-stage">
+            <div class="container">
+                <router-outlet></router-outlet>
             </div>
-            <div>
-              <h1>About</h1>
-              <p>
-                We're a site dedicated to the cultivation of a community of writers 
-                that help each other grow, get better, and just have fun.
-              </p>
-              <p>
-                &copy;2020 Offprint Studios
-              </p>
-              <ul>
-                <li><a [routerLink]="['/terms-of-service']">Terms of Service & Privacy Policy</a></li>
-                <li><a [routerLink]="['/open-source-licenses']">Open Source Licenses</a></li>
-                <li><a [routerLink]="['/site-staff']">Site Staff</a></li>
-                <li><a [routerLink]="['/supporters']">Patreon Supporters & Contributors</a></li>
-              </ul>
+
+            <div class="container footer">
+                <footer>
+                    <div class="grid-container thirds">
+                        <div>
+                            <h1>Help</h1>
+                            <p>Here's some useful things to get you started:</p>
+                            <ul>
+                                <li><a [routerLink]="['/what-is-offprint']">What is Offprint?</a></li>
+                                <li><a [routerLink]="['/omnibus']">The Offprint Omnibus</a></li>
+                                <li><a [routerLink]="['/code-of-conduct']">Code of Conduct</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h1>About</h1>
+                            <p>
+                                We're a site dedicated to the cultivation of a community of writers that help each other
+                                grow, get better, and just have fun.
+                            </p>
+                            <p>&copy;2020 Offprint Studios</p>
+                            <ul>
+                                <li><a [routerLink]="['/terms-of-service']">Terms of Service & Privacy Policy</a></li>
+                                <li><a [routerLink]="['/open-source-licenses']">Open Source Licenses</a></li>
+                                <li><a [routerLink]="['/site-staff']">Site Staff</a></li>
+                                <li><a [routerLink]="['/supporters']">Patreon Supporters & Contributors</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h1>Statistics & Support Us</h1>
+                            <p>More detailed stats to come.</p>
+                            <div class="loader" *ngIf="loading">
+                                <div class="lds-dual-ring"></div>
+                            </div>
+                            <ul *ngIf="!loading">
+                                <li>
+                                    {{ footerStats.numUsers | toLocaleString }} user{{
+                                        footerStats.numUsers | pluralize
+                                    }}
+                                    registered
+                                </li>
+                                <li>
+                                    {{ footerStats.numWorks | toLocaleString }} work{{
+                                        footerStats.numWorks | pluralize
+                                    }}
+                                    written
+                                </li>
+                                <li>
+                                    <a href="https://www.patreon.com/offprintstudios?fan_landing=true"
+                                        >Support us on Patreon!</a
+                                    >
+                                </li>
+                                <li>
+                                    <a href="https://forms.gle/VBHoKhneJzg34GSA8"
+                                        >Sign up for the Offprint Closed Alpha!</a
+                                    >
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            <div>
-              <h1>Statistics & Support Us</h1>
-              <p>
-                More detailed stats to come.
-              </p>
-              <div class="loader" *ngIf="loading">
-                <div class="lds-dual-ring"></div>
-              </div>
-              <ul *ngIf="!loading">
-                <li>{{ footerStats.numUsers | toLocaleString }} user{{ footerStats.numUsers | pluralize }} registered</li>
-                <li>{{ footerStats.numWorks | toLocaleString }} work{{ footerStats.numWorks | pluralize }} written</li>
-                <li><a href="https://www.patreon.com/offprintstudios?fan_landing=true">Support us on Patreon!</a></li>
-                <li><a href="https://forms.gle/VBHoKhneJzg34GSA8">Sign up for the Offprint Closed Alpha!</a></li>
-              </ul>
-            </div>
-          </div>
-        </footer>
-      </div>
-    </div>
-  </mat-sidenav-content>
+        </div>
+    </mat-sidenav-content>
 </mat-sidenav-container>
-
-

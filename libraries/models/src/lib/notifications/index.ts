@@ -2,10 +2,13 @@ export { NotificationKind } from './notification-kind';
 export { NotificationSubscription } from './notification-subscription.model';
 export {
     CreateNotification,
-    CreateBlogNotification, CreateCommentNotification,
-    CreateNewsPostNotification, CreatePMReplyNotification,
-    CreatePMThreadNotification, CreateSectionNotification,
-    CreateWorkNotification
+    CreateBlogNotification,
+    CreateCommentNotification,
+    CreateNewsPostNotification,
+    CreatePMReplyNotification,
+    CreatePMThreadNotification,
+    CreateSectionNotification,
+    CreateWorkNotification,
 } from './create-notification.model';
 export { MarkReadRequest } from './mark-read-request.model';
 

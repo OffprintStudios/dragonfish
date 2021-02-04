@@ -6,19 +6,31 @@
                 <div class="view-title-info">
                     <h2>
                         <a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a>
-                        <span class="byline">by <a [routerLink]="['/portfolio', $any(currProse.author)._id, $any(currProse.author).username | slugify]">{{ $any(currProse.author).username }}</a></span>
+                        <span class="byline"
+                            >by
+                            <a
+                                [routerLink]="[
+                                    '/portfolio',
+                                    $any(currProse.author)._id,
+                                    $any(currProse.author).username | slugify
+                                ]"
+                                >{{ $any(currProse.author).username }}</a
+                            ></span
+                        >
                     </h2>
-                </div>  
+                </div>
             </div>
             <div class="view-tags">
-                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="book-open" class="kind"></i-feather></span>
+                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"
+                    ><i-feather name="book-open" class="kind"></i-feather
+                ></span>
                 <span class="divider">//</span>
                 <span class="tag">{{ currProse.meta.category }}</span>
                 <span class="divider">//</span>
                 <span class="tag genres">{{ currProse.meta.genres | separateGenres }}</span>
             </div>
             <div class="view-description">
-                <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt">
+                <img class="little-art" [src]="currProse.meta.coverArt" *ngIf="currProse.meta.coverArt" />
                 <div class="html-description" [innerHtml]="currProse.body | safeHtml"></div>
             </div>
         </div>
@@ -33,9 +45,14 @@
                                 {{ section.title }}
                             </div>
                             <div class="section-info">
-                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span>
+                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span
+                                >
                                 <span class="divider">//</span>
-                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ getPublishedDate(section) | localedate:'mediumDate'}}</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="calendar"></i-feather
+                                    >{{ getPublishedDate(section) | localedate: 'mediumDate' }}</span
+                                >
                             </div>
                             <div class="section-button">
                                 <button><i-feather name="chevron-right"></i-feather></button>
@@ -47,11 +64,17 @@
         </ul>
     </div>
     <div class="view-stats">
-        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="pen-tool"></i-feather>{{ currProse.stats.words | abbreviate }}</span
+        >
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="calendar"></i-feather>{{ currProse.createdAt | localedate:'mediumDate' }}</span>
+        <span class="tag" [matTooltip]="'Created On'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="calendar"></i-feather>{{ currProse.createdAt | localedate: 'mediumDate' }}</span
+        >
         <span class="divider">//</span>
-        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{ contentStatus[currProse.meta.status] }}</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{
+            contentStatus[currProse.meta.status]
+        }}</span>
     </div>
 </div>
 

@@ -7,7 +7,7 @@ export interface SectionInfo {
     };
     readonly audit: {
         readonly publishedOn: Date;
-    }
+    };
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

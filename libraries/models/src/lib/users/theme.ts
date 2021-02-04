@@ -2,43 +2,43 @@ export interface Theme {
     /**
      * The website's primary accent color.
      */
-    accent: string,
+    accent: string;
 
     /**
      * The color used when hovering over an element. Typically a darker sahde
      * of the accent color.
      */
-    accentHover: string,
+    accentHover: string;
 
     /**
      * A lighter shade of the accent color.
      */
-    accentLight: string,
+    accentLight: string;
 
     /**
      * Background color for pages.
      */
-    background: string,
+    background: string;
 
     /**
      * Color used for text.
      */
-    textColor: string,
+    textColor: string;
 
     /**
      * Border color for divs and containers.
      */
-    borders: string,
+    borders: string;
 
     /**
      * The background color for any control bars.
      */
-    controlsBackground: string,
+    controlsBackground: string;
 
     /**
      * The background color for code blocks.
      */
-    codeBackground: string,
+    codeBackground: string;
 }
 
 export const Crimson: Theme = {
@@ -50,7 +50,7 @@ export const Crimson: Theme = {
     borders: '#808080', // aka grey
     controlsBackground: '#D3D3D3', // aka lightgrey
     codeBackground: '#F0F0F0',
-}
+};
 
 export const DarkCrimson: Theme = {
     accent: '#DD4C4F',
@@ -61,7 +61,7 @@ export const DarkCrimson: Theme = {
     borders: '#FFFFFF', // aka White
     controlsBackground: '#3A3A3A',
     codeBackground: '#3A3A3A',
-}
+};
 
 export const Aqua: Theme = {
     accent: '#5098D6',
@@ -72,7 +72,7 @@ export const Aqua: Theme = {
     borders: '#808080', // aka gray
     controlsBackground: '#D3D3D3', // aka lightgrey
     codeBackground: '#F0F0F0',
-}
+};
 
 export const DarkAqua: Theme = {
     accent: '#5098D6',
@@ -83,7 +83,7 @@ export const DarkAqua: Theme = {
     borders: '#FFFFFF', // aka white
     controlsBackground: '#3A3A3A',
     codeBackground: '#3A3A3A',
-}
+};
 
 export const Royal: Theme = {
     accent: '#9A4EAE',
@@ -94,7 +94,7 @@ export const Royal: Theme = {
     borders: '#808080', // aka grey
     controlsBackground: '#D3D3D3', // aka lightgrey
     codeBackground: '#F0F0F0',
-}
+};
 
 export const DarkRoyal: Theme = {
     accent: '#9A4EAE',
@@ -105,7 +105,7 @@ export const DarkRoyal: Theme = {
     borders: '#FFFFFF', // aka white
     controlsBackground: '#3A3A3A',
     codeBackground: '#3A3A3A',
-}
+};
 
 export const Steel: Theme = {
     accent: '#3B3F44',
@@ -113,10 +113,10 @@ export const Steel: Theme = {
     accentLight: '#8EC67B',
     background: '#FBFBFB',
     textColor: '#000000', // aka black
-    borders: '#808080',  // aka grey
+    borders: '#808080', // aka grey
     controlsBackground: '#D3D3D3', // aka lightgrey
     codeBackground: '#F0F0F0',
-}
+};
 
 export const MidnightField: Theme = {
     accent: '#3C8028',
@@ -127,7 +127,7 @@ export const MidnightField: Theme = {
     borders: '#FFFFFF', // aka white
     controlsBackground: '#3A3A3A',
     codeBackground: '#3A3A3A',
-}
+};
 
 export const Autumn: Theme = {
     accent: '#D16D2B',
@@ -136,9 +136,9 @@ export const Autumn: Theme = {
     background: '#FBFBFB',
     textColor: '#000000', //aka black
     borders: '#808080', // aka grey
-    controlsBackground: '#D3D3D3', // aka lightgrey 
+    controlsBackground: '#D3D3D3', // aka lightgrey
     codeBackground: '#F0F0F0',
-}
+};
 
 export const DuskAutumn: Theme = {
     accent: '#D16D2B',
@@ -149,17 +149,17 @@ export const DuskAutumn: Theme = {
     borders: '#FFFFFF', // aka white
     controlsBackground: '#3A3A3A',
     codeBackground: '#3A3A3A',
-}
+};
 
 export const PredefinedThemes: Record<string, Theme> = {
-    'crimson': Crimson,
+    crimson: Crimson,
     'dark-crimson': DarkCrimson,
-    'aqua': Aqua,
+    aqua: Aqua,
     'dark-aqua': DarkAqua,
-    'royal': Royal,
+    royal: Royal,
     'dark-royal': DarkRoyal,
-    'steel': Steel,
+    steel: Steel,
     'midnight-field': MidnightField,
-    'autumn': Autumn,
-    'dusk-autumn': DuskAutumn
-}
+    autumn: Autumn,
+    'dusk-autumn': DuskAutumn,
+};

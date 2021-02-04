@@ -3,13 +3,22 @@ import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentService } from '../../db/content';
-import { BlogForm, ContentFilter, ContentKind, CreatePoetry, CreateProse, NewsForm, PubChange, SetRating } from '@dragonfish/models/content';
+import {
+    BlogForm,
+    ContentFilter,
+    ContentKind,
+    CreatePoetry,
+    CreateProse,
+    NewsForm,
+    PubChange,
+    SetRating,
+} from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
 
 @Controller()
 export class ContentController {
-    constructor (private readonly contentService: ContentService) {}
+    constructor(private readonly contentService: ContentService) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-one')
@@ -23,7 +32,11 @@ export class ContentController {
 
     @UseGuards(OptionalAuthGuard)
     @Get('fetch-one-published')
-    async fetchOnePublished(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
+    async fetchOnePublished(
+        @Request() req: any,
+        @Query('contentId') contentId: string,
+        @Query('kind') kind: ContentKind,
+    ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
@@ -38,7 +51,13 @@ export class ContentController {
     }
 
     @Get('fetch-all-published')
-    async fetchAllPublished(@Request() req: any, @Cookies('contentFilter') filter: ContentFilter, @Query('pageNum') pageNum: number, @Query('userId') userId: string, @Query('kind') kind: ContentKind[]) {
+    async fetchAllPublished(
+        @Request() req: any,
+        @Cookies('contentFilter') filter: ContentFilter,
+        @Query('pageNum') pageNum: number,
+        @Query('userId') userId: string,
+        @Query('kind') kind: ContentKind[],
+    ) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }
@@ -48,7 +67,11 @@ export class ContentController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-one')
-    async createOne(@Request() req: any, @Query('kind') kind: ContentKind, @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+    async createOne(
+        @Request() req: any,
+        @Query('kind') kind: ContentKind,
+        @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
+    ) {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
@@ -58,7 +81,12 @@ export class ContentController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('save-changes')
-    async saveChanges(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind, @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+    async saveChanges(
+        @Request() req: any,
+        @Query('contentId') contentId: string,
+        @Query('kind') kind: ContentKind,
+        @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
+    ) {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
         }

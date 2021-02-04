@@ -6,7 +6,6 @@ import { SchemaDefinition } from 'mongoose';
  * or a NotificationQueueDocument to get content-specific notifications.
  */
 export namespace SubSchemas {
-
     export function getWorkNotification(): SchemaDefinition {
         return {
             // TBD
@@ -31,8 +30,13 @@ export namespace SubSchemas {
             commentId: { type: String, required: true, trim: true },
             commenterName: { type: String, required: true },
             commenterId: { type: String, required: true, trim: true },
-            parentKind: { type: String, required: true, enum: Object.keys(ContentKind), default: ContentKind.ProseContent },            
-            parentTitle: { type: String, required: true }
+            parentKind: {
+                type: String,
+                required: true,
+                enum: Object.keys(ContentKind),
+                default: ContentKind.ProseContent,
+            },
+            parentTitle: { type: String, required: true },
         };
     }
 

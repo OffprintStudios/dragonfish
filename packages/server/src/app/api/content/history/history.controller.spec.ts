@@ -2,17 +2,17 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HistoryController } from './history.controller';
 
 describe('History Controller', () => {
-  let controller: HistoryController;
+    let controller: HistoryController;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [HistoryController],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            controllers: [HistoryController],
+        }).compile();
 
-    controller = module.get<HistoryController>(HistoryController);
-  });
+        controller = module.get<HistoryController>(HistoryController);
+    });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    it('should be defined', () => {
+        expect(controller).toBeDefined();
+    });
 });

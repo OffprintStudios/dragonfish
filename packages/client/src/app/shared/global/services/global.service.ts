@@ -4,19 +4,19 @@ import { CookieService, CookieOptions } from 'ngx-cookie';
 import { ContentFilter } from '@dragonfish/models/content';
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class GlobalService {
-    constructor (private cookies: CookieService) {}
+    constructor(private cookies: CookieService) {}
 
     /**
      * Sets the contentFilter cookie based on the values of the two provided booleans.
-     * 
+     *
      * @param enableMature Enable mature check
      * @param enableExplicit Enable explicit check
      */
     public async setContentFilter(enableMature: boolean, enableExplicit: boolean) {
-        let options: CookieOptions = {expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1))};
+        let options: CookieOptions = { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) };
         let filterSetting: ContentFilter = ContentFilter.Default;
 
         if (enableMature === true && enableExplicit === false) {

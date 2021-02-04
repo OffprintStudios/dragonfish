@@ -16,108 +16,156 @@ import { SectionsState } from './sections';
     defaults: {
         myStuff: [],
         currContent: null,
-        currContentWordCount: 0
+        currContentWordCount: 0,
     },
-    children: [SectionsState]
+    children: [SectionsState],
 })
 @Injectable()
 export class MyStuffState {
-    constructor (private stuffService: MyStuffService) { }
+    constructor(private stuffService: MyStuffService) {}
 
     @Action(MyStuff.SetFiles)
     public setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
-        return this.stuffService.fetchAll().pipe(tap((result: ContentModel[]) => {
-            patchState({
-                myStuff: result
-            });
-        }));
+        return this.stuffService.fetchAll().pipe(
+            tap((result: ContentModel[]) => {
+                patchState({
+                    myStuff: result,
+                });
+            }),
+        );
     }
 
     @Action(MyStuff.SetCurrentContent)
-    public setCurrentContent({ patchState }: StateContext<MyStuffStateModel>, { content }: MyStuff.SetCurrentContent): void {
+    public setCurrentContent(
+        { patchState }: StateContext<MyStuffStateModel>,
+        { content }: MyStuff.SetCurrentContent,
+    ): void {
         patchState({
             currContent: content,
-            currContentWordCount: content === null ? 0 : content.stats.words
+            currContentWordCount: content === null ? 0 : content.stats.words,
         });
     }
 
     @Action(MyStuff.CreateContent)
-    public createContent({ getState, patchState, dispatch }: StateContext<MyStuffStateModel>, { kind, formInfo }: MyStuff.CreateContent): Observable<ContentModel> {
-        return this.stuffService.createContent(kind, formInfo).pipe(tap((result: ContentModel) => {
-            dispatch(new Alerts.Success(`Content saved!`));
-            patchState({
-                myStuff: [...getState().myStuff, result]
-            });
-        }), catchError(err => {
-            dispatch(new Alerts.Error(err.error.message));
-            return throwError(err);
-        }));
+    public createContent(
+        { getState, patchState, dispatch }: StateContext<MyStuffStateModel>,
+        { kind, formInfo }: MyStuff.CreateContent,
+    ): Observable<ContentModel> {
+        return this.stuffService.createContent(kind, formInfo).pipe(
+            tap((result: ContentModel) => {
+                dispatch(new Alerts.Success(`Content saved!`));
+                patchState({
+                    myStuff: [...getState().myStuff, result],
+                });
+            }),
+            catchError((err) => {
+                dispatch(new Alerts.Error(err.error.message));
+                return throwError(err);
+            }),
+        );
     }
 
     @Action(MyStuff.SaveContent)
-    public saveContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, kind, formInfo }: MyStuff.SaveContent): Observable<ContentModel> {
-        return this.stuffService.saveContent(contentId, kind, formInfo).pipe(tap((result: ContentModel) => {
-            dispatch(new Alerts.Success(`Changes saved!`));
-            setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
-                currContent: result
-            }));
-        }), catchError(err => {
-            dispatch(new Alerts.Error(err.error.message));
-            return throwError(err);
-        }));
+    public saveContent(
+        { setState, dispatch }: StateContext<MyStuffStateModel>,
+        { contentId, kind, formInfo }: MyStuff.SaveContent,
+    ): Observable<ContentModel> {
+        return this.stuffService.saveContent(contentId, kind, formInfo).pipe(
+            tap((result: ContentModel) => {
+                dispatch(new Alerts.Success(`Changes saved!`));
+                setState(
+                    patch({
+                        myStuff: updateItem<ContentModel>((content) => content._id === result._id, result),
+                        currContent: result,
+                    }),
+                );
+            }),
+            catchError((err) => {
+                dispatch(new Alerts.Error(err.error.message));
+                return throwError(err);
+            }),
+        );
     }
 
     @Action(MyStuff.DeleteContent)
-    public deleteContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId }: MyStuff.DeleteContent): Observable<void> {
-        return this.stuffService.deleteOne(contentId).pipe(tap((_res: void) => {
-            setState(patch({
-                myStuff: removeItem<ContentModel>(content => content._id === contentId),
-                currContent: null
-            }));
-        }), catchError(err => {
-            dispatch(new Alerts.Error(err.error.message));
-            return throwError(err);
-        }));
+    public deleteContent(
+        { setState, dispatch }: StateContext<MyStuffStateModel>,
+        { contentId }: MyStuff.DeleteContent,
+    ): Observable<void> {
+        return this.stuffService.deleteOne(contentId).pipe(
+            tap((_res: void) => {
+                setState(
+                    patch({
+                        myStuff: removeItem<ContentModel>((content) => content._id === contentId),
+                        currContent: null,
+                    }),
+                );
+            }),
+            catchError((err) => {
+                dispatch(new Alerts.Error(err.error.message));
+                return throwError(err);
+            }),
+        );
     }
 
     @Action(MyStuff.PublishContent)
-    public publishContent({ setState, dispatch }: StateContext<MyStuffStateModel>, { contentId, pubChange }: MyStuff.PublishContent): Observable<ContentModel> {
-        return this.stuffService.publishOne(contentId, pubChange).pipe(tap((result: ContentModel) => {
-            setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
-                currContent: result
-            }));
-        }), catchError(err => {
-            dispatch(new Alerts.Error(err.error.message));
-            return throwError(err);
-        }));
+    public publishContent(
+        { setState, dispatch }: StateContext<MyStuffStateModel>,
+        { contentId, pubChange }: MyStuff.PublishContent,
+    ): Observable<ContentModel> {
+        return this.stuffService.publishOne(contentId, pubChange).pipe(
+            tap((result: ContentModel) => {
+                setState(
+                    patch({
+                        myStuff: updateItem<ContentModel>((content) => content._id === result._id, result),
+                        currContent: result,
+                    }),
+                );
+            }),
+            catchError((err) => {
+                dispatch(new Alerts.Error(err.error.message));
+                return throwError(err);
+            }),
+        );
     }
 
     @Action(MyStuff.UploadCoverArt)
-    public uploadCoverArt({ setState, dispatch }: StateContext<MyStuffStateModel>, { uploader }: MyStuff.UploadCoverArt): Observable<ContentModel> {
-        return this.stuffService.uploadCoverart(uploader).pipe(tap((result: ContentModel) => {
-            setState(patch({
-                myStuff: updateItem<ContentModel>(content => content._id === result._id, result),
-                currContent: result
-            }));
-        }), catchError(err => {
-            dispatch(new Alerts.Error(`Something went wrong! Try again in a little bit.`));
-            return throwError(err);
-        }));
+    public uploadCoverArt(
+        { setState, dispatch }: StateContext<MyStuffStateModel>,
+        { uploader }: MyStuff.UploadCoverArt,
+    ): Observable<ContentModel> {
+        return this.stuffService.uploadCoverart(uploader).pipe(
+            tap((result: ContentModel) => {
+                setState(
+                    patch({
+                        myStuff: updateItem<ContentModel>((content) => content._id === result._id, result),
+                        currContent: result,
+                    }),
+                );
+            }),
+            catchError((err) => {
+                dispatch(new Alerts.Error(`Something went wrong! Try again in a little bit.`));
+                return throwError(err);
+            }),
+        );
     }
 
     @Action(MyStuff.UpdateWordcount)
-    public updateWordcount({ getState, patchState }: StateContext<MyStuffStateModel>, { section, pubStatus }: MyStuff.UpdateWordcount) {
-        if (section.published === true && pubStatus.oldPub === false) { // if newly published
+    public updateWordcount(
+        { getState, patchState }: StateContext<MyStuffStateModel>,
+        { section, pubStatus }: MyStuff.UpdateWordcount,
+    ) {
+        if (section.published === true && pubStatus.oldPub === false) {
+            // if newly published
             patchState({
-                currContentWordCount: getState().currContentWordCount + section.stats.words
+                currContentWordCount: getState().currContentWordCount + section.stats.words,
             });
-        } else if (section.published === false && pubStatus.oldPub === true) { // if unpublished
+        } else if (section.published === false && pubStatus.oldPub === true) {
+            // if unpublished
             patchState({
-                currContentWordCount: getState().currContentWordCount - section.stats.words
+                currContentWordCount: getState().currContentWordCount - section.stats.words,
             });
-        };
+        }
     }
 
     /* Selectors */

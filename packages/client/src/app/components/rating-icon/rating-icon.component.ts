@@ -5,7 +5,7 @@ import { ContentRating } from '@dragonfish/models/content';
 @Component({
     selector: 'rating-icon',
     templateUrl: './rating-icon.component.html',
-    styleUrls: ['./rating-icon.component.less']
+    styleUrls: ['./rating-icon.component.less'],
 })
 export class RatingIconComponent implements OnInit {
     @Input() rating: ContentRating;

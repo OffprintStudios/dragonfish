@@ -20,11 +20,15 @@ export class MigrateBlogResolver implements Resolve<Blog> {
     }
 
     grabOneBlog(blogId: string) {
-        return this.http.get<Blog>(`${this.url}/fetch-one-blog?blogId=${blogId}`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<Blog>(`${this.url}/fetch-one-blog?blogId=${blogId}`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 }

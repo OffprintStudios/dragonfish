@@ -3,10 +3,14 @@
         <ng-container *ngIf="route.children.length === 0; else disabledTools">
             <ng-container *ngIf="workView; else blogView">
                 <button matRipple class="tool left active"><i-feather name="book"></i-feather>Works</button>
-                <button matRipple class="tool end" (click)="switchView()"><i-feather name="coffee"></i-feather>Blogs</button>
+                <button matRipple class="tool end" (click)="switchView()">
+                    <i-feather name="coffee"></i-feather>Blogs
+                </button>
             </ng-container>
             <ng-template #blogView>
-                <button matRipple class="tool left" (click)="switchView()"><i-feather name="book"></i-feather>Works</button>
+                <button matRipple class="tool left" (click)="switchView()">
+                    <i-feather name="book"></i-feather>Works
+                </button>
                 <button matRipple class="tool end active"><i-feather name="coffee"></i-feather>Blogs</button>
             </ng-template>
         </ng-container>
@@ -21,7 +25,7 @@
     <ng-container *ngIf="workView; else blogViewList">
         <div class="work-list">
             <div class="work-item" *ngFor="let work of myWorks">
-                <img class="work-coverart" *ngIf="work.meta.coverArt" [src]="work.meta.coverArt">
+                <img class="work-coverart" *ngIf="work.meta.coverArt" [src]="work.meta.coverArt" />
                 <div class="work-info">
                     <div class="info">
                         <ng-container [ngSwitch]="work.meta.rating">
@@ -30,51 +34,99 @@
                             <div class="rating mature small" *ngSwitchCase="'Mature'">M</div>
                             <div class="rating explicit small" *ngSwitchCase="'Explicit'">X</div>
                         </ng-container>
-                        <h3><a>{{ work.title }}</a></h3>
-                        <br>
-                        <div class="stats">   
-                            <h4>{{ work.meta.category | fixCategories }}</h4><span>//</span>                             
-                            <h4>{{ work.meta.status }}</h4><span>//</span>
-                            <h4 title="Likes"><i-feather name="thumbs-up"></i-feather>{{ work.stats.likes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Dislikes"><i-feather name="thumbs-down"></i-feather>{{ work.stats.dislikes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ work.stats.totWords | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ work.stats.views | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ work.stats.comments | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ work.updatedAt | date:'short' }}</h4>
+                        <h3>
+                            <a>{{ work.title }}</a>
+                        </h3>
+                        <br />
+                        <div class="stats">
+                            <h4>{{ work.meta.category | fixCategories }}</h4>
+                            <span>//</span>
+                            <h4>{{ work.meta.status }}</h4>
+                            <span>//</span>
+                            <h4 title="Likes">
+                                <i-feather name="thumbs-up"></i-feather>{{ work.stats.likes | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Dislikes">
+                                <i-feather name="thumbs-down"></i-feather>{{ work.stats.dislikes | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Words">
+                                <i-feather name="pen-tool"></i-feather>{{ work.stats.totWords | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Views">
+                                <i-feather name="bar-chart-2"></i-feather>{{ work.stats.views | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Comments">
+                                <i-feather name="message-circle"></i-feather>{{ work.stats.comments | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Last Updated">
+                                <i-feather name="calendar"></i-feather>{{ work.updatedAt | date: 'short' }}
+                            </h4>
                         </div>
                     </div>
                 </div>
                 <div class="work-control-buttons" *ngIf="work.meta.category !== 'Poetry'; else notAvailable">
-                    <button class="work-controls" [routerLink]="['/migration/work', work._id]"><i-feather name="arrow-right"></i-feather></button>
+                    <button class="work-controls" [routerLink]="['/migration/work', work._id]">
+                        <i-feather name="arrow-right"></i-feather>
+                    </button>
                 </div>
                 <ng-template #notAvailable>
-                    <div class="work-control-buttons" [matTooltip]="'Poetry cannot be migrated. Please reupload instead.'" [matTooltipClass]="'offprint-tooltip'">
+                    <div
+                        class="work-control-buttons"
+                        [matTooltip]="'Poetry cannot be migrated. Please reupload instead.'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                    >
                         <button class="work-controls"><i-feather name="x"></i-feather></button>
                     </div>
                 </ng-template>
             </div>
         </div>
     </ng-container>
-    
+
     <ng-template #blogViewList>
         <div class="work-list">
             <div class="work-item" *ngFor="let blog of myBlogs">
                 <div class="work-info">
                     <div class="info">
-                        <h3 style="margin-left: 0;"><a>{{ blog.title }}</a></h3>
-                        <br>
-                        <div class="stats">   
-                            <h4 title="Likes"><i-feather name="thumbs-up"></i-feather>{{ blog.stats.likes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Dislikes"><i-feather name="thumbs-down"></i-feather>{{ blog.stats.dislikes | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Words"><i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Views"><i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Comments"><i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }}</h4><span>//</span>
-                            <h4 title="Last Updated"><i-feather name="calendar"></i-feather>{{ blog.updatedAt | date:'short' }}</h4>
+                        <h3 style="margin-left: 0">
+                            <a>{{ blog.title }}</a>
+                        </h3>
+                        <br />
+                        <div class="stats">
+                            <h4 title="Likes">
+                                <i-feather name="thumbs-up"></i-feather>{{ blog.stats.likes | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Dislikes">
+                                <i-feather name="thumbs-down"></i-feather>{{ blog.stats.dislikes | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Words">
+                                <i-feather name="pen-tool"></i-feather>{{ blog.stats.words | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Views">
+                                <i-feather name="bar-chart-2"></i-feather>{{ blog.stats.views | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Comments">
+                                <i-feather name="message-circle"></i-feather>{{ blog.stats.comments | toLocaleString }}
+                            </h4>
+                            <span>//</span>
+                            <h4 title="Last Updated">
+                                <i-feather name="calendar"></i-feather>{{ blog.updatedAt | date: 'short' }}
+                            </h4>
                         </div>
                     </div>
                 </div>
                 <div class="work-control-buttons">
-                    <button class="work-controls" [routerLink]="['/migration/blog', blog._id]"><i-feather name="arrow-right"></i-feather></button>
+                    <button class="work-controls" [routerLink]="['/migration/blog', blog._id]">
+                        <i-feather name="arrow-right"></i-feather>
+                    </button>
                 </div>
             </div>
         </div>

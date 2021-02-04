@@ -14,7 +14,7 @@ import { CollectionsService } from 'packages/client/src/app/services/content';
 @Component({
     selector: 'collection-page',
     templateUrl: './collection-page.component.html',
-    styleUrls: ['./collection-page.component.less']
+    styleUrls: ['./collection-page.component.less'],
 })
 export class CollectionPageComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -25,16 +25,21 @@ export class CollectionPageComponent implements OnInit {
 
     collData: Collection;
 
-    constructor(private route: ActivatedRoute, private dialog: MatDialog, private router: Router,
-        private collsService: CollectionsService, private location: Location) {
-            this.currentUserSubscription = this.currentUser$.subscribe(x => {
-                this.currentUser = x;
-            });
+    constructor(
+        private route: ActivatedRoute,
+        private dialog: MatDialog,
+        private router: Router,
+        private collsService: CollectionsService,
+        private location: Location,
+    ) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
+        });
     }
 
     ngOnInit(): void {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
-        this.route.data.subscribe(data => {
+        this.route.data.subscribe((data) => {
             console.log(data.collData);
             this.collData = data.collData as Collection;
         });
@@ -50,20 +55,20 @@ export class CollectionPageComponent implements OnInit {
 
     /**
      * Opens the create collection modal in edit mode.
-     * 
+     *
      * @param coll The collection to edit
      */
     openEditCollectionModal(coll: Collection) {
-        const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {currColl: coll}});
+        const dialogRef = this.dialog.open(CreateCollectionComponent, { data: { currColl: coll } });
 
         dialogRef.afterClosed().subscribe(() => {
-            this.router.navigate([], {relativeTo: this.route, queryParamsHandling: 'merge'});
+            this.router.navigate([], { relativeTo: this.route, queryParamsHandling: 'merge' });
         });
     }
 
     /**
      * Sends a request to delete the specified collection.
-     * 
+     *
      * @param collId The collection to delete
      */
     askDelete(collId: string) {
@@ -78,18 +83,18 @@ export class CollectionPageComponent implements OnInit {
 
     /**
      * Sets a collection to public or private depending on the value of the setPublic boolean.
-     * 
+     *
      * @param collId The collection's ID
      * @param setPublic whether or not this request is to set a collection to public or private
      */
     setPublicPrivate(collId: string, setPublic: boolean) {
         if (setPublic) {
             this.collsService.setToPublic(collId).subscribe(() => {
-                this.router.navigate([], {relativeTo: this.route, queryParamsHandling: 'merge'});
+                this.router.navigate([], { relativeTo: this.route, queryParamsHandling: 'merge' });
             });
         } else {
             this.collsService.setToPrivate(collId).subscribe(() => {
-                this.router.navigate([], {relativeTo: this.route, queryParamsHandling: 'merge'});
+                this.router.navigate([], { relativeTo: this.route, queryParamsHandling: 'merge' });
             });
         }
     }

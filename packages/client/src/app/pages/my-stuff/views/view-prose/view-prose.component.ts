@@ -16,7 +16,7 @@ import { UploadCoverartComponent } from '../../components';
 @Component({
     selector: 'view-prose',
     templateUrl: './view-prose.component.html',
-    styleUrls: ['./view-prose.component.less']
+    styleUrls: ['./view-prose.component.less'],
 })
 export class ViewProseComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
@@ -34,10 +34,15 @@ export class ViewProseComponent implements OnInit {
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         authorsNote: new FormControl('', [Validators.minLength(3)]),
-        authorsNotePos: new FormControl(AuthorsNotePos.Bottom)
+        authorsNotePos: new FormControl(AuthorsNotePos.Bottom),
     });
 
-    constructor(public route: ActivatedRoute, private alerts: AlertsService, private dialog: MatDialog, private stuff: MyStuffService) {}
+    constructor(
+        public route: ActivatedRoute,
+        private alerts: AlertsService,
+        private dialog: MatDialog,
+        private stuff: MyStuffService,
+    ) {}
 
     ngOnInit(): void {}
 
@@ -45,7 +50,9 @@ export class ViewProseComponent implements OnInit {
         this.editMode = false;
     }
 
-    get fields() { return this.sectionForm.controls; }
+    get fields() {
+        return this.sectionForm.controls;
+    }
 
     addSection() {
         this.editMode = true;
@@ -76,7 +83,7 @@ export class ViewProseComponent implements OnInit {
             body: this.fields.body.value,
             authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
-            usesNewEditor: true
+            usesNewEditor: true,
         };
 
         this.stuff.createSection(contentId, sectionForm);
@@ -84,6 +91,6 @@ export class ViewProseComponent implements OnInit {
     }
 
     uploadCoverart(contentId: string) {
-        this.dialog.open(UploadCoverartComponent, {data: {kind: ContentKind.ProseContent, contentId: contentId}});
+        this.dialog.open(UploadCoverartComponent, { data: { kind: ContentKind.ProseContent, contentId: contentId } });
     }
 }

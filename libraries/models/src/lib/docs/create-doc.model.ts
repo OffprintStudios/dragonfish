@@ -1,4 +1,4 @@
-import { Roles } from "../users";
+import { Roles } from '../users';
 
 export interface CreateDoc {
     readonly _id: string;

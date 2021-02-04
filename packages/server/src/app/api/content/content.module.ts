@@ -24,21 +24,35 @@ import { SectionsModule } from '../../db/sections/sections.module';
 import { SectionsController } from './sections/sections.controller';
 
 @Module({
-  imports: [
-    WorksModule, UsersModule, ImagesModule, CollectionsModule, ReadingHistoryModule, CommentsModule,
-    MessagesModule, ContentCollectionModule, SectionsModule,
-    JwtModule.registerAsync({
-      useFactory: () => ({
-        secret: getJwtSecretKey(),
-        signOptions: {expiresIn: JWT_EXPIRATION},
-      }),
-    }),
-  ],
-  controllers: [
-    WorksController, PortfolioController, 
-    CollectionsController, HistoryController, CommentsController, 
-    MessagesController, NewsController, ContentController, ProseController,
-    PoetryController, SectionsController
-  ]
+    imports: [
+        WorksModule,
+        UsersModule,
+        ImagesModule,
+        CollectionsModule,
+        ReadingHistoryModule,
+        CommentsModule,
+        MessagesModule,
+        ContentCollectionModule,
+        SectionsModule,
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
+        }),
+    ],
+    controllers: [
+        WorksController,
+        PortfolioController,
+        CollectionsController,
+        HistoryController,
+        CommentsController,
+        MessagesController,
+        NewsController,
+        ContentController,
+        ProseController,
+        PoetryController,
+        SectionsController,
+    ],
 })
 export class ContentModule {}

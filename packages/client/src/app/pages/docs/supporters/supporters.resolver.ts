@@ -19,11 +19,15 @@ export class SupportersResolver implements Resolve<FrontendUser[]> {
     }
 
     getSupporters() {
-        return this.http.get<FrontendUser[]>(`${this.url}/supporters`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<FrontendUser[]>(`${this.url}/supporters`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 }

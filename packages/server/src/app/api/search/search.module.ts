@@ -5,11 +5,8 @@ import { UsersModule } from '../../db/users/users.module';
 import { ContentModule } from '../../db/content';
 
 @Module({
-  imports: [
-    UsersModule,
-    ContentModule,
-  ],
-  providers: [SearchService],
-  controllers: [SearchController]
+    imports: [UsersModule, ContentModule],
+    providers: [SearchService],
+    controllers: [SearchController],
 })
 export class SearchModule {}

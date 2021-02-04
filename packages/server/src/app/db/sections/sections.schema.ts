@@ -4,43 +4,47 @@ import { generate } from 'shortid';
 
 import { Section, AuthorsNotePos } from '@dragonfish/models/sections';
 
-@Schema({timestamps: true, autoIndex: true, collection: 'sections'})
+@Schema({ timestamps: true, autoIndex: true, collection: 'sections' })
 export class SectionsDocument extends Document implements Section {
-    @Prop({type: String})
+    @Prop({ type: String })
     readonly _id: string;
 
-    @Prop({trim: true, required: true})
+    @Prop({ trim: true, required: true })
     title: string;
 
-    @Prop({trim: true, required: true})
+    @Prop({ trim: true, required: true })
     body: string;
 
-    @Prop({trim: true})
+    @Prop({ trim: true })
     authorsNote?: string;
 
-    @Prop({type: String, enum: Object.keys(AuthorsNotePos), default: AuthorsNotePos.Bottom})
+    @Prop({ type: String, enum: Object.keys(AuthorsNotePos), default: AuthorsNotePos.Bottom })
     authorsNotePos?: AuthorsNotePos;
 
-    @Prop({default: false})
+    @Prop({ default: false })
     published: boolean;
 
-    @Prop(raw({
-        words: {type: Number, default: 0}
-    }))
+    @Prop(
+        raw({
+            words: { type: Number, default: 0 },
+        }),
+    )
     stats: {
         words: number;
     };
 
-    @Prop(raw({
-        publishedOn: {type: Date, default: null},
-        isDeleted: {type: Boolean, default: false}
-    }))
+    @Prop(
+        raw({
+            publishedOn: { type: Date, default: null },
+            isDeleted: { type: Boolean, default: false },
+        }),
+    )
     audit: {
         publishedOn: Date;
         isDeleted: boolean;
     };
 
-    @Prop({default: false})
+    @Prop({ default: false })
     usesNewEditor: boolean; // this gets removed after QuillJS is nuked from orbit
 
     @Prop()

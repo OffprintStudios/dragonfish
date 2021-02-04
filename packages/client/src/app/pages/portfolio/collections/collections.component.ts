@@ -15,7 +15,7 @@ import { CreateCollectionComponent } from '../../../components/modals/collection
 @Component({
     selector: 'port-collections',
     templateUrl: './collections.component.html',
-    styleUrls: ['./collections.component.less']
+    styleUrls: ['./collections.component.less'],
 })
 export class CollectionsComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -29,29 +29,37 @@ export class CollectionsComponent implements OnInit {
     submitting = false;
     listView = false;
 
-    constructor(private route: ActivatedRoute, private router: Router, private collsService: CollectionsService,
-        private dialog: MatDialog) {
-            this.currentUserSubscription = this.currentUser$.subscribe(x => {
-                this.currentUser = x;
-            });
-        }
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private collsService: CollectionsService,
+        private dialog: MatDialog,
+    ) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
+        });
+    }
 
     ngOnInit(): void {
         this.portUser = this.route.parent.snapshot.data.portData as FrontendUser;
         Title.setThreePartTitle(this.portUser.username, Constants.COLLECTIONS);
 
-        this.route.data.subscribe(data => {
+        this.route.data.subscribe((data) => {
             this.collsData = data.feedData as PaginateResult<Collection>;
         });
     }
 
     /**
      * Handles page changing
-     * 
+     *
      * @param event The new page
      */
     onPageChange(event: number) {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event },
+            queryParamsHandling: 'merge',
+        });
         this.pageNum = event;
     }
 
@@ -70,26 +78,34 @@ export class CollectionsComponent implements OnInit {
         const dialogRef = this.dialog.open(CreateCollectionComponent);
 
         dialogRef.afterClosed().subscribe(() => {
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { page: this.pageNum },
+                queryParamsHandling: 'merge',
+            });
         });
     }
 
     /**
      * Opens the create collection modal in edit mode.
-     * 
+     *
      * @param coll The collection to edit
      */
     openEditCollectionModal(coll: Collection) {
-        const dialogRef = this.dialog.open(CreateCollectionComponent, {data: {currColl: coll}});
+        const dialogRef = this.dialog.open(CreateCollectionComponent, { data: { currColl: coll } });
 
         dialogRef.afterClosed().subscribe(() => {
-            this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { page: this.pageNum },
+                queryParamsHandling: 'merge',
+            });
         });
     }
 
     /**
      * Sets a collection to public or private depending on the value of the setPublic boolean.
-     * 
+     *
      * @param collId The collection's ID
      * @param setPublic whether or not this request is to set a collection to public or private
      */
@@ -98,26 +114,38 @@ export class CollectionsComponent implements OnInit {
             this.submitting = true;
             this.collsService.setToPublic(collId).subscribe(() => {
                 this.submitting = false;
-                this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+                this.router.navigate([], {
+                    relativeTo: this.route,
+                    queryParams: { page: this.pageNum },
+                    queryParamsHandling: 'merge',
+                });
             });
         } else {
             this.submitting = true;
             this.collsService.setToPrivate(collId).subscribe(() => {
                 this.submitting = false;
-                this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+                this.router.navigate([], {
+                    relativeTo: this.route,
+                    queryParams: { page: this.pageNum },
+                    queryParamsHandling: 'merge',
+                });
             });
         }
     }
 
     /**
      * Sends a request to delete the specified collection.
-     * 
+     *
      * @param collId The collection to delete
      */
     askDelete(collId: string) {
         if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
             this.collsService.deleteCollection(collId).subscribe(() => {
-                this.router.navigate([], {relativeTo: this.route, queryParams: {page: this.pageNum}, queryParamsHandling: 'merge'});
+                this.router.navigate([], {
+                    relativeTo: this.route,
+                    queryParams: { page: this.pageNum },
+                    queryParamsHandling: 'merge',
+                });
             });
         } else {
             return;

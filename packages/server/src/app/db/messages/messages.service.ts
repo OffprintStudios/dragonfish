@@ -11,12 +11,14 @@ import { isNullOrUndefined } from '../../util';
 
 @Injectable()
 export class MessagesService {
-    constructor(@InjectModel('Message') private readonly messageModel: PaginateModel<MessageDocument>,
-                @InjectModel('MessageThread') private readonly messageThreadModel: PaginateModel<MessageThreadDocument>) {}
+    constructor(
+        @InjectModel('Message') private readonly messageModel: PaginateModel<MessageDocument>,
+        @InjectModel('MessageThread') private readonly messageThreadModel: PaginateModel<MessageThreadDocument>,
+    ) {}
 
     /**
      * Creates a new thread with one other user.
-     * 
+     *
      * @param user The user creating the thread
      * @param initialMessage The first message of said thread
      */
@@ -26,18 +28,18 @@ export class MessagesService {
             users: [user.sub, initialMessage.recipient],
         });
 
-        await newThread.save().then(async doc => {
+        await newThread.save().then(async (doc) => {
             const newMessage = new this.messageModel({
                 threadId: doc._id,
                 user: user.sub,
-                body: await sanitizeHtml(initialMessage.body)
+                body: await sanitizeHtml(initialMessage.body),
             });
 
             await newMessage.save().then(async () => {
                 await this.messageThreadModel.findByIdAndUpdate(doc._id, {
-                    $inc: {'meta.numMessages': 1},
+                    $inc: { 'meta.numMessages': 1 },
                     'meta.userWhoRepliedLast': user.sub,
-                    'meta.lastMessage': await sanitizeHtml(initialMessage.body)
+                    'meta.lastMessage': await sanitizeHtml(initialMessage.body),
                 });
             });
         });
@@ -45,7 +47,7 @@ export class MessagesService {
 
     /**
      * Creates a response for a thread.
-     * 
+     *
      * @param user The user responding
      * @param response Their response
      */
@@ -53,15 +55,15 @@ export class MessagesService {
         const newResponse = new this.messageModel({
             threadId: response.threadId,
             user: user.sub,
-            body: await sanitizeHtml(response.body)
+            body: await sanitizeHtml(response.body),
         });
 
-        return await newResponse.save().then(async doc => {
+        return await newResponse.save().then(async (doc) => {
             await this.messageThreadModel.findByIdAndUpdate(response.threadId, {
-                $inc: {'meta.numMessages': 1},
-                'meta.userWhoRepliedLast': user.sub
+                $inc: { 'meta.numMessages': 1 },
+                'meta.userWhoRepliedLast': user.sub,
             });
-            
+
             return doc;
         });
     }
@@ -69,26 +71,30 @@ export class MessagesService {
     /**
      * Fetches the paginated list of threads in which a user is
      * involved.
-     * 
+     *
      * @param user The user who's part of these threads
      * @param pageNum The current page of threads
      */
     async fetchThreads(user: any, pageNum: number): Promise<PaginateResult<MessageThreadDocument>> {
-        return await this.messageThreadModel.paginate({'users': user.sub, 'audit.isDeleted': false}, {
-            sort: {'updatedAt': -1},
-            page: pageNum,
-            limit: 15
-        });
+        return await this.messageThreadModel.paginate(
+            { users: user.sub, 'audit.isDeleted': false },
+            {
+                sort: { updatedAt: -1 },
+                page: pageNum,
+                limit: 15,
+            },
+        );
     }
 
     /**
      * Fetches a small subset of active conversations, sorted by update date.
-     * 
+     *
      * @param user The user who's part of these threads
      */
     async fetchSidenavThreads(user: any): Promise<MessageThreadDocument[]> {
-        return await this.messageThreadModel.find({'users': user.sub, 'audit.isDeleted': false})
-            .sort({'updatedAt': -1})
+        return await this.messageThreadModel
+            .find({ users: user.sub, 'audit.isDeleted': false })
+            .sort({ updatedAt: -1 })
             .limit(7);
     }
 }

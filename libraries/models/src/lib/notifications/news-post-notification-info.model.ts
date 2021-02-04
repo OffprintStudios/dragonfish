@@ -1,5 +1,3 @@
-import { NotificationBase } from "./notification-base.model";
+import { NotificationBase } from './notification-base.model';
 
-export interface NewsPostNotificationInfo extends NotificationBase {
-
-}
+export interface NewsPostNotificationInfo extends NotificationBase {}

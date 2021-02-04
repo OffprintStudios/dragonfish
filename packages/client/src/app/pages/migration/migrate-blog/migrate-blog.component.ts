@@ -16,7 +16,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 @Component({
     selector: 'migrate-blog',
     templateUrl: './migrate-blog.component.html',
-    styleUrls: ['./migrate-blog.component.less']
+    styleUrls: ['./migrate-blog.component.less'],
 })
 export class MigrateBlogComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -29,11 +29,16 @@ export class MigrateBlogComponent implements OnInit {
     migrateBlogForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
-        rating: new FormControl(null, [Validators.required])
+        rating: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar,
+        private router: Router,
+    ) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
@@ -43,15 +48,17 @@ export class MigrateBlogComponent implements OnInit {
         this.migrateBlogForm.setValue({
             title: this.myBlog.title,
             body: this.myBlog.body,
-            rating: ContentRating.Everyone
+            rating: ContentRating.Everyone,
         });
     }
 
-    get fields() { return this.migrateBlogForm.controls; }
+    get fields() {
+        return this.migrateBlogForm.controls;
+    }
 
     migrateBlog() {
         if (this.migrateBlogForm.invalid) {
-            this.snackBar.open(`Something's not right with the data you entered.`)
+            this.snackBar.open(`Something's not right with the data you entered.`);
             return;
         }
 
@@ -61,20 +68,20 @@ export class MigrateBlogComponent implements OnInit {
             author: this.currentUser._id,
             body: this.fields.body.value,
             meta: {
-                rating: this.fields.rating.value
+                rating: this.fields.rating.value,
             },
             stats: {
                 words: this.myBlog.stats.words,
                 views: this.myBlog.stats.views,
                 likes: this.myBlog.stats.likes,
                 dislikes: this.myBlog.stats.dislikes,
-                comments: this.myBlog.stats.comments
+                comments: this.myBlog.stats.comments,
             },
             published: this.myBlog.published ? PubStatus.Published : PubStatus.Unpublished,
             publishedOn: new Date(),
             kind: ContentKind.BlogContent,
             createdAt: this.myBlog.createdAt,
-            updatedAt: this.myBlog.updatedAt
+            updatedAt: this.myBlog.updatedAt,
         };
 
         this.saveMigration(contentBlog).subscribe(() => {
@@ -83,12 +90,16 @@ export class MigrateBlogComponent implements OnInit {
     }
 
     private saveMigration(formData: MigrationForm) {
-        return this.http.put<void>(`/api/migration/save-migration`, formData, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                this.snackBar.open(`Something went wrong with this blog's migration!`);
-                return throwError(err);
-            }));
+        return this.http
+            .put<void>(`/api/migration/save-migration`, formData, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    this.snackBar.open(`Something went wrong with this blog's migration!`);
+                    return throwError(err);
+                }),
+            );
     }
 }

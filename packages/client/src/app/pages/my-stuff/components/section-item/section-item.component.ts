@@ -13,10 +13,10 @@ import { MyStuffService } from '../../my-stuff.service';
 @Component({
     selector: 'section-item',
     templateUrl: './section-item.component.html',
-    styleUrls: ['./section-item.component.less']
+    styleUrls: ['./section-item.component.less'],
 })
 export class SectionItemComponent implements OnInit {
-    @Select(SectionsState.currSection) currSection$: Observable<Section>
+    @Select(SectionsState.currSection) currSection$: Observable<Section>;
 
     @Input() contentId: string;
 
@@ -27,28 +27,30 @@ export class SectionItemComponent implements OnInit {
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         authorsNote: new FormControl('', [Validators.minLength(3)]),
-        authorsNotePos: new FormControl(null)
+        authorsNotePos: new FormControl(null),
     });
 
     constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
 
-    get fields() { return this.editForm.controls; }
+    get fields() {
+        return this.editForm.controls;
+    }
 
     ngOnInit(): void {
-        this.currSection$.pipe(untilDestroyed(this)).subscribe(x => {
+        this.currSection$.pipe(untilDestroyed(this)).subscribe((x) => {
             if (x !== null) {
                 this.editForm.setValue({
                     title: x.title,
                     body: x.body,
                     authorsNote: x.authorsNote,
-                    authorsNotePos: x.authorsNotePos
+                    authorsNotePos: x.authorsNotePos,
                 });
             } else {
                 this.editForm.setValue({
                     title: '',
                     body: '',
                     authorsNote: '',
-                    authorsNotePos: null
+                    authorsNotePos: null,
                 });
             }
         });
@@ -79,7 +81,7 @@ export class SectionItemComponent implements OnInit {
             usesNewEditor: true,
             authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
-            oldWords: section.stats.words
+            oldWords: section.stats.words,
         };
 
         this.stuff.saveSection(this.contentId, section._id, sectionInfo);
@@ -92,8 +94,8 @@ export class SectionItemComponent implements OnInit {
     pubUnpub(section: Section) {
         const pubStatus: PublishSection = {
             oldPub: section.published,
-            newPub: !section.published
-        }
+            newPub: !section.published,
+        };
 
         this.stuff.publishSection(this.contentId, section._id, pubStatus);
     }

@@ -22,147 +22,153 @@ import { Alerts } from './shared/alerts';
 import { isAllowed } from './util/functions';
 
 @Component({
-  selector: 'dragonfish-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+    selector: 'dragonfish-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.less'],
 })
 export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('sidenav', {static: true}) sidenav: ElementRef;
+    @ViewChild('sidenav', { static: true }) sidenav: ElementRef;
 
-  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-  currentUserSubscription: Subscription;
-  currentUser: FrontendUser;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
+    currentUser: FrontendUser;
 
-  sidenavOpened: boolean;
+    sidenavOpened: boolean;
 
-  title = 'offprint';
+    title = 'offprint';
 
-  loading = false;
-  loadingLogin = false;
-  footerStats: FrontPageStats;
-  rotatingSlogan: string;
+    loading = false;
+    loadingLogin = false;
+    footerStats: FrontPageStats;
+    rotatingSlogan: string;
 
-  notifications: NotificationBase[];
-  numNotifs: number = 0;
+    notifications: NotificationBase[];
+    numNotifs: number = 0;
 
-  constructor(private router: Router, private statsService: StatsService,
-    private nagBarService: NagBarService, public loader: LoadingBarService, 
-    private notif: NotificationsService, private metadata: MetadataService) {
+    constructor(
+        private router: Router,
+        private statsService: StatsService,
+        private nagBarService: NagBarService,
+        public loader: LoadingBarService,
+        private notif: NotificationsService,
+        private metadata: MetadataService,
+    ) {
+        this.fetchFrontPageStats();
 
-    this.fetchFrontPageStats();
-
-    this.currentUserSubscription = this.currentUser$.subscribe(x => {
-      this.currentUser = x;
-    });
-    
-    if (this.currentUser) {
-        // Sets the current site theme based on user preference
-        this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);   
-
-        // Starts fetching notifications updates from the server
-        interval(Constants.FIVE_MINUTES).pipe(flatMap(() => this.notif.getUnreadNotifications())).subscribe(data => {
-          this.notifications = data;
-          this.numNotifs = this.notifications.length;
-        });  
-    }
-
-    this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
-
-    this.metadata.initTags();
-  }
-  
-  ngOnInit(): void {
-    this.router.events.subscribe(event => {
-      this.sidenavOpened = false;
-      if (event instanceof NavigationEnd) {
-        this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
-      }
-    });
-  }
-
-  /**
-   * Initializes the global dropdown menus.
-   */
-  ngAfterViewInit(): void {
-      // Initialize the ToS nagbar if we need to
-      if (!this.currentUser) {
-        this.currentUser$.subscribe(x => {
-        // This is wrapped in setTimeout because it's called by ngAfterInit,
-        // and if we modify the UI before that finishes, Angular errors out.
-        // So allow one render tick to progress before we try.
-          setTimeout(() => {
-            if (x !== null) {
-              this.checkUserPolicies(x);
-            }
-          });
-        })
-      } else {
-        // See above comment re: setTimeout()
-        setTimeout(() => {
-            this.checkUserPolicies(this.currentUser);
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
         });
-      }
-  }
 
-  /**
-   * Unsubscribes from everything.
-   */
-  ngOnDestroy(): void {
-    this.currentUserSubscription.unsubscribe();
-  }
+        if (this.currentUser) {
+            // Sets the current site theme based on user preference
+            this.changeTheme(PredefinedThemes[this.currentUser.profile.themePref]);
 
-  /**
-   * Fetches the front page stats.
-   */
-  private fetchFrontPageStats() {
-    this.loading = true;
-    this.statsService.fetchFrontPageStats().subscribe(stats => {
-      this.footerStats = stats;
-      this.loading = false;
-    });
-  }
+            // Starts fetching notifications updates from the server
+            interval(Constants.FIVE_MINUTES)
+                .pipe(flatMap(() => this.notif.getUnreadNotifications()))
+                .subscribe((data) => {
+                    this.notifications = data;
+                    this.numNotifs = this.notifications.length;
+                });
+        }
 
-  /**
-   * Changes the site's theme based on user preference by manipulating CSS variables declared
-   * in styles.less.
-   * @param newTheme The theme to change to.
-   */
-  changeTheme(newTheme: Theme){
-    document.documentElement.style.setProperty('--site-accent', newTheme.accent);
-    document.documentElement.style.setProperty('--site-accent-hover', newTheme.accentHover);
-    document.documentElement.style.setProperty('--site-accent-light', newTheme.accentLight);
-    document.documentElement.style.setProperty('--site-background', newTheme.background);
-    document.documentElement.style.setProperty('--site-text-color', newTheme.textColor);
-    document.documentElement.style.setProperty('--site-borders', newTheme.borders);
-    document.documentElement.style.setProperty('--site-controls-background', newTheme.controlsBackground);
-    document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
-  }
+        this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
 
-  /**
-   * Checks to see if the currently logged-in user has agreed to the site's policies.
-   * 
-   * @param user The currently logged-in user
-   */
-  private checkUserPolicies(user: FrontendUser) {
-    if (!user.agreedToPolicies) {
-      this.nagBarService.queueContent(NewPolicyNagComponent, null);
-    }     
-  }
-
-  /**
-   * Closes the sidenav if the close button was clicked.
-   * 
-   * @param event Check for the close button click
-   */
-  onCloseClicked(event: boolean) {
-    if (event === true) {
-      this.sidenavOpened = false;
+        this.metadata.initTags();
     }
-  }
+
+    ngOnInit(): void {
+        this.router.events.subscribe((event) => {
+            this.sidenavOpened = false;
+            if (event instanceof NavigationEnd) {
+                this.rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
+            }
+        });
+    }
 
     /**
-    * In order to access the contributor page
-    */
+     * Initializes the global dropdown menus.
+     */
+    ngAfterViewInit(): void {
+        // Initialize the ToS nagbar if we need to
+        if (!this.currentUser) {
+            this.currentUser$.subscribe((x) => {
+                // This is wrapped in setTimeout because it's called by ngAfterInit,
+                // and if we modify the UI before that finishes, Angular errors out.
+                // So allow one render tick to progress before we try.
+                setTimeout(() => {
+                    if (x !== null) {
+                        this.checkUserPolicies(x);
+                    }
+                });
+            });
+        } else {
+            // See above comment re: setTimeout()
+            setTimeout(() => {
+                this.checkUserPolicies(this.currentUser);
+            });
+        }
+    }
+
+    /**
+     * Unsubscribes from everything.
+     */
+    ngOnDestroy(): void {
+        this.currentUserSubscription.unsubscribe();
+    }
+
+    /**
+     * Fetches the front page stats.
+     */
+    private fetchFrontPageStats() {
+        this.loading = true;
+        this.statsService.fetchFrontPageStats().subscribe((stats) => {
+            this.footerStats = stats;
+            this.loading = false;
+        });
+    }
+
+    /**
+     * Changes the site's theme based on user preference by manipulating CSS variables declared
+     * in styles.less.
+     * @param newTheme The theme to change to.
+     */
+    changeTheme(newTheme: Theme) {
+        document.documentElement.style.setProperty('--site-accent', newTheme.accent);
+        document.documentElement.style.setProperty('--site-accent-hover', newTheme.accentHover);
+        document.documentElement.style.setProperty('--site-accent-light', newTheme.accentLight);
+        document.documentElement.style.setProperty('--site-background', newTheme.background);
+        document.documentElement.style.setProperty('--site-text-color', newTheme.textColor);
+        document.documentElement.style.setProperty('--site-borders', newTheme.borders);
+        document.documentElement.style.setProperty('--site-controls-background', newTheme.controlsBackground);
+        document.documentElement.style.setProperty('--site-code-background', newTheme.codeBackground);
+    }
+
+    /**
+     * Checks to see if the currently logged-in user has agreed to the site's policies.
+     *
+     * @param user The currently logged-in user
+     */
+    private checkUserPolicies(user: FrontendUser) {
+        if (!user.agreedToPolicies) {
+            this.nagBarService.queueContent(NewPolicyNagComponent, null);
+        }
+    }
+
+    /**
+     * Closes the sidenav if the close button was clicked.
+     *
+     * @param event Check for the close button click
+     */
+    onCloseClicked(event: boolean) {
+        if (event === true) {
+            this.sidenavOpened = false;
+        }
+    }
+
+    /**
+     * In order to access the contributor page
+     */
     checkUserRolesForContribMenu() {
         if (this.currentUser) {
             return isAllowed(this.currentUser.roles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);

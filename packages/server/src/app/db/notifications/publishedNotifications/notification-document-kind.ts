@@ -1,9 +1,9 @@
 export enum NotificationDocumentKind {
     NDKWorkNotification = 'NDKWorkNotification',
     NDKSectionNotification = 'NDKSectionNotification',
-    NDKBlogNotification = 'NDKBlogNotification',    
+    NDKBlogNotification = 'NDKBlogNotification',
     NDKCommentNotification = 'NDKCommentNotification',
     NDKNewsPostNotification = 'NDKNewsPostNotification',
     NDKPMThreadNotification = 'NDKPMThreadNotification',
-    NDKPMReplyNotification = 'NDKPMReplyNotification'
+    NDKPMReplyNotification = 'NDKPMReplyNotification',
 }

@@ -17,7 +17,7 @@ import { getQuillHtml } from '../../../util/functions';
 @Component({
     selector: 'migrate-work',
     templateUrl: './migrate-work.component.html',
-    styleUrls: ['./migrate-work.component.less']
+    styleUrls: ['./migrate-work.component.less'],
 })
 export class MigrateWorkComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -38,11 +38,16 @@ export class MigrateWorkComponent implements OnInit {
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
         rating: new FormControl(null, [Validators.required]),
-        status: new FormControl(null, [Validators.required])
+        status: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar,
+        private router: Router,
+    ) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
@@ -72,11 +77,13 @@ export class MigrateWorkComponent implements OnInit {
             category: currCategory,
             genres: this.currWork.meta.genres,
             rating: this.currWork.meta.rating,
-            status: this.currWork.meta.status
+            status: this.currWork.meta.status,
         });
     }
 
-    get fields() { return this.proseForm.controls; }
+    get fields() {
+        return this.proseForm.controls;
+    }
 
     migrateWork() {
         if (this.proseForm.invalid) {
@@ -119,20 +126,20 @@ export class MigrateWorkComponent implements OnInit {
                 category: this.fields.category.value,
                 genres: this.fields.genres.value,
                 status: this.fields.status.value,
-                coverArt: this.currWork.meta.coverArt
+                coverArt: this.currWork.meta.coverArt,
             },
             stats: {
                 words: this.currWork.stats.totWords,
                 views: this.currWork.stats.views,
                 likes: this.currWork.stats.likes,
                 dislikes: this.currWork.stats.dislikes,
-                comments: this.currWork.stats.comments
+                comments: this.currWork.stats.comments,
             },
             published: publishStatus,
             publishedOn: this.currWork.audit.publishedOn,
             kind: ContentKind.ProseContent,
             createdAt: this.currWork.createdAt,
-            updatedAt: this.currWork.updatedAt
+            updatedAt: this.currWork.updatedAt,
         };
 
         this.saveMigration(contentWork).subscribe(() => {
@@ -141,12 +148,16 @@ export class MigrateWorkComponent implements OnInit {
     }
 
     private saveMigration(formData: MigrationForm) {
-        return this.http.put<void>(`/api/migration/save-migration`, formData, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                this.snackBar.open(`Something went wrong with this work's migration!`);
-                return throwError(err);
-            }));
+        return this.http
+            .put<void>(`/api/migration/save-migration`, formData, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    this.snackBar.open(`Something went wrong with this work's migration!`);
+                    return throwError(err);
+                }),
+            );
     }
 }

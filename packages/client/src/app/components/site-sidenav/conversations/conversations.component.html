@@ -3,9 +3,7 @@
         <ng-container *ngFor="let convo of activeConvos">
             <div class="convo-item">
                 <ng-container *ngIf="convo.meta.threadPicture !== null; else defaultIcon">
-                    <div class="convo-picture">
-
-                    </div>
+                    <div class="convo-picture"></div>
                 </ng-container>
                 <ng-template #defaultIcon>
                     <div class="convo-picture">
@@ -15,8 +13,10 @@
                     </div>
                 </ng-template>
                 <div class="convo-info">
-                    <h4><a>{{ convo.name | truncate:32 }}</a></h4>
-                    <h5>{{ convo.meta.lastMessage | truncate:45 }}</h5>
+                    <h4>
+                        <a>{{ convo.name | truncate: 32 }}</a>
+                    </h4>
+                    <h5>{{ convo.meta.lastMessage | truncate: 45 }}</h5>
                 </div>
                 <div class="convo-link">
                     <i-feather name="chevron-right"></i-feather>
@@ -30,10 +30,10 @@
 </ng-container>
 
 <ng-template #noConvos>
-    <div style="text-align: center; margin-top: 1.5rem;">
-        <h3 style="color: whitesmoke; margin-bottom: 0;">There's nothing here yet</h3>
-        <p style="color: whitesmoke; margin-top: 0;">
-            Start a conversation with other users by<br>hitting the message button on their portfolio!
+    <div style="text-align: center; margin-top: 1.5rem">
+        <h3 style="color: whitesmoke; margin-bottom: 0">There's nothing here yet</h3>
+        <p style="color: whitesmoke; margin-top: 0">
+            Start a conversation with other users by<br />hitting the message button on their portfolio!
         </p>
     </div>
 </ng-template>

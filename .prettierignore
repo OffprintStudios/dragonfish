@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+
+ckeditor.js
+/packages/client/src/app/components/editor/translations

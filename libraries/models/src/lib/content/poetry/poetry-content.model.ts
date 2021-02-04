@@ -18,5 +18,5 @@ export interface PoetryContent extends ContentModel {
         status: WorkStatus;
         warnings: string[];
         coverArt?: string;
-    }
+    };
 }

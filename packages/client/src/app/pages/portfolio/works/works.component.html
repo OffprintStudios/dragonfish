@@ -1,17 +1,25 @@
 <ng-container *ngIf="currPageContent$ | async as contentData">
     <div class="works-feed" *ngIf="contentData.totalDocs !== 0; else noGalleryWorks">
-        <ng-container *ngFor="let work of contentData.docs | paginate: {
-            itemsPerPage: contentData.limit,
-            currentPage: pageNum,
-            totalItems: contentData.totalDocs
-        }">
+        <ng-container
+            *ngFor="
+                let work of contentData.docs
+                    | paginate
+                        : {
+                              itemsPerPage: contentData.limit,
+                              currentPage: pageNum,
+                              totalItems: contentData.totalDocs
+                          }
+            "
+        >
             <work-card [content]="work" [showAuthor]="false"></work-card>
         </ng-container>
     </div>
     <ng-template #noGalleryWorks>
         <div class="empty">
             <h3>There's nothing here...</h3>
-            <p *ngIf="currentUserIsSame(); else notSameUser">Why not head to My Stuff and add some new prose or poetry?</p>
+            <p *ngIf="currentUserIsSame(); else notSameUser">
+                Why not head to My Stuff and add some new prose or poetry?
+            </p>
             <ng-template #notSameUser>
                 <p>Check back later to see if {{ portUser.username }} adds anything!</p>
             </ng-template>

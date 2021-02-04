@@ -11,16 +11,19 @@ import { NotificationModule } from './api/notification/notification.module';
 import { MigrationModule } from './api/migration/migration.module';
 
 const routes: Routes = [
-    {path: 'api', children: [
-        {path: 'auth', module: AuthModule},
-        {path: 'content', module: ContentModule},
-        {path: 'admin', module: AdminModule},
-        {path: 'search', module: SearchModule},
-        {path: 'images', module: ImagesModule},
-        {path: 'dashboard', module: DashboardModule},
-        {path: 'notifications', module: NotificationModule},
-        {path: 'migration', module: MigrationModule}
-    ]}
+    {
+        path: 'api',
+        children: [
+            { path: 'auth', module: AuthModule },
+            { path: 'content', module: ContentModule },
+            { path: 'admin', module: AdminModule },
+            { path: 'search', module: SearchModule },
+            { path: 'images', module: ImagesModule },
+            { path: 'dashboard', module: DashboardModule },
+            { path: 'notifications', module: NotificationModule },
+            { path: 'migration', module: MigrationModule },
+        ],
+    },
 ];
 
 @Module({
@@ -33,7 +36,7 @@ const routes: Routes = [
         ImagesModule,
         DashboardModule,
         NotificationModule,
-        MigrationModule
-    ]
+        MigrationModule,
+    ],
 })
 export class AppRoutingModule {}

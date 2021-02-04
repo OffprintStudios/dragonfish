@@ -1,83 +1,102 @@
-<div style="text-align: center;" *ngIf="currentUser;else registration">
+<div style="text-align: center" *ngIf="currentUser; else registration">
     <h1>Looks like you're already logged in.</h1>
     <p>So what are you waiting for?</p>
 </div>
 
 <ng-template #registration>
+    <div class="row register-body">
+        <div class="six columns">
+            <h3 class="form-header">Welcome to Offprint!</h3>
+            <p>Hey there!</p>
+            <p>
+                Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, friendly, and open
+                community of writers and readers.
+            </p>
+            <p>
+                The site is currently under heavy active development, so there's a lot of stuff still missing or even
+                completely broken. Want to sign up? <a href="https://forms.gle/VBHoKhneJzg34GSA8">Click here</a> to add
+                your name to the list!
+            </p>
+            <p>
+                If you want to contribute&mdash;or just want to give us a star&mdash;check out our
+                <a href="https://github.com/Figments/pulp-fiction">GitHub</a> repository. We also have a community
+                <a href="https://discord.gg/9cnSwfn">Discord server</a> if you want to chat about the site, or writing
+                in general. And if you want to throw some money our way, to help fund Offprint's development,
+                <a href="https://www.patreon.com/offprintstudios?fan_landing=true">we have a Patreon</a>!
+            </p>
+            <p>With all that said, see you guys on the flip side!</p>
+            <p style="text-align: right">&mdash;Offprint Studios</p>
+        </div>
+        <div class="six columns">
+            <h3 class="form-header">Register</h3>
+            <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Email Address</mat-label>
+                    <input matInput placeholder="someone@email.com" formControlName="email" />
+                    <mat-error
+                        *ngIf="
+                            registerFields.email.invalid && (registerFields.email.dirty || registerFields.email.touched)
+                        "
+                        >Please enter a valid email address.</mat-error
+                    >
+                </mat-form-field>
 
-<div class="row register-body">
-    <div class="six columns">
-        <h3 class="form-header">Welcome to Offprint!</h3>
-        <p>
-            Hey there!
-        </p>
-        <p>
-            Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, 
-            friendly, and open community of writers and readers. 
-        </p>
-        <p>
-            The site is currently under heavy active development, so there's a lot of stuff still 
-            missing or even completely broken. Want to sign up? <a href="https://forms.gle/VBHoKhneJzg34GSA8">Click here</a> to add your name
-            to the list!
-        </p>
-        <p>
-            If you want to contribute&mdash;or just want to give us a star&mdash;check out our 
-            <a href="https://github.com/Figments/pulp-fiction">GitHub</a> repository. We also have 
-            a community <a href="https://discord.gg/9cnSwfn">Discord server</a> if you want to chat 
-            about the site, or writing in general. And if you want to throw some money our way, to 
-            help fund Offprint's development, <a href="https://www.patreon.com/offprintstudios?fan_landing=true">we have a Patreon</a>!
-        </p>
-        <p>
-            With all that said, see you guys on the flip side!
-        </p>
-        <p style="text-align: right;">
-            &mdash;Offprint Studios
-        </p>
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Username</mat-label>
+                    <input matInput placeholder="JaneDoe" formControlName="username" />
+                    <mat-error
+                        *ngIf="
+                            registerFields.username.invalid &&
+                            (registerFields.username.dirty || registerFields.username.touched)
+                        "
+                        >Usernames must be between 3 and 50 characters.</mat-error
+                    >
+                </mat-form-field>
+
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="password" />
+                </mat-form-field>
+
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Repeat Password</mat-label>
+                    <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="repeatPassword" />
+                    <mat-error *ngIf="registerFields.repeatPassword.value !== registerFields.password.value"
+                        >The passwords you entered don't match.</mat-error
+                    >
+                </mat-form-field>
+
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Invite Code</mat-label>
+                    <input matInput placeholder="Your Invite Code" formControlName="inviteCode" />
+                </mat-form-field>
+
+                <label>
+                    <input type="checkbox" formControlName="tosCheck" required />
+                    <span class="label-body"
+                        >I agree to the
+                        <a [routerLink]="['/terms-of-service']">Offprint Terms of Service and Privacy Policy</a>, and
+                        <a [routerLink]="['/code-of-conduct']">Code of Conduct</a>.</span
+                    >
+                </label>
+                <label>
+                    <input type="checkbox" formControlName="ageCheck" required />
+                    <span class="label-body">I am over 13 years of age.</span>
+                </label>
+                <div class="loader" *ngIf="loadingRegister">
+                    <div class="lds-dual-ring"></div>
+                </div>
+                <button
+                    matRipple
+                    type="submit"
+                    [disabled]="!registerForm.valid"
+                    class="button-primary"
+                    style="width: 100%"
+                    *ngIf="!loadingRegister"
+                >
+                    Sign up
+                </button>
+            </form>
+        </div>
     </div>
-    <div class="six columns">
-        <h3 class="form-header">Register</h3>
-        <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Email Address</mat-label>
-                <input matInput placeholder="someone@email.com" formControlName="email">
-                <mat-error *ngIf="registerFields.email.invalid && (registerFields.email.dirty || registerFields.email.touched)">Please enter a valid email address.</mat-error>
-            </mat-form-field>
-            
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Username</mat-label>
-                <input matInput placeholder="JaneDoe" formControlName="username">
-                <mat-error *ngIf="registerFields.username.invalid && (registerFields.username.dirty || registerFields.username.touched)">Usernames must be between 3 and 50 characters.</mat-error>
-            </mat-form-field>
-
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="password">
-            </mat-form-field>
-
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Repeat Password</mat-label>
-                <input matInput [type]="'password'" placeholder="SuperSecret" formControlName="repeatPassword">
-                <mat-error *ngIf="registerFields.repeatPassword.value !== registerFields.password.value">The passwords you entered don't match.</mat-error>
-            </mat-form-field>
-
-            <mat-form-field style="width: 100%;" appearance="outline">
-                <mat-label>Invite Code</mat-label>
-                <input matInput placeholder="Your Invite Code" formControlName="inviteCode">
-            </mat-form-field>
-
-            <label>
-                <input type="checkbox" formControlName="tosCheck" required>
-                <span class="label-body">I agree to the <a [routerLink]="['/terms-of-service']">Offprint Terms of Service and Privacy Policy</a>, and <a [routerLink]="['/code-of-conduct']">Code of Conduct</a>.</span>
-            </label>
-            <label>
-                <input type="checkbox" formControlName="ageCheck" required>
-                <span class="label-body">I am over 13 years of age.</span>
-            </label>
-            <div class="loader" *ngIf="loadingRegister">
-                <div class="lds-dual-ring"></div>
-            </div>
-            <button matRipple type="submit" [disabled]="!registerForm.valid" class="button-primary" style="width: 100%;" *ngIf="!loadingRegister">Sign up</button>
-        </form>
-    </div>
-</div>
 </ng-template>

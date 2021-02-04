@@ -1,9 +1,9 @@
 export enum NotificationKind {
     WorkNotification = 'WorkNotification',
     SectionNotification = 'SectionNotification',
-    BlogNotification = 'BlogNotification',    
+    BlogNotification = 'BlogNotification',
     CommentNotification = 'CommentNotification',
     NewsPostNotification = 'NewsPostNotification',
     PMThreadNotification = 'PMThreadNotification',
-    PMReplyNotification = 'PMReplyNotification'
+    PMReplyNotification = 'PMReplyNotification',
 }

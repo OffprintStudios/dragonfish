@@ -8,7 +8,7 @@ import { NewsService } from '../../services/content';
 
 @Injectable()
 export class HomePageResolver implements Resolve<NewsContentModel[]> {
-    constructor (private newsService: NewsService) { }
+    constructor(private newsService: NewsService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<NewsContentModel[]> {
         return this.newsService.getInitialPosts();

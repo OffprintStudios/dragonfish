@@ -32,13 +32,18 @@ export class SectionsController {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You need to include the content ID for this request.`);
         }
-        
+
         return await this.contentService.createSection(req.user, contentId, sectionInfo);
     }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-section')
-    async editSection(@Request() req: any, @Query('contentId') contentId: string, @Query('sectionId') sectionId: string, @Body() sectionInfo: SectionForm) {
+    async editSection(
+        @Request() req: any,
+        @Query('contentId') contentId: string,
+        @Query('sectionId') sectionId: string,
+        @Body() sectionInfo: SectionForm,
+    ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
         }
@@ -48,7 +53,12 @@ export class SectionsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-section')
-    async publishSection(@Request() req: any, @Query('contentId') contentId: string, @Query('sectionId') sectionId: string, @Body() pubStatus: PublishSection) {
+    async publishSection(
+        @Request() req: any,
+        @Query('contentId') contentId: string,
+        @Query('sectionId') sectionId: string,
+        @Body() pubStatus: PublishSection,
+    ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
         }
@@ -58,7 +68,11 @@ export class SectionsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-section')
-    async deleteSection(@Request() req: any, @Query('contentId') contentId: string, @Query('sectionId') sectionId: string) {
+    async deleteSection(
+        @Request() req: any,
+        @Query('contentId') contentId: string,
+        @Query('sectionId') sectionId: string,
+    ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
         }

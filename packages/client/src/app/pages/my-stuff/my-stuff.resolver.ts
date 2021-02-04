@@ -7,7 +7,7 @@ import { MyStuff } from '../../shared/my-stuff';
 
 @Injectable()
 export class MyStuffResolver implements Resolve<void> {
-    constructor (private store: Store) { }
+    constructor(private store: Store) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<void> {
         return this.store.dispatch(new MyStuff.SetFiles());

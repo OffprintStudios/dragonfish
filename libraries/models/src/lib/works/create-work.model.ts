@@ -11,13 +11,13 @@ export interface CreateWork {
     readonly category: Categories;
     readonly fandoms?: Fandoms[];
     readonly genres: Genres[];
-    readonly rating: ContentRating,
-    readonly status: WorkStatus,    
-    
+    readonly rating: ContentRating;
+    readonly status: WorkStatus;
+
     /**
      * Determines whether or not the long description uses the new editor or not.
      * Has no bearing on sections.
-     * Remove this once we've migrated fully away from Quill.     
+     * Remove this once we've migrated fully away from Quill.
      */
     readonly usesNewEditor: boolean;
 }

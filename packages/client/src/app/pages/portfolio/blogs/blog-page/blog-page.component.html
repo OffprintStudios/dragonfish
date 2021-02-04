@@ -5,11 +5,15 @@
             <h1>{{ blogData.title }}</h1>
             <div class="post-cat">
                 <div class="info">
-                    <span>{{ blogData.audit.publishedOn | localedate:'fullDate' }}</span>
+                    <span>{{ blogData.audit.publishedOn | localedate: 'fullDate' }}</span>
                     <span class="divider" *ngIf="blogData.audit.publishedOn">//</span>
-                    <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</span>
+                    <span [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'"
+                        ><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</span
+                    >
                     <span class="divider">//</span>
-                    <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span>
+                    <span [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'"
+                        ><i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}</span
+                    >
                 </div>
                 <div class="post-tools">
                     <content-approval></content-approval>
@@ -20,11 +24,13 @@
             <div class="html-description" [innerHtml]="blogData.body | safeHtml"></div>
         </div>
     </div>
-    
+
     <ng-container *ngIf="!loading">
-        <comments [itemId]="blogData._id"
-                  [itemKind]="blogData.kind"
-                  [pageNum]="pageNum" 
-                  (emitPageChange)="onPageChange($event)"></comments>
+        <comments
+            [itemId]="blogData._id"
+            [itemKind]="blogData.kind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></comments>
     </ng-container>
 </ng-container>

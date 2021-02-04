@@ -19,7 +19,7 @@ export class QueueService {
 
     /**
      * Fetches all claimed queue items associated with this user.
-     * 
+     *
      * @param user The claimant
      */
     async getQueueForMod(user: any, pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
@@ -28,7 +28,7 @@ export class QueueService {
 
     /**
      * Claims a queue item for a user
-     * 
+     *
      * @param user The user claiming this work for review
      * @param docId The document ID of the queue entry
      */
@@ -38,7 +38,7 @@ export class QueueService {
 
     /**
      * Approves a work and then removes it from the Approval Queue
-     * 
+     *
      * @param user The claimant
      * @param docId The queue document
      * @param workId The work to approve
@@ -50,7 +50,7 @@ export class QueueService {
 
     /**
      * Rejects a work and then removes it from the Approval Queue
-     * 
+     *
      * @param user The claimant
      * @param docId The queue document
      * @param workId The work to reject
@@ -62,7 +62,7 @@ export class QueueService {
 
     /**
      * Fetches a piece of content for review.
-     * 
+     *
      * @param contentId The content ID
      * @param kind The content kind
      * @param userId The user associated with this work

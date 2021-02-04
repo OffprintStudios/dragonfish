@@ -18,31 +18,41 @@ export class MigrationResolver implements Resolve<MigrationModel> {
         const userWorks = this.fetchAllWorks();
         const userBlogs = this.fetchAllBlogs();
 
-        return zip(userWorks, userBlogs).pipe(map(val => {
-            const migrationData: MigrationModel = {
-                works: val[0],
-                blogs: val[1]
-            };
+        return zip(userWorks, userBlogs).pipe(
+            map((val) => {
+                const migrationData: MigrationModel = {
+                    works: val[0],
+                    blogs: val[1],
+                };
 
-            return migrationData;
-        }));
+                return migrationData;
+            }),
+        );
     }
 
     fetchAllWorks() {
-        return this.http.get<Work[]>(`${this.url}/fetch-works`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<Work[]>(`${this.url}/fetch-works`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 
     fetchAllBlogs() {
-        return this.http.get<Blog[]>(`${this.url}/fetch-blogs`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<Blog[]>(`${this.url}/fetch-blogs`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 }

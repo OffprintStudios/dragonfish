@@ -7,5 +7,5 @@ export enum Roles {
     Contributor = 'Contributor',
     VIP = 'VIP',
     Supporter = 'Supporter',
-    User = 'User'
+    User = 'User',
 }

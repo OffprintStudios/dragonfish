@@ -1,4 +1,4 @@
-import { Section } from "@dragonfish/models/sections";
+import { Section } from '@dragonfish/models/sections';
 
 export interface SectionsStateModel {
     sections: Section[];

@@ -12,7 +12,7 @@ import { MigrationModel } from './migration.model';
 @Component({
     selector: 'migration',
     templateUrl: './migration.component.html',
-    styleUrls: ['./migration.component.less']
+    styleUrls: ['./migration.component.less'],
 })
 export class MigrationComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -25,9 +25,9 @@ export class MigrationComponent implements OnInit {
     myBlogs: Blog[];
 
     columnsToDisplay = ['title', 'createdAt'];
-    
+
     constructor(public route: ActivatedRoute) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }

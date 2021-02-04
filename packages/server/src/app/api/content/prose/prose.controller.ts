@@ -1,5 +1,17 @@
-import { Controller, UseInterceptors, Put, UseGuards, Request, 
-    Body, Patch, Query, BadRequestException, UploadedFile, Post, Param } from '@nestjs/common';
+import {
+    Controller,
+    UseInterceptors,
+    Put,
+    UseGuards,
+    Request,
+    Body,
+    Patch,
+    Query,
+    BadRequestException,
+    UploadedFile,
+    Post,
+    Param,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CreateProse } from '@dragonfish/models/content';
@@ -18,7 +30,9 @@ export class ProseController {
     @Post('upload-coverart/:proseId')
     async uploadCoverArt(@UploadedFile() coverArtImage: any, @Request() req: any, @Param('proseId') proseId: string) {
         const coverArtUrl = await this.imagesService.upload(coverArtImage, proseId, 'coverart');
-        const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(coverArtUrl.lastIndexOf('/') + 1)}`;
+        const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(
+            coverArtUrl.lastIndexOf('/') + 1,
+        )}`;
         return await this.proseService.updateCoverArt(req.user, proseId, coverArt);
     }
 }

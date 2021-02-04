@@ -9,39 +9,39 @@ import { SectionsService } from './sections.service';
 import { countPlaintextWords, countQuillWords } from '@dragonfish/word_counter';
 
 @Module({
-  imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        name: 'Section',
-        useFactory: () => {
-          const schema = SectionsSchema;
-          schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
-            if (!this._id) {
-              this.set('_id', generate());
-            }
-            this.set('title', await sanitizeHtml(this.title));
-            this.set('body', await sanitizeHtml(this.body));
-            if (this.authorsNote) {
-              this.set('authorsNote', await sanitizeHtml(this.authorsNote));
-            }
-            if (this.authorsNotePos) {
-              this.set('authorsNotePos', this.authorsNotePos);
-            }
-            this.set('published', this.published);
+    imports: [
+        MongooseModule.forFeatureAsync([
+            {
+                name: 'Section',
+                useFactory: () => {
+                    const schema = SectionsSchema;
+                    schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
+                        if (!this._id) {
+                            this.set('_id', generate());
+                        }
+                        this.set('title', await sanitizeHtml(this.title));
+                        this.set('body', await sanitizeHtml(this.body));
+                        if (this.authorsNote) {
+                            this.set('authorsNote', await sanitizeHtml(this.authorsNote));
+                        }
+                        if (this.authorsNotePos) {
+                            this.set('authorsNotePos', this.authorsNotePos);
+                        }
+                        this.set('published', this.published);
 
-            const wordCount = this.usesNewEditor
-              ? await countPlaintextWords(await stripAllHtml(this.body))
-              : await countQuillWords(await sanitizeHtml(this.body));
-            this.set('stats.words', Number(wordCount));
+                        const wordCount = this.usesNewEditor
+                            ? await countPlaintextWords(await stripAllHtml(this.body))
+                            : await countQuillWords(await sanitizeHtml(this.body));
+                        this.set('stats.words', Number(wordCount));
 
-            return next();
-          });
-          return schema;
-        }
-      }
-    ])
-  ],
-  providers: [SectionsService],
-  exports: [SectionsService]
+                        return next();
+                    });
+                    return schema;
+                },
+            },
+        ]),
+    ],
+    providers: [SectionsService],
+    exports: [SectionsService],
 })
 export class SectionsModule {}

@@ -7,7 +7,7 @@ import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 @Component({
     selector: 'approve-prose',
     templateUrl: './approve-prose.component.html',
-    styleUrls: ['./approve-prose.component.less']
+    styleUrls: ['./approve-prose.component.less'],
 })
 export class ApproveProseComponent implements OnInit {
     currDoc: ApprovalQueue;
@@ -23,7 +23,7 @@ export class ApproveProseComponent implements OnInit {
 
     /**
      * Old prose won't have a publishedOn value, so createdAt is used instead
-     * @param section 
+     * @param section
      */
     getPublishedDate(section: SectionInfo): Date {
         if (section.audit.publishedOn === null) {

@@ -9,11 +9,10 @@ import { slugify } from 'voca';
 import { Title } from '../../../shared';
 import { Content, ContentState } from '../../../shared/content';
 
-
 @Component({
     selector: 'section-view',
     templateUrl: './section-view.component.html',
-    styleUrls: ['./section-view.component.less']
+    styleUrls: ['./section-view.component.less'],
 })
 export class SectionViewComponent implements OnInit {
     @Select(ContentState.currContent) currContent$: Observable<ContentModel>;
@@ -39,9 +38,11 @@ export class SectionViewComponent implements OnInit {
     private fetchData() {
         this.loading = true;
 
-        this.route.paramMap.subscribe(params => {
-            // @ts-ignore
-            this.sections = this.store.selectSnapshot<SectionInfo[]>((state: ContentState) => state.content.currSections);
+        this.route.paramMap.subscribe((params) => {
+            this.sections = this.store.selectSnapshot<SectionInfo[]>(
+                // @ts-ignore
+                (state: ContentState) => state.content.currSections,
+            );
 
             this.currIndex = +params.get('sectionNum') - 1;
             this.indexNext = this.currIndex + 1;
@@ -50,7 +51,7 @@ export class SectionViewComponent implements OnInit {
             this.store.dispatch(new Content.FetchSection(this.sections[this.currIndex]._id)).subscribe(() => {
                 this.loading = false;
 
-                zip(this.currContent$, this.currSection$).subscribe(val => {
+                zip(this.currContent$, this.currSection$).subscribe((val) => {
                     this.currContent = val[0];
                     this.thisSection = val[1];
                     Title.setThreePartTitle(this.currContent.title, this.thisSection.title);
@@ -61,16 +62,20 @@ export class SectionViewComponent implements OnInit {
 
     goToNext() {
         const nextSection = this.sections[this.indexNext];
-        this.router.navigate([`${this.indexNext + 1}/${slugify(nextSection.title)}`], {relativeTo: this.route.parent});
+        this.router.navigate([`${this.indexNext + 1}/${slugify(nextSection.title)}`], {
+            relativeTo: this.route.parent,
+        });
     }
 
     goToPrev() {
         const prevSection = this.sections[this.indexPrev];
-        this.router.navigate([`${this.indexPrev + 1}/${slugify(prevSection.title)}`], {relativeTo: this.route.parent});
+        this.router.navigate([`${this.indexPrev + 1}/${slugify(prevSection.title)}`], {
+            relativeTo: this.route.parent,
+        });
     }
 
     changeSection(section: SectionInfo) {
         const sectionIndex = this.sections.indexOf(section);
-        this.router.navigate([`${sectionIndex + 1}/${slugify(section.title)}`], {relativeTo: this.route.parent});
+        this.router.navigate([`${sectionIndex + 1}/${slugify(section.title)}`], { relativeTo: this.route.parent });
     }
 }

@@ -1,4 +1,18 @@
-import { Controller, UseGuards, Post, Body, Request, Get, Patch, UseInterceptors, UploadedFile, Req, ForbiddenException, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+    Controller,
+    UseGuards,
+    Post,
+    Body,
+    Request,
+    Get,
+    Patch,
+    UseInterceptors,
+    UploadedFile,
+    Req,
+    ForbiddenException,
+    BadRequestException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { v4 as uuidV4 } from 'uuid';
@@ -12,9 +26,11 @@ import * as models from '@dragonfish/models/users';
 
 @Controller('')
 export class AuthController {
-    constructor(private readonly authService: AuthService,
+    constructor(
+        private readonly authService: AuthService,
         private readonly usersService: UsersService,
-        private readonly imagesService: ImagesService) { }
+        private readonly imagesService: ImagesService,
+    ) {}
 
     /* Login and Registration*/
 
@@ -29,7 +45,11 @@ export class AuthController {
 
     @SetCookies()
     @Post('login')
-    async login(@Request() req: any, @Body() loginUser: models.LoginUser, @Cookies() cookies: any): Promise<models.FrontendUser> {
+    async login(
+        @Request() req: any,
+        @Body() loginUser: models.LoginUser,
+        @Cookies() cookies: any,
+    ): Promise<models.FrontendUser> {
         // Check for stray sessions from previous logout attempts that the server never received
         let oldSessionId: string | null = cookies['refreshToken'];
 
@@ -56,12 +76,17 @@ export class AuthController {
 
         const verifiedUser = await this.authService.validateUser(loginUser.email, loginUser.password);
 
-        let hasRoles = lodash.intersection(verifiedUser.audit.roles, [models.Roles.Admin, models.Roles.Moderator, models.Roles.Contributor, models.Roles.WorkApprover]);
+        let hasRoles = lodash.intersection(verifiedUser.audit.roles, [
+            models.Roles.Admin,
+            models.Roles.Moderator,
+            models.Roles.Contributor,
+            models.Roles.WorkApprover,
+        ]);
         if (hasRoles.length > 0) {
             if (oldSessionId) {
                 await this.usersService.clearRefreshToken(verifiedUser._id, oldSessionId);
             }
-    
+
             if (loginUser.rememberMe) {
                 const sessionId = uuidV4();
                 const newSession = await this.usersService.addRefreshToken(verifiedUser._id, sessionId);
@@ -76,12 +101,12 @@ export class AuthController {
 
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
-    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<{newToken: string}> {
+    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<{ newToken: string }> {
         const refreshToken = cookies['refreshToken'];
         if (refreshToken) {
             if (await this.usersService.checkRefreshToken(req.user.sub, refreshToken)) {
                 // If the refresh token is valid, let's generate a new JWT.
-                return {newToken: await this.authService.refreshLogin(req.user)};
+                return { newToken: await this.authService.refreshLogin(req.user) };
             } else {
                 throw new ForbiddenException(`Your login has expired. Please log back in.`);
             }
@@ -124,8 +149,8 @@ export class AuthController {
     @UseGuards(RolesGuard([models.Roles.User]))
     @Patch('update-profile')
     async updateProfile(@Request() req: any, @Body() newProfile: models.ChangeProfile) {
-        if (newProfile.bio && newProfile.bio.length > 160) { 
-            throw new BadRequestException("Your bio must not be longer than 160 characters.");
+        if (newProfile.bio && newProfile.bio.length > 160) {
+            throw new BadRequestException('Your bio must not be longer than 160 characters.');
         }
         return await this.authService.updateProfile(req.user, newProfile);
     }

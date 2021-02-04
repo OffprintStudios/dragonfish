@@ -8,7 +8,6 @@ const PNG_MIME_TYPE = 'image/png';
 
 @Injectable()
 export class ImagesService {
-
     private readonly s3 = new AWS.S3({
         endpoint: process.env.DIGITALOCEAN_SPACES_ENDPOINT,
         accessKeyId: process.env.DIGITALOCEAN_SPACES_ACCESS_KEY,
@@ -20,7 +19,7 @@ export class ImagesService {
      * returns the full URL of the uploaded image.
      * @throws(BadRequestException) if the image is larger than 3MB, or is not a PNG or JPEG.
      * @throws(InternalServerException) if the upload to Spaces fails.
-     * @returns The full URL of the uploaded image. 
+     * @returns The full URL of the uploaded image.
      */
     async upload(imageFile: any, userId: string, folder: string): Promise<string> {
         this.validateImageFile(imageFile);
@@ -42,23 +41,23 @@ export class ImagesService {
                 }
 
                 if (!data?.Location) {
-                    throw new InternalServerErrorException(null, "Image upload did not return a URL.");
+                    throw new InternalServerErrorException(null, 'Image upload did not return a URL.');
                 }
 
                 resolve(data.Location);
-            })
+            });
         });
     }
 
     private validateImageFile(file: any): void {
         // For the future: this is a good place to check things like
-        // * Is this _actually_ a JPG/PNG        
+        // * Is this _actually_ a JPG/PNG
         // * Are the dimensions ridiculous?
         // * etc.
         if (file.buffer.byteLength > ONE_MEGABYTE * 3) {
-            throw new BadRequestException(`Uploaded files must be 3MB or smaller.`)
+            throw new BadRequestException(`Uploaded files must be 3MB or smaller.`);
         }
-        
+
         if (file.mimetype !== JPEG_MIME_TYPE && file.mimetype !== PNG_MIME_TYPE) {
             throw new BadRequestException(`Upload must be either a JPEG or PNG image!`);
         }
@@ -66,10 +65,9 @@ export class ImagesService {
 
     private getExtension(file: any): string {
         if (file.mimetype === JPEG_MIME_TYPE) {
-            return "jpg";
-        }
-        else if (file.mimetype === PNG_MIME_TYPE) {
-            return "png";
+            return 'jpg';
+        } else if (file.mimetype === PNG_MIME_TYPE) {
+            return 'png';
         }
     }
 }

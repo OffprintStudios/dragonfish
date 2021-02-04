@@ -12,17 +12,22 @@ import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQueue>> {
     pageNum: number = 1;
 
-    constructor (private store: Store) {}
+    constructor(private store: Store) {}
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<ApprovalQueue>> {
+    resolve(
+        route: ActivatedRouteSnapshot,
+        routerState: RouterStateSnapshot,
+    ): Observable<PaginateResult<ApprovalQueue>> {
         const pageNum = +route.queryParamMap.get('page');
 
         if (pageNum) {
             this.pageNum = pageNum;
         }
-        
-        return this.store.dispatch(new AQNamespace.GetQueue(this.pageNum)).pipe(switchMap(() => {
-            return this.store.selectOnce<PaginateResult<ApprovalQueue>>(ApprovalQueueState.currPageDocs);
-        }));
+
+        return this.store.dispatch(new AQNamespace.GetQueue(this.pageNum)).pipe(
+            switchMap(() => {
+                return this.store.selectOnce<PaginateResult<ApprovalQueue>>(ApprovalQueueState.currPageDocs);
+            }),
+        );
     }
 }

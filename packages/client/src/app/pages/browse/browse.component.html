@@ -12,14 +12,19 @@
         </div>
     </div>
     <div class="works-feed">
-        <div *ngFor="let work of works.docs | paginate: {
-            itemsPerPage: works.limit,
-            currentPage: pageNum,
-            totalItems: works.totalDocs
-        }">
+        <div
+            *ngFor="
+                let work of works.docs
+                    | paginate
+                        : {
+                              itemsPerPage: works.limit,
+                              currentPage: pageNum,
+                              totalItems: works.totalDocs
+                          }
+            "
+        >
             <work-card [content]="work" [showAuthor]="true"></work-card>
         </div>
     </div>
     <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
 </ng-template>
-

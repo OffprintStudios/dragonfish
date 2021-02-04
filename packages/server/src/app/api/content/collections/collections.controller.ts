@@ -1,4 +1,15 @@
-import { Controller, UseGuards, Request, Param, Body, Get, Put, Patch, Query, BadRequestException } from '@nestjs/common';
+import {
+    Controller,
+    UseGuards,
+    Request,
+    Param,
+    Body,
+    Get,
+    Put,
+    Patch,
+    Query,
+    BadRequestException,
+} from '@nestjs/common';
 
 import { RolesGuard } from '../../../guards';
 import { Roles } from '@dragonfish/models/users';
@@ -23,7 +34,9 @@ export class CollectionsController {
     @Get('get-one-collection')
     async getOneCollection(@Request() req: any, @Query('collId') collId: string) {
         if (isNullOrUndefined(collId)) {
-            throw new BadRequestException(`This request requires the collection ID and whether or not to grab a private collection.`);
+            throw new BadRequestException(
+                `This request requires the collection ID and whether or not to grab a private collection.`,
+            );
         }
         return await this.collsService.getOneCollection(req.user, collId);
     }
@@ -50,7 +63,7 @@ export class CollectionsController {
     async fetchUserCollectionsNoPaginate(@Request() req: any) {
         return await this.collsService.getUserCollectionsNoPaginate(req.user);
     }
-    
+
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-collection')
     async createCollection(@Request() req: any, @Body() collInfo: CollectionForm) {
@@ -88,7 +101,9 @@ export class CollectionsController {
     @Patch('remove-content')
     async removeContent(@Request() req: any, @Query('collId') collId: string, @Query('contentId') contentId: string) {
         if (isNullOrUndefined(collId) || isNullOrUndefined(contentId)) {
-            throw new BadRequestException(`This request requires the collection ID, the collection item ID, and the content ID.`);
+            throw new BadRequestException(
+                `This request requires the collection ID, the collection item ID, and the content ID.`,
+            );
         }
         return await this.collsService.removeFromCollection(req.user, collId, contentId);
     }

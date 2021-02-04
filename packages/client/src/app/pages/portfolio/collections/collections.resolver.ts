@@ -18,12 +18,12 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
     pageNum: number = 1;
 
     constructor(private collsService: CollectionsService) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
     }
 
-    resolve (route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Collection>> {
+    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Collection>> {
         const userId = route.parent.paramMap.get('id');
         const pageNum = +route.queryParamMap.get('page');
 

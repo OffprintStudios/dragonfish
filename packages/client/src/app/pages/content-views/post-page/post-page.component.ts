@@ -11,51 +11,55 @@ import { FrontendUser } from '@dragonfish/models/users';
 import { ItemKind } from '@dragonfish/models/comments';
 
 @Component({
-  selector: 'dragonfish-post-page',
-  templateUrl: './post-page.component.html',
-  styleUrls: ['./post-page.component.less']
+    selector: 'dragonfish-post-page',
+    templateUrl: './post-page.component.html',
+    styleUrls: ['./post-page.component.less'],
 })
 export class PostPageComponent implements OnInit {
-  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-  currentUserSubscription: Subscription;
-  currentUser: FrontendUser;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
+    currentUser: FrontendUser;
 
-  @Select(ContentState.currContent) currContent$: Observable<NewsContentModel>;
-  category = NewsCategory;
+    @Select(ContentState.currContent) currContent$: Observable<NewsContentModel>;
+    category = NewsCategory;
 
-  pageNum = 1; // For comments pages
-  itemKind = ItemKind.NewsContent; // Sets the item kind for comments
+    pageNum = 1; // For comments pages
+    itemKind = ItemKind.NewsContent; // Sets the item kind for comments
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-    this.currentUserSubscription = this.currentUser$.subscribe(x => {
-      this.currentUser = x;
-    });
-    this.fetchData();
-  }
-
-  ngOnInit(): void {
-    this.currContent$.subscribe(x => {
-      Title.setTwoPartTitle(x.title);
-    });
-  }
-
-  private fetchData() {
-    const queryParams = this.route.snapshot.queryParamMap;    
-    if (queryParams.get('page') !== null) {
-      this.pageNum = +queryParams.get('page');
+    constructor(private router: Router, private route: ActivatedRoute) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
+        });
+        this.fetchData();
     }
-  }
 
-  /**
-   * Handles page changing
-   * 
-   * @param event The new page
-   */
-  onPageChange(event: number) {
-    if (event !== 1) {
-      this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
-    } else {
-      this.router.navigate([], {relativeTo: this.route});
+    ngOnInit(): void {
+        this.currContent$.subscribe((x) => {
+            Title.setTwoPartTitle(x.title);
+        });
     }
-  }
+
+    private fetchData() {
+        const queryParams = this.route.snapshot.queryParamMap;
+        if (queryParams.get('page') !== null) {
+            this.pageNum = +queryParams.get('page');
+        }
+    }
+
+    /**
+     * Handles page changing
+     *
+     * @param event The new page
+     */
+    onPageChange(event: number) {
+        if (event !== 1) {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { page: event },
+                queryParamsHandling: 'merge',
+            });
+        } else {
+            this.router.navigate([], { relativeTo: this.route });
+        }
+    }
 }

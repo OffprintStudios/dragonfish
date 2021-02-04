@@ -14,8 +14,8 @@ export class StatsController {
         const workCount = await this.worksService.getTotalWorkCount();
         const frontPageStats: FrontPageStats = {
             numUsers: userCount,
-            numWorks: workCount
-        }
+            numWorks: workCount,
+        };
 
         return frontPageStats;
     }

@@ -9,14 +9,14 @@ import { WorkStatus } from '@dragonfish/models/works';
 @Component({
     selector: 'approve-poetry',
     templateUrl: './approve-poetry.component.html',
-    styleUrls: ['./approve-poetry.component.less']
+    styleUrls: ['./approve-poetry.component.less'],
 })
 export class ApprovePoetryComponent implements OnInit {
     currDoc: ApprovalQueue;
     currPoetry: PoetryContent;
     contentStatus = WorkStatus;
     poetryForm = PoetryForm;
-    
+
     constructor(public route: ActivatedRoute) {}
 
     ngOnInit(): void {

@@ -8,41 +8,41 @@ import { MessageThreadDocument, MessageThreadSchema } from './message-thread.sch
 import { MessagesService } from './messages.service';
 
 @Module({
-  imports: [
-    MongooseModule.forFeatureAsync([
-      {
-        name: 'Message',
-        useFactory: () => {
-          const schema = MessageSchema;
-          schema.plugin(require('mongoose-autopopulate'));
-          schema.plugin(require('mongoose-paginate-v2'));
-          schema.pre<MessageDocument>('save', async function (next: HookNextFunction) {
-            this.set('_id', uuidV4());
-            this.set('createdAt', new Date());
-            this.set('updatedAt', new Date());
-            return next();
-          });
-          return schema;
-        }
-      },
-      {
-        name: 'MessageThread',
-        useFactory: () => {
-          const schema = MessageThreadSchema;
-          schema.plugin(require('mongoose-autopopulate'));
-          schema.plugin(require('mongoose-paginate-v2'));
-          schema.pre<MessageThreadDocument>('save', async function (next: HookNextFunction) {
-            this.set('_id', uuidV4());
-            this.set('createdAt', new Date());
-            this.set('updatedAt', new Date());
-            return next();
-          });
-          return schema;
-        }
-      }
-    ])
-  ],
-  exports: [MessagesService],
-  providers: [MessagesService]
+    imports: [
+        MongooseModule.forFeatureAsync([
+            {
+                name: 'Message',
+                useFactory: () => {
+                    const schema = MessageSchema;
+                    schema.plugin(require('mongoose-autopopulate'));
+                    schema.plugin(require('mongoose-paginate-v2'));
+                    schema.pre<MessageDocument>('save', async function (next: HookNextFunction) {
+                        this.set('_id', uuidV4());
+                        this.set('createdAt', new Date());
+                        this.set('updatedAt', new Date());
+                        return next();
+                    });
+                    return schema;
+                },
+            },
+            {
+                name: 'MessageThread',
+                useFactory: () => {
+                    const schema = MessageThreadSchema;
+                    schema.plugin(require('mongoose-autopopulate'));
+                    schema.plugin(require('mongoose-paginate-v2'));
+                    schema.pre<MessageThreadDocument>('save', async function (next: HookNextFunction) {
+                        this.set('_id', uuidV4());
+                        this.set('createdAt', new Date());
+                        this.set('updatedAt', new Date());
+                        return next();
+                    });
+                    return schema;
+                },
+            },
+        ]),
+    ],
+    exports: [MessagesService],
+    providers: [MessagesService],
 })
 export class MessagesModule {}

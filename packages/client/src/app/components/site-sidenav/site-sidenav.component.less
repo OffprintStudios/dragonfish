@@ -6,7 +6,8 @@
     }
 }
 
-.mat-tab-nav-bar, .mat-tab-header {
+.mat-tab-nav-bar,
+.mat-tab-header {
     border-bottom: none !important;
 }
 
@@ -29,7 +30,7 @@ div.user-menu {
             text-align: center;
             border-bottom: 1px solid whitesmoke;
         }
-    
+
         form {
             margin-bottom: 0;
             p {
@@ -37,10 +38,21 @@ div.user-menu {
                 a {
                     color: whitesmoke;
                     text-decoration: none;
-                    background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent) 50%);
+                    background: linear-gradient(
+                        0deg,
+                        var(--site-accent) 0%,
+                        var(--site-accent-hover) 10%,
+                        var(--site-accent) 50%
+                    );
                     &:hover {
                         color: whitesmoke;
-                        background: linear-gradient(0deg, var(--site-accent) 0%, var(--site-accent-hover) 10%, var(--site-accent-hover) 90%, var(--site-accent) 100%);
+                        background: linear-gradient(
+                            0deg,
+                            var(--site-accent) 0%,
+                            var(--site-accent-hover) 10%,
+                            var(--site-accent-hover) 90%,
+                            var(--site-accent) 100%
+                        );
                         text-decoration: none;
                     }
                 }
@@ -119,7 +131,7 @@ div.user-menu {
         overflow: auto;
         padding-left: 1.5rem;
         padding-right: 1.5rem;
-        
+
         .mat-tab-group {
             font-family: Raleway, sans-serif;
             font-size: initial;

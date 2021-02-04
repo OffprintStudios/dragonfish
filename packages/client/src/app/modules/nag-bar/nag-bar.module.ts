@@ -3,13 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { NagBarComponent } from './nag-bar.component';
 
-
-
 @NgModule({
-  declarations: [NagBarComponent],
-  imports: [
-    CommonModule
-  ],
-  exports: [NagBarComponent]
+    declarations: [NagBarComponent],
+    imports: [CommonModule],
+    exports: [NagBarComponent],
 })
-export class NagBarModule { }
+export class NagBarModule {}

@@ -1,4 +1,10 @@
-import { BlogsContentModel, ContentModel, NewsContentModel, PoetryContent, ProseContent } from '@dragonfish/models/content';
+import {
+    BlogsContentModel,
+    ContentModel,
+    NewsContentModel,
+    PoetryContent,
+    ProseContent,
+} from '@dragonfish/models/content';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 export interface ContentPage {

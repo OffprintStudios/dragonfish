@@ -2,43 +2,43 @@ export interface Theme {
     /**
      * The website's primary accent color.
      */
-    accent: string,
+    accent: string;
 
     /**
      * The color used when hovering over an element. Typically a darker sahde
      * of the accent color.
      */
-    accentHover: string,
+    accentHover: string;
 
     /**
      * A lighter shade of the accent color.
      */
-    accentLight: string,
+    accentLight: string;
 
     /**
      * Background color for pages.
      */
-    background: string,
+    background: string;
 
     /**
      * Color used for text.
      */
-    textColor: string,
+    textColor: string;
 
     /**
      * Border color for divs and containers.
      */
-    borders: string,
+    borders: string;
 
     /**
      * The background color for any control bars.
      */
-    controlsBackground: string,
+    controlsBackground: string;
 
     /**
      * The background color for code blocks.
      */
-    codeBackground: string,
+    codeBackground: string;
 }
 
 export namespace Themes {
@@ -70,7 +70,7 @@ export namespace Themes {
 
     export class Aqua implements Theme {
         static readonly key = 'aqua';
-        
+
         readonly accent = '#5098D6';
         readonly accentHover = '#316399';
         readonly accentLight = '#A2CDEF';
@@ -109,7 +109,7 @@ export namespace Themes {
 
     export class DarkRoyal implements Theme {
         static readonly key = 'dark-royal';
-        
+
         readonly accent = '#9A4EAE';
         readonly accentHover = '#4E2A84';
         readonly accentLight = '#C987DB';
@@ -128,11 +128,11 @@ export namespace Themes {
         readonly accentLight = '#8EC67B';
         readonly background = '#FBFBFB';
         readonly textColor = '#000000'; // aka black
-        readonly borders = '#808080';  // aka grey
+        readonly borders = '#808080'; // aka grey
         readonly controlsBackground = '#D3D3D3'; // aka lightgrey
         readonly codeBackground = '#F0F0F0';
     }
-    
+
     export class MidnightField implements Theme {
         static readonly key = 'midnight-field';
 
@@ -155,7 +155,7 @@ export namespace Themes {
         readonly background = '#FBFBFB';
         readonly textColor = '#000000'; //aka black
         readonly borders = '#808080'; // aka grey
-        readonly controlsBackground = '#D3D3D3'; // aka lightgrey 
+        readonly controlsBackground = '#D3D3D3'; // aka lightgrey
         readonly codeBackground = '#F0F0F0';
     }
 
@@ -182,6 +182,6 @@ export namespace Themes {
         Steel = 'steel',
         MidnightField = 'midnight-field',
         Autumn = 'autumn',
-        DuskAutumn = 'dusk-autumn'
+        DuskAutumn = 'dusk-autumn',
     }
 }

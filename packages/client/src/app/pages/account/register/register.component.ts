@@ -10,72 +10,76 @@ import { Auth } from '../../../shared/auth';
 import { UserState } from '../../../shared/user';
 import { FrontendUser, CreateUser } from '@dragonfish/models/users';
 
-
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.less']
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.less'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
-  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-  currentUserSubscription: Subscription;
-  currentUser: FrontendUser;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
+    currentUser: FrontendUser;
 
-  loadingRegister = false;
-  siteVersion = Constants.siteVersion;
+    loadingRegister = false;
+    siteVersion = Constants.siteVersion;
 
-  registerForm = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
-    password: new FormControl('', Validators.required),
-    repeatPassword: new FormControl('', Validators.required),
-    inviteCode: new FormControl('', Validators.required),
-    tosCheck: new FormControl(false, Validators.requiredTrue),
-    ageCheck: new FormControl(false, Validators.requiredTrue),
-  });
-
-  constructor( private store: Store, private snackBar: MatSnackBar) {
-    this.currentUserSubscription = this.currentUser$.subscribe(x => {
-      this.currentUser = x;
+    registerForm = new FormGroup({
+        email: new FormControl('', [Validators.email, Validators.required]),
+        username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
+        password: new FormControl('', Validators.required),
+        repeatPassword: new FormControl('', Validators.required),
+        inviteCode: new FormControl('', Validators.required),
+        tosCheck: new FormControl(false, Validators.requiredTrue),
+        ageCheck: new FormControl(false, Validators.requiredTrue),
     });
-  }
 
-  ngOnInit(): void {
-    Title.setTwoPartTitle(Constants.REGISTER);
-  }
-
-  ngOnDestroy(): void {
-    this.currentUserSubscription.unsubscribe();
-  }
-
-  get registerFields() { return this.registerForm.controls; }
-
-  onRegisterSubmit() {
-    this.loadingRegister = true;
-    if (this.registerForm.invalid) {
-      this.loadingRegister = false;
-      return;
+    constructor(private store: Store, private snackBar: MatSnackBar) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
+        });
     }
 
-    if (this.registerFields.password.value !== this.registerFields.repeatPassword.value) {
-      this.loadingRegister = false;
-      this.snackBar.open('Your passwords don\'t match!');
-      return;
+    ngOnInit(): void {
+        Title.setTwoPartTitle(Constants.REGISTER);
     }
 
-    const credentials: CreateUser = {
-      email: this.registerFields.email.value,
-      username: this.registerFields.username.value,
-      password: this.registerFields.password.value,
-      inviteCode: this.registerFields.inviteCode.value,
-      agreedToPolicies: this.registerFields.tosCheck.value
-    };
+    ngOnDestroy(): void {
+        this.currentUserSubscription.unsubscribe();
+    }
 
-    this.store.dispatch([new Auth.Register(credentials), new Navigate(['/home'])]).subscribe(() => {
-      this.loadingRegister = false;
-    }, err => {
-      this.loadingRegister = false;
-      this.snackBar.open(err.error.message);
-    });
-  }
+    get registerFields() {
+        return this.registerForm.controls;
+    }
+
+    onRegisterSubmit() {
+        this.loadingRegister = true;
+        if (this.registerForm.invalid) {
+            this.loadingRegister = false;
+            return;
+        }
+
+        if (this.registerFields.password.value !== this.registerFields.repeatPassword.value) {
+            this.loadingRegister = false;
+            this.snackBar.open("Your passwords don't match!");
+            return;
+        }
+
+        const credentials: CreateUser = {
+            email: this.registerFields.email.value,
+            username: this.registerFields.username.value,
+            password: this.registerFields.password.value,
+            inviteCode: this.registerFields.inviteCode.value,
+            agreedToPolicies: this.registerFields.tosCheck.value,
+        };
+
+        this.store.dispatch([new Auth.Register(credentials), new Navigate(['/home'])]).subscribe(
+            () => {
+                this.loadingRegister = false;
+            },
+            (err) => {
+                this.loadingRegister = false;
+                this.snackBar.open(err.error.message);
+            },
+        );
+    }
 }

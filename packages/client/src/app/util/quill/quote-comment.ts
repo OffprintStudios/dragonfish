@@ -9,7 +9,7 @@ export function quoteComment(body: string) {
 
     const newQuote = commBody.forEach((op) => {
         return op;
-    })
+    });
     console.log(newQuote);
     /*const newQuote = commBody.insert({blockquote: true});
     console.log(`With blockquote:`);

@@ -9,7 +9,7 @@ import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 
 @Injectable()
 export class ApproveContentResolver implements Resolve<ApprovalQueue> {
-    constructor (private store: Store) {}
+    constructor(private store: Store) {}
 
     resolve(_route: ActivatedRouteSnapshot, _routerState: RouterStateSnapshot): Observable<ApprovalQueue> {
         return this.store.selectOnce<ApprovalQueue>(ApprovalQueueState.selectedDoc);

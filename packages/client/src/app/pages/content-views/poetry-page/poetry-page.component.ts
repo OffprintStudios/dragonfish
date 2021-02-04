@@ -13,7 +13,7 @@ import { ContentState } from '../../../shared/content';
 @Component({
     selector: 'poetry-page',
     templateUrl: './poetry-page.component.html',
-    styleUrls: ['./poetry-page.component.less']
+    styleUrls: ['./poetry-page.component.less'],
 })
 export class PoetryPageComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
@@ -30,21 +30,21 @@ export class PoetryPageComponent implements OnInit {
     contentGenres = Genres;
 
     constructor(public route: ActivatedRoute, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
         this.fetchData();
     }
 
     ngOnInit(): void {
-        this.currContent$.subscribe(x => {
+        this.currContent$.subscribe((x) => {
             Title.setTwoPartTitle(x.title);
         });
     }
 
     /**
      * Changes the size of the rating icon depending on the size of the window.
-     * 
+     *
      * @param event Window resize event
      */
     @HostListener('window:resize', ['$event'])
@@ -60,21 +60,25 @@ export class PoetryPageComponent implements OnInit {
      * Fetches the current page of comments.
      */
     private fetchData() {
-        const queryParams = this.route.snapshot.queryParamMap;    
+        const queryParams = this.route.snapshot.queryParamMap;
         if (queryParams.get('page') !== null) {
             this.pageNum = +queryParams.get('page');
         }
     }
-    
+
     /**
      * Changes query params to the appropriate page.
      * @param event The page changed to
      */
     onPageChange(event: number) {
         if (event !== 1) {
-        this.router.navigate([], {relativeTo: this.route, queryParams: {page: event}, queryParamsHandling: 'merge'});
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { page: event },
+                queryParamsHandling: 'merge',
+            });
         } else {
-        this.router.navigate([], {relativeTo: this.route});
+            this.router.navigate([], { relativeTo: this.route });
         }
     }
 }

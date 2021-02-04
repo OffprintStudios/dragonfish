@@ -20,11 +20,15 @@ export class MigrateWorkResolver implements Resolve<Work> {
     }
 
     grabOneWork(workId: string) {
-        return this.http.get<Work>(`${this.url}/fetch-one-work?workId=${workId}`, {observe: 'response', withCredentials: true})
-            .pipe(map(res => {
-                return res.body;
-            }), catchError(err => {
-                return throwError(err);
-            }));
+        return this.http
+            .get<Work>(`${this.url}/fetch-one-work?workId=${workId}`, { observe: 'response', withCredentials: true })
+            .pipe(
+                map((res) => {
+                    return res.body;
+                }),
+                catchError((err) => {
+                    return throwError(err);
+                }),
+            );
     }
 }

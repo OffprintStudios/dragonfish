@@ -2,7 +2,9 @@
     <div class="section-container">
         <div class="section-selector-mobile">
             <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">
-                <button matRipple class="selector left" (click)="goToPrev()"><i-feather name="chevron-left"></i-feather></button>
+                <button matRipple class="selector left" (click)="goToPrev()">
+                    <i-feather name="chevron-left"></i-feather>
+                </button>
             </ng-container>
             <ng-template #hasNoPrev>
                 <button matRipple class="selector left disabled"><i-feather name="chevron-left"></i-feather></button>
@@ -12,7 +14,9 @@
                 <span class="icon"><i-feather name="chevron-down"></i-feather></span>
             </div>
             <ng-container *ngIf="indexNext < sections.length; else hasNoNext">
-                <button matRipple class="selector right" (click)="goToNext()"><i-feather name="chevron-right"></i-feather></button>
+                <button matRipple class="selector right" (click)="goToNext()">
+                    <i-feather name="chevron-right"></i-feather>
+                </button>
             </ng-container>
             <ng-template #hasNoNext>
                 <button matRipple class="selector right disabled"><i-feather name="chevron-right"></i-feather></button>
@@ -24,20 +28,28 @@
             </div>
             <div class="section-selector">
                 <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">
-                    <button matRipple class="selector left" (click)="goToPrev()"><i-feather name="chevron-left"></i-feather></button>
+                    <button matRipple class="selector left" (click)="goToPrev()">
+                        <i-feather name="chevron-left"></i-feather>
+                    </button>
                 </ng-container>
                 <ng-template #hasNoPrev>
-                    <button matRipple class="selector left disabled"><i-feather name="chevron-left"></i-feather></button>
+                    <button matRipple class="selector left disabled">
+                        <i-feather name="chevron-left"></i-feather>
+                    </button>
                 </ng-template>
                 <div class="section-list-menu" [matMenuTriggerFor]="sectionList">
                     <span class="text">Sections</span>
                     <span class="icon"><i-feather name="chevron-down"></i-feather></span>
                 </div>
                 <ng-container *ngIf="indexNext < sections.length; else hasNoNext">
-                    <button matRipple class="selector right" (click)="goToNext()"><i-feather name="chevron-right"></i-feather></button>
+                    <button matRipple class="selector right" (click)="goToNext()">
+                        <i-feather name="chevron-right"></i-feather>
+                    </button>
                 </ng-container>
                 <ng-template #hasNoNext>
-                    <button matRipple class="selector right disabled"><i-feather name="chevron-right"></i-feather></button>
+                    <button matRipple class="selector right disabled">
+                        <i-feather name="chevron-right"></i-feather>
+                    </button>
                 </ng-template>
             </div>
         </div>
@@ -62,7 +74,9 @@
         </div>
         <div class="section-selector-bottom">
             <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">
-                <button matRipple class="selector left" (click)="goToPrev()"><i-feather name="chevron-left"></i-feather></button>
+                <button matRipple class="selector left" (click)="goToPrev()">
+                    <i-feather name="chevron-left"></i-feather>
+                </button>
             </ng-container>
             <ng-template #hasNoPrev>
                 <button matRipple class="selector left disabled"><i-feather name="chevron-left"></i-feather></button>
@@ -72,7 +86,9 @@
                 <span class="icon"><i-feather name="chevron-down"></i-feather></span>
             </div>
             <ng-container *ngIf="indexNext < sections.length; else hasNoNext">
-                <button matRipple class="selector right" (click)="goToNext()"><i-feather name="chevron-right"></i-feather></button>
+                <button matRipple class="selector right" (click)="goToNext()">
+                    <i-feather name="chevron-right"></i-feather>
+                </button>
             </ng-container>
             <ng-template #hasNoNext>
                 <button matRipple class="selector right disabled"><i-feather name="chevron-right"></i-feather></button>

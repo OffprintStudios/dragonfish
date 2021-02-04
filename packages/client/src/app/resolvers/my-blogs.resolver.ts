@@ -10,7 +10,7 @@ import { BlogsService } from '../services/content';
 export class MyBlogsResolver implements Resolve<PaginateResult<Blog>> {
     pageNum: number = 1;
 
-    constructor (private blogsService: BlogsService) { }
+    constructor(private blogsService: BlogsService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Blog>> {
         const pageNum = +route.queryParamMap.get('page');

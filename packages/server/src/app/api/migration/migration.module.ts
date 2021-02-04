@@ -11,15 +11,18 @@ import { MigrationController } from './migration.controller';
 
 @Module({
     imports: [
-        UsersModule, OldBlogsModule, WorksModule, ContentModule,
+        UsersModule,
+        OldBlogsModule,
+        WorksModule,
+        ContentModule,
         JwtModule.registerAsync({
             useFactory: () => ({
                 secret: getJwtSecretKey(),
-                signOptions: {expiresIn: JWT_EXPIRATION},
+                signOptions: { expiresIn: JWT_EXPIRATION },
             }),
         }),
     ],
     providers: [MigrationService],
-    controllers: [MigrationController]
+    controllers: [MigrationController],
 })
 export class MigrationModule {}

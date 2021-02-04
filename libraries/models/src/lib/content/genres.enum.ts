@@ -10,5 +10,5 @@ export enum Genres {
     Horror = 'Horror',
     Thriller = 'Thriller',
     Mystery = 'Mystery',
-    Erotica = 'Erotica'
+    Erotica = 'Erotica',
 }

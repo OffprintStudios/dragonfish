@@ -9,9 +9,11 @@ import { WorksService } from '../../db/works/works.service';
 
 @Injectable()
 export class MigrationService {
-    constructor (private readonly contentService: ContentService, 
-        private readonly worksService: WorksService, 
-        private readonly blogsService: OldBlogsService) {}
+    constructor(
+        private readonly contentService: ContentService,
+        private readonly worksService: WorksService,
+        private readonly blogsService: OldBlogsService,
+    ) {}
 
     async fetchWorks(user: JwtPayload) {
         return await this.worksService.fetchUserWorks(user);
@@ -32,7 +34,7 @@ export class MigrationService {
     async saveMigration(user: JwtPayload, formData: MigrationForm) {
         switch (formData.kind) {
             case ContentKind.BlogContent:
-                await this.contentService.migrateBlog(user, formData).then(() =>{
+                await this.contentService.migrateBlog(user, formData).then(() => {
                     this.blogsService.deleteBlog(user, formData._id);
                 });
                 return;

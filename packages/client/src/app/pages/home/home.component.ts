@@ -11,32 +11,32 @@ import { Title } from '../../shared';
 import { NewsContentModel } from '@dragonfish/models/content';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.less'],
 })
 export class HomeComponent implements OnInit {
-  @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-  currentUserSubscription: Subscription;
-  currentUser: FrontendUser;
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    currentUserSubscription: Subscription;
+    currentUser: FrontendUser;
 
-  siteVersion = Constants.siteVersion;
+    siteVersion = Constants.siteVersion;
 
-  initialPosts: NewsContentModel[];
+    initialPosts: NewsContentModel[];
 
-  // Carousel Options
-  newsOptions = this.carouselOptions.newsCarouselConfig;
+    // Carousel Options
+    newsOptions = this.carouselOptions.newsCarouselConfig;
 
-  constructor(public route: ActivatedRoute, private carouselOptions: CarouselOptionsManager) {
-    this.currentUserSubscription = this.currentUser$.subscribe(x => {
-      this.currentUser = x;
-    });
-  }
-  ngOnInit(): void {
-    this.route.data.subscribe(data => {
-      this.initialPosts = data.homeData as NewsContentModel[];
-    });
+    constructor(public route: ActivatedRoute, private carouselOptions: CarouselOptionsManager) {
+        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
+            this.currentUser = x;
+        });
+    }
+    ngOnInit(): void {
+        this.route.data.subscribe((data) => {
+            this.initialPosts = data.homeData as NewsContentModel[];
+        });
 
-    Title.setTwoPartTitle(Constants.HOME);
-  }
+        Title.setTwoPartTitle(Constants.HOME);
+    }
 }
