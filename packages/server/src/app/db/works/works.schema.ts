@@ -1,5 +1,5 @@
 import { Schema, HookNextFunction } from 'mongoose';
-import { generate } from 'shortid';
+import { nanoid } from 'nanoid';
 import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
@@ -13,7 +13,7 @@ import * as documents from './models';
  */
 export const WorksSchema = new Schema(
     {
-        _id: { type: String, default: generate() },
+        _id: { type: String, default: () => nanoid() },
         author: {
             type: String,
             ref: 'User',
@@ -66,9 +66,6 @@ WorksSchema.plugin(MongooseAutopopulate);
 WorksSchema.plugin(MongoosePaginate);
 
 WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
-    if (!this._id) {
-        this.set('_id', generate());
-    }
     this.set('title', await sanitizeHtml(this.title));
     this.set('shortDesc', await sanitizeHtml(this.shortDesc));
     this.set('longDesc', await sanitizeHtml(this.longDesc));

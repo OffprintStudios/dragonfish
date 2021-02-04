@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { HookNextFunction } from 'mongoose';
-import { generate } from 'shortid';
+import * as sanitizeHtml from 'sanitize-html';
+import { countWords, stripTags } from 'voca';
 
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
 import { SectionsService } from './sections.service';
-import { countPlaintextWords, countQuillWords } from '@dragonfish/word_counter';
 
 @Module({
     imports: [
@@ -16,22 +15,17 @@ import { countPlaintextWords, countQuillWords } from '@dragonfish/word_counter';
                 useFactory: () => {
                     const schema = SectionsSchema;
                     schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
-                        if (!this._id) {
-                            this.set('_id', generate());
-                        }
-                        this.set('title', await sanitizeHtml(this.title));
-                        this.set('body', await sanitizeHtml(this.body));
+                        this.set('title', sanitizeHtml(this.title));
+                        this.set('body', sanitizeHtml(this.body));
                         if (this.authorsNote) {
-                            this.set('authorsNote', await sanitizeHtml(this.authorsNote));
+                            this.set('authorsNote', sanitizeHtml(this.authorsNote));
                         }
                         if (this.authorsNotePos) {
                             this.set('authorsNotePos', this.authorsNotePos);
                         }
                         this.set('published', this.published);
 
-                        const wordCount = this.usesNewEditor
-                            ? await countPlaintextWords(await stripAllHtml(this.body))
-                            : await countQuillWords(await sanitizeHtml(this.body));
+                        const wordCount = countWords(stripTags(sanitizeHtml(this.body)));
                         this.set('stats.words', Number(wordCount));
 
                         return next();
