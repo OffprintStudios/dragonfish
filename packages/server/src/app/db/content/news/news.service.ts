@@ -1,6 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { sanitizeHtml, stripAllHtml } from '@dragonfish/html_sanitizer';
+import { PaginateModel } from 'mongoose';
+import * as sanitizeHtml from 'sanitize-html';
+import { countWords, stripTags } from 'voca';
+
 import { JwtPayload } from '@dragonfish/models/auth';
 import {
     ContentFilter,
@@ -11,8 +14,6 @@ import {
     PubStatus,
 } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
-import { countPlaintextWords } from '@dragonfish/word_counter';
-import { PaginateModel, PaginateResult } from 'mongoose';
 import { NewsContentDocument } from './news-content.document';
 import { isAllowed } from '../../../util';
 
@@ -30,12 +31,12 @@ export class NewsService {
         if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Moderator, Roles.Admin])) {
             const newPost = new this.newsModel({
                 author: user.sub,
-                title: await sanitizeHtml(postInfo.title),
-                desc: await sanitizeHtml(postInfo.desc),
-                body: await sanitizeHtml(postInfo.body),
+                title: sanitizeHtml(postInfo.title),
+                desc: sanitizeHtml(postInfo.desc),
+                body: sanitizeHtml(postInfo.body),
                 'meta.category': postInfo.category,
                 'meta.rating': ContentRating.Everyone,
-                'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
+                'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body))),
             });
 
             return await newPost.save();
@@ -56,11 +57,11 @@ export class NewsService {
             return await this.newsModel.findByIdAndUpdate(
                 postId,
                 {
-                    title: await sanitizeHtml(postInfo.title),
-                    desc: await sanitizeHtml(postInfo.desc),
-                    body: await sanitizeHtml(postInfo.body),
+                    title: sanitizeHtml(postInfo.title),
+                    desc: sanitizeHtml(postInfo.desc),
+                    body: sanitizeHtml(postInfo.body),
                     'meta.category': postInfo.category,
-                    'stats.words': await countPlaintextWords(await stripAllHtml(postInfo.body)),
+                    'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body))),
                 },
                 { new: true },
             );

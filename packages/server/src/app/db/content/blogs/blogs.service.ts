@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload } from '@dragonfish/models/auth';
 import { PaginateModel } from 'mongoose';
-import { UsersService } from '../../users/users.service';
-
-import { BlogsContentDocument } from './blogs-content.document';
-import { BlogForm, PubChange, PubStatus } from '@dragonfish/models/content';
 import * as sanitizeHtml from 'sanitize-html';
 import { stripTags, countWords } from 'voca';
+
+import { UsersService } from '../../users/users.service';
+import { BlogsContentDocument } from './blogs-content.document';
+import { BlogForm, PubChange, PubStatus } from '@dragonfish/models/content';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/models/notifications';
 
@@ -32,7 +32,7 @@ export class BlogsService {
             title: sanitizeHtml(blogInfo.title),
             body: sanitizeHtml(blogInfo.body),
             'meta.rating': blogInfo.rating,
-            'stats.words': countWords(stripTags(blogInfo.body)),
+            'stats.words': countWords(stripTags(sanitizeHtml(blogInfo.body))),
         });
 
         const savedBlog = await newBlog.save();
@@ -52,7 +52,7 @@ export class BlogsService {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
-        const wordcount = countWords(stripTags(blogInfo.body));
+        const wordcount = countWords(stripTags(sanitizeHtml(blogInfo.body)));
 
         return await this.blogsModel.findOneAndUpdate(
             { _id: blogId, author: user.sub },
