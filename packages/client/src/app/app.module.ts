@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -144,6 +144,7 @@ import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from '
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
 import { SectionsState } from './shared/my-stuff/sections';
+import { init } from './util/functions';
 
 @NgModule({
     declarations: [
@@ -293,6 +294,7 @@ import { SectionsState } from './shared/my-stuff/sections';
         NgxsSelectSnapshotModule.forRoot(),
     ],
     providers: [
+        { provide: APP_INITIALIZER, useFactory: init, multi: true, deps: [HttpClient] },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
         SlugifyPipe,

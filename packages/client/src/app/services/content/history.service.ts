@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { PaginateResult } from '@dragonfish/models/util';
@@ -11,7 +12,7 @@ import { AlertsService } from '../../shared/alerts';
     providedIn: 'root',
 })
 export class HistoryService {
-    private url = `/api/content/history`;
+    private url = `${environment.apiUrl}/api/content/history`;
 
     constructor(private http: HttpClient, private alertsService: AlertsService) {}
 

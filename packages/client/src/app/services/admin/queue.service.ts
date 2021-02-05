@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { AlertsService } from '../../shared/alerts';
 
@@ -9,7 +10,7 @@ import { AlertsService } from '../../shared/alerts';
     providedIn: 'root',
 })
 export class QueueService {
-    private url: string = `/api/dashboard/queue`;
+    private url: string = `${environment.apiUrl}/api/dashboard/queue`;
 
     constructor(private http: HttpClient, private alertsService: AlertsService) {}
 

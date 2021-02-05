@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import {
@@ -19,7 +20,7 @@ import { HttpError } from '../../../models/site';
     providedIn: 'root',
 })
 export class UserService {
-    private url = `/api/auth`;
+    private url = `${environment.apiUrl}/api/auth`;
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { AlertsService } from '../../shared/alerts';
 import { Collection, CollectionForm } from '@dragonfish/models/collections';
@@ -11,7 +12,7 @@ import { PaginateResult } from '@dragonfish/models/util';
     providedIn: 'root',
 })
 export class CollectionsService {
-    private url = `/api/content/collections`;
+    private url = `${environment.apiUrl}/api/content/collections`;
     public thisUsersCollections: Collection[];
 
     constructor(private http: HttpClient, private alertsService: AlertsService) {}

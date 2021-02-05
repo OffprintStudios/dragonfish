@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://api.offprint.net'
+    apiUrl: 'https://api.offprint.net',
 };

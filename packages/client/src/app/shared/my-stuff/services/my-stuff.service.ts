@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import {
@@ -20,7 +21,7 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/models/section
     providedIn: 'root',
 })
 export class MyStuffService {
-    private url = `/api/content`;
+    private url = `${environment.apiUrl}/api/content`;
 
     constructor(private http: HttpClient) {}
 

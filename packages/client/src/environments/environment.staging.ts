@@ -1,4 +1,4 @@
-export const environment =  {
+export const environment = {
     production: true,
-    apiUrl: 'https://api-test.offprint.net'
+    apiUrl: 'https://api-test.offprint.net',
 };

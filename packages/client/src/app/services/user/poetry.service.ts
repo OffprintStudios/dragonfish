@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
+import { environment } from '../../../environments/environment';
 
 import { PoetryContent, CreatePoetry } from '@dragonfish/models/content';
 import { HttpError } from '../../models/site';
@@ -11,7 +12,7 @@ import { HttpError } from '../../models/site';
     providedIn: 'root',
 })
 export class PoetryService {
-    private url = `/api/content/poetry`;
+    private url = `${environment.apiUrl}/api/content/poetry`;
 
     constructor(private http: HttpClient) {}
 

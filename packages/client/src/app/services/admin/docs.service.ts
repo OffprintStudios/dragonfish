@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import * as lodash from 'lodash';
+import { environment } from '../../../environments/environment';
 
 import { AlertsService } from '../../shared/alerts';
 import { Doc } from '@dragonfish/models/docs';
@@ -11,7 +11,7 @@ import { Doc } from '@dragonfish/models/docs';
     providedIn: 'root',
 })
 export class DocsService {
-    private url = `/api/dashboard/docs`;
+    private url = `${environment.apiUrl}/api/dashboard/docs`;
 
     constructor(private http: HttpClient, private alertsService: AlertsService) {}
 

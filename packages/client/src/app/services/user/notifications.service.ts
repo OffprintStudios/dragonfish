@@ -5,6 +5,7 @@ import { map, catchError } from 'rxjs/operators';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Select } from '@ngxs/store';
 import { UserState } from '../../shared/user';
+import { environment } from '../../../environments/environment';
 
 import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@dragonfish/models/notifications';
 import { FrontendUser } from '@dragonfish/models/users';
@@ -17,7 +18,7 @@ export class NotificationsService {
     private currentUserSubscription: Subscription;
     private currentUser: FrontendUser;
 
-    private url = `/api/notifications`;
+    private url = `${environment.apiUrl}/api/notifications`;
 
     constructor(private http: HttpClient, private zone: NgZone) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {

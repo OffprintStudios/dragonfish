@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { PaginateResult } from '@dragonfish/models/util';
 import { NewsContentModel } from '@dragonfish/models/content';
@@ -11,7 +12,7 @@ import { NewsContentModel } from '@dragonfish/models/content';
     providedIn: 'root',
 })
 export class NewsService {
-    private url = `/api/content/news`;
+    private url = `${environment.apiUrl}/api/content/news`;
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 

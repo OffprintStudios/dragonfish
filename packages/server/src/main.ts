@@ -21,19 +21,24 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     // Initializing core functionality & security
-    app.use(cookieParser());
+    app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
-    app.use(csurf({ cookie: true }));
-    app.use(helmet());
-    app.enableCors({ origin: process.env.ORIGIN, credentials: true });
-    app.use(require('prerender-node').set('prerenderToken', process.env.PRERENDER_TOKEN));
-
+    app.enableCors({ 
+        origin: process.env.ORIGIN,
+        credentials: true,
+        allowedHeaders: ['Accept', 'Authorization', 'Content-Type', 'Origin'],
+        methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+        optionsSuccessStatus: 204
+    });
+    app.use(csurf({cookie: {sameSite: 'none', secure: true}}));
     // this is to make sure the XSRF-TOKEN is being set correctly
     app.use(function (req, res, next) {
-        res.cookie('XSRF-TOKEN', req.csrfToken());
+        res.cookie('XSRF-TOKEN', req.csrfToken(), {sameSite: 'none', secure: true});
         return next();
     });
+    app.use(helmet());
+    app.use(require('prerender-node').set('prerenderToken', process.env.PRERENDER_TOKEN));
 
     const config = new DocumentBuilder()
         .setTitle(`Dragonfish`)

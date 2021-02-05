@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import * as models from '@dragonfish/models/blogs';
 import { BlogForm, BlogsContentModel, PubChange, PubStatus } from '@dragonfish/models/content';
@@ -14,7 +15,7 @@ import { Types } from 'mongoose';
     providedIn: 'root',
 })
 export class BlogsService {
-    private url: string = `/api/content/blogs`;
+    private url: string = `${environment.apiUrl}/api/content/blogs`;
 
     constructor(private http: HttpClient, private alertsService: AlertsService, private router: Router) {}
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../../../environments/environment';
 
 import { Decision } from '@dragonfish/models/contrib';
 import { PaginateResult } from '@dragonfish/models/util';
@@ -14,7 +15,7 @@ import { Section } from '@dragonfish/models/sections';
     providedIn: 'root',
 })
 export class ApprovalQueueService {
-    private url: string = `/api/dashboard/queue`;
+    private url: string = `${environment.apiUrl}/api/dashboard/queue`;
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 

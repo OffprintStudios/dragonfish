@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { BlogComment, WorkComment, ContentComment, CreateComment, EditComment } from '@dragonfish/models/comments';
 import { PaginateResult } from '@dragonfish/models/util';
@@ -11,7 +12,7 @@ import { AlertsService } from '../../shared/alerts';
     providedIn: 'root',
 })
 export class CommentsService {
-    private url = `/api/content/comments`;
+    private url = `${environment.apiUrl}/api/content/comments`;
 
     constructor(private readonly http: HttpClient, private readonly alertsService: AlertsService) {}
 

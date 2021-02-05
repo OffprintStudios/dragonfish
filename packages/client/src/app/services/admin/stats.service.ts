@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { FrontPageStats } from '@dragonfish/models/stats';
 import { AlertsService } from '../../shared/alerts';
@@ -10,7 +11,7 @@ import { AlertsService } from '../../shared/alerts';
     providedIn: 'root',
 })
 export class StatsService {
-    private url = `/api/admin/stats`;
+    private url = `${environment.apiUrl}/api/admin/stats`;
 
     constructor(private http: HttpClient, private alertsService: AlertsService) {}
 

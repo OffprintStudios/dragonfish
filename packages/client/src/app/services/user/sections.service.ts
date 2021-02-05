@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 import { PoetryContent, ProseContent } from '@dragonfish/models/content';
@@ -10,7 +11,7 @@ import { PoetryContent, ProseContent } from '@dragonfish/models/content';
     providedIn: 'root',
 })
 export class SectionsService {
-    private url = `/api/content/sections`;
+    private url = `${environment.apiUrl}/api/content/sections`;
     public myWork: PoetryContent | ProseContent;
     public mySections: Section[];
 

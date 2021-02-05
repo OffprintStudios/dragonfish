@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { InitialResults, PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
@@ -12,7 +13,7 @@ import { BlogsContentModel, ContentModel, ProseContent } from '@dragonfish/model
     providedIn: 'root',
 })
 export class SearchService {
-    private url: string = `/api/search`;
+    private url: string = `${environment.apiUrl}/api/search`;
 
     workResults: Observable<PaginateResult<ContentModel>>;
     blogResults: Observable<PaginateResult<BlogsContentModel>>;

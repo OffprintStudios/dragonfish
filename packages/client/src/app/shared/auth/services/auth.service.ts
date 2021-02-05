@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 import { FrontendUser, CreateUser, LoginUser } from '@dragonfish/models/users';
 
@@ -14,7 +15,7 @@ import { FrontendUser, CreateUser, LoginUser } from '@dragonfish/models/users';
     providedIn: 'root',
 })
 export class AuthService {
-    private url: string = `/api/auth`;
+    private url: string = `${environment.apiUrl}/api/auth`;
 
     constructor(private http: HttpClient) {}
 

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { PaginateResult } from '@dragonfish/models/util';
 import { MessageThread, CreateInitialMessage, CreateResponse } from '@dragonfish/models/messages';
@@ -11,7 +12,7 @@ import { MessageThread, CreateInitialMessage, CreateResponse } from '@dragonfish
     providedIn: 'root',
 })
 export class MessagesService {
-    private url = `/api/content/messages`;
+    private url = `${environment.apiUrl}/api/content/messages`;
 
     constructor(private http: HttpClient, private _snackbar: MatSnackBar) {}
 

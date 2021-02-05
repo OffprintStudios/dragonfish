@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { Blog } from '@dragonfish/models/blogs';
 import { Work } from '@dragonfish/models/works';
@@ -13,7 +14,7 @@ import { Collection } from '@dragonfish/models/collections';
     providedIn: 'root',
 })
 export class PortfolioService {
-    private url: string = `/api/content/portfolio`;
+    private url: string = `${environment.apiUrl}/api/content/portfolio`;
 
     constructor(private http: HttpClient) {}
 

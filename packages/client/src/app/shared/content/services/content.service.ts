@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 import { ContentModel, ContentKind, SetRating } from '@dragonfish/models/content';
 import { PaginateResult } from '@dragonfish/models/util';
@@ -13,7 +14,7 @@ import { ReadingHistory } from '@dragonfish/models/reading-history';
     providedIn: 'root',
 })
 export class ContentService {
-    private url = `/api/content`;
+    private url = `${environment.apiUrl}/api/content`;
 
     constructor(private http: HttpClient, private snackBar: MatSnackBar) {}
 

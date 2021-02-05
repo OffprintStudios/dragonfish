@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
+
 import { BlogsContentModel, ContentKind, ContentModel, PoetryContent, ProseContent } from '@dragonfish/models/content';
 
 @Injectable({
     providedIn: 'root',
 })
 export class MyStuffService {
-    private url = `/api/content`;
+    private url = `${environment.apiUrl}/api/content`;
 
     constructor(private http: HttpClient) {}
 

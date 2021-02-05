@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 import { throwError, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 import { AlertsService } from '../../shared/alerts';
 import { HttpError } from '../..//models/site';
@@ -24,7 +25,7 @@ import { PaginateResult } from '@dragonfish/models/util';
     providedIn: 'root',
 })
 export class WorksService {
-    private url: string = `/api/content/works`;
+    private url: string = `${environment.apiUrl}/api/content/works`;
 
     public thisWorkId: string; // for cover art uploading
 
