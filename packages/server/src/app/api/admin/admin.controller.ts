@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { FrontendUser } from '@dragonfish/models/users';
 import { UsersService } from '../../db/users/users.service';
+import { SetCookies } from '@nestjsplus/cookies';
 
 @Controller()
 export class AdminController {

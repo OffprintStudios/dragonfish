@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AppController } from './app.controller';
 
 @Module({
     imports: [
@@ -16,5 +17,6 @@ import { AppRoutingModule } from './app-routing.module';
             }),
         }),
     ],
+    controllers: [AppController]
 })
 export class AppModule {}
