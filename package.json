@@ -41,6 +41,9 @@
     "@angular/platform-browser": "11.0.5",
     "@angular/platform-browser-dynamic": "11.0.5",
     "@angular/router": "11.0.5",
+    "@angular-devkit/build-angular": "0.1100.5",
+    "@angular/compiler-cli": "11.0.5",
+    "@angular/language-service": "11.0.5",
     "@auth0/angular-jwt": "^5.0.1",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "@ckeditor/ckeditor5-indent": "^22.0.0",
@@ -104,9 +107,6 @@
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "0.1100.5",
-    "@angular/compiler-cli": "11.0.5",
-    "@angular/language-service": "11.0.5",
     "@nestjs/schematics": "^7.0.0",
     "@nestjs/testing": "^7.0.0",
     "@nrwl/cypress": "11.2.10",
