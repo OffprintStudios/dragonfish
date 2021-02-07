@@ -3,7 +3,7 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import { Auth } from './auth.actions';
 import { AuthStateModel } from './auth-state.model';
-import { AuthService } from './services';
+import { NetworkService } from '../../services';
 
 import { FrontendUser } from '@dragonfish/models/users';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ import { Alerts } from '../alerts';
 })
 @Injectable()
 export class AuthState {
-    constructor(private auth: AuthService) {}
+    constructor(private network: NetworkService) {}
 
     /* Actions */
 
@@ -27,7 +27,7 @@ export class AuthState {
      */
     @Action(Auth.Login)
     login({ patchState, dispatch }: StateContext<AuthStateModel>, action: Auth.Login): Observable<FrontendUser> {
-        return this.auth.login(action.payload).pipe(
+        return this.network.login(action.payload).pipe(
             tap((result: FrontendUser) => {
                 dispatch(new User.SetUser(result));
                 patchState({
@@ -42,7 +42,7 @@ export class AuthState {
      */
     @Action(Auth.Register)
     register({ patchState, dispatch }: StateContext<AuthStateModel>, action: Auth.Register): Observable<FrontendUser> {
-        return this.auth.register(action.payload).pipe(
+        return this.network.register(action.payload).pipe(
             tap((result: FrontendUser) => {
                 dispatch(new User.SetUser(result));
                 patchState({
@@ -57,7 +57,7 @@ export class AuthState {
      */
     @Action(Auth.Logout)
     logout({ patchState, dispatch }: StateContext<AuthStateModel>, _action: Auth.Logout): Observable<void> {
-        return this.auth.logout().pipe(
+        return this.network.logout().pipe(
             tap((_) => {
                 dispatch(new User.SetUser(null));
                 patchState({
@@ -72,7 +72,7 @@ export class AuthState {
         { patchState, dispatch }: StateContext<AuthStateModel>,
         _action: Auth.RefreshToken,
     ): Observable<string> {
-        return this.auth.refreshToken().pipe(
+        return this.network.refreshToken().pipe(
             tap((result: string | null) => {
                 if (result === null) {
                     dispatch(new User.SetUser(null));

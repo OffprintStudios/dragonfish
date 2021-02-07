@@ -8,7 +8,7 @@ import { Constants, Title } from '../../../shared';
 import { FrontendUser } from '@dragonfish/models/users';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { PaginateResult } from '@dragonfish/models/util';
-import { HistoryService } from '../../../services/content';
+import { NetworkService } from '../../../services';
 import { calculateApprovalRating } from '../../../util/functions';
 import { ContentKind } from '@dragonfish/models/content';
 
@@ -27,7 +27,7 @@ export class HistoryComponent implements OnInit {
 
     pageNum = 1;
 
-    constructor(private hist: HistoryService, private route: ActivatedRoute, private router: Router) {
+    constructor(private networkService: NetworkService, private route: ActivatedRoute, private router: Router) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -63,7 +63,7 @@ export class HistoryComponent implements OnInit {
      */
     askDelete(histId: string) {
         if (confirm(`Are you sure you want to delete this? This action cannot be reversed.`)) {
-            this.hist.changeVisibility(histId).subscribe(() => {
+            this.networkService.changeHistoryVisibility(histId).subscribe(() => {
                 this.router.navigate([], {
                     relativeTo: this.route,
                     queryParams: { page: event },

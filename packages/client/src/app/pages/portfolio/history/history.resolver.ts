@@ -3,14 +3,14 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { PaginateResult } from '@dragonfish/models/util';
-import { HistoryService } from '../../../services/content';
+import { NetworkService } from '../../../services';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 @Injectable()
 export class HistoryResolver implements Resolve<PaginateResult<ReadingHistory>> {
     pageNum: number = 1;
 
-    constructor(private hist: HistoryService) {}
+    constructor(private networkService: NetworkService) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -22,6 +22,6 @@ export class HistoryResolver implements Resolve<PaginateResult<ReadingHistory>> 
             this.pageNum = pageNum;
         }
 
-        return this.hist.fetchUserHistory(this.pageNum);
+        return this.networkService.fetchUserHistory(this.pageNum);
     }
 }

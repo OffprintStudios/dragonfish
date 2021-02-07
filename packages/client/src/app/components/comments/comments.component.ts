@@ -17,7 +17,7 @@ import {
     EditComment,
 } from '@dragonfish/models/comments';
 import { PaginateResult } from '@dragonfish/models/util';
-import { CommentsService } from '../../services/content';
+import { NetworkService } from '../../services';
 import { ContentKind } from '@dragonfish/models/content';
 
 @Component({
@@ -48,7 +48,7 @@ export class CommentsComponent implements OnInit {
         body: new FormControl('', [Validators.required, Validators.minLength(10)]),
     });
 
-    constructor(private commentsService: CommentsService, private snackbar: MatSnackBar) {
+    constructor(private networkService: NetworkService, private snackbar: MatSnackBar) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -80,21 +80,21 @@ export class CommentsComponent implements OnInit {
     fetchData(pageNum: number) {
         this.loading = true;
         if (this.itemKind === ItemKind.Blog) {
-            this.commentsService.getBlogComments(this.itemId, pageNum).subscribe((comments) => {
+            this.networkService.fetchBlogComments(this.itemId, pageNum).subscribe((comments) => {
                 this.comments = comments;
                 this.pageNum = pageNum;
                 this.emitPageChange.emit(pageNum);
                 this.loading = false;
             });
         } else if (this.itemKind === ItemKind.Work) {
-            this.commentsService.getWorkComments(this.itemId, pageNum).subscribe((comments) => {
+            this.networkService.fetchWorkComments(this.itemId, pageNum).subscribe((comments) => {
                 this.comments = comments;
                 this.pageNum = pageNum;
                 this.emitPageChange.emit(pageNum);
                 this.loading = false;
             });
         } /* Presuming this comments component lives on piece of new-Content: */ else {
-            this.commentsService.getContentComments(this.itemId, pageNum).subscribe((comments) => {
+            this.networkService.fetchContentComments(this.itemId, pageNum).subscribe((comments) => {
                 this.comments = comments;
                 this.pageNum = pageNum;
                 this.emitPageChange.emit(pageNum);
@@ -195,17 +195,17 @@ export class CommentsComponent implements OnInit {
         };
 
         if (this.itemKind === ItemKind.Blog) {
-            this.commentsService.addBlogComment(this.itemId, comm).subscribe(() => {
+            this.networkService.addBlogComment(this.itemId, comm).subscribe(() => {
                 this.newCommentForm.reset();
                 this.fetchData(this.pageNum);
             });
         } else if (this.itemKind === ItemKind.Work) {
-            this.commentsService.addWorkComment(this.itemId, comm).subscribe(() => {
+            this.networkService.addWorkComment(this.itemId, comm).subscribe(() => {
                 this.newCommentForm.reset();
                 this.fetchData(this.pageNum);
             });
         } /* Presuming this comment is being made on a piece of new-Content  */ else {
-            this.commentsService.addContentComment(this.itemId, comm).subscribe(() => {
+            this.networkService.addContentComment(this.itemId, comm).subscribe(() => {
                 this.fetchData(this.pageNum);
             });
         }
@@ -227,7 +227,7 @@ export class CommentsComponent implements OnInit {
             body: this.editCommentFields.body.value,
         };
 
-        this.commentsService.editComment(commentId, commInfo).subscribe(() => {
+        this.networkService.editComment(commentId, commInfo).subscribe(() => {
             this.comments.docs[commentIndex].isEditing = false;
             this.comments.docs[commentIndex].body = this.editCommentFields.body.value;
         });

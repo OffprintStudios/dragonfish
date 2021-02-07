@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { MyStuffState } from '../../../../shared/my-stuff';
 
 import {
     WorkKind,
@@ -15,8 +15,8 @@ import {
     ContentKind,
 } from '@dragonfish/models/content';
 import { AlertsService } from '../../../../shared/alerts';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MyStuffService } from '../../my-stuff.service';
+import { MyStuffState } from 'packages/client/src/app/shared/my-stuff';
 
 @UntilDestroy()
 @Component({

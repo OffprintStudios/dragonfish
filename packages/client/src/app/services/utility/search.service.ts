@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 import { InitialResults, PaginateResult } from '@dragonfish/models/util';
 import { AlertsService } from '../../shared/alerts';
 import { User } from '@dragonfish/models/users';
-import { BlogsContentModel, ContentModel, ProseContent } from '@dragonfish/models/content';
+import { BlogsContentModel, ContentModel } from '@dragonfish/models/content';
+import { NetworkService } from '../network.service';
 
 @Injectable({
     providedIn: 'root',
@@ -19,73 +18,25 @@ export class SearchService {
     blogResults: Observable<PaginateResult<BlogsContentModel>>;
     userResults: Observable<PaginateResult<User>>;
 
-    constructor(private http: HttpClient, private alertsService: AlertsService) {}
+    constructor(private readonly networkService: NetworkService) { }
 
-    public getInitialResults(query: string): Observable<InitialResults> {
-        return this.http
-            .get<InitialResults>(`${this.url}/get-initial-results?query=${query}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-                    return throwError(err);
-                }),
-            );
+    /**
+   * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
+   * @param query The user's search string.
+   */
+    public fetchInitialResults(query: string): Observable<InitialResults> {
+        return this.networkService.searchInitialResults(query);
     }
 
-    public getWorkResults(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return this.http
-            .get<PaginateResult<ContentModel>>(`${this.url}/get-work-results?query=${query}&pageNum=${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    this.alertsService.error(`Something went wrong! Try again in a little bit.`);
-                    return throwError(err);
-                }),
-            );
+    public fetchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return this.networkService.searchWorks(query, pageNum);
     }
 
-    public getBlogResults(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return this.http
-            .get<PaginateResult<ContentModel>>(`${this.url}/get-blog-results?query=${query}&pageNum=${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    this.alertsService.error(`Something with wrong! Try again in a little bit.`);
-                    return throwError(err);
-                }),
-            );
+    public fetchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return this.networkService.searchBlogs(query, pageNum);
     }
 
-    public getUserResults(query: string, pageNum: number): Observable<PaginateResult<User>> {
-        return this.http
-            .get<PaginateResult<User>>(`${this.url}/get-user-results?query=${query}&pageNum=${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    this.alertsService.error(`Something with wrong! Try again in a little bit.`);
-                    return throwError(err);
-                }),
-            );
+    public fetchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+        return this.networkService.searchUsers(query, pageNum);
     }
 }

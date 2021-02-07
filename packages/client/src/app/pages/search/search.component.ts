@@ -3,11 +3,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { InitialResults } from '@dragonfish/models/util';
+import { ContentKind } from '@dragonfish/models/content';
 
 import { calculateApprovalRating } from '../../util/functions';
-import { SearchService } from '../../services/utility';
 import { Constants, Title } from '../../shared';
-import { ContentKind } from '@dragonfish/models/content';
+import { NetworkService } from '../../services';
 
 @Component({
     selector: 'app-search',
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
     searchResults: InitialResults;
 
-    constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) {}
+    constructor(private networkService: NetworkService, public route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
         const queryParams = this.route.snapshot.queryParamMap;
@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit {
             queryParams: { query: query },
             queryParamsHandling: 'merge',
         });
-        this.searchService.getInitialResults(query).subscribe((results) => {
+        this.networkService.searchInitialResults(query).subscribe((results) => {
             this.searchResults = results;
         });
     }

@@ -3,16 +3,17 @@ import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import { Observable, zip, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { Content } from './content.actions';
-import { ContentStateModel } from './content-state.model';
-import { ContentService } from './services';
 import { ContentKind, ContentModel, SectionInfo } from '@dragonfish/models/content';
 import { RatingOption } from '@dragonfish/models/reading-history';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { FrontendUser } from '@dragonfish/models/users';
-import { UserState } from '../user';
 import { PaginateResult } from '@dragonfish/models/util';
 import { Section } from '@dragonfish/models/sections';
+
+import { Content } from './content.actions';
+import { ContentStateModel } from './content-state.model';
+import { NetworkService } from '../../services';
+import { UserState } from '../user';
 
 /**
  * ## ContentState
@@ -34,7 +35,7 @@ import { Section } from '@dragonfish/models/sections';
 })
 @Injectable()
 export class ContentState {
-    constructor(private contentService: ContentService, private store: Store) {}
+    constructor(private networkService: NetworkService, private store: Store) {}
 
     /* Actions */
 
@@ -44,7 +45,7 @@ export class ContentState {
         { contentId, kind }: Content.FetchOne,
     ): Observable<[ContentModel, any]> {
         const currUser: FrontendUser | null = this.store.selectSnapshot(UserState.currUser);
-        const thisContent = this.contentService.fetchOne(contentId, kind).pipe(
+        const thisContent = this.networkService.fetchContent(contentId, kind).pipe(
             tap((val: ContentModel) => {
                 if (val.kind === ContentKind.PoetryContent || val.kind === ContentKind.ProseContent) {
                     const anyContent = val as any;
@@ -55,7 +56,7 @@ export class ContentState {
         );
 
         if (currUser !== null) {
-            const thisHistory = this.contentService.fetchRelatedHistory(contentId);
+            const thisHistory = this.networkService.fetchRelatedHistory(contentId);
 
             return zip(thisContent, thisHistory).pipe(
                 tap((val: [ContentModel, ReadingHistory]) => {
@@ -83,7 +84,7 @@ export class ContentState {
 
     @Action(Content.FetchAll)
     fetchAll({ patchState }: StateContext<ContentStateModel>, { pageNum, kinds, userId }: Content.FetchAll) {
-        return this.contentService.fetchAll(pageNum, kinds, userId).pipe(
+        return this.networkService.fetchAllContent(pageNum, kinds, userId).pipe(
             tap((val: PaginateResult<ContentModel>) => {
                 patchState({
                     currPageContent: val,
@@ -103,7 +104,7 @@ export class ContentState {
 
     @Action(Content.FetchSection)
     fetchSection({ patchState }: StateContext<ContentStateModel>, { sectionId }: Content.FetchSection) {
-        return this.contentService.fetchSection(sectionId).pipe(
+        return this.networkService.fetchSection(sectionId).pipe(
             tap((val: Section) => {
                 patchState({
                     currSection: val,
@@ -114,7 +115,7 @@ export class ContentState {
 
     @Action(Content.SetLike)
     setLike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
-        return this.contentService.setLike(setRating).pipe(
+        return this.networkService.setLike(setRating).pipe(
             tap((val: ReadingHistory) => {
                 console.log(val);
                 if (setRating.oldApprovalRating === RatingOption.Disliked) {
@@ -133,7 +134,7 @@ export class ContentState {
 
     @Action(Content.SetDislike)
     setDislike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
-        return this.contentService.setDislike(setRating).pipe(
+        return this.networkService.setDislike(setRating).pipe(
             tap((val: ReadingHistory) => {
                 console.log(val);
                 if (setRating.oldApprovalRating === RatingOption.Liked) {
@@ -152,7 +153,7 @@ export class ContentState {
 
     @Action(Content.SetNoVote)
     setNoVote({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetNoVote) {
-        return this.contentService.setNoVote(setRating).pipe(
+        return this.networkService.setNoVote(setRating).pipe(
             tap((val: ReadingHistory) => {
                 console.log(val);
                 if (setRating.oldApprovalRating === RatingOption.Liked) {

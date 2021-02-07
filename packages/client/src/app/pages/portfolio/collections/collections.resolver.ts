@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Select } from '@ngxs/store';
-import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@dragonfish/models/users';
-import { CollectionsService } from '../../../services/content';
 import { PaginateResult } from '@dragonfish/models/util';
 import { Collection } from '@dragonfish/models/collections';
+
+import { UserState } from '../../../shared/user';
+import { NetworkService } from '../../../services';
 
 @Injectable()
 export class CollectionsResolver implements Resolve<PaginateResult<Collection>> {
@@ -17,7 +18,7 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
 
     pageNum: number = 1;
 
-    constructor(private collsService: CollectionsService) {
+    constructor(private networkService: NetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -33,12 +34,12 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
 
         if (this.currentUser) {
             if (this.currentUser._id === userId) {
-                return this.collsService.getAllCollections(this.pageNum);
+                return this.networkService.fetchAllCollections(this.pageNum);
             } else {
-                return this.collsService.getPublicCollections(userId, this.pageNum);
+                return this.networkService.fetchPublicCollections(userId, this.pageNum);
             }
         } else {
-            return this.collsService.getPublicCollections(userId, this.pageNum);
+            return this.networkService.fetchPublicCollections(userId, this.pageNum);
         }
     }
 }

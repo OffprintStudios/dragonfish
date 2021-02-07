@@ -37,7 +37,7 @@ export class FindWorksComponent implements OnInit {
             queryParams: { query: query, page: pageNum },
             queryParamsHandling: 'merge',
         });
-        this.searchService.getWorkResults(query, pageNum).subscribe((results) => {
+        this.searchService.fetchWorks(query, pageNum).subscribe((results) => {
             this.results = results;
             this.pageNum = pageNum;
         });

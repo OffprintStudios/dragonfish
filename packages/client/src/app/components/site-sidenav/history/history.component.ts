@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HistoryService } from '../../../services/content';
 
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { ContentKind } from '@dragonfish/models/content';
+
+import { NetworkService } from '../../../services';
 
 @Component({
     selector: 'sidenav-history',
@@ -14,7 +15,7 @@ export class HistoryComponent implements OnInit {
     histItems: ReadingHistory[];
     contentKind = ContentKind;
 
-    constructor(private historyService: HistoryService) {
+constructor(private networkService: NetworkService) {
         this.fetchData();
     }
 
@@ -25,7 +26,7 @@ export class HistoryComponent implements OnInit {
      */
     fetchData() {
         this.loading = true;
-        this.historyService.fetchUserSidenavHistory().subscribe((hist) => {
+        this.networkService.fetchUserSidenavHistory().subscribe((hist) => {
             this.histItems = hist;
             this.loading = false;
         });

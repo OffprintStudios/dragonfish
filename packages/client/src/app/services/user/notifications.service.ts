@@ -1,7 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Subscription, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Select } from '@ngxs/store';
 import { UserState } from '../../shared/user';
@@ -9,6 +7,7 @@ import { environment } from '../../../environments/environment';
 
 import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@dragonfish/models/notifications';
 import { FrontendUser } from '@dragonfish/models/users';
+import { NetworkService } from '../network.service';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +19,7 @@ export class NotificationsService {
 
     private url = `${environment.apiUrl}/api/notifications`;
 
-    constructor(private http: HttpClient, private zone: NgZone) {
+    constructor(private networkService: NetworkService, private zone: NgZone) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -46,92 +45,48 @@ export class NotificationsService {
         });
     }
 
+    /**
+     * Gets all of the current user's notifications.
+     */
     public getAllNotifications(): Observable<NotificationBase[]> {
-        return this.http
-            .get<NotificationBase[]>(`${this.url}/all-notifications`, { observe: 'response', withCredentials: true })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.fetchAllNotifications();
     }
 
+    /**
+     * Gets all of the current user's _unread_ notifications.
+     */
     public getUnreadNotifications(): Observable<NotificationBase[]> {
-        return this.http
-            .get<NotificationBase[]>(`${this.url}/unread-notifications`, { observe: 'response', withCredentials: true })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.fetchUnreadNotifications();
     }
 
+    /**
+     * Marks the given notifications as read.
+     * @param toMark A list of notification IDs to mark as read.
+     */
     public markAsRead(toMark: MarkReadRequest): Observable<void> {
-        return this.http
-            .post<void>(`${this.url}/mark-as-read`, toMark, { observe: 'response', withCredentials: true })
-            .pipe(
-                map((res) => {
-                    return;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.markNotificationsAsRead(toMark);
     }
 
+    /**
+     * Gets a list of all the things the current user is subscribed to notifications for.
+     */
     public getSubscriptions(): Observable<NotificationSubscription[]> {
-        return this.http
-            .get<NotificationSubscription[]>(`${this.url}/unread-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.fetchNotificationSubscriptions();
     }
 
+    /**
+     * Subscribe to notifications on the source with the given ID.
+     * @param sourceId ID of the thing to subscribe to notifications for.
+     */
     public subscribe(sourceId: string): Observable<void> {
-        return this.http
-            .post<void>(
-                `${this.url}/subscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map((res) => {
-                    return;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.subscribeToNotifications(sourceId);
     }
 
+    /**
+     * Unsubscribe to notifications on the source with the given ID.
+     * @param sourceId ID of the thing to unsubscribe from.
+     */
     public unsubscribe(sourceId: string): Observable<void> {
-        return this.http
-            .post<void>(
-                `${this.url}/unsubscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map((res) => {
-                    return;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.networkService.unsubscribeFromNotifications(sourceId);
     }
 }

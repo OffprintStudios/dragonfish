@@ -7,7 +7,7 @@ import { UserState } from '../../../shared/user';
 import { NewsContentModel, PubStatus } from '@dragonfish/models/content';
 import { FrontendUser } from '@dragonfish/models/users';
 import { PaginateResult } from '@dragonfish/models/util';
-import { NewsManagementService } from './news-management.service';
+import { NetworkService } from '../../../services';
 
 @Component({
     selector: 'news-management',
@@ -23,7 +23,7 @@ export class NewsManagementComponent implements OnInit {
     pubStatus = PubStatus;
     pageNum: number = 1;
 
-    constructor(private newsService: NewsManagementService, public route: ActivatedRoute, private router: Router) {
+    constructor(private networkService: NetworkService, public route: ActivatedRoute, private router: Router) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });
@@ -51,7 +51,7 @@ export class NewsManagementComponent implements OnInit {
 
     setPublishStatus(postId: string, pubStatus: PubStatus) {
         if (pubStatus === PubStatus.Published) {
-            this.newsService.setPublishStatus(postId, PubStatus.Unpublished).subscribe(() => {
+            this.networkService.setNewspostPublishStatus(postId, PubStatus.Unpublished).subscribe(() => {
                 this.router.navigate([], {
                     relativeTo: this.route,
                     queryParams: { page: this.pageNum },
@@ -59,7 +59,7 @@ export class NewsManagementComponent implements OnInit {
                 });
             });
         } else if (pubStatus === PubStatus.Unpublished) {
-            this.newsService.setPublishStatus(postId, PubStatus.Published).subscribe(() => {
+            this.networkService.setNewspostPublishStatus(postId, PubStatus.Published).subscribe(() => {
                 this.router.navigate([], {
                     relativeTo: this.route,
                     queryParams: { page: this.pageNum },

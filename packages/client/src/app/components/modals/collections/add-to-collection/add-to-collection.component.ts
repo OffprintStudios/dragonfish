@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { CollectionsService } from '../../../../services/content';
+import { NetworkService } from '../../../../services';
 import { Collection } from '@dragonfish/models/collections';
 import { ContentModel } from '@dragonfish/models/content';
 
@@ -17,7 +17,7 @@ export class AddToCollectionComponent implements OnInit {
     loading = false;
 
     constructor(
-        private collsService: CollectionsService,
+        private networkService: NetworkService,
         private dialogRef: MatDialogRef<AddToCollectionComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { content: ContentModel },
     ) {
@@ -30,7 +30,7 @@ export class AddToCollectionComponent implements OnInit {
 
     private fetchData() {
         this.loading = true;
-        this.collsService.getAllCollectionsNoPaginate().subscribe((colls) => {
+        this.networkService.fetchAllCollectionsNoPaginate().subscribe((colls) => {
             this.collections = colls;
             console.log(this.collections);
             this.loading = false;
@@ -64,7 +64,7 @@ export class AddToCollectionComponent implements OnInit {
      * @param coll The collection in question
      */
     addToCollection(coll: Collection) {
-        this.collsService.addWork(coll._id, this.currContent._id).subscribe(() => {
+        this.networkService.addWorkToCollection(coll._id, this.currContent._id).subscribe(() => {
             this.dialogRef.close();
         });
     }
@@ -75,7 +75,7 @@ export class AddToCollectionComponent implements OnInit {
      * @param coll The collection in question
      */
     removeFromCollection(coll: Collection) {
-        this.collsService.removeWork(coll._id, this.currContent._id).subscribe(() => {
+        this.networkService.removeWorkFromCollection(coll._id, this.currContent._id).subscribe(() => {
             this.dialogRef.close();
         });
     }
