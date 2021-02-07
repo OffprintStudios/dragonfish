@@ -81,10 +81,10 @@ import { ApprovalQueueService } from './services/admin/approval-queue.service';
     ],
     providers: [
         ...AdminServices,
-        ...AuthServices, 
+        ...AuthServices,
         ...ContentServices,
         ...ImagesServices,
-        { provide: 'IApprovalQueue', useClass: ApprovalQueueService }
+        { provide: 'IApprovalQueue', useClass: ApprovalQueueService },
     ],
 })
 export class AppModule {}
