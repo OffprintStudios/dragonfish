@@ -19,15 +19,15 @@ import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
-import { SectionsService } from '../sections/sections.service';
+import { SectionsStore } from '../sections/sections.store';
 import { ContentDocument } from './content.schema';
 import { NotificationKind } from '@dragonfish/models/notifications/notification-kind';
 import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
-import { UsersService } from '../users/users.service';
+import { UsersStore } from '../users/users.store';
 import { ApprovalQueueStore } from '../approval-queue/approval-queue.store';
 import { MigrationForm } from '@dragonfish/models/migration';
-import { ReadingHistoryService } from '../reading-history/reading-history.service';
+import { ReadingHistoryStore } from '../reading-history/reading-history.store';
 import { RatingOption } from '@dragonfish/models/reading-history';
 import { NewsStore } from './news/news.store';
 import { PoetryStore } from './poetry/poetry.store';
@@ -44,11 +44,11 @@ export class ContentStore {
         private readonly newsService: NewsStore,
         private readonly poetryService: PoetryStore,
         private readonly proseService: ProseStore,
-        private readonly sectionsService: SectionsService,
-        private readonly usersService: UsersService,
+        private readonly sectionsService: SectionsStore,
+        private readonly usersService: UsersStore,
         private readonly queueService: ApprovalQueueStore,
         private readonly notificationsService: NotificationsService,
-        private readonly histService: ReadingHistoryService,
+        private readonly histService: ReadingHistoryStore,
     ) {}
 
     /**

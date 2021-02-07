@@ -5,7 +5,7 @@ import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { stripTags, countWords } from 'voca';
 
-import { UsersService } from '../../users/users.service';
+import { UsersStore } from '../../users/users.store';
 import { BlogsContentDocument } from './blogs-content.document';
 import { BlogForm, PubChange, PubStatus } from '@dragonfish/models/content';
 import { NotificationsService } from '../../notifications/notifications.service';
@@ -15,7 +15,7 @@ import { NotificationKind } from '@dragonfish/models/notifications';
 export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
-        private readonly usersService: UsersService,
+        private readonly usersService: UsersStore,
         private readonly notificationsService: NotificationsService,
     ) {}
 
