@@ -15,8 +15,10 @@ import { PortfolioRoutes } from './controllers/portfolio';
 import { SearchRoutes } from './controllers/search';
 
 /* Services */
+import { AdminServices } from './services/admin';
 import { AuthServices } from './services/auth';
 import { ImagesServices } from './services/images';
+import { ContentServices } from './services/content';
 
 /* Database Modules */
 import { UsersModule } from './db/users/users.module';
@@ -33,6 +35,9 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
 
 /* Utilies */
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
+
+/* Other */
+import { ApprovalQueueService } from './services/admin/approval-queue.service';
 
 @Module({
     imports: [
@@ -74,6 +79,12 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
         ...PortfolioRoutes,
         ...SearchRoutes,
     ],
-    providers: [...AuthServices, ...ImagesServices],
+    providers: [
+        ...AdminServices,
+        ...AuthServices, 
+        ...ContentServices,
+        ...ImagesServices,
+        { provide: 'IApprovalQueue', useClass: ApprovalQueueService }
+    ],
 })
 export class AppModule {}

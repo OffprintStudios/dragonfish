@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentService } from '../../db/content';
+import { ContentStore } from '../../db/content';
 import {
     BlogForm,
     ContentFilter,
@@ -19,7 +19,7 @@ import { isNullOrUndefined } from '../../util';
 
 @Controller('content')
 export class ContentController {
-    constructor(private readonly contentService: ContentService) {}
+    constructor(private readonly contentService: ContentStore) {}
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))

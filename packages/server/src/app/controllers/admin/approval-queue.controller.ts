@@ -1,4 +1,4 @@
-import { Body, Controller, Request, Get, Param, Patch, UseGuards, BadRequestException, Query } from '@nestjs/common';
+import { Body, Controller, Request, Get, Param, Patch, UseGuards, BadRequestException, Query, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../guards';
@@ -10,7 +10,7 @@ import { IApprovalQueue } from '../../shared/admin/approval-queue.interface';
 
 @Controller('approval-queue')
 export class ApprovalQueueController {
-    constructor(private readonly queue: IApprovalQueue) {}
+    constructor(@Inject('IApprovalQueue') private readonly queue: IApprovalQueue) {}
 
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
