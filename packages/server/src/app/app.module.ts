@@ -16,6 +16,7 @@ import { SearchRoutes } from './controllers/search';
 
 /* Services */
 import { AuthServices } from './services/auth';
+import { ImagesServices } from './services/images';
 
 /* Database Modules */
 import { UsersModule } from './db/users/users.module';
@@ -29,7 +30,6 @@ import { ApprovalQueueModule } from './db/approval-queue/approval-queue.module';
 import { CommentsModule } from './db/comments/comments.module';
 import { WorksModule } from './db/works/works.module';
 import { OldBlogsModule } from './db/blogs/blogs.module';
-import { ImagesServices } from './services/images';
 
 @Module({
     imports: [
