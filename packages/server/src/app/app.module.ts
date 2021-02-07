@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-
-import { getJwtSecretKey, JWT_EXPIRATION } from './util';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 /* Controllers */
 import { AppController } from './app.controller';
@@ -31,6 +31,9 @@ import { CommentsModule } from './db/comments/comments.module';
 import { WorksModule } from './db/works/works.module';
 import { OldBlogsModule } from './db/blogs/blogs.module';
 
+/* Utilies */
+import { getJwtSecretKey, JWT_EXPIRATION } from './util';
+
 @Module({
     imports: [
         UsersModule,
@@ -44,6 +47,7 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
         CommentsModule,
         WorksModule,
         OldBlogsModule,
+        ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
                 uri: process.env.MONGO_URL,
@@ -70,9 +74,6 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
         ...PortfolioRoutes,
         ...SearchRoutes,
     ],
-    providers: [
-        ...AuthServices, 
-        ...ImagesServices,
-    ],
+    providers: [...AuthServices, ...ImagesServices],
 })
 export class AppModule {}
