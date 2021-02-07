@@ -24,12 +24,12 @@ RUN yarn global add @angular/cli@10.0.4 \
 RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
-ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
+ENV PATH "$PATH:/opt/dragonfish/node_modules/.bin"
 
 EXPOSE 3333
 EXPOSE 4200
 EXPOSE 3000
 EXPOSE 9229
 
-WORKDIR /opt/pulpd
+WORKDIR /opt/dragonfish
 COPY . .
