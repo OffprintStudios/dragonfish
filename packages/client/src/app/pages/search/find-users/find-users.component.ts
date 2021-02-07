@@ -36,7 +36,7 @@ export class FindUsersComponent implements OnInit {
             queryParams: { query: query, page: pageNum },
             queryParamsHandling: 'merge',
         });
-        this.searchService.getUserResults(query, pageNum).subscribe((results) => {
+        this.searchService.fetchUsers(query, pageNum).subscribe((results) => {
             this.results = results;
             this.pageNum = pageNum;
         });

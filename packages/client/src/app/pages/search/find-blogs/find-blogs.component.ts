@@ -36,7 +36,7 @@ export class FindBlogsComponent implements OnInit {
             queryParams: { query: query, page: pageNum },
             queryParamsHandling: 'merge',
         });
-        this.searchService.getBlogResults(query, pageNum).subscribe((results) => {
+        this.searchService.fetchBlogs(query, pageNum).subscribe((results) => {
             this.results = results;
             this.pageNum = pageNum;
         });
