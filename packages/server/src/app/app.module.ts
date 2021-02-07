@@ -14,6 +14,9 @@ import { NotificationsRoutes } from './controllers/notifications';
 import { PortfolioRoutes } from './controllers/portfolio';
 import { SearchRoutes } from './controllers/search';
 
+/* Services */
+import { AuthServices } from './services/auth';
+
 /* Database Modules */
 import { UsersModule } from './db/users/users.module';
 import { ContentModule } from './db/content';
@@ -26,6 +29,7 @@ import { ApprovalQueueModule } from './db/approval-queue/approval-queue.module';
 import { CommentsModule } from './db/comments/comments.module';
 import { WorksModule } from './db/works/works.module';
 import { OldBlogsModule } from './db/blogs/blogs.module';
+import { ImagesServices } from './services/images';
 
 @Module({
     imports: [
@@ -66,6 +70,9 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
         ...PortfolioRoutes,
         ...SearchRoutes,
     ],
-    providers: [],
+    providers: [
+        ...AuthServices,
+        ...ImagesServices,
+    ],
 })
 export class AppModule {}
