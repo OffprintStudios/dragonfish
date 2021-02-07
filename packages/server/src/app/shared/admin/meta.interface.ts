@@ -3,7 +3,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 
 /**
  * ## The Meta Interface
- * 
+ *
  * Implement this interface to be able to serve data to associated routes.
  */
 export interface IMeta {
