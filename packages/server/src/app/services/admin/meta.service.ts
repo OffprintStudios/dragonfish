@@ -2,13 +2,13 @@ import { FrontPageStats } from '@dragonfish/models/stats';
 import { FrontendUser } from '@dragonfish/models/users';
 import { Injectable, Logger } from '@nestjs/common';
 
-import { UsersService } from '../../db/users/users.service';
+import { UsersStore } from '../../db/users/users.store';
 
 @Injectable()
 export class MetaService {
     private readonly logger: Logger = new Logger(MetaService.name);
 
-    constructor (private readonly usersService: UsersService) {}
+    constructor (private readonly usersService: UsersStore) {}
 
     /**
      * Gets the list of site staff.

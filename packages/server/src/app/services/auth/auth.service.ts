@@ -10,14 +10,14 @@ import { verify, argon2id } from 'argon2';
 import { nanoid } from 'nanoid';
 
 import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/models/users';
-import { UsersService } from '../../db/users/users.service';
+import { UsersStore } from '../../db/users/users.store';
 import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
 export class AuthService {
     private readonly logger: Logger = new Logger(AuthService.name);
 
-    constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
+    constructor(private readonly usersService: UsersStore, private readonly jwtService: JwtService) {}
 
     /**
      * Validates the incoming email and password of a login request. Returns a User

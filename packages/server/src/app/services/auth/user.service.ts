@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { verify, argon2id } from 'argon2';
 
-import { UsersService } from '../../db/users/users.service';
+import { UsersStore } from '../../db/users/users.store';
 import { JwtPayload } from '@dragonfish/models/auth';
 import {
     FrontendUser,
@@ -22,7 +22,7 @@ import {
 export class UserService {
     private readonly logger: Logger = new Logger(UserService.name);
 
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersStore) {}
 
     /**
      * Changes a user's username. First validates their credentials, and if they match, makes the change
