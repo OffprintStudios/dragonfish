@@ -42,7 +42,9 @@ async function bootstrap() {
     }
     app.use(helmet());
     app.use(require('prerender-node').set('prerenderToken', process.env.PRERENDER_TOKEN));
+    app.setGlobalPrefix('api');
 
+    // Set up Swagger
     const config = new DocumentBuilder()
         .setTitle(`Dragonfish`)
         .setDescription(`"Fire in its own way"--The official Offprint API.`)
@@ -53,7 +55,7 @@ async function bootstrap() {
         .addTag(`search`)
         .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('api-docs', app, document);
 
     const port = process.env.PORT || 3333;
     await app.listen(port, () => {
