@@ -1,12 +1,17 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppController } from './app.controller';
+import { AdminRoutes } from './controllers/admin';
+import { AuthRoutes } from './controllers/auth';
+import { ContentRoutes } from './controllers/content';
+import { MigrationRoutes } from './controllers/migration';
+import { NotificationsRoutes } from './controllers/notifications';
+import { PortfolioRoutes } from './controllers/portfolio';
+import { SearchRoutes } from './controllers/search';
 
 @Module({
     imports: [
-        AppRoutingModule,
         MongooseModule.forRootAsync({
             useFactory: () => ({
                 uri: process.env.MONGO_URL,
@@ -17,6 +22,16 @@ import { AppController } from './app.controller';
             }),
         }),
     ],
-    controllers: [AppController],
+    controllers: [
+        AppController,
+        ...AdminRoutes,
+        ...AuthRoutes,
+        ...ContentRoutes,
+        ...MigrationRoutes,
+        ...NotificationsRoutes,
+        ...PortfolioRoutes,
+        ...SearchRoutes,
+    ],
+    providers: [],
 })
 export class AppModule {}
