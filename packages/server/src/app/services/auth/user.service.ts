@@ -17,9 +17,10 @@ import {
     ChangeProfile,
     UpdateTagline,
 } from '@dragonfish/models/users';
+import { IUser } from '../../shared/auth';
 
 @Injectable()
-export class UserService {
+export class UserService implements IUser {
     private readonly logger: Logger = new Logger(UserService.name);
 
     constructor(private readonly usersService: UsersStore) {}
@@ -76,7 +77,7 @@ export class UserService {
      * @param user The user making the request
      * @param newPassword Their new password
      */
-    async changePassword(user: JwtPayload, newPassword: ChangePassword) {
+    async changePassword(user: JwtPayload, newPassword: ChangePassword): Promise<FrontendUser> {
         const potentialUser = await this.usersService.findOneById(user.sub);
         if (potentialUser) {
             try {
@@ -107,7 +108,7 @@ export class UserService {
      * @param user The user making the request
      * @param newProfileInfo Their new profile info
      */
-    async updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile) {
+    async updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile): Promise<FrontendUser> {
         const newUserInfo = await this.usersService.updateProfile(user.sub, newProfileInfo);
         return this.usersService.buildFrontendUser(newUserInfo);
     }

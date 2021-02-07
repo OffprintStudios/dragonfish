@@ -1,13 +1,14 @@
 import { Injectable, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 import { v4 as uuidV4 } from 'uuid';
+import { IImages } from '../../shared/images';
 
 const ONE_MEGABYTE: number = 1024 * 1024;
 const JPEG_MIME_TYPE = 'image/jpeg';
 const PNG_MIME_TYPE = 'image/png';
 
 @Injectable()
-export class ImagesService {
+export class ImagesService implements IImages {
     private readonly s3 = new AWS.S3({
         endpoint: process.env.DIGITALOCEAN_SPACES_ENDPOINT,
         accessKeyId: process.env.DIGITALOCEAN_SPACES_ACCESS_KEY,

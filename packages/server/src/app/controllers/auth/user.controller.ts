@@ -8,19 +8,20 @@ import {
     Request,
     UploadedFile,
     BadRequestException,
+    Inject,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 
 import { Roles, FrontendUser } from '@dragonfish/models/users';
-import { UserService } from '../../services/auth/user.service';
 import { RolesGuard } from '../../guards';
-import { ImagesService } from '../../services/images/images.service';
 import { ChangeEmailDTO, ChangePasswordDTO, ChangeProfileDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
+import { IUser } from '../../shared/auth';
+import { IImages } from '../../shared/images';
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly user: UserService, private readonly images: ImagesService) {}
+    constructor(@Inject('IUser') private readonly user: IUser, @Inject('IImages') private readonly images: IImages) {}
 
     @ApiTags('user')
     @UseGuards(RolesGuard([Roles.User]))

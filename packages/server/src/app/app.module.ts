@@ -40,6 +40,8 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 import { ApprovalQueueService } from './services/admin/approval-queue.service';
 import { MetaService } from './services/admin/meta.service';
 import { AuthService } from './services/auth/auth.service';
+import { UserService } from './services/auth/user.service';
+import { ImagesService } from './services/images/images.service';
 
 @Module({
     imports: [
@@ -89,6 +91,8 @@ import { AuthService } from './services/auth/auth.service';
         { provide: 'IApprovalQueue', useClass: ApprovalQueueService },
         { provide: 'IMeta', useClass: MetaService },
         { provide: 'IAuth', useClass: AuthService },
+        { provide: 'IUser', useClass: UserService },
+        { provide: 'IImages', useClass: ImagesService },
     ],
 })
 export class AppModule {}
