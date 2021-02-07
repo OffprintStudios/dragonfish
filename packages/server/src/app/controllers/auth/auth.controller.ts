@@ -10,7 +10,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 
 @Controller('auth')
 export class AuthController {
-    constructor (private auth: AuthService) {}
+    constructor(private auth: AuthService) {}
 
     @ApiTags('auth')
     @SetCookies()
@@ -22,11 +22,7 @@ export class AuthController {
     @ApiTags('auth')
     @SetCookies()
     @Post('login')
-    async login(
-        @Request() req: any,
-        @Body() loginUser: LoginUserDTO,
-        @Cookies() cookies: any,
-    ): Promise<FrontendUser> {
+    async login(@Request() req: any, @Body() loginUser: LoginUserDTO, @Cookies() cookies: any): Promise<FrontendUser> {
         // Check for stray sessions from previous logout attempts that the server never received
         let oldSessionId: string | null = cookies['refreshToken'];
 

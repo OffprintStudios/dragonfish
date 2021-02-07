@@ -1,14 +1,15 @@
-import { Injectable, Logger, UnauthorizedException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    Logger,
+    UnauthorizedException,
+    InternalServerErrorException,
+    NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { verify, argon2id } from 'argon2';
 import { nanoid } from 'nanoid';
 
-import {
-    User,
-    FrontendUser,
-    CreateUser,
-    AuditSession,
-} from '@dragonfish/models/users';
+import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/models/users';
 import { UsersService } from '../../db/users/users.service';
 import { JwtPayload } from '@dragonfish/models/auth';
 
@@ -16,7 +17,7 @@ import { JwtPayload } from '@dragonfish/models/auth';
 export class AuthService {
     private readonly logger = new Logger(AuthService.name);
 
-    constructor (private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
+    constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
 
     /**
      * Validates the incoming email and password of a login request. Returns a User
@@ -46,7 +47,7 @@ export class AuthService {
 
     /**
      * Registers a new user, then logs them in.
-     * 
+     *
      * @param req The request object
      * @param newUser The new user's credentials
      * @returns
@@ -117,7 +118,7 @@ export class AuthService {
 
     /**
      * Adds a Session ID from a new refresh token to a user's active sessions.
-     * 
+     *
      * @param userId The user's ID
      * @param sessionId The new session ID to add
      * @returns
@@ -128,7 +129,7 @@ export class AuthService {
 
     /**
      * Checks to see if the refresh token with the provided session ID is valid.
-     * 
+     *
      * @param userId The user's ID
      * @param sessionId The session to check
      * @returns
@@ -139,7 +140,7 @@ export class AuthService {
 
     /**
      * Clears the specified session ID from a user's session list.
-     * 
+     *
      * @param userId The user's ID
      * @param oldSessionId Their old session ID
      * @returns
