@@ -15,7 +15,7 @@ import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
 export class AuthService {
-    private readonly logger = new Logger(AuthService.name);
+    private readonly logger: Logger = new Logger(AuthService.name);
 
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
 
