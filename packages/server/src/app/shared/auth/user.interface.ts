@@ -1,11 +1,18 @@
 import { JwtPayload } from '@dragonfish/models/auth';
-import { FrontendUser, ChangeUsername, ChangeEmail, ChangePassword, ChangeProfile, UpdateTagline } from '@dragonfish/models/users';
+import {
+    FrontendUser,
+    ChangeUsername,
+    ChangeEmail,
+    ChangePassword,
+    ChangeProfile,
+    UpdateTagline,
+} from '@dragonfish/models/users';
 
 export interface IUser {
     /**
      * Changes a user's username. First validates their credentials, and if they match, makes the change
      * and returns a new FrontendUser.
-     * 
+     *
      * @param jwtPayload The JWT payload of the user making the request.
      * @param changeUsernameRequest The requested new username, and current password.
      */
@@ -43,7 +50,7 @@ export interface IUser {
     /**
      * Update the given user's 'agreedToPolicies' flag to be true. Returns a new
      * FrontendUSer on success.
-     * 
+     *
      * @param user The ID of the user to update.
      */
     agreeToPolicies(user: JwtPayload): Promise<FrontendUser>;
@@ -51,7 +58,7 @@ export interface IUser {
     /**
      * Updates the user's avatar. Not account-sensitive, so doesn't require a password.
      * A new FrontendUser is returned.
-     * 
+     *
      * @param user The user making the request
      * @param newAvatarUrl Their new avatar URL
      */
