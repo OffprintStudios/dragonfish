@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { MessageDocument, MessageSchema } from './message.schema';
 import { MessageThreadDocument, MessageThreadSchema } from './message-thread.schema';
-import { MessagesService } from './messages.service';
+import { MessagesStore } from './messages.store';
 
 @Module({
     imports: [
@@ -42,7 +42,7 @@ import { MessagesService } from './messages.service';
             },
         ]),
     ],
-    exports: [MessagesService],
-    providers: [MessagesService],
+    exports: [MessagesStore],
+    providers: [MessagesStore],
 })
 export class MessagesModule {}

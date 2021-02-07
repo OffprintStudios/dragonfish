@@ -10,15 +10,15 @@ import * as models from '@dragonfish/models/users';
 import { CollectionForm } from '@dragonfish/models/collections';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
 import { createHash } from 'crypto';
-import { CollectionsService } from '../collections/collections.service';
+import { CollectionsStore } from '../collections/collections.store';
 import { JwtPayload } from '@dragonfish/models/auth';
 
 @Injectable()
-export class UsersService {
+export class UsersStore {
     constructor(
         @InjectModel('User') private readonly userModel: PaginateModel<documents.UserDocument>,
         @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<documents.InviteCodesDocument>,
-        private readonly collsService: CollectionsService,
+        private readonly collsService: CollectionsStore,
     ) {}
 
     /**

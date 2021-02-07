@@ -25,28 +25,28 @@ import { NotificationKind } from '@dragonfish/models/notifications/notification-
 import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
 import { UsersService } from '../users/users.service';
-import { ApprovalQueueService } from '../approval-queue/approval-queue.service';
+import { ApprovalQueueStore } from '../approval-queue/approval-queue.store';
 import { MigrationForm } from '@dragonfish/models/migration';
 import { ReadingHistoryService } from '../reading-history/reading-history.service';
 import { RatingOption } from '@dragonfish/models/reading-history';
-import { NewsService } from './news/news.service';
-import { PoetryService } from './poetry/poetry.service';
-import { ProseService } from './prose/prose.service';
-import { BlogsService } from './blogs/blogs.service';
+import { NewsStore } from './news/news.store';
+import { PoetryStore } from './poetry/poetry.store';
+import { ProseStore } from './prose/prose.store';
+import { BlogsStore } from './blogs/blogs.store';
 import { BlogsContentDocument } from './blogs/blogs-content.document';
 import { NewsContentDocument } from './news/news-content.document';
 
 @Injectable()
-export class ContentService {
+export class ContentStore {
     constructor(
         @InjectModel('Content') private readonly contentModel: PaginateModel<ContentDocument>,
-        private readonly blogsService: BlogsService,
-        private readonly newsService: NewsService,
-        private readonly poetryService: PoetryService,
-        private readonly proseService: ProseService,
+        private readonly blogsService: BlogsStore,
+        private readonly newsService: NewsStore,
+        private readonly poetryService: PoetryStore,
+        private readonly proseService: ProseStore,
         private readonly sectionsService: SectionsService,
         private readonly usersService: UsersService,
-        private readonly queueService: ApprovalQueueService,
+        private readonly queueService: ApprovalQueueStore,
         private readonly notificationsService: NotificationsService,
         private readonly histService: ReadingHistoryService,
     ) {}

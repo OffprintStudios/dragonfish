@@ -12,7 +12,7 @@ import { NotificationsService } from '../../notifications/notifications.service'
 import { NotificationKind } from '@dragonfish/models/notifications';
 
 @Injectable()
-export class BlogsService {
+export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         private readonly usersService: UsersService,

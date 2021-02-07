@@ -10,7 +10,7 @@ import { isNullOrUndefined } from '../../util';
 import { ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
-export class CollectionsService {
+export class CollectionsStore {
     constructor(@InjectModel('Collection') private readonly collModel: PaginateModel<CollectionDocument>) {}
 
     /**

@@ -5,7 +5,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 
 import { SectionsDocument, SectionsSchema } from './sections.schema';
-import { SectionsService } from './sections.service';
+import { SectionsStore } from './sections.store';
 
 @Module({
     imports: [
@@ -35,7 +35,7 @@ import { SectionsService } from './sections.service';
             },
         ]),
     ],
-    providers: [SectionsService],
-    exports: [SectionsService],
+    providers: [SectionsStore],
+    exports: [SectionsStore],
 })
 export class SectionsModule {}

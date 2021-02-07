@@ -11,7 +11,7 @@ import { NotificationsService } from '../notifications/notifications.service';
 import { CreateCommentNotification, NotificationKind } from '@dragonfish/models/notifications';
 
 @Injectable()
-export class CommentsService {
+export class CommentsStore {
     constructor(
         @InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
         @InjectModel('ContentComment')

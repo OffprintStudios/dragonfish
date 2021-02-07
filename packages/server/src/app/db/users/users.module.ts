@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { UsersSchema } from './users.schema';
-import { UsersService } from './users.service';
+import { UsersStore } from './users.store';
 import { InviteCodesSchema } from './invite-codes.schema';
 import { CollectionsModule } from '../collections/collections.module';
 
@@ -14,7 +14,7 @@ import { CollectionsModule } from '../collections/collections.module';
             { name: 'InviteCodes', schema: InviteCodesSchema },
         ]),
     ],
-    providers: [UsersService],
-    exports: [UsersService],
+    providers: [UsersStore],
+    exports: [UsersStore],
 })
 export class UsersModule {}

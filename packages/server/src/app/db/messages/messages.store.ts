@@ -9,7 +9,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { CreateInitialMessage, CreateResponse } from '@dragonfish/models/messages';
 
 @Injectable()
-export class MessagesService {
+export class MessagesStore {
     constructor(
         @InjectModel('Message') private readonly messageModel: PaginateModel<MessageDocument>,
         @InjectModel('MessageThread') private readonly messageThreadModel: PaginateModel<MessageThreadDocument>,

@@ -11,7 +11,7 @@ import { PoetryContentDocument } from './poetry-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
-export class PoetryService {
+export class PoetryStore {
     constructor(
         @InjectModel('PoetryContent') private readonly poetryModel: PaginateModel<PoetryContentDocument>,
         private readonly notificationsService: NotificationsService,

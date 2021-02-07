@@ -4,13 +4,13 @@ import { PaginateModel } from 'mongoose';
 
 import * as models from '@dragonfish/models/blogs';
 import * as documents from './models/blog-document.model';
-import { UsersService } from '../users/users.service';
+import { UsersStore } from '../users/users.store';
 
 @Injectable()
 export class OldBlogsService {
     constructor(
         @InjectModel('Blog') private readonly blogModel: PaginateModel<documents.BlogDocument>,
-        private readonly usersService: UsersService,
+        private readonly usersService: UsersStore,
     ) {}
 
     /**

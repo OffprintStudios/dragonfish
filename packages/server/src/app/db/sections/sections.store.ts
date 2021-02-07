@@ -6,7 +6,7 @@ import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 import { SectionsDocument } from './sections.schema';
 
 @Injectable()
-export class SectionsService {
+export class SectionsStore {
     constructor(@InjectModel('Section') private readonly sectionModel: Model<SectionsDocument>) {}
 
     /**

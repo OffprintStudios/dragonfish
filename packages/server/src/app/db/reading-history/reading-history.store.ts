@@ -7,7 +7,7 @@ import { ReadingHistoryDocument } from './reading-history.schema';
 import { RatingOption } from '@dragonfish/models/reading-history';
 
 @Injectable()
-export class ReadingHistoryService {
+export class ReadingHistoryStore {
     constructor(@InjectModel('ReadingHistory') private readonly histModel: PaginateModel<ReadingHistoryDocument>) {}
 
     /**

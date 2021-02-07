@@ -18,7 +18,7 @@ import { NewsContentDocument } from './news-content.document';
 import { isAllowed } from '../../../util';
 
 @Injectable()
-export class NewsService {
+export class NewsStore {
     constructor(@InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>) {}
 
     /**

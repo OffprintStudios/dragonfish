@@ -42,6 +42,8 @@ async function bootstrap() {
         .addTag(`auth`)
         .addTag(`user`)
         .addTag(`content`)
+        .addTag(`meta`)
+        .addTag(`approval-queue`)
         .addTag(`search`)
         .addBearerAuth()
         .build();

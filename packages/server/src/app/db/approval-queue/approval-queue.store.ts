@@ -6,7 +6,7 @@ import { ApprovalQueueDocument } from './approval-queue.schema';
 import { WorksService } from '../works/works.service';
 
 @Injectable()
-export class ApprovalQueueService {
+export class ApprovalQueueStore {
     constructor(
         @InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<ApprovalQueueDocument>,
         private readonly worksService: WorksService,

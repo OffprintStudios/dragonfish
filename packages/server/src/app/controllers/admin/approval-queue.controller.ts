@@ -1,4 +1,5 @@
 import { Body, Controller, Request, Get, Param, Patch, UseGuards, BadRequestException, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../guards';
 import { ApprovalQueueService } from '../../services/admin/approval-queue.service';
@@ -11,18 +12,21 @@ import { Decision } from '@dragonfish/models/contrib';
 export class ApprovalQueueController {
     constructor(private readonly queueService: ApprovalQueueService) {}
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('get-queue/:pageNum')
     async getQueue(@Param('pageNum') pageNum: number) {
         return await this.queueService.getQueue(pageNum);
     }
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('get-queue-for-mod/:pageNum')
     async getQueueForMod(@Request() req: any, @Param('pageNum') pageNum: number) {
         return await this.queueService.getQueueForMod(req.user, pageNum);
     }
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('view-content')
     async viewContent(
@@ -40,18 +44,21 @@ export class ApprovalQueueController {
         return await this.queueService.fetchOne(contentId, kind, userId);
     }
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('claim-work/:docId')
     async claimWork(@Request() req: any, @Param('docId') docId: string) {
         return await this.queueService.claimWork(req.user, docId);
     }
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('approve-work')
     async approveWork(@Request() req: any, @Body() decision: Decision) {
         return await this.queueService.approveWork(req.user, decision.docId, decision.workId, decision.authorId);
     }
 
+    @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('reject-work')
     async rejectWork(@Request() req: any, @Body() decision: Decision) {
