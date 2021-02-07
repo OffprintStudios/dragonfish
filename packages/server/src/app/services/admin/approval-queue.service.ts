@@ -1,14 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 import { PaginateResult } from 'mongoose';
 
 import { ContentKind, ContentModel } from '@dragonfish/models/content';
-import { ApprovalQueueService } from '../../../db/approval-queue/approval-queue.service';
-import { ContentService } from '../../../db/content';
+import { ApprovalQueueService as ApprovalQueueServiceDb } from '../../db/approval-queue/approval-queue.service';
+import { ContentService } from '../../db/content';
 
 @Injectable()
-export class QueueService {
-    constructor(private approvalQueueService: ApprovalQueueService, private contentService: ContentService) {}
+export class ApprovalQueueService {
+    private readonly logger: Logger = new Logger(ApprovalQueueService.name);
+
+    constructor(private approvalQueueService: ApprovalQueueServiceDb, private contentService: ContentService) {}
 
     /**
      * Fetches the entire queue.
