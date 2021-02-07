@@ -38,6 +38,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 
 /* Other */
 import { ApprovalQueueService } from './services/admin/approval-queue.service';
+import { MetaService } from './services/admin/meta.service';
 
 @Module({
     imports: [
@@ -85,6 +86,7 @@ import { ApprovalQueueService } from './services/admin/approval-queue.service';
         ...ContentServices,
         ...ImagesServices,
         { provide: 'IApprovalQueue', useClass: ApprovalQueueService },
+        { provide: 'IMeta', useClass: MetaService },
     ],
 })
 export class AppModule {}

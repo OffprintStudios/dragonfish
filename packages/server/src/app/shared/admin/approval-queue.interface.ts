@@ -6,7 +6,7 @@ import { JwtPayload } from '@dragonfish/models/auth';
 /**
  * ## The Approval Queue Interface
  *
- * Implement this interface to be able to serve these routes data.
+ * Implement this interface to be able to serve data to associated routes.
  */
 export interface IApprovalQueue {
     /**

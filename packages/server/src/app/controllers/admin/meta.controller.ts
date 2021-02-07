@@ -1,13 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { MetaService } from '../../services/admin/meta.service';
 import { FrontendUser } from '@dragonfish/models/users';
 import { FrontPageStats } from '@dragonfish/models/stats';
+import { IMeta } from '../../shared/admin';
 
 @Controller('meta')
 export class MetaController {
-    constructor(private readonly meta: MetaService) {}
+    constructor(@Inject('IMeta') private readonly meta: IMeta) {}
 
     @ApiTags('meta')
     @Get('site-staff')
@@ -22,8 +22,8 @@ export class MetaController {
     }
 
     @ApiTags('meta')
-    @Get('front-page-stats')
-    async getFooterStats(): Promise<FrontPageStats> {
-        return await this.meta.getFrontPageStats();
+    @Get('public-stats')
+    async getPublicStats(): Promise<FrontPageStats> {
+        return await this.meta.getPublicStats();
     }
 }

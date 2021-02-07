@@ -5,7 +5,7 @@ import { PaginateResult } from 'mongoose';
 import { ContentKind, ContentModel } from '@dragonfish/models/content';
 import { ApprovalQueueStore } from '../../db/approval-queue/approval-queue.store';
 import { ContentStore } from '../../db/content';
-import { IApprovalQueue } from '../../shared/admin/approval-queue.interface';
+import { IApprovalQueue } from '../../shared/admin';
 
 @Injectable()
 export class ApprovalQueueService implements IApprovalQueue {
