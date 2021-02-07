@@ -70,6 +70,9 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
         ...PortfolioRoutes,
         ...SearchRoutes,
     ],
-    providers: [...AuthServices, ...ImagesServices],
+    providers: [
+        ...AuthServices, 
+        ...ImagesServices,
+    ],
 })
 export class AppModule {}
