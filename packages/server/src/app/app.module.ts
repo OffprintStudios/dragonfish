@@ -1,5 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtModule } from '@nestjs/jwt';
+
+import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 
 import { AppController } from './app.controller';
 import { AdminRoutes } from './controllers/admin';
@@ -19,6 +22,12 @@ import { SearchRoutes } from './controllers/search';
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
                 useFindAndModify: false,
+            }),
+        }),
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
             }),
         }),
     ],
