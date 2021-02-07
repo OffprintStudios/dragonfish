@@ -8,11 +8,11 @@ import { UsersStore } from '../../db/users/users.store';
 export class MetaService {
     private readonly logger: Logger = new Logger(MetaService.name);
 
-    constructor (private readonly usersService: UsersStore) {}
+    constructor(private readonly usersService: UsersStore) {}
 
     /**
      * Gets the list of site staff.
-     * 
+     *
      * @returns
      */
     async getSiteStaff(): Promise<FrontendUser[]> {
@@ -21,7 +21,7 @@ export class MetaService {
 
     /**
      * Gets the list of Patreon supporters, VIPs, contributors, and maintainers.
-     * 
+     *
      * @returns
      */
     async getSupporters(): Promise<FrontendUser[]> {
@@ -30,13 +30,13 @@ export class MetaService {
 
     /**
      * Gets the site stats for the footer.
-     * 
+     *
      * @returns
      */
     async getFrontPageStats(): Promise<FrontPageStats> {
         const stats: FrontPageStats = {
             numUsers: await this.usersService.getUserCount(),
-            numWorks: 0
+            numWorks: 0,
         };
 
         return stats;

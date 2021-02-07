@@ -7,7 +7,7 @@ import { FrontPageStats } from '@dragonfish/models/stats';
 
 @Controller('meta')
 export class MetaController {
-    constructor (private readonly meta: MetaService) {}
+    constructor(private readonly meta: MetaService) {}
 
     @ApiTags('meta')
     @Get('site-staff')
