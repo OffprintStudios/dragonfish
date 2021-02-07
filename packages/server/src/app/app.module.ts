@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 
+/* Controllers */
 import { AppController } from './app.controller';
 import { AdminRoutes } from './controllers/admin';
 import { AuthRoutes } from './controllers/auth';
@@ -13,8 +14,32 @@ import { NotificationsRoutes } from './controllers/notifications';
 import { PortfolioRoutes } from './controllers/portfolio';
 import { SearchRoutes } from './controllers/search';
 
+/* Database Modules */
+import { UsersModule } from './db/users/users.module';
+import { ContentModule } from './db/content';
+import { ReadingHistoryModule } from './db/reading-history/reading-history.module';
+import { CollectionsModule } from './db/collections/collections.module';
+import { MessagesModule } from './db/messages/messages.module';
+import { NotificationsModule } from './db/notifications/notifications.module';
+import { SectionsModule } from './db/sections/sections.module';
+import { ApprovalQueueModule } from './db/approval-queue/approval-queue.module';
+import { CommentsModule } from './db/comments/comments.module';
+import { WorksModule } from './db/works/works.module';
+import { OldBlogsModule } from './db/blogs/blogs.module';
+
 @Module({
     imports: [
+        UsersModule,
+        ContentModule,
+        ReadingHistoryModule,
+        CollectionsModule,
+        MessagesModule,
+        NotificationsModule,
+        SectionsModule,
+        ApprovalQueueModule,
+        CommentsModule,
+        WorksModule,
+        OldBlogsModule,
         MongooseModule.forRootAsync({
             useFactory: () => ({
                 uri: process.env.MONGO_URL,
