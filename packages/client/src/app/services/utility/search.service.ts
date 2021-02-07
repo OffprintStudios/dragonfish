@@ -18,12 +18,12 @@ export class SearchService {
     blogResults: Observable<PaginateResult<BlogsContentModel>>;
     userResults: Observable<PaginateResult<User>>;
 
-    constructor(private readonly networkService: NetworkService) { }
+    constructor(private readonly networkService: NetworkService) {}
 
     /**
-   * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
-   * @param query The user's search string.
-   */
+     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
+     * @param query The user's search string.
+     */
     public fetchInitialResults(query: string): Observable<InitialResults> {
         return this.networkService.searchInitialResults(query);
     }
