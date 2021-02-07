@@ -16,8 +16,8 @@ import { RolesGuard } from '../../guards';
 import { isNullOrUndefined } from '../../util';
 import { ContentKind } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
-import { Decision } from '@dragonfish/models/contrib';
 import { IApprovalQueue } from '../../shared/admin';
+import { DecisionDTO } from './models';
 
 @Controller('approval-queue')
 export class ApprovalQueueController {
@@ -58,14 +58,14 @@ export class ApprovalQueueController {
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('approve-content')
-    async approveContent(@Request() req: any, @Body() decision: Decision) {
+    async approveContent(@Request() req: any, @Body() decision: DecisionDTO) {
         return await this.queue.approveContent(req.user, decision.docId, decision.workId, decision.authorId);
     }
 
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('reject-content')
-    async rejectContent(@Request() req: any, @Body() decision: Decision) {
+    async rejectContent(@Request() req: any, @Body() decision: DecisionDTO) {
         return await this.queue.rejectContent(req.user, decision.docId, decision.workId, decision.authorId);
     }
 }
