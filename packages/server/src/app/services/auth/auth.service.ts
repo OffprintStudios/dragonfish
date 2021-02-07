@@ -12,20 +12,14 @@ import { nanoid } from 'nanoid';
 import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/models/users';
 import { UsersStore } from '../../db/users/users.store';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { IAuth } from '../../shared/auth';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuth {
     private readonly logger: Logger = new Logger(AuthService.name);
 
     constructor(private readonly usersService: UsersStore, private readonly jwtService: JwtService) {}
 
-    /**
-     * Validates the incoming email and password of a login request. Returns a User
-     * if validation success, but otherwise errors out.
-     *
-     * @param email A potential user's email
-     * @param password A potential user's password
-     */
     async validateUser(email: string, password: string): Promise<User> {
         const potentialUser = await this.usersService.findOneByEmail(email);
         if (potentialUser) {
@@ -45,13 +39,6 @@ export class AuthService {
         }
     }
 
-    /**
-     * Registers a new user, then logs them in.
-     *
-     * @param req The request object
-     * @param newUser The new user's credentials
-     * @returns
-     */
     async register(req: any, newUser: CreateUser): Promise<FrontendUser> {
         const addedUser = await this.usersService.createUser(newUser);
         this.logger.log(`New user created with ID: ${addedUser._id}`);
@@ -60,18 +47,6 @@ export class AuthService {
         return this.login(addedUser, req, sessionId, newSession.expires);
     }
 
-    /**
-     * Logs a user in by generating a JWT payload and (if requested) setting the httpOnly refresh token
-     * in the request cookies header. Then, constructs a specialized FrontendUser object
-     * to send to the frontend.
-     *
-     * @param user The incoming user
-     * @param req The incoming login request
-     * @param sessionId (Optional) A new session ID. If included, sessionExpiry must also be included.
-     * If included, will set a 'refreshToken' httpOnly cookie.
-     * Otherwise, the cookie will not be set, and the user's session will only last an hour.
-     * @param sessionExpiry (Optional) Must be included if sessionId is passed. The expiry date of the user's session.
-     */
     async login(user: User, req: any, sessionId?: string, sessionExpiry?: Date): Promise<FrontendUser> {
         const payload: JwtPayload = {
             username: user.username,
@@ -88,23 +63,12 @@ export class AuthService {
         return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 
-    /**
-     * Logs a user out by deleting their HTTP-only refresh token cookie. The rest of the logout process
-     * takes place in the user service, or client-side.
-     * @param req The incoming logout request
-     */
-    logout(req: any) {
+    logout(req: any): void {
         req._cookies = [
             { name: 'refreshToken', value: '', options: { httpOnly: true, expires: new Date(Date.now()) } },
         ];
     }
 
-    /**
-     * Refreshes the login of a given user by generating a new JWT payload and reconstructing
-     * the FrontendUser object of the requisite user.
-     *
-     * @param user A user's JWT payload
-     */
     async refreshLogin(user: JwtPayload): Promise<string> {
         const validatedUser = await this.usersService.findOneById(user.sub);
         const newPayload: JwtPayload = {
@@ -116,35 +80,14 @@ export class AuthService {
         return this.jwtService.sign(newPayload);
     }
 
-    /**
-     * Adds a Session ID from a new refresh token to a user's active sessions.
-     *
-     * @param userId The user's ID
-     * @param sessionId The new session ID to add
-     * @returns
-     */
     async addRefreshToken(userId: string, sessionId: string): Promise<AuditSession> {
         return await this.usersService.addRefreshToken(userId, sessionId);
     }
 
-    /**
-     * Checks to see if the refresh token with the provided session ID is valid.
-     *
-     * @param userId The user's ID
-     * @param sessionId The session to check
-     * @returns
-     */
     async checkRefreshToken(userId: string, sessionId: string): Promise<boolean> {
         return await this.usersService.checkRefreshToken(userId, sessionId);
     }
 
-    /**
-     * Clears the specified session ID from a user's session list.
-     *
-     * @param userId The user's ID
-     * @param oldSessionId Their old session ID
-     * @returns
-     */
     async clearRefreshToken(userId: string, oldSessionId: string): Promise<void> {
         return await this.usersService.clearRefreshToken(userId, oldSessionId);
     }

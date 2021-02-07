@@ -1,16 +1,16 @@
-import { Controller, Request, Body, Get, Post, UseGuards, ForbiddenException } from '@nestjs/common';
+import { Controller, Request, Body, Get, Post, UseGuards, ForbiddenException, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { nanoid } from 'nanoid';
 
-import { AuthService } from '../../services/auth/auth.service';
 import { RefreshGuard } from '../../guards';
 import { CreateUserDTO, LoginUserDTO } from './models';
 import { FrontendUser } from '@dragonfish/models/users';
+import { IAuth } from '../../shared/auth';
 
 @Controller('auth')
 export class AuthController {
-    constructor(private auth: AuthService) {}
+    constructor(@Inject('IAuth') private readonly auth: IAuth) {}
 
     @ApiTags('auth')
     @SetCookies()
