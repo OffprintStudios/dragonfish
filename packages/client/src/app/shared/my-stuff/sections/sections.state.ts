@@ -6,10 +6,10 @@ import { tap, catchError } from 'rxjs/operators';
 
 import { Sections } from './sections.actions';
 import { SectionsStateModel } from './sections-state.model';
-import { MyStuffService } from '../services';
 import { Section } from '@dragonfish/models/sections';
 import { AlertsService } from '../../alerts';
 import { MyStuff } from '../my-stuff.actions';
+import { NetworkService } from '../../../services';
 
 @State<SectionsStateModel>({
     name: 'sections',
@@ -20,11 +20,11 @@ import { MyStuff } from '../my-stuff.actions';
 })
 @Injectable()
 export class SectionsState {
-    constructor(private stuffService: MyStuffService, private alerts: AlertsService) {}
+    constructor(private networkService: NetworkService, private alerts: AlertsService) {}
 
     @Action(Sections.SetAll)
     public setAll({ patchState }: StateContext<SectionsStateModel>, { contentId }: Sections.SetAll) {
-        return this.stuffService.fetchSections(contentId).pipe(
+        return this.networkService.fetchUserContentSections(contentId).pipe(
             tap((result: Section[]) => {
                 patchState({
                     sections: result.reverse(),
@@ -49,7 +49,7 @@ export class SectionsState {
         { getState, patchState }: StateContext<SectionsStateModel>,
         { contentId, sectionInfo }: Sections.Create,
     ) {
-        return this.stuffService.createSection(contentId, sectionInfo).pipe(
+        return this.networkService.createSection(contentId, sectionInfo).pipe(
             tap((result: Section) => {
                 this.alerts.success(`Section created!`);
                 patchState({
@@ -66,7 +66,7 @@ export class SectionsState {
 
     @Action(Sections.Save)
     public save({ setState }: StateContext<SectionsStateModel>, { contentId, sectionId, sectionInfo }: Sections.Save) {
-        return this.stuffService.editSection(contentId, sectionId, sectionInfo).pipe(
+        return this.networkService.editSection(contentId, sectionId, sectionInfo).pipe(
             tap((result: Section) => {
                 this.alerts.success(`Changes saved!`);
                 setState(
@@ -88,7 +88,7 @@ export class SectionsState {
         { setState, dispatch }: StateContext<SectionsStateModel>,
         { contentId, sectionId, pubStatus }: Sections.Publish,
     ) {
-        return this.stuffService.publishSection(contentId, sectionId, pubStatus).pipe(
+        return this.networkService.publishSection(contentId, sectionId, pubStatus).pipe(
             tap((result: Section) => {
                 setState(
                     patch({
@@ -107,7 +107,7 @@ export class SectionsState {
 
     @Action(Sections.Delete)
     public delete({ setState }: StateContext<SectionsStateModel>, { contentId, sectionId }: Sections.Delete) {
-        return this.stuffService.deleteSection(contentId, sectionId).pipe(
+        return this.networkService.deleteSection(contentId, sectionId).pipe(
             tap((_result: Section) => {
                 setState(
                     patch({
