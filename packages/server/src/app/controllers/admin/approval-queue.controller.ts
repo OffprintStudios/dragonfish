@@ -6,7 +6,7 @@ import { isNullOrUndefined } from '../../util';
 import { ContentKind } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { Decision } from '@dragonfish/models/contrib';
-import { IApprovalQueue } from '../../interfaces/admin/approval-queue.interface';
+import { IApprovalQueue } from '../../shared/admin/approval-queue.interface';
 
 @Controller('approval-queue')
 export class ApprovalQueueController {
