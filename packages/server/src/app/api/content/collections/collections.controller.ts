@@ -14,12 +14,12 @@ import {
 import { RolesGuard } from '../../../guards';
 import { Roles } from '@dragonfish/models/users';
 import { CollectionForm } from '@dragonfish/models/collections';
-import { CollectionsService } from '../../../db/collections/collections.service';
+import { CollectionsStore } from '../../../db/collections/collections.store';
 import { isNullOrUndefined } from '../../../util';
 
 @Controller('collections')
 export class CollectionsController {
-    constructor(private readonly collsService: CollectionsService) {}
+    constructor(private readonly collsService: CollectionsStore) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('get-all-collections')
