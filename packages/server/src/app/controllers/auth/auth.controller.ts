@@ -14,14 +14,14 @@ import { JwtPayload } from '@dragonfish/models/auth';
 export class AuthController {
     constructor(@Inject('IAuth') private readonly auth: IAuth) {}
 
-    @ApiTags('auth')
+    @ApiTags('Auth')
     @SetCookies()
     @Post('register')
     async register(@Request() req: any, @Body() newUser: CreateUserDTO): Promise<FrontendUser> {
         return await this.auth.register(req, newUser);
     }
 
-    @ApiTags('auth')
+    @ApiTags('Auth')
     @SetCookies()
     @Post('login')
     async login(@Request() req: any, @Body() loginUser: LoginUserDTO, @Cookies() cookies: any): Promise<FrontendUser> {
@@ -43,7 +43,7 @@ export class AuthController {
         }
     }
 
-    @ApiTags('auth')
+    @ApiTags('Auth')
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
     async refreshToken(@User() user: JwtPayload, @Cookies() cookies: any): Promise<{ newToken: string }> {
@@ -60,7 +60,7 @@ export class AuthController {
         }
     }
 
-    @ApiTags('auth')
+    @ApiTags('Auth')
     @UseGuards(RefreshGuard)
     @SetCookies()
     @Get('logout')

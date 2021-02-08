@@ -14,14 +14,14 @@ import { JwtPayload } from '@dragonfish/models/auth';
 export class ApprovalQueueController {
     constructor(@Inject('IApprovalQueue') private readonly queue: IApprovalQueue) {}
 
-    @ApiTags('approval-queue')
+    @ApiTags('Approval Queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('get-queue/:pageNum')
     async getQueue(@Param('pageNum') pageNum: number) {
         return await this.queue.getQueue(pageNum);
     }
 
-    @ApiTags('approval-queue')
+    @ApiTags('Approval Queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('view-content')
     async viewContent(
@@ -39,21 +39,21 @@ export class ApprovalQueueController {
         return await this.queue.viewContent(contentId, kind, userId);
     }
 
-    @ApiTags('approval-queue')
+    @ApiTags('Approval Queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('claim-content/:docId')
     async claimContent(@User() user: JwtPayload, @Param('docId') docId: string) {
         return await this.queue.claimContent(user, docId);
     }
 
-    @ApiTags('approval-queue')
+    @ApiTags('Approval Queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('approve-content')
     async approveContent(@User() user: JwtPayload, @Body() decision: DecisionDTO) {
         return await this.queue.approveContent(user, decision.docId, decision.workId, decision.authorId);
     }
 
-    @ApiTags('approval-queue')
+    @ApiTags('Approval Queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('reject-content')
     async rejectContent(@User() user: JwtPayload, @Body() decision: DecisionDTO) {

@@ -13,13 +13,13 @@ import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 export class SectionsController {
     constructor(@Inject('ISections') private readonly sections: ISections) {}
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @Get('fetch-one-by-id')
     async fetchOneById(@Query('sectionId') sectionId: string, @Query('published') published: boolean) {
         return await this.sections.fetchOneById(sectionId, published);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-content-sections')
     async fetchUserContentSections(@User() user: JwtPayload, @Query('contentId') contentId: string) {
@@ -30,7 +30,7 @@ export class SectionsController {
         return await this.sections.fetchUserContentSections(user, contentId);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-section')
     async createSection(
@@ -45,7 +45,7 @@ export class SectionsController {
         return await this.sections.create(user, contentId, sectionInfo);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-section')
     async editSection(
@@ -61,7 +61,7 @@ export class SectionsController {
         return await this.sections.save(user, contentId, sectionId, sectionInfo);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-section')
     async publishSection(
@@ -77,7 +77,7 @@ export class SectionsController {
         return await this.sections.publish(user, contentId, sectionId, pubStatus);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-section')
     async deleteSection(

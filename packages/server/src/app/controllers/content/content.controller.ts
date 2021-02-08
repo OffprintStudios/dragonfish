@@ -25,7 +25,7 @@ import { IContent } from '../../shared/content';
 export class ContentController {
     constructor(@Inject('IContent') private readonly content: IContent) {}
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-one')
     async fetchOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
@@ -36,7 +36,7 @@ export class ContentController {
         return await this.content.fetchOne(contentId, kind, user);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(OptionalAuthGuard)
     @Get('fetch-one-published')
     async fetchOnePublished(
@@ -51,14 +51,14 @@ export class ContentController {
         return await this.content.fetchOnePublished(contentId, kind, user);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-all')
     async fetchAll(@User() user: JwtPayload) {
         return await this.content.fetchAll(user);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @Get('fetch-all-published')
     async fetchAllPublished(
         @Cookies('contentFilter') filter: ContentFilter,
@@ -73,7 +73,7 @@ export class ContentController {
         return await this.content.fetchAllPublished(pageNum, kind, filter, userId);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-one')
     async createOne(@User() user: JwtPayload, @Query('kind') kind: ContentKind, @Body() formInfo: FormType) {
@@ -84,7 +84,7 @@ export class ContentController {
         return await this.content.createOne(user, kind, formInfo);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('save-changes')
     async saveChanges(
@@ -100,7 +100,7 @@ export class ContentController {
         return await this.content.saveOne(user, contentId, formInfo);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-one')
     async deleteOne(@User() user: JwtPayload, @Query('contentId') contentId: string) {
@@ -111,7 +111,7 @@ export class ContentController {
         return await this.content.deleteOne(user, contentId);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-one')
     async publishOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Body() pubChange?: PubChange) {
@@ -122,21 +122,21 @@ export class ContentController {
         return await this.content.publishOne(user, contentId, pubChange);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-like')
     async setLike(@User() user: JwtPayload, @Body() setRating: SetRating) {
         return await this.content.setLike(user, setRating);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-dislike')
     async setDislike(@User() user: JwtPayload, @Body() setRating: SetRating) {
         return await this.content.setDislike(user, setRating);
     }
 
-    @ApiTags('content')
+    @ApiTags('Content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-no-vote')
     async setNoVote(@User() user: JwtPayload, @Body() setRating: SetRating) {

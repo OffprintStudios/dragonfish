@@ -9,19 +9,19 @@ import { IMeta } from '../../shared/admin';
 export class MetaController {
     constructor(@Inject('IMeta') private readonly meta: IMeta) {}
 
-    @ApiTags('meta')
+    @ApiTags('Meta')
     @Get('site-staff')
     async getSiteStaff(): Promise<FrontendUser[]> {
         return await this.meta.getSiteStaff();
     }
 
-    @ApiTags('meta')
+    @ApiTags('Meta')
     @Get('supporters')
     async getSupporters(): Promise<FrontendUser[]> {
         return await this.meta.getSupporters();
     }
 
-    @ApiTags('meta')
+    @ApiTags('Meta')
     @Get('public-stats')
     async getPublicStats(): Promise<FrontPageStats> {
         return await this.meta.getPublicStats();

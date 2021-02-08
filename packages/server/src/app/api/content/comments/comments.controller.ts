@@ -3,11 +3,11 @@ import { Controller, UseGuards, Request, Param, Body, Get, Put, Patch, Post } fr
 import { Roles } from '@dragonfish/models/users';
 import { RolesGuard } from '../../../guards';
 import { CreateComment, EditComment } from '@dragonfish/models/comments';
-import { CommentsService } from '../../../db/comments/comments.service';
+import { CommentsStore } from '../../../db/comments/comments.store';
 
 @Controller('comments')
 export class CommentsController {
-    constructor(private readonly commentsService: CommentsService) {}
+    constructor(private readonly commentsService: CommentsStore) {}
 
     @UseGuards(RolesGuard([Roles.User]))
     @Put('add-content-comment/:contentId')
