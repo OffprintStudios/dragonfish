@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { User } from './user.actions';
 import { UserStateModel } from './user-state.model';
 import { FrontendUser } from '@dragonfish/models/users';
-import { Alerts } from '../alerts';
+import { AlertsService } from '@dragonfish/alerts';
 import { NetworkService } from '../../services';
 
 @State<UserStateModel>({
@@ -16,7 +16,7 @@ import { NetworkService } from '../../services';
 })
 @Injectable()
 export class UserState {
-    constructor(private networkService: NetworkService) {}
+    constructor(private networkService: NetworkService, private alerts: AlertsService) {}
 
     /* Actions */
 
@@ -31,7 +31,7 @@ export class UserState {
     changeEmail({ patchState, dispatch }: StateContext<UserStateModel>, action: User.ChangeEmail) {
         return this.networkService.changeEmail(action.newEmail).pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
@@ -41,14 +41,14 @@ export class UserState {
 
     @Action(User.ChangeUsername)
     changeUsername({ patchState, dispatch }: StateContext<UserStateModel>, action: User.ChangeUsername) {
-        dispatch(new Alerts.Info(`This action does nothing right now. Check back for a future update!`));
+        this.alerts.info(`This action does nothing right now. Check back for a future update!`);
     }
 
     @Action(User.ChangePassword)
     changePassword({ patchState, dispatch }: StateContext<UserStateModel>, action: User.ChangePassword) {
         return this.networkService.changePassword(action.newPassword).pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
@@ -60,7 +60,7 @@ export class UserState {
     changeProfile({ patchState, dispatch }: StateContext<UserStateModel>, action: User.ChangeProfile) {
         return this.networkService.changeProfile(action.newProfile).pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
@@ -72,7 +72,7 @@ export class UserState {
     agreeToPolicies({ patchState, dispatch }: StateContext<UserStateModel>, _action: User.AgreeToPolicies) {
         return this.networkService.agreeToPolicies().pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
@@ -84,7 +84,7 @@ export class UserState {
     changeAvatar({ patchState, dispatch }: StateContext<UserStateModel>, action: User.ChangeAvatar) {
         return this.networkService.changeImage(action.uploader).pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
@@ -96,7 +96,7 @@ export class UserState {
     updateTagline({ patchState, dispatch }: StateContext<UserStateModel>, action: User.UpdateTagline) {
         return this.networkService.updateTagline(action.newTagline).pipe(
             tap((result: FrontendUser) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });

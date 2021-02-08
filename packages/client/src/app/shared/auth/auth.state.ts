@@ -8,7 +8,7 @@ import { NetworkService } from '../../services';
 import { FrontendUser } from '@dragonfish/models/users';
 import { Observable } from 'rxjs';
 import { User } from '../user';
-import { Alerts } from '../alerts';
+import { AlertsService } from '@dragonfish/alerts';
 
 @State<AuthStateModel>({
     name: 'auth',
@@ -18,7 +18,7 @@ import { Alerts } from '../alerts';
 })
 @Injectable()
 export class AuthState {
-    constructor(private network: NetworkService) {}
+    constructor(private network: NetworkService, private alerts: AlertsService) {}
 
     /* Actions */
 
@@ -79,7 +79,7 @@ export class AuthState {
                     patchState({
                         token: null,
                     });
-                    dispatch(new Alerts.Info(`Your token has expired, and you've been logged out.`));
+                    this.alerts.info(`Your token has expired, and you've been logged out.`);
                 } else {
                     patchState({
                         token: result,

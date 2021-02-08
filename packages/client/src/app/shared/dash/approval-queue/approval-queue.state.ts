@@ -14,7 +14,7 @@ import { AQNamespace } from './approval-queue.actions';
 import { ApprovalQueueStateModel } from './approval-queue-state.model';
 import { UserState } from '../../user';
 import { NetworkService } from '../../../services';
-import { Alerts } from '../../alerts';
+import { AlertsService } from '@dragonfish/alerts';
 
 @State<ApprovalQueueStateModel>({
     name: 'approvalQueue',
@@ -28,7 +28,7 @@ import { Alerts } from '../../alerts';
 })
 @Injectable()
 export class ApprovalQueueState {
-    constructor(private networkService: NetworkService, private store: Store) {}
+    constructor(private networkService: NetworkService, private store: Store, private alerts: AlertsService) {}
 
     /* Actions */
 
@@ -52,7 +52,7 @@ export class ApprovalQueueState {
                     });
                     return;
                 } else {
-                    dispatch(new Alerts.Error(`This action is forbidden.`));
+                    this.alerts.error(`This action is forbidden.`);
                 }
             }),
         );
@@ -60,7 +60,7 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.GetQueueForMod)
     getQueueForMod({ dispatch }: StateContext<ApprovalQueueStateModel>, _action: AQNamespace.GetQueueForMod) {
-        dispatch(new Alerts.Info(`Action not yet supported.`));
+        this.alerts.info(`Action not yet supported.`);
     }
 
     @Action(AQNamespace.ClaimWork)
@@ -129,7 +129,7 @@ export class ApprovalQueueState {
 
     @Action(AQNamespace.ViewContent)
     viewContent({ dispatch }: StateContext<ApprovalQueueStateModel>) {
-        dispatch(new Alerts.Info(`Action not yet supported.`));
+        this.alerts.info(`Action not yet supported.`);
     }
 
     /* Selectors */

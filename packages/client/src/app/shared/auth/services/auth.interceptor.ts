@@ -6,7 +6,6 @@ import { Store } from '@ngxs/store';
 
 import { AuthState } from '../auth.state';
 import { Auth } from '../auth.actions';
-import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

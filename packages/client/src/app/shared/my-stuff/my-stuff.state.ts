@@ -7,7 +7,7 @@ import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 import { MyStuff } from './my-stuff.actions';
 import { MyStuffStateModel } from './my-stuff-state.model';
 import { ContentModel } from '@dragonfish/models/content';
-import { Alerts } from '../alerts';
+import { AlertsService } from '@dragonfish/alerts';
 import { SectionsState } from './sections';
 import { NetworkService } from '../../services';
 
@@ -22,7 +22,7 @@ import { NetworkService } from '../../services';
 })
 @Injectable()
 export class MyStuffState {
-    constructor(private networkService: NetworkService) {}
+    constructor(private networkService: NetworkService, private alerts: AlertsService) {}
 
     @Action(MyStuff.SetFiles)
     public setFiles({ patchState }: StateContext<MyStuffStateModel>): Observable<ContentModel[]> {
@@ -53,13 +53,13 @@ export class MyStuffState {
     ): Observable<ContentModel> {
         return this.networkService.createContent(kind, formInfo).pipe(
             tap((result: ContentModel) => {
-                dispatch(new Alerts.Success(`Content saved!`));
+                this.alerts.success(`Content saved!`);
                 patchState({
                     myStuff: [...getState().myStuff, result],
                 });
             }),
             catchError((err) => {
-                dispatch(new Alerts.Error(err.error.message));
+                this.alerts.error(err.error.message);
                 return throwError(err);
             }),
         );
@@ -72,7 +72,7 @@ export class MyStuffState {
     ): Observable<ContentModel> {
         return this.networkService.saveContent(contentId, kind, formInfo).pipe(
             tap((result: ContentModel) => {
-                dispatch(new Alerts.Success(`Changes saved!`));
+                this.alerts.success(`Changes saved!`);
                 setState(
                     patch({
                         myStuff: updateItem<ContentModel>((content) => content._id === result._id, result),
@@ -81,7 +81,7 @@ export class MyStuffState {
                 );
             }),
             catchError((err) => {
-                dispatch(new Alerts.Error(err.error.message));
+                this.alerts.error(err.error.message);
                 return throwError(err);
             }),
         );
@@ -102,7 +102,7 @@ export class MyStuffState {
                 );
             }),
             catchError((err) => {
-                dispatch(new Alerts.Error(err.error.message));
+                this.alerts.error(err.error.message);
                 return throwError(err);
             }),
         );
@@ -123,7 +123,7 @@ export class MyStuffState {
                 );
             }),
             catchError((err) => {
-                dispatch(new Alerts.Error(err.error.message));
+                this.alerts.error(err.error.message);
                 return throwError(err);
             }),
         );
@@ -144,7 +144,7 @@ export class MyStuffState {
                 );
             }),
             catchError((err) => {
-                dispatch(new Alerts.Error(`Something went wrong! Try again in a little bit.`));
+                this.alerts.error(`Something went wrong! Try again in a little bit.`);
                 return throwError(err);
             }),
         );
