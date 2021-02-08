@@ -7,22 +7,16 @@ import { DocsResolvers } from './resolvers/docs';
 import { HomeResolvers } from './resolvers/home';
 import { MigrationResolvers } from './resolvers/migration';
 import { PortfolioResolvers } from './resolvers/portfolio';
+import { MyStuffResolvers } from './resolvers/my-stuff';
 import { Resolvers } from './resolvers';
 
 /* Page Routes */
 import { HomeRoutes } from './pages/home';
-
-import {
-    MyStuffComponent,
-    ProseFormComponent,
-    BlogFormComponent,
-    PoetryFormComponent,
-    ViewProseComponent,
-    ViewPoetryComponent,
-    MyStuffResolver,
-    NewsFormComponent,
-    ViewSectionsResolver,
-} from './pages/my-stuff';
+import { BrowseRoutes } from './pages/browse';
+import { SocialRoutes } from './pages/social';
+import { ContentViewRoutes } from './pages/content-views';
+import { AccountRoutes } from './pages/account';
+import { MyStuffRoutes } from './pages/my-stuff';
 
 import { AuthGuard } from './shared/auth/services';
 import { Roles } from '@dragonfish/models/users';
@@ -30,58 +24,11 @@ import { Roles } from '@dragonfish/models/users';
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     ...HomeRoutes,
-    {
-        path: 'browse',
-        component: BrowseComponent,
-        resolve: { feedData: BrowseResolver },
-        runGuardsAndResolvers: 'always',
-    },
-    { path: 'social', component: SocialComponent },
-    {
-        path: 'post/:contentId/:postTitle',
-        resolve: { contentData: ContentViewResolver },
-        runGuardsAndResolvers: 'paramsChange',
-        component: PostPageComponent,
-    },
-    { path: 'register', component: RegisterComponent },
-    {
-        path: 'my-stuff',
-        component: MyStuffComponent,
-        canActivate: [AuthGuard],
-        resolve: { stuffData: MyStuffResolver },
-        children: [
-            { path: 'new-blog', component: BlogFormComponent, canActivate: [AuthGuard] },
-            {
-                path: 'new-post',
-                component: NewsFormComponent,
-                canActivate: [AuthGuard],
-                data: { roles: [Roles.Contributor, Roles.Moderator, Roles.Admin] },
-            },
-            { path: 'new-prose', component: ProseFormComponent, canActivate: [AuthGuard] },
-            { path: 'new-poetry', component: PoetryFormComponent, canActivate: [AuthGuard] },
-            { path: 'view-blog', component: BlogFormComponent, canActivate: [AuthGuard] },
-            {
-                path: 'view-post',
-                component: NewsFormComponent,
-                canActivate: [AuthGuard],
-                data: { roles: [Roles.Contributor, Roles.Moderator, Roles.Admin] },
-            },
-            {
-                path: 'view-prose',
-                component: ViewProseComponent,
-                canActivate: [AuthGuard],
-                resolve: { sectionData: ViewSectionsResolver },
-            },
-            {
-                path: 'view-poetry',
-                component: ViewPoetryComponent,
-                canActivate: [AuthGuard],
-                resolve: { sectionData: ViewSectionsResolver },
-            },
-            { path: 'edit-prose', component: ProseFormComponent, canActivate: [AuthGuard] },
-            { path: 'edit-poetry', component: PoetryFormComponent, canActivate: [AuthGuard] },
-        ],
-    },
+    ...BrowseRoutes,
+    ...SocialRoutes,
+    ...ContentViewRoutes,
+    ...AccountRoutes,
+    ...MyStuffRoutes,
     {
         path: 'portfolio/:id/:username',
         resolve: { portData: PortfolioResolver },
@@ -130,20 +77,6 @@ const routes: Routes = [
             { path: 'home', component: PortHomeComponent },
             { path: '', redirectTo: 'home', pathMatch: 'full' },
         ],
-    },
-    {
-        path: 'prose/:contentId/:proseTitle',
-        component: ProsePageComponent,
-        resolve: { contentData: ContentViewResolver },
-        runGuardsAndResolvers: 'paramsChange',
-        children: [{ path: ':sectionNum/:sectionTitle', component: SectionViewComponent }],
-    },
-    {
-        path: 'poetry/:contentId/:poetryTitle',
-        component: PoetryPageComponent,
-        resolve: { contentData: ContentViewResolver },
-        runGuardsAndResolvers: 'paramsChange',
-        children: [{ path: ':sectionNum/:sectionTitle', component: SectionViewComponent }],
     },
     {
         path: 'search',
@@ -315,9 +248,8 @@ const routes: Routes = [
         ...HomeResolvers,
         ...MigrationResolvers,
         ...PortfolioResolvers,
+        ...MyStuffResolvers,
         ...Resolvers,
-        MyStuffResolver,
-        ViewSectionsResolver,
     ],
 })
 export class AppRoutingModule {}
