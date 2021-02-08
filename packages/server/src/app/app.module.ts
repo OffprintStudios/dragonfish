@@ -23,34 +23,14 @@ import { MigrationServices } from './controllers/migration';
 import { SearchServices } from './services/search';
 
 /* Database Modules */
-import { UsersModule } from './db/users/users.module';
-import { ContentModule } from './db/content';
-import { ReadingHistoryModule } from './db/reading-history/reading-history.module';
-import { CollectionsModule } from './db/collections/collections.module';
-import { MessagesModule } from './db/messages/messages.module';
-import { NotificationsModule } from './db/notifications/notifications.module';
-import { SectionsModule } from './db/sections/sections.module';
-import { ApprovalQueueModule } from './db/approval-queue/approval-queue.module';
-import { CommentsModule } from './db/comments/comments.module';
-import { WorksModule } from './db/works/works.module';
-import { OldBlogsModule } from './db/blogs/blogs.module';
+import { DatabaseModules } from './db';
 
 /* Utilies */
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 
 @Module({
     imports: [
-        UsersModule,
-        ContentModule,
-        ReadingHistoryModule,
-        CollectionsModule,
-        MessagesModule,
-        NotificationsModule,
-        SectionsModule,
-        ApprovalQueueModule,
-        CommentsModule,
-        WorksModule,
-        OldBlogsModule,
+        ...DatabaseModules,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
