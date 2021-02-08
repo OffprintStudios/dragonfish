@@ -1,8 +1,19 @@
-export { PortfolioComponent } from './portfolio.component';
-export { PortHomeComponent } from './port-home/port-home.component';
-export { WorksComponent } from './works/works.component';
-export { BlogsComponent, BlogPageComponent } from './blogs';
-export { CollectionsComponent } from './collections/collections.component';
-export { HistoryComponent } from './history/history.component';
-export { ConversationsComponent } from './conversations/conversations.component';
-export { SettingsComponent } from './settings/settings.component';
+import { PortfolioComponent } from './portfolio.component';
+import { PortfolioHomePages } from './port-home';
+import { PortfolioWorksPages } from './works';
+import { PortfolioBlogPages } from './blogs';
+import { PortfolioCollectionsPages } from './collections';
+import { PortfolioHistoryPages } from './history';
+import { PortfolioConversationsPages } from './conversations';
+import { PortfolioSettingsPages } from './settings';
+
+export const PortfolioPages = [
+    PortfolioComponent,
+    ...PortfolioHomePages,
+    ...PortfolioWorksPages,
+    ...PortfolioBlogPages,
+    ...PortfolioCollectionsPages,
+    ...PortfolioHistoryPages,
+    ...PortfolioConversationsPages,
+    ...PortfolioSettingsPages,
+];

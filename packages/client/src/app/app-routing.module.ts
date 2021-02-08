@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { HomeComponent, HomePageResolver, NewsComponent, WatchingPageComponent } from './pages/home';
-import { NewsResolver } from './pages/home/news';
+/* Resolvers */
+import { DashboardResolvers } from './resolvers/dashboard';
+import { DocsResolvers } from './resolvers/docs';
+import { HomeResolvers } from './resolvers/home';
+import { MigrationResolvers } from './resolvers/migration';
+import { PortfolioResolvers } from './resolvers/portfolio';
+import { Resolvers } from './resolvers';
 
-import {
-    PortfolioComponent,
-    PortHomeComponent,
-    BlogPageComponent,
-    WorksComponent,
-    SettingsComponent,
-    BlogsComponent,
-    CollectionsComponent,
-    ConversationsComponent,
-    HistoryComponent,
-} from './pages/portfolio';
+/* Page Routes */
+import { HomeRoutes } from './pages/home';
 
 import {
     MyStuffComponent,
@@ -28,84 +24,12 @@ import {
     ViewSectionsResolver,
 } from './pages/my-stuff';
 
-import { BrowseComponent, SocialComponent } from './pages';
-
-import { RegisterComponent } from './pages/account';
-
 import { AuthGuard } from './shared/auth/services';
-import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-
-import { Resolvers } from './resolvers';
-
-import { HistoryResolver } from './pages/portfolio/history';
-import { CollectionsResolver, CollectionPageResolver, CollectionPageComponent } from './pages/portfolio/collections';
-import { WorksResolver } from './pages/portfolio/works';
-
-import {
-    PoetryPageComponent,
-    ProsePageComponent,
-    PostPageComponent,
-    SectionViewComponent,
-} from './pages/content-views';
-
-import {
-    MigrateBlogComponent,
-    MigrateBlogResolver,
-    MigrateWorkComponent,
-    MigrateWorkResolver,
-    MigrationComponent,
-    MigrationResolver,
-} from './pages/migration';
-import {
-    ApprovalQueueComponent,
-    AuditLogComponent,
-    DashComponent,
-    GroupQueueComponent,
-    NewsManagementComponent,
-    OverviewComponent,
-    ReportsComponent,
-    UsersManagementComponent,
-} from './pages/dash';
-
-import {
-    ApprovalQueueResolver,
-    ApproveContentResolver,
-    ApprovePoetryComponent,
-    ApproveProseComponent,
-    ApproveSectionViewComponent,
-} from './pages/dash/approval-queue';
-import { NewsManagementResolver, PostFormComponent, PostFormResolver } from './pages/dash/news-management';
 import { Roles } from '@dragonfish/models/users';
-
-import {
-    AboutOffprintComponent,
-    CodeOfConductComponent,
-    OmnibusComponent,
-    TosComponent,
-    SiteStaffComponent,
-    SiteStaffResolver,
-    SupportersComponent,
-    SupportersResolver,
-} from './pages/docs';
-
-import { BlogsResolver } from './pages/portfolio/blogs';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
-    {
-        path: 'home',
-        component: HomeComponent,
-        resolve: { homeData: HomePageResolver },
-        runGuardsAndResolvers: 'always',
-        children: [
-            {
-                path: 'news',
-                component: NewsComponent,
-                resolve: { feedData: NewsResolver },
-                runGuardsAndResolvers: 'paramsChange',
-            },
-        ],
-    },
+    ...HomeRoutes,
     {
         path: 'browse',
         component: BrowseComponent,
@@ -386,26 +310,14 @@ const routes: Routes = [
     ],
     exports: [RouterModule],
     providers: [
+        ...DashboardResolvers,
+        ...DocsResolvers,
+        ...HomeResolvers,
+        ...MigrationResolvers,
+        ...PortfolioResolvers,
         ...Resolvers,
-        NewsResolver,
-        CollectionPageResolver,
         MyStuffResolver,
         ViewSectionsResolver,
-        MigrationResolver,
-        MigrateWorkResolver,
-        MigrateBlogResolver,
-        CollectionsResolver,
-        HistoryResolver,
-        ApprovalQueueResolver,
-        NewsManagementResolver,
-        PostFormResolver,
-        SiteStaffResolver,
-        SupportersResolver,
-        HomePageResolver,
-        ApproveContentResolver,
-        ContentViewResolver,
-        BlogsResolver,
-        WorksResolver,
     ],
 })
 export class AppRoutingModule {}

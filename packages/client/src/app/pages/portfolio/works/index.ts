@@ -1,2 +1,5 @@
-export { WorksComponent } from './works.component';
-export { WorksResolver } from './works.resolver';
+import { WorksComponent } from './works.component';
+
+export const PortfolioWorksPages = [
+    WorksComponent,
+];

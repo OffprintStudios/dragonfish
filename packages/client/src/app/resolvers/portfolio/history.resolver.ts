@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 
 import { PaginateResult } from '@dragonfish/models/util';
-import { NetworkService } from '../../../services';
+import { NetworkService } from '../../services';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 @Injectable()

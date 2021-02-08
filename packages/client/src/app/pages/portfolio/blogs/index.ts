@@ -1,3 +1,7 @@
-export { BlogsComponent } from './blogs.component';
-export { BlogsResolver } from './blogs.resolver';
-export { BlogPageComponent } from './blog-page/blog-page.component';
+import { BlogsComponent } from './blogs.component';
+import { BlogPageComponent } from './blog-page/blog-page.component';
+
+export const PortfolioBlogPages = [
+    BlogsComponent,
+    BlogPageComponent,
+];

@@ -3,9 +3,9 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { FrontendUser } from '@dragonfish/models/users';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../../../shared/user';
+import { UserState } from '../../shared/user';
 
-import { NetworkService } from '../../../../services';
+import { NetworkService } from '../../services';
 import { Collection } from '@dragonfish/models/collections';
 
 @Injectable()

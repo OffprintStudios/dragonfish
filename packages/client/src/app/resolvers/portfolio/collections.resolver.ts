@@ -7,8 +7,8 @@ import { FrontendUser } from '@dragonfish/models/users';
 import { PaginateResult } from '@dragonfish/models/util';
 import { Collection } from '@dragonfish/models/collections';
 
-import { UserState } from '../../../shared/user';
-import { NetworkService } from '../../../services';
+import { UserState } from '../../shared/user';
+import { NetworkService } from '../../services';
 
 @Injectable()
 export class CollectionsResolver implements Resolve<PaginateResult<Collection>> {

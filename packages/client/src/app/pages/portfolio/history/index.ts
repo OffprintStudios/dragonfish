@@ -1,2 +1,5 @@
-export { HistoryComponent } from './history.component';
-export { HistoryResolver } from './history.resolver';
+import { HistoryComponent as PortHistComponent } from './history.component';
+
+export const PortfolioHistoryPages = [
+    PortHistComponent,
+];

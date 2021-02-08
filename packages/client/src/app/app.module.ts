@@ -12,15 +12,6 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 import { NgxsSelectSnapshotModule } from '@ngxs-labs/select-snapshot';
 
-import { AuthState } from './shared/auth';
-import { AuthInterceptor } from './shared/auth/services';
-import { GlobalState } from './shared/global';
-import { UserState } from './shared/user';
-import { ApprovalQueueState } from './shared/dash/approval-queue';
-import { ContentState } from './shared/content';
-import { MyStuffState } from './shared/my-stuff';
-import { AlertsState, AlertsComponent } from './shared/alerts';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from '@dragonfish/material';
@@ -43,22 +34,22 @@ import { DashboardPages } from './pages/dash';
 import { DocsPages } from './pages/docs';
 import { HomePages } from './pages/home';
 import { MigrationPages } from './pages/migration';
+import { PortfolioPages } from './pages/portfolio';
+import { SearchPages } from './pages/search';
+import { SocialPages } from './pages/social';
+
+/* State */
+import { AuthState } from './shared/auth';
+import { AuthInterceptor } from './shared/auth/services';
+import { GlobalState } from './shared/global';
+import { UserState } from './shared/user';
+import { ApprovalQueueState } from './shared/dash/approval-queue';
+import { ContentState } from './shared/content';
+import { MyStuffState } from './shared/my-stuff';
+import { AlertsState, AlertsComponent } from './shared/alerts';
 
 import { Pipes } from './pipes';
 import { NagBarModule } from './modules';
-
-import {
-    PortfolioComponent,
-    PortHomeComponent,
-    BlogPageComponent,
-    WorksComponent,
-    SettingsComponent,
-    BlogsComponent,
-    CollectionsComponent,
-    ConversationsComponent as PortConversations,
-    HistoryComponent as HistoryPageComponent,
-} from './pages/portfolio';
-import { CollectionPageComponent } from './pages/portfolio/collections';
 
 import {
     MyStuffComponent,
@@ -71,11 +62,6 @@ import {
     SectionItemComponent,
     NewsFormComponent,
 } from './pages/my-stuff';
-
-import { SocialComponent } from './pages';
-import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-
-import { PostFormComponent } from './pages/dash/news-management';
 
 import { UploadCoverartComponent } from './pages/my-stuff/components';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -117,26 +103,16 @@ import { SectionsState } from './shared/my-stuff/sections';
         ...DocsPages,
         ...HomePages,
         ...MigrationPages,
+        ...PortfolioPages,
+        ...SearchPages,
+        ...SocialPages,
         ...Pipes,
-        CollectionsComponent,
         WatchingComponent,
-        BlogsComponent,
-        WorksComponent,
-        SettingsComponent,
-        HistoryPageComponent,
-        PortfolioComponent,
-        PortHomeComponent,
-        BlogPageComponent,
         UploadAvatarComponent,
         BeatrizHeroComponent,
         UploadCoverartComponent,
-        SearchComponent,
-        FindUsersComponent,
-        FindWorksComponent,
-        FindBlogsComponent,
         NetworkInputComponent,
         CreateCollectionComponent,
-        SocialComponent,
         AddToCollectionComponent,
         NewPolicyNagComponent,
         CommentsComponent,
@@ -146,7 +122,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         NotificationsComponent,
         HistoryComponent,
         StartConversationComponent,
-        PortConversations,
         MyStuffComponent,
         BlogFormComponent,
         ContentItemComponent,
@@ -158,8 +133,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         SectionItemComponent,
         WorkCardComponent,
         ContentApprovalComponent,
-        CollectionPageComponent,
-        PostFormComponent,
         RoleBadgeComponent,
         UserCardComponent,
         NotifItemComponent,
