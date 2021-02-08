@@ -10,8 +10,6 @@ import { CommentsModule } from '../../db/comments/comments.module';
 import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
-import { ProseController } from './prose/prose.controller';
-import { PoetryController } from './poetry/poetry.controller';
 import { SectionsModule } from '../../db/sections/sections.module';
 
 @Module({
@@ -31,6 +29,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
             }),
         }),
     ],
-    controllers: [NewsController, ProseController, PoetryController],
+    controllers: [NewsController],
 })
 export class ContentModule {}

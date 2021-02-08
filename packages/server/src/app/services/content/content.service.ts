@@ -1,7 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { ContentStore } from '../../db/content';
+import { ContentStore, PoetryStore, ProseStore } from '../../db/content';
 import { IContent } from '../../shared/content/content.interface';
 import { JwtPayload } from '@dragonfish/models/auth';
 import { ContentModel, ContentKind, FormType, SetRating, ContentFilter, PubChange } from '@dragonfish/models/content';
@@ -11,7 +11,11 @@ import { ReadingHistory } from '@dragonfish/models/reading-history';
 export class ContentService implements IContent {
     private readonly logger: Logger = new Logger(ContentService.name);
 
-    constructor(private readonly content: ContentStore) {}
+    constructor(
+        private readonly content: ContentStore,
+        private readonly poetry: PoetryStore,
+        private readonly prose: ProseStore,
+    ) {}
 
     async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
@@ -60,5 +64,20 @@ export class ContentService implements IContent {
 
     async setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
         return await this.content.setNoVote(user, setRating.workId, setRating.oldApprovalRating);
+    }
+
+    async updateCoverArt(
+        user: JwtPayload,
+        contentId: string,
+        kind: ContentKind,
+        coverArt: string,
+    ): Promise<ContentModel> {
+        if (kind === ContentKind.PoetryContent) {
+            return await this.poetry.updateCoverArt(user, contentId, coverArt);
+        } else if (kind === ContentKind.ProseContent) {
+            return await this.prose.updateCoverArt(user, contentId, coverArt);
+        } else {
+            throw new BadRequestException(`Invalid content kind.`);
+        }
     }
 }

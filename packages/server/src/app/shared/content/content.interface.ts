@@ -107,4 +107,14 @@ export interface IContent {
      * @param setRating Information regarding this change
      */
     setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
+
+    /**
+     * Updates a content's cover art URL, based on its contentKind.
+     *
+     * @param user The author of the content
+     * @param contentId The content ID
+     * @param kind The content kind
+     * @param coverArt The new cover art URL
+     */
+    updateCoverArt(user: JwtPayload, contentId: string, kind: ContentKind, coverArt: string): Promise<ContentModel>;
 }
