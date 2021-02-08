@@ -271,6 +271,28 @@
                     }
                 }
             }
+        },
+        "my-stuff": {
+            "projectType": "library",
+            "root": "libraries/my-stuff",
+            "sourceRoot": "libraries/my-stuff/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/my-stuff/src/**/*.ts", "libraries/my-stuff/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/my-stuff"],
+                    "options": {
+                        "jestConfig": "libraries/my-stuff/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     },
     "cli": {
@@ -278,10 +300,14 @@
     },
     "schematics": {
         "@nrwl/angular:application": {
+            "style": "less",
+            "linter": "eslint",
             "unitTestRunner": "jest",
             "e2eTestRunner": "cypress"
         },
         "@nrwl/angular:library": {
+            "style": "less",
+            "linter": "eslint",
             "unitTestRunner": "jest"
         },
         "@nrwl/angular:component": {
