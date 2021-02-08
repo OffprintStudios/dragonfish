@@ -19,6 +19,7 @@ import { AdminServices } from './services/admin';
 import { AuthServices } from './services/auth';
 import { ImagesServices } from './services/images';
 import { ContentServices } from './services/content';
+import { MigrationServices } from './controllers/migration';
 
 /* Database Modules */
 import { UsersModule } from './db/users/users.module';
@@ -89,6 +90,7 @@ import { ContentService } from './services/content/content.service';
         ...AuthServices,
         ...ContentServices,
         ...ImagesServices,
+        ...MigrationServices,
         { provide: 'IApprovalQueue', useClass: ApprovalQueueService },
         { provide: 'IMeta', useClass: MetaService },
         { provide: 'IAuth', useClass: AuthService },

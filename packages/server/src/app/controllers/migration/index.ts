@@ -1,5 +1,5 @@
 import { MigrationController } from './migration.controller';
-import { OldBlogsController } from './old-blogs.controller';
-import { OldWorksController } from './old-works.controller';
+import { MigrationService } from './migration.service';
 
-export const MigrationRoutes = [MigrationController, OldBlogsController, OldWorksController];
+export const MigrationRoutes = [MigrationController];
+export const MigrationServices = [MigrationService];
