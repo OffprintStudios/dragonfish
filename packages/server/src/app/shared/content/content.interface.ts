@@ -1,9 +1,7 @@
 import { PaginateResult } from 'mongoose';
 
-import { BlogForm, ContentFilter, ContentKind, ContentModel, CreatePoetry, CreateProse, NewsForm, PubChange, SetRating } from '@dragonfish/models/content';
+import { FormType, ContentFilter, ContentKind, ContentModel, PubChange, SetRating } from '@dragonfish/models/content';
 import { JwtPayload } from '@dragonfish/models/auth';
-
-export type FormType = CreateProse | CreatePoetry | NewsForm | BlogForm;
 
 export interface IContent {
     /**

@@ -14,6 +14,7 @@ import {
     CreatePoetry,
     CreateProse,
     NewsForm,
+    FormType
 } from '@dragonfish/models/content';
 import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 
@@ -165,7 +166,7 @@ export class ContentStore {
      * @param kind The content kind
      * @param formInfo The form information
      */
-    async createOne(user: JwtPayload, kind: ContentKind, formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+    async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType) {
         switch (kind) {
             case ContentKind.BlogContent:
                 return await this.blogsService.createNewBlog(user, formInfo as BlogForm);
@@ -186,7 +187,7 @@ export class ContentStore {
      * @param contentId The content ID
      * @param formInfo The form information
      */
-    async saveChanges(user: JwtPayload, contentId: string, formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry) {
+    async saveChanges(user: JwtPayload, contentId: string, formInfo: FormType) {
         const content = await this.contentModel.findOne({ _id: contentId, author: user.sub, 'audit.isDeleted': false });
 
         if (isNullOrUndefined(content)) {
