@@ -7,6 +7,8 @@ import { RefreshGuard } from '../../guards';
 import { CreateUserDTO, LoginUserDTO } from './models';
 import { FrontendUser } from '@dragonfish/models/users';
 import { IAuth } from '../../shared/auth';
+import { User } from '../../util/decorators';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Controller('auth')
 export class AuthController {
@@ -44,12 +46,12 @@ export class AuthController {
     @ApiTags('auth')
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
-    async refreshToken(@Request() req: any, @Cookies() cookies: any): Promise<{ newToken: string }> {
+    async refreshToken(@User() user: JwtPayload, @Cookies() cookies: any): Promise<{ newToken: string }> {
         const refreshToken = cookies['refreshToken'];
         if (refreshToken) {
-            if (await this.auth.checkRefreshToken(req.user.sub, refreshToken)) {
+            if (await this.auth.checkRefreshToken(user.sub, refreshToken)) {
                 // If the refresh token is valid, let's generate a new JWT.
-                return { newToken: await this.auth.refreshLogin(req.user) };
+                return { newToken: await this.auth.refreshLogin(user) };
             } else {
                 throw new ForbiddenException(`Your login has expired. Please log back in.`);
             }

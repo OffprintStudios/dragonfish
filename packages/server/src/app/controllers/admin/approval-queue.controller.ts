@@ -1,7 +1,6 @@
 import {
     Body,
     Controller,
-    Request,
     Get,
     Param,
     Patch,
@@ -18,6 +17,8 @@ import { ContentKind } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { IApprovalQueue } from '../../shared/admin';
 import { DecisionDTO } from './models';
+import { User } from '../../util/decorators';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Controller('approval-queue')
 export class ApprovalQueueController {
@@ -34,7 +35,7 @@ export class ApprovalQueueController {
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Get('view-content')
     async viewContent(
-        @Request() _req: any,
+        @User() _user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
         @Query('userId') userId: string,
@@ -51,21 +52,21 @@ export class ApprovalQueueController {
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('claim-content/:docId')
-    async claimContent(@Request() req: any, @Param('docId') docId: string) {
-        return await this.queue.claimContent(req.user, docId);
+    async claimContent(@User() user: JwtPayload, @Param('docId') docId: string) {
+        return await this.queue.claimContent(user, docId);
     }
 
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('approve-content')
-    async approveContent(@Request() req: any, @Body() decision: DecisionDTO) {
-        return await this.queue.approveContent(req.user, decision.docId, decision.workId, decision.authorId);
+    async approveContent(@User() user: JwtPayload, @Body() decision: DecisionDTO) {
+        return await this.queue.approveContent(user, decision.docId, decision.workId, decision.authorId);
     }
 
     @ApiTags('approval-queue')
     @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
     @Patch('reject-content')
-    async rejectContent(@Request() req: any, @Body() decision: DecisionDTO) {
-        return await this.queue.rejectContent(req.user, decision.docId, decision.workId, decision.authorId);
+    async rejectContent(@User() user: JwtPayload, @Body() decision: DecisionDTO) {
+        return await this.queue.rejectContent(user, decision.docId, decision.workId, decision.authorId);
     }
 }

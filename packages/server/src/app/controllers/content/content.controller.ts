@@ -16,6 +16,8 @@ import {
 } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
+import { User } from '../../util/decorators';
+import { JwtPayload } from '@dragonfish/models/auth';
 
 @Controller('content')
 export class ContentController {
@@ -24,19 +26,19 @@ export class ContentController {
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-one')
-    async fetchOne(@Request() req: any, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
+    async fetchOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOne(contentId, kind, req.user);
+        return await this.contentService.fetchOne(contentId, kind, user);
     }
 
     @ApiTags('content')
     @UseGuards(OptionalAuthGuard)
     @Get('fetch-one-published')
     async fetchOnePublished(
-        @Request() req: any,
+        @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
     ) {
@@ -44,20 +46,19 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOnePublished(contentId, kind, req.user);
+        return await this.contentService.fetchOnePublished(contentId, kind, user);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-all')
-    async fetchAll(@Request() req: any) {
-        return await this.contentService.fetchAll(req.user);
+    async fetchAll(@User() user: JwtPayload) {
+        return await this.contentService.fetchAll(user);
     }
 
     @ApiTags('content')
     @Get('fetch-all-published')
     async fetchAllPublished(
-        @Request() req: any,
         @Cookies('contentFilter') filter: ContentFilter,
         @Query('pageNum') pageNum: number,
         @Query('userId') userId: string,
@@ -74,7 +75,7 @@ export class ContentController {
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-one')
     async createOne(
-        @Request() req: any,
+        @User() user: JwtPayload,
         @Query('kind') kind: ContentKind,
         @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
     ) {
@@ -82,14 +83,14 @@ export class ContentController {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
 
-        return await this.contentService.createOne(req.user, kind, formInfo);
+        return await this.contentService.createOne(user, kind, formInfo);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('save-changes')
     async saveChanges(
-        @Request() req: any,
+        @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
         @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
@@ -98,49 +99,49 @@ export class ContentController {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
         }
 
-        return await this.contentService.saveChanges(req.user, contentId, formInfo);
+        return await this.contentService.saveChanges(user, contentId, formInfo);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-one')
-    async deleteOne(@Request() req: any, @Query('contentId') contentId: string) {
+    async deleteOne(@User() user: JwtPayload, @Query('contentId') contentId: string) {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID.`);
         }
 
-        return await this.contentService.deleteOne(req.user, contentId);
+        return await this.contentService.deleteOne(user, contentId);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-one')
-    async publishOne(@Request() req: any, @Query('contentId') contentId: string, @Body() pubChange?: PubChange) {
+    async publishOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Body() pubChange?: PubChange) {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID.`);
         }
 
-        return await this.contentService.publishOne(req.user, contentId, pubChange);
+        return await this.contentService.publishOne(user, contentId, pubChange);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-like')
-    async setLike(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setLike(req.user, setRating.workId, setRating.oldApprovalRating);
+    async setLike(@User() user: JwtPayload, @Body() setRating: SetRating) {
+        return await this.contentService.setLike(user, setRating.workId, setRating.oldApprovalRating);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-dislike')
-    async setDislike(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setDislike(req.user, setRating.workId, setRating.oldApprovalRating);
+    async setDislike(@User() user: JwtPayload, @Body() setRating: SetRating) {
+        return await this.contentService.setDislike(user, setRating.workId, setRating.oldApprovalRating);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-no-vote')
-    async setNoVote(@Request() req: any, @Body() setRating: SetRating) {
-        return await this.contentService.setNoVote(req.user, setRating.workId, setRating.oldApprovalRating);
+    async setNoVote(@User() user: JwtPayload, @Body() setRating: SetRating) {
+        return await this.contentService.setNoVote(user, setRating.workId, setRating.oldApprovalRating);
     }
 }
