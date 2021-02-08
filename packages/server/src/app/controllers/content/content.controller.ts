@@ -5,12 +5,9 @@ import { Cookies } from '@nestjsplus/cookies';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentStore } from '../../db/content';
 import {
-    BlogForm,
     ContentFilter,
     ContentKind,
-    CreatePoetry,
-    CreateProse,
-    NewsForm,
+    FormType,
     PubChange,
     SetRating,
 } from '@dragonfish/models/content';
@@ -77,7 +74,7 @@ export class ContentController {
     async createOne(
         @User() user: JwtPayload,
         @Query('kind') kind: ContentKind,
-        @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
+        @Body() formInfo: FormType,
     ) {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
@@ -93,7 +90,7 @@ export class ContentController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
-        @Body() formInfo: BlogForm | NewsForm | CreateProse | CreatePoetry,
+        @Body() formInfo: FormType,
     ) {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
