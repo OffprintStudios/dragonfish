@@ -1,4 +1,15 @@
-import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body, Put, Inject } from '@nestjs/common';
+import {
+    Controller,
+    UseGuards,
+    Request,
+    Query,
+    Get,
+    BadRequestException,
+    Patch,
+    Body,
+    Put,
+    Inject,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 
@@ -8,7 +19,7 @@ import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
 import { User } from '../../util/decorators';
 import { JwtPayload } from '@dragonfish/models/auth';
-import { IContent } from '../../shared/content/content.interface';
+import { IContent } from '../../shared/content';
 
 @Controller('content')
 export class ContentController {

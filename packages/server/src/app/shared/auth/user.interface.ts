@@ -11,8 +11,8 @@ import {
 export interface IUser {
     /**
      * Fetches a user from the database and returns the FrontendUser object using their data.
-     * 
-     * @param userId 
+     *
+     * @param userId
      */
     getOneUser(userId: string): Promise<FrontendUser>;
 

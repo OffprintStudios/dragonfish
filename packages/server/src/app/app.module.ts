@@ -36,14 +36,6 @@ import { OldBlogsModule } from './db/blogs/blogs.module';
 /* Utilies */
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 
-/* Other */
-import { ApprovalQueueService } from './services/admin/approval-queue.service';
-import { MetaService } from './services/admin/meta.service';
-import { AuthService } from './services/auth/auth.service';
-import { UserService } from './services/auth/user.service';
-import { ImagesService } from './services/images/images.service';
-import { ContentService } from './services/content/content.service';
-
 @Module({
     imports: [
         UsersModule,
@@ -89,12 +81,48 @@ import { ContentService } from './services/content/content.service';
         ...ContentServices,
         ...ImagesServices,
         ...MigrationServices,
-        { provide: 'IApprovalQueue', useClass: ApprovalQueueService },
-        { provide: 'IMeta', useClass: MetaService },
-        { provide: 'IAuth', useClass: AuthService },
-        { provide: 'IUser', useClass: UserService },
-        { provide: 'IImages', useClass: ImagesService },
-        { provide: 'IContent', useClass: ContentService },
+        {
+            provide: 'IApprovalQueue',
+            useClass: AdminServices.find((x) => {
+                return x.name === 'ApprovalQueueService';
+            }),
+        },
+        {
+            provide: 'IMeta',
+            useClass: AdminServices.find((x) => {
+                return x.name === 'MetaService';
+            }),
+        },
+        {
+            provide: 'IAuth',
+            useClass: AuthServices.find((x) => {
+                return x.name === 'AuthService';
+            }),
+        },
+        {
+            provide: 'IUser',
+            useClass: AuthServices.find((x) => {
+                return x.name === 'UserService';
+            }),
+        },
+        {
+            provide: 'IImages',
+            useClass: ImagesServices.find((x) => {
+                return x.name === 'ImagesService';
+            }),
+        },
+        {
+            provide: 'IContent',
+            useClass: ContentServices.find((x) => {
+                return x.name === 'ContentService';
+            }),
+        },
+        {
+            provide: 'ISections',
+            useClass: ContentServices.find((x) => {
+                return x.name === 'SectionsService';
+            }),
+        },
     ],
 })
 export class AppModule {}

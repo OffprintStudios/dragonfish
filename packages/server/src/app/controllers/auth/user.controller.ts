@@ -2,8 +2,10 @@ import {
     Controller,
     UseGuards,
     Patch,
+    Get,
     Post,
     Body,
+    Param,
     UseInterceptors,
     UploadedFile,
     BadRequestException,
@@ -23,6 +25,12 @@ import { JwtPayload } from '@dragonfish/models/auth';
 @Controller('user')
 export class UserController {
     constructor(@Inject('IUser') private readonly user: IUser, @Inject('IImages') private readonly images: IImages) {}
+
+    @ApiTags('user')
+    @Get('get-user-info/:userId')
+    async getUserInfo(@Param('userId') userId: string) {
+        return await this.user.getOneUser(userId);
+    }
 
     @ApiTags('user')
     @UseGuards(RolesGuard([Roles.User]))

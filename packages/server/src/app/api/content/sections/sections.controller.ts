@@ -2,14 +2,14 @@ import { BadRequestException, Body, Controller, Get, Patch, Put, Query, Request,
 
 import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 import { Roles } from '@dragonfish/models/users';
-import { ContentService } from '../../../db/content';
-import { SectionsService } from '../../../db/sections/sections.service';
+import { ContentStore } from '../../../db/content';
+import { SectionsStore } from '../../../db/sections/sections.store';
 import { RolesGuard } from '../../../guards';
 import { isNullOrUndefined } from '../../../util';
 
 @Controller('sections')
 export class SectionsController {
-    constructor(private readonly sectionsService: SectionsService, private readonly contentService: ContentService) {}
+    constructor(private readonly sectionsService: SectionsStore, private readonly contentService: ContentStore) {}
 
     @Get('fetch-one-by-id')
     async fetchOneById(@Query('sectionId') sectionId: string, @Query('published') published: boolean) {
