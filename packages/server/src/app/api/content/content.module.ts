@@ -5,7 +5,6 @@ import { WorksModule } from '../../db/works/works.module';
 import { UsersModule } from '../../db/users/users.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { CollectionsModule } from '../../db/collections/collections.module';
-import { CollectionsController } from './collections/collections.controller';
 import { HistoryController } from './history/history.controller';
 import { ReadingHistoryModule } from '../../db/reading-history/reading-history.module';
 import { CommentsModule } from '../../db/comments/comments.module';
@@ -37,7 +36,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
         }),
     ],
     controllers: [
-        CollectionsController,
         HistoryController,
         CommentsController,
         MessagesController,

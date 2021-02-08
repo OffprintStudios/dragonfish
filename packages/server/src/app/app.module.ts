@@ -123,6 +123,12 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
                 return x.name === 'SectionsService';
             }),
         },
+        {
+            provide: 'ICollections',
+            useClass: ContentServices.find((x) => {
+                return x.name === 'CollectionsService';
+            }),
+        },
     ],
 })
 export class AppModule {}

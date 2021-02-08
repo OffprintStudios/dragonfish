@@ -1,15 +1,15 @@
 import { PaginateResult } from 'mongoose';
-import { Collection } from "@dragonfish/models/collections";
+import { Collection, CollectionForm } from "@dragonfish/models/collections";
+import { JwtPayload } from '@dragonfish/models/auth';
 
 export interface ICollections {
-
     /**
      * Grabs a single collection from the database belonging to the specified user.
      *
      * @param userId The owner of the portfolio
      * @param collId The collection to fetch
      */
-    getCollection(): Promise<Collection>;
+    getCollection(user: JwtPayload, collectionId: string): Promise<Collection>;
 
     /**
      * Gets all undeleted collections belonging to a single user.
@@ -17,7 +17,7 @@ export interface ICollections {
      * @param user The owner of these collections
      * @param pageNum The page of results to fetch
      */
-    getAllCollections(): Promise<PaginateResult<Collection>>;
+    getAllCollections(user: JwtPayload, pageNum: number): Promise<PaginateResult<Collection>>;
 
     /**
      * Grabs a single public collection from the database belonging to the specified user.
@@ -25,21 +25,21 @@ export interface ICollections {
      * @param userId The owner of the portfolio
      * @param collId The collection to fetch
      */
-    getPublicCollection(): Promise<Collection>;
+    getPublicCollection(userId: string, collectionId: string): Promise<Collection>;
 
     /**
      * Fetches all public collections that a user has.
      *
      * @param user The owner of the portfolio
      */
-    getAllPublicCollections(): Promise<PaginateResult<Collection>>;
+    getAllPublicCollections(userId: string, pageNum: number): Promise<PaginateResult<Collection>>;
 
     /**
      * Gets all undeleted collections belonging to a single user.
      *
      * @param user The owner of these collections
      */
-    getUserCollectionsNoPaginate(): Promise<Collection[]>
+    getUserCollectionsNoPaginate(user: JwtPayload): Promise<Collection[]>;
 
     /**
      * Creates a collection and saves it to the database.
@@ -47,7 +47,7 @@ export interface ICollections {
      * @param userId The owner of the collection
      * @param collForm The collection's information
      */
-    create(): Promise<Collection>;
+    create(user: JwtPayload, collectionInfo: CollectionForm): Promise<Collection>;
 
     /**
      * Edits a collection given the newest collection info.
@@ -56,7 +56,7 @@ export interface ICollections {
      * @param collId The collection ID
      * @param collInfo The new collection info
      */
-    edit(): Promise<Collection>;
+    edit(user: JwtPayload, collectionId: string, collectionInfo: CollectionForm): Promise<Collection>;
 
     /**
      * Soft deletes a collection associated with the provided user.
@@ -64,7 +64,7 @@ export interface ICollections {
      * @param user The owner of the collection
      * @param collId The collection to delete
      */
-    delete(): Promise<void>;
+    delete(user: JwtPayload, collectionId: string): Promise<void>;
 
     /**
      * Adds a piece of content to a collection.
@@ -73,7 +73,7 @@ export interface ICollections {
      * @param collId The collection's ID
      * @param contentId The content being added to it
      */
-    addTo(): Promise<Collection>;
+    addTo(user: JwtPayload, collectionId: string, contentId: string): Promise<Collection>;
 
     /**
      * Removes a piece of content from a collection. Also deletes the `collItem` document associated with it.
@@ -83,7 +83,7 @@ export interface ICollections {
      * @param collItemId The item ID to delete
      * @param contentId The content being removed
      */
-    removeFrom(): Promise<Collection>;
+    removeFrom(user: JwtPayload, collectionId: string, contentId: string): Promise<Collection>;
 
     /**
      * Sets a collection's isPublic flag to true.
@@ -91,7 +91,7 @@ export interface ICollections {
      * @param user The owner of the collection
      * @param collId The collection to make public
      */
-    setPublic(): Promise<void>;
+    setPublic(user: JwtPayload, collectionId: string): Promise<void>;
 
     /**
      * Sets a collection's isPublic flag to false.
@@ -99,5 +99,5 @@ export interface ICollections {
      * @param user The owner of the collection
      * @param collId The collection to make private
      */
-    setPrivate(): Promise<void>;
+    setPrivate(user: JwtPayload, collectionId: string): Promise<void>;
 }
