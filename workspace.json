@@ -293,6 +293,28 @@
                     }
                 }
             }
+        },
+        "alerts": {
+            "projectType": "library",
+            "root": "libraries/alerts",
+            "sourceRoot": "libraries/alerts/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/alerts/src/**/*.ts", "libraries/alerts/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/alerts"],
+                    "options": {
+                        "jestConfig": "libraries/alerts/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     },
     "cli": {

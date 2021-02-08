@@ -21,7 +21,8 @@
         "models": { "tags": [] },
         "icons": { "tags": [] },
         "material": { "tags": [] },
-        "my-stuff": { "tags": [] }
+        "my-stuff": { "tags": [] },
+        "alerts": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }

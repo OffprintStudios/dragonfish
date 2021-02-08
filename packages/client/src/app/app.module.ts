@@ -46,7 +46,7 @@ import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
 import { MyStuffState } from './shared/my-stuff';
-import { AlertsState, AlertsComponent } from './shared/alerts';
+import { AlertsState } from '@dragonfish/alerts';
 import { SectionsState } from './shared/my-stuff/sections';
 
 /* Components */
@@ -77,6 +77,7 @@ import { ContentApprovalComponent } from './components/content-approval';
 import { NagBarModule } from './modules';
 import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
+import { AlertsModule } from '@dragonfish/alerts';
 
 /* Util */
 import { Pipes } from './pipes';
@@ -118,7 +119,6 @@ import { environment } from '../environments/environment';
         RoleBadgeComponent,
         UserCardComponent,
         NotifItemComponent,
-        AlertsComponent,
     ],
     imports: [
         BrowserModule,
@@ -139,6 +139,7 @@ import { environment } from '../environments/environment';
         LoadingBarHttpClientModule,
         ClipboardModule,
         NguCarouselModule,
+        AlertsModule,
         NgxsModule.forRoot(
             [
                 AuthState,
