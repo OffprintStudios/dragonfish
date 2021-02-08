@@ -71,4 +71,10 @@ export const InterfaceProviders = [
             return x.name === 'HistoryService';
         }),
     },
+    {
+        provide: 'IMessages',
+        useClass: ContentServices.find((x) => {
+            return x.name === 'MessagesService';
+        }),
+    },
 ];

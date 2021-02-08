@@ -7,7 +7,6 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { CollectionsModule } from '../../db/collections/collections.module';
 import { ReadingHistoryModule } from '../../db/reading-history/reading-history.module';
 import { CommentsModule } from '../../db/comments/comments.module';
-import { MessagesController } from './messages/messages.controller';
 import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
@@ -33,7 +32,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
         }),
     ],
     controllers: [
-        MessagesController,
         NewsController,
         ProseController,
         PoetryController,
