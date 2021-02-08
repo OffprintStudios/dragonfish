@@ -4,7 +4,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable, zip, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { MigrationModel } from './migration.model';
+import { MigrationModel } from '../../pages/migration/migration.model';
 import { Work } from '@dragonfish/models/works';
 import { Blog } from '@dragonfish/models/blogs';
 

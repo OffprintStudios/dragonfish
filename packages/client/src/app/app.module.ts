@@ -41,11 +41,11 @@ import { BrowsePages } from './pages/browse';
 import { ContentViewPages } from './pages/content-views';
 import { DashboardPages } from './pages/dash';
 import { DocsPages } from './pages/docs';
+import { HomePages } from './pages/home';
+import { MigrationPages } from './pages/migration';
 
 import { Pipes } from './pipes';
 import { NagBarModule } from './modules';
-
-import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
 
 import {
     PortfolioComponent,
@@ -103,7 +103,6 @@ import { NotifItemComponent } from './components/site-sidenav/notifications/noti
 import { StartConversationComponent } from './components/modals/portfolio/start-conversation/start-conversation.component';
 import { ContentApprovalComponent } from './components/content-approval';
 
-import { MigrationComponent, MigrateWorkComponent, MigrateBlogComponent } from './pages/migration';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { environment } from '../environments/environment';
 import { SectionsState } from './shared/my-stuff/sections';
@@ -116,9 +115,9 @@ import { SectionsState } from './shared/my-stuff/sections';
         ...ContentViewPages,
         ...DashboardPages,
         ...DocsPages,
+        ...HomePages,
+        ...MigrationPages,
         ...Pipes,
-        HomeComponent,
-        NewsComponent,
         CollectionsComponent,
         WatchingComponent,
         BlogsComponent,
@@ -145,7 +144,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         SiteSidenavComponent,
         ConversationsComponent,
         NotificationsComponent,
-        WatchingPageComponent,
         HistoryComponent,
         StartConversationComponent,
         PortConversations,
@@ -159,9 +157,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         ViewPoetryComponent,
         SectionItemComponent,
         WorkCardComponent,
-        MigrationComponent,
-        MigrateWorkComponent,
-        MigrateBlogComponent,
         ContentApprovalComponent,
         CollectionPageComponent,
         PostFormComponent,
