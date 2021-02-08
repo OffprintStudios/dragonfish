@@ -12,7 +12,6 @@ import { MessagesController } from './messages/messages.controller';
 import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
 import { ContentModule as ContentCollectionModule } from '../../db/content';
-import { ContentController } from './content.controller';
 import { ProseController } from './prose/prose.controller';
 import { PoetryController } from './poetry/poetry.controller';
 import { SectionsModule } from '../../db/sections/sections.module';
@@ -38,7 +37,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
         HistoryController,
         MessagesController,
         NewsController,
-        ContentController,
         ProseController,
         PoetryController,
     ],
