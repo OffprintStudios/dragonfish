@@ -25,9 +25,9 @@ RUN curl https://sh.rustup.rs -sSf |  bash -s -- -y
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 ENV PATH "$PATH:/root/.cargo/bin"
 
-ENV PATH "$PATH:/opt/pulpd/node_modules/.bin"
+ENV PATH "$PATH:/opt/dragonfish/node_modules/.bin"
 
-WORKDIR /opt/pulpd
+WORKDIR /opt/dragonfish
 COPY . .
 RUN ls
 

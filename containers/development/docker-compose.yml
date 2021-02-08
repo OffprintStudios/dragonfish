@@ -1,16 +1,16 @@
 version: '3'
 services:
-  pulpd:
+  dragonfish:
     build:
-      context: .
-      dockerfile: dev-setup.Dockerfile
+      context: ../../.
+      dockerfile: containers/development/dev-setup.Dockerfile
     ports:
       - "3000:3000"
       - "9229:9229"
       - "3333:3333"
       - "4200:4200"
     volumes:
-    - .:/opt/pulpd
+    - ../../.:/opt/dragonfish
   mongo:
     image: "mongo:4.2.1"
     ports:
