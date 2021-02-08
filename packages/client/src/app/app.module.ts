@@ -51,7 +51,6 @@ import { SectionsState } from './shared/my-stuff/sections';
 
 /* Components */
 import { MyStuffComponents } from './pages/my-stuff';
-import { Pipes } from './pipes';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
@@ -80,6 +79,7 @@ import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
 
 /* Util */
+import { Pipes } from './pipes';
 import { environment } from '../environments/environment';
 
 @NgModule({
