@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 
-import { WorksController } from './works/works.controller';
 import { WorksModule } from '../../db/works/works.module';
 import { PortfolioController } from './portfolio/portfolio.controller';
 import { UsersModule } from '../../db/users/users.module';
-import { ImagesModule } from '../images/images.module';
 import { getJwtSecretKey, JWT_EXPIRATION } from '../../util';
 import { CollectionsModule } from '../../db/collections/collections.module';
 import { CollectionsController } from './collections/collections.controller';
@@ -27,7 +25,6 @@ import { SectionsController } from './sections/sections.controller';
     imports: [
         WorksModule,
         UsersModule,
-        ImagesModule,
         CollectionsModule,
         ReadingHistoryModule,
         CommentsModule,
@@ -42,7 +39,6 @@ import { SectionsController } from './sections/sections.controller';
         }),
     ],
     controllers: [
-        WorksController,
         PortfolioController,
         CollectionsController,
         HistoryController,
