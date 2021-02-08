@@ -18,7 +18,6 @@ import { ContentController } from './content.controller';
 import { ProseController } from './prose/prose.controller';
 import { PoetryController } from './poetry/poetry.controller';
 import { SectionsModule } from '../../db/sections/sections.module';
-import { SectionsController } from './sections/sections.controller';
 
 @Module({
     imports: [
@@ -46,7 +45,6 @@ import { SectionsController } from './sections/sections.controller';
         ContentController,
         ProseController,
         PoetryController,
-        SectionsController,
     ],
 })
 export class ContentModule {}
