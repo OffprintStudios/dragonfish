@@ -44,6 +44,7 @@ async function bootstrap() {
         .addTag(`Content`)
         .addTag(`Collections`)
         .addTag(`Comments`)
+        .addTag(`History`)
         .addTag(`Meta`)
         .addTag(`Approval Queue`)
         .addTag(`Search`)
