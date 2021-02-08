@@ -1,4 +1,5 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
@@ -12,6 +13,7 @@ import { ISearch } from '../../shared/search';
 export class SearchController {
     constructor(@Inject('ISearch') private readonly searchService: ISearch) {}
 
+    @ApiTags('Search')
     @Get('get-initial-results')
     async getInitialResults(
         @Query('query') query: string,
@@ -20,6 +22,7 @@ export class SearchController {
         return await this.searchService.fetchInitialResults(query, contentFilter);
     }
 
+    @ApiTags('Search')
     @Get('get-user-results')
     async getUserRequests(
         @Query('query') query: string,
@@ -28,6 +31,7 @@ export class SearchController {
         return await this.searchService.searchUsers(query, pageNum);
     }
 
+    @ApiTags('Search')
     @Get('get-blog-results')
     async getBlogResults(
         @Query('query') query: string,
@@ -37,6 +41,7 @@ export class SearchController {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
 
+    @ApiTags('Search')
     @Get('get-work-results')
     async getWorkResults(
         @Query('query') query: string,
