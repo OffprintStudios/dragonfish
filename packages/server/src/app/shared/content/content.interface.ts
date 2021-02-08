@@ -2,6 +2,7 @@ import { PaginateResult } from 'mongoose';
 
 import { FormType, ContentFilter, ContentKind, ContentModel, PubChange, SetRating } from '@dragonfish/models/content';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 export interface IContent {
     /**
@@ -35,12 +36,14 @@ export interface IContent {
      *
      * @param pageNum The current page
      * @param kinds The kind of document to fetch
+     * @param filter What rating of content to fetch
+     * @param userId (Optional) The author this content belongs to
      */
     fetchAllPublished(
         pageNum: number,
-        kind: ContentKind,
+        kinds: ContentKind[],
         filter: ContentFilter,
-        userId: string,
+        userId?: string,
     ): Promise<PaginateResult<ContentModel>>;
 
     /**
@@ -87,7 +90,7 @@ export interface IContent {
      * @param user The user making the change
      * @param setRating Information regarding this change
      */
-    setLike(user: JwtPayload, setRating: SetRating): Promise<ContentModel>;
+    setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
 
     /**
      * Changes the rating of a user to a Like.
@@ -95,7 +98,7 @@ export interface IContent {
      * @param user The user making the change
      * @param setRating Information regarding this change
      */
-    setDislike(user: JwtPayload, setRating: SetRating): Promise<ContentModel>;
+    setDislike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
 
     /**
      * Changes the rating of a user to a Like.
@@ -103,5 +106,5 @@ export interface IContent {
      * @param user The user making the change
      * @param setRating Information regarding this change
      */
-    setNoVote(user: JwtPayload, setRating: SetRating): Promise<ContentModel>;
+    setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
 }

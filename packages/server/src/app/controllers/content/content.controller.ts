@@ -1,18 +1,18 @@
-import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body, Put } from '@nestjs/common';
+import { Controller, UseGuards, Request, Query, Get, BadRequestException, Patch, Body, Put, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentStore } from '../../db/content';
 import { ContentFilter, ContentKind, FormType, PubChange, SetRating } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
 import { User } from '../../util/decorators';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { IContent } from '../../shared/content/content.interface';
 
 @Controller('content')
 export class ContentController {
-    constructor(private readonly contentService: ContentStore) {}
+    constructor(@Inject('IContent') private readonly content: IContent) {}
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
@@ -22,7 +22,7 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOne(contentId, kind, user);
+        return await this.content.fetchOne(contentId, kind, user);
     }
 
     @ApiTags('content')
@@ -37,14 +37,14 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.contentService.fetchOnePublished(contentId, kind, user);
+        return await this.content.fetchOnePublished(contentId, kind, user);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-all')
     async fetchAll(@User() user: JwtPayload) {
-        return await this.contentService.fetchAll(user);
+        return await this.content.fetchAll(user);
     }
 
     @ApiTags('content')
@@ -59,7 +59,7 @@ export class ContentController {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }
 
-        return await this.contentService.fetchAllPublished(pageNum, kind, filter, userId);
+        return await this.content.fetchAllPublished(pageNum, kind, filter, userId);
     }
 
     @ApiTags('content')
@@ -70,7 +70,7 @@ export class ContentController {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
 
-        return await this.contentService.createOne(user, kind, formInfo);
+        return await this.content.createOne(user, kind, formInfo);
     }
 
     @ApiTags('content')
@@ -86,7 +86,7 @@ export class ContentController {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
         }
 
-        return await this.contentService.saveChanges(user, contentId, formInfo);
+        return await this.content.saveOne(user, contentId, formInfo);
     }
 
     @ApiTags('content')
@@ -97,7 +97,7 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID.`);
         }
 
-        return await this.contentService.deleteOne(user, contentId);
+        return await this.content.deleteOne(user, contentId);
     }
 
     @ApiTags('content')
@@ -108,27 +108,27 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID.`);
         }
 
-        return await this.contentService.publishOne(user, contentId, pubChange);
+        return await this.content.publishOne(user, contentId, pubChange);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-like')
     async setLike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.contentService.setLike(user, setRating.workId, setRating.oldApprovalRating);
+        return await this.content.setLike(user, setRating);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-dislike')
     async setDislike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.contentService.setDislike(user, setRating.workId, setRating.oldApprovalRating);
+        return await this.content.setDislike(user, setRating);
     }
 
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('set-no-vote')
     async setNoVote(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.contentService.setNoVote(user, setRating.workId, setRating.oldApprovalRating);
+        return await this.content.setNoVote(user, setRating);
     }
 }

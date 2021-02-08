@@ -42,6 +42,7 @@ import { MetaService } from './services/admin/meta.service';
 import { AuthService } from './services/auth/auth.service';
 import { UserService } from './services/auth/user.service';
 import { ImagesService } from './services/images/images.service';
+import { ContentService } from './services/content/content.service';
 
 @Module({
     imports: [
@@ -93,6 +94,7 @@ import { ImagesService } from './services/images/images.service';
         { provide: 'IAuth', useClass: AuthService },
         { provide: 'IUser', useClass: UserService },
         { provide: 'IImages', useClass: ImagesService },
+        { provide: 'IContent', useClass: ContentService },
     ],
 })
 export class AppModule {}
