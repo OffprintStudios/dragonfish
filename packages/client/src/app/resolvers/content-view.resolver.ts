@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment } from
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
-import { Content } from '../../shared/content';
+import { Content } from '../shared/content';
 import { ContentKind } from '@dragonfish/models/content';
 
 @Injectable()

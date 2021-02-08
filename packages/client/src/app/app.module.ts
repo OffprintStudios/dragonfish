@@ -35,12 +35,17 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';
 import { NguCarouselModule } from '@ngu/carousel';
 
+/* Pages */
+import { AccountPages } from './pages/account';
+import { BrowsePages } from './pages/browse';
+import { ContentViewPages } from './pages/content-views';
+import { DashboardPages } from './pages/dash';
+import { DocsPages } from './pages/docs';
+
 import { Pipes } from './pipes';
 import { NagBarModule } from './modules';
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
-
-import { BrowseComponent } from './pages/browse';
 
 import {
     PortfolioComponent,
@@ -68,39 +73,9 @@ import {
 } from './pages/my-stuff';
 
 import { SocialComponent } from './pages';
-import { RegisterComponent } from './pages/account';
 import { SearchComponent, FindUsersComponent, FindBlogsComponent, FindWorksComponent } from './pages/search';
-import {
-    ProsePageComponent,
-    PoetryPageComponent,
-    PostPageComponent,
-    SectionViewComponent,
-} from './pages/content-views';
-import {
-    DashComponent,
-    OverviewComponent,
-    ApprovalQueueComponent,
-    GroupQueueComponent,
-    NewsManagementComponent,
-    ReportsComponent,
-    UsersManagementComponent,
-    AuditLogComponent,
-} from './pages/dash';
-import {
-    ApprovePoetryComponent,
-    ApproveProseComponent,
-    ApproveSectionViewComponent,
-} from './pages/dash/approval-queue';
 
 import { PostFormComponent } from './pages/dash/news-management';
-import {
-    TosComponent,
-    CodeOfConductComponent,
-    OmnibusComponent,
-    AboutOffprintComponent,
-    SiteStaffComponent,
-    SupportersComponent,
-} from './pages/docs';
 
 import { UploadCoverartComponent } from './pages/my-stuff/components';
 import { UploadAvatarComponent } from './components/modals/account';
@@ -136,11 +111,14 @@ import { SectionsState } from './shared/my-stuff/sections';
 @NgModule({
     declarations: [
         AppComponent,
+        ...AccountPages,
+        ...BrowsePages,
+        ...ContentViewPages,
+        ...DashboardPages,
+        ...DocsPages,
         ...Pipes,
         HomeComponent,
-        BrowseComponent,
         NewsComponent,
-        RegisterComponent,
         CollectionsComponent,
         WatchingComponent,
         BlogsComponent,
@@ -158,7 +136,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         FindWorksComponent,
         FindBlogsComponent,
         NetworkInputComponent,
-        SiteStaffComponent,
         CreateCollectionComponent,
         SocialComponent,
         AddToCollectionComponent,
@@ -171,7 +148,6 @@ import { SectionsState } from './shared/my-stuff/sections';
         WatchingPageComponent,
         HistoryComponent,
         StartConversationComponent,
-        PostPageComponent,
         PortConversations,
         MyStuffComponent,
         BlogFormComponent,
@@ -183,34 +159,15 @@ import { SectionsState } from './shared/my-stuff/sections';
         ViewPoetryComponent,
         SectionItemComponent,
         WorkCardComponent,
-        ProsePageComponent,
-        PoetryPageComponent,
-        SectionViewComponent,
         MigrationComponent,
         MigrateWorkComponent,
         MigrateBlogComponent,
         ContentApprovalComponent,
         CollectionPageComponent,
-        DashComponent,
-        OverviewComponent,
-        ApprovalQueueComponent,
-        GroupQueueComponent,
-        NewsManagementComponent,
-        ReportsComponent,
-        UsersManagementComponent,
-        AuditLogComponent,
         PostFormComponent,
-        TosComponent,
-        CodeOfConductComponent,
-        OmnibusComponent,
-        AboutOffprintComponent,
         RoleBadgeComponent,
         UserCardComponent,
-        SupportersComponent,
         NotifItemComponent,
-        ApprovePoetryComponent,
-        ApproveProseComponent,
-        ApproveSectionViewComponent,
         AlertsComponent,
         NewsFormComponent,
     ],

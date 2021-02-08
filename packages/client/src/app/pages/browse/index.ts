@@ -1,2 +1,3 @@
-export { BrowseComponent } from './browse.component';
-export { BrowseResolver } from './browse.resolver';
+import { BrowseComponent } from './browse.component';
+
+export const BrowsePages = [BrowseComponent];

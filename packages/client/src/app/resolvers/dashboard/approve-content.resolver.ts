@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
-import { ApprovalQueueState } from '../../../../shared/dash/approval-queue';
+import { ApprovalQueueState } from '../../shared/dash/approval-queue';
 
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 
