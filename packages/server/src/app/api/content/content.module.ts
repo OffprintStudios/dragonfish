@@ -8,7 +8,6 @@ import { CollectionsModule } from '../../db/collections/collections.module';
 import { HistoryController } from './history/history.controller';
 import { ReadingHistoryModule } from '../../db/reading-history/reading-history.module';
 import { CommentsModule } from '../../db/comments/comments.module';
-import { CommentsController } from './comments/comments.controller';
 import { MessagesController } from './messages/messages.controller';
 import { MessagesModule } from '../../db/messages/messages.module';
 import { NewsController } from './news/news.controller';
@@ -37,7 +36,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
     ],
     controllers: [
         HistoryController,
-        CommentsController,
         MessagesController,
         NewsController,
         ContentController,
