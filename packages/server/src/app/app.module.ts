@@ -11,7 +11,6 @@ import { AuthRoutes } from './controllers/auth';
 import { ContentRoutes } from './controllers/content';
 import { MigrationRoutes } from './controllers/migration';
 import { NotificationsRoutes } from './controllers/notifications';
-import { PortfolioRoutes } from './controllers/portfolio';
 import { SearchRoutes } from './controllers/search';
 
 /* Services */
@@ -82,7 +81,6 @@ import { ContentService } from './services/content/content.service';
         ...ContentRoutes,
         ...MigrationRoutes,
         ...NotificationsRoutes,
-        ...PortfolioRoutes,
         ...SearchRoutes,
     ],
     providers: [

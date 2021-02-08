@@ -10,6 +10,13 @@ import {
 
 export interface IUser {
     /**
+     * Fetches a user from the database and returns the FrontendUser object using their data.
+     * 
+     * @param userId 
+     */
+    getOneUser(userId: string): Promise<FrontendUser>;
+
+    /**
      * Changes a user's username. First validates their credentials, and if they match, makes the change
      * and returns a new FrontendUser.
      *
