@@ -14,7 +14,7 @@ import {
     CreatePoetry,
     CreateProse,
     NewsForm,
-    FormType
+    FormType,
 } from '@dragonfish/models/content';
 import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 

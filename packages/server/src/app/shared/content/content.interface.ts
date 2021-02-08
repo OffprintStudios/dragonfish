@@ -6,7 +6,7 @@ import { JwtPayload } from '@dragonfish/models/auth';
 export interface IContent {
     /**
      * Fetches a single piece of content from the database regardless of its publishing status.
-     * 
+     *
      * @param contentId The content ID
      * @param kind The content kind
      * @param user The author of the content
@@ -25,7 +25,7 @@ export interface IContent {
 
     /**
      * Finds a bunch of content documents belonging to a user, per that user's request.
-     * 
+     *
      * @param user — The user making the request
      */
     fetchAll(user: JwtPayload): Promise<ContentModel[]>;
@@ -36,7 +36,12 @@ export interface IContent {
      * @param pageNum The current page
      * @param kinds The kind of document to fetch
      */
-    fetchAllPublished(pageNum: number, kind: ContentKind, filter: ContentFilter, userId: string): Promise<PaginateResult<ContentModel>>;
+    fetchAllPublished(
+        pageNum: number,
+        kind: ContentKind,
+        filter: ContentFilter,
+        userId: string,
+    ): Promise<PaginateResult<ContentModel>>;
 
     /**
      * Routes a request for creating some content to the appropriate API functions, given the specified

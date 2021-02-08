@@ -4,13 +4,7 @@ import { Cookies } from '@nestjsplus/cookies';
 
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentStore } from '../../db/content';
-import {
-    ContentFilter,
-    ContentKind,
-    FormType,
-    PubChange,
-    SetRating,
-} from '@dragonfish/models/content';
+import { ContentFilter, ContentKind, FormType, PubChange, SetRating } from '@dragonfish/models/content';
 import { Roles } from '@dragonfish/models/users';
 import { isNullOrUndefined } from '../../util';
 import { User } from '../../util/decorators';
@@ -71,11 +65,7 @@ export class ContentController {
     @ApiTags('content')
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-one')
-    async createOne(
-        @User() user: JwtPayload,
-        @Query('kind') kind: ContentKind,
-        @Body() formInfo: FormType,
-    ) {
+    async createOne(@User() user: JwtPayload, @Query('kind') kind: ContentKind, @Body() formInfo: FormType) {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
