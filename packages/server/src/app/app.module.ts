@@ -143,6 +143,12 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
                 return x.name === 'SearchService';
             }),
         },
+        {
+            provide: 'IHistory',
+            useClass: ContentServices.find((x) => {
+                return x.name === 'HistoryService';
+            }),
+        },
     ],
 })
 export class AppModule {}
