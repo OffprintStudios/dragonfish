@@ -1,0 +1,109 @@
+<ng-container *ngIf="currSection$ | async as section">
+    <div class="form-container">
+        <div class="form-header">
+            <div class="form-buttons left">
+                <ng-container *ngIf="section.published === true; else notPublishedPreview">
+                    <button matRipple class="single active" style="margin-left: 0" (click)="pubUnpub(section)">
+                        <i-feather name="check-circle"></i-feather>published
+                    </button>
+                </ng-container>
+                <ng-template #notPublishedPreview>
+                    <button matRipple class="single" style="margin-left: 0" (click)="pubUnpub(section)">
+                        <i-feather name="circle"></i-feather>unpublished
+                    </button>
+                </ng-template>
+
+                <ng-container *ngIf="previewMode; else editModeButtons">
+                    <button matRipple class="left active"><i-feather name="eye"></i-feather>preview</button>
+                    <button matRipple class="right" (click)="switchView()">
+                        <i-feather name="edit-3"></i-feather>edit
+                    </button>
+                    <button matRipple class="single disabled"><i-feather name="save"></i-feather>save</button>
+                </ng-container>
+                <ng-template #editModeButtons>
+                    <button matRipple class="left" (click)="switchView()">
+                        <i-feather name="eye"></i-feather>preview
+                    </button>
+                    <button matRipple class="right active"><i-feather name="edit-3"></i-feather>edit</button>
+                    <button matRipple class="single" (click)="saveChanges(section)">
+                        <i-feather name="save"></i-feather>save
+                    </button>
+                </ng-template>
+            </div>
+
+            <div class="form-stats">
+                <span>{{ section.stats.words }} word{{ section.stats.words | pluralize }}</span>
+            </div>
+
+            <div class="form-buttons">
+                <button matRipple class="single" style="margin-left: 0; margin-right: 0" (click)="delete(section._id)">
+                    <i-feather name="trash-2"></i-feather>delete
+                </button>
+            </div>
+        </div>
+        <ng-container *ngIf="previewMode; else editMode">
+            <div class="form-body">
+                <div class="body-header">
+                    <h2>{{ section.title }}</h2>
+                </div>
+                <ng-container *ngIf="section.authorsNote">
+                    <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Top">
+                        <div class="authors-note-box">
+                            <h3>A word from the author&mdash;</h3>
+                            <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+                <ng-container *ngIf="section.authorsNote">
+                    <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Bottom">
+                        <div class="authors-note-box">
+                            <h3>A word from the author&mdash;</h3>
+                            <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-template #editMode>
+            <div class="form-body">
+                <form [formGroup]="editForm" (ngSubmit)="saveChanges(section)">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Title</mat-label>
+                        <input matInput placeholder="The Beginning Of A Great Adventure" [formControlName]="'title'" />
+                    </mat-form-field>
+
+                    <editor
+                        [parentForm]="editForm"
+                        [controlName]="'body'"
+                        [minHeight]="'750px'"
+                        [maxHeight]="'750px'"
+                    ></editor>
+
+                    <div class="authors-note">
+                        <div class="header">
+                            <h2>Author's Note</h2>
+                            <mat-form-field style="margin: 0" appearance="outline">
+                                <mat-label>Position</mat-label>
+                                <mat-select [formControlName]="'authorsNotePos'">
+                                    <mat-option
+                                        *ngFor="let pos of authorsNotePosOptions | keyvalue"
+                                        [value]="pos.key"
+                                        >{{ pos.value }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <editor
+                            [parentForm]="editForm"
+                            [controlName]="'authorsNote'"
+                            [minHeight]="'750px'"
+                            [maxHeight]="'750px'"
+                        ></editor>
+                    </div>
+                </form>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>

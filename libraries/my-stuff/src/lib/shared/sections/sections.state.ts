@@ -7,7 +7,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { Sections } from './sections.actions';
 import { SectionsStateModel } from './sections-state.model';
 import { Section } from '@dragonfish/models/sections';
-// import { AlertsService } from '../../alerts';
+import { AlertsService } from '@dragonfish/alerts';
 import { MyStuff } from '../my-stuff.actions';
 import { MyStuffService } from '../services';
 
@@ -20,7 +20,7 @@ import { MyStuffService } from '../services';
 })
 @Injectable()
 export class SectionsState {
-    constructor(private networkService: MyStuffService, /*private alerts: AlertsService*/) {}
+    constructor(private networkService: MyStuffService, private alerts: AlertsService) {}
 
     @Action(Sections.SetAll)
     public setAll({ patchState }: StateContext<SectionsStateModel>, { contentId }: Sections.SetAll) {
@@ -31,7 +31,7 @@ export class SectionsState {
                 });
             }),
             catchError((err) => {
-                //this.alerts.error(err.error);
+                this.alerts.error(err.error);
                 return throwError(err);
             }),
         );
@@ -51,14 +51,14 @@ export class SectionsState {
     ) {
         return this.networkService.createSection(contentId, sectionInfo).pipe(
             tap((result: Section) => {
-                //this.alerts.success(`Section created!`);
+                this.alerts.success(`Section created!`);
                 patchState({
                     sections: [...getState().sections, result],
                     currSection: result,
                 });
             }),
             catchError((err) => {
-                //this.alerts.error(err.error);
+                this.alerts.error(err.error);
                 return throwError(err);
             }),
         );
@@ -68,7 +68,7 @@ export class SectionsState {
     public save({ setState }: StateContext<SectionsStateModel>, { contentId, sectionId, sectionInfo }: Sections.Save) {
         return this.networkService.editSection(contentId, sectionId, sectionInfo).pipe(
             tap((result: Section) => {
-                //this.alerts.success(`Changes saved!`);
+                this.alerts.success(`Changes saved!`);
                 setState(
                     patch({
                         sections: updateItem<Section>((section) => section._id === result._id, result),
@@ -77,7 +77,7 @@ export class SectionsState {
                 );
             }),
             catchError((err) => {
-                //this.alerts.error(err.error);
+                this.alerts.error(err.error);
                 return throwError(err);
             }),
         );
@@ -99,7 +99,7 @@ export class SectionsState {
                 dispatch(new MyStuff.UpdateWordcount(result, pubStatus));
             }),
             catchError((err) => {
-                //this.alerts.error(err.error);
+                this.alerts.error(err.error);
                 return throwError(err);
             }),
         );
@@ -117,7 +117,7 @@ export class SectionsState {
                 );
             }),
             catchError((err) => {
-                //this.alerts.error(err.error);
+                this.alerts.error(err.error);
                 return throwError(err);
             }),
         );

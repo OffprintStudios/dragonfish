@@ -3,9 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { State, Action, StateContext } from '@ngxs/store';
 
 import { Alerts } from './alerts.actions';
-import { AlertsComponent } from './components';
-import { AlertType } from './models';
-import { AlertsStateModel } from './models/alerts-state.model';
+import { AlertsComponent } from '../components';
+import { AlertType } from '../models';
+import { AlertsStateModel } from '../models/alerts-state.model';
 
 @State<AlertsStateModel>({
     name: 'alerts',
