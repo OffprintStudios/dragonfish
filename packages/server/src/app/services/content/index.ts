@@ -5,4 +5,11 @@ import { CommentsService } from './comments.service';
 import { HistoryService } from './history.service';
 import { MessagesService } from './messages.service';
 
-export const ContentServices = [ContentService, SectionsService, CollectionsService, CommentsService, HistoryService, MessagesService];
+export const ContentServices = [
+    ContentService,
+    SectionsService,
+    CollectionsService,
+    CommentsService,
+    HistoryService,
+    MessagesService,
+];

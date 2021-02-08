@@ -1,14 +1,4 @@
-import {
-    Controller,
-    UseGuards,
-    Body,
-    Get,
-    Put,
-    Patch,
-    Query,
-    BadRequestException,
-    Inject,
-} from '@nestjs/common';
+import { Controller, UseGuards, Body, Get, Put, Patch, Query, BadRequestException, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../guards';
@@ -111,7 +101,11 @@ export class CollectionsController {
     @ApiTags('Collections')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('remove-content')
-    async removeContent(@User() user: JwtPayload, @Query('collId') collId: string, @Query('contentId') contentId: string) {
+    async removeContent(
+        @User() user: JwtPayload,
+        @Query('collId') collId: string,
+        @Query('contentId') contentId: string,
+    ) {
         if (isNullOrUndefined(collId) || isNullOrUndefined(contentId)) {
             throw new BadRequestException(
                 `This request requires the collection ID, the collection item ID, and the content ID.`,

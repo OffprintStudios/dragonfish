@@ -32,7 +32,11 @@ export class CommentsController {
     @ApiTags('Comments')
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-comment/:commentId')
-    async editComment(@User() user: JwtPayload, @Param('commentId') commentId: string, @Body() commentInfo: EditComment) {
+    async editComment(
+        @User() user: JwtPayload,
+        @Param('commentId') commentId: string,
+        @Body() commentInfo: EditComment,
+    ) {
         return await this.comments.edit(user, commentId, commentInfo);
     }
 }

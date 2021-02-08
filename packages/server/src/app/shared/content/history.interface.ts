@@ -1,6 +1,6 @@
 import { PaginateResult } from 'mongoose';
 
-import { ReadingHistory } from "@dragonfish/models/reading-history";
+import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { JwtPayload } from '@dragonfish/models/auth';
 
 export interface IHistory {

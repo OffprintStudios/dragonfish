@@ -7,7 +7,7 @@ import { MessageThread, Message, CreateInitialMessage, CreateResponse } from '@d
 
 @Injectable()
 export class MessagesService implements IMessages {
-    constructor (private readonly messages: MessagesStore) {}
+    constructor(private readonly messages: MessagesStore) {}
 
     async createNewPrivateThread(user: any, initialMessage: CreateInitialMessage): Promise<void> {
         return await this.messages.createNewPrivateThread(user, initialMessage);

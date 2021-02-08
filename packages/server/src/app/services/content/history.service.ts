@@ -8,7 +8,7 @@ import { IHistory } from '../../shared/content';
 
 @Injectable()
 export class HistoryService implements IHistory {
-    constructor (private readonly history: ReadingHistoryStore) {}
+    constructor(private readonly history: ReadingHistoryStore) {}
 
     async addOrUpdateHistory(user: JwtPayload, contentId: string): Promise<ReadingHistory> {
         return await this.history.addOrUpdateHistory(user, contentId);

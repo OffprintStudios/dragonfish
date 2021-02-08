@@ -1,5 +1,5 @@
 import { PaginateResult } from 'mongoose';
-import { Collection, CollectionForm } from "@dragonfish/models/collections";
+import { Collection, CollectionForm } from '@dragonfish/models/collections';
 import { JwtPayload } from '@dragonfish/models/auth';
 
 export interface ICollections {

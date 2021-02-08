@@ -31,10 +31,6 @@ import { SectionsModule } from '../../db/sections/sections.module';
             }),
         }),
     ],
-    controllers: [
-        NewsController,
-        ProseController,
-        PoetryController,
-    ],
+    controllers: [NewsController, ProseController, PoetryController],
 })
 export class ContentModule {}

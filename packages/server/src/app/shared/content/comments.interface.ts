@@ -1,7 +1,7 @@
 import { PaginateResult } from 'mongoose';
 
-import { JwtPayload } from "@dragonfish/models/auth";
-import { ContentComment, CreateComment, EditComment } from "@dragonfish/models/comments";
+import { JwtPayload } from '@dragonfish/models/auth';
+import { ContentComment, CreateComment, EditComment } from '@dragonfish/models/comments';
 
 export interface IComments {
     /**

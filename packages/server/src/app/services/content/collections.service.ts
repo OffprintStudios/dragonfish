@@ -10,7 +10,7 @@ import { CollectionsStore } from '../../db/collections/collections.store';
 export class CollectionsService implements ICollections {
     private readonly logger: Logger = new Logger();
 
-    constructor (private readonly collections: CollectionsStore) {}
+    constructor(private readonly collections: CollectionsStore) {}
 
     async getCollection(user: JwtPayload, collectionId: string): Promise<Collection> {
         return await this.collections.getOneCollection(user, collectionId);

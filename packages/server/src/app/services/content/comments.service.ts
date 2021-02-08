@@ -8,7 +8,7 @@ import { ContentComment, CreateComment, EditComment } from '@dragonfish/models/c
 
 @Injectable()
 export class CommentsService implements IComments {
-    constructor (private readonly comments: CommentsStore) {}
+    constructor(private readonly comments: CommentsStore) {}
 
     async get(contentId: string, pageNum: number): Promise<PaginateResult<ContentComment>> {
         return await this.comments.getContentComments(contentId, pageNum);
