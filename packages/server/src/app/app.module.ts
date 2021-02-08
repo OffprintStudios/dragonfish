@@ -19,6 +19,7 @@ import { AuthServices } from './services/auth';
 import { ImagesServices } from './services/images';
 import { ContentServices } from './services/content';
 import { MigrationServices } from './controllers/migration';
+import { SearchServices } from './services/search';
 
 /* Database Modules */
 import { UsersModule } from './db/users/users.module';
@@ -81,6 +82,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
         ...ContentServices,
         ...ImagesServices,
         ...MigrationServices,
+        ...SearchServices,
         {
             provide: 'IApprovalQueue',
             useClass: AdminServices.find((x) => {
@@ -133,6 +135,12 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
             provide: 'IComments',
             useClass: ContentServices.find((x) => {
                 return x.name === 'CommentsService';
+            }),
+        },
+        {
+            provide: 'ISearch',
+            useClass: SearchServices.find((x) => {
+                return x.name === 'SearchService';
             }),
         },
     ],
