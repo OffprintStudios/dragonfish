@@ -28,5 +28,5 @@ export interface IComments {
      * @param commentId The comment's ID
      * @param commentInfo The comment's new info
      */
-    edit(user: JwtPayload, commentId: string, commentInfo: EditComment): Promise<ContentComment>;
+    edit(user: JwtPayload, commentId: string, commentInfo: EditComment): Promise<void>;
 }

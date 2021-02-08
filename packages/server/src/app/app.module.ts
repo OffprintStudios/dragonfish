@@ -129,6 +129,12 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
                 return x.name === 'CollectionsService';
             }),
         },
+        {
+            provide: 'IComments',
+            useClass: ContentServices.find((x) => {
+                return x.name === 'CommentsService';
+            }),
+        },
     ],
 })
 export class AppModule {}
