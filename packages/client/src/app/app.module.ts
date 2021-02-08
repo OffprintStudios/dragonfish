@@ -35,19 +35,7 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';
 import { NguCarouselModule } from '@ngu/carousel';
 
-import {
-    SlugifyPipe,
-    PluralizePipe,
-    SeparateGenresPipe,
-    FixCategoriesPipe,
-    StringifyMetaPipe,
-    ToLocaleStringPipe,
-    AbbreviateNumbersPipe,
-    SafeHtmlPipe,
-    TruncatePipe,
-    LocaleDatePipe,
-    JoinStringsPipe,
-} from './pipes';
+import { Pipes } from './pipes';
 import { NagBarModule } from './modules';
 
 import { HomeComponent, NewsComponent, WatchingPageComponent } from './pages/home';
@@ -149,8 +137,7 @@ import { init } from './util/functions';
 @NgModule({
     declarations: [
         AppComponent,
-        SlugifyPipe,
-        PluralizePipe,
+        ...Pipes,
         HomeComponent,
         BrowseComponent,
         NewsComponent,
@@ -164,9 +151,6 @@ import { init } from './util/functions';
         PortfolioComponent,
         PortHomeComponent,
         BlogPageComponent,
-        SeparateGenresPipe,
-        JoinStringsPipe,
-        FixCategoriesPipe,
         UploadAvatarComponent,
         BeatrizHeroComponent,
         UploadCoverartComponent,
@@ -174,25 +158,20 @@ import { init } from './util/functions';
         FindUsersComponent,
         FindWorksComponent,
         FindBlogsComponent,
-        StringifyMetaPipe,
-        ToLocaleStringPipe,
         NetworkInputComponent,
         SiteStaffComponent,
         CreateCollectionComponent,
         SocialComponent,
         AddToCollectionComponent,
-        AbbreviateNumbersPipe,
         NewPolicyNagComponent,
         CommentsComponent,
         EditorComponent,
-        SafeHtmlPipe,
         SiteSidenavComponent,
         ConversationsComponent,
         NotificationsComponent,
         WatchingPageComponent,
         HistoryComponent,
         StartConversationComponent,
-        TruncatePipe,
         PostPageComponent,
         PortConversations,
         MyStuffComponent,
@@ -208,7 +187,6 @@ import { init } from './util/functions';
         ProsePageComponent,
         PoetryPageComponent,
         SectionViewComponent,
-        LocaleDatePipe,
         MigrationComponent,
         MigrateWorkComponent,
         MigrateBlogComponent,
@@ -297,7 +275,6 @@ import { init } from './util/functions';
         { provide: APP_INITIALIZER, useFactory: init, multi: true, deps: [HttpClient] },
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
-        SlugifyPipe,
     ],
     entryComponents: [
         UploadAvatarComponent,
