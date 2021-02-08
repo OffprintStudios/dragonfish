@@ -1,7 +1,6 @@
 import {
     Controller,
     UseGuards,
-    Request,
     Query,
     Get,
     BadRequestException,
@@ -158,14 +157,14 @@ export class ContentController {
     @Post('prose/upload-coverart/:proseId')
     async uploadProseCoverArt(
         @UploadedFile() coverArtImage: any,
-        @Request() req: any,
+        @User() user: JwtPayload,
         @Param('proseId') proseId: string,
     ) {
         const coverArtUrl = await this.images.upload(coverArtImage, proseId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(
             coverArtUrl.lastIndexOf('/') + 1,
         )}`;
-        return await this.content.updateCoverArt(req.user, proseId, ContentKind.ProseContent, coverArt);
+        return await this.content.updateCoverArt(user, proseId, ContentKind.ProseContent, coverArt);
     }
 
     @ApiTags('Content')
@@ -174,13 +173,13 @@ export class ContentController {
     @Post('poetry/upload-coverart/:poetryId')
     async uploadPoetryCoverArt(
         @UploadedFile() coverArtImage: any,
-        @Request() req: any,
+        @User() user: JwtPayload,
         @Param('poetryId') poetryId: string,
     ) {
         const coverArtUrl = await this.images.upload(coverArtImage, poetryId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(
             coverArtUrl.lastIndexOf('/') + 1,
         )}`;
-        return await this.content.updateCoverArt(req.user, poetryId, ContentKind.PoetryContent, coverArt);
+        return await this.content.updateCoverArt(user, poetryId, ContentKind.PoetryContent, coverArt);
     }
 }
