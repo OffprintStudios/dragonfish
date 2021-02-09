@@ -6,8 +6,7 @@ import { UserState } from '../../shared/user';
 
 import { CarouselOptionsManager } from './carousel-options-manager';
 import { FrontendUser } from '@dragonfish/models/users';
-import { Constants } from '../../shared/constants';
-import { Title } from '../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { NewsContentModel } from '@dragonfish/models/content';
 
 @Component({

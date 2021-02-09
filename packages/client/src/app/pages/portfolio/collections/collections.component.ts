@@ -9,7 +9,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 import { Collection } from '@dragonfish/models/collections';
 import { PaginateResult } from '@dragonfish/models/util';
 import { NetworkService } from '../../../services';
-import { Title, Constants } from '../../../shared';
+import { Title, Constants } from '@dragonfish/utilities/constants';
 import { CreateCollectionComponent } from '../../../components/modals/collections';
 
 @Component({

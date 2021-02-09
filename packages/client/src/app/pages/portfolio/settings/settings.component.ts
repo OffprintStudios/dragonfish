@@ -20,7 +20,7 @@ import {
 } from '@dragonfish/models/users';
 import { ContentFilter } from '@dragonfish/models/works';
 
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { Global } from '../../../shared/global';
 
 @Component({

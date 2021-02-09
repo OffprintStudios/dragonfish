@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store, Select } from '@ngxs/store';
 import { Navigate } from '@ngxs/router-plugin';
 import { Observable, Subscription } from 'rxjs';
-import { Constants } from '../../shared';
+import { Constants } from '@dragonfish/utilities/constants';
 import { Auth } from '../../shared/auth';
 import { UserState } from '../../shared/user';
 

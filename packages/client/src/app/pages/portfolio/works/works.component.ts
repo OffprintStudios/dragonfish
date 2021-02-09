@@ -8,7 +8,7 @@ import { ContentState } from '../../../shared/content';
 import { ContentModel } from '@dragonfish/models/content';
 import { FrontendUser } from '@dragonfish/models/users';
 import { PaginateResult } from '@dragonfish/models/util';
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 
 @Component({
     selector: 'port-works',

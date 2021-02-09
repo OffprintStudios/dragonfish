@@ -8,7 +8,7 @@ import { UserState } from '../../shared/user';
 
 import { FrontendUser, Roles } from '@dragonfish/models/users';
 
-import { Title } from '../../shared';
+import { Title } from '@dragonfish/utilities/constants';
 
 @Component({
     selector: 'app-portfolio',

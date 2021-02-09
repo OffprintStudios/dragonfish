@@ -12,7 +12,6 @@ import { ApprovalStatus, Categories, Work } from '@dragonfish/models/works';
 import { FrontendUser } from '@dragonfish/models/users';
 import { WorkKind, Genres, ContentRating, WorkStatus, ContentKind, PubStatus } from '@dragonfish/models/content';
 import { MigrationForm } from '@dragonfish/models/migration';
-import { getQuillHtml } from '../../../util/functions';
 
 @Component({
     selector: 'migrate-work',

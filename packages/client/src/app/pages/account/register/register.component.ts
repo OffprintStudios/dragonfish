@@ -5,7 +5,7 @@ import { Navigate } from '@ngxs/router-plugin';
 import { Observable, Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { Auth } from '../../../shared/auth';
 import { UserState } from '../../../shared/user';
 import { FrontendUser, CreateUser } from '@dragonfish/models/users';

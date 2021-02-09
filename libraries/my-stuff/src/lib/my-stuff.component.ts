@@ -8,13 +8,13 @@ import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Observable } from 'rxjs';
 import { slugify } from 'voca';
 import { MyStuff, MyStuffState } from './shared';
-import { Constants, Title } from '../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
+import { isAllowed } from '@dragonfish/utilities/functions';
 
 import { ContentModel, ContentKind, PubStatus, PubChange } from '@dragonfish/models/content';
 import { AlertsService } from '@dragonfish/alerts';
 import { FrontendUser, Roles, UserInfo } from '@dragonfish/models/users';
 import { Navigate } from '@ngxs/router-plugin';
-import { isAllowed } from '../../util/functions';
 import { MyStuffFacade } from './facades';
 
 @UntilDestroy()

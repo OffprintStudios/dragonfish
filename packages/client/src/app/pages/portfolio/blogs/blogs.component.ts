@@ -6,7 +6,7 @@ import { UserState } from '../../../shared/user';
 
 import { FrontendUser } from '@dragonfish/models/users';
 import { PaginateResult } from '@dragonfish/models/util';
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { BlogsContentModel } from '@dragonfish/models/content';
 import { ContentState } from '../../../shared/content';
 

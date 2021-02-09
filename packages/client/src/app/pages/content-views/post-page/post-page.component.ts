@@ -4,7 +4,7 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 import { ContentState } from '../../../shared/content';
-import { Title } from '../../../shared/title';
+import { Title } from '@dragonfish/utilities/constants';
 
 import { NewsCategory, NewsContentModel } from '@dragonfish/models/content';
 import { FrontendUser } from '@dragonfish/models/users';

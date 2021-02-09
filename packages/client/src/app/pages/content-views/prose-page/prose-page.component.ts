@@ -8,7 +8,7 @@ import { ContentState } from '../../../shared/content';
 import { Genres, ProseContent, SectionInfo, WorkStatus } from '@dragonfish/models/content';
 import { FrontendUser } from '@dragonfish/models/users';
 
-import { Title } from '../../../shared';
+import { Title } from '@dragonfish/utilities/constants';
 
 @Component({
     selector: 'prose-page',

@@ -15,7 +15,7 @@ import {
 } from '@dragonfish/models/content';
 import { AlertsService } from '@dragonfish/alerts';
 import { MyStuffFacade } from '../../facades';
-import { MyStuffState } from 'packages/client/src/app/shared/my-stuff';
+import { MyStuffState } from '../../shared';
 
 @UntilDestroy()
 @Component({

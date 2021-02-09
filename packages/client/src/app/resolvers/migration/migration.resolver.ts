@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, zip, of, throwError } from 'rxjs';
+import { Observable, zip, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { MigrationModel } from '../../pages/migration/migration.model';

@@ -14,9 +14,9 @@ import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@dragonfish/models/notifications';
-import { Constants } from './shared';
+import { Constants } from '@dragonfish/utilities/constants';
 import { MetadataService } from './services/utility';
-import { isAllowed } from '@dragonfish/functions';
+import { isAllowed } from '@dragonfish/utilities/functions';
 
 @Component({
     selector: 'dragonfish-root',

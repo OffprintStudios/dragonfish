@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, zip, of, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { Work } from '@dragonfish/models/works';
-import { Blog } from '@dragonfish/models/blogs';
 import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()

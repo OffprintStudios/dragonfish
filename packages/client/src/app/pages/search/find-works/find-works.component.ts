@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Work } from '@dragonfish/models/works';
 import { PaginateResult } from '@dragonfish/models/util';
 import { SearchService } from '../../../services/utility';
-import { calculateApprovalRating } from '../../../util/functions';
+import { calculateApprovalRating } from '@dragonfish/utilities/functions';
 import { ContentModel } from '@dragonfish/models/content';
 
 @Component({
