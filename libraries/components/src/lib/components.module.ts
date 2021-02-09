@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Ng2FittextModule } from 'ng2-fittext';
+import { FileUploadModule } from 'ng2-file-upload';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
 import { PipesModule } from '@dragonfish/pipes';
@@ -24,6 +26,8 @@ import { WorkCardComponent } from './components/work-card/work-card.component';
         PipesModule,
         MaterialModule,
         Ng2FittextModule,
+        FileUploadModule,
+        ImageCropperModule,
         RouterModule.forChild([]),
     ],
     exports: [

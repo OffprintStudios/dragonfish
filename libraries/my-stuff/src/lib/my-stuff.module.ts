@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxsModule } from '@ngxs/store';
 import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
@@ -38,6 +39,7 @@ import { MyStuffComponent } from './my-stuff.component';
         EditorModule,
         ComponentsModule,
         FileUploadModule,
+        ImageCropperModule,
     ],
     providers: [
         MyStuffFacade,
