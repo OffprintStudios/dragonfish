@@ -36,7 +36,6 @@ import { MigrationPages } from './pages/migration';
 import { PortfolioPages } from './pages/portfolio';
 import { SearchPages } from './pages/search';
 import { SocialPages } from './pages/social';
-import { MyStuffPages } from './pages/my-stuff';
 
 /* State */
 import { AuthState } from './shared/auth';
@@ -45,7 +44,6 @@ import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
-import { MyStuffState } from './shared/my-stuff';
 import { AlertsState } from '@dragonfish/alerts';
 import { SectionsState } from './shared/my-stuff/sections';
 
@@ -55,7 +53,6 @@ import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
 import { CommentsComponent } from './components/comments';
-import { EditorComponent } from './components/editor';
 import { WorkCardComponent } from './components/work-card/work-card.component';
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
 import { RoleBadgeComponent } from './components/role-badge/role-badge.component';
@@ -79,6 +76,7 @@ import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
 import { AlertsModule } from '@dragonfish/alerts';
 import { PipesModule } from '@dragonfish/pipes';
+import { EditorModule } from '@dragonfish/editor';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -96,7 +94,6 @@ import { environment } from '../environments/environment';
         ...PortfolioPages,
         ...SearchPages,
         ...SocialPages,
-        ...MyStuffPages,
         ...MyStuffComponents,
         WatchingComponent,
         UploadAvatarComponent,
@@ -106,7 +103,6 @@ import { environment } from '../environments/environment';
         AddToCollectionComponent,
         NewPolicyNagComponent,
         CommentsComponent,
-        EditorComponent,
         SiteSidenavComponent,
         ConversationsComponent,
         NotificationsComponent,
@@ -140,6 +136,7 @@ import { environment } from '../environments/environment';
         NguCarouselModule,
         AlertsModule,
         PipesModule,
+        EditorModule,
         NgxsModule.forRoot(
             [
                 AuthState,
@@ -147,7 +144,6 @@ import { environment } from '../environments/environment';
                 UserState,
                 ApprovalQueueState,
                 ContentState,
-                MyStuffState,
                 AlertsState,
                 SectionsState,
             ],

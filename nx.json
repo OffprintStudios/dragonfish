@@ -23,7 +23,8 @@
         "material": { "tags": [] },
         "my-stuff": { "tags": [] },
         "alerts": { "tags": [] },
-        "pipes": { "tags": [] }
+        "pipes": { "tags": [] },
+        "editor": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }
