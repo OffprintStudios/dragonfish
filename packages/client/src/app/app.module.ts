@@ -78,9 +78,9 @@ import { NagBarModule } from './modules';
 import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
 import { AlertsModule } from '@dragonfish/alerts';
+import { PipesModule } from '@dragonfish/pipes';
 
 /* Util */
-import { Pipes } from './pipes';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -98,7 +98,6 @@ import { environment } from '../environments/environment';
         ...SocialPages,
         ...MyStuffPages,
         ...MyStuffComponents,
-        ...Pipes,
         WatchingComponent,
         UploadAvatarComponent,
         BeatrizHeroComponent,
@@ -140,6 +139,7 @@ import { environment } from '../environments/environment';
         ClipboardModule,
         NguCarouselModule,
         AlertsModule,
+        PipesModule,
         NgxsModule.forRoot(
             [
                 AuthState,
