@@ -22,7 +22,6 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { MarkdownModule } from 'ngx-markdown';
 import { NguCarouselModule } from '@ngu/carousel';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 
 /* Pages */
@@ -117,7 +116,6 @@ import { environment } from '../environments/environment';
         NgxPaginationModule,
         NagBarModule,
         BrowserAnimationsModule,
-        CKEditorModule,
         MaterialModule,
         Ng2FittextModule,
         LoadingBarModule,

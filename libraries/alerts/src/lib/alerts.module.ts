@@ -18,6 +18,7 @@ import { IconsModule } from '@dragonfish/icons';
     exports: [
         AlertsState,
         AlertsService,
+        AlertsComponent,
     ]
 })
 export class AlertsModule {}
