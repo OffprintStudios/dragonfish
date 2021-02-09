@@ -22,7 +22,8 @@
         "icons": { "tags": [] },
         "material": { "tags": [] },
         "my-stuff": { "tags": [] },
-        "alerts": { "tags": [] }
+        "alerts": { "tags": [] },
+        "pipes": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }

@@ -20,7 +20,8 @@
             "@dragonfish/icons": ["libraries/icons/src/index.ts"],
             "@dragonfish/material": ["libraries/material/src/index.ts"],
             "@dragonfish/my-stuff": ["libraries/my-stuff/src/index.ts"],
-            "@dragonfish/alerts": ["libraries/alerts/src/index.ts"]
+            "@dragonfish/alerts": ["libraries/alerts/src/index.ts"],
+            "@dragonfish/pipes": ["libraries/pipes/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]
