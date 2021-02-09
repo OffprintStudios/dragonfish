@@ -34,7 +34,6 @@ import {
 } from '@dragonfish/models/users';
 import { InitialResults, PaginateResult } from '@dragonfish/models/util';
 import { Section } from '@dragonfish/models/works';
-import { Doc } from '@dragonfish/models/docs';
 import { FrontPageStats } from '@dragonfish/models/stats';
 import { Blog } from '@dragonfish/models/blogs';
 import { Collection, CollectionForm } from '@dragonfish/models/collections';
@@ -621,52 +620,10 @@ export class NetworkService {
 
     //#region ---COMMENTS---
 
-    /**
-     * Adds a comment to a blog.
-     *
-     * @param blogId The ID of the blog
-     * @param commentInfo the new comment to add
-     */
-    public addBlogComment(blogId: string, commentInfo: CreateComment) {
-        return this.handleResponse(
-            this.http.put<BlogComment>(`${this.baseUrl}/content/comments/add-blog-comment/${blogId}`, commentInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success(`Comment added successfully!`);
-            },
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Adds a comment to a work.
-     *
-     * @param workId The ID of the work
-     * @param commentInfo the new comment to add
-     */
-    public addWorkComment(workId: string, commentInfo: CreateComment) {
-        return this.handleResponse(
-            this.http.put<WorkComment>(`${this.baseUrl}/content/comments/add-work-comment/${workId}`, commentInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success(`Comment added successfully!`);
-            },
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
     public addContentComment(contentId: string, commentInfo: CreateComment) {
         return this.handleResponse(
             this.http.put<ContentComment>(
-                `${this.baseUrl}/content/comments/add-content-comment/${contentId}`,
+                `${this.baseUrl}/comments/add-content-comment/${contentId}`,
                 commentInfo,
                 { observe: 'response', withCredentials: true },
             ),
@@ -679,46 +636,10 @@ export class NetworkService {
         );
     }
 
-    /**
-     * Fetches the comments belonging to a blog.
-     *
-     * @param blogId The blog that these comments belong to
-     */
-    public fetchBlogComments(blogId: string, pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<BlogComment>>(
-                `${this.baseUrl}/content/comments/get-blog-comments/${blogId}/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-            null,
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches the comments belonging to a work.
-     *
-     * @param workId The work that these comments belong to
-     */
-    public fetchWorkComments(workId: string, pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<WorkComment>>(
-                `${this.baseUrl}/content/comments/get-work-comments/${workId}/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-            null,
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
     public fetchContentComments(contentId: string, pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<ContentComment>>(
-                `${this.baseUrl}/content/comments/get-content-comments/${contentId}/${pageNum}`,
+                `${this.baseUrl}/comments/get-content-comments/${contentId}/${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -736,7 +657,7 @@ export class NetworkService {
      */
     public editComment(commentId: string, commentInfo: EditComment) {
         return this.handleResponse(
-            this.http.patch(`${this.baseUrl}/content/comments/edit-comment/${commentId}`, commentInfo, {
+            this.http.patch(`${this.baseUrl}/comments/edit-comment/${commentId}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -781,7 +702,7 @@ export class NetworkService {
     public fetchRelatedHistory(contentId: string): Observable<ReadingHistory> {
         return this.handleResponse(
             this.http.post<ReadingHistory>(
-                `${this.baseUrl}/content/history/add-or-update-history/${contentId}`,
+                `${this.baseUrl}/history/add-or-update-history/${contentId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -834,7 +755,7 @@ export class NetworkService {
     public fetchSection(sectionId: string): Observable<Section> {
         return this.handleResponse(
             this.http.get<Section>(
-                `${this.baseUrl}/content/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`,
+                `${this.baseUrl}/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -934,27 +855,6 @@ export class NetworkService {
 
     //#endregion
 
-    //#region ---DOCS---
-
-    /**
-     * Fetches a doc for display on a document page
-     * @param docId The doc to fetch
-     */
-    public fetchOneDoc(docId: string) {
-        return this.handleResponse(
-            this.http.get<Doc>(`${this.baseUrl}/dashboard/docs/fetch-one/${docId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (err) => {
-                //this.alertsService.error(`The doc you're looking for can't be found.`);
-            },
-        );
-    }
-
-    //#endregion
-
     //#region ---HISTORY---
 
     /**
@@ -963,7 +863,7 @@ export class NetworkService {
     public fetchUserHistory(pageNum: number): Observable<PaginateResult<ReadingHistory>> {
         return this.handleResponse(
             this.http.get<PaginateResult<ReadingHistory>>(
-                `${this.baseUrl}/content/history/fetch-user-history/${pageNum}`,
+                `${this.baseUrl}/history/fetch-user-history/${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -978,7 +878,7 @@ export class NetworkService {
      */
     public fetchUserSidenavHistory(): Observable<ReadingHistory[]> {
         return this.handleResponse(
-            this.http.get<ReadingHistory[]>(`${this.baseUrl}/content/history/fetch-user-sidenav-history`, {
+            this.http.get<ReadingHistory[]>(`${this.baseUrl}/history/fetch-user-sidenav-history`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -994,7 +894,7 @@ export class NetworkService {
      */
     public fetchOneHistDoc(workId: string): Observable<ReadingHistory> {
         return this.handleResponse(
-            this.http.get<ReadingHistory>(`${this.baseUrl}/content/history/fetch-one-hist-doc/${workId}`, {
+            this.http.get<ReadingHistory>(`${this.baseUrl}/history/fetch-one-hist-doc/${workId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1013,7 +913,7 @@ export class NetworkService {
     public addOrUpdateHistory(workId: string): Observable<ReadingHistory> {
         return this.handleResponse(
             this.http.post<ReadingHistory>(
-                `${this.baseUrl}/content/history/add-or-update-history/${workId}`,
+                `${this.baseUrl}/history/add-or-update-history/${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1032,7 +932,7 @@ export class NetworkService {
     public changeHistoryVisibility(histId: string): Observable<void> {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/history/change-item-visibility/${histId}`,
+                `${this.baseUrl}/history/change-item-visibility/${histId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1055,7 +955,7 @@ export class NetworkService {
     public fetchUserThreads(pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<MessageThread>>(
-                `${this.baseUrl}/content/messages/fetch-user--threads/${pageNum}`,
+                `${this.baseUrl}/messages/fetch-user--threads/${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -1066,7 +966,7 @@ export class NetworkService {
      */
     public fetchUserSidenavThreads() {
         return this.handleResponse(
-            this.http.get<MessageThread[]>(`${this.baseUrl}/content/messages/fetch-user-sidenav-threads`, {
+            this.http.get<MessageThread[]>(`${this.baseUrl}/messages/fetch-user-sidenav-threads`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1080,7 +980,7 @@ export class NetworkService {
      */
     public createNewPrivateThread(initialMessage: CreateInitialMessage) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/messages/create-new-private-thread`, initialMessage, {
+            this.http.put<void>(`${this.baseUrl}/messages/create-new-private-thread`, initialMessage, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1094,7 +994,7 @@ export class NetworkService {
      */
     public createResponse(response: CreateResponse) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/messages/create-response`, response, {
+            this.http.put<void>(`${this.baseUrl}/messages/create-response`, response, {
                 observe: 'response',
                 withCredentials: true,
             }),
