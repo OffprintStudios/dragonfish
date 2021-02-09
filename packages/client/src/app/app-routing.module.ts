@@ -20,6 +20,7 @@ import { SearchRoutes } from './pages/search';
 import { DocsRoutes } from './pages/docs';
 import { MigrationRoutes } from './pages/migration';
 import { DashboardRoutes } from './pages/dash';
+import { AuthGuard } from './shared/auth/services';
 
 const routes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -33,6 +34,7 @@ const routes: Routes = [
     ...DocsRoutes,
     ...MigrationRoutes,
     ...DashboardRoutes,
+    { path: 'my-stuff', canLoad: [AuthGuard], loadChildren: () => import('@dragonfish/my-stuff').then(m => m.MyStuffModule) },
 ];
 
 @NgModule({

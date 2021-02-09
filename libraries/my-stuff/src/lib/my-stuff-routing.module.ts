@@ -5,6 +5,7 @@ import { MyStuffResolvers } from './resolvers';
 import { MyStuffViews } from './views';
 import { Roles } from '@dragonfish/models/users';
 import { MyStuffComponent } from './my-stuff.component';
+import { AuthGuard } from './util';
 
 const routes: Routes = [
     {
@@ -51,6 +52,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
         ...MyStuffResolvers,
+        AuthGuard,
     ],
 })
 export class MyStuffRoutingModule {}
