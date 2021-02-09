@@ -43,7 +43,8 @@ export class MyStuffComponent implements OnInit {
         private router: Router,
         private stuffService: MyStuffFacade,
     ) {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser')) as FrontendUser;
+        const currUser = JSON.parse(localStorage.getItem('user')) as { currUser: FrontendUser };
+        this.currentUser = currUser.currUser;
     }
 
     ngOnInit(): void {
