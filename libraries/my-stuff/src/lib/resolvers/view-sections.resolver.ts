@@ -5,8 +5,8 @@ import { Store } from '@ngxs/store';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 
 import { ContentModel } from '@dragonfish/models/content';
-import { MyStuffState } from '../../shared/my-stuff';
-import { Sections } from '../../shared/my-stuff/sections';
+import { MyStuffState } from '../shared';
+import { Sections } from '../shared/sections';
 
 @Injectable()
 export class ViewSectionsResolver implements Resolve<void> {

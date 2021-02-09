@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 
-import { MyStuff } from '../../shared/my-stuff';
+import { MyStuff } from '../shared';
 
 @Injectable()
 export class MyStuffResolver implements Resolve<void> {

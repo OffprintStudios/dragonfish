@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'functions',
+    displayName: 'utilities',
     preset: '../../jest.preset.js',
     setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
     globals: {
@@ -14,7 +14,7 @@ module.exports = {
             },
         },
     },
-    coverageDirectory: '../../coverage/libraries/functions',
+    coverageDirectory: '../../coverage/libraries/utilities',
     snapshotSerializers: [
         'jest-preset-angular/build/AngularNoNgAttributesSnapshotSerializer.js',
         'jest-preset-angular/build/AngularSnapshotSerializer.js',

@@ -24,7 +24,7 @@
             "@dragonfish/pipes": ["libraries/pipes/src/index.ts"],
             "@dragonfish/editor": ["libraries/editor/src/index.ts"],
             "@dragonfish/components": ["libraries/components/src/index.ts"],
-            "@dragonfish/functions": ["libraries/functions/src/index.ts"]
+            "@dragonfish/utilities/*": ["libraries/utilities/src/lib/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]

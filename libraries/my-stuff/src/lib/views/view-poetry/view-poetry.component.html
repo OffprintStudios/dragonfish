@@ -192,7 +192,7 @@
                         </div>
                     </ng-container>
                     <ng-template #selectSection>
-                        <ng-container *ngIf="selectedSection; else nothingSelected">
+                        <ng-container *ngIf="sectionsState.currSection; else nothingSelected">
                             <section-item [contentId]="myPoetry._id"></section-item>
                         </ng-container>
                         <ng-template #nothingSelected>

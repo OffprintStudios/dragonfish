@@ -5,7 +5,7 @@
         {
             "files": ["*.ts"],
             "extends": ["plugin:@nrwl/nx/angular", "plugin:@angular-eslint/template/process-inline-templates"],
-            "parserOptions": { "project": ["libraries/functions/tsconfig.*?.json"] },
+            "parserOptions": { "project": ["libraries/utilities/tsconfig.*?.json"] },
             "rules": {
                 "@angular-eslint/directive-selector": [
                     "error",

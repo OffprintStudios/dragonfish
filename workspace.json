@@ -382,23 +382,23 @@
                 }
             }
         },
-        "functions": {
+        "utilities": {
             "projectType": "library",
-            "root": "libraries/functions",
-            "sourceRoot": "libraries/functions/src",
+            "root": "libraries/utilities",
+            "sourceRoot": "libraries/utilities/src",
             "prefix": "dragonfish",
             "architect": {
                 "lint": {
                     "builder": "@nrwl/linter:eslint",
                     "options": {
-                        "lintFilePatterns": ["libraries/functions/src/**/*.ts", "libraries/functions/src/**/*.html"]
+                        "lintFilePatterns": ["libraries/utilities/src/**/*.ts", "libraries/utilities/src/**/*.html"]
                     }
                 },
                 "test": {
                     "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/libraries/functions"],
+                    "outputs": ["coverage/libraries/utilities"],
                     "options": {
-                        "jestConfig": "libraries/functions/jest.config.js",
+                        "jestConfig": "libraries/utilities/jest.config.js",
                         "passWithNoTests": true
                     }
                 }
