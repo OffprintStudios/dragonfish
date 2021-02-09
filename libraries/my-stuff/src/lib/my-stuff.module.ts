@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
 import { MaterialModule } from '@dragonfish/material';
 import { IconsModule } from '@dragonfish/icons';
@@ -10,9 +11,13 @@ import { MyStuffState } from './shared/my-stuff.state';
 import { SectionsState } from './shared/sections';
 import { MyStuffComponents } from './components';
 import { MyStuffViews } from './views';
+import { MyStuffFacade } from './facades';
+import { MyStuffService } from './shared/services';
+import { MyStuffComponent } from './my-stuff.component';
 
 @NgModule({
     declarations: [
+        MyStuffComponent,
         ...MyStuffComponents,
         ...MyStuffViews,
     ],
@@ -23,6 +28,12 @@ import { MyStuffViews } from './views';
         MaterialModule,
         IconsModule,
         AlertsModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
+    providers: [
+        MyStuffFacade,
+        MyStuffService,
+    ]
 })
 export class MyStuffModule {}
