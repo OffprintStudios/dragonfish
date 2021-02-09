@@ -10,7 +10,8 @@ import { HttpError } from '@dragonfish/models/util';
 
 @Injectable()
 export class MyStuffService {
-    private readonly url: string = `/api/content`;
+    private readonly contentUrl: string = `/api/content`;
+    private readonly sectionsUrl: string = `/api/sections`;
 
     constructor (private http: HttpClient) {}
 
@@ -22,7 +23,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
-        return this.http.get<ContentModel>(`${this.url}/fetch-one?contentId=${contentId}&kind=${kind}`, {observe: 'response', withCredentials: true})
+        return this.http.get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -36,7 +37,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchAll(): Observable<ContentModel[]> {
-        return this.http.get<ContentModel[]>(`${this.url}/fetch-all`, {observe: 'response', withCredentials: true})
+        return this.http.get<ContentModel[]>(`${this.contentUrl}/fetch-all`, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -52,7 +53,7 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.http.put<ContentModel>(`${this.url}/create-one?kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
+        return this.http.put<ContentModel>(`${this.contentUrl}/create-one?kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -68,7 +69,7 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.http.patch<ContentModel>(`${this.url}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
+        return this.http.patch<ContentModel>(`${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -84,7 +85,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public deleteOne(contentId: string): Observable<void> {
-        return this.http.patch(`${this.url}/delete-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
+        return this.http.patch(`${this.contentUrl}/delete-one?contentId=${contentId}`, {}, {observe: 'response', withCredentials: true})
             .pipe(map(() => {
                 return;
             }), catchError(err => {
@@ -100,7 +101,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
-        return this.http.patch<ContentModel>(`${this.url}/publish-one?contentId=${contentId}`, pubChange, {observe: 'response', withCredentials: true})
+        return this.http.patch<ContentModel>(`${this.contentUrl}/publish-one?contentId=${contentId}`, pubChange, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -146,7 +147,7 @@ export class MyStuffService {
      * @param contentId The content ID
      */
     public fetchSections(contentId: string): Observable<Section[]> {
-        return this.http.get<Section[]>(`${this.url}/sections/fetch-user-content-sections?contentId=${contentId}`, {observe: 'response', withCredentials: true})
+        return this.http.get<Section[]>(`${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -162,7 +163,7 @@ export class MyStuffService {
      * @param sectionInfo The info for the new section
      */
     public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.http.put<Section>(`${this.url}/sections/create-section?contentId=${contentId}`, sectionInfo, {observe: 'response', withCredentials: true})
+        return this.http.put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -178,7 +179,7 @@ export class MyStuffService {
      * @param sectionInfo The info to save
      */
     public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.http.patch<Section>(`${this.url}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`, sectionInfo, {observe: 'response', withCredentials: true})
+        return this.http.patch<Section>(`${this.sectionsUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`, sectionInfo, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -193,7 +194,7 @@ export class MyStuffService {
      * @param sectionId The section ID
      */
     public deleteSection(contentId: string, sectionId: string): Observable<Section> {
-        return this.http.patch<Section>(`${this.url}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`, {}, {observe: 'response', withCredentials: true})
+        return this.http.patch<Section>(`${this.sectionsUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`, {}, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
@@ -209,7 +210,7 @@ export class MyStuffService {
      * @param pubStatus The publishing status
      */
     public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
-        return this.http.patch<Section>(`${this.url}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
+        return this.http.patch<Section>(`${this.sectionsUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`, pubStatus, {observe: 'response', withCredentials: true})
             .pipe(map(res => {
                 return res.body;
             }), catchError(err => {
