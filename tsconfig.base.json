@@ -22,7 +22,8 @@
             "@dragonfish/my-stuff": ["libraries/my-stuff/src/index.ts"],
             "@dragonfish/alerts": ["libraries/alerts/src/index.ts"],
             "@dragonfish/pipes": ["libraries/pipes/src/index.ts"],
-            "@dragonfish/editor": ["libraries/editor/src/index.ts"]
+            "@dragonfish/editor": ["libraries/editor/src/index.ts"],
+            "@dragonfish/components": ["libraries/components/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

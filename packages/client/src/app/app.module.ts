@@ -45,18 +45,12 @@ import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
 import { AlertsState } from '@dragonfish/alerts';
-import { SectionsState } from './shared/my-stuff/sections';
 
 /* Components */
-import { MyStuffComponents } from './pages/my-stuff';
 import { UploadAvatarComponent } from './components/modals/account';
 import { BeatrizHeroComponent } from './components/beatriz-hero/beatriz-hero.component';
 import { CreateCollectionComponent, AddToCollectionComponent } from './components/modals/collections';
 import { CommentsComponent } from './components/comments';
-import { WorkCardComponent } from './components/work-card/work-card.component';
-import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
-import { RoleBadgeComponent } from './components/role-badge/role-badge.component';
-import { UserCardComponent } from './components/user-card/user-card.component';
 import { NetworkInputComponent } from './components/network-input/network-input.component';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import {
@@ -77,6 +71,7 @@ import { IconsModule } from '@dragonfish/icons';
 import { AlertsModule } from '@dragonfish/alerts';
 import { PipesModule } from '@dragonfish/pipes';
 import { EditorModule } from '@dragonfish/editor';
+import { ComponentsModule } from '@dragonfish/components';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -94,7 +89,6 @@ import { environment } from '../environments/environment';
         ...PortfolioPages,
         ...SearchPages,
         ...SocialPages,
-        ...MyStuffComponents,
         WatchingComponent,
         UploadAvatarComponent,
         BeatrizHeroComponent,
@@ -108,11 +102,7 @@ import { environment } from '../environments/environment';
         NotificationsComponent,
         HistoryComponent,
         StartConversationComponent,
-        RatingIconComponent,
-        WorkCardComponent,
         ContentApprovalComponent,
-        RoleBadgeComponent,
-        UserCardComponent,
         NotifItemComponent,
     ],
     imports: [
@@ -137,6 +127,7 @@ import { environment } from '../environments/environment';
         AlertsModule,
         PipesModule,
         EditorModule,
+        ComponentsModule,
         NgxsModule.forRoot(
             [
                 AuthState,
@@ -145,7 +136,6 @@ import { environment } from '../environments/environment';
                 ApprovalQueueState,
                 ContentState,
                 AlertsState,
-                SectionsState,
             ],
             {
                 developmentMode: !environment.production,
@@ -179,7 +169,6 @@ import { environment } from '../environments/environment';
     ],
     entryComponents: [
         UploadAvatarComponent,
-        MyStuffComponents.find(x => { return x.name === 'UploadCoverartComponent' }),
         AddToCollectionComponent,
         StartConversationComponent,
     ],

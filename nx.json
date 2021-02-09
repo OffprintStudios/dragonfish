@@ -24,7 +24,8 @@
         "my-stuff": { "tags": [] },
         "alerts": { "tags": [] },
         "pipes": { "tags": [] },
-        "editor": { "tags": [] }
+        "editor": { "tags": [] },
+        "components": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }

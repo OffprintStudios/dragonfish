@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import * as v from 'voca';
 import { ContentKind, Genres } from '@dragonfish/models/content';
 
 import { calculateApprovalRating } from '../../util/functions';
