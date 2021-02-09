@@ -140,7 +140,7 @@ import { environment } from '../environments/environment';
         ),
         NgxsStoragePluginModule.forRoot({
             key: [
-                'auth',
+                'auth.token',
                 'user',
                 'global',
                 'myStuff.currContent',

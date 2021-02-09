@@ -6,7 +6,7 @@ import { Store } from '@ngxs/store';
 import { AuthState } from '../auth.state';
 import { JwtPayload } from '@dragonfish/models/auth';
 import { Roles } from '@dragonfish/models/users';
-import { isAllowed } from '@dragonfish/utilities/functions';
+import { isAllowed, isNullOrUndefined } from '@dragonfish/utilities/functions';
 import { AlertsService } from '@dragonfish/alerts';
 
 @Injectable({
@@ -82,12 +82,17 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
-            if (route.data.roles) {
-                if (isAllowed(decodedToken.roles as Roles[], route.data.roles)) {
-                    return true;
+            if (!isNullOrUndefined(route.data)) {
+                if (!isNullOrUndefined(route.data.roles)) {
+                    console.log(`something is present...`);
+                    if (isAllowed(decodedToken.roles as Roles[], route.data.roles)) {
+                        return true;
+                    } else {
+                        this.alerts.error(`You don't have permission to do that.`);
+                        return false;
+                    }
                 } else {
-                    this.alerts.error(`You don't have permission to do that.`);
-                    return false;
+                    return true;
                 }
             } else {
                 return true;
