@@ -5,23 +5,27 @@ import { NewsComponent } from './news/news.component';
 import { WatchingComponent as WatchingPageComponent } from './watching/watching.component';
 import { HomeResolvers } from '../../resolvers/home';
 
-export const HomePages = [
-    HomeComponent,
-    NewsComponent,
-    WatchingPageComponent,
-];
+export const HomePages = [HomeComponent, NewsComponent, WatchingPageComponent];
 
 export const HomeRoutes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
-        resolve: { homeData: HomeResolvers.find(x => { return x.name === 'HomePageResolver' }) },
+        resolve: {
+            homeData: HomeResolvers.find((x) => {
+                return x.name === 'HomePageResolver';
+            }),
+        },
         runGuardsAndResolvers: 'always',
         children: [
             {
                 path: 'news',
                 component: NewsComponent,
-                resolve: { feedData: HomeResolvers.find(x => { return x.name === 'NewsResolver' }) },
+                resolve: {
+                    feedData: HomeResolvers.find((x) => {
+                        return x.name === 'NewsResolver';
+                    }),
+                },
                 runGuardsAndResolvers: 'paramsChange',
             },
         ],

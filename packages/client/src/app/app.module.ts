@@ -125,19 +125,10 @@ import { environment } from '../environments/environment';
         PipesModule,
         EditorModule,
         ComponentsModule,
-        NgxsModule.forRoot(
-            [
-                AuthState,
-                GlobalState,
-                UserState,
-                ApprovalQueueState,
-                ContentState,
-            ],
-            {
-                developmentMode: !environment.production,
-                selectorOptions: { suppressErrors: false, injectContainerState: false },
-            },
-        ),
+        NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState], {
+            developmentMode: !environment.production,
+            selectorOptions: { suppressErrors: false, injectContainerState: false },
+        }),
         NgxsStoragePluginModule.forRoot({
             key: [
                 'auth.token',
@@ -163,11 +154,7 @@ import { environment } from '../environments/environment';
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
     ],
-    entryComponents: [
-        UploadAvatarComponent,
-        AddToCollectionComponent,
-        StartConversationComponent,
-    ],
+    entryComponents: [UploadAvatarComponent, AddToCollectionComponent, StartConversationComponent],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

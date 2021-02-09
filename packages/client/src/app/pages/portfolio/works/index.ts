@@ -1,5 +1,3 @@
 import { WorksComponent } from './works.component';
 
-export const PortfolioWorksPages = [
-    WorksComponent,
-];
+export const PortfolioWorksPages = [WorksComponent];

@@ -26,13 +26,21 @@ export const DocsRoutes: Routes = [
     {
         path: 'site-staff',
         component: SiteStaffComponent,
-        resolve: { staffData: DocsResolvers.find(x => { return x.name === 'SiteStaffResolver' }) },
+        resolve: {
+            staffData: DocsResolvers.find((x) => {
+                return x.name === 'SiteStaffResolver';
+            }),
+        },
         runGuardsAndResolvers: 'always',
     },
     {
         path: 'supporters',
         component: SupportersComponent,
-        resolve: { supporterData: DocsResolvers.find(x => { return x.name === 'SupportersResolver' }) },
+        resolve: {
+            supporterData: DocsResolvers.find((x) => {
+                return x.name === 'SupportersResolver';
+            }),
+        },
         runGuardsAndResolvers: 'always',
     },
 ];

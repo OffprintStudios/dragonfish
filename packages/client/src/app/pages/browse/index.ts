@@ -9,7 +9,11 @@ export const BrowseRoutes: Routes = [
     {
         path: 'browse',
         component: BrowseComponent,
-        resolve: { feedData: Resolvers.find(x => { return x.name === 'BrowseResolver' }) },
+        resolve: {
+            feedData: Resolvers.find((x) => {
+                return x.name === 'BrowseResolver';
+            }),
+        },
         runGuardsAndResolvers: 'always',
     },
 ];

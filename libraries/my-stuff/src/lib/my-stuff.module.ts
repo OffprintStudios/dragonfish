@@ -21,11 +21,7 @@ import { MyStuffService } from './shared/services';
 import { MyStuffComponent } from './my-stuff.component';
 
 @NgModule({
-    declarations: [
-        MyStuffComponent,
-        ...MyStuffComponents,
-        ...MyStuffViews,
-    ],
+    declarations: [MyStuffComponent, ...MyStuffComponents, ...MyStuffViews],
     imports: [
         CommonModule,
         MyStuffRoutingModule,
@@ -41,9 +37,6 @@ import { MyStuffComponent } from './my-stuff.component';
         FileUploadModule,
         ImageCropperModule,
     ],
-    providers: [
-        MyStuffFacade,
-        MyStuffService,
-    ]
+    providers: [MyStuffFacade, MyStuffService],
 })
 export class MyStuffModule {}

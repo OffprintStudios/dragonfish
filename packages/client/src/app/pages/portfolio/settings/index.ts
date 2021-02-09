@@ -1,5 +1,3 @@
 import { SettingsComponent } from './settings.component';
 
-export const PortfolioSettingsPages = [
-    SettingsComponent,
-];
+export const PortfolioSettingsPages = [SettingsComponent];

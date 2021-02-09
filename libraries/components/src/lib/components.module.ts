@@ -14,12 +14,7 @@ import { UserCardComponent } from './components/user-card/user-card.component';
 import { WorkCardComponent } from './components/work-card/work-card.component';
 
 @NgModule({
-    declarations: [
-        RatingIconComponent,
-        RoleBadgeComponent,
-        UserCardComponent,
-        WorkCardComponent,
-    ],
+    declarations: [RatingIconComponent, RoleBadgeComponent, UserCardComponent, WorkCardComponent],
     imports: [
         CommonModule,
         IconsModule,
@@ -30,11 +25,6 @@ import { WorkCardComponent } from './components/work-card/work-card.component';
         ImageCropperModule,
         RouterModule.forChild([]),
     ],
-    exports: [
-        RatingIconComponent,
-        RoleBadgeComponent,
-        UserCardComponent,
-        WorkCardComponent,
-    ],
+    exports: [RatingIconComponent, RoleBadgeComponent, UserCardComponent, WorkCardComponent],
 })
 export class ComponentsModule {}

@@ -7,12 +7,7 @@ import { EditorComponent } from './editor.component';
 
 @NgModule({
     declarations: [EditorComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        CKEditorModule,
-    ],
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, CKEditorModule],
     exports: [EditorComponent],
 })
 export class EditorModule {}

@@ -2,8 +2,4 @@ import { ApprovePoetryComponent } from './approve-poetry/approve-poetry.componen
 import { ApproveProseComponent } from './approve-prose/approve-prose.component';
 import { SectionViewComponent as ApproveSectionViewComponent } from './section-view/section-view.component';
 
-export const ApprovalQueueViews = [
-    ApprovePoetryComponent,
-    ApproveProseComponent,
-    ApproveSectionViewComponent,
-];
+export const ApprovalQueueViews = [ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent];

@@ -34,7 +34,11 @@ const routes: Routes = [
     ...DocsRoutes,
     ...MigrationRoutes,
     ...DashboardRoutes,
-    { path: 'my-stuff', canLoad: [AuthGuard], loadChildren: () => import('@dragonfish/my-stuff').then(m => m.MyStuffModule) },
+    {
+        path: 'my-stuff',
+        canLoad: [AuthGuard],
+        loadChildren: () => import('@dragonfish/my-stuff').then((m) => m.MyStuffModule),
+    },
 ];
 
 @NgModule({

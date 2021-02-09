@@ -6,17 +6,9 @@ import { AlertsComponent } from './components';
 import { IconsModule } from '@dragonfish/icons';
 
 @NgModule({
-    declarations: [
-        AlertsComponent,
-    ],
-    imports: [
-        CommonModule,
-        IconsModule,
-        NgxsModule.forFeature([AlertsState]),
-    ],
-    providers: [
-        AlertsService,
-    ],
+    declarations: [AlertsComponent],
+    imports: [CommonModule, IconsModule, NgxsModule.forFeature([AlertsState])],
+    providers: [AlertsService],
 })
 export class AlertsModule {}
 

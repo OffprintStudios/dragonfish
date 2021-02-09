@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, CanLoad, Route, UrlSegment } from '@angular/router';
+import {
+    CanActivate,
+    CanActivateChild,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot,
+    CanLoad,
+    Route,
+    UrlSegment,
+} from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Store } from '@ngxs/store';
 
