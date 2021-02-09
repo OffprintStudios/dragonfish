@@ -1,0 +1,191 @@
+<ng-container *ngIf="currContent$ | async as currPoetry; else creationForm">
+    <div class="form-container">
+        <div class="form-header">
+            <h3>{{ formTitle }}</h3>
+            <button class="form-button" (click)="submitForm(currPoetry._id)">Save</button>
+        </div>
+        <form [formGroup]="poetryForm" (ngSubmit)="submitForm(currPoetry._id)">
+            <mat-form-field style="width: 100%" appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="My Next Great Masterpiece" formControlName="title" />
+            </mat-form-field>
+
+            <div class="row">
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <mat-select [formControlName]="'category'">
+                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{
+                                category.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Form</mat-label>
+                        <mat-select [formControlName]="'form'">
+                            <mat-option *ngFor="let form of forms | keyvalue" [value]="form.key">
+                                {{ form.value }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Genre(s)</mat-label>
+                        <mat-select [formControlName]="'genres'" multiple>
+                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{
+                                genre.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <ng-container *ngIf="isCollection; else isSingle">
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Short Description</mat-label>
+                    <input matInput placeholder="One of the best things never told" formControlName="desc" />
+                </mat-form-field>
+
+                <label>Long Description</label>
+            </ng-container>
+
+            <ng-template #isSingle>
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="One of the best things never told" formControlName="desc" />
+                </mat-form-field>
+
+                <label>Poem</label>
+            </ng-template>
+            <editor
+                [parentForm]="poetryForm"
+                [controlName]="'body'"
+                [minHeight]="'300px'"
+                [maxHeight]="'300px'"
+            ></editor>
+
+            <div class="row" style="margin-top: 2rem">
+                <div class="six columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Rating</mat-label>
+                        <mat-select [formControlName]="'rating'">
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{
+                                rating.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="six columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select [formControlName]="'status'">
+                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{
+                                status.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-container>
+
+<ng-template #creationForm>
+    <div class="form-container">
+        <div class="form-header">
+            <h3>{{ formTitle }}</h3>
+            <span class="toggle-left">Single Poem</span
+            ><mat-slide-toggle [(ngModel)]="isCollection">Collection</mat-slide-toggle>
+            <button class="form-button" (click)="submitForm()">Save</button>
+        </div>
+        <form [formGroup]="poetryForm" (ngSubmit)="submitForm()">
+            <mat-form-field style="width: 100%" appearance="outline">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="My Next Great Masterpiece" formControlName="title" />
+            </mat-form-field>
+
+            <div class="row">
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <mat-select [formControlName]="'category'">
+                            <mat-option *ngFor="let category of categories | keyvalue" [value]="category.key">{{
+                                category.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Form</mat-label>
+                        <mat-select [formControlName]="'form'">
+                            <mat-option *ngFor="let form of forms | keyvalue" [value]="form.key">
+                                {{ form.value }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="four columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Genre(s)</mat-label>
+                        <mat-select [formControlName]="'genres'" multiple>
+                            <mat-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">{{
+                                genre.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <ng-container *ngIf="isCollection; else isSingle">
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Short Description</mat-label>
+                    <input matInput placeholder="One of the best things never told" formControlName="desc" />
+                </mat-form-field>
+
+                <label>Long Description</label>
+            </ng-container>
+
+            <ng-template #isSingle>
+                <mat-form-field style="width: 100%" appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input matInput placeholder="One of the best things never told" formControlName="desc" />
+                </mat-form-field>
+
+                <label>Poem</label>
+            </ng-template>
+            <editor
+                [parentForm]="poetryForm"
+                [controlName]="'body'"
+                [minHeight]="'300px'"
+                [maxHeight]="'300px'"
+            ></editor>
+
+            <div class="row" style="margin-top: 2rem">
+                <div class="six columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Rating</mat-label>
+                        <mat-select [formControlName]="'rating'">
+                            <mat-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">{{
+                                rating.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="six columns">
+                    <mat-form-field style="width: 100%" appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select [formControlName]="'status'">
+                            <mat-option *ngFor="let status of statuses | keyvalue" [value]="status.key">{{
+                                status.value
+                            }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

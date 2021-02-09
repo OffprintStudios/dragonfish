@@ -9,10 +9,12 @@ import { MyStuffRoutingModule } from './my-stuff-routing.module';
 import { MyStuffState } from './shared/my-stuff.state';
 import { SectionsState } from './shared/sections';
 import { MyStuffComponents } from './components';
+import { MyStuffViews } from './views';
 
 @NgModule({
     declarations: [
-        ...MyStuffComponents
+        ...MyStuffComponents,
+        ...MyStuffViews,
     ],
     imports: [
         CommonModule,
