@@ -24,10 +24,10 @@ async function bootstrap() {
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
-    app.use(csurf({ cookie: { sameSite: 'none', secure: true } }));
+    app.use(csurf({ cookie: true }));
     // this is to make sure the XSRF-TOKEN is being set correctly
     app.use(function (req, res, next) {
-        res.cookie('XSRF-TOKEN', req.csrfToken(), { sameSite: 'none', secure: true });
+        res.cookie('XSRF-TOKEN', req.csrfToken());
         return next();
     });
     app.use(helmet());

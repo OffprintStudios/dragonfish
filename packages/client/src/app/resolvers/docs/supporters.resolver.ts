@@ -8,7 +8,7 @@ import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()
 export class SupportersResolver implements Resolve<FrontendUser[]> {
-    private url = `/api/admin`;
+    private url = `/api/meta`;
 
     constructor(private http: HttpClient) {}
 

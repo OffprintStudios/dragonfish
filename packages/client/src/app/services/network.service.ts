@@ -1227,7 +1227,7 @@ export class NetworkService {
      */
     public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
         return this.handleResponse(
-            this.http.get<NewsContentModel[]>(`${this.baseUrl}/content/news/initial-posts`, {
+            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1245,7 +1245,7 @@ export class NetworkService {
      */
     public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
         return this.handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/content/news/news-feed/${pageNum}`, {
+            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1263,7 +1263,7 @@ export class NetworkService {
      */
     public fetchNewsPost(postId: string) {
         return this.handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/content/news/news-post/${postId}`, {
+            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1689,7 +1689,7 @@ export class NetworkService {
      */
     public fetchFrontPageStats() {
         return this.handleResponse(
-            this.http.get<FrontPageStats>(`${this.baseUrl}/admin/stats/front-page-stats`, {
+            this.http.get<FrontPageStats>(`${this.baseUrl}/meta/public-stats`, {
                 observe: 'response',
                 withCredentials: true,
             }),
