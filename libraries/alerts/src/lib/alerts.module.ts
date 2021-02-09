@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgxsModule } from '@ngxs/store';
 import { AlertsService, AlertsState } from './shared';
 import { AlertsComponent } from './components';
 import { IconsModule } from '@dragonfish/icons';
@@ -11,16 +12,12 @@ import { IconsModule } from '@dragonfish/icons';
     imports: [
         CommonModule,
         IconsModule,
+        NgxsModule.forFeature([AlertsState]),
     ],
     providers: [
         AlertsService,
     ],
-    exports: [
-        AlertsState,
-        AlertsService,
-        AlertsComponent,
-    ]
 })
 export class AlertsModule {}
 
-export { AlertsState, AlertsService } from './shared';
+export { AlertsService } from './shared';

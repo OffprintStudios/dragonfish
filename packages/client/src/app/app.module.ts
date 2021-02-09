@@ -43,7 +43,6 @@ import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
 import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
-import { AlertsState } from '@dragonfish/alerts';
 
 /* Components */
 import { UploadAvatarComponent } from './components/modals/account';
@@ -133,7 +132,6 @@ import { environment } from '../environments/environment';
                 UserState,
                 ApprovalQueueState,
                 ContentState,
-                AlertsState,
             ],
             {
                 developmentMode: !environment.production,
