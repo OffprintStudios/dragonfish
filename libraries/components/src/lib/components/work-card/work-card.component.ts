@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ContentKind, Genres } from '@dragonfish/models/content';
 
-import { calculateApprovalRating } from '../../util/functions';
+import { calculateApprovalRating } from '@dragonfish/functions';
 
 @Component({
     selector: 'work-card',

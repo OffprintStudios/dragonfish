@@ -25,7 +25,8 @@
         "alerts": { "tags": [] },
         "pipes": { "tags": [] },
         "editor": { "tags": [] },
-        "components": { "tags": [] }
+        "components": { "tags": [] },
+        "functions": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }
