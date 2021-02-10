@@ -4,12 +4,12 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';
 
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { FrontendUser } from '@dragonfish/models/users';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { PaginateResult } from '@dragonfish/models/util';
 import { NetworkService } from '../../../services';
-import { calculateApprovalRating } from '../../../util/functions';
+import { calculateApprovalRating } from '@dragonfish/utilities/functions';
 import { ContentKind } from '@dragonfish/models/content';
 
 @Component({

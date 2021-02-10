@@ -7,7 +7,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Genres, PoetryContent, PoetryForm, WorkStatus } from '@dragonfish/models/content';
 import { FrontendUser } from '@dragonfish/models/users';
 
-import { Title } from '../../../shared';
+import { Title } from '@dragonfish/utilities/constants';
 import { ContentState } from '../../../shared/content';
 
 @Component({

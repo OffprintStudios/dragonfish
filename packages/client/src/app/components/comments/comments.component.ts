@@ -79,28 +79,12 @@ export class CommentsComponent implements OnInit {
      */
     fetchData(pageNum: number) {
         this.loading = true;
-        if (this.itemKind === ItemKind.Blog) {
-            this.networkService.fetchBlogComments(this.itemId, pageNum).subscribe((comments) => {
-                this.comments = comments;
-                this.pageNum = pageNum;
-                this.emitPageChange.emit(pageNum);
-                this.loading = false;
-            });
-        } else if (this.itemKind === ItemKind.Work) {
-            this.networkService.fetchWorkComments(this.itemId, pageNum).subscribe((comments) => {
-                this.comments = comments;
-                this.pageNum = pageNum;
-                this.emitPageChange.emit(pageNum);
-                this.loading = false;
-            });
-        } /* Presuming this comments component lives on piece of new-Content: */ else {
-            this.networkService.fetchContentComments(this.itemId, pageNum).subscribe((comments) => {
-                this.comments = comments;
-                this.pageNum = pageNum;
-                this.emitPageChange.emit(pageNum);
-                this.loading = false;
-            });
-        }
+        this.networkService.fetchContentComments(this.itemId, pageNum).subscribe((comments) => {
+            this.comments = comments;
+            this.pageNum = pageNum;
+            this.emitPageChange.emit(pageNum);
+            this.loading = false;
+        });
     }
 
     /**
@@ -194,21 +178,9 @@ export class CommentsComponent implements OnInit {
             commentParentKind: contentKind,
         };
 
-        if (this.itemKind === ItemKind.Blog) {
-            this.networkService.addBlogComment(this.itemId, comm).subscribe(() => {
-                this.newCommentForm.reset();
-                this.fetchData(this.pageNum);
-            });
-        } else if (this.itemKind === ItemKind.Work) {
-            this.networkService.addWorkComment(this.itemId, comm).subscribe(() => {
-                this.newCommentForm.reset();
-                this.fetchData(this.pageNum);
-            });
-        } /* Presuming this comment is being made on a piece of new-Content  */ else {
-            this.networkService.addContentComment(this.itemId, comm).subscribe(() => {
-                this.fetchData(this.pageNum);
-            });
-        }
+        this.networkService.addContentComment(this.itemId, comm).subscribe(() => {
+            this.fetchData(this.pageNum);
+        });
     }
 
     /**

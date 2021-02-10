@@ -4,8 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ContentModel, ProseContent } from '@dragonfish/models/content';
 import { PaginateResult } from '@dragonfish/models/util';
 
-import { calculateApprovalRating } from '../../util/functions';
-import { Constants, Title } from '../../shared';
+import { calculateApprovalRating } from '@dragonfish/utilities/functions';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 
 @Component({
     selector: 'app-browse',

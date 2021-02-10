@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../../shared/user';

@@ -3,10 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { InitialResults } from '@dragonfish/models/util';
-import { ContentKind } from '@dragonfish/models/content';
 
-import { calculateApprovalRating } from '../../util/functions';
-import { Constants, Title } from '../../shared';
+import { calculateApprovalRating } from '@dragonfish/utilities/functions';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 import { NetworkService } from '../../services';
 
 @Component({

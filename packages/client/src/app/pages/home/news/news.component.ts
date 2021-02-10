@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { PaginateResult } from '@dragonfish/models/util';
 import { NewsCategory, NewsContentModel } from '@dragonfish/models/content';
-import { Constants, Title } from '../../../shared';
+import { Constants, Title } from '@dragonfish/utilities/constants';
 
 @Component({
     selector: 'app-news',

@@ -2,10 +2,8 @@ import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, OnDestroy } fr
 import { NavigationEnd, Router } from '@angular/router';
 import { interval, Observable, Subscription } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
-import * as lodash from 'lodash';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { Select } from '@ngxs/store';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { UserState } from './shared/user';
 
 import { FrontendUser, Roles, PredefinedThemes } from '@dragonfish/models/users';
@@ -16,10 +14,9 @@ import { NagBarService } from './modules/nag-bar';
 import { NewPolicyNagComponent } from './components/new-policy-nag/new-policy-nag.component';
 import { NotificationsService } from './services/user';
 import { NotificationBase } from '@dragonfish/models/notifications';
-import { Constants } from './shared';
+import { Constants } from '@dragonfish/utilities/constants';
 import { MetadataService } from './services/utility';
-import { Alerts } from './shared/alerts';
-import { isAllowed } from './util/functions';
+import { isAllowed } from '@dragonfish/utilities/functions';
 
 @Component({
     selector: 'dragonfish-root',

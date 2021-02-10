@@ -1,3 +1,4 @@
-export { PortfolioResolver } from './portfolio.resolver';
-export { MyBlogsResolver } from './my-blogs.resolver';
-export { ViewContentResolver } from './view-content.resolver';
+import { BrowseResolver } from './browse.resolver';
+import { ContentViewResolver } from './content-view.resolver';
+
+export const Resolvers = [BrowseResolver, ContentViewResolver];

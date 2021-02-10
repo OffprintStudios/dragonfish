@@ -271,6 +271,138 @@
                     }
                 }
             }
+        },
+        "my-stuff": {
+            "projectType": "library",
+            "root": "libraries/my-stuff",
+            "sourceRoot": "libraries/my-stuff/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/my-stuff/src/**/*.ts", "libraries/my-stuff/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/my-stuff"],
+                    "options": {
+                        "jestConfig": "libraries/my-stuff/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "alerts": {
+            "projectType": "library",
+            "root": "libraries/alerts",
+            "sourceRoot": "libraries/alerts/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/alerts/src/**/*.ts", "libraries/alerts/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/alerts"],
+                    "options": {
+                        "jestConfig": "libraries/alerts/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "pipes": {
+            "projectType": "library",
+            "root": "libraries/pipes",
+            "sourceRoot": "libraries/pipes/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/pipes/src/**/*.ts", "libraries/pipes/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/pipes"],
+                    "options": {
+                        "jestConfig": "libraries/pipes/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "editor": {
+            "projectType": "library",
+            "root": "libraries/editor",
+            "sourceRoot": "libraries/editor/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/editor/src/**/*.ts", "libraries/editor/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/editor"],
+                    "options": {
+                        "jestConfig": "libraries/editor/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "components": {
+            "projectType": "library",
+            "root": "libraries/components",
+            "sourceRoot": "libraries/components/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/components/src/**/*.ts", "libraries/components/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/components"],
+                    "options": {
+                        "jestConfig": "libraries/components/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "utilities": {
+            "projectType": "library",
+            "root": "libraries/utilities",
+            "sourceRoot": "libraries/utilities/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libraries/utilities/src/**/*.ts", "libraries/utilities/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libraries/utilities"],
+                    "options": {
+                        "jestConfig": "libraries/utilities/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
         }
     },
     "cli": {
@@ -278,10 +410,14 @@
     },
     "schematics": {
         "@nrwl/angular:application": {
+            "style": "less",
+            "linter": "eslint",
             "unitTestRunner": "jest",
             "e2eTestRunner": "cypress"
         },
         "@nrwl/angular:library": {
+            "style": "less",
+            "linter": "eslint",
             "unitTestRunner": "jest"
         },
         "@nrwl/angular:component": {

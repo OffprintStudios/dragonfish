@@ -6,7 +6,7 @@ import { Observable, zip } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { slugify } from 'voca';
 
-import { Title } from '../../../shared';
+import { Title } from '@dragonfish/utilities/constants';
 import { Content, ContentState } from '../../../shared/content';
 
 @Component({

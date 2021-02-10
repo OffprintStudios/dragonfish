@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 import { InitialResults, PaginateResult } from '@dragonfish/models/util';
-import { AlertsService } from '../../shared/alerts';
 import { User } from '@dragonfish/models/users';
 import { BlogsContentModel, ContentModel } from '@dragonfish/models/content';
 import { NetworkService } from '../network.service';

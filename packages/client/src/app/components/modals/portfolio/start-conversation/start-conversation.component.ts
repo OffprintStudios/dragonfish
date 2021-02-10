@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CreateInitialMessage } from '@dragonfish/models/messages';
 import { NetworkService } from '../../../../services';
-import { AlertsService } from '../../../../shared/alerts';
+import { AlertsService } from '@dragonfish/alerts';
 
 @Component({
     selector: 'pulp-fiction-start-conversation',

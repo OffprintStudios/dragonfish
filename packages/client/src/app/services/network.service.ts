@@ -1,25 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Types } from 'mongoose';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
-import {
-    BlogForm,
-    BlogsContentModel,
-    ContentKind,
-    ContentModel,
-    CreatePoetry,
-    CreateProse,
-    NewsContentModel,
-    NewsForm,
-    PoetryContent,
-    ProseContent,
-    PubChange,
-    PubStatus,
-    SetRating,
-} from '@dragonfish/models/content';
+import { ContentKind, ContentModel, NewsContentModel, SetRating } from '@dragonfish/models/content';
 import { Decision } from '@dragonfish/models/contrib';
 import {
     FrontendUser,
@@ -34,17 +19,14 @@ import {
 } from '@dragonfish/models/users';
 import { InitialResults, PaginateResult } from '@dragonfish/models/util';
 import { Section } from '@dragonfish/models/works';
-import { Doc } from '@dragonfish/models/docs';
 import { FrontPageStats } from '@dragonfish/models/stats';
-import { Blog } from '@dragonfish/models/blogs';
 import { Collection, CollectionForm } from '@dragonfish/models/collections';
-import { BlogComment, ContentComment, CreateComment, EditComment, WorkComment } from '@dragonfish/models/comments';
+import { ContentComment, CreateComment, EditComment } from '@dragonfish/models/comments';
 import { ReadingHistory } from '@dragonfish/models/reading-history';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpError } from '../models/site';
 import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/models/notifications';
-import { PublishSection, SectionForm } from '@dragonfish/models/sections';
 
 /**
  * ## NetworkService
@@ -108,26 +90,10 @@ export class NetworkService {
      */
     public fetchApprovalQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
         return this.handleResponse(
-            this.http.get<PaginateResult<ApprovalQueue>>(`${this.baseUrl}/dashboard/queue/get-queue/${pageNum}`, {
+            this.http.get<PaginateResult<ApprovalQueue>>(`${this.baseUrl}/approval-queue/get-queue/${pageNum}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    /**
-     * Gets the claimed works for one moderator.
-     */
-    public fetchApprovalQueueForMod(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
-        return this.handleResponse(
-            this.http.get<PaginateResult<ApprovalQueue>>(`${this.baseUrl}/get-queue-for-mod/${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (_err) => {
-                //this.snackBar.open(`Something went wrong! Try again in a little bit.`);
-            },
         );
     }
 
@@ -139,7 +105,7 @@ export class NetworkService {
     public claimWork(docId: string): Observable<ApprovalQueue> {
         return this.handleResponse(
             this.http.patch<ApprovalQueue>(
-                `${this.baseUrl}/dashboard/queue/claim-work/${docId}`,
+                `${this.baseUrl}/approval-queue/claim-work/${docId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -153,7 +119,7 @@ export class NetworkService {
      */
     public approveWork(decision: Decision): Observable<void> {
         return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/dashboard/queue/approve-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-work`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -167,7 +133,7 @@ export class NetworkService {
      */
     public rejectWork(decision: Decision): Observable<void> {
         return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/dashboard/queue/reject-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-work`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -184,7 +150,7 @@ export class NetworkService {
     public viewDashboardContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
         return this.handleResponse(
             this.http.get<ContentModel>(
-                `${this.baseUrl}/dashboard/queue/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`,
+                `${this.baseUrl}/approval-queue/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -202,7 +168,7 @@ export class NetworkService {
     public submitWorkForApproval(workId: string) {
         return this.handleResponse(
             this.http.post<void>(
-                `${this.baseUrl}/dashboard/queue/submit-work/${workId}`,
+                `${this.baseUrl}/approval-queue/submit-work/${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -287,105 +253,6 @@ export class NetworkService {
     }
     // #endregion
 
-    //#region ---BLOGS---
-
-    /**
-     * Sends the requisite blog info to the backend so that a new blog
-     * can be created.
-     *
-     * @param info The blog's information.
-     */
-    public createBlog(info: BlogForm, parentId?: Types.ObjectId) {
-        if (parentId) {
-            return this.handleResponse(
-                this.http.put<Blog>(`${this.baseUrl}/content/blogs/create-blog?parentId=${parentId}`, info, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-                (resp) => {
-                    //this.alertsService.success('Blog successfully created.');
-                },
-            );
-        } else {
-            return this.handleResponse(
-                this.http.put<Blog>(`${this.baseUrl}/content/blogs/create-blog`, info, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-                (resp) => {
-                    //this.alertsService.success('Blog successfully created.');
-                },
-            );
-        }
-    }
-
-    /**
-     * Fetches a user's blogs for display in the blog management section
-     * of the home page.
-     */
-    public fetchUserBlogs(pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<Blog>>(`${this.baseUrl}/content/blogs/fetch-user-blogs/${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Deletes a user's blog based on the specified Blog ID.
-     *
-     * @param blogId The ID of the blog we're deleting
-     */
-    public deleteBlog(blogId: string) {
-        return this.handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/content/blogs/delete-blog`,
-                { blogId },
-                { observe: 'response', withCredentials: true },
-            ),
-            (resp) => {
-                //this.alertsService.success('Blog successfully deleted.');
-            },
-        );
-    }
-
-    /**
-     * Changes the publishing status of the specified blog.
-     *
-     * @param blogId The ID of the blog we're changing status on
-     */
-    public changeBlogPublishStatus(contentId: string, pubChange: PubChange) {
-        return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/content/blogs/set-publish-status/${contentId}`, pubChange, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success('Blog status updated.');
-            },
-        );
-    }
-
-    /**
-     * Sends information to the backend so the requisite blog can be updated.
-     *
-     * @param blogInfo The updated blog info
-     */
-    public editBlog(blogId: string, blogInfo: BlogForm) {
-        return this.handleResponse(
-            this.http.patch<BlogsContentModel>(`${this.baseUrl}/content/blogs/edit-blog/${blogId}`, blogInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success('Changes saved successfully.');
-            },
-        );
-    }
-
-    //#endregion
-
     //#region ---COLLECTIONS---
 
     /**
@@ -395,7 +262,7 @@ export class NetworkService {
      */
     public createCollection(collInfo: CollectionForm) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/collections/create-collection`, collInfo, {
+            this.http.put<void>(`${this.baseUrl}/collections/create-collection`, collInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -414,7 +281,7 @@ export class NetworkService {
     public fetchAllCollections(pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/content/collections/get-all-collections?pageNum=${pageNum}`,
+                `${this.baseUrl}/collections/get-all-collections?pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -430,7 +297,7 @@ export class NetworkService {
      */
     public fetchOneCollection(collId: string): Observable<Collection> {
         return this.handleResponse(
-            this.http.get<Collection>(`${this.baseUrl}/content/collections/get-one-collection?collId=${collId}`, {
+            this.http.get<Collection>(`${this.baseUrl}/collections/get-one-collection?collId=${collId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -449,7 +316,7 @@ export class NetworkService {
     public fetchOnePublicCollection(userId: string, collId: string): Observable<Collection> {
         return this.handleResponse(
             this.http.get<Collection>(
-                `${this.baseUrl}/content/collections/get-one-public-collection?userId=${userId}&collId=${collId}`,
+                `${this.baseUrl}/collections/get-one-public-collection?userId=${userId}&collId=${collId}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -467,7 +334,7 @@ export class NetworkService {
     public fetchPublicCollections(userId: string, pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/content/collections/get-public-collections?userId=${userId}&pageNum=${pageNum}`,
+                `${this.baseUrl}/collections/get-public-collections?userId=${userId}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -482,7 +349,7 @@ export class NetworkService {
      */
     public fetchAllCollectionsNoPaginate() {
         return this.handleResponse(
-            this.http.get<Collection[]>(`${this.baseUrl}/content/collections/get-all-collections-no-paginate`, {
+            this.http.get<Collection[]>(`${this.baseUrl}/collections/get-all-collections-no-paginate`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -501,7 +368,7 @@ export class NetworkService {
      */
     public editCollection(collId: string, collInfo: CollectionForm) {
         return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/content/collections/edit-collection?collId=${collId}`, collInfo, {
+            this.http.patch<void>(`${this.baseUrl}/collections/edit-collection?collId=${collId}`, collInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -522,7 +389,7 @@ export class NetworkService {
     public deleteCollection(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/delete-collection?collId=${collId}`,
+                `${this.baseUrl}/collections/delete-collection?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -544,7 +411,7 @@ export class NetworkService {
     public addWorkToCollection(collId: string, workId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/add-content?collId=${collId}&contentId=${workId}`,
+                `${this.baseUrl}/collections/add-content?collId=${collId}&contentId=${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -566,7 +433,7 @@ export class NetworkService {
     public removeWorkFromCollection(collId: string, workId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/remove-content?collId=${collId}&contentId=${workId}`,
+                `${this.baseUrl}/collections/remove-content?collId=${collId}&contentId=${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -587,7 +454,7 @@ export class NetworkService {
     public setCollectionToPublic(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/set-public?collId=${collId}`,
+                `${this.baseUrl}/collections/set-public?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -606,7 +473,7 @@ export class NetworkService {
     public setCollectionToPrivate(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/set-private?collId=${collId}`,
+                `${this.baseUrl}/collections/set-private?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -621,94 +488,15 @@ export class NetworkService {
 
     //#region ---COMMENTS---
 
-    /**
-     * Adds a comment to a blog.
-     *
-     * @param blogId The ID of the blog
-     * @param commentInfo the new comment to add
-     */
-    public addBlogComment(blogId: string, commentInfo: CreateComment) {
-        return this.handleResponse(
-            this.http.put<BlogComment>(`${this.baseUrl}/content/comments/add-blog-comment/${blogId}`, commentInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success(`Comment added successfully!`);
-            },
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Adds a comment to a work.
-     *
-     * @param workId The ID of the work
-     * @param commentInfo the new comment to add
-     */
-    public addWorkComment(workId: string, commentInfo: CreateComment) {
-        return this.handleResponse(
-            this.http.put<WorkComment>(`${this.baseUrl}/content/comments/add-work-comment/${workId}`, commentInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success(`Comment added successfully!`);
-            },
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
     public addContentComment(contentId: string, commentInfo: CreateComment) {
         return this.handleResponse(
-            this.http.put<ContentComment>(
-                `${this.baseUrl}/content/comments/add-content-comment/${contentId}`,
-                commentInfo,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.put<ContentComment>(`${this.baseUrl}/comments/add-content-comment/${contentId}`, commentInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             (resp) => {
                 //this.alertsService.success(`Comment added successfully!`);
             },
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches the comments belonging to a blog.
-     *
-     * @param blogId The blog that these comments belong to
-     */
-    public fetchBlogComments(blogId: string, pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<BlogComment>>(
-                `${this.baseUrl}/content/comments/get-blog-comments/${blogId}/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-            null,
-            (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches the comments belonging to a work.
-     *
-     * @param workId The work that these comments belong to
-     */
-    public fetchWorkComments(workId: string, pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<WorkComment>>(
-                `${this.baseUrl}/content/comments/get-work-comments/${workId}/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-            null,
             (err) => {
                 //this.alertsService.error(err.error.message);
             },
@@ -718,7 +506,7 @@ export class NetworkService {
     public fetchContentComments(contentId: string, pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<ContentComment>>(
-                `${this.baseUrl}/content/comments/get-content-comments/${contentId}/${pageNum}`,
+                `${this.baseUrl}/comments/get-content-comments/${contentId}/${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -736,7 +524,7 @@ export class NetworkService {
      */
     public editComment(commentId: string, commentInfo: EditComment) {
         return this.handleResponse(
-            this.http.patch(`${this.baseUrl}/content/comments/edit-comment/${commentId}`, commentInfo, {
+            this.http.patch(`${this.baseUrl}/comments/edit-comment/${commentId}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -781,7 +569,7 @@ export class NetworkService {
     public fetchRelatedHistory(contentId: string): Observable<ReadingHistory> {
         return this.handleResponse(
             this.http.post<ReadingHistory>(
-                `${this.baseUrl}/content/history/add-or-update-history/${contentId}`,
+                `${this.baseUrl}/history/add-or-update-history/${contentId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -833,10 +621,10 @@ export class NetworkService {
      */
     public fetchSection(sectionId: string): Observable<Section> {
         return this.handleResponse(
-            this.http.get<Section>(
-                `${this.baseUrl}/content/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<Section>(`${this.baseUrl}/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             null,
             (err) => {
                 //this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
@@ -934,27 +722,6 @@ export class NetworkService {
 
     //#endregion
 
-    //#region ---DOCS---
-
-    /**
-     * Fetches a doc for display on a document page
-     * @param docId The doc to fetch
-     */
-    public fetchOneDoc(docId: string) {
-        return this.handleResponse(
-            this.http.get<Doc>(`${this.baseUrl}/dashboard/docs/fetch-one/${docId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (err) => {
-                //this.alertsService.error(`The doc you're looking for can't be found.`);
-            },
-        );
-    }
-
-    //#endregion
-
     //#region ---HISTORY---
 
     /**
@@ -962,10 +729,10 @@ export class NetworkService {
      */
     public fetchUserHistory(pageNum: number): Observable<PaginateResult<ReadingHistory>> {
         return this.handleResponse(
-            this.http.get<PaginateResult<ReadingHistory>>(
-                `${this.baseUrl}/content/history/fetch-user-history/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<PaginateResult<ReadingHistory>>(`${this.baseUrl}/history/fetch-user-history/${pageNum}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             null,
             (err) => {
                 //this.alertsService.error(err.error.message);
@@ -978,7 +745,7 @@ export class NetworkService {
      */
     public fetchUserSidenavHistory(): Observable<ReadingHistory[]> {
         return this.handleResponse(
-            this.http.get<ReadingHistory[]>(`${this.baseUrl}/content/history/fetch-user-sidenav-history`, {
+            this.http.get<ReadingHistory[]>(`${this.baseUrl}/history/fetch-user-sidenav-history`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -994,7 +761,7 @@ export class NetworkService {
      */
     public fetchOneHistDoc(workId: string): Observable<ReadingHistory> {
         return this.handleResponse(
-            this.http.get<ReadingHistory>(`${this.baseUrl}/content/history/fetch-one-hist-doc/${workId}`, {
+            this.http.get<ReadingHistory>(`${this.baseUrl}/history/fetch-one-hist-doc/${workId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1013,7 +780,7 @@ export class NetworkService {
     public addOrUpdateHistory(workId: string): Observable<ReadingHistory> {
         return this.handleResponse(
             this.http.post<ReadingHistory>(
-                `${this.baseUrl}/content/history/add-or-update-history/${workId}`,
+                `${this.baseUrl}/history/add-or-update-history/${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1032,7 +799,7 @@ export class NetworkService {
     public changeHistoryVisibility(histId: string): Observable<void> {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/history/change-item-visibility/${histId}`,
+                `${this.baseUrl}/history/change-item-visibility/${histId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1054,10 +821,10 @@ export class NetworkService {
      */
     public fetchUserThreads(pageNum: number) {
         return this.handleResponse(
-            this.http.get<PaginateResult<MessageThread>>(
-                `${this.baseUrl}/content/messages/fetch-user--threads/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<PaginateResult<MessageThread>>(`${this.baseUrl}/messages/fetch-user--threads/${pageNum}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 
@@ -1066,7 +833,7 @@ export class NetworkService {
      */
     public fetchUserSidenavThreads() {
         return this.handleResponse(
-            this.http.get<MessageThread[]>(`${this.baseUrl}/content/messages/fetch-user-sidenav-threads`, {
+            this.http.get<MessageThread[]>(`${this.baseUrl}/messages/fetch-user-sidenav-threads`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1080,7 +847,7 @@ export class NetworkService {
      */
     public createNewPrivateThread(initialMessage: CreateInitialMessage) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/messages/create-new-private-thread`, initialMessage, {
+            this.http.put<void>(`${this.baseUrl}/messages/create-new-private-thread`, initialMessage, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1094,124 +861,7 @@ export class NetworkService {
      */
     public createResponse(response: CreateResponse) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/messages/create-response`, response, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---MY STUFF---
-
-    /**
-     * Fetches one piece of the current user's content.
-     * @param contentId The ID of the content to fetch
-     * @param kind The `ContentKind` of the content to fetch
-     */
-    public fetchOneMyStuff(
-        contentId: string,
-        kind: ContentKind,
-    ): Observable<ProseContent> | Observable<BlogsContentModel> | Observable<PoetryContent> {
-        if (kind === ContentKind.BlogContent) {
-            return this.handleResponse(
-                this.http.get<BlogsContentModel>(
-                    `${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`,
-                    { observe: 'response', withCredentials: true },
-                ),
-            );
-        } else if (kind === ContentKind.ProseContent) {
-            return this.handleResponse(
-                this.http.get<ProseContent>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-            );
-        } else if (kind === ContentKind.PoetryContent) {
-            return this.handleResponse(
-                this.http.get<PoetryContent>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-            );
-        }
-    }
-
-    /**
-     * Fetches all of the current user's content.
-     */
-    public fetchAllMyStuff(): Observable<ContentModel[]> {
-        return this.handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to create a piece of content to the backend, with the route determined by its
-     * `ContentKind`.
-     *
-     * @param kind The content kind
-     * @param formInfo The form information
-     */
-    public createContent(
-        kind: ContentKind,
-        formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm,
-    ): Observable<ContentModel> {
-        return this.handleResponse(
-            this.http.put<ContentModel>(`${this.baseUrl}/content/create-one?kind=${kind}`, formInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to create a piece of content to the backend, with the route determined by its
-     * `ContentKind`.
-     *
-     * @param kind The content kind
-     * @param formInfo The form information
-     */
-    public saveContent(
-        contentId: string,
-        kind: ContentKind,
-        formInfo: CreateProse | CreatePoetry | BlogForm | NewsForm,
-    ): Observable<ContentModel> {
-        return this.handleResponse(
-            this.http.patch<ContentModel>(
-                `${this.baseUrl}/content/save-changes?contentId=${contentId}&kind=${kind}`,
-                formInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Deletes the specified content owned by the current user.
-     * @param contentId The ID of the content to delete.
-     */
-    public deleteOneMyStuff(contentId: string): Observable<void> {
-        return this.handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/content/delete-one?contentId=${contentId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to publish the specified content.
-     * @param contentId The ID of the content to publish
-     * @param pubChange (Optional) Used for blog and newspost publishing changes
-     */
-    public publishOneMyStuff(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
-        return this.handleResponse(
-            this.http.patch<ContentModel>(`${this.baseUrl}/content/publish-one?contentId=${contentId}`, pubChange, {
+            this.http.put<void>(`${this.baseUrl}/messages/create-response`, response, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1227,7 +877,7 @@ export class NetworkService {
      */
     public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
         return this.handleResponse(
-            this.http.get<NewsContentModel[]>(`${this.baseUrl}/content/news/initial-posts`, {
+            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1245,7 +895,7 @@ export class NetworkService {
      */
     public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
         return this.handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/content/news/news-feed/${pageNum}`, {
+            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1263,111 +913,13 @@ export class NetworkService {
      */
     public fetchNewsPost(postId: string) {
         return this.handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/content/news/news-post/${postId}`, {
+            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
             null,
             (err) => {
                 //this.snackBar.open(`${err.error.message}`);
-            },
-        );
-    }
-
-    //#endregion
-
-    //#region ---NEWS MANAGEMENT---
-
-    /**
-     * Creates and saves a new newspost to the database.
-     *
-     * @param form A newspost's info
-     */
-    public createNewspost(form: NewsForm) {
-        return this.handleResponse(
-            this.http.put<NewsContentModel>(`${this.baseUrl}/dashboard/news/create-post`, form, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.snackBar.open(`Post created successfully!`);
-            },
-            (err) => {
-                //this.snackBar.open(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Submits edits on a newspost to the database.
-     *
-     * @param form A newspost's info
-     */
-    public editNewspost(postId: string, form: NewsForm) {
-        return this.handleResponse(
-            this.http.patch<NewsContentModel>(`${this.baseUrl}/dashboard/news/edit-post/${postId}`, form, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.snackBar.open(`Changed saved!`);
-            },
-            (err) => {
-                //this.snackBar.open(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches all newsposts
-     */
-    public fetchAllNewsposts(pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/dashboard/news/fetch-all/${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (err) => {
-                //this.snackBar.open(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches a post for editing.
-     *
-     * @param postId The post to fetch
-     */
-    public fetchNewspostForEdit(postId: string) {
-        return this.handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/dashboard/news/fetch-for-edit/${postId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (err) => {
-                //this.snackBar.open(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Changes the pubStatus of a post.
-     *
-     * @param postId The post to publish/unpublish
-     * @param pubStatus The pubstatus to change to
-     */
-    public setNewspostPublishStatus(postId: string, pubStatus: PubStatus) {
-        return this.handleResponse(
-            this.http.patch<NewsContentModel>(
-                `${this.baseUrl}/dashboard/news/set-publish-status/${postId}`,
-                { pubStatus },
-                { observe: 'response', withCredentials: true },
-            ),
-            null,
-            (err) => {
-                //this.snackBar.open(err.error.message);
             },
         );
     }
@@ -1455,88 +1007,6 @@ export class NetworkService {
 
     //#endregion
 
-    //#region ---POETRY---
-
-    /**
-     * Creates a new piece of poetry content authored by the current user.
-     * @param poetryInfo The details of the new poetry to create.
-     */
-    public createPoetry(poetryInfo: CreatePoetry): Observable<PoetryContent> {
-        return this.handleResponse(
-            this.http.put<PoetryContent>(`${this.baseUrl}/content/poetry/create-poetry`, poetryInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Edits an existing piece of poetry content owned by the current user.
-     * @param contentId The ID of the poetry.
-     * @param poetryInfo The updated poetry info.
-     */
-    public editPoetry(contentId: string, poetryInfo: CreatePoetry): Observable<PoetryContent> {
-        return this.handleResponse(
-            this.http.patch<PoetryContent>(
-                `${this.baseUrl}/content/poetry/edit-poetry?contentId=${contentId}`,
-                poetryInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    //#endregion
-
-    //#region ---PORTFOLIO---
-
-    /**
-     * Fetches the user whose portfolio the request belongs to.
-     *
-     * @param userId The user ID of a requested portfolio
-     */
-    public fetchUserInfo(userId: string): Observable<FrontendUser> {
-        return this.handleResponse(
-            this.http.get<FrontendUser>(`${this.baseUrl}/content/portfolio/get-user-info/${userId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---PROSE---
-
-    /**
-     * Creates a new piece of prose content authored by the current user.
-     * @param proseInfo The details of the new prose to create.
-     */
-    public createProse(proseInfo: CreateProse): Observable<ProseContent> {
-        return this.handleResponse(
-            this.http.put<ProseContent>(`${this.baseUrl}/content/prose/create-prose`, proseInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Edits an existing piece of prose content owned by the current user.
-     * @param contentId The ID of the prose.
-     * @param proseInfo The updated poetry info.
-     */
-    public editProse(contentId: string, proseInfo: CreateProse): Observable<ProseContent> {
-        return this.handleResponse(
-            this.http.patch<ProseContent>(
-                `${this.baseUrl}/content/prose/edit-prose?contentId=${contentId}`,
-                proseInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    //#endregion
-
     //#region ---SEARCH---
 
     /**
@@ -1597,91 +1067,6 @@ export class NetworkService {
 
     //#endregion
 
-    //#region ---SECTIONS---
-
-    /**
-     * Fetches the sections belonging to the specified piece of content given its ID.
-     *
-     * @param contentId The content ID
-     */
-    public fetchUserContentSections(contentId: string): Observable<Section[]> {
-        return this.handleResponse(
-            this.http.get<Section[]>(
-                `${this.baseUrl}/content/sections/fetch-user-content-sections?contentId=${contentId}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to create a new section for the specified piece of content, given the content's ID
-     * and the new section info.
-     *
-     * @param contentId The content ID
-     * @param sectionInfo The info for the new section
-     */
-    public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.handleResponse(
-            this.http.put<Section>(
-                `${this.baseUrl}/content/sections/create-section?contentId=${contentId}`,
-                sectionInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to save any edits to the specified section, belonging to the specified content.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     * @param sectionInfo The info to save
-     */
-    public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/content/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
-                sectionInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to delete the specified section, belonging to the specified content.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     */
-    public deleteSection(contentId: string, sectionId: string): Observable<Section> {
-        return this.handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/content/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to flip the current publishing status of the specified section.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     * @param pubStatus The publishing status
-     */
-    public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
-        return this.handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/content/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
-                pubStatus,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    //#endregion
-
     //#region ---STATS---
 
     /**
@@ -1689,7 +1074,7 @@ export class NetworkService {
      */
     public fetchFrontPageStats() {
         return this.handleResponse(
-            this.http.get<FrontPageStats>(`${this.baseUrl}/admin/stats/front-page-stats`, {
+            this.http.get<FrontPageStats>(`${this.baseUrl}/meta/public-stats`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1705,13 +1090,27 @@ export class NetworkService {
     //#region ---USER---
 
     /**
+     * Fetches the user whose portfolio the request belongs to.
+     *
+     * @param userId The user ID of a requested portfolio
+     */
+    public fetchUserInfo(userId: string): Observable<FrontendUser> {
+        return this.handleResponse(
+            this.http.get<FrontendUser>(`${this.baseUrl}/user/get-user-info/${userId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
      * Sends a request to change a user's email.
      *
      * @param newEmail The requested new email and current password.
      */
     public changeEmail(newEmail: ChangeEmail): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/auth/change-email`, newEmail, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-email`, newEmail, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1729,7 +1128,7 @@ export class NetworkService {
      */
     public changeUsername(newUsername: ChangeUsername): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/auth/change-username`, newUsername, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-username`, newUsername, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1747,7 +1146,7 @@ export class NetworkService {
      */
     public changePassword(newPasswordInfo: ChangePassword): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/auth/change-password`, newPasswordInfo, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-password`, newPasswordInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1765,7 +1164,7 @@ export class NetworkService {
      */
     public changeProfile(newProfileInfo: ChangeProfile): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/auth/update-profile`, newProfileInfo, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-profile`, newProfileInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1783,7 +1182,7 @@ export class NetworkService {
      */
     public agreeToPolicies(): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.post<FrontendUser>(`${this.baseUrl}/auth/agree-to-policies`, null, {
+            this.http.post<FrontendUser>(`${this.baseUrl}/user/agree-to-policies`, null, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1801,7 +1200,7 @@ export class NetworkService {
      */
     public updateTagline(tagline: UpdateTagline): Observable<FrontendUser> {
         return this.handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/auth/update-tagline`, tagline, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-tagline`, tagline, {
                 observe: 'response',
                 withCredentials: true,
             }),
