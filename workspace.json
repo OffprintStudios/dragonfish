@@ -15,7 +15,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/packages/client",
+                        "outputPath": "dist/packages/server/static",
                         "index": "packages/client/src/index.html",
                         "main": "packages/client/src/main.ts",
                         "polyfills": "packages/client/src/polyfills.ts",
@@ -163,7 +163,7 @@
                         "tsConfig": "packages/server/tsconfig.app.json",
                         "assets": ["packages/server/src/assets"],
                         "maxWorkers": 1,
-                        "memoryLimit": 512
+                        "memoryLimit": 1024
                     },
                     "configurations": {
                         "production": {

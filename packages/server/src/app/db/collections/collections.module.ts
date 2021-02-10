@@ -4,7 +4,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { HookNextFunction } from 'mongoose';
 
 import { CollectionDocument, CollectionSchema } from './collection.schema';
-import { CollectionsService } from './collections.service';
+import { CollectionsStore } from './collections.store';
 
 @Module({
     imports: [
@@ -27,7 +27,7 @@ import { CollectionsService } from './collections.service';
             },
         ]),
     ],
-    providers: [CollectionsService],
-    exports: [CollectionsService],
+    providers: [CollectionsStore],
+    exports: [CollectionsStore],
 })
 export class CollectionsModule {}

@@ -4,7 +4,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
 
 import { Roles } from '@dragonfish/models/users';
-import { UsersService } from '../db/users/users.service';
+import { UsersStore } from '../db/users/users.store';
 import { JwtPayload } from '@dragonfish/models/auth';
 
 /**
@@ -15,7 +15,7 @@ import { JwtPayload } from '@dragonfish/models/auth';
 export const RolesGuard = (requiredRoles: Roles[]) => {
     @Injectable()
     class RolesGuardMixin implements CanActivate {
-        constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) {}
+        constructor(private readonly usersService: UsersStore, private readonly jwtService: JwtService) {}
 
         async canActivate(context: ExecutionContext) {
             // Getting the request.

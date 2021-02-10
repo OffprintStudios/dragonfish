@@ -2,16 +2,16 @@ import { Module } from '@nestjs/common';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { Schema, HookNextFunction } from 'mongoose';
 
-import { ContentService } from './content.service';
-import { NewsService } from './news/news.service';
-import { BlogsService } from './blogs/blogs.service';
+import { ContentStore } from './content.store';
+import { NewsStore } from './news/news.store';
+import { BlogsStore } from './blogs/blogs.store';
 import { SectionsModule } from '../sections/sections.module';
-import { ContentDocument, ContentSchema } from './content.schema';
+import { ContentSchema } from './content.schema';
 import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@dragonfish/models/content';
 import { UsersModule } from '../users/users.module';
 import { NotificationsModule } from '../notifications/notifications.module';
-import { ProseService } from './prose/prose.service';
-import { PoetryService } from './poetry/poetry.service';
+import { ProseStore } from './prose/prose.store';
+import { PoetryStore } from './poetry/poetry.store';
 import { ApprovalQueueModule } from '../approval-queue/approval-queue.module';
 import { ReadingHistoryModule } from '../reading-history/reading-history.module';
 
@@ -36,11 +36,11 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
         ]),
     ],
     providers: [
-        ContentService,
-        NewsService,
-        BlogsService,
-        ProseService,
-        PoetryService,
+        ContentStore,
+        NewsStore,
+        BlogsStore,
+        ProseStore,
+        PoetryStore,
         {
             provide: getModelToken('NewsContent'),
             useFactory: (contentModel) =>
@@ -126,6 +126,6 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
             inject: [getModelToken('Content')],
         },
     ],
-    exports: [ContentService, NewsService, BlogsService, ProseService, PoetryService],
+    exports: [ContentStore, NewsStore, BlogsStore, ProseStore, PoetryStore],
 })
 export class ContentModule {}

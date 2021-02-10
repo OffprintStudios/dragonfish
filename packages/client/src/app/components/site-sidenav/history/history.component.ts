@@ -15,7 +15,7 @@ export class HistoryComponent implements OnInit {
     histItems: ReadingHistory[];
     contentKind = ContentKind;
 
-constructor(private networkService: NetworkService) {
+    constructor(private networkService: NetworkService) {
         this.fetchData();
     }
 

@@ -17,7 +17,6 @@ import { AlertsService } from '../../../../shared/alerts';
 import { MyStuffService } from '../../my-stuff.service';
 import { MyStuffState } from 'packages/client/src/app/shared/my-stuff';
 
-
 @UntilDestroy()
 @Component({
     selector: 'prose-form',

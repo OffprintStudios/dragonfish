@@ -3,7 +3,7 @@ import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
 
 import { CommentsSchema } from './comments.schema';
-import { CommentsService } from './comments.service';
+import { CommentsStore } from './comments.store';
 
 import { ContentModule } from '../content/content.module';
 import { NotificationsModule } from '../notifications/notifications.module';
@@ -15,7 +15,7 @@ import { NotificationsModule } from '../notifications/notifications.module';
         NotificationsModule,
     ],
     providers: [
-        CommentsService,
+        CommentsStore,
         {
             provide: getModelToken('ContentComment'),
             useFactory: (commentModel) =>
@@ -28,6 +28,6 @@ import { NotificationsModule } from '../notifications/notifications.module';
             inject: [getModelToken('Comment')],
         },
     ],
-    exports: [CommentsService],
+    exports: [CommentsStore],
 })
 export class CommentsModule {}

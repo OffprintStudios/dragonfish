@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { ReadingHistorySchema } from './reading-history.schema';
-import { ReadingHistoryService } from './reading-history.service';
+import { ReadingHistoryStore } from './reading-history.store';
 
 @Module({
     imports: [
@@ -18,7 +18,7 @@ import { ReadingHistoryService } from './reading-history.service';
             },
         ]),
     ],
-    exports: [ReadingHistoryService],
-    providers: [ReadingHistoryService],
+    exports: [ReadingHistoryStore],
+    providers: [ReadingHistoryStore],
 })
 export class ReadingHistoryModule {}

@@ -1,6 +1,6 @@
 export { ContentModule } from './content.module';
-export { ContentService } from './content.service';
-export { NewsService } from './news/news.service';
-export { BlogsService } from './blogs/blogs.service';
-export { PoetryService } from './poetry/poetry.service';
-export { ProseService } from './prose/prose.service';
+export { ContentStore } from './content.store';
+export { NewsStore } from './news/news.store';
+export { BlogsStore } from './blogs/blogs.store';
+export { PoetryStore } from './poetry/poetry.store';
+export { ProseStore } from './prose/prose.store';

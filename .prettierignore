@@ -4,4 +4,5 @@
 /coverage
 
 ckeditor.js
-/packages/client/src/app/components/editor/translations
+/libraries/editor/src/lib/components/editor/translations
+README.md

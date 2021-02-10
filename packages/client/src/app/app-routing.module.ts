@@ -389,7 +389,7 @@ const routes: Routes = [
     exports: [RouterModule],
     providers: [
         PortfolioResolver,
-        BrowseResolver,        
+        BrowseResolver,
         MyBlogsResolver,
         NewsResolver,
         CollectionPageResolver,
