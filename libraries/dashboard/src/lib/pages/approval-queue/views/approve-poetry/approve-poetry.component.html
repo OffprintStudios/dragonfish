@@ -1,0 +1,97 @@
+<div class="view-container">
+    <div class="view-info">
+        <div class="view-header">
+            <div class="view-title">
+                <rating-icon [rating]="currPoetry.meta.rating" [size]="'large'"></rating-icon>
+                <div class="view-title-info">
+                    <h2>
+                        <a>{{ currPoetry.title }}</a>
+                        <span class="byline"
+                            >by
+                            <a
+                                [routerLink]="[
+                                    '/portfolio',
+                                    $any(currPoetry.author)._id,
+                                    $any(currPoetry.author).username | slugify
+                                ]"
+                                >{{ $any(currPoetry.author).username }}</a
+                            ></span
+                        >
+                    </h2>
+                </div>
+            </div>
+            <div class="view-tags">
+                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
+                    ><i-feather name="feather" class="kind"></i-feather
+                ></span>
+                <span class="divider">//</span>
+                <span class="tag">{{ currPoetry.meta.category }}</span>
+                <span class="divider">//</span>
+                <span class="tag genres">{{ currPoetry.meta.genres | separateGenres }}</span>
+            </div>
+            <div class="view-description">
+                <img class="little-art" [src]="currPoetry.meta.coverArt" *ngIf="currPoetry.meta.coverArt" />
+                <ng-container *ngIf="currPoetry.meta.collection; else singlePoemDesc">
+                    <div class="html-description" [innerHtml]="currPoetry.body | safeHtml"></div>
+                </ng-container>
+                <ng-template #singlePoemDesc>
+                    <div class="html-description" [innerHTML]="currPoetry.desc | safeHtml"></div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="view-sections" *ngIf="route.children.length === 0 && currPoetry.meta.collection">
+        <ul>
+            <ng-container *ngFor="let section of currPoetry.sections; let i = index">
+                <li>
+                    <ng-container *ngIf="section.published === true">
+                        <a [routerLink]="[i + 1]">
+                            <div class="section-title">
+                                {{ section.title }}
+                            </div>
+                            <div class="section-info">
+                                <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="pen-tool"></i-feather>{{ section.stats.words | abbreviate }}</span
+                                >
+                                <span class="divider">//</span>
+                                <span class="tag" [matTooltip]="'Published On'" [matTooltipClass]="'offprint-tooltip'"
+                                    ><i-feather name="calendar"></i-feather
+                                    >{{ section.audit.publishedOn | localedate: 'mediumDate' }}</span
+                                >
+                            </div>
+                            <div class="section-button">
+                                <button><i-feather name="chevron-right"></i-feather></button>
+                            </div>
+                        </a>
+                    </ng-container>
+                </li>
+            </ng-container>
+        </ul>
+    </div>
+    <div class="view-stats">
+        <span class="tag" [matTooltip]="'Form'" [matTooltipClass]="'offprint-tooltip'">{{
+            poetryForm[currPoetry.meta.form]
+        }}</span>
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="pen-tool"></i-feather>{{ currPoetry.stats.words | abbreviate }}</span
+        >
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Created At'" [matTooltipClass]="'offprint-tooltip'"
+            ><i-feather name="calendar"></i-feather>{{ currPoetry.createdAt | localedate: 'mediumDate' }}</span
+        >
+        <span class="divider">//</span>
+        <span class="tag" [matTooltip]="'Status'" [matTooltipClass]="'offprint-tooltip'">{{
+            contentStatus[currPoetry.meta.status]
+        }}</span>
+    </div>
+</div>
+
+<ng-container *ngIf="currPoetry.meta.collection; else singlePoem">
+    <router-outlet></router-outlet>
+</ng-container>
+<ng-template #singlePoem>
+    <div class="view-poem">
+        <div class="section-body" [innerHTML]="currPoetry.body | safeHtml"></div>
+    </div>
+</ng-template>

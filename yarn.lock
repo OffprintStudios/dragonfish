@@ -2452,13 +2452,6 @@
   dependencies:
     tslib "^1.10.0"
 
-"@ngxs-labs/data@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-4.1.1.tgz#abaf0e7d1bdde9b592275a586a6b6a75c5b94178"
-  integrity sha512-T9hcH/KkdoX1DJGV3jfh3ciiCYsg9vRYeJ2E6e8ZNRuSiLZ2kaAmVBl+uIKTZedTcMznK+DvvgHg18fc+Paogg==
-  dependencies:
-    tslib "^2.0.0"
-
 "@ngxs-labs/dispatch-decorator@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@ngxs-labs/dispatch-decorator/-/dispatch-decorator-2.1.0.tgz#d35a21566b9786ccff094c3227935f9d7bf45444"

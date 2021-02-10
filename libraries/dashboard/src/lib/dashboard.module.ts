@@ -8,14 +8,30 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
+import { ApprovalQueuePages } from './pages/approval-queue';
+import { AuditLogPages } from './pages/audit-log';
+import { GroupQueuePages } from './pages/group-queue';
+import { OverviewPages } from './pages/overview';
+import { ReportsPages } from './pages/reports';
+import { UsersManagementPages } from './pages/users-management';
 
 /* Components */
 
 /* State */
+import { ApprovalQueueState } from './shared/approval-queue';
+
+/* Services */
+import { ApprovalQueueService } from './shared/approval-queue/services';
 
 @NgModule({
     declarations: [
         DashboardComponent,
+        ...ApprovalQueuePages,
+        ...AuditLogPages,
+        ...GroupQueuePages,
+        ...OverviewPages,
+        ...ReportsPages,
+        ...UsersManagementPages,
     ],
     imports: [
         CommonModule,
@@ -23,7 +39,12 @@ import { DashboardComponent } from './dashboard.component';
         AlertsModule,
         IconsModule,
         MaterialModule,
-        NgxsModule.forFeature([]),
+        NgxsModule.forFeature([
+            ApprovalQueueState,
+        ]),
+    ],
+    providers: [
+        ApprovalQueueService,
     ],
 })
 export class DashboardModule {}

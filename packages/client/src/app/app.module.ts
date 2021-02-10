@@ -11,7 +11,6 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
 import { NgxsSelectSnapshotModule } from '@ngxs-labs/select-snapshot';
-import { NgxsDataPluginModule } from '@ngxs-labs/data';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -143,7 +142,6 @@ import { environment } from '../environments/environment';
                 'approvalQueue.selectedDocSection',
             ],
         }),
-        NgxsDataPluginModule.forRoot(),
         NgxsReduxDevtoolsPluginModule.forRoot(),
         NgxsRouterPluginModule.forRoot(),
         NgxsDispatchPluginModule.forRoot(),
