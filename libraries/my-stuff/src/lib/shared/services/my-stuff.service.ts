@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import { ContentModel, ContentKind, FormType, PubChange } from '@dragonfish/models/content';
 import { Section, SectionForm, PublishSection } from '@dragonfish/models/sections';
 import { HttpError } from '@dragonfish/models/util';
+import { handleResponse, tryParseJsonHttpError } from '@dragonfish/utilities/functions';
 
 @Injectable()
 export class MyStuffService {
@@ -23,7 +23,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, {
                 observe: 'response',
                 withCredentials: true,
@@ -37,7 +37,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchAll(): Observable<ContentModel[]> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.get<ContentModel[]>(`${this.contentUrl}/fetch-all`, {
                 observe: 'response',
                 withCredentials: true,
@@ -53,7 +53,7 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.put<ContentModel>(`${this.contentUrl}/create-one?kind=${kind}`, formInfo, {
                 observe: 'response',
                 withCredentials: true,
@@ -69,7 +69,7 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<ContentModel>(
                 `${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`,
                 formInfo,
@@ -88,7 +88,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public deleteOne(contentId: string): Observable<void> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<void>(
                 `${this.contentUrl}/delete-one?contentId=${contentId}`,
                 {},
@@ -108,7 +108,7 @@ export class MyStuffService {
      * @returns Observable
      */
     public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<ContentModel>(`${this.contentUrl}/publish-one?contentId=${contentId}`, pubChange, {
                 observe: 'response',
                 withCredentials: true,
@@ -126,7 +126,7 @@ export class MyStuffService {
         return new Observable<ContentModel>((observer) => {
             uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
                 if (status !== 201) {
-                    const errorMessage: HttpError = this.tryParseJsonHttpError(response);
+                    const errorMessage: HttpError = tryParseJsonHttpError(response);
                     if (!errorMessage) {
                         const juryRiggedError: HttpError = {
                             statusCode: status,
@@ -151,7 +151,7 @@ export class MyStuffService {
      * @param contentId The content ID
      */
     public fetchSections(contentId: string): Observable<Section[]> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.get<Section[]>(
                 `${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`,
                 {
@@ -170,7 +170,7 @@ export class MyStuffService {
      * @param sectionInfo The info for the new section
      */
     public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
                 observe: 'response',
                 withCredentials: true,
@@ -186,7 +186,7 @@ export class MyStuffService {
      * @param sectionInfo The info to save
      */
     public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
                 sectionInfo,
@@ -202,7 +202,7 @@ export class MyStuffService {
      * @param sectionId The section ID
      */
     public deleteSection(contentId: string, sectionId: string): Observable<Section> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
                 {},
@@ -219,56 +219,12 @@ export class MyStuffService {
      * @param pubStatus The publishing status
      */
     public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
-        return this.handleResponse(
+        return handleResponse(
             this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
                 pubStatus,
                 { observe: 'response', withCredentials: true },
             ),
         );
-    }
-
-    /**
-     * Handles a common response pattern for HTTP requests. Automatically returns the response
-     * body on success, or calls `throwError(err)` on error. Allows a callback to be passed in,
-     * which will be called before returning success or error.
-     * @param response An observable wrapped around the HTTP request.
-     * @param onSuccess A callback to call upon success. Defaults to null.
-     * @param onError A callback to call upon error. Defaults to null.
-     */
-    private handleResponse<T>(
-        response: Observable<HttpResponse<T>>,
-        onSuccess: (success: HttpResponse<T>) => void = null,
-        onError: (error: any) => void = null,
-    ): Observable<T> {
-        return response.pipe(
-            map((resp) => {
-                if (onSuccess) {
-                    onSuccess(resp);
-                }
-                return resp.body;
-            }),
-            catchError((err) => {
-                if (onError) {
-                    onError(err);
-                }
-                return throwError(err);
-            }),
-        );
-    }
-
-    /**
-     * Attempts to parse an HttpError.
-     *
-     * @param response The response to parse
-     * @returns HttpError | null
-     */
-    private tryParseJsonHttpError(response: string): HttpError | null {
-        try {
-            const error: HttpError = JSON.parse(response);
-            return error;
-        } catch (err) {
-            return null;
-        }
     }
 }
