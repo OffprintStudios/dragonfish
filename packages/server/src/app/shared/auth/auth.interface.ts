@@ -1,11 +1,6 @@
 import { JwtPayload } from '@dragonfish/models/auth';
 import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/models/users';
 
-/**
- * ## The Authorization Interface
- *
- * Implement this interface to be able to serve data to associated routes.
- */
 export interface IAuth {
     /**
      * Validates the incoming email and password of a login request. Returns a User
