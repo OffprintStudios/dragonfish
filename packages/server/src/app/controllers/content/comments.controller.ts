@@ -5,6 +5,7 @@ import { Roles } from '@dragonfish/models/users';
 import { RolesGuard } from '../../guards';
 import { CreateComment, EditComment } from '@dragonfish/models/comments';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { DragonfishTags } from '@dragonfish/models/util';
 import { IComments } from '../../shared/content';
 import { User } from '../../util/decorators';
 
@@ -12,7 +13,7 @@ import { User } from '../../util/decorators';
 export class CommentsController {
     constructor(@Inject('IComments') private readonly comments: IComments) {}
 
-    @ApiTags('Comments')
+    @ApiTags(DragonfishTags.Comments)
     @UseGuards(RolesGuard([Roles.User]))
     @Put('add-content-comment/:contentId')
     async addContentComment(
@@ -23,13 +24,13 @@ export class CommentsController {
         return await this.comments.create(user, contentId, commentInfo);
     }
 
-    @ApiTags('Comments')
+    @ApiTags(DragonfishTags.Comments)
     @Get('get-content-comments/:contentId/:pageNum')
     async getContentComments(@Param('contentId') contentId: string, @Param('pageNum') pageNum: number) {
         return await this.comments.get(contentId, pageNum);
     }
 
-    @ApiTags('Comments')
+    @ApiTags(DragonfishTags.Comments)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-comment/:commentId')
     async editComment(
