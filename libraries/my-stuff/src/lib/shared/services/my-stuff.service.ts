@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -23,19 +23,12 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
-        return this.http
-            .get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, {
-                observe: 'response',
+        return this.handleResponse(
+            this.http.get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, { 
+                observe: 'response', 
                 withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            }),
+        );
     }
 
     /**
@@ -44,16 +37,12 @@ export class MyStuffService {
      * @returns Observable
      */
     public fetchAll(): Observable<ContentModel[]> {
-        return this.http
-            .get<ContentModel[]>(`${this.contentUrl}/fetch-all`, { observe: 'response', withCredentials: true })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.handleResponse(
+            this.http.get<ContentModel[]>(`${this.contentUrl}/fetch-all`, { 
+                observe: 'response', 
+                withCredentials: true,
+            }),
+        );
     }
 
     /**
@@ -64,19 +53,12 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.http
-            .put<ContentModel>(`${this.contentUrl}/create-one?kind=${kind}`, formInfo, {
+        return this.handleResponse(
+            this.http.put<ContentModel>(`${this.contentUrl}/create-one?kind=${kind}`, formInfo, {
                 observe: 'response',
                 withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            }),
+        );
     }
 
     /**
@@ -87,19 +69,12 @@ export class MyStuffService {
      * @param formInfo The form information
      */
     public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return this.http
-            .patch<ContentModel>(`${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {
+        return this.handleResponse(
+            this.http.patch<ContentModel>(`${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {
                 observe: 'response',
                 withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            }),
+        );
     }
 
     /**
@@ -109,20 +84,12 @@ export class MyStuffService {
      * @returns Observable
      */
     public deleteOne(contentId: string): Observable<void> {
-        return this.http
-            .patch(
-                `${this.contentUrl}/delete-one?contentId=${contentId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map(() => {
-                    return;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        return this.handleResponse(
+            this.http.patch<void>(`${this.contentUrl}/delete-one?contentId=${contentId}`, {}, {
+                observe: 'response',
+                withCredentials: true
+            }),
+        );
     }
 
     /**
@@ -133,19 +100,12 @@ export class MyStuffService {
      * @returns Observable
      */
     public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
-        return this.http
-            .patch<ContentModel>(`${this.contentUrl}/publish-one?contentId=${contentId}`, pubChange, {
+        return this.handleResponse(
+            this.http.patch<ContentModel>(`${this.contentUrl}/publish-one?contentId=${contentId}`, pubChange, {
                 observe: 'response',
                 withCredentials: true,
-            })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            }),
+        );
     }
 
     /**
@@ -169,9 +129,6 @@ export class MyStuffService {
                         return observer.error(errorMessage);
                     }
                 }
-                // If we ever need to retun the modified work, the return type on this
-                // should change to Observable<models.Work>, and we'd need to JSON parse
-                // the response and return it in .next() here.
                 observer.next(JSON.parse(response));
                 observer.complete();
             };
@@ -186,19 +143,12 @@ export class MyStuffService {
      * @param contentId The content ID
      */
     public fetchSections(contentId: string): Observable<Section[]> {
-        return this.http
-            .get<Section[]>(`${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {
+        return this.handleResponse(
+            this.http.get<Section[]>(`${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {
                 observe: 'response',
                 withCredentials: true,
             })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        );
     }
 
     /**
@@ -209,19 +159,12 @@ export class MyStuffService {
      * @param sectionInfo The info for the new section
      */
     public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.http
-            .put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
+        return this.handleResponse(
+            this.http.put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
                 observe: 'response',
                 withCredentials: true,
             })
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+        );
     }
 
     /**
@@ -232,20 +175,13 @@ export class MyStuffService {
      * @param sectionInfo The info to save
      */
     public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
-        return this.http
-            .patch<Section>(
+        return this.handleResponse(
+            this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
                 sectionInfo,
                 { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            ),
+        );
     }
 
     /**
@@ -255,20 +191,13 @@ export class MyStuffService {
      * @param sectionId The section ID
      */
     public deleteSection(contentId: string, sectionId: string): Observable<Section> {
-        return this.http
-            .patch<Section>(
+        return this.handleResponse(
+            this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
                 {},
                 { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            ),
+        );
     }
 
     /**
@@ -279,20 +208,42 @@ export class MyStuffService {
      * @param pubStatus The publishing status
      */
     public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
-        return this.http
-            .patch<Section>(
+        return this.handleResponse(
+            this.http.patch<Section>(
                 `${this.sectionsUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
                 pubStatus,
                 { observe: 'response', withCredentials: true },
-            )
-            .pipe(
-                map((res) => {
-                    return res.body;
-                }),
-                catchError((err) => {
-                    return throwError(err);
-                }),
-            );
+            ),
+        );
+    }
+
+    /**
+     * Handles a common response pattern for HTTP requests. Automatically returns the response
+     * body on success, or calls `throwError(err)` on error. Allows a callback to be passed in,
+     * which will be called before returning success or error.
+     * @param response An observable wrapped around the HTTP request.
+     * @param onSuccess A callback to call upon success. Defaults to null.
+     * @param onError A callback to call upon error. Defaults to null.
+     */
+    private handleResponse<T>(
+        response: Observable<HttpResponse<T>>,
+        onSuccess: (success: HttpResponse<T>) => void = null,
+        onError: (error: any) => void = null,
+    ): Observable<T> {
+        return response.pipe(
+            map((resp) => {
+                if (onSuccess) {
+                    onSuccess(resp);
+                }
+                return resp.body;
+            }),
+            catchError((err) => {
+                if (onError) {
+                    onError(err);
+                }
+                return throwError(err);
+            }),
+        );
     }
 
     /**
