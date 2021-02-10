@@ -7,13 +7,14 @@ import { ContentModel } from '@dragonfish/models/content';
 import { User } from '@dragonfish/models/users';
 import { InitialResults } from '@dragonfish/models/util';
 import { ContentFilter } from '@dragonfish/models/works';
+import { DragonfishTags } from '@dragonfish/models/util';
 import { ISearch } from '../../shared/search';
 
 @Controller('search')
 export class SearchController {
     constructor(@Inject('ISearch') private readonly searchService: ISearch) {}
 
-    @ApiTags('Search')
+    @ApiTags(DragonfishTags.Search)
     @Get('get-initial-results')
     async getInitialResults(
         @Query('query') query: string,
@@ -22,7 +23,7 @@ export class SearchController {
         return await this.searchService.fetchInitialResults(query, contentFilter);
     }
 
-    @ApiTags('Search')
+    @ApiTags(DragonfishTags.Search)
     @Get('get-user-results')
     async getUserRequests(
         @Query('query') query: string,
@@ -31,7 +32,7 @@ export class SearchController {
         return await this.searchService.searchUsers(query, pageNum);
     }
 
-    @ApiTags('Search')
+    @ApiTags(DragonfishTags.Search)
     @Get('get-blog-results')
     async getBlogResults(
         @Query('query') query: string,
@@ -41,7 +42,7 @@ export class SearchController {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
 
-    @ApiTags('Search')
+    @ApiTags(DragonfishTags.Search)
     @Get('get-work-results')
     async getWorkResults(
         @Query('query') query: string,

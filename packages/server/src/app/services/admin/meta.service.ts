@@ -9,19 +9,19 @@ import { IMeta } from '../../shared/admin';
 export class MetaService implements IMeta {
     private readonly logger: Logger = new Logger(MetaService.name);
 
-    constructor(private readonly usersService: UsersStore) {}
+    constructor(private readonly usersStore: UsersStore) {}
 
     async getSiteStaff(): Promise<FrontendUser[]> {
-        return await this.usersService.getSiteStaff();
+        return await this.usersStore.getSiteStaff();
     }
 
     async getSupporters(): Promise<FrontendUser[]> {
-        return await this.usersService.getSupporters();
+        return await this.usersStore.getSupporters();
     }
 
     async getPublicStats(): Promise<FrontPageStats> {
         const stats: FrontPageStats = {
-            numUsers: await this.usersService.getUserCount(),
+            numUsers: await this.usersStore.getUserCount(),
             numWorks: 0,
         };
 

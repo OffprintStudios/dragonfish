@@ -21,25 +21,26 @@ import { IUser } from '../../shared/auth';
 import { IImages } from '../../shared/images';
 import { User } from '../../util/decorators';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { DragonfishTags } from '@dragonfish/models/util';
 
 @Controller('user')
 export class UserController {
     constructor(@Inject('IUser') private readonly user: IUser, @Inject('IImages') private readonly images: IImages) {}
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @Get('get-user-info/:userId')
     async getUserInfo(@Param('userId') userId: string) {
         return await this.user.getOneUser(userId);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('change-email')
     async changeEmail(@User() user: JwtPayload, @Body() changeEmailRequest: ChangeEmailDTO) {
         return await this.user.changeEmail(user, changeEmailRequest);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('change-username')
     async changeUsername(@User() user: JwtPayload, @Body() changeUsernameRequest: ChangeUsernameDTO) {
@@ -48,14 +49,14 @@ export class UserController {
         //return await this.user.changeUsername(user, changeUsernameRequest);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('change-password')
     async changePassword(@User() user: JwtPayload, @Body() newPassword: ChangePasswordDTO) {
         return await this.user.changePassword(user, newPassword);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('update-profile')
     async updateProfile(@User() user: JwtPayload, @Body() newProfile: ChangeProfileDTO) {
@@ -65,14 +66,14 @@ export class UserController {
         return await this.user.updateProfile(user, newProfile);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @Post('agree-to-policies')
     async agreeToPolicies(@User() user: JwtPayload): Promise<FrontendUser> {
         return await this.user.agreeToPolicies(user);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
@@ -82,7 +83,7 @@ export class UserController {
         return await this.user.updateAvatar(user, avatar);
     }
 
-    @ApiTags('User')
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator]))
     @Patch('update-tagline')
     async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {

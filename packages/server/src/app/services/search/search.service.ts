@@ -12,15 +12,15 @@ import { ContentKind, ContentModel } from '@dragonfish/models/content';
 
 @Injectable()
 export class SearchService implements ISearch {
-    constructor(private readonly usersService: UsersStore, private readonly contentService: ContentStore) {}
+    constructor(private readonly usersStore: UsersStore, private readonly contentStore: ContentStore) {}
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
 
         const [initialUsers, initialBlogs, initialContent] = await Promise.all([
-            this.usersService.findRelatedUsers(parsedQuery, 1, 6),
-            this.contentService.findRelatedContent(parsedQuery, [ContentKind.BlogContent], 1, 6, contentFilter),
-            this.contentService.findRelatedContent(
+            this.usersStore.findRelatedUsers(parsedQuery, 1, 6),
+            this.contentStore.findRelatedContent(parsedQuery, [ContentKind.BlogContent], 1, 6, contentFilter),
+            this.contentStore.findRelatedContent(
                 parsedQuery,
                 [ContentKind.PoetryContent, ContentKind.ProseContent],
                 1,
@@ -39,7 +39,7 @@ export class SearchService implements ISearch {
 
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.usersService.findRelatedUsers(parsedQuery, pageNum, 15);
+        return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, 15);
     }
 
     async searchBlogs(
@@ -48,7 +48,7 @@ export class SearchService implements ISearch {
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentService.findRelatedContent(
+        return await this.contentStore.findRelatedContent(
             parsedQuery,
             [ContentKind.BlogContent],
             pageNum,
@@ -63,7 +63,7 @@ export class SearchService implements ISearch {
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentService.findRelatedContent(
+        return await this.contentStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,
