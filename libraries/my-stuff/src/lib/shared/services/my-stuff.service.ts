@@ -24,8 +24,8 @@ export class MyStuffService {
      */
     public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
         return this.handleResponse(
-            this.http.get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, { 
-                observe: 'response', 
+            this.http.get<ContentModel>(`${this.contentUrl}/fetch-one?contentId=${contentId}&kind=${kind}`, {
+                observe: 'response',
                 withCredentials: true,
             }),
         );
@@ -38,8 +38,8 @@ export class MyStuffService {
      */
     public fetchAll(): Observable<ContentModel[]> {
         return this.handleResponse(
-            this.http.get<ContentModel[]>(`${this.contentUrl}/fetch-all`, { 
-                observe: 'response', 
+            this.http.get<ContentModel[]>(`${this.contentUrl}/fetch-all`, {
+                observe: 'response',
                 withCredentials: true,
             }),
         );
@@ -70,10 +70,14 @@ export class MyStuffService {
      */
     public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
         return this.handleResponse(
-            this.http.patch<ContentModel>(`${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`, formInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.patch<ContentModel>(
+                `${this.contentUrl}/save-changes?contentId=${contentId}&kind=${kind}`,
+                formInfo,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
@@ -85,10 +89,14 @@ export class MyStuffService {
      */
     public deleteOne(contentId: string): Observable<void> {
         return this.handleResponse(
-            this.http.patch<void>(`${this.contentUrl}/delete-one?contentId=${contentId}`, {}, {
-                observe: 'response',
-                withCredentials: true
-            }),
+            this.http.patch<void>(
+                `${this.contentUrl}/delete-one?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
@@ -144,10 +152,13 @@ export class MyStuffService {
      */
     public fetchSections(contentId: string): Observable<Section[]> {
         return this.handleResponse(
-            this.http.get<Section[]>(`${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
+            this.http.get<Section[]>(
+                `${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
@@ -163,7 +174,7 @@ export class MyStuffService {
             this.http.put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
                 observe: 'response',
                 withCredentials: true,
-            })
+            }),
         );
     }
 

@@ -39,10 +39,7 @@ export class UserService implements IUser {
         if (!(await verify(potentialUser.password, changeUsernameRequest.currentPassword, { type: argon2id }))) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
-        const updatedUser = await this.usersStore.changeUsername(
-            potentialUser._id,
-            changeUsernameRequest.newUsername,
-        );
+        const updatedUser = await this.usersStore.changeUsername(potentialUser._id, changeUsernameRequest.newUsername);
         return this.usersStore.buildFrontendUser(updatedUser);
     }
 

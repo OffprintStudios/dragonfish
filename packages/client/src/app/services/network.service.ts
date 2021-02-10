@@ -4,12 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
-import {
-    ContentKind,
-    ContentModel,
-    NewsContentModel,
-    SetRating,
-} from '@dragonfish/models/content';
+import { ContentKind, ContentModel, NewsContentModel, SetRating } from '@dragonfish/models/content';
 import { Decision } from '@dragonfish/models/contrib';
 import {
     FrontendUser,
@@ -495,11 +490,10 @@ export class NetworkService {
 
     public addContentComment(contentId: string, commentInfo: CreateComment) {
         return this.handleResponse(
-            this.http.put<ContentComment>(
-                `${this.baseUrl}/comments/add-content-comment/${contentId}`,
-                commentInfo,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.put<ContentComment>(`${this.baseUrl}/comments/add-content-comment/${contentId}`, commentInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             (resp) => {
                 //this.alertsService.success(`Comment added successfully!`);
             },
@@ -627,10 +621,10 @@ export class NetworkService {
      */
     public fetchSection(sectionId: string): Observable<Section> {
         return this.handleResponse(
-            this.http.get<Section>(
-                `${this.baseUrl}/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<Section>(`${this.baseUrl}/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             null,
             (err) => {
                 //this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
@@ -735,10 +729,10 @@ export class NetworkService {
      */
     public fetchUserHistory(pageNum: number): Observable<PaginateResult<ReadingHistory>> {
         return this.handleResponse(
-            this.http.get<PaginateResult<ReadingHistory>>(
-                `${this.baseUrl}/history/fetch-user-history/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<PaginateResult<ReadingHistory>>(`${this.baseUrl}/history/fetch-user-history/${pageNum}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
             null,
             (err) => {
                 //this.alertsService.error(err.error.message);
@@ -827,10 +821,10 @@ export class NetworkService {
      */
     public fetchUserThreads(pageNum: number) {
         return this.handleResponse(
-            this.http.get<PaginateResult<MessageThread>>(
-                `${this.baseUrl}/messages/fetch-user--threads/${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
+            this.http.get<PaginateResult<MessageThread>>(`${this.baseUrl}/messages/fetch-user--threads/${pageNum}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 
