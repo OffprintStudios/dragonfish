@@ -11,10 +11,10 @@ import { IApprovalQueue } from '../../shared/admin';
 export class ApprovalQueueService implements IApprovalQueue {
     private readonly logger: Logger = new Logger(ApprovalQueueService.name);
 
-    constructor(private approvalQueueService: ApprovalQueueStore, private contentService: ContentStore) {}
+    constructor(private approvalQueueStore: ApprovalQueueStore, private contentService: ContentStore) {}
 
     async getQueue(pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
-        return await this.approvalQueueService.fetchAll(pageNum);
+        return await this.approvalQueueStore.fetchAll(pageNum);
     }
 
     async viewContent(contentId: string, kind: ContentKind, userId: string): Promise<ContentModel> {
@@ -22,7 +22,7 @@ export class ApprovalQueueService implements IApprovalQueue {
     }
 
     async claimContent(user: any, docId: string): Promise<ApprovalQueue> {
-        return await this.approvalQueueService.claimWork(user, docId);
+        return await this.approvalQueueStore.claimWork(user, docId);
     }
 
     async approveContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {

@@ -7,19 +7,20 @@ import { isNullOrUndefined } from '../../util';
 import { User } from '../../util/decorators';
 import { Roles } from '@dragonfish/models/users';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { DragonfishTags } from '@dragonfish/models/util';
 import { SectionForm, PublishSection } from '@dragonfish/models/sections';
 
 @Controller('sections')
 export class SectionsController {
     constructor(@Inject('ISections') private readonly sections: ISections) {}
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @Get('fetch-one-by-id')
     async fetchOneById(@Query('sectionId') sectionId: string, @Query('published') published: boolean) {
         return await this.sections.fetchOneById(sectionId, published);
     }
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-user-content-sections')
     async fetchUserContentSections(@User() user: JwtPayload, @Query('contentId') contentId: string) {
@@ -30,7 +31,7 @@ export class SectionsController {
         return await this.sections.fetchUserContentSections(user, contentId);
     }
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
     @Put('create-section')
     async createSection(
@@ -45,7 +46,7 @@ export class SectionsController {
         return await this.sections.create(user, contentId, sectionInfo);
     }
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('edit-section')
     async editSection(
@@ -61,7 +62,7 @@ export class SectionsController {
         return await this.sections.save(user, contentId, sectionId, sectionInfo);
     }
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('publish-section')
     async publishSection(
@@ -77,7 +78,7 @@ export class SectionsController {
         return await this.sections.publish(user, contentId, sectionId, pubStatus);
     }
 
-    @ApiTags('Content')
+    @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
     @Patch('delete-section')
     async deleteSection(

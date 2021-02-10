@@ -8,6 +8,7 @@ import * as csurf from 'csurf';
 import * as helmet from 'helmet';
 
 import { AppModule } from './app/app.module';
+import { DragonfishTags } from '@dragonfish/models/util';
 
 /**
  * Determines the location of the required .env file.
@@ -39,16 +40,16 @@ async function bootstrap() {
         .setTitle(`Dragonfish`)
         .setDescription(`"Fire in its own way"&mdash;The official Offprint API.`)
         .setVersion(`1.0`)
-        .addTag(`Auth`)
-        .addTag(`User`)
-        .addTag(`Content`)
-        .addTag(`Collections`)
-        .addTag(`Comments`)
-        .addTag(`History`)
-        .addTag(`Messages`)
-        .addTag(`Meta`)
-        .addTag(`Approval Queue`)
-        .addTag(`Search`)
+        .addTag(DragonfishTags.Auth)
+        .addTag(DragonfishTags.Users)
+        .addTag(DragonfishTags.Content)
+        .addTag(DragonfishTags.Collections)
+        .addTag(DragonfishTags.Comments)
+        .addTag(DragonfishTags.History)
+        .addTag(DragonfishTags.Messages)
+        .addTag(DragonfishTags.Meta)
+        .addTag(DragonfishTags.ApprovalQueue)
+        .addTag(DragonfishTags.Search)
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);

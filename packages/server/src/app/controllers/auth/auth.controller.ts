@@ -9,19 +9,20 @@ import { FrontendUser } from '@dragonfish/models/users';
 import { IAuth } from '../../shared/auth';
 import { User } from '../../util/decorators';
 import { JwtPayload } from '@dragonfish/models/auth';
+import { DragonfishTags } from '@dragonfish/models/util';
 
 @Controller('auth')
 export class AuthController {
     constructor(@Inject('IAuth') private readonly auth: IAuth) {}
 
-    @ApiTags('Auth')
+    @ApiTags(DragonfishTags.Auth)
     @SetCookies()
     @Post('register')
     async register(@Request() req: any, @Body() newUser: CreateUserDTO): Promise<FrontendUser> {
         return await this.auth.register(req, newUser);
     }
 
-    @ApiTags('Auth')
+    @ApiTags(DragonfishTags.Auth)
     @SetCookies()
     @Post('login')
     async login(@Request() req: any, @Body() loginUser: LoginUserDTO, @Cookies() cookies: any): Promise<FrontendUser> {
@@ -43,7 +44,7 @@ export class AuthController {
         }
     }
 
-    @ApiTags('Auth')
+    @ApiTags(DragonfishTags.Auth)
     @UseGuards(RefreshGuard)
     @Get('refresh-token')
     async refreshToken(@User() user: JwtPayload, @Cookies() cookies: any): Promise<{ newToken: string }> {
@@ -60,7 +61,7 @@ export class AuthController {
         }
     }
 
-    @ApiTags('Auth')
+    @ApiTags(DragonfishTags.Auth)
     @UseGuards(RefreshGuard)
     @SetCookies()
     @Get('logout')

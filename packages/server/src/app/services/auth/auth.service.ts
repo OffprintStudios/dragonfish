@@ -18,10 +18,10 @@ import { IAuth } from '../../shared/auth';
 export class AuthService implements IAuth {
     private readonly logger: Logger = new Logger(AuthService.name);
 
-    constructor(private readonly usersService: UsersStore, private readonly jwtService: JwtService) {}
+    constructor(private readonly usersStore: UsersStore, private readonly jwtService: JwtService) {}
 
     async validateUser(email: string, password: string): Promise<User> {
-        const potentialUser = await this.usersService.findOneByEmail(email);
+        const potentialUser = await this.usersStore.findOneByEmail(email);
         if (potentialUser) {
             try {
                 if (await verify(potentialUser.password, password, { type: argon2id })) {
@@ -40,10 +40,10 @@ export class AuthService implements IAuth {
     }
 
     async register(req: any, newUser: CreateUser): Promise<FrontendUser> {
-        const addedUser = await this.usersService.createUser(newUser);
+        const addedUser = await this.usersStore.createUser(newUser);
         this.logger.log(`New user created with ID: ${addedUser._id}`);
         const sessionId = nanoid();
-        const newSession = await this.usersService.addRefreshToken(addedUser._id, sessionId);
+        const newSession = await this.usersStore.addRefreshToken(addedUser._id, sessionId);
         return this.login(addedUser, req, sessionId, newSession.expires);
     }
 
@@ -60,7 +60,7 @@ export class AuthService implements IAuth {
         } else {
             req._cookies = [{ name: 'refreshToken', value: '', options: { httpOnly: true, expires: Date.now() } }];
         }
-        return this.usersService.buildFrontendUser(user, this.jwtService.sign(payload));
+        return this.usersStore.buildFrontendUser(user, this.jwtService.sign(payload));
     }
 
     logout(req: any): void {
@@ -70,7 +70,7 @@ export class AuthService implements IAuth {
     }
 
     async refreshLogin(user: JwtPayload): Promise<string> {
-        const validatedUser = await this.usersService.findOneById(user.sub);
+        const validatedUser = await this.usersStore.findOneById(user.sub);
         const newPayload: JwtPayload = {
             username: validatedUser.username,
             roles: validatedUser.audit.roles,
@@ -81,14 +81,14 @@ export class AuthService implements IAuth {
     }
 
     async addRefreshToken(userId: string, sessionId: string): Promise<AuditSession> {
-        return await this.usersService.addRefreshToken(userId, sessionId);
+        return await this.usersStore.addRefreshToken(userId, sessionId);
     }
 
     async checkRefreshToken(userId: string, sessionId: string): Promise<boolean> {
-        return await this.usersService.checkRefreshToken(userId, sessionId);
+        return await this.usersStore.checkRefreshToken(userId, sessionId);
     }
 
     async clearRefreshToken(userId: string, oldSessionId: string): Promise<void> {
-        return await this.usersService.clearRefreshToken(userId, oldSessionId);
+        return await this.usersStore.clearRefreshToken(userId, oldSessionId);
     }
 }
