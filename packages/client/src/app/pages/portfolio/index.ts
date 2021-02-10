@@ -90,7 +90,7 @@ export const PortfolioRoutes: Routes = [
                 }),
                 resolve: {
                     collData: PortfolioResolvers.find((x) => {
-                        return x.name === 'CollectionsPageResolver';
+                        return x.name === 'CollectionPageResolver';
                     }),
                 },
                 runGuardsAndResolvers: 'always',

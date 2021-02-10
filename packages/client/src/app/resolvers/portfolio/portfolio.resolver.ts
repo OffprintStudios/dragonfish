@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { NetworkService } from '../services';
+import { NetworkService } from '../../services';
 import { FrontendUser } from '@dragonfish/models/users';
 
 @Injectable()

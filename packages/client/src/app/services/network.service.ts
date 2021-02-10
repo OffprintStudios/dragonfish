@@ -286,105 +286,6 @@ export class NetworkService {
     }
     // #endregion
 
-    //#region ---BLOGS---
-
-    /**
-     * Sends the requisite blog info to the backend so that a new blog
-     * can be created.
-     *
-     * @param info The blog's information.
-     */
-    public createBlog(info: BlogForm, parentId?: Types.ObjectId) {
-        if (parentId) {
-            return this.handleResponse(
-                this.http.put<Blog>(`${this.baseUrl}/content/blogs/create-blog?parentId=${parentId}`, info, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-                (resp) => {
-                    //this.alertsService.success('Blog successfully created.');
-                },
-            );
-        } else {
-            return this.handleResponse(
-                this.http.put<Blog>(`${this.baseUrl}/content/blogs/create-blog`, info, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
-                (resp) => {
-                    //this.alertsService.success('Blog successfully created.');
-                },
-            );
-        }
-    }
-
-    /**
-     * Fetches a user's blogs for display in the blog management section
-     * of the home page.
-     */
-    public fetchUserBlogs(pageNum: number) {
-        return this.handleResponse(
-            this.http.get<PaginateResult<Blog>>(`${this.baseUrl}/content/blogs/fetch-user-blogs/${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Deletes a user's blog based on the specified Blog ID.
-     *
-     * @param blogId The ID of the blog we're deleting
-     */
-    public deleteBlog(blogId: string) {
-        return this.handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/content/blogs/delete-blog`,
-                { blogId },
-                { observe: 'response', withCredentials: true },
-            ),
-            (resp) => {
-                //this.alertsService.success('Blog successfully deleted.');
-            },
-        );
-    }
-
-    /**
-     * Changes the publishing status of the specified blog.
-     *
-     * @param blogId The ID of the blog we're changing status on
-     */
-    public changeBlogPublishStatus(contentId: string, pubChange: PubChange) {
-        return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/content/blogs/set-publish-status/${contentId}`, pubChange, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success('Blog status updated.');
-            },
-        );
-    }
-
-    /**
-     * Sends information to the backend so the requisite blog can be updated.
-     *
-     * @param blogInfo The updated blog info
-     */
-    public editBlog(blogId: string, blogInfo: BlogForm) {
-        return this.handleResponse(
-            this.http.patch<BlogsContentModel>(`${this.baseUrl}/content/blogs/edit-blog/${blogId}`, blogInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            (resp) => {
-                //this.alertsService.success('Changes saved successfully.');
-            },
-        );
-    }
-
-    //#endregion
-
     //#region ---COLLECTIONS---
 
     /**
@@ -394,7 +295,7 @@ export class NetworkService {
      */
     public createCollection(collInfo: CollectionForm) {
         return this.handleResponse(
-            this.http.put<void>(`${this.baseUrl}/content/collections/create-collection`, collInfo, {
+            this.http.put<void>(`${this.baseUrl}/collections/create-collection`, collInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -413,7 +314,7 @@ export class NetworkService {
     public fetchAllCollections(pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/content/collections/get-all-collections?pageNum=${pageNum}`,
+                `${this.baseUrl}/collections/get-all-collections?pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -429,7 +330,7 @@ export class NetworkService {
      */
     public fetchOneCollection(collId: string): Observable<Collection> {
         return this.handleResponse(
-            this.http.get<Collection>(`${this.baseUrl}/content/collections/get-one-collection?collId=${collId}`, {
+            this.http.get<Collection>(`${this.baseUrl}/collections/get-one-collection?collId=${collId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -448,7 +349,7 @@ export class NetworkService {
     public fetchOnePublicCollection(userId: string, collId: string): Observable<Collection> {
         return this.handleResponse(
             this.http.get<Collection>(
-                `${this.baseUrl}/content/collections/get-one-public-collection?userId=${userId}&collId=${collId}`,
+                `${this.baseUrl}/collections/get-one-public-collection?userId=${userId}&collId=${collId}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -466,7 +367,7 @@ export class NetworkService {
     public fetchPublicCollections(userId: string, pageNum: number) {
         return this.handleResponse(
             this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/content/collections/get-public-collections?userId=${userId}&pageNum=${pageNum}`,
+                `${this.baseUrl}/collections/get-public-collections?userId=${userId}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
             null,
@@ -481,7 +382,7 @@ export class NetworkService {
      */
     public fetchAllCollectionsNoPaginate() {
         return this.handleResponse(
-            this.http.get<Collection[]>(`${this.baseUrl}/content/collections/get-all-collections-no-paginate`, {
+            this.http.get<Collection[]>(`${this.baseUrl}/collections/get-all-collections-no-paginate`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -500,7 +401,7 @@ export class NetworkService {
      */
     public editCollection(collId: string, collInfo: CollectionForm) {
         return this.handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/content/collections/edit-collection?collId=${collId}`, collInfo, {
+            this.http.patch<void>(`${this.baseUrl}/collections/edit-collection?collId=${collId}`, collInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -521,7 +422,7 @@ export class NetworkService {
     public deleteCollection(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/delete-collection?collId=${collId}`,
+                `${this.baseUrl}/collections/delete-collection?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -543,7 +444,7 @@ export class NetworkService {
     public addWorkToCollection(collId: string, workId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/add-content?collId=${collId}&contentId=${workId}`,
+                `${this.baseUrl}/collections/add-content?collId=${collId}&contentId=${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -565,7 +466,7 @@ export class NetworkService {
     public removeWorkFromCollection(collId: string, workId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/remove-content?collId=${collId}&contentId=${workId}`,
+                `${this.baseUrl}/collections/remove-content?collId=${collId}&contentId=${workId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -586,7 +487,7 @@ export class NetworkService {
     public setCollectionToPublic(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/set-public?collId=${collId}`,
+                `${this.baseUrl}/collections/set-public?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -605,7 +506,7 @@ export class NetworkService {
     public setCollectionToPrivate(collId: string) {
         return this.handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/collections/set-private?collId=${collId}`,
+                `${this.baseUrl}/collections/set-private?collId=${collId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1387,24 +1288,6 @@ export class NetworkService {
 
     //#endregion
 
-    //#region ---PORTFOLIO---
-
-    /**
-     * Fetches the user whose portfolio the request belongs to.
-     *
-     * @param userId The user ID of a requested portfolio
-     */
-    public fetchUserInfo(userId: string): Observable<FrontendUser> {
-        return this.handleResponse(
-            this.http.get<FrontendUser>(`${this.baseUrl}/content/portfolio/get-user-info/${userId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
     //#region ---PROSE---
 
     /**
@@ -1603,6 +1486,20 @@ export class NetworkService {
     //#endregion
 
     //#region ---USER---
+
+    /**
+     * Fetches the user whose portfolio the request belongs to.
+     *
+     * @param userId The user ID of a requested portfolio
+     */
+    public fetchUserInfo(userId: string): Observable<FrontendUser> {
+        return this.handleResponse(
+            this.http.get<FrontendUser>(`${this.baseUrl}/user/get-user-info/${userId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
 
     /**
      * Sends a request to change a user's email.
