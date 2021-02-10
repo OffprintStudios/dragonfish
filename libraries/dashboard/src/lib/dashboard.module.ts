@@ -23,7 +23,7 @@ import { DashboardComponent } from './dashboard.component';
         AlertsModule,
         IconsModule,
         MaterialModule,
-        NgxsModule.forFeature([])
+        NgxsModule.forFeature([]),
     ],
 })
 export class DashboardModule {}
