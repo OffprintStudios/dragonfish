@@ -17,17 +17,15 @@ It's still very much a work in progress.
 
 You must have the following tools installed on your system or in a docker container (use listed versions or latest):
 
--   NodeJS 14.6.0
--   Yarn 1.22.4 (don't use 2.x)
+-   NodeJS 15.5.1
+-   Yarn 1.22.10 (don't use 2.x)
 -   MongoDB Community Server 4.2.1
     -   MongoDB Compass is recommended
--   The [Rust 1.30 (or later) toolchain](https://rustup.rs/).
-    -   You'll also need a working C compiler. On Ubuntu, the `build-essential` apt package is sufficient.
 
 For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 
--   The Angular CLI 10.0.4 (globally, via Yarn)
--   The NestJS CLI 7.4.1 (globally, via Yarn)
+-   The Angular CLI 11.2.0 or higher (globally, via Yarn)
+-   The NestJS CLI 7.6.5 or higher (globally, via Yarn)
 -   The `nx` CLI (globally, via Yarn)
 
 ## Building the application
