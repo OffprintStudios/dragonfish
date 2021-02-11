@@ -28,7 +28,6 @@ import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { AccountPages } from './pages/account';
 import { BrowsePages } from './pages/browse';
 import { ContentViewPages } from './pages/content-views';
-import { DashboardPages } from './pages/dash';
 import { DocsPages } from './pages/docs';
 import { HomePages } from './pages/home';
 import { MigrationPages } from './pages/migration';
@@ -80,7 +79,6 @@ import { environment } from '../environments/environment';
         ...AccountPages,
         ...BrowsePages,
         ...ContentViewPages,
-        ...DashboardPages,
         ...DocsPages,
         ...HomePages,
         ...MigrationPages,
