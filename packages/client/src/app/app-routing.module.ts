@@ -39,13 +39,13 @@ const routes: Routes = [
         path: 'my-stuff',
         canLoad: [AuthGuard],
         loadChildren: () => import('@dragonfish/my-stuff').then((m) => m.MyStuffModule),
-    },
+    },*/
     {
         path: 'dashboard',
         canLoad: [AuthGuard],
         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
         loadChildren: () => import('@dragonfish/dashboard').then((m) => m.DashboardModule),
-    },*/
+    },
 ];
 
 @NgModule({
