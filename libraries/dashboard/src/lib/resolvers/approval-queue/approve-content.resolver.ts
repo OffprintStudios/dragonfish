@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
-import { ApprovalQueueState } from '../shared/approval-queue';
+import { ApprovalQueueState } from '../../shared/approval-queue';
 
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 

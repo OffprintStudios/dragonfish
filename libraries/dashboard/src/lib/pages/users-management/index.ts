@@ -1,3 +1,1 @@
-import { UsersManagementComponent } from './users-management.component';
-
-export const UsersManagementPages = [UsersManagementComponent];
+export { UsersManagementComponent } from './users-management.component';

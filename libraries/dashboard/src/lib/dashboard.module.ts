@@ -11,12 +11,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueuePages } from './pages/approval-queue';
-import { AuditLogPages } from './pages/audit-log';
-import { GroupQueuePages } from './pages/group-queue';
-import { OverviewPages } from './pages/overview';
-import { ReportsPages } from './pages/reports';
-import { UsersManagementPages } from './pages/users-management';
+import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/approval-queue';
+import { AuditLogComponent } from './pages/audit-log';
+import { GroupQueueComponent } from './pages/group-queue';
+import { OverviewComponent } from './pages/overview';
+import { ReportsComponent } from './pages/reports';
+import { UsersManagementComponent } from './pages/users-management';
 
 /* Components */
 
@@ -25,17 +25,19 @@ import { ApprovalQueueState } from './shared/approval-queue';
 
 /* Services */
 import { ApprovalQueueService } from './shared/approval-queue/services';
-import { AuthGuard } from './util';
 
 @NgModule({
     declarations: [
         DashboardComponent,
-        ...ApprovalQueuePages,
-        ...AuditLogPages,
-        ...GroupQueuePages,
-        ...OverviewPages,
-        ...ReportsPages,
-        ...UsersManagementPages,
+        ApprovalQueueComponent,
+        ApprovePoetryComponent,
+        ApproveProseComponent,
+        ApproveSectionViewComponent,
+        AuditLogComponent,
+        GroupQueueComponent,
+        OverviewComponent,
+        ReportsComponent,
+        UsersManagementComponent,
     ],
     imports: [
         CommonModule,

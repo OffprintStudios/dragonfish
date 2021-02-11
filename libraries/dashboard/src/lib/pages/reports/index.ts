@@ -1,3 +1,1 @@
-import { ReportsComponent } from './reports.component';
-
-export const ReportsPages = [ReportsComponent];
+export { ReportsComponent } from './reports.component';

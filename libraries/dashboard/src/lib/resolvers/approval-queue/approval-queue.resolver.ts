@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Store } from '@ngxs/store';
 
-import { AQNamespace, ApprovalQueueState } from '../shared/approval-queue';
+import { AQNamespace, ApprovalQueueState } from '../../shared/approval-queue';
 import { PaginateResult } from '@dragonfish/models/util';
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 

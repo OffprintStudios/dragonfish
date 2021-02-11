@@ -1,3 +1,1 @@
-import { AuditLogComponent } from './audit-log.component';
-
-export const AuditLogPages = [AuditLogComponent];
+export { AuditLogComponent } from './audit-log.component';

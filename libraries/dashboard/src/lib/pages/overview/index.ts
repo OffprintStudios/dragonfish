@@ -1,3 +1,1 @@
-import { OverviewComponent } from './overview.component';
-
-export const OverviewPages = [OverviewComponent];
+export { OverviewComponent } from './overview.component';
