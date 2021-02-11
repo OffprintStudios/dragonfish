@@ -12,7 +12,11 @@ categories:
       - 'Bug'
   - title: '🧰 Maintenance'
     label: 'Chore'
-change-template: '- **$TITLE** by @$AUTHOR (#$NUMBER): \n ```$BODY```'
+change-template: '
+- **$TITLE** by @$AUTHOR (#$NUMBER):
+ ```
+ $BODY
+ ```'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
