@@ -46,12 +46,8 @@ import { AuthGuard } from './util';
         ComponentsModule,
         NgxPaginationModule,
         PipesModule,
-        NgxsModule.forFeature([
-            ApprovalQueueState,
-        ]),
+        NgxsModule.forFeature([ApprovalQueueState]),
     ],
-    providers: [
-        ApprovalQueueService,
-    ],
+    providers: [ApprovalQueueService],
 })
 export class DashboardModule {}

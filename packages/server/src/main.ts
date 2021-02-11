@@ -22,6 +22,7 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     // Initializing core functionality & security
+    app.use(helmet({ contentSecurityPolicy: false }));
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
@@ -31,7 +32,6 @@ async function bootstrap() {
         res.cookie('XSRF-TOKEN', req.csrfToken());
         return next();
     });
-    app.use(helmet());
     app.use(require('prerender-node').set('prerenderToken', process.env.PRERENDER_TOKEN));
     app.setGlobalPrefix('api');
 

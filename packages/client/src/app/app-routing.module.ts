@@ -56,12 +56,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [
-        ...DocsResolvers,
-        ...HomeResolvers,
-        ...MigrationResolvers,
-        ...PortfolioResolvers,
-        ...Resolvers,
-    ],
+    providers: [...DocsResolvers, ...HomeResolvers, ...MigrationResolvers, ...PortfolioResolvers, ...Resolvers],
 })
 export class AppRoutingModule {}
