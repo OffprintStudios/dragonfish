@@ -7,7 +7,7 @@ import { AboutOffprintComponent } from './about-offprint/about-offprint.componen
 import { SiteStaffComponent } from './site-staff/site-staff.component';
 import { SupportersComponent } from './supporters/supporters.component';
 
-import { DocsResolvers } from '../../resolvers/docs';
+import { SiteStaffResolver, SupportersResolver } from '../../resolvers/docs';
 
 export const DocsPages = [
     TosComponent,
@@ -27,9 +27,7 @@ export const DocsRoutes: Routes = [
         path: 'site-staff',
         component: SiteStaffComponent,
         resolve: {
-            staffData: DocsResolvers.find((x) => {
-                return x.name === 'SiteStaffResolver';
-            }),
+            staffData: SiteStaffResolver,
         },
         runGuardsAndResolvers: 'always',
     },
@@ -37,9 +35,7 @@ export const DocsRoutes: Routes = [
         path: 'supporters',
         component: SupportersComponent,
         resolve: {
-            supporterData: DocsResolvers.find((x) => {
-                return x.name === 'SupportersResolver';
-            }),
+            supporterData: SupportersResolver,
         },
         runGuardsAndResolvers: 'always',
     },

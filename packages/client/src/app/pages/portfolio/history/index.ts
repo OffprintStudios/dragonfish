@@ -1,3 +1,1 @@
-import { HistoryComponent as PortHistComponent } from './history.component';
-
-export const PortfolioHistoryPages = [PortHistComponent];
+export { HistoryComponent as PortHistComponent } from './history.component';

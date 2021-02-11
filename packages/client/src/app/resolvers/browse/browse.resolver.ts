@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { PaginateResult } from '@dragonfish/models/util';
 import { ContentKind, ContentModel } from '@dragonfish/models/content';
 import { Store } from '@ngxs/store';
-import { Content, ContentState } from '../shared/content';
+import { Content, ContentState } from '../../shared/content';
 
 @Injectable()
 export class BrowseResolver implements Resolve<PaginateResult<ContentModel>> {

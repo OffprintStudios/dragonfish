@@ -101,7 +101,7 @@
     "tslib": "^2.0.0",
     "validator": "^13.1.1",
     "voca": "^1.4.0",
-    "zone.js": "^0.10.2"
+    "zone.js": "^0.11.3"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^11.0.0",
