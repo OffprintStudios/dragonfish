@@ -13,21 +13,25 @@ categories:
   - title: '🧰 Maintenance'
     label: 'Chore'
 change-template: |
- - **$TITLE** by @$AUTHOR (#$NUMBER):
- > $BODY
+ - $TITLE (@$AUTHOR, #$NUMBER)
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - 'major'
+      - 'Major'
   minor:
     labels:
-      - 'minor'
+      - 'Minor'
   patch:
     labels:
-      - 'patch'
+      - 'Patch'
   default: patch
 template: |
   ## What's New
 
   $CHANGES
+
+  ## Contributors
+
+  This release was made possible by the following wonderful people:
+  $CONTRIBUTORS
