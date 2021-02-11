@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MyStuffResolvers } from './resolvers';
+import { MyStuffResolver, ViewSectionsResolver } from './resolvers';
 
-import { MyStuffViews } from './views';
-import { Roles } from '@dragonfish/models/users';
+/* Views */
 import { MyStuffComponent } from './my-stuff.component';
+import { BlogFormComponent, NewsFormComponent, ProseFormComponent, PoetryFormComponent, ViewPoetryComponent, ViewProseComponent } from './views';
+
+/* Util */
+import { Roles } from '@dragonfish/models/users';
 import { AuthGuard } from './util';
 
 const routes: Routes = [
@@ -12,84 +15,58 @@ const routes: Routes = [
         path: '',
         component: MyStuffComponent,
         resolve: {
-            stuffData: MyStuffResolvers.find((x) => {
-                return x.name === 'MyStuffResolver';
-            }),
+            stuffData: MyStuffResolver,
         },
         children: [
             {
                 path: 'new-blog',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'BlogFormComponent';
-                }),
+                component: BlogFormComponent,
             },
             {
                 path: 'new-post',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'NewsFormComponent';
-                }),
+                component: NewsFormComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Contributor, Roles.Moderator, Roles.Admin] },
             },
             {
                 path: 'new-prose',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'ProseFormComponent';
-                }),
+                component: ProseFormComponent,
             },
             {
                 path: 'new-poetry',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'PoetryFormComponent';
-                }),
+                component: PoetryFormComponent,
             },
             {
                 path: 'view-blog',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'BlogFormComponent';
-                }),
+                component: BlogFormComponent
             },
             {
                 path: 'view-post',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'NewsFormComponent';
-                }),
+                component: NewsFormComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Contributor, Roles.Moderator, Roles.Admin] },
             },
             {
                 path: 'view-prose',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'ViewProseComponent';
-                }),
+                component: ViewProseComponent,
                 resolve: {
-                    sectionData: MyStuffResolvers.find((x) => {
-                        return x.name === 'ViewSectionsResolver';
-                    }),
+                    sectionData: ViewSectionsResolver,
                 },
             },
             {
                 path: 'view-poetry',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'ViewPoetryComponent';
-                }),
+                component: ViewPoetryComponent,
                 resolve: {
-                    sectionData: MyStuffResolvers.find((x) => {
-                        return x.name === 'ViewSectionsResolver';
-                    }),
+                    sectionData: ViewSectionsResolver,
                 },
             },
             {
                 path: 'edit-prose',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'ProseFormComponent';
-                }),
+                component: ProseFormComponent,
             },
             {
                 path: 'edit-poetry',
-                component: MyStuffViews.find((x) => {
-                    return x.name === 'PoetryFormComponent';
-                }),
+                component: PoetryFormComponent,
             },
         ],
     },
@@ -98,6 +75,10 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [...MyStuffResolvers, AuthGuard],
+    providers: [
+        AuthGuard,
+        MyStuffResolver,
+        ViewSectionsResolver,
+    ],
 })
 export class MyStuffRoutingModule {}

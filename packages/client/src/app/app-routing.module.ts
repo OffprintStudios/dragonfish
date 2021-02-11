@@ -35,11 +35,11 @@ const routes: Routes = [
     ...SocialRoutes,
     ...SearchRoutes,
     ...PortfolioRoutes,
-    /*{
+    {
         path: 'my-stuff',
         canLoad: [AuthGuard],
         loadChildren: () => import('@dragonfish/my-stuff').then((m) => m.MyStuffModule),
-    },*/
+    },
     {
         path: 'dashboard',
         canLoad: [AuthGuard],
