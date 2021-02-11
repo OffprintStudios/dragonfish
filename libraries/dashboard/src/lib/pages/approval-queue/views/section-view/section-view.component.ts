@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ApprovalQueueState, AQNamespace } from 'packages/client/src/app/shared/dash/approval-queue';
+import { ApprovalQueueState, AQNamespace } from '../../../../shared/approval-queue';
 
 @Component({
     selector: 'section-view',
