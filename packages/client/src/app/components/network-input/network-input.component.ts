@@ -17,7 +17,7 @@ export class NetworkInputComponent implements OnInit {
     @Input() inputValue: string;
     @Input() uploadFunction: (newValue: string, password: string) => Observable<string>;
 
-    passwordValue: string = '';
+    passwordValue = '';
     currentState: InputState = InputState.Default;
     initialValue: string;
 

@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-
 import { HomeComponent } from './home.component';
 import { NewsComponent } from './news/news.component';
 import { WatchingComponent as WatchingPageComponent } from './watching/watching.component';
-import { HomeResolvers } from '../../resolvers/home';
+import { HomePageResolver, NewsResolver } from '../../resolvers/home';
 
 export const HomePages = [HomeComponent, NewsComponent, WatchingPageComponent];
 
@@ -11,23 +10,15 @@ export const HomeRoutes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
-        resolve: {
-            homeData: HomeResolvers.find((x) => {
-                return x.name === 'HomePageResolver';
-            }),
-        },
+        resolve: { homeData: HomePageResolver },
         runGuardsAndResolvers: 'always',
         children: [
             {
                 path: 'news',
                 component: NewsComponent,
-                resolve: {
-                    feedData: HomeResolvers.find((x) => {
-                        return x.name === 'NewsResolver';
-                    }),
-                },
+                resolve: { feedData: NewsResolver },
                 runGuardsAndResolvers: 'paramsChange',
             },
         ],
     },
-];
+]

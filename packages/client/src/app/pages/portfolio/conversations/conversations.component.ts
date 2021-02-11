@@ -21,7 +21,7 @@ export class ConversationsComponent implements OnInit {
 
     threads: PaginateResult<MessageThread>;
 
-    pageNum: number = 1;
+    pageNum = 1;
 
     constructor(private networkService: NetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {

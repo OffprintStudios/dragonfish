@@ -35,7 +35,7 @@ export class SiteSidenavComponent implements OnInit {
     loadingLogin = false;
     siteVersion = Constants.siteVersion;
 
-    notifCount: number = 0;
+    notifCount = 0;
 
     loginForm = new FormGroup({
         email: new FormControl(''),

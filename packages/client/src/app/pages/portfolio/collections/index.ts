@@ -1,4 +1,2 @@
-import { CollectionsComponent } from './collections.component';
-import { CollectionPageComponent } from './collection-page/collection-page.component';
-
-export const PortfolioCollectionsPages = [CollectionPageComponent, CollectionsComponent];
+export { CollectionsComponent } from './collections.component';
+export { CollectionPageComponent } from './collection-page/collection-page.component';

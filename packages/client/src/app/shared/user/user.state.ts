@@ -18,6 +18,13 @@ import { NetworkService } from '../../services';
 export class UserState {
     constructor(private networkService: NetworkService, private alerts: AlertsService) {}
 
+    /* Selectors */
+
+    @Selector()
+    static currUser(state: UserStateModel): FrontendUser | null {
+        return state.currUser;
+    }
+
     /* Actions */
 
     @Action(User.SetUser)
@@ -102,12 +109,5 @@ export class UserState {
                 });
             }),
         );
-    }
-
-    /* Selectors */
-
-    @Selector()
-    static currUser(state: UserStateModel): FrontendUser | null {
-        return state.currUser;
     }
 }

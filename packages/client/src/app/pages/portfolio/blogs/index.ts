@@ -1,4 +1,2 @@
-import { BlogsComponent } from './blogs.component';
-import { BlogPageComponent } from './blog-page/blog-page.component';
-
-export const PortfolioBlogPages = [BlogsComponent, BlogPageComponent];
+export { BlogsComponent } from './blogs.component';
+export { BlogPageComponent } from './blog-page/blog-page.component';

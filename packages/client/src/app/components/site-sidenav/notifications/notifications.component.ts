@@ -12,7 +12,7 @@ import { NotificationSelect } from './notification-select.model';
     styleUrls: ['./notifications.component.less'],
 })
 export class NotificationsComponent implements OnInit {
-    loading: boolean = false;
+    loading = false;
 
     unread: NotificationSelect[];
     read: NotificationSelect[];

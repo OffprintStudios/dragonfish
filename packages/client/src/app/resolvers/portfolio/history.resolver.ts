@@ -8,7 +8,7 @@ import { ReadingHistory } from '@dragonfish/models/reading-history';
 
 @Injectable()
 export class HistoryResolver implements Resolve<PaginateResult<ReadingHistory>> {
-    pageNum: number = 1;
+    pageNum = 1;
 
     constructor(private networkService: NetworkService) {}
 

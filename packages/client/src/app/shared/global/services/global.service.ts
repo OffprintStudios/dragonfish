@@ -16,7 +16,7 @@ export class GlobalService {
      * @param enableExplicit Enable explicit check
      */
     public async setContentFilter(enableMature: boolean, enableExplicit: boolean) {
-        let options: CookieOptions = { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) };
+        const options: CookieOptions = { expires: new Date(new Date().setFullYear(new Date().getFullYear() + 1)) };
         let filterSetting: ContentFilter = ContentFilter.Default;
 
         if (enableMature === true && enableExplicit === false) {

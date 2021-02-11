@@ -26,7 +26,8 @@
         "pipes": { "tags": [] },
         "editor": { "tags": [] },
         "components": { "tags": [] },
-        "utilities": { "tags": [] }
+        "utilities": { "tags": [] },
+        "dashboard": { "tags": [] }
     },
     "workspaceLayout": { "appsDir": "packages", "libsDir": "libraries" }
 }

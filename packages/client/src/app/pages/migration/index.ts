@@ -5,7 +5,7 @@ import { MigrateWorkComponent } from './migrate-work/migrate-work.component';
 import { MigrateBlogComponent } from './migrate-blog/migrate-blog.component';
 
 import { AuthGuard } from '../../shared/auth/services';
-import { MigrationResolvers } from '../../resolvers/migration';
+import { MigrationResolver, MigrateBlogResolver, MigrateWorkResolver } from '../../resolvers/migration';
 
 export const MigrationPages = [MigrationComponent, MigrateWorkComponent, MigrateBlogComponent];
 
@@ -15,9 +15,7 @@ export const MigrationRoutes: Routes = [
         component: MigrationComponent,
         canActivate: [AuthGuard],
         resolve: {
-            contentData: MigrationResolvers.find((x) => {
-                return x.name === 'MigrationResolver';
-            }),
+            contentData: MigrationResolver,
         },
         runGuardsAndResolvers: 'always',
         children: [
@@ -26,9 +24,7 @@ export const MigrationRoutes: Routes = [
                 component: MigrateWorkComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    workData: MigrationResolvers.find((x) => {
-                        return x.name === 'MigrateWorkResolver';
-                    }),
+                    workData: MigrateWorkResolver,
                 },
                 runGuardsAndResolvers: 'always',
             },
@@ -37,9 +33,7 @@ export const MigrationRoutes: Routes = [
                 component: MigrateBlogComponent,
                 canActivate: [AuthGuard],
                 resolve: {
-                    blogData: MigrationResolvers.find((x) => {
-                        return x.name === 'MigrateBlogResolver';
-                    }),
+                    blogData: MigrateBlogResolver,
                 },
                 runGuardsAndResolvers: 'always',
             },

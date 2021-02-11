@@ -37,6 +37,43 @@ import { UserState } from '../user';
 export class ContentState {
     constructor(private networkService: NetworkService, private store: Store) {}
 
+    /* Selectors */
+
+    @Selector()
+    static currPageContent(state: ContentStateModel): PaginateResult<ContentModel> {
+        return state.currPageContent;
+    }
+
+    @Selector()
+    static currContent(state: ContentStateModel): ContentModel {
+        return state.currContent;
+    }
+
+    @Selector()
+    static currHistDoc(state: ContentStateModel): ReadingHistory {
+        return state.currHistDoc;
+    }
+
+    @Selector()
+    static currSections(state: ContentStateModel): SectionInfo[] {
+        return state.currSections;
+    }
+
+    @Selector()
+    static currSection(state: ContentStateModel): Section {
+        return state.currSection;
+    }
+
+    @Selector()
+    static likes(state: ContentStateModel): number {
+        return state.likes;
+    }
+
+    @Selector()
+    static dislikes(state: ContentStateModel): number {
+        return state.dislikes;
+    }
+
     /* Actions */
 
     @Action(Content.FetchOne)
@@ -195,42 +232,5 @@ export class ContentState {
         patchState({
             dislikes: getState().dislikes - 1,
         });
-    }
-
-    /* Selectors */
-
-    @Selector()
-    static currPageContent(state: ContentStateModel): PaginateResult<ContentModel> {
-        return state.currPageContent;
-    }
-
-    @Selector()
-    static currContent(state: ContentStateModel): ContentModel {
-        return state.currContent;
-    }
-
-    @Selector()
-    static currHistDoc(state: ContentStateModel): ReadingHistory {
-        return state.currHistDoc;
-    }
-
-    @Selector()
-    static currSections(state: ContentStateModel): SectionInfo[] {
-        return state.currSections;
-    }
-
-    @Selector()
-    static currSection(state: ContentStateModel): Section {
-        return state.currSection;
-    }
-
-    @Selector()
-    static likes(state: ContentStateModel): number {
-        return state.likes;
-    }
-
-    @Selector()
-    static dislikes(state: ContentStateModel): number {
-        return state.dislikes;
     }
 }

@@ -13,7 +13,7 @@ import { SearchService } from '../../../services/utility';
 export class FindBlogsComponent implements OnInit {
     results: PaginateResult<ContentModel>;
     query: string;
-    pageNum: number = 1;
+    pageNum = 1;
 
     constructor(private searchService: SearchService, public route: ActivatedRoute, private router: Router) {}
 

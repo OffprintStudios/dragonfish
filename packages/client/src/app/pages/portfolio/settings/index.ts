@@ -1,3 +1,1 @@
-import { SettingsComponent } from './settings.component';
-
-export const PortfolioSettingsPages = [SettingsComponent];
+export { SettingsComponent } from './settings.component';

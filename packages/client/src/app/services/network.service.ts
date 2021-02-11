@@ -37,7 +37,7 @@ import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dr
     providedIn: 'root',
 })
 export class NetworkService {
-    private baseUrl: string = `/api`;
+    private baseUrl = `/api`;
     constructor(private readonly http: HttpClient) {}
 
     /**
@@ -593,7 +593,7 @@ export class NetworkService {
         kinds: ContentKind[],
         userId?: string,
     ): Observable<PaginateResult<ContentModel>> {
-        let route: string = ``;
+        let route = ``;
 
         // If we just include the kind array as-is, it'll be serialized as "&kind=Kind1,Kind2" which the backend will interpret as
         // the string 'Kind1,Kind2' which is not what we want. So, we manually split it out into a query string
