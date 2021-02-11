@@ -4,8 +4,7 @@ import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select, Store } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../../shared/user';
-import { AQNamespace, ApprovalQueueState } from '../../../shared/dash/approval-queue';
+import { AQNamespace, ApprovalQueueState } from '../../shared/approval-queue';
 
 import { ApprovalQueue } from '@dragonfish/models/approval-queue';
 import { ContentKind, ContentModel } from '@dragonfish/models/content';
@@ -20,10 +19,6 @@ import { Navigate } from '@ngxs/router-plugin';
     styleUrls: ['./approval-queue.component.less'],
 })
 export class ApprovalQueueComponent implements OnInit, OnDestroy {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-    currentUserSubscription: Subscription;
-    currentUser: FrontendUser;
-
     @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
     selectedDocSubscription: Subscription;
     selectedDoc: ApprovalQueue;
@@ -40,10 +35,6 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
         private snackBar: MatSnackBar,
         private location: Location,
     ) {
-        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
-            this.currentUser = x;
-        });
-
         this.selectedDocSubscription = this.selectedDoc$.subscribe((x) => {
             this.selectedDoc = x;
         });
@@ -56,7 +47,6 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.currentUserSubscription.unsubscribe();
         this.selectedDocSubscription.unsubscribe();
     }
 
@@ -134,9 +124,10 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * @param entry The approval queue entry
      */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
+        const currentUser: FrontendUser = JSON.parse('user').currUser;
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             let whoClaimedThis = entry.claimedBy as UserInfo;
-            if (whoClaimedThis._id === this.currentUser._id) {
+            if (whoClaimedThis._id === currentUser._id) {
                 return true;
             } else {
                 return false;

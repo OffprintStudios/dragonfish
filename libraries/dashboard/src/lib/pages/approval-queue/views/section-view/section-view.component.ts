@@ -4,9 +4,8 @@ import { AuthorsNotePos, Section } from '@dragonfish/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Select, Store } from '@ngxs/store';
-import { ContentState } from 'packages/client/src/app/shared/content';
-import { Observable, zip } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { ApprovalQueueState, AQNamespace } from 'packages/client/src/app/shared/dash/approval-queue';
 
 @Component({

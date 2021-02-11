@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { AlertsModule } from '@dragonfish/alerts';
 import { IconsModule } from '@dragonfish/icons';
 import { MaterialModule } from '@dragonfish/material';
+import { ComponentsModule } from '@dragonfish/components';
+import { PipesModule } from '@dragonfish/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
@@ -39,6 +42,9 @@ import { ApprovalQueueService } from './shared/approval-queue/services';
         AlertsModule,
         IconsModule,
         MaterialModule,
+        ComponentsModule,
+        NgxPaginationModule,
+        PipesModule,
         NgxsModule.forFeature([
             ApprovalQueueState,
         ]),
