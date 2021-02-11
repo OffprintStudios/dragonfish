@@ -11,7 +11,7 @@ import { NetworkService } from '../network.service';
     providedIn: 'root',
 })
 export class SearchService {
-    private url: string = `${environment.apiUrl}/api/search`;
+    private url = `${environment.apiUrl}/api/search`;
 
     workResults: Observable<PaginateResult<ContentModel>>;
     blogResults: Observable<PaginateResult<BlogsContentModel>>;

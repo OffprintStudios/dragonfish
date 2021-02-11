@@ -9,7 +9,7 @@ import { Auth } from '../auth.actions';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    private isRefreshing: boolean = false;
+    private isRefreshing = false;
     private refreshTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
     constructor(private store: Store) {}

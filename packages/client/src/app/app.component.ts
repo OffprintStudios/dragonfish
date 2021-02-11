@@ -40,7 +40,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     rotatingSlogan: string;
 
     notifications: NotificationBase[];
-    numNotifs: number = 0;
+    numNotifs = 0;
 
     constructor(
         private router: Router,

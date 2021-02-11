@@ -20,6 +20,18 @@ import { AlertsService } from '@dragonfish/alerts';
 export class AuthState {
     constructor(private network: NetworkService, private alerts: AlertsService) {}
 
+    /* Selectors */
+
+    @Selector()
+    static token(state: AuthStateModel): string | null {
+        return state.token;
+    }
+
+    @Selector()
+    static isLoggedIn(state: AuthStateModel): boolean {
+        return !!state.token;
+    }
+
     /* Actions */
 
     /**
@@ -87,17 +99,5 @@ export class AuthState {
                 }
             }),
         );
-    }
-
-    /* Selectors */
-
-    @Selector()
-    static token(state: AuthStateModel): string | null {
-        return state.token;
-    }
-
-    @Selector()
-    static isLoggedIn(state: AuthStateModel): boolean {
-        return !!state.token;
     }
 }

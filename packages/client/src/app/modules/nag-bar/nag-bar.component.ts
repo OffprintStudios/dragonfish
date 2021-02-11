@@ -12,7 +12,7 @@ export class NagBarComponent implements OnInit, OnDestroy {
     // ng-container as an ngComponentOutlet.
     content?: any;
     contentInjector?: Injector;
-    shown: boolean = false;
+    shown = false;
     contentChangedSubscription: Subscription;
     visibilityChangedSubscription: Subscription;
     clearRequestedSubscription: Subscription;

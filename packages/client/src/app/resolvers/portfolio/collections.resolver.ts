@@ -16,7 +16,7 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    pageNum: number = 1;
+    pageNum = 1;
 
     constructor(private networkService: NetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {

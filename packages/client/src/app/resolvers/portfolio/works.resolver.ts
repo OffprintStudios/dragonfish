@@ -9,7 +9,7 @@ import { Content, ContentState } from '../../shared/content';
 
 @Injectable()
 export class WorksResolver implements Resolve<PaginateResult<ContentModel>> {
-    pageNum: number = 1;
+    pageNum = 1;
 
     constructor(private store: Store) {}
 
