@@ -34,8 +34,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
      * @param state Current state of the router
      */
     canActivate(next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
-        // @ts-ignore
-        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+        const token = this.store.selectSnapshot<string>(AuthState.token);
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
@@ -63,8 +62,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
      * @param state Current state of the router
      */
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        // @ts-ignore
-        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+        const token = this.store.selectSnapshot<string>(AuthState.token);
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
@@ -85,8 +83,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     canLoad(route: Route, segments: UrlSegment[]) {
-        // @ts-ignore
-        const token = this.store.selectSnapshot<string>((state: AuthState) => state.auth.token);
+        const token = this.store.selectSnapshot<string>(AuthState.token);
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
