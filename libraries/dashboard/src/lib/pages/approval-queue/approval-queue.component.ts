@@ -124,7 +124,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * @param entry The approval queue entry
      */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
-        const currentUser: FrontendUser = JSON.parse('user').currUser;
+        const currentUser: FrontendUser = JSON.parse(localStorage.getItem('user')).currUser;
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             let whoClaimedThis = entry.claimedBy as UserInfo;
             if (whoClaimedThis._id === currentUser._id) {

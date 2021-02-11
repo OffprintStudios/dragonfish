@@ -25,6 +25,7 @@ import { ApprovalQueueState } from './shared/approval-queue';
 
 /* Services */
 import { ApprovalQueueService } from './shared/approval-queue/services';
+import { AuthGuard } from './util';
 
 @NgModule({
     declarations: [

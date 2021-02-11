@@ -126,7 +126,7 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
-            { path: '', redirectTo: '/dash/overview', pathMatch: 'full' },
+            { path: '', redirectTo: '/dashboard/overview', pathMatch: 'full' },
         ],
     },
 ];
@@ -134,5 +134,9 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
+    providers: [
+        ...DashboardResolvers,
+        AuthGuard,
+    ],
 })
 export class DashboardRoutingModule {}

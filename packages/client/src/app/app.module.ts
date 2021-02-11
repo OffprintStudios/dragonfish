@@ -40,7 +40,6 @@ import { AuthState } from './shared/auth';
 import { AuthInterceptor } from './shared/auth/services';
 import { GlobalState } from './shared/global';
 import { UserState } from './shared/user';
-import { ApprovalQueueState } from './shared/dash/approval-queue';
 import { ContentState } from './shared/content';
 
 /* Components */
@@ -123,7 +122,7 @@ import { environment } from '../environments/environment';
         PipesModule,
         EditorModule,
         ComponentsModule,
-        NgxsModule.forRoot([AuthState, GlobalState, UserState, ApprovalQueueState, ContentState], {
+        NgxsModule.forRoot([AuthState, GlobalState, UserState, ContentState], {
             developmentMode: !environment.production,
             selectorOptions: { suppressErrors: false, injectContainerState: false },
         }),
