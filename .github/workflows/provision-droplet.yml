@@ -11,9 +11,9 @@ on:
         required: true
         default: "ubuntu-20-04-x64"
       do_region:
-        description: "The Digital Ocean region to deploy the droplet in. Valid values: sfo2, sfo3, nyc1, nyc3, ams3, fra1, lon1, tor1"
+        description: "The Digital Ocean region to deploy the droplet in. Valid values: sfo3, nyc1, nyc3, ams3, fra1, lon1, tor1"
         required: true
-        default: "sfo2"
+        default: "sfo3"
       do_size:
         description: "The Digital Ocean VM profile to provision the virtual machine with. Valid values include: s-1vcpu-1gb, s-1vcpu-2gb, s-2vcpu-2gb, s-2vcpu-4gb"
         required: true
