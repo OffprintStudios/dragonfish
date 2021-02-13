@@ -1,0 +1,50 @@
+# This is a basic workflow to help you get started with Actions
+
+name: "Provision Droplet"
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      do_image:
+        desription: "The Digital Ocean VM image to use when creating the VM. Valid values include: ubuntu-20-04-x64, ubuntu-18-04-x64, or ubuntu-20-10-x64. See Digital Ocean for more."
+        required: true
+        default: "ubuntu-20-04-x64"
+      do_region:
+        description: "The Digital Ocean region to deploy the droplet in. Valid values: sfo2, sfo3, nyc1, nyc3, ams3, fra1, lon1, tor1"
+        required: true
+        default: "sfo2"
+      do_size:
+        description: "The Digital Ocean VM profile to provision the virtual machine with. Valid values include: s-1vcpu-1gb, s-1vcpu-2gb, s-2vcpu-2gb, s-2vcpu-4gb"
+        requred: true
+        defualt: "s-1vcpu-1gb"
+      droplet_name:
+        description: "The name to give the new droplet!"
+        required: true
+      
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: GitHub Action for DigitalOcean - doctl
+        uses: digitalocean/action-doctl@v2.1.0
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN  }}
+          
+      - name: Create droplet
+        run: | 
+          doctl compute droplet create ${{ droplet_name }} \
+          --image ${{ do_image }} \
+          --size ${{ do_size }} \
+          --region ${{ do_region }} \
+          --tag-name api \
+          --enable-backups \
+          --wait        
+           
+     # To do: Actually go in and provision the droplet with Node, PM2, set up the folder structure, etc etc.
