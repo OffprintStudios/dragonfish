@@ -40,10 +40,10 @@ jobs:
           
       - name: Create droplet
         run: | 
-          doctl compute droplet create ${{ droplet_name }} \
-          --image ${{ do_image }} \
-          --size ${{ do_size }} \
-          --region ${{ do_region }} \
+          doctl compute droplet create ${{ github.event.inputs.droplet_name }} \
+          --image ${{ github.event.inputs.do_image }} \
+          --size ${{ github.event.inputs.do_size }} \
+          --region ${{ github.event.inputs.do_region }} \
           --tag-name api \
           --enable-backups \
           --wait        
