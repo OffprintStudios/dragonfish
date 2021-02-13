@@ -16,11 +16,12 @@ on:
         default: "sfo2"
       do_size:
         description: "The Digital Ocean VM profile to provision the virtual machine with. Valid values include: s-1vcpu-1gb, s-1vcpu-2gb, s-2vcpu-2gb, s-2vcpu-4gb"
-        requred: true
-        defualt: "s-1vcpu-1gb"
+        required: true
+        default: "s-1vcpu-1gb"
       droplet_name:
         description: "The name to give the new droplet!"
         required: true
+        default: "new-droplet"
       
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
