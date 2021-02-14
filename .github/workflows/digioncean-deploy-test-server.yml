@@ -61,6 +61,7 @@ jobs:
     # Todo: Get latest client release, and set up a symlink to it inside /dist/static/whatever
     # Note: there should probably be both a current_server and a current_client. current_client
     # should point to the latest frontend release, and /dist/static/whatever should point to current_client
+<<<<<<< HEAD
     - name: 'Remote: Fix up frontend symlinks'
       uses: garygrossgarten/github-action-ssh@release
       with:
@@ -71,6 +72,9 @@ jobs:
           if find /opt/dragonfish/releases/client -mindepth 1 | read; then
           else
           fi
+=======
+    #
+>>>>>>> main
 
 
 
