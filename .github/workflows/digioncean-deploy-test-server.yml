@@ -5,7 +5,7 @@ name: Deploy Test Server (DO)
 on:
   workflow_run:
     workflows: ["Build Test Server (DO)"]
-    branches: [main]
+    branches: [ feature/cd-deply-server ]
     types:
       - completed
 
@@ -61,7 +61,20 @@ jobs:
     # Todo: Get latest client release, and set up a symlink to it inside /dist/static/whatever
     # Note: there should probably be both a current_server and a current_client. current_client
     # should point to the latest frontend release, and /dist/static/whatever should point to current_client
+<<<<<<< HEAD
+    - name: 'Remote: Fix up frontend symlinks'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          if find /opt/dragonfish/releases/client -mindepth 1 | read; then
+          else
+          fi
+=======
     #
+>>>>>>> main
 
 
 
