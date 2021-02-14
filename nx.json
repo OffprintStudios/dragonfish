@@ -1,4 +1,4 @@
-{ 
+{       
     "npmScope": "dragonfish",
     "affected": { "defaultBase": "master" },
     "implicitDependencies": {
