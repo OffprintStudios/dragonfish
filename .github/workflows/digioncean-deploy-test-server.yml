@@ -44,10 +44,10 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-        mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
-        # rsync here for easier recursive copy & overwriting at destination
-        rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
-        rsync --archive --remove-source-files /opt/dragonfish/deply-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+          mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+          rsync here for easier recursive copy & overwriting at destination
+          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
+          rsync --archive --remove-source-files /opt/dragonfish/deply-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
 
     - name: 'Remote: Move server symlink to new release'
       uses: garygrossgarten/github-action-ssh@release
@@ -56,7 +56,7 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-        ln -sf /opt/dragonfish/current_server /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA        
+          ln -sf /opt/dragonfish/current_server /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA        
 
     # Todo: Get latest client release, and set up a symlink to it inside /dist/static/whatever
     # Note: there should probably be both a current_server and a current_client. current_client

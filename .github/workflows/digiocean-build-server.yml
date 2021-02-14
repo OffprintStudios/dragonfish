@@ -51,8 +51,8 @@ jobs:
       # Compress node_modules so it fits in GitHub storage. Exclude nx's .bin and .cache folders.
       - name: Compress node_modules
         run: |
-        mkdir -p /opt/dragonfish/deploy-cache
-        tar -czvf dist.tar.gz --exclude='node_modules/.bin' --exclude='node_modules/.cache' node_modules/ dist/packages/server/
+          mkdir -p /opt/dragonfish/deploy-cache
+          tar -czvf dist.tar.gz --exclude='node_modules/.bin' --exclude='node_modules/.cache' node_modules/ dist/packages/server/
 
       - name: Upload dist.tar.gz
         uses: actions/upload-artifact@v2
