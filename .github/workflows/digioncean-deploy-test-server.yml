@@ -30,7 +30,7 @@ jobs:
     - name: Upload dist.tar.gz to the remote server
       run: |
         # Write key out to a file, so we can use it via rsync's 'ssh' invocation
-        "${{ secrets.SSH_KEY }}" >> key.txt
+        echo ${{ secrets.SSH_KEY }} >> key.txt
         rsync -e "ssh -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
         rm key.txt
 
