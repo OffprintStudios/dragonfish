@@ -45,7 +45,7 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
-          rsync here for easier recursive copy & overwriting at destination
+          #rsync here for easier recursive copy & overwriting at destination
           rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
           rsync --archive --remove-source-files /opt/dragonfish/deply-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
 
