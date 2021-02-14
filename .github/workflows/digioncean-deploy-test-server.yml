@@ -1,0 +1,69 @@
+name: Deploy Test Server (DO)
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  workflow_run:
+    workflows: ["Build Test Server (DO)"]
+    branches: [main]
+    types:
+      - completed
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      SSH_USER: 'dragonfish-cd'      
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+    - name: Download dist.tar.gz
+      uses: actions/download-artifact@v2
+      with:
+        name: dist.tar.gz
+    
+    - name: Upload dist.tar.gz to the remote server
+      run: rsync dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
+
+    - name: 'Remote: Extract dist.tar.gz'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: tar -xzvf dist.tar.gz --directory /opt/dragonfish/deploy-cache
+
+    - name: 'Remote: Copy files to new release directory'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+          #rsync here for easier recursive copy & overwriting at destination
+          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
+          rsync --archive --remove-source-files /opt/dragonfish/deply-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+
+    - name: 'Remote: Move server symlink to new release'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          ln -sf /opt/dragonfish/current_server /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA        
+
+    # Todo: Get latest client release, and set up a symlink to it inside /dist/static/whatever
+    # Note: there should probably be both a current_server and a current_client. current_client
+    # should point to the latest frontend release, and /dist/static/whatever should point to current_client
+    #
+
+
+
+
+        
