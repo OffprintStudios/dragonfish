@@ -19,10 +19,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
+    # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
-      uses: actions/download-artifact@v2
+      uses: dawidd6/action-download-artifact@v2
       with:
-        name: dist.tar.gz
+        workflow: Build Server (DO)
+        workflow_conclusion: success
+        name: backend_artifact
     
     - name: Upload dist.tar.gz to the remote server
       run: rsync dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
