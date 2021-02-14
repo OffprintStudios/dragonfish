@@ -28,7 +28,11 @@ jobs:
         name: backend_artifact
     
     - name: Upload dist.tar.gz to the remote server
-      run: rsync dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
+      run: |
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation
+        ${{ secrets.SSH_KEY }} >> key.txt
+        rsync -e "ssh -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
+        rm key.txt
 
     - name: 'Remote: Extract dist.tar.gz'
       uses: garygrossgarten/github-action-ssh@release
@@ -46,7 +50,7 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
-          #rsync here for easier recursive copy & overwriting at destination
+          # Using rsync here for easier recursive copy & overwriting at destination
           rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
           rsync --archive --remove-source-files /opt/dragonfish/deply-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
 
