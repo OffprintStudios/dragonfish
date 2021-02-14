@@ -57,5 +57,5 @@ jobs:
       - name: Upload dist.tar.gz
         uses: actions/upload-artifact@v2
         with:
-          name: dist.tar.gz
+          name: backend_artifact
           path: dist.tar.gz
