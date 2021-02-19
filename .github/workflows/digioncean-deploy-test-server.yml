@@ -35,7 +35,7 @@ jobs:
         echo "Storing SSH key..."
         echo $SSH_KEY >> key.txt
         chmod 400 key.txt
-        rsync -e "ssh -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
+        rsync -e "ssh -o StrictHostKeyChecking=no-i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
         rm key.txt
 
     - name: 'Remote: Extract dist.tar.gz'
