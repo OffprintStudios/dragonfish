@@ -28,9 +28,12 @@ jobs:
         name: backend_artifact
     
     - name: Upload dist.tar.gz to the remote server
+      env: 
+        SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
         # Write key out to a file, so we can use it via rsync's 'ssh' invocation
-        echo ${{ secrets.SSH_KEY }} >> key.txt
+        echo "Storing SSH key..."
+        echo $SSH_KEY >> key.txt
         rsync -e "ssh -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
         rm key.txt
 
