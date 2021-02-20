@@ -61,10 +61,10 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-          mkdir -p /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+          mkdir -p /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
           # Using rsync here for easier recursive copy & overwriting at destination
-          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
-          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
+          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}/node_modules
+          rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
 
     - name: 'Remote: Clear deploy cache folder (again)'
       uses: garygrossgarten/github-action-ssh@release
