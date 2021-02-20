@@ -26,6 +26,15 @@ jobs:
         workflow: digiocean-build-server.yml        
         workflow_conclusion: success
         name: backend_artifact
+
+    # We do this at the beginning in case some previous run failed. We don't want to work with a dirty deployment environment.
+    - name: 'Remote: Clear deploy cache folder'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: rm -rf /opt/dragonfish/deploy-cache/*
     
     - name: Upload backend server zip file to the remote server
       env: 
@@ -57,6 +66,14 @@ jobs:
           rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA/node_modules
           rsync --archive --remove-source-files /opt/dragonfish/deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-$GITHUB_RUN_NUMER-$GITHUB_SHA
 
+    - name: 'Remote: Clear deploy cache folder (again)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: rm -rf /opt/dragonfish/deploy-cache/*
+
     - name: 'Remote: Move server symlink to new release'
       uses: garygrossgarten/github-action-ssh@release
       with:
@@ -77,7 +94,9 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           if find /opt/dragonfish/releases/client -mindepth 1 | read; then
+            echo "oh no, todo: this is where we'd clean up client stuff"
           else
+            echo "oh cool, there's no client we don't have to do anything"
           fi
 
 
