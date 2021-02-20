@@ -20,31 +20,32 @@ jobs:
     steps:
 
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
-    - name: Download dist.tar.gz
+    - name: Download backend server artifact
       uses: dawidd6/action-download-artifact@v2
       with:
         workflow: digiocean-build-server.yml        
         workflow_conclusion: success
         name: backend_artifact
     
-    - name: Upload dist.tar.gz to the remote server
+    - name: Upload backend server zip file to the remote server
       env: 
         SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
-        # Write key out to a file, so we can use it via rsync's 'ssh' invocation
-        echo "Storing SSH key..."
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation    
+        echo "Running ls..."
+        ls -la    
         echo "$SSH_KEY" >> key.txt
         chmod 400 key.txt
-        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" backend_artifact $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/deply-cache
         rm key.txt
 
-    - name: 'Remote: Extract dist.tar.gz'
+    - name: 'Remote: Extract backend_artifact'
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: tar -xzvf dist.tar.gz --directory /opt/dragonfish/deploy-cache
+        command: tar -xzvf backend_artifact --directory /opt/dragonfish/deploy-cache
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
