@@ -81,7 +81,7 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-          ln -sf /opt/dragonfish/current_server /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
+          ln -sf /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }} /opt/dragonfish/current_server
 
     # Todo: Get latest client release, and set up a symlink to it inside /dist/static/whatever
     # Note: there should probably be both a current_server and a current_client. current_client
