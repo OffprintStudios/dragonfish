@@ -43,7 +43,7 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: tar -xzvf dist.tar.gz --directory /opt/dragonfish/deploy-cache
+        command: tar -xzvf /opt/dragonfish/deploy-cache/dist.tar.gz --directory /opt/dragonfish/deploy-cache
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
