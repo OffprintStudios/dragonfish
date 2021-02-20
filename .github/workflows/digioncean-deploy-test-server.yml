@@ -77,7 +77,9 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           if find /opt/dragonfish/releases/client -mindepth 1 | read; then
+            echo "oh no, todo: this is where we'd clean up client stuff"
           else
+            echo "oh cool, there's no client we don't have to do anything"
           fi
 
 
