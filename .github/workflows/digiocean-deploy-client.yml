@@ -20,7 +20,7 @@ jobs:
     - name: Download dist.tar.gz
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: digiocean-build-server.yml        
+        workflow: digiocean-build-client.yml        
         workflow_conclusion: success
         name: frontend_artifact
         commit: ${{ github.sha }}
