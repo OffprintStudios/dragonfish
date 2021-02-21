@@ -92,7 +92,8 @@ jobs:
         command: |
           if find /opt/dragonfish/releases/client -mindepth 1 | read; then
             latest_client_folder=`ls /opt/dragonfish/releases/server/ | sort --numeric-sort | head -1`
-            rm /opt/dragonfish/current_server/static
+            # A '-' in front of rm ignores its return code. We want that, because it may fail if no symlink to the frontend exists yet
+            -rm /opt/dragonfish/current_server/static
             ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server_/static
           else
             echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
@@ -181,14 +182,15 @@ jobs:
   #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
   #       username: 'dragonfish-cd'
   #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: |
-  #         if find /opt/dragonfish/releases/client -mindepth 1 | read; then
-  #           latest_client_folder=`ls /opt/dragonfish/releases/server/ | sort --numeric-sort | head -1`
-  #           rm /opt/dragonfish/current_server/static
-  #           ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server_/static
-  #         else
-  #           echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
-  #         fi
+        # command: |
+        #   if find /opt/dragonfish/releases/client -mindepth 1 | read; then
+        #     latest_client_folder=`ls /opt/dragonfish/releases/server/ | sort --numeric-sort | head -1`
+        #     # A '-' in front of rm ignores its return code. We want that, because it may fail if no symlink to the frontend exists yet
+        #     -rm /opt/dragonfish/current_server/static
+        #     ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server_/static
+        #   else
+        #     echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
+        #   fi
 
   # TODO: Restart pm2
   # TODO: If we have more than 5 server releaes, delete the oldest one
