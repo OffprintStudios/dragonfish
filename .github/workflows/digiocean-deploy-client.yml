@@ -32,7 +32,9 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: rm -rf /opt/dragonfish/frontend-deploy-cache/*
+        command: |
+          rm -rf /opt/dragonfish/frontend-deploy-cache/*
+          mkdir -p /opt/dragonfish/frontend-deploy-cache
 
     - name: Upload frontend client zip file to the remote server
       env: 
@@ -78,7 +80,7 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-           if find /opt/dragonfish/current_server -mindepth 1 | read; then
+          if find /opt/dragonfish/current_server -mindepth 1 | read; then
             # A backend exists, let's re-point its 'static' to to the new frontend
             rm /opt/dragonfish/current_server/static
             ln -s /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }} /opt/dragonfish/current_server/static
