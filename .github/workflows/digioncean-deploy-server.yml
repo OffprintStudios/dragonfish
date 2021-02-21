@@ -187,7 +187,7 @@ jobs:
         #     latest_client_folder=`ls /opt/dragonfish/releases/server/ | sort --numeric-sort | head -1`
         #     # A '-' in front of rm ignores its return code. We want that, because it may fail if no symlink to the frontend exists yet
         #     -rm /opt/dragonfish/current_server/static
-        #     ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server_/static
+        #     ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server/static
         #   else
         #     echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
         #   fi
