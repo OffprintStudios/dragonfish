@@ -4,18 +4,7 @@ name: Build Server (DO)
 # events
 on:
   push:
-    branches: [ feature/cd-deply-server ]
-    paths:
-    - 'nx.json'
-    - 'package.json'
-    - 'workspace.json'
-    - 'libraries/models/**'
-    - 'libraries/utilities/**'
-    - 'packages/server/**'
-    - '.github/workflows/digiocean-build-server.yml'
-    - '.github/workflows/digiocean-deploy-test-server.yml'
-  pull_request:
-    branches: [ feature/cd-deply-server ]
+    branches: [ main ]
     paths:
     - 'nx.json'
     - 'package.json'

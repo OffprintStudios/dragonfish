@@ -3,7 +3,7 @@ name: Deploy Test Server (DO)
 on:
   workflow_run:
     workflows: ["Build Server (DO)"]
-    branches: [ feature/cd-deply-server ]
+    branches: [ main ]
     types:
       - completed
 
@@ -99,7 +99,8 @@ jobs:
             echo "oh cool, there's no client we don't have to do anything"
           fi
 
-
+  # TODO: Restart pm2
+  # TODO: If we have more than 5 server releaes, delete the oldest one          
 
 
 
