@@ -31,7 +31,9 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: rm -rf /opt/dragonfish/backend-deploy-cache/*
+        command: |
+          rm -rf /opt/dragonfish/backend-deploy-cache/*
+          mkdir -p /opt/dragonfish/backend-deploy-cache
     
     - name: Upload backend server zip file to the remote server
       env: 
