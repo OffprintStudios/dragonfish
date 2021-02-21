@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 {      
-=======
-{       
->>>>>>> main
     "npmScope": "dragonfish",
     "affected": { "defaultBase": "master" },
     "implicitDependencies": {
