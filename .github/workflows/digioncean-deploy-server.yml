@@ -105,91 +105,12 @@ jobs:
   #   name: "Deploy to Production environment"
   #   runs-on: ubuntu-latest
   #   needs: deploy_to_test
-  #   environment: prod
+  #   environment: dragonfish-prod
   #   env:
   #     SSH_USER: 'dragonfish-cd'          
     
-  #   steps:
-  #   # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
-  #   - name: Download dist.tar.gz
-  #     uses: dawidd6/action-download-artifact@v2
-  #     with:
-  #       workflow: digiocean-build-server.yml        
-  #       workflow_conclusion: success
-  #       name: backend_artifact
-
-  #   # We do this at the beginning in case some previous run failed. We don't want to work with a dirty deployment environment.
-  #   - name: 'Remote: Clear deploy cache folder'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: rm -rf /opt/dragonfish/backend-deploy-cache/*
-    
-  #   - name: Upload backend server zip file to the remote server
-  #     env: 
-  #       SSH_KEY: ${{ secrets.SSH_KEY }}
-  #     run: |
-  #       # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
-  #       echo "$SSH_KEY" >> key.txt
-  #       chmod 400 key.txt
-  #       rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.PRODUCTION_SERVER_IP }}:/opt/dragonfish/backend-deploy-cache
-  #       rm key.txt
-
-  #   - name: 'Remote: Extract dist.tar.gz'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: tar -xzvf /opt/dragonfish/backend-deploy-cache/dist.tar.gz --directory /opt/dragonfish/backend-deploy-cache
-
-  #   - name: 'Remote: Copy files to new release directory'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: |
-  #         mkdir -p /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
-  #         # Using rsync here for easier recursive copy & overwriting at destination
-  #         rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}/node_modules
-  #         rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
-
-  #   - name: 'Remote: Clear deploy cache folder (again)'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: rm -rf /opt/dragonfish/backend-deploy-cache/*
-
-  #   - name: 'Remote: Move server symlink to new release'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-  #       command: |
-  #         rm /opt/dragonfish/current_server
-  #         ln -s /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }} /opt/dragonfish/current_server
-    
-  #   - name: 'Remote: Fix up frontend symlinks'
-  #     uses: garygrossgarten/github-action-ssh@release
-  #     with:
-  #       host: ${{ secrets.PRODUCTION_SERVER_IP }}
-  #       username: 'dragonfish-cd'
-  #       privateKey: ${{ secrets.SSH_KEY }}
-        # command: |
-        #   if find /opt/dragonfish/releases/client -mindepth 1 | read; then
-        #     latest_client_folder=`ls /opt/dragonfish/releases/server/ | sort --numeric-sort | head -1`
-        #     # A '-' in front of rm ignores its return code. We want that, because it may fail if no symlink to the frontend exists yet
-        #     -rm /opt/dragonfish/current_server/static
-        #     ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server/static
-        #   else
-        #     echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
-        #   fi
+    # TODO: Rest of prod deploy process
+    # Note: Prod IP is ${{ secrets.PROD_IP_1 }}
 
   # TODO: Restart pm2
   # TODO: If we have more than 5 server releaes, delete the oldest one
