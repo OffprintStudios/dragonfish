@@ -25,6 +25,7 @@ import { ApprovalQueueState } from './shared/approval-queue';
 
 /* Services */
 import { ApprovalQueueService } from './shared/approval-queue/services';
+import { UserManagementService } from './shared/user-management/services';
 
 @NgModule({
     declarations: [
@@ -50,6 +51,6 @@ import { ApprovalQueueService } from './shared/approval-queue/services';
         PipesModule,
         NgxsModule.forFeature([ApprovalQueueState]),
     ],
-    providers: [ApprovalQueueService],
+    providers: [ApprovalQueueService, UserManagementService],
 })
 export class DashboardModule {}
