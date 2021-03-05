@@ -4,6 +4,7 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import { hash, argon2id } from 'argon2';
 import * as sanitizeHtml from 'sanitize-html';
 import validator from 'validator';
+import { nanoid } from 'nanoid';
 
 import * as documents from './models';
 import * as models from '@dragonfish/models/users';
@@ -404,7 +405,7 @@ export class UsersStore {
             ],
         });
 
-        let frontendUserList = Array<models.FrontendUser>();
+        const frontendUserList = Array<models.FrontendUser>();
         userList.forEach(async (user) => {
             frontendUserList.push(await this.buildFrontendUser(user));
         });
@@ -421,11 +422,26 @@ export class UsersStore {
             $or: [{ 'audit.roles': 'Contributor' }, { 'audit.roles': 'VIP' }, { 'audit.roles': 'Supporter' }],
         });
 
-        let frontendUserList = Array<models.FrontendUser>();
+        const frontendUserList = Array<models.FrontendUser>();
         userList.forEach(async (user) => {
             frontendUserList.push(await this.buildFrontendUser(user));
         });
 
         return frontendUserList;
+    }
+
+    /**
+     * Generates a new invite code.
+     * 
+     * @returns The new invite code
+     */
+    async generateInviteCode(): Promise<documents.InviteCodesDocument> {
+        const newCode = new this.inviteCodesModel({
+            "_id": nanoid(),
+            "used": false,
+            "byWho": null
+        });
+
+        return await newCode.save();
     }
 }
