@@ -53,7 +53,7 @@ jobs:
           --region ${{ github.event.inputs.do_region }} \
           --tag-name api \
           --enable-backups \
-          --ssh-keys 10:0e:01:95:ac:39:97:d7:e8:f5:ae:0a:be:43:29:ed 0b:ba:93:b2:15:43:7d:f0:5b:36:da:56:1f:fb:ad:82 \
+          --ssh-keys 29458820 29750484 \
           --wait
 
       - name: "Store new droplet's IP address"
@@ -87,7 +87,7 @@ jobs:
             else
               . /root/provision.sh ${{ env.droplet_host }}
             fi
-      
+
       - name: "Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys"
         uses: garygrossgarten/github-action-ssh@release
         with:
