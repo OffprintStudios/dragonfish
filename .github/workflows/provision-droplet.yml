@@ -87,7 +87,7 @@ jobs:
             else
               . /root/provision.sh ${{ env.droplet_host }}
             fi
-
+      
       - name: "Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys"
         uses: garygrossgarten/github-action-ssh@release
         with:
