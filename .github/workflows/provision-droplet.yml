@@ -58,7 +58,8 @@ jobs:
 
       - name: "Store new droplet's IP address"
         run: |
-          hostIP=$(doctl compute droplet get ${{ github.events.inputs.droplet_name }} --format "PublicIPv4" | sed -n 2p)
+          droplet_name=${{ github.event.inputs.droplet_name }}
+          hostIP=$(doctl compute droplet get $droplet_name --format "PublicIPv4" | sed -n 2p)
           echo "droplet_host=$hostIP" >> $GITHUB_ENV
       
       - name: "Upload provisioning script and pm2.config.js"
