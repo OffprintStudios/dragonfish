@@ -60,7 +60,7 @@ jobs:
         run: |
           hostIP=$(doctl compute droplet get ${{ github.events.inputs.droplet_name }} --format "PublicIPv4" | sed -n 2p)
           echo "droplet_host=$hostIP" >> $GITHUB_ENV
-
+      
       - name: "Upload provisioning script and pm2.config.js"
         env: 
           SSH_KEY: ${{ secrets.SSH_KEY }}
@@ -71,7 +71,7 @@ jobs:
           rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh $SSH_USER@${{ env.droplet_host }}:/root/
           rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js $SSH_USER@${{ env.droplet_host }}:/root/
           rm key.txt
-    
+
       - name: "Remote: Prep PM2 and run provisioning script"
         uses: garygrossgarten/github-action-ssh@release
         with:
@@ -87,7 +87,7 @@ jobs:
             else
               . /root/provision.sh ${{ env.droplet_host }}
             fi
-
+      
       - name: "Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys"
         uses: garygrossgarten/github-action-ssh@release
         with:
