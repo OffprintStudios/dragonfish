@@ -104,7 +104,7 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: pm2 start /opt/dragonfish/server-config/pm2.config.js
+        command: pm2 start /opt/dragonfish/server_config/pm2.config.js
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
