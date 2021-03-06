@@ -35,14 +35,14 @@ jobs:
           rm -rf /opt/dragonfish/backend-deploy-cache/*
           mkdir -p /opt/dragonfish/backend-deploy-cache
     
-    - name: Upload backend server zip file to the remote server
+    - name: Upload deployment artifacts to server
       env: 
         SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
         # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
         echo "$SSH_KEY" >> key.txt
         chmod 400 key.txt
-        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/backend-deploy-cache
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/backend-deploy-cache        
         rm key.txt
 
     - name: 'Remote: Extract dist.tar.gz'
@@ -98,7 +98,14 @@ jobs:
             echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
           fi
 
-  # TODO: Restart pm2
+    - name: 'Remote: Restart PM2'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: pm2 start /opt/dragonfish/server_config/pm2.config.js
+
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
   # deploy_to_prod:
@@ -112,7 +119,6 @@ jobs:
     # TODO: Rest of prod deploy process
     # Note: Prod IP is ${{ secrets.PROD_IP_1 }}
 
-  # TODO: Restart pm2
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
 

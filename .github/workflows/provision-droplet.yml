@@ -22,6 +22,10 @@ on:
         description: "The name to give the new droplet!"
         required: true
         default: "new-droplet"
+      hostname:
+        description: "If set, the hostname the reverse proxy will use. If unset, it will use the new droplet's IP address."
+        required: false
+        default: ""
       
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -33,19 +37,68 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2
+
       - name: GitHub Action for DigitalOcean - doctl
         uses: digitalocean/action-doctl@v2.1.0
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN  }}
           
       - name: Create droplet
-        run: | 
+        run: |
+          # Embed the SSH keys for dragonfish-cd and Figments' Macbook Air
           doctl compute droplet create ${{ github.event.inputs.droplet_name }} \
           --image ${{ github.event.inputs.do_image }} \
           --size ${{ github.event.inputs.do_size }} \
           --region ${{ github.event.inputs.do_region }} \
           --tag-name api \
           --enable-backups \
+          --ssh-keys 10:0e:01:95:ac:39:97:d7:e8:f5:ae:0a:be:43:29:ed 0b:ba:93:b2:15:43:7d:f0:5b:36:da:56:1f:fb:ad:82
           --wait        
-           
-     # To do: Actually go in and provision the droplet with Node, PM2, set up the folder structure, etc etc.
+      
+      - name: 'Store new droplet's IP address'
+        run: |
+          hostIP=$(doctl compute droplet get ${{ github.events.inputs.droplet_name }} --format "PublicIPv4" | sed -n 2p)
+          echo "droplet_host=$hostIP" >> $GITHUB_ENV
+
+     - name: 'Upload provisioning script and pm2.config.js'
+      env: 
+        SSH_KEY: ${{ secrets.SSH_KEY }}
+      run: |
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
+        echo "$SSH_KEY" >> key.txt
+        chmod 400 key.txt
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh $SSH_USER@${{ env.droplet_host }}:/root/
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js $SSH_USER@${{ env.droplet_host }}:/root/
+        rm key.txt
+    
+    - name: 'Remote: Prep PM2 and run provisioning script'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ env.droplet_host }}
+        username: 'root'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |        
+          mkdir -p /opt/dragonfish/server_config
+          cp /root/pm2.config.js /opt/dragonfish/server_config/pm2.config/js
+
+          if [[ -n ${{ github.event.inputs.hostname }} ]]; then
+            . /root/provision.sh ${{ github.event.inputs.hostname }}            
+          else
+            . /root/provision.sh ${{ env.droplet_host }}
+          fi
+
+    - name: 'Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ env.droplet_host }}
+        username: 'root'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          if test -f /root/.ssh/authorized_keys; then
+            if grep -v "AAAAB3NzaC1yc2EAAAADAQABAAABAQCAEwaTboMlJuVoEkOkewcEbXh19ua8F0Hd2j2AHrJk7vkSO9b0jDAT+sZcnjAk1DvXdXb3AgxdFxz8tmSymF6M3DLpq12wssFBgdmczCN1z1xCtZlfU9sGypYyh96fodVLB9opbuK2rqjWl/mCeWNMWLKdJoy/bUUCb5cUbJT9GmSF3uQtZFlDaYKqSZKpCrLMCHG3Z0H3oHeBEMqZ68ZO2rBWVM5VgT0/b6ZfYacH7mkn7Ck00EHU/xsTzWgO1XLIv9GNaKEWc9CQ3Jna6pLCrPRXN0p2PkntvkJyqYh+Vk9uOteqSyApYjaPSRYsG/Ax5L4gZ4GHFM9ZCTSMXV/V" /root/.ssh/authorized_keys > /root/.ssh/tmp; then
+              cat /root/.ssh/tmp > /root/.ssh/authorized_keys && rm /root/.ssh/tmp;
+            else
+              rm /root/.ssh/authorized_keys && rm /root/.ssh/tmp
+          rm /root/provision.sh
+          rm /root/pm2.config.js
