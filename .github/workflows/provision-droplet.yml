@@ -52,8 +52,8 @@ jobs:
           --size ${{ github.event.inputs.do_size }} \
           --region ${{ github.event.inputs.do_region }} \
           --tag-name api \
-          --enable-backups \
-          --ssh-keys "29458820 29750484" \
+          --enable-backups \      
+          --ssh-keys "29458820,29750484" \
           --wait
 
       - name: "Store new droplet's IP address"
