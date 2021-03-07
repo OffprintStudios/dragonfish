@@ -23,4 +23,8 @@ export class Constants {
     public static SITE_STAFF: string = 'Site Staff';
     public static WATCHING: string = 'Watching';
     public static WORKS: string = 'Works';
+    
+    public static COLOR_WARNING: string = " text includes colored or highlighted text. " +
+        "If you didn't mean to do this, then you can select all your text, go to Font Color, and " +
+        "select \"Remove color\". Do the same for Highlight.";
 }

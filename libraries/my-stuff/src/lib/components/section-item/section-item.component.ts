@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { AuthorsNotePos, PublishSection, Section, SectionForm } from '@dragonfish/models/sections';
 import { Sections, SectionsState } from '../../shared/sections';
 import { AlertsService } from '@dragonfish/alerts';
+import { colorTagCheck } from '@dragonfish/utilities/functions';
 
 @UntilDestroy()
 @Component({
@@ -84,6 +85,9 @@ export class SectionItemComponent implements OnInit {
         };
 
         this.store.dispatch(new Sections.Save(this.contentId, section._id, sectionInfo)).subscribe();
+
+        // colorTagCheck("Body", sectionInfo.body, this.alerts);
+        // colorTagCheck("Author's note", sectionInfo.authorsNote, this.alerts);
     }
 
     delete(sectionId: string) {
