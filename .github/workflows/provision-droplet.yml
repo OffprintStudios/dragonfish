@@ -94,18 +94,12 @@ jobs:
           privateKey: ${{ secrets.SSH_KEY }}
           command: |
             # Install NPM and Node via NVM
-            curl -s -S https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash            
-
-      - name: "Remote: Install PM2 as dragonfish-cd"
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          host: ${{ env.droplet_host }}
-          username: 'dragonfish-cd'
-          privateKey: ${{ secrets.SSH_KEY }}
-          command: |      
+            curl -s -S https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash  
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install 15.5.1
             nvm use 15.5.1
-            npm install pm2@4.5.4 -g
+            npm install pm2@4.5.4 -g              
 
       - name: "Remote: Daemonize PM2 as root"
         uses: garygrossgarten/github-action-ssh@release

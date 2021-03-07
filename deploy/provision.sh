@@ -12,6 +12,7 @@ fi
 # Create the dragonfish-cd user, and allow SSH access to them
 sudo useradd dragonfish-cd
 mkhomedir_helper dragonfish-cd
+usermod --shell /bin/bash dragonfish-cd
 mkdir -p /home/dragonfish-cd/.ssh
 cat /root/.ssh/authorized_keys > /home/dragonfish-cd/.ssh/authorized_keys
 
