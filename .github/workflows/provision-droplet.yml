@@ -95,9 +95,7 @@ jobs:
           command: |
             # Install NPM and Node via NVM
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-            nvm install 15.5.1
-            nvm use 15.5.1
-            npm install pm2@4.5.4 -g            
+            nvm install 15.5.1                       
 
       - name: "Remote: Install PM2 as dragonfish-cd"
         uses: garygrossgarten/github-action-ssh@release
