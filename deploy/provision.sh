@@ -38,9 +38,8 @@ wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/node_
 sudo apt install -y ./node-latest.deb 
 rm node-latest.deb
 
-# Install and set up PM2
-sudo npm install pm2@4.5.4 -g
-sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd
+# Once everything is set up, ensure that dragonfish-cd owns everything under /opt/dragonfish
+chown -R dragonfish-cd /opt/dragonfish/
 
 # Install and set up caddy
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -50,6 +49,3 @@ sudo apt update
 sudo apt install caddy
 sed -i "s/replaceme/$hostname/g" "/root/Caddyfile"
 sudo cp /root/Caddyfile /etc/caddy/Caddyfile
-
-# Once everything is set up, ensure that dragonfish-cd owns everything under /opt/dragonfish
-chown -R dragonfish-cd /opt/dragonfish/
