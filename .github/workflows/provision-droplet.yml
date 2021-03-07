@@ -74,11 +74,12 @@ jobs:
           host: ${{ env.droplet_host }}
           username: 'root'
           privateKey: ${{ secrets.SSH_KEY }}
-          command: |        
+          command: |
+            hostname=${{ github.event.inputs.hostname }}
             mkdir -p /opt/dragonfish/server_config
             cp /root/pm2.config.js /opt/dragonfish/server_config/pm2.config.js
 
-            if [[ -n ${{ github.event.inputs.hostname }} ]]; then
+            if [[ -n $hostname ]]; then
               . /root/provision.sh ${{ github.event.inputs.hostname }}            
             else
               . /root/provision.sh ${{ env.droplet_host }}
