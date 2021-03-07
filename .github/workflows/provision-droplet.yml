@@ -64,8 +64,8 @@ jobs:
           # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
           echo "$SSH_KEY" >> key.txt
           chmod 400 key.txt
-          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh $SSH_USER@${{ env.droplet_host }}:/root/
-          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js $SSH_USER@${{ env.droplet_host }}:/root/
+          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh root@${{ env.droplet_host }}:/root/
+          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js root@${{ env.droplet_host }}:/root/
           rm key.txt
 
       - name: "Remote: Prep PM2 and run provisioning script"
