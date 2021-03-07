@@ -46,8 +46,8 @@ jobs:
           
       - name: "Create droplet"
         run: |
-          # Embed the SSH keys for dragonfish-cd and Figments' Macbook Air
-          doctl compute droplet create ${{ github.event.inputs.droplet_name }} --image ${{ github.event.inputs.do_image }} --size ${{ github.event.inputs.do_size }} --region ${{ github.event.inputs.do_region }} --tag-name api --enable-backups --ssh-keys "29458820,29750484" --wait
+          # Create a droplet and embed the SSH keys for dragonfish-cd, Figments' Macbook Air, and PingZing's Offprint key
+          doctl compute droplet create ${{ github.event.inputs.droplet_name }} --image ${{ github.event.inputs.do_image }} --size ${{ github.event.inputs.do_size }} --region ${{ github.event.inputs.do_region }} --tag-name api --enable-backups --ssh-keys "29458820,29750484,29750474" --wait
           # Wait an extra 10 seconds to make sure the SSH daemon is ready
           sleep 10s
 
@@ -64,8 +64,8 @@ jobs:
           # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
           echo "$SSH_KEY" >> key.txt
           chmod 400 key.txt
-          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh $SSH_USER@${{ env.droplet_host }}:/root/
-          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js $SSH_USER@${{ env.droplet_host }}:/root/
+          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh root@${{ env.droplet_host }}:/root/
+          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js root@${{ env.droplet_host }}:/root/
           rm key.txt
 
       - name: "Remote: Prep PM2 and run provisioning script"
