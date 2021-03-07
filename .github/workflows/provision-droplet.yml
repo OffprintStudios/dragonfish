@@ -84,17 +84,38 @@ jobs:
               . /root/provision.sh ${{ github.event.inputs.hostname }}            
             else
               . /root/provision.sh ${{ env.droplet_host }}
-            fi     
+            fi        
             
+      - name: "Remote: Install NVM as dragonfish-cd"
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ env.droplet_host }}
+          username: 'dragonfish-cd'
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |
+            # Install NPM and Node via NVM
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+            nvm install 15.5.1
+            nvm use 15.5.1
+            npm install pm2@4.5.4 -g            
+
       - name: "Remote: Install PM2 as dragonfish-cd"
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ env.droplet_host }}
+          username: 'dragonfish-cd'
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |      
+            nvm use 15.5.1
+            npm install pm2@4.5.4 -g
+
+      - name: "Remote: Daemonize PM2 as root"
         uses: garygrossgarten/github-action-ssh@release
         with:
           host: ${{ env.droplet_host }}
           username: 'root'
           privateKey: ${{ secrets.SSH_KEY }}
-          command: |
-            sudo -u dragonfish-cd npm install pm2@4.5.4 -g
-            sudo -u dragonfish-cd env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd            
+          command: sudo -u dragonfish-cd env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd
       
       - name: "Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys"
         uses: garygrossgarten/github-action-ssh@release

@@ -1,14 +1,19 @@
 #!/bin/bash
 
 # Provisions a machine for usage by the 'dragonfish' backend for Offprint.
+
+# Receive the hostname as an argument from the caller
 hostname=$1
 if [[ -z $hostname ]]; then
     echo "No hostname was included in the provisioning script. Terminating..."
     exit 1
 fi
 
-# Create the dragonfish-cd user
+# Create the dragonfish-cd user, and allow SSH access to them
 sudo useradd dragonfish-cd
+mkhomedir_helper dragonfish-cd
+mkdir -p /home/dragonfish-cd/.ssh
+cat /root/.ssh/authorized_keys > /home/dragonfish-cd/.ssh/authorized_keys
 
 # Create the install directory
 sudo mkdir -p /opt/dragonfish
@@ -29,14 +34,6 @@ sudo chmod -R a+rwx,o-rwx /opt/dragonfish/
 
 # Ensure that any newly-created files inherit group permissions
 sudo chmod g+s /opt/dragonfish
-
-# Install NPM and Node
-# This is the only way to pin to Node 15.5.1 the nodesource repository removes
-# old point versions whenever they do a minor update (which breaks our attempt to
-# pin to a specific version with apt-get)
-wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/node_15.x/pool/main/n/nodejs/nodejs_15.5.1-deb-1nodesource1_amd64.deb'
-sudo apt install -y ./node-latest.deb 
-rm node-latest.deb
 
 # Once everything is set up, ensure that dragonfish-cd owns everything under /opt/dragonfish
 chown -R dragonfish-cd /opt/dragonfish/
