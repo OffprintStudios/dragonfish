@@ -48,8 +48,11 @@ jobs:
         run: |
           # Embed the SSH keys for dragonfish-cd and Figments' Macbook Air
           doctl compute droplet create ${{ github.event.inputs.droplet_name }} --image ${{ github.event.inputs.do_image }} --size ${{ github.event.inputs.do_size }} --region ${{ github.event.inputs.do_region }} --tag-name api --enable-backups --ssh-keys "29458820,29750484" --wait
+<<<<<<< HEAD
           # Wait an extra 10 seconds to make sure the SSH daemon is ready
           sleep 10s
+=======
+>>>>>>> main
 
       - name: "Store new droplet's IP address"
         run: |
