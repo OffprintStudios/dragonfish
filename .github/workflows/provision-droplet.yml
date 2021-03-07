@@ -57,7 +57,7 @@ jobs:
           hostIP=$(doctl compute droplet get $droplet_name --format "PublicIPv4" | sed -n 2p)
           echo "droplet_host=$hostIP" >> $GITHUB_ENV
       
-      - name: "Upload provisioning script and pm2.config.js"
+      - name: "Upload provisioning script, pm2.config.js, and Caddyfile"
         env: 
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
@@ -66,6 +66,7 @@ jobs:
           chmod 400 key.txt
           rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/provision.sh root@${{ env.droplet_host }}:/root/
           rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/pm2.config.js root@${{ env.droplet_host }}:/root/
+          rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" deploy/Caddyfile root@${{ env.droplet.host }}:/root/
           rm key.txt
 
       - name: "Remote: Prep PM2 and run provisioning script"
@@ -97,5 +98,8 @@ jobs:
                 cat /root/.ssh/tmp > /root/.ssh/authorized_keys && rm /root/.ssh/tmp;
               else
                 rm /root/.ssh/authorized_keys && rm /root/.ssh/tmp
+              fi
+            fi
             rm /root/provision.sh
             rm /root/pm2.config.js
+            rm /root/Caddyfile

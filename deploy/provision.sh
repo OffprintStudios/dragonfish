@@ -12,7 +12,6 @@ sudo useradd dragonfish-cd
 
 # Create the install directory
 sudo mkdir -p /opt/dragonfish
-sudo mkdir -p /opt/dragonfish/.pm2 
 sudo mkdir -p /opt/dragonfish/deploy-cache
 sudo mkdir -p /opt/dragonfish/releases
 sudo mkdir -p /opt/dragonfish/releases/server
@@ -42,7 +41,6 @@ rm node-latest.deb
 # Install and set up PM2
 sudo npm install pm2@4.5.4 -g
 sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd
-pm2 start /opt/dragonfish/server_config/pm2.config.js
 
 # Install and set up caddy
 sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
@@ -50,7 +48,8 @@ curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo apt-key
 curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee -a /etc/apt/sources.list.d/caddy-stable.list
 sudo apt update
 sudo apt install caddy
-caddy reverse-proxy --from $hostname --to localhost:3333
+sed -i "s/replaceme/$hostname/g" "/root/Caddyfile"
+sudo cp /root/Caddyfile /etc/caddy/Caddyfile
 
 # Once everything is set up, ensure that dragonfish-cd owns everything under /opt/dragonfish
 chown -R dragonfish-cd /opt/dragonfish/
