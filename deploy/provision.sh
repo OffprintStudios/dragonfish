@@ -11,15 +11,15 @@ fi
 sudo useradd dragonfish-cd
 
 # Create the install directory
-sudo mkdir /opt/dragonfish
-sudo mkdir /opt/dragonfish/.pm2 
-sudo mkdir /opt/dragonfish/deploy-cache
-sudo mkdir /opt/dragonfish/releases
-sudo mkdir /opt/dragonfish/releases/server
-sudo mkdir /opt/dragonfish/releases/client
+sudo mkdir -p /opt/dragonfish
+sudo mkdir -p /opt/dragonfish/.pm2 
+sudo mkdir -p /opt/dragonfish/deploy-cache
+sudo mkdir -p /opt/dragonfish/releases
+sudo mkdir -p /opt/dragonfish/releases/server
+sudo mkdir -p /opt/dragonfish/releases/client
 
 # Set up group membership.
-sudo groupapp dragonfishers
+sudo groupadd dragonfishers
 sudo usermod -a -G dragonfishers dragonfish-cd # <-- this will be the user in charge of actually running PM2
 
 # Grant ownership of the install directory to the 'dragonfishers' group
@@ -30,6 +30,14 @@ sudo chmod -R a+rwx,o-rwx /opt/dragonfish/
 
 # Ensure that any newly-created files inherit group permissions
 sudo chmod g+s /opt/dragonfish
+
+# Install NPM and Node
+# This is the only way to pin to Node 15.5.1 the nodesource repository removes
+# old point versions whenever they do a minor update (which breaks our attempt to
+# pin to a specific version with apt-get)
+wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/node_15.x/pool/main/n/nodejs/nodejs_15.5.1-deb-1nodesource1_amd64.deb'
+sudo apt install -y ./node-latest.deb 
+rm node-latest.deb
 
 # Install and set up PM2
 sudo npm install pm2@4.5.4 -g

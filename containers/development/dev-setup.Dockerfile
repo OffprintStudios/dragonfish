@@ -5,10 +5,10 @@ RUN apt-get update && apt-get install -y curl wget gnupg git
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 
-# This is the only way to pin to Node 14.6.0, the nodesource repository removes
+# This is the only way to pin to Node 15.5.1 the nodesource repository removes
 # old point versions whenever they do a minor update (which breaks our attempt to
 # pin to a specific version with apt-get)
-RUN wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/node_14.x/pool/main/n/nodejs/nodejs_14.6.0-deb-1nodesource1_amd64.deb' \
+RUN wget --quiet --output-document=node-latest.deb 'https://deb.nodesource.com/node_15.x/pool/main/n/nodejs/nodejs_15.5.1-deb-1nodesource1_amd64.deb' \
     && apt install -y ./node-latest.deb \ 
     && rm node-latest.deb
 
