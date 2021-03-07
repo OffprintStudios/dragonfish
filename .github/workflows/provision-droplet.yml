@@ -94,7 +94,7 @@ jobs:
           privateKey: ${{ secrets.SSH_KEY }}
           command: |
             if test -f /root/.ssh/authorized_keys; then
-              if grep -v "AAAAB3NzaC1yc2EAAAADAQABAAABAQCAEwaTboMlJuVoEkOkewcEbXh19ua8F0Hd2j2AHrJk7vkSO9b0jDAT+sZcnjAk1DvXdXb3AgxdFxz8tmSymF6M3DLpq12wssFBgdmczCN1z1xCtZlfU9sGypYyh96fodVLB9opbuK2rqjWl/mCeWNMWLKdJoy/bUUCb5cUbJT9GmSF3uQtZFlDaYKqSZKpCrLMCHG3Z0H3oHeBEMqZ68ZO2rBWVM5VgT0/b6ZfYacH7mkn7Ck00EHU/xsTzWgO1XLIv9GNaKEWc9CQ3Jna6pLCrPRXN0p2PkntvkJyqYh+Vk9uOteqSyApYjaPSRYsG/Ax5L4gZ4GHFM9ZCTSMXV/V" /root/.ssh/authorized_keys > /root/.ssh/tmp; then
+              if grep -v "AAAAB3NzaC1yc2EAAAADAQABAAABgQDEaaKz08Z43X+3/aP5kZmptdid2r722yALbC8NsEwZVL1JjhVCGnGECnXQ515PCNOb29XIVcXp0DwscLaUlh7miOQv9s1te9UvFWLPnVx1Lp7+DiyrHJXYkp9eqYHgnwOIltHfbO4VxNWrgsp9n7OxJe2HWeJk4XCENkR8GyPd+6xWraW5VZj7uFyb22dt5RvZsBIQF2+C2d81jtGP1I8DRf9kbreqs3Q8ypSE4GSpNsi9HXxAjQTzQJ2l8Vn1L+/QWXQ0ET8M4DMNH2m9BoNQUdZ/5PujsCX3KXflFl4G/2FRZYbOkhrdE8Deo63MlVtf6UwDrg+W+2bcsiLeJ21NaXPsQhPGTVQ98tSr11YBFee4rVVJmKRGLQ4pWeKO56Ojgc9oXBHFnFspo4ptBPUJOIuR54KWWJMkNeHOY44CDAowbjytSNFvHZ2TVZyWuBzCTjbn3ARZsHdxGlTBL+lfwq31+nzuEk1K816WJ/j2osODzN0PQ4aklxUw129kKiU=" /root/.ssh/authorized_keys > /root/.ssh/tmp; then
                 cat /root/.ssh/tmp > /root/.ssh/authorized_keys && rm /root/.ssh/tmp;
               else
                 rm /root/.ssh/authorized_keys && rm /root/.ssh/tmp
