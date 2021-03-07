@@ -76,7 +76,7 @@ jobs:
           privateKey: ${{ secrets.SSH_KEY }}
           command: |        
             mkdir -p /opt/dragonfish/server_config
-            cp /root/pm2.config.js /opt/dragonfish/server_config/pm2.config/js
+            cp /root/pm2.config.js /opt/dragonfish/server_config/pm2.config.js
 
             if [[ -n ${{ github.event.inputs.hostname }} ]]; then
               . /root/provision.sh ${{ github.event.inputs.hostname }}            
