@@ -153,7 +153,7 @@ export class MyStuffService {
     public fetchSections(contentId: string): Observable<Section[]> {
         return handleResponse(
             this.http.get<Section[]>(
-                `${this.sectionsUrl}/sections/fetch-user-content-sections?contentId=${contentId}`,
+                `${this.sectionsUrl}/fetch-user-content-sections?contentId=${contentId}`,
                 {
                     observe: 'response',
                     withCredentials: true,
@@ -171,7 +171,7 @@ export class MyStuffService {
      */
     public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
         return handleResponse(
-            this.http.put<Section>(`${this.sectionsUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
+            this.http.put<Section>(`${this.sectionsUrl}/create-section?contentId=${contentId}`, sectionInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -188,7 +188,7 @@ export class MyStuffService {
     public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.sectionsUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.sectionsUrl}/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
                 sectionInfo,
                 { observe: 'response', withCredentials: true },
             ),
@@ -204,7 +204,7 @@ export class MyStuffService {
     public deleteSection(contentId: string, sectionId: string): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.sectionsUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.sectionsUrl}/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -221,7 +221,7 @@ export class MyStuffService {
     public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.sectionsUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.sectionsUrl}/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
                 pubStatus,
                 { observe: 'response', withCredentials: true },
             ),
