@@ -84,7 +84,17 @@ jobs:
               . /root/provision.sh ${{ github.event.inputs.hostname }}            
             else
               . /root/provision.sh ${{ env.droplet_host }}
-            fi            
+            fi     
+            
+      - name: "Remote: Install PM2 as dragonfish-cd"
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ env.droplet_host }}
+          username: 'root'
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |
+            sudo -u dragonfish-cd npm install pm2@4.5.4 -g
+            sudo -u dragonfish-cd env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd            
       
       - name: "Remote: Remove artifacts and remove dragonfish-cd from root's authorized_keys"
         uses: garygrossgarten/github-action-ssh@release
@@ -103,13 +113,3 @@ jobs:
             rm /root/provision.sh
             rm /root/pm2.config.js
             rm /root/Caddyfile
-
-      - name: "Remote: Install PM2 as dragonfish-cd"
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          host: ${{ env.droplet_host }}
-          username: 'root'
-          privateKey: ${{ secrets.SSH_KEY }}
-          command: |
-            sudo -u dragonfish-cd npm install pm2@4.5.4 -g
-            sudo -u dragonfish-cd env PATH=$PATH:/usr/bin pm2 startup systemd -u dragonfish-cd --hp /home/dragonfish-cd
