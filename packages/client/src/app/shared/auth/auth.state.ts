@@ -86,7 +86,7 @@ export class AuthState {
     ): Observable<string> {
         return this.network.refreshToken().pipe(
             tap((result: string | null) => {
-                if (result === "expired") {
+                if (result === null) {
                     dispatch(new User.SetUser(null));
                     patchState({
                         token: null,

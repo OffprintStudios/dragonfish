@@ -245,7 +245,7 @@ export class NetworkService {
                 catchError((err) => {
                     if (err.status === 403) {
                         // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious
-                        return of<string>("expired");
+                        return of<string>(null);
                     }
                     return throwError(err);
                 }),
