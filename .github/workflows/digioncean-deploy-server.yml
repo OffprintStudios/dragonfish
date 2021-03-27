@@ -16,11 +16,6 @@ jobs:
       SSH_USER: 'dragonfish-cd'          
     
     steps:
-    # Debug the github context to see if the workflow_run event actually has the commit sha or something we can use.
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
 
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
@@ -29,7 +24,7 @@ jobs:
         workflow: digiocean-build-server.yml        
         workflow_conclusion: success
         name: backend_artifact
-        commit: ${{ github.sha }}
+        commit: ${{ github.event.workflow_run.head_sha }}
 
     # We do this at the beginning in case some previous run failed. We don't want to work with a dirty deployment environment.
     - name: 'Remote: Clear deploy cache folder'
