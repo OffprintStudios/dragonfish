@@ -10,11 +10,18 @@ on:
 jobs:  
   deploy_to_test:    
     name: "Deploy to Test environment"
+    environment: 'dragonfish-test'
     runs-on: ubuntu-latest
     env:
       SSH_USER: 'dragonfish-cd'          
     
     steps:
+    # Debug the github context to see if the workflow_run event actually has the commit sha or something we can use.
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
+
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
       uses: dawidd6/action-download-artifact@v2
@@ -98,13 +105,25 @@ jobs:
             echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
           fi
 
-    - name: 'Remote: Restart PM2'
+      # The docs for PM2 claim that you need the use the --update-env flag to update environment variables.
+      # Testing and a long string of GitHub issue comments seem to indicate it doesn't work quite right.
+      # However, setting env vars directly in the invocation to PM2 seems to be working in my testing.
+    - name: 'Remote: Restart PM2 and update env vars'
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: pm2 start /opt/dragonfish/server_config/pm2.config.js
+        command: |          
+          COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} \
+          DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} \
+          DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} \
+          DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} \
+          DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} \
+          IMAGES_HOSTNAME=#{{ secrets.IMAGES_HOSTNAME }} \
+          JWT_SECRET=${{ secrets.JWT_SECRET }} \
+          MONGO_URL=${{ secrets.MONGO_URL }} \
+          pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
