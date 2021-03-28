@@ -115,7 +115,7 @@ jobs:
           DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} \
           DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} \
           DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} \
-          IMAGES_HOSTNAME=#{{ secrets.IMAGES_HOSTNAME }} \
+          IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} \
           JWT_SECRET=${{ secrets.JWT_SECRET }} \
           MONGO_URL=${{ secrets.MONGO_URL }} \
           pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
