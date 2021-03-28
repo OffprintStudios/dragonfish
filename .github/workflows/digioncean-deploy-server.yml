@@ -117,13 +117,17 @@ jobs:
             echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
           fi
 
+      # Note: We run PM2 via NVM here, and manually set the NODE_VERSION. We have to do this because we installed Node
+      # and PM2 via NVM, and NVM is basically only set up to work in an interactive environment. Since we're NOT
+      # in an interactive environment, we need to explicitly invoke NVM and tell it which Node version to use
+      # and what command to run.
     - name: 'Remote: Restart PM2'
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: pm2 start /opt/dragonfish/server_config/pm2.config.js
+        command: NODE_VERSION=15.5.1 ~/.nvm/nvm-exec pm2 start /opt/dragonfish/server_config/pm2.config.js
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
