@@ -47,3 +47,4 @@ sudo apt update
 sudo apt install caddy
 sed -i "s/replaceme/$hostname/g" "/root/Caddyfile"
 sudo cp /root/Caddyfile /etc/caddy/Caddyfile
+sudo systemctl reload caddy
