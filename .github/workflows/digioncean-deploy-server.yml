@@ -62,10 +62,10 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
-          mkdir -p /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
+          mkdir -p /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}
           # Using rsync here for easier recursive copy & overwriting at destination
-          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}/node_modules
-          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }}
+          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}/node_modules
+          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}
 
     - name: 'Remote: Clear deploy cache folder (again)'
       uses: garygrossgarten/github-action-ssh@release
@@ -83,7 +83,7 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           rm /opt/dragonfish/current_server
-          ln -s /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.sha }} /opt/dragonfish/current_server
+          ln -s /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }} /opt/dragonfish/current_server
     
     - name: 'Remote: Fix up frontend symlinks'
       uses: garygrossgarten/github-action-ssh@release
@@ -109,9 +109,7 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: |          
-          # There is an actual pm2 invocation at the end of this monster, I swear.
-          COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} JWT_SECRET=${{ secrets.JWT_SECRET }} MONGO_URL=${{ secrets.MONGO_URL }} pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
+        command: COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} JWT_SECRET=${{ secrets.JWT_SECRET }} MONGO_URL=${{ secrets.MONGO_URL }} pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
