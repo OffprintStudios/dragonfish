@@ -110,15 +110,8 @@ jobs:
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
         command: |          
-          COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} \
-          DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} \
-          DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} \
-          DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} \
-          DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} \
-          IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} \
-          JWT_SECRET=${{ secrets.JWT_SECRET }} \
-          MONGO_URL=${{ secrets.MONGO_URL }} \
-          pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
+          # There is an actual pm2 invocation at the end of this monster, I swear.
+          COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} JWT_SECRET=${{ secrets.JWT_SECRET }} MONGO_URL=${{ secrets.MONGO_URL }} pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
