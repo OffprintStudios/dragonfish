@@ -2,6 +2,6 @@ module.exports = {
     apps : [{
         name: 'dragonfish',
         script: 'main.js',   
-        cwd: '../current_server/'   
+        cwd: '/opt/dragonfish/current_server/'   
     }],
   };
