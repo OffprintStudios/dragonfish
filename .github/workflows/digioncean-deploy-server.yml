@@ -69,7 +69,8 @@ jobs:
           echo DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
           echo IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo MONGO_URL=${{ secrets.MONGO_URL }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          # This next one needs quotes, because the URL has some characters that shells like to do funny things with
+          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
