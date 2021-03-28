@@ -55,6 +55,22 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: tar -xzf /opt/dragonfish/backend-deploy-cache/dist.tar.gz --directory /opt/dragonfish/backend-deploy-cache
 
+    - name: 'Remote: Create .env file'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |          
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo MONGO_URL=${{ secrets.MONGO_URL }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
       with:
@@ -100,16 +116,13 @@ jobs:
             echo "No frontend has been deployed yet. No symlink to re-point. Terminating..."
           fi
 
-      # The docs for PM2 claim that you need the use the --update-env flag to update environment variables.
-      # Testing and a long string of GitHub issue comments seem to indicate it doesn't work quite right.
-      # However, setting env vars directly in the invocation to PM2 seems to be working in my testing.
-    - name: 'Remote: Restart PM2 and update env vars'
+    - name: 'Remote: Restart PM2'
       uses: garygrossgarten/github-action-ssh@release
       with:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} JWT_SECRET=${{ secrets.JWT_SECRET }} MONGO_URL=${{ secrets.MONGO_URL }} pm2 start /opt/dragonfish/server_config/pm2.config.js --update-env
+        command: pm2 start /opt/dragonfish/server_config/pm2.config.js
 
   # TODO: If we have more than 5 server releaes, delete the oldest one
 
