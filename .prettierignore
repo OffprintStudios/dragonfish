@@ -1,8 +1,0 @@
-# Add files here to ignore them from prettier formatting
-
-/dist
-/coverage
-
-ckeditor.js
-/libraries/editor/src/lib/translations
-README.md
