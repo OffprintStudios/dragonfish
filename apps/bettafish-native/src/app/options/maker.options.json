@@ -1,0 +1,20 @@
+{
+    "$schema": "../../../../../node_modules/nx-electron/src/validation/maker.schema.json",
+    "productName": "Offprint",
+    "copyright": "Copyright © 2021 Alyx Mote",
+    "electronCompile": false,
+    "npmRebuild": false,
+    "asar": true,
+    "win": {
+        "target": "appx",
+        "publisherName": "Alyx Mote"
+    },
+    "appx": {
+        "displayName": "Offprint",
+        "publisherDisplayName": "Alyx Mote",
+        "backgroundColor": "transparent"
+    },
+    "mac": {
+        "target": "dmg"
+    }
+}

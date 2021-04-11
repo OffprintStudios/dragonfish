@@ -1,0 +1,12 @@
+<ng-container *ngIf="electron.isElectronApp && !(currentUser$ | async); else isInBrowser">
+    <dragonfish-auth-full></dragonfish-auth-full>
+</ng-container>
+
+<ng-template #isInBrowser>
+    <main class="content flex flex-row">
+        <dragonfish-nav></dragonfish-nav>
+        <div class="flex-auto overflow-y-auto">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</ng-template>

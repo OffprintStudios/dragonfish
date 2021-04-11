@@ -1,0 +1,51 @@
+<ng-container [ngSwitch]="determineProminentRole()">
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role admin"
+        *ngSwitchCase="'Admin'"
+    >
+        Admin
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role moderator"
+        *ngSwitchCase="'Moderator'"
+    >
+        Moderator
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role chat-moderator"
+        *ngSwitchCase="'ChatModerator'"
+    >
+        Chat Moderator
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role contributor"
+        *ngSwitchCase="'Contributor'"
+    >
+        Contributor
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role work-approver"
+        *ngSwitchCase="'WorkApprover'"
+    >
+        Work Approver
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role vip"
+        *ngSwitchCase="'VIP'"
+    >
+        VIP
+    </div>
+    <div
+        [ngStyle]="{ margin: isCentered ? '0 auto 1.5rem auto' : '0 0 1.5rem 0' }"
+        class="role supporter"
+        *ngSwitchCase="'Supporter'"
+    >
+        Supporter
+    </div>
+</ng-container>

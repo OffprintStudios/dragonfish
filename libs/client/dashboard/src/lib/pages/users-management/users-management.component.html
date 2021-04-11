@@ -1,0 +1,18 @@
+<div class="code-generator">
+    <div class="title">
+        <h2>Generate New Code</h2>
+        <button (click)="generateCode()">generate</button>
+    </div>
+    <div>
+        <ng-container *ngIf="currCode; else noCode">
+            <span>
+                {{ currCode._id }}
+            </span>
+        </ng-container>
+        <ng-template #noCode>
+            <span>
+                No code generated.
+            </span>
+        </ng-template>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<ng-container *ngIf="portUser$ | async as portUser">
+    <div class="my-8 sticky top-0">
+        <div class="portfolio-header w-11/12 mx-auto rounded-md mb-8 z-30">
+            <div class="flex flex-row items-center p-5">
+                <div>
+                    <img [alt]="'Avatar'" [src]="portUser.profile.avatar" />
+                </div>
+                <div class="flex-1 ml-8">
+                    <h1 class="text-5xl font-bold">{{ portUser.username }}</h1>
+                    <h3 class="text-2xl italic">{{ portUser.profile.bio }}</h3>
+                    <dragonfish-role-badge [roles]="portUser.roles" [isCentered]="false"></dragonfish-role-badge>
+                    <div class="w-full flex flex-row">
+                        <a
+                            class="link"
+                            [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <span class="link-icon"><i-feather name="home"></i-feather></span>Home
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['works']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <span class="link-icon"><i-feather name="feather"></i-feather></span>Works
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['blog']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <span class="link-icon"><i-feather name="coffee"></i-feather></span>Blogs
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['collections']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections
+                        </a>
+                        <ng-container *ngIf="currentUser$ | async as currentUser">
+                            <ng-container *ngIf="currentUser._id === portUser._id">
+                                <a
+                                    class="link"
+                                    [routerLink]="['history']"
+                                    [routerLinkActive]="'active'"
+                                >
+                                    <span class="link-icon"><i-feather name="layers"></i-feather></span>History
+                                </a>
+                                <a
+                                    class="link"
+                                    [routerLink]="['settings']"
+                                    [routerLinkActive]="'active'"
+                                >
+                                    <span class="link-icon"><i-feather name="settings"></i-feather></span>Settings
+                                </a>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+                <div>
+                    <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
+                        <ng-container *ngIf="currentUser._id !== portUser._id">
+                            <div class="controls flex flex-col items-center">
+                                <button class="control top" title="Watch">
+                                    <i-feather name="eye"></i-feather>
+                                </button>
+                                <button class="control mid" title="Send Friend Request">
+                                    <i-feather name="user-plus"></i-feather>
+                                </button>
+                                <button class="control bottom" title="Send Message">
+                                    <i-feather name="message-circle"></i-feather>
+                                </button>
+                            </div>
+
+                            <button class="control solo" title="Report">
+                                <i-feather name="flag"></i-feather>
+                            </button>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noUser>
+                        <div class="controls flex flex-col items-center">
+                            <button class="control top" title="Watch">
+                                <i-feather name="eye"></i-feather>
+                            </button>
+                            <button class="control mid" title="Send Friend Request">
+                                <i-feather name="user-plus"></i-feather>
+                            </button>
+                            <button class="control bottom" title="Send Message">
+                                <i-feather name="message-circle"></i-feather>
+                            </button>
+                        </div>
+
+                        <button class="control solo" title="Report">
+                            <i-feather name="flag"></i-feather>
+                        </button>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</ng-container>

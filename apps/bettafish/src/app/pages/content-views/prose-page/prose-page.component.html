@@ -1,0 +1,4 @@
+<ng-container *ngIf="currProse$ | async as currProse">
+    <dragonfish-content-box [route]="route"></dragonfish-content-box>
+    <router-outlet></router-outlet>
+</ng-container>

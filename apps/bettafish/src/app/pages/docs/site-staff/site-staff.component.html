@@ -1,0 +1,10 @@
+<div class="w-11/12 mx-auto mt-8">
+    <div class="header text-center mb-8" style="border-bottom: 1px solid var(--borders)">
+        <h1 class="text-5xl">Site Staff</h1>
+    </div>
+    <div class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-4 place-items-center">
+        <ng-container *ngFor="let user of staffData">
+            <dragonfish-user-card [user]="user"></dragonfish-user-card>
+        </ng-container>
+    </div>
+</div>

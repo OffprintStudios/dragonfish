@@ -1,0 +1,10 @@
+<div class="text-area">
+    <label [for]="name">{{ label }}</label>
+    <textarea
+        [name]="name"
+        [placeholder]="placeholder"
+        [value]="value"
+        [disabled]="disabled"
+        (input)="onChange($event.target.value)"
+    ></textarea>
+</div>

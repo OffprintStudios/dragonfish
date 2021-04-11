@@ -1,0 +1,110 @@
+<ng-container *ngIf="content$ | async as content">
+    <div class="content-box rounded-md w-11/12 mx-auto shadow-2xl my-6">
+        <dragonfish-rating-icon [rating]="content.currContent.meta.rating" [size]="'large'"></dragonfish-rating-icon>
+        <div class="flex flex-col p-4">
+            <div>
+                <h2 class='text-4xl font-medium'>
+                    <a [routerLink]="['/prose', content.currContent._id, content.currContent.title | slugify]">
+                        {{ content.currContent.title }}
+                    </a>
+                    <span class='ml-0.5 font-normal text-base'>
+                        by
+                        <a
+                            [routerLink]="[
+                                '/portfolio',
+                                content.currContent.author._id,
+                                content.currContent.author.username | slugify,
+                            ]"
+                        >
+                            {{ content.currContent.author.username }}
+                        </a>
+                    </span>
+                </h2>
+            </div>
+            <div class="tags flex flex-row items-center">
+                <ng-container [ngSwitch]="content.currContent.kind">
+                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
+                        <div class="tag" title='Poetry'>
+                            <i-feather name="feather" class="kind"></i-feather>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.ProseContent">
+                        <div class="tag" title='Prose'>
+                            <i-feather name="book-open" class="kind"></i-feather>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <div class="tag" title='Prose'>
+                            <i-feather name="book-open" class="kind"></i-feather>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <div class="separator">//</div>
+                <div class="tag">{{ $any(content.currContent.meta).category }}</div>
+                <div class="separator">//</div>
+                <div class="tag">{{ $any(content.currContent.meta).genres | separateGenres }}</div>
+                <div class="flex-1"><!--push content rating to the right--></div>
+                <dragonfish-content-rating></dragonfish-content-rating>
+            </div>
+            <div class="flex-1 p-4">
+                <img
+                    [alt]="'Cover Art'"
+                    [src]="$any(content.currContent.meta).coverArt"
+                    class="max-w-xs"
+                    *ngIf="$any(content.currContent.meta).coverArt"
+                >
+                <ng-container [ngSwitch]="content.currContent.kind">
+                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
+                        <ng-container *ngIf="$any(content.currContent.meta).collection; else singlePoemDesc">
+                            <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                        </ng-container>
+                        <ng-template #singlePoemDesc>
+                            <div class="html-description" [innerHTML]="content.currContent.desc | safeHtml"></div>
+                        </ng-template>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.ProseContent">
+                        <div class="html-description" [innerHTML]="content.currContent.body | safeHtml"></div>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="route.children.length === 0">
+                <ng-container [ngSwitch]="content.currContent.kind">
+                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
+                        <ng-container *ngIf="$any(content.currContent.meta).collection">
+                            <div>
+                                <dragonfish-sections-list [sections]="$any(content.currContent).sections"></dragonfish-sections-list>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <div>
+                            <dragonfish-sections-list [sections]="$any(content.currContent).sections"></dragonfish-sections-list>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+            <div class="view-stats flex flex-row items-center justify-end">
+                <div class="tag" title='Comments'>
+                    <i-feather name="message-circle"></i-feather>{{ content.currContent.stats.comments | abbreviate }}
+                </div>
+                <div class="separator">//</div>
+                <div class="tag" title='Views'>
+                    <i-feather name="bar-chart-2"></i-feather>{{ content.currContent.stats.views | abbreviate }}
+                </div>
+                <div class="separator">//</div>
+                <div class="tag" title='Words'>
+                    <i-feather name="pen-tool"></i-feather>{{ content.currContent.stats.words | abbreviate }}
+                </div>
+                <div class="separator">//</div>
+                <div class="tag" title='Published On'>
+                    <i-feather name="calendar"></i-feather>{{ content.currContent.audit.publishedOn | localedate: 'mediumDate' }}
+                </div>
+                <div class="separator">//</div>
+                <div class="tag" title='Status'>{{ contentStatus[$any(content.currContent.meta).status] }}</div>
+            </div>
+        </div>
+    </div>
+</ng-container>

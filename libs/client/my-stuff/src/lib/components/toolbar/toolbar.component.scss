@@ -1,0 +1,43 @@
+div.tools {
+    border: 1px solid var(--borders);
+    background: var(--code-background);
+    button.tool {
+        margin-right: 0.25rem;
+        box-shadow: none;
+        background: var(--background);
+        i-feather.no-text {
+            margin-right: 0;
+        }
+        &:hover {
+            background: var(--accent);
+        }
+        &.left {
+            margin-right: 0;
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+        &.mid {
+            margin-right: 0;
+            border-radius: 0;
+        }
+        &.end {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+    button.disabled,
+    input[type='text'].disabled {
+        background: var(--code-background) !important;
+        color: grey;
+        cursor: not-allowed;
+
+        &:hover {
+            background: var(--code-background) !important;
+            color: grey;
+            cursor: not-allowed;
+        }
+    }
+}
+

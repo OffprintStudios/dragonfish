@@ -1,0 +1,48 @@
+<dragonfish-my-stuff-toolbar></dragonfish-my-stuff-toolbar>
+
+<ng-container *ngIf="route.children.length === 0; else openedView">
+    <ng-container *ngIf="myStuff$ | async as myStuff">
+        <ng-container *ngIf="loading; else notLoading">
+            <div class="flex flex-row items-center justify-center h-full">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-container>
+        <ng-template #notLoading>
+            <!--Migration notice-->
+            <div class="migration-notice">
+                <div class="migration-prompt">
+                    <h4 class="text-2xl">Looking for something?</h4>
+                    <p class="text-sm">Not to worry! Let's bring some of your old stuff over, shall we?</p>
+                </div>
+                <div class="migration-button">
+                    <button matRipple [routerLink]="['/migration']">View Old Content</button>
+                </div>
+            </div>
+
+            <!--User has nothing-->
+            <ng-container *ngIf="myStuff.myStuff.length ===0; else hasContent">
+                <div class="empty">
+                    <h3>It's pretty lonely here...</h3>
+                    <p>Why not add some content by hitting the Create button?</p>
+                </div>
+            </ng-container>
+
+            <!--User has content-->
+            <ng-template #hasContent>
+                <div class="content-block">
+                    <div class="content-grid">
+                        <ng-container *ngFor="let content of myStuff.myStuff">
+                            <dragonfish-content-item [content]="content" (viewItem)="viewContent($event)"></dragonfish-content-item>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-template>
+    </ng-container>
+</ng-container>
+
+<ng-template #openedView>
+    <div class="mb-8">
+        <router-outlet></router-outlet>
+    </div>
+</ng-template>

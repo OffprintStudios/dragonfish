@@ -1,0 +1,65 @@
+/* Material Dialog */
+.mat-dialog-container {
+    margin: 0 auto;
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border-radius: 4px !important;
+    border: 1px solid var(--borders);
+}
+
+.mat-dialog-title {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Material Menu */
+.mat-menu-panel {
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--borders);
+}
+
+button.mat-menu-item {
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    color: var(--text-color);
+    text-transform: none !important;
+    font-variant: normal;
+    font-family: 'Raleway', sans-serif;
+    box-shadow: none;
+    i-feather {
+        position: relative;
+        width: 16px;
+        top: 0.65rem;
+        margin-right: 0.5rem;
+    }
+}
+
+.mat-menu-item:hover:not([disabled]),
+.mat-menu-item.cdk-program-focused:not([disabled]),
+.mat-menu-item.cdk-keyboard-focused:not([disabled]),
+.mat-menu-item-highlighted:not([disabled]) {
+    background: var(--accent) !important;
+    color: whitesmoke;
+}
+
+.mat-menu-panel {
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--borders);
+}
+
+/* Material Tooltip */
+.offprint-tooltip {
+    font-family: Raleway, sans-serif !important;
+    border: 1px solid var(--borders) !important;
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border-radius: 0 !important;
+    box-shadow: var(--dropshadow);
+}
+
+/* Material Progress Spinner */
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: var(--accent);
+}

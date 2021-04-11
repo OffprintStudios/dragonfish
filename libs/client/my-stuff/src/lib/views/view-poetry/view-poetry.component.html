@@ -1,0 +1,11 @@
+<ng-container *ngIf="currContent$ | async as myPoetry">
+    <dragonfish-content-preview></dragonfish-content-preview>
+    <ng-container *ngIf="myPoetry.meta.collection; else singlePoem">
+        <dragonfish-manage-sections></dragonfish-manage-sections>
+    </ng-container>
+    <ng-template #singlePoem>
+        <div class="view-body w-3/4 mx-auto mt-8">
+            <div class="html-description" [innerHtml]="myPoetry.body | safeHtml"></div>
+        </div>
+    </ng-template>
+</ng-container>

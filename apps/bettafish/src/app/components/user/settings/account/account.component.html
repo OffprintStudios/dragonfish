@@ -1,0 +1,60 @@
+<div class="box w-full border rounded-md p-4 shadow-lg">
+    <div class="header border-b mb-5">
+        <h3 class="text-3xl font-medium">Account</h3>
+    </div>
+    <div class="grid grid-cols-2">
+        <div class="bordered pr-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Change Email</h5>
+            <form [formGroup]="changeEmailForm" (ngSubmit)="submitEmailForm()" class="flex-1">
+                <div>
+                    <dragonfish-text-field
+                        [formControlName]="'email'"
+                        [name]="'email'"
+                        [type]="'email'"
+                        [label]="'Email Address'"
+                        [placeholder]="'someone@example.com'"
+                    ></dragonfish-text-field>
+                    <dragonfish-text-field
+                        [formControlName]="'currPassword'"
+                        [name]="'currPassword'"
+                        [type]="'password'"
+                        [label]="'Current Password'"
+                        [placeholder]="'••••••••••'"
+                    ></dragonfish-text-field>
+                </div>
+            </form>
+            <hr />
+            <button type="submit" class="shadow-lg" (click)="submitEmailForm()">Save Changes</button>
+        </div>
+        <div class="pl-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Change Password</h5>
+            <form [formGroup]="changePasswordForm" (ngSubmit)="submitPasswordForm()" class="flex-1">
+                <div>
+                    <dragonfish-text-field
+                        [formControlName]="'newPassword'"
+                        [name]="'newPassword'"
+                        [type]="'password'"
+                        [label]="'New Password'"
+                        [placeholder]="'••••••••••'"
+                    ></dragonfish-text-field>
+                    <dragonfish-text-field
+                        [formControlName]="'repeatNewPassword'"
+                        [name]="'repeatNewPassword'"
+                        [type]="'password'"
+                        [label]="'Repeat New Password'"
+                        [placeholder]="'••••••••••'"
+                    ></dragonfish-text-field>
+                    <dragonfish-text-field
+                        [formControlName]="'currPassword'"
+                        [name]="'currPassword'"
+                        [type]="'password'"
+                        [label]="'Current Password'"
+                        [placeholder]="'••••••••••'"
+                    ></dragonfish-text-field>
+                </div>
+            </form>
+            <hr />
+            <button type="submit" class="shadow-lg" (click)="submitPasswordForm()">Save Changes</button>
+        </div>
+    </div>
+</div>

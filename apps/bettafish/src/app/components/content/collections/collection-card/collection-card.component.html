@@ -1,0 +1,62 @@
+<div class="collection-box flex flex-col rounded-md p-4 shadow-lg">
+    <div class="flex flex-row items-center">
+        <div>
+            <ng-container [ngSwitch]="collection.audit.isPublic">
+                <a
+                    matTooltip="Public (click to set to private)"
+                    matTooltipClass="offprint-tooltip"
+                    *ngSwitchCase="true"
+                >
+                    <i-feather name="unlock"></i-feather>
+                </a>
+                <a
+                    matTooltip="Private (click to set to public)"
+                    matTooltipClass="offprint-tooltip"
+                    *ngSwitchDefault
+                >
+                    <i-feather name="lock"></i-feather>
+                </a>
+            </ng-container>
+        </div>
+        <div class="flex-1">
+            <h3 class="text-xl text-center">
+                <a>{{ collection.name }}</a>
+            </h3>
+        </div>
+        <div>
+            <a [matMenuTriggerFor]="optionsMenu" [matMenuTriggerData]="{ coll: collection }">
+                <i-feather name="more-vertical"></i-feather>
+            </a>
+        </div>
+    </div>
+    <div class="flex-1">
+        <ng-container *ngIf="collection.contains.length === 0; else displayWorks">
+            <div class="empty">
+                <h3 class="text-lg">Nothing's been added yet.</h3>
+                <p class="text-sm">Why not add something first?</p>
+            </div>
+        </ng-container>
+        <ng-template #displayWorks>
+            <ul>
+                <li *ngFor="let entry of collection.contains | slice: 0:5">
+                    <a>
+                        {{ entry.title }}
+                        <span class="end-point">
+                            {{ entry.stats.words | abbreviate }} word{{ entry.stats.words | pluralize }}
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </ng-template>
+    </div>
+    <div class="text-center text-xs mt-4">
+        {{ collection.contains.length | toLocaleString }} work{{ collection.contains.length | pluralize }}
+    </div>
+</div>
+
+<mat-menu xPosition="before" #optionsMenu="matMenu">
+    <ng-template matMenuContent let-coll="coll">
+        <button mat-menu-item><i-feather name="edit-3"></i-feather>Edit</button>
+        <button mat-menu-item><i-feather name="trash-2"></i-feather>Delete</button>
+    </ng-template>
+</mat-menu>

@@ -1,0 +1,55 @@
+<div class="flex flex-row h-screen">
+    <div class="nav p-4 flex flex-col w-96">
+        <div class="header">
+            <h2 class="text-4xl">More Stuff</h2>
+        </div>
+        <div class="flex-auto overflow-y-auto flex flex-col pt-4">
+            <a [routerLink]="['/docs/what-is-offprint']" [routerLinkActive]="'active'">
+                <i-feather name="info"></i-feather>
+                <span class="flex-1 px-2">What is Offprint?</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a [routerLink]="['/docs/omnibus']" [routerLinkActive]="'active'">
+                <i-feather name="feather"></i-feather>
+                <span class="flex-1 px-2">The Offprint Omnibus</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a [routerLink]="['/docs/code-of-conduct']" [routerLinkActive]="'active'">
+                <i-feather name="book"></i-feather>
+                <span class="flex-1 px-2">Code of Conduct</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a [routerLink]="['/docs/terms-of-service']" [routerLinkActive]="'active'">
+                <i-feather name="briefcase"></i-feather>
+                <span class="flex-1 px-2">Terms of Service & Privacy Policy</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a>
+                <i-feather name="file-text"></i-feather>
+                <span class="flex-1 px-2">Open Source Licenses</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a [routerLink]="['/docs/site-staff']" [routerLinkActive]="'active'">
+                <i-feather name="shield"></i-feather>
+                <span class="flex-1 px-2">Site Staff</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+            <a [routerLink]="['/docs/supporters']" [routerLinkActive]="'active'">
+                <i-feather name="thumbs-up"></i-feather>
+                <span class="flex-1 px-2">Patreon Supporters & Contributors</span>
+                <i-feather name="chevron-right" class="end"></i-feather>
+            </a>
+        </div>
+    </div>
+    <div class="flex-auto overflow-y-auto">
+        <ng-container *ngIf="route.children.length === 0; else viewingDoc">
+            <div class="empty">
+                <h3>You haven't selected anything yet...</h3>
+                <p>Please select an item from the left to view it.</p>
+            </div>            
+        </ng-container>
+        <ng-template #viewingDoc>
+            <router-outlet></router-outlet>
+        </ng-template>
+    </div>
+</div>

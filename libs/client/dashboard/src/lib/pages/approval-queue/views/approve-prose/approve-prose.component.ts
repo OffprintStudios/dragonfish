@@ -1,0 +1,34 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { cloneDeep } from 'lodash';
+import { ProseContent, SectionInfo, WorkStatus } from '@dragonfish/shared/models/content';
+import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+
+@Component({
+    selector: 'dragonfish-approve-prose',
+    templateUrl: './approve-prose.component.html',
+    styleUrls: ['./approve-prose.component.scss'],
+})
+export class ApproveProseComponent implements OnInit {
+    currDoc: ApprovalQueue;
+    currProse: ProseContent;
+    contentStatus = WorkStatus;
+
+    constructor(public route: ActivatedRoute) {}
+
+    ngOnInit(): void {
+        this.currDoc = cloneDeep(this.route.snapshot.data.contentData) as ApprovalQueue;
+        this.currProse = cloneDeep(this.currDoc.workToApprove) as ProseContent;
+    }
+
+    /**
+     * Old prose won't have a publishedOn value, so createdAt is used instead
+     * @param section
+     */
+    getPublishedDate(section: SectionInfo): Date {
+        if (section.audit.publishedOn === null) {
+            return section.createdAt;
+        }
+        return section.audit.publishedOn;
+    }
+}

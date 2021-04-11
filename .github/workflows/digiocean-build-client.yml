@@ -1,0 +1,51 @@
+name: Build Client (DO)
+
+on:
+# WARNING ABOUT USAGE: Do not attempt to re-run this workflow, as the 'workflow_run' trigger
+# used by the deployment step implicitly has a ${{ github.sha }} of the SHA of the latest commit 
+# on the HEAD.
+# The "dawidd6/action-download-artifact@v2" action used in the deploy step looks for a workflow 
+# run triggered by that commit.
+# If you attempt to re-run this step after the HEAD has moved forward, it will complete successfully,
+# but then deployment will look for a workflow with the newest commit SHA, which _this_ run did not use.
+  push:
+    branches: [ main ]
+    paths:
+    - 'nx.json'
+    - 'package.json'
+    - 'workspace.json'
+    - 'libraries/**'    
+    - 'packages/client/**'
+    - '.github/workflows/digiocean-build-client.yml'
+    - '.github/workflows/digiocean-deploy-client.yml'
+
+jobs:
+  build_client:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.5.1
+      
+      - name: Install global dependencies
+        run: yarn global add @angular/cli nx typescript less
+
+      - name: Install local dependencies
+        run: yarn install
+
+      - name: Build client
+        run: yarn build:ci:client
+
+      # Not strictly necessary, but it makes the deployment workflow a little more ergonomic.
+      - name: Compress artifact
+        run: tar -czf dist.tar.gz dist/packages/server/static/
+
+      - name: Upload dist.tar.gz
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend_artifact
+          path: dist.tar.gz

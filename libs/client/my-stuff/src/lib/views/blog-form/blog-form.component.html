@@ -1,0 +1,102 @@
+<ng-container *ngIf="currContent$ | async as currBlog; else createMode">
+    <div class="form-container">
+        <div class="form-header">
+            <button class="form-button left" [ngClass]="{ selected: !editMode }" (click)="switchView()">Preview</button>
+            <button class="form-button right" [ngClass]="{ selected: editMode }" (click)="switchView()">Edit</button>
+            <div style="flex: 1; text-align: right">
+                <button class="form-button save" *ngIf="editMode" (click)="submitForm(currBlog._id)">Save</button>
+            </div>
+        </div>
+
+        <ng-container *ngIf="editMode; else previewBlog">
+            <form class="w-3/4 mx-auto" [formGroup]="blogForm" (ngSubmit)="submitForm(currBlog._id)" *ngIf="editMode">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <dragonfish-text-field
+                            [formControlName]="'title'"
+                            [name]="'title'"
+                            [type]="'text'"
+                            [label]="'Title'"
+                            [placeholder]="'There\'s Something I Gotta Say...'"
+                        ></dragonfish-text-field>
+                    </div>
+                    <div class="offprint-select">
+                        <label>Rating</label>
+                        <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
+                            <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
+                                {{ rating.value }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+
+                <dragonfish-editor
+                    [parentForm]="blogForm"
+                    [controlName]="'body'"
+                    [minHeight]="'1000px'"
+                    [maxHeight]="'1000px'"
+                ></dragonfish-editor>
+            </form>
+        </ng-container>
+
+        <ng-template #previewBlog>
+            <div class="post-container rounded-md mx-auto w-3/4" *ngIf="currBlog">
+                <dragonfish-rating-icon [rating]="currBlog.meta.rating" [size]="'large'"></dragonfish-rating-icon>
+                <div class="p-12 pt-16">
+                    <div class="post-header">
+                        <h1 class="text-5xl">{{ currBlog.title }}</h1>
+                        <div>
+                            <div class="tag">{{ currBlog.audit.publishedOn | localedate: 'fullDate' }}</div>
+                            <div class="separator">//</div>
+                            <div class="tag" title="Views"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</div>
+                            <div class="separator">//</div>
+                            <div class="tag" title="Comments">
+                                <i-feather name="message-circle"></i-feather>{{ currBlog.stats.comments }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <div class="blog-body" [innerHtml]="currBlog.body | safeHtml"></div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>
+
+<ng-template #createMode>
+    <div class="form-container">
+        <div class="form-header pb-2">
+            <h3 class="text-4xl">{{ formTitle }}</h3>
+            <button class="form-button" (click)="submitForm()">Save</button>
+        </div>
+        <form class="w-3/4 mx-auto" [formGroup]="blogForm" (ngSubmit)="submitForm()">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <dragonfish-text-field
+                        [formControlName]="'title'"
+                        [name]="'title'"
+                        [type]="'text'"
+                        [label]="'Title'"
+                        [placeholder]="'There\'s Something I Gotta Say...'"
+                    ></dragonfish-text-field>
+                </div>
+                <div class="offprint-select">
+                    <label>Rating</label>
+                    <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
+                        <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
+                            {{ rating.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+
+            <dragonfish-editor
+                [parentForm]="blogForm"
+                [controlName]="'body'"
+                [minHeight]="'1000px'"
+                [maxHeight]="'1000px'"
+            ></dragonfish-editor>
+        </form>
+    </div>
+</ng-template>
