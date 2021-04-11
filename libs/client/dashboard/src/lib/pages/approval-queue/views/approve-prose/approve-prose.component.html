@@ -2,7 +2,7 @@
     <div class="view-info">
         <div class="view-header">
             <div class="view-title">
-                <rating-icon [rating]="currProse.meta.rating" [size]="'large'"></rating-icon>
+                <dragonfish-rating-icon [rating]="currProse.meta.rating" [size]="'large'"></dragonfish-rating-icon>
                 <div class="view-title-info">
                     <h2>
                         <a [routerLink]="['/prose', currProse._id, currProse.title | slugify]">{{ currProse.title }}</a>
