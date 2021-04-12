@@ -1,14 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AQNamespace, ApprovalQueueState } from '../../shared/approval-queue';
 
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
-import { Decision } from '@dragonfish/shared/models/contrib';
 import { FrontendUser, UserInfo } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Navigate } from '@ngxs/router-plugin';
@@ -18,10 +17,8 @@ import { Navigate } from '@ngxs/router-plugin';
     templateUrl: './approval-queue.component.html',
     styleUrls: ['./approval-queue.component.scss'],
 })
-export class ApprovalQueueComponent implements OnInit, OnDestroy {
+export class ApprovalQueueComponent implements OnInit {
     @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
-    selectedDocSubscription: Subscription;
-    selectedDoc: ApprovalQueue;
 
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
@@ -34,20 +31,12 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
         private router: Router,
         private snackBar: MatSnackBar,
         private location: Location,
-    ) {
-        this.selectedDocSubscription = this.selectedDoc$.subscribe((x) => {
-            this.selectedDoc = x;
-        });
-    }
+    ) {}
 
     ngOnInit(): void {
         this.route.data.subscribe((data) => {
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
-    }
-
-    ngOnDestroy(): void {
-        this.selectedDocSubscription.unsubscribe();
     }
 
     /**
@@ -154,7 +143,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * @param entry The entry to approve
      * @param work The work to approve
      */
-    approveWork() {
+    /*approveWork() {
         if (this.selectedDoc !== null) {
             const thisWork = this.selectedDoc.workToApprove as ContentModel;
             const thisWorksAuthor = thisWork.author as UserInfo;
@@ -170,7 +159,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }
-    }
+    }*/
 
     /**
      * Rejects a work.
@@ -178,7 +167,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
      * @param entry The entry to reject
      * @param work The work to reject
      */
-    rejectWork() {
+    /*rejectWork() {
         if (this.selectedDoc !== null) {
             const thisWork = this.selectedDoc.workToApprove as ContentModel;
             const thisWorksAuthor = thisWork.author as UserInfo;
@@ -194,7 +183,7 @@ export class ApprovalQueueComponent implements OnInit, OnDestroy {
         } else {
             this.snackBar.open(`Nothing is currently selected!`);
         }
-    }
+    }*/
 
     /**
      * Goes back to the previous page.

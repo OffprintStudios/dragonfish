@@ -1,4 +1,6 @@
-<div class="tools">
+<dragonfish-approval-queue-toolbar></dragonfish-approval-queue-toolbar>
+
+<!--<div class="tools">
     <div class="tool-buttons">
         <ng-container *ngIf="route.children.length === 0; else contentViewTools">
             <button matRipple class="tool disabled"><i-feather name="chevron-left"></i-feather>Back</button>
@@ -55,9 +57,9 @@
             <button matRipple class="tool end" (click)="rejectWork()"><i-feather name="x"></i-feather>Reject</button>
         </ng-template>
     </div>
-</div>
+</div>-->
 
-<div class="approval-queue-container" *ngIf="route.children.length === 0">
+<div class="approval-queue-container mx-auto my-4" *ngIf="route.children.length === 0">
     <div class="queue-list">
         <h4 style="text-align: center" *ngIf="queueIsEmpty()">Surprisingly, no one's submitted anything yet.</h4>
         <div class="work-list" *ngIf="queue && queue.docs">

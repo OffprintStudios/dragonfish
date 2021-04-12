@@ -1,11 +1,5 @@
-div.tools {
-    width: 98.5%;
-}
-
 div.approval-queue-container {
-    width: 100%;
-    margin: 0 auto 0 auto;
-
+    width: 91.666667%;
     div.queue-list {
         width: 100%;
         margin: 0 auto 0 auto;
@@ -19,9 +13,9 @@ div.approval-queue-container {
                 display: flex;
                 flex-direction: row;
                 justify-content: space-around;
-                border: 1px solid var(--site-borders);
+                border: 1px solid var(--borders);
                 border-radius: 4px;
-                box-shadow: var(--site-dropshadow);
+                box-shadow: var(--dropshadow);
                 margin-bottom: 2rem;
                 min-height: 12rem;
 
@@ -56,14 +50,14 @@ div.approval-queue-container {
                             h4.author-byline {
                                 display: inline-block;
                                 font-size: 20px;
-                                color: var(--site-text-color);
+                                color: var(--text-color);
                                 font-style: italic;
                                 margin: 0 0 0 1rem;
                             }
                         }
                         div.info-bits {
                             h4 {
-                                color: var(--site-text-color);
+                                color: var(--text-color);
                                 display: inline-block;
                                 font-size: 18px;
                                 margin-bottom: 0;
@@ -75,7 +69,7 @@ div.approval-queue-container {
                                     position: relative;
                                     margin-right: 0.5rem;
                                     top: 0.25rem;
-                                    color: var(--site-accent);
+                                    color: var(--accent);
                                 }
                             }
 
@@ -87,7 +81,7 @@ div.approval-queue-container {
                         }
                         div.stats {
                             h4 {
-                                color: var(--site-text-color);
+                                color: var(--text-color);
                                 display: inline-block;
                                 font-size: 18px;
                                 margin-bottom: 0;
@@ -99,7 +93,7 @@ div.approval-queue-container {
                                     position: relative;
                                     margin-right: 0.5rem;
                                     top: 0.25rem;
-                                    color: var(--site-accent);
+                                    color: var(--accent);
                                 }
                             }
 
@@ -117,11 +111,11 @@ div.approval-queue-container {
                     margin-right: 2rem;
                     img.claimed-avatar {
                         object-fit: cover;
-                        border: 1px solid var(--site-borders);
+                        border: 1px solid var(--borders);
                         width: 50px;
                         height: 50px;
                         border-radius: 50%;
-                        box-shadow: var(--site-dropshadow);
+                        box-shadow: var(--dropshadow);
                     }
                 }
 
@@ -137,7 +131,7 @@ div.approval-queue-container {
                         border-bottom: none;
                         border-top-left-radius: 0;
                         border-bottom-left-radius: 0;
-                        color: var(--site-borders);
+                        color: var(--borders);
                         i-feather {
                             position: relative;
                             top: 0.75rem;
@@ -145,7 +139,7 @@ div.approval-queue-container {
                         }
                         &:hover {
                             color: whitesmoke;
-                            background-color: var(--site-accent);
+                            background-color: var(--accent);
                         }
                     }
                     button.top {
@@ -159,7 +153,7 @@ div.approval-queue-container {
                     }
                     button.right {
                         border-right: none;
-                        border-top: 1px solid var(--site-borders);
+                        border-top: 1px solid var(--borders);
                         border-top-right-radius: 0;
                     }
                     button.work-controls-single {
@@ -175,7 +169,7 @@ div.approval-queue-container {
                         border-top-left-radius: 0;
                         border-top-right-radius: 4px;
                         border-bottom-left-radius: 0;
-                        color: var(--site-borders);
+                        color: var(--borders);
                         i-feather {
                             position: relative;
                             top: 0.75rem;
@@ -183,7 +177,7 @@ div.approval-queue-container {
                         }
                         &:hover {
                             color: whitesmoke;
-                            background-color: var(--site-accent);
+                            background-color: var(--accent);
                         }
                     }
                 }

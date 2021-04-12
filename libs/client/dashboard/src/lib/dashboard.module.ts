@@ -19,6 +19,7 @@ import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
 
 /* Components */
+import { ApprovalQueueToolbarComponent } from './components/approval-queue';
 
 /* State */
 import { ApprovalQueueState } from './shared/approval-queue';
@@ -39,6 +40,7 @@ import { UserManagementService } from './shared/user-management/services';
         OverviewComponent,
         ReportsComponent,
         UsersManagementComponent,
+        ApprovalQueueToolbarComponent,
     ],
     imports: [
         CommonModule,
