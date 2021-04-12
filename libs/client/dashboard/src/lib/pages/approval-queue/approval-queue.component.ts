@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { AQNamespace, ApprovalQueueState } from '../../shared/approval-queue';
+import { Store } from '@ngxs/store';
+import { AQNamespace } from '../../shared/approval-queue';
 
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { FrontendUser, UserInfo } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { Navigate } from '@ngxs/router-plugin';
 
 @Component({
     selector: 'dragonfish-approval-queue',
@@ -18,11 +15,8 @@ import { Navigate } from '@ngxs/router-plugin';
     styleUrls: ['./approval-queue.component.scss'],
 })
 export class ApprovalQueueComponent implements OnInit {
-    @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
-
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
-
     pageNum = 1;
 
     constructor(
@@ -30,7 +24,6 @@ export class ApprovalQueueComponent implements OnInit {
         public route: ActivatedRoute,
         private router: Router,
         private snackBar: MatSnackBar,
-        private location: Location,
     ) {}
 
     ngOnInit(): void {
@@ -135,60 +128,5 @@ export class ApprovalQueueComponent implements OnInit {
         this.store.dispatch(new AQNamespace.ClaimWork(entry)).subscribe(() => {
             this.forceRefresh();
         });
-    }
-
-    /**
-     * Approves a work.
-     *
-     * @param entry The entry to approve
-     * @param work The work to approve
-     */
-    /*approveWork() {
-        if (this.selectedDoc !== null) {
-            const thisWork = this.selectedDoc.workToApprove as ContentModel;
-            const thisWorksAuthor = thisWork.author as UserInfo;
-            const decision: Decision = {
-                docId: this.selectedDoc._id,
-                workId: thisWork._id,
-                authorId: thisWorksAuthor._id,
-            };
-
-            this.store
-                .dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dash/approval-queue'])])
-                .subscribe();
-        } else {
-            this.snackBar.open(`Nothing is currently selected!`);
-        }
-    }*/
-
-    /**
-     * Rejects a work.
-     *
-     * @param entry The entry to reject
-     * @param work The work to reject
-     */
-    /*rejectWork() {
-        if (this.selectedDoc !== null) {
-            const thisWork = this.selectedDoc.workToApprove as ContentModel;
-            const thisWorksAuthor = thisWork.author as UserInfo;
-            const decision: Decision = {
-                docId: this.selectedDoc._id,
-                workId: thisWork._id,
-                authorId: thisWorksAuthor._id,
-            };
-
-            this.store
-                .dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dash/approval-queue'])])
-                .subscribe();
-        } else {
-            this.snackBar.open(`Nothing is currently selected!`);
-        }
-    }*/
-
-    /**
-     * Goes back to the previous page.
-     */
-    goBack() {
-        this.store.dispatch(new Navigate(['/dash/approval-queue'])).subscribe();
     }
 }

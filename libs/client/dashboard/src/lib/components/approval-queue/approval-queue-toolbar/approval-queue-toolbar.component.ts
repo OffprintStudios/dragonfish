@@ -1,9 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ApprovalQueueState } from '../../../shared/approval-queue';
+import { ApprovalQueueState, AQNamespace } from '../../../shared/approval-queue';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { ContentModel } from '@dragonfish/shared/models/content';
+import { Decision } from '@dragonfish/shared/models/contrib';
+import { UserInfo } from '@dragonfish/shared/models/users';
+import { Navigate } from '@ngxs/router-plugin';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'dragonfish-approval-queue-toolbar',
@@ -12,11 +17,18 @@ import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 })
 export class ApprovalQueueToolbarComponent {
     @Select(ApprovalQueueState.selectedDoc) selectedDoc$: Observable<ApprovalQueue>;
+    @Input() route: ActivatedRoute;
+    @Input() pageNum: number;
 
-    constructor(private location: Location) {}
+    constructor(private location: Location, private store: Store, private router: Router) {}
 
     forceRefresh() {
-        // more stuff
+        // eventually, none of this will be necessary and items will be updated in-place.
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: this.pageNum },
+            queryParamsHandling: 'merge',
+        });
     }
 
     goBack() {
@@ -24,10 +36,28 @@ export class ApprovalQueueToolbarComponent {
     }
 
     approveWork(doc: ApprovalQueue) {
-        // things
+        const thisWork = doc.workToApprove as ContentModel;
+        const thisWorksAuthor = thisWork.author as UserInfo;
+        const decision: Decision = {
+            docId: doc._id,
+            workId: thisWork._id,
+            authorId: thisWorksAuthor._id,
+        };
+        this.store
+            .dispatch([new AQNamespace.ApproveWork(decision), new Navigate(['/dashboard/approval-queue'])])
+            .subscribe();
     }
 
     rejectWork(doc: ApprovalQueue) {
-        // stuff
+        const thisWork = doc.workToApprove as ContentModel;
+        const thisWorksAuthor = thisWork.author as UserInfo;
+        const decision: Decision = {
+            docId: doc._id,
+            workId: thisWork._id,
+            authorId: thisWorksAuthor._id,
+        };
+        this.store
+            .dispatch([new AQNamespace.RejectWork(decision), new Navigate(['/dashboard/approval-queue'])])
+            .subscribe();
     }
 }
