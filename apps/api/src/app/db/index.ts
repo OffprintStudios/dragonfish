@@ -3,7 +3,7 @@ import { ContentModule } from './content';
 import { ReadingHistoryModule } from './reading-history/reading-history.module';
 import { CollectionsModule } from './collections/collections.module';
 import { MessagesModule } from './messages/messages.module';
-// import { NotificationsModule } from './notifications/notifications.module';
+import { NotificationsModule } from './notifications/notifications.module';
 import { SectionsModule } from './sections/sections.module';
 import { ApprovalQueueModule } from './approval-queue/approval-queue.module';
 import { CommentsModule } from './comments/comments.module';
@@ -16,7 +16,7 @@ export const DatabaseModules = [
     ReadingHistoryModule,
     CollectionsModule,
     MessagesModule,
-    // NotificationsModule,
+    NotificationsModule,
     SectionsModule,
     ApprovalQueueModule,
     CommentsModule,
