@@ -1,4 +1,4 @@
-import { NewsPostNotificationInfo } from '@dragonfish/models/notifications';
+import { NewsPostNotificationInfo } from '@dragonfish/shared/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 export interface NewsPostNotificationDocument extends NewsPostNotificationInfo, NotificationDocument {

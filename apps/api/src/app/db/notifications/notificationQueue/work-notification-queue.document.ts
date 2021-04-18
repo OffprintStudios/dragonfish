@@ -1,4 +1,4 @@
-import { WorkNotificationInfo } from '@dragonfish/models/notifications';
+import { WorkNotificationInfo } from '@dragonfish/shared/models/notifications';
 import { NotificationQueueDocument } from '../notification-queue.schema';
 
 export interface WorkNotificationQueueDocument extends NotificationQueueDocument, WorkNotificationInfo {

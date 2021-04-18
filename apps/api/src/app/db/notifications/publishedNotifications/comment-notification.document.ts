@@ -1,4 +1,4 @@
-import { CommentNotificationInfo } from '@dragonfish/models/notifications';
+import { CommentNotificationInfo } from '@dragonfish/shared/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 export interface CommentNotificationDocument extends CommentNotificationInfo, NotificationDocument {

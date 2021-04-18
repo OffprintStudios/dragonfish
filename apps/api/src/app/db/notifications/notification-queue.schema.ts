@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Model, Document, Schema as MongooseSchema } from 'mongoose';
 
-import { NotificationKind } from '@dragonfish/models/notifications';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
 import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
 import {
@@ -20,8 +20,8 @@ import { PublishStatus } from './notificationQueue/publish-status';
 import { getSubSchemaProvider } from './notifications.module';
 import { SubSchemas } from './sub-schemas';
 
-const FiveMB: number = 5_242_880; // Even this is probably overkill
-const NOTIFICATION_QUEUE_MODEL_TOKEN: string = 'NotificationQueue';
+const FiveMB = 5_242_880; // Even this is probably overkill
+const NOTIFICATION_QUEUE_MODEL_TOKEN = 'NotificationQueue';
 
 @Schema({
     timestamps: true,
