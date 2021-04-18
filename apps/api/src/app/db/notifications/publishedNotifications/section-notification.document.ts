@@ -1,4 +1,4 @@
-import { SectionNotificationInfo } from '@dragonfish/models/notifications';
+import { SectionNotificationInfo } from '@dragonfish/shared/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 export interface SectionNotificationDocument extends SectionNotificationInfo, NotificationDocument {

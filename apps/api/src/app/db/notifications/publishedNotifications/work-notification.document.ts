@@ -1,4 +1,4 @@
-import { WorkNotificationInfo } from '@dragonfish/models/notifications';
+import { WorkNotificationInfo } from '@dragonfish/shared/models/notifications';
 import { NotificationDocument } from '../notifications.schema';
 
 export interface WorkNotificationDocument extends WorkNotificationInfo, NotificationDocument {

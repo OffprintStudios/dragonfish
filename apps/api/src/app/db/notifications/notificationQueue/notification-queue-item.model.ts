@@ -1,4 +1,4 @@
-import { NotificationKind } from '@dragonfish/models/notifications';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PublishStatus } from './publish-status';
 
 // Base interface

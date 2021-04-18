@@ -19,8 +19,8 @@ import {
     NotificationBase,
     NotificationKind,
     NotificationSubscription,
-} from '@dragonfish/models/notifications';
-import { Roles } from '@dragonfish/models/users';
+} from '@dragonfish/shared/models/notifications';
+import { Roles } from '@dragonfish/shared/models/users';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NotificationsService } from '../../db/notifications/notifications.service';

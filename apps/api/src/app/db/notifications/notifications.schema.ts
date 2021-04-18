@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Model, Document, Schema as MongooseSchema } from 'mongoose';
 
-import { NotificationKind, NotificationBase } from '@dragonfish/models/notifications';
+import { NotificationKind, NotificationBase } from '@dragonfish/shared/models/notifications';
 
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';
 import {
@@ -18,7 +18,7 @@ import { NotificationEnumConverters } from './notification-enum-converters';
 import { getSubSchemaProvider } from './notifications.module';
 import { SubSchemas } from './sub-schemas';
 
-const NOTIFICATION_MOODEL_TOKEN: string = 'Notification';
+const NOTIFICATION_MODEL_TOKEN = 'Notification';
 
 @Schema({
     timestamps: true,
@@ -58,13 +58,13 @@ export class NotificationDocument extends Document implements NotificationBase {
 export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
 
 export const NotificationSubSchemaProviders: Provider[] = [
-    getSubSchemaProvider('WorkNotification', NOTIFICATION_MOODEL_TOKEN, getWorkNotificationSubSchema),
-    getSubSchemaProvider('SectionNotification', NOTIFICATION_MOODEL_TOKEN, getSectionNotificationSubSchema),
-    getSubSchemaProvider('BlogNotification', NOTIFICATION_MOODEL_TOKEN, getBlogNotificationSubSchema),
-    getSubSchemaProvider('CommentNotification', NOTIFICATION_MOODEL_TOKEN, getCommentNotificationSubSchema),
-    getSubSchemaProvider('NewsPostNotification', NOTIFICATION_MOODEL_TOKEN, getNewsPostNotificationSubSchema),
-    getSubSchemaProvider('PMThreadNotification', NOTIFICATION_MOODEL_TOKEN, getPMThreadNotificationSubSchema),
-    getSubSchemaProvider('PMReplyNotification', NOTIFICATION_MOODEL_TOKEN, getPMReplyNotificationSubSchema),
+    getSubSchemaProvider('WorkNotification', NOTIFICATION_MODEL_TOKEN, getWorkNotificationSubSchema),
+    getSubSchemaProvider('SectionNotification', NOTIFICATION_MODEL_TOKEN, getSectionNotificationSubSchema),
+    getSubSchemaProvider('BlogNotification', NOTIFICATION_MODEL_TOKEN, getBlogNotificationSubSchema),
+    getSubSchemaProvider('CommentNotification', NOTIFICATION_MODEL_TOKEN, getCommentNotificationSubSchema),
+    getSubSchemaProvider('NewsPostNotification', NOTIFICATION_MODEL_TOKEN, getNewsPostNotificationSubSchema),
+    getSubSchemaProvider('PMThreadNotification', NOTIFICATION_MODEL_TOKEN, getPMThreadNotificationSubSchema),
+    getSubSchemaProvider('PMReplyNotification', NOTIFICATION_MODEL_TOKEN, getPMReplyNotificationSubSchema),
 ];
 
 // Builders for sub-schemas

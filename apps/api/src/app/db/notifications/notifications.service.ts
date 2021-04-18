@@ -9,7 +9,7 @@ import {
     NotificationSubscription,
     BlogNotificationInfo,
     CommentNotificationInfo,
-} from '@dragonfish/models/notifications';
+} from '@dragonfish/shared/models/notifications';
 
 import { NotificationSubscriptionDocument } from './notification-subscriptions.schema';
 import { NotificationDocument } from './notifications.schema';
@@ -33,14 +33,14 @@ import { NewsPostNotificationQueueDocument } from './notificationQueue/news-post
 import { PMThreadNotificationQueueDocument } from './notificationQueue/pm-thread-notification-queue.document';
 import { PMReplyNotificationQueueDocument } from './notificationQueue/pm-reply-notification-queue.document';
 
-const MAX_NOTIFICATIONS_PER_WAKEUP: number = 100;
-const MAX_MS_PER_WAKEUP: number = 100;
-const NS_PER_SEC: number = 1_000_000_000;
-const NS_PER_MS: number = 1_000_000;
+const MAX_NOTIFICATIONS_PER_WAKEUP = 100;
+const MAX_MS_PER_WAKEUP = 100;
+const NS_PER_SEC = 1_000_000_000;
+const NS_PER_MS = 1_000_000;
 
 @Injectable()
 export class NotificationsService {
-    private active: boolean = false;
+    private active = false;
     private currentWakeup: Promise<void>;
 
     constructor(
@@ -128,7 +128,7 @@ export class NotificationsService {
         return await this.notificationModel.find({
             destinationUserId: userId,
             read: false,
-        });
+        }) as NotificationBase[];
     }
 
     /**
@@ -138,7 +138,7 @@ export class NotificationsService {
     async getAllNotifications(userId: string): Promise<NotificationBase[]> {
         return await this.notificationModel.find({
             destinationUserId: userId,
-        });
+        }) as NotificationBase[];
     }
 
     /**
@@ -273,7 +273,7 @@ export class NotificationsService {
         }
 
         const tickStart = process.hrtime();
-        let processed: number = 0;
+        let processed = 0;
         let toPublish: NotificationQueueDocument;
 
         // Note: Since NotificationQueue is a capped collection, an unsorted .find()
