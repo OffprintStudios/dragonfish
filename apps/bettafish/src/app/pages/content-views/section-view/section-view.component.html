@@ -78,13 +78,13 @@
 
     <mat-menu #sectionList="matMenu" xPosition="before">
         <ng-container *ngFor="let sec of sections">
-            <button mat-menu-item (click)="changeSection(sec)">{{ sec.title }}</button>
+            <button mat-menu-item (click)="changeSection(sec)" *ngIf="sec.published === true">{{ sec.title }}</button>
         </ng-container>
     </mat-menu>
 
     <mat-menu #sectionListBottom="matMenu" xPosition="after">
         <ng-container *ngFor="let sec of sections">
-            <button mat-menu-item (click)="changeSection(sec)">{{ sec.title }}</button>
+            <button mat-menu-item (click)="changeSection(sec)" *ngIf="sec.published === true">{{ sec.title }}</button>
         </ng-container>
     </mat-menu>
 </ng-container>

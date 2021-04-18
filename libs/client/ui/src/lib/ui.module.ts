@@ -9,6 +9,7 @@ import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
+import { MaterialModule } from '@dragonfish/client/material';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -21,6 +22,7 @@ import { TextAreaComponent } from './components/text-area/text-area.component';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { ContentListItemComponent } from './components/content-list-item/content-list-item.component';
 import { SelectComponent } from './components/select/select.component';
+import { SectionsListComponent } from './components/sections-list/sections-list.component';
 
 @NgModule({
     declarations: [
@@ -34,6 +36,7 @@ import { SelectComponent } from './components/select/select.component';
         BlogCardComponent,
         ContentListItemComponent,
         SelectComponent,
+        SectionsListComponent,
     ],
     imports: [
         CommonModule,
@@ -45,6 +48,7 @@ import { SelectComponent } from './components/select/select.component';
         ImageCropperModule,
         LineTruncationLibModule,
         NgSelectModule,
+        MaterialModule,
         RouterModule.forChild([]),
     ],
     exports: [
@@ -58,6 +62,7 @@ import { SelectComponent } from './components/select/select.component';
         BlogCardComponent,
         ContentListItemComponent,
         SelectComponent,
+        SectionsListComponent,
     ],
 })
 export class UiModule {}

@@ -1,8 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { ApprovalQueueState } from '../../../shared/approval-queue';
 import { Observable } from 'rxjs';
-import { ContentKind, ContentModel, Genres, PoetryForm, WorkStatus } from '@dragonfish/shared/models/content';
+import {
+    ContentKind,
+    Genres,
+    PoetryForm,
+    SectionInfo,
+    WorkStatus,
+} from '@dragonfish/shared/models/content';
+import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'dragonfish-content-preview',
@@ -10,7 +18,9 @@ import { ContentKind, ContentModel, Genres, PoetryForm, WorkStatus } from '@drag
     styleUrls: ['./content-preview.component.scss'],
 })
 export class ContentPreviewComponent {
-    @Select(ApprovalQueueState.selectedDoc) currContent$: Observable<ContentModel>;
+    @Select(ApprovalQueueState.selectedDoc) currDoc$: Observable<ApprovalQueue>;
+    @Select(ApprovalQueueState.selectedDocSections) currSections$: Observable<SectionInfo[]>;
+    @Input() route: ActivatedRoute;
     contentKind = ContentKind;
     contentStatus = WorkStatus;
     contentGenres = Genres;

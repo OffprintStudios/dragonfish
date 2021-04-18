@@ -1,22 +1,22 @@
-<ng-container *ngIf="currContent$ | async as currContent">
+<ng-container *ngIf="currDoc$ | async as currDoc">
     <div class="content-box rounded-md w-11/12 mx-auto my-6">
-        <dragonfish-rating-icon [rating]="currContent.meta.rating" [size]="'large'"></dragonfish-rating-icon>
+        <dragonfish-rating-icon [rating]="currDoc.workToApprove.meta.rating" [size]="'large'"></dragonfish-rating-icon>
         <div class="flex flex-col p-4">
             <div class="flex flex-row items-center">
                 <h2 class='text-4xl font-medium'>
                     <a class="hover:no-underline">
-                        {{ currContent.title }}
+                        {{ currDoc.workToApprove.title }}
                     </a>
                     <span class='ml-0.5 font-normal text-base'>
                         by
                         <a class="hover:no-underline">
-                            {{ currContent.author.username }}
+                            {{ currDoc.workToApprove.author.username }}
                         </a>
                     </span>
                 </h2>
             </div>
             <div class="tags flex flex-row items-center">
-                <ng-container [ngSwitch]="currContent.kind">
+                <ng-container [ngSwitch]="currDoc.workToApprove.kind">
                     <ng-container *ngSwitchCase="contentKind.PoetryContent">
                         <div class="tag" title='Poetry'>
                             <i-feather name="feather" class="kind"></i-feather>
@@ -29,13 +29,13 @@
                     </ng-container>
                 </ng-container>
                 <div class="separator">//</div>
-                <div class="tag">{{ $any(currContent.meta).category }}</div>
+                <div class="tag">{{ $any(currDoc.workToApprove.meta).category }}</div>
                 <div class="separator">//</div>
-                <div class="tag">{{ $any(currContent.meta).genres | separateGenres }}</div>
+                <div class="tag">{{ $any(currDoc.workToApprove.meta).genres | separateGenres }}</div>
                 <div class="flex-1"><!--push content rating to the right--></div>
             </div>
             <div class="flex-1 p-4">
-                <ng-container *ngIf="$any(currContent.meta).coverArt">
+                <ng-container *ngIf="$any(currDoc.workToApprove.meta).coverArt">
                     <div
                         class="edit-cover-art rounded-md"
                         [matTooltip]="'Edit Cover Art'"
@@ -44,70 +44,76 @@
                         (mouseleave)="addEditIcon = false"
                     >
                         <span class="edit-icon" *ngIf="addEditIcon"><i-feather name="edit-3"></i-feather></span>
-                        <img class="rounded-md" [src]="$any(currContent.meta).coverArt" />
+                        <img class="rounded-md" [src]="$any(currDoc.workToApprove.meta).coverArt" />
                     </div>
                 </ng-container>
                 <div class="px-6">
-                    <ng-container [ngSwitch]="currContent.kind">
+                    <ng-container [ngSwitch]="currDoc.workToApprove.kind">
                         <ng-container *ngSwitchCase="contentKind.PoetryContent">
-                            <ng-container *ngIf="$any(currContent.meta).collection; else singlePoemDesc">
-                                <div class="html-description" [innerHtml]="currContent.body | safeHtml"></div>
+                            <ng-container *ngIf="$any(currDoc.workToApprove.meta).collection; else singlePoemDesc">
+                                <div class="html-description" [innerHtml]="currDoc.workToApprove.body | safeHtml"></div>
                             </ng-container>
                             <ng-template #singlePoemDesc>
-                                <div class="html-description" [innerHTML]="currContent.desc | safeHtml"></div>
+                                <div class="html-description" [innerHTML]="currDoc.workToApprove.desc | safeHtml"></div>
                             </ng-template>
                         </ng-container>
                         <ng-container *ngSwitchCase="contentKind.ProseContent">
-                            <div class="html-description" [innerHTML]="currContent.body | safeHtml"></div>
+                            <div class="html-description" [innerHTML]="currDoc.workToApprove.body | safeHtml"></div>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
-                            <div class="html-description" [innerHtml]="currContent.body | safeHtml"></div>
+                            <div class="html-description" [innerHtml]="currDoc.workToApprove.body | safeHtml"></div>
                         </ng-container>
                     </ng-container>
                 </div>
             </div>
-            <div class="view-stats flex flex-row items-center justify-end">
-                <div class="flex-1">
-                    <ng-container [ngSwitch]="currContent.kind">
-                        <ng-container *ngSwitchCase="contentKind.ProseContent">
-                            <a [routerLink]="['/my-stuff/edit-prose']">Edit Info >></a>
-                        </ng-container>
-                        <ng-container *ngSwitchCase="contentKind.PoetryContent">
-                            <a [routerLink]="['/my-stuff/edit-poetry']">Edit Info >></a>
+            <ng-container *ngIf="route.children.length === 0">
+                <ng-container [ngSwitch]="currDoc.workToApprove.kind">
+                    <ng-container *ngSwitchCase="currDoc.workToApprove.kind === contentKind.PoetryContent">
+                        <ng-container *ngIf="$any(currDoc.workToApprove.meta).collection">
+                            <div>
+                                <dragonfish-sections-list [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list>
+                            </div>
                         </ng-container>
                     </ng-container>
-                </div>
-                <ng-container *ngIf="currContent.kind === contentKind.PoetryContent">
+                    <ng-container *ngSwitchDefault>
+                        <div>
+                            <dragonfish-sections-list [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list>
+                        </div>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+            <div class="view-stats flex flex-row items-center justify-end">
+                <ng-container *ngIf="currDoc.workToApprove.kind === contentKind.PoetryContent">
                     <div class="tag" title="Form">
-                        {{ poetryForm[$any(currContent.meta).form] }}
+                        {{ poetryForm[$any(currDoc.workToApprove.meta).form] }}
                     </div>
                     <div class="separator">//</div>
                 </ng-container>
                 <div class="tag" title='Comments'>
-                    <i-feather name="message-circle"></i-feather>{{ currContent.stats.comments | abbreviate }}
+                    <i-feather name="message-circle"></i-feather>{{ currDoc.workToApprove.stats.comments | abbreviate }}
                 </div>
                 <div class="separator">//</div>
                 <div class="tag" title='Views'>
-                    <i-feather name="bar-chart-2"></i-feather>{{ currContent.stats.views | abbreviate }}
+                    <i-feather name="bar-chart-2"></i-feather>{{ currDoc.workToApprove.stats.views | abbreviate }}
                 </div>
                 <div class="separator">//</div>
                 <div class="tag" title="Likes">
-                    <i-feather name="thumbs-up"></i-feather>{{ currContent.stats.likes | abbreviate }}
+                    <i-feather name="thumbs-up"></i-feather>{{ currDoc.workToApprove.stats.likes | abbreviate }}
                 </div>
                 <div class="separator">//</div>
                 <div class="tag" title="Dislikes">
-                    <i-feather name="thumbs-down"></i-feather>{{ currContent.stats.dislikes | abbreviate }}
+                    <i-feather name="thumbs-down"></i-feather>{{ currDoc.workToApprove.stats.dislikes | abbreviate }}
                 </div>
                 <div class="separator">//</div>
                 <div class="tag" title='Words'>
-                    <i-feather name="pen-tool"></i-feather>{{ currContent.stats.words | abbreviate }}
+                    <i-feather name="pen-tool"></i-feather>{{ currDoc.workToApprove.stats.words | abbreviate }}
                 </div>
                 <div class="separator">//</div>
                 <div class="tag" title='Created On'>
-                    <i-feather name="calendar"></i-feather>{{ currContent.createdAt | localedate: 'mediumDate' }}
+                    <i-feather name="calendar"></i-feather>{{ currDoc.workToApprove.createdAt | localedate: 'mediumDate' }}
                 </div>
                 <div class="separator">//</div>
-                <div class="tag" title='Status'>{{ contentStatus[$any(currContent.meta).status] }}</div>
+                <div class="tag" title='Status'>{{ contentStatus[$any(currDoc.workToApprove.meta).status] }}</div>
             </div>
         </div>
     </div>

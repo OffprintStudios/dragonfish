@@ -11,7 +11,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/approval-queue';
+import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
@@ -19,7 +19,7 @@ import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
 
 /* Components */
-import { ApprovalQueueToolbarComponent } from './components/approval-queue';
+import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
 
 /* State */
 import { ApprovalQueueState } from './shared/approval-queue';
@@ -34,13 +34,14 @@ import { UserManagementService } from './shared/user-management/services';
         ApprovalQueueComponent,
         ApprovePoetryComponent,
         ApproveProseComponent,
-        ApproveSectionViewComponent,
+        SectionViewComponent,
         AuditLogComponent,
         GroupQueueComponent,
         OverviewComponent,
         ReportsComponent,
         UsersManagementComponent,
         ApprovalQueueToolbarComponent,
+        ContentPreviewComponent,
     ],
     imports: [
         CommonModule,

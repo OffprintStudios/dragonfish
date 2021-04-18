@@ -105,7 +105,7 @@ export class ApprovalQueueService {
      */
     public fetchSection(sectionId: string): Observable<Section> {
         return handleResponse(
-            this.http.get<Section>(`/api/content/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {
+            this.http.get<Section>(`/api/sections/fetch-one-by-id?sectionId=${sectionId}&published=true`, {
                 observe: 'response',
                 withCredentials: true,
             }),

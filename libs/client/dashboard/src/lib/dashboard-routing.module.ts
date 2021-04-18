@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, ApproveSectionViewComponent } from './pages/approval-queue';
+import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
@@ -49,8 +49,8 @@ const routes: Routes = [
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
-                                path: ':sectionNum',
-                                component: ApproveSectionViewComponent,
+                                path: ':sectionNum/:sectionTitle',
+                                component: SectionViewComponent,
                                 canActivate: [AuthGuard],
                                 data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
                             },
@@ -67,8 +67,8 @@ const routes: Routes = [
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
-                                path: ':sectionNum',
-                                component: ApproveSectionViewComponent,
+                                path: ':sectionNum/:sectionTitle',
+                                component: SectionViewComponent,
                                 canActivate: [AuthGuard],
                                 data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
                             },
