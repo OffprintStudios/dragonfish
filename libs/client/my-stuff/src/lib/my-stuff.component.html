@@ -1,3 +1,23 @@
+<div class="my-stuff-nav shadow-lg sticky top-0 z-40">
+    <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
+        <i-feather name="hard-drive" class="text-white relative top-0.5 mr-4"></i-feather>
+        <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+            <a class="text-white hover:text-white" [routerLink]="['/my-stuff']">My Stuff</a>
+        </h3>
+        <div class="flex-1"><!--spacer--></div>
+
+        <!--<form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+            <dragonfish-text-field
+                [formControlName]="'query'"
+                [name]="'query'"
+                [type]="'text'"
+                [placeholder]="'Search...'"
+                [searchBox]="true"
+            ></dragonfish-text-field>
+        </form>-->
+    </div>
+</div>
+
 <dragonfish-my-stuff-toolbar></dragonfish-my-stuff-toolbar>
 
 <ng-container *ngIf="route.children.length === 0; else openedView">
