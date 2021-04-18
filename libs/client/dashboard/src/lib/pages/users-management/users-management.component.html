@@ -1,7 +1,9 @@
-<div class="code-generator">
+<div class="code-generator my-8">
     <div class="title">
-        <h2>Generate New Code</h2>
-        <button (click)="generateCode()">generate</button>
+        <h2 class="text-4xl">Generate New Code</h2>
+        <div class="mx-auto w-full">
+            <button (click)="generateCode()">generate</button>
+        </div>
     </div>
     <div>
         <ng-container *ngIf="currCode; else noCode">

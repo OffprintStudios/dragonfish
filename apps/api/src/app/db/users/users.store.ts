@@ -4,6 +4,7 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import { hash, argon2id } from 'argon2';
 import * as sanitizeHtml from 'sanitize-html';
 import * as validator from 'validator';
+import { nanoid } from 'nanoid';
 
 import * as documents from './models';
 import * as models from '@dragonfish/shared/models/users';
@@ -427,5 +428,20 @@ export class UsersStore {
         });
 
         return frontendUserList;
+    }
+
+    /**
+     * Generates a new invite code.
+     *
+     * @returns The new invite code
+     */
+    async generateInviteCode(): Promise<documents.InviteCodesDocument> {
+        const newCode = new this.inviteCodesModel({
+            "_id": nanoid(),
+            "used": false,
+            "byWho": null
+        });
+
+        return await newCode.save();
     }
 }
