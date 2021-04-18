@@ -65,8 +65,10 @@ export default class App {
             width: width,
             height: height,
             show: false,
+            titleBarStyle: 'hidden',
             webPreferences: {
-                contextIsolation: true,
+                enableRemoteModule: true,
+                contextIsolation: false,
                 backgroundThrottling: false,
                 preload: join(__dirname, 'preload.js'),
             },

@@ -7,6 +7,7 @@ import { UserState } from '../../../repo/user';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { AuthService } from '../../../repo/auth/services';
+import { ElectronService } from 'ngx-electron';
 
 @Component({
     selector: 'dragonfish-nav',
@@ -16,7 +17,7 @@ import { AuthService } from '../../../repo/auth/services';
 export class NavComponent {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(private dialog: MatDialog, private auth: AuthService) {}
+    constructor(private dialog: MatDialog, private auth: AuthService, public electron: ElectronService) {}
 
     openAuthModal() {
         this.dialog.open(AuthModalComponent);

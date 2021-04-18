@@ -3,7 +3,7 @@ nav {
     background: var(--accent-dark);
     button.link {
       border: none;
-      padding: 10px 15px;
+      padding: 15px 20px;
       text-transform: none;
       font-variant: normal;
       color: whitesmoke;
@@ -16,17 +16,11 @@ nav {
             padding: 10px 12px;
         }
       i-feather {
-          width: 28px;
+          width: 28px !important;
           stroke-width: 1;
-          position: relative;
-          right: 0.125rem;
-      }
-      img.avatar {
-        position: relative;
-        max-width: 28px;
-          left: 0.05rem;
-        border: 1px solid whitesmoke;
-        border-radius: 50%;
+          position: relative !important;
+          top: -0.125rem;
+          right: 0.125rem !important;
       }
     }
     a.link {

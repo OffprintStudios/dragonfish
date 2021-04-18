@@ -1,4 +1,7 @@
 <nav class="h-full relative top-auto left-0 flex flex-col shadow-2xl py-2">
+    <div class="py-2" style="-webkit-app-region: drag" *ngIf="electron.isElectronApp">
+        <!--spacer-->
+    </div>
     <ng-container *ngIf="currentUser$ | async as currentUser">
         <a
             class="link avatar"
@@ -98,6 +101,15 @@
                 <span class="link-icon"><i-feather name="grid"></i-feather></span>
             </a>
         </ng-container>
+        <button
+            class="link"
+            [matTooltip]="'Log Out'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+            (click)="logout()"
+        >
+            <span class="link-icon"><i-feather name="log-out"></i-feather></span>
+        </button>
     </ng-container>
     <ng-template #noUser>
         <button
