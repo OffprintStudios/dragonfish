@@ -47,7 +47,7 @@ export class ApprovalQueueService {
     public claimWork(docId: string): Observable<ApprovalQueue> {
         return handleResponse(
             this.http.patch<ApprovalQueue>(
-                `${this.url}/claim-work/${docId}`,
+                `${this.url}/claim-content/${docId}`,
                 {},
                 {
                     observe: 'response',
@@ -64,7 +64,7 @@ export class ApprovalQueueService {
      */
     public approveWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.url}/approve-work`, decision, { observe: 'response', withCredentials: true }),
+            this.http.patch<void>(`${this.url}/approve-content`, decision, { observe: 'response', withCredentials: true }),
         );
     }
 
@@ -75,7 +75,7 @@ export class ApprovalQueueService {
      */
     public rejectWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.url}/reject-work`, decision, { observe: 'response', withCredentials: true }),
+            this.http.patch<void>(`${this.url}/reject-content`, decision, { observe: 'response', withCredentials: true }),
         );
     }
 
