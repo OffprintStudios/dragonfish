@@ -38,6 +38,7 @@ import { AppComponent } from './app.component';
 import { SiteComponents } from './components/site';
 import { AuthComponents } from './components/auth';
 import { ContentComponents } from './components/content';
+import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
 
@@ -70,6 +71,7 @@ import { environment } from '../environments/environment';
         ...SiteComponents,
         ...AuthComponents,
         ...ContentComponents,
+        ...UserComponents,
         ...UserSettingsComponents,
         ...CollectionsComponents,
         ...HomePages,
