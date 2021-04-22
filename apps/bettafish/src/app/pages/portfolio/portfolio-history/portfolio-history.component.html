@@ -1,11 +1,11 @@
 <ng-container *ngIf="loading; else notLoading">
-    <div class="flex h-full items-center justify-center">
+    <div class="flex h-40 items-center justify-center">
         <mat-spinner></mat-spinner>
     </div>
 </ng-container>
 
 <ng-template #notLoading>
-    <div class="mx-auto lg:w-3/4 md:w-4/5 sm:w-full h-full">
+    <div class="my-8 mx-auto lg:w-3/4 md:w-4/5 sm:w-full h-full">
         <div class="empty" *ngIf="isHistoryEmpty()">
             <h3>You haven't read anything yet!</h3>
             <p>Browse around for Prose, Poetry, Blogs, and News and it'll all show up here.</p>

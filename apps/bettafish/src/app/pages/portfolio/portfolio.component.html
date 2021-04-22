@@ -1,15 +1,16 @@
 <ng-container *ngIf="portUser$ | async as portUser">
-    <div class="my-8 sticky top-0">
-        <div class="portfolio-header w-11/12 mx-auto rounded-md mb-8 z-30">
+    <div class="sticky top-0 z-40">
+        <div class="portfolio-header shadow-2xl relative z-40">
             <div class="flex flex-row items-center p-5">
                 <div>
-                    <img [alt]="'Avatar'" [src]="portUser.profile.avatar" />
+                    <img class="shadow-2xl" [alt]="'Avatar'" [src]="portUser.profile.avatar" />
                 </div>
-                <div class="flex-1 ml-8">
-                    <h1 class="text-5xl font-bold">{{ portUser.username }}</h1>
-                    <h3 class="text-2xl italic">{{ portUser.profile.bio }}</h3>
+                <div class="flex-1 ml-8 flex flex-col items-start justify-center">
+                    <h1 class="text-4xl font-bold text-white">{{ portUser.username }}</h1>
+                    <h3 class="text-2xl italic text-white">{{ portUser.profile.bio }}</h3>
+                    <div class="my-1" *ngIf="portUser.profile.bio === undefined || portUser.profile.bio === null || portUser.profile.bio === ''"><!--spacer--></div>
                     <dragonfish-role-badge [roles]="portUser.roles" [isCentered]="false"></dragonfish-role-badge>
-                    <div class="w-full flex flex-row">
+                    <div class="relative -top-3 w-full flex flex-row">
                         <a
                             class="link"
                             [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
@@ -59,49 +60,9 @@
                         </ng-container>
                     </div>
                 </div>
-                <div>
-                    <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
-                        <ng-container *ngIf="currentUser._id !== portUser._id">
-                            <div class="controls flex flex-col items-center">
-                                <button class="control top" title="Watch">
-                                    <i-feather name="eye"></i-feather>
-                                </button>
-                                <button class="control mid" title="Send Friend Request">
-                                    <i-feather name="user-plus"></i-feather>
-                                </button>
-                                <button class="control bottom" title="Send Message">
-                                    <i-feather name="message-circle"></i-feather>
-                                </button>
-                            </div>
-
-                            <button class="control solo" title="Report">
-                                <i-feather name="flag"></i-feather>
-                            </button>
-                        </ng-container>
-                    </ng-container>
-                    <ng-template #noUser>
-                        <div class="controls flex flex-col items-center">
-                            <button class="control top" title="Watch">
-                                <i-feather name="eye"></i-feather>
-                            </button>
-                            <button class="control mid" title="Send Friend Request">
-                                <i-feather name="user-plus"></i-feather>
-                            </button>
-                            <button class="control bottom" title="Send Message">
-                                <i-feather name="message-circle"></i-feather>
-                            </button>
-                        </div>
-
-                        <button class="control solo" title="Report">
-                            <i-feather name="flag"></i-feather>
-                        </button>
-                    </ng-template>
-                </div>
             </div>
         </div>
-
-        <div class="container mx-auto">
-            <router-outlet></router-outlet>
-        </div>
+        <dragonfish-portfolio-toolbar></dragonfish-portfolio-toolbar>
     </div>
+    <router-outlet></router-outlet>
 </ng-container>

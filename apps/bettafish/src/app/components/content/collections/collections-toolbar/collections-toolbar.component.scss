@@ -1,14 +1,15 @@
 div.tools {
-    background: var(--code-background);
-    border: 1px solid var(--borders);
+    background: var(--accent-light);
     button {
-        background: var(--background);
+        border: none;
+        border-radius: 0;
+        color: white;
         &.disabled {
-            background: var(--code-background);
+            color: var(--accent-dark);
             &:hover {
                 cursor: not-allowed;
-                background: var(--code-background);
-                color: var(--text-color);
+                background: var(--accent-light);
+                color: var(--accent-dark);
             }
         }
         &:hover {

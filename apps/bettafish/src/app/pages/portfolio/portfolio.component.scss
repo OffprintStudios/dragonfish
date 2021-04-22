@@ -1,10 +1,9 @@
 div.portfolio-header {
-    border: 1px solid var(--borders);
     box-shadow: var(--dropshadow);
-    background: var(--background);
+    background: var(--accent);
     img {
-        width: 250px;
-        height: 250px;
+        width: 200px;
+        height: 200px;
         border-radius: 50%;
         border: 1px solid whitesmoke;
         @media (max-width: 1150px) {
@@ -17,51 +16,16 @@ div.portfolio-header {
         }
     }
 
-    div.controls {
-        box-shadow: var(--dropshadow);
-        border-radius: 6px;
-    }
-
-    button.control {
-        padding: 5px 10px;
-        margin: 0;
-        border: 1px solid var(--borders);
-        box-shadow: none;
-        i-feather {
-            position: relative;
-            top: 0.125rem;
-        }
-        &.top {
-            border-bottom: 0;
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        &.mid {
-            border-bottom: 0;
-            border-radius: 0;
-        }
-        &.bottom {
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-        }
-        &.solo {
-            margin-top: 1rem;
-            box-shadow: var(--dropshadow);
-        }
-    }
-
     a.link {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 8px 16px;
-        border-bottom: 2px solid transparent;
         font-size: 1.25rem;
-        color: var(--text-color);
-        text-transform: lowercase;
-        font-variant: small-caps;
+        color: white;
         font-weight: 500;
-        letter-spacing: 2px;
+        font-family: 'Josefin Sans', sans-serif;
+        @apply rounded-md;
         @media (max-width: 1360px) {
             display: inline-block;
             font-size: 18px;
@@ -73,12 +37,13 @@ div.portfolio-header {
         }
         &:hover {
             transition: 0.125s;
-            background: var(--accent);
+            background: var(--accent-light);
             text-decoration: none;
             color: whitesmoke;
+            @apply rounded-md;
         }
         &.active {
-            border-color: var(--accent);
+            background: var(--accent-light);
         }
         span.link-icon {
             display: inline-block;
@@ -87,7 +52,7 @@ div.portfolio-header {
                 position: relative;
                 height: 18px;
                 width: 18px;
-                top: 0.125rem;
+                top: 0.15rem;
             }
             @media (max-width: 640px) {
                 //--small
