@@ -1,0 +1,54 @@
+<div class="flex flex-row items-center">
+    <ng-container *ngIf="currContent$ | async as post">
+        <ng-container *ngIf="currHistDoc$ | async as histDoc; else noHist">
+            <ng-container [ngSwitch]="histDoc.ratingOption">
+                <ng-container *ngSwitchCase="ratingOption.Liked">
+                    <button class="active border-none shadow-none rounded-full p-2.5" (click)="setNoVote(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <span>{{ likes$ | async | abbreviate }}</span>
+                    </button>
+                    <button class="border-none shadow-none rounded-full p-2.5" (click)="setDislike(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <span>{{ dislikes$ | async | abbreviate }}</span>
+                    </button>
+                </ng-container>
+                <ng-container *ngSwitchCase="ratingOption.Disliked">
+                    <button class="border-none shadow-none rounded-full p-2.5" (click)="setLike(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <span>{{ likes$ | async | abbreviate }}</span>
+                    </button>
+                    <button class="active border-none shadow-none rounded-full p-2.5" (click)="setNoVote(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <span>{{ dislikes$ | async | abbreviate }}</span>
+                    </button>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <button class="border-none shadow-none rounded-full p-2.5" (click)="setLike(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <span>{{ likes$ | async | abbreviate }}</span>
+                    </button>
+                    <button class="border-none shadow-none rounded-full p-2.5" (click)="setDislike(post._id, histDoc.ratingOption)">
+                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <span>{{ dislikes$ | async | abbreviate }}</span>
+                    </button>
+                </ng-container>
+            </ng-container>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="more-vertical"></i-feather>
+            </button>
+        </ng-container>
+        <ng-template #noHist>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="thumbs-up" class="end-button"></i-feather>
+                <span>{{ likes$ | async | abbreviate }}</span>
+            </button>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="thumbs-down" class="end-button"></i-feather>
+                <span>{{ dislikes$ | async | abbreviate }}</span>
+            </button>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="more-vertical"></i-feather>
+            </button>
+        </ng-template>
+    </ng-container>
+</div>

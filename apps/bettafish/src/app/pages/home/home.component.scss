@@ -21,3 +21,7 @@ div.header {
       max-height: 650px;
       display: inline;
   }
+
+div.section-header {
+    border-bottom: 1px solid var(--borders);
+}

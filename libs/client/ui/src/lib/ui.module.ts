@@ -23,6 +23,7 @@ import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { ContentListItemComponent } from './components/content-list-item/content-list-item.component';
 import { SelectComponent } from './components/select/select.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
+import { NewsCardComponent } from './components/news-card/news-card.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         ContentListItemComponent,
         SelectComponent,
         SectionsListComponent,
+        NewsCardComponent,
     ],
     imports: [
         CommonModule,
@@ -63,6 +65,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         ContentListItemComponent,
         SelectComponent,
         SectionsListComponent,
+        NewsCardComponent,
     ],
 })
 export class UiModule {}

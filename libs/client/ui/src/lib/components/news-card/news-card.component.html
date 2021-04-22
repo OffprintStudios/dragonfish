@@ -1,0 +1,46 @@
+<div class="post flex flex-col p-2 shadow-lg rounded-md">
+    <div>
+        <h4 class="text-xl font-medium">
+            <a [routerLink]="['/news', post._id, post.title | slugify]">{{ post.title }}</a>
+        </h4>
+    </div>
+    <div class="post-byline flex flex-row py-1">
+        <div class="text-sm">
+            by <a [routerLink]="['/portfolio', $any(post.author)._id, $any(post.author).username | slugify]">
+                {{ $any(post.author).username }}
+            </a>
+        </div>
+    </div>
+    <div class="post-body" [line-truncation]="6" [innerHTML]="post.body | safeHtml"></div>
+    <div class="flex flex-row items-center">
+        <div class="stat text-sm">
+            <i-feather name="eye"></i-feather>
+            {{ post.stats.views }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat text-sm">
+            <i-feather name="message-circle"></i-feather>
+            {{ post.stats.comments }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat" title="Likes">
+            <i-feather name="thumbs-up"></i-feather>
+            {{ post.stats.likes | abbreviate }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat" title="Dislikes">
+            <i-feather name="thumbs-down"></i-feather>
+            {{ post.stats.dislikes | abbreviate }}
+        </div>
+        <div class="flex-1"><!--spacer--></div>
+        <div>
+            <a
+                class="continue-reading"
+                [routerLink]="['/news', post._id, post.title | slugify]"
+            >
+                Continue Reading
+                <i-feather name="chevron-right"></i-feather>
+            </a>
+        </div>
+    </div>
+</div>
