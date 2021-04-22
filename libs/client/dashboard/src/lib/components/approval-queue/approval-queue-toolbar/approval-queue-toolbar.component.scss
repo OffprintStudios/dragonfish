@@ -8,8 +8,9 @@ div.tools {
         padding-top: 0.875rem/* 14px */;
         padding-bottom: 0.875rem/* 14px */;
         &.disabled {
-            color: gray;
+            color: var(--accent-dark);
             cursor: not-allowed;
+            background: var(--accent-light);
         }
         i-feather.no-text {
             margin: 0;
