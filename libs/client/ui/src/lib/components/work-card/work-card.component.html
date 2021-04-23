@@ -9,8 +9,8 @@
                 <ng-container *ngIf="content.kind === contentKind.ProseContent">
                     <a [routerLink]="['/prose', content._id, content.title | slugify]">{{ content.title }}</a>
                 </ng-container>
-                <span class="font-light text-xs italic inline-block ml-1">
-                    by 
+                <span class="font-light text-xs italic inline-block ml-1" *ngIf="showAuthor">
+                    by
                     <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify]">
                         {{ content.author.username }}
                     </a>

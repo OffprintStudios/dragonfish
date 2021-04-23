@@ -41,6 +41,7 @@ import { ContentComponents } from './components/content';
 import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
+import { CommentsComponents } from './components/content/comments';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -82,6 +83,7 @@ import { environment } from '../environments/environment';
         ...MessagesPages,
         ...NotificationsPages,
         ...ContentViewPages,
+        ...CommentsComponents,
     ],
     imports: [
         BrowserModule,
