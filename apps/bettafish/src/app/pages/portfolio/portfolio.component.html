@@ -10,7 +10,7 @@
                     <h3 class="text-2xl italic text-white">{{ portUser.profile.bio }}</h3>
                     <div class="my-1" *ngIf="portUser.profile.bio === undefined || portUser.profile.bio === null || portUser.profile.bio === ''"><!--spacer--></div>
                     <dragonfish-role-badge [roles]="portUser.roles" [isCentered]="false"></dragonfish-role-badge>
-                    <div class="relative -top-3 w-full flex flex-row">
+                    <div class="mt-2 w-full flex flex-row">
                         <a
                             class="link"
                             [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"

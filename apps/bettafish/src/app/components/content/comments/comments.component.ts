@@ -116,6 +116,7 @@ export class CommentsComponent {
 
         this.networkService.addContentComment(this.itemId, comm).subscribe(() => {
             this.fetchData(this.pageNum);
+            this.newCommentForm.reset();
         });
     }
 

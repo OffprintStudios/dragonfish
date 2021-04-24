@@ -1,5 +1,5 @@
 <ng-container *ngIf="currContent$ | async as currPost">
-    <div class="sticky top-0">
+    <div class="sticky top-0 z-40">
         <div class="news-post-nav shadow-lg relative z-40">
             <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
                 <button class="go-back border-none rounded-full shadow-none p-2.5" [routerLink]="['/news']">
@@ -35,10 +35,12 @@
         </div>
     </div>
 
-    <!--<comments
-        [itemId]="currPost._id"
-        [itemKind]="itemKind"
-        [pageNum]="pageNum"
-        (emitPageChange)="onPageChange($event)"
-    ></comments>-->
+    <div class="relative z-0">
+        <dragonfish-comments
+            [itemId]="currPost._id"
+            [itemKind]="itemKind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></dragonfish-comments>
+    </div>
 </ng-container>

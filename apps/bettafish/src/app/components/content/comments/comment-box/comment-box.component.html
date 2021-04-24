@@ -1,0 +1,34 @@
+<div class="comment-box w-3/4 mx-auto shadow-lg rounded-md">
+    <div class="comment-header flex flex-row items-center py-1 px-1.5 rounded-t-md">
+        <img class="rounded-full w-10 mr-2" [src]="$any(comment.user).profile.avatar">
+        <div class="self-center">
+            <h3 class="text-xl font-medium">{{ $any(comment.user).username }}</h3>
+            <p *ngIf="$any(comment.user).profile.tagline; else noTagline" class="text-xs m-0">{{ $any(comment.user).profile.tagline }}</p>
+            <ng-template #noTagline>
+                <p class="text-xs m-0">Member</p>
+            </ng-template>
+        </div>
+        <div class="text-3xl mx-1 font-thin">|</div>
+        <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false"></dragonfish-role-badge>
+        <div class="flex-1"><!--spacer--></div>
+        <div>
+            <dragonfish-comment-approval></dragonfish-comment-approval>
+            <p class="text-xs m-0">{{ comment.createdAt | localedate: 'fullDate' }}</p>
+        </div>
+    </div>
+    <div class="flex-1 p-4">
+        <div class="html-description" [innerHTML]="comment.body | safeHtml"></div>
+    </div>
+    <div class="flex flex-row items-center">
+        <div class="flex-1"><!--spacer--></div>
+        <button class="py-2 px-3 shadow-none border-none rounded-full">
+            <i-feather name="corner-up-left" class="m-0"></i-feather>
+        </button>
+        <button class="py-2 px-3 shadow-none border-none rounded-full">
+            <i-feather name="edit-3" class="m-0"></i-feather>
+        </button>
+        <button class="py-2 px-3 shadow-none border-none rounded-full">
+            <i-feather name="flag" class="m-0"></i-feather>
+        </button>
+    </div>
+</div>
