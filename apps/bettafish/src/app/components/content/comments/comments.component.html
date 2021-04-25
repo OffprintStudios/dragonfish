@@ -55,8 +55,36 @@
             </ng-container>
         </ng-template>
 
+        <div class="top-bar flex flex-row w-3/4 mx-auto mt-8 mb-3.5 relative z-10">
+            <div>
+                <pagination-controls
+                    [nextLabel]="''"
+                    [previousLabel]="''"
+                    (pageChange)="fetchData($event)"
+                    id="comments"
+                ></pagination-controls>
+            </div>
+            <div class="flex-1"><!--spacer--></div>
+            <div class="flex flex-row items-center">
+                <button matRipple class="rounded-r-none shadow-none" title="New Comment" (click)="scrollToNewCommentForm()">
+                    <i-feather name="message-circle" class="mr-0"></i-feather>
+                </button>
+                <button
+                    matRipple
+                    class="rounded-none border-l-0 border-r-0 shadow-none"
+                    title="Refresh Thread"
+                    (click)="refreshThread()"
+                >
+                    <i-feather name="refresh-cw" class="mr-0"></i-feather>
+                </button>
+                <button matRipple class="rounded-l-none shadow-none" title="Thread Settings">
+                    <i-feather name="settings" class="mr-0"></i-feather>
+                </button>
+            </div>
+        </div>
+
         <!--To be replaced once the floating editor is reimplemented-->
-        <div class="mt-8 w-4/6 mx-auto" #newCommentSection>
+        <div class="mt-8 w-4/6 mx-auto" #newCommentSection *ngIf="currentUser$ | async">
             <form [formGroup]="newCommentForm" (ngSubmit)="submitNewComment()">
                 <dragonfish-editor
                     [parentForm]="newCommentForm"
