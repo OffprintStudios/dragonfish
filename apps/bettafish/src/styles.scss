@@ -261,6 +261,7 @@ div.offprint-select {
         min-height: 0px;
         border-radius: 0.375rem;
         border-top-left-radius: 0;
+        background: var(--background);
     }
     .ng-select.custom .ng-select-container {
         min-height: 40px;
@@ -268,6 +269,8 @@ div.offprint-select {
         border-top-left-radius: 0;
         border: none;
         font-size: 1rem;
+        background: var(--background);
+        color: var(--text-color);
     }
     .ng-select.custom .ng-select-container .ng-value-container .ng-placeholder {
         color: var(--text-color);
@@ -277,13 +280,13 @@ div.offprint-select {
         border: 1px solid var(--borders);
     }
     .ng-select.custom .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
-        background-color: var(--accent);
-        color: whitesmoke;
+        background-color: var(--accent) !important;
+        color: whitesmoke !important;
     }
     .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
     .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected.ng-option-marked {
-        background-color: var(--accent-dark);
-        color: whitesmoke;
+        background-color: var(--accent-dark) !important;
+        color: whitesmoke !important;
     }
     .ng-select.custom.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
         background-color: var(--accent);
@@ -294,6 +297,10 @@ div.offprint-select {
     }
     .ng-select.custom.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
         border-right: 1px solid var(--accent-dark);
+    }
+    .ng-select.custom .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+        background-color: var(--background);
+        color: var(--text-color);
     }
 }
 /* Style changes for prose */

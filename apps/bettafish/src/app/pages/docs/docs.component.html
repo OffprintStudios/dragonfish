@@ -1,55 +1,77 @@
-<div class="flex flex-row h-screen">
-    <div class="nav p-4 flex flex-col w-96">
-        <div class="header">
-            <h2 class="text-4xl">More Stuff</h2>
+<div class="docs-nav shadow-lg sticky top-0 z-40">
+    <div class="w-11/12 mx-auto py-4">
+        <div class="flex flex-row items-center">
+            <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+                More Stuff
+            </h3>
+            <div class="flex-1"><!--spacer--></div>
         </div>
-        <div class="flex-auto overflow-y-auto flex flex-col pt-4">
-            <a [routerLink]="['/docs/what-is-offprint']" [routerLinkActive]="'active'">
-                <i-feather name="info"></i-feather>
-                <span class="flex-1 px-2">What is Offprint?</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+        <div class="mt-2 w-full flex flex-row">
+            <a
+                class="link"
+                [routerLink]="['/docs']"
+                [routerLinkActive]="'active'"
+                [routerLinkActiveOptions]="{ exact: true }"
+            >
+                <span class="link-icon"><i-feather name="globe"></i-feather></span>Global
             </a>
-            <a [routerLink]="['/docs/omnibus']" [routerLinkActive]="'active'">
-                <i-feather name="feather"></i-feather>
-                <span class="flex-1 px-2">The Offprint Omnibus</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+                [routerLink]="['/docs/what-is-offprint']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="info"></i-feather></span>About
             </a>
-            <a [routerLink]="['/docs/code-of-conduct']" [routerLinkActive]="'active'">
-                <i-feather name="book"></i-feather>
-                <span class="flex-1 px-2">Code of Conduct</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+                [routerLink]="['/docs/omnibus']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="feather"></i-feather></span>Omnibus
             </a>
-            <a [routerLink]="['/docs/terms-of-service']" [routerLinkActive]="'active'">
-                <i-feather name="briefcase"></i-feather>
-                <span class="flex-1 px-2">Terms of Service & Privacy Policy</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+                [routerLink]="['/docs/code-of-conduct']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="book"></i-feather></span>Code of Conduct
             </a>
-            <a>
-                <i-feather name="file-text"></i-feather>
-                <span class="flex-1 px-2">Open Source Licenses</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+                [routerLink]="['/docs/terms-of-service']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="briefcase"></i-feather></span>Terms of Service
             </a>
-            <a [routerLink]="['/docs/site-staff']" [routerLinkActive]="'active'">
-                <i-feather name="shield"></i-feather>
-                <span class="flex-1 px-2">Site Staff</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+            >
+                <span class="link-icon"><i-feather name="briefcase"></i-feather></span>OSL
             </a>
-            <a [routerLink]="['/docs/supporters']" [routerLinkActive]="'active'">
-                <i-feather name="thumbs-up"></i-feather>
-                <span class="flex-1 px-2">Patreon Supporters & Contributors</span>
-                <i-feather name="chevron-right" class="end"></i-feather>
+            <a
+                class="link"
+                [routerLink]="['/docs/site-staff']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="briefcase"></i-feather></span>Staff
+            </a>
+            <a
+                class="link"
+                [routerLink]="['/docs/supporters']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="users"></i-feather></span>Supporters
             </a>
         </div>
-    </div>
-    <div class="flex-auto overflow-y-auto">
-        <ng-container *ngIf="route.children.length === 0; else viewingDoc">
-            <div class="empty">
-                <h3>You haven't selected anything yet...</h3>
-                <p>Please select an item from the left to view it.</p>
-            </div>            
-        </ng-container>
-        <ng-template #viewingDoc>
-            <router-outlet></router-outlet>
-        </ng-template>
     </div>
 </div>
+
+<ng-container *ngIf="route.children.length === 0; else viewingDoc">
+    <div class="my-8 w-11/12 mx-auto">
+        <dragonfish-global-settings></dragonfish-global-settings>
+    </div>
+</ng-container>
+<ng-template #viewingDoc>
+    <router-outlet></router-outlet>
+</ng-template>
+

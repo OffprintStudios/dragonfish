@@ -163,3 +163,16 @@ export const PredefinedThemes: Record<string, Theme> = {
     autumn: Autumn,
     'dusk-autumn': DuskAutumn,
 };
+
+export enum ThemePref {
+    Crimson = 'crimson',
+    DarkCrimson = 'dark-crimson',
+    Aqua = 'aqua',
+    DarkAqua = 'dark-aqua',
+    Royal = 'royal',
+    DarkRoyal = 'dark-royal',
+    Steel = 'steel',
+    MidnightField = 'midnight-field',
+    Autumn = 'autumn',
+    DuskAutumn = 'dusk-autumn',
+}
