@@ -5,4 +5,12 @@
         </div>
     </dragonfish-content-box>
     <router-outlet></router-outlet>
+    <ng-container *ngIf="route.children.length === 0">
+        <dragonfish-comments
+            [itemId]="currProse._id"
+            [itemKind]="currProse.kind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></dragonfish-comments>
+    </ng-container>
 </ng-container>

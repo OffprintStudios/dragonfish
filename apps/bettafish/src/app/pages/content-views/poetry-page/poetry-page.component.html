@@ -14,4 +14,12 @@
             <div class="section-body" [innerHTML]="currPoetry.body | safeHtml"></div>
         </div>
     </ng-template>
+    <ng-container *ngIf="route.children.length === 0">
+        <dragonfish-comments
+            [itemId]="currPoetry._id"
+            [itemKind]="currPoetry.kind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></dragonfish-comments>
+    </ng-container>
 </ng-container>
