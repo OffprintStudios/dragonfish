@@ -171,7 +171,7 @@ export enum ThemePref {
     DarkAqua = 'dark-aqua',
     Royal = 'royal',
     DarkRoyal = 'dark-royal',
-    Steel = 'steel',
+    Field = 'field',
     MidnightField = 'midnight-field',
     Autumn = 'autumn',
     DuskAutumn = 'dusk-autumn',

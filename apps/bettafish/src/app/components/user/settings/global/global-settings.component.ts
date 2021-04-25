@@ -35,6 +35,6 @@ export class GlobalSettingsComponent implements OnInit {
     }
 
     onFilterChange(event: ContentFilter) {
-        console.log(event);
+        //this.store.dispatch(new SetContentFilter()).pipe(take(1)).subscribe();
     }
 }
