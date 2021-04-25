@@ -38,6 +38,7 @@ nav {
         flex-direction: row;
         align-items: center;
         justify-content: center;
+        position: relative;
 
         &:hover {
             transition: 0.125s;
@@ -48,6 +49,8 @@ nav {
 
         &.active {
             background: var(--accent);
+            box-shadow: var(--dropshadow);
+            @apply z-20;
         }
 
         &.avatar {
