@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ContentKind, Genres, WorkStatus } from '@dragonfish/shared/models/content';
@@ -11,17 +10,9 @@ import { ContentState, ContentStateModel } from '../../../repo/content';
     styleUrls: ['./content-box.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentBoxComponent implements OnChanges {
+export class ContentBoxComponent {
     @Select(ContentState) content$: Observable<ContentStateModel>;
-    @Input() route: ActivatedRoute;
     contentKind = ContentKind;
     contentStatus = WorkStatus;
     contentGenres = Genres;
-
-    ngOnChanges(changes: SimpleChanges) {
-        const value = changes['route'];
-        if (value.previousValue !== undefined) {
-            this.route = value.currentValue;
-        }
-    }
 }

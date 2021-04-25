@@ -70,22 +70,7 @@
                     </ng-container>
                 </ng-container>
             </div>
-            <ng-container *ngIf="route.children.length === 0">
-                <ng-container [ngSwitch]="content.currContent.kind">
-                    <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
-                        <ng-container *ngIf="$any(content.currContent.meta).collection">
-                            <div>
-                                <dragonfish-sections-list [sections]="$any(content.currContent).sections"></dragonfish-sections-list>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                    <ng-container *ngSwitchDefault>
-                        <div>
-                            <dragonfish-sections-list [sections]="$any(content.currContent).sections"></dragonfish-sections-list>
-                        </div>
-                    </ng-container>
-                </ng-container>
-            </ng-container>
+            <ng-content></ng-content>
             <div class="view-stats flex flex-row items-center justify-end">
                 <div class="tag" title='Comments'>
                     <i-feather name="message-circle"></i-feather>{{ content.currContent.stats.comments | abbreviate }}

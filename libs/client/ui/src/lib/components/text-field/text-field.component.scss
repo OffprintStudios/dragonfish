@@ -10,6 +10,7 @@ div.text-field {
         border: 1px solid var(--borders);
         width: 100%;
         font-size: 16px;
+        background: var(--background);
 
         &:focus {
             --tw-ring-color: var(--accent);

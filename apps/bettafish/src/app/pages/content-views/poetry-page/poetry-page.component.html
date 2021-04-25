@@ -1,5 +1,11 @@
 <ng-container *ngIf="currPoetry$ | async as currPoetry">
-    <dragonfish-content-box [route]="route"></dragonfish-content-box>
+    <dragonfish-content-box>
+        <ng-container *ngIf="$any(currPoetry.meta).collection">
+            <div *ngIf="route.children.length === 0">
+                <dragonfish-sections-list [sections]="$any(currPoetry).sections"></dragonfish-sections-list>
+            </div>
+        </ng-container>
+    </dragonfish-content-box>
     <ng-container *ngIf="currPoetry.meta.collection; else singlePoem">
         <router-outlet></router-outlet>
     </ng-container>
