@@ -23,7 +23,34 @@ export class AppComponent implements OnInit {
         this.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
-            body.classList.replace(currTheme, ThemePref[theme]);
+            body.classList.replace(currTheme, this.switchTheme(theme));
         });
+    }
+
+    private switchTheme(theme: ThemePref) {
+        switch (theme) {
+            case ThemePref.Crimson:
+                return 'crimson';
+            case ThemePref.DarkCrimson:
+                return 'dark-crimson';
+            case ThemePref.Aqua:
+                return 'aqua';
+            case ThemePref.DarkAqua:
+                return 'dark-aqua';
+            case ThemePref.Royal:
+                return 'royal';
+            case ThemePref.DarkRoyal:
+                return 'dark-royal';
+            case ThemePref.Field:
+                return 'field';
+            case ThemePref.MidnightField:
+                return 'midnight-field';
+            case ThemePref.Autumn:
+                return 'autumn';
+            case ThemePref.DuskAutumn:
+                return 'dusk-autumn';
+            default:
+                return 'crimson';
+        }
     }
 }
