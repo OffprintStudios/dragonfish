@@ -24,6 +24,7 @@ import { ContentListItemComponent } from './components/content-list-item/content
 import { SelectComponent } from './components/select/select.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
+import { PopupComponent } from './components/popup/popup.component';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import { NewsCardComponent } from './components/news-card/news-card.component';
         SelectComponent,
         SectionsListComponent,
         NewsCardComponent,
+        PopupComponent,
     ],
     imports: [
         CommonModule,
@@ -66,6 +68,9 @@ import { NewsCardComponent } from './components/news-card/news-card.component';
         SelectComponent,
         SectionsListComponent,
         NewsCardComponent,
+        PopupComponent,
     ],
 })
 export class UiModule {}
+
+export { PopupComponent } from './components/popup/popup.component';

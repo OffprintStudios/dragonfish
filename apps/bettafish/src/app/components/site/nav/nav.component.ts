@@ -8,6 +8,8 @@ import { isAllowed } from '@dragonfish/shared/functions';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { AuthService } from '../../../repo/auth/services';
 import { ElectronService } from 'ngx-electron';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { PopupModel } from '@dragonfish/shared/models/util';
 
 @Component({
     selector: 'dragonfish-nav',
@@ -28,6 +30,15 @@ export class NavComponent {
     }
 
     logout() {
-        this.auth.logout();
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to log out?',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
+            if (wantsToLogOut) {
+                this.auth.logout();
+            }
+        });
     }
 }

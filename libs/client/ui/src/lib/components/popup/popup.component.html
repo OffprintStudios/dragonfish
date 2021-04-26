@@ -1,0 +1,16 @@
+<div class="flex flex-col">
+    <div>
+        {{ data.message }}
+    </div>
+    <div class="my-4"><!--spacer--></div>
+    <div class="flex flex-row items-center justify-center">
+        <ng-container *ngIf="data.confirm; else alert">
+            <button class="shadow-none" [mat-dialog-close]="true">Yes</button>
+            <div class="mx-2"><!--spacer--></div>
+            <button class="shadow-none" [mat-dialog-close]="false">No</button>
+        </ng-container>
+        <ng-template #alert>
+            <button class="shadow-none" (click)="closeDialog()">Okay</button>
+        </ng-template>
+    </div>
+</div>
