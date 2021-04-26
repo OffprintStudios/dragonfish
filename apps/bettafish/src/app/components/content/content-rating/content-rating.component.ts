@@ -8,6 +8,8 @@ import { ContentModel, SetRating, ContentKind } from '@dragonfish/shared/models/
 import { RatingOption, ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { ContentService } from '../../../repo/content/services';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { MatDialog } from '@angular/material/dialog';
+import { AddToCollectionComponent } from '../collections/add-to-collection/add-to-collection.component';
 
 @UntilDestroy()
 @Component({
@@ -26,7 +28,14 @@ export class ContentRatingComponent {
     contentKind = ContentKind;
     optionsIsOpen = false;
 
-    constructor(private content: ContentService) {}
+    constructor(private content: ContentService, private dialog: MatDialog) {}
+
+    /**
+     * Opens the Add To Collection dialog box.
+     */
+    openAddToCollectionDialog(content: ContentModel) {
+        this.dialog.open(AddToCollectionComponent, { data: { content: content } });
+    }
 
     /**
      * Sets this user's rating as Liked.

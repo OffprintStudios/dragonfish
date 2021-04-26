@@ -42,7 +42,7 @@
             <ng-container
                 *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent"
             >
-                <button mat-menu-item>
+                <button mat-menu-item (click)="openAddToCollectionDialog(content)">
                     <i-feather name="folder-plus"></i-feather>Add to Collection
                 </button>
             </ng-container>
@@ -65,13 +65,9 @@
         </div>
 
         <mat-menu xPosition="before" #moreItemsNoUser="matMenu">
-            <ng-container
-                *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent"
-            >
-                <button mat-menu-item>
-                    <i-feather name="folder-plus"></i-feather>Add to Collection
-                </button>
-            </ng-container>
+            <button mat-menu-item>
+                <i-feather name="folder-plus"></i-feather>Add to Collection
+            </button>
             <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
         </mat-menu>
     </ng-template>
