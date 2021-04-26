@@ -41,7 +41,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/apps/bettafish",
+                        "outputPath": "dist/apps/api/static",
                         "index": "apps/bettafish/src/index.html",
                         "main": "apps/bettafish/src/main.ts",
                         "polyfills": "apps/bettafish/src/polyfills.ts",
