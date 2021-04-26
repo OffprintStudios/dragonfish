@@ -67,7 +67,9 @@ export class AuthController {
     @Get('logout')
     async logout(@Request() req: any, @Cookies() cookies: any): Promise<void> {
         const refreshToken = cookies['refreshToken'];
-        await this.auth.clearRefreshToken(req.user.sub, refreshToken);
+        if (refreshToken) {
+            await this.auth.clearRefreshToken(req.user.sub, refreshToken);
+        }
         this.auth.logout(req);
     }
 }

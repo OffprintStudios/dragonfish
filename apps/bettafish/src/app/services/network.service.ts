@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
@@ -204,7 +204,7 @@ export class NetworkService {
                 catchError((err) => {
                     if (err.status === 403) {
                         // A 403 means that the refreshToken has expired, or we didn't send one up at all, which is Super Suspicious
-                        return null;
+                        return of<string>(null);
                     }
                     return throwError(err);
                 }),
