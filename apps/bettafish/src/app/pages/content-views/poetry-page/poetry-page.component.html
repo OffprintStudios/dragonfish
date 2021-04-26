@@ -2,7 +2,7 @@
     <dragonfish-content-box>
         <ng-container *ngIf="$any(currPoetry.meta).collection">
             <div *ngIf="route.children.length === 0">
-                <dragonfish-sections-list [sections]="$any(currPoetry).sections"></dragonfish-sections-list>
+                <dragonfish-sections-list [sections]="$any(currPoetry).sections" [contentBox]="true"></dragonfish-sections-list>
             </div>
         </ng-container>
     </dragonfish-content-box>

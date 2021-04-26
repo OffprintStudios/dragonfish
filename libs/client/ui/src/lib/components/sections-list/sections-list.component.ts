@@ -9,6 +9,7 @@ import { Section } from '@dragonfish/shared/models/sections';
 })
 export class SectionsListComponent implements OnChanges {
     @Input() sections: Section[];
+    @Input() contentBox = false;
 
     ngOnChanges(changes: SimpleChanges) {
         const value = changes['sections'];

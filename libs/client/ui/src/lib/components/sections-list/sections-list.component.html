@@ -1,5 +1,5 @@
-<div class="section-list w-3/4 mx-auto rounded-md mb-8 shadow-lg">
-    <ul class="w-full">
+<div class="section-list w-3/4 mx-auto rounded-md mb-8 shadow-lg" [ngClass]="contentBox ? 'default' : 'content-box' ">
+    <ul class="w-full max-h-60 overflow-auto">
         <ng-container *ngFor="let section of sections; let i = index">
             <li *ngIf="section.published === true">
                 <a
