@@ -7,16 +7,15 @@ on:
     - 'nx.json'
     - 'package.json'
     - 'workspace.json'
-    - 'libraries/models/**'
-    - 'libraries/utilities/**'
-    - 'packages/server/**'
+    - 'libs/shared/**'
+    - 'apps/api/**'
     - '.github/workflows/digiocean-build-server.yml'
     - '.github/workflows/digioncean-deploy-server.yml'
 
 jobs:
-  build_server:    
+  build_server:
     runs-on: ubuntu-latest
-  
+
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -25,19 +24,19 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 15.5.1
-           
+
       - name: Install global dependencies
         run: yarn global add @angular/cli @nestjs/cli nx typescript
-        
+
       - name: Install local dependencies
         run: yarn install
-        
+
       - name: Build server
         run: yarn build:ci:server
 
       # Compress node_modules so it fits in GitHub storage. Exclude nx's .bin and .cache folders.
       - name: Compress node_modules
-        run: tar -czf dist.tar.gz --exclude='node_modules/.bin' --exclude='node_modules/.cache' node_modules/ dist/packages/server/
+        run: tar -czf dist.tar.gz --exclude='node_modules/.bin' --exclude='node_modules/.cache' node_modules/ dist/apps/api/
 
       - name: Upload dist.tar.gz
         uses: actions/upload-artifact@v2
