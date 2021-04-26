@@ -1,8 +1,8 @@
 <ng-container *ngIf="currContent$ | async as currProse; else createForm">
     <div class="form-container">
-        <div class="form-header">
-            <h3>{{ formTitle }}</h3>
-            <button class="form-button" (click)="submitForm(currProse._id)">Save</button>
+        <div class="form-header flex flex-row items-center mb-8">
+            <h3 class="text-4xl flex-1">{{ formTitle }}</h3>
+            <button class="form-button shadow-none" (click)="submitForm(currProse._id)">Save</button>
         </div>
         <form [formGroup]="proseForm" (ngSubmit)="submitForm(currProse._id)">
             <dragonfish-text-field
@@ -80,9 +80,9 @@
 
 <ng-template #createForm>
     <div class="form-container">
-        <div class="form-header">
-            <h3>{{ formTitle }}</h3>
-            <button class="form-button" (click)="submitForm()">Save</button>
+        <div class="form-header flex flex-row items-center mb-8 pb-1">
+            <h3 class="text-4xl flex-1">{{ formTitle }}</h3>
+            <button class="form-button shadow-none" (click)="submitForm()">Save</button>
         </div>
         <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
             <dragonfish-text-field

@@ -37,6 +37,7 @@ export class SectionsState {
             tap((result: Section[]) => {
                 patchState({
                     sections: result.reverse(),
+                    currSection: null,
                 });
             }),
             catchError((err) => {

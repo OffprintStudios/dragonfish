@@ -33,7 +33,7 @@ nav {
 
     a.link {
         color: whitesmoke;
-        padding: 15px 20px;
+        padding: 15px 17px;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -59,7 +59,8 @@ nav {
 
         span.link-icon {
             position: relative;
-            left: -0.1rem;
+            left: -0.05rem;
+            top: 0.15rem;
             i-feather {
                 width: 26px;
                 stroke-width: 1;

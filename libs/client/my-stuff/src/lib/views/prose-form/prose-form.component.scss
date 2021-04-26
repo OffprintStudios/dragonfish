@@ -3,15 +3,8 @@ div.form-container {
     margin: 0 auto;
 
     div.form-header {
-        display: flex;
-        flex-direction: row;
-        border-bottom: 1px solid var(--site-borders);
+        border-bottom: 1px solid var(--borders);
         margin-bottom: 2rem;
-        h3 {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
         button.form-button {
             &.left {
                 border-right: none;
@@ -29,11 +22,11 @@ div.form-container {
             }
 
             &.selected {
-                background-color: var(--site-accent);
+                background-color: var(--accent);
                 color: whitesmoke;
 
                 &:hover {
-                    background-color: var(--site-accent-hover);
+                    background-color: var(--accent-dark);
                     color: whitesmoke;
                 }
             }
