@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginUser } from '@dragonfish/shared/models/users';
 import { AuthService } from '../../../repo/auth/services';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-login-form',
@@ -17,15 +18,20 @@ export class LoginFormComponent {
         rememberMe: new FormControl(false),
     });
 
-    constructor(private auth: AuthService) {}
+    constructor(private auth: AuthService, private alerts: AlertsService) {}
 
     get fields() {
         return this.loginForm.controls;
     }
 
     submitForm() {
-        if (this.loginForm.invalid) {
-            alert(`Check the info you've entered, because it doesn't look right to us.`);
+        if (this.fields.email.invalid) {
+            this.alerts.error(`You need to provide a valid email address.`);
+            return;
+        }
+
+        if (this.fields.password.invalid) {
+            this.alerts.error(`You need to provide your password.`);
             return;
         }
 
