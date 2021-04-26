@@ -1,5 +1,5 @@
 <ng-container *ngIf="portUser$ | async as portUser">
-    <div class="collection-page-header w-11/12 mx-auto">
+    <div class="collection-page-header my-8 w-11/12 mx-auto">
         <div class="coll-name">
             <ng-container *ngIf="currentUser$ | async as currentUser">
                 <ng-container *ngIf="portUser._id === currentUser._id">
@@ -24,7 +24,7 @@
             <h2 class="text-4xl">{{ collData.name }}</h2>
             <ng-container *ngIf="currentUser$ | async as currentUser">
                 <ng-container *ngIf="portUser._id === currentUser._id">
-                    <div class="coll-tools mb-1">
+                    <div class="coll-tools flex flex-row items-center mb-1">
                         <button class="tool left shadow-none" (click)="openEditCollectionModal(collData)">
                             <i-feather name="edit-3"></i-feather>Edit
                         </button>
@@ -48,9 +48,9 @@
             </div>
         </ng-container>
         <ng-template #hasContent>
-            <div class="grid auto-cols-fr">
+            <div class="grid grid-cols-3">
                 <ng-container *ngFor="let content of collData.contains">
-                    <dragonfish-work-card [content]="content" [showAuthor]="false"></dragonfish-work-card>
+                    <dragonfish-work-card [content]="content" [showAuthor]="true"></dragonfish-work-card>
                 </ng-container>
             </div>
         </ng-template>

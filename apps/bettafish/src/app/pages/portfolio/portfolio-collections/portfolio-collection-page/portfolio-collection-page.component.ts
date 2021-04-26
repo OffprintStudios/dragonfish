@@ -10,6 +10,8 @@ import { UserState } from '../../../../repo/user';
 import { PortfolioState } from '../../../../repo/portfolio';
 import { NetworkService } from '../../../../services';
 import { CollectionFormComponent } from '../../../../components/content/collections/collection-form/collection-form.component';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
 
 @Component({
     selector: 'dragonfish-portfolio-collection-page',
@@ -54,13 +56,20 @@ export class PortfolioCollectionPageComponent {
      * @param collId The collection to delete
      */
     askDelete(collId: string) {
-        if (confirm(`Are you sure you want to delete this collection? This action is irreversible.`)) {
-            this.network.deleteCollection(collId).subscribe(() => {
-                this.location.back();
-            });
-        } else {
-            return;
-        }
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this collection? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.network.deleteCollection(collId).subscribe(() => {
+                    this.location.back();
+                });
+            } else {
+                return;
+            }
+        });
     }
 
     /**
