@@ -1,0 +1,27 @@
+div.header {
+    background: var(--accent);
+    h2 {
+      color: whitesmoke;
+      text-transform: lowercase;
+      font-variant: small-caps;
+      letter-spacing: 4px;
+      font-size: 24px;
+    }
+    img.offprint-logo {
+      max-width: 20rem;
+      margin: 0 auto;
+    }
+  }
+
+  h2 {
+      font-size: 36px;
+  }
+
+  img.beatriz {
+      max-height: 650px;
+      display: inline;
+  }
+
+div.section-header {
+    border-bottom: 1px solid var(--borders);
+}

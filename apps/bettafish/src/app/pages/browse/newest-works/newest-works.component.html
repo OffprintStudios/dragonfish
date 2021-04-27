@@ -1,0 +1,21 @@
+<div class="section-header mb-4">
+    <div class="w-11/12 mx-auto pb-2 pt-4 flex flex-row justify-center">
+        <i-feather name="loader" class="mr-4 text-white"></i-feather>
+        <h3 class="text-2xl italic text-white">Newest Works</h3>
+    </div>
+</div>
+
+<ng-container *ngIf="loading; else notLoading">
+    <div class="flex flex-row items-center justify-center h-full">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <div class="grid grid-cols-3 gap-4 mb-4 w-11/12 mx-auto">
+        <ng-container *ngFor="let work of works.docs | paginate: {itemsPerPage: works.limit, currentPage: pageNum, totalItems: works.totalDocs}">
+            <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+        </ng-container>
+    </div>
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+</ng-template>

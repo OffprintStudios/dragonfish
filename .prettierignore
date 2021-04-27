@@ -2,7 +2,6 @@
 
 /dist
 /coverage
-
-ckeditor.js
-/libraries/editor/src/lib/translations
 README.md
+yarn.lock
+yarn-error.log

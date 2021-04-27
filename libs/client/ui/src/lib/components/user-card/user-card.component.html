@@ -1,0 +1,28 @@
+<div class="user-card-container w-64">
+    <div class="user-avatar">
+        <img [src]="user.profile.avatar" />
+    </div>
+    <div class="user-info" #infoContainer>
+        <h2 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="24" class="text-2xl mt-6">
+            <a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a>
+        </h2>
+        <dragonfish-role-badge [roles]="user.roles" [isCentered]="true"></dragonfish-role-badge>
+        <h3 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="20">
+            {{ user.profile.bio }}
+        </h3>
+    </div>
+    <div class="user-stats">
+        <div class="works" title="Works">
+            <span class="icon"><i-feather name="feather"></i-feather></span>
+            <span class="stat">{{ user.stats.works | abbreviate }}</span>
+        </div>
+        <div class="blogs" title="Blogs">
+            <span class="icon"><i-feather name="coffee"></i-feather></span>
+            <span class="stat">{{ user.stats.blogs | abbreviate }}</span>
+        </div>
+        <div class="watchers" title="Watchers">
+            <span class="icon"><i-feather name="eye"></i-feather></span>
+            <span class="stat">{{ user.stats.watchers | abbreviate }}</span>
+        </div>
+    </div>
+</div>

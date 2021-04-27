@@ -1,0 +1,101 @@
+<div class="top-bar flex flex-row w-3/4 mx-auto mt-8 mb-3.5 relative z-10">
+    <div>
+        <pagination-controls
+            [nextLabel]="''"
+            [previousLabel]="''"
+            (pageChange)="fetchData($event)"
+            id="comments"
+        ></pagination-controls>
+    </div>
+    <div class="flex-1"><!--spacer--></div>
+    <div class="flex flex-row items-center">
+        <button matRipple class="rounded-r-none shadow-none" title="New Comment" (click)="scrollToNewCommentForm()">
+            <i-feather name="message-circle" class="mr-0"></i-feather>
+        </button>
+        <button
+            matRipple
+            class="rounded-none border-l-0 border-r-0 shadow-none"
+            title="Refresh Thread"
+            (click)="refreshThread()"
+        >
+            <i-feather name="refresh-cw" class="mr-0"></i-feather>
+        </button>
+        <button matRipple class="rounded-l-none shadow-none" title="Thread Settings">
+            <i-feather name="settings" class="mr-0"></i-feather>
+        </button>
+    </div>
+</div>
+
+<div class="mb-8 relative z-10">
+    <ng-container *ngIf="loading; else notLoading">
+        <div class="flex flex-row items-center justify-center h-48">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+
+    <ng-template #notLoading>
+        <ng-container *ngIf="comments.docs.length === 0; else notEmpty">
+            <div class="empty">
+                <h3>No one's said anything yet...</h3>
+                <p>But you could be the first!</p>
+            </div>
+        </ng-container>
+
+        <ng-template #notEmpty>
+            <ng-container
+                *ngFor="let comment of comments.docs | paginate: {
+                    id: 'comments',
+                    itemsPerPage: comments.limit,
+                    currentPage: pageNum,
+                    totalItems: comments.totalDocs
+                }; let i = index"
+            >
+                <dragonfish-comment-box [comment]="comment" [index]="i" (reply)="quoteComment($event)"></dragonfish-comment-box>
+                <div class="my-6"><!--spacer--></div>
+            </ng-container>
+        </ng-template>
+
+        <div class="top-bar flex flex-row w-3/4 mx-auto mt-8 mb-3.5 relative z-10">
+            <div>
+                <pagination-controls
+                    [nextLabel]="''"
+                    [previousLabel]="''"
+                    (pageChange)="fetchData($event)"
+                    id="comments"
+                ></pagination-controls>
+            </div>
+            <div class="flex-1"><!--spacer--></div>
+            <div class="flex flex-row items-center">
+                <button matRipple class="rounded-r-none shadow-none" title="New Comment" (click)="scrollToNewCommentForm()">
+                    <i-feather name="message-circle" class="mr-0"></i-feather>
+                </button>
+                <button
+                    matRipple
+                    class="rounded-none border-l-0 border-r-0 shadow-none"
+                    title="Refresh Thread"
+                    (click)="refreshThread()"
+                >
+                    <i-feather name="refresh-cw" class="mr-0"></i-feather>
+                </button>
+                <button matRipple class="rounded-l-none shadow-none" title="Thread Settings">
+                    <i-feather name="settings" class="mr-0"></i-feather>
+                </button>
+            </div>
+        </div>
+
+        <!--To be replaced once the floating editor is reimplemented-->
+        <div class="mt-8 w-4/6 mx-auto" #newCommentSection *ngIf="currentUser$ | async">
+            <form [formGroup]="newCommentForm" (ngSubmit)="submitNewComment()">
+                <dragonfish-editor
+                    [parentForm]="newCommentForm"
+                    [controlName]="'body'"
+                    [minHeight]="'200px'"
+                    [maxHeight]="'200px'"
+                ></dragonfish-editor>
+                <div class="comment-control flex flex-row justify-center items-center p-1 w-11/12 mx-auto">
+                    <button type="submit" class="shadow-none">Submit</button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+</div>

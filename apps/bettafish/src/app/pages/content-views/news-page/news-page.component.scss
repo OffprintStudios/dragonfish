@@ -1,0 +1,40 @@
+div.news-post-nav {
+    background: var(--accent);
+    button.go-back {
+        margin: 0 0.25rem 0 0.25rem;
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            position: relative;
+            width: 1.5rem !important;
+            color: white;
+            margin: 0;
+            top: -0.025rem;
+            &.end-button {
+                stroke-width: 1;
+            }
+        }
+    }
+}
+
+div.post-container {
+    margin: 2rem auto 0 auto;
+
+    @media (max-width: 1150px) {
+        width: 95%;
+    }
+
+    div.post-header {
+        margin-top: 5rem;
+        margin-bottom: 1.5rem;
+        h1 {
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+    }
+
+    div.post-byline {
+        border-bottom: 1px solid var(--borders);
+    }
+}

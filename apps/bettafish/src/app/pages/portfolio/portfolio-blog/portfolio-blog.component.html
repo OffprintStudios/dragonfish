@@ -1,0 +1,31 @@
+<ng-container *ngIf="portUser$ | async as portUser">
+    <ng-container *ngIf="loading; else notLoading">
+        <div class="flex h-40 items-center justify-center">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #notLoading>
+        <div class="grid grid-cols-2 gap-6 my-8 w-11/12 mx-auto" *ngIf="blogsData.totalDocs !== 0; else noGalleryBlogs">
+            <ng-container *ngFor="let blog of blogsData.docs | paginate: {itemsPerPage: blogsData.limit, currentPage: pageNum, totalItems: blogsData.totalDocs}">
+                <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
+            </ng-container>
+        </div>
+        <ng-template #noGalleryBlogs>
+            <div class="empty">
+                <h3>There's nothing here...</h3>
+                <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
+                    <p *ngIf="currentUser._id === portUser._id; else notSameUser">Why not head to My Stuff and add one?</p>
+                    <ng-template #notSameUser>
+                        <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                    </ng-template>
+                </ng-container>
+                <ng-template #noUser>
+                    <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                </ng-template>
+            </div>
+        </ng-template>
+        <ng-container *ngIf="blogsData.totalDocs > 0">
+            <pagination-controls (pageChange)="onPageChange($event, portUser._id)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-container>
+    </ng-template>
+</ng-container>

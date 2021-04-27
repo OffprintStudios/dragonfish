@@ -1,0 +1,69 @@
+<div class="comment-box w-3/4 mx-auto shadow-lg rounded-md">
+    <div class="comment-header flex flex-row items-center py-1 px-1.5 rounded-t-md">
+        <img class="rounded-full w-10 mr-2" [src]="$any(comment.user).profile.avatar">
+        <div class="self-center">
+            <h3 class="text-xl font-medium">{{ $any(comment.user).username }}</h3>
+            <p *ngIf="$any(comment.user).profile.tagline; else noTagline" class="text-xs m-0">{{ $any(comment.user).profile.tagline }}</p>
+            <ng-template #noTagline>
+                <p class="text-xs m-0">Member</p>
+            </ng-template>
+        </div>
+        <div class="text-3xl mx-1 font-thin">|</div>
+        <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false"></dragonfish-role-badge>
+        <div class="flex-1"><!--spacer--></div>
+        <div>
+            <dragonfish-comment-approval></dragonfish-comment-approval>
+            <p class="text-xs m-0">{{ comment.createdAt | localedate: 'fullDate' }}</p>
+        </div>
+    </div>
+    <div class="flex-1 p-4">
+        <ng-container *ngIf="editMode; else viewMode">
+            <form [formGroup]="editComment" (ngSubmit)="submitEdits()">
+                <dragonfish-editor
+                    [parentForm]="editComment"
+                    [controlName]="'body'"
+                    [minHeight]="'200px'"
+                    [maxHeight]="'200px'"
+                ></dragonfish-editor>
+                <div class="flex flex-row items-center justify-center pt-3">
+                    <button type="submit">Save</button>
+                    <div class="mx-2"><!--spacer--></div>
+                    <button (click)="toggleEditMode()">Cancel</button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-template #viewMode>
+            <div class="html-description" [innerHTML]="comment.body | safeHtml"></div>
+        </ng-template>
+    </div>
+    <div class="flex flex-row items-center">
+        <div class="flex-1"><!--spacer--></div>
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="currentUser._id === $any(comment.user)._id; else notThisUser">
+                <ng-container *ngIf="!editMode">
+                    <button class="py-2 px-3 shadow-none border-none rounded-full" (click)="toggleEditMode()">
+                        <i-feather name="edit-3" class="m-0"></i-feather>
+                    </button>
+                </ng-container>
+            </ng-container>
+            <ng-template #notThisUser>
+                <button
+                    class="py-2 px-3 shadow-none border-none rounded-full"
+                    [matTooltip]="'Reply'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (click)="replyToComment()"
+                >
+                    <i-feather name="corner-up-left" class="m-0"></i-feather>
+                </button>
+
+                <button
+                    class="py-2 px-3 shadow-none border-none rounded-full"
+                    [matTooltip]="'Report'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                >
+                    <i-feather name="flag" class="m-0"></i-feather>
+                </button>
+            </ng-template>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="box w-full border rounded-md p-4 shadow-lg">
+    <div class="header border-b mb-5">
+        <h3 class="text-3xl font-medium">Global Settings</h3>
+    </div>
+    <div class="grid grid-cols-2">
+        <div class="bordered pl-2 pr-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Change App Theme</h5>
+            <div class="offprint-select">
+                <label>Theme</label>
+                <ng-select class="custom" [(ngModel)]="selectedTheme" [searchable]="false" [clearable]="false" (change)="onThemeChange($event)">
+                    <ng-option *ngFor="let theme of themes | keyvalue" [value]="theme.key">
+                        {{ theme.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="pl-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Change Content Filter</h5>
+            <form [formGroup]="setContentFilter" (ngSubmit)="submitContentFilter()">
+                <div class="flex flex-col items-center justify-center">
+                    <span class="toggles">
+                        <dragonfish-toggle [formControlName]="'enableMature'">Enable Mature</dragonfish-toggle>
+                    </span>
+                    <span class="toggles">
+                        <dragonfish-toggle [formControlName]="'enableExplicit'">Enable Explicit</dragonfish-toggle>
+                    </span>
+                </div>
+                <div class="my-2"><!--spacer--></div>
+                <div class="flex flex-col items-center justify-center">
+                    <button type="submit" class="button-primary">Set Filters</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

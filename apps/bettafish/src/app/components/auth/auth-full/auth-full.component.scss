@@ -1,0 +1,29 @@
+div.auth-full {
+    background: var(--accent);
+    color: whitesmoke;
+
+    div.header {
+        h2 {
+            color: whitesmoke;
+            text-transform: lowercase;
+            font-variant: small-caps;
+            letter-spacing: 4px;
+            font-size: 24px;
+        }
+        img.offprint-logo {
+            max-width: 20rem;
+            margin: 0 auto;
+        }
+    }
+
+    div.auth-forms {
+        background: var(--background);
+        color: var(--text-color);
+        overflow-y: auto;
+        height: 32rem;
+    }
+    img.beatriz {
+        max-height: 550px;
+        display: inline;
+    }
+}
