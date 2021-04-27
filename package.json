@@ -27,8 +27,8 @@
         "dep-graph": "nx dep-graph",
         "help": "nx help",
         "build:prod": "cross-env NODE_ENV=production ng build --prod",
-        "build:ci:server": "cross-env NODE_ENV=production ng build api --skip-nx-cache --prod",
-        "build:ci:client": "cross-env NODE_ENV=production ng build bettafish --skip-nx-cache --prod"
+        "build:ci:server": "cross-env NODE_ENV=production nx build api --skip-nx-cache --prod",
+        "build:ci:client": "cross-env NODE_ENV=production nx build bettafish --skip-nx-cache --prod"
     },
     "private": true,
     "dependencies": {
