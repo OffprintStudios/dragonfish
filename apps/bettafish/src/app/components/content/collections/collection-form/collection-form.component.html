@@ -19,15 +19,12 @@
                 [placeholder]="'Full of all the things I can\'t forget'"
             ></dragonfish-text-area>
 
-            <div class="private-toggle">
-                <span class="before-text">Private</span>
-                <dragonfish-toggle [formControlName]="'public'">Public</dragonfish-toggle>
-            </div>
+            <dragonfish-toggle [formControlName]="'public'">Public</dragonfish-toggle>
         </form>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <div class="actions">
+    <div class="actions flex flex-row items-center justify-center">
         <button class="create" type="submit" (click)="submitCollection()">
             <ng-container *ngIf="editMode; else createMode"> Save </ng-container>
             <ng-template #createMode> Create </ng-template>
