@@ -47,11 +47,20 @@
                 </ng-container>
             </ng-container>
             <ng-template #notThisUser>
-                <button class="py-2 px-3 shadow-none border-none rounded-full">
+                <button
+                    class="py-2 px-3 shadow-none border-none rounded-full"
+                    [matTooltip]="'Reply'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (click)="replyToComment()"
+                >
                     <i-feather name="corner-up-left" class="m-0"></i-feather>
                 </button>
 
-                <button class="py-2 px-3 shadow-none border-none rounded-full">
+                <button
+                    class="py-2 px-3 shadow-none border-none rounded-full"
+                    [matTooltip]="'Report'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                >
                     <i-feather name="flag" class="m-0"></i-feather>
                 </button>
             </ng-template>

@@ -11,6 +11,7 @@ import { NetworkService } from '../../../services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { findIndex } from 'lodash';
+import { ReplyCommentModel } from './models';
 
 @Component({
     selector: 'dragonfish-comments',
@@ -121,40 +122,18 @@ export class CommentsComponent {
     }
 
     /**
-     * Submits edits on a comment.
-     *
-     * @param commentId The comment we're editing
-     */
-    submitEdits(commentId: string) {
-        if (this.editCommentFields.body.invalid) {
-            this.alerts.info('Comments must be at least 10 characters long.');
-            return;
-        }
-
-        const commentIndex = findIndex(this.comments.docs, { _id: commentId });
-        const commInfo: EditComment = {
-            body: this.editCommentFields.body.value,
-        };
-
-        this.networkService.editComment(commentId, commInfo).subscribe(() => {
-            this.comments.docs[commentIndex].isEditing = false;
-            this.comments.docs[commentIndex].body = this.editCommentFields.body.value;
-        });
-    }
-
-    /**
      * Appends a comment to the new comment form for quoting.
      *
      * @param quoteUser The user we're quoting
      * @param commentId The ID of the quoted comment
      * @param commentBody The body of the quoted comment
      */
-    quoteComment(quoteUser: UserInfoComments, commentId: string, commentBody: string) {
+    quoteComment(event: ReplyCommentModel) {
         this.newCommentForm.setValue({
             body: `
         <blockquote>
-          <em><a href="#${commentId}">${quoteUser.username}</a> said:</em>\n
-          ${commentBody}
+          <em><a href="#${event.commentId}">${event.quoteUser.username}</a> said:</em>\n
+          ${event.commentBody}
         </blockquote>
       `,
         });

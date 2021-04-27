@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Comment, EditComment } from '@dragonfish/shared/models/comments';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Comment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
 import { Select } from '@ngxs/store';
 import { UserState } from '../../../../repo/user';
 import { Observable } from 'rxjs';
@@ -7,6 +7,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { NetworkService } from '../../../../services';
+import { ReplyCommentModel } from '../models';
 
 @Component({
     selector: 'dragonfish-comment-box',
@@ -17,6 +18,7 @@ export class CommentBoxComponent implements OnInit {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @Input() comment: Comment;
     @Input() index: number;
+    @Output() reply = new EventEmitter<ReplyCommentModel>();
 
     editMode = false;
     editComment = new FormGroup({
@@ -37,6 +39,15 @@ export class CommentBoxComponent implements OnInit {
 
     toggleEditMode() {
         this.editMode = !this.editMode;
+    }
+
+    replyToComment() {
+        const replyOut: ReplyCommentModel = {
+            quoteUser: this.comment.user as UserInfoComments,
+            commentId: this.comment._id,
+            commentBody: this.comment.body,
+        };
+        this.reply.emit(replyOut);
     }
 
     /**

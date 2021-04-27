@@ -50,7 +50,7 @@
                     totalItems: comments.totalDocs
                 }; let i = index"
             >
-                <dragonfish-comment-box [comment]="comment" [index]="i"></dragonfish-comment-box>
+                <dragonfish-comment-box [comment]="comment" [index]="i" (reply)="quoteComment($event)"></dragonfish-comment-box>
                 <div class="my-6"><!--spacer--></div>
             </ng-container>
         </ng-template>
