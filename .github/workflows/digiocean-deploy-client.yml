@@ -63,7 +63,7 @@ jobs:
         command: |
           mkdir -p /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }}
           # Using rsync here for easier recursive copy & overwriting at destination
-          rsync --archive --remove-source-files /opt/dragonfish/frontend-deploy-cache/dist/packages/server/static/ /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }}
+          rsync --archive --remove-source-files /opt/dragonfish/frontend-deploy-cache/dist/apps/api/static/ /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }}
 
     - name: 'Remote: Clear deploy cache folder (again)'
       uses: garygrossgarten/github-action-ssh@release
