@@ -7,6 +7,7 @@ import { ContentFilter } from '@dragonfish/shared/models/content';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import { CookieService } from 'ngx-cookie';
 
 @UntilDestroy()
 @Component({
@@ -27,13 +28,23 @@ export class GlobalSettingsComponent implements OnInit {
         enableExplicit: new FormControl(false),
     });
 
-    constructor(private store: Store) {}
+    constructor(private store: Store, private cookies: CookieService) {}
 
     ngOnInit(): void {
         this.global$.pipe(untilDestroyed(this)).subscribe(global => {
             this.selectedTheme = global.theme;
             this.selectedFilter = global.filter;
         });
+
+        const contentFilterSetting: ContentFilter = this.cookies.get('contentFilter') as ContentFilter;
+        if (contentFilterSetting !== null && contentFilterSetting !== undefined) {
+            this.setContentFilterToggles(contentFilterSetting);
+        } else {
+            this.setContentFilter.setValue({
+                enableMature: false,
+                enableExplicit: false,
+            });
+        }
     }
 
     get setFilterFields() {
@@ -55,5 +66,34 @@ export class GlobalSettingsComponent implements OnInit {
             .subscribe(() => {
                 location.reload();
             });
+    }
+
+    private setContentFilterToggles(contentFilterSetting: ContentFilter) {
+        switch (contentFilterSetting) {
+            case ContentFilter.Default:
+                this.setContentFilter.setValue({
+                    enableMature: false,
+                    enableExplicit: false,
+                });
+                break;
+            case ContentFilter.Everything:
+                this.setContentFilter.setValue({
+                    enableMature: true,
+                    enableExplicit: true,
+                });
+                break;
+            case ContentFilter.MatureEnabled:
+                this.setContentFilter.setValue({
+                    enableMature: true,
+                    enableExplicit: false,
+                });
+                break;
+            case ContentFilter.ExplicitEnabled:
+                this.setContentFilter.setValue({
+                    enableMature: false,
+                    enableExplicit: true,
+                });
+                break;
+        }
     }
 }
