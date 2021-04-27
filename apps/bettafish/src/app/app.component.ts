@@ -23,7 +23,12 @@ export class AppComponent implements OnInit {
         this.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
-            body.classList.replace(currTheme, ThemePref[theme]);
+            console.log(typeof ThemePref[theme]);
+            if (ThemePref[theme] !== null && ThemePref[theme] !== undefined) {
+                body.classList.replace(currTheme, ThemePref[theme]);
+            } else {
+                body.classList.replace(currTheme, 'crimson');
+            }
         });
     }
 }
