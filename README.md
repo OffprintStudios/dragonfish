@@ -10,8 +10,8 @@ It's still very much a work in progress.
 
 | Dragonfish | Build                                                                                                             | Test                                                                                                                      | Production                                                                                                          |
 | ---------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Server     | ![Build Server (Dev)](<https://github.com/OffprintStudios/dragonfish/workflows/Build%20Server%20(Dev)/badge.svg>) | ![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
-| Client     | ![Build Client (Dev)](<https://github.com/OffprintStudios/dragonfish/workflows/Build%20Client%20(Dev)/badge.svg>) | ![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
+| Server     | ![Build API (Dev)](<https://github.com/OffprintStudios/dragonfish/workflows/Build%20Server%20(Dev)/badge.svg>) | ![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
+| Client     | ![Build Bettafish (Dev)](<https://github.com/OffprintStudios/dragonfish/workflows/Build%20Client%20(Dev)/badge.svg>) | ![Deploy Test Environment](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20Test%20Environment/badge.svg) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
 
 ## Setting up the dev environment
 
@@ -83,30 +83,22 @@ Note that by default, the backend serves up the frontend, so in order to test th
 To run the backend:
 
 ```bash
-nx serve server
+ng serve api
 ```
 
 To run the frontend:
 
 ```bash
-nx build client
+ng serve bettafish
 ```
 
 On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
 
 ```bash
-nx build client --watch --poll=2000
+ng build bettafish --watch --poll=2000
 ```
 
 Then you should find the website at <http://localhost:3333>
-
-To run the Dashboard:
-
-```bash
-nx serve dashboard
-```
-
-Then you should find the website at <http://localhost:4200>. Note the backend still needs to be run for this.
 
 ## Contributing
 
