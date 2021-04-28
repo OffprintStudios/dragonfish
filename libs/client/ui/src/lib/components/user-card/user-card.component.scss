@@ -1,10 +1,6 @@
-div.user-card-container {
-    display: flex;
-    flex-direction: column;
+div.user-card {
     background: var(--accent);
     border: 1px solid var(--borders);
-    border-radius: 4px;
-
     div.user-avatar {
         align-self: center;
         padding-top: 10px;
@@ -16,32 +12,27 @@ div.user-card-container {
             box-shadow: var(--dropshadow);
         }
     }
-
     div.user-info {
         align-self: center;
-        text-align: center;
-        margin-bottom: 1rem;
-        width: 275px;
+        width: 15rem;
+        margin: 0 auto 1rem auto;
         h2 {
-            margin: 0;
-            color: whitesmoke;
+            color: white;
             font-weight: 700;
 
             a {
-                color: whitesmoke;
-
+                color: white;
                 &:hover {
-                    background-color: var(--accent-hover);
+                    background-color: var(--accent-dark);
                 }
             }
         }
 
         h3 {
-            margin: 0;
-            color: whitesmoke;
+            color: white;
             font-weight: 300;
             font-style: italic;
-            font-size: 16px;
+            font-size: 1rem;
         }
     }
 
