@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@dragonfish/shared/models/content';
 import { MyStuffState } from '../../repo';
-import { FrontendUser, Roles, UserInfo } from '@dragonfish/shared/models/users';
+import { FrontendUser, Roles } from '@dragonfish/shared/models/users';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffService } from '../../repo/services';
-import { slugify } from 'voca';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Navigate } from '@ngxs/router-plugin';
 import { isAllowed } from '@dragonfish/shared/functions';
@@ -31,7 +29,6 @@ export class ToolbarComponent {
         private alerts: AlertsService,
         private router: Router,
         private stuff: MyStuffService,
-        private clipboard: Clipboard
     ) {
         const currUser = JSON.parse(localStorage.getItem('user')) as { currUser: FrontendUser };
         this.currentUser = currUser.currUser;
@@ -64,54 +61,6 @@ export class ToolbarComponent {
                 return;
             }
         }
-    }
-
-    /**
-     * Asks if a user really wants to delete the specified content. If yes,
-     * sends a request to delete the specified content given its ID. If no,
-     * does nothing.
-     *
-     * @param contentId The content ID
-     */
-    deleteContent(contentId: string) {
-        if (confirm(`Are you sure you want to delete this? This action is irreversible.`)) {
-            this.stuff.deleteContent(contentId);
-        } else {
-            return;
-        }
-    }
-
-    /**
-     * Generates a share link for the specified content. If the content is not `Published`, then
-     * a warning will appear.
-     *
-     * @param content The specific piece of content
-     */
-    getShareLink(content: ContentModel) {
-        if (content.audit.published !== PubStatus.Published) {
-            this.alerts.warn(`Links can only be generated for published content.`);
-            return;
-        }
-
-        const authorInfo = content.author as UserInfo;
-
-        if (content.kind === ContentKind.BlogContent) {
-            this.clipboard.copy(
-                `https://offprint.net/portfolio/${authorInfo._id}/${slugify(authorInfo.username)}/blog/${slugify(
-                    content.title,
-                )}`,
-            );
-        } else if (content.kind === ContentKind.ProseContent) {
-            this.clipboard.copy(`https://offprint.net/prose/${content._id}/${slugify(content.title)}`);
-        } else if (content.kind === ContentKind.PoetryContent) {
-            this.clipboard.copy(`https://offprint.net/poetry/${content._id}/${slugify(content.title)}`);
-        } else {
-            this.alerts.error(`Content Kind does not exist.`);
-            return;
-        }
-
-        this.alerts.success(`Copied link!`);
-        return;
     }
 
     /**

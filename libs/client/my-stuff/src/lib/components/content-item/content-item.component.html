@@ -5,6 +5,9 @@
     (click)="setCurrContent()"
     (dblclick)="view()"
     [ngClass]="{ selected: selected }"
+    [contextMenuTrigger]="menu"
+    [menuContext]="content"
+    (menuAction)="setCurrContent()"
 >
     <div class="content-description">
         <ng-container [ngSwitch]="content.kind">

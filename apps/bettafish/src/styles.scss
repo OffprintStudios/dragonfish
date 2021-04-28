@@ -311,3 +311,54 @@ div.offprint-select {
         font-weight: 700 !important;
     }
 }
+/* Context Menu */
+.cdk-overlay-container {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.ngx-contextmenu.cdk-overlay-pane {
+    position: absolute;
+    pointer-events: auto;
+    box-sizing: border-box;
+}
+
+// not required but can help with mobile right click
+.target {
+    user-select: none;
+}
+div.context-menu {
+    background: var(--background);
+    border: 1px solid var(--borders);
+    min-width: 10rem;
+    font-size: 0.825rem;
+    box-shadow: var(--dropshadow);
+    @apply py-1 rounded-md flex flex-col;
+    a {
+        color: var(--text-color);
+        width: 100%;
+        @apply flex flex-row items-center py-1 px-1.5;
+        span.link-icon {
+            position: relative;
+            margin-right: 0.5rem;
+            top: 0.3rem;
+            i-feather {
+                width: 1.25rem;
+            }
+        }
+        &:hover {
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    }
+    div.spacer {
+        @apply my-1 px-1;
+        border-bottom: 1px solid var(--borders);
+    }
+}

@@ -24,6 +24,7 @@ import {
     ContentPreviewComponent,
     ManageSectionsComponent,
     UploadCoverArtComponent,
+    ContextMenuComponent,
 } from './components';
 import {
     BlogFormComponent,
@@ -56,6 +57,7 @@ import { NetworkService, MyStuffService } from './repo/services';
         ContentPreviewComponent,
         ManageSectionsComponent,
         UploadCoverArtComponent,
+        ContextMenuComponent,
     ],
     imports: [
         CommonModule,

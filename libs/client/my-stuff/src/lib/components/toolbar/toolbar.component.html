@@ -49,50 +49,6 @@
                     <button matRipple class="tool disabled"><i-feather name="edit-3"></i-feather>Edit</button>
                 </ng-template>
                 <span class="tool-divider"></span>
-
-                <!--General Tools-->
-                <ng-container *ngIf="route.children.length === 0; else notOnHomeDeselect">
-                    <button
-                        matRipple
-                        class="tool left"
-                        matTooltip="Deselect"
-                        matTooltipClass="offprint-tooltip"
-                        (click)="deselect()"
-                    >
-                        <i-feather class="no-text" name="x"></i-feather>
-                    </button>
-                </ng-container>
-                <ng-template #notOnHomeDeselect>
-                    <button
-                        matRipple
-                        class="tool left disabled"
-                        matTooltip="Deselect"
-                        matTooltipClass="offprint-tooltip"
-                        (click)="deselect()"
-                    >
-                        <i-feather class="no-text" name="x"></i-feather>
-                    </button>
-                </ng-template>
-                <button
-                    matRipple
-                    class="tool mid"
-                    [matTooltip]="'Share'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    [matMenuTriggerFor]="shareMenu"
-                    [matMenuTriggerData]="{ content: currContent }"
-                >
-                    <i-feather class="no-text" name="share"></i-feather>
-                </button>
-                <button
-                    matRipple
-                    class="tool end"
-                    matTooltip="Delete"
-                    matTooltipClass="offprint-tooltip"
-                    (click)="deleteContent(currContent._id)"
-                >
-                    <i-feather class="no-text" name="trash-2"></i-feather>
-                </button>
-                <span class="tool-divider"></span>
             </ng-container>
             <ng-template #noContentSelected>
                 <!--Content Management-->
@@ -101,18 +57,6 @@
 
                 <!--Editing-->
                 <button matRipple class="tool disabled"><i-feather name="edit-3"></i-feather>Edit</button>
-                <span class="tool-divider"></span>
-
-                <!--General Tools-->
-                <button matRipple class="tool left disabled" matTooltip="Deselect" matTooltipClass="offprint-tooltip">
-                    <i-feather class="no-text" name="x"></i-feather>
-                </button>
-                <button matRipple class="tool mid disabled" [matTooltip]="'Share'" [matTooltipClass]="'offprint-tooltip'">
-                    <i-feather class="no-text" name="share"></i-feather>
-                </button>
-                <button matRipple class="tool end disabled" matTooltip="Delete" matTooltipClass="offprint-tooltip">
-                    <i-feather class="no-text" name="trash-2"></i-feather>
-                </button>
                 <span class="tool-divider"></span>
             </ng-template>
 

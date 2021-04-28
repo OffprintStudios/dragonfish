@@ -99,6 +99,8 @@ import {
     Info,
     MoreHorizontal,
     Shield,
+    Link,
+    ExternalLink,
 } from 'angular-feather/icons';
 
 const icons = {
@@ -198,6 +200,8 @@ const icons = {
     Info,
     MoreHorizontal,
     Shield,
+    Link,
+    ExternalLink,
 };
 
 @NgModule({

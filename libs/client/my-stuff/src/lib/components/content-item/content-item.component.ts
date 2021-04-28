@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { ContentKind, ContentModel, PubStatus} from '@dragonfish/shared/models/content';
 import { MyStuffState } from '../../repo';
 import { MyStuffService } from '../../repo/services';
+import { ContextMenuComponent } from '../context-menu/context-menu.component';
 
 @UntilDestroy()
 @Component({
     selector: 'dragonfish-content-item',
     templateUrl: './content-item.component.html',
-    styleUrls: ['./content-item.component.scss']
+    styleUrls: ['./content-item.component.scss'],
 })
 export class ContentItemComponent implements OnInit {
     @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
@@ -19,6 +20,7 @@ export class ContentItemComponent implements OnInit {
     selected = false;
     contentKind = ContentKind;
     pubStatus = PubStatus;
+    menu = ContextMenuComponent;
 
     constructor(private stuff: MyStuffService) {}
 
