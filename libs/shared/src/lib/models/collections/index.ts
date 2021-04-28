@@ -1,2 +1,2 @@
-export { Collection } from './collection.model';
-export { CollectionForm } from './collection-form.model';
+export type { Collection } from './collection.model';
+export type { CollectionForm } from './collection-form.model';

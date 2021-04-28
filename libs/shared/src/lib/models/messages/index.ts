@@ -1,8 +1,8 @@
-export { MessageThread } from './message-thread.model';
-export { MessageThreadUser } from './message-thread-user.model';
-export { Message } from './message.model';
-export { MessageUser } from './message-user.model';
+export type { MessageThread } from './message-thread.model';
+export type { MessageThreadUser } from './message-thread-user.model';
+export type { Message } from './message.model';
+export type { MessageUser } from './message-user.model';
 
 // Data transfer objects
-export { CreateInitialMessage } from './create-initial-message.model';
-export { CreateResponse } from './create-response.model';
+export type { CreateInitialMessage } from './create-initial-message.model';
+export type { CreateResponse } from './create-response.model';

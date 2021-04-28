@@ -6,13 +6,13 @@ import { CommentsSchema } from './comments.schema';
 import { CommentsStore } from './comments.store';
 
 import { ContentModule } from '../content/content.module';
-// import { NotificationsModule } from '../notifications/notifications.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 
 @Module({
     imports: [
         ContentModule,
         MongooseModule.forFeature([{ name: 'Comment', schema: CommentsSchema }]),
-        // NotificationsModule,
+        NotificationsModule,
     ],
     providers: [
         CommentsStore,

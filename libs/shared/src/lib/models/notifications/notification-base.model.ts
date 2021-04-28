@@ -2,7 +2,7 @@ import { NotificationKind } from './notification-kind';
 
 // Base interface
 export interface NotificationBase {
-    _id: string;
+    _id?: string;
 
     /**
      * The ID of the user this notification was sent to.

@@ -3,7 +3,7 @@ import { NewsForm } from './news';
 import { CreatePoetry } from './poetry';
 import { CreateProse } from './prose';
 
-export { ContentModel } from './content.model';
+export type { ContentModel } from './content.model';
 export { ContentKind } from './content-kind.enum';
 export { ContentRating } from './content-rating.enum';
 export { ContentWarning } from './content-warning.enum';

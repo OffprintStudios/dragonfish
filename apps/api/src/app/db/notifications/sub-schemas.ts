@@ -18,14 +18,27 @@ export namespace SubSchemas {
         };
     }
 
-    export function getBlogNotification(): SchemaDefinition {
+
+    interface BlogSubSchemaProps {
+        authorId: typeof String;
+        authorName: typeof String;
+    }
+    export function getBlogNotification(): SchemaDefinition<BlogSubSchemaProps> {
         return {
             authorId: { type: String, trim: true, required: true },
             authorName: { type: String, required: true },
-        };
+        };        
     }
 
-    export function getCommentNotification(): SchemaDefinition {
+    interface CommentNotificationSubSchemaProps {
+        commentId: typeof String;
+        commenterName: typeof String;
+        commenterId: typeof String;
+        parentKind: typeof String;
+        parentTitle: typeof String;
+    }
+
+    export function getCommentNotification(): SchemaDefinition<CommentNotificationSubSchemaProps> {
         return {
             commentId: { type: String, required: true, trim: true },
             commenterName: { type: String, required: true },
@@ -33,8 +46,7 @@ export namespace SubSchemas {
             parentKind: {
                 type: String,
                 required: true,
-                enum: Object.keys(ContentKind),
-                default: ContentKind.ProseContent,
+                enum: Object.keys(ContentKind),                
             },
             parentTitle: { type: String, required: true },
         };

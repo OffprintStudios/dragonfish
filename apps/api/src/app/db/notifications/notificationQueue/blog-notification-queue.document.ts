@@ -2,5 +2,5 @@ import { BlogNotificationInfo } from '@dragonfish/shared/models/notifications/bl
 import { NotificationQueueDocument } from '../notification-queue.schema';
 
 export interface BlogNotificationQueueDocument extends NotificationQueueDocument, BlogNotificationInfo {
-    readonly _id: string;
+    readonly _id?: string;
 }

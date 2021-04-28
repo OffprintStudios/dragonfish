@@ -46,10 +46,10 @@ export class NotificationsModule {}
  * @param subSchemaFunction The function responsible for returning a Mongoose schema as defined by
  * a Model<T> object. Should usually call the `.discriminator()` function on the passed-in model.
  */
-export function getSubSchemaProvider<T extends Document>(
+export function getSubSchemaProvider<T extends Document, U extends Document>(
     token: string,
     parentToken: string,
-    subSchemaFunction: (notificationModel: Model<T>) => Model<T>,
+    subSchemaFunction: (notificationModel: Model<T>) => Model<U>,
 ): Provider {
     return {
         provide: getModelToken(token),
