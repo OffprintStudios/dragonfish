@@ -1,7 +1,12 @@
-<div class="section-header mb-4">
-    <div class="w-11/12 mx-auto pb-2 pt-4 flex flex-row justify-center">
-        <i-feather name="loader" class="mr-4 text-white"></i-feather>
-        <h3 class="text-2xl italic text-white">Newest Works</h3>
+<div class="newest-works-nav shadow-lg sticky top-0 z-40 mb-8">
+    <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
+        <button class="go-back border-none rounded-full shadow-none p-2.5" [routerLink]="['/browse']">
+            <i-feather name="chevron-left" class="text-white relative top-0.5 mr-4"></i-feather>
+        </button>
+        <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+            Newest Works
+        </h3>
+        <div class="flex-1"><!--spacer--></div>
     </div>
 </div>
 
