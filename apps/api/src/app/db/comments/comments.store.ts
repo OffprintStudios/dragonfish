@@ -41,18 +41,18 @@ export class CommentsStore {
         const doc = await newComment.save();
         await this.contentService.addComment(contentId);
 
-        const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
-            .title;
-        const notification: CreateCommentNotification = {
-            commentId: doc._id,
-            kind: NotificationKind.CommentNotification,
-            sourceId: contentId,
-            commenterId: user.sub,
-            commenterName: user.username,
-            parentKind: commentInfo.commentParentKind,
-            parentTitle: contentTitle,
-        };
-        await this.notificationsService.queueNotification(notification);
+        // const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
+        //     .title;
+        // const notification: CreateCommentNotification = {
+        //     commentId: doc._id,
+        //     kind: NotificationKind.CommentNotification,
+        //     sourceId: contentId,
+        //     commenterId: user.sub,
+        //     commenterName: user.username,
+        //     parentKind: commentInfo.commentParentKind,
+        //     parentTitle: contentTitle,
+        // };
+        // await this.notificationsService.queueNotification(notification);
 
         return doc;
     }
