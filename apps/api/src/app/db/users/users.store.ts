@@ -1,24 +1,24 @@
-import { Injectable, ConflictException, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-import { hash, argon2id } from 'argon2';
+import { argon2id, hash } from 'argon2';
 import * as sanitizeHtml from 'sanitize-html';
 import * as validator from 'validator';
 import { nanoid } from 'nanoid';
-
-import * as documents from './models';
 import * as models from '@dragonfish/shared/models/users';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
 import { isNullOrUndefined, REFRESH_EXPIRATION } from '../../util';
 import { createHash } from 'crypto';
 import { CollectionsStore } from '../collections/collections.store';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { UserDocument } from './users.schema';
+import { InviteCodesDocument } from './invite-codes.schema';
 
 @Injectable()
 export class UsersStore {
     constructor(
-        @InjectModel('User') private readonly userModel: PaginateModel<documents.UserDocument>,
-        @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<documents.InviteCodesDocument>,
+        @InjectModel('User') private readonly userModel: PaginateModel<UserDocument>,
+        @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<InviteCodesDocument>,
         private readonly collsService: CollectionsStore
     ) {}
 
@@ -62,7 +62,12 @@ export class UsersStore {
             throw new ConflictException('Someone already has your username or email. Try another combination.');
         }
 
-        const newUser = await new this.userModel(newUserInfo).save();
+        const newUser = await new this.userModel({
+            email: newUserInfo.email,
+            username: newUserInfo.username,
+            password: newUserInfo.password,
+            'audit.termsAgree': newUserInfo.agreedToPolicies,
+        }).save();
         await this.useInviteCode(storedInviteCode._id, newUser._id);
 
         const newFavColl: CollectionForm = {
@@ -81,7 +86,7 @@ export class UsersStore {
      * @param potEmail A potential user's email
      */
     async findOneByEmail(potEmail: string): Promise<models.User> {
-        return await this.userModel.findOne({ email: await sanitizeHtml(potEmail) });
+        return this.userModel.findOne({ email: await sanitizeHtml(potEmail) });
     }
 
     /**
@@ -90,7 +95,7 @@ export class UsersStore {
      * @param userId A user's ID
      */
     async findOneById(userId: string): Promise<models.User> {
-        return await this.userModel.findById(userId);
+        return this.userModel.findById(userId);
     }
 
     /**
@@ -125,9 +130,10 @@ export class UsersStore {
      */
     async clearRefreshToken(userId: string, sessionId: string) {
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
-        return await this.userModel.updateOne(
+        return this.userModel.updateOne(
             { _id: userId },
-            { $pull: { 'audit.sessions': { _id: hashedSessionId } } }
+            //@ts-ignore
+            { $pull: { 'audit.sessions': { '_id': hashedSessionId } } }
         );
     }
 
@@ -138,14 +144,12 @@ export class UsersStore {
      * @param newToken A new JSON web token
      */
     async buildFrontendUser(user: models.User, newToken?: string): Promise<models.FrontendUser> {
-        const frontendUser: models.FrontendUser = {
+        return {
             _id: user._id,
             email: user.email,
             username: user.username,
-            agreedToPolicies: user.agreedToPolicies,
             profile: {
                 avatar: user.profile.avatar,
-                themePref: user.profile.themePref,
                 bio: user.profile.bio,
                 tagline: user.profile.tagline,
             },
@@ -159,7 +163,6 @@ export class UsersStore {
             createdAt: user.createdAt,
             token: newToken,
         };
-        return frontendUser;
     }
 
     /**
@@ -173,11 +176,7 @@ export class UsersStore {
     async checkRefreshToken(userId: string, sessionId: string): Promise<boolean> {
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
         const validUser = await this.userModel.findOne({ _id: userId, 'audit.sessions._id': hashedSessionId });
-        if (validUser) {
-            return true;
-        } else {
-            return false;
-        }
+        return !!validUser;
     }
 
     /* Stat counters */
@@ -242,7 +241,7 @@ export class UsersStore {
         if (!isNullOrUndefined(existingUsername)) {
             throw new ConflictException(`This username is already in use. Please use another.`);
         }
-        return await this.userModel.findOneAndUpdate({ _id: userId }, { username: newUsername }, { new: true });
+        return this.userModel.findOneAndUpdate({ _id: userId }, { username: newUsername }, { new: true });
     }
 
     /**
@@ -255,7 +254,7 @@ export class UsersStore {
         if (!isNullOrUndefined(existingEmail)) {
             throw new ConflictException(`That email is already in use. Please use another.`);
         }
-        return await this.userModel.findOneAndUpdate({ _id: userId }, { email: newEmail }, { new: true });
+        return this.userModel.findOneAndUpdate({ _id: userId }, { email: newEmail }, { new: true });
     }
 
     /**
@@ -283,9 +282,9 @@ export class UsersStore {
      * @param newProfileInfo Their new profile info
      */
     async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate(
+        return this.userModel.findOneAndUpdate(
             { _id: userId },
-            { 'profile.themePref': newProfileInfo.themePref, 'profile.bio': newProfileInfo.bio },
+            { 'profile.bio': newProfileInfo.bio },
             { new: true }
         );
     }
@@ -297,7 +296,7 @@ export class UsersStore {
      * @param avatarUrl The full URL of the new avatar
      */
     async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.avatar': avatarUrl }, { new: true });
+        return this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.avatar': avatarUrl }, { new: true });
     }
 
     /**
@@ -305,7 +304,7 @@ export class UsersStore {
      * @param userId The ID of the user to update.
      */
     async agreeToPolicies(userId: string): Promise<models.User> {
-        return await this.userModel.findOneAndUpdate({ _id: userId }, { agreedToPolicies: true }, { new: true });
+        return this.userModel.findOneAndUpdate({ _id: userId }, { 'audit.termsAgree': true }, { new: true });
     }
 
     /**
@@ -330,12 +329,12 @@ export class UsersStore {
         query: string,
         pageNum: number,
         maxPerPage: number
-    ): Promise<PaginateResult<documents.UserDocument>> {
+    ): Promise<PaginateResult<UserDocument>> {
         return await this.userModel.paginate(
             { $text: { $search: '"' + query + '"' } },
             {
                 select:
-                    '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.isDeleted',
+                    '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
                 page: pageNum,
                 limit: maxPerPage,
             }
@@ -349,12 +348,13 @@ export class UsersStore {
      * @param codeId The ID of the invite code to look for.
      */
     async findOneInviteCode(codeId: string): Promise<models.InviteCodes> {
-        return await this.inviteCodesModel.findById(await sanitizeHtml(codeId));
+        return this.inviteCodesModel.findById(await sanitizeHtml(codeId));
     }
 
     /**
      * Marks the code with the given ID as used, preventing it from being used by anyone else.
      * @param codeId The ID of the code to mark as used.
+     * @param usedById Which user used this code
      */
     async useInviteCode(codeId: string, usedById: string): Promise<void> {
         await this.inviteCodesModel.findOneAndUpdate({ _id: codeId }, { byWho: usedById, used: true });
@@ -376,8 +376,8 @@ export class UsersStore {
      * @param userId The user we're changing
      * @param newTagline Their new tagline
      */
-    async updateTagline(userId: string, newTagline: string): Promise<documents.UserDocument> {
-        return await this.userModel.findOneAndUpdate(
+    async updateTagline(userId: string, newTagline: string): Promise<UserDocument> {
+        return this.userModel.findOneAndUpdate(
             { _id: userId },
             { 'profile.tagline': await sanitizeHtml(newTagline) },
             { new: true }
@@ -388,7 +388,7 @@ export class UsersStore {
      * Gets the estimated count of users from the db.
      */
     async getUserCount(): Promise<number> {
-        return await this.userModel.estimatedDocumentCount().where('audit.isDeleted', false);
+        return this.userModel.estimatedDocumentCount().where('audit.isDeleted', false);
     }
 
     /**
@@ -435,7 +435,7 @@ export class UsersStore {
      *
      * @returns The new invite code
      */
-    async generateInviteCode(): Promise<documents.InviteCodesDocument> {
+    async generateInviteCode(): Promise<InviteCodesDocument> {
         const newCode = new this.inviteCodesModel({
             "_id": nanoid(),
             "used": false,

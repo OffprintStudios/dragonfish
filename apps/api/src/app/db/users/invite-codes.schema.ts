@@ -1,12 +1,13 @@
 // This schema is temporary and only applicable to the Closed Alpha (aka, the Origins Arc)
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { InviteCodes } from '@dragonfish/shared/models/users';
 
-import { Schema } from 'mongoose';
+@Schema({ collection: 'invite_codes' })
+export class InviteCodesDocument extends Document implements InviteCodes {
+    @Prop({ required: true }) readonly _id: string;
+    @Prop({ default: false }) readonly used: boolean;
+    @Prop({ ref: 'User' }) readonly byWho: string;
+}
 
-export const InviteCodesSchema = new Schema(
-    {
-        _id: { type: String, required: true },
-        used: { type: Boolean, default: false },
-        byWho: { type: String, ref: 'User' },
-    },
-    { collection: 'invite_codes' }
-);
+export const InviteCodesSchema = SchemaFactory.createForClass(InviteCodesDocument);

@@ -17,11 +17,11 @@ import {
 import { SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
 
 import { isNullOrUndefined } from '../../util';
-// import { NotificationsService } from '../notifications/notifications.service';
+import { NotificationsService } from '../notifications/notifications.service';
 import { SectionsStore } from '../sections/sections.store';
 import { ContentDocument } from './content.schema';
-// import { NotificationKind } from '@dragonfish/shared/models/notifications/notification-kind';
-// import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
+import { NotificationKind } from '@dragonfish/shared/models/notifications/notification-kind';
+import { UnsubscribeResult } from '../notifications/unsubscribe-result.model';
 import { SectionsDocument } from '../sections/sections.schema';
 import { UsersStore } from '../users/users.store';
 import { ApprovalQueueStore } from '../approval-queue/approval-queue.store';
@@ -46,7 +46,7 @@ export class ContentStore {
         private readonly sectionsService: SectionsStore,
         private readonly usersService: UsersStore,
         private readonly queueService: ApprovalQueueStore,
-        /*private readonly notificationsService: NotificationsService,*/
+        private readonly notificationsService: NotificationsService,
         private readonly histService: ReadingHistoryStore
     ) {}
 
@@ -247,7 +247,7 @@ export class ContentStore {
         await this.contentModel.updateOne({ _id: contentId, author: user.sub }, { 'audit.isDeleted': true });
 
         // Unsubscribe the user from comments on the now-deleted work
-        /*const unsubResult: UnsubscribeResult = await this.notificationsService.unsubscribe(
+        const unsubResult: UnsubscribeResult = await this.notificationsService.unsubscribe(
             user.sub,
             contentId,
             NotificationKind.CommentNotification,
@@ -256,7 +256,7 @@ export class ContentStore {
             console.error(
                 `Failed to unsubscribe user '${user.username}' (ID: ${user.sub}) from notifications on content with ID: '${contentId}'. Reason: ${unsubResult}`,
             );
-        }*/
+        }
 
         // TODO: Once users have the ability to subscribe to things, we need to unsubscribe _all_ subscribers to this piece of content.
         // ...maybe work for another background queue processor
@@ -514,7 +514,7 @@ export class ContentStore {
      * @param authorId The author of the work
      */
     async pendingWork(contentId: string, authorId: string): Promise<ContentDocument> {
-        return await this.contentModel.findOneAndUpdate(
+        return this.contentModel.findOneAndUpdate(
             { _id: contentId, author: authorId, 'audit.isDeleted': false },
             { 'audit.published': PubStatus.Pending },
             { new: true }
@@ -614,7 +614,7 @@ export class ContentStore {
      * @param contentId The content's ID
      */
     async addComment(contentId: string): Promise<any> {
-        return await this.contentModel.updateOne(
+        return this.contentModel.updateOne(
             { _id: contentId },
             {
                 $inc: { 'stats.comments': 1 },
@@ -628,7 +628,7 @@ export class ContentStore {
      * @param contentId The content's ID
      */
     async incrementViewCount(contentId: string): Promise<any> {
-        return await this.contentModel.updateOne(
+        return this.contentModel.updateOne(
             { _id: contentId },
             {
                 $inc: { 'stats.views': 1 },
@@ -643,7 +643,7 @@ export class ContentStore {
      * @param contentId The content's ID
      */
     async setIsChild(user: JwtPayload, contentId: string, parent: Types.ObjectId): Promise<any> {
-        return await this.contentModel.updateOne({ _id: contentId, author: user.sub }, { 'audit.childOf': parent });
+        return this.contentModel.updateOne({ _id: contentId, author: user.sub }, { 'audit.childOf': parent });
     }
 
     /**

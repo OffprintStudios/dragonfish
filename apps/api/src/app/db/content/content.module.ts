@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
-import { Schema, HookNextFunction } from 'mongoose';
-
+import { Schema } from 'mongoose';
 import { ContentStore } from './content.store';
 import { BrowseStore } from './browse.store';
 import { NewsStore } from './news/news.store';
@@ -10,7 +9,7 @@ import { SectionsModule } from '../sections/sections.module';
 import { ContentSchema } from './content.schema';
 import { Genres, NewsCategory, PoetryForm, WorkKind, WorkStatus } from '@dragonfish/shared/models/content';
 import { UsersModule } from '../users/users.module';
-// import { NotificationsModule } from '../notifications/notifications.module';
+import { NotificationsModule } from '../notifications/notifications.module';
 import { ProseStore } from './prose/prose.store';
 import { PoetryStore } from './poetry/poetry.store';
 import { ApprovalQueueModule } from '../approval-queue/approval-queue.module';
@@ -19,7 +18,7 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
 @Module({
     imports: [
         UsersModule,
-        // NotificationsModule,
+        NotificationsModule,
         SectionsModule,
         ApprovalQueueModule,
         ReadingHistoryModule,

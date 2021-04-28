@@ -1,9 +1,17 @@
-import { Schema } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { AuditSession } from '@dragonfish/shared/models/users';
 
-import { AuditSessionDocument } from './models';
+@Schema({ timestamps: true })
+export class AuditSessionDocument extends Document implements AuditSession {
+    @Prop({ type: String, required: [true, `You must provide a Session ID.`] })
+    readonly _id: string;
 
-export const AuditSessionSchema = new Schema<AuditSessionDocument>({
-    _id: { type: String, required: [true, `You must provide a sessionId.`] },
-    expires: { type: Date, required: [true, `You must provide an expiration date.`] },
-    createdAt: { type: Date, default: Date.now() },
-});
+    @Prop({ type: Date, required: [true, `You must provide an expiration date.`] })
+    readonly expires: Date;
+
+    @Prop()
+    readonly createdAt: Date;
+}
+
+export const AuditSessionSchema = SchemaFactory.createForClass(AuditSessionDocument);

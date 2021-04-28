@@ -6,10 +6,8 @@ export interface User {
     readonly email: string;
     readonly username: string;
     readonly password: string;
-    readonly agreedToPolicies: boolean;
     readonly profile: {
         readonly avatar: string;
-        readonly themePref: string;
         readonly bio: string | null;
         readonly tagline: string | null;
     };
@@ -21,10 +19,10 @@ export interface User {
     };
     readonly audit: {
         readonly roles: Roles[];
-        readonly sessions: AuditSession[] | null;
+        readonly sessions: AuditSession[];
         readonly termsAgree: boolean;
         readonly emailConfirmed: boolean;
-        readonly isDeleted: boolean;
+        readonly deleted: boolean;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;
