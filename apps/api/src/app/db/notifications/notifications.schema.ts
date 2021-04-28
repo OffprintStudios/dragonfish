@@ -69,7 +69,7 @@ export const NotificationSubSchemaProviders: Provider[] = [
 
 // Builders for sub-schemas
 function getWorkNotificationSubSchema(model: Model<NotificationDocument>): Model<WorkNotificationDocument> {
-    return model.discriminator<WorkNotificationDocument>(
+    return model.discriminator(
         NotificationDocumentKind.NDKWorkNotification,
         new MongooseSchema(SubSchemas.getWorkNotification()),
     );    
@@ -83,11 +83,10 @@ function getSectionNotificationSubSchema(model: Model<NotificationDocument>): Mo
 }
 
 function getBlogNotificationSubSchema(model: Model<NotificationDocument>): Model<BlogNotificationDocument> {
-    const disc = model.discriminator<BlogNotificationDocument>(
+    return model.discriminator(
         NotificationDocumentKind.NDKBlogNotification,
         new MongooseSchema(SubSchemas.getBlogNotification()),
-    );
-    return disc;
+    );    
 }
 
 function getCommentNotificationSubSchema(model: Model<NotificationDocument>): Model<CommentNotificationDocument> {
