@@ -2,5 +2,5 @@ import { PMThreadNotificationInfo } from '@dragonfish/shared/models/notification
 import { NotificationDocument } from '../notifications.schema';
 
 export interface PMThreadNotificationDocument extends PMThreadNotificationInfo, NotificationDocument {
-    readonly _id: string;
+    readonly _id?: string;
 }

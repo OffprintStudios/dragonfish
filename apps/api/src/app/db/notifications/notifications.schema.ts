@@ -1,6 +1,6 @@
 import { Provider } from '@nestjs/common';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Model, Document, Schema as MongooseSchema } from 'mongoose';
+import { Model, Document, Schema as MongooseSchema, SchemaDefinition } from 'mongoose';
 
 import { NotificationKind, NotificationBase } from '@dragonfish/shared/models/notifications';
 
@@ -58,21 +58,21 @@ export class NotificationDocument extends Document implements NotificationBase {
 export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
 
 export const NotificationSubSchemaProviders: Provider[] = [
-    getSubSchemaProvider('WorkNotification', NOTIFICATION_MODEL_TOKEN, getWorkNotificationSubSchema),
-    getSubSchemaProvider('SectionNotification', NOTIFICATION_MODEL_TOKEN, getSectionNotificationSubSchema),
-    getSubSchemaProvider('BlogNotification', NOTIFICATION_MODEL_TOKEN, getBlogNotificationSubSchema),
-    getSubSchemaProvider('CommentNotification', NOTIFICATION_MODEL_TOKEN, getCommentNotificationSubSchema),
-    getSubSchemaProvider('NewsPostNotification', NOTIFICATION_MODEL_TOKEN, getNewsPostNotificationSubSchema),
-    getSubSchemaProvider('PMThreadNotification', NOTIFICATION_MODEL_TOKEN, getPMThreadNotificationSubSchema),
-    getSubSchemaProvider('PMReplyNotification', NOTIFICATION_MODEL_TOKEN, getPMReplyNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, WorkNotificationDocument>('WorkNotification', NOTIFICATION_MODEL_TOKEN, getWorkNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, SectionNotificationDocument>('SectionNotification', NOTIFICATION_MODEL_TOKEN, getSectionNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, BlogNotificationDocument>('BlogNotification', NOTIFICATION_MODEL_TOKEN, getBlogNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, CommentNotificationDocument>('CommentNotification', NOTIFICATION_MODEL_TOKEN, getCommentNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, NewsPostNotificationDocument>('NewsPostNotification', NOTIFICATION_MODEL_TOKEN, getNewsPostNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, PMThreadNotificationDocument>('PMThreadNotification', NOTIFICATION_MODEL_TOKEN, getPMThreadNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, PMReplyNotificationDocument>('PMReplyNotification', NOTIFICATION_MODEL_TOKEN, getPMReplyNotificationSubSchema),
 ];
 
 // Builders for sub-schemas
 function getWorkNotificationSubSchema(model: Model<NotificationDocument>): Model<WorkNotificationDocument> {
-    return model.discriminator(
+    return model.discriminator<WorkNotificationDocument>(
         NotificationDocumentKind.NDKWorkNotification,
         new MongooseSchema(SubSchemas.getWorkNotification()),
-    );
+    );    
 }
 
 function getSectionNotificationSubSchema(model: Model<NotificationDocument>): Model<SectionNotificationDocument> {
@@ -83,10 +83,11 @@ function getSectionNotificationSubSchema(model: Model<NotificationDocument>): Mo
 }
 
 function getBlogNotificationSubSchema(model: Model<NotificationDocument>): Model<BlogNotificationDocument> {
-    return model.discriminator(
+    const disc = model.discriminator<BlogNotificationDocument>(
         NotificationDocumentKind.NDKBlogNotification,
         new MongooseSchema(SubSchemas.getBlogNotification()),
     );
+    return disc;
 }
 
 function getCommentNotificationSubSchema(model: Model<NotificationDocument>): Model<CommentNotificationDocument> {

@@ -1,2 +1,2 @@
-export { ProseContent } from './prose-content.model';
-export { CreateProse } from './create-prose.model';
+export type { ProseContent } from './prose-content.model';
+export type { CreateProse } from './create-prose.model';

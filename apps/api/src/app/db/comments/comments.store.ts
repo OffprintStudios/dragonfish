@@ -7,8 +7,8 @@ import * as documents from './models';
 import * as models from '@dragonfish/shared/models/comments';
 import { ContentStore } from '../content/content.store';
 import { isNullOrUndefined } from '../../util';
-/*import { NotificationsService } from '../notifications/notifications.service';
-import { CreateCommentNotification, NotificationKind } from '@dragonfish/models/notifications';*/
+import { CreateCommentNotification, NotificationKind } from '@dragonfish/shared/models/notifications';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable()
 export class CommentsStore {
@@ -16,7 +16,8 @@ export class CommentsStore {
         @InjectModel('Comment') private readonly commentModel: PaginateModel<documents.CommentDocument>,
         @InjectModel('ContentComment')
         private readonly contentCommentModel: PaginateModel<documents.ContentCommentDocument>,
-        private readonly contentService: ContentStore // private readonly notificationsService: NotificationsService,
+        private readonly contentService: ContentStore,
+        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -40,7 +41,7 @@ export class CommentsStore {
         const doc = await newComment.save();
         await this.contentService.addComment(contentId);
 
-        /*const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
+        const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
             .title;
         const notification: CreateCommentNotification = {
             commentId: doc._id,
@@ -51,7 +52,7 @@ export class CommentsStore {
             parentKind: commentInfo.commentParentKind,
             parentTitle: contentTitle,
         };
-        await this.notificationsService.queueNotification(notification);*/
+        await this.notificationsService.queueNotification(notification);
 
         return doc;
     }

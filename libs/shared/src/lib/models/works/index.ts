@@ -1,4 +1,4 @@
-export { Work, AuthorInfo, SectionInfo, WorkMetadata } from './work.model';
+export type { Work, AuthorInfo, SectionInfo, WorkMetadata } from './work.model';
 export { Section } from './section.model';
 export { Categories } from './categories.enum';
 export { Fandoms, MAX_FANDOMS_PER_STORY } from './fandoms.enum';

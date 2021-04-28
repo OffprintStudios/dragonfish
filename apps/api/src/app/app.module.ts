@@ -29,7 +29,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
 @Module({
     imports: [
         ...DatabaseModules,
-        ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
+        ServeStaticModule.forRoot({ rootPath: join(__dirname, './../bettafish') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
                 uri: process.env.MONGO_URL,
