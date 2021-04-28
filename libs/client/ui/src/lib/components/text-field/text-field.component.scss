@@ -17,7 +17,7 @@ div.text-field {
         }
 
         &::placeholder {
-            color: var(--text-color);
+            color: var(--placeholder);
         }
     }
     label {
@@ -46,7 +46,7 @@ div.search-field {
             border: 1px solid whitesmoke;
         }
         &::placeholder {
-            color: white;
+            color: whitesmoke;
         }
     }
 }
