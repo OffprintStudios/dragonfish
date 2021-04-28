@@ -7,21 +7,21 @@ on:
     types:
       - completed
 
-jobs:  
-  deploy_to_test:    
+jobs:
+  deploy_to_test:
     name: "Deploy to Test environment"
     environment: 'dragonfish-test'
     runs-on: ubuntu-latest
     env:
-      SSH_USER: 'dragonfish-cd'          
-    
+      SSH_USER: 'dragonfish-cd'
+
     steps:
 
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: digiocean-build-server.yml        
+        workflow: digiocean-build-server.yml
         workflow_conclusion: success
         name: backend_artifact
         commit: ${{ github.event.workflow_run.head_sha }}
@@ -36,15 +36,15 @@ jobs:
         command: |
           rm -rf /opt/dragonfish/backend-deploy-cache/*
           mkdir -p /opt/dragonfish/backend-deploy-cache
-    
+
     - name: Upload deployment artifacts to server
-      env: 
+      env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
-        # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation
         echo "$SSH_KEY" >> key.txt
         chmod 400 key.txt
-        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/backend-deploy-cache        
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/backend-deploy-cache
         rm key.txt
 
     - name: 'Remote: Extract dist.tar.gz'
@@ -61,16 +61,16 @@ jobs:
         host: ${{ secrets.TEST_SERVER_IP }}
         username: 'dragonfish-cd'
         privateKey: ${{ secrets.SSH_KEY }}
-        command: |          
-          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
-          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+        command: |
+          echo COOKIE_SECRET=${{ secrets.COOKIE_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo DIGITALOCEAN_SPACES_ACCESS_KEY=${{ secrets.DIGITALOCEAN_SPACES_ACCESS_KEY }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo DIGITALOCEAN_SPACES_ENDPOINT=${{ secrets.DIGITALOCEAN_SPACES_ENDPOINT }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo DIGITALOCEAN_SPACES_NAME=${{ secrets.DIGITALOCEAN_SPACES_NAME }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo DIGITALOCEAN_SPACES_SECRET=${{ secrets.DIGITALOCEAN_SPACES_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo IMAGES_HOSTNAME=${{ secrets.IMAGES_HOSTNAME }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           # This next one needs quotes, because the URL has some characters that shells like to do funny things with
-          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> /opt/dragonfish/backend-deploy-cache/dist/packages/server/.env
+          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
@@ -82,7 +82,7 @@ jobs:
           mkdir -p /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}
           # Using rsync here for easier recursive copy & overwriting at destination
           rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/node_modules/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}/node_modules
-          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/dist/packages/server/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}
+          rsync --archive --remove-source-files /opt/dragonfish/backend-deploy-cache/dist/apps/api/ /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }}
 
     - name: 'Remote: Clear deploy cache folder (again)'
       uses: garygrossgarten/github-action-ssh@release
@@ -101,7 +101,7 @@ jobs:
         command: |
           rm /opt/dragonfish/current_server
           ln -s /opt/dragonfish/releases/server/release-${{ github.run_number }}-${{ github.event.workflow_run.head_sha  }} /opt/dragonfish/current_server
-    
+
     - name: 'Remote: Fix up frontend symlinks'
       uses: garygrossgarten/github-action-ssh@release
       with:
@@ -110,7 +110,7 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: |
           if find /opt/dragonfish/releases/client -mindepth 1 | read; then
-            latest_client_folder=`ls /opt/dragonfish/releases/client/ | sort -t '-' -k2,2nr | head -1`            
+            latest_client_folder=`ls /opt/dragonfish/releases/client/ | sort -t '-' -k2,2nr | head -1`
             rm -f /opt/dragonfish/current_server/static
             ln -s /opt/dragonfish/releases/client/$latest_client_folder /opt/dragonfish/current_server/static
           else
@@ -137,8 +137,8 @@ jobs:
   #   needs: deploy_to_test
   #   environment: dragonfish-prod
   #   env:
-  #     SSH_USER: 'dragonfish-cd'          
-    
+  #     SSH_USER: 'dragonfish-cd'
+
     # TODO: Rest of prod deploy process
     # Note: Prod IP is ${{ secrets.PROD_IP_1 }}
 
@@ -148,4 +148,3 @@ jobs:
 
 
 
-        
