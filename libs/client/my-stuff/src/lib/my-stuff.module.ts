@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 import { NgxsModule } from '@ngxs/store';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
@@ -70,6 +72,8 @@ import { NetworkService, MyStuffService } from './repo/services';
         AlertsModule,
         MaterialModule,
         MyStuffRoutingModule,
+        ClickOutsideModule,
+        ContextMenuModule,
     ],
     providers: [
         NetworkService,

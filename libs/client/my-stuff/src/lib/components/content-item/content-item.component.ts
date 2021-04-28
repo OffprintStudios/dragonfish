@@ -39,4 +39,8 @@ export class ContentItemComponent implements OnInit {
     view() {
         this.viewItem.emit(this.content);
     }
+
+    deselect() {
+        this.stuff.setCurrentContent(null);
+    }
 }

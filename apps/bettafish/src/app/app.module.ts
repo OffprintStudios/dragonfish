@@ -22,6 +22,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ContentLoaderModule } from '@ngneat/content-loader';
 import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgxElectronModule } from 'ngx-electron';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -109,6 +111,8 @@ import { environment } from '../environments/environment';
         ContentLoaderModule,
         LineTruncationLibModule,
         NgxElectronModule,
+        ClickOutsideModule,
+        ContextMenuModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
         NgxsModule.forRoot([AuthState, UserState, GlobalState, ContentState, PortfolioState, CollectionsState], {
