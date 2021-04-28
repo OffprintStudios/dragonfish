@@ -1513,6 +1513,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@ctrl/ngx-rightclick@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ctrl/ngx-rightclick/-/ngx-rightclick-4.0.0.tgz#54a687976f987b909cfa60f35df717296f31baaa"
+  integrity sha512-NhwtDvOKxzT6g+3SXsuasHZNTZ8Ql0bP3X8jqt2h5wbHhWKLGW8H9D3qp+6IGMPR52BDvZuBLGgmTQa2vjLvCw==
+  dependencies:
+    tslib "^2.0.0"
+
 "@cypress/listr-verbose-renderer@^0.4.1":
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/@cypress/listr-verbose-renderer/-/listr-verbose-renderer-0.4.1.tgz#a77492f4b11dcc7c446a34b3e28721afd33c642a"
@@ -10984,6 +10991,11 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
+
+ng-click-outside@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/ng-click-outside/-/ng-click-outside-8.0.0.tgz#3d537963737eaefe0a7f2d41b2ddec5f3a6a573f"
+  integrity sha512-CVzddAMjaGS2hTVWu313fS/ksaAqg6O90xqVOJoCVhmZ7E7+i0nFeTWEqNsppi0Fe9GntuAAphN/eWBz6+0Low==
 
 ng2-file-upload@^1.4.0:
   version "1.4.0"

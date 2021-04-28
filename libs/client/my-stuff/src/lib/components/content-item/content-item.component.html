@@ -1,4 +1,14 @@
-<div class="content-box" (click)="setCurrContent()" (dblclick)="view()" [ngClass]="{ selected: selected }">
+<div
+    class="content-box"
+    (clickOutside)="deselect()"
+    [exclude]="'.content-box'"
+    (click)="setCurrContent()"
+    (dblclick)="view()"
+    [ngClass]="{ selected: selected }"
+    [contextMenuTrigger]="menu"
+    [menuContext]="content"
+    (menuAction)="setCurrContent()"
+>
     <div class="content-description">
         <ng-container [ngSwitch]="content.kind">
             <i-feather

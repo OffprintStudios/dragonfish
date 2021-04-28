@@ -17,7 +17,7 @@ export class MyStuffComponent implements OnInit {
     isIconView = true;
     loading = false;
 
-    constructor(public route: ActivatedRoute, public router: Router, private myStuffService: MyStuffService) {}
+    constructor(public route: ActivatedRoute, public router: Router, private myStuff: MyStuffService) {}
 
     ngOnInit(): void {
         setTwoPartTitle(Constants.MY_STUFF);
@@ -26,9 +26,13 @@ export class MyStuffComponent implements OnInit {
 
     private fetchData() {
         this.loading = true;
-        this.myStuffService.setFiles().then(() => {
+        this.myStuff.setFiles().then(() => {
             this.loading = false;
         });
+    }
+
+    deselect() {
+        this.myStuff.setCurrentContent(null);
     }
 
     /**
