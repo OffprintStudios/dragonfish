@@ -11,6 +11,7 @@ on:
 jobs:
   deploy_to_test:
     name: "Deploy to Test environment"
+    environment: 'dragonfish-test'
     runs-on: ubuntu-latest
     env:
       SSH_USER: 'dragonfish-cd'
@@ -89,3 +90,83 @@ jobs:
           fi
 
 # TODO: Repeat this process for Prod, but in the "dragonfish-prod" GitHub environment
+
+  deploy_to_prod:
+    name: "Deploy to Production environment"
+    environment: dragonfish-prod
+    runs-on: ubuntu-latest
+    env:
+      SSH_USER: 'dragonfish-cd'
+    
+    steps:
+    # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
+    - name: Download dist.tar.gz
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: digiocean-build-client.yml        
+        workflow_conclusion: success
+        name: frontend_artifact
+        commit: ${{ github.sha }}
+
+    # We do this at the beginning in case some previous run failed. We don't want to work with a dirty deployment environment.
+    - name: 'Remote: Clear deploy cache folder'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          rm -rf /opt/dragonfish/frontend-deploy-cache/*
+          mkdir -p /opt/dragonfish/frontend-deploy-cache
+
+    - name: Upload frontend client zip file to the remote server
+      env: 
+        SSH_KEY: ${{ secrets.SSH_KEY }}
+      run: |
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
+        echo "$SSH_KEY" >> key.txt
+        chmod 400 key.txt
+        rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.PROD_IP_1 }}:/opt/dragonfish/frontend-deploy-cache
+        rm key.txt
+
+    - name: 'Remote: Extract dist.tar.gz'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: tar -xzf /opt/dragonfish/frontend-deploy-cache/dist.tar.gz --directory /opt/dragonfish/frontend-deploy-cache
+
+    - name: 'Remote: Copy files to new release directory'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          mkdir -p /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }}
+          # Using rsync here for easier recursive copy & overwriting at destination
+          rsync --archive --remove-source-files /opt/dragonfish/frontend-deploy-cache/dist/apps/api/static/ /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }}
+
+    - name: 'Remote: Clear deploy cache folder (again)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: rm -rf /opt/dragonfish/frontend-deploy-cache/*
+
+    - name: 'Remote: Move client symlink to new release'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+          if find /opt/dragonfish/releases/server/ -mindepth 1 | read; then
+            # A backend exists, let's re-point its 'static' to to the new frontend
+            rm /opt/dragonfish/current_server/static
+            ln -s /opt/dragonfish/releases/client/release-${{ github.run_number }}-${{ github.sha }} /opt/dragonfish/current_server/static
+          else
+            echo "No backend has been deployed yet. No symlink to set up. Terminating..."
+          fi
