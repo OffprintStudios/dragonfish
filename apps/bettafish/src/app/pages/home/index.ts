@@ -11,6 +11,11 @@ export const HomeRoutes: Routes = [
         component: HomeComponent,
         pathMatch: 'full',
     },
+    { 
+        path: 'home',
+        redirectTo: '',
+        pathMatch: 'full',
+    },
     {
         path: 'news',
         component: NewsFeedComponent,
