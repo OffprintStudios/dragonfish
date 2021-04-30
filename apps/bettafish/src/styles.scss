@@ -306,6 +306,9 @@ div.offprint-select {
 /* Style changes for prose */
 .prose {
     color: var(--text-color) !important;
+    h1,h2,h3,h4,h5 {
+        color: var(--accent) !important;
+    }
     strong {
         color: var(--text-color) !important;
         font-weight: 700 !important;
