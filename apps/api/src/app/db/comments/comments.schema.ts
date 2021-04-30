@@ -3,7 +3,6 @@ import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import * as sanitizeHtml from 'sanitize-html';
 import { nanoid } from 'nanoid';
-
 import { CommentDocument } from './models';
 import { ContentAction } from '@dragonfish/shared/models/comments';
 

@@ -2,9 +2,9 @@ import { Schema, HookNextFunction } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import { nanoid } from 'nanoid';
 import * as sanitizeHtml from 'sanitize-html';
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { countWords, stripTags } from 'voca';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-
 import * as documents from './models/blog-document.model';
 
 /**
@@ -49,11 +49,11 @@ BlogsSchema.plugin(MongooseAutopopulate);
 BlogsSchema.plugin(MongoosePaginate);
 
 BlogsSchema.pre<documents.BlogDocument>('save', async function (next: HookNextFunction) {
-    this.set('title', sanitizeHtml(this.title));
-    this.set('body', sanitizeHtml(this.body));
+    this.set('title', sanitizeHtml(this.title, sanitizeOptions));
+    this.set('body', sanitizeHtml(this.body, sanitizeOptions));
     this.set('published', this.published);
 
-    const wordCount = countWords(stripTags(sanitizeHtml(this.body)));
+    const wordCount = countWords(stripTags(sanitizeHtml(this.body, sanitizeOptions)));
     this.set('stats.words', wordCount);
 
     this.set('createdAt', Date.now());

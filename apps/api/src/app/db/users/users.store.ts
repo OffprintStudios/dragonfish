@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import { argon2id, hash } from 'argon2';
 import * as sanitizeHtml from 'sanitize-html';
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import * as validator from 'validator';
 import { nanoid } from 'nanoid';
 import * as models from '@dragonfish/shared/models/users';

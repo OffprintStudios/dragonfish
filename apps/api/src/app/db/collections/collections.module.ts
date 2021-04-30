@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { HookNextFunction } from 'mongoose';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CollectionDocument, CollectionSchema } from './collection.schema';
 import { CollectionsStore } from './collections.store';
 
@@ -17,8 +17,8 @@ import { CollectionsStore } from './collections.store';
                     schema.plugin(require('mongoose-autopopulate'));
                     schema.plugin(require('mongoose-paginate-v2'));
                     schema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
-                        this.set('name', sanitizeHtml(this.name));
-                        this.set('desc', sanitizeHtml(this.desc));
+                        this.set('name', sanitizeHtml(this.name, sanitizeOptions));
+                        this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
 
                         return next();
                     });

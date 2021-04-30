@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
     ContentFilter,
@@ -32,11 +32,10 @@ export class NewsStore {
             const newPost = new this.newsModel({
                 author: user.sub,
                 title: sanitizeHtml(postInfo.title),
-                desc: sanitizeHtml(postInfo.desc),
-                body: sanitizeHtml(postInfo.body),
+                body: sanitizeHtml(postInfo.body, sanitizeOptions),
                 'meta.category': postInfo.category,
                 'meta.rating': ContentRating.Everyone,
-                'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body))),
+                'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
             });
 
             return await newPost.save();
@@ -54,14 +53,13 @@ export class NewsStore {
      */
     async editPost(user: JwtPayload, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
         if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Admin, Roles.Moderator])) {
-            return await this.newsModel.findByIdAndUpdate(
+            return this.newsModel.findByIdAndUpdate(
                 postId,
                 {
                     title: sanitizeHtml(postInfo.title),
-                    desc: sanitizeHtml(postInfo.desc),
-                    body: sanitizeHtml(postInfo.body),
+                    body: sanitizeHtml(postInfo.body, sanitizeOptions),
                     'meta.category': postInfo.category,
-                    'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body))),
+                    'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
                 },
                 { new: true }
             );
@@ -80,7 +78,7 @@ export class NewsStore {
      */
     async setPublishStatus(user: JwtPayload, postId: string, pubChange: PubChange): Promise<NewsContentDocument> {
         if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Admin, Roles.Moderator])) {
-            return await this.newsModel.findOneAndUpdate(
+            return this.newsModel.findOneAndUpdate(
                 { _id: postId, author: user.sub },
                 {
                     'audit.published': pubChange.newStatus,
@@ -99,7 +97,7 @@ export class NewsStore {
     async fetchForHome(filter: ContentFilter): Promise<NewsContentModel[]> {
         const query = { 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
         const filteredQuery = await this.determineContentFilter(query, filter);
-        return await this.newsModel.find(filteredQuery).sort({ 'audit.publishedOn': -1 }).limit(6);
+        return this.newsModel.find(filteredQuery).sort({ 'audit.publishedOn': -1 }).limit(6);
     }
 
     /**
@@ -111,7 +109,6 @@ export class NewsStore {
     private async determineContentFilter(query: any, filter: ContentFilter) {
         switch (filter) {
             case ContentFilter.Everything:
-                query = query;
                 break;
             case ContentFilter.MatureEnabled:
                 query['$or'] = [

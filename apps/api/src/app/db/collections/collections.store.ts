@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
 import { CollectionDocument } from './collection.schema';
@@ -22,7 +22,7 @@ export class CollectionsStore {
     async createCollection(userId: string, collForm: CollectionForm): Promise<CollectionDocument> {
         const newCollection = new this.collModel({
             owner: userId,
-            name: collForm.name,
+            name: sanitizeHtml(collForm.name),
             desc: sanitizeHtml(collForm.desc),
             'audit.isPublic': collForm.public,
         });
@@ -126,7 +126,7 @@ export class CollectionsStore {
      * @param collId The collection to fetch
      */
     async getOneCollection(user: JwtPayload, collId: string): Promise<CollectionDocument> {
-        return await this.collModel.findOne({ _id: collId, owner: user.sub, 'audit.isDeleted': false });
+        return this.collModel.findOne({ _id: collId, owner: user.sub, 'audit.isDeleted': false });
     }
 
     /**
@@ -136,7 +136,7 @@ export class CollectionsStore {
      * @param collId The collection to fetch
      */
     async getOnePublicCollection(userId: string, collId: string): Promise<CollectionDocument> {
-        return await this.collModel.findOne({
+        return this.collModel.findOne({
             _id: collId,
             owner: userId,
             'audit.isDeleted': false,
@@ -158,8 +158,8 @@ export class CollectionsStore {
             throw new NotFoundException(`The collection you wanted to edit cannot be found.`);
         }
 
-        thisCollection.name = collInfo.name;
-        thisCollection.desc = collInfo.desc;
+        thisCollection.name = sanitizeHtml(collInfo.name);
+        thisCollection.desc = sanitizeHtml(collInfo.desc);
         thisCollection.audit.isPublic = collInfo.public;
 
         return await thisCollection.save();

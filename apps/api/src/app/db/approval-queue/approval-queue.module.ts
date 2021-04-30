@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-
 import { ApprovalQueueSchema } from './approval-queue.schema';
 import { ApprovalQueueStore } from './approval-queue.store';
 import { WorksModule } from '../works/works.module';

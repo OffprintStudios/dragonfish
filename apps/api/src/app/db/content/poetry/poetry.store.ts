@@ -3,18 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CreatePoetry } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-// import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from './poetry-content.document';
-// import { NotificationsService } from '../../notifications/notifications.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
 export class PoetryStore {
     constructor(
         @InjectModel('PoetryContent')
-        private readonly poetryModel: PaginateModel<PoetryContentDocument> /*private readonly notificationsService: NotificationsService,*/
+        private readonly poetryModel: PaginateModel<PoetryContentDocument>, private readonly notificationsService: NotificationsService
     ) {}
 
     /**
@@ -28,8 +28,8 @@ export class PoetryStore {
             author: user.sub,
             title: sanitizeHtml(poetryInfo.title),
             desc: sanitizeHtml(poetryInfo.desc),
-            body: sanitizeHtml(poetryInfo.body),
-            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body))),
+            body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
+            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
@@ -41,7 +41,7 @@ export class PoetryStore {
         const savedPoetry: PoetryContentDocument = await newPoetry.save();
 
         // Subscribe author to comments on their new poetry
-        // this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);
+        await this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);
 
         return savedPoetry;
     }
@@ -55,12 +55,12 @@ export class PoetryStore {
      */
     async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         if (poetryInfo.collection === true) {
-            return await this.poetryModel.findOneAndUpdate(
+            return this.poetryModel.findOneAndUpdate(
                 { _id: poetryId, author: user.sub },
                 {
                     title: sanitizeHtml(poetryInfo.title),
                     desc: sanitizeHtml(poetryInfo.desc),
-                    body: sanitizeHtml(poetryInfo.body),
+                    body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
                     'meta.category': poetryInfo.category,
                     'meta.form': poetryInfo.form,
                     'meta.genres': poetryInfo.genres,
@@ -70,13 +70,13 @@ export class PoetryStore {
                 { new: true }
             );
         } else {
-            return await this.poetryModel.findOneAndUpdate(
+            return this.poetryModel.findOneAndUpdate(
                 { _id: poetryId, author: user.sub },
                 {
                     title: sanitizeHtml(poetryInfo.title),
                     desc: sanitizeHtml(poetryInfo.desc),
-                    body: sanitizeHtml(poetryInfo.body),
-                    'stats.words': countWords(stripTags(sanitizeHtml(poetryInfo.body))),
+                    body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
+                    'stats.words': countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
                     'meta.category': poetryInfo.category,
                     'meta.form': poetryInfo.form,
                     'meta.genres': poetryInfo.genres,
@@ -96,7 +96,7 @@ export class PoetryStore {
      * @param coverArt The new cover art
      */
     async updateCoverArt(user: JwtPayload, poetryId: string, coverArt: string): Promise<PoetryContentDocument> {
-        return await this.poetryModel.findOneAndUpdate(
+        return this.poetryModel.findOneAndUpdate(
             { _id: poetryId, author: user.sub, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
             { new: true }

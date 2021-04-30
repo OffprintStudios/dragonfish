@@ -2,19 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ProseContentDocument } from './prose-content.document';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-// import { NotificationsService } from '../../notifications/notifications.service';
-// import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { NotificationsService } from '../../notifications/notifications.service';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
 @Injectable()
 export class ProseStore {
     constructor(
         @InjectModel('ProseContent')
-        private readonly proseModel: PaginateModel<ProseContentDocument> /*private readonly notificationsService: NotificationsService,*/
+        private readonly proseModel: PaginateModel<ProseContentDocument>, private readonly notificationsService: NotificationsService
     ) {}
 
     /**
@@ -28,7 +28,7 @@ export class ProseStore {
             author: user.sub,
             title: sanitizeHtml(proseInfo.title),
             desc: sanitizeHtml(proseInfo.desc),
-            body: sanitizeHtml(proseInfo.body),
+            body: sanitizeHtml(proseInfo.body, sanitizeOptions),
             'meta.category': proseInfo.category,
             'meta.genres': proseInfo.genres,
             'meta.rating': proseInfo.rating,
@@ -38,7 +38,7 @@ export class ProseStore {
         const savedProse: ProseContentDocument = await newProse.save();
 
         // Subscribe author to comments on their new prose document
-        // this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);
+        await this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);
 
         return savedProse;
     }
@@ -51,12 +51,12 @@ export class ProseStore {
      * @param proseInfo The prose info
      */
     async editProse(user: JwtPayload, proseId: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
-        return await this.proseModel.findOneAndUpdate(
+        return this.proseModel.findOneAndUpdate(
             { _id: proseId, author: user.sub },
             {
                 title: sanitizeHtml(proseInfo.title),
                 desc: sanitizeHtml(proseInfo.desc),
-                body: sanitizeHtml(proseInfo.body),
+                body: sanitizeHtml(proseInfo.body, sanitizeOptions),
                 'meta.category': proseInfo.category,
                 'meta.genres': proseInfo.genres,
                 'meta.rating': proseInfo.rating,
@@ -74,7 +74,7 @@ export class ProseStore {
      * @param coverArt The new cover art
      */
     async updateCoverArt(user: JwtPayload, proseId: string, coverArt: string): Promise<ProseContentDocument> {
-        return await this.proseModel.findOneAndUpdate(
+        return this.proseModel.findOneAndUpdate(
             { _id: proseId, author: user.sub, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
             { new: true }
@@ -87,7 +87,7 @@ export class ProseStore {
             author: user.sub,
             title: sanitizeHtml(formData.title),
             desc: sanitizeHtml(formData.desc),
-            body: sanitizeHtml(formData.body),
+            body: sanitizeHtml(formData.body, sanitizeOptions),
             sections: formData.sections,
             'meta.rating': formData.meta.rating,
             'meta.warnings': [],

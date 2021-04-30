@@ -4,7 +4,7 @@ import { v4 as uuidV4 } from 'uuid';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import * as sanitizeHtml from 'sanitize-html';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import * as models from '@dragonfish/shared/models/works';
 import * as documents from './models';
 
@@ -68,7 +68,7 @@ WorksSchema.plugin(MongoosePaginate);
 WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFunction) {
     this.set('title', await sanitizeHtml(this.title));
     this.set('shortDesc', await sanitizeHtml(this.shortDesc));
-    this.set('longDesc', await sanitizeHtml(this.longDesc));
+    this.set('longDesc', await sanitizeHtml(this.longDesc, sanitizeOptions));
     this.set('meta.category', this.meta.category);
     if (this.meta.fandoms) {
         this.set('meta.fandoms', this.meta.fandoms);
