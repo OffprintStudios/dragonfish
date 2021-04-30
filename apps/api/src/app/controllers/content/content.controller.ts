@@ -14,9 +14,7 @@ import {
     Inject,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Cookies } from '@nestjsplus/cookies';
 import { FileInterceptor } from '@nestjs/platform-express';
-
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
 import { ContentFilter, ContentKind, FormType, PubChange, SetRating } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
@@ -70,7 +68,7 @@ export class ContentController {
     @ApiTags(DragonfishTags.Content)
     @Get('fetch-all-published')
     async fetchAllPublished(
-        @Cookies('contentFilter') filter: ContentFilter,
+        @Query('filter') filter: ContentFilter,
         @Query('pageNum') pageNum: number,
         @Query('userId') userId: string,
         @Query('kind') kind: ContentKind[]

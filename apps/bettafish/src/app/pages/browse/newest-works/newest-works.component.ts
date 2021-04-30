@@ -3,7 +3,9 @@ import { NetworkService } from '../../../services';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-newest-works',
     templateUrl: './newest-works.component.html',
@@ -17,7 +19,12 @@ export class NewestWorksComponent implements OnInit {
     constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
-        this.fetchData(this.pageNum);
+        this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
+            if (params.has('page')) {
+                this.pageNum = +params.get('page');
+            }
+            this.fetchData(this.pageNum);
+        });
     }
 
     /**
@@ -47,8 +54,6 @@ export class NewestWorksComponent implements OnInit {
             relativeTo: this.route,
             queryParams: { page: event },
             queryParamsHandling: 'merge',
-        }).then(() => {
-            this.fetchData(event);
         });
         this.pageNum = event;
     }

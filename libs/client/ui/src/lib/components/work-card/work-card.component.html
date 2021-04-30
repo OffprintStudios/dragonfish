@@ -22,14 +22,13 @@
                 <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
                     ><i-feather name="feather" class="kind"></i-feather
                 ></span>
-                <span class="divider">//</span>
             </ng-container>
             <ng-container *ngIf="content.kind === contentKind.ProseContent">
                 <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"
                     ><i-feather name="book-open" class="kind"></i-feather
                 ></span>
-                <span class="divider">//</span>
             </ng-container>
+            <span class="mx-1"><!--spacer--></span>
             <span class="tag">{{ content.meta.category }}</span>
             <span class="divider">//</span>
             <span class="tag genres">{{ content.meta.genres | separateGenres }}</span>

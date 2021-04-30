@@ -9,6 +9,7 @@ div.content-box {
     cursor: pointer;
     color: var(--text-color);
     overflow: hidden;
+    user-select: none;
 
     &.selected {
         border: 1px solid var(--accent);

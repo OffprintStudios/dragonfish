@@ -15,7 +15,7 @@ import { AuthState } from '../auth.state';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isAllowed, isNullOrUndefined } from '@dragonfish/shared/functions';
-// import { AlertsService } from '@dragonfish/alerts';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +23,7 @@ import { isAllowed, isNullOrUndefined } from '@dragonfish/shared/functions';
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     helper = new JwtHelperService();
 
-    constructor(private store: Store /* private alerts: AlertsService */) {}
+    constructor(private store: Store, private alerts: AlertsService) {}
 
     /**
      * Verifies that a user can access a protected route. If their JWT is expired, it makes a request to the backend to
@@ -42,14 +42,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
                 if (isAllowed(decodedToken.roles as Roles[], next.data.roles)) {
                     return true;
                 } else {
-                    //this.alerts.error(`You don't have permission to do that.`);
+                    this.alerts.error(`You don't have permission to do that.`);
                     return false;
                 }
             } else {
                 return true;
             }
         } else {
-            //this.alerts.error(`You don't have permission to do that.`);
+            this.alerts.error(`You don't have permission to do that.`);
             return false;
         }
     }
@@ -70,14 +70,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
                 if (isAllowed(decodedToken.roles as Roles[], next.data.roles)) {
                     return true;
                 } else {
-                    //this.alerts.error(`You don't have permission to do that.`);
+                    this.alerts.error(`You don't have permission to do that.`);
                     return false;
                 }
             } else {
                 return true;
             }
         } else {
-            //this.alerts.error(`You don't have permission to do that.`);
+            this.alerts.error(`You don't have permission to do that.`);
             return false;
         }
     }
@@ -93,7 +93,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
                     if (isAllowed(decodedToken.roles as Roles[], route.data.roles)) {
                         return true;
                     } else {
-                        //this.alerts.error(`You don't have permission to do that.`);
+                        this.alerts.error(`You don't have permission to do that.`);
                         return false;
                     }
                 } else {
@@ -103,7 +103,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
                 return true;
             }
         } else {
-            //this.alerts.error(`You don't have permission to do that.`);
+            this.alerts.error(`You don't have permission to do that.`);
             return false;
         }
     }
