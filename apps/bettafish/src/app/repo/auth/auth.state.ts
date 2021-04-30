@@ -45,6 +45,7 @@ export class AuthState {
                 patchState({
                     token: result.token,
                 });
+                this.alerts.success(`Welcome back!`);
             }),
         );
     }
@@ -60,6 +61,7 @@ export class AuthState {
                 patchState({
                     token: result.token,
                 });
+                this.alerts.success(`Glad you could make it!`);
             }),
         );
     }
@@ -75,6 +77,7 @@ export class AuthState {
                 patchState({
                     token: null,
                 });
+                this.alerts.success(`See you next time!`);
             }),
         );
     }
