@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
     ChangeEmail,
     ChangePassword,
-    ChangeProfile,
+    ChangeBio,
     ChangeUsername,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
@@ -32,10 +32,7 @@ export class ChangePasswordDTO implements ChangePassword {
     readonly currentPassword: string;
 }
 
-export class ChangeProfileDTO implements ChangeProfile {
-    @ApiProperty()
-    readonly themePref: string;
-
+export class ChangeBioDTO implements ChangeBio {
     @ApiProperty()
     readonly bio: string;
 }

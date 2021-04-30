@@ -6,7 +6,7 @@
         <div *ngIf="currentUser$ | async as currentUser" class="bordered">
             <h5 class="text-xl font-medium text-center">Avatar</h5>
             <img [alt]="'Avatar'" [src]="currentUser.profile.avatar" class="avatar" />
-            <div class="text-center">
+            <div class="flex flex-row items-center justify-center">
                 <button type="button" class="mt-10 shadow-lg" (click)="changeAvatar()">Change Avatar</button>
             </div>
         </div>
@@ -30,8 +30,9 @@
                     ></dragonfish-text-field>
                 </div>
             </form>
-            <hr />
-            <button type="submit" class="shadow-lg" (click)="submitUsernameForm()">Save Changes</button>
+            <div class="flex flex-row items-center justify-center mt-4">
+                <button type="submit" class="shadow-lg" (click)="submitUsernameForm()">Save Changes</button>
+            </div>
         </div>
         <div class="pl-2 flex flex-col">
             <h5 class="text-xl font-medium text-center">Update Bio</h5>
@@ -45,8 +46,9 @@
                     ></dragonfish-text-area>
                 </div>
             </form>
-            <hr />
-            <button type="submit" class="shadow-lg" (click)="submitBioForm()">Save Changes</button>
+            <div class="flex flex-row items-center justify-center mt-4">
+                <button type="submit" class="shadow-lg" (click)="submitBioForm()">Save Changes</button>
+            </div>
         </div>
     </div>
 </div>

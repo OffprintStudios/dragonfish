@@ -6,7 +6,6 @@ import {
     InternalServerErrorException,
 } from '@nestjs/common';
 import { verify, argon2id } from 'argon2';
-
 import { UsersStore } from '../../db/users/users.store';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
@@ -14,7 +13,7 @@ import {
     ChangeUsername,
     ChangeEmail,
     ChangePassword,
-    ChangeProfile,
+    ChangeBio,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
 import { IUser } from '../../shared/auth';
@@ -80,8 +79,8 @@ export class UserService implements IUser {
         }
     }
 
-    async updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile): Promise<FrontendUser> {
-        const newUserInfo = await this.usersStore.updateProfile(user.sub, newProfileInfo);
+    async updateBio(user: JwtPayload, newProfileInfo: ChangeBio): Promise<FrontendUser> {
+        const newUserInfo = await this.usersStore.updateBio(user.sub, newProfileInfo);
         return this.usersStore.buildFrontendUser(newUserInfo);
     }
 

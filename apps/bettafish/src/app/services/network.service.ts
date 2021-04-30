@@ -21,7 +21,7 @@ import {
     ChangeEmail,
     ChangeUsername,
     ChangePassword,
-    ChangeProfile,
+    ChangeBio,
 } from '@dragonfish/shared/models/users';
 import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
 import { Section } from '@dragonfish/shared/models/works';
@@ -1104,13 +1104,13 @@ export class NetworkService {
     }
 
     /**
-     * Sends a request to change a user's profile.
+     * Sends a request to change a user's bio.
      *
-     * @param newProfileInfo The new profile info requested
+     * @param newBioInfo The new profile info requested
      */
-    public changeProfile(newProfileInfo: ChangeProfile): Observable<FrontendUser> {
+    public changeBio(newBioInfo: ChangeBio): Observable<FrontendUser> {
         return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-profile`, newProfileInfo, {
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-bio`, newBioInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
