@@ -4,7 +4,7 @@ import {
     FrontendUser,
     ChangeEmail as EmailForm,
     ChangePassword as PasswordForm,
-    ChangeProfile as ProfileForm,
+    ChangeBio as BioForm,
     ChangeUsername as UsernameForm,
     UpdateTagline as TaglineForm,
 } from '@dragonfish/shared/models/users';
@@ -34,8 +34,8 @@ export class UserService {
     }
 
     @Dispatch()
-    public changeProfile(newProfile: ProfileForm) {
-        return new User.ChangeProfile(newProfile);
+    public changeBio(newBio: BioForm) {
+        return new User.ChangeBio(newBio);
     }
 
     @Dispatch()

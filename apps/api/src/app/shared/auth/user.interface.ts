@@ -4,7 +4,7 @@ import {
     ChangeUsername,
     ChangeEmail,
     ChangePassword,
-    ChangeProfile,
+    ChangeBio,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
 
@@ -50,9 +50,9 @@ export interface IUser {
      * This shouldn't error out.
      *
      * @param user The user making the request
-     * @param newProfileInfo Their new profile info
+     * @param newBioInfo Their new profile info
      */
-    updateProfile(user: JwtPayload, newProfileInfo: ChangeProfile): Promise<FrontendUser>;
+    updateBio(user: JwtPayload, newBioInfo: ChangeBio): Promise<FrontendUser>;
 
     /**
      * Update the given user's 'agreedToPolicies' flag to be true. Returns a new

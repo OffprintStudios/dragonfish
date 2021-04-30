@@ -1,17 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
-
 import * as models from '@dragonfish/shared/models/blogs';
 import * as documents from './models/blog-document.model';
-import { UsersStore } from '../users/users.store';
 
 @Injectable()
 export class OldBlogsService {
-    constructor(
-        @InjectModel('Blog') private readonly blogModel: PaginateModel<documents.BlogDocument>,
-        private readonly usersService: UsersStore
-    ) {}
+    constructor(@InjectModel('Blog') private readonly blogModel: PaginateModel<documents.BlogDocument>) {}
 
     /**
      * Finds a blog by a given ID and returns it in a promise.
@@ -19,7 +14,7 @@ export class OldBlogsService {
      * @param blogId The incoming blog ID.
      */
     async findOneById(user: any, blogId: string): Promise<models.Blog> {
-        return await this.blogModel.findById(blogId).where('author', user.sub).where('audit.isDeleted', false);
+        return this.blogModel.findById(blogId).where('author', user.sub).where('audit.isDeleted', false);
     }
 
     /**
@@ -29,7 +24,7 @@ export class OldBlogsService {
      * @param user The user whose blogs are being requested.
      */
     async fetchUserBlogs(user: any): Promise<documents.BlogDocument[]> {
-        return await this.blogModel.find({ author: user.sub, 'audit.isDeleted': false }).sort({ createdAt: -1 });
+        return this.blogModel.find({ author: user.sub, 'audit.isDeleted': false }).sort({ createdAt: -1 });
     }
 
     /**
@@ -50,7 +45,7 @@ export class OldBlogsService {
      * @param query The relevant search parameters
      */
     async findInitialRelatedBlogs(query: string): Promise<documents.BlogDocument[]> {
-        return await this.blogModel
+        return this.blogModel
             .find({ $text: { $search: query }, published: true, 'audit.isDeleted': false })
             .limit(6);
     }

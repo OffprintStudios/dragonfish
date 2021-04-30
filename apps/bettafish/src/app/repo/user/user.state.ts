@@ -65,9 +65,9 @@ export class UserState {
         );
     }
 
-    @Action(User.ChangeProfile)
-    changeProfile({ patchState }: StateContext<UserStateModel>, action: User.ChangeProfile) {
-        return this.networkService.changeProfile(action.newProfile).pipe(
+    @Action(User.ChangeBio)
+    changeBio({ patchState }: StateContext<UserStateModel>, action: User.ChangeBio) {
+        return this.networkService.changeBio(action.newBio).pipe(
             tap((result: FrontendUser) => {
                 this.alerts.success(`Changes saved!`);
                 patchState({

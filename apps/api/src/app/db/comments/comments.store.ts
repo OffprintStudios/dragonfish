@@ -2,7 +2,7 @@ import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/co
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import * as documents from './models';
 import * as models from '@dragonfish/shared/models/comments';
 import { ContentStore } from '../content/content.store';
@@ -41,18 +41,18 @@ export class CommentsStore {
         const doc = await newComment.save();
         await this.contentService.addComment(contentId);
 
-        // const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
-        //     .title;
-        // const notification: CreateCommentNotification = {
-        //     commentId: doc._id,
-        //     kind: NotificationKind.CommentNotification,
-        //     sourceId: contentId,
-        //     commenterId: user.sub,
-        //     commenterName: user.username,
-        //     parentKind: commentInfo.commentParentKind,
-        //     parentTitle: contentTitle,
-        // };
-        // await this.notificationsService.queueNotification(notification);
+        const contentTitle = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind))
+            .title;
+        const notification: CreateCommentNotification = {
+            commentId: doc._id,
+            kind: NotificationKind.CommentNotification,
+            sourceId: contentId,
+            commenterId: user.sub,
+            commenterName: user.username,
+            parentKind: commentInfo.commentParentKind,
+            parentTitle: contentTitle,
+        };
+        await this.notificationsService.queueNotification(notification);
 
         return doc;
     }
@@ -94,7 +94,7 @@ export class CommentsStore {
             await this.commentModel.updateOne(
                 { _id: commentId, user: user.sub },
                 {
-                    body: sanitizeHtml(commentInfo.body),
+                    body: sanitizeHtml(commentInfo.body, sanitizeOptions),
                     $push: {
                         history: {
                             oldBody: oldBody,

@@ -279,12 +279,12 @@ export class UsersStore {
      * because this information is not account sensitive.
      *
      * @param userId A user's ID
-     * @param newProfileInfo Their new profile info
+     * @param newBioInfo Their new profile info
      */
-    async updateProfile(userId: string, newProfileInfo: models.ChangeProfile): Promise<models.User> {
+    async updateBio(userId: string, newBioInfo: models.ChangeBio): Promise<models.User> {
         return this.userModel.findOneAndUpdate(
             { _id: userId },
-            { 'profile.bio': newProfileInfo.bio },
+            { 'profile.bio': newBioInfo.bio },
             { new: true }
         );
     }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
-import { ChangeUsername, FrontendUser } from '@dragonfish/shared/models/users';
+import { ChangeBio, ChangeUsername, FrontendUser } from '@dragonfish/shared/models/users';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
@@ -64,6 +64,14 @@ export class ProfileComponent implements OnInit {
     }
 
     submitBioForm() {
-        // something goes here
+        if (this.changeBioFields.bio.invalid) {
+            this.alerts.warn(`Bios must be between 3 and 160 characters.`);
+            return;
+        }
+        const changeRequest: ChangeBio = {
+            bio: this.changeBioFields.bio.value,
+        };
+
+        return this.user.changeBio(changeRequest);
     }
 }

@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
-
 import { CommentsSchema } from './comments.schema';
 import { CommentsStore } from './comments.store';
-
 import { ContentModule } from '../content/content.module';
 import { NotificationsModule } from '../notifications/notifications.module';
 

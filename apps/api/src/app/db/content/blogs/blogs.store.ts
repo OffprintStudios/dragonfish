@@ -4,11 +4,11 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { stripTags, countWords } from 'voca';
-
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { UsersStore } from '../../users/users.store';
 import { BlogsContentDocument } from './blogs-content.document';
 import { BlogForm, ContentKind, PubChange, PubStatus } from '@dragonfish/shared/models/content';
-// import { NotificationsService } from '../../notifications/notifications.service';
+import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 
@@ -16,7 +16,7 @@ import { MigrationForm } from '@dragonfish/shared/models/migration';
 export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
-        private readonly usersService: UsersStore /*private readonly notificationsService: NotificationsService*/
+        private readonly usersService: UsersStore, private readonly notificationsService: NotificationsService
     ) {}
 
     /**
@@ -30,15 +30,15 @@ export class BlogsStore {
         const newBlog = new this.blogsModel({
             author: user.sub,
             title: sanitizeHtml(blogInfo.title),
-            body: sanitizeHtml(blogInfo.body),
+            body: sanitizeHtml(blogInfo.body, sanitizeOptions),
             'meta.rating': blogInfo.rating,
-            'stats.words': countWords(stripTags(sanitizeHtml(blogInfo.body))),
+            'stats.words': countWords(stripTags(sanitizeHtml(blogInfo.body, sanitizeOptions))),
         });
 
         const savedBlog = await newBlog.save();
 
         // Subscribe the author to comments on their new blog
-        // await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);
+        await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);
 
         return savedBlog;
     }
@@ -52,15 +52,15 @@ export class BlogsStore {
      * @param blogInfo The blog info for the update
      */
     async editBlog(user: JwtPayload, blogId: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
-        const wordcount = countWords(stripTags(sanitizeHtml(blogInfo.body)));
+        const wordCount = countWords(stripTags(sanitizeHtml(blogInfo.body, sanitizeOptions)));
 
-        return await this.blogsModel.findOneAndUpdate(
+        return this.blogsModel.findOneAndUpdate(
             { _id: blogId, author: user.sub },
             {
                 title: sanitizeHtml(blogInfo.title),
-                body: sanitizeHtml(blogInfo.body),
+                body: sanitizeHtml(blogInfo.body, sanitizeOptions),
                 'meta.rating': blogInfo.rating,
-                'stats.words': wordcount,
+                'stats.words': wordCount,
             },
             { new: true }
         );
@@ -82,7 +82,7 @@ export class BlogsStore {
             await this.usersService.changeBlogCount(user, false);
         }
 
-        return await this.blogsModel.findOneAndUpdate(
+        return this.blogsModel.findOneAndUpdate(
             { _id: blogId, author: user.sub },
             {
                 'audit.published': pubChange.newStatus,
@@ -97,7 +97,7 @@ export class BlogsStore {
             _id: formData._id,
             author: user.sub,
             title: sanitizeHtml(formData.title),
-            body: sanitizeHtml(formData.body),
+            body: sanitizeHtml(formData.body, sanitizeOptions),
             'meta.rating': formData.meta.rating,
             'meta.warnings': [],
             'stats.words': formData.stats.words,

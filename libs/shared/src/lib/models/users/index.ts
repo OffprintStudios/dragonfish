@@ -3,7 +3,7 @@ export { FrontendUser } from './frontend-user.model';
 export { CreateUser } from './create-user.model';
 export { LoginUser } from './login-user.model';
 export type { ChangePassword } from './change-password.model';
-export type { ChangeProfile } from './change-profile.model';
+export type { ChangeBio } from './change-bio.model';
 export { Roles } from './roles.enum';
 export { SearchUser } from './search-user.model';
 export type { AuditSession } from './audit-session.model';

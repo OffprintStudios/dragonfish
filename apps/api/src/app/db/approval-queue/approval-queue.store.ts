@@ -1,16 +1,12 @@
 import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
-
 import { ApprovalQueueDocument } from './approval-queue.schema';
-import { WorksService } from '../works/works.service';
 
 @Injectable()
 export class ApprovalQueueStore {
     constructor(
-        @InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<ApprovalQueueDocument>,
-        private readonly worksService: WorksService
-    ) {}
+        @InjectModel('ApprovalQueue') private readonly approvalQueue: PaginateModel<ApprovalQueueDocument>) {}
 
     /**
      * Adds a new entry to the Approval Queue

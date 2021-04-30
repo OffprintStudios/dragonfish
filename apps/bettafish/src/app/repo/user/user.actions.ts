@@ -2,7 +2,7 @@ import {
     FrontendUser,
     ChangeEmail as EmailForm,
     ChangePassword as PasswordForm,
-    ChangeProfile as ProfileForm,
+    ChangeBio as BioForm,
     ChangeUsername as UsernameForm,
     UpdateTagline as TaglineForm,
 } from '@dragonfish/shared/models/users';
@@ -28,9 +28,9 @@ export class ChangePassword {
     constructor(public newPassword: PasswordForm) {}
 }
 
-export class ChangeProfile {
-    static readonly type = '[User] Change Profile';
-    constructor(public newProfile: ProfileForm) {}
+export class ChangeBio {
+    static readonly type = '[User] Change Bio';
+    constructor(public newBio: BioForm) {}
 }
 
 export class AgreeToPolicies {

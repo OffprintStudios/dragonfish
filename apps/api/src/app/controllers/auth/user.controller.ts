@@ -16,7 +16,7 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { Roles, FrontendUser } from '@dragonfish/shared/models/users';
 import { RolesGuard } from '../../guards';
-import { ChangeEmailDTO, ChangePasswordDTO, ChangeProfileDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
+import { ChangeEmailDTO, ChangePasswordDTO, ChangeBioDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
 import { IUser } from '../../shared/auth';
 import { IImages } from '../../shared/images';
 import { User } from '../../util/decorators';
@@ -58,12 +58,12 @@ export class UserController {
 
     @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
-    @Patch('update-profile')
-    async updateProfile(@User() user: JwtPayload, @Body() newProfile: ChangeProfileDTO) {
-        if (newProfile.bio && newProfile.bio.length > 160) {
+    @Patch('update-bio')
+    async updateBio(@User() user: JwtPayload, @Body() newBio: ChangeBioDTO) {
+        if (newBio.bio && newBio.bio.length > 160) {
             throw new BadRequestException('Your bio must not be longer than 160 characters.');
         }
-        return await this.user.updateProfile(user, newProfile);
+        return await this.user.updateBio(user, newBio);
     }
 
     @ApiTags(DragonfishTags.Users)

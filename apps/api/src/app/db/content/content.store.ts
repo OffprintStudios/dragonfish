@@ -15,7 +15,6 @@ import {
     FormType,
 } from '@dragonfish/shared/models/content';
 import { SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
-
 import { isNullOrUndefined } from '../../util';
 import { NotificationsService } from '../notifications/notifications.service';
 import { SectionsStore } from '../sections/sections.store';
@@ -655,7 +654,6 @@ export class ContentStore {
     async determineContentFilter(query: any, filter: ContentFilter) {
         switch (filter) {
             case ContentFilter.Everything:
-                query = query;
                 break;
             case ContentFilter.MatureEnabled:
                 query['$or'] = [
