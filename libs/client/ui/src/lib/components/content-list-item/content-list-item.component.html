@@ -5,8 +5,11 @@
             <dragonfish-rating-icon [rating]="item.content.meta.rating" [size]="'medium'"></dragonfish-rating-icon>
             <div class="flex flex-row">
                 <div>
-                    <button class="h-full border-t-0 border-b-0 border-l-0 rounded-r-none shadow-none" (click)="deleteItem.emit(item._id)">
-                        <i-feather name="trash-2"></i-feather>
+                    <button
+                        class="h-full border-t-0 border-b-0 border-l-0 rounded-r-none shadow-none flex flex-col items-center justify-center"
+                        (click)="deleteItem.emit(item._id)"
+                    >
+                        <i-feather name="trash-2" class="left-icon m-0 relative -top-1"></i-feather>
                     </button>
                 </div>
                 <div *ngIf="item.content.meta.coverArt" class="self-center">
@@ -14,7 +17,10 @@
                 </div>
                 <div class="self-center p-4">
                     <h3 class="text-2xl font-medium">
-                        {{ item.content.title }}
+                        <a
+                            [routerLink]="navigateToContent(item.content.kind, item.content._id, item.content.title, item.content.author._id, item.content.author.username)">
+                            {{ item.content.title }}
+                        </a>
                         <span class="text-base italic font-light">by {{ item.content.author.username }}</span>
                     </h3>
                     <ng-container [ngSwitch]="item.content.kind">
