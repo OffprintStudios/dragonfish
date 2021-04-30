@@ -4,7 +4,13 @@ import { Observable, of, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
-import { ContentKind, ContentModel, NewsContentModel, SetRating } from '@dragonfish/shared/models/content';
+import {
+    ContentFilter,
+    ContentKind,
+    ContentModel,
+    NewsContentModel,
+    SetRating,
+} from '@dragonfish/shared/models/content';
 import { Decision } from '@dragonfish/shared/models/contrib';
 import {
     FrontendUser,
@@ -29,6 +35,8 @@ import { HttpError } from '@dragonfish/shared/models/util';
 import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { GlobalState } from '../repo/global';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 
 /**
  * ## NetworkService
@@ -39,6 +47,8 @@ import { AlertsService } from '@dragonfish/client/alerts';
     providedIn: 'root',
 })
 export class NetworkService {
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
+
     private baseUrl = `/api`;
     constructor(private readonly http: HttpClient, private readonly alertsService: AlertsService) {}
 
@@ -501,9 +511,9 @@ export class NetworkService {
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
         if (userId) {
-            route = `${this.baseUrl}/content/fetch-all-published?pageNum=${pageNum}&userId=${userId}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${this.filter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
         } else {
-            route = `${this.baseUrl}/content/fetch-all-published?pageNum=${pageNum}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${this.filter}&pageNum=${pageNum}${kindFragment}`;
         }
 
         return handleResponse(
@@ -915,7 +925,7 @@ export class NetworkService {
      */
     public fetchFirstNew() {
         return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new`, {
+            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${this.filter}`, {
                 observe: 'response',
                 withCredentials: true,
             }),

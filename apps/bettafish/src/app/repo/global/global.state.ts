@@ -5,6 +5,7 @@ import { GlobalStateModel } from './global-state.model';
 import * as Global from './global.actions';
 import { ContentFilter } from '@dragonfish/shared/models/content';
 import { ThemePref } from '@dragonfish/shared/models/users';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @State<GlobalStateModel>({
     name: 'global',
@@ -20,16 +21,21 @@ export class GlobalState {
         return state.theme;
     }
 
-    constructor(private globalService: GlobalService) {}
+    @Selector()
+    static filter(state: GlobalStateModel): ContentFilter {
+        return state.filter;
+    }
+
+    constructor(private globalService: GlobalService, private alerts: AlertsService) {}
 
     /* Actions */
     @Action(Global.SetContentFilter)
     public async setContentFilter({ patchState }: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
-        return await this.globalService.setContentFilter(action.enableMature, action.enableExplicit).then((filter) => {
-            patchState({
-                filter: filter,
-            });
+        const filter = this.globalService.setContentFilter(action.enableMature, action.enableExplicit);
+        patchState({
+            filter: filter,
         });
+        this.alerts.success(`Your content filter has been updated!`);
     }
 
     @Action(Global.SetThemePref)

@@ -7,7 +7,6 @@ import { ContentFilter } from '@dragonfish/shared/models/content';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
-import { CookieService } from 'ngx-cookie';
 
 @UntilDestroy()
 @Component({
@@ -21,30 +20,19 @@ export class GlobalSettingsComponent implements OnInit {
     filters = ContentFilter;
 
     selectedTheme: ThemePref;
-    selectedFilter: ContentFilter;
 
     setContentFilter = new FormGroup({
         enableMature: new FormControl(false),
         enableExplicit: new FormControl(false),
     });
 
-    constructor(private store: Store, private cookies: CookieService) {}
+    constructor(private store: Store) {}
 
     ngOnInit(): void {
         this.global$.pipe(untilDestroyed(this)).subscribe(global => {
             this.selectedTheme = global.theme;
-            this.selectedFilter = global.filter;
+            this.setContentFilterToggles(global.filter);
         });
-
-        const contentFilterSetting: ContentFilter = this.cookies.get('contentFilter') as ContentFilter;
-        if (contentFilterSetting !== null && contentFilterSetting !== undefined) {
-            this.setContentFilterToggles(contentFilterSetting);
-        } else {
-            this.setContentFilter.setValue({
-                enableMature: false,
-                enableExplicit: false,
-            });
-        }
     }
 
     get setFilterFields() {
@@ -63,9 +51,7 @@ export class GlobalSettingsComponent implements OnInit {
                     this.setFilterFields.enableExplicit.value,
                 ),
             )
-            .subscribe(() => {
-                location.reload();
-            });
+            .subscribe();
     }
 
     private setContentFilterToggles(contentFilterSetting: ContentFilter) {
