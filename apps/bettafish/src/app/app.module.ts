@@ -34,6 +34,7 @@ import { PortfolioPages } from './pages/portfolio';
 import { MessagesPages } from './pages/messages';
 import { NotificationsPages } from './pages/notifications';
 import { ContentViewPages } from './pages/content-views';
+import { ErrorPages } from './pages/errors';
 
 /* Components */
 import { AppComponent } from './app.component';
@@ -77,6 +78,7 @@ import { environment } from '../environments/environment';
         ...UserComponents,
         ...UserSettingsComponents,
         ...CollectionsComponents,
+        ...CommentsComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
@@ -85,7 +87,7 @@ import { environment } from '../environments/environment';
         ...MessagesPages,
         ...NotificationsPages,
         ...ContentViewPages,
-        ...CommentsComponents,
+        ...ErrorPages,
     ],
     imports: [
         BrowserModule,

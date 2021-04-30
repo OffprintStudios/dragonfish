@@ -10,6 +10,7 @@ import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
 import { NotificationsRoutes } from './pages/notifications';
 import { ContentViewRoutes } from './pages/content-views';
+import { ErrorRoutes } from './pages/errors';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
@@ -41,6 +42,7 @@ const routes: Routes = [
         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
         loadChildren: () => import('@dragonfish/client/dashboard').then((m) => m.DashboardModule),
     },
+    ...ErrorRoutes,
 ];
 
 @NgModule({
