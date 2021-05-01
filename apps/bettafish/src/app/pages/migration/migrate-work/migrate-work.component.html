@@ -1,0 +1,77 @@
+<div class="form-container">
+    <div class="form-header">
+        <h3>Migrate {{ currWork.title }}</h3>
+        <button class="form-button" (click)="migrateWork()">Save</button>
+    </div>
+    <form [formGroup]="proseForm" (ngSubmit)="migrateWork()">
+        <dragonfish-text-field
+            [formControlName]="'title'"
+            [name]="'title'"
+            [type]="'text'"
+            [label]="'Title'"
+            [placeholder]="'There\'s Something I Gotta Say...'"
+        ></dragonfish-text-field>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <div class="offprint-select">
+                    <label>Category</label>
+                    <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
+                        <ng-option *ngFor="let category of categories | keyvalue" [value]="category.key">
+                            {{ category.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div>
+                <div class="offprint-select">
+                    <label>Genre(s)</label>
+                    <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
+                        <ng-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">
+                            {{ genre.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+
+        <dragonfish-text-field
+            [formControlName]="'desc'"
+            [name]="'desc'"
+            [type]="'text'"
+            [label]="'Short Description'"
+            [placeholder]="'One of the best things never told'"
+        ></dragonfish-text-field>
+
+        <label>Long Description</label>
+        <dragonfish-editor
+            [parentForm]="proseForm"
+            [controlName]="'body'"
+            [minHeight]="'300px'"
+            [maxHeight]="'300px'"
+        ></dragonfish-editor>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <div class="offprint-select">
+                    <label>Rating</label>
+                    <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
+                        <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
+                            {{ rating.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div>
+                <div class="offprint-select">
+                    <label>Status</label>
+                    <ng-select class="custom" [formControlName]="'status'" [searchable]="false" [placeholder]="'Select a Status'">
+                        <ng-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                            {{ status.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

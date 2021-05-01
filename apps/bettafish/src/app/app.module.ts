@@ -35,6 +35,7 @@ import { MessagesPages } from './pages/messages';
 import { NotificationsPages } from './pages/notifications';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
+import { MigrationPages } from './pages/migration';
 
 /* Components */
 import { AppComponent } from './app.component';
@@ -88,6 +89,7 @@ import { environment } from '../environments/environment';
         ...NotificationsPages,
         ...ContentViewPages,
         ...ErrorPages,
+        ...MigrationPages,
     ],
     imports: [
         BrowserModule,
