@@ -57,9 +57,14 @@
             </div>
             <div>
                 <a
-                    class="continue-reading"
-                    [routerLink]="['/portfolio', blog.author._id, blog.author.username | slugify, 'blog', blog._id]"
-                >
+                    [routerLink]="[
+                        '/portfolio',
+                        blog.author._id,
+                        blog.author.username | slugify,
+                        'post',
+                        blog._id,
+                        blog.title | slugify,
+                    ]">
                     Continue Reading
                     <i-feather name="chevron-right"></i-feather>
                 </a>
