@@ -37,6 +37,6 @@
                 </ng-template>
             </div>
         </ng-template>
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel="" *ngIf="currPageCollections.docs.length !== 0;"></pagination-controls>
     </ng-template>
 </ng-container>
