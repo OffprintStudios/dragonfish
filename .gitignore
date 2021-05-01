@@ -4,11 +4,6 @@
 /dist
 /tmp
 /out-tsc
-target
-
-# Compiled rust module output
-/packages/html_sanitizer/src/lib/*
-/packages/word_counter/src/lib/*
 
 # dependencies
 /node_modules
@@ -21,11 +16,10 @@ target
 *.launch
 .settings/
 *.sublime-workspace
+.devcontainer/*
 
 # IDE - VSCode
-.vscode
 .vscode/*
-.devcontainer/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
@@ -45,3 +39,7 @@ testem.log
 .DS_Store
 Thumbs.db
 .env
+.DS_Store
+.DS_Store
+.DS_Store
+.DS_Store

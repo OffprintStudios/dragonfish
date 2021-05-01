@@ -1,0 +1,17 @@
+version: '3'
+services:
+  dragonfish:
+    build:
+      context: ../../.
+      dockerfile: containers/development/dev-setup.Dockerfile
+    ports:
+      - "3000:3000"
+      - "9229:9229"
+      - "3333:3333"
+      - "4200:4200"
+    volumes:
+    - ../../.:/opt/dragonfish
+  mongo:
+    image: "mongo:4.2.1"
+    ports:
+      - "27017:27017"

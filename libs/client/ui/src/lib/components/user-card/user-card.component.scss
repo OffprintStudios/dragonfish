@@ -1,0 +1,74 @@
+div.user-card {
+    background: var(--accent);
+    border: 1px solid var(--borders);
+    div.user-avatar {
+        align-self: center;
+        padding-top: 10px;
+        img {
+            width: 175px;
+            height: 175px;
+            border-radius: 50%;
+            border: 1px solid whitesmoke;
+            box-shadow: var(--dropshadow);
+        }
+    }
+    div.user-info {
+        align-self: center;
+        width: 15rem;
+        margin: 0 auto 1rem auto;
+        h2 {
+            color: white;
+            font-weight: 700;
+
+            a {
+                color: white;
+                &:hover {
+                    background-color: var(--accent-dark);
+                }
+            }
+        }
+
+        h3 {
+            color: white;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 1rem;
+        }
+    }
+
+    div.user-stats {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-top: 0.25rem;
+        font-size: 0;
+        border-top: 1px solid whitesmoke;
+
+        div {
+            width: 33.33%;
+            text-align: center;
+            color: whitesmoke;
+        }
+
+        span.icon {
+            display: inline-block;
+            i-feather {
+                position: relative;
+                margin-right: 0.25rem;
+            }
+        }
+
+        span.stat {
+            display: inline-block;
+            position: relative;
+            top: -0.4rem;
+            font-size: 16px;
+        }
+
+        div.blogs {
+            border-left: 1px solid whitesmoke;
+            border-right: 1px solid whitesmoke;
+        }
+    }
+}

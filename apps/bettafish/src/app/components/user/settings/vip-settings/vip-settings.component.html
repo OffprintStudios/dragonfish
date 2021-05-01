@@ -1,0 +1,32 @@
+<div class="box w-full border rounded-md p-4 shadow-lg">
+    <div class="header border-b mb-5">
+        <h3 class="text-3xl font-medium">VIP Settings</h3>
+    </div>
+    <ng-container *ngIf="currentUser$ | async as currentUser">
+        <div class="grid grid-cols-3" *ngIf="isAllowed(currentUser.roles); else notAllowed">
+            <div class="pl-2 flex flex-col">
+                <h5 class="text-xl font-medium text-center">Update Tagline</h5>
+                <form [formGroup]="taglineForm" (ngSubmit)="submitTagline()" class="flex-1">
+                    <div>
+                        <dragonfish-text-field
+                            [formControlName]="'tagline'"
+                            [name]="'tagline'"
+                            [type]="'text'"
+                            [label]="'Tagline'"
+                            [placeholder]="'Member'"
+                        ></dragonfish-text-field>
+                    </div>
+                </form>
+                <div class="flex flex-row items-center justify-center mt-4">
+                    <button type="submit" class="shadow-lg" (click)="submitTagline()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <ng-template #notAllowed>
+            <div class="empty">
+                <h3>This is on a need to know basis...</h3>
+                <p>And it looks like you don't need to know.</p>
+            </div>
+        </ng-template>
+    </ng-container>
+</div>

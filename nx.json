@@ -1,62 +1,33 @@
 {
-  "npmScope": "pulp-fiction",
-  "affected": {
-    "defaultBase": "master"
-  },
-  "implicitDependencies": {
-    "workspace.json": "*",
-    "package.json": {
-      "dependencies": "*",
-      "devDependencies": "*"
+    "implicitDependencies": {
+        "angular.json": "*",
+        "package.json": { "dependencies": "*", "devDependencies": "*" },
+        "tsconfig.base.json": "*",
+        "tslint.json": "*",
+        ".eslintrc.json": "*",
+        "nx.json": "*"
     },
-    "tsconfig.base.json": "*",
-    "tslint.json": "*",
-    "nx.json": "*"
-  },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
-      "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
-      }
+    "affected": { "defaultBase": "master" },
+    "npmScope": "dragonfish",
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "@nrwl/workspace/tasks-runners/default",
+            "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+        }
+    },
+    "projects": {
+        "bettafish": { "tags": [] },
+        "bettafish-e2e": { "tags": [], "implicitDependencies": ["bettafish"] },
+        "api": { "tags": [] },
+        "shared": { "tags": [] },
+        "client-pipes": { "tags": [] },
+        "client-ui": { "tags": [] },
+        "client-alerts": { "tags": [] },
+        "client-material": { "tags": [] },
+        "client-icons": { "tags": [] },
+        "bettafish-native": { "tags": [] },
+        "client-editor": { "tags": [] },
+        "client-my-stuff": { "tags": [] },
+        "client-dashboard": { "tags": [] }
     }
-  },
-  "projects": {
-    "client": {
-      "tags": []
-    },
-    "client-e2e": {
-      "tags": [],
-      "implicitDependencies": ["client"]
-    },
-    "server": {
-      "tags": []
-    },
-    "models": {
-      "tags": []
-    },
-    "word_counter": {
-      "tags": []
-    },
-    "html_sanitizer": {
-      "tags": []
-    },
-    "material": {
-      "tags": []
-    },
-    "dashboard": {
-      "tags": []
-    },
-    "dashboard-e2e": {
-      "tags": [],
-      "implicitDependencies": ["dashboard"]
-    },
-    "icons": {
-      "tags": []
-    }
-  },
-  "workspaceLayout": {
-    "appsDir": "packages",
-    "libsDir": "packages"
-  }
 }

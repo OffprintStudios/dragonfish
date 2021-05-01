@@ -1,0 +1,33 @@
+<ng-container *ngIf="loading; else notLoading">
+    <div class="flex h-40 items-center justify-center">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <div class="my-8 mx-auto lg:w-3/4 md:w-4/5 sm:w-full h-full">
+        <div class="empty" *ngIf="isHistoryEmpty()">
+            <h3>You haven't read anything yet!</h3>
+            <p>Browse around for Prose, Poetry, Blogs, and News and it'll all show up here.</p>
+        </div>
+        <ng-container *ngIf="!isHistoryEmpty()">
+            <ng-container *ngFor="let doc of histList.docs | paginate: {
+                itemsPerPage: histList.limit,
+                currentPage: pageNum,
+                totalItems: histList.totalDocs
+                }"
+            >
+                <dragonfish-content-list-item
+                    [item]="doc"
+                    [listKind]="'history'"
+                    (deleteItem)="askDelete($event)"
+                ></dragonfish-content-list-item>
+            </ng-container>
+            <pagination-controls
+                (pageChange)="onPageChange($event)"
+                previousLabel=""
+                nextLabel=""
+            ></pagination-controls>
+        </ng-container>
+    </div>
+</ng-template>

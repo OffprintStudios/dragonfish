@@ -1,0 +1,74 @@
+<div class="blog-box flex flex-col rounded-md shadow-xl">
+    <dragonfish-rating-icon [rating]="blog.meta.rating" [size]="'medium'"></dragonfish-rating-icon>
+    <div class="p-4">
+        <div class="header flex flex-row items-center">
+            <div class="avatar pr-2" *ngIf="showAuthor">
+                <img class="w-24 h-24 rounded-full" [alt]="'Avatar'" [src]="blog.author.profile.avatar" />
+            </div>
+            <div [ngClass]="{ 'title-padding': showAuthor }">
+                <div>
+                    <h3 class="text-3xl font-medium">
+                        <a
+                            [routerLink]="[
+                                '/portfolio',
+                                blog.author._id,
+                                blog.author.username | slugify,
+                                'post',
+                                blog._id,
+                                blog.title | slugify,
+                            ]"
+                            >{{ blog.title }}</a
+                        >
+                        <span class="byline" *ngIf="showAuthor"
+                            >by
+                            <a [routerLink]="['/portfolio', blog.author._id, blog.author.username | slugify]">
+                                {{ blog.author.username }}
+                            </a></span
+                        >
+                    </h3>
+                </div>
+                <div>
+                    <div class="tag">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</div>
+                    <div class="separator">//</div>
+                    <div class="tag" title="Views">
+                        <i-feather name="bar-chart-2"></i-feather>
+                        {{ blog.stats.views | abbreviate }}
+                    </div>
+                    <div class="separator">//</div>
+                    <div class="tag" title="Comments">
+                        <i-feather name="message-circle"></i-feather>
+                        {{ blog.stats.comments | abbreviate }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="blog-body flex-1" [line-truncation]="6" [innerHTML]="blog.body | safeHtml"></div>
+        <div class="flex flex-row items-center">
+            <div class="flex-1">
+                <div class="tag" title="Likes">
+                    <i-feather name="thumbs-up"></i-feather>
+                    {{ blog.stats.likes | abbreviate }}
+                </div>
+                <div class="separator">|</div>
+                <div class="tag" title="Dislikes">
+                    <i-feather name="thumbs-down"></i-feather>
+                    {{ blog.stats.dislikes | abbreviate }}
+                </div>
+            </div>
+            <div>
+                <a
+                    [routerLink]="[
+                        '/portfolio',
+                        blog.author._id,
+                        blog.author.username | slugify,
+                        'post',
+                        blog._id,
+                        blog.title | slugify,
+                    ]">
+                    Continue Reading
+                    <i-feather name="chevron-right"></i-feather>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<ng-container *ngIf="portUser$ | async as portUser">
+    <ng-container *ngIf="loading; else notLoading">
+        <div class="flex h-40 items-center justify-center">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #notLoading>
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="currentUser._id === portUser._id">
+                <div class="mb-6">
+                    <dragonfish-collections-toolbar></dragonfish-collections-toolbar>
+                </div>
+            </ng-container>
+        </ng-container>
+        <div class="grid grid-cols-3 gap-4 mb-6 w-11/12 mx-auto" *ngIf="currPageCollections.docs.length !== 0; else noDocs">
+            <ng-container
+                *ngFor="let coll of currPageCollections.docs | paginate: {
+                    itemsPerPage: currPageCollections.limit,
+                    currentPage: pageNum,
+                    totalItems: currPageCollections.totalDocs
+                }"
+            >
+                <dragonfish-collection-card [collection]="coll" [user]="portUser"></dragonfish-collection-card>
+            </ng-container>
+        </div>
+        <ng-template #noDocs>
+            <div class="empty">
+                <h3>There's nothing here...</h3>
+                <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
+                    <p *ngIf="currentUser._id === portUser._id; else notSameUser">Why not hit the Create button and add one?</p>
+                    <ng-template #notSameUser>
+                        <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                    </ng-template>
+                </ng-container>
+                <ng-template #noUser>
+                    <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                </ng-template>
+            </div>
+        </ng-template>
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel="" *ngIf="currPageCollections.docs.length !== 0;"></pagination-controls>
+    </ng-template>
+</ng-container>

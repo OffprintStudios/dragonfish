@@ -1,0 +1,29 @@
+div.dash-nav {
+    background: var(--accent);
+    div.menu {
+        border-bottom: 2px solid transparent;
+        &:hover {
+            border-bottom: 2px solid var(--accent-light);
+        }
+        i-feather {
+            position: relative;
+            top: 0.15rem;
+            stroke-width: 1;
+            margin-left: 0.5rem;
+        }
+    }
+    button {
+        margin: 0 0.25rem 0 0.25rem;
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            position: relative;
+            width: 1.5rem !important;
+            color: white;
+            margin: 0;
+            top: -0.025rem;
+            stroke-width: 1;
+        }
+    }
+}

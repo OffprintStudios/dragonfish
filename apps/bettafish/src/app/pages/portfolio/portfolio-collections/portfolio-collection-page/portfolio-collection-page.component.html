@@ -1,0 +1,58 @@
+<ng-container *ngIf="portUser$ | async as portUser">
+    <div class="collection-page-header my-8 w-11/12 mx-auto">
+        <div class="coll-name">
+            <ng-container *ngIf="currentUser$ | async as currentUser">
+                <ng-container *ngIf="portUser._id === currentUser._id">
+                    <div class="set-coll-visibility">
+                        <ng-container [ngSwitch]="collData.audit.isPublic">
+                            <a
+                                title="Lock"
+                                (click)="setPublicPrivate(collData._id, false)"
+                                *ngSwitchCase="true"
+                            ><i-feather name="unlock"></i-feather
+                            ></a>
+                            <a
+                                title="Unlock"
+                                (click)="setPublicPrivate(collData._id, true)"
+                                *ngSwitchDefault
+                            ><i-feather name="lock"></i-feather
+                            ></a>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <h2 class="text-4xl">{{ collData.name }}</h2>
+            <ng-container *ngIf="currentUser$ | async as currentUser">
+                <ng-container *ngIf="portUser._id === currentUser._id">
+                    <div class="coll-tools flex flex-row items-center mb-1">
+                        <button class="tool left shadow-none" (click)="openEditCollectionModal(collData)">
+                            <i-feather name="edit-3"></i-feather>Edit
+                        </button>
+                        <button class="tool end shadow-none" (click)="askDelete(collData._id)">
+                            <i-feather name="trash-2"></i-feather>Delete
+                        </button>
+                    </div>
+                </ng-container>
+            </ng-container>
+        </div>
+        <div class="coll-desc">
+            {{ collData.desc }}
+        </div>
+    </div>
+
+    <div class="w-11/12 mx-auto">
+        <ng-container *ngIf="collData.contains.length === 0; else hasContent">
+            <div class="empty">
+                <h3>Nothing's been added yet</h3>
+                <p>Come back later to see if that changes!</p>
+            </div>
+        </ng-container>
+        <ng-template #hasContent>
+            <div class="grid grid-cols-3">
+                <ng-container *ngFor="let content of collData.contains">
+                    <dragonfish-work-card [content]="content" [showAuthor]="true"></dragonfish-work-card>
+                </ng-container>
+            </div>
+        </ng-template>
+    </div>
+</ng-container>

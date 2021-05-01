@@ -1,0 +1,8 @@
+button.active {
+    background: var(--accent);
+    color: whitesmoke;
+
+    &:hover {
+        background: var(--accent-dark);
+    }
+}

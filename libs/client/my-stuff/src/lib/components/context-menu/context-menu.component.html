@@ -1,0 +1,19 @@
+<div
+    class="context-menu "
+    [@menu]="_state"
+    (@menu.done)="_onAnimationDone($event)"
+>
+    <a (click)="getShareLink()">
+        <span class="link-icon"><i-feather name="link"></i-feather></span>
+        Get Public Link
+    </a>
+    <a (click)="viewContent()">
+        <span class="link-icon"><i-feather name="edit-3"></i-feather></span>
+        Edit
+    </a>
+    <div class="spacer"><!--spacer--></div>
+    <a (click)="deleteContent()">
+        <span class="link-icon"><i-feather name="trash-2"></i-feather></span>
+        Delete
+    </a>
+</div>

@@ -1,0 +1,111 @@
+<ng-container [ngSwitch]="listKind">
+    <!--History Documents-->
+    <ng-container *ngSwitchCase="kinds.History">
+        <div class="list-item rounded-md mb-6">
+            <dragonfish-rating-icon [rating]="item.content.meta.rating" [size]="'medium'"></dragonfish-rating-icon>
+            <div class="flex flex-row">
+                <div>
+                    <button
+                        class="h-full border-t-0 border-b-0 border-l-0 rounded-r-none shadow-none flex flex-col items-center justify-center"
+                        (click)="deleteItem.emit(item._id)"
+                    >
+                        <i-feather name="trash-2" class="left-icon m-0 relative -top-1"></i-feather>
+                    </button>
+                </div>
+                <div *ngIf="item.content.meta.coverArt" class="self-center">
+                    <img class="cover-art" [alt]="'Cover Art'" [src]="item.content.meta.coverArt">
+                </div>
+                <div class="self-center p-4">
+                    <h3 class="text-2xl font-medium">
+                        <a
+                            [routerLink]="navigateToContent(item.content.kind, item.content._id, item.content.title, item.content.author._id, item.content.author.username)">
+                            {{ item.content.title }}
+                        </a>
+                        <span class="text-base italic font-light">by {{ item.content.author.username }}</span>
+                    </h3>
+                    <ng-container [ngSwitch]="item.content.kind">
+                        <h4
+                            class="tag"
+                            *ngSwitchCase="contentKind.ProseContent"
+                        >
+                            <i-feather name="book-open"></i-feather> Prose
+                        </h4>
+                        <h4
+                            class="tag"
+                            *ngSwitchCase="contentKind.PoetryContent"
+                        >
+                            <i-feather name="feather"></i-feather> Poetry
+                        </h4>
+                        <h4
+                            class="tag"
+                            *ngSwitchCase="contentKind.BlogContent"
+                        >
+                            <i-feather name="coffee"></i-feather> Blog
+                        </h4>
+                        <h4
+                            class="tag"
+                            *ngSwitchCase="contentKind.NewsContent"
+                        >
+                            <i-feather name="globe"></i-feather> News
+                        </h4>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="
+                            item.content.kind === contentKind.ProseContent ||
+                            item.content.kind === contentKind.PoetryContent
+                        "
+                    >
+                        <div class="separator">//</div>
+                        <h4 class="tag">{{ item.content.meta.category | fixCategories }}</h4>
+                        <div class="separator">//</div>
+                        <h4 class="tag">{{ item.content.meta.genres | separateGenres }}</h4>
+                    </ng-container>
+                    <div class="stats">
+                        <ng-container *ngIf="item.content.kind === contentKind.ProseContent || item.content.kind === contentKind.PoetryContent">
+                            <h4 class="tag">{{ item.content.meta.status }}</h4>
+                            <div class="separator">//</div>
+                        </ng-container>
+                        <h4 title="Approval Rating" class="tag">
+                            <i-feather name="heart"></i-feather
+                            >{{
+                                calcApprovalRating(
+                                    item.content.stats.likes,
+                                    item.content.stats.dislikes
+                                )
+                            }}%
+                        </h4>
+                        <div class="separator">//</div>
+                        <h4 title="Words" class="tag">
+                            <i-feather name="pen-tool"></i-feather
+                            >{{ item.content.stats.words | toLocaleString }}
+                        </h4>
+                        <div class="separator">//</div>
+                        <h4 title="Views" class="tag">
+                            <i-feather name="bar-chart-2"></i-feather
+                            >{{ item.content.stats.views | toLocaleString }}
+                        </h4>
+                        <div class="separator">//</div>
+                        <h4 title="Comments" class="tag">
+                            <i-feather name="message-circle"></i-feather
+                            >{{ item.content.stats.comments | toLocaleString }}
+                        </h4>
+                        <ng-container *ngIf="item.content.audit.publishedOn">
+                            <div class="separator">//</div>
+                            <h4 title="Published On" class="tag">
+                                <i-feather name="calendar"></i-feather
+                                >{{ item.content.audit.publishedOn | localedate: 'short' }}
+                            </h4>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="kinds.MyStuff">
+        <div class="empty">
+            <h3>Pardon the dust &mdash;</h3>
+            <p>This feature is not yet implemented.</p>
+            <p>Check the patch notes to find out when this will be made available!</p>
+        </div>
+    </ng-container>
+</ng-container>

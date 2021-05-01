@@ -1,0 +1,7 @@
+<div class="w-11/12 mx-auto mt-8">
+    <div class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-4 place-items-center">
+        <ng-container *ngFor="let user of supporters">
+            <dragonfish-user-card [user]="user"></dragonfish-user-card>
+        </ng-container>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<ng-container *ngIf="currContent$ | async as post">
+    <ng-container *ngIf="currHistDoc$ | async as histDoc; else noHist">
+        <div class="relative">
+            <div class="absolute left-0 flex flex-row">
+                <ng-container [ngSwitch]="histDoc.ratingOption">
+                    <ng-container *ngSwitchCase="ratingOption.Liked">
+                        <button
+                            class="active border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-tr-none font-normal"
+                            (click)="setNoVote(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-up"></i-feather>
+                            <span>{{ likes$ | async | abbreviate }}</span>
+                        </button>
+                        <button
+                            class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-t-none font-normal"
+                            (click)="setDislike(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-down"></i-feather>
+                            <span>{{ dislikes$ | async | abbreviate }}</span>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="ratingOption.Disliked">
+                        <button
+                            class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-tr-none font-normal"
+                            (click)="setLike(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-up"></i-feather>
+                            <span>{{ likes$ | async | abbreviate }}</span>
+                        </button>
+                        <button
+                            class="active border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-t-none font-normal"
+                            (click)="setNoVote(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-down"></i-feather>
+                            <span>{{ dislikes$ | async | abbreviate }}</span>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>
+                        <button
+                            class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-tr-none font-normal"
+                            (click)="setLike(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-up"></i-feather>
+                            <span>{{ likes$ | async | abbreviate }}</span>
+                        </button>
+                        <button
+                            class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-t-none font-normal"
+                            (click)="setDislike(post._id, histDoc.ratingOption)"
+                        >
+                            <i-feather name="thumbs-down"></i-feather>
+                            <span>{{ dislikes$ | async | abbreviate }}</span>
+                        </button>
+                    </ng-container>
+                </ng-container>
+                <button class="border-t-0 border-l-0 shadow-none px-2.5 py-1.5 rounded-bl-none rounded-t-none font-normal">
+                    <i-feather name="more-vertical"></i-feather>
+                </button>
+            </div>
+        </div>
+    </ng-container>
+    <ng-template #noHist>
+        <div class="relative">
+            <div class="absolute left-0">
+                <button class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-tr-none font-normal">
+                    <i-feather name="thumbs-up"></i-feather>
+                    <span class="relative bottom-1.5 ml-1">{{ likes$ | async | abbreviate }}</span>
+                </button>
+                <button class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-t-none font-normal">
+                    <i-feather name="thumbs-down"></i-feather>
+                    <span class="relative bottom-1.5 ml-1">{{ dislikes$ | async | abbreviate }}</span>
+                </button>
+                <button
+                    class="border-t-0 border-l-0 shadow-none px-2.5 py-1.5 rounded-bl-none rounded-t-none font-normal"
+                >
+                    <i-feather name="more-vertical"></i-feather>
+                </button>
+            </div>
+        </div>
+    </ng-template>
+</ng-container>

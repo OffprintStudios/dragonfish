@@ -1,0 +1,105 @@
+div.card {
+    border: 1px solid var(--borders);
+    background: var(--accent);
+    color: whitesmoke;
+
+    div.card-content {
+        min-height: 20rem;
+    }
+
+    h3 {
+        color: whitesmoke;
+        a {
+            cursor: pointer;
+            color: whitesmoke;
+            &:hover {
+                background: var(--accent-dark);
+            }
+        }
+    }
+    div.card-info {
+        border-top: 1px solid whitesmoke;
+        border-bottom: 1px solid whitesmoke;
+    }
+    span.divider {
+        font-size: 14px;
+        margin: 0 0.25rem 0 0.5rem;
+    }
+    span.tag {
+        font-size: 14px;
+        text-transform: lowercase;
+        font-variant: small-caps;
+        i-feather {
+            position: relative;
+            width: 14px;
+            margin-right: 0.25rem;
+            top: 0.5rem;
+            &.kind {
+                width: 16px;
+                top: 0.4rem;
+            }
+        }
+        &.end {
+            flex: 1;
+            text-align: right;
+        }
+    }
+    span.genres {
+        @media (max-width: 700px) {
+            display: none;
+        }
+    }
+    span.genres-mobile {
+        display: none;
+        cursor: pointer;
+        @media (max-width: 700px) {
+            display: block;
+        }
+    }
+    img.cover-art {
+        float: left;
+        max-height: 150px;
+        max-width: 100px;
+        margin-right: 1.5rem;
+    }
+    div.card-footer {
+        padding-top: 5px;
+        border-top: 1px solid whitesmoke;
+        text-align: right;
+        font-size: 11px;
+        color: whitesmoke;
+        a.work-stat-button {
+            color: whitesmoke;
+            text-decoration: none;
+            padding: 2px;
+            &:hover {
+                background-color: var(--accent-dark);
+            }
+        }
+        span {
+            margin: 0 0.25rem 0 0.25rem;
+        }
+        i-feather {
+            position: relative;
+            width: 13px;
+            height: 13px;
+            stroke-width: 1;
+            top: 0.25rem;
+            margin-right: 0.25rem;
+        }
+    }
+
+    div.card-body {
+        flex-grow: 1;
+        color: whitesmoke;
+        font-size: 14px;
+        margin-top: 1rem;
+
+        img.cover-art {
+            float: left;
+            max-height: 150px;
+            max-width: 100px;
+            margin-right: 1.5rem;
+        }
+    }
+}

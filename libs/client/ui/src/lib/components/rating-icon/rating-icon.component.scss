@@ -1,0 +1,46 @@
+div.ratings {
+    position: relative;
+}
+
+div.rating {
+    position: absolute;
+    right: 0;
+    border-radius: 0.375rem;
+    border-top-left-radius: 0;
+    border-bottom-right-radius: 0;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    color: #000000;
+    text-align: center;
+    box-sizing: border-box;
+    &.small {
+        font-size: 24px;
+        line-height: 22px;
+        height: 24px;
+        width: 24px;
+    }
+    &.medium {
+        font-size: 32px;
+        line-height: 30px;
+        height: 32px;
+        width: 32px;
+    }
+    &.large {
+        font-size: 40px;
+        line-height: 40px;
+        height: 40px;
+        width: 40px;
+    }
+    &.everyone {
+        background: #08a400;
+    }
+    &.teen {
+        background: #ebcf00;
+    }
+    &.mature {
+        background: #ff7700;
+    }
+    &.explicit {
+        background: #ff000a;
+    }
+}

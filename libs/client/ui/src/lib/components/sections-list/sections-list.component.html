@@ -1,0 +1,34 @@
+<div class="section-list w-3/4 mx-auto rounded-md mb-8 shadow-lg" [ngClass]="contentBox ? 'default' : 'content-box' ">
+    <ul class="w-full max-h-60 overflow-auto">
+        <ng-container *ngFor="let section of sections; let i = index">
+            <li *ngIf="section.published === true">
+                <a
+                    class="flex flex-row items-center w-full hover:no-underline pl-4"
+                    [routerLink]="[i + 1, section.title | slugify]"
+                >
+                    <div class="flex-1">
+                        {{ section.title }}
+                    </div>
+                    <div class="text-sm uppercase flex flex-row items-center">
+                            <span class="tag" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'">
+                                <i-feather name="pen-tool"></i-feather>
+                                {{ section.stats.words | abbreviate }}
+                            </span>
+                        <span class="divider">//</span>
+                        <span
+                            class="tag"
+                            [matTooltip]="'Published On'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                        >
+                                <i-feather name="calendar"></i-feather>
+                            {{ section.audit.publishedOn | localedate: 'mediumDate' }}
+                            </span>
+                    </div>
+                    <div class="section-button">
+                        <button><i-feather name="chevron-right"></i-feather></button>
+                    </div>
+                </a>
+            </li>
+        </ng-container>
+    </ul>
+</div>

@@ -1,0 +1,46 @@
+<ng-container *ngIf="currContent$ | async as currPost">
+    <div class="sticky top-0 z-40">
+        <div class="news-post-nav shadow-lg relative z-40">
+            <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
+                <button class="go-back border-none rounded-full shadow-none p-2.5" [routerLink]="['/news']">
+                    <i-feather name="chevron-left" class="text-white relative top-0.5 mr-4"></i-feather>
+                </button>
+                <div>
+                    <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+                        {{ currPost.title }}
+                    </h3>
+                    <div class="flex flex-row items-center text-white uppercase text-sm">
+                        <span>
+                            by
+                            <a
+                                class="text-white underline"
+                                [routerLink]="['/portfolio', $any(currPost.author)._id, $any(currPost.author).username | slugify]">
+                                {{ $any(currPost.author).username }}
+                            </a>
+                        </span>
+                        <span class="mx-2">//</span>
+                        <span>{{ category[currPost.meta.category] }}</span>
+                        <span class="mx-2">//</span>
+                        <span>{{ currPost.audit.publishedOn | localedate: 'fullDate' }}</span>
+                    </div>
+                </div>
+                <div class="flex-1"><!--spacer--></div>
+                <dragonfish-news-rating></dragonfish-news-rating>
+            </div>
+        </div>
+    </div>
+    <div class="post-container">
+        <div class="prose mx-auto">
+            <div class="html-description" [innerHtml]="currPost.body | safeHtml"></div>
+        </div>
+    </div>
+
+    <div class="relative z-0">
+        <dragonfish-comments
+            [itemId]="currPost._id"
+            [itemKind]="itemKind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event)"
+        ></dragonfish-comments>
+    </div>
+</ng-container>

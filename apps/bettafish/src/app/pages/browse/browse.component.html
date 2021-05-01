@@ -1,0 +1,43 @@
+<ng-container *ngIf="route.children.length === 0">
+    <div class="browse-nav shadow-lg sticky top-0 z-40" *ngIf="route.children.length === 0">
+        <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
+            <i-feather name="map" class="text-white relative top-0.5 mr-4"></i-feather>
+            <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+                <a class="text-white hover:text-white" [routerLink]="['/browse']">Browse</a>
+            </h3>
+            <div class="flex-1"><!--spacer--></div>
+
+            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+                <dragonfish-text-field
+                    [formControlName]="'query'"
+                    [name]="'query'"
+                    [type]="'text'"
+                    [placeholder]="'Search...'"
+                    [searchBox]="true"
+                ></dragonfish-text-field>
+            </form>
+        </div>
+    </div>
+    <div class="w-11/12 mx-auto my-8">
+        <div>
+            <div class="section-header flex flex-row items-center p-2 mb-4">
+                <h3 class="text-4xl font-medium flex-1">Newest Works</h3>
+                <a [routerLink]="['newest-works']">See More >></a>
+            </div>
+            <ng-container *ngIf="loadingNew; else notLoadingNew">
+                <div class="flex flex-row items-center justify-center h-72">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #notLoadingNew>
+                <div class="grid grid-cols-3 gap-4">
+                    <ng-container *ngFor="let work of newWorks">
+                        <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+                    </ng-container>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</ng-container>
+
+<router-outlet></router-outlet>

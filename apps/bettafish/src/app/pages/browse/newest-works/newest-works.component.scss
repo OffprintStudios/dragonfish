@@ -1,0 +1,19 @@
+div.newest-works-nav {
+    background: var(--accent);
+    button.go-back {
+        margin: 0 0.25rem 0 0.25rem;
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            position: relative;
+            width: 1.5rem !important;
+            color: white;
+            margin: 0;
+            top: -0.025rem;
+            &.end-button {
+                stroke-width: 1;
+            }
+        }
+    }
+}

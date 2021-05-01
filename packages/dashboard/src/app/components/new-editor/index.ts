@@ -1,1 +1,0 @@
-export { NewEditorComponent } from './new-editor.component';
