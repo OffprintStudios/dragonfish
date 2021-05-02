@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
@@ -6,7 +6,7 @@ import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
     templateUrl: './social.component.html',
     styleUrls: ['./social.component.scss']
 })
-export class SocialComponent {
+export class SocialComponent implements OnInit {
     ngOnInit() {
         setTwoPartTitle(Constants.SOCIAL);
     }
