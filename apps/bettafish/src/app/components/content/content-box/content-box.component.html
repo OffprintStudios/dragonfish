@@ -63,17 +63,17 @@
                     <ng-container [ngSwitch]="content.currContent.kind">
                         <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
                             <ng-container *ngIf="$any(content.currContent.meta).collection; else singlePoemDesc">
-                                <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                                <div class="html-description accented-content-box" [innerHtml]="content.currContent.body | safeHtml"></div>
                             </ng-container>
                             <ng-template #singlePoemDesc>
-                                <div class="html-description" [innerHTML]="content.currContent.desc | safeHtml"></div>
+                                <div class="html-description accented-content-box" [innerHTML]="content.currContent.desc | safeHtml"></div>
                             </ng-template>
                         </ng-container>
                         <ng-container *ngSwitchCase="content.currContent.kind === contentKind.ProseContent">
-                            <div class="html-description" [innerHTML]="content.currContent.body | safeHtml"></div>
+                            <div class="html-description accented-content-box" [innerHTML]="content.currContent.body | safeHtml"></div>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
-                            <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                            <div class="html-description accented-content-box" [innerHtml]="content.currContent.body | safeHtml"></div>
                         </ng-container>
                     </ng-container>
                 </div>
