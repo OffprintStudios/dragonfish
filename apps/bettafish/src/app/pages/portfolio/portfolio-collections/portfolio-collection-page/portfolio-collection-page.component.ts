@@ -12,6 +12,7 @@ import { NetworkService } from '../../../../services';
 import { CollectionFormComponent } from '../../../../components/content/collections/collection-form/collection-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-portfolio-collection-page',
@@ -34,6 +35,7 @@ export class PortfolioCollectionPageComponent {
     ngOnInit(): void {
         this.route.data.subscribe((data) => {
             this.collData = data.collData as Collection;
+            setTwoPartTitle(this.collData.name);
         });
     }
 
