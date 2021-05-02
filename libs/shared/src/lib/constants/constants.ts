@@ -14,7 +14,7 @@ export class Constants {
     public static MY_STUFF = 'My Stuff';
     public static NEWS = 'News';
     public static NEW_SECTION = 'New section';
-    public static NEWEST_WORKS = "Newest Works";
+    public static NEWEST_WORKS = 'Newest Works';
 
     public static NOTIFICATIONS = 'Notifications';
     public static OFFPRINT = 'Offprint';
@@ -23,6 +23,7 @@ export class Constants {
     public static SETTINGS = 'Settings';
 
     public static SITE_STAFF = 'Site Staff';
+    public static SOCIAL = 'Social';
     public static WATCHING = 'Watching';
     public static WORKS = 'Works';
 }
