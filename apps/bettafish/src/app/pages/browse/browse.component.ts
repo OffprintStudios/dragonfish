@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { NetworkService } from '../../services';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-browse',
@@ -20,6 +21,7 @@ export class BrowseComponent implements OnInit {
     constructor(public route: ActivatedRoute, private router: Router, private alerts: AlertsService, private network: NetworkService) {}
 
     ngOnInit() {
+        setTwoPartTitle(Constants.BROWSE);
         this.loadFirstNew();
     }
 
