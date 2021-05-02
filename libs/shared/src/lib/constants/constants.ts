@@ -11,6 +11,7 @@ export class Constants {
 
     public static HOME = 'Home';
     public static INBOX = 'Inbox';
+    public static MESSAGES = 'Messages';
     public static MY_STUFF = 'My Stuff';
     public static NEWS = 'News';
     public static NEW_SECTION = 'New section';
