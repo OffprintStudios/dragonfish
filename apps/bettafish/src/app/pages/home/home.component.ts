@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants } from '@dragonfish/shared/constants';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { slogans } from '../../models/site';
 import { NetworkService } from '../../services';
 import { ActivatedRoute } from '@angular/router';
@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit {
     constructor(private network: NetworkService, public route: ActivatedRoute) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.HOME);
+
         // Load the latest posts
         this.loadingLatest = true;
         this.network.fetchInitialNewsPosts().subscribe(data => {
