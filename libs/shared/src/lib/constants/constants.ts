@@ -3,9 +3,12 @@ export class Constants {
 
     public static FIVE_MINUTES = 300000;
 
+    public static ABOUT = 'About';
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
+    public static CODE_OF_CONDUCT = 'Code of Conduct';
     public static COLLECTIONS = 'Collections';
+    public static GLOBAL_SETTINGS = "Global Settings";
     public static GROUPS = 'Groups';
     public static HISTORY = 'History';
 
@@ -19,12 +22,15 @@ export class Constants {
 
     public static NOTIFICATIONS = 'Notifications';
     public static OFFPRINT = 'Offprint';
+    public static OMNIBUS = 'Omnibus';
     public static REGISTER = 'Register';
     public static SEARCH = 'Search';
     public static SETTINGS = 'Settings';
 
     public static SITE_STAFF = 'Site Staff';
     public static SOCIAL = 'Social';
+    public static SUPPORTERS = 'Supporters';
+    public static TOS = 'Terms of Service';
     public static WATCHING = 'Watching';
     public static WORKS = 'Works';
 }

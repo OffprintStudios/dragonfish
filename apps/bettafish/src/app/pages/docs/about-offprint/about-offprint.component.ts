@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'about-offprint',
@@ -7,5 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class AboutOffprintComponent implements OnInit {
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        setTwoPartTitle(Constants.ABOUT);
+    }
 }

@@ -7,6 +7,7 @@ import { ContentFilter } from '@dragonfish/shared/models/content';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { take } from 'rxjs/operators';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,8 @@ export class GlobalSettingsComponent implements OnInit {
     constructor(private store: Store) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.GLOBAL_SETTINGS);
+
         this.global$.pipe(untilDestroyed(this)).subscribe(global => {
             this.selectedTheme = global.theme;
             this.setContentFilterToggles(global.filter);

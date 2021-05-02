@@ -9,6 +9,7 @@ import { UserState } from '../../../repo/user';
 import { NetworkService } from '../../../services';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { PortfolioState } from '../../../repo/portfolio';
+import { Constants, setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -34,8 +35,10 @@ export class PortfolioCollectionsComponent implements OnInit {
                 this.pageNum = params.has('page') ? +params.get('page') : 1;
                 if ((currUser !== null) && (currUser._id === portUser._id)) {
                     this.fetchData(this.pageNum);
+                    setTwoPartTitle(Constants.COLLECTIONS);
                 } else {
                     this.fetchData(this.pageNum, portUser._id);
+                    setThreePartTitle(portUser.username, Constants.COLLECTIONS);
                 }
             });
     }
