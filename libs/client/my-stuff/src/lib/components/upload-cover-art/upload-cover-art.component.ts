@@ -1,3 +1,4 @@
+import { Store } from '@ngxs/store';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
@@ -41,6 +42,7 @@ export class UploadCoverArtComponent implements OnInit {
         private dialogRef: MatDialogRef<UploadCoverArtComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { kind: ContentKind; contentId: string },
         private stuff: MyStuffService,
+        private store: Store,
     ) {
         if (this.data.kind === ContentKind.ProseContent) {
             this.uploader = new FileUploader({
@@ -56,7 +58,8 @@ export class UploadCoverArtComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.token = localStorage.getItem('auth.token');
+        const stateSnapshot = this.store.snapshot();
+        this.token = stateSnapshot.auth.token;
     }
 
     fileChangeEvent(fileInput: Event): void {
@@ -132,15 +135,16 @@ export class UploadCoverArtComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    uploadCoverArt() {
+    async uploadCoverArt() {
         this.uploader.authToken = `Bearer ${this.token}`;
         this.loading = true;
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
 
-        this.stuff.uploadCoverArt(this.uploader);
-        this.loading = false;
-        this.dialogRef.close();
+        await this.stuff.uploadCoverArt(this.uploader).then(() => {
+            this.loading = false;
+            this.dialogRef.close();
+        });
     }
 
     snapCropperToBorders(event: ImageCroppedEvent): void {

@@ -1,9 +1,10 @@
+import { ContentKind, ContentModel, Genres, PoetryForm, WorkStatus } from '@dragonfish/shared/models/content';
+
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
 import { MyStuffState } from '../../repo';
 import { Observable } from 'rxjs';
-import { ContentKind, ContentModel, Genres, PoetryForm, WorkStatus } from '@dragonfish/shared/models/content';
+import { Select } from '@ngxs/store';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 
 @Component({
@@ -21,7 +22,7 @@ export class ContentPreviewComponent {
 
     constructor(private dialog: MatDialog) {}
 
-    uploadCoverArt(contentId: string) {
-        this.dialog.open(UploadCoverArtComponent, { data: { kind: ContentKind.PoetryContent, contentId: contentId } });
+    uploadCoverArt(contentId: string, kind: ContentKind) {
+        this.dialog.open(UploadCoverArtComponent, { data: { kind: kind, contentId: contentId } });
     }
 }
