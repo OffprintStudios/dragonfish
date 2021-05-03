@@ -1,9 +1,16 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
-import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import {
+    ChangeBio,
+    ChangeEmail,
+    ChangePassword,
+    ChangeUsername,
+    CreateUser,
+    FrontendUser,
+    LoginUser,
+    UpdateTagline,
+    User,
+} from '@dragonfish/shared/models/users';
+import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
+import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
     ContentKind,
@@ -11,31 +18,24 @@ import {
     NewsContentModel,
     SetRating,
 } from '@dragonfish/shared/models/content';
-import { Decision } from '@dragonfish/shared/models/contrib';
-import {
-    FrontendUser,
-    CreateUser,
-    LoginUser,
-    User,
-    UpdateTagline,
-    ChangeEmail,
-    ChangeUsername,
-    ChangePassword,
-    ChangeBio,
-} from '@dragonfish/shared/models/users';
-import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
-import { Section } from '@dragonfish/shared/models/works';
-import { FrontPageStats } from '@dragonfish/shared/models/stats';
-import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
-import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
-import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
-import { HttpError } from '@dragonfish/shared/models/util';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
 import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
+
 import { AlertsService } from '@dragonfish/client/alerts';
+import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { Decision } from '@dragonfish/shared/models/contrib';
+import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { GlobalState } from '../repo/global';
+import { HttpError } from '@dragonfish/shared/models/util';
+import { Injectable } from '@angular/core';
+import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
+import { Section } from '@dragonfish/shared/models/works';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 
 /**
@@ -944,7 +944,7 @@ export class NetworkService {
      */
     public fetchAllNew(pageNum: number, kinds: ContentKind[]) {
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
-        const route = `${this.baseUrl}/browse/fetch-all-new?pageNum=${pageNum}${kindFragment}`;
+        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${this.filter}&pageNum=${pageNum}${kindFragment}`;
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
