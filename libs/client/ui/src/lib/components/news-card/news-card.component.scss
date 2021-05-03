@@ -1,5 +1,7 @@
 div.post {
     border: 1px solid var(--borders);
+    min-height: 9.7rem;
+    max-height: 13rem;
     div.post-byline {
         border-bottom: 1px solid var(--borders);
     }

@@ -29,22 +29,22 @@
                 </div>
                 <div>
                     <div class="tag">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</div>
-                    <div class="separator">//</div>
-                    <div class="tag" title="Views">
-                        <i-feather name="bar-chart-2"></i-feather>
-                        {{ blog.stats.views | abbreviate }}
-                    </div>
-                    <div class="separator">//</div>
-                    <div class="tag" title="Comments">
-                        <i-feather name="message-circle"></i-feather>
-                        {{ blog.stats.comments | abbreviate }}
-                    </div>
                 </div>
             </div>
         </div>
         <div class="blog-body flex-1" [line-truncation]="6" [innerHTML]="blog.body | safeHtml"></div>
         <div class="flex flex-row items-center">
             <div class="flex-1">
+                <div class="tag" title="Views">
+                    <i-feather name="bar-chart-2"></i-feather>
+                    {{ blog.stats.views | abbreviate }}
+                </div>
+                <div class="separator">|</div>
+                <div class="tag" title="Comments">
+                    <i-feather name="message-circle"></i-feather>
+                    {{ blog.stats.comments | abbreviate }}
+                </div>
+                <div class="separator">|</div>
                 <div class="tag" title="Likes">
                     <i-feather name="thumbs-up"></i-feather>
                     {{ blog.stats.likes | abbreviate }}
@@ -57,6 +57,7 @@
             </div>
             <div>
                 <a
+                    class="continue-reading"
                     [routerLink]="[
                         '/portfolio',
                         blog.author._id,
