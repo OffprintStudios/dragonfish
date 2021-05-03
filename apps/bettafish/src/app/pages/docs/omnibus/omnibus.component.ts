@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'omnibus',
@@ -7,5 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class OmnibusComponent implements OnInit {
     constructor() {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        setTwoPartTitle(Constants.OMNIBUS);
+    }
 }

@@ -4,6 +4,7 @@ import { ContentState } from '../../../repo/content';
 import { Observable } from 'rxjs';
 import { PoetryContent } from '@dragonfish/shared/models/content';
 import { ActivatedRoute, Router } from '@angular/router';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-poetry-page',
@@ -17,6 +18,9 @@ export class PoetryPageComponent {
 
     ngOnInit(): void {
         this.fetchData();
+        this.currPoetry$.subscribe((currPoetry) => {
+            setTwoPartTitle(currPoetry.title);
+        })
     }
 
     /**

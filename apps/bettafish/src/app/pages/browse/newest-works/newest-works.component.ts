@@ -4,6 +4,7 @@ import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -19,6 +20,7 @@ export class NewestWorksComponent implements OnInit {
     constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.NEWEST_WORKS);
         this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
             if (params.has('page')) {
                 this.pageNum = +params.get('page');

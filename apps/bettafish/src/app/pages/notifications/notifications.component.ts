@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationSelectModel } from './notification-select.model';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MarkReadRequest } from '@dragonfish/shared/models/notifications';
 import { NotificationsService } from '../../services';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-notifications',
@@ -21,6 +21,10 @@ export class NotificationsComponent {
     viewRead = false;
 
     constructor(private alerts: AlertsService, private notifications: NotificationsService) {}
+
+    ngOnInit() {
+        setTwoPartTitle(Constants.NOTIFICATIONS);
+    }
 
     switchView(): void {
         this.viewRead = !this.viewRead;

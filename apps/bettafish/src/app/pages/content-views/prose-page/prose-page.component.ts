@@ -4,6 +4,7 @@ import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProseContent } from '@dragonfish/shared/models/content';
 import { ContentState } from '../../../repo/content';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-prose-page',
@@ -17,6 +18,9 @@ export class ProsePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchData();
+        this.currProse$.subscribe((currProse) => {
+            setTwoPartTitle(currProse.title);
+        })
     }
 
     /**

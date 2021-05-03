@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-supporters',
@@ -12,6 +13,8 @@ export class SupportersComponent implements OnInit {
     constructor(private route: ActivatedRoute) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.SUPPORTERS);
+    
         this.supporters = this.route.snapshot.data.supporterData as FrontendUser[];
     }
 }
