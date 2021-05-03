@@ -109,3 +109,5 @@ TODO: Flesh this section out.
 ## Want to talk about the project?
 
 Look no further. [We have a Discord server!](https://discord.gg/9cnSwfn)
+
+Future lines of communication pending.
