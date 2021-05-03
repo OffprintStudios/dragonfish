@@ -75,26 +75,13 @@
                 [placeholder]="'There\'s Something I Gotta Say...'"
             ></dragonfish-text-field>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <dragonfish-text-field
-                        [formControlName]="'desc'"
-                        [name]="'desc'"
-                        [type]="'text'"
-                        [label]="'Description'"
-                        [placeholder]="'There\'s something afoot...'"
-                    ></dragonfish-text-field>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Category</label>
-                        <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
-                            <ng-option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
-                                {{ cat.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
+            <div class="offprint-select">
+                <label>Category</label>
+                <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
+                    <ng-option *ngFor="let cat of categories | keyvalue" [value]="cat.key">
+                        {{ cat.value }}
+                    </ng-option>
+                </ng-select>
             </div>
 
             <dragonfish-editor

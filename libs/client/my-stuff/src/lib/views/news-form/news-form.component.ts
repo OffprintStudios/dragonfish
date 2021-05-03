@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { ContentKind, ContentRating, NewsForm } from '@dragonfish/shared/models/content';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NewsCategory, NewsContentModel } from '@dragonfish/shared/models/content';
-import { MyStuffState } from '../../repo';
-import { ContentRating, ContentKind, NewsForm } from '@dragonfish/shared/models/content';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffService } from '../../repo/services';
+import { MyStuffState } from '../../repo';
+import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
 
 @UntilDestroy()
 @Component({
@@ -36,7 +37,6 @@ export class NewsFormComponent implements OnInit {
                 this.formTitle = `Viewing "${content.title}"`;
                 this.postForm.setValue({
                     title: content.title,
-                    desc: content.desc,
                     body: content.body,
                     category: content.meta.category,
                 });
@@ -44,7 +44,6 @@ export class NewsFormComponent implements OnInit {
                 this.formTitle = `Create a Newspost`;
                 this.postForm.setValue({
                     title: '',
-                    desc: '',
                     body: '',
                     category: null,
                 });

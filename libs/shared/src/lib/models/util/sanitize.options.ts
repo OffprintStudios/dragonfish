@@ -15,6 +15,8 @@ export const sanitizeOptions: IOptions = {
     allowedAttributes: {
         div: ['style'],
         p: ['style'],
+        ul: ['style'],
+        ol: ['style', 'type', 'start', 'reversed'],
         a: ['href', 'name', 'target', 'style'],
         h1: ['style'],
         h2: ['style'],

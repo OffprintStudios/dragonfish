@@ -141,10 +141,9 @@ export class UploadCoverArtComponent implements OnInit {
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
 
-        await this.stuff.uploadCoverArt(this.uploader).then(() => {
-            this.loading = false;
-            this.dialogRef.close();
-        });
+        await this.stuff.uploadCoverArt(this.uploader);
+        this.loading = false;
+        this.dialogRef.close();
     }
 
     snapCropperToBorders(event: ImageCroppedEvent): void {

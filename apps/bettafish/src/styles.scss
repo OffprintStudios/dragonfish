@@ -436,6 +436,15 @@ div.html-description {
     ul,ol {
         margin-left: 2.5rem;
     }
+    ul {
+        list-style-type: disc;
+    }
+    ol {
+        list-style-type: decimal;
+    }
+    li {
+        @apply my-1;
+    }
 }
 
 .accented-content-box {
