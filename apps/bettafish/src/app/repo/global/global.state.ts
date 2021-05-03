@@ -10,6 +10,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 @State<GlobalStateModel>({
     name: 'global',
     defaults: {
+        isOfAge: false,
         filter: ContentFilter.Default,
         theme: ThemePref.Crimson,
     },
@@ -29,6 +30,13 @@ export class GlobalState {
     constructor(private globalService: GlobalService, private alerts: AlertsService) {}
 
     /* Actions */
+    @Action(Global.SetOfAge)
+    public async setOfAge({ patchState }: StateContext<GlobalStateModel>) {
+        patchState({
+            isOfAge: true,
+        });
+    }
+
     @Action(Global.SetContentFilter)
     public async setContentFilter({ patchState }: StateContext<GlobalStateModel>, action: Global.SetContentFilter) {
         const filter = this.globalService.setContentFilter(action.enableMature, action.enableExplicit);

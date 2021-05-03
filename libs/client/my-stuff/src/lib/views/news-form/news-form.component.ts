@@ -24,7 +24,6 @@ export class NewsFormComponent implements OnInit {
 
     postForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]),
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         category: new FormControl(null, [Validators.required]),
     });
@@ -73,7 +72,6 @@ export class NewsFormComponent implements OnInit {
 
         const formData: NewsForm = {
             title: this.fields.title.value,
-            desc: this.fields.desc.value,
             body: this.fields.body.value,
             category: this.fields.category.value,
         };

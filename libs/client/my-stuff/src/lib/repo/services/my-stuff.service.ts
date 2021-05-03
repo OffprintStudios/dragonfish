@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
-import { ContentModel, ContentKind, FormType, PubChange } from '@dragonfish/shared/models/content';
-import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import * as MyStuff from '../my-stuff.actions';
 import * as Sections from '../sections/sections.actions';
+
+import { ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
+
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { FileUploader } from 'ng2-file-upload';
+import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MyStuffService {
@@ -39,7 +41,7 @@ export class MyStuffService {
     }
 
     @Dispatch()
-    public uploadCoverArt(uploader: FileUploader) {
+    public async uploadCoverArt(uploader: FileUploader) {
         return new MyStuff.UploadCoverArt(uploader);
     }
 

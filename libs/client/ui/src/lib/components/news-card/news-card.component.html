@@ -4,11 +4,15 @@
             <a [routerLink]="['/news', post._id, post.title | slugify]">{{ post.title }}</a>
         </h4>
     </div>
-    <div class="post-byline flex flex-row py-1">
-        <div class="text-sm">
+    <div class="post-byline flex flex-row py-1 text-sm">
+        <div>
             by <a [routerLink]="['/portfolio', $any(post.author)._id, $any(post.author).username | slugify]">
                 {{ $any(post.author).username }}
             </a>
+        </div>
+        <div class="mx-1">//</div>
+        <div>
+            {{ post.audit.publishedOn | localedate: 'longDate' }}
         </div>
     </div>
     <div class="post-body" [line-truncation]="6" [innerHTML]="post.body | safeHtml"></div>

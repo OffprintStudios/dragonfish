@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CookieService, CookieOptions } from 'ngx-cookie';
-
 import { ContentFilter } from '@dragonfish/shared/models/content';
 
 @Injectable({

@@ -373,6 +373,7 @@ div.context-menu {
  * innerHtml AND view encapsulation, we can move all this back down to the
  * component level.
 */
+div.comment-body,
 div.section-body,
 div.blog-body,
 div.authors-note,
@@ -385,6 +386,11 @@ div.html-description {
     h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
     h6 { font-size: 1em; text-transform: uppercase; }
     img { max-width: 100% }
+
+    quote {
+        margin-left: 0.75rem;
+        border-left: 2px solid var(--borders);
+    }
 
     // CKEditor-generated image styles
     .image {

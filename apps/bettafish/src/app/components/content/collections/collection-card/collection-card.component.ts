@@ -6,6 +6,9 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { CollectionFormComponent } from '../collection-form/collection-form.component';
 import { FrontendUser } from '@dragonfish/shared/models/users';
+import { UserState } from '../../../../repo/user';
+import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
 
 @Component({
     selector: 'dragonfish-collection-card',
@@ -13,6 +16,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
     styleUrls: ['./collection-card.component.scss']
 })
 export class CollectionCardComponent {
+    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @Input() collection: Collection;
     @Input() user: FrontendUser;
     submitting = false;

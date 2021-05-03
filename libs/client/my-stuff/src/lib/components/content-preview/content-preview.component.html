@@ -42,7 +42,7 @@
                         [matTooltipClass]="'offprint-tooltip'"
                         (mouseenter)="addEditIcon = true"
                         (mouseleave)="addEditIcon = false"
-                        (click)="uploadCoverArt(currContent._id)"
+                        (click)="uploadCoverArt(currContent._id, currContent.kind)"
                     >
                         <span class="edit-icon" *ngIf="addEditIcon"><i-feather name="edit-3"></i-feather></span>
                         <img class="rounded-md" [src]="$any(currContent.meta).coverArt" />
@@ -53,7 +53,7 @@
                         class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-row items-center justify-center"
                         [matTooltip]="'Add Cover Art'"
                         [matTooltipClass]="'offprint-tooltip'"
-                        (click)="uploadCoverArt(currContent._id)"
+                        (click)="uploadCoverArt(currContent._id, currContent.kind)"
                     >
                         <i-feather name="plus"></i-feather>
                     </div>
