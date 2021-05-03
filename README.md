@@ -34,7 +34,7 @@ Once you've installed and verified that these dependencies are working as expect
 
 - Create a file named `.env` at the root of the repository
 - Copy the contents of `sample.env` to your new `.env`
-- Edit `.env` to set `MONGO_URL=mongodb://localhost:27017`
+- Edit `.env` to set `MONGO_URL=mongodb://localhost:27017/<your_database_name_here>`
 - Edit `.env` to set `JWT_SECRET` to an _actual_ secret, such as a plain random string
 - If you intend to test out image functionality, fill in the `DIGITALOCEAN_SPACES` variables with your information
 
