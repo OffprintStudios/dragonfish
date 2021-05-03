@@ -1,23 +1,19 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { Component, OnInit } from '@angular/core';
+
+import { AlertsService } from '@dragonfish/client/alerts';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { AlertsService } from '@dragonfish/client/alerts';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 import { UserService } from '../../../../repo/user/services';
-import { UserState } from '../../../../repo/user';
-import { AuthState } from '../../../../repo/auth';
 
 @Component({
     selector: 'dragonfish-upload-avatar',
     templateUrl: './upload-avatar.component.html',
     styleUrls: ['./upload-avatar.component.scss']
 })
-export class UploadAvatarComponent {
-    @SelectSnapshot(UserState.currUser) currentUser: FrontendUser;
-    @SelectSnapshot(AuthState.token) token: string;
-
+export class UploadAvatarComponent implements OnInit {
+    token: string;
     imageChangedEvent: Event;
     croppedImage: any = '';
 
@@ -35,7 +31,13 @@ export class UploadAvatarComponent {
         private dialogRef: MatDialogRef<UploadAvatarComponent>,
         private alerts: AlertsService,
         private user: UserService,
+        private store: Store,
     ) {}
+
+    ngOnInit() {
+        const stateSnapshot = this.store.snapshot();
+        this.token = stateSnapshot.auth.token;
+    }
 
     fileChangeEvent(event: any): void {
         this.imageChangedEvent = event;
