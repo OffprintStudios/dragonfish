@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
@@ -11,9 +11,9 @@ import { ContentKind } from '@dragonfish/shared/models/content';
     templateUrl: './upload-cover-art.component.html',
     styleUrls: ['./upload-cover-art.component.scss'],
 })
-export class UploadCoverArtComponent {
+export class UploadCoverArtComponent implements OnInit {
     workId: string;
-
+    token: string;
     imageChangedEvent: Event;
     croppedImage: any = '';
 
@@ -53,6 +53,10 @@ export class UploadCoverArtComponent {
                 itemAlias: 'coverart',
             });
         }
+    }
+
+    ngOnInit() {
+        this.token = localStorage.getItem('auth.token');
     }
 
     fileChangeEvent(fileInput: Event): void {
@@ -129,8 +133,7 @@ export class UploadCoverArtComponent {
     }
 
     uploadCoverArt() {
-        const token = localStorage.getItem('auth.token');
-        this.uploader.authToken = `Bearer ${token}`;
+        this.uploader.authToken = `Bearer ${this.token}`;
         this.loading = true;
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
