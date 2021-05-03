@@ -11,13 +11,13 @@ export class BrowseController {
     constructor(private readonly browseStore: BrowseStore) {}
 
     @Get('fetch-first-new')
-    async fetchFirstNew(@Query('contentFilter') filter: ContentFilter) {
+    async fetchFirstNew(@Query('filter') filter: ContentFilter) {
         return await this.browseStore.fetchFirstNew(filter);
     }
 
     @Get('fetch-all-new')
     async fetchAllNew(
-        @Query('contentFilter') filter: ContentFilter,
+        @Query('filter') filter: ContentFilter,
         @Query('pageNum') pageNum: number,
         @Query('userId') userId: string,
         @Query('kind') kind: ContentKind[],
