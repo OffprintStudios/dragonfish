@@ -33,7 +33,7 @@
             </form>
         </ng-container>
         <ng-template #viewMode>
-            <div class="html-description" [innerHTML]="comment.body | safeHtml"></div>
+            <div class="comment-body" [innerHTML]="comment.body | safeHtml"></div>
         </ng-template>
     </div>
     <div class="flex flex-row items-center">
