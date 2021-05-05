@@ -6,11 +6,20 @@
                 <h4 class="text-sm text-white">{{ currentUser.profile.bio }}</h4>
             </div>
             <div class="flex-1"><!--spacer--></div>
-            <button class="border-none rounded-full shadow-none text-white">
+            <button
+                class="border-none rounded-full shadow-none text-white"
+                [matTooltip]="'Friends'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
                 <i-feather name="users" class="mr-0"></i-feather>
             </button>
             <div class="mx-0.5"><!--spacer--></div>
-            <button class="border-none rounded-full shadow-none text-white">
+            <button
+                class="border-none rounded-full shadow-none text-white"
+                [routerLink]="['/docs']"
+                [matTooltip]="'Settings'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
                 <i-feather name="settings" class="mr-0"></i-feather>
             </button>
         </div>
@@ -18,9 +27,9 @@
             <dragonfish-notifications></dragonfish-notifications>
         </div>
         <div class="self-center flex flex-row items-center mb-6">
-            <button class="shadow-none">
+            <button class="shadow-none" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]">
                 <i-feather name="user"></i-feather>
-                Profile
+                Portfolio
             </button>
             <div class="mx-2"><!--spacer--></div>
             <button class="shadow-none" (click)="logout()">

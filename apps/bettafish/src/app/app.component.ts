@@ -8,6 +8,7 @@ import { UserState } from './repo/user';
 import { ElectronService } from 'ngx-electron';
 import { GlobalState } from './repo/global';
 import { SidenavService } from './services';
+import { NavigationStart, Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     @Select(GlobalState.theme) theme$: Observable<ThemePref>;
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(public electron: ElectronService, public sidenavService: SidenavService) {}
+    constructor(public electron: ElectronService, public sidenavService: SidenavService, private router: Router) {}
 
     ngOnInit(): void {
         this.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
@@ -38,6 +39,12 @@ export class AppComponent implements OnInit, AfterViewInit {
                 }
             } else {
                 body.classList.replace(currTheme, 'crimson');
+            }
+        });
+
+        this.router.events.pipe(untilDestroyed(this)).subscribe(event => {
+            if (event instanceof NavigationStart) {
+                this.sidenavService.close();
             }
         });
     }
