@@ -25,6 +25,7 @@ export class UploadAvatarComponent implements OnInit {
     uploader: FileUploader = new FileUploader({
         url: '/api/user/upload-avatar',
         itemAlias: 'avatar',
+        headers: []
     });
 
     constructor(

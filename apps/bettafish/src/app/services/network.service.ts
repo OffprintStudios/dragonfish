@@ -37,6 +37,7 @@ import { Injectable } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { Section } from '@dragonfish/shared/models/works';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { CookieService } from 'ngx-cookie';
 
 /**
  * ## NetworkService
@@ -50,7 +51,7 @@ export class NetworkService {
     @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
     private baseUrl = `/api`;
-    constructor(private readonly http: HttpClient, private readonly alertsService: AlertsService) {}
+    constructor(private readonly http: HttpClient, private readonly alertsService: AlertsService, private readonly cookieService: CookieService ) {}
 
     //#region ---APPROVAL QUEUE---
 
@@ -607,8 +608,15 @@ export class NetworkService {
      * @param uploader The file uploader, prefilled with the URL and instructions for uploading the image.
      */
     public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
+        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === "XSRF-TOKEN");
+        const currentXsrfToken = this.cookieService.get("XSRF-TOKEN") ?? "";
+        if (!xsrfHeader) {            
+            uploader.options.headers.push({name: "XSRF-TOKEN", value: currentXsrfToken});
+        } else {
+            xsrfHeader.value = currentXsrfToken;
+        }        
         return new Observable<T>((observer) => {
-            uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
+            uploader.onCompleteItem = (_: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = tryParseJsonHttpError(response);
                     if (!errorMessage) {
@@ -622,6 +630,12 @@ export class NetworkService {
                     }
                 }
 
+                // Normally, our midleware handles this, but since we're handling the token manually here,
+                // we need to set up the next token manually as well.
+                const newXsrfToken = headers["XSRF-TOKEN"];
+                if (newXsrfToken) {
+                    this.cookieService.put("XSRF-TOKEN", newXsrfToken);
+                }
                 const work: T = JSON.parse(response);
                 observer.next(work);
                 observer.complete();

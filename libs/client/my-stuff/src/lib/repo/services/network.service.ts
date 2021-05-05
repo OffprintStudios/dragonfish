@@ -6,13 +6,14 @@ import { ContentModel, ContentKind, FormType, PubChange } from '@dragonfish/shar
 import { Section, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
+import { CookieService } from 'ngx-cookie';
 
 @Injectable()
 export class NetworkService {
     private readonly contentUrl: string = `/api/content`;
     private readonly sectionsUrl: string = `/api/sections`;
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private readonly cookieService: CookieService) {}
 
     /**
      * Fetches one piece of content from the backend.
@@ -123,8 +124,15 @@ export class NetworkService {
      * @returns Observable
      */
     public uploadCoverart(uploader: FileUploader): Observable<ContentModel> {
+        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === "XSRF-TOKEN");
+        const currentXsrfToken = this.cookieService.get("XSRF-TOKEN") ?? "";
+        if (!xsrfHeader) {            
+            uploader.options.headers.push({name: "XSRF-TOKEN", value: currentXsrfToken});
+        } else {
+            xsrfHeader.value = currentXsrfToken;
+        }        
         return new Observable<ContentModel>((observer) => {
-            uploader.onCompleteItem = (_: FileItem, response: string, status: number, __: ParsedResponseHeaders) => {
+            uploader.onCompleteItem = (_: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = tryParseJsonHttpError(response);
                     if (!errorMessage) {
@@ -136,6 +144,13 @@ export class NetworkService {
                     } else {
                         return observer.error(errorMessage);
                     }
+                }
+
+                // Normally, our midleware handles this, but since we're handling the token manually here,
+                // we need to set up the next token manually as well.
+                const newXsrfToken = headers["XSRF-TOKEN"];
+                if (newXsrfToken) {
+                    this.cookieService.put("XSRF-TOKEN", newXsrfToken);
                 }
                 observer.next(JSON.parse(response));
                 observer.complete();
