@@ -8,7 +8,6 @@ import { SocialRoutes } from './pages/social';
 import { DocsRoutes } from './pages/docs';
 import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
-import { NotificationsRoutes } from './pages/notifications';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
 import { MigrationRoutes } from './pages/migration';
@@ -32,7 +31,6 @@ const routes: Routes = [
     ...DocsRoutes,
     ...PortfolioRoutes,
     ...MessagesRoutes,
-    ...NotificationsRoutes,
     ...ContentViewRoutes,
     ...MigrationRoutes,
     {

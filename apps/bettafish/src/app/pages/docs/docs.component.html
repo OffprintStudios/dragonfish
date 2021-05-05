@@ -13,7 +13,7 @@
                 [routerLinkActive]="'active'"
                 [routerLinkActiveOptions]="{ exact: true }"
             >
-                <span class="link-icon"><i-feather name="globe"></i-feather></span>Global
+                <span class="link-icon"><i-feather name="Settings"></i-feather></span>Settings
             </a>
             <a
                 class="link"
@@ -68,6 +68,14 @@
 
 <ng-container *ngIf="route.children.length === 0; else viewingDoc">
     <div class="my-8 w-11/12 mx-auto">
+        <ng-container *ngIf="currentUser$ | async">
+            <dragonfish-account></dragonfish-account>
+            <div class="my-5"><!--spacer--></div>
+            <dragonfish-profile></dragonfish-profile>
+            <div class="my-5"><!--spacer--></div>
+            <dragonfish-vip-settings></dragonfish-vip-settings>
+            <div class="my-5"><!--spacer--></div>
+        </ng-container>
         <dragonfish-global-settings></dragonfish-global-settings>
     </div>
 </ng-container>

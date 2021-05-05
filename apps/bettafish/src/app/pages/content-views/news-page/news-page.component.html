@@ -29,10 +29,8 @@
             </div>
         </div>
     </div>
-    <div class="post-container">
-        <div class="prose mx-auto">
-            <div class="html-description" [innerHtml]="currPost.body | safeHtml"></div>
-        </div>
+    <div class="post-container w-6/12 mx-auto">
+        <div class="blog-body" [innerHtml]="currPost.body | safeHtml"></div>
     </div>
 
     <div class="relative z-0">

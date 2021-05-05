@@ -1,53 +1,69 @@
 <div class="dash-nav shadow-lg sticky top-0 z-40">
-    <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
-        <i-feather name="grid" class="text-white relative top-0.5 mr-4"></i-feather>
-        <h3 class="text-4xl text-white relative top-1.5 font-semibold pr-4">
-            <a class="text-white hover:text-white" [routerLink]="['/dashboard']">Dashboard</a>
-        </h3>
-        <div class="border border-white h-10 bg-white"><!--separator--></div>
-        <div class="menu ml-4 flex flex-row items-center" [matMenuTriggerFor]="navMenu">
-
-            <h4 class="text-2xl text-white font-light italic relative top-1">
-                {{ currRoute }}
-            </h4>
-            <i-feather name="chevron-down" class="text-white"></i-feather>
-
+    <div class="w-11/12 mx-auto py-4">
+        <div class="flex flex-row items-center">
+            <i-feather name="grid" class="text-white relative top-0.5 mr-4"></i-feather>
+            <h3 class="text-4xl text-white relative top-1.5 font-semibold pr-4">
+                Dashboard
+            </h3>
+            <div class="flex-1"><!--spacer--></div>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="inbox"></i-feather>
+            </button>
+            <button class="border-none shadow-none rounded-full p-2.5">
+                <i-feather name="bell"></i-feather>
+            </button>
         </div>
-        <div class="flex-1"><!--spacer--></div>
-        <button class="border-none shadow-none rounded-full p-2.5">
-            <i-feather name="inbox"></i-feather>
-        </button>
-        <button class="border-none shadow-none rounded-full p-2.5">
-            <i-feather name="bell"></i-feather>
-        </button>
+        <div class="flex flex-row items-center">
+            <a
+                class="link"
+                [routerLink]="['overview']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="bar-chart-2"></i-feather></span>
+                Overview
+            </a>
+            <a
+                class="link"
+                [routerLink]="['approval-queue']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="list"></i-feather></span>
+                Approval Queue
+            </a>
+            <a
+                class="link"
+                [routerLink]="['group-queue']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="user-check"></i-feather></span>
+                Groups
+            </a>
+            <a
+                class="link"
+                [routerLink]="['reports']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="alert-triangle"></i-feather></span>
+                Reports
+            </a>
+            <a
+                class="link"
+                [routerLink]="['users-management']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="users"></i-feather></span>
+                Users
+            </a>
+            <a
+                class="link"
+                [routerLink]="['audit-log']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="clipboard"></i-feather></span>
+                Audit Log
+            </a>
+        </div>
     </div>
 </div>
-
-<mat-menu #navMenu="matMenu">
-    <button mat-menu-item [routerLink]="['overview']">
-        <i-feather name="grid"></i-feather>
-        Overview
-    </button>
-    <button mat-menu-item [routerLink]="['approval-queue']">
-        <i-feather name="list"></i-feather>
-        Approval Queue
-    </button>
-    <button mat-menu-item [routerLink]="['group-queue']">
-        <i-feather name="user-check"></i-feather>
-        Group Queue
-    </button>
-    <button mat-menu-item [routerLink]="['reports']">
-        <i-feather name="alert-triangle"></i-feather>
-        Reports
-    </button>
-    <button mat-menu-item [routerLink]="['users-management']">
-        <i-feather name="users"></i-feather>
-        Users
-    </button>
-    <button mat-menu-item [routerLink]="['audit-log']">
-        <i-feather name="clipboard"></i-feather>
-        Audit Log
-    </button>
-</mat-menu>
 
 <router-outlet></router-outlet>

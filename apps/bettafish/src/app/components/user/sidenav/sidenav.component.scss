@@ -1,0 +1,12 @@
+div.sidenav {
+    min-width: 24rem;
+    background: var(--background);
+    div.header {
+        background: var(--accent);
+        button {
+            &:hover {
+                background: var(--accent-light);
+            }
+        }
+    }
+}

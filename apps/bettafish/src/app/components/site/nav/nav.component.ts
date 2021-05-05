@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { AuthService } from '../../../repo/auth/services';
 import { ElectronService } from 'ngx-electron';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { PopupModel } from '@dragonfish/shared/models/util';
+import { SidenavService } from '../../../services';
 
 @Component({
     selector: 'dragonfish-nav',
@@ -19,7 +20,11 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 export class NavComponent {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(private dialog: MatDialog, private auth: AuthService, public electron: ElectronService) {}
+    constructor(
+        private dialog: MatDialog,
+        public electron: ElectronService,
+        public sidenavService: SidenavService,
+    ) {}
 
     openAuthModal() {
         this.dialog.open(AuthModalComponent);
@@ -27,18 +32,5 @@ export class NavComponent {
 
     canSeeDash(userRoles: Roles[]) {
         return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
-    }
-
-    logout() {
-        const alertData: PopupModel = {
-            message: 'Are you sure you want to log out?',
-            confirm: true,
-        };
-        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
-        dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
-            if (wantsToLogOut) {
-                this.auth.logout();
-            }
-        });
     }
 }

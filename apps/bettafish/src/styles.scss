@@ -168,16 +168,19 @@ div.empty {
     justify-content: center;
     //border-bottom: 1px solid var(--borders);
     margin-bottom: 1.5rem;
-}
-.nav-tab {
-    font-size: 18px;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    font-weight: 700;
-    letter-spacing: 2px;
-    &:hover {
-        color: var(--accent);
-        transition: all 0.15s ease;
+    .nav-tab {
+        @apply text-lg;
+        text-transform: lowercase;
+        font-variant: small-caps;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--text-color);
+        border-bottom-width: 2px;
+        border-color: transparent;
+        &:hover {
+            color: var(--accent);
+            transition: all 0.15s ease;
+        }
     }
 }
 .nav-tabset:not(.disable-style) .nav-tab.active {

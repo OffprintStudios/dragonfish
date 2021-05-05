@@ -14,6 +14,7 @@ import { UiModule } from '@dragonfish/client/ui';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { MaterialModule } from '@dragonfish/client/material';
 import { MyStuffRoutingModule } from './my-stuff-routing.module';
+import { CookieModule } from 'ngx-cookie';
 
 /* Components */
 import { MyStuffComponent } from './my-stuff.component';
@@ -76,6 +77,7 @@ import { NetworkService, MyStuffService } from './repo/services';
         MyStuffRoutingModule,
         ClickOutsideModule,
         ContextMenuModule,
+        CookieModule,
     ],
     providers: [
         NetworkService,

@@ -2,116 +2,16 @@
     <div class="py-2" style="-webkit-app-region: drag" *ngIf="electron.isElectronApp">
         <!--spacer-->
     </div>
-    <ng-container *ngIf="currentUser$ | async as currentUser">
+    <ng-container *ngIf="currentUser$ | async as currentUser; else noUserLogIn">
         <a
             class="link avatar"
-            [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]"
-            [routerLinkActive]="'active'"
-            [matTooltip]="'Me'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
+            (click)="sidenavService.toggle()"
+            [ngClass]="sidenavService.isOpened ? 'active' : ''"
         >
             <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
         </a>
     </ng-container>
-    <a
-        class="link"
-        [routerLink]="['/']"
-        [routerLinkActive]="'active'"
-        [routerLinkActiveOptions]="{ exact: true }"
-        [matTooltip]="'Home'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><i-feather name="home"></i-feather></span>
-    </a>
-    <a
-        class="link"
-        [routerLink]="['/browse']"
-        [routerLinkActive]="'active'"
-        [matTooltip]="'Browse'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><i-feather name="map"></i-feather></span>
-    </a>
-    <a
-        class="link"
-        [routerLink]="['/social']"
-        [routerLinkActive]="'active'"
-        [matTooltip]="'Social'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><i-feather name="users"></i-feather></span>
-    </a>
-    <ng-container *ngIf="currentUser$ | async as currentUser">
-        <a
-            class="link"
-            [routerLink]="['/my-stuff']"
-            [routerLinkActive]="'active'"
-            [matTooltip]="'My Stuff'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-        >
-            <span class="link-icon"><i-feather name="hard-drive"></i-feather></span>
-        </a>
-        <a
-            class="link"
-            [routerLink]="['/messages']"
-            [routerLinkActive]="'active'"
-            [matTooltip]="'Messages'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-        >
-            <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
-        </a>
-        <a
-            class="link"
-            [routerLink]="['/notifications']"
-            [routerLinkActive]="'active'"
-            [matTooltip]="'Notifications'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-        >
-            <span class="link-icon"><i-feather name="bell"></i-feather></span>
-        </a>
-    </ng-container>
-    <a
-        class="link"
-        [routerLink]="['/docs']"
-        [routerLinkActive]="'active'"
-        [matTooltip]="'More'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><i-feather name="more-horizontal" style="stroke-width: 2"></i-feather></span>
-    </a>
-    <div class="flex-1"><!--spacer--></div>
-    <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
-        <ng-container *ngIf="canSeeDash(currentUser.roles)">
-            <a
-                class="link"
-                [routerLink]="['/dashboard']"
-                [routerLinkActive]="'active'"
-                [matTooltip]="'Dashboard'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
-            >
-                <span class="link-icon"><i-feather name="grid"></i-feather></span>
-            </a>
-        </ng-container>
-        <button
-            class="link"
-            [matTooltip]="'Log Out'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-            (click)="logout()"
-        >
-            <span class="link-icon"><i-feather name="log-out"></i-feather></span>
-        </button>
-    </ng-container>
-    <ng-template #noUser>
+    <ng-template #noUserLogIn>
         <button
             class="link"
             [matTooltip]="'Log In'"
@@ -121,5 +21,119 @@
         >
             <span class="link-icon"><i-feather name="log-in"></i-feather></span>
         </button>
+    </ng-template>
+    <ng-container *ngIf="sidenavService.isOpened; else noSidenav">
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <a class="link">
+                <span class="link-icon"><i-feather name="hard-drive"></i-feather></span>
+            </a>
+            <a class="link">
+                <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
+            </a>
+        </ng-container>
+        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <a class="link">
+            <span class="link-icon"><i-feather name="home"></i-feather></span>
+        </a>
+        <a class="link">
+            <span class="link-icon"><i-feather name="map"></i-feather></span>
+        </a>
+        <a class="link">
+            <span class="link-icon"><i-feather name="users"></i-feather></span>
+        </a>
+        <div class="flex-1"><!--spacer--></div>
+        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+                <a class="link">
+                    <span class="link-icon"><i-feather name="grid"></i-feather></span>
+                </a>
+            </ng-container>
+        </ng-container>
+        <a class="link">
+            <span class="link-icon"><i-feather name="more-vertical" style="stroke-width: 2"></i-feather></span>
+        </a>
+    </ng-container>
+    <ng-template #noSidenav>
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <a
+                class="link"
+                [routerLink]="['/my-stuff']"
+                [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+                [matTooltip]="'My Stuff'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><i-feather name="hard-drive"></i-feather></span>
+            </a>
+            <a
+                class="link"
+                [routerLink]="['/messages']"
+                [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+                [matTooltip]="'Messages'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
+            </a>
+        </ng-container>
+        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <a
+            class="link"
+            [routerLink]="['/']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [matTooltip]="'Home'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="home"></i-feather></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/browse']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'Browse'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="map"></i-feather></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/social']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'Social'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="users"></i-feather></span>
+        </a>
+        <div class="flex-1"><!--spacer--></div>
+        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+                <a
+                    class="link"
+                    [routerLink]="['/dashboard']"
+                    [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+                    [matTooltip]="'Dashboard'"
+                    [matTooltipPosition]="'right'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                >
+                    <span class="link-icon"><i-feather name="grid"></i-feather></span>
+                </a>
+            </ng-container>
+        </ng-container>
+        <a
+            class="link"
+            [routerLink]="['/docs']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'More'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="more-vertical" style="stroke-width: 2"></i-feather></span>
+        </a>
     </ng-template>
 </nav>
