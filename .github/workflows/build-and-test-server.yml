@@ -5,6 +5,13 @@ name: Build & Test API
 on:
     pull_request:
         branches: [ main ]
+        paths:
+        - 'nx.json'
+        - 'package.json'
+        - 'workspace.json'
+        - 'libs/shared/**'
+        - 'apps/api/**'
+        - '.github/workflows/build-and-test-server.yml'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,7 +28,7 @@ jobs:
             - name: Setup Node.js environment
               uses: actions/setup-node@v1
               with:
-                  node-version: 14.6.0
+                  node-version: 15.5.1
 
             - name: Install global dependencies
               run: yarn global add @angular/cli @nestjs/cli nx typescript less
