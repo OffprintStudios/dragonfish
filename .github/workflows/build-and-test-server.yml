@@ -5,6 +5,13 @@ name: Build & Test API
 on:
     pull_request:
         branches: [ main ]
+        paths:
+        - 'nx.json'
+        - 'package.json'
+        - 'workspace.json'
+        - 'libs/shared/**'
+        - 'apps/api/**'
+        - '.github/workflows/build-and-test-server.yml'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
