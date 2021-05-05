@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { AuthService } from '../../../repo/auth/services';
 import { ElectronService } from 'ngx-electron';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { PopupModel } from '@dragonfish/shared/models/util';
+import { SidenavService } from '../../../services';
 
 @Component({
     selector: 'dragonfish-nav',
@@ -19,7 +20,12 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 export class NavComponent {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(private dialog: MatDialog, private auth: AuthService, public electron: ElectronService) {}
+    constructor(
+        private dialog: MatDialog,
+        private auth: AuthService,
+        public electron: ElectronService,
+        public sidenavService: SidenavService,
+    ) {}
 
     openAuthModal() {
         this.dialog.open(AuthModalComponent);

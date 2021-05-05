@@ -5,8 +5,19 @@
 <ng-template #isInBrowser>
     <main class="content flex flex-row">
         <dragonfish-nav></dragonfish-nav>
-        <div class="flex-auto overflow-y-auto">
-            <router-outlet></router-outlet>
-        </div>
+        <mat-drawer-container autosize>
+            <mat-drawer
+                #sidenav
+                class="offprint-sidenav"
+                mode="over"
+                (openedStart)="sidenavService.setCurrState()"
+                (closedStart)="sidenavService.setCurrState()"
+            >
+                <dragonfish-sidenav></dragonfish-sidenav>
+            </mat-drawer>
+            <div class="flex-auto overflow-y-auto">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-drawer-container>
     </main>
 </ng-template>

@@ -63,3 +63,10 @@ button.mat-menu-item {
 .mat-progress-spinner circle, .mat-spinner circle {
     stroke: var(--accent);
 }
+
+/* Mat sidenav */
+.mat-drawer-container {
+    width: 100%;
+    background-color: var(--background) !important;
+    color: var(--text-color) !important;
+}

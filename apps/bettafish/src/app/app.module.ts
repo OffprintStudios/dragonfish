@@ -32,7 +32,6 @@ import { SocialPages } from './pages/social';
 import { DocsPages } from './pages/docs';
 import { PortfolioPages } from './pages/portfolio';
 import { MessagesPages } from './pages/messages';
-import { NotificationsPages } from './pages/notifications';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
 import { MigrationPages } from './pages/migration';
@@ -86,7 +85,6 @@ import { environment } from '../environments/environment';
         ...DocsPages,
         ...PortfolioPages,
         ...MessagesPages,
-        ...NotificationsPages,
         ...ContentViewPages,
         ...ErrorPages,
         ...MigrationPages,
