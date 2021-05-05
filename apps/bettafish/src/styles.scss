@@ -390,7 +390,7 @@ div.html-description {
     h6 { font-size: 1em; text-transform: uppercase; }
     img { max-width: 100% }
 
-    quote {
+    quote, blockquote {
         margin-left: 0.75rem;
         border-left: 2px solid var(--borders);
     }
