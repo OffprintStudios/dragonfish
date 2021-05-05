@@ -390,9 +390,9 @@ div.html-description {
     h6 { font-size: 1em; text-transform: uppercase; }
     img { max-width: 100% }
 
-    quote {
-        margin-left: 0.75rem;
-        border-left: 2px solid var(--borders);
+    quote, blockquote {
+        margin-left: 0.75rem !important;
+        border-left: 2px solid var(--borders) !important;
     }
 
     // CKEditor-generated image styles
