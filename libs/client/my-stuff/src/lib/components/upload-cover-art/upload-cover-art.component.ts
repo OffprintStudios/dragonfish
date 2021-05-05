@@ -48,11 +48,13 @@ export class UploadCoverArtComponent implements OnInit {
             this.uploader = new FileUploader({
                 url: `/api/content/prose/upload-coverart/${this.data.contentId}`,
                 itemAlias: 'coverart',
+                headers: [],
             });
         } else if (this.data.kind === ContentKind.PoetryContent) {
             this.uploader = new FileUploader({
                 url: `/api/content/poetry/upload-coverart/${this.data.contentId}`,
                 itemAlias: 'coverart',
+                headers: [],
             });
         }
     }
