@@ -391,8 +391,9 @@ div.html-description {
     img { max-width: 100% }
 
     quote, blockquote {
-        margin-left: 0.75rem;
-        border-left: 2px solid var(--borders);
+        margin-left: 0.75rem !important;
+        padding-left: 0.75rem !important;
+        border-left: 2px solid var(--borders) !important;
     }
 
     // CKEditor-generated image styles
