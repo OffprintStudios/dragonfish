@@ -67,6 +67,7 @@ import { UserState } from './repo/user';
 import { ContentState } from './repo/content';
 import { PortfolioState } from './repo/portfolio';
 import { CollectionsState } from './repo/collections';
+import { HistoryState } from './repo/history';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -121,10 +122,19 @@ import { environment } from '../environments/environment';
         ContextMenuModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
-        NgxsModule.forRoot([AuthState, UserState, GlobalState, ContentState, PortfolioState, CollectionsState], {
-            developmentMode: !environment.production,
-            selectorOptions: { suppressErrors: false, injectContainerState: false },
-        }),
+        NgxsModule.forRoot(
+            [
+                AuthState,
+                UserState,
+                GlobalState,
+                ContentState,
+                PortfolioState,
+                CollectionsState,
+                HistoryState,
+            ], {
+                developmentMode: !environment.production,
+                selectorOptions: { suppressErrors: false, injectContainerState: false },
+            }),
         NgxsStoragePluginModule.forRoot({
             key: [
                 'auth.token',

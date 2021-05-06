@@ -20,7 +20,7 @@ import {
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
 import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
 import { Observable, of, throwError } from 'rxjs';
@@ -610,11 +610,11 @@ export class NetworkService {
     public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
         const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === "XSRF-TOKEN");
         const currentXsrfToken = this.cookieService.get("XSRF-TOKEN") ?? "";
-        if (!xsrfHeader) {            
+        if (!xsrfHeader) {
             uploader.options.headers.push({name: "XSRF-TOKEN", value: currentXsrfToken});
         } else {
             xsrfHeader.value = currentXsrfToken;
-        }        
+        }
         return new Observable<T>((observer) => {
             uploader.onCompleteItem = (_: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
                 if (status !== 201) {
@@ -652,31 +652,15 @@ export class NetworkService {
     /**
      * Fetches a user's entire history, paginated.
      */
-    public fetchUserHistory(pageNum: number): Observable<PaginateResult<ReadingHistory>> {
+    public fetchUserHistory(): Observable<ReadingHistory[]> {
         return handleResponse(
-            this.http.get<PaginateResult<ReadingHistory>>(`${this.baseUrl}/history/fetch-user-history/${pageNum}`, {
+            this.http.get<ReadingHistory[]>(`${this.baseUrl}/history/fetch-user-history`, {
                 observe: 'response',
                 withCredentials: true,
             }),
             null,
             (err) => {
-                //this.alertsService.error(err.error.message);
-            },
-        );
-    }
-
-    /**
-     * Fetches a user's history for their sidenav.
-     */
-    public fetchUserSidenavHistory(): Observable<ReadingHistory[]> {
-        return handleResponse(
-            this.http.get<ReadingHistory[]>(`${this.baseUrl}/history/fetch-user-sidenav-history`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-            null,
-            (err) => {
-                //this.alertsService.error(err.error.message);
+                this.alertsService.error(err.error.message);
             },
         );
     }
@@ -692,7 +676,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.alertsService.error(err.error.message);
+                this.alertsService.error(err.error.message);
             },
         );
     }
@@ -711,7 +695,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                //this.alertsService.error(err.error.message);
+                this.alertsService.error(err.error.message);
             },
         );
     }
@@ -719,20 +703,20 @@ export class NetworkService {
     /**
      * Soft deletes a history doc by setting its visibility to false.
      *
-     * @param histId The ID of the history document
+     * @param histIds The ID of the history document
      */
-    public changeHistoryVisibility(histId: string): Observable<void> {
+    public changeHistoryVisibility(histIds: string[]): Observable<void> {
         return handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/history/change-item-visibility/${histId}`,
-                {},
+                `${this.baseUrl}/history/change-visibility`,
+                { histIds: histIds },
                 { observe: 'response', withCredentials: true },
             ),
-            (resp) => {
-                //this.alertsService.success(`Item successfully removed.`);
+            () => {
+                this.alertsService.success(`Item(s) successfully deleted.`);
             },
             (err) => {
-                //this.alertsService.error(err.error.message);
+                this.alertsService.error(err.error.message);
             },
         );
     }

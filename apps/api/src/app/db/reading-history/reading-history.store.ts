@@ -31,7 +31,7 @@ export class ReadingHistoryStore {
 
             return await newHist.save();
         } else {
-            return await this.histModel.findOneAndUpdate(
+            return this.histModel.findOneAndUpdate(
                 { owner: user.sub, content: contentId },
                 {
                     viewedOn: new Date(),
@@ -47,24 +47,8 @@ export class ReadingHistoryStore {
      * @param user The owner of these documents
      * @param pageNum The current page of results to view
      */
-    async fetchUserHistory(user: JwtPayload, pageNum: number): Promise<PaginateResult<ReadingHistoryDocument>> {
-        return await this.histModel.paginate(
-            { owner: user.sub, visible: true },
-            {
-                sort: { viewedOn: -1 },
-                page: pageNum,
-                limit: 15,
-            }
-        );
-    }
-
-    /**
-     * Fetches seven history documents belonging to one user for their sidenav.
-     *
-     * @param user The owner of these documents
-     */
-    async fetchUserSidenavHistory(user: JwtPayload): Promise<ReadingHistoryDocument[]> {
-        return await this.histModel.find({ owner: user.sub, visible: true }).limit(7).sort({ viewedOn: -1 });
+    async fetchUserHistory(user: JwtPayload): Promise<ReadingHistoryDocument[]> {
+        return this.histModel.find({ owner: user.sub, visible: true }).sort({ viewedOn: -1 });
     }
 
     /**
@@ -74,7 +58,7 @@ export class ReadingHistoryStore {
      * @param contentId The content associated with it
      */
     async fetchOneHistoryDoc(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return await this.histModel.findOne({ owner: user.sub, content: contentId }, { autopopulate: false });
+        return this.histModel.findOne({ owner: user.sub, content: contentId }, { autopopulate: false });
     }
 
     /**
@@ -84,7 +68,7 @@ export class ReadingHistoryStore {
      * @param contentId The content associated with it
      */
     async setLike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return await this.histModel.findOneAndUpdate(
+        return this.histModel.findOneAndUpdate(
             { owner: user.sub, content: contentId },
             {
                 ratingOption: RatingOption.Liked,
@@ -100,7 +84,7 @@ export class ReadingHistoryStore {
      * @param contentId The content associated with it
      */
     async setDislike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return await this.histModel.findOneAndUpdate(
+        return this.histModel.findOneAndUpdate(
             { owner: user.sub, content: contentId },
             {
                 ratingOption: RatingOption.Disliked,
@@ -116,7 +100,7 @@ export class ReadingHistoryStore {
      * @param contentId The content associated with it
      */
     async setNoVote(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return await this.histModel.findOneAndUpdate(
+        return this.histModel.findOneAndUpdate(
             { owner: user.sub, content: contentId },
             {
                 ratingOption: RatingOption.NoVote,
@@ -129,11 +113,11 @@ export class ReadingHistoryStore {
      * Soft deletes a history document so it no longer shows up on frontend queries.
      *
      * @param user The owner of the history document
-     * @param histId The history document itself
+     * @param histIds The history documents themselves
      */
-    async changeVisibility(user: JwtPayload, histId: string): Promise<void> {
+    async changeVisibility(user: JwtPayload, histIds: string[]): Promise<void> {
         await this.histModel.updateOne(
-            { _id: histId, owner: user.sub },
+            { _id: { $in: histIds }, owner: user.sub },
             {
                 visible: false,
             }

@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { PaginateResult } from 'mongoose';
-
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ReadingHistoryStore } from '../../db/reading-history/reading-history.store';
@@ -14,19 +12,15 @@ export class HistoryService implements IHistory {
         return await this.history.addOrUpdateHistory(user, contentId);
     }
 
-    async fetchUserHistory(user: JwtPayload, pageNum: number): Promise<PaginateResult<ReadingHistory>> {
-        return await this.history.fetchUserHistory(user, pageNum);
-    }
-
-    async fetchUserSidenavHistory(user: JwtPayload): Promise<ReadingHistory[]> {
-        return await this.history.fetchUserSidenavHistory(user);
+    async fetchUserHistory(user: JwtPayload): Promise<ReadingHistory[]> {
+        return await this.history.fetchUserHistory(user);
     }
 
     async fetchOneHistoryDoc(user: JwtPayload, contentId: string): Promise<ReadingHistory> {
         return await this.history.fetchOneHistoryDoc(user, contentId);
     }
 
-    async changeVisibility(user: JwtPayload, histId: string): Promise<void> {
-        return await this.history.changeVisibility(user, histId);
+    async changeVisibility(user: JwtPayload, histIds: string[]): Promise<void> {
+        return await this.history.changeVisibility(user, histIds);
     }
 }

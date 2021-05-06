@@ -1,5 +1,3 @@
-import { PaginateResult } from 'mongoose';
-
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 
@@ -18,16 +16,8 @@ export interface IHistory {
      * Fetches all history documents belonging to one user.
      *
      * @param user The owner of these documents
-     * @param pageNum The current page of results to view
      */
-    fetchUserHistory(user: JwtPayload, pageNum: number): Promise<PaginateResult<ReadingHistory>>;
-
-    /**
-     * Fetches seven history documents belonging to one user for their sidenav.
-     *
-     * @param user The owner of these documents
-     */
-    fetchUserSidenavHistory(user: JwtPayload): Promise<ReadingHistory[]>;
+    fetchUserHistory(user: JwtPayload): Promise<ReadingHistory[]>;
 
     /**
      * Fetches one history document associated with both a user and some content.
@@ -41,7 +31,7 @@ export interface IHistory {
      * Soft deletes a history document so it no longer shows up on frontend queries.
      *
      * @param user The owner of the history document
-     * @param histId The history document itself
+     * @param histIds The history document itself
      */
-    changeVisibility(user: JwtPayload, histId: string): Promise<void>;
+    changeVisibility(user: JwtPayload, histIds: string[]): Promise<void>;
 }
