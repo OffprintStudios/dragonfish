@@ -45,6 +45,8 @@ import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
 import { CommentsComponents } from './components/content/comments';
+import { FriendsComponents } from './components/user/friends';
+import { HistoryComponents } from './components/user/history';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -79,6 +81,8 @@ import { environment } from '../environments/environment';
         ...UserSettingsComponents,
         ...CollectionsComponents,
         ...CommentsComponents,
+        ...FriendsComponents,
+        ...HistoryComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
