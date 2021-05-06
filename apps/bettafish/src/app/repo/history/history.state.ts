@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
+import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 import { throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { History } from './history.actions';
@@ -39,6 +40,9 @@ export class HistoryState {
                 history: val,
                 loading: false,
             });
+        }), catchError(err => {
+            this.alerts.error(`Something went wrong fetching your reading history!`);
+            return throwError(err);
         }));
     }
 
@@ -47,6 +51,13 @@ export class HistoryState {
         patchState({
             selectedDocs: [...getState().selectedDocs, docId],
         });
+    }
+
+    @Action(History.Deselect)
+    public deselect({ setState }: StateContext<HistoryStateModel>, { docId }: History.Deselect) {
+        setState(patch({
+            selectedDocs: removeItem<string>((id) => id === docId),
+        }));
     }
 
     @Action(History.Delete)

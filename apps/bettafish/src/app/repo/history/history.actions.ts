@@ -8,6 +8,11 @@ export namespace History {
         constructor(public docId: string) {}
     }
 
+    export class Deselect {
+        static readonly type = '[History] Deselect';
+        constructor(public docId: string) {}
+    }
+
     export class Delete {
         static readonly type = '[History] Delete';
         constructor(public docIds: string[]) {}
