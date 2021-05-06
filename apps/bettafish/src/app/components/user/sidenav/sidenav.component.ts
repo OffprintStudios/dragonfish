@@ -7,6 +7,7 @@ import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { UserState } from '../../../repo/user';
+import { SidenavService } from '../../../services';
 
 @Component({
     selector: 'dragonfish-sidenav',
@@ -16,7 +17,7 @@ import { UserState } from '../../../repo/user';
 export class SidenavComponent {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(private auth: AuthService, private dialog: MatDialog) {}
+    constructor(private auth: AuthService, private dialog: MatDialog, private sidenavService: SidenavService) {}
 
     logout() {
         const alertData: PopupModel = {
@@ -27,6 +28,7 @@ export class SidenavComponent {
         dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
             if (wantsToLogOut) {
                 this.auth.logout();
+                this.sidenavService.close();
             }
         });
     }

@@ -4,6 +4,9 @@ div.sidenav {
     color: var(--text-color);
     div.header {
         background: var(--accent);
+        img.avatar {
+            max-width: 4rem;
+        }
         button {
             &:hover {
                 background: var(--accent-light);
