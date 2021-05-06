@@ -61,5 +61,14 @@ export class HistoryState {
     }
 
     @Action(History.Delete)
-    public delete({ patchState }: StateContext<HistoryStateModel>, { docIds }: History.Delete) {}
+    public delete({ getState, patchState }: StateContext<HistoryStateModel>, { docIds }: History.Delete) {
+        return this.network.changeHistoryVisibility(docIds).pipe(tap(() => {
+            patchState({
+                history: getState().history.filter(val => {
+                    return !docIds.includes(val._id);
+                }),
+                selectedDocs: [],
+            });
+        }));
+    }
 }

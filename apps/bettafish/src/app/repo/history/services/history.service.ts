@@ -9,4 +9,10 @@ export class HistoryService {
 
     @Dispatch()
     public select = (docId: string) => new History.Select(docId);
+
+    @Dispatch()
+    public deselect = (docId: string) => new History.Deselect(docId);
+
+    @Dispatch()
+    public delete = (docIds: string[]) => new History.Delete(docIds);
 }

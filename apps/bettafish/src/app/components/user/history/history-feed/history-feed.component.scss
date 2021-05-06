@@ -1,0 +1,10 @@
+div.controls {
+    background: var(--accent-light);
+    top: 138px;
+    @apply mb-2.5 z-30;
+    button {
+        box-shadow: none;
+        border-radius: 0;
+        border: none;
+    }
+}

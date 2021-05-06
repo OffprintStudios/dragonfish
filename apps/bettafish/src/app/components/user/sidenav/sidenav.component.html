@@ -1,6 +1,6 @@
 <ng-container *ngIf="currentUser$ | async as currentUser">
     <div class="sidenav flex flex-col h-full relative">
-        <div class="sticky top-0">
+        <div class="sticky top-0 shadow-2xl z-40">
             <div class="header flex flex-row items-center p-6 pl-3 pb-0">
                 <img [src]="currentUser.profile.avatar" class="avatar rounded-md border border-white shadow-lg mr-2.5">
                 <div>
@@ -18,7 +18,7 @@
                     <i-feather name="more-vertical" class="mr-0"></i-feather>
                 </button>
             </div>
-            <div class="tab-bar flex flex-row items-center justify-center mb-2">
+            <div class="tab-bar flex flex-row items-center justify-center">
                 <div
                     class="tab select-none"
                     [ngClass]="selectedTab === userTabs.Friends ? 'active' : ''"
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <div class="body flex-1 h-full my-4">
+        <div class="body flex-1 h-full mb-4">
             <ng-container [ngSwitch]="selectedTab">
                 <ng-container *ngSwitchCase="userTabs.Friends">
                     <dragonfish-friends-list></dragonfish-friends-list>

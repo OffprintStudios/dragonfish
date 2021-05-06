@@ -1,4 +1,12 @@
 <ng-container *ngIf="historyState$ | async as state">
+    <div class="relative">
+        <div class="controls flex flex-row items-center justify-center sticky">
+            <button (click)="askDelete(state.selectedDocs)">
+                <i-feather name="trash-2"></i-feather>
+                delete
+            </button>
+        </div>
+    </div>
     <ng-container *ngIf="state.loading; else notLoading">
         <div class="flex flex-col items-center justify-center h-full">
             <mat-spinner></mat-spinner>
@@ -7,18 +15,19 @@
     <ng-template #notLoading>
         <ng-container *ngIf="state.history.length === 0">
             <div style="margin-top: 1.25rem; text-align: center;">
-                <h4 class="text-2xl">Pardon the dust&mdash;</h4>
+                <h4 class="text-2xl">You haven't read anything yet!</h4>
                 <p class="text-sm mt-2">
-                    Looks like you came here a bit too early.
-                </p>
-                <p class="text-sm m-0">
-                    Keep an eye on the patch notes to find out <br/> when this feature will be available.
+                    Well, what are you waiting for?
                 </p>
             </div>
         </ng-container>
         <div class="w-11/12 mx-auto">
             <ng-container *ngFor="let history of state.history">
-                <dragonfish-history-item [document]="history"></dragonfish-history-item>
+                <dragonfish-history-item
+                    [document]="history"
+                    (onSelect)="historyService.select($event)"
+                    (onDeselect)="historyService.deselect($event)"
+                ></dragonfish-history-item>
             </ng-container>
         </div>
     </ng-template>
