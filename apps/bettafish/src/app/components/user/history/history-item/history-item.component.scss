@@ -1,0 +1,32 @@
+div.history-item {
+    border: 1px solid var(--borders);
+    div.check-box {
+        border-right: 1px solid var(--borders);
+        &:hover {
+            cursor: pointer;
+            background: var(--accent);
+            i-feather {
+                color: white;
+            }
+        }
+    }
+    img {
+        max-width: 51px;
+        max-height: 51px;
+        object-fit: contain;
+        border: 1px solid whitesmoke;
+        @apply rounded-md;
+    }
+    div.work-info {
+        flex: 1;
+        user-select: none;
+    }
+    span {
+        i-feather {
+            width: 1.15rem;
+            position: relative;
+            top: 0.15rem;
+            @apply mr-1;
+        }
+    }
+}

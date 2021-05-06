@@ -46,4 +46,7 @@ div.sidenav {
         background: var(--accent);
         @apply pb-1 pt-1.5;
     }
+    div.body {
+        background: var(--background);
+    }
 }
