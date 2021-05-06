@@ -34,7 +34,7 @@ div.dash-nav {
         color: white;
         font-weight: 500;
         font-family: 'Josefin Sans', sans-serif;
-        @apply rounded-md;
+        @apply rounded-md mx-0.5;
         &:hover {
             transition: 0.125s;
             background: var(--accent-light);
