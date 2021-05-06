@@ -40,17 +40,6 @@
                         >
                             <span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections
                         </a>
-                        <ng-container *ngIf="currentUser$ | async as currentUser">
-                            <ng-container *ngIf="currentUser._id === portUser._id">
-                                <a
-                                    class="link"
-                                    [routerLink]="['history']"
-                                    [routerLinkActive]="'active'"
-                                >
-                                    <span class="link-icon"><i-feather name="layers"></i-feather></span>History
-                                </a>
-                            </ng-container>
-                        </ng-container>
                     </div>
                 </div>
             </div>

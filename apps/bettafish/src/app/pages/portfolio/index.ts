@@ -4,7 +4,6 @@ import { PortfolioHomeComponent } from './portfolio-home/portfolio-home.componen
 import { PortfolioWorksComponent } from './portfolio-works/portfolio-works.component';
 import { PortfolioBlogComponent } from './portfolio-blog/portfolio-blog.component';
 import { PortfolioCollectionsComponent } from './portfolio-collections/portfolio-collections.component';
-import { PortfolioHistoryComponent } from './portfolio-history/portfolio-history.component';
 import { PortfolioBlogPageComponent } from './portfolio-blog/portfolio-blog-page/portfolio-blog-page.component';
 import { PortfolioCollectionPageComponent } from './portfolio-collections/portfolio-collection-page/portfolio-collection-page.component';
 
@@ -21,7 +20,6 @@ export const PortfolioPages = [
     PortfolioBlogPageComponent,
     PortfolioCollectionsComponent,
     PortfolioCollectionPageComponent,
-    PortfolioHistoryComponent,
 ];
 
 export const PortfolioRoutes: Routes = [
@@ -59,10 +57,6 @@ export const PortfolioRoutes: Routes = [
                     collData: CollectionPageResolver,
                 },
                 runGuardsAndResolvers: 'always',
-            },
-            {
-                path: 'history',
-                component: PortfolioHistoryComponent,
             },
         ]
     }

@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { NewsContentModel, NewsCategory, ContentKind } from '@dragonfish/shared/models/content';
 import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { NetworkService } from '../../../services';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-news-feed',
     templateUrl: './news-feed.component.html',

@@ -1,41 +1,78 @@
 <ng-container *ngIf="currentUser$ | async as currentUser">
-    <div class="sidenav flex flex-col h-full">
-        <div class="header flex flex-row items-center p-6 pl-3">
-            <div>
-                <h3 class="text-4xl text-white font-medium">{{ currentUser.username }}</h3>
-                <h4 class="text-sm text-white">{{ currentUser.profile.bio }}</h4>
+    <div class="sidenav flex flex-col h-full relative">
+        <div class="sticky top-0 shadow-2xl z-40">
+            <div class="header flex flex-row items-center p-6 pl-3 pb-0">
+                <img [src]="currentUser.profile.avatar" class="avatar rounded-md border border-white shadow-lg mr-2.5">
+                <div>
+                    <h3 class="text-4xl text-white font-medium">{{ currentUser.username }}</h3>
+                    <h4 class="text-sm text-white">{{ currentUser.profile.bio }}</h4>
+                </div>
+                <div class="flex-1"><!--spacer--></div>
+                <button
+                    class="border-none rounded-full shadow-none text-white p-2.5"
+                    [ngClass]="moreMenuOpened ? 'active': ''"
+                    [matMenuTriggerFor]="moreMenu"
+                    (menuOpened)="toggleMoreMenu()"
+                    (menuClosed)="toggleMoreMenu()"
+                >
+                    <i-feather name="more-vertical" class="mr-0"></i-feather>
+                </button>
             </div>
-            <div class="flex-1"><!--spacer--></div>
-            <button
-                class="border-none rounded-full shadow-none text-white"
-                [matTooltip]="'Friends'"
-                [matTooltipClass]="'offprint-tooltip'"
-            >
-                <i-feather name="users" class="mr-0"></i-feather>
-            </button>
-            <div class="mx-0.5"><!--spacer--></div>
-            <button
-                class="border-none rounded-full shadow-none text-white"
-                [routerLink]="['/docs']"
-                [matTooltip]="'Settings'"
-                [matTooltipClass]="'offprint-tooltip'"
-            >
-                <i-feather name="settings" class="mr-0"></i-feather>
-            </button>
+            <div class="tab-bar flex flex-row items-center justify-center">
+                <div
+                    class="tab select-none"
+                    [ngClass]="selectedTab === userTabs.Friends ? 'active' : ''"
+                    (click)="switchUserTab(userTabs.Friends)"
+                >
+                    <i-feather name="users" class="mr-1"></i-feather>
+                    <div class="text-sm">Friends</div>
+                </div>
+                <div
+                    class="tab select-none"
+                    [ngClass]="selectedTab === userTabs.Notifications ? 'active' : ''"
+                    (click)="switchUserTab(userTabs.Notifications)"
+                >
+                    <i-feather name="bell" class="mr-1"></i-feather>
+                    <div class="text-sm">Notifications</div>
+                </div>
+                <div
+                    class="tab select-none"
+                    [ngClass]="selectedTab === userTabs.History ? 'active' : ''"
+                    (click)="switchUserTab(userTabs.History)"
+                >
+                    <i-feather name="layers" class="mr-1"></i-feather>
+                    <div class="text-sm">History</div>
+                </div>
+            </div>
         </div>
-        <div class="flex-1 h-full mb-4">
-            <dragonfish-notifications></dragonfish-notifications>
-        </div>
-        <div class="self-center flex flex-row items-center mb-6">
-            <button class="shadow-none" [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]">
-                <i-feather name="user"></i-feather>
-                Portfolio
-            </button>
-            <div class="mx-2"><!--spacer--></div>
-            <button class="shadow-none" (click)="logout()">
-                <i-feather name="log-out"></i-feather>
-                Log Out
-            </button>
+        <div class="body flex-1 h-full mb-4">
+            <ng-container [ngSwitch]="selectedTab">
+                <ng-container *ngSwitchCase="userTabs.Friends">
+                    <dragonfish-friends-list></dragonfish-friends-list>
+                </ng-container>
+                <ng-container *ngSwitchCase="userTabs.History">
+                    <dragonfish-history-feed></dragonfish-history-feed>
+                </ng-container>
+                <ng-container *ngSwitchCase="userTabs.Notifications">
+                    <dragonfish-notifications></dragonfish-notifications>
+                </ng-container>
+            </ng-container>
         </div>
     </div>
+
+    <mat-menu #moreMenu="matMenu" xPosition="before">
+        <button mat-menu-item [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]">
+            <i-feather name="user"></i-feather>
+            Portfolio
+        </button>
+        <button mat-menu-item [routerLink]="['/docs']">
+            <i-feather name="settings"></i-feather>
+            Settings
+        </button>
+        <div class="my-1.5 border-b" style="border-color: var(--borders)"><!--spacer--></div>
+        <button mat-menu-item (click)="logout()">
+            <i-feather name="log-out"></i-feather>
+            Log Out
+        </button>
+    </mat-menu>
 </ng-container>

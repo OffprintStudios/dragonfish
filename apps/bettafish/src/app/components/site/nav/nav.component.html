@@ -3,13 +3,19 @@
         <!--spacer-->
     </div>
     <ng-container *ngIf="currentUser$ | async as currentUser; else noUserLogIn">
-        <a
-            class="link avatar"
-            (click)="sidenavService.toggle()"
-            [ngClass]="sidenavService.isOpened ? 'active' : ''"
-        >
-            <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
-        </a>
+        <ng-container *ngIf="sidenavService.isOpened; else notOpened">
+            <a class="link active close-avatar" (click)="sidenavService.toggle()">
+                <span class="link-icon"><i-feather name="x"></i-feather></span>
+            </a>
+        </ng-container>
+        <ng-template #notOpened>
+            <a
+                class="link avatar"
+                (click)="sidenavService.toggle()"
+            >
+                <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
+            </a>
+        </ng-template>
     </ng-container>
     <ng-template #noUserLogIn>
         <button

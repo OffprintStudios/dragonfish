@@ -7,6 +7,13 @@ import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { UserState } from '../../../repo/user';
+import { SidenavService } from '../../../services';
+
+enum UserTabs {
+    Friends,
+    Notifications,
+    History,
+}
 
 @Component({
     selector: 'dragonfish-sidenav',
@@ -15,8 +22,19 @@ import { UserState } from '../../../repo/user';
 })
 export class SidenavComponent {
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    moreMenuOpened = false;
+    userTabs = UserTabs;
+    selectedTab = UserTabs.Notifications;
 
-    constructor(private auth: AuthService, private dialog: MatDialog) {}
+    constructor(private auth: AuthService, private dialog: MatDialog, private sidenavService: SidenavService) {}
+
+    toggleMoreMenu() {
+        this.moreMenuOpened = !this.moreMenuOpened;
+    }
+
+    switchUserTab(newTab: UserTabs) {
+        this.selectedTab = newTab;
+    }
 
     logout() {
         const alertData: PopupModel = {
@@ -27,6 +45,7 @@ export class SidenavComponent {
         dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
             if (wantsToLogOut) {
                 this.auth.logout();
+                this.sidenavService.close();
             }
         });
     }

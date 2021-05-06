@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Request, Param, Get, Post, Patch, Inject } from '@nestjs/common';
+import { Controller, UseGuards, Request, Param, Get, Post, Patch, Inject, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../guards';
@@ -14,16 +14,9 @@ export class HistoryController {
 
     @ApiTags(DragonfishTags.History)
     @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-user-history/:pageNum')
-    async fetchUserHistory(@User() user: JwtPayload, @Param('pageNum') pageNum: number) {
-        return await this.history.fetchUserHistory(user, pageNum);
-    }
-
-    @ApiTags(DragonfishTags.History)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-user-sidenav-history')
-    async fetchUserSidenavHistory(@User() user: JwtPayload) {
-        return await this.history.fetchUserSidenavHistory(user);
+    @Get('fetch-user-history')
+    async fetchUserHistory(@User() user: JwtPayload) {
+        return await this.history.fetchUserHistory(user);
     }
 
     @ApiTags(DragonfishTags.History)
@@ -42,8 +35,8 @@ export class HistoryController {
 
     @ApiTags(DragonfishTags.History)
     @UseGuards(RolesGuard([Roles.User]))
-    @Patch('change-item-visibility/:histId')
-    async changeItemVisibility(@User() user: JwtPayload, @Param('histId') histId: string) {
-        return await this.history.changeVisibility(user, histId);
+    @Patch('change-visibility')
+    async changeVisibility(@User() user: JwtPayload, @Body() ids: { histIds: string[] }) {
+        return await this.history.changeVisibility(user, ids.histIds);
     }
 }
