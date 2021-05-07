@@ -6,6 +6,7 @@ import {
     Post,
     Body,
     Param,
+    Query,
     UseInterceptors,
     UploadedFile,
     BadRequestException,
@@ -22,6 +23,7 @@ import { IImages } from '../../shared/images';
 import { User } from '../../util/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
+import { ContentFilter } from '@dragonfish/shared/models/content';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +33,12 @@ export class UserController {
     @Get('get-user-info/:userId')
     async getUserInfo(@Param('userId') userId: string) {
         return await this.user.getOneUser(userId);
+    }
+
+    @ApiTags(DragonfishTags.Users)
+    @Get('get-user-profile')
+    async getUserProfile(@Query('userId') userId: string, @Query('filter') filter: ContentFilter) {
+        return await this.user.getUserProfile(userId, filter);
     }
 
     @ApiTags(DragonfishTags.Users)

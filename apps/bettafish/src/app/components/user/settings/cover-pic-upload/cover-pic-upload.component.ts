@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AlertsService } from '@dragonfish/client/alerts';
 import { FileUploader } from 'ng2-file-upload';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +12,6 @@ import { UserService } from '../../../../repo/user/services';
 })
 export class CoverPicUploadComponent implements OnInit {
     token: string;
-    imageChangedEvent: Event;
     fileToReturn: File;
     showCropper = false;
     uploader: FileUploader = new FileUploader({
@@ -34,7 +32,7 @@ export class CoverPicUploadComponent implements OnInit {
         this.token = stateSnapshot.auth.token;
     }
 
-    fileDropped(event: FileList) {
+    fileDropped(event: File[]): void {
         if (event.length > 1) {
             this.alerts.error(`You can't upload more than one thing!`);
         }
@@ -49,22 +47,5 @@ export class CoverPicUploadComponent implements OnInit {
             this.alerts.error(`Only images are allowed.`);
             return;
         }
-    }
-
-    cancel() {
-        this.dialogRef.close();
-    }
-
-    uploadCoverPic() {
-        this.uploader.authToken = `Bearer ${this.token}`;
-        this.uploader.clearQueue();
-        this.uploader.addToQueue([this.fileToReturn]);
-
-        /*this.user.uploadAvatar(this.uploader).then(() => {
-            this.uploading = false;
-            this.dialogRef.close();
-        }).catch(() => {
-            this.uploading = false;
-        });*/
     }
 }

@@ -1,5 +1,5 @@
 <ng-container *ngIf="portUser$ | async as portUser">
-    <div class="portfolio-header z-40" [ngClass]="portUser.profile.coverPic ? 'with-cover' : 'no-cover'" (mouseenter)="toggleCoverButton()" (mouseleave)="toggleCoverButton()">
+    <div class="portfolio-header relative z-40" [ngClass]="portUser.profile.coverPic ? 'with-cover' : 'no-cover'" (mouseenter)="toggleCoverButton()" (mouseleave)="toggleCoverButton()">
         <ng-container *ngIf="currentUser$ | async as currentUser">
             <ng-container *ngIf="currentUser._id === portUser._id">
                 <div class="absolute right-0 mt-3.5 mr-3.5 z-40" *ngIf="canSeeCoverButton">

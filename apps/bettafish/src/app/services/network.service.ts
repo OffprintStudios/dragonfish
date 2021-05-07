@@ -1048,6 +1048,21 @@ export class NetworkService {
     }
 
     /**
+     * Fetches a specified user's profile for the portfolio home page.
+     *
+     * @param userId
+     */
+    public fetchUserProfile(userId: string): Observable<{works: ContentModel[], blogs: ContentModel[]}> {
+        return handleResponse(
+            this.http.get<{works: ContentModel[], blogs: ContentModel[]}>(
+                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${this.filter}`, {
+                    observe: 'response',
+                    withCredentials: true,
+                }),
+        )
+    }
+
+    /**
      * Sends a request to change a user's email.
      *
      * @param newEmail The requested new email and current password.

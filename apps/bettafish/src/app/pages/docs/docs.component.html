@@ -67,7 +67,7 @@
 </div>
 
 <ng-container *ngIf="route.children.length === 0; else viewingDoc">
-    <div class="my-8 w-11/12 mx-auto">
+    <div class="my-8 w-11/12 mx-auto h-full">
         <ng-container *ngIf="currentUser$ | async">
             <dragonfish-account></dragonfish-account>
             <div class="my-5"><!--spacer--></div>

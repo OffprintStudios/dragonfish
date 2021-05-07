@@ -1,5 +1,5 @@
-<div 
-    class="uploader-container flex flex-col items-center justify-center px-8 py-24" 
+<div
+    class="uploader-container flex flex-col items-center justify-center px-8 py-24"
     ng2FileDrop
     (onFileDrop)="fileDropped($event)"
     [uploader]="uploader"
@@ -10,7 +10,8 @@
         type="file"
         class="hidden"
         accept="image/png, image/jpeg, image/jpg"
-        ng2FileSelect 
+        ng2FileSelect
+        (onFileSelected)="fileDropped($event)"
         [uploader]="uploader"
         #avatarInput
     />

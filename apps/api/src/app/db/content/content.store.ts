@@ -156,6 +156,25 @@ export class ContentStore {
     }
 
     /**
+     * Fetches the first three published content specified in the `kinds` array, filtered as appropriate.
+     *
+     * @param kinds
+     * @param filter
+     * @param userId
+     */
+    async fetchFirstThreePublished(filter: ContentFilter, userId: string): Promise<{ works: ContentDocument[], blogs: ContentDocument[] }> {
+        const worksQuery = { 'author': userId, kind: { $in: [ContentKind.ProseContent, ContentKind.PoetryContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const filteredWorksQuery = await this.determineContentFilter(worksQuery, filter);
+        const works = await this.contentModel.find(filteredWorksQuery).sort({'audit.publishedOn': -1}).limit(3);
+
+        const blogsQuery = { 'author': userId, kind: { $in: [ContentKind.BlogContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const filteredBlogsQuery = await this.determineContentFilter(blogsQuery, filter);
+        const blogs = await this.contentModel.find(filteredBlogsQuery).sort({'audit.publishedOn': -1}).limit(3);
+
+        return { works: works, blogs: blogs };
+    }
+
+    /**
      * Routes a request for creating some content to the appropriate API functions, given the specified
      * `ContentKind`.
      *

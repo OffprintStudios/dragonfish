@@ -14,19 +14,24 @@ import {
     UnauthorizedException,
 } from '@nestjs/common';
 import { argon2id, verify } from 'argon2';
-
 import { IUser } from '../../shared/auth';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { UsersStore } from '../../db/users/users.store';
+import { ContentStore } from '../../db/content';
+import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class UserService implements IUser {
     private readonly logger: Logger = new Logger(UserService.name);
 
-    constructor(private readonly usersStore: UsersStore) {}
+    constructor(private readonly usersStore: UsersStore, private readonly contentStore: ContentStore) {}
 
     async getOneUser(userId: string): Promise<FrontendUser> {
         return await this.usersStore.getOneUser(userId);
+    }
+
+    async getUserProfile(userId: string, filter: ContentFilter): Promise<{ works: ContentModel[], blogs: ContentModel[] }> {
+        return await this.contentStore.fetchFirstThreePublished(filter, userId,);
     }
 
     async changeUsername(jwtPayload: JwtPayload, changeUsernameRequest: ChangeUsername): Promise<FrontendUser> {
