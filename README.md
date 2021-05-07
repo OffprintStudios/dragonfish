@@ -8,8 +8,8 @@ It's still very much a work in progress.
 
 ## Build Status
 
-| Dragonfish | Build                                                                                                             | Test                                                                                                                      | Production                                                                                                          |
-| ---------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Dragonfish | Build | Test | Production |
+| ---------- | ----- | ---- | ---------- |
 | Server     | [![Build Server (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-server.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-server.yml) | [![Deploy Server (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digioncean-deploy-server.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digioncean-deploy-server.yml) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
 | Client     | [![Build Client (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-client.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-client.yml) | [![Deploy Client (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-deploy-client.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-deploy-client.yml) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
 
@@ -37,42 +37,11 @@ Once you've installed and verified that these dependencies are working as expect
 - Edit `.env` to set `MONGO_URL=mongodb://localhost:27017`
 - Edit `.env` to set `JWT_SECRET` to an _actual_ secret, such as a plain random string
 - If you intend to test out image functionality, fill in the `DIGITALOCEAN_SPACES` variables with your information
-
-Run `./build-dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries. SH files can be run using Git Bash on Windows.
+- Run `yarn install` in the repository root to install all the dependencies.
 
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
 
-To view the source files, VS Code is recommended.
-
-### Developing in Docker
-
-If you just want to use `docker-compose`, you can follow these steps.
-
-#### Building the image
-
-- Run `docker-compose build`
-
-Once the container is created you can get a shell inside of it with the following docker command:
-
-```bash
-docker container exec -it <your container ID> /bin/bash
-```
-
-(You can obtain your container ID with `docker container ls`. Look for the container using the `pulp-fiction_pulpd` image.)
-
-If you're a Visual Studio Code user, you can use the "Open Folder in Container" feature of the [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) to automate all of the above:
-
-- Open VSCode.
-- Hit Ctrl + P to open the command palette.
-- Type "Remote Containers: Open Folder in Container..."
-- Find your `pulp-fiction` folder.
-- When prompted, selected `docker-compose.yml`.
-- When prompted again, select `pulpd`.
-- Let it build.
-
-Once it's done, VSCode will be operating inside the docker container, and opening the terminal with `Ctrl +` ` will give you a bash environment running in the container.
-
-Once inside the docker container, you can follow the directions from "Building the applications".
+VS Code is the recommended editor.
 
 ## Running the application
 
@@ -83,19 +52,19 @@ Note that by default, the backend serves up the frontend, so in order to test th
 To run the backend:
 
 ```bash
-ng serve api
+nx serve api
 ```
 
 To run the frontend:
 
 ```bash
-ng serve bettafish
+nx serve bettafish
 ```
 
 On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
 
 ```bash
-ng build bettafish --watch --poll=2000
+nx build bettafish --watch --poll=2000
 ```
 
 Then you should find the website at <http://localhost:3333>
@@ -105,6 +74,10 @@ Then you should find the website at <http://localhost:3333>
 Check out the Contribution guides in the wiki!
 
 TODO: Flesh this section out.
+
+## Deployment
+
+For more information on deploying the server and client, and the project's infrastructure, take a look at [deployment folder's readme](/deploy).
 
 ## Want to talk about the project?
 
