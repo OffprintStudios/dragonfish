@@ -1,47 +1,57 @@
 <ng-container *ngIf="portUser$ | async as portUser">
-    <div class="sticky top-0 z-40">
-        <div class="portfolio-header shadow-2xl relative z-40">
-            <div class="flex flex-row items-center p-5">
+    <div class="portfolio-header z-40">
+        <div class="absolute right-0 mt-3.5 mr-3.5">
+            <button class="change-cover rounded-md text-white p-1">
+                <i-feather name="image"></i-feather>
+            </button>
+        </div>
+        <div class="flex flex-col items-center justify-center px-6 py-12">
+            <div class="flex flex-row items-center">
                 <div>
-                    <img class="shadow-2xl" [alt]="'Avatar'" [src]="portUser.profile.avatar" />
+                    <img class="avatar shadow-2xl" [alt]="'Avatar'" [src]="portUser.profile.avatar" />
                 </div>
-                <div class="flex-1 ml-8 flex flex-col items-start justify-center">
+                <div class="ml-6 flex flex-col items-start justify-center">
                     <h1 class="text-4xl font-bold text-white">{{ portUser.username }}</h1>
-                    <h3 class="text-2xl italic text-white">{{ portUser.profile.bio }}</h3>
-                    <div class="my-1" *ngIf="portUser.profile.bio === undefined || portUser.profile.bio === null || portUser.profile.bio === ''"><!--spacer--></div>
-                    <dragonfish-role-badge [roles]="portUser.roles" [isCentered]="false"></dragonfish-role-badge>
-                    <div class="mt-2 w-full flex flex-row">
-                        <a
-                            class="link"
-                            [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
-                            [routerLinkActive]="'active'"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                        >
-                            <span class="link-icon"><i-feather name="home"></i-feather></span>Home
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['works']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <span class="link-icon"><i-feather name="feather"></i-feather></span>Works
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['blog']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <span class="link-icon"><i-feather name="coffee"></i-feather></span>Blogs
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['collections']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections
-                        </a>
+                    <h3 class="text-2xl italic text-white">{{ portUser.profile.tagline }}</h3>
+                    <div
+                        class="my-1"
+                        *ngIf="portUser.profile.tagline === undefined || portUser.profile.tagline === null || portUser.profile.tagline === ''"
+                    >
+                        <!--spacer-->
                     </div>
+                    <dragonfish-role-badge [roles]="portUser.roles" [isCentered]="false"></dragonfish-role-badge>
                 </div>
+            </div>
+            <div class="mt-2 flex flex-row items-center">
+                <a
+                    class="link"
+                    [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
+                    [routerLinkActive]="'active'"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    <span class="link-icon"><i-feather name="home"></i-feather></span>Home
+                </a>
+                <a
+                    class="link"
+                    [routerLink]="['works']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><i-feather name="feather"></i-feather></span>Works
+                </a>
+                <a
+                    class="link"
+                    [routerLink]="['blog']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><i-feather name="coffee"></i-feather></span>Blogs
+                </a>
+                <a
+                    class="link"
+                    [routerLink]="['collections']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections
+                </a>
             </div>
         </div>
         <dragonfish-portfolio-toolbar></dragonfish-portfolio-toolbar>
