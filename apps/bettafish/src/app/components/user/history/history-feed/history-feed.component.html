@@ -1,10 +1,18 @@
 <ng-container *ngIf="historyState$ | async as state">
     <div class="relative">
         <div class="controls flex flex-row items-center justify-center sticky">
-            <button (click)="askDelete(state.selectedDocs)">
-                <i-feather name="trash-2"></i-feather>
-                delete
-            </button>
+            <ng-container *ngIf="state.selectedDocs.length === 0; else canDelete">
+                <button class="disabled">
+                    <i-feather name="trash-2"></i-feather>
+                    delete
+                </button>
+            </ng-container>
+            <ng-template #canDelete>
+                <button (click)="askDelete(state.selectedDocs)">
+                    <i-feather name="trash-2"></i-feather>
+                    delete <span class="text-xs relative top-1 ml-0.5">({{ state.selectedDocs.length }})</span>
+                </button>
+            </ng-template>
         </div>
     </div>
     <ng-container *ngIf="state.loading; else notLoading">
@@ -21,7 +29,7 @@
                 </p>
             </div>
         </ng-container>
-        <div class="w-11/12 mx-auto">
+        <div class="w-11/12 mx-auto overflow-y-hidden">
             <ng-container *ngFor="let history of state.history">
                 <dragonfish-history-item
                     [document]="history"

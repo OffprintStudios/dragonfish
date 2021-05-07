@@ -19,7 +19,13 @@
         <img [src]="$any(document.content).meta.coverArt" />
     </div>
     <div class="work-info self-center py-0.5">
-        <h4 class="text-lg font-medium">
+        <h4
+            class="text-lg font-medium"
+            [matTooltip]="$any(document.content).title"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipDisabled]="$any(document.content).title.length < 30"
+            [matTooltipShowDelay]="1000"
+        >
             <a [routerLink]="goToItem()">
                 {{ $any(document.content).title }}
             </a>

@@ -6,5 +6,13 @@ div.controls {
         box-shadow: none;
         border-radius: 0;
         border: none;
+        color: white;
+        &.disabled {
+            color: var(--accent-dark);
+            &:hover {
+                cursor: not-allowed;
+                color: var(--accent-dark);
+            }
+        }
     }
 }
