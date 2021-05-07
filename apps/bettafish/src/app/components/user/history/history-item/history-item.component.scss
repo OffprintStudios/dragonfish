@@ -1,5 +1,6 @@
 div.history-item {
     border: 1px solid var(--borders);
+    width: 350px;
     div.check-box {
         border-right: 1px solid var(--borders);
         &:hover {
@@ -16,6 +17,13 @@ div.history-item {
         object-fit: contain;
         border: 1px solid whitesmoke;
         @apply rounded-md;
+    }
+    h4 {
+        width: 250px;
+        text-overflow: ellipsis;
+        /* Required for text-overflow to do anything */
+        white-space: nowrap;
+        overflow: hidden;
     }
     div.work-info {
         flex: 1;
