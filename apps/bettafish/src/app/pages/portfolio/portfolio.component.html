@@ -12,11 +12,11 @@
         <img class="object-cover absolute w-full z-20" style="height: 18.75rem;" [src]="portUser.profile.coverPic" *ngIf="portUser.profile.coverPic">
         <div class="flex flex-col items-center justify-center px-4 py-10">
             <div class="flex flex-col items-center justify-center p-2 z-50" [ngClass]="portUser.profile.coverPic ? 'info-with-cover' : ''">
-                <div class="flex flex-row items-center">
+                <div class="flex flex-row items-center self-start">
                     <div>
                         <img class="avatar shadow-2xl" [alt]="'Avatar'" [src]="portUser.profile.avatar" />
                     </div>
-                    <div class="ml-6 flex flex-col items-start justify-center">
+                    <div class="ml-4 flex flex-col items-start justify-center">
                         <h1 class="text-4xl font-bold text-white">{{ portUser.username }}</h1>
                         <h3 class="text-2xl italic text-white">{{ portUser.profile.tagline }}</h3>
                         <div
@@ -30,7 +30,7 @@
                 </div>
                 <div class="mt-2 flex flex-row items-center">
                     <a
-                        class="link"
+                        class="link ml-0"
                         [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
                         [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
                         [routerLinkActive]="'active'"
@@ -44,7 +44,7 @@
                         [routerLink]="['works']"
                         [routerLinkActive]="'active'"
                     >
-                        <span class="link-icon"><i-feather name="feather"></i-feather></span>Works
+                        <span class="link-icon"><i-feather name="feather"></i-feather></span>{{ portUser.stats.works | abbreviate }} Work{{ portUser.stats.works | pluralize}}
                     </a>
                     <a
                         class="link"
@@ -52,10 +52,10 @@
                         [routerLink]="['blog']"
                         [routerLinkActive]="'active'"
                     >
-                        <span class="link-icon"><i-feather name="coffee"></i-feather></span>Blogs
+                        <span class="link-icon"><i-feather name="coffee"></i-feather></span>{{ portUser.stats.blogs | abbreviate }} Blog{{ portUser.stats.blogs | pluralize }}
                     </a>
                     <a
-                        class="link"
+                        class="link end"
                         [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
                         [routerLink]="['collections']"
                         [routerLinkActive]="'active'"

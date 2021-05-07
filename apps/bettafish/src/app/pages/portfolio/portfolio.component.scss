@@ -40,7 +40,10 @@ div.portfolio-header {
         color: white;
         font-weight: 500;
         font-family: 'Josefin Sans', sans-serif;
-        @apply rounded-md mx-0.5;
+        @apply rounded-md mr-0.5;
+        &.end {
+            @apply mr-0;
+        }
         &.with-cover {
             border: 2px solid transparent;
             &.active {
