@@ -44,7 +44,7 @@ div.sidenav {
     }
     div.tab-bar {
         background: var(--accent);
-        @apply pb-1 pt-1.5;
+        @apply pb-1 pt-1.5 text-white;
     }
     div.body {
         background: var(--background);
