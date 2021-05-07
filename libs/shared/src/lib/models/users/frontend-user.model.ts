@@ -7,6 +7,7 @@ export interface FrontendUser {
         readonly avatar: string;
         readonly bio: string | null;
         readonly tagline: string | null;
+        readonly coverPic: string | null;
     };
     readonly stats: {
         readonly works: number;

@@ -1,15 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Dispatch } from '@ngxs-labs/dispatch-decorator';
-import {
-    FrontendUser,
-    ChangeEmail as EmailForm,
-    ChangePassword as PasswordForm,
-    ChangeBio as BioForm,
-    ChangeUsername as UsernameForm,
-    UpdateTagline as TaglineForm,
-} from '@dragonfish/shared/models/users';
 import * as User from '../user.actions';
+
+import {
+    ChangeBio as BioForm,
+    ChangeEmail as EmailForm,
+    FrontendUser,
+    ChangePassword as PasswordForm,
+    UpdateTagline as TaglineForm,
+    ChangeUsername as UsernameForm,
+} from '@dragonfish/shared/models/users';
+
+import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { FileUploader } from 'ng2-file-upload';
+import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -46,5 +48,10 @@ export class UserService {
     @Dispatch()
     public async uploadAvatar(fileUploader: FileUploader) {
         return new User.ChangeAvatar(fileUploader);
+    }
+
+    @Dispatch()
+    public uploadCoverPic(fileUploader: FileUploader) {
+        return new User.ChangeCoverPic(fileUploader);
     }
 }

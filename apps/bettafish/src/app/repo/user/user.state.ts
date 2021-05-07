@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
-
 import * as User from './user.actions';
-import { UserStateModel } from './user-state.model';
-import { FrontendUser } from '@dragonfish/shared/models/users';
+
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { catchError, tap } from 'rxjs/operators';
+
 import { AlertsService } from '@dragonfish/client/alerts';
-import { NetworkService } from '../../services';
+import { FrontendUser } from '@dragonfish/shared/models/users';
 import { HttpError } from '@dragonfish/shared/models/util';
+import { Injectable } from '@angular/core';
+import { NetworkService } from '../../services';
+import { UserStateModel } from './user-state.model';
+import { throwError } from 'rxjs';
 
 @State<UserStateModel>({
     name: 'user',
@@ -106,6 +107,24 @@ export class UserState {
             }),
         );
     }
+
+    @Action(User.ChangeCoverPic)
+    changeCoverPic({ patchState }: StateContext<UserStateModel>, action: User.ChangeCoverPic) {
+        return this.networkService.changeImage(action.uploader).pipe(
+            tap((result: FrontendUser) => {
+                this.alerts.success(`Changes saved!`);
+                patchState({
+                    currUser: result,
+                });
+            }),
+            catchError((error: HttpError) => {
+                this.alerts.error(
+                    `Uh-oh! Failed to upload your cover pic. ${error.message} (HTTP ${error.statusCode} ${error.error})`,
+                );
+                return throwError(error);
+            }),
+        );
+    } 
 
     @Action(User.UpdateTagline)
     updateTagline({ patchState }: StateContext<UserStateModel>, action: User.UpdateTagline) {

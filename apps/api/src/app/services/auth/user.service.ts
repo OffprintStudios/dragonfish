@@ -1,22 +1,23 @@
 import {
-    Injectable,
-    Logger,
-    UnauthorizedException,
-    NotFoundException,
-    InternalServerErrorException,
-} from '@nestjs/common';
-import { verify, argon2id } from 'argon2';
-import { UsersStore } from '../../db/users/users.store';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    FrontendUser,
-    ChangeUsername,
+    ChangeBio,
     ChangeEmail,
     ChangePassword,
-    ChangeBio,
+    ChangeUsername,
+    FrontendUser,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
+import {
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
+import { argon2id, verify } from 'argon2';
+
 import { IUser } from '../../shared/auth';
+import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { UsersStore } from '../../db/users/users.store';
 
 @Injectable()
 export class UserService implements IUser {
@@ -91,6 +92,11 @@ export class UserService implements IUser {
 
     async updateAvatar(user: JwtPayload, newAvatarUrl: string): Promise<FrontendUser> {
         const updatedUser = await this.usersStore.updateAvatar(user.sub, newAvatarUrl);
+        return this.usersStore.buildFrontendUser(updatedUser);
+    }
+
+    async updateCoverPic(user: JwtPayload, coverPicUrl: string): Promise<FrontendUser> {
+        const updatedUser = await this.usersStore.updateCoverPic(user.sub, coverPicUrl);
         return this.usersStore.buildFrontendUser(updatedUser);
     }
 

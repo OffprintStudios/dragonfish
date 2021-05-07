@@ -152,6 +152,7 @@ export class UsersStore {
                 avatar: user.profile.avatar,
                 bio: user.profile.bio,
                 tagline: user.profile.tagline,
+                coverPic: user.profile.coverPic,
             },
             stats: {
                 works: user.stats.works,
@@ -297,6 +298,17 @@ export class UsersStore {
      */
     async updateAvatar(userId: string, avatarUrl: string): Promise<models.User> {
         return this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.avatar': avatarUrl }, { new: true });
+    }
+
+    /**
+     * Updates a user's cover pic with the new URL. Does not require a password, because
+     * this information is not account sensitive.
+     * @param userId The ID of the user to update
+     * @param coverPicUrl The full URL of the new cover pic
+     * @returns 
+     */
+    async updateCoverPic(userId: string, coverPicUrl: string): Promise<models.User> {
+        return this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.coverPic': coverPicUrl }, { new: true });
     }
 
     /**

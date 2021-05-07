@@ -84,6 +84,16 @@ export class UserController {
     }
 
     @ApiTags(DragonfishTags.Users)
+    @UseGuards(RolesGuard([Roles.User]))
+    @UseInterceptors(FileInterceptor('coverPic'))
+    @Post('upload-cover')
+    async uploadCover(@UploadedFile() coverImage: any, @User() user: JwtPayload) {
+        const avatarUrl = await this.images.upload(coverImage, user.sub, 'cover-pics');
+        const avatar = `${process.env.IMAGES_HOSTNAME}/cover-pics/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
+        return await this.user.updateCoverPic(user, avatar);
+    }
+
+    @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator]))
     @Patch('update-tagline')
     async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {
