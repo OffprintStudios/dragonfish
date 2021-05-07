@@ -10,6 +10,7 @@ import { Roles } from '@dragonfish/shared/models/users';
 export class RoleBadgeComponent {
     @Input() roles: Roles[];
     @Input() isCentered: boolean;
+    @Input() isStyled: boolean;
 
     /**
      * Checks to see what the prominent role for this user is so it can be displayed.

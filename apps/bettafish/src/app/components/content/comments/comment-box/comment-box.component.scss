@@ -1,6 +1,176 @@
-div.comment-box {
-    border: 1px solid var(--borders);
-    div.comment-header {
-        border-bottom: 1px solid var(--borders);
+div.comment {
+    @apply hidden;
+    @apply mt-4;
+    @apply mx-auto;
+    @apply w-3/4;
+
+    @apply lg:block;
+
+    div.comment-wrapper {
+        @apply flex;
+
+        div.comment-author {
+            @apply mr-4;
+
+            max-width: 10rem;
+
+            a {
+                @apply block;
+                @apply p-1;
+                @apply rounded;
+                @apply text-center;
+                @apply text-sm;
+                @apply text-white;
+                @apply w-full;
+
+                background-color: var(--accent);
+                hyphens: auto;
+                -ms-hyphens: auto;
+                -webkit-hyphens: auto;
+            }
+
+            dragonfish-role-badge div {
+                background-color: blue;
+            }
+
+            img {
+                @apply bg-white;
+                @apply border;
+                @apply border-gray-100;
+                @apply mt-2;
+                @apply p-0.5;
+                @apply rounded-md;
+            }
+
+            div.title {
+                @apply mt-2;
+                @apply text-center;
+                @apply text-xs;
+            }
+
+        }
+
+        div.comment-body {
+            @apply border;
+            @apply border-gray-200;
+            @apply p-4;
+            @apply rounded-md;
+            @apply shadow-sm;
+            @apply w-11/12;
+
+            div.comment-metadata {
+                @apply border-b;
+                @apply border-gray-200;
+                @apply flex;
+                @apply items-center;
+                @apply pb-4;
+
+                div.timestamp {
+                    @apply inline-block;
+                    @apply text-sm;
+                }
+
+                div.tools {
+                    @apply float-right;
+                    @apply inline-block;
+                    @apply ml-auto;
+                    @apply text-right;
+                    @apply text-sm;
+
+                    &:hover {
+                        @apply cursor-pointer;
+                        @apply no-underline;
+                    }
+                }
+
+                dragonfish-role-badge {
+                    @apply border-r;
+                    @apply border-gray-200;
+                    @apply mr-4;
+                    @apply pr-4;
+                }
+
+            }
+        }
+    }
+}
+div.mobile-comment {
+    @apply border;
+    @apply border-gray-200;
+    @apply mt-4;
+    @apply mx-auto;
+    @apply p-2;
+    @apply rounded-md;
+    @apply shadow-sm;
+    @apply w-3/4;
+
+    @apply lg:hidden;
+
+    div.mobile-comment-header {
+        @apply border-b;
+        @apply border-gray-200;
+        @apply mb-2;
+        @apply pb-2;
+
+        div.mobile-comment-author {
+            @apply flex;
+            @apply flex-row;
+            @apply items-center;
+            @apply w-full;
+
+            div.authorlinks {
+                @apply border-r;
+                @apply border-gray-200;
+                @apply mx-2;
+                @apply pr-2;
+                @apply self-center;
+
+                a {
+                    @apply font-medium;
+                }
+
+                p {
+                    @apply text-xs;
+                }
+
+            }
+
+            div.timestamp {
+                @apply text-xs;
+            }
+
+            div.tools {
+                @apply float-right;
+                @apply ml-auto;
+                @apply text-right;
+                @apply text-sm;
+
+                &:hover {
+                    @apply cursor-pointer;
+                    @apply no-underline;
+                }
+            }
+
+            dragonfish-role-badge {
+                @apply border-r;
+                @apply border-gray-200;
+                @apply hidden;
+                @apply mr-4;
+                @apply pr-4;
+
+                @apply sm:block;
+            }
+
+            img {
+                @apply bg-white;
+                @apply border;
+                @apply border-gray-100;
+                @apply inline-block;
+                @apply p-0.5;
+                @apply rounded-md;
+                @apply w-10;
+
+            }
+        }
     }
 }
