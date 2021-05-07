@@ -1,11 +1,12 @@
 import {
-    FrontendUser,
-    ChangeEmail as EmailForm,
-    ChangePassword as PasswordForm,
     ChangeBio as BioForm,
-    ChangeUsername as UsernameForm,
+    ChangeEmail as EmailForm,
+    FrontendUser,
+    ChangePassword as PasswordForm,
     UpdateTagline as TaglineForm,
+    ChangeUsername as UsernameForm,
 } from '@dragonfish/shared/models/users';
+
 import { FileUploader } from 'ng2-file-upload';
 
 export class SetUser {
@@ -39,6 +40,11 @@ export class AgreeToPolicies {
 
 export class ChangeAvatar {
     static readonly type = '[User] Change Avatar';
+    constructor(public uploader: FileUploader) {}
+}
+
+export class ChangeCoverPic {
+    static readonly type = '[User] Change Cover Pic';
     constructor(public uploader: FileUploader) {}
 }
 

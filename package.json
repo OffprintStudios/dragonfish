@@ -90,6 +90,7 @@
         "ngx-markdown": "^11.1.2",
         "ngx-pagination": "^5.0.0",
         "ngx-tabset": "^2.2.0",
+        "ngx-uploader": "^11.0.0",
         "numeral": "^2.0.6",
         "postcss": "^8.2.8",
         "prerender-node": "^3.2.5",
@@ -147,7 +148,7 @@
         "ngx-tailwind": "2.1.0",
         "nx-electron": "^11.0.0",
         "prettier": "2.2.1",
-        "tailwindcss": "^2.0.3",
+        "tailwindcss": "^2.1.2",
         "ts-jest": "26.4.0",
         "ts-node": "~9.1.1",
         "typescript": "~4.0.3"

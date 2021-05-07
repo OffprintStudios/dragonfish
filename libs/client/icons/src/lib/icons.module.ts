@@ -101,6 +101,7 @@ import {
     Shield,
     Link,
     ExternalLink,
+    Gift,
 } from 'angular-feather/icons';
 
 const icons = {
@@ -202,6 +203,7 @@ const icons = {
     Shield,
     Link,
     ExternalLink,
+    Gift,
 };
 
 @NgModule({

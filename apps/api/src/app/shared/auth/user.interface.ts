@@ -1,12 +1,13 @@
-import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
-    FrontendUser,
-    ChangeUsername,
+    ChangeBio,
     ChangeEmail,
     ChangePassword,
-    ChangeBio,
+    ChangeUsername,
+    FrontendUser,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
+import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 
 export interface IUser {
     /**
@@ -15,6 +16,14 @@ export interface IUser {
      * @param userId
      */
     getOneUser(userId: string): Promise<FrontendUser>;
+
+    /**
+     * Fetches content for a user's profile home page.
+     *
+     * @param userId
+     * @param filter
+     */
+    getUserProfile(userId: string, filter: ContentFilter): Promise<{ works: ContentModel[], blogs: ContentModel[] }>;
 
     /**
      * Changes a user's username. First validates their credentials, and if they match, makes the change
@@ -70,6 +79,15 @@ export interface IUser {
      * @param newAvatarUrl Their new avatar URL
      */
     updateAvatar(user: JwtPayload, newAvatarUrl: string): Promise<FrontendUser>;
+
+    /**
+     * Updates a user's cover pic with the new URL. Does not require a password, because
+     * this information is not account sensitive.
+     *
+     * @param userId The ID of the user to update
+     * @param coverPicUrl The full URL of the new cover pic
+     */
+    updateCoverPic(user: JwtPayload, coverPicUrl: string): Promise<FrontendUser>;
 
     /**
      * Updates a user's tagline with the provided info.

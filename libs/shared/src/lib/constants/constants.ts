@@ -1,5 +1,5 @@
 export class Constants {
-    public static SITE_VERSION = 'alpha-0.7.0';
+    public static SITE_VERSION = 'alpha-0.7.3';
 
     public static FIVE_MINUTES = 300000;
 

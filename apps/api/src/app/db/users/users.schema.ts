@@ -1,8 +1,9 @@
+import { AuditSession, Roles, User } from '@dragonfish/shared/models/users';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+
+import { AuditSessionSchema } from './audit-session.schema';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
-import { AuditSession, Roles, User } from '@dragonfish/shared/models/users';
-import { AuditSessionSchema } from './audit-session.schema';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'users' })
 export class UserDocument extends Document implements User {
@@ -13,14 +14,15 @@ export class UserDocument extends Document implements User {
 
     @Prop(raw({
         avatar: { type: String, trim: true, default: 'https://images.offprint.net/avatars/avatar.png' },
-        themePref: { type: String, default: 'crimson' },
         bio: { type: String, trim: true, default: null },
         tagline: { type: String, trim: true, default: null },
+        coverPic: { type: String, trim: true, default: null },
     }))
     profile: {
         avatar: string;
         bio: string;
         tagline: string;
+        coverPic: string;
     };
 
     @Prop(raw({
