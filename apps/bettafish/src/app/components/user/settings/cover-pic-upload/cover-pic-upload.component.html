@@ -1,0 +1,18 @@
+<div
+    class="uploader-container flex flex-col items-center justify-center px-8 py-24"
+    ng2FileDrop
+    (onFileDrop)="fileDropped($event)"
+    [uploader]="uploader"
+>
+    <h3 class="text-3xl font-medium">Drag & Drop To Upload</h3>
+    <p class="m-0">Or just click <a (click)="avatarInput.click()">browse</a> to find something awesome.</p>
+    <input
+        type="file"
+        class="hidden"
+        accept="image/png, image/jpeg, image/jpg"
+        ng2FileSelect
+        (onFileSelected)="fileDropped($event)"
+        [uploader]="uploader"
+        #avatarInput
+    />
+</div>

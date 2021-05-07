@@ -1,39 +1,67 @@
 div.portfolio-header {
-    box-shadow: var(--dropshadow);
+    &.no-cover {
+        background: var(--accent);
+    }
+    &.with-cover {
+        background: transparent;
+    }
     background: var(--accent);
-    img {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        border: 1px solid whitesmoke;
-        @media (max-width: 1150px) {
-            width: 150px;
-            height: 150px;
+    box-shadow: var(--dropshadow);
+    button.change-cover {
+        background: var(--accent-dark);
+        margin: 0 0.25rem 0 0.25rem;
+        &:hover {
+            background: var(--accent);
         }
-        @media (max-width: 700px) {
-            width: 75px;
-            height: 75px;
+        i-feather {
+            position: relative;
+            width: 1.5rem !important;
+            color: white;
+            margin: 0;
+            top: -0.025rem;
+            stroke-width: 1;
         }
     }
-
+    img.avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 0.375rem;
+        border: 1px solid whitesmoke;
+    }
+    div.info-with-cover {
+        @apply bg-black bg-opacity-40 rounded-md backdrop-filter backdrop-blur;
+    }
     a.link {
         display: flex;
         flex-direction: row;
         align-items: center;
         padding: 8px 16px;
-        font-size: 1.25rem;
+        font-size: 1rem;
         color: white;
         font-weight: 500;
         font-family: 'Josefin Sans', sans-serif;
-        @apply rounded-md;
-        @media (max-width: 1360px) {
-            display: inline-block;
-            font-size: 18px;
+        @apply rounded-md mr-0.5;
+        &.end {
+            @apply mr-0;
         }
-        @media (max-width: 700px) {
-            display: inline-block;
-            padding: 6px 12px;
-            font-size: 14px;
+        &.with-cover {
+            border: 2px solid transparent;
+            &.active {
+                background: transparent;
+                border-color: white;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            &:hover {
+                transition: 0.125s;
+                background: transparent;
+                border-color: white;
+                text-decoration: none;
+                color: whitesmoke;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                @apply rounded-md;
+            }
         }
         &:hover {
             transition: 0.125s;
@@ -53,14 +81,6 @@ div.portfolio-header {
                 height: 18px;
                 width: 18px;
                 top: 0.15rem;
-            }
-            @media (max-width: 640px) {
-                //--small
-                margin-right: 0.5rem;
-            }
-            @media (max-width: 481px) {
-                //--xsmall
-                margin-right: 0.25rem;
             }
         }
     }

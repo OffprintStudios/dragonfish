@@ -1,31 +1,37 @@
 import {
-    Injectable,
-    Logger,
-    UnauthorizedException,
-    NotFoundException,
-    InternalServerErrorException,
-} from '@nestjs/common';
-import { verify, argon2id } from 'argon2';
-import { UsersStore } from '../../db/users/users.store';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    FrontendUser,
-    ChangeUsername,
+    ChangeBio,
     ChangeEmail,
     ChangePassword,
-    ChangeBio,
+    ChangeUsername,
+    FrontendUser,
     UpdateTagline,
 } from '@dragonfish/shared/models/users';
+import {
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
+import { argon2id, verify } from 'argon2';
 import { IUser } from '../../shared/auth';
+import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { UsersStore } from '../../db/users/users.store';
+import { ContentStore } from '../../db/content';
+import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class UserService implements IUser {
     private readonly logger: Logger = new Logger(UserService.name);
 
-    constructor(private readonly usersStore: UsersStore) {}
+    constructor(private readonly usersStore: UsersStore, private readonly contentStore: ContentStore) {}
 
     async getOneUser(userId: string): Promise<FrontendUser> {
         return await this.usersStore.getOneUser(userId);
+    }
+
+    async getUserProfile(userId: string, filter: ContentFilter): Promise<{ works: ContentModel[], blogs: ContentModel[] }> {
+        return await this.contentStore.fetchFirstThreePublished(filter, userId,);
     }
 
     async changeUsername(jwtPayload: JwtPayload, changeUsernameRequest: ChangeUsername): Promise<FrontendUser> {
@@ -91,6 +97,11 @@ export class UserService implements IUser {
 
     async updateAvatar(user: JwtPayload, newAvatarUrl: string): Promise<FrontendUser> {
         const updatedUser = await this.usersStore.updateAvatar(user.sub, newAvatarUrl);
+        return this.usersStore.buildFrontendUser(updatedUser);
+    }
+
+    async updateCoverPic(user: JwtPayload, coverPicUrl: string): Promise<FrontendUser> {
+        const updatedUser = await this.usersStore.updateCoverPic(user.sub, coverPicUrl);
         return this.usersStore.buildFrontendUser(updatedUser);
     }
 
