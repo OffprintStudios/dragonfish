@@ -6,6 +6,8 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
 import { UserState } from '../../repo/user';
 import { PortfolioState } from '../../repo/portfolio';
+import { MatDialog } from '@angular/material/dialog';
+import { CoverPicUploadComponent } from '../../components/user/settings/cover-pic-upload/cover-pic-upload.component';
 
 @UntilDestroy()
 @Component({
@@ -17,7 +19,11 @@ export class PortfolioComponent implements OnInit {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
-    constructor(public route: ActivatedRoute) {}
+    constructor(public route: ActivatedRoute, private dialog: MatDialog) {}
 
     ngOnInit(): void {}
+
+    openCoverPicUploader() {
+        const dialogRef = this.dialog.open(CoverPicUploadComponent);
+    }
 }

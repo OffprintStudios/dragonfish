@@ -1,7 +1,7 @@
 <ng-container *ngIf="portUser$ | async as portUser">
     <div class="portfolio-header z-40">
         <div class="absolute right-0 mt-3.5 mr-3.5">
-            <button class="change-cover rounded-md text-white p-1">
+            <button class="change-cover rounded-md text-white p-1" (click)="openCoverPicUploader()">
                 <i-feather name="image"></i-feather>
             </button>
         </div>

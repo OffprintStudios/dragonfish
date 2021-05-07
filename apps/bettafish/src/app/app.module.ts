@@ -24,6 +24,7 @@ import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgxElectronModule } from 'ngx-electron';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
+import { NgxUploaderModule } from 'ngx-uploader';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -120,6 +121,7 @@ import { environment } from '../environments/environment';
         NgxElectronModule,
         ClickOutsideModule,
         ContextMenuModule,
+        NgxUploaderModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
         NgxsModule.forRoot(
