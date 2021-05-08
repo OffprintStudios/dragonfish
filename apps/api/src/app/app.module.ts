@@ -25,8 +25,6 @@ import { DatabaseModules } from './db';
 
 /* Utilies */
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
-import { ContentService } from './services/content/content.service';
-import { SectionsService } from './services/content/sections.service';
 
 @Module({
     imports: [
