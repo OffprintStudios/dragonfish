@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { State, Action, Selector, StateContext } from '@ngxs/store';
-import { throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
 import * as Portfolio from './portfolio.actions';
-import { PortfolioStateModel } from './portfolio-state.model';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { NetworkService } from '../../services';
+
+import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { catchError, tap } from 'rxjs/operators';
+
 import { AlertsService } from '@dragonfish/client/alerts';
+import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Injectable } from '@angular/core';
+import { NetworkService } from '../../services';
+import { PortfolioStateModel } from './portfolio-state.model';
+import { throwError } from 'rxjs';
 
 @State<PortfolioStateModel>({
     name: 'portfolio',
@@ -39,6 +41,16 @@ export class PortfolioState {
                 return throwError(err);
             }),
         );
+    }
+
+    @Action(Portfolio.UpdateCurrentProfile)
+    public updateCurrentProfile(
+        { patchState }: StateContext<PortfolioStateModel>, 
+        { newUserInfo }: Portfolio.UpdateCurrentProfile
+    ) {
+        patchState({
+            currPortfolio: newUserInfo,
+        });
     }
 
     @Action(Portfolio.WatchUser)
