@@ -3,7 +3,7 @@
     <div class="p-4">
         <div class="header flex flex-row items-center">
             <div class="avatar pr-2" *ngIf="showAuthor">
-                <img class="w-24 h-24 rounded-full" [alt]="'Avatar'" [src]="blog.author.profile.avatar" />
+                <img class="w-24 h-24 rounded-md" [alt]="'Avatar'" [src]="blog.author.profile.avatar" />
             </div>
             <div [ngClass]="{ 'title-padding': showAuthor }">
                 <div>

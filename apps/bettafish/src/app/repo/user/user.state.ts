@@ -8,6 +8,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { Injectable } from '@angular/core';
 import { NetworkService } from '../../services';
+import { PortfolioService } from './../portfolio/services';
 import { UserStateModel } from './user-state.model';
 import { throwError } from 'rxjs';
 
@@ -19,7 +20,7 @@ import { throwError } from 'rxjs';
 })
 @Injectable()
 export class UserState {
-    constructor(private networkService: NetworkService, private alerts: AlertsService) {}
+    constructor(private networkService: NetworkService, private alerts: AlertsService, private portfolio: PortfolioService) {}
 
     /* Selectors */
 
@@ -112,10 +113,11 @@ export class UserState {
     changeCoverPic({ patchState }: StateContext<UserStateModel>, action: User.ChangeCoverPic) {
         return this.networkService.changeImage(action.uploader).pipe(
             tap((result: FrontendUser) => {
-                this.alerts.success(`Changes saved!`);
                 patchState({
                     currUser: result,
                 });
+                this.portfolio.updateCurrentPortfolio(result);
+                this.alerts.success(`Changes saved!`);
             }),
             catchError((error: HttpError) => {
                 this.alerts.error(
