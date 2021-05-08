@@ -11,6 +11,7 @@ import {
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 
+export const IContentKey: string = "IContent";
 export interface IContent {
     /**
      * Fetches a single piece of content from the database regardless of its publishing status.

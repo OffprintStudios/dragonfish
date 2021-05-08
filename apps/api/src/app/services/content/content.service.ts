@@ -11,8 +11,12 @@ import {
     SetRating,
     ContentFilter,
     PubChange,
+    PubStatus,
 } from '@dragonfish/shared/models/content';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
+import { NotificationsService } from '../../db/notifications/notifications.service';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { NotificationEnumConverters } from '../../db/notifications/notification-enum-converters';
 
 @Injectable()
 export class ContentService implements IContent {
@@ -21,8 +25,9 @@ export class ContentService implements IContent {
     constructor(
         private readonly content: ContentStore,
         private readonly poetry: PoetryStore,
-        private readonly prose: ProseStore
-    ) {}
+        private readonly prose: ProseStore,
+        private readonly notifications: NotificationsService,
+    ) { }
 
     async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
@@ -58,7 +63,14 @@ export class ContentService implements IContent {
     }
 
     async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
-        return await this.content.publishOne(user, contentId, pubChange);
+        const publishedContent = await this.content.publishOne(user, contentId, pubChange);
+
+        // If this content is being published, subscribe the author to comments on it.
+        if (pubChange.newStatus === PubStatus.Published) {
+            await this.notifications.subscribe(user.sub, contentId, NotificationKind.CommentNotification);
+        }
+
+        return publishedContent;
     }
 
     async setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {

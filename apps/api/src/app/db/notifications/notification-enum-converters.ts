@@ -1,3 +1,4 @@
+import { ContentKind } from '@dragonfish/shared/models/content';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { NotificationQueueDocumentKind } from './notificationQueue/notification-queue-document-kind';
 import { NotificationDocumentKind } from './publishedNotifications/notification-document-kind';

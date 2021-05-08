@@ -13,6 +13,11 @@ export interface NotificationBase {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
+
+    /**
+     * (Optional) The user (if any) whose action triggered this notification.
+     */
+    creatorUserId?: string;
     kind: NotificationKind;
     read: boolean;
     createdAt: Date;
