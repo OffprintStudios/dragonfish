@@ -8,7 +8,7 @@ import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Collection } from '@dragonfish/shared/models/collections';
 
 import { UserState } from '../../repo/user';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 @Injectable()
 export class CollectionsResolver implements Resolve<PaginateResult<Collection>> {
@@ -18,7 +18,7 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
 
     pageNum = 1;
 
-    constructor(private networkService: NetworkService) {
+    constructor(private networkService: DragonfishNetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });

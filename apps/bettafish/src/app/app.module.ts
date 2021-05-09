@@ -59,6 +59,7 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { MyStuffModule } from '@dragonfish/client/my-stuff';
 import { DashboardModule } from '@dragonfish/client/dashboard';
+import { ClientServicesModule } from '@dragonfish/client/services';
 
 /* State */
 import { AuthState } from './repo/auth';
@@ -111,6 +112,7 @@ import { environment } from '../environments/environment';
         EditorModule,
         MyStuffModule,
         DashboardModule,
+        ClientServicesModule,
         Ng2FittextModule,
         NgxPaginationModule,
         TabsModule.forRoot(),

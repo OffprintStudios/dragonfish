@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationBase, MarkReadRequest, NotificationSubscription } from '@dragonfish/shared/models/notifications';
-import { NetworkService } from './network.service';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class NotificationsService {
-    constructor(private networkService: NetworkService) {}
+    constructor(private networkService: DragonfishNetworkService) {}
 
     /**
      * Gets all of the current user's notifications.

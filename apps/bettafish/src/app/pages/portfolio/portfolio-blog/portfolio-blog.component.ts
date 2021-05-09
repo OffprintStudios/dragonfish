@@ -4,12 +4,14 @@ import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { BlogsContentModel, ContentKind } from '@dragonfish/shared/models/content';
+import { BlogsContentModel, ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 import { UserState } from '../../../repo/user';
 import { PortfolioState } from '../../../repo/portfolio';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { GlobalState } from '../../../repo/global';
 
 @UntilDestroy()
 @Component({
@@ -19,13 +21,14 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class PortfolioBlogComponent implements OnInit {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
     loading = false;
     blogsData: PaginateResult<BlogsContentModel>;
 
     pageNum = 1;
 
-    constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(private network: DragonfishNetworkService, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit(): void {
         combineLatest(this.portUser$, this.route.queryParamMap).pipe(untilDestroyed(this))
@@ -46,7 +49,7 @@ export class PortfolioBlogComponent implements OnInit {
      */
     private fetchData(pageNum: number, userId: string): void {
         this.loading = true;
-        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], userId)
+        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], this.filter, userId)
             .subscribe(content => {
                 this.blogsData = content as any;
                 this.loading = false;

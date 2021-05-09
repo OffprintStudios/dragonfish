@@ -6,7 +6,7 @@ import { Collection } from '@dragonfish/shared/models/collections';
 import { throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { CollectionsStateModel } from './collections-state.model';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import * as Collections from './collections.actions';
 
 @State<CollectionsStateModel>({
@@ -34,7 +34,7 @@ export class CollectionsState {
         return ctx.currCollection;
     }
 
-    constructor(private network: NetworkService, private alerts: AlertsService) {}
+    constructor(private network: DragonfishNetworkService, private alerts: AlertsService) {}
 
     @Action(Collections.Create)
     public create({ getState, patchState }: StateContext<CollectionsStateModel>, { formInfo }: Collections.Create) {

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ReplyCommentModel } from '../models';
 
 @Component({
@@ -25,7 +25,7 @@ export class CommentBoxComponent implements OnInit {
         body: new FormControl('', [Validators.minLength(10), Validators.required])
     })
 
-    constructor(private alerts: AlertsService, private network: NetworkService) {}
+    constructor(private alerts: AlertsService, private network: DragonfishNetworkService) {}
 
     ngOnInit(): void {
         this.editComment.setValue({

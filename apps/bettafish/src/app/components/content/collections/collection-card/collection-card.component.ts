@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { MatDialog } from '@angular/material/dialog';
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { CollectionFormComponent } from '../collection-form/collection-form.component';
@@ -21,7 +21,7 @@ export class CollectionCardComponent {
     @Input() user: FrontendUser;
     submitting = false;
 
-    constructor(private dialog: MatDialog, private networkService: NetworkService) {}
+    constructor(private dialog: MatDialog, private networkService: DragonfishNetworkService) {}
 
     /**
      * Opens the create collection modal in edit mode.

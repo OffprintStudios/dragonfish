@@ -7,7 +7,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Comment, CreateComment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { findIndex } from 'lodash';
@@ -39,7 +39,7 @@ export class CommentsComponent {
         body: new FormControl('', [Validators.required, Validators.minLength(10)]),
     });
 
-    constructor(private networkService: NetworkService, private alerts: AlertsService) {}
+    constructor(private networkService: DragonfishNetworkService, private alerts: AlertsService) {}
 
     ngOnInit(): void {
         this.fetchData(this.pageNum);

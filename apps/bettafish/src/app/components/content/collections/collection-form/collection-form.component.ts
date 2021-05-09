@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { CollectionForm, Collection } from '@dragonfish/shared/models/collections';
 import { AlertsService } from '@dragonfish/client/alerts';
 
@@ -22,7 +22,7 @@ export class CollectionFormComponent implements OnInit {
     });
 
     constructor(
-        private networkService: NetworkService,
+        private networkService: DragonfishNetworkService,
         private alerts: AlertsService,
         private dialogRef: MatDialogRef<CollectionFormComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { currColl: Collection },

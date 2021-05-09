@@ -8,7 +8,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { UserState } from '../../../../repo/user';
 import { PortfolioState } from '../../../../repo/portfolio';
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { CollectionFormComponent } from '../../../../components/content/collections/collection-form/collection-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
@@ -27,7 +27,7 @@ export class PortfolioCollectionPageComponent {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private network: NetworkService,
+        private network: DragonfishNetworkService,
         private location: Location,
         private dialog: MatDialog,
     ) {}
