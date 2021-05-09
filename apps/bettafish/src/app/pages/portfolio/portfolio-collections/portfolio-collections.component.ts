@@ -6,7 +6,7 @@ import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { UserState } from '../../../repo/user';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { PortfolioState } from '../../../repo/portfolio';
 import { Constants, setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
@@ -25,7 +25,7 @@ export class PortfolioCollectionsComponent implements OnInit {
     loading = false;
     pageNum = 1;
 
-    constructor(public route: ActivatedRoute, private router: Router, private network: NetworkService) {}
+    constructor(public route: ActivatedRoute, private router: Router, private network: DragonfishNetworkService) {}
 
     ngOnInit(): void {
         combineLatest(this.currentUser$, this.portUser$, this.route.queryParamMap)

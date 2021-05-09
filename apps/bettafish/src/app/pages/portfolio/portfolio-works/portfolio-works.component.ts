@@ -4,12 +4,14 @@ import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, combineLatest } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 import { UserState } from '../../../repo/user';
 import { PortfolioState } from '../../../repo/portfolio';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { GlobalState } from '../../../repo/global';
 
 @UntilDestroy()
 @Component({
@@ -19,12 +21,13 @@ import { NetworkService } from '../../../services';
 export class PortfolioWorksComponent implements OnInit {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
     @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
     loading = false;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(private network: DragonfishNetworkService, private route: ActivatedRoute, private router: Router) {}
 
     ngOnInit(): void {
         combineLatest(this.portUser$, this.route.queryParamMap).pipe(untilDestroyed(this))
@@ -45,7 +48,7 @@ export class PortfolioWorksComponent implements OnInit {
      */
     private fetchData(pageNum: number, userId: string): void {
         this.loading = true;
-        this.network.fetchAllContent(pageNum, [ContentKind.ProseContent, ContentKind.PoetryContent], userId)
+        this.network.fetchAllContent(pageNum, [ContentKind.ProseContent, ContentKind.PoetryContent], this.filter, userId)
             .subscribe(content => {
                 this.contentData = content;
                 this.loading = false;

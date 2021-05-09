@@ -6,7 +6,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { History } from './history.actions';
 import { HistoryStateModel } from './history-state.model';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 
 @State<HistoryStateModel>({
@@ -28,7 +28,7 @@ export class HistoryState {
     @Selector()
     public static loading(state: HistoryStateModel) { return state.loading; }
 
-    constructor(private network: NetworkService, private alerts: AlertsService) {}
+    constructor(private network: DragonfishNetworkService, private alerts: AlertsService) {}
 
     @Action(History.Fetch)
     public fetch({ patchState }: StateContext<HistoryStateModel>) {

@@ -5,7 +5,7 @@ import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
 import { UserState } from '../../repo/user';
 
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Collection } from '@dragonfish/shared/models/collections';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class CollectionPageResolver implements Resolve<Collection> {
     currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
-    constructor(private networkService: NetworkService) {
+    constructor(private networkService: DragonfishNetworkService) {
         this.currentUserSubscription = this.currentUser$.subscribe((x) => {
             this.currentUser = x;
         });

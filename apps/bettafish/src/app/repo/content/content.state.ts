@@ -3,7 +3,7 @@ import { State, Action, Selector, StateContext, Store } from '@ngxs/store';
 import { Observable, zip, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { ContentKind, ContentModel, SectionInfo } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentModel, SectionInfo } from '@dragonfish/shared/models/content';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { FrontendUser } from '@dragonfish/shared/models/users';
@@ -12,8 +12,10 @@ import { Section } from '@dragonfish/shared/models/sections';
 
 import * as Content from './content.actions';
 import { ContentStateModel } from './content-state.model';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UserState } from '../user';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { GlobalState } from '../global';
 
 /**
  * ## ContentState
@@ -35,7 +37,9 @@ import { UserState } from '../user';
 })
 @Injectable()
 export class ContentState {
-    constructor(private networkService: NetworkService, private store: Store) {}
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
+
+    constructor(private networkService: DragonfishNetworkService, private store: Store) { }
 
     /* Selectors */
 
@@ -121,7 +125,7 @@ export class ContentState {
 
     @Action(Content.FetchAll)
     fetchAll({ patchState }: StateContext<ContentStateModel>, { pageNum, kinds, userId }: Content.FetchAll) {
-        return this.networkService.fetchAllContent(pageNum, kinds, userId).pipe(
+        return this.networkService.fetchAllContent(pageNum, kinds, this.filter, userId).pipe(
             tap((val: PaginateResult<ContentModel>) => {
                 patchState({
                     currPageContent: val,

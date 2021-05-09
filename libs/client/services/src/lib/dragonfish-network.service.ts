@@ -27,31 +27,26 @@ import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
 
-import { AlertsService } from '@dragonfish/client/alerts';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { Decision } from '@dragonfish/shared/models/contrib';
 import { FrontPageStats } from '@dragonfish/shared/models/stats';
-import { GlobalState } from '../repo/global';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { Injectable } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { Section } from '@dragonfish/shared/models/works';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { CookieService } from 'ngx-cookie';
 
 /**
- * ## NetworkService
+ * ## DragonfishNetworkService
  *
- * Manages API calls to the backend.
+ * Manages API calls to the Dragonfish backend.
  */
 @Injectable({
     providedIn: 'root',
 })
-export class NetworkService {
-    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
-
+export class DragonfishNetworkService {
     private baseUrl = `/api`;
-    constructor(private readonly http: HttpClient, private readonly alertsService: AlertsService, private readonly cookieService: CookieService ) {}
+    constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) { }
 
     //#region ---APPROVAL QUEUE---
 
@@ -125,7 +120,7 @@ export class NetworkService {
             ),
             null,
             (_err) => {
-                //this.snackBar.open(`Something went wrong! Try again in a little bit.`);
+
             },
         );
     }
@@ -143,14 +138,10 @@ export class NetworkService {
                 { observe: 'response', withCredentials: true },
             ),
             (resp) => {
-                //this.alertsService.success(`Work successfully submitted!`);
+
             },
             (err) => {
-                // if (err.error.message) {
-                //   this.alertsService.error(`HTTP ${err.status}: ${err.error.message}`);
-                // } else {
-                //   this.alertsService.error(`Something went wrong! Try again in a little bit.\nDetails: HTTP ${err.status}`);
-                // }
+
             },
         );
     }
@@ -407,10 +398,10 @@ export class NetworkService {
                 withCredentials: true,
             }),
             (resp) => {
-                //this.alertsService.success(`Comment added successfully!`);
+
             },
             (err) => {
-                //this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -423,7 +414,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                //this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -441,10 +432,10 @@ export class NetworkService {
                 withCredentials: true,
             }),
             (resp) => {
-                //this.alertsService.success(`Changes saved!`);
+
             },
             (err) => {
-                //this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -467,7 +458,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                //this.snackBar.open(`Something went wrong fetching this content. Try again in a little bit.`);
+
             },
         );
     }
@@ -487,7 +478,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -498,11 +489,13 @@ export class NetworkService {
      *
      * @param pageNum The current page
      * @param kinds The kinds of content to include
+     * @param contentFilter The rating filter to apply to the retrieval
      * @param userId (Optional) The author of this content
      */
     public fetchAllContent(
         pageNum: number,
         kinds: ContentKind[],
+        contentFilter: ContentFilter,
         userId?: string,
     ): Observable<PaginateResult<ContentModel>> {
         let route = ``;
@@ -512,16 +505,16 @@ export class NetworkService {
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
         if (userId) {
-            route = `${this.baseUrl}/content/fetch-all-published?filter=${this.filter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
         } else {
-            route = `${this.baseUrl}/content/fetch-all-published?filter=${this.filter}&pageNum=${pageNum}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
         }
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
             null,
             (err) => {
-                //this.snackBar.open(`Something went wrong fetching this content. Try again in a little bit.`);
+
             },
         );
     }
@@ -539,7 +532,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(`Something went wrong fetching this section. Try again in a little bit.`);
+
             },
         );
     }
@@ -557,7 +550,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -575,7 +568,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -593,7 +586,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -611,7 +604,7 @@ export class NetworkService {
         const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === "XSRF-TOKEN");
         const currentXsrfToken = this.cookieService.get("XSRF-TOKEN") ?? "";
         if (!xsrfHeader) {
-            uploader.options.headers.push({name: "XSRF-TOKEN", value: currentXsrfToken});
+            uploader.options.headers.push({ name: "XSRF-TOKEN", value: currentXsrfToken });
         } else {
             xsrfHeader.value = currentXsrfToken;
         }
@@ -660,7 +653,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -676,7 +669,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -695,7 +688,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -712,11 +705,11 @@ export class NetworkService {
                 { histIds: histIds },
                 { observe: 'response', withCredentials: true },
             ),
-            () => {
-                this.alertsService.success(`Item(s) successfully deleted.`);
+            (resp) => {
+
             },
             (err) => {
-                this.alertsService.error(err.error.message);
+
             },
         );
     }
@@ -792,7 +785,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(`${err.error.message}`);
+
             },
         );
     }
@@ -810,7 +803,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(`${err.error.message}`);
+
             },
         );
     }
@@ -828,7 +821,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(`${err.error.message}`);
+
             },
         );
     }
@@ -920,16 +913,17 @@ export class NetworkService {
 
     /**
      * Fetches the first few new works for the browse page.
+     * @param contentFilter The rating filter to apply to the fetch
      */
-    public fetchFirstNew() {
+    public fetchFirstNew(contentFilter: ContentFilter) {
         return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${this.filter}`, {
+            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
             null,
             () => {
-                this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+
             }
         );
     }
@@ -939,16 +933,17 @@ export class NetworkService {
      *
      * @param pageNum The current page
      * @param kinds The kinds of work to fetch
+     * @param contentFilter The mature/explicit/etc. content filter to apply
      */
-    public fetchAllNew(pageNum: number, kinds: ContentKind[]) {
+    public fetchAllNew(pageNum: number, kinds: ContentKind[], contentFilter: ContentFilter) {
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
-        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${this.filter}&pageNum=${pageNum}${kindFragment}`;
+        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
             null,
             () => {
-                this.alertsService.error(`Something went wrong fetching this content. Try again in a little bit.`);
+
             },
         );
     }
@@ -965,7 +960,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+
             },
         );
     }
@@ -978,7 +973,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                this.alertsService.error(`Something went wrong! Try again in a little bit.`);
+
             },
         );
     }
@@ -991,7 +986,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                //this.alertsService.error(`Something with wrong! Try again in a little bit.`);
+
             },
         );
     }
@@ -1004,7 +999,7 @@ export class NetworkService {
             ),
             null,
             (err) => {
-                this.alertsService.error(`Something with wrong! Try again in a little bit.`);
+
             },
         );
     }
@@ -1024,7 +1019,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.alertsService.error(`Error retrieving frontpage stats.`);
+
             },
         );
     }
@@ -1050,15 +1045,16 @@ export class NetworkService {
     /**
      * Fetches a specified user's profile for the portfolio home page.
      *
-     * @param userId
+     * @param userId The user whose profile should be retrieved
+     * @param contentFilter The rating filter to apply to the user's content
      */
-    public fetchUserProfile(userId: string): Observable<{works: ContentModel[], blogs: ContentModel[]}> {
+    public fetchUserProfile(userId: string, contentFilter: ContentFilter): Observable<{ works: ContentModel[], blogs: ContentModel[] }> {
         return handleResponse(
-            this.http.get<{works: ContentModel[], blogs: ContentModel[]}>(
-                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${this.filter}`, {
-                    observe: 'response',
-                    withCredentials: true,
-                }),
+            this.http.get<{ works: ContentModel[], blogs: ContentModel[] }>(
+                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         )
     }
 
@@ -1075,7 +1071,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -1093,7 +1089,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -1111,7 +1107,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -1129,7 +1125,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }
@@ -1147,7 +1143,7 @@ export class NetworkService {
             }),
             null,
             (err) => {
-                //this.snackBar.open(err.error.message);
+
             },
         );
     }

@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { NewsContentModel, NewsCategory, ContentKind } from '@dragonfish/shared/models/content';
+import { NewsContentModel, NewsCategory, ContentKind, ContentFilter } from '@dragonfish/shared/models/content';
 import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { GlobalState } from '../../../repo/global';
 
 @UntilDestroy()
 @Component({
@@ -13,12 +15,14 @@ import { NetworkService } from '../../../services';
     styleUrls: ['./news-feed.component.scss'],
 })
 export class NewsFeedComponent implements OnInit {
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
+
     posts: PaginateResult<NewsContentModel>;
     pageNum = 1;
     category = NewsCategory;
     loading = false;
 
-    constructor(private route: ActivatedRoute, private router: Router, private network: NetworkService) {}
+    constructor(private route: ActivatedRoute, private router: Router, private network: DragonfishNetworkService) {}
 
     ngOnInit(): void {
         this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
@@ -39,7 +43,7 @@ export class NewsFeedComponent implements OnInit {
      */
     private fetchData(pageNum: number) {
         this.loading = true;
-        this.network.fetchAllNew(pageNum, [ContentKind.NewsContent])
+        this.network.fetchAllNew(pageNum, [ContentKind.NewsContent], this.filter)
             .subscribe(result => {
                 this.posts = result as PaginateResult<NewsContentModel>;
                 this.loading = false;

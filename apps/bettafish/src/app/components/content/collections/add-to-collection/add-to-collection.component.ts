@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { Collection } from '@dragonfish/shared/models/collections';
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -16,7 +16,7 @@ export class AddToCollectionComponent {
     loading = false;
 
     constructor(
-        private networkService: NetworkService,
+        private networkService: DragonfishNetworkService,
         private dialogRef: MatDialogRef<AddToCollectionComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { content: ContentModel },
     ) {
