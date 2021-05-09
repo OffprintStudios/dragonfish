@@ -10,6 +10,7 @@ import {
     User,
 } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
+import { Tag, TagsForm } from '@dragonfish/shared/models/tags';
 import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
@@ -233,6 +234,20 @@ export class NetworkService {
     public createCollection(collInfo: CollectionForm) {
         return handleResponse(
             this.http.put<Collection>(`${this.baseUrl}/collections/create-collection`, collInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Creates a tag in the database.
+     *
+     * @param tagInfo A tag's info
+     */
+    public createTag(tagInfo: TagsForm) {
+        return handleResponse(
+            this.http.put<Tag>(`${this.baseUrl}/tags/create-tag`, tagInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),

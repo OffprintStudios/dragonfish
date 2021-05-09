@@ -1,0 +1,35 @@
+div.form-container {
+    width: 85%;
+    margin: 0 auto;
+
+    div.form-header {
+        border-bottom: 1px solid var(--borders);
+        margin-bottom: 2rem;
+        button.form-button {
+            &.left {
+                border-right: none;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+            }
+
+            &.right {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            &.save {
+                margin-left: 1rem;
+            }
+
+            &.selected {
+                background-color: var(--accent);
+                color: whitesmoke;
+
+                &:hover {
+                    background-color: var(--accent-dark);
+                    color: whitesmoke;
+                }
+            }
+        }
+    }
+}

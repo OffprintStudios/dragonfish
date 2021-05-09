@@ -28,6 +28,8 @@ import { ApprovalQueueState } from './shared/approval-queue';
 import { ApprovalQueueService } from './shared/approval-queue/services';
 import { UserManagementService } from './shared/user-management/services';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -53,6 +55,8 @@ import { UserManagementService } from './shared/user-management/services';
         NgxPaginationModule,
         PipesModule,
         NgxsModule.forFeature([ApprovalQueueState]),
+        FormsModule,
+        ReactiveFormsModule,
     ],
     providers: [ApprovalQueueService, UserManagementService],
 })

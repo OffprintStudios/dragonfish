@@ -1,5 +1,30 @@
-<div class="empty">
-    <h3>Pardon the dust!</h3>
-    <p>You're here a litte too early.</p>
-    <p>Check the patch notes to see when this feature will be available.</p>
-</div>
+<ng-container>
+    <div class="form-container">
+        <div class="form-header flex flex-row items-center mb-8">
+            <h3 class="text-4xl flex-1">{{ formTitle }}</h3>
+            <button class="form-button shadow-none" (click)="submitForm()">Save</button>
+        </div>
+        <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
+            <dragonfish-text-field
+                [formControlName]="'name'"
+                [name]="'name'"
+                [type]="'text'"
+                [label]="'Name'"
+                [placeholder]="'There\'s Something I Gotta Say...'"
+            ></dragonfish-text-field>
+
+        </form>
+    </div>
+    <div>
+        <ng-container *ngIf="output; else noCode">
+            <span>
+                {{ output }}
+            </span>
+        </ng-container>
+        <ng-template #noCode>
+            <span>
+                No code generated.
+            </span>
+        </ng-template>
+    </div>
+</ng-container>

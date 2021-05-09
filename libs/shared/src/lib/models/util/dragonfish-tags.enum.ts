@@ -9,4 +9,5 @@ export enum DragonfishTags {
     Meta = 'Meta',
     ApprovalQueue = 'Approval Queue',
     Search = 'Search',
+    Tags = 'Tags',
 }
