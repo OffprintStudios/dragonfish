@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NetworkService } from '../../../services';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
+import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
+import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
+import { GlobalState } from '../../../repo/global';
 
 @UntilDestroy()
 @Component({
@@ -13,11 +15,13 @@ import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
     styleUrls: ['./newest-works.component.scss'],
 })
 export class NewestWorksComponent implements OnInit {
+    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
+
     loading = false;
     works: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(private network: DragonfishNetworkService, private route: ActivatedRoute, private router: Router) { }
 
     ngOnInit(): void {
         setTwoPartTitle(Constants.NEWEST_WORKS);
@@ -37,7 +41,7 @@ export class NewestWorksComponent implements OnInit {
      */
     private fetchData(pageNum: number): void {
         this.loading = true;
-        this.network.fetchAllNew(pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent])
+        this.network.fetchAllNew(pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent], this.filter)
             .subscribe(result => {
                 this.works = result;
                 this.loading = false;

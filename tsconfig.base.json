@@ -23,7 +23,8 @@
             "@dragonfish/client/icons": ["libs/client/icons/src/index.ts"],
             "@dragonfish/client/editor": ["libs/client/editor/src/index.ts"],
             "@dragonfish/client/my-stuff": ["libs/client/my-stuff/src/index.ts"],
-            "@dragonfish/client/dashboard": ["libs/client/dashboard/src/index.ts"]
+            "@dragonfish/client/dashboard": ["libs/client/dashboard/src/index.ts"],
+            "@dragonfish/client/services": ["libs/client/services/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

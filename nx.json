@@ -28,6 +28,7 @@
         "bettafish-native": { "tags": [] },
         "client-editor": { "tags": [] },
         "client-my-stuff": { "tags": [] },
-        "client-dashboard": { "tags": [] }
+        "client-dashboard": { "tags": [] },
+        "client-services": { "tags": [] }
     }
 }

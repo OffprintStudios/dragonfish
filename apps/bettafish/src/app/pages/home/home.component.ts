@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { slogans } from '../../models/site';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ActivatedRoute } from '@angular/router';
 import { NewsContentModel } from '@dragonfish/shared/models/content';
 
@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
     loadingLatest = false;
     latestPosts: NewsContentModel[];
 
-    constructor(private network: NetworkService, public route: ActivatedRoute) {}
+    constructor(private network: DragonfishNetworkService, public route: ActivatedRoute) {}
 
     ngOnInit(): void {
         setTwoPartTitle(Constants.HOME);

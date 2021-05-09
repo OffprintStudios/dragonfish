@@ -3,7 +3,7 @@ import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { tap } from 'rxjs/operators';
 import * as Auth from './auth.actions';
 import { AuthStateModel } from './auth-state.model';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 })
 @Injectable()
 export class AuthState {
-    constructor(private network: NetworkService, private alerts: AlertsService) {}
+    constructor(private network: DragonfishNetworkService, private alerts: AlertsService) {}
 
     /* Selectors */
 

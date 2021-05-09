@@ -6,7 +6,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Injectable } from '@angular/core';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PortfolioStateModel } from './portfolio-state.model';
 import { throwError } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class PortfolioState {
         return ctx.currPortfolio;
     }
 
-    constructor(private network: NetworkService, private alerts: AlertsService) {}
+    constructor(private network: DragonfishNetworkService, private alerts: AlertsService) {}
 
     @Action(Portfolio.FetchCurrentPortfolio)
     public fetchCurrentPortfolio(
@@ -45,7 +45,7 @@ export class PortfolioState {
 
     @Action(Portfolio.UpdateCurrentProfile)
     public updateCurrentProfile(
-        { patchState }: StateContext<PortfolioStateModel>, 
+        { patchState }: StateContext<PortfolioStateModel>,
         { newUserInfo }: Portfolio.UpdateCurrentProfile
     ) {
         patchState({

@@ -7,7 +7,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { Injectable } from '@angular/core';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PortfolioService } from './../portfolio/services';
 import { UserStateModel } from './user-state.model';
 import { throwError } from 'rxjs';
@@ -20,7 +20,7 @@ import { throwError } from 'rxjs';
 })
 @Injectable()
 export class UserState {
-    constructor(private networkService: NetworkService, private alerts: AlertsService, private portfolio: PortfolioService) {}
+    constructor(private networkService: DragonfishNetworkService, private alerts: AlertsService, private portfolio: PortfolioService) {}
 
     /* Selectors */
 
@@ -126,7 +126,7 @@ export class UserState {
                 return throwError(error);
             }),
         );
-    } 
+    }
 
     @Action(User.UpdateTagline)
     updateTagline({ patchState }: StateContext<UserStateModel>, action: User.UpdateTagline) {

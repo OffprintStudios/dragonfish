@@ -12,5 +12,6 @@ module.exports = {
         '<rootDir>/libs/client/editor',
         '<rootDir>/libs/client/my-stuff',
         '<rootDir>/libs/client/dashboard',
+        '<rootDir>/libs/client/services',
     ],
 };
