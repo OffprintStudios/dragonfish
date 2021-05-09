@@ -33,6 +33,9 @@ export class NotificationDocument extends Document implements NotificationBase {
     @Prop({ required: true })
     sourceId: string;
 
+    @Prop({required: false})
+    creatorUserId?: string;
+
     // Gotta do these naming and type shenanaigans because Mongo discriminator names must be unique,
     // so this can't just go into the DB as the names inside NotificationKind.
     @Prop({
@@ -72,7 +75,7 @@ function getWorkNotificationSubSchema(model: Model<NotificationDocument>): Model
     return model.discriminator(
         NotificationDocumentKind.NDKWorkNotification,
         new MongooseSchema(SubSchemas.getWorkNotification()),
-    );    
+    );
 }
 
 function getSectionNotificationSubSchema(model: Model<NotificationDocument>): Model<SectionNotificationDocument> {
@@ -86,7 +89,7 @@ function getBlogNotificationSubSchema(model: Model<NotificationDocument>): Model
     return model.discriminator(
         NotificationDocumentKind.NDKBlogNotification,
         new MongooseSchema(SubSchemas.getBlogNotification()),
-    );    
+    );
 }
 
 function getCommentNotificationSubSchema(model: Model<NotificationDocument>): Model<CommentNotificationDocument> {

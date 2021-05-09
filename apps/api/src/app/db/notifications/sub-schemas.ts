@@ -27,13 +27,12 @@ export namespace SubSchemas {
         return {
             authorId: { type: String, trim: true, required: true },
             authorName: { type: String, required: true },
-        };        
+        };
     }
 
     interface CommentNotificationSubSchemaProps {
         commentId: typeof String;
         commenterName: typeof String;
-        commenterId: typeof String;
         parentKind: typeof String;
         parentTitle: typeof String;
     }
@@ -42,11 +41,10 @@ export namespace SubSchemas {
         return {
             commentId: { type: String, required: true, trim: true },
             commenterName: { type: String, required: true },
-            commenterId: { type: String, required: true, trim: true },
             parentKind: {
                 type: String,
                 required: true,
-                enum: Object.keys(ContentKind),                
+                enum: Object.keys(ContentKind),
             },
             parentTitle: { type: String, required: true },
         };

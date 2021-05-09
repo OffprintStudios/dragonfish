@@ -32,6 +32,7 @@ import { CommentNotificationQueueDocument } from './notificationQueue/comment-no
 import { NewsPostNotificationQueueDocument } from './notificationQueue/news-post-notification-queue.document';
 import { PMThreadNotificationQueueDocument } from './notificationQueue/pm-thread-notification-queue.document';
 import { PMReplyNotificationQueueDocument } from './notificationQueue/pm-reply-notification-queue.document';
+import { Logger } from '@nestjs/common/services/logger.service';
 
 const MAX_NOTIFICATIONS_PER_WAKEUP = 100;
 const MAX_MS_PER_WAKEUP = 100;
@@ -40,6 +41,9 @@ const NS_PER_MS = 1_000_000;
 
 @Injectable()
 export class NotificationsService {
+
+    private readonly logger: Logger = new Logger(NotificationsService.name);
+
     private active = false;
     private currentWakeup: Promise<void>;
 
@@ -167,7 +171,7 @@ export class NotificationsService {
     }
 
     /**
-     * Subscribes a user to a notification source.
+     * Subscribes a user to a notification source. Does nothing if the user is already subscribed.
      * @param userId The user to subscribe
      * @param sourceId The ID of the thing the user would like to subscribe to
      * @param notificationKind The kind of notifications the notification source emits
@@ -218,7 +222,7 @@ export class NotificationsService {
         const deleteResult = await this.subscriptionModel.deleteOne({
             userId: userId,
             notificationSourceId: sourceId,
-            notificationKind: notificationKind,
+            notificationKind: notificationKind
         });
         if (deleteResult.ok !== 1) {
             return UnsubscribeResult.Failure;
@@ -290,6 +294,7 @@ export class NotificationsService {
                 const subscribers = await this.subscriptionModel.find({
                     notificationSourceId: toPublish.sourceId,
                     notificationKind: toPublish.kind,
+                    userId: { $ne: toPublish.creatorUserId } // so we don't send your own notifications to you
                 });
 
                 // Publish this notification to all subscribers.
@@ -315,11 +320,11 @@ export class NotificationsService {
                 }
             } catch (error) {
                 if (error instanceof Error) {
-                    console.error(
+                    this.logger.error(
                         `Error processing notification from queue - ${error.name}: ${error.message}\n${error.stack}`,
                     );
                 } else {
-                    console.error(`Error processing notification from queue - ${error}`);
+                    this.logger.error(`Error processing notification from queue - ${error}`);
                 }
 
                 break;
@@ -328,6 +333,10 @@ export class NotificationsService {
 
         // Put stale notifications back into the processing queue
         await this.cleanUpStaleNotifications();
+
+        const [sec, ns] = process.hrtime(tickStart);
+        const elapsedMs = (sec * NS_PER_SEC + ns) / NS_PER_MS;
+        this.logger.debug(`NotificationsService wakeup completed in ${elapsedMs}ms. Processed ${processed} notifications. Sleeping...`);
 
         // Queue the next wakeup
         setTimeout(async () => {
@@ -359,6 +368,7 @@ export class NotificationsService {
             _id: undefined,
             destinationUserId: subscription.userId,
             sourceId: toPublish.sourceId,
+            creatorUserId: toPublish.creatorUserId,
             kind: toPublish.kind,
             read: false,
             createdAt: toPublish.createdAt,
@@ -398,7 +408,6 @@ export class NotificationsService {
         const commentInfo: CommentNotificationInfo = {
             ...commonProperties,
             commentId: queuedCommentNotification.commentId,
-            commenterId: queuedCommentNotification.commenterId,
             commenterName: queuedCommentNotification.commenterName,
             parentKind: queuedCommentNotification.parentKind,
             parentTitle: queuedCommentNotification.parentTitle,

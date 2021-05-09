@@ -9,6 +9,11 @@ export interface NotificationQueueItem {
      * The ID of the thing (Work, Document, Blog, etc) that triggered this notification.
      */
     sourceId: string;
+
+    /**
+     * (Optional) The user (if any) whose action triggered this notification.
+     */
+    creatorUserId?: string;
     kind: NotificationKind;
     publishStatus: PublishStatus;
     createdAt: Date;

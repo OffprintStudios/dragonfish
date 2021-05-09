@@ -34,6 +34,9 @@ export class NotificationQueueDocument extends Document implements NotificationQ
     @Prop({ required: true })
     sourceId: string;
 
+    @Prop({ required: false })
+    creatorUserId?: string;
+
     // Gotta do these naming and type shenanaigans because Mongo discriminator names must be unique,
     // so this can't just go into the DB as the names inside NotificationKind.
     @Prop({
