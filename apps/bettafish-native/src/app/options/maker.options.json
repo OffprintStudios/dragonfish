@@ -5,16 +5,26 @@
     "electronCompile": false,
     "npmRebuild": false,
     "asar": true,
+    "appId": "com.offprintstudios.offprint",
+    "directories": {
+        "buildResources": "apps/bettafish-native/src/assets"
+    },
+    "files": [
+        "**/*",
+        "apps/bettafish-native/src/assets/icons/mac/icon.icns",
+        "apps/bettafish-native/src/assets/icons/win/icon.ico"
+    ],
     "win": {
         "target": "appx",
-        "publisherName": "Alyx Mote"
+        "publisherName": "Offprint Studios"
     },
     "appx": {
         "displayName": "Offprint",
-        "publisherDisplayName": "Alyx Mote",
+        "publisherDisplayName": "Offprint Studios",
         "backgroundColor": "transparent"
     },
     "mac": {
-        "target": "dmg"
+        "target": "dmg",
+        "icon": "apps/bettafish-native/src/assets/icons/mac/icon.icns"
     }
 }
