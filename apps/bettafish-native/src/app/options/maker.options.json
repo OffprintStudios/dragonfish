@@ -7,12 +7,12 @@
     "asar": true,
     "appId": "com.offprintstudios.offprint",
     "directories": {
-        "buildResources": "../../assets"
+        "buildResources": "apps/bettafish-native/src/assets"
     },
     "files": [
         "**/*",
-        "../../assets/icons/mac/icon.icns",
-        "../../assets/icons/win/icon.ico"
+        "apps/bettafish-native/src/assets/icons/mac/icon.icns",
+        "apps/bettafish-native/src/assets/icons/win/icon.ico"
     ],
     "win": {
         "target": "appx",
@@ -25,6 +25,6 @@
     },
     "mac": {
         "target": "dmg",
-        "icon": "../../assets/icons/mac/icon.icns"
+        "icon": "apps/bettafish-native/src/assets/icons/mac/icon.icns"
     }
 }
