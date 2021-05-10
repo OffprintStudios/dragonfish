@@ -16,6 +16,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UserState } from '../user';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { GlobalState } from '../global';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 /**
  * ## ContentState
@@ -39,7 +40,7 @@ import { GlobalState } from '../global';
 export class ContentState {
     @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
-    constructor(private networkService: DragonfishNetworkService, private store: Store) { }
+    constructor(private networkService: DragonfishNetworkService, private store: Store, private alerts: AlertsService) { }
 
     /* Selectors */
 
@@ -156,38 +157,56 @@ export class ContentState {
 
     @Action(Content.SetLike)
     setLike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetLike) {
-        return this.networkService.setLike(setRating).pipe(
-            tap((val: ReadingHistory) => {
-                if (setRating.oldApprovalRating === RatingOption.Disliked) {
+        if (setRating.oldApprovalRating === RatingOption.Disliked) {
+            return this.networkService.setLike(setRating).pipe(
+                tap((val: ReadingHistory) => {
                     dispatch(new Content.IncrementLikes());
                     dispatch(new Content.DecrementDislikes());
-                } else {
+                    patchState({
+                        currHistDoc: val,
+                    });
+                }),
+            );
+        } else if (setRating.oldApprovalRating === RatingOption.Liked) {
+            this.alerts.error(`You've already upvoted this content!`);
+            return;
+        } else {
+            return this.networkService.setLike(setRating).pipe(
+                tap((val: ReadingHistory) => {
                     dispatch(new Content.IncrementLikes());
-                }
-
-                patchState({
-                    currHistDoc: val,
-                });
-            }),
-        );
+                    patchState({
+                        currHistDoc: val,
+                    });
+                }),
+            );
+        }
     }
 
     @Action(Content.SetDislike)
     setDislike({ patchState, dispatch }: StateContext<ContentStateModel>, { setRating }: Content.SetDislike) {
-        return this.networkService.setDislike(setRating).pipe(
-            tap((val: ReadingHistory) => {
-                if (setRating.oldApprovalRating === RatingOption.Liked) {
+        if (setRating.oldApprovalRating === RatingOption.Liked) {
+            return this.networkService.setDislike(setRating).pipe(
+                tap((val: ReadingHistory) => {
                     dispatch(new Content.IncrementDislikes());
                     dispatch(new Content.DecrementLikes());
-                } else {
+                    patchState({
+                        currHistDoc: val,
+                    });
+                }),
+            );
+        } else if (setRating.oldApprovalRating === RatingOption.Disliked) {
+            this.alerts.error(`You've already downvoted this content!`);
+            return;
+        } else {
+            return this.networkService.setDislike(setRating).pipe(
+                tap((val: ReadingHistory) => {
                     dispatch(new Content.IncrementDislikes());
-                }
-
-                patchState({
-                    currHistDoc: val,
-                });
-            }),
-        );
+                    patchState({
+                        currHistDoc: val,
+                    });
+                }),
+            );
+        }
     }
 
     @Action(Content.SetNoVote)
@@ -199,7 +218,6 @@ export class ContentState {
                 } else if (setRating.oldApprovalRating === RatingOption.Disliked) {
                     dispatch(new Content.DecrementDislikes());
                 }
-
                 patchState({
                     currHistDoc: val,
                 });
