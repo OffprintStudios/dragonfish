@@ -2,6 +2,8 @@
     "name": "dragonfish",
     "version": "0.0.0",
     "license": "MIT",
+    "author": "Offprint Studios",
+    "description": "A community of writers and readers",
     "scripts": {
         "ng": "nx",
         "postinstall": "exitzero electron-builder install-app-deps && ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
@@ -26,9 +28,11 @@
         "workspace-generator": "nx workspace-generator",
         "dep-graph": "nx dep-graph",
         "help": "nx help",
-        "build:prod": "cross-env NODE_ENV=production ng build --prod",
+        "build:native:prod:client": "cross-env NODE_ENV=production ng build --prod bettafish --baseHref=\"./\" --output-path=dist/apps/bettafish",
+        "build:electron:prod:native": "cross-env NODE_ENV=production ng build --prod bettafish-native",
         "build:ci:server": "cross-env NODE_ENV=production nx build api --skip-nx-cache --prod",
-        "build:ci:client": "cross-env NODE_ENV=production nx build bettafish --skip-nx-cache --prod"
+        "build:ci:client": "cross-env NODE_ENV=production nx build bettafish --skip-nx-cache --prod",
+        "package-app": "yarn run build:native:prod:client && yarn run build:electron:prod:native && ng run bettafish-native:make --prepackage-only"
     },
     "private": true,
     "dependencies": {
