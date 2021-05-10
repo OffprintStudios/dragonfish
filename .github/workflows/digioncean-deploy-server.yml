@@ -129,7 +129,33 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: NODE_VERSION=15.5.1 ~/.nvm/nvm-exec pm2 start /opt/dragonfish/server_config/pm2.config.js
 
-  # TODO: If we have more than 5 server releaes, delete the oldest one
+    - name: 'Remote: Delete oldest release(s)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+            cd /opt/dragonfish/releases/server
+            shopt -s nullglob
+            echo "Collecting all folders into an array sorted reverse chronologically by release number..."
+            folders=(*)
+            folders2=($(for folder in "${folders[@]}"; do echo $folder; done | sort -t '-' -k2,2nr))
+
+            echo "Deleting oldest indices..."
+            for ((i = 0; i < ${#folders2[@]}; ++i))
+            do
+                if [ $i -gt 4 ]; then
+                    echo "Deleting index $i..."
+                    rm -rf ${folders2[$i]}
+                    echo "Success!"
+                else
+                    echo "Skipping index $i..."
+                fi
+            done
+
+            echo "Done!"
+            shopt -u nullglob
 
 # Production deployment steps
   deploy_to_prod:
@@ -253,7 +279,33 @@ jobs:
         privateKey: ${{ secrets.SSH_KEY }}
         command: NODE_VERSION=15.5.1 ~/.nvm/nvm-exec pm2 start /opt/dragonfish/server_config/pm2.config.js
 
-  # TODO: If we have more than 5 server releaes, delete the oldest one
+    - name: 'Remote: Delete oldest release(s)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+            cd /opt/dragonfish/releases/server
+            shopt -s nullglob
+            echo "Collecting all folders into an array sorted reverse chronologically by release number..."
+            folders=(*)
+            folders2=($(for folder in "${folders[@]}"; do echo $folder; done | sort -t '-' -k2,2nr))
+
+            echo "Deleting oldest indices..."
+            for ((i = 0; i < ${#folders2[@]}; ++i))
+            do
+                if [ $i -gt 4 ]; then
+                    echo "Deleting index $i..."
+                    rm -rf ${folders2[$i]}
+                    echo "Success!"
+                else
+                    echo "Skipping index $i..."
+                fi
+            done
+
+            echo "Done!"
+            shopt -u nullglob
 
 
 
