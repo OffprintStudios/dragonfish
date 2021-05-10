@@ -70,9 +70,10 @@ export default class App {
             minHeight: minHeight,
             show: false,
             titleBarStyle: 'hiddenInset',
+            icon: join(__dirname, './assets/icons/mac/icon.icns'),
             webPreferences: {
                 enableRemoteModule: true,
-                contextIsolation: false,
+                contextIsolation: true,
                 backgroundThrottling: false,
                 preload: join(__dirname, 'preload.js'),
             },

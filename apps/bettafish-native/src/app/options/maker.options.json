@@ -5,16 +5,26 @@
     "electronCompile": false,
     "npmRebuild": false,
     "asar": true,
+    "appId": "com.offprintstudios.offprint",
+    "directories": {
+        "buildResources": "../../assets"
+    },
+    "files": [
+        "**/*",
+        "../../assets/icons/mac/icon.icns",
+        "../../assets/icons/win/icon.ico"
+    ],
     "win": {
         "target": "appx",
-        "publisherName": "Alyx Mote"
+        "publisherName": "Offprint Studios"
     },
     "appx": {
         "displayName": "Offprint",
-        "publisherDisplayName": "Alyx Mote",
+        "publisherDisplayName": "Offprint Studios",
         "backgroundColor": "transparent"
     },
     "mac": {
-        "target": "dmg"
+        "target": "dmg",
+        "icon": "../../assets/icons/mac/icon.icns"
     }
 }
