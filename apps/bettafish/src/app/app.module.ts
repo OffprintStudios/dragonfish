@@ -5,6 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsDataPluginModule } from '@ngxs-labs/data';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
@@ -139,6 +140,7 @@ import { environment } from '../environments/environment';
                 developmentMode: !environment.production,
                 selectorOptions: { suppressErrors: false, injectContainerState: false },
             }),
+        NgxsDataPluginModule.forRoot(),
         NgxsStoragePluginModule.forRoot({
             key: [
                 'auth.token',
