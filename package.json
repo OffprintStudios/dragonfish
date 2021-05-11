@@ -62,6 +62,7 @@
         "@ng-select/ng-select": "^6.1.0",
         "@ngneat/content-loader": "^6.0.0",
         "@ngneat/until-destroy": "^8.0.4",
+        "@ngxs-labs/data": "^5.0.0",
         "@ngxs-labs/dispatch-decorator": "^2.1.0",
         "@ngxs-labs/select-snapshot": "^2.0.1",
         "@ngxs/devtools-plugin": "^3.7.1",
