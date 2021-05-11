@@ -3,11 +3,11 @@ import { Select, Store } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { AlertsService } from '@dragonfish/client/alerts';
-import { AuthState } from './../../../../repo/auth';
+import { AuthState } from '@dragonfish/client/repository/auth';
 import { FileUploader } from 'ng2-file-upload';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { UserService } from '../../../../repo/user/services';
+import { UserService } from '@dragonfish/client/repository/user/services';
 
 @UntilDestroy()
 @Component({

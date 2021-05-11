@@ -1,15 +1,12 @@
-import { AfterViewChecked, AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FrontendUser, Roles } from '@dragonfish/shared/models/users';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
-import { AuthService } from '../../../repo/auth/services';
 import { ElectronService } from 'ngx-electron';
-import { PopupComponent } from '@dragonfish/client/ui';
-import { PopupModel } from '@dragonfish/shared/models/util';
 import { SidenavService } from '../../../services';
 
 @Component({

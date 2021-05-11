@@ -5,7 +5,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { NgxsModule } from '@ngxs/store';
-import { NgxsDataPluginModule } from '@ngxs-labs/data';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
@@ -63,14 +62,8 @@ import { DashboardModule } from '@dragonfish/client/dashboard';
 import { ClientServicesModule } from '@dragonfish/client/services';
 
 /* State */
-import { AuthState } from './repo/auth';
-import { AuthInterceptor } from './repo/auth/services';
-import { GlobalState } from './repo/global';
-import { UserState } from './repo/user';
-import { ContentState } from './repo/content';
-import { PortfolioState } from './repo/portfolio';
-import { CollectionsState } from './repo/collections';
-import { HistoryState } from './repo/history';
+import { RepositoryModule } from '@dragonfish/client/repository';
+import { AuthInterceptor } from '@dragonfish/client/repository/auth/services';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -127,20 +120,12 @@ import { environment } from '../environments/environment';
         NgxUploaderModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
+        RepositoryModule,
         NgxsModule.forRoot(
-            [
-                AuthState,
-                UserState,
-                GlobalState,
-                ContentState,
-                PortfolioState,
-                CollectionsState,
-                HistoryState,
-            ], {
+            [], {
                 developmentMode: !environment.production,
                 selectorOptions: { suppressErrors: false, injectContainerState: false },
             }),
-        NgxsDataPluginModule.forRoot(),
         NgxsStoragePluginModule.forRoot({
             key: [
                 'auth.token',

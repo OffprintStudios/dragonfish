@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @UntilDestroy()
 @Component({

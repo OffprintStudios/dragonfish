@@ -5,7 +5,7 @@ import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { FetchAll, ContentState } from '../../repo/content';
+import { FetchAll, ContentState } from '@dragonfish/client/repository/content';
 
 @Injectable()
 export class BlogsResolver implements Resolve<PaginateResult<ContentModel>> {

@@ -2305,13 +2305,6 @@
     enhanced-resolve "5.7.0"
     webpack-sources "2.2.0"
 
-"@ngxs-labs/data@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/data/-/data-5.0.0.tgz#2bbfd7967829f0d58ee08d338bf69a5c179ceae5"
-  integrity sha512-eZLFFmehuPjwbahCvB7HqobhHznGduuVEo1c93Pk8OxHyHfSn5NdKEJ4oh6Xo7KC9V6Fht/7Awe4ZHcNpitgZg==
-  dependencies:
-    tslib "^2.0.0"
-
 "@ngxs-labs/dispatch-decorator@^2.1.0":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@ngxs-labs/dispatch-decorator/-/dispatch-decorator-2.1.1.tgz#651a081f1216c9c474e68ea33ac6b6e1066eebfd"

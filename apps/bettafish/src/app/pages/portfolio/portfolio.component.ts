@@ -5,10 +5,10 @@ import { CoverPicUploadComponent } from '../../components/user/settings/cover-pi
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { PortfolioState } from '../../repo/portfolio';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Select } from '@ngxs/store';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { UserState } from '../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 
 @UntilDestroy()
 @Component({

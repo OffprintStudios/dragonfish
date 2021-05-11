@@ -21,8 +21,7 @@ import { MigrationResolvers } from './pages/migration';
 
 /* Util */
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from './repo/auth/services';
-
+import { AuthGuard } from '@dragonfish/client/repository/auth/services'
 
 const routes: Routes = [
     ...HomeRoutes,

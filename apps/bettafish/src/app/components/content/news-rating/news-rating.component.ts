@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { ContentState } from '../../../repo/content';
+import { ContentState } from '@dragonfish/client/repository/content';
 import { ContentModel, SetRating } from '@dragonfish/shared/models/content';
 import { RatingOption, ReadingHistory } from '@dragonfish/shared/models/reading-history';
-import { ContentService } from '../../../repo/content/services';
+import { ContentService } from '@dragonfish/client/repository/content/services';
 
 @Component({
     selector: 'dragonfish-news-rating',

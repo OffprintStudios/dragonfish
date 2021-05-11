@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentModel, SetRating } from '@dragonfish/shared/models/content';
 import { RatingOption, ReadingHistory } from '@dragonfish/shared/models/reading-history';
-import { UserState } from '../../../repo/user';
-import { ContentState } from '../../../repo/content';
-import { ContentService } from '../../../repo/content/services';
+import { UserState } from '@dragonfish/client/repository/user';
+import { ContentState } from '@dragonfish/client/repository/content';
+import { ContentService } from '@dragonfish/client/repository/content/services';
 
 @UntilDestroy()
 @Component({

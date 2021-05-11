@@ -6,7 +6,7 @@ import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @UntilDestroy()
 @Component({

@@ -6,7 +6,7 @@ import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @Component({
     selector: 'dragonfish-browse',
@@ -22,7 +22,12 @@ export class BrowseComponent implements OnInit {
         query: new FormControl('')
     });
 
-    constructor(public route: ActivatedRoute, private router: Router, private alerts: AlertsService, private network: DragonfishNetworkService) {}
+    constructor(
+        public route: ActivatedRoute,
+        private router: Router,
+        private alerts: AlertsService,
+        private network: DragonfishNetworkService
+    ) {}
 
     ngOnInit() {
         setTwoPartTitle(Constants.BROWSE);

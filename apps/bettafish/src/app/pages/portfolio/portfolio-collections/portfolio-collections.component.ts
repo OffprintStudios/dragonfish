@@ -5,10 +5,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Collection } from '@dragonfish/shared/models/collections';
-import { PortfolioState } from '../../../repo/portfolio';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Constants, setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()

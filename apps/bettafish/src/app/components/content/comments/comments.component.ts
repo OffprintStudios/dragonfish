@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ItemKind } from '@dragonfish/shared/models/comments';
 import { Select } from '@ngxs/store';
-import { UserState} from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';

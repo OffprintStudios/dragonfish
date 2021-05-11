@@ -5,8 +5,8 @@ import { ChangeBio, ChangeUsername, FrontendUser } from '@dragonfish/shared/mode
 import { AlertsService } from '@dragonfish/client/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { UserState } from '../../../../repo/user';
-import { UserService } from '../../../../repo/user/services';
+import { UserState } from '@dragonfish/client/repository/user';
+import { UserService } from '@dragonfish/client/repository/user/services';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadAvatarComponent } from '../upload-avatar/upload-avatar.component';
 

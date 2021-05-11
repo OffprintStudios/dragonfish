@@ -9,7 +9,6 @@ import { PortfolioCollectionPageComponent } from './portfolio-collections/portfo
 
 /* Util */
 import { PortfolioResolver, CollectionPageResolver } from '../../resolvers/portfolio';
-import { AuthGuard } from '../../repo/auth/services';
 import { ContentViewResolver } from '../../resolvers';
 
 export const PortfolioPages = [

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { ContentState } from '../../../repo/content';
+import { ContentState } from '@dragonfish/client/repository/content';
 import { Observable } from 'rxjs';
 import { PoetryContent } from '@dragonfish/shared/models/content';
 import { ActivatedRoute, Router } from '@angular/router';

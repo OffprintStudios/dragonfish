@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 
 import { ApprovalStatus, Categories, Work } from '@dragonfish/shared/models/works';
 import { FrontendUser } from '@dragonfish/shared/models/users';

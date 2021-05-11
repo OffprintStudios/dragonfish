@@ -7,11 +7,11 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { UserState } from '../../../repo/user';
-import { PortfolioState } from '../../../repo/portfolio';
+import { UserState } from '@dragonfish/client/repository/user';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @UntilDestroy()
 @Component({

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FrontendUser, ThemePref } from '@dragonfish/shared/models/users';
-import { UserState } from './repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { ElectronService } from 'ngx-electron';
-import { GlobalState } from './repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 import { SidenavService } from './services';
 import { NavigationStart, Router } from '@angular/router';
 

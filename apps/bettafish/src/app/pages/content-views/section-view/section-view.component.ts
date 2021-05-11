@@ -3,7 +3,7 @@ import { Observable, zip } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
-import { ContentState, FetchSection } from '../../../repo/content';
+import { ContentState, FetchSection } from '@dragonfish/client/repository/content';
 import { Section, AuthorsNotePos } from '@dragonfish/shared/models/sections';
 import { ContentModel, SectionInfo } from '@dragonfish/shared/models/content';
 import { setThreePartTitle } from '@dragonfish/shared/constants';
