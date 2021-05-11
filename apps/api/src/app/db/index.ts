@@ -7,6 +7,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { SectionsModule } from './sections/sections.module';
 import { ApprovalQueueModule } from './approval-queue/approval-queue.module';
 import { CommentsModule } from './comments/comments.module';
+import { RatingsModule } from './ratings';
 import { WorksModule } from './works/works.module';
 import { OldBlogsModule } from './blogs/blogs.module';
 
@@ -20,6 +21,7 @@ export const DatabaseModules = [
     SectionsModule,
     ApprovalQueueModule,
     CommentsModule,
+    RatingsModule,
     WorksModule,
     OldBlogsModule,
 ];
