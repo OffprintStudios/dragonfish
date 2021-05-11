@@ -4,11 +4,11 @@ import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable } from 'rxjs';
-import { PortfolioState } from '../../../repo/portfolio';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { BlogsContentModel, ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @UntilDestroy()
 @Component({

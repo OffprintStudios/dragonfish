@@ -6,7 +6,7 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { CollectionFormComponent } from '../collection-form/collection-form.component';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '../../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 

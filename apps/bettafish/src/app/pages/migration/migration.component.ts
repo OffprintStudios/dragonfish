@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Work } from '@dragonfish/shared/models/works';
 import { Blog } from '@dragonfish/shared/models/blogs';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Comment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
 import { Select } from '@ngxs/store';
-import { UserState } from '../../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FormControl, FormGroup, Validators } from '@angular/forms';

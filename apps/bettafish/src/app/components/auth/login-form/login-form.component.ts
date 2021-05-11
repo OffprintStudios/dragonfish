@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginUser } from '@dragonfish/shared/models/users';
-import { AuthService } from '../../../repo/auth/services';
+import { AuthService } from '@dragonfish/client/repository/auth/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({

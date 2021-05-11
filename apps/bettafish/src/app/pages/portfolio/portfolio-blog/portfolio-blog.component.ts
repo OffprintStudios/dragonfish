@@ -6,12 +6,12 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { BlogsContentModel, ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
-import { UserState } from '../../../repo/user';
-import { PortfolioState } from '../../../repo/portfolio';
+import { UserState } from '@dragonfish/client/repository/user';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 
 @UntilDestroy()
 @Component({

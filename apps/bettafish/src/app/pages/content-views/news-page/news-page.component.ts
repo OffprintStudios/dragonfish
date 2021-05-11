@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { ContentState } from '../../../repo/content';
+import { ContentState } from '@dragonfish/client/repository/content';
 import { Observable } from 'rxjs';
 import { NewsContentModel, NewsCategory } from '@dragonfish/shared/models/content';
 import { ItemKind } from '@dragonfish/shared/models/comments';

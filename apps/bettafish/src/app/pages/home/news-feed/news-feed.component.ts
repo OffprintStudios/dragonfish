@@ -6,7 +6,8 @@ import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '../../../repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
+import { delay } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -44,6 +45,7 @@ export class NewsFeedComponent implements OnInit {
     private fetchData(pageNum: number) {
         this.loading = true;
         this.network.fetchAllNew(pageNum, [ContentKind.NewsContent], this.filter)
+            .pipe(delay(500))
             .subscribe(result => {
                 this.posts = result as PaginateResult<NewsContentModel>;
                 this.loading = false;

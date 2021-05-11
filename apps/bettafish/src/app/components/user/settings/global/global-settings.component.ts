@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalState, GlobalStateModel, SetThemePref, SetContentFilter, SetOfAge } from '../../../../repo/global';
+import { GlobalState, GlobalStateModel, SetThemePref, SetContentFilter, SetOfAge } from '@dragonfish/client/repository/global';
 import { Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { ThemePref } from '@dragonfish/shared/models/users';

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { UserState } from '../../../../repo/user';
-import { PortfolioState } from '../../../../repo/portfolio';
-import { ContentState } from '../../../../repo/content';
+import { UserState } from '@dragonfish/client/repository/user';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
+import { ContentState } from '@dragonfish/client/repository/content';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { BlogsContentModel } from '@dragonfish/shared/models/content';

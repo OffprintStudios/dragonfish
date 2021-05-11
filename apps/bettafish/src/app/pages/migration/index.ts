@@ -5,7 +5,7 @@ import { MigrateWorkResolver } from './migrate-work/migrate-work.resolver';
 import { MigrateBlogComponent } from './migrate-blog/migrate-blog.component';
 import { MigrateBlogResolver } from './migrate-blog/migrate-blog.resolver';
 import { Routes } from '@angular/router';
-import { AuthGuard } from '../../repo/auth/services';
+import { AuthGuard } from '@dragonfish/client/repository/auth/services';
 
 export const MigrationPages = [MigrationComponent, MigrateWorkComponent, MigrateBlogComponent];
 export const MigrationResolvers = [MigrationResolver, MigrateWorkResolver, MigrateBlogResolver];

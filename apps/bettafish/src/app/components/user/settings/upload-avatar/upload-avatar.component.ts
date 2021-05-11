@@ -5,7 +5,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { UserService } from '../../../../repo/user/services';
+import { UserService } from '@dragonfish/client/repository/user/services';
 
 @Component({
     selector: 'dragonfish-upload-avatar',

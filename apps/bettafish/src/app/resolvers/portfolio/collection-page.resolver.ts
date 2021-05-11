@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription } from 'rxjs';
-import { UserState } from '../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Collection } from '@dragonfish/shared/models/collections';

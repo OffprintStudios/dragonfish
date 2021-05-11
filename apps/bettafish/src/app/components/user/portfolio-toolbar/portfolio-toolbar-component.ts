@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Select } from '@ngxs/store';
-import { PortfolioState } from '../../../repo/portfolio';
+import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 
 @Component({
     selector: 'dragonfish-portfolio-toolbar',

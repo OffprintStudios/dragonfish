@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { HistoryService, HistoryState, HistoryStateModel } from '../../../../repo/history';
+import { HistoryService, HistoryState, HistoryStateModel } from '@dragonfish/client/repository/history';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';

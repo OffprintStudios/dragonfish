@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FrontendUser, ThemePref } from '@dragonfish/shared/models/users';
-import { UserState } from './repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { ElectronService } from 'ngx-electron';
-import { GlobalState } from './repo/global';
+import { GlobalState } from '@dragonfish/client/repository/global';
 import { SidenavService } from './services';
 import { NavigationStart, Router } from '@angular/router';
 
@@ -30,7 +30,13 @@ export class AppComponent implements OnInit, AfterViewInit {
             const html = document.getElementsByTagName('html')[0];
             console.log(typeof ThemePref[theme]);
             if (ThemePref[theme] !== null && ThemePref[theme] !== undefined) {
-                if(ThemePref[theme] == 'dark-aqua' || ThemePref[theme] == 'dark-crimson' || ThemePref[theme] == 'dark-field' || ThemePref[theme] == 'dark-royal' || ThemePref[theme] === 'dusk-autumn') {
+                if (
+                    ThemePref[theme] == 'dark-aqua' ||
+                    ThemePref[theme] == 'dark-crimson' ||
+                    ThemePref[theme] == 'dark-field' ||
+                    ThemePref[theme] == 'dark-royal' ||
+                    ThemePref[theme] === 'dusk-autumn'
+                ) {
                     body.classList.replace(currTheme, ThemePref[theme]);
                     html.classList.add('dark');
                 } else {
@@ -43,13 +49,19 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
 
         this.router.events.pipe(untilDestroyed(this)).subscribe(event => {
-            if (event instanceof NavigationStart) {
-                this.sidenavService.close();
+            if (this.sidenav) {
+                if (event instanceof NavigationStart) {
+                    this.sidenavService.close();
+                }
             }
         });
     }
 
     ngAfterViewInit() {
-        this.sidenavService.setSidenav(this.sidenav);
+        this.currentUser$.pipe(untilDestroyed(this)).subscribe(user => {
+            if (user || !this.electron.isElectronApp) {
+                this.sidenavService.setSidenav(this.sidenav);
+            }
+        });
     }
 }

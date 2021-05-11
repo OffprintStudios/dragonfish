@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Select } from '@ngxs/store';
 import { Observable, Subscription, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 
 import { Blog } from '@dragonfish/shared/models/blogs';
 import { ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ProseContent } from '@dragonfish/shared/models/content';
-import { ContentState } from '../../../repo/content';
+import { ContentState } from '@dragonfish/client/repository/content';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({

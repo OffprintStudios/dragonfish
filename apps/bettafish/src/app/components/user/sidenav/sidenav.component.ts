@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
-import { AuthService } from '../../../repo/auth/services';
+import { AuthService } from '@dragonfish/client/repository/auth/services';
 import { MatDialog } from '@angular/material/dialog';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '../../../repo/user';
+import { UserState } from '@dragonfish/client/repository/user';
 import { SidenavService } from '../../../services';
 
 enum UserTabs {

@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 
-import * as Portfolio from '../../repo/portfolio';
+import * as Portfolio from '@dragonfish/client/repository/portfolio';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 
 @Injectable()
