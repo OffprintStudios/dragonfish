@@ -4,6 +4,7 @@ import { slogans } from '../../models/site';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ActivatedRoute } from '@angular/router';
 import { NewsContentModel } from '@dragonfish/shared/models/content';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'dragonfish-home',
@@ -23,7 +24,7 @@ export class HomeComponent implements OnInit {
 
         // Load the latest posts
         this.loadingLatest = true;
-        this.network.fetchInitialNewsPosts().subscribe(data => {
+        this.network.fetchInitialNewsPosts().pipe(delay(500)).subscribe(data => {
             this.latestPosts = data;
             this.loadingLatest = false;
         }, () => {
