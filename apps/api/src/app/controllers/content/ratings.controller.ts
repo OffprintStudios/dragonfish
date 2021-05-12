@@ -1,4 +1,4 @@
-import { Controller, Query, Get, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Query, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import { RatingsStore } from '../../db/ratings';
 import { ApiTags } from '@nestjs/swagger';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
@@ -10,6 +10,13 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 @Controller('ratings')
 export class RatingsController {
     constructor(private readonly ratings: RatingsStore) {}
+
+    @ApiTags(DragonfishTags.Content)
+    @UseGuards(RolesGuard([Roles.User]))
+    @Post('create-ratings-doc')
+    async createRatingsDoc(@Query('contentId') contentId: string) {
+        return this.ratings.createRatingsDoc(contentId);
+    }
 
     @ApiTags(DragonfishTags.Content)
     @Get('fetch-ratings')

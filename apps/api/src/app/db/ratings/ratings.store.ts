@@ -3,17 +3,24 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RatingsDocument } from './ratings.schema';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @Injectable()
 export class RatingsStore {
     constructor(@InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>) {}
 
     public async createRatingsDoc(contentId: string) {
-        const newDoc = new this.ratings({
-            _id: contentId,
-        });
+        const existingDoc = await this.ratings.findById(contentId);
 
-        return newDoc.save();
+        if (isNullOrUndefined(existingDoc)) {
+            const newDoc = new this.ratings({
+                _id: contentId,
+            });
+
+            return newDoc.save();
+        } else {
+            throw new ConflictException(`A ratings doc already exists for this content!`);
+        }
     }
 
     public async fetchRatingsDoc(contentId: string) {
