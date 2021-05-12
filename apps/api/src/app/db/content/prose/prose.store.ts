@@ -9,12 +9,15 @@ import { ProseContentDocument } from './prose-content.document';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { RatingsStore } from '../../ratings';
 
 @Injectable()
 export class ProseStore {
     constructor(
         @InjectModel('ProseContent')
-        private readonly proseModel: PaginateModel<ProseContentDocument>, private readonly notificationsService: NotificationsService
+        private readonly proseModel: PaginateModel<ProseContentDocument>,
+        private readonly notificationsService: NotificationsService,
+        private readonly ratingsService: RatingsStore
     ) {}
 
     /**
@@ -36,6 +39,7 @@ export class ProseStore {
         });
 
         const savedProse: ProseContentDocument = await newProse.save();
+        await this.ratingsService.createRatingsDoc(savedProse._id);
 
         // Subscribe author to comments on their new prose document
         await this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);

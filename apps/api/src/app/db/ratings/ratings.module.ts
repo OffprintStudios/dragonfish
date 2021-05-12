@@ -12,6 +12,7 @@ import { RatingsStore } from './ratings.store';
             },
         ]),
     ],
-    providers: [RatingsStore]
+    providers: [RatingsStore],
+    exports: [RatingsStore],
 })
 export class RatingsModule {}

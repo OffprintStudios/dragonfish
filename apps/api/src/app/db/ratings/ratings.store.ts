@@ -16,6 +16,10 @@ export class RatingsStore {
         return newDoc.save();
     }
 
+    public async fetchRatingsDoc(contentId: string) {
+        return this.ratings.findById(contentId);
+    }
+
     public async addLike(user: JwtPayload, contentId: string) {
         const doc = await this.ratings.findById(contentId);
         if (doc.likes.some((value) => value === user.sub)) {

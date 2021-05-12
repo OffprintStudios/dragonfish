@@ -9,12 +9,15 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from './poetry-content.document';
 import { NotificationsService } from '../../notifications/notifications.service';
+import { RatingsStore } from '../../ratings';
 
 @Injectable()
 export class PoetryStore {
     constructor(
         @InjectModel('PoetryContent')
-        private readonly poetryModel: PaginateModel<PoetryContentDocument>, private readonly notificationsService: NotificationsService
+        private readonly poetryModel: PaginateModel<PoetryContentDocument>,
+        private readonly notificationsService: NotificationsService,
+        private readonly ratingsService: RatingsStore
     ) {}
 
     /**
@@ -39,6 +42,7 @@ export class PoetryStore {
         });
 
         const savedPoetry: PoetryContentDocument = await newPoetry.save();
+        await this.ratingsService.createRatingsDoc(savedPoetry._id);
 
         // Subscribe author to comments on their new poetry
         await this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);

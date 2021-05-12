@@ -14,6 +14,7 @@ import { ProseStore } from './prose/prose.store';
 import { PoetryStore } from './poetry/poetry.store';
 import { ApprovalQueueModule } from '../approval-queue/approval-queue.module';
 import { ReadingHistoryModule } from '../reading-history/reading-history.module';
+import { RatingsModule } from '../ratings';
 
 @Module({
     imports: [
@@ -22,6 +23,7 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
         SectionsModule,
         ApprovalQueueModule,
         ReadingHistoryModule,
+        RatingsModule,
         MongooseModule.forFeatureAsync([
             {
                 name: 'Content',
