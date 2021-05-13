@@ -1,7 +1,7 @@
 {
     "version": 1,
     "cli": {
-        "defaultCollection": "@nrwl/angular"
+        "defaultCollection": "@datorama/akita"
     },
     "defaultProject": "bettafish",
     "schematics": {
