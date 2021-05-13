@@ -35,6 +35,7 @@ import { Injectable } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { Section } from '@dragonfish/shared/models/works';
 import { CookieService } from 'ngx-cookie';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 /**
  * ## DragonfishNetworkService
@@ -118,10 +119,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/approval-queue/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (_err) => {
-
-            },
         );
     }
 
@@ -137,12 +134,6 @@ export class DragonfishNetworkService {
                 {},
                 { observe: 'response', withCredentials: true },
             ),
-            (resp) => {
-
-            },
-            (err) => {
-
-            },
         );
     }
 
@@ -212,7 +203,7 @@ export class DragonfishNetworkService {
                 }),
             );
     }
-    // #endregion
+    //#endregion
 
     //#region ---COLLECTIONS---
 
@@ -397,12 +388,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            (resp) => {
-
-            },
-            (err) => {
-
-            },
         );
     }
 
@@ -412,10 +397,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/comments/get-content-comments/${contentId}/${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -431,12 +412,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            (resp) => {
-
-            },
-            (err) => {
-
-            },
         );
     }
 
@@ -456,10 +431,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -476,10 +447,6 @@ export class DragonfishNetworkService {
                 {},
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -505,17 +472,14 @@ export class DragonfishNetworkService {
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
         if (userId) {
-            route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
+            route =
+                `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
         } else {
             route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
         }
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -530,10 +494,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -548,10 +508,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -566,10 +522,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -584,10 +536,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
     //#endregion
@@ -601,10 +549,10 @@ export class DragonfishNetworkService {
      * @param uploader The file uploader, prefilled with the URL and instructions for uploading the image.
      */
     public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
-        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === "XSRF-TOKEN");
-        const currentXsrfToken = this.cookieService.get("XSRF-TOKEN") ?? "";
+        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === 'XSRF-TOKEN');
+        const currentXsrfToken = this.cookieService.get('XSRF-TOKEN') ?? '';
         if (!xsrfHeader) {
-            uploader.options.headers.push({ name: "XSRF-TOKEN", value: currentXsrfToken });
+            uploader.options.headers.push({ name: 'XSRF-TOKEN', value: currentXsrfToken });
         } else {
             xsrfHeader.value = currentXsrfToken;
         }
@@ -625,9 +573,9 @@ export class DragonfishNetworkService {
 
                 // Normally, our midleware handles this, but since we're handling the token manually here,
                 // we need to set up the next token manually as well.
-                const newXsrfToken = headers["XSRF-TOKEN"];
+                const newXsrfToken = headers['XSRF-TOKEN'];
                 if (newXsrfToken) {
-                    this.cookieService.put("XSRF-TOKEN", newXsrfToken);
+                    this.cookieService.put('XSRF-TOKEN', newXsrfToken);
                 }
                 const work: T = JSON.parse(response);
                 observer.next(work);
@@ -651,10 +599,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -667,10 +611,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -686,10 +626,6 @@ export class DragonfishNetworkService {
                 {},
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -705,12 +641,6 @@ export class DragonfishNetworkService {
                 { histIds: histIds },
                 { observe: 'response', withCredentials: true },
             ),
-            (resp) => {
-
-            },
-            (err) => {
-
-            },
         );
     }
 
@@ -783,10 +713,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -801,10 +727,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -819,10 +741,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -920,11 +838,7 @@ export class DragonfishNetworkService {
             this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
                 observe: 'response',
                 withCredentials: true,
-            }),
-            null,
-            () => {
-
-            }
+            })
         );
     }
 
@@ -941,10 +855,6 @@ export class DragonfishNetworkService {
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
-            null,
-            () => {
-
-            },
         );
     }
 
@@ -958,10 +868,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -971,10 +877,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -984,10 +886,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -997,10 +895,6 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1017,10 +911,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1069,10 +959,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1087,10 +973,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1105,10 +987,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1123,10 +1001,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1141,10 +1015,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-            null,
-            (err) => {
-
-            },
         );
     }
 
@@ -1159,6 +1029,74 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---RATINGS---
+
+    public createRatingsDoc(contentId: string) {
+        return handleResponse(
+            this.http.post<RatingsModel>(
+                `${this.baseUrl}/ratings/create-ratings-doc?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public fetchRatings(contentId: string) {
+        return handleResponse(
+            this.http.get<RatingsModel>(
+                `${this.baseUrl}/ratings/fetch-ratings?contentId=${contentId}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public addLike(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-like?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public addDislike(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-dislike?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public removeVote(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/remove-vote?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 

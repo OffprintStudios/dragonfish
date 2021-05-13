@@ -16,6 +16,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UserState } from '../user';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { GlobalState } from '../global';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 /**
  * ## ContentState
@@ -29,6 +30,7 @@ import { GlobalState } from '../global';
         currPageContent: null,
         currContent: null,
         currHistDoc: null,
+        currRatingsDoc: null,
         currSections: null,
         currSection: null,
         likes: 0,
@@ -56,6 +58,11 @@ export class ContentState {
     @Selector()
     static currHistDoc(state: ContentStateModel): ReadingHistory {
         return state.currHistDoc;
+    }
+
+    @Selector()
+    static currRatingsDoc(state: ContentStateModel): RatingsModel {
+        return state.currRatingsDoc;
     }
 
     @Selector()
