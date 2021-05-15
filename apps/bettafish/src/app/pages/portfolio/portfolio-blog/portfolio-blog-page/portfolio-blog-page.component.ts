@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { ContentState } from '@dragonfish/client/repository/content';
-import { Observable } from 'rxjs';
-import { BlogsContentModel } from '@dragonfish/shared/models/content';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
 import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
 
@@ -13,8 +9,6 @@ import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
     styleUrls: ['./portfolio-blog-page.component.scss']
 })
 export class PortfolioBlogPageComponent implements OnInit {
-    @Select(ContentState.currContent) currContent$: Observable<BlogsContentModel>;
-
     pageNum = 1;
     loading = false;
 
