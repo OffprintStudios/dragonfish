@@ -1,4 +1,4 @@
-<ng-container *ngIf="currProse$ | async as currProse">
+<ng-container *ngIf="viewQuery.currContent$ | async as currProse">
     <dragonfish-content-box>
         <div *ngIf="route.children.length === 0">
             <dragonfish-sections-list [sections]="$any(currProse).sections"></dragonfish-sections-list>

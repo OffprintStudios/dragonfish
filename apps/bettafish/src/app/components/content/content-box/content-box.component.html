@@ -1,4 +1,4 @@
-<ng-container *ngIf="content$ | async as content">
+<ng-container *ngIf="viewQuery.state$ | async as content">
     <div class="content-box shadow-2xl mb-6">
         <dragonfish-rating-icon [rating]="content.currContent.meta.rating" [size]="'large'"></dragonfish-rating-icon>
         <div class='w-11/12 mx-auto'>

@@ -1,24 +1,20 @@
-import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
-import { ContentState } from '@dragonfish/client/repository/content';
-import { Observable } from 'rxjs';
-import { PoetryContent } from '@dragonfish/shared/models/content';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
 
 @Component({
     selector: 'dragonfish-poetry-page',
     templateUrl: './poetry-page.component.html',
 })
-export class PoetryPageComponent {
-    @Select(ContentState.currContent) currPoetry$: Observable<PoetryContent>;
+export class PoetryPageComponent implements OnInit {
     pageNum = 1;
 
-    constructor(public route: ActivatedRoute, private router: Router) {}
+    constructor(public route: ActivatedRoute, private router: Router, public viewQuery: ContentViewQuery) {}
 
     ngOnInit(): void {
         this.fetchData();
-        this.currPoetry$.subscribe((currPoetry) => {
+        this.viewQuery.currContent$.subscribe((currPoetry) => {
             setTwoPartTitle(currPoetry.title);
         })
     }

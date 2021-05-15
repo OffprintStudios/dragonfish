@@ -1,35 +1,35 @@
-<ng-container *ngIf="currContent$ | async as content">
-    <ng-container *ngIf="currHistDoc$ | async as histData; else noHistory">
+<ng-container *ngIf="viewQuery.state$ | async as state">
+    <ng-container *ngIf="state.ratingsDoc as histData; else noHistory">
         <div class="approval-buttons">
-            <ng-container [ngSwitch]="histData.ratingOption">
+            <ng-container [ngSwitch]="state.currRating">
                 <ng-container *ngSwitchCase="ratingOption.NoVote">
-                    <button (click)="setLike(content._id, histData.ratingOption)">
+                    <button (click)="viewService.addLike(state.currContent._id)">
                         <i-feather name="thumbs-up"></i-feather
-                        ><span class="button-text">{{ likes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.likes | abbreviate }}</span>
                     </button>
-                    <button class="mid" (click)="setDislike(content._id, histData.ratingOption)">
+                    <button class="mid" (click)="viewService.addDislike(state.currContent._id)">
                         <i-feather name="thumbs-down"></i-feather
-                        ><span class="button-text">{{ dislikes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="ratingOption.Liked">
-                    <button class="active" (click)="setNoVote(content._id, histData.ratingOption)">
+                    <button class="active" (click)="viewService.setNoVote(state.currContent._id)">
                         <i-feather name="thumbs-up"></i-feather
-                        ><span class="button-text">{{ likes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.likes | abbreviate }}</span>
                     </button>
-                    <button class="mid" (click)="setDislike(content._id, histData.ratingOption)">
+                    <button class="mid" (click)="viewService.addDislike(state.currContent._id)">
                         <i-feather name="thumbs-down"></i-feather
-                        ><span class="button-text">{{ dislikes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="ratingOption.Disliked">
-                    <button (click)="setLike(content._id, histData.ratingOption)">
+                    <button (click)="viewService.addLike(state.currContent._id)">
                         <i-feather name="thumbs-up"></i-feather
-                        ><span class="button-text">{{ likes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.likes | abbreviate }}</span>
                     </button>
-                    <button class="mid active" (click)="setNoVote(content._id, histData.ratingOption)">
+                    <button class="mid active" (click)="viewService.setNoVote(state.currContent._id)">
                         <i-feather name="thumbs-down"></i-feather
-                        ><span class="button-text">{{ dislikes$ | async | abbreviate }}</span>
+                        ><span class="button-text">{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
             </ng-container>
@@ -40,9 +40,9 @@
 
         <mat-menu xPosition="before" #moreItems="matMenu">
             <ng-container
-                *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent"
+                *ngIf="state.currContent.kind === contentKind.ProseContent || state.currContent.kind === contentKind.PoetryContent"
             >
-                <button mat-menu-item (click)="openAddToCollectionDialog(content)">
+                <button mat-menu-item (click)="openAddToCollectionDialog(state.currContent)">
                     <i-feather name="folder-plus"></i-feather>Add to Collection
                 </button>
             </ng-container>
@@ -53,11 +53,11 @@
         <div class="approval-buttons">
             <button>
                 <i-feather name="thumbs-up"></i-feather
-                ><span class="button-text">{{ likes$ | async | abbreviate }}</span>
+                ><span class="button-text">{{ state.likes | abbreviate }}</span>
             </button>
             <button class="mid">
                 <i-feather name="thumbs-down"></i-feather
-                ><span class="button-text">{{ dislikes$ | async | abbreviate }}</span>
+                ><span class="button-text">{{ state.dislikes | abbreviate }}</span>
             </button>
             <button class="end" [matMenuTriggerFor]="moreItemsNoUser">
                 <i-feather class="more" name="more-vertical"></i-feather>

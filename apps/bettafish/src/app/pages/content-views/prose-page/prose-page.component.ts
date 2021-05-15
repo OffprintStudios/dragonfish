@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { ProseContent } from '@dragonfish/shared/models/content';
-import { ContentState } from '@dragonfish/client/repository/content';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
 
 @Component({
     selector: 'dragonfish-prose-page',
     templateUrl: './prose-page.component.html',
 })
 export class ProsePageComponent implements OnInit {
-    @Select(ContentState.currContent) currProse$: Observable<ProseContent>;
     pageNum = 1;
 
-    constructor(public route: ActivatedRoute, private router: Router) {}
+    constructor(
+        public route: ActivatedRoute,
+        private router: Router,
+        public viewQuery: ContentViewQuery,
+    ) {}
 
     ngOnInit(): void {
         this.fetchData();
-        this.currProse$.subscribe((currProse) => {
+        this.viewQuery.currContent$.subscribe((currProse) => {
             setTwoPartTitle(currProse.title);
         })
     }
