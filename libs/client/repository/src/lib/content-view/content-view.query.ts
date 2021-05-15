@@ -7,12 +7,19 @@ import { ContentViewStore } from '@dragonfish/client/repository/content-view/con
 export class ContentViewQuery extends Query<ContentViewState> {
     public state$ = this.select();
     public currContent$ = this.select('currContent');
-    public allSections$ = this.select('allSections');
     public currSection$ = this.select('currSection');
     public ratingsDoc$ = this.select('ratingsDoc');
 
     constructor(protected store: ContentViewStore) {
         super(store);
+    }
+
+    public get contentTitle() {
+        return this.getValue().currContent.title;
+    }
+
+    public get allSections() {
+        return this.getValue().allSections;
     }
 
     public get currRating() {

@@ -33,7 +33,7 @@ import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { Injectable } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
-import { Section } from '@dragonfish/shared/models/works';
+import { Section } from '@dragonfish/shared/models/sections';
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 

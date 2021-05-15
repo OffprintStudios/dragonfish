@@ -34,7 +34,9 @@ export class ContentViewService {
             const contentAny = content as any;
             let sections = null;
             if (content.kind === ContentKind.ProseContent || content.kind === ContentKind.PoetryContent) {
-                sections = contentAny.sections as SectionInfo[];
+                sections = contentAny.sections.filter((x) => {
+                    return x.published === true;
+                }) as SectionInfo[];
             }
             this.contentView.update({
                 currContent: content,
@@ -43,6 +45,14 @@ export class ContentViewService {
                 currRating: ratings.rating ? ratings.rating : RatingOption.NoVote,
                 likes: content.stats.likes,
                 dislikes: content.stats.dislikes,
+            });
+        }));
+    }
+
+    public fetchSection(sectionId: string) {
+        return this.network.fetchSection(sectionId).pipe(tap(val => {
+            this.contentView.update({
+                currSection: val
             });
         }));
     }
