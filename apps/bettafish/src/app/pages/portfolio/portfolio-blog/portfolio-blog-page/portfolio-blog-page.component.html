@@ -1,4 +1,4 @@
-<ng-container *ngIf="currContent$ | async as blogData">
+<ng-container *ngIf="viewQuery.currContent$ | async as blogData">
     <div class="post-container rounded-md my-8 mx-auto w-3/4">
         <dragonfish-post-rating></dragonfish-post-rating>
         <dragonfish-rating-icon [rating]="blogData.meta.rating" [size]="'large'"></dragonfish-rating-icon>

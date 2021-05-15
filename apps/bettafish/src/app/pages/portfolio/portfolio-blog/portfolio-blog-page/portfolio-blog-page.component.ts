@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Select } from '@ngxs/store';
-import { UserState } from '@dragonfish/client/repository/user';
-import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { ContentState } from '@dragonfish/client/repository/content';
 import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { BlogsContentModel } from '@dragonfish/shared/models/content';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
-
+import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
 
 @Component({
     selector: 'dragonfish-portfolio-blog-page',
@@ -16,19 +13,16 @@ import { setTwoPartTitle } from '@dragonfish/shared/constants';
     styleUrls: ['./portfolio-blog-page.component.scss']
 })
 export class PortfolioBlogPageComponent implements OnInit {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @Select(ContentState.currContent) currContent$: Observable<BlogsContentModel>;
 
     pageNum = 1;
     loading = false;
 
-    constructor(private route: ActivatedRoute, private router: Router) {
-        this.fetchData();
-    }
+    constructor(private route: ActivatedRoute, private router: Router, public viewQuery: ContentViewQuery) {}
 
     ngOnInit(): void {
-        this.currContent$.subscribe((x) => {
+        this.fetchData();
+        this.viewQuery.currContent$.subscribe((x) => {
             setTwoPartTitle(x.title);
         });
     }
