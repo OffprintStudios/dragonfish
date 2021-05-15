@@ -24,7 +24,6 @@ import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgxElectronModule } from 'ngx-electron';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
-import { NgxUploaderModule } from 'ngx-uploader';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -120,7 +119,6 @@ import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
         NgxElectronModule,
         ClickOutsideModule,
         ContextMenuModule,
-        NgxUploaderModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
         RepositoryModule,

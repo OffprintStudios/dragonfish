@@ -11198,13 +11198,6 @@ ngx-tailwind@2.1.0:
     "@angular/cdk" "~11.0.0"
     "@schematics/angular" "^11.0.0"
 
-ngx-uploader@^11.0.0:
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-uploader/-/ngx-uploader-11.0.0.tgz#ba599d50a92036153f36561e15f18cbff620fbba"
-  integrity sha512-UUZ/AmtK6DVs6h82kwqX3uo/oqF/JcpJeQJtqfuGo5QWCDaL2VN0ElWlJXtvmVSweIkYa7h86iX82MEviR+lyQ==
-  dependencies:
-    tslib "^2.0.0"
-
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
