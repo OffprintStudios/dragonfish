@@ -1,6 +1,7 @@
 import { ContentModel, SectionInfo } from '@dragonfish/shared/models/content';
 import { Section } from '@dragonfish/shared/models/sections';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
+import { RatingOption } from '@dragonfish/shared/models/reading-history';
 
 /**
  * Component state for Content Views
@@ -18,6 +19,9 @@ export interface ContentViewState {
     // Current ratings doc
     ratingsDoc: RatingsModel | null;
 
+    // Currently selected rating option
+    currRating: RatingOption;
+
     // The likes for this content
     likes: number;
 
@@ -31,6 +35,7 @@ export function createInitialState(): ContentViewState {
         allSections: null,
         currSection: null,
         ratingsDoc: null,
+        currRating: RatingOption.NoVote,
         likes: 0,
         dislikes: 0,
     };

@@ -5,12 +5,25 @@ import { ContentViewStore } from '@dragonfish/client/repository/content-view/con
 
 @Injectable({ providedIn: 'root' })
 export class ContentViewQuery extends Query<ContentViewState> {
+    public state$ = this.select();
     public currContent$ = this.select('currContent');
     public allSections$ = this.select('allSections');
     public currSection$ = this.select('currSection');
-    public ratings$ = this.select('ratings');
+    public ratingsDoc$ = this.select('ratingsDoc');
 
     constructor(protected store: ContentViewStore) {
         super(store);
+    }
+
+    public get currRating() {
+        return this.getValue().currRating;
+    }
+
+    public get likes() {
+        return this.getValue().likes;
+    }
+
+    public get dislikes() {
+        return this.getValue().dislikes;
     }
 }

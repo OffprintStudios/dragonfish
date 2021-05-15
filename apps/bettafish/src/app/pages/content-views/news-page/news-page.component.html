@@ -1,4 +1,4 @@
-<ng-container *ngIf="currContent$ | async as currPost">
+<ng-container *ngIf="viewState.currContent$ | async as currPost">
     <div class="sticky top-0 z-40">
         <div class="news-post-nav shadow-lg relative z-40">
             <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
@@ -19,7 +19,7 @@
                             </a>
                         </span>
                         <span class="mx-2">//</span>
-                        <span>{{ category[currPost.meta.category] }}</span>
+                        <span>{{ category[$any(currPost.meta).category] }}</span>
                         <span class="mx-2">//</span>
                         <span>{{ currPost.audit.publishedOn | localedate: 'fullDate' }}</span>
                     </div>

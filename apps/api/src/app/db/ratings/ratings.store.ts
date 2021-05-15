@@ -33,29 +33,38 @@ export class RatingsStore {
         const doc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
         doc.rating = RatingOption.Liked;
 
-        await this.updateCounts(contentId);
-        return doc.save();
+        return doc.save().then(async (doc) => {
+            await this.updateCounts(contentId);
+            return doc;
+        });
     }
 
     public async addDislike(user: JwtPayload, contentId: string) {
         const doc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
         doc.rating = RatingOption.Disliked;
 
-        await this.updateCounts(contentId);
-        return doc.save();
+        return doc.save().then(async (doc) => {
+            await this.updateCounts(contentId);
+            return doc;
+        });
     }
 
     public async setNoVote(user: JwtPayload, contentId: string) {
         const doc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
         doc.rating = RatingOption.NoVote;
 
-        await this.updateCounts(contentId);
-        return doc.save();
+        return doc.save().then(async (doc) => {
+            await this.updateCounts(contentId);
+            return doc;
+        });
     }
 
     private async updateCounts(contentId: string) {
-        const newLikedCount = await this.ratings.count({ contentId: contentId, rating: RatingOption.Liked });
-        const newDislikedCount = await this.ratings.count({ contentId: contentId, rating: RatingOption.Disliked });
+        const newLikedCount = await this.ratings
+            .countDocuments({ contentId: contentId, rating: RatingOption.Liked });
+        const newDislikedCount = await this.ratings
+            .countDocuments({ contentId: contentId, rating: RatingOption.Disliked });
+        console.log(`New Liked Count: ${newLikedCount}\nNew Disliked Count: ${newDislikedCount}`);
         await this.contentStore.updateRatingCounts(contentId, newLikedCount, newDislikedCount);
     }
 }

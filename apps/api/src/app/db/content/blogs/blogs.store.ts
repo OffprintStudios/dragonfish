@@ -11,14 +11,12 @@ import { BlogForm, ContentKind, PubChange, PubStatus } from '@dragonfish/shared/
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-import { RatingsStore } from '../../ratings';
 
 @Injectable()
 export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         private readonly usersService: UsersStore, private readonly notificationsService: NotificationsService,
-        private readonly ratingsService: RatingsStore
     ) {}
 
     /**
@@ -38,7 +36,6 @@ export class BlogsStore {
         });
 
         const savedBlog = await newBlog.save();
-        await this.ratingsService.createRatingsDoc(savedBlog._id);
 
         // Subscribe the author to comments on their new blog
         await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);

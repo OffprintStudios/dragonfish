@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { ContentState } from '@dragonfish/client/repository/content';
-import { Observable } from 'rxjs';
-import { NewsContentModel, NewsCategory } from '@dragonfish/shared/models/content';
+import { NewsCategory } from '@dragonfish/shared/models/content';
 import { ItemKind } from '@dragonfish/shared/models/comments';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ContentViewQuery } from '@dragonfish/client/repository/content-view';
 
 @UntilDestroy()
 @Component({
@@ -14,19 +12,17 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     templateUrl: './news-page.component.html',
     styleUrls: ['./news-page.component.scss'],
 })
-export class NewsPageComponent {
-    @Select(ContentState.currContent) currContent$: Observable<NewsContentModel>;
+export class NewsPageComponent implements OnInit {
     category = NewsCategory;
-
     pageNum = 1; // For comments pages
     itemKind = ItemKind.NewsContent; // Sets the item kind for comments
 
-    constructor(private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router, private route: ActivatedRoute, public viewState: ContentViewQuery) {
         this.fetchData();
     }
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe((x) => {
+        this.viewState.currContent$.pipe(untilDestroyed(this)).subscribe((x) => {
             setTwoPartTitle(x.title);
         });
     }

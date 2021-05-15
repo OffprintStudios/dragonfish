@@ -16,13 +16,11 @@ import {
 import { Roles } from '@dragonfish/shared/models/users';
 import { NewsContentDocument } from './news-content.document';
 import { isAllowed } from '@dragonfish/shared/functions';
-import { RatingsStore } from '../../ratings';
 
 @Injectable()
 export class NewsStore {
     constructor(
         @InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>,
-        private readonly ratingsService: RatingsStore
     ) {}
 
     /**
@@ -42,9 +40,7 @@ export class NewsStore {
                 'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
             });
 
-            const post = await newPost.save();
-            await this.ratingsService.createRatingsDoc(post._id);
-            return post;
+            return newPost.save();
         } else {
             throw new UnauthorizedException(`You don't have permission to create news posts.`);
         }

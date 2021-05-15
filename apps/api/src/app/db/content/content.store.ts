@@ -546,7 +546,7 @@ export class ContentStore {
      */
     async updateRatingCounts(contentId: string, likes: number, dislikes: number): Promise<void> {
         await this.contentModel.updateOne(
-            { contentId: contentId },
+            { _id: contentId },
             { 'stats.likes': likes, 'stats.dislikes': dislikes }
         );
     }
