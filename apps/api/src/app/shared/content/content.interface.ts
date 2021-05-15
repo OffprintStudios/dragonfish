@@ -92,30 +92,6 @@ export interface IContent {
     publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel>;
 
     /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
-
-    /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setDislike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
-
-    /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
-
-    /**
      * Updates a content's cover art URL, based on its contentKind.
      *
      * @param user The author of the content

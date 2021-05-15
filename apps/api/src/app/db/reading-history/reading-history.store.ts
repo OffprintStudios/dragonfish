@@ -62,54 +62,6 @@ export class ReadingHistoryStore {
     }
 
     /**
-     * Sets the rating option of a history document to Liked.
-     *
-     * @param user The owner of the history document
-     * @param contentId The content associated with it
-     */
-    async setLike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return this.histModel.findOneAndUpdate(
-            { owner: user.sub, content: contentId },
-            {
-                ratingOption: RatingOption.Liked,
-            },
-            { new: true }
-        );
-    }
-
-    /**
-     * Sets the rating option of a history document to Disliked.
-     *
-     * @param user The owner of the history document
-     * @param contentId The content associated with it
-     */
-    async setDislike(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return this.histModel.findOneAndUpdate(
-            { owner: user.sub, content: contentId },
-            {
-                ratingOption: RatingOption.Disliked,
-            },
-            { new: true }
-        );
-    }
-
-    /**
-     * Sets the rating option of a history document to NoVote.
-     *
-     * @param user The owner of the history document
-     * @param contentId The content associated with it
-     */
-    async setNoVote(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return this.histModel.findOneAndUpdate(
-            { owner: user.sub, content: contentId },
-            {
-                ratingOption: RatingOption.NoVote,
-            },
-            { new: true }
-        );
-    }
-
-    /**
      * Soft deletes a history document so it no longer shows up on frontend queries.
      *
      * @param user The owner of the history document

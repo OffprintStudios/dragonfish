@@ -1036,23 +1036,10 @@ export class DragonfishNetworkService {
 
     //#region ---RATINGS---
 
-    public createRatingsDoc(contentId: string) {
-        return handleResponse(
-            this.http.post<RatingsModel>(
-                `${this.baseUrl}/ratings/create-ratings-doc?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public fetchRatings(contentId: string) {
+    public addOrFetchRatings(contentId: string) {
         return handleResponse(
             this.http.get<RatingsModel>(
-                `${this.baseUrl}/ratings/fetch-ratings?contentId=${contentId}`,
+                `${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`,
                 {
                     observe: 'response',
                     withCredentials: true,
@@ -1090,7 +1077,7 @@ export class DragonfishNetworkService {
     public removeVote(contentId: string) {
         return handleResponse(
             this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/remove-vote?contentId=${contentId}`,
+                `${this.baseUrl}/ratings/set-no-vote?contentId=${contentId}`,
                 {},
                 {
                     observe: 'response',

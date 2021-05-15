@@ -1,27 +1,22 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
 import { ContentStore, PoetryStore, ProseStore } from '../../db/content';
-import { IContent } from '../../shared/content/content.interface';
+import { IContent } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
     ContentModel,
     ContentKind,
     FormType,
-    SetRating,
     ContentFilter,
     PubChange,
     PubStatus,
 } from '@dragonfish/shared/models/content';
-import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { NotificationsService } from '../../db/notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
-import { NotificationEnumConverters } from '../../db/notifications/notification-enum-converters';
 
 @Injectable()
 export class ContentService implements IContent {
-    private readonly logger: Logger = new Logger(ContentService.name);
-
     constructor(
         private readonly content: ContentStore,
         private readonly poetry: PoetryStore,
@@ -71,18 +66,6 @@ export class ContentService implements IContent {
         }
 
         return publishedContent;
-    }
-
-    async setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setLike(user, setRating.workId, setRating.oldApprovalRating);
-    }
-
-    async setDislike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setDislike(user, setRating.workId, setRating.oldApprovalRating);
-    }
-
-    async setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setNoVote(user, setRating.workId, setRating.oldApprovalRating);
     }
 
     async updateCoverArt(

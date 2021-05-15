@@ -26,7 +26,6 @@ import { UsersStore } from '../users/users.store';
 import { ApprovalQueueStore } from '../approval-queue/approval-queue.store';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { ReadingHistoryStore } from '../reading-history/reading-history.store';
-import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { NewsStore } from './news/news.store';
 import { PoetryStore } from './poetry/poetry.store';
 import { ProseStore } from './prose/prose.store';
@@ -46,7 +45,7 @@ export class ContentStore {
         private readonly usersService: UsersStore,
         private readonly queueService: ApprovalQueueStore,
         private readonly notificationsService: NotificationsService,
-        private readonly histService: ReadingHistoryStore
+        private readonly history: ReadingHistoryStore,
     ) {}
 
     /**
@@ -108,12 +107,11 @@ export class ContentStore {
             return doc;
         } else {
             const authorInfo = doc.author as any;
-            if (authorInfo._id === user.sub) {
-                return doc;
-            } else {
+            if (authorInfo._id !== user.sub) {
                 await this.incrementViewCount(contentId);
-                return doc;
             }
+            await this.history.addOrUpdateHistory(user, contentId);
+            return doc;
         }
     }
 
@@ -540,90 +538,17 @@ export class ContentStore {
     }
 
     /**
-     * Changes the rating of a user to a Like.
+     * Updates the likes and dislikes of a piece of content.
      *
-     * @param user The user making the change
-     * @param contentId The content in question
-     * @param oldRatingOption A user's old rating option
+     * @param contentId
+     * @param likes
+     * @param dislikes
      */
-    async setLike(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was a dislike
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.likes': 1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.dislikes': -1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        } else if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was already a like
-            throw new ConflictException(`You've already upvoted this content!`);
-        } else {
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.likes': 1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        }
-
-        return await this.histService.setLike(user, contentId);
-    }
-
-    /**
-     * Changes the rating of a user to a Dislike
-     *
-     * @param user The user making the change
-     * @param contentId The content in question
-     * @param oldRatingOption A user's old rating option
-     */
-    async setDislike(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was a like
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.dislikes': 1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.likes': -1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        } else if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was already a dislike
-            throw new ConflictException(`You've already downvoted this content!`);
-        } else {
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.dislikes': 1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        }
-
-        return await this.histService.setDislike(user, contentId);
-    }
-
-    /**
-     * Changes the rating of a user to NoVote
-     *
-     * @param user The user making the change
-     * @param contentId The content in question
-     * @param oldRatingOption A user's old rating option
-     */
-    async setNoVote(user: JwtPayload, contentId: string, oldRatingOption: RatingOption) {
-        if (oldRatingOption === RatingOption.Liked) {
-            // If the old rating option was a like
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.likes': -1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        } else if (oldRatingOption === RatingOption.Disliked) {
-            // If the old rating option was a dislike
-            await this.contentModel
-                .updateOne({ _id: contentId }, { $inc: { 'stats.dislikes': -1 } })
-                .where('audit.published')
-                .equals(PubStatus.Published);
-        }
-
-        return await this.histService.setNoVote(user, contentId);
+    async updateRatingCounts(contentId: string, likes: number, dislikes: number): Promise<void> {
+        await this.contentModel.updateOne(
+            { contentId: contentId },
+            { 'stats.likes': likes, 'stats.dislikes': dislikes }
+        );
     }
 
     /**

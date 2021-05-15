@@ -15,11 +15,14 @@ export interface ContentViewState {
     // The currently selected section (if applicable)
     currSection: Section | null;
 
+    // Current ratings doc
+    ratingsDoc: RatingsModel | null;
+
     // The likes for this content
-    likes: string[];
+    likes: number;
 
     // The dislikes for this content
-    dislikes: string[];
+    dislikes: number;
 }
 
 export function createInitialState(): ContentViewState {
@@ -27,7 +30,8 @@ export function createInitialState(): ContentViewState {
         currContent: null,
         allSections: null,
         currSection: null,
-        likes: [],
-        dislikes: [],
+        ratingsDoc: null,
+        likes: 0,
+        dislikes: 0,
     };
 }

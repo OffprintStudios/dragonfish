@@ -1,4 +1,4 @@
-import { Controller, Query, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import { Controller, Query, Get, Patch, UseGuards } from '@nestjs/common';
 import { RatingsStore } from '../../db/ratings';
 import { ApiTags } from '@nestjs/swagger';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
@@ -13,15 +13,9 @@ export class RatingsController {
 
     @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
-    @Post('create-ratings-doc')
-    async createRatingsDoc(@Query('contentId') contentId: string) {
-        return this.ratings.createRatingsDoc(contentId);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @Get('fetch-ratings')
-    async fetchRatings(@Query('contentId') contentId: string) {
-        return this.ratings.fetchRatingsDoc(contentId);
+    @Get('add-or-fetch-ratings')
+    async addOrFetchRatings(@User() user: JwtPayload, @Query('contentId') contentId: string) {
+        return this.ratings.addOrFetchRatingsDoc(user, contentId);
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -40,8 +34,8 @@ export class RatingsController {
 
     @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
-    @Patch('remove-vote')
-    async removeVote(@User() user: JwtPayload, @Query('contentId') contentId: string) {
-        return this.ratings.removeVote(user, contentId);
+    @Patch('set-no-vote')
+    async setNoVote(@User() user: JwtPayload, @Query('contentId') contentId: string) {
+        return this.ratings.setNoVote(user, contentId);
     }
 }
