@@ -34,4 +34,12 @@ div.user-card {
             margin-right: 0.25rem;
         }
     }
+    a.button {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        &.bottom {
+            @apply rounded-b-md;
+        }
+    }
 }

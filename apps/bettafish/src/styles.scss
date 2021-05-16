@@ -93,6 +93,8 @@ a.button {
     border: 1px solid var(--borders);
     border-radius: 6px;
     box-shadow: var(--dropshadow);
+    color: var(--text-color);
+    user-select: none;
     &:hover {
         color: whitesmoke;
         background: var(--accent);

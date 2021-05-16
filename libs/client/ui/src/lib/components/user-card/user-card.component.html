@@ -61,22 +61,22 @@
     </div>
     <div class="my-2"><!--spacer--></div>
     <div>
-        <button
-            class="w-full border-none shadow-none rounded-none text-center"
+        <a
+            class="button w-full"
             [routerLink]="['/portfolio', user._id, user.username | slugify]"
         >
             <i-feather name="user"></i-feather>
             View Portfolio
-        </button>
+        </a>
         <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
-        <button class="w-full border-none shadow-none rounded-none text-center">
+        <a class="button w-full">
             <i-feather name="message-circle"></i-feather>
             Send Message
-        </button>
+        </a>
         <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
-        <button class="w-full border-none shadow-none rounded-t-none text-center">
+        <a class="button bottom w-full">
             <i-feather name="user-plus"></i-feather>
             Add Friend
-        </button>
+        </a>
     </div>
 </div>
