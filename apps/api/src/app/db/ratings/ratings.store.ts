@@ -51,10 +51,9 @@ export class RatingsStore {
         const doc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
         doc.rating = RatingOption.NoVote;
 
-        return doc.save().then(async (doc) => {
-            await this.updateCounts(contentId);
-            return doc;
-        });
+        const savedDoc = await doc.save();
+        await this.updateCounts(contentId);
+        return savedDoc;
     }
 
     private async updateCounts(contentId: string) {
