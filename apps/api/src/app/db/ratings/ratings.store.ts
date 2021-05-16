@@ -33,10 +33,9 @@ export class RatingsStore {
         const doc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
         doc.rating = RatingOption.Liked;
 
-        return doc.save().then(async (doc) => {
-            await this.updateCounts(contentId);
-            return doc;
-        });
+        const savedDoc = await doc.save();
+        await this.updateCounts(contentId);
+        return savedDoc;
     }
 
     public async addDislike(user: JwtPayload, contentId: string) {
