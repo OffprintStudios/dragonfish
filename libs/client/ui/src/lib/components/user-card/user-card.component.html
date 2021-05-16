@@ -1,29 +1,82 @@
-<div class="user-card flex flex-col rounded-md w-64">
-    <div class="user-avatar">
-        <img [src]="user.profile.avatar" />
+<div class="user-card rounded-md w-64 relative">
+    <div
+        class="cover-pic absolute blur z-10 w-full h-20 top-0 left-0 rounded-md pointer-events-none overflow-hidden"
+        [ngClass]="user.profile.coverPic ? '' : 'has-accent'"
+    >
+        <img
+            class="object-cover object-top object-center w-full h-full"
+            [src]="user.profile.coverPic"
+            *ngIf="user.profile.coverPic"
+        />
     </div>
-    <div class="user-info flex flex-col items-center" #infoContainer>
-        <h2 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="24" class="text-2xl mt-6">
-            <a [routerLink]="['/portfolio', user._id, user.username | slugify]">{{ user.username }}</a>
-        </h2>
+    <div class="user-header p-1.5 relative z-20 mt-8">
+        <div class="flex flex-row items-center">
+            <div class="user-avatar">
+                <img [src]="user.profile.avatar" />
+            </div>
+            <div class="ml-2">
+                <h2 class="text-xl font-medium">
+                    {{ user.username }}
+                </h2>
+                <h3 class="text-xs font-medium">
+                    {{ user.profile.tagline }}
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="stats flex flex-row items-center justify-center">
+        <div
+            class="flex flex-row items-center select-none cursor-default"
+            [matTooltip]="'Works'"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipShowDelay]="600"
+        >
+            <i-feather name="feather"></i-feather>
+            <span class="select-none">{{ user.stats.works | abbreviate }}</span>
+        </div>
+        <div class="mx-1 select-none cursor-default">|</div>
+        <div
+            class="flex flex-row items-center select-none cursor-default"
+            [matTooltip]="'Blogs'"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipShowDelay]="600"
+        >
+            <i-feather name="coffee"></i-feather>
+            <span class="select-none">{{ user.stats.blogs | abbreviate }}</span>
+        </div>
+        <div class="mx-1 select-none cursor-default">|</div>
+        <div
+            class="flex flex-row items-center select-none cursor-default"
+            [matTooltip]="'Watchers'"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipShowDelay]="600"
+        >
+            <i-feather name="eye"></i-feather>
+            <span class="select-none">{{ user.stats.watchers | abbreviate }}</span>
+        </div>
+    </div>
+    <div class="badge border-b w-11/12 mx-auto my-2"><!--spacer--></div>
+    <div class="flex flex-col items-center">
         <dragonfish-role-badge [roles]="user.roles" [isStyled]="true"></dragonfish-role-badge>
-        <div class="my-1.5"><!--spacer--></div>
-        <h3 [fittext]="true" [activateOnResize]="true" [container]="infoContainer" [maxFontSize]="20">
-            {{ user.profile.bio }}
-        </h3>
     </div>
-    <div class="user-stats">
-        <div class="works" title="Works">
-            <span class="icon"><i-feather name="feather"></i-feather></span>
-            <span class="stat">{{ user.stats.works | abbreviate }}</span>
-        </div>
-        <div class="blogs" title="Blogs">
-            <span class="icon"><i-feather name="coffee"></i-feather></span>
-            <span class="stat">{{ user.stats.blogs | abbreviate }}</span>
-        </div>
-        <div class="watchers" title="Watchers">
-            <span class="icon"><i-feather name="eye"></i-feather></span>
-            <span class="stat">{{ user.stats.watchers | abbreviate }}</span>
-        </div>
+    <div class="my-2"><!--spacer--></div>
+    <div>
+        <button
+            class="w-full border-none shadow-none rounded-none text-center"
+            [routerLink]="['/portfolio', user._id, user.username | slugify]"
+        >
+            <i-feather name="user"></i-feather>
+            View Portfolio
+        </button>
+        <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+        <button class="w-full border-none shadow-none rounded-none text-center">
+            <i-feather name="message-circle"></i-feather>
+            Send Message
+        </button>
+        <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+        <button class="w-full border-none shadow-none rounded-t-none text-center">
+            <i-feather name="user-plus"></i-feather>
+            Add Friend
+        </button>
     </div>
 </div>
