@@ -23,6 +23,7 @@ import { SearchServices } from './services/search';
 /* Database Modules */
 import { DatabaseModules } from './db';
 import { ContentModule } from '@dragonfish/api/database/content';
+import { NotificationsModule } from '@dragonfish/api/database/notifications';
 
 /* Utilities */
 import { getJwtSecretKey, JWT_EXPIRATION } from './util';
@@ -31,6 +32,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from './util';
     imports: [
         ...DatabaseModules,
         ContentModule,
+        NotificationsModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
