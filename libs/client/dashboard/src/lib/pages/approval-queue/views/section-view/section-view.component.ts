@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SectionInfo } from '@dragonfish/shared/models/content';
 import { AuthorsNotePos, Section } from '@dragonfish/shared/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { slugify } from 'voca';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -49,16 +49,16 @@ export class SectionViewComponent {
 
     goToNext() {
         const nextSection = this.sections[this.indexNext];
-        this.router.navigate([`${this.indexNext + 1}`], { relativeTo: this.route.parent });
+        this.router.navigate([`${this.indexNext + 1}/${slugify(nextSection.title)}`], { relativeTo: this.route.parent });
     }
 
     goToPrev() {
         const prevSection = this.sections[this.indexPrev];
-        this.router.navigate([`${this.indexPrev + 1}`], { relativeTo: this.route.parent });
+        this.router.navigate([`${this.indexPrev + 1}/${slugify(prevSection.title)}`], { relativeTo: this.route.parent });
     }
 
     changeSection(section: SectionInfo) {
         const sectionIndex = this.sections.indexOf(section);
-        this.router.navigate([`${sectionIndex + 1}`], { relativeTo: this.route.parent });
+        this.router.navigate([`${sectionIndex + 1}/${slugify(section.title)}`], { relativeTo: this.route.parent });
     }
 }
