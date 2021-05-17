@@ -131,6 +131,27 @@ export class ContentStore {
         }
     }
 
+    /**
+     * Fetches all sections, published and unpublished, associated with the provided content belonging to the specified user.
+     *
+     * @param user The author of the content
+     * @param contentId The content ID
+     */
+    async fetchUserContentSections(user: JwtPayload, contentId: string): Promise<SectionsDocument[]> {
+        const work = await this.content.findOne(
+            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { autopopulate: false }
+        );
+
+        if (isNullOrUndefined(work)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            const workContent = work as any;
+
+            return await this.sectionsService.fetchSectionsList(workContent.sections);
+        }
+    }
+
     //#endregion
 
     //#region ---CREATE, EDIT, DELETE---
@@ -454,27 +475,6 @@ export class ContentStore {
                     { strict: false }
                 );
             }
-        }
-    }
-
-    /**
-     * Fetches all sections, published and unpublished, associated with the provided content belonging to the specified user.
-     *
-     * @param user The author of the content
-     * @param contentId The content ID
-     */
-    async fetchUserContentSections(user: JwtPayload, contentId: string): Promise<SectionsDocument[]> {
-        const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
-            { autopopulate: false }
-        );
-
-        if (isNullOrUndefined(work)) {
-            throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {
-            const workContent = work as any;
-
-            return await this.sectionsService.fetchSectionsList(workContent.sections);
         }
     }
 
