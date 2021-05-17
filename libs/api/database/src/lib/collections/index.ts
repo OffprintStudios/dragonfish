@@ -1,0 +1,1 @@
+export { CollectionsModule } from './collections.module';

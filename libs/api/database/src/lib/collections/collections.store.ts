@@ -2,11 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
 import { CollectionDocument } from './collection.schema';
-import { isNullOrUndefined } from '../../util';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
