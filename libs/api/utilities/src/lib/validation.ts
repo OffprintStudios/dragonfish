@@ -4,5 +4,5 @@
  * @param value The value to check for null-or-undefinedness.
  */
 export function isNullOrUndefined(value: any): boolean {
-    return value === undefined || value === null;
+    return value ?? true;
 }
