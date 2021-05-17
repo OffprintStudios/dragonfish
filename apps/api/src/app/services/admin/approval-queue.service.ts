@@ -3,8 +3,8 @@ import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { PaginateResult } from 'mongoose';
 
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
-import { ApprovalQueueStore } from '../../db/approval-queue/approval-queue.store';
-import { ContentStore } from '../../db/content';
+import { ApprovalQueueStore } from '@dragonfish/api/database/approval-queue';
+import { ContentStore } from '@dragonfish/api/database/content/stores';
 import { IApprovalQueue } from '../../shared/admin';
 
 @Injectable()

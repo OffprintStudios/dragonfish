@@ -425,9 +425,9 @@ export class DragonfishNetworkService {
      * @param contentId The content ID
      * @param kind The content kind
      */
-    public fetchContent(contentId: string, kind: ContentKind): Observable<ContentModel> {
+    public fetchContent(contentId: string, kind: ContentKind): Observable<{ content: ContentModel, ratings: RatingsModel }> {
         return handleResponse(
-            this.http.get<ContentModel>(
+            this.http.get<{ content: ContentModel, ratings: RatingsModel }>(
                 `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}`,
                 { observe: 'response', withCredentials: true },
             ),

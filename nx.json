@@ -30,6 +30,8 @@
         "client-my-stuff": { "tags": [] },
         "client-dashboard": { "tags": [] },
         "client-services": { "tags": [] },
-        "client-repository": { "tags": [] }
+        "client-repository": { "tags": [] },
+        "api-database": { "tags": [] },
+        "api-utilities": { "tags": [] }
     }
 }

@@ -6,7 +6,6 @@ import { NgxsModule } from '@ngxs/store';
 import { AuthState } from './auth';
 import { GlobalState } from './global';
 import { UserState } from './user';
-import { ContentState } from './content';
 import { PortfolioState } from './portfolio';
 import { CollectionsState } from './collections';
 import { HistoryState } from './history';
@@ -18,7 +17,6 @@ import { HistoryState } from './history';
             AuthState,
             GlobalState,
             UserState,
-            ContentState,
             PortfolioState,
             CollectionsState,
             HistoryState

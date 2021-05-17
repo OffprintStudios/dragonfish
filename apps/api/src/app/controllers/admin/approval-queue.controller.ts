@@ -2,12 +2,12 @@ import { Body, Controller, Get, Param, Patch, UseGuards, BadRequestException, Qu
 import { ApiTags } from '@nestjs/swagger';
 
 import { RolesGuard } from '../../guards';
-import { isNullOrUndefined } from '../../util';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { IApprovalQueue } from '../../shared/admin';
 import { DecisionDTO } from './models';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 

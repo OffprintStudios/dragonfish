@@ -1,9 +1,9 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
-import { BrowseStore } from '../../db/content';
+import { BrowseStore } from '@dragonfish/api/database/content/stores';
 import { ApiTags } from '@nestjs/swagger';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
-import { isNullOrUndefined } from '../../util';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @ApiTags(DragonfishTags.Content)
 @Controller('browse')

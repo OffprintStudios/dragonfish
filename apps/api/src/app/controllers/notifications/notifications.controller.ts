@@ -23,10 +23,9 @@ import {
 import { Roles } from '@dragonfish/shared/models/users';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { NotificationsService } from '../../db/notifications/notifications.service';
-import { UnsubscribeResult } from '../../db/notifications/unsubscribe-result.model';
+import { NotificationsService, UnsubscribeResult } from '@dragonfish/api/database/notifications';
 import { RolesGuard } from '../../guards';
-import { isNullOrUndefined } from '../../util';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @Controller('notifications')
 export class NotificationsController {

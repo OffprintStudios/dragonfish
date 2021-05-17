@@ -3,8 +3,8 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { ISections } from '../../shared/content';
 import { RolesGuard } from '../../guards';
-import { isNullOrUndefined } from '../../util';
-import { User } from '../../util/decorators';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { Roles } from '@dragonfish/shared/models/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';

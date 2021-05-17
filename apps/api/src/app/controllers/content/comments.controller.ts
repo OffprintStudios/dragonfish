@@ -7,7 +7,7 @@ import { CreateComment, EditComment } from '@dragonfish/shared/models/comments';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IComments } from '../../shared/content';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 
 @Controller('comments')
 export class CommentsController {

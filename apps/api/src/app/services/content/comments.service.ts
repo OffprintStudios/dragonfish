@@ -6,7 +6,7 @@ import { IComments, IContent } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
 import { CreateCommentNotification, NotificationKind } from '@dragonfish/shared/models/notifications';
-import { NotificationsService } from '../../db/notifications/notifications.service';
+import { NotificationsService } from '@dragonfish/api/database/notifications';
 
 @Injectable()
 export class CommentsService implements IComments {
@@ -22,7 +22,7 @@ export class CommentsService implements IComments {
         const commentContent = await this.comments.createContentComment(user, contentId, commentInfo);
 
         // Queue notification for this comment
-        const content = (await this.contentService.fetchOnePublished(contentId, commentInfo.commentParentKind));
+        const content = (await this.contentService.fetchOne(contentId, commentInfo.commentParentKind));
         const notification: CreateCommentNotification = {
             commentId: commentContent._id,
             kind: NotificationKind.CommentNotification,
