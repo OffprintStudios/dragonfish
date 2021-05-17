@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import * as Schemas from './schemas';
 import * as Stores from './stores';
 import { MongooseModule } from '@nestjs/mongoose';
+import { NotificationsModule } from '@dragonfish/api/database/notifications';
 
 @Module({
     imports: [
+        NotificationsModule,
         MongooseModule.forFeatureAsync([
             {
                 name: 'Content',
