@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { ContentStore, PoetryStore, ProseStore } from '../../db/content';
+import { BrowseStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
 import { IContent } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
@@ -12,13 +12,15 @@ import {
     PubChange,
     PubStatus,
 } from '@dragonfish/shared/models/content';
-import { NotificationsService } from '../../db/notifications/notifications.service';
+import { NotificationsService } from '@dragonfish/api/database/notifications';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 @Injectable()
 export class ContentService implements IContent {
     constructor(
         private readonly content: ContentStore,
+        private readonly browse: BrowseStore,
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
@@ -28,8 +30,8 @@ export class ContentService implements IContent {
         return await this.content.fetchOne(contentId, kind, user);
     }
 
-    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
-        return await this.content.fetchOnePublished(contentId, kind, user);
+    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]> {
+        return await this.browse.fetchOnePublished(contentId, kind, user);
     }
 
     async fetchAll(user: JwtPayload): Promise<ContentModel[]> {
@@ -42,7 +44,7 @@ export class ContentService implements IContent {
         filter: ContentFilter,
         userId?: string
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.content.fetchAllPublished(pageNum, kinds, filter, userId);
+        return await this.browse.fetchAllPublished(pageNum, kinds, filter, userId);
     }
 
     async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {

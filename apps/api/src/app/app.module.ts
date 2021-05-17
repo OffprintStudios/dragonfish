@@ -24,15 +24,21 @@ import { SearchServices } from './services/search';
 import { DatabaseModules } from './db';
 import { ContentModule } from '@dragonfish/api/database/content';
 import { NotificationsModule } from '@dragonfish/api/database/notifications';
+import { UsersModule } from '@dragonfish/api/database/users';
+import { CollectionsModule } from '@dragonfish/api/database/collections';
+import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
 
 /* Utilities */
-import { getJwtSecretKey, JWT_EXPIRATION } from './util';
+import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 
 @Module({
     imports: [
         ...DatabaseModules,
         ContentModule,
         NotificationsModule,
+        UsersModule,
+        CollectionsModule,
+        ApprovalQueueModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({

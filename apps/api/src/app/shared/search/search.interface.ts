@@ -26,6 +26,7 @@ export interface ISearch {
      *
      * @param query The user's query
      * @param pageNum The current results page
+     * @param contentFilter
      */
     searchBlogs(query: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
 
@@ -34,6 +35,7 @@ export interface ISearch {
      *
      * @param query The user's query
      * @param pageNum The current results page
+     * @param contentFilter
      */
     searchContent(query: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
 }

@@ -2,7 +2,7 @@ import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Injectable, Logger } from '@nestjs/common';
 
-import { UsersStore } from '../../db/users/users.store';
+import { UsersStore } from '@dragonfish/api/database/users';
 import { IMeta } from '../../shared/admin';
 
 @Injectable()

@@ -5,9 +5,9 @@ import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import * as documents from './models';
 import * as models from '@dragonfish/shared/models/comments';
-import { ContentStore } from '../content/content.store';
-import { isNullOrUndefined } from '../../util';
-import { NotificationsService } from '../notifications/notifications.service';
+import { ContentStore } from '@dragonfish/api/database/content/stores';
+import { isNullOrUndefined } from '@dragonfish/api/utilities/validation';
+import { NotificationsService } from '@dragonfish/api/database/notifications';
 
 @Injectable()
 export class CommentsStore {

@@ -3,8 +3,8 @@ import { MongooseModule, getModelToken } from '@nestjs/mongoose';
 import { Schema } from 'mongoose';
 import { CommentsSchema } from './comments.schema';
 import { CommentsStore } from './comments.store';
-import { ContentModule } from '../content/content.module';
-import { NotificationsModule } from '../notifications/notifications.module';
+import { ContentModule } from '@dragonfish/api/database/content';
+import { NotificationsModule } from '@dragonfish/api/database/notifications';
 
 @Module({
     imports: [

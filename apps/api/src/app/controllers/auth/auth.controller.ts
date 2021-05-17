@@ -7,7 +7,7 @@ import { RefreshGuard } from '../../guards';
 import { CreateUserDTO, LoginUserDTO } from './models';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { IAuth } from '../../shared/auth';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 

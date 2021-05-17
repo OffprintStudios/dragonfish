@@ -6,10 +6,9 @@ import {
     ContentKind,
     ContentModel,
     PubChange,
-    SetRating,
 } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 export interface IContent {
     /**
@@ -29,7 +28,7 @@ export interface IContent {
      * @param kind — A content's Kind
      * @param user — (Optional) The user making the request
      */
-    fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel>;
+    fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]>;
 
     /**
      * Finds a bunch of content documents belonging to a user, per that user's request.

@@ -5,7 +5,12 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import {
+    ContentFilter,
+    ContentKind,
+    ContentRating,
+    PubStatus,
+} from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
 /**
@@ -48,6 +53,14 @@ export class BrowseStore {
 
     public async fetchFirstRecommended() {
         // TODO: Implement this
+    }
+
+    /**
+     * Fetches news content for the home page.
+     */
+    async fetchForHome(): Promise<ContentDocument[]> {
+        const query = { 'kind': ContentKind.NewsContent, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        return this.content.find(query).sort({ 'audit.publishedOn': -1 }).limit(6);
     }
 
     /**
@@ -102,14 +115,6 @@ export class BrowseStore {
     }
 
     /**
-     * Fetches a published section by ID
-     * @param sectionId The section ID
-     */
-    async fetchPublishedSection(sectionId: string): Promise<SectionsDocument> {
-        return this.sections.findOne({ _id: sectionId, published: true });
-    }
-
-    /**
      * Fetches the first three published content specified in the `kinds` array, filtered as appropriate.
      * @param filter
      * @param userId
@@ -124,6 +129,31 @@ export class BrowseStore {
         const blogs = await this.content.find(filteredBlogsQuery).sort({'audit.publishedOn': -1}).limit(3);
 
         return { works: works, blogs: blogs };
+    }
+
+    /**
+     * Fetches all published documents based on kind, limited by page number.
+     *
+     * @param pageNum The current page
+     * @param kinds The kind of document to fetch
+     * @param filter
+     * @param userId (Optional)
+     */
+    async fetchAllPublished(
+        pageNum: number,
+        kinds: ContentKind[],
+        filter: ContentFilter,
+        userId?: string
+    ): Promise<PaginateResult<ContentDocument>> {
+        const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const filteredQuery = await this.determineContentFilter(query, filter);
+        const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
+
+        if (userId) {
+            filteredQuery['author'] = userId;
+        }
+
+        return await this.content.paginate(filteredQuery, paginateOptions);
     }
 
     //#endregion

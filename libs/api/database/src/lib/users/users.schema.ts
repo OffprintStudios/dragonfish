@@ -1,6 +1,5 @@
 import { AuditSession, Roles, User } from '@dragonfish/shared/models/users';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
-
 import { AuditSessionSchema } from './audit-session.schema';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';

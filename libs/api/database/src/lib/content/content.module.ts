@@ -3,10 +3,14 @@ import * as Schemas from './schemas';
 import * as Stores from './stores';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NotificationsModule } from '@dragonfish/api/database/notifications';
+import { UsersModule } from '@dragonfish/api/database/users';
+import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
 
 @Module({
     imports: [
+        UsersModule,
         NotificationsModule,
+        ApprovalQueueModule,
         MongooseModule.forFeatureAsync([
             {
                 name: 'Content',
@@ -38,6 +42,10 @@ import { NotificationsModule } from '@dragonfish/api/database/notifications';
         Stores.ReadingHistoryStore,
         Stores.BrowseStore,
         Stores.SectionsStore,
+        Stores.BlogsStore,
+        Stores.NewsStore,
+        Stores.PoetryStore,
+        Stores.ProseStore,
     ],
     exports: [
         Stores.ContentStore,
@@ -45,6 +53,8 @@ import { NotificationsModule } from '@dragonfish/api/database/notifications';
         Stores.ReadingHistoryStore,
         Stores.BrowseStore,
         Stores.SectionsStore,
+        Stores.PoetryStore,
+        Stores.ProseStore,
     ]
 })
 export class ContentModule {}

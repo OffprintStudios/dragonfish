@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid';
 import * as models from '@dragonfish/shared/models/users';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
-import { REFRESH_EXPIRATION } from '@dragonfish/shared/constants';
+import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { createHash } from 'crypto';
 import { CollectionsStore } from '../collections/collections.store';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
@@ -306,7 +306,7 @@ export class UsersStore {
      * this information is not account sensitive.
      * @param userId The ID of the user to update
      * @param coverPicUrl The full URL of the new cover pic
-     * @returns 
+     * @returns
      */
     async updateCoverPic(userId: string, coverPicUrl: string): Promise<models.User> {
         return this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.coverPic': coverPicUrl }, { new: true });

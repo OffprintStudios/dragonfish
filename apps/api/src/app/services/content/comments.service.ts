@@ -6,7 +6,7 @@ import { IComments, IContent } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
 import { CreateCommentNotification, NotificationKind } from '@dragonfish/shared/models/notifications';
-import { NotificationsService } from '../../db/notifications/notifications.service';
+import { NotificationsService } from '@dragonfish/api/database/notifications';
 
 @Injectable()
 export class CommentsService implements IComments {
