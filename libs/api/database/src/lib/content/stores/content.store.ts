@@ -17,7 +17,7 @@ import { BlogsStore } from './blogs.store';
 import { NewsStore } from './news.store';
 import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
-import { isNullOrUndefined } from '@dragonfish/api/utilities/validation';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { UsersStore } from '@dragonfish/api/database/users';
 import { NotificationsService, UnsubscribeResult } from '@dragonfish/api/database/notifications';
 import { ApprovalQueueStore } from '@dragonfish/api/database/approval-queue';

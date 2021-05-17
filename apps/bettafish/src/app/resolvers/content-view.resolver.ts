@@ -3,9 +3,10 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment } from
 import { Observable } from 'rxjs';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { ContentViewService } from '@dragonfish/client/repository/content-view';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 @Injectable()
-export class ContentViewResolver implements Resolve<Observable<[ContentModel, any]>> {
+export class ContentViewResolver implements Resolve<Observable<{ content: ContentModel, ratings: RatingsModel }>> {
     constructor(private viewService: ContentViewService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot) {

@@ -5,7 +5,6 @@ import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { UserState } from '@dragonfish/client/repository/user';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentKind, SectionInfo } from '@dragonfish/shared/models/content';
-import { of, zip } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { ContentViewQuery } from './content-view.query';
@@ -23,28 +22,21 @@ export class ContentViewService {
     ) {}
 
     public fetchContent(contentId: string, kind: ContentKind) {
-        const thisContent$ = this.network.fetchContent(contentId, kind);
-        let thisRatingsDoc$ = of(null);
-        if (this.currUser !== null && this.currUser !== undefined) {
-            thisRatingsDoc$ = this.network.addOrFetchRatings(contentId);
-        }
-
-        return zip(thisContent$, thisRatingsDoc$).pipe(tap(value => {
-            const [content, ratings] = value;
-            const contentAny = content as any;
+        return this.network.fetchContent(contentId, kind).pipe(tap(value => {
+            const contentAny = value.content as any;
             let sections = null;
-            if (content.kind === ContentKind.ProseContent || content.kind === ContentKind.PoetryContent) {
+            if (value.content.kind === ContentKind.ProseContent || value.content.kind === ContentKind.PoetryContent) {
                 sections = contentAny.sections.filter((x) => {
                     return x.published === true;
                 }) as SectionInfo[];
             }
             this.contentView.update({
-                currContent: content,
+                currContent: value.content,
                 allSections: sections,
-                ratingsDoc: ratings,
-                currRating: ratings.rating ? ratings.rating : RatingOption.NoVote,
-                likes: content.stats.likes,
-                dislikes: content.stats.dislikes,
+                ratingsDoc: value.ratings,
+                currRating: value.ratings.rating ? value.ratings.rating : RatingOption.NoVote,
+                likes: value.content.stats.likes,
+                dislikes: value.content.stats.dislikes,
             });
         }));
     }

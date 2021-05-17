@@ -55,7 +55,9 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.content.fetchOnePublished(contentId, kind, user);
+        const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
+
+        return { content: content, ratings: ratings };
     }
 
     @ApiTags(DragonfishTags.Content)

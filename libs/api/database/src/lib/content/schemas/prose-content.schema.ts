@@ -46,7 +46,7 @@ export class ProseContentDocument extends Document implements ProseContent {
 
     @Prop({
         type: [String],
-        ref: 'Section',
+        ref: 'Sections',
         default: null,
         autopopulate: {
             select: '_id title published stats.words audit.publishedOn createdAt updatedAt',
