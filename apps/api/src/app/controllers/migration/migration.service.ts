@@ -4,7 +4,7 @@ import { ContentKind } from '@dragonfish/shared/models/content';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 
 import { OldBlogsService } from '../../db/blogs/blogs.service';
-import { ContentStore } from '../../db/content';
+import { ContentStore } from '@dragonfish/api/database/content/stores';
 import { WorksService } from '../../db/works/works.service';
 
 @Injectable()

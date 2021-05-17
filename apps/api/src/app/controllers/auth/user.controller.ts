@@ -20,7 +20,7 @@ import { RolesGuard } from '../../guards';
 import { ChangeEmailDTO, ChangePasswordDTO, ChangeBioDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
 import { IUser } from '../../shared/auth';
 import { IImages } from '../../shared/images';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/content';

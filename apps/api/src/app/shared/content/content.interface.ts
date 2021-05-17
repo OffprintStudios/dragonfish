@@ -6,10 +6,9 @@ import {
     ContentKind,
     ContentModel,
     PubChange,
-    SetRating,
 } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 export interface IContent {
     /**
@@ -19,7 +18,7 @@ export interface IContent {
      * @param kind The content kind
      * @param user The author of the content
      */
-    fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel>;
+    fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel>;
 
     /**
      * Fetches one published item from the content collection via its ID and ContentKind. If a
@@ -29,7 +28,7 @@ export interface IContent {
      * @param kind — A content's Kind
      * @param user — (Optional) The user making the request
      */
-    fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel>;
+    fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]>;
 
     /**
      * Finds a bunch of content documents belonging to a user, per that user's request.
@@ -90,30 +89,6 @@ export interface IContent {
      * @param pubChange (Optional) Publishing status updates for Blogs and Newsposts
      */
     publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel>;
-
-    /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
-
-    /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setDislike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
-
-    /**
-     * Changes the rating of a user to a Like.
-     *
-     * @param user The user making the change
-     * @param setRating Information regarding this change
-     */
-    setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory>;
 
     /**
      * Updates a content's cover art URL, based on its contentKind.

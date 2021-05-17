@@ -14,7 +14,6 @@ export interface Section {
         publishedOn: Date;
         readonly isDeleted: boolean;
     };
-    readonly usesNewEditor: boolean;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '@dragonfish/api/database/users';
 import { WorksSchema } from './works.schema';
 import { WorksService } from './works.service';
 

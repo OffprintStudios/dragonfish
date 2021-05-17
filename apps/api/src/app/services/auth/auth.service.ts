@@ -10,7 +10,7 @@ import { verify, argon2id } from 'argon2';
 import { nanoid } from 'nanoid';
 
 import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/shared/models/users';
-import { UsersStore } from '../../db/users/users.store';
+import { UsersStore } from '@dragonfish/api/database/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { IAuth } from '../../shared/auth';
 

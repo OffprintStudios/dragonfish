@@ -3,16 +3,6 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 
 export interface IHistory {
     /**
-     * Creates a new history document if, and only if, one for the existing content doesn't
-     * already exist for this user. Otherwise, updates the existing document with a new
-     * `viewedOn` date and resets its visibility to `true`.
-     *
-     * @param user The owner of this history document
-     * @param contentId The content being viewed
-     */
-    addOrUpdateHistory(user: JwtPayload, contentId: string): Promise<ReadingHistory>;
-
-    /**
      * Fetches all history documents belonging to one user.
      *
      * @param user The owner of these documents

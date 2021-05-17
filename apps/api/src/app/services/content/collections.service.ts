@@ -4,7 +4,7 @@ import { PaginateResult } from 'mongoose';
 import { ICollections } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
-import { CollectionsStore } from '../../db/collections/collections.store';
+import { CollectionsStore } from '@dragonfish/api/database/collections';
 
 @Injectable()
 export class CollectionsService implements ICollections {

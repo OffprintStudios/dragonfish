@@ -24,7 +24,6 @@ import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgxElectronModule } from 'ngx-electron';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
-import { NgxUploaderModule } from 'ngx-uploader';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -67,6 +66,9 @@ import { AuthInterceptor } from '@dragonfish/client/repository/auth/services';
 
 /* Util */
 import { environment } from '../environments/environment';
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 
 @NgModule({
     declarations: [
@@ -117,7 +119,6 @@ import { environment } from '../environments/environment';
         NgxElectronModule,
         ClickOutsideModule,
         ContextMenuModule,
-        NgxUploaderModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
         RepositoryModule,
@@ -141,10 +142,13 @@ import { environment } from '../environments/environment';
         NgxsDispatchPluginModule.forRoot(),
         NgxsSelectSnapshotModule.forRoot(),
         NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
+        environment.production ? [] : AkitaNgDevtools.forRoot(),
+        AkitaNgRouterStoreModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
         { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 }},
+        { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
     ],
     bootstrap: [AppComponent],
 })

@@ -16,10 +16,10 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange, SetRating } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, FormType, PubChange } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
-import { isNullOrUndefined } from '../../util';
-import { User } from '../../util/decorators';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IContent } from '../../shared/content';
@@ -55,7 +55,9 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.content.fetchOnePublished(contentId, kind, user);
+        const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
+
+        return { content: content, ratings: ratings };
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -127,27 +129,6 @@ export class ContentController {
         }
 
         return await this.content.publishOne(user, contentId, pubChange);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-like')
-    async setLike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setLike(user, setRating);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-dislike')
-    async setDislike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setDislike(user, setRating);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-no-vote')
-    async setNoVote(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setNoVote(user, setRating);
     }
 
     @ApiTags(DragonfishTags.Content)

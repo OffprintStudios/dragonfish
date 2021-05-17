@@ -5,7 +5,7 @@ import { RolesGuard } from '../../guards';
 import { Roles } from '@dragonfish/shared/models/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { IHistory } from '../../shared/content';
 
 @Controller('history')
@@ -24,13 +24,6 @@ export class HistoryController {
     @Get('fetch-one-hist-doc/:workId')
     async fetchOneHistDoc(@User() user: JwtPayload, @Param('workId') workId: string) {
         return await this.history.fetchOneHistoryDoc(user, workId);
-    }
-
-    @ApiTags(DragonfishTags.History)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Post('add-or-update-history/:workId')
-    async addOrUpdateHistory(@User() user: JwtPayload, @Param('workId') workId: string) {
-        return await this.history.addOrUpdateHistory(user, workId);
     }
 
     @ApiTags(DragonfishTags.History)
