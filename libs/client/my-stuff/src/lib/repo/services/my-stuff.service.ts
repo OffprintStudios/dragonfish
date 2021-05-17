@@ -1,7 +1,7 @@
 import * as MyStuff from '../my-stuff.actions';
 import * as Sections from '../sections/sections.actions';
 
-import { ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, CreateFandomTag, FormType, PubChange } from '@dragonfish/shared/models/content';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
@@ -23,6 +23,11 @@ export class MyStuffService {
     @Dispatch()
     public createContent(kind: ContentKind, formInfo: FormType) {
         return new MyStuff.CreateContent(kind, formInfo);
+    }
+
+    @Dispatch()
+    public createFandomTag(fandomTagInfo: CreateFandomTag) {
+        return new MyStuff.CreateFandomTagAction(fandomTagInfo);
     }
 
     @Dispatch()

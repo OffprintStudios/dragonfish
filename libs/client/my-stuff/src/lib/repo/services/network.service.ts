@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileUploader, FileItem, ParsedResponseHeaders } from 'ng2-file-upload';
-import { ContentModel, ContentKind, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { ContentModel, ContentKind, FormType, PubChange, FandomTagModel, CreateFandomTag } from '@dragonfish/shared/models/content';
 import { Section, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie';
 export class NetworkService {
     private readonly contentUrl: string = `/api/content`;
     private readonly sectionsUrl: string = `/api/sections`;
+    private readonly fandomTagUrl: string = `/api/fandom-tag`;
 
     constructor(private http: HttpClient, private readonly cookieService: CookieService) {}
 
@@ -55,6 +56,20 @@ export class NetworkService {
     public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
         return handleResponse(
             this.http.put<ContentModel>(`${this.contentUrl}/create-one?kind=${kind}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to create a fandom tag to the backend
+     *
+     * @param fandomTagInfo The fandom tag information
+     */
+     public createFandomTag(fandomTagInfo: CreateFandomTag): Observable<FandomTagModel> {
+        return handleResponse(
+            this.http.put<FandomTagModel>(`${this.fandomTagUrl}/create-fandom-tag`, fandomTagInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),

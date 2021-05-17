@@ -6,6 +6,7 @@ import { CommentsController } from './comments.controller';
 import { CollectionsController } from './collections.controller';
 import { SectionsController } from './sections.controller';
 import { NewsController } from './news.controller';
+import { FandomTagController } from './fandom-tag.controller';
 
 export const ContentRoutes = [
     ContentController,
@@ -16,4 +17,5 @@ export const ContentRoutes = [
     CollectionsController,
     SectionsController,
     NewsController,
+    FandomTagController,
 ];

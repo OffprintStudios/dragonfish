@@ -3,7 +3,7 @@ import { State, Action, Selector, StateContext} from '@ngxs/store';
 import { patch, updateItem, removeItem } from '@ngxs/store/operators';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { ContentModel, FandomTagModel } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
 import * as MyStuff from './my-stuff.actions';
 import { MyStuffStateModel } from './my-stuff-state.model';
@@ -71,6 +71,21 @@ export class MyStuffState {
                 patchState({
                     myStuff: [...getState().myStuff, result],
                 });
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    @Action(MyStuff.CreateFandomTagAction)
+    public createFandomTag(
+        { fandomTagInfo }: MyStuff.CreateFandomTagAction,
+    ): Observable<FandomTagModel> {
+        return this.myStuff.createFandomTag(fandomTagInfo).pipe(
+            tap((result: FandomTagModel) => {
+                this.alerts.success(`Content saved!`);
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);

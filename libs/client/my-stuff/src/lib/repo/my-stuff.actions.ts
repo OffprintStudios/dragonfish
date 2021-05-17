@@ -1,4 +1,4 @@
-import { ContentKind, ContentModel, PubChange, FormType } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, PubChange, FormType, CreateFandomTag } from '@dragonfish/shared/models/content';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { FileUploader } from 'ng2-file-upload';
 
@@ -14,6 +14,11 @@ export class SetCurrentContent {
 export class CreateContent {
     static readonly type = '[MyStuff] Create Content';
     constructor(public kind: ContentKind, public formInfo: FormType) {}
+}
+
+export class CreateFandomTagAction {
+    static readonly type = '[MyStuff] Create Fandom Tag';
+    constructor(public fandomTagInfo: CreateFandomTag) {}
 }
 
 export class SaveContent {

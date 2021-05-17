@@ -14,6 +14,7 @@ import { ProseStore } from './prose/prose.store';
 import { PoetryStore } from './poetry/poetry.store';
 import { ApprovalQueueModule } from '../approval-queue/approval-queue.module';
 import { ReadingHistoryModule } from '../reading-history/reading-history.module';
+import { FandomTagStore } from './prose/fandom-tag.store';
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
         BlogsStore,
         ProseStore,
         PoetryStore,
+        FandomTagStore,
         {
             provide: getModelToken('NewsContent'),
             useFactory: (contentModel) =>
@@ -127,6 +129,6 @@ import { ReadingHistoryModule } from '../reading-history/reading-history.module'
             inject: [getModelToken('Content')],
         },
     ],
-    exports: [ContentStore, BrowseStore, NewsStore, BlogsStore, ProseStore, PoetryStore],
+    exports: [ContentStore, BrowseStore, NewsStore, BlogsStore, ProseStore, PoetryStore, FandomTagStore],
 })
 export class ContentModule {}

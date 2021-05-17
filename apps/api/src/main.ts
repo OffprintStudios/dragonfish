@@ -53,6 +53,7 @@ async function bootstrap() {
         .addTag(DragonfishTags.Meta)
         .addTag(DragonfishTags.ApprovalQueue)
         .addTag(DragonfishTags.Search)
+        .addTag(DragonfishTags.FandomTag)
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);

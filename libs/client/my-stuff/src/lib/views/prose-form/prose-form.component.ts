@@ -12,6 +12,7 @@ import {
     CreateProse,
     ProseContent,
     ContentKind,
+    CreateFandomTag,
 } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffService } from '../../repo/services';
@@ -41,6 +42,10 @@ export class ProseFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
+
+    tagForm = new FormGroup({
+        name: new FormControl(null, [Validators.required]),
+    })
 
     constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
 
@@ -96,5 +101,16 @@ export class ProseFormComponent implements OnInit {
         } else {
             this.stuff.createContent(ContentKind.ProseContent, proseInfo);
         }
+    }
+
+    submitTag() {
+        const tagInfo: CreateFandomTag = {
+            name: this.tagForm.controls.name.value,
+            desc: "Test description",
+            parent: null,
+            children: null,
+        }
+
+        this.stuff.createFandomTag(tagInfo);
     }
 }
