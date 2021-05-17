@@ -4,8 +4,10 @@ import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
+import { SectionsDocument, SectionsSchema } from './sections.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
+import { countWords, stripTags } from 'voca';
 
 //#region ---EXPORTS---
 
@@ -16,6 +18,7 @@ export { PoetryContentDocument, PoetryContentSchema } from './poetry-content.sch
 export { ProseContentDocument, ProseContentSchema } from './prose-content.schema';
 export { RatingsDocument, RatingsSchema } from './ratings.schema';
 export { ReadingHistoryDocument, ReadingHistorySchema } from './reading-history.schema';
+export { SectionsDocument, SectionsSchema } from './sections.schema';
 
 //#endregion
 
@@ -46,6 +49,30 @@ export async function setupContentCollection() {
     schema.plugin(MongooseAutopopulate);
     schema.plugin(MongoosePaginate);
 
+    return schema;
+}
+
+/**
+ * Sets up the sections collection and.
+ */
+export async function setupSectionsCollection() {
+    const schema = SectionsSchema;
+    schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
+        this.set('title', sanitizeHtml(this.title, sanitizeOptions));
+        this.set('body', sanitizeHtml(this.body, sanitizeOptions));
+        if (this.authorsNote) {
+            this.set('authorsNote', sanitizeHtml(this.authorsNote, sanitizeOptions));
+        }
+        if (this.authorsNotePos) {
+            this.set('authorsNotePos', this.authorsNotePos);
+        }
+        this.set('published', this.published);
+
+        const wordCount = countWords(stripTags(sanitizeHtml(this.body, sanitizeOptions)));
+        this.set('stats.words', Number(wordCount));
+
+        return next();
+    });
     return schema;
 }
 

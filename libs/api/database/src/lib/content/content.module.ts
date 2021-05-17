@@ -23,6 +23,10 @@ import { MongooseModule } from '@nestjs/mongoose';
             {
                 name: 'ReadingHistory',
                 useFactory: Schemas.setupReadingHistoryCollection,
+            },
+            {
+                name: 'Sections',
+                useFactory: Schemas.setupSectionsCollection,
             }
         ])
     ],
@@ -31,12 +35,14 @@ import { MongooseModule } from '@nestjs/mongoose';
         Stores.RatingsStore,
         Stores.ReadingHistoryStore,
         Stores.BrowseStore,
+        Stores.SectionsStore,
     ],
     exports: [
         Stores.ContentStore,
         Stores.RatingsStore,
         Stores.ReadingHistoryStore,
         Stores.BrowseStore,
+        Stores.SectionsStore,
     ]
 })
 export class ContentModule {}

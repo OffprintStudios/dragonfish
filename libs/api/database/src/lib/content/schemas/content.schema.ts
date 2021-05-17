@@ -2,6 +2,7 @@ import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { ContentModel, ContentKind, PubStatus, ContentRating } from '@dragonfish/shared/models/content';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
+import { UserInfo } from '@dragonfish/shared/models/users';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'content', discriminatorKey: 'kind' })
 export class ContentDocument extends Document implements ContentModel {
@@ -16,7 +17,7 @@ export class ContentDocument extends Document implements ContentModel {
             select: '_id username profile.avatar audit.roles',
         },
     })
-    readonly author: string;
+    readonly author: string | UserInfo;
 
     @Prop({ trim: true, required: true })
     title: string;

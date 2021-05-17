@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult, PaginateOptions, Model } from 'mongoose';
-import { ContentDocument, RatingsDocument, ReadingHistoryDocument } from '../schemas';
+import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocument } from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { UserInfo } from '@dragonfish/shared/models/users';
 
 /**
  * ## Browse Store
@@ -16,6 +17,7 @@ import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfis
 export class BrowseStore {
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
+        @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
     ) {}
@@ -24,7 +26,6 @@ export class BrowseStore {
 
     /**
      * Fetches the first six new works.
-     *
      * @param filter
      */
     public async fetchFirstNew(filter: ContentFilter) {
@@ -51,7 +52,6 @@ export class BrowseStore {
 
     /**
      * Fetches all published documents based on kind, limited by page number.
-     *
      * @param pageNum The current page
      * @param kinds The kind of document to fetch
      * @param filter The currently active filter
@@ -76,12 +76,11 @@ export class BrowseStore {
 
     /**
      * Fetches one published item from the content collection via ID and ContentKind.
-     *
      * @param contentId A content's ID
      * @param kind A content's Kind
      * @param user (Optional) The user making the request
      */
-    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentDocument> {
+    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentDocument, RatingsDocument]> {
         const doc = await this.content.findOne({
             _id: contentId,
             kind: kind,
@@ -90,15 +89,41 @@ export class BrowseStore {
         });
         if (isNullOrUndefined(user)) {
             await this.incrementViewCount(contentId);
-            return doc;
+            return [doc, null];
         } else {
-            const authorInfo = doc.author as any;
+            const authorInfo = doc.author as UserInfo;
             if (authorInfo._id !== user.sub) {
                 await this.incrementViewCount(contentId);
             }
+            const ratings = await this.addOrFetchRatingsDoc(user, contentId);
             await this.addOrUpdateHistory(user, contentId);
-            return doc;
+            return [doc, ratings];
         }
+    }
+
+    /**
+     * Fetches a published section by ID
+     * @param sectionId The section ID
+     */
+    async fetchPublishedSection(sectionId: string): Promise<SectionsDocument> {
+        return this.sections.findOne({ _id: sectionId, published: true });
+    }
+
+    /**
+     * Fetches the first three published content specified in the `kinds` array, filtered as appropriate.
+     * @param filter
+     * @param userId
+     */
+    async fetchFirstThreePublished(filter: ContentFilter, userId: string): Promise<{ works: ContentDocument[], blogs: ContentDocument[] }> {
+        const worksQuery = { 'author': userId, kind: { $in: [ContentKind.ProseContent, ContentKind.PoetryContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const filteredWorksQuery = await this.determineContentFilter(worksQuery, filter);
+        const works = await this.content.find(filteredWorksQuery).sort({'audit.publishedOn': -1}).limit(3);
+
+        const blogsQuery = { 'author': userId, kind: { $in: [ContentKind.BlogContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const filteredBlogsQuery = await this.determineContentFilter(blogsQuery, filter);
+        const blogs = await this.content.find(filteredBlogsQuery).sort({'audit.publishedOn': -1}).limit(3);
+
+        return { works: works, blogs: blogs };
     }
 
     //#endregion
@@ -107,7 +132,6 @@ export class BrowseStore {
 
     /**
      * Finds content related to the the user's query.
-     *
      * @param query The string the user searched for.
      * @param kinds The kind of document to fetch.
      * @param pageNum The page of results to retrieve.
@@ -154,6 +178,26 @@ export class BrowseStore {
     }
 
     /**
+     * Fetches a user's ratings doc. If one doesn't exist, add one and return the result.
+     * @param user
+     * @param contentId
+     */
+    private async addOrFetchRatingsDoc(user: JwtPayload, contentId: string): Promise<RatingsDocument> {
+        const existingDoc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
+
+        if (isNullOrUndefined(existingDoc)) {
+            const newDoc = new this.ratings({
+                contentId: contentId,
+                userId: user.sub,
+            });
+
+            return newDoc.save();
+        } else {
+            return existingDoc;
+        }
+    }
+
+    /**
      * Updates an existing history doc. If none are found, adds a new one.
      * @param user
      * @param contentId
@@ -184,7 +228,6 @@ export class BrowseStore {
 
     /**
      * Determines which settings to apply on the content filter by checking a user's filter settings.
-     *
      * @param query The query to add to
      * @param filter The current filter settings
      * @private

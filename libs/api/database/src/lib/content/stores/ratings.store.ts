@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RatingsDocument, ContentDocument } from '../schemas';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { PubStatus } from '@dragonfish/shared/models/content';
 
@@ -18,26 +17,6 @@ export class RatingsStore {
         @InjectModel('Content') private readonly content: Model<ContentDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
     ) {}
-
-    /**
-     * Fetches a user's ratings doc. If one doesn't exist, add one and return the result.
-     * @param user
-     * @param contentId
-     */
-    public async addOrFetchRatingsDoc(user: JwtPayload, contentId: string): Promise<RatingsDocument> {
-        const existingDoc = await this.ratings.findOne({ contentId: contentId, userId: user.sub });
-
-        if (isNullOrUndefined(existingDoc)) {
-            const newDoc = new this.ratings({
-                contentId: contentId,
-                userId: user.sub,
-            });
-
-            return newDoc.save();
-        } else {
-            return existingDoc;
-        }
-    }
 
     /**
      * Switches a user's rating option to Liked.

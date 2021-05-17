@@ -438,7 +438,6 @@ export class ContentStore {
                     { _id: contentId, author: user.sub, 'audit.isDeleted': false },
                     {
                         $inc: { 'stats.totWords': -sec.stats.words },
-                        // @ts-ignore
                         $pull: { 'sections': sec._id },
                     },
                     { strict: false }
