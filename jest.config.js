@@ -14,5 +14,6 @@ module.exports = {
         '<rootDir>/libs/client/dashboard',
         '<rootDir>/libs/client/services',
         '<rootDir>/libs/client/repository',
+        '<rootDir>/libs/api/database',
     ],
 };

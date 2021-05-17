@@ -26,7 +26,8 @@
             "@dragonfish/client/dashboard": ["libs/client/dashboard/src/index.ts"],
             "@dragonfish/client/services": ["libs/client/services/src/index.ts"],
             "@dragonfish/client/repository": ["libs/client/repository/src/index.ts"],
-            "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"]
+            "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"],
+            "@dragonfish/api/database/*": ["libs/api/database/src/lib/*"]
         }
     },
     "exclude": ["node_modules", "tmp"]
