@@ -7,11 +7,11 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { UserState } from '@dragonfish/client/repository/user';
 import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { GlobalState } from '@dragonfish/client/repository/global';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -20,14 +20,18 @@ import { GlobalState } from '@dragonfish/client/repository/global';
 })
 export class PortfolioWorksComponent implements OnInit {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
     loading = false;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private network: DragonfishNetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private network: DragonfishNetworkService,
+        private route: ActivatedRoute,
+        private router: Router,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     ngOnInit(): void {
         combineLatest(this.portUser$, this.route.queryParamMap).pipe(untilDestroyed(this))

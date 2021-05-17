@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeEmail, ChangePassword, FrontendUser } from '@dragonfish/shared/models/users';
+import { ChangeEmail, ChangePassword } from '@dragonfish/shared/models/users';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import { UserState } from '@dragonfish/client/repository/user';
-import { UserService } from '@dragonfish/client/repository/user/services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { UserService } from '@dragonfish/client/repository/session/services';
 
 @UntilDestroy()
 @Component({
@@ -15,8 +13,6 @@ import { UserService } from '@dragonfish/client/repository/user/services';
     styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-
     changeEmailForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
         currPassword: new FormControl('', [Validators.required]),
@@ -28,10 +24,10 @@ export class AccountComponent implements OnInit {
         currPassword: new FormControl('', [Validators.required]),
     });
 
-    constructor(private user: UserService, private alerts: AlertsService) {}
+    constructor(private user: UserService, private alerts: AlertsService, public sessionQuery: SessionQuery) {}
 
     ngOnInit(): void {
-        this.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
             this.changeEmailForm.setValue({
                 email: user.email,
                 currPassword: '',
@@ -62,7 +58,7 @@ export class AccountComponent implements OnInit {
             newEmail: this.changeEmailFields.email.value,
         };
 
-        return this.user.changeEmail(changeRequest);
+        return this.user.changeEmail(changeRequest).subscribe();
     }
 
     submitPasswordForm() {
@@ -79,6 +75,6 @@ export class AccountComponent implements OnInit {
             currentPassword: this.changePasswordFields.currPassword.value,
         };
 
-        return this.user.changePassword(changeRequest);
+        return this.user.changePassword(changeRequest).subscribe();
     }
 }

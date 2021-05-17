@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
-import { ChangeBio, ChangeUsername, FrontendUser } from '@dragonfish/shared/models/users';
+import { ChangeBio, ChangeUsername } from '@dragonfish/shared/models/users';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import { UserState } from '@dragonfish/client/repository/user';
-import { UserService } from '@dragonfish/client/repository/user/services';
+import { UserService } from '@dragonfish/client/repository/session/services';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadAvatarComponent } from '../upload-avatar/upload-avatar.component';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -17,8 +15,6 @@ import { UploadAvatarComponent } from '../upload-avatar/upload-avatar.component'
     styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-
     changeUsernameForm = new FormGroup({
         username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
         currPassword: new FormControl('', [Validators.required]),
@@ -28,10 +24,15 @@ export class ProfileComponent implements OnInit {
         bio: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(160)]),
     });
 
-    constructor(private user: UserService, private alerts: AlertsService, private dialog: MatDialog) {}
+    constructor(
+        private user: UserService,
+        private alerts: AlertsService,
+        private dialog: MatDialog,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     ngOnInit(): void {
-        this.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
             this.changeUsernameForm.setValue({
                 username: user.username,
                 currPassword: '',

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CoverPicUploadComponent } from '../../components/user/settings/cover-pic-upload/cover-pic-upload.component';
 import { FrontendUser } from '@dragonfish/shared/models/users';
@@ -8,7 +7,7 @@ import { Observable } from 'rxjs';
 import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Select } from '@ngxs/store';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { UserState } from '@dragonfish/client/repository/user';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -16,14 +15,11 @@ import { UserState } from '@dragonfish/client/repository/user';
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
 })
-export class PortfolioComponent implements OnInit {
+export class PortfolioComponent {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     canSeeCoverButton = false;
 
-    constructor(public route: ActivatedRoute, private dialog: MatDialog) {}
-
-    ngOnInit(): void {}
+    constructor(public route: ActivatedRoute, private dialog: MatDialog, public sessionQuery: SessionQuery) {}
 
     openCoverPicUploader() {
         const dialogRef = this.dialog.open(CoverPicUploadComponent);

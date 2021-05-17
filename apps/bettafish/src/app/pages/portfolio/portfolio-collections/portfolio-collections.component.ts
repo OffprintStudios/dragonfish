@@ -5,11 +5,11 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '@dragonfish/client/repository/user';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Constants, setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -19,16 +19,20 @@ import { Constants, setTwoPartTitle, setThreePartTitle } from '@dragonfish/share
 })
 export class PortfolioCollectionsComponent implements OnInit {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
 
     currPageCollections: PaginateResult<Collection>;
     loading = false;
     pageNum = 1;
 
-    constructor(public route: ActivatedRoute, private router: Router, private network: DragonfishNetworkService) {}
+    constructor(
+        public route: ActivatedRoute,
+        private router: Router,
+        private network: DragonfishNetworkService,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     ngOnInit(): void {
-        combineLatest(this.currentUser$, this.portUser$, this.route.queryParamMap)
+        combineLatest(this.sessionQuery.currentUser$, this.portUser$, this.route.queryParamMap)
             .pipe(untilDestroyed(this))
             .subscribe(value => {
                 const [currUser, portUser, params] = value;

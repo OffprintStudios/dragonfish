@@ -23,7 +23,7 @@
         <ng-template #noGalleryWorks>
             <div class="empty">
                 <h3>There's nothing here...</h3>
-                <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
+                <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUser">
                     <p *ngIf="currentUser._id === portUser._id; else notSameUser">
                         Why not head to My Stuff and add some new prose or poetry?
                     </p>

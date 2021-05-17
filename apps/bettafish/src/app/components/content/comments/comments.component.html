@@ -84,7 +84,7 @@
         </div>
 
         <!--To be replaced once the floating editor is reimplemented-->
-        <div class="mt-8 w-4/6 mx-auto" #newCommentSection *ngIf="currentUser$ | async">
+        <div class="mt-8 w-4/6 mx-auto" #newCommentSection *ngIf="sessionQuery.currentUser$ | async">
             <form [formGroup]="newCommentForm" (ngSubmit)="submitNewComment()">
                 <dragonfish-editor
                     [parentForm]="newCommentForm"

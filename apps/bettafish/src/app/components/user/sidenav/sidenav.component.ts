@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
-import { AuthService } from '@dragonfish/client/repository/auth/services';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '@dragonfish/client/repository/user';
 import { SidenavService } from '../../../services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 enum UserTabs {
     Friends,
@@ -21,12 +18,16 @@ enum UserTabs {
     styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     moreMenuOpened = false;
     userTabs = UserTabs;
     selectedTab = UserTabs.Notifications;
 
-    constructor(private auth: AuthService, private dialog: MatDialog, private sidenavService: SidenavService) {}
+    constructor(
+        private auth: AuthService,
+        private dialog: MatDialog,
+        private sidenavService: SidenavService,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     toggleMoreMenu() {
         this.moreMenuOpened = !this.moreMenuOpened;

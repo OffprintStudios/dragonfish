@@ -1,9 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { Observable } from 'rxjs';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '@dragonfish/client/repository/user';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-portfolio-toolbar',
@@ -12,5 +12,6 @@ import { UserState } from '@dragonfish/client/repository/user';
 })
 export class PortfolioToolbarComponent {
     @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+
+    constructor(public sessionQuery: SessionQuery) {}
 }

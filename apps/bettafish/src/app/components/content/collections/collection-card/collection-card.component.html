@@ -1,6 +1,6 @@
 <div class="collection-box flex flex-col rounded-md p-4 shadow-lg">
     <div class="flex flex-row items-center">
-        <ng-container *ngIf="currentUser$ | async as currentUser">
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="user._id === currentUser._id">
                 <div>
                     <ng-container [ngSwitch]="collection.audit.isPublic">
@@ -31,7 +31,7 @@
                 </a>
             </h3>
         </div>
-        <ng-container *ngIf="currentUser$ | async as currentUser">
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="user._id === currentUser._id">
                 <div>
                     <a [matMenuTriggerFor]="optionsMenu" [matMenuTriggerData]="{ coll: collection }">

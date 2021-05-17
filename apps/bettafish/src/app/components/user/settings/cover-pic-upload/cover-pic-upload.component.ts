@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { AlertsService } from '@dragonfish/client/alerts';
-import { AuthState } from '@dragonfish/client/repository/auth';
 import { FileUploader } from 'ng2-file-upload';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { UserService } from '@dragonfish/client/repository/user/services';
+import { UserService } from '@dragonfish/client/repository/session/services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -16,7 +13,6 @@ import { UserService } from '@dragonfish/client/repository/user/services';
     styleUrls: ['./cover-pic-upload.component.scss'],
 })
 export class CoverPicUploadComponent implements OnInit {
-    @Select(AuthState.token) token$: Observable<string>;
     token: string;
     fileToReturn: File;
     showCropper = false;
@@ -30,11 +26,11 @@ export class CoverPicUploadComponent implements OnInit {
         private dialogRef: MatDialogRef<CoverPicUploadComponent>,
         private alerts: AlertsService,
         private user: UserService,
-        private store: Store,
+        private sessionQuery: SessionQuery,
     ) {}
 
     ngOnInit() {
-        this.token$.pipe(untilDestroyed(this)).subscribe(value => {
+        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe(value => {
             this.token = value;
         });
     }
@@ -49,8 +45,9 @@ export class CoverPicUploadComponent implements OnInit {
             this.uploader.authToken = `Bearer ${this.token}`;
             this.uploader.clearQueue();
             this.uploader.addToQueue([event[0]]);
-            this.user.uploadCoverPic(this.uploader);
-            this.dialogRef.close();
+            this.user.changeProfileCover(this.uploader).subscribe(() => {
+                this.dialogRef.close();
+            });
         } else {
             this.alerts.error(`Only images are allowed.`);
             return;

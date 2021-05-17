@@ -1,24 +1,19 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { ItemKind } from '@dragonfish/shared/models/comments';
-import { Select } from '@ngxs/store';
-import { UserState } from '@dragonfish/client/repository/user';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { Comment, CreateComment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
+import { Comment, CreateComment } from '@dragonfish/shared/models/comments';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
-import { findIndex } from 'lodash';
-import { ReplyCommentModel } from './models';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-comments',
     templateUrl: './comments.component.html',
     styleUrls: ['./comments.component.scss'],
 })
-export class CommentsComponent {
+export class CommentsComponent implements OnInit {
     @Input() itemId: string; // The ID of the content
     @Input() itemKind: ItemKind; // The kind of comments thread it is, between all content
     @Input() pageNum: number; // The requested page number
@@ -27,7 +22,6 @@ export class CommentsComponent {
 
     @ViewChild('newCommentSection') newCommentSection: ElementRef;
 
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     loading = false;
     comments: PaginateResult<Comment>;
 
@@ -35,11 +29,11 @@ export class CommentsComponent {
         body: new FormControl('', [Validators.required, Validators.minLength(10)]),
     });
 
-    editCommentForm = new FormGroup({
-        body: new FormControl('', [Validators.required, Validators.minLength(10)]),
-    });
-
-    constructor(private networkService: DragonfishNetworkService, private alerts: AlertsService) {}
+    constructor(
+        private networkService: DragonfishNetworkService,
+        private alerts: AlertsService,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     ngOnInit(): void {
         this.fetchData(this.pageNum);
@@ -50,13 +44,6 @@ export class CommentsComponent {
      */
     get newCommentFields() {
         return this.newCommentForm.controls;
-    }
-
-    /**
-     * Getter for the edit comment form
-     */
-    get editCommentFields() {
-        return this.editCommentForm.controls;
     }
 
     /**
@@ -119,52 +106,5 @@ export class CommentsComponent {
             this.fetchData(this.pageNum);
             this.newCommentForm.reset();
         });
-    }
-
-    /**
-     * Appends a comment to the new comment form for quoting.
-     *
-     * @param quoteUser The user we're quoting
-     * @param commentId The ID of the quoted comment
-     * @param commentBody The body of the quoted comment
-     */
-    quoteComment(event: ReplyCommentModel) {
-        this.newCommentForm.setValue({
-            body: `
-        <blockquote>
-          <em><a href="#${event.commentId}">${event.quoteUser.username}</a> said:</em>\n
-          ${event.commentBody}
-        </blockquote>
-      `,
-        });
-
-        this.scrollToNewCommentForm();
-    }
-
-    /**
-     * Sets the editCommentForm to the comment body requested.
-     *
-     * @param commentId: The comment's Id
-     * @param commentBody The comment body of what we're editing
-     */
-    editComment(commentId: string, commentBody: string) {
-        const commentIndex = findIndex(this.comments.docs, { _id: commentId });
-        this.comments.docs[commentIndex].isEditing = true;
-
-        this.editCommentForm.setValue({
-            body: commentBody,
-        });
-    }
-
-    /**
-     * Exits editing mode without saving any changes
-     *
-     * @param commentId The comment's ID
-     */
-    exitEditing(commentId: string) {
-        const commentIndex = findIndex(this.comments.docs, { _id: commentId });
-        this.comments.docs[commentIndex].isEditing = false;
-
-        this.editCommentForm.reset();
     }
 }

@@ -3,24 +3,23 @@ import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Select } from '@ngxs/store';
-import { Observable, Subscription, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { UserState } from '@dragonfish/client/repository/user';
 
 import { ApprovalStatus, Categories, Work } from '@dragonfish/shared/models/works';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { WorkKind, Genres, ContentRating, WorkStatus, ContentKind, PubStatus } from '@dragonfish/shared/models/content';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-migrate-work',
     templateUrl: './migrate-work.component.html',
     styleUrls: ['./migrate-work.component.scss']
 })
 export class MigrateWorkComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     currWork: Work;
@@ -40,8 +39,14 @@ export class MigrateWorkComponent implements OnInit {
         status: new FormControl(null, [Validators.required])
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar,
+        private router: Router,
+        private sessionQuery: SessionQuery,
+    ) {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe(x => {
             this.currentUser = x;
         });
     }
