@@ -53,6 +53,8 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
         Stores.ReadingHistoryStore,
         Stores.BrowseStore,
         Stores.SectionsStore,
+        Stores.BlogsStore,
+        Stores.NewsStore,
         Stores.PoetryStore,
         Stores.ProseStore,
     ]

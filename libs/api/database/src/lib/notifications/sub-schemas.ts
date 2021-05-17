@@ -23,7 +23,7 @@ export namespace SubSchemas {
         authorId: typeof String;
         authorName: typeof String;
     }
-    export function getBlogNotification(): SchemaDefinition<BlogSubSchemaProps> {
+    export function getBlogNotification(): SchemaDefinition {
         return {
             authorId: { type: String, trim: true, required: true },
             authorName: { type: String, required: true },
@@ -37,7 +37,7 @@ export namespace SubSchemas {
         parentTitle: typeof String;
     }
 
-    export function getCommentNotification(): SchemaDefinition<CommentNotificationSubSchemaProps> {
+    export function getCommentNotification(): SchemaDefinition {
         return {
             commentId: { type: String, required: true, trim: true },
             commenterName: { type: String, required: true },

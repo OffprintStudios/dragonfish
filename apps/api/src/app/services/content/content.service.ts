@@ -26,7 +26,7 @@ export class ContentService implements IContent {
         private readonly notifications: NotificationsService,
     ) { }
 
-    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel> {
+    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
     }
 

@@ -6,7 +6,7 @@ import { SectionsDocument } from '../schemas';
 
 @Injectable()
 export class SectionsStore {
-    constructor(@InjectModel('Section') private readonly sectionModel: Model<SectionsDocument>) {}
+    constructor(@InjectModel('Sections') private readonly sectionModel: Model<SectionsDocument>) {}
 
     /**
      * Creates a new section and adds it to the database, updating the associated work's

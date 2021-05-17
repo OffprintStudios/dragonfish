@@ -18,7 +18,7 @@ export interface IContent {
      * @param kind The content kind
      * @param user The author of the content
      */
-    fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel>;
+    fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel>;
 
     /**
      * Fetches one published item from the content collection via its ID and ContentKind. If a

@@ -4,7 +4,7 @@ import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
 
 import { Roles } from '@dragonfish/shared/models/users';
-import { UsersStore } from '../db/users/users.store';
+import { UsersStore } from '@dragonfish/api/database/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 
 /**
