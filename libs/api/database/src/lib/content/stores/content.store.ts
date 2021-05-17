@@ -40,7 +40,7 @@ export class ContentStore {
         private readonly newsContent: NewsStore,
         private readonly proseContent: ProseStore,
         private readonly poetryContent: PoetryStore,
-        private readonly sectionsService: SectionsStore,
+        private readonly sectionsStore: SectionsStore,
         private readonly notifications: NotificationsService,
         private readonly queue: ApprovalQueueStore,
     ) {}
@@ -48,8 +48,8 @@ export class ContentStore {
     //#region ---FETCHING---
 
     /**
-     * Fetches one unpublished item from the content collection via ID and ContentKind.
-     *
+     * Fetches one item from the content collection via ID and ContentKind,
+     * regardless of publishing status.
      * @param contentId A content's ID
      * @param kind A content's Kind
      * @param user The user making this request
@@ -118,9 +118,9 @@ export class ContentStore {
     }
 
     /**
-     * Fetches a section by ID. Performs an extra check to only fetch a published section.
+     * Fetches a section by ID. Optionally performs an extra check to only fetch a published section.
      *
-     * @param sectionId The second ID
+     * @param sectionId The section ID
      * @param published (optional)
      */
     async fetchSectionById(sectionId: string, published?: boolean): Promise<SectionsDocument> {
@@ -148,7 +148,7 @@ export class ContentStore {
         } else {
             const workContent = work as any;
 
-            return await this.sectionsService.fetchSectionsList(workContent.sections);
+            return await this.sectionsStore.fetchSectionsList(workContent.sections);
         }
     }
 
@@ -357,7 +357,7 @@ export class ContentStore {
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const sec: SectionsDocument = await this.sectionsService.createNewSection(sectionInfo);
+            const sec: SectionsDocument = await this.sectionsStore.createNewSection(sectionInfo);
             await this.content.updateOne(
                 { _id: contentId, author: user.sub, 'audit.isDeleted': false },
                 { $push: { sections: sec._id } },
@@ -389,7 +389,7 @@ export class ContentStore {
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const sec: SectionsDocument = await this.sectionsService.editSection(sectionId, sectionInfo);
+            const sec: SectionsDocument = await this.sectionsStore.editSection(sectionId, sectionInfo);
             if (sec.published === true) {
                 await this.content.updateOne(
                     { _id: contentId, author: user.sub, 'audit.isDeleted': false },
@@ -428,7 +428,7 @@ export class ContentStore {
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const sec = await this.sectionsService.publishSection(sectionId, pubStatus);
+            const sec = await this.sectionsStore.publishSection(sectionId, pubStatus);
             if (sec.published === true && pubStatus.oldPub === false) {
                 // if newly published
                 await this.content.updateOne(
@@ -464,7 +464,7 @@ export class ContentStore {
         if (isNullOrUndefined(work)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const sec = await this.sectionsService.deleteSection(sectionId);
+            const sec = await this.sectionsStore.deleteSection(sectionId);
             if (sec.published === true) {
                 await this.content.updateOne(
                     { _id: contentId, author: user.sub, 'audit.isDeleted': false },
