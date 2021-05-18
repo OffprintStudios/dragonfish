@@ -14,7 +14,7 @@ import {
 /* Util */
 import { ViewSectionsResolver } from './resolvers';
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from './util';
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
 const routes: Routes = [
     {
@@ -78,6 +78,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [AuthGuard, ViewSectionsResolver],
+    providers: [ViewSectionsResolver],
 })
 export class MyStuffRoutingModule {}

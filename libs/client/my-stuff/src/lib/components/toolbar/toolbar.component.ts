@@ -10,6 +10,7 @@ import { MyStuffService } from '../../repo/services';
 import { Dispatch } from '@ngxs-labs/dispatch-decorator';
 import { Navigate } from '@ngxs/router-plugin';
 import { isAllowed } from '@dragonfish/shared/functions';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-my-stuff-toolbar',
@@ -29,10 +30,8 @@ export class ToolbarComponent {
         private alerts: AlertsService,
         private router: Router,
         private stuff: MyStuffService,
-    ) {
-        const currUser = JSON.parse(localStorage.getItem('user')) as { currUser: FrontendUser };
-        this.currentUser = currUser.currUser;
-    }
+        public sessionQuery: SessionQuery,
+    ) {}
 
     /**
      * Sets the currently selected content to null.
@@ -124,8 +123,9 @@ export class ToolbarComponent {
 
     /**
      * Checks to see if the currently signed in user is allowed to access the newspost form.
+     * @param currentUser
      */
-    checkIsAllowed() {
-        return isAllowed(this.currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
+    checkIsAllowed(currentUser: FrontendUser) {
+        return isAllowed(currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
     }
 }

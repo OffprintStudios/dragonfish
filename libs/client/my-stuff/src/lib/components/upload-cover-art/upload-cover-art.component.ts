@@ -1,4 +1,3 @@
-import { Store } from '@ngxs/store';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
@@ -6,7 +5,10 @@ import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
 import { MyStuffService } from '../../repo/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-upload-cover-art',
     templateUrl: './upload-cover-art.component.html',
@@ -42,7 +44,7 @@ export class UploadCoverArtComponent implements OnInit {
         private dialogRef: MatDialogRef<UploadCoverArtComponent>,
         @Inject(MAT_DIALOG_DATA) private data: { kind: ContentKind; contentId: string },
         private stuff: MyStuffService,
-        private store: Store,
+        private sessionQuery: SessionQuery,
     ) {
         if (this.data.kind === ContentKind.ProseContent) {
             this.uploader = new FileUploader({
@@ -60,8 +62,9 @@ export class UploadCoverArtComponent implements OnInit {
     }
 
     ngOnInit() {
-        const stateSnapshot = this.store.snapshot();
-        this.token = stateSnapshot.auth.token;
+        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe(value => {
+            this.token = value;
+        });
     }
 
     fileChangeEvent(fileInput: Event): void {
