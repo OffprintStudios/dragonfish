@@ -432,7 +432,12 @@ export class UsersStore {
     async getSupporters(): Promise<models.FrontendUser[]> {
         const userList = await this.userModel.find({
             'audit.isDeleted': false,
-            $or: [{ 'audit.roles': 'Contributor' }, { 'audit.roles': 'VIP' }, { 'audit.roles': 'Supporter' }],
+            $or: [
+                { 'audit.roles': 'Maintainer' },
+                { 'audit.roles': 'Contributor' },
+                { 'audit.roles': 'VIP' },
+                { 'audit.roles': 'Supporter' }
+            ],
         });
 
         const frontendUserList = Array<models.FrontendUser>();

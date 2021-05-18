@@ -24,6 +24,9 @@ import { LineTruncationLibModule } from 'ngx-line-truncation';
 import { NgxElectronModule } from 'ngx-electron';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
+import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
+import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
+import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -62,13 +65,10 @@ import { ClientServicesModule } from '@dragonfish/client/services';
 
 /* State */
 import { RepositoryModule } from '@dragonfish/client/repository';
-import { AuthInterceptor } from '@dragonfish/client/repository/auth/services';
 
 /* Util */
 import { environment } from '../environments/environment';
-import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { AuthInterceptor } from '@dragonfish/client/repository/session/services';
 
 @NgModule({
     declarations: [

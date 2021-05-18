@@ -2,17 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, switchMap, filter, take } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
-
-import { AuthState } from '../auth.state';
-import * as Auth from '../auth.actions';
+import { SessionQuery } from '../session.query';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
     private isRefreshing = false;
     private refreshTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-    constructor(private store: Store) {}
+    constructor(private sessionQuery: SessionQuery, private auth: AuthService) {}
 
     /**
      * Intercepts all outgoing requests to the backend and sets an Authorization header
@@ -22,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
      * @param next Passes the request along to the next handler
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const token = this.store.selectSnapshot<string>(AuthState.token);
+        const token = this.sessionQuery.token;
         if (token === null) {
             return next.handle(req);
         }
@@ -55,17 +53,14 @@ export class AuthInterceptor implements HttpInterceptor {
         this.isRefreshing = true;
         this.refreshTokenSubject.next(null);
 
-        return this.store.dispatch(new Auth.RefreshToken()).pipe(
+        return this.auth.refreshToken().pipe(
             switchMap(() => {
-                return this.store.selectOnce<string>(AuthState.token).pipe(
-                    switchMap((token: string) => {
-                        this.isRefreshing = false;
-                        this.refreshTokenSubject.next(token);
-                        return next.handle(this.addToken(req, token));
-                    }),
-                );
-            }),
-        );
+                const token = this.sessionQuery.token;
+                this.isRefreshing = false;
+                this.refreshTokenSubject.next(token);
+                return next.handle(this.addToken(req, token));
+            })
+        )
     }
 
     private addToken(req: HttpRequest<any>, token: string): HttpRequest<any> {

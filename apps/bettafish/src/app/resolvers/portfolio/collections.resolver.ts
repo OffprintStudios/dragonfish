@@ -1,28 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { Select } from '@ngxs/store';
-
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Observable } from 'rxjs';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Collection } from '@dragonfish/shared/models/collections';
-
-import { UserState } from '@dragonfish/client/repository/user';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Injectable()
 export class CollectionsResolver implements Resolve<PaginateResult<Collection>> {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-    currentUserSubscription: Subscription;
-    currentUser: FrontendUser;
-
     pageNum = 1;
 
-    constructor(private networkService: DragonfishNetworkService) {
-        this.currentUserSubscription = this.currentUser$.subscribe((x) => {
-            this.currentUser = x;
-        });
-    }
+    constructor(private networkService: DragonfishNetworkService, private sessionQuery: SessionQuery) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<PaginateResult<Collection>> {
         const userId = route.parent.paramMap.get('id');
@@ -32,8 +20,8 @@ export class CollectionsResolver implements Resolve<PaginateResult<Collection>> 
             this.pageNum = pageNum;
         }
 
-        if (this.currentUser) {
-            if (this.currentUser._id === userId) {
+        if (this.sessionQuery.currentUser) {
+            if (this.sessionQuery.currentUser._id === userId) {
                 return this.networkService.fetchAllCollections(this.pageNum);
             } else {
                 return this.networkService.fetchPublicCollections(userId, this.pageNum);

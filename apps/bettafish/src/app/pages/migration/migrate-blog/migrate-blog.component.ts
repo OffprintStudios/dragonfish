@@ -2,25 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
-import { Observable, Subscription, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { UserState } from '@dragonfish/client/repository/user';
 
 import { Blog } from '@dragonfish/shared/models/blogs';
 import { ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { FrontendUser } from '@dragonfish/shared/models/users';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-migrate-blog',
     templateUrl: './migrate-blog.component.html',
     styleUrls: ['./migrate-blog.component.scss']
 })
 export class MigrateBlogComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-    currentUserSubscription: Subscription;
     currentUser: FrontendUser;
 
     myBlog: Blog;
@@ -32,8 +31,14 @@ export class MigrateBlogComponent implements OnInit {
         rating: new FormControl(null, [Validators.required])
     });
 
-    constructor(private http: HttpClient, private route: ActivatedRoute, private snackBar: MatSnackBar, private router: Router) {
-        this.currentUserSubscription = this.currentUser$.subscribe(x => {
+    constructor(
+        private http: HttpClient,
+        private route: ActivatedRoute,
+        private snackBar: MatSnackBar,
+        private router: Router,
+        private sessionQuery: SessionQuery,
+    ) {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe(x => {
             this.currentUser = x;
         });
     }

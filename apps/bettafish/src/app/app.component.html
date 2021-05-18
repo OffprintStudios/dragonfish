@@ -1,4 +1,4 @@
-<ng-container *ngIf="electron.isElectronApp && !(currentUser$ | async); else isInBrowser">
+<ng-container *ngIf="electron.isElectronApp && !sessionQuery.isLoggedIn; else isInBrowser">
     <dragonfish-auth-full></dragonfish-auth-full>
 </ng-container>
 

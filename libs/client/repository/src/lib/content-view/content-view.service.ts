@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ContentViewStore } from './content-view.store';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { UserState } from '@dragonfish/client/repository/user';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentKind, SectionInfo, ContentModel } from '@dragonfish/shared/models/content';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -15,8 +12,6 @@ import { Section } from '@dragonfish/shared/models/sections';
 
 @Injectable({ providedIn: 'root' })
 export class ContentViewService {
-    @SelectSnapshot(UserState.currUser) private currUser: FrontendUser;
-
     constructor(
         private contentView: ContentViewStore,
         private viewQuery: ContentViewQuery,

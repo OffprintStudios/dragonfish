@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { UserState } from '@dragonfish/client/repository/user';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-docs',
@@ -11,7 +8,5 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
     styleUrls: ['./docs.component.scss']
 })
 export class DocsComponent {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-
-    constructor(public route: ActivatedRoute) {}
+    constructor(public route: ActivatedRoute, public sessionQuery: SessionQuery) {}
 }

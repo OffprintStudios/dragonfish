@@ -1,7 +1,12 @@
 <div class="comment">
 	<div class="comment-wrapper">
 		<div class="comment-author">
-			<a href="#" class="name" lang="en">{{ $any(comment.user).username }}</a>
+			<a
+                class="name"
+                lang="en"
+            >
+                {{ $any(comment.user).username }}
+            </a>
             <div class="title">{{ $any(comment.user).profile.tagline }}</div>
             <img [src]="$any(comment.user).profile.avatar" />
 		</div>
@@ -10,7 +15,7 @@
                 <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false" [isStyled]="true"></dragonfish-role-badge>
 				<div class="timestamp">{{ comment.createdAt | localedate: 'fullDate' }}</div>
 				<ng-container *ngIf="!editMode">
-					<div class="tools" *ngIf="currentUser$ | async as currentUser">
+					<div class="tools" *ngIf="sessionQuery.currentUser$ | async as currentUser">
                         <ng-container *ngIf="currentUser._id">
     						<a class="comment-edit" [matMenuTriggerFor]="optionsMenu">
     							<i-feather name="more-horizontal"></i-feather>
@@ -43,7 +48,7 @@
             <div class="mobile-comment-author">
                 <img [src]="$any(comment.user).profile.avatar" />
                 <div class="authorlinks">
-                    <a href="#">{{ $any(comment.user).username }}</a>
+                    <a>{{ $any(comment.user).username }}</a>
                     <p *ngIf="$any(comment.user).profile.tagline; else noTagline" class="text-xs m-0">{{ $any(comment.user).profile.tagline }}</p>
                     <ng-template #noTagline>
                         <p class="text-xs m-0">Member</p>
@@ -52,7 +57,7 @@
                 <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false" [isStyled]="true"></dragonfish-role-badge>
                 <div class="timestamp">{{ comment.createdAt | localedate: 'fullDate' }}</div>
                 <ng-container *ngIf="!editMode">
-                    <div class="tools" *ngIf="currentUser$ | async as currentUser">
+                    <div class="tools" *ngIf="sessionQuery.currentUser$ | async as currentUser">
                         <ng-container *ngIf="currentUser._id">
                             <a class="comment-edit" [matMenuTriggerFor]="optionsMenu">
                                 <i-feather name="more-horizontal"></i-feather>
@@ -81,7 +86,7 @@
 </div>
 <mat-menu xPosition="before" #optionsMenu="matMenu">
 	<ng-template matMenuContent>
-		<ng-container *ngIf="currentUser$ | async as currentUser">
+		<ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
 			<ng-container *ngIf="currentUser._id === $any(comment.user)._id; else notThisUser">
 				<button role="menuitem" class="mat-menu-item" (click)="toggleEditMode()">
 					<i-feather name="edit-3"></i-feather>

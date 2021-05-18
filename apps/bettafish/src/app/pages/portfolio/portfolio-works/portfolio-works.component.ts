@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, combineLatest } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { UserState } from '@dragonfish/client/repository/user';
-import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { GlobalState } from '@dragonfish/client/repository/global';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
 
 @UntilDestroy()
 @Component({
@@ -19,23 +16,26 @@ import { GlobalState } from '@dragonfish/client/repository/global';
     templateUrl: './portfolio-works.component.html'
 })
 export class PortfolioWorksComponent implements OnInit {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
 
     loading = false;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private network: DragonfishNetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private network: DragonfishNetworkService,
+        private route: ActivatedRoute,
+        private router: Router,
+        public sessionQuery: SessionQuery,
+        public portQuery: PortfolioQuery,
+    ) {}
 
     ngOnInit(): void {
-        combineLatest(this.portUser$, this.route.queryParamMap).pipe(untilDestroyed(this))
-            .subscribe(value => {
-                const [portUser, params] = value;
+        this.route.queryParamMap.pipe(untilDestroyed(this))
+            .subscribe(params => {
                 this.pageNum = params.has('page') ? +params.get('page') : 1;
-                setThreePartTitle(portUser.username, Constants.WORKS);
-                this.fetchData(this.pageNum, portUser._id);
+                setThreePartTitle(this.portQuery.portUserName, Constants.WORKS);
+                this.fetchData(this.pageNum, this.portQuery.portUserId);
             });
     }
 
@@ -59,6 +59,7 @@ export class PortfolioWorksComponent implements OnInit {
      * Handles page changing
      *
      * @param event The new page
+     * @param userId
      */
     onPageChange(event: number, userId: string): void {
         this.router.navigate([], {

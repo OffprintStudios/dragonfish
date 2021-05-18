@@ -1,13 +1,10 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Comment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
-import { Select } from '@ngxs/store';
-import { UserState } from '@dragonfish/client/repository/user';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ReplyCommentModel } from '../models';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-comment-box',
@@ -15,7 +12,6 @@ import { ReplyCommentModel } from '../models';
     styleUrls: ['./comment-box.component.scss'],
 })
 export class CommentBoxComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @Input() comment: Comment;
     @Input() index: number;
     @Output() reply = new EventEmitter<ReplyCommentModel>();
@@ -25,7 +21,11 @@ export class CommentBoxComponent implements OnInit {
         body: new FormControl('', [Validators.minLength(10), Validators.required])
     })
 
-    constructor(private alerts: AlertsService, private network: DragonfishNetworkService) {}
+    constructor(
+        private alerts: AlertsService,
+        private network: DragonfishNetworkService,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     ngOnInit(): void {
         this.editComment.setValue({
@@ -69,5 +69,9 @@ export class CommentBoxComponent implements OnInit {
             this.comment.body = this.editCommentFields.body.value;
             this.editMode = false;
         });
+    }
+
+    reportComment() {
+        this.alerts.info(`This feature is not yet implemented. Check back later!`);
     }
 }

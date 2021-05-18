@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-
 import { AlertsService } from '@dragonfish/client/alerts';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Store } from '@ngxs/store';
-import { UserService } from '@dragonfish/client/repository/user/services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { UserService } from '@dragonfish/client/repository/session/services';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
     selector: 'dragonfish-upload-avatar',
@@ -32,12 +32,13 @@ export class UploadAvatarComponent implements OnInit {
         private dialogRef: MatDialogRef<UploadAvatarComponent>,
         private alerts: AlertsService,
         private user: UserService,
-        private store: Store,
+        private sessionQuery: SessionQuery,
     ) {}
 
     ngOnInit() {
-        const stateSnapshot = this.store.snapshot();
-        this.token = stateSnapshot.auth.token;
+        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe(value => {
+            this.token = value;
+        });
     }
 
     fileChangeEvent(event: any): void {
@@ -85,10 +86,10 @@ export class UploadAvatarComponent implements OnInit {
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
 
-        this.user.uploadAvatar(this.uploader).then(() => {
+        this.user.changeAvatar(this.uploader).subscribe(() => {
             this.uploading = false;
             this.dialogRef.close();
-        }).catch(() => {
+        }, () =>{
             this.uploading = false;
         });
     }

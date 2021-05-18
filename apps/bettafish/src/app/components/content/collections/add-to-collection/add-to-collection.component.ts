@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { Collection } from '@dragonfish/shared/models/collections';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
@@ -9,7 +9,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
     templateUrl: './add-to-collection.component.html',
     styleUrls: ['./add-to-collection.component.scss'],
 })
-export class AddToCollectionComponent {
+export class AddToCollectionComponent implements OnInit {
     currContent: ContentModel;
     collections: Collection[];
 

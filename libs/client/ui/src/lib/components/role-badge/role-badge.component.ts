@@ -23,6 +23,7 @@ export class RoleBadgeComponent {
         const hasAdmin = lodash.intersection([Roles.Admin], this.roles);
         const hasModerator = lodash.intersection([Roles.Moderator], this.roles);
         const hasChatModerator = lodash.intersection([Roles.ChatModerator], this.roles);
+        const hasMaintainer = lodash.intersection([Roles.Maintainer], this.roles);
         const hasContributor = lodash.intersection([Roles.Contributor], this.roles);
         const hasWorkApprover = lodash.intersection([Roles.WorkApprover], this.roles);
         const hasVIP = lodash.intersection([Roles.VIP], this.roles);
@@ -34,6 +35,8 @@ export class RoleBadgeComponent {
             return Roles.Moderator;
         } else if (hasChatModerator.length > 0) {
             return Roles.ChatModerator;
+        } else if (hasMaintainer.length > 0) {
+            return Roles.Maintainer;
         } else if (hasContributor.length > 0) {
             return Roles.Contributor;
         } else if (hasWorkApprover.length > 0) {

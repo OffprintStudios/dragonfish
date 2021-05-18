@@ -9,13 +9,11 @@ import {
     UrlSegment,
 } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Store } from '@ngxs/store';
-
-import { AuthState } from '../auth.state';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isAllowed, isNullOrUndefined } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { SessionQuery } from '../session.query';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +21,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     helper = new JwtHelperService();
 
-    constructor(private store: Store, private alerts: AlertsService) {}
+    constructor(private sessionQuery: SessionQuery, private alerts: AlertsService) {}
 
     /**
      * Verifies that a user can access a protected route. If their JWT is expired, it makes a request to the backend to
@@ -34,7 +32,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
      * @param state Current state of the router
      */
     canActivate(next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
-        const token = this.store.selectSnapshot<string>(AuthState.token);
+        const token = this.sessionQuery.token;
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
@@ -62,7 +60,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
      * @param state Current state of the router
      */
     canActivateChild(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const token = this.store.selectSnapshot<string>(AuthState.token);
+        const token = this.sessionQuery.token;
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {
@@ -83,7 +81,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     }
 
     canLoad(route: Route, segments: UrlSegment[]) {
-        const token = this.store.selectSnapshot<string>(AuthState.token);
+        const token = this.sessionQuery.token;
         const decodedToken: JwtPayload = this.helper.decodeToken(token);
 
         if (token) {

@@ -6,9 +6,7 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { CollectionFormComponent } from '../collection-form/collection-form.component';
 import { FrontendUser } from '@dragonfish/shared/models/users';
-import { UserState } from '@dragonfish/client/repository/user';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-collection-card',
@@ -16,12 +14,15 @@ import { Select } from '@ngxs/store';
     styleUrls: ['./collection-card.component.scss']
 })
 export class CollectionCardComponent {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
     @Input() collection: Collection;
     @Input() user: FrontendUser;
     submitting = false;
 
-    constructor(private dialog: MatDialog, private networkService: DragonfishNetworkService) {}
+    constructor(
+        private dialog: MatDialog,
+        private networkService: DragonfishNetworkService,
+        public sessionQuery: SessionQuery,
+    ) {}
 
     /**
      * Opens the create collection modal in edit mode.
