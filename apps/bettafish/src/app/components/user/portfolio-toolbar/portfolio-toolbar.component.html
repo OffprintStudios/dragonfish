@@ -1,4 +1,4 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portfolioQuery.portUser$ | async as portUser">
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
         <ng-container *ngIf="portUser._id !== currentUser._id">
             <div class="portfolio-toolbar flex flex-row items-center justify-center shadow-2xl z-30 relative">

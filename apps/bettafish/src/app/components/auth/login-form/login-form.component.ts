@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { LoginUser } from '@dragonfish/shared/models/users';
-import { AuthService } from '@dragonfish/client/repository/auth/services';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
@@ -41,7 +41,7 @@ export class LoginFormComponent {
             rememberMe: this.fields.rememberMe.value,
         };
 
-        this.auth.login(info).then(() => {
+        this.auth.login(info).subscribe(() => {
             this.isSuccess.emit(true);
         });
     }

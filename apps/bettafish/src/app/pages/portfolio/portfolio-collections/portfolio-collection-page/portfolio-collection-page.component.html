@@ -1,4 +1,4 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
     <div class="collection-page-header my-8 w-11/12 mx-auto">
         <div class="coll-name">
             <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">

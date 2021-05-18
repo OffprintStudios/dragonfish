@@ -45,8 +45,9 @@ export class SidenavComponent {
         const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
         dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
             if (wantsToLogOut) {
-                this.auth.logout();
-                this.sidenavService.close();
+                this.auth.logout().subscribe(() => {
+                    this.sidenavService.close();
+                });
             }
         });
     }

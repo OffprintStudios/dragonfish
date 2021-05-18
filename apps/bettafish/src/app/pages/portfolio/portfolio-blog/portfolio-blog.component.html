@@ -1,4 +1,4 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
     <ng-container *ngIf="loading; else notLoading">
         <div class="flex h-40 items-center justify-center">
             <mat-spinner></mat-spinner>

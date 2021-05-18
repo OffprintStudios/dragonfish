@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CreateUser } from '@dragonfish/shared/models/users';
-import { AuthService } from '@dragonfish/client/repository/auth/services';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 
 @Component({
     selector: 'dragonfish-register-form',
@@ -46,7 +46,7 @@ export class RegisterFormComponent {
             agreedToPolicies: this.fields.termsAgree.value,
         };
 
-        this.auth.register(info).then(() => {
+        this.auth.register(info).subscribe(() => {
             this.isSuccess.emit(true);
         });
     }

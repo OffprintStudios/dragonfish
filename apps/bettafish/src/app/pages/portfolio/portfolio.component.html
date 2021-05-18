@@ -1,4 +1,4 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
     <div class="portfolio-header relative z-40" [ngClass]="portUser.profile.coverPic ? 'with-cover' : 'no-cover'" (mouseenter)="toggleCoverButton()" (mouseleave)="toggleCoverButton()">
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="currentUser._id === portUser._id">

@@ -4,7 +4,6 @@ import { NgxsModule } from '@ngxs/store';
 
 /* States */
 import { GlobalState } from './global';
-import { PortfolioState } from './portfolio';
 import { CollectionsState } from './collections';
 import { HistoryState } from './history';
 
@@ -13,7 +12,6 @@ import { HistoryState } from './history';
         CommonModule,
         NgxsModule.forFeature([
             GlobalState,
-            PortfolioState,
             CollectionsState,
             HistoryState
         ]),

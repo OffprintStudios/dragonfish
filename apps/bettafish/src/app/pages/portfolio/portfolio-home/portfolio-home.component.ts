@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { BlogsContentModel, ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
 import { GlobalState } from '@dragonfish/client/repository/global';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
 
 @UntilDestroy()
 @Component({
@@ -16,16 +13,15 @@ import { GlobalState } from '@dragonfish/client/repository/global';
     templateUrl: './portfolio-home.component.html'
 })
 export class PortfolioHomeComponent implements OnInit {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
     @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
     loading = false;
     works: ContentModel[];
     blogs: BlogsContentModel[];
 
-    constructor(private network: DragonfishNetworkService) { }
+    constructor(private network: DragonfishNetworkService, public portQuery: PortfolioQuery) { }
 
     ngOnInit(): void {
-        this.portUser$.pipe(untilDestroyed(this)).subscribe(user => {
+        this.portQuery.portUser$.pipe(untilDestroyed(this)).subscribe(user => {
             this.fetchData(user._id);
             setThreePartTitle(user.username, Constants.HOME);
         });

@@ -1,26 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Collection } from '@dragonfish/shared/models/collections';
-import { PortfolioState } from '@dragonfish/client/repository/portfolio';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { CollectionFormComponent } from '../../../../components/content/collections/collection-form/collection-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
 
 @Component({
     selector: 'dragonfish-portfolio-collection-page',
     templateUrl: './portfolio-collection-page.component.html',
     styleUrls: ['./portfolio-collection-page.component.scss']
 })
-export class PortfolioCollectionPageComponent {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
+export class PortfolioCollectionPageComponent implements OnInit {
     collData: Collection;
 
     constructor(
@@ -30,6 +26,7 @@ export class PortfolioCollectionPageComponent {
         private location: Location,
         private dialog: MatDialog,
         public sessionQuery: SessionQuery,
+        public portQuery: PortfolioQuery,
     ) {}
 
     ngOnInit(): void {
