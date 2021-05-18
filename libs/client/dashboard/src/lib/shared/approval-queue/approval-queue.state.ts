@@ -3,17 +3,15 @@ import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { append, patch, removeItem } from '@ngxs/store/operators';
-
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PoetryContent, ProseContent, SectionInfo } from '@dragonfish/shared/models/content';
 import { Section } from '@dragonfish/shared/models/sections';
-
 import { AQNamespace } from './approval-queue.actions';
 import { ApprovalQueueStateModel } from './approval-queue-state.model';
 import { ApprovalQueueService } from './services';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @State<ApprovalQueueStateModel>({
     name: 'approvalQueue',
@@ -53,7 +51,7 @@ export class ApprovalQueueState {
         return state.selectedDocSection;
     }
 
-    constructor(private queue: ApprovalQueueService, private alerts: AlertsService) {}
+    constructor(private queue: ApprovalQueueService, private alerts: AlertsService, private sessionQuery: SessionQuery) {}
 
     /* Actions */
     @Action(AQNamespace.GetQueue)
@@ -63,12 +61,11 @@ export class ApprovalQueueState {
     ): Observable<PaginateResult<ApprovalQueue>> {
         return this.queue.getQueue(pageNum).pipe(
             tap((result: PaginateResult<ApprovalQueue>) => {
-                const currUser: FrontendUser | null = JSON.parse(localStorage.getItem('user')).currUser;
-                if (currUser !== null) {
+                if (this.sessionQuery.currentUser !== null) {
                     // current behavior will reset the `claimedDocs` every time the page changes; this will be addressed
                     // in a future update to determine if docs have already been added to the array
                     const ownedDocs = result.docs.filter((doc: any) => {
-                        return doc.claimedBy !== null && doc.claimedBy._id === currUser._id;
+                        return doc.claimedBy !== null && doc.claimedBy._id === this.sessionQuery.currentUser._id;
                     });
                     patchState({
                         currPageDocs: result,

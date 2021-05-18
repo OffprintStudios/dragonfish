@@ -13,7 +13,7 @@ import { UsersManagementComponent } from './pages/users-management';
 /* Util */
 import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/approval-queue';
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from './util';
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
 const routes: Routes = [
     {
@@ -109,7 +109,6 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
     providers: [
-        AuthGuard,
         ApprovalQueueResolver,
         ApproveContentResolver,
     ],

@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngxs/store';
 import { AQNamespace } from '../../shared/approval-queue';
-
+import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
-import { FrontendUser, UserInfo } from '@dragonfish/shared/models/users';
+import { UserInfo } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 
 @Component({
@@ -24,6 +24,7 @@ export class ApprovalQueueComponent implements OnInit {
         public route: ActivatedRoute,
         private router: Router,
         private snackBar: MatSnackBar,
+        public sessionQuery: SessionQuery,
     ) {}
 
     ngOnInit(): void {
@@ -106,10 +107,9 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The approval queue entry
      */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
-        const currentUser: FrontendUser = JSON.parse(localStorage.getItem('user')).currUser;
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             const whoClaimedThis = entry.claimedBy as UserInfo;
-            if (whoClaimedThis._id === currentUser._id) {
+            if (whoClaimedThis._id === this.sessionQuery.currentUser._id) {
                 return true;
             } else {
                 return false;
