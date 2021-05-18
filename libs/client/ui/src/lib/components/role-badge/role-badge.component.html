@@ -18,6 +18,12 @@
         Chat Moderator
     </div>
     <div
+        *ngSwitchCase="'Maintainer'"
+        [ngClass]="isStyled ? 'role maintainer': ''"
+    >
+        Maintainer
+    </div>
+    <div
         *ngSwitchCase="'Contributor'"
         [ngClass]="isStyled ? 'role contributor' : ''"
     >
