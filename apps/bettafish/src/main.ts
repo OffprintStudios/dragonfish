@@ -10,7 +10,10 @@ if (environment.production) {
 }
 
 const storage = persistState({
-    include: ['session']
+    include: [
+        'session',
+        'portfolio'
+    ],
 });
 
 const providers = [

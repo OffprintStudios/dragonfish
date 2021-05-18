@@ -15,6 +15,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { FileUploader } from 'ng2-file-upload';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { throwError } from 'rxjs';
+import { PortfolioService } from '@dragonfish/client/repository/portfolio';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -23,6 +24,7 @@ export class UserService {
         private sessionQuery: SessionQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
+        private portService: PortfolioService,
     ) {}
 
     /**
@@ -124,7 +126,7 @@ export class UserService {
                     currentUser: result,
                 });
                 this.alerts.success(`Changes saved!`);
-                //this.portfolio.updateCurrentPortfolio(result);
+                this.portService.updatePortfolio(result);
             }),
             catchError((error: HttpError) => {
                 this.alerts.error(
