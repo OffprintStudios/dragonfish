@@ -49,6 +49,7 @@ export class ContextMenuComponent extends MenuComponent {
         super(menuPackage, contextMenuService);
         // grab any required menu context passed via menuContext input
         this.content = menuPackage.context;
+        this.stuff.setCurrentContent(this.content);
     }
 
     handleClick() {
