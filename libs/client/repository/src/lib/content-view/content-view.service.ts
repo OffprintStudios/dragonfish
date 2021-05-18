@@ -32,7 +32,7 @@ export class ContentViewService {
                 currContent: value.content,
                 allSections: sections,
                 ratingsDoc: value.ratings,
-                currRating: value.ratings.rating ? value.ratings.rating : RatingOption.NoVote,
+                currRating: (value.ratings && value.ratings.rating) ? value.ratings.rating : RatingOption.NoVote,
                 likes: value.content.stats.likes,
                 dislikes: value.content.stats.dislikes,
             });
