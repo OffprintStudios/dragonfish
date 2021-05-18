@@ -50,6 +50,6 @@ export class VipSettingsComponent implements OnInit {
             newTagline: this.taglineFields.tagline.value
         };
 
-        return this.user.updateTagline(changeRequest);
+        return this.user.updateTagline(changeRequest).subscribe();
     }
 }

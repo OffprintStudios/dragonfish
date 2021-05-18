@@ -102,7 +102,7 @@ export class UserController {
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator]))
+    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator, Roles.Maintainer, Roles.Contributor, Roles.VIP]))
     @Patch('update-tagline')
     async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {
         return await this.user.updateTagline(user, tagline);
