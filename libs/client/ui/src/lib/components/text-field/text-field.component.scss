@@ -38,15 +38,22 @@ div.search-field {
         border: 1px solid transparent;
         background: var(--accent-light);
         color: white;
-        @apply text-base;
-        @apply shadow-md;
-        @apply rounded-md;
+        @apply text-base rounded-full py-1.5 px-2 w-40;
         &:focus {
             --tw-ring-color: var(--accent);
             border: 1px solid whitesmoke;
+            @apply w-64 shadow-md transition-all;
+        }
+        &:not(:focus) {
+            @apply transition-all;
         }
         &::placeholder {
             color: whitesmoke;
+        }
+        &:disabled {
+            &::placeholder {
+                color: var(--accent);
+            }
         }
     }
 }

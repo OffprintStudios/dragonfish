@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
-import { MyStuffState } from '../../repo';
-
 import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
+import { MyStuffService, MyStuffQuery } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'dragonfish-blog-form',
@@ -14,7 +11,6 @@ import { MyStuffService } from '../../repo/services';
     styleUrls: ['./blog-form.component.scss'],
 })
 export class BlogFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<BlogsContentModel>;
     editMode = false;
     ratings = ContentRating;
     pubStatus = PubStatus;
@@ -27,11 +23,16 @@ export class BlogFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        private router: Router,
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.subscribe((content) => {
-            if (content !== null) {
+        this.stuffQuery.current$.subscribe((content: BlogsContentModel) => {
+            if (content !== null && content !== undefined) {
                 this.formTitle = `Viewing "${content.title}"`;
                 this.blogForm.setValue({
                     title: content.title,
@@ -57,6 +58,10 @@ export class BlogFormComponent implements OnInit {
         this.editMode = this.editMode !== true;
     }
 
+    goBack() {
+        this.router.navigate(['/my-stuff']);
+    }
+
     submitForm(contentId?: string) {
         if (this.blogForm.invalid) {
             this.alerts.warn(`Something's not right with the data you entered.`);
@@ -70,10 +75,14 @@ export class BlogFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.stuff.saveContent(contentId, ContentKind.BlogContent, formData);
-            this.editMode = false;
+            this.stuff.save(contentId, ContentKind.BlogContent, formData).subscribe(() => {
+                this.editMode = false;
+            });
         } else {
-            this.stuff.createContent(ContentKind.BlogContent, formData);
+            this.stuff.create(ContentKind.BlogContent, formData).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-blog']);
+            });
         }
     }
 }

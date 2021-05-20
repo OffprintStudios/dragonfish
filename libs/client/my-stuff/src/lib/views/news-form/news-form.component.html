@@ -1,15 +1,42 @@
-<ng-container *ngIf="currContent$ | async as currPost; else createMode">
-    <div class="form-container">
-        <div class="form-header">
-            <button class="form-button left" [ngClass]="{ selected: !editMode }" (click)="switchView()">Preview</button>
-            <button class="form-button right" [ngClass]="{ selected: editMode }" (click)="switchView()">Edit</button>
-            <div style="flex: 1; text-align: right">
-                <button class="form-button save" *ngIf="editMode" (click)="submitForm(currPost._id)">Save</button>
-            </div>
+<ng-container *ngIf="stuffQuery.current$ | async as currPost; else createMode">
+    <div class="form-nav relative sticky top-0 z-40">
+        <div class="mx-6 flex flex-row items-center py-4">
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
+                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
+            </button>
+            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
+            <div class="flex-1"><!--spacer--></div>
+            <ng-container *ngIf="editMode; else previewModeSave">
+                <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm(currPost._id)">
+                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                </button>
+            </ng-container>
+            <ng-template #previewModeSave>
+                <button class="disabled border-none shadow-none rounded-full px-2 py-1.5">
+                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                </button>
+            </ng-template>
+            <div class="text-white mx-1.5 select-none cursor-default">|</div>
+            <button
+                class="border-none shadow-none rounded-full px-2 py-1.5"
+                [ngClass]="{ active: !editMode }"
+                (click)="switchView()"
+            >
+                <i-feather name="eye" class="text-white relative top-0.5"></i-feather><span class="ml-2">Preview</span>
+            </button>
+            <button
+                class="border-none shadow-none rounded-full px-2 py-1.5"
+                [ngClass]="{ active: editMode }"
+                (click)="switchView()"
+            >
+                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather><span class="ml-2">Edit</span>
+            </button>
         </div>
+    </div>
 
+    <div class="w-8/12 mx-auto">
         <ng-container *ngIf="editMode; else previewBlog">
-            <form class="w-3/4 mx-auto" [formGroup]="postForm" (ngSubmit)="submitForm(currPost._id)" *ngIf="editMode">
+            <form [formGroup]="postForm" (ngSubmit)="submitForm(currPost._id)" *ngIf="editMode">
                 <dragonfish-text-field
                     [formControlName]="'title'"
                     [name]="'title'"
@@ -37,7 +64,7 @@
         </ng-container>
 
         <ng-template #previewBlog>
-            <div class="post-container rounded-md mx-auto w-3/4" *ngIf="currPost">
+            <div class="post-container rounded-md my-4" *ngIf="currPost">
                 <div class="p-12">
                     <div class="post-header">
                         <h1 class="text-5xl">{{ currPost.title }}</h1>
@@ -61,12 +88,21 @@
 </ng-container>
 
 <ng-template #createMode>
-    <div class="form-container">
-        <div class="form-header">
-            <h3 class="text-4xl">{{ formTitle }}</h3>
-            <button class="form-button" (click)="submitForm()">Save</button>
+    <div class="form-nav relative sticky top-0 z-40">
+        <div class="mx-6 flex flex-row items-center py-4">
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
+                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
+            </button>
+            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
+            <div class="flex-1"><!--spacer--></div>
+            <button class="border-none shadow-none rounded-full px-2 py-1.5"  (click)="submitForm()">
+                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+            </button>
         </div>
-        <form class="w-3/4 mx-auto" [formGroup]="postForm" (ngSubmit)="submitForm()">
+    </div>
+
+    <div class="w-8/12 mx-auto">
+        <form [formGroup]="postForm" (ngSubmit)="submitForm()">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"

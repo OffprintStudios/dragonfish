@@ -1,9 +1,18 @@
-<ng-container *ngIf="currContent$ | async as currProse; else createForm">
-    <div class="form-container">
-        <div class="form-header flex flex-row items-center mb-8">
-            <h3 class="text-4xl flex-1">{{ formTitle }}</h3>
-            <button class="form-button shadow-none" (click)="submitForm(currProse._id)">Save</button>
+<ng-container *ngIf="stuffQuery.current$ | async as currProse; else createForm">
+    <div class="form-nav relative sticky top-0 z-40">
+        <div class="mx-6 flex flex-row items-center py-4">
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
+                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
+            </button>
+            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
+            <div class="flex-1"><!--spacer--></div>
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm(currProse._id)">
+                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+            </button>
         </div>
+    </div>
+
+    <div class="w-8/12 mx-auto">
         <form [formGroup]="proseForm" (ngSubmit)="submitForm(currProse._id)">
             <dragonfish-text-field
                 [formControlName]="'title'"
@@ -79,11 +88,20 @@
 </ng-container>
 
 <ng-template #createForm>
-    <div class="form-container">
-        <div class="form-header flex flex-row items-center mb-8 pb-1">
-            <h3 class="text-4xl flex-1">{{ formTitle }}</h3>
-            <button class="form-button shadow-none" (click)="submitForm()">Save</button>
+    <div class="form-nav relative sticky top-0 z-40">
+        <div class="mx-6 flex flex-row items-center py-4">
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
+                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
+            </button>
+            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
+            <div class="flex-1"><!--spacer--></div>
+            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm()">
+                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+            </button>
         </div>
+    </div>
+
+    <div class="w-8/12 mx-auto">
         <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
             <dragonfish-text-field
                 [formControlName]="'title'"

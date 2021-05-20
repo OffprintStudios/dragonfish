@@ -3,12 +3,9 @@ import { ContentKind, ContentRating, NewsForm } from '@dragonfish/shared/models/
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NewsCategory, NewsContentModel } from '@dragonfish/shared/models/content';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
-import { MyStuffState } from '../../repo';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
+import { MyStuffService, MyStuffQuery } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -17,7 +14,6 @@ import { Select } from '@ngxs/store';
     styleUrls: ['./news-form.component.scss'],
 })
 export class NewsFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<NewsContentModel>;
     formTitle = `Create a Newspost`;
     editMode = false;
     ratings = ContentRating;
@@ -29,10 +25,15 @@ export class NewsFormComponent implements OnInit {
         category: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
+        this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: NewsContentModel) => {
             if (content !== null) {
                 this.formTitle = `Viewing "${content.title}"`;
                 this.postForm.setValue({
@@ -55,13 +56,11 @@ export class NewsFormComponent implements OnInit {
         return this.postForm.controls;
     }
 
-    switchView() {
-        if (this.editMode === true) {
-            this.editMode = false;
-        } else {
-            this.editMode = true;
-        }
+    goBack() {
+        this.router.navigate(['/my-stuff'])
     }
+
+    switchView = () => this.editMode = !this.editMode;
 
     submitForm(contentId?: string) {
         if (this.postForm.invalid) {
@@ -76,10 +75,14 @@ export class NewsFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.editMode = false;
-            this.stuff.saveContent(contentId, ContentKind.NewsContent, formData);
+            this.stuff.save(contentId, ContentKind.NewsContent, formData).subscribe(() => {
+                this.editMode = false;
+            });
         } else {
-            this.stuff.createContent(ContentKind.NewsContent, formData);
+            this.stuff.create(ContentKind.NewsContent, formData).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-post']);
+            });
         }
     }
 }

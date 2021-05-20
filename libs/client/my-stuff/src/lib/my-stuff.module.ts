@@ -33,7 +33,8 @@ import {
     PoetryFormComponent,
     ProseFormComponent,
     ViewPoetryComponent,
-    ViewProseComponent
+    ViewProseComponent,
+    ContentPageComponent,
 } from './views';
 
 /* State */
@@ -55,6 +56,7 @@ import { NetworkService, MyStuffService } from './repo/services';
         ProseFormComponent,
         ViewPoetryComponent,
         ViewProseComponent,
+        ContentPageComponent,
         ContentPreviewComponent,
         ManageSectionsComponent,
         UploadCoverArtComponent,

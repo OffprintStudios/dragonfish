@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import {
     WorkKind,
     Genres,
     ContentRating,
     WorkStatus,
     CreateProse,
-    ProseContent,
     ContentKind,
+    ProseContent,
 } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
-import { MyStuffState } from '../../repo';
+import { Location } from '@angular/common';
+import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +22,6 @@ import { MyStuffState } from '../../repo';
     styleUrls: ['./prose-form.component.scss'],
 })
 export class ProseFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<ProseContent>;
     formTitle = `Create New Prose`;
 
     categories = WorkKind;
@@ -42,10 +39,16 @@ export class ProseFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
+    constructor(
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        private alerts: AlertsService,
+        private location: Location,
+        private router: Router
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
+        this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: ProseContent) => {
             if (content !== null) {
                 this.formTitle = `Editing "${content.title}"`;
                 this.proseForm.setValue({
@@ -71,6 +74,10 @@ export class ProseFormComponent implements OnInit {
         });
     }
 
+    goBack() {
+        this.location.back();
+    }
+
     get fields() {
         return this.proseForm.controls;
     }
@@ -92,9 +99,14 @@ export class ProseFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.stuff.saveContent(contentId, ContentKind.ProseContent, proseInfo);
+            this.stuff.save(contentId, ContentKind.ProseContent, proseInfo).subscribe(() => {
+                this.router.navigate(['/my-stuff/view-prose']);
+            });
         } else {
-            this.stuff.createContent(ContentKind.ProseContent, proseInfo);
+            this.stuff.create(ContentKind.ProseContent, proseInfo).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-prose']);
+            });
         }
     }
 }

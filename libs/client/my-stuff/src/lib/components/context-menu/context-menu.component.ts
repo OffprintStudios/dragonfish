@@ -10,7 +10,7 @@ import { MenuComponent, MenuPackage, ContextMenuService } from '@ctrl/ngx-rightc
 import { ContentKind, ContentModel, PubStatus } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 import { slugify } from 'voca';
-import { MyStuffService } from '../../repo/services';
+import { MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PopupModel } from '@dragonfish/shared/models/util';
@@ -49,7 +49,7 @@ export class ContextMenuComponent extends MenuComponent {
         super(menuPackage, contextMenuService);
         // grab any required menu context passed via menuContext input
         this.content = menuPackage.context;
-        this.stuff.setCurrentContent(this.content);
+        this.stuff.setActive(this.content._id);
     }
 
     handleClick() {
@@ -70,7 +70,7 @@ export class ContextMenuComponent extends MenuComponent {
         const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
         dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
             if (wantsToDelete) {
-                this.stuff.deleteContent(this.content._id);
+                // this.stuff.deleteContent(this.content._id);
             }
             this.contextMenuService.closeAll();
         });
