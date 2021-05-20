@@ -1,4 +1,4 @@
-<ng-container *ngIf="currContent$ | async as myProse">
+<ng-container *ngIf="stuffQuery.current$ | async">
     <dragonfish-content-preview></dragonfish-content-preview>
-    <dragonfish-manage-sections></dragonfish-manage-sections>
+    <!--<dragonfish-manage-sections></dragonfish-manage-sections>-->
 </ng-container>

@@ -1,17 +1,11 @@
 div.content-box {
-    border: 1px solid var(--borders);
-    div.tags {
-        border-bottom: 1px solid var(--borders);
-    }
+    background: var(--accent);
+    color: white;
     div.tag {
         text-transform: lowercase;
         font-variant: small-caps;
         font-size: 1.25rem;
         letter-spacing: 0.05em;
-    }
-    div.separator {
-        margin-left: 0.25rem;
-        margin-right: 0.25rem;
     }
     .kind {
         position: relative;
@@ -21,6 +15,30 @@ div.content-box {
     }
     i-feather.kind {
         stroke-width: 1;
+    }
+    button.go-back {
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            width: 1.25rem !important;
+            color: white;
+            margin: 0;
+            right: -0.025rem;
+        }
+        &.active {
+            background: var(--accent-light);
+        }
+        &.disabled {
+            color: var(--accent-dark);
+            i-feather {
+                color: var(--accent-dark);
+            }
+            &:hover {
+                background: var(--accent);
+                cursor: not-allowed;
+            }
+        }
     }
     button {
         &:hover {
@@ -69,6 +87,7 @@ div.content-box {
                 stroke-width: 1;
                 top: 38%;
                 left: 38%;
+                color: black;
             }
         }
 
@@ -100,6 +119,11 @@ div.content-box {
             width: 4rem;
             stroke-width: 1;
             top: -1.15rem;
+            color: white;
         }
     }
+}
+
+div.sections-toolbar {
+    background: var(--accent-light);
 }
