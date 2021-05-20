@@ -33,10 +33,12 @@
         ></dragonfish-text-field>
     </form>
     <div>
-        <ng-container *ngIf="currTag; else noTag">
-            <span>
-                {{ currTag.name }}
-            </span>
+        <ng-container *ngIf="currTags; else noTag">
+            <ng-container *ngFor="let tag of currTags">
+                <span>
+                    {{ tag.name }},
+                </span>
+            </ng-container>
         </ng-container>
         <ng-template #noTag>
             <span>

@@ -27,4 +27,13 @@ export class UserManagementService {
             })
         )
     }
+
+    public fetchAllFandomTags(): Observable<FandomTags[]> {
+        return handleResponse(
+            this.http.get<FandomTags[]>(`${this.url}/fetch-all-fandom-tags`, {
+                observe: 'response',
+                withCredentials: true
+            })
+        )
+    }
 }

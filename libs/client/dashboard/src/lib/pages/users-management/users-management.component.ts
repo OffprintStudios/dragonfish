@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { FandomTags, InviteCodes } from '@dragonfish/shared/models/users';
 import { UserManagementService } from '../../shared/user-management/services';
@@ -8,14 +8,18 @@ import { UserManagementService } from '../../shared/user-management/services';
     templateUrl: './users-management.component.html',
     styleUrls: ['./users-management.component.scss'],
 })
-export class UsersManagementComponent {
+export class UsersManagementComponent implements OnInit {
     currCode: InviteCodes;
-    currTag: FandomTags;
+    currTags: FandomTags[];
     tagForm = new FormGroup({
         name: new FormControl(null, [Validators.required]),
     })
 
     constructor(private userManagement: UserManagementService) {}
+
+    ngOnInit() {
+        this.fetchAllFandomTags();
+    }
 
     generateCode() {
         this.userManagement.generateCode().subscribe(code => {
@@ -32,7 +36,13 @@ export class UsersManagementComponent {
         }
 
         this.userManagement.createFandomTag(tagInfo).subscribe(tag => {
-            this.currTag = tag;
+            this.fetchAllFandomTags();
         });
+    }
+
+    fetchAllFandomTags() {
+        this.userManagement.fetchAllFandomTags().subscribe(tags => {
+            this.currTags = tags;
+        })
     }
 }

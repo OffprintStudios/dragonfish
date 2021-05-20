@@ -476,4 +476,13 @@ export class UsersStore {
 
         return await newTag.save();
     }
+
+    async fetchAllFandomTags(): Promise<FandomTagsDocument[]> {
+        return this.fandomTagsModel
+            .find({
+            })
+            .sort({
+                name: 1
+            });
+    }
 }

@@ -18,4 +18,10 @@ export class UserManagementController {
     async createFandomTag(@Body() fandomTagInfo: FandomTags): Promise<FandomTags> {
         return await this.users.createFandomTag(fandomTagInfo);
     }
+    
+    @UseGuards(RolesGuard([Roles.WorkApprover, Roles.Moderator, Roles.Admin]))
+    @Get('fetch-all-fandom-tags')
+    async fetchAllFandomTags(): Promise<FandomTags[]> {
+        return await this.users.fetchAllFandomTags();
+    }
 }
