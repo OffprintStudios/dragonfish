@@ -4,7 +4,7 @@
         <div class="flex flex-col p-4">
             <div class="flex flex-row items-center">
                 <button
-                    class="go-back border-none shadow-none rounded-full px-2 py-1.5 relative -top-1"
+                    class="border-none shadow-none rounded-full px-2 py-1.5 relative -top-1"
                     (click)="goBack()"
                 >
                     <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
@@ -15,6 +15,7 @@
                         by {{ currContent.author.username }}
                     </span>
                 </h2>
+                <div class="flex-1"><!--spacer--></div>
             </div>
             <div class="border-b border-white flex flex-row items-center">
                 <ng-container [ngSwitch]="currContent.kind">
@@ -79,15 +80,52 @@
                 </div>
             </div>
             <div class="view-stats flex flex-row items-center justify-end">
-                <div class="flex-1">
+                <div class="flex-1 flex flex-row items-center">
+                    <ng-container [ngSwitch]="currContent.audit.published">
+                        <button *ngSwitchCase="pubStatus.Published" class="border-none shadow-none rounded-full px-2 py-1.5">
+                            <i-feather name="check-circle" class="text-white relative top-0.5"></i-feather>
+                            <span class="ml-1">Published</span>
+                        </button>
+                        <button
+                            *ngSwitchCase="pubStatus.Unpublished"
+                            class="border-none shadow-none rounded-full px-2 py-1.5"
+                            (click)="publish(currContent)"
+                        >
+                            <i-feather name="circle" class="text-white relative top-0.5"></i-feather>
+                            <span class="ml-1">Unpublished</span>
+                        </button>
+                        <button *ngSwitchCase="pubStatus.Pending" class="border-none shadow-none rounded-full px-2 py-1.5">
+                            <i-feather name="clock" class="text-white relative top-0.5"></i-feather>
+                            <span class="ml-1">Pending</span>
+                        </button>
+                        <button *ngSwitchCase="pubStatus.Rejected" class="border-none shadow-none rounded-full px-2 py-1.5">
+                            <i-feather name="x-circle" class="text-white relative top-0.5"></i-feather>
+                            <span class="ml-1">Rejected</span>
+                        </button>
+                        <button *ngSwitchCase="pubStatus.ApprovedUnpublished" class="border-none shadow-none rounded-full px-2 py-1.5">
+                            <i-feather name="circle" class="text-white relative top-0.5"></i-feather>
+                            <span class="ml-1">Approved</span>
+                        </button>
+                    </ng-container>
                     <ng-container [ngSwitch]="currContent.kind">
                         <ng-container *ngSwitchCase="contentKind.ProseContent">
-                            <a [routerLink]="['/my-stuff/edit-prose']">Edit Info >></a>
+                            <button class="border-none shadow-none rounded-full px-2 py-1.5" [routerLink]="['/my-stuff/edit-prose']">
+                                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather>
+                                <span class="ml-1">Edit</span>
+                            </button>
                         </ng-container>
                         <ng-container *ngSwitchCase="contentKind.PoetryContent">
-                            <a [routerLink]="['/my-stuff/edit-poetry']">Edit Info >></a>
+                            <button class="border-none shadow-none rounded-full px-2 py-1.5" [routerLink]="['/my-stuff/edit-poetry']">
+                                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather>
+                                <span class="ml-1">Edit</span>
+                            </button>
                         </ng-container>
                     </ng-container>
+                    <div class="mx-1 text-white">|</div>
+                    <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="deleteContent(currContent)">
+                        <i-feather name="trash-2" class="text-white relative top-0.5"></i-feather>
+                        <span class="ml-1">Delete</span>
+                    </button>
                 </div>
                 <ng-container *ngIf="currContent.kind === contentKind.PoetryContent">
                     <div class="tag" title="Form">
@@ -121,47 +159,6 @@
                 <div class="mx-1">//</div>
                 <div class="tag" title='Status'>{{ contentStatus[$any(currContent.meta).status] }}</div>
             </div>
-        </div>
-    </div>
-    <div class="sections-toolbar relative z-30">
-        <div class="flex flex-row items-center justify-center">
-            <ng-container [ngSwitch]="currContent.audit.published">
-                <button *ngSwitchCase="pubStatus.Published" class="rounded-none border-none shadow-none">
-                    <i-feather name="check-circle"></i-feather>Published
-                </button>
-                <button
-                    *ngSwitchCase="pubStatus.Unpublished"
-                    class="rounded-none border-none shadow-none"
-                    (click)="publish(currContent)"
-                >
-                    <i-feather name="circle"></i-feather>Unpublished
-                </button>
-                <button *ngSwitchCase="pubStatus.Pending" class="rounded-none border-none shadow-none">
-                    <i-feather name="clock"></i-feather>Pending
-                </button>
-                <button *ngSwitchCase="pubStatus.Rejected" class="rounded-none border-none shadow-none">
-                    <i-feather name="x-circle"></i-feather>Rejected
-                </button>
-                <button *ngSwitchCase="pubStatus.ApprovedUnpublished" class="rounded-none border-none shadow-none">
-                    <i-feather name="circle"></i-feather>Approved
-                </button>
-            </ng-container>
-            <ng-container [ngSwitch]="currContent.kind">
-                <ng-container *ngSwitchCase="contentKind.ProseContent">
-                    <button class="rounded-none border-none shadow-none" [routerLink]="['/my-stuff/edit-prose']">
-                        <i-feather name="edit-3"></i-feather>Edit
-                    </button>
-                </ng-container>
-                <ng-container *ngSwitchCase="contentKind.PoetryContent">
-                    <button class="rounded-none border-none shadow-none" [routerLink]="['/my-stuff/edit-poetry']">
-                        <i-feather name="edit-3"></i-feather>Edit
-                    </button>
-                </ng-container>
-            </ng-container>
-            <div class="mx-1 text-white">|</div>
-            <button class="rounded-none border-none shadow-none" (click)="deleteContent(currContent)">
-                <i-feather name="trash-2"></i-feather>Delete
-            </button>
         </div>
     </div>
 </ng-container>

@@ -16,7 +16,7 @@ div.content-box {
     i-feather.kind {
         stroke-width: 1;
     }
-    button.go-back {
+    button {
         &:hover {
             background: var(--accent-light);
         }
@@ -38,18 +38,6 @@ div.content-box {
                 background: var(--accent);
                 cursor: not-allowed;
             }
-        }
-    }
-    button {
-        &:hover {
-            background: var(--background);
-            color: var(--accent);
-        }
-        i-feather.edit-button {
-            width: 1.5rem !important;
-            position: relative;
-            top: -0.25rem;
-            stroke-width: 1;
         }
     }
     div.view-stats {
@@ -122,8 +110,4 @@ div.content-box {
             color: white;
         }
     }
-}
-
-div.sections-toolbar {
-    background: var(--accent-light);
 }
