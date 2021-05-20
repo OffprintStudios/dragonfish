@@ -34,11 +34,10 @@
     </form>
     <div>
         <ng-container *ngIf="currTags; else noTag">
-            <ng-container *ngFor="let tag of currTags">
-                <span>
-                    {{ tag.name }},
-                </span>
-            </ng-container>
+            <div *ngFor="let tag of currTags">
+                <input type="checkbox" />
+                    {{ tag.name }}
+            </div>
         </ng-container>
         <ng-template #noTag>
             <span>
