@@ -14,12 +14,15 @@ import { CollectionsStore } from '../collections/collections.store';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { UserDocument } from './users.schema';
 import { InviteCodesDocument } from './invite-codes.schema';
+import { FandomTagsDocument } from './fandom-tags.schema';
+import { FandomTags } from '@dragonfish/shared/models/users';
 
 @Injectable()
 export class UsersStore {
     constructor(
         @InjectModel('User') private readonly userModel: PaginateModel<UserDocument>,
         @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<InviteCodesDocument>,
+        @InjectModel('FandomTags') private readonly fandomTagsModel: PaginateModel<FandomTagsDocument>,
         private readonly collsService: CollectionsStore
     ) {}
 
@@ -461,5 +464,16 @@ export class UsersStore {
         });
 
         return await newCode.save();
+    }
+
+    async createFandomTag(fandomTag: FandomTags): Promise<FandomTagsDocument> {
+        const newTag = new this.fandomTagsModel({
+            name: fandomTag.name,
+            desc: fandomTag.desc,
+            parent: fandomTag.parent,
+            children: fandomTag.children
+        })
+
+        return await newTag.save();
     }
 }

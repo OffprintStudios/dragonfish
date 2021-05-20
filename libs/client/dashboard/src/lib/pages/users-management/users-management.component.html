@@ -18,3 +18,30 @@
         </ng-template>
     </div>
 </div>
+<div class="form-container">
+    <div class="form-header flex flex-row items-center mb-8">
+        <h3 class="text-4xl flex-1">{{ "Create Fandom Tag" }}</h3>
+        <button class="form-button shadow-none" (click)="createFandomTag()">Create</button>
+    </div>
+    <form [formGroup]="tagForm" (ngSubmit)="createFandomTag()">
+        <dragonfish-text-field
+            [formControlName]="'name'"
+            [name]="'name'"
+            [type]="'text'"
+            [label]="'Name'"
+            [placeholder]="'There\'s Something I Gotta Say...'"
+        ></dragonfish-text-field>
+    </form>
+    <div>
+        <ng-container *ngIf="currTag; else noTag">
+            <span>
+                {{ currTag.name }}
+            </span>
+        </ng-container>
+        <ng-template #noTag>
+            <span>
+                No tag created.
+            </span>
+        </ng-template>
+    </div>
+</div>

@@ -7,6 +7,7 @@ import { CollectionsModule } from '../collections/collections.module';
 import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { hash, argon2id } from 'argon2';
+import { FandomTagsSchema } from './fandom-tags.schema';
 
 @Module({
     imports: [
@@ -46,6 +47,14 @@ import { hash, argon2id } from 'argon2';
                     return schema;
                 },
             },
+            {
+                name: 'FandomTags',
+                useFactory: () => {
+                    const schema = FandomTagsSchema;
+                    schema.plugin(require('mongoose-autopopulate'));
+                    return schema;
+                }
+            }
         ]),
     ],
     providers: [UsersStore],
