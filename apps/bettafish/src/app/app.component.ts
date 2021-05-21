@@ -10,6 +10,11 @@ import { SidenavService } from './services';
 import { NavigationStart, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { delay } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
+import { AuthService } from '@dragonfish/client/repository/session/services';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { PopupModel } from '@dragonfish/shared/models/util';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +27,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     @Select(GlobalState.theme) theme$: Observable<ThemePref>;
 
     constructor(
+        private auth: AuthService,
+        private dialog: MatDialog,
         public electron: ElectronService,
         public sidenavService: SidenavService,
         private router: Router,
@@ -60,6 +67,25 @@ export class AppComponent implements OnInit, AfterViewInit {
                 }
             }
         });
+    }
+
+    logout() {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to log out?',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
+            if (wantsToLogOut) {
+                this.auth.logout().subscribe(() => {
+                    this.sidenavService.close();
+                });
+            }
+        });
+    }
+
+    openAuthModal() {
+        this.dialog.open(AuthModalComponent);
     }
 
     ngAfterViewInit() {
