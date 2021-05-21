@@ -28,6 +28,8 @@ import { ApprovalQueueState } from './shared/approval-queue';
 import { ApprovalQueueService } from './shared/approval-queue/services';
 import { UserManagementService } from './shared/user-management/services';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgSelectComponent, NgSelectModule } from '@ng-select/ng-select';
+import { NgOptionComponent } from '@ng-select/ng-select/lib/ng-option.component';
 
 @NgModule({
     declarations: [
@@ -56,6 +58,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         NgxsModule.forFeature([ApprovalQueueState]),
         FormsModule,
         ReactiveFormsModule,
+        NgSelectModule,
     ],
     providers: [ApprovalQueueService, UserManagementService],
 })

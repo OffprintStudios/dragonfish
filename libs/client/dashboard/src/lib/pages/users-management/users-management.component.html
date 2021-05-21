@@ -22,6 +22,7 @@
     <div class="form-header flex flex-row items-center mb-8">
         <h3 class="text-4xl flex-1">{{ "Create Fandom Tag" }}</h3>
         <button class="form-button shadow-none" (click)="createFandomTag()">Create</button>
+        <button class="form-button shadow-none" (click)="createFandomTag()">Add as child of selected</button>
     </div>
     <form [formGroup]="tagForm" (ngSubmit)="createFandomTag()">
         <dragonfish-text-field
@@ -32,11 +33,23 @@
             [placeholder]="'There\'s Something I Gotta Say...'"
         ></dragonfish-text-field>
     </form>
+    <div class="offprint-select">
+        <label>Tags</label>
+        <ng-select class="custom" [formControlName]="currTags" [searchable]="false" [multiple]="true" [placeholder]="'Select Tag'">
+            <ng-option *ngFor="let tag of currTags" [value]="tag.name">
+                {{ tag.name }}
+            </ng-option>
+        </ng-select>
+    </div>
     <div>
         <ng-container *ngIf="currTags; else noTag">
             <div *ngFor="let tag of currTags">
                 <input type="checkbox" />
                     {{ tag.name }}
+                <div *ngFor="let child of tag.children">
+                    <input type="checkbox" />
+                        —{{ child.name }}
+                </div>
             </div>
         </ng-container>
         <ng-template #noTag>

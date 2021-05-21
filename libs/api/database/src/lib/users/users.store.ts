@@ -15,7 +15,7 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { UserDocument } from './users.schema';
 import { InviteCodesDocument } from './invite-codes.schema';
 import { FandomTagsDocument } from './fandom-tags.schema';
-import { FandomTags } from '@dragonfish/shared/models/users';
+import { CreateFandomTag, FandomTags } from '@dragonfish/shared/models/users';
 
 @Injectable()
 export class UsersStore {
@@ -466,12 +466,29 @@ export class UsersStore {
         return await newCode.save();
     }
 
-    async createFandomTag(fandomTag: FandomTags): Promise<FandomTagsDocument> {
+    async createFandomTag(newFandomTag: CreateFandomTag): Promise<FandomTagsDocument> {
+        if (newFandomTag.parentId != null) {
+            const parentDocument = await this.fandomTagsModel
+                .findById(newFandomTag.parentId)
+            
+            const newTag = new this.fandomTagsModel({
+                name: newFandomTag.name,
+                desc: newFandomTag.desc,
+                parent: {
+                    _id: newFandomTag.parentId,
+                    name: parentDocument.name,
+                },
+                children: null
+            })
+
+            return await newTag.save();
+        }
+
         const newTag = new this.fandomTagsModel({
-            name: fandomTag.name,
-            desc: fandomTag.desc,
-            parent: fandomTag.parent,
-            children: fandomTag.children
+            name: newFandomTag.name,
+            desc: newFandomTag.desc,
+            parent: null,
+            children: null
         })
 
         return await newTag.save();

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { FandomTags, InviteCodes } from '@dragonfish/shared/models/users';
+import { CreateFandomTag, FandomTags, InviteCodes } from '@dragonfish/shared/models/users';
 import { UserManagementService } from '../../shared/user-management/services';
 
 @Component({
@@ -28,14 +28,13 @@ export class UsersManagementComponent implements OnInit {
     }
 
     createFandomTag() {
-        const tagInfo: FandomTags = {
+        const newFandomTag: CreateFandomTag = {
             name: this.tagForm.controls.name.value,
             desc: "Test description",
-            parent: null,
-            children: null,
+            parentId: null
         }
 
-        this.userManagement.createFandomTag(tagInfo).subscribe(tag => {
+        this.userManagement.createFandomTag(newFandomTag).subscribe(tag => {
             this.fetchAllFandomTags();
         });
     }
@@ -44,5 +43,9 @@ export class UsersManagementComponent implements OnInit {
         this.userManagement.fetchAllFandomTags().subscribe(tags => {
             this.currTags = tags;
         })
+    }
+
+    createFandomTagAsChildOfSelected() {
+
     }
 }

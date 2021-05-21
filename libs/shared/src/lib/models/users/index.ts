@@ -15,4 +15,6 @@ export * from './theme';
 
 // Delete after the Offprint Alpha ends
 export { InviteCodes } from './invite-codes.model';
+
 export { FandomTags } from './fandom-tags.model';
+export { CreateFandomTag } from './create-fandom-tag.model';

@@ -4,7 +4,7 @@ import { FandomTags } from "@dragonfish/shared/models/users";
 import { nanoid } from 'nanoid';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'fandom_tags' })
-export class FandomTagsDocument extends Document implements FandomTags  {
+export class FandomTagsDocument extends Document implements FandomTags {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
@@ -14,11 +14,17 @@ export class FandomTagsDocument extends Document implements FandomTags  {
     @Prop({ trim: true })
     desc: string;
 
-    @Prop({ trim: true, default: null })
-    parent: string;
+    @Prop({ default: null })
+    parent: {
+        _id: string;
+        name: string;
+    }
 
-    @Prop({ type: [String], default: null })
-    children: string[];
+    @Prop({ default: null })
+    children: [{
+        _id: string;
+        name: string;
+    }]
 
     @Prop()
     readonly createdAt: Date;

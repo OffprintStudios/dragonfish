@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { handleResponse } from '@dragonfish/shared/functions';
-import { FandomTags, InviteCodes } from '@dragonfish/shared/models/users';
+import { CreateFandomTag, FandomTags, InviteCodes } from '@dragonfish/shared/models/users';
 import { Observable } from 'rxjs';
 
 @Injectable()
@@ -19,9 +19,9 @@ export class UserManagementService {
         )
     }
 
-    public createFandomTag(fandomTagInfo: FandomTags): Observable<FandomTags> {
+    public createFandomTag(newFandomTag: CreateFandomTag): Observable<FandomTags> {
         return handleResponse(
-            this.http.put<FandomTags>(`${this.url}/create-fandom-tag`, fandomTagInfo, {
+            this.http.put<FandomTags>(`${this.url}/create-fandom-tag`, newFandomTag, {
                 observe: 'response',
                 withCredentials: true,
             })
