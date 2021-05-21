@@ -19,7 +19,6 @@ import { CookieModule } from 'ngx-cookie';
 /* Components */
 import { MyStuffComponent } from './my-stuff.component';
 import {
-    ToolbarComponent,
     SectionItemComponent,
     ContentItemComponent,
     ContentPreviewComponent,
@@ -47,7 +46,6 @@ import { NetworkService, MyStuffService } from './repo/services';
 @NgModule({
     declarations: [
         MyStuffComponent,
-        ToolbarComponent,
         SectionItemComponent,
         ContentItemComponent,
         BlogFormComponent,

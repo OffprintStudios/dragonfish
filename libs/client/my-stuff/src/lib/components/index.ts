@@ -1,4 +1,3 @@
-export { ToolbarComponent } from './toolbar/toolbar.component';
 export { ContentItemComponent } from './content-item/content-item.component';
 export { SectionItemComponent } from './section-item/section-item.component';
 export { ContentPreviewComponent } from './content-preview/content-preview.component';

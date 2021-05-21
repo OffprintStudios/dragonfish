@@ -13,4 +13,12 @@ export class MyStuffQuery extends QueryEntity<MyStuffState> {
     constructor(protected store: MyStuffStore) {
         super(store);
     }
+
+    public get currentId() {
+        return this.getActive()._id;
+    }
+
+    public get currentWordCount() {
+        return this.getActive().stats.words;
+    }
 }

@@ -49,7 +49,7 @@ export class ContentPreviewComponent {
      */
     publish(content: ContentModel) {
         if (content.audit.published === PubStatus.Unpublished) {
-            // this.stuff.publishContent(content._id);
+            this.stuff.publish(content._id).subscribe();
         }
     }
 
@@ -66,7 +66,9 @@ export class ContentPreviewComponent {
         const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
         dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
             if (wantsToDelete) {
-                // this.stuff.deleteContent(content._id);
+                this.stuff.delete(content._id).subscribe(() => {
+                    this.router.navigate(['/my-stuff']);
+                });
             }
         });
     }

@@ -1,12 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Section, AuthorsNotePos, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
 import { MyStuffService } from '../../repo/services';
-import { SectionsState } from '../../repo/sections';
+import { SectionsQuery } from '@dragonfish/client/repository/my-stuff/sections';
 
 @UntilDestroy()
 @Component({
@@ -15,8 +13,6 @@ import { SectionsState } from '../../repo/sections';
     styleUrls: ['./section-item.component.scss']
 })
 export class SectionItemComponent implements OnInit {
-    @Select(SectionsState.currSection) currSection$: Observable<Section>;
-
     @Input() contentId: string;
 
     previewMode = true;
@@ -29,14 +25,18 @@ export class SectionItemComponent implements OnInit {
         authorsNotePos: new FormControl(null),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private stuff: MyStuffService,
+        public sectionsQuery: SectionsQuery,
+    ) {}
 
     get fields() {
         return this.editForm.controls;
     }
 
     ngOnInit(): void {
-        this.currSection$.pipe(untilDestroyed(this)).subscribe((x) => {
+        this.sectionsQuery.current$.pipe(untilDestroyed(this)).subscribe((x) => {
             if (x !== null) {
                 this.editForm.setValue({
                     title: x.title,

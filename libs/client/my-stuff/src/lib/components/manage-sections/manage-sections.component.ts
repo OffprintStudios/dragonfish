@@ -1,25 +1,28 @@
 import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
-import { SectionsState, SectionsStateModel } from '../../repo/sections';
-import { Observable } from 'rxjs';
 import { AuthorsNotePos, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MyStuffService } from '../../repo/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffState } from '../../repo';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
+import { SectionsService, SectionsQuery } from '@dragonfish/client/repository/my-stuff/sections';
+import { zip } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-manage-sections',
     templateUrl: './manage-sections.component.html',
     styleUrls: ['./manage-sections.component.scss'],
 })
 export class ManageSectionsComponent {
-    @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
-    @Select(SectionsState) sectionsState$: Observable<SectionsStateModel>;
     editMode = false;
     selectedPos = AuthorsNotePos.Bottom;
     authorsNotePosOptions = AuthorsNotePos;
+
+    allNeededParts = zip(
+        this.stuffQuery.current$,
+        this.sectionsQuery.all$,
+        this.sectionsQuery.current$
+    ).pipe(untilDestroyed(this));
 
     sectionForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -28,7 +31,13 @@ export class ManageSectionsComponent {
         authorsNotePos: new FormControl(AuthorsNotePos.Bottom),
     });
 
-    constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
+    constructor(
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        public sectionsQuery: SectionsQuery,
+        private sections: SectionsService,
+        private alerts: AlertsService
+    ) {}
 
     exitEditMode() {
         this.editMode = false;
@@ -43,7 +52,7 @@ export class ManageSectionsComponent {
     }
 
     setCurrSection(section: Section) {
-        this.stuff.setCurrentSection(section);
+        this.stuff.setActive(section._id);
     }
 
     submitForm(contentId: string) {
@@ -70,7 +79,7 @@ export class ManageSectionsComponent {
             usesNewEditor: true,
         };
 
-        this.stuff.createSection(contentId, sectionForm);
+        this.sections.create(contentId, sectionForm);
         this.editMode = false;
     }
 }

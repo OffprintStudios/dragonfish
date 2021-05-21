@@ -6,23 +6,75 @@
             </button>
             <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
             <div class="flex-1"><!--spacer--></div>
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm(currBlog._id)">
-                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+            <ng-container [ngSwitch]="currBlog.audit.published">
+                <button
+                    *ngSwitchCase="pubStatus.Published"
+                    class="border-none shadow-none rounded-full px-2 py-1.5"
+                    (click)="publish(currBlog)"
+                >
+                    <i-feather name="check-circle" class="text-white relative top-0.5"></i-feather>
+                    <span class="ml-1">Published</span>
+                </button>
+                <button
+                    *ngSwitchCase="pubStatus.Unpublished"
+                    class="border-none shadow-none rounded-full px-2 py-1.5"
+                    (click)="publish(currBlog)"
+                >
+                    <i-feather name="circle" class="text-white relative top-0.5"></i-feather>
+                    <span class="ml-1">Unpublished</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="editMode; else previewSave">
+                <button
+                    class="border-none shadow-none rounded-full px-2 py-1.5"
+                    [matTooltip]="'Save'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                    (click)="submitForm(currBlog._id)"
+                >
+                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                </button>
+            </ng-container>
+            <ng-template #previewSave>
+                <button
+                    class="border-none shadow-none rounded-full px-2 py-1.5 disabled"
+                    [matTooltip]="'Save'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                >
+                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                </button>
+            </ng-template>
+            <div class="text-white mx-1.5 select-none cursor-default">|</div>
+            <button
+                class="border-none shadow-none rounded-full px-2 py-1.5"
+                [matTooltip]="'Preview'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                [ngClass]="{ active: !editMode }"
+                (click)="switchView()"
+            >
+                <i-feather name="eye" class="text-white relative top-0.5"></i-feather>
+            </button>
+            <button
+                class="border-none shadow-none rounded-full px-2 py-1.5"
+                [matTooltip]="'Edit'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                [ngClass]="{ active: editMode }"
+                (click)="switchView()"
+            >
+                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather>
             </button>
             <div class="text-white mx-1.5 select-none cursor-default">|</div>
             <button
                 class="border-none shadow-none rounded-full px-2 py-1.5"
-                [ngClass]="{ active: !editMode }"
-                (click)="switchView()"
+                [matTooltip]="'Delete'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                (click)="deleteContent(currBlog)"
             >
-                <i-feather name="eye" class="text-white relative top-0.5"></i-feather><span class="ml-2">Preview</span>
-            </button>
-            <button
-                class="border-none shadow-none rounded-full px-2 py-1.5"
-                [ngClass]="{ active: editMode }"
-                (click)="switchView()"
-            >
-                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather><span class="ml-2">Edit</span>
+                <i-feather name="trash-2" class="text-white relative top-0.5"></i-feather>
             </button>
         </div>
     </div>
