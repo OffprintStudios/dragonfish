@@ -13,7 +13,6 @@ const storage = persistState({
     include: [
         'session',
         'portfolio',
-        'my-stuff.active',
         'app',
     ],
 });

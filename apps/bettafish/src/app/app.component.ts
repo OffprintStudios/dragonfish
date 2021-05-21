@@ -27,11 +27,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        this.appQuery.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
+        this.appQuery.theme$.pipe(untilDestroyed(this), delay(600)).subscribe(theme => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
             const html = document.getElementsByTagName('html')[0];
-            console.log(typeof ThemePref[theme]);
             if (ThemePref[theme] !== null && ThemePref[theme] !== undefined) {
                 if (
                     ThemePref[theme] == 'dark-aqua' ||
@@ -51,7 +50,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.router.events.pipe(untilDestroyed(this)).subscribe(event => {
+        this.router.events.pipe(untilDestroyed(this), delay(300)).subscribe(event => {
             if (this.sidenav) {
                 if (event instanceof NavigationStart) {
                     this.sidenavService.close();
