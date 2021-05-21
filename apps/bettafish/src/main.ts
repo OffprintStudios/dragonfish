@@ -12,7 +12,9 @@ if (environment.production) {
 const storage = persistState({
     include: [
         'session',
-        'portfolio'
+        'portfolio',
+        'my-stuff.active',
+        'app',
     ],
 });
 
