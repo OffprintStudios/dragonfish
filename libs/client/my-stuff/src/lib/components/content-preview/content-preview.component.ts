@@ -13,6 +13,7 @@ import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-s
 import { Router } from '@angular/router';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-content-preview',
@@ -32,6 +33,7 @@ export class ContentPreviewComponent {
         private stuff: MyStuffService,
         public stuffQuery: MyStuffQuery,
         private router: Router,
+        private alerts: AlertsService
     ) {}
 
     uploadCoverArt(contentId: string, kind: ContentKind) {
@@ -49,6 +51,11 @@ export class ContentPreviewComponent {
      */
     publish(content: ContentModel) {
         if (content.audit.published === PubStatus.Unpublished) {
+            if (content.kind === ContentKind.ProseContent && content.stats.words < 750) {
+                this.alerts.warn(`Prose needs a minimum of 750 published words in order to be submitted!`);
+                return;
+            }
+
             this.stuff.publish(content._id).subscribe();
         }
     }

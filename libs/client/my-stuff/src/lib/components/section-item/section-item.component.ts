@@ -3,8 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Section, AuthorsNotePos, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
-import { MyStuffService } from '../../repo/services';
-import { SectionsQuery } from '@dragonfish/client/repository/my-stuff/sections';
+import { SectionsQuery, SectionsService } from '@dragonfish/client/repository/my-stuff/sections';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
 
 @UntilDestroy()
 @Component({
@@ -27,8 +29,9 @@ export class SectionItemComponent implements OnInit {
 
     constructor(
         private alerts: AlertsService,
-        private stuff: MyStuffService,
+        private sections: SectionsService,
         public sectionsQuery: SectionsQuery,
+        private dialog: MatDialog,
     ) {}
 
     get fields() {
@@ -79,11 +82,20 @@ export class SectionItemComponent implements OnInit {
             oldWords: section.stats.words,
         };
 
-        this.stuff.saveSection(this.contentId, section._id, sectionInfo);
+        this.sections.save(this.contentId, section._id, sectionInfo).subscribe();
     }
 
     delete(sectionId: string) {
-        this.stuff.deleteSection(this.contentId, sectionId);
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.sections.delete(this.contentId, sectionId).subscribe();
+            }
+        });
     }
 
     pubUnpub(section: Section) {
@@ -92,6 +104,6 @@ export class SectionItemComponent implements OnInit {
             newPub: !section.published,
         };
 
-        this.stuff.publishSection(this.contentId, section._id, pubStatus);
+        this.sections.publish(this.contentId, section._id, pubStatus).subscribe();
     }
 }

@@ -52,7 +52,7 @@ export class ManageSectionsComponent {
     }
 
     setCurrSection(section: Section) {
-        this.stuff.setActive(section._id);
+        this.sections.setActive(section._id);
     }
 
     submitForm(contentId: string) {
@@ -79,7 +79,8 @@ export class ManageSectionsComponent {
             usesNewEditor: true,
         };
 
-        this.sections.create(contentId, sectionForm);
-        this.editMode = false;
+        this.sections.create(contentId, sectionForm).subscribe(() => {
+            this.editMode = false;
+        });
     }
 }

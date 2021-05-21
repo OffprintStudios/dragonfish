@@ -1,4 +1,4 @@
-<ng-container *ngIf="allNeededParts | async as state">
+<ng-container *ngIf="sectionsQuery.all$ | async as sections">
     <div class="flex flex-row w-5/6 mx-auto">
         <div class="sections-list">
             <ng-container *ngIf="!editMode; else disabledAddButton">
@@ -12,12 +12,10 @@
                 </div>
             </ng-template>
             <ng-container *ngIf="!editMode; else disabledSections">
-                <ng-container *ngFor="let section of state[1]">
+                <ng-container *ngFor="let section of sections">
                     <div
                         class="section-box"
-                        [ngClass]="{
-                                    active: state[2] && state[2]._id === section._id
-                                }"
+                        [ngClass]="{ active: sectionsQuery.current && sectionsQuery.currentId === section._id }"
                         (click)="setCurrSection(section)"
                     >
                         <div class="section-indicator">
@@ -35,7 +33,7 @@
                 </ng-container>
             </ng-container>
             <ng-template #disabledSections>
-                <ng-container *ngFor="let section of state[1]">
+                <ng-container *ngFor="let section of sections">
                     <div class="section-box disabled">
                         <div class="section-title">
                             {{ section.title }}
@@ -49,9 +47,9 @@
                 <div class="form-container">
                     <div class="form-header pb-2">
                         <h3 class="text-4xl">Add a Section</h3>
-                        <button (click)="submitForm(state[0]._id)">Save</button>
+                        <button (click)="submitForm(stuffQuery.currentId)">Save</button>
                     </div>
-                    <form [formGroup]="sectionForm" (ngSubmit)="submitForm(state[0]._id)">
+                    <form [formGroup]="sectionForm" (ngSubmit)="submitForm(stuffQuery.currentId)">
                         <dragonfish-text-field
                             [formControlName]="'title'"
                             [name]="'title'"
@@ -91,7 +89,7 @@
             </ng-container>
 
             <ng-template #viewMode>
-                <ng-container *ngIf="state[1].length === 0; else selectSection">
+                <ng-container *ngIf="sections.length === 0; else selectSection">
                     <div class="empty">
                         <h3>It's lonely in here...</h3>
                         <p>Looks like you haven't added any sections yet.</p>
@@ -99,8 +97,8 @@
                     </div>
                 </ng-container>
                 <ng-template #selectSection>
-                    <ng-container *ngIf="state[2]; else nothingSelected">
-                        <dragonfish-section-item [contentId]="state[0]._id"></dragonfish-section-item>
+                    <ng-container *ngIf="sectionsQuery.current$ | async; else nothingSelected">
+                        <dragonfish-section-item [contentId]="stuffQuery.currentId"></dragonfish-section-item>
                     </ng-container>
                     <ng-template #nothingSelected>
                         <div class="empty">

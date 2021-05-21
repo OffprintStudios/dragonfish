@@ -13,4 +13,12 @@ export class SectionsQuery extends QueryEntity<SectionsState> {
     constructor(protected store: SectionsStore) {
         super(store);
     }
+
+    public get current() {
+        return this.getActive();
+    }
+
+    public get currentId() {
+        return this.getActive()._id;
+    }
 }
