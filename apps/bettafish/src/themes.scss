@@ -9,6 +9,7 @@
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-crimson {
@@ -21,6 +22,7 @@
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .aqua {
@@ -33,6 +35,7 @@
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-aqua {
@@ -45,6 +48,7 @@
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .royal {
@@ -57,6 +61,7 @@
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-royal {
@@ -69,6 +74,7 @@
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .autumn {
@@ -81,6 +87,7 @@
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dusk-autumn {
@@ -93,6 +100,7 @@
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .field {
@@ -105,6 +113,7 @@
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .midnight-field {
@@ -117,4 +126,5 @@
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }

@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ContentFilter, ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '@dragonfish/client/repository/global';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -16,8 +15,6 @@ import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
     templateUrl: './portfolio-works.component.html'
 })
 export class PortfolioWorksComponent implements OnInit {
-    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
-
     loading = false;
     contentData: PaginateResult<ContentModel>;
     pageNum = 1;
@@ -28,6 +25,7 @@ export class PortfolioWorksComponent implements OnInit {
         private router: Router,
         public sessionQuery: SessionQuery,
         public portQuery: PortfolioQuery,
+        private appQuery: AppQuery,
     ) {}
 
     ngOnInit(): void {
@@ -48,7 +46,12 @@ export class PortfolioWorksComponent implements OnInit {
      */
     private fetchData(pageNum: number, userId: string): void {
         this.loading = true;
-        this.network.fetchAllContent(pageNum, [ContentKind.ProseContent, ContentKind.PoetryContent], this.filter, userId)
+        this.network.fetchAllContent(
+            pageNum,
+            [ContentKind.ProseContent, ContentKind.PoetryContent],
+            this.appQuery.filter,
+            userId
+        )
             .subscribe(content => {
                 this.contentData = content;
                 this.loading = false;
