@@ -1,4 +1,4 @@
-<ng-container *ngIf="currSection$ | async as section">
+<ng-container *ngIf="sectionsQuery.current$ | async as section">
     <div class="form-container">
         <div class="form-header flex flex-row items-center">
             <ng-container *ngIf="section.published === true; else notPublishedPreview">

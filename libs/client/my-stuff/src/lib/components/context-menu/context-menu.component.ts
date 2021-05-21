@@ -1,16 +1,10 @@
 import { Component } from '@angular/core';
-import {
-    animate,
-    state,
-    style,
-    transition,
-    trigger,
-} from '@angular/animations';
-import { MenuComponent, MenuPackage, ContextMenuService } from '@ctrl/ngx-rightclick';
-import { ContentKind, ContentModel, PubStatus } from '@dragonfish/shared/models/content';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ContextMenuService, MenuComponent, MenuPackage } from '@ctrl/ngx-rightclick';
+import { ContentKind, ContentModel, PubChange, PubStatus } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 import { slugify } from 'voca';
-import { MyStuffService } from '../../repo/services';
+import { MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PopupModel } from '@dragonfish/shared/models/util';
@@ -34,6 +28,7 @@ import { Router } from '@angular/router';
 })
 export class ContextMenuComponent extends MenuComponent {
     content: ContentModel;
+    pubStatus = PubStatus;
     // this module does not have animations, set lazy false
     lazy = false;
 
@@ -49,11 +44,39 @@ export class ContextMenuComponent extends MenuComponent {
         super(menuPackage, contextMenuService);
         // grab any required menu context passed via menuContext input
         this.content = menuPackage.context;
+        this.stuff.setActive(this.content._id);
     }
 
-    handleClick() {
-        // IMPORTANT! tell the menu to close, anything passed in here is given to (menuAction)
+    /**
+     * Publishes a piece of content.
+     */
+    publish() {
+        const pubChange: PubChange = {
+            oldStatus: this.content.audit.published,
+            newStatus: this.content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished,
+        };
 
+        if (this.content.kind === ContentKind.BlogContent || this.content.kind === ContentKind.NewsContent) {
+            this.stuff.publish(this.content._id, pubChange);
+        } else if (this.content.kind === ContentKind.PoetryContent || this.content.kind === ContentKind.ProseContent) {
+            switch (this.content.audit.published) {
+                case PubStatus.Published:
+                    this.alerts.error(`Un-publishing is not yet supported for the selected content type.`);
+                    return;
+                case PubStatus.Unpublished:
+                    this.stuff.publish(this.content._id).subscribe();
+                    break;
+                case PubStatus.Pending:
+                    this.alerts.error(`You've already submitted this to the queue.`);
+                    return;
+                case PubStatus.Rejected:
+                    this.alerts.error(`Your fic wasn't accepted. Contact a moderator for more info.`);
+                    return;
+                case PubStatus.ApprovedUnpublished:
+                    this.alerts.error(`Switching back to a published fic is not yet supported.`);
+                    return;
+            }
+        }
     }
 
     /**
@@ -69,7 +92,7 @@ export class ContextMenuComponent extends MenuComponent {
         const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
         dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
             if (wantsToDelete) {
-                this.stuff.deleteContent(this.content._id);
+                this.stuff.delete(this.content._id);
             }
             this.contextMenuService.closeAll();
         });

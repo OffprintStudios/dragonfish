@@ -1,11 +1,8 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
 import { ContentKind, ContentModel, PubStatus} from '@dragonfish/shared/models/content';
-import { MyStuffState } from '../../repo';
-import { MyStuffService } from '../../repo/services';
 import { ContextMenuComponent } from '../context-menu/context-menu.component';
+import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 
 @UntilDestroy()
 @Component({
@@ -14,7 +11,6 @@ import { ContextMenuComponent } from '../context-menu/context-menu.component';
     styleUrls: ['./content-item.component.scss'],
 })
 export class ContentItemComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<ContentModel>;
     @Input() content: ContentModel;
     @Output() viewItem = new EventEmitter<ContentModel>();
     selected = false;
@@ -22,11 +18,11 @@ export class ContentItemComponent implements OnInit {
     pubStatus = PubStatus;
     menu = ContextMenuComponent;
 
-    constructor(private stuff: MyStuffService) {}
+    constructor(private stuff: MyStuffService, public myStuffQuery: MyStuffQuery) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe(x => {
-            if (x !== null) {
+        this.myStuffQuery.current$.pipe(untilDestroyed(this)).subscribe(x => {
+            if (x !== null && x !== undefined) {
                 this.selected = x._id === this.content._id;
             } else {
                 this.selected = false;
@@ -35,7 +31,8 @@ export class ContentItemComponent implements OnInit {
     }
 
     setCurrContent() {
-        this.stuff.setCurrentContent(this.content);
+        console.log(`setting active content`);
+        this.stuff.setActive(this.content._id);
     }
 
     view() {
@@ -43,6 +40,6 @@ export class ContentItemComponent implements OnInit {
     }
 
     deselect() {
-        this.stuff.setCurrentContent(null);
+        this.stuff.setActive(null);
     }
 }

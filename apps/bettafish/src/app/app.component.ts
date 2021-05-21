@@ -9,6 +9,7 @@ import { GlobalState } from '@dragonfish/client/repository/global';
 import { SidenavService } from './services';
 import { NavigationStart, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { delay } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
@@ -62,8 +63,8 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe(user => {
-            if (user || !this.electron.isElectronApp) {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this), delay(300)).subscribe(user => {
+            if (user !== null || !this.electron.isElectronApp) {
                 this.sidenavService.setSidenav(this.sidenav);
             }
         });

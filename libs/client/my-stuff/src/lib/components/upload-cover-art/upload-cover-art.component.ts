@@ -2,10 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileUploader } from 'ng2-file-upload';
 import { ImageCroppedEvent, CropperPosition } from 'ngx-image-cropper';
-import { MyStuffService } from '../../repo/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -146,9 +146,10 @@ export class UploadCoverArtComponent implements OnInit {
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
 
-        await this.stuff.uploadCoverArt(this.uploader);
-        this.loading = false;
-        this.dialogRef.close();
+        this.stuff.uploadCoverArt(this.uploader).subscribe(() => {
+            this.loading = false;
+            this.dialogRef.close();
+        });
     }
 
     snapCropperToBorders(event: ImageCroppedEvent): void {

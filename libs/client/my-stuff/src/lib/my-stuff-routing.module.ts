@@ -12,7 +12,6 @@ import {
 } from './views';
 
 /* Util */
-import { ViewSectionsResolver } from './resolvers';
 import { Roles } from '@dragonfish/shared/models/users';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
@@ -52,16 +51,10 @@ const routes: Routes = [
             {
                 path: 'view-prose',
                 component: ViewProseComponent,
-                resolve: {
-                    sectionData: ViewSectionsResolver,
-                },
             },
             {
                 path: 'view-poetry',
                 component: ViewPoetryComponent,
-                resolve: {
-                    sectionData: ViewSectionsResolver,
-                },
             },
             {
                 path: 'edit-prose',
@@ -78,6 +71,5 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ViewSectionsResolver],
 })
 export class MyStuffRoutingModule {}

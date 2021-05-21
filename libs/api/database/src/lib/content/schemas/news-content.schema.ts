@@ -17,11 +17,7 @@ export class NewsContentDocument extends Document implements NewsContentModel {
 
     @Prop(raw({
         featured: { type: Boolean, default: false },
-        published: { type: String, enum: Object.keys(PubStatus), default: 'Unpublished' },
-        publishedOn: { type: Date, default: null },
         releaseOn: { type: Date, default: null },
-        hasComments: { type: Boolean, default: true },
-        isDeleted: { type: Boolean, default: false },
     }))
     audit: {
         featured: boolean;

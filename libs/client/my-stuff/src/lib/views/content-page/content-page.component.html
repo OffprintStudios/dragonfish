@@ -1,0 +1,35 @@
+<ng-container *ngIf="myStuffQuery.loading$ | async; else notLoading">
+    <div class="flex flex-row items-center justify-center h-72">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+<ng-template #notLoading>
+    <ng-container *ngIf="myStuffQuery.all$ | async as myStuff">
+        <!--<div class="migration-notice">
+            <div class="migration-prompt">
+                <h4 class="text-2xl">Looking for something?</h4>
+                <p class="text-sm">Not to worry! Let's bring some of your old stuff over, shall we?</p>
+            </div>
+            <div class="migration-button">
+                <button matRipple [routerLink]="['/migration']">View Old Content</button>
+            </div>
+        </div>-->
+
+        <ng-container *ngIf="myStuff.length === 0; else hasContent">
+            <div class="empty">
+                <h3>It's pretty lonely here...</h3>
+                <p>Why not add some content by hitting the Create button?</p>
+            </div>
+        </ng-container>
+
+        <ng-template #hasContent>
+            <div class="my-8">
+                <div class="grid 2xl:grid-cols-6 xl:grid-cols-5 lg:grid-cols-4 mx-auto w-11/12 gap-4">
+                    <ng-container *ngFor="let content of myStuff">
+                        <dragonfish-content-item [content]="content" (viewItem)="viewContent($event)"></dragonfish-content-item>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-template>
+    </ng-container>
+</ng-template>

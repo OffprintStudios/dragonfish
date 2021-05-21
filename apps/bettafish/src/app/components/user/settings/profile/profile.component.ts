@@ -73,6 +73,6 @@ export class ProfileComponent implements OnInit {
             bio: this.changeBioFields.bio.value,
         };
 
-        return this.user.changeBio(changeRequest);
+        return this.user.changeBio(changeRequest).subscribe();
     }
 }

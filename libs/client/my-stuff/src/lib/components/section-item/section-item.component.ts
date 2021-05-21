@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Section, AuthorsNotePos, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
-import { MyStuffService } from '../../repo/services';
-import { SectionsState } from '../../repo/sections';
+import { SectionsQuery, SectionsService } from '@dragonfish/client/repository/my-stuff/sections';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
 
 @UntilDestroy()
 @Component({
@@ -15,8 +15,6 @@ import { SectionsState } from '../../repo/sections';
     styleUrls: ['./section-item.component.scss']
 })
 export class SectionItemComponent implements OnInit {
-    @Select(SectionsState.currSection) currSection$: Observable<Section>;
-
     @Input() contentId: string;
 
     previewMode = true;
@@ -29,14 +27,19 @@ export class SectionItemComponent implements OnInit {
         authorsNotePos: new FormControl(null),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private sections: SectionsService,
+        public sectionsQuery: SectionsQuery,
+        private dialog: MatDialog,
+    ) {}
 
     get fields() {
         return this.editForm.controls;
     }
 
     ngOnInit(): void {
-        this.currSection$.pipe(untilDestroyed(this)).subscribe((x) => {
+        this.sectionsQuery.current$.pipe(untilDestroyed(this)).subscribe((x) => {
             if (x !== null) {
                 this.editForm.setValue({
                     title: x.title,
@@ -79,11 +82,20 @@ export class SectionItemComponent implements OnInit {
             oldWords: section.stats.words,
         };
 
-        this.stuff.saveSection(this.contentId, section._id, sectionInfo);
+        this.sections.save(this.contentId, section._id, sectionInfo).subscribe();
     }
 
     delete(sectionId: string) {
-        this.stuff.deleteSection(this.contentId, sectionId);
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.sections.delete(this.contentId, sectionId).subscribe();
+            }
+        });
     }
 
     pubUnpub(section: Section) {
@@ -92,6 +104,6 @@ export class SectionItemComponent implements OnInit {
             newPub: !section.published,
         };
 
-        this.stuff.publishSection(this.contentId, section._id, pubStatus);
+        this.sections.publish(this.contentId, section._id, pubStatus).subscribe();
     }
 }

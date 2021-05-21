@@ -6,7 +6,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
-import { NgxsModule } from '@ngxs/store';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { EditorModule } from '@dragonfish/client/editor';
@@ -19,7 +18,6 @@ import { CookieModule } from 'ngx-cookie';
 /* Components */
 import { MyStuffComponent } from './my-stuff.component';
 import {
-    ToolbarComponent,
     SectionItemComponent,
     ContentItemComponent,
     ContentPreviewComponent,
@@ -33,20 +31,14 @@ import {
     PoetryFormComponent,
     ProseFormComponent,
     ViewPoetryComponent,
-    ViewProseComponent
+    ViewProseComponent,
+    ContentPageComponent,
+    SectionsPageComponent,
 } from './views';
-
-/* State */
-import { MyStuffState } from './repo';
-import { SectionsState } from './repo/sections';
-
-/* Services */
-import { NetworkService, MyStuffService } from './repo/services';
 
 @NgModule({
     declarations: [
         MyStuffComponent,
-        ToolbarComponent,
         SectionItemComponent,
         ContentItemComponent,
         BlogFormComponent,
@@ -55,6 +47,8 @@ import { NetworkService, MyStuffService } from './repo/services';
         ProseFormComponent,
         ViewPoetryComponent,
         ViewProseComponent,
+        ContentPageComponent,
+        SectionsPageComponent,
         ContentPreviewComponent,
         ManageSectionsComponent,
         UploadCoverArtComponent,
@@ -67,7 +61,6 @@ import { NetworkService, MyStuffService } from './repo/services';
         FileUploadModule,
         ImageCropperModule,
         NgSelectModule,
-        NgxsModule.forFeature([MyStuffState, SectionsState]),
         IconsModule,
         PipesModule,
         EditorModule,
@@ -79,9 +72,5 @@ import { NetworkService, MyStuffService } from './repo/services';
         ContextMenuModule,
         CookieModule,
     ],
-    providers: [
-        NetworkService,
-        MyStuffService,
-    ]
 })
 export class MyStuffModule {}

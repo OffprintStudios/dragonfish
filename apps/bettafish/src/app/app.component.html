@@ -1,4 +1,4 @@
-<ng-container *ngIf="electron.isElectronApp && !sessionQuery.isLoggedIn; else isInBrowser">
+<ng-container *ngIf="electron.isElectronApp && !(sessionQuery.currentUser$ | async); else isInBrowser">
     <dragonfish-auth-full></dragonfish-auth-full>
 </ng-container>
 
@@ -15,7 +15,7 @@
             >
                 <dragonfish-sidenav></dragonfish-sidenav>
             </mat-drawer>
-            <div class="flex-auto h-screen">
+            <div class="flex-auto">
                 <router-outlet></router-outlet>
             </div>
         </mat-drawer-container>
