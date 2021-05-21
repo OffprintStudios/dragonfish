@@ -5,6 +5,7 @@ import { AppStore } from './app.store';
 
 @Injectable({ providedIn: 'root' })
 export class AppQuery extends Query<AppState> {
+    public all$ = this.select();
     public theme$ = this.select('theme');
     public filter$ = this.select('filter');
 

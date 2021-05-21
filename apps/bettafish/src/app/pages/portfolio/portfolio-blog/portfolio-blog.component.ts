@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { BlogsContentModel, ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
+import { BlogsContentModel, ContentKind } from '@dragonfish/shared/models/content';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '@dragonfish/client/repository/global';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -16,8 +15,6 @@ import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
     templateUrl: './portfolio-blog.component.html'
 })
 export class PortfolioBlogComponent implements OnInit {
-    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
-
     loading = false;
     blogsData: PaginateResult<BlogsContentModel>;
 
@@ -29,6 +26,7 @@ export class PortfolioBlogComponent implements OnInit {
         private router: Router,
         public sessionQuery: SessionQuery,
         public portQuery: PortfolioQuery,
+        private appQuery: AppQuery,
     ) { }
 
     ngOnInit(): void {
@@ -49,7 +47,7 @@ export class PortfolioBlogComponent implements OnInit {
      */
     private fetchData(pageNum: number, userId: string): void {
         this.loading = true;
-        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], this.filter, userId)
+        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], this.appQuery.filter, userId)
             .subscribe(content => {
                 this.blogsData = content as PaginateResult<BlogsContentModel>;
                 this.loading = false;
