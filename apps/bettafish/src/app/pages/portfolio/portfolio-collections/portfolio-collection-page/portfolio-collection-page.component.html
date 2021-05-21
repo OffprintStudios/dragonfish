@@ -48,7 +48,7 @@
             </div>
         </ng-container>
         <ng-template #hasContent>
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-3 gap-4">
                 <ng-container *ngFor="let content of collData.contains">
                     <dragonfish-work-card [content]="content" [showAuthor]="true"></dragonfish-work-card>
                 </ng-container>

@@ -1,54 +1,86 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { MyStuffState, MyStuffStateModel } from './repo';
-import { ContentModel, ContentKind } from '@dragonfish/shared/models/content';
+import { ContentKind } from '@dragonfish/shared/models/content';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
-import { MyStuffService } from './repo/services';
+import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { FrontendUser, Roles } from '@dragonfish/shared/models/users';
+import { isAllowed } from '@dragonfish/shared/functions';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-my-stuff',
     templateUrl: './my-stuff.component.html',
     styleUrls: ['./my-stuff.component.scss'],
 })
 export class MyStuffComponent implements OnInit {
-    @Select(MyStuffState) myStuff$: Observable<MyStuffStateModel>;
     isIconView = true;
-    loading = false;
+    contentKind = ContentKind;
+    filterMenuOpened = false;
+    createMenuOpened = false;
 
-    constructor(public route: ActivatedRoute, public router: Router, private myStuff: MyStuffService) {}
+    searchForm = new FormGroup({
+        query: new FormControl(''),
+    });
+
+    constructor(
+        public route: ActivatedRoute,
+        public router: Router,
+        public sessionQuery: SessionQuery,
+        private myStuff: MyStuffService,
+        public myStuffQuery: MyStuffQuery,
+        private alerts: AlertsService,
+    ) {}
 
     ngOnInit(): void {
         setTwoPartTitle(Constants.MY_STUFF);
-        this.fetchData();
+        this.myStuff.setAll().pipe(untilDestroyed(this)).subscribe();
     }
 
-    private fetchData() {
-        this.loading = true;
-        this.myStuff.setFiles().then(() => {
-            this.loading = false;
-        });
+    submitSearch() {
+        this.alerts.info(`Search for My Stuff is not yet enabled!`);
     }
 
-    deselect() {
-        this.myStuff.setCurrentContent(null);
+    toggleCreateMenu() {
+        this.createMenuOpened = !this.createMenuOpened;
+    }
+
+    toggleFilterMenu() {
+        this.filterMenuOpened = !this.filterMenuOpened;
     }
 
     /**
-     * Navigates to the specified view page.
+     * Navigates to a creation form based on the content kind. Clears any currently selected content
+     * first.
      *
-     * @param content The content item to view
+     * @param kind The kind requested
      */
-    viewContent(content: ContentModel) {
-        if (content.kind === ContentKind.BlogContent) {
-            this.router.navigate(['view-blog'], { relativeTo: this.route }).catch(err => console.log(err));
-        } else if (content.kind === ContentKind.NewsContent) {
-            this.router.navigate(['view-post'], { relativeTo: this.route }).catch(err => console.log(err));
-        } else if (content.kind === ContentKind.ProseContent) {
-            this.router.navigate(['view-prose'], { relativeTo: this.route }).catch(err => console.log(err));
-        } else if (content.kind === ContentKind.PoetryContent) {
-            this.router.navigate(['view-poetry'], { relativeTo: this.route }).catch(err => console.log(err));
+    createContent(kind: ContentKind) {
+        this.myStuff.setActive(null);
+        switch (kind) {
+            case ContentKind.BlogContent:
+                this.router.navigate(['/my-stuff/new-blog']);
+                break;
+            case ContentKind.NewsContent:
+                this.router.navigate(['/my-stuff/new-post']);
+                break;
+            case ContentKind.PoetryContent:
+                this.router.navigate(['/my-stuff/new-poetry']);
+                break;
+            case ContentKind.ProseContent:
+                this.router.navigate(['/my-stuff/new-prose']);
+                break;
         }
+    }
+
+    /**
+     * Checks to see if the currently signed in user is allowed to access the newspost form.
+     * @param currentUser
+     */
+    checkIsAllowed(currentUser: FrontendUser) {
+        return isAllowed(currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
     }
 }

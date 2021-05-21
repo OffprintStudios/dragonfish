@@ -32,8 +32,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         collection: { type: Boolean, default: false },
         fandoms: { type: [String], default: null },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
-        rating: { type: String, enum: Object.keys(ContentRating), required: true, index: true },
-        warnings: { type: [String], default: null },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
     }))

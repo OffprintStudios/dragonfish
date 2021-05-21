@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
 import {
     WorkKind,
     CreatePoetry,
@@ -14,8 +12,9 @@ import {
     ContentKind,
 } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
-import { MyStuffState } from '../../repo';
+import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -24,7 +23,6 @@ import { MyStuffState } from '../../repo';
     styleUrls: ['./poetry-form.component.scss'],
 })
 export class PoetryFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<PoetryContent>;
     formTitle = `Create New Poetry`;
 
     categories = WorkKind;
@@ -45,10 +43,16 @@ export class PoetryFormComponent implements OnInit {
         status: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private stuff: MyStuffService, private alerts: AlertsService) {}
+    constructor(
+        private stuff: MyStuffService,
+        private alerts: AlertsService,
+        public stuffQuery: MyStuffQuery,
+        private router: Router,
+        private location: Location
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
+        this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: PoetryContent) => {
             if (content !== null) {
                 this.formTitle = `Editing "${content.title}"`;
                 this.isCollection = content.meta.collection;
@@ -82,6 +86,10 @@ export class PoetryFormComponent implements OnInit {
         return this.poetryForm.controls;
     }
 
+    goBack() {
+        this.location.back();
+    }
+
     submitForm(contentId?: string) {
         if (this.poetryForm.invalid) {
             this.alerts.warn(`Looks like something's wrong with the stuff you've entered.`);
@@ -101,9 +109,14 @@ export class PoetryFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.stuff.saveContent(contentId, ContentKind.PoetryContent, poetryInfo);
+            this.stuff.save(contentId, ContentKind.PoetryContent, poetryInfo).subscribe(() => {
+                this.router.navigate(['/my-stuff/view-poetry']);
+            });
         } else {
-            this.stuff.createContent(ContentKind.PoetryContent, poetryInfo);
+            this.stuff.create(ContentKind.PoetryContent, poetryInfo).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-prose']);
+            });
         }
     }
 }

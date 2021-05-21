@@ -1,12 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
-import { MyStuffState } from '../../repo';
-
-import { BlogForm, BlogsContentModel, ContentRating, PubStatus, ContentKind } from '@dragonfish/shared/models/content';
+import {
+    BlogForm,
+    BlogsContentModel,
+    ContentRating,
+    PubStatus,
+    ContentKind,
+    ContentModel, PubChange,
+} from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
+import { MyStuffService, MyStuffQuery } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
+import { untilDestroyed } from '@ngneat/until-destroy';
 
 @Component({
     selector: 'dragonfish-blog-form',
@@ -14,7 +22,6 @@ import { MyStuffService } from '../../repo/services';
     styleUrls: ['./blog-form.component.scss'],
 })
 export class BlogFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<BlogsContentModel>;
     editMode = false;
     ratings = ContentRating;
     pubStatus = PubStatus;
@@ -27,11 +34,17 @@ export class BlogFormComponent implements OnInit {
         rating: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        private router: Router,
+        private dialog: MatDialog
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.subscribe((content) => {
-            if (content !== null) {
+        this.stuffQuery.current$.subscribe((content: BlogsContentModel) => {
+            if (content !== null && content !== undefined) {
                 this.formTitle = `Viewing "${content.title}"`;
                 this.blogForm.setValue({
                     title: content.title,
@@ -53,8 +66,44 @@ export class BlogFormComponent implements OnInit {
         return this.blogForm.controls;
     }
 
-    switchView() {
-        this.editMode = this.editMode !== true;
+    switchView = () => this.editMode = !this.editMode;
+
+    goBack() {
+        this.router.navigate(['/my-stuff']);
+    }
+
+    /**
+     * Sends a request to publish the specified content given its info.
+     *
+     * @param content The content to publish
+     */
+    publish(content: ContentModel) {
+        const pubChange: PubChange = {
+            oldStatus: content.audit.published,
+            newStatus: content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished,
+        };
+
+        this.stuff.publish(content._id, pubChange).subscribe();
+    }
+
+    /**
+     * Asks if a user really wants to delete the specified content. If yes,
+     * sends a request to delete the specified content given its ID. If no,
+     * does nothing.
+     */
+    deleteContent(content: ContentModel) {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().pipe(untilDestroyed(this)).subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.stuff.delete(content._id).subscribe(() => {
+                    this.router.navigate(['/my-stuff']);
+                });
+            }
+        });
     }
 
     submitForm(contentId?: string) {
@@ -70,10 +119,14 @@ export class BlogFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.stuff.saveContent(contentId, ContentKind.BlogContent, formData);
-            this.editMode = false;
+            this.stuff.save(contentId, ContentKind.BlogContent, formData).subscribe(() => {
+                this.editMode = false;
+            });
         } else {
-            this.stuff.createContent(ContentKind.BlogContent, formData);
+            this.stuff.create(ContentKind.BlogContent, formData).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-blog']);
+            });
         }
     }
 }

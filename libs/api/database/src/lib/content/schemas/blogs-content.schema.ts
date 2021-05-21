@@ -14,11 +14,7 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
     readonly stats: { words: number; readonly views: number; likes: number; dislikes: number; readonly comments: number };
 
     @Prop(raw({
-        published: { type: String, enum: Object.keys(PubStatus), default: 'Unpublished' },
-        publishedOn: { type: Date, default: null },
         releaseOn: { type: Date, default: null },
-        hasComments: { type: Boolean, default: true },
-        isDeleted: { type: Boolean, default: false },
     }))
     audit: {
         published: PubStatus;

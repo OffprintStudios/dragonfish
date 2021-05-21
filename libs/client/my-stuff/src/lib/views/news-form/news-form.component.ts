@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { ContentKind, ContentRating, NewsForm } from '@dragonfish/shared/models/content';
+import {
+    ContentKind,
+    ContentModel,
+    ContentRating,
+    NewsForm,
+    PubChange,
+    PubStatus,
+} from '@dragonfish/shared/models/content';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NewsCategory, NewsContentModel } from '@dragonfish/shared/models/content';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { AlertsService } from '@dragonfish/client/alerts';
-import { MyStuffService } from '../../repo/services';
-import { MyStuffState } from '../../repo';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
+import { MyStuffService, MyStuffQuery } from '@dragonfish/client/repository/my-stuff';
+import { Router } from '@angular/router';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
 
 @UntilDestroy()
 @Component({
@@ -17,11 +24,11 @@ import { Select } from '@ngxs/store';
     styleUrls: ['./news-form.component.scss'],
 })
 export class NewsFormComponent implements OnInit {
-    @Select(MyStuffState.currContent) currContent$: Observable<NewsContentModel>;
     formTitle = `Create a Newspost`;
     editMode = false;
     ratings = ContentRating;
     categories = NewsCategory;
+    pubStatus = PubStatus;
 
     postForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
@@ -29,10 +36,16 @@ export class NewsFormComponent implements OnInit {
         category: new FormControl(null, [Validators.required]),
     });
 
-    constructor(private alerts: AlertsService, private stuff: MyStuffService) {}
+    constructor(
+        private alerts: AlertsService,
+        private stuff: MyStuffService,
+        public stuffQuery: MyStuffQuery,
+        private router: Router,
+        private dialog: MatDialog,
+    ) {}
 
     ngOnInit(): void {
-        this.currContent$.pipe(untilDestroyed(this)).subscribe((content) => {
+        this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: NewsContentModel) => {
             if (content !== null) {
                 this.formTitle = `Viewing "${content.title}"`;
                 this.postForm.setValue({
@@ -55,12 +68,44 @@ export class NewsFormComponent implements OnInit {
         return this.postForm.controls;
     }
 
-    switchView() {
-        if (this.editMode === true) {
-            this.editMode = false;
-        } else {
-            this.editMode = true;
-        }
+    goBack() {
+        this.router.navigate(['/my-stuff'])
+    }
+
+    switchView = () => this.editMode = !this.editMode;
+
+    /**
+     * Sends a request to publish the specified content given its info.
+     *
+     * @param content The content to publish
+     */
+    publish(content: ContentModel) {
+        const pubChange: PubChange = {
+            oldStatus: content.audit.published,
+            newStatus: content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished,
+        };
+
+        this.stuff.publish(content._id, pubChange).subscribe();
+    }
+
+    /**
+     * Asks if a user really wants to delete the specified content. If yes,
+     * sends a request to delete the specified content given its ID. If no,
+     * does nothing.
+     */
+    deleteContent(content: ContentModel) {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().pipe(untilDestroyed(this)).subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.stuff.delete(content._id).subscribe(() => {
+                    this.router.navigate(['/my-stuff'])
+                });
+            }
+        });
     }
 
     submitForm(contentId?: string) {
@@ -76,10 +121,14 @@ export class NewsFormComponent implements OnInit {
         };
 
         if (contentId) {
-            this.editMode = false;
-            this.stuff.saveContent(contentId, ContentKind.NewsContent, formData);
+            this.stuff.save(contentId, ContentKind.NewsContent, formData).subscribe(() => {
+                this.editMode = false;
+            });
         } else {
-            this.stuff.createContent(ContentKind.NewsContent, formData);
+            this.stuff.create(ContentKind.NewsContent, formData).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-post']);
+            });
         }
     }
 }
