@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { FandomTags } from "@dragonfish/shared/models/users";
+import { FandomTags, SimpleTag } from "@dragonfish/shared/models/users";
 import { nanoid } from 'nanoid';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'fandom_tags' })
@@ -14,17 +14,11 @@ export class FandomTagsDocument extends Document implements FandomTags {
     @Prop({ trim: true })
     desc: string;
 
-    @Prop({ default: null })
-    parent: {
-        _id: string;
-        name: string;
-    }
+    @Prop({ type: SimpleTag, default: null })
+    parent: SimpleTag;
 
-    @Prop({ default: null })
-    children: [{
-        _id: string;
-        name: string;
-    }]
+    @Prop({ type: [SimpleTag], default: [] })
+    children: [SimpleTag]
 
     @Prop()
     readonly createdAt: Date;

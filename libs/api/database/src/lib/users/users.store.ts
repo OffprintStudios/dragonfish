@@ -473,20 +473,35 @@ export class UsersStore {
             
             const newTag = new this.fandomTagsModel({
                 name: newFandomTag.name,
-                desc: newFandomTag.desc,
+                desc: "Parent ID is not null",
                 parent: {
                     _id: newFandomTag.parentId,
-                    name: parentDocument.name,
+                    name: parentDocument? parentDocument.name : "Couldn't find",
                 },
                 children: null
             })
 
-            return await newTag.save();
+            const savedTag: FandomTagsDocument = await newTag.save();
+
+            // update parent
+            await this.fandomTagsModel.updateOne(
+                { _id: savedTag.parent._id },
+                {
+                    $push: {
+                        children: {
+                            _id: savedTag._id,
+                            name: savedTag.name
+                        }
+                    }
+                }
+            )
+
+            return savedTag;
         }
 
         const newTag = new this.fandomTagsModel({
             name: newFandomTag.name,
-            desc: newFandomTag.desc,
+            desc: "Parent ID is null",
             parent: null,
             children: null
         })

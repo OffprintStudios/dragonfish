@@ -13,7 +13,8 @@ export class UsersManagementComponent implements OnInit {
     currTags: FandomTags[];
     tagForm = new FormGroup({
         name: new FormControl(null, [Validators.required]),
-    })
+        selectedTag: new FormControl(null, [Validators.required])
+    });
 
     constructor(private userManagement: UserManagementService) {}
 
@@ -46,6 +47,14 @@ export class UsersManagementComponent implements OnInit {
     }
 
     createFandomTagAsChildOfSelected() {
+        const newFandomTag: CreateFandomTag = {
+            name: this.tagForm.controls.name.value,
+            desc: "Child description",
+            parentId: this.tagForm.controls.selectedTag.value
+        }
 
+        this.userManagement.createFandomTag(newFandomTag).subscribe(tag => {
+            this.fetchAllFandomTags();
+        });
     }
 }

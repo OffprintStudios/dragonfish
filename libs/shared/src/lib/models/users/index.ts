@@ -18,3 +18,4 @@ export { InviteCodes } from './invite-codes.model';
 
 export { FandomTags } from './fandom-tags.model';
 export { CreateFandomTag } from './create-fandom-tag.model';
+export { SimpleTag } from './simple-tag.model';
