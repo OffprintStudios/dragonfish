@@ -1,15 +1,18 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FrontendUser, ThemePref } from '@dragonfish/shared/models/users';
+import { ThemePref } from '@dragonfish/shared/models/users';
 import { ElectronService } from 'ngx-electron';
-import { GlobalState } from '@dragonfish/client/repository/global';
 import { SidenavService } from './services';
 import { NavigationStart, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { delay } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
+import { AuthService } from '@dragonfish/client/repository/session/services';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -19,21 +22,22 @@ import { delay } from 'rxjs/operators';
 })
 export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild('sidenav') public sidenav: MatSidenav;
-    @Select(GlobalState.theme) theme$: Observable<ThemePref>;
 
     constructor(
+        private auth: AuthService,
+        private dialog: MatDialog,
         public electron: ElectronService,
         public sidenavService: SidenavService,
         private router: Router,
         public sessionQuery: SessionQuery,
+        private appQuery: AppQuery,
     ) {}
 
     ngOnInit(): void {
-        this.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
+        this.appQuery.theme$.pipe(untilDestroyed(this), delay(600)).subscribe(theme => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
             const html = document.getElementsByTagName('html')[0];
-            console.log(typeof ThemePref[theme]);
             if (ThemePref[theme] !== null && ThemePref[theme] !== undefined) {
                 if (
                     ThemePref[theme] == 'dark-aqua' ||
@@ -53,13 +57,32 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.router.events.pipe(untilDestroyed(this)).subscribe(event => {
+        this.router.events.pipe(untilDestroyed(this), delay(300)).subscribe(event => {
             if (this.sidenav) {
                 if (event instanceof NavigationStart) {
                     this.sidenavService.close();
                 }
             }
         });
+    }
+
+    logout() {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to log out?',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
+            if (wantsToLogOut) {
+                this.auth.logout().subscribe(() => {
+                    this.sidenavService.close();
+                });
+            }
+        });
+    }
+
+    openAuthModal() {
+        this.dialog.open(AuthModalComponent);
     }
 
     ngAfterViewInit() {
