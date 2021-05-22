@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { NewsContentModel, NewsCategory, ContentKind, ContentFilter } from '@dragonfish/shared/models/content';
+import { NewsContentModel, NewsCategory, ContentKind } from '@dragonfish/shared/models/content';
 import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { SelectSnapshot } from '@ngxs-labs/select-snapshot';
-import { GlobalState } from '@dragonfish/client/repository/global';
 import { delay } from 'rxjs/operators';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -16,14 +15,17 @@ import { delay } from 'rxjs/operators';
     styleUrls: ['./news-feed.component.scss'],
 })
 export class NewsFeedComponent implements OnInit {
-    @SelectSnapshot(GlobalState.filter) filter: ContentFilter;
-
     posts: PaginateResult<NewsContentModel>;
     pageNum = 1;
     category = NewsCategory;
     loading = false;
 
-    constructor(private route: ActivatedRoute, private router: Router, private network: DragonfishNetworkService) {}
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private network: DragonfishNetworkService,
+        private appQuery: AppQuery,
+    ) {}
 
     ngOnInit(): void {
         this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
@@ -44,7 +46,7 @@ export class NewsFeedComponent implements OnInit {
      */
     private fetchData(pageNum: number) {
         this.loading = true;
-        this.network.fetchAllNew(pageNum, [ContentKind.NewsContent], this.filter)
+        this.network.fetchAllNew(pageNum, [ContentKind.NewsContent], this.appQuery.filter)
             .pipe(delay(500))
             .subscribe(result => {
                 this.posts = result as PaginateResult<NewsContentModel>;
