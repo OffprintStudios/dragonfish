@@ -1,4 +1,90 @@
-<nav class="h-full relative top-auto left-0 flex flex-col shadow-2xl py-2 z-50">
+<nav class="mobile">
+    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogIn">
+        <ng-container *ngIf="sidenavService.isOpened; else notOpened">
+            <a class="link active close-avatar" (click)="sidenavService.toggle()">
+                <span class="link-icon"><i-feather name="x"></i-feather></span>
+            </a>
+        </ng-container>
+        <ng-template #notOpened>
+            <a
+                class="link avatar"
+                (click)="sidenavService.toggle()"
+            >
+                <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
+            </a>
+        </ng-template>
+    </ng-container>
+    <ng-template #noUserLogIn>
+        <a
+            class="link"
+            [matTooltip]="'Log In'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+            (click)="openAuthModal()"
+        >
+            <span class="link-icon"><i-feather name="log-in"></i-feather></span>
+        </a>
+    </ng-template>
+    <ng-container *ngIf="sidenavService.isOpened; else noSidenav">
+        <a class="link">
+            <span class="link-icon"><i-feather name="home"></i-feather></span>
+        </a>
+        <a class="link">
+            <span class="link-icon"><i-feather name="map"></i-feather></span>
+        </a>
+        <a class="link">
+            <span class="link-icon"><i-feather name="users"></i-feather></span>
+        </a>
+        <a class="link">
+            <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
+        </a>
+    </ng-container>
+    <ng-template #noSidenav>
+        <a
+            class="link"
+            [routerLink]="['/']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [matTooltip]="'Home'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="home"></i-feather></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/browse']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'Browse'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="map"></i-feather></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/social']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'Social'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="users"></i-feather></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/docs']"
+            [routerLinkActive]="sidenavService.isOpened ? '' : 'active'"
+            [matTooltip]="'More'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
+        </a>
+    </ng-template>
+</nav>
+
+<nav class="desktop h-full relative top-auto left-0 flex flex-col shadow-2xl py-2 z-50">
     <div class="py-3" style="-webkit-app-region: drag" *ngIf="electron.isElectronApp">
         <!--spacer-->
     </div>

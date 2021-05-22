@@ -1,6 +1,10 @@
-nav {
+nav.desktop {
     z-index: 50;
     background: var(--accent-dark);
+
+    @media (max-width: 1020px) {
+        @apply hidden;
+    }
 
     button.link {
         border: none;
@@ -77,6 +81,39 @@ nav {
             max-width: 35px;
             border: 1px solid whitesmoke;
             border-radius: 0.375rem;
+        }
+    }
+}
+
+nav.mobile {
+    z-index: 50;
+    background: var(--accent-dark);
+    @apply hidden;
+    @media (max-width: 1020px) {
+        @apply flex flex-row items-center justify-between pt-1 pb-2 px-1.5 absolute bottom-0 z-50 w-full shadow-xl;
+    }
+
+    a.link {
+        padding: 5px 10px;
+        border: 2px solid transparent;
+        @apply rounded-md;
+        &:hover {
+            border-color: white;
+        }
+        &.active {
+            border-color: white;
+        }
+        img.avatar {
+            max-width: 26px;
+            @apply rounded-md;
+        }
+        span.link-icon {
+            @apply relative top-0.5;
+            i-feather {
+                width: 24px;
+                stroke-width: 1;
+                color: white;
+            }
         }
     }
 }

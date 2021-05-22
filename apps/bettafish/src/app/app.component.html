@@ -3,7 +3,25 @@
 </ng-container>
 
 <ng-template #isInBrowser>
-    <div class="lg:hidden">
+    <main class="content flex">
+        <dragonfish-nav></dragonfish-nav>
+        <mat-drawer-container autosize>
+            <mat-drawer
+                #sidenav
+                class="offprint-sidenav"
+                mode="over"
+                (openedStart)="sidenavService.setCurrState()"
+                (closedStart)="sidenavService.setCurrState()"
+            >
+                <dragonfish-sidenav></dragonfish-sidenav>
+            </mat-drawer>
+            <div class="outlet">
+                <router-outlet></router-outlet>
+            </div>
+        </mat-drawer-container>
+    </main>
+
+    <!--<div class="lg:hidden">
         <header class="mobile-header">
             <h1 class="logo">
                 <a [routerLink]="['/home']">Offprint</a>
@@ -45,5 +63,5 @@
                 <div class="h-40"></div>
             </div>
         </mat-drawer-container>
-    </main>
+    </main>-->
 </ng-template>
