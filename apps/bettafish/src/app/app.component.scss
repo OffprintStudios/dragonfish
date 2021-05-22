@@ -2,6 +2,17 @@ main {
 	color: var(--text-color);
 	font-family: var(--body-text);
 	background-color: var(--background);
+    @apply flex-row;
+    @media (max-width: 1020px) {
+        @apply flex-col;
+    }
+
+    div.outlet {
+        @apply flex-auto h-screen;
+        @media (max-width: 1020px) {
+            height: calc(100vh - 3.516rem);
+        }
+    }
 }
 
 .mobile-header {

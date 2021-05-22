@@ -43,6 +43,9 @@ div.search-field {
             --tw-ring-color: var(--accent);
             border: 1px solid whitesmoke;
             @apply w-64 shadow-md transition-all;
+            @media (max-width: 1020px) {
+                @apply w-56
+            }
         }
         &:not(:focus) {
             @apply transition-all;

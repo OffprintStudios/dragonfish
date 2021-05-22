@@ -1,4 +1,4 @@
-<ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+<ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else login">
     <div class="sidenav flex flex-col h-full relative">
         <div class="sticky top-0 shadow-2xl z-40">
             <div class="header flex flex-row items-center p-6 pl-3 pb-0">
@@ -76,3 +76,42 @@
         </button>
     </mat-menu>
 </ng-container>
+
+<ng-template #login>
+    <div class="sidenav flex flex-col h-full relative">
+        <div class="sticky top-0 shadow-2xl z-40">
+            <div class="header flex flex-row items-center p-4 pl-3 pb-2.5">
+                <div class="user-header no-hover">
+                    <h3 class="text-3xl text-white font-medium relative top-1.5">Welcome!</h3>
+                </div>
+                <div class="flex-1"><!--spacer--></div>
+                <div
+                    class="tab select-none"
+                    [ngClass]="selectedAuthTab === authTabs.Login ? 'active' : ''"
+                    (click)="switchAuthTab(authTabs.Login)"
+                >
+                    <i-feather name="log-in" class="mr-1 text-white"></i-feather>
+                    <div class="text-sm text-white">Log In</div>
+                </div>
+                <div
+                    class="tab select-none"
+                    [ngClass]="selectedAuthTab === authTabs.Register ? 'active' : ''"
+                    (click)="switchAuthTab(authTabs.Register)"
+                >
+                    <i-feather name="user-plus" class="mr-1 text-white"></i-feather>
+                    <div class="text-sm text-white">Register</div>
+                </div>
+            </div>
+        </div>
+        <div class="body flex-1 h-full mb-4 mx-3.5">
+            <ng-container [ngSwitch]="selectedAuthTab">
+                <ng-container *ngSwitchCase="authTabs.Login">
+                    <dragonfish-login-form (isSuccess)="closeSidenav($event)"></dragonfish-login-form>
+                </ng-container>
+                <ng-container *ngSwitchCase="authTabs.Register">
+                    <dragonfish-register-form (isSuccess)="closeSidenav($event)"></dragonfish-register-form>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>
