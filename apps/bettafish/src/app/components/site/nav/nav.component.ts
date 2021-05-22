@@ -20,7 +20,7 @@ export class NavComponent {
         public sessionQuery: SessionQuery,
     ) {}
 
-    openAuthModal() {
+    openSidenav() {
         this.dialog.open(AuthModalComponent);
     }
 

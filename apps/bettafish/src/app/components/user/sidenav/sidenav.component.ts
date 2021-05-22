@@ -12,6 +12,11 @@ enum UserTabs {
     History,
 }
 
+enum AuthTabs {
+    Login,
+    Register,
+}
+
 @Component({
     selector: 'dragonfish-sidenav',
     templateUrl: './sidenav.component.html',
@@ -21,6 +26,8 @@ export class SidenavComponent {
     moreMenuOpened = false;
     userTabs = UserTabs;
     selectedTab = UserTabs.Notifications;
+    authTabs = AuthTabs;
+    selectedAuthTab = AuthTabs.Login;
 
     constructor(
         private auth: AuthService,
@@ -35,6 +42,16 @@ export class SidenavComponent {
 
     switchUserTab(newTab: UserTabs) {
         this.selectedTab = newTab;
+    }
+
+    switchAuthTab(newTab: AuthTabs) {
+        this.selectedAuthTab = newTab;
+    }
+
+    closeSidenav(event: boolean) {
+        if (event) {
+            this.sidenavService.close();
+        }
     }
 
     logout() {

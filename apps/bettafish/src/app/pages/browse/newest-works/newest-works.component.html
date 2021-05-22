@@ -1,9 +1,9 @@
 <div class="newest-works-nav shadow-lg sticky top-0 z-40 mb-8">
-    <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
-        <button class="go-back border-none rounded-full shadow-none p-2.5" [routerLink]="['/browse']">
-            <i-feather name="chevron-left" class="text-white relative top-0.5 mr-4"></i-feather>
+    <div class="lg:mx-6 md:mx-3 py-4 flex flex-row items-center">
+        <button class="go-back border-none rounded-full shadow-none px-2 py-1.5" [routerLink]="['/browse']">
+            <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
         </button>
-        <h3 class="text-4xl text-white relative top-1.5 font-semibold">
+        <h3 class="text-3xl text-white relative top-1 font-medium">
             Newest Works
         </h3>
         <div class="flex-1"><!--spacer--></div>
@@ -17,7 +17,7 @@
 </ng-container>
 
 <ng-template #notLoading>
-    <div class="grid grid-cols-3 gap-4 mb-4 w-11/12 mx-auto">
+    <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4 w-11/12 mx-auto">
         <ng-container *ngFor="let work of works.docs | paginate: {itemsPerPage: works.limit, currentPage: pageNum, totalItems: works.totalDocs}">
             <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
         </ng-container>

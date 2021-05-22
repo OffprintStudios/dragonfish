@@ -2,6 +2,9 @@ div.sidenav {
     min-width: 24rem;
     background: var(--background);
     color: var(--text-color);
+    @media (max-width: 1020px) {
+        min-width: 23rem;
+    }
     div.header {
         background: var(--accent);
         img.avatar {
@@ -30,6 +33,12 @@ div.sidenav {
             &:hover {
                 background: var(--accent-dark);
             }
+            &.no-hover {
+                cursor: default;
+                &:hover {
+                    background: var(--accent);
+                }
+            }
         }
     }
     div.tab {
@@ -56,5 +65,8 @@ div.sidenav {
     }
     div.body {
         background: var(--background);
+        @media(max-width: 1020px) {
+            height: calc(100vh - 3.516rem);
+        }
     }
 }

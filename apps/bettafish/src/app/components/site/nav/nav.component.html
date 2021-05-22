@@ -1,11 +1,11 @@
 <nav class="mobile">
-    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogIn">
-        <ng-container *ngIf="sidenavService.isOpened; else notOpened">
+    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogInMobile">
+        <ng-container *ngIf="sidenavService.isOpened; else notOpenedMobile">
             <a class="link active close-avatar" (click)="sidenavService.toggle()">
                 <span class="link-icon"><i-feather name="x"></i-feather></span>
             </a>
         </ng-container>
-        <ng-template #notOpened>
+        <ng-template #notOpenedMobile>
             <a
                 class="link avatar"
                 (click)="sidenavService.toggle()"
@@ -14,18 +14,25 @@
             </a>
         </ng-template>
     </ng-container>
-    <ng-template #noUserLogIn>
-        <a
-            class="link"
-            [matTooltip]="'Log In'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-            (click)="openAuthModal()"
-        >
-            <span class="link-icon"><i-feather name="log-in"></i-feather></span>
-        </a>
+    <ng-template #noUserLogInMobile>
+        <ng-container *ngIf="sidenavService.isOpened; else notOpenedMobileLogin">
+            <a class="link active" (click)="sidenavService.toggle()">
+                <span class="link-icon"><i-feather name="x"></i-feather></span>
+            </a>
+        </ng-container>
+        <ng-template #notOpenedMobileLogin>
+            <a
+                class="link"
+                [matTooltip]="'Log In'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (click)="sidenavService.toggle()"
+            >
+                <span class="link-icon"><i-feather name="log-in"></i-feather></span>
+            </a>
+        </ng-template>
     </ng-template>
-    <ng-container *ngIf="sidenavService.isOpened; else noSidenav">
+    <ng-container *ngIf="sidenavService.isOpened; else noSidenavMobile">
         <a class="link">
             <span class="link-icon"><i-feather name="home"></i-feather></span>
         </a>
@@ -39,7 +46,7 @@
             <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
         </a>
     </ng-container>
-    <ng-template #noSidenav>
+    <ng-template #noSidenavMobile>
         <a
             class="link"
             [routerLink]="['/']"
@@ -104,15 +111,22 @@
         </ng-template>
     </ng-container>
     <ng-template #noUserLogIn>
-        <button
-            class="link"
-            [matTooltip]="'Log In'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-            (click)="openAuthModal()"
-        >
-            <span class="link-icon"><i-feather name="log-in"></i-feather></span>
-        </button>
+        <ng-container *ngIf="sidenavService.isOpened; else notOpenedLogin">
+            <a class="link active" (click)="sidenavService.toggle()">
+                <span class="link-icon"><i-feather name="x"></i-feather></span>
+            </a>
+        </ng-container>
+        <ng-template #notOpenedLogin>
+            <a
+                class="link"
+                [matTooltip]="'Log In'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (click)="sidenavService.toggle()"
+            >
+                <span class="link-icon"><i-feather name="log-in"></i-feather></span>
+            </a>
+        </ng-template>
     </ng-template>
     <ng-container *ngIf="sidenavService.isOpened; else noSidenav">
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
@@ -169,7 +183,7 @@
                 <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
             </a>
         </ng-container>
-        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <div class="my-2.5 border-b border-white mx-2"></div>
         <a
             class="link"
             [routerLink]="['/']"

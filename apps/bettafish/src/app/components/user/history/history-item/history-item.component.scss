@@ -1,6 +1,9 @@
 div.history-item {
     border: 1px solid var(--borders);
     width: 350px;
+    @media(max-width: 1020px) {
+        width: 325px;
+    }
     div.check-box {
         border-right: 1px solid var(--borders);
         &:hover {
@@ -24,6 +27,9 @@ div.history-item {
         /* Required for text-overflow to do anything */
         white-space: nowrap;
         overflow: hidden;
+        @media(max-width: 1020px) {
+            width: 225px;
+        }
     }
     div.work-info {
         flex: 1;

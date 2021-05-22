@@ -102,6 +102,11 @@ nav.mobile {
         }
         &.active {
             border-color: white;
+            background: var(--accent);
+            @apply shadow-lg transition-all;
+        }
+        &.avatar {
+            padding: 5px 9px;
         }
         img.avatar {
             max-width: 26px;
