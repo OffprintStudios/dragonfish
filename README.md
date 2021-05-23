@@ -28,6 +28,20 @@ For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 - The NestJS CLI 7.6.5 or higher (globally, via Yarn)
 - The `nx` CLI (globally, via Yarn)
 
+### CKEditor
+
+We use CKEditor 5 as the editor for writing stories. We use our own custom build of it, and we have it included as a submodule. While not necessary for everyday development, if you want to modify or extend the story editor, there's a good chance you'll need to work on it and recompile it directly. In that case, you'll need to initialize its submodule:
+
+```
+git submodule update --init --recursive
+```
+
+If you already initialized the submodule, you can just use 
+
+```
+git submodule update
+```
+
 ## Building the application
 
 Once you've installed and verified that these dependencies are working as expected...
@@ -42,6 +56,14 @@ Once you've installed and verified that these dependencies are working as expect
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
 
 VS Code is the recommended editor.
+
+### Compiling a new version of the editor
+
+If you've made changes to the CKEditor, you'll need to recompile it, and include the compiled artifacts in the main repo. To do so, run
+
+```
+TBD, GOTTA WRITE THIS
+```
 
 ## Running the application
 
