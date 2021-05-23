@@ -1,7 +1,6 @@
 import { Roles } from './roles.enum';
 export interface FrontendUser {
     readonly _id: string;
-    readonly email: string;
     readonly username: string;
     readonly profile: {
         readonly avatar: string;

@@ -28,8 +28,8 @@ export class AccountComponent implements OnInit {
 
     ngOnInit(): void {
         this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
-            this.changeEmailForm.setValue({
-                email: user.email,
+            this.changeEmailForm.patchValue({
+                email: '',
                 currPassword: '',
             });
             this.changePasswordForm.setValue({
