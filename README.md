@@ -59,11 +59,33 @@ VS Code is the recommended editor.
 
 ### Compiling a new version of the editor
 
-If you've made changes to the CKEditor, you'll need to recompile it, and include the compiled artifacts in the main repo. To do so, run
+If you've made changes to CKEditor, you'll need to recompile it, and include the compiled artifacts in the main repo. To do so, you must make changes to our custom build of CKEditor. It can be found in
 
 ```
-TBD, GOTTA WRITE THIS
+/ckeditor5/packages/ckeditor5-build-offprint`
 ```
+
+Once you've made your desired changes to CKEditor, it must be recompiled, and replaced in the main `dragonfish` repo. To do that:
+
+```bash
+# Navigate to the custom build folder
+> cd ckeditor5/packages/ckeditor5-build-offprint
+
+# Install its dependencies. WARNING: THIS MIGHT REQUIRE PYTHON 2. Node-gyp will first look for an executable named 
+# 'python2'. If it doesn't find that, it will try to use 'python'. If this is a Python 3 executable, the build will fail.
+# You can work around this by installing Python 2, ensuring it is in your PATH, 
+# and renaming its 'python' executable to 'python2'. Shockingly, this works.
+yarn install
+
+# Build the editor
+yarn build
+```
+
+The resulting editor files will be generated in `/ckeditor5/packages/ckeditor5-build-offprint/build`.
+
+In order to ensure that your new editor actually _works_, you can view the test HTML page in `ckeditor5/packages/ckeditor5-build-offprint/sample/`, with a browser, which is set up to try to run it automatically.
+
+Once you're sure the editor works, copy `ckeditor.js` and `ckeditor.js.map` over to `/libs/client/editor/src/lib`, and replace the old files.
 
 ## Running the application
 
