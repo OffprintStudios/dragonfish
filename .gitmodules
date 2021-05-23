@@ -1,4 +1,3 @@
 [submodule "ckeditor5"]
 	path = ckeditor5
 	url = git@github.com:OffprintStudios/ckeditor5.git
-
