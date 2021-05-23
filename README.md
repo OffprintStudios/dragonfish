@@ -28,6 +28,20 @@ For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 - The NestJS CLI 7.6.5 or higher (globally, via Yarn)
 - The `nx` CLI (globally, via Yarn)
 
+### CKEditor
+
+We use CKEditor 5 as the editor for writing stories. We use our own custom build of it, and we have it included as a submodule. While not necessary for everyday development, if you want to modify or extend the story editor, there's a good chance you'll need to work on it and recompile it directly. In that case, you'll need to initialize its submodule:
+
+```
+git submodule update --init --recursive
+```
+
+If you already initialized the submodule, you can just use 
+
+```
+git submodule update
+```
+
 ## Building the application
 
 Once you've installed and verified that these dependencies are working as expected...
@@ -42,6 +56,42 @@ Once you've installed and verified that these dependencies are working as expect
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
 
 VS Code is the recommended editor.
+
+### Editing our fork of CKEditor
+
+We use a custom build of CKEditor, which is kept in this repository as a git submodule. If you'd like to makes changes to it, make sure you've initialized the submodule, as explained above.
+
+If you want to make any changes to it, you should branch off the submodule's `offprint` branch and, once done, open up a PR in the [forked repo](https://github.com/OffprintStudios/ckeditor5) on GitHub.
+
+### Compiling a new version of the editor
+
+If there are changes to our CKEditor fork, and you want to include those in Offprint, you'll need to recompile it. First, ensure the submodule is initialized as explained above. Then, ensure it is up to date:
+
+```bash
+git pull --recurse-submodules
+```
+
+Once you have the latest version, it must be recompiled, and replaced in the main `dragonfish` repo. To do that:
+
+```bash
+# Navigate to the custom build folder
+> cd ckeditor5/packages/ckeditor5-build-offprint
+
+# Install its dependencies. WARNING: THIS MIGHT REQUIRE PYTHON 2. Node-gyp will first look for an executable named 
+# 'python2'. If it doesn't find that, it will try to use 'python'. If this is a Python 3 executable, the build will fail.
+# You can work around this by installing Python 2, ensuring it is in your PATH, 
+# and renaming its 'python' executable to 'python2'. Shockingly, this works.
+yarn install
+
+# Build the editor
+yarn build
+```
+
+The resulting editor files will be generated in `/ckeditor5/packages/ckeditor5-build-offprint/build`.
+
+In order to ensure that your new editor actually _works_, you can view the test HTML page in `ckeditor5/packages/ckeditor5-build-offprint/sample/`, with a browser, which is set up to try to run it automatically.
+
+Once you're sure the editor works, copy `ckeditor.js` and `ckeditor.js.map` over to `/libs/client/editor/src/lib`, and replace the old files.
 
 ## Running the application
 
