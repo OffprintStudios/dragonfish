@@ -57,15 +57,21 @@ When you're starting the development server with `nx serve client`, make sure to
 
 VS Code is the recommended editor.
 
+### Editing our fork of CKEditor
+
+We use a custom build of CKEditor, which is kept in this repository as a git submodule. If you'd like to makes changes to it, make sure you've initialized the submodule, as explained above.
+
+If you want to make any changes to it, you should branch off the submodule's `offprint` branch and, once done, open up a PR in the [forked repo](https://github.com/OffprintStudios/ckeditor5) on GitHub.
+
 ### Compiling a new version of the editor
 
-If you've made changes to CKEditor, you'll need to recompile it, and include the compiled artifacts in the main repo. To do so, you must make changes to our custom build of CKEditor. It can be found in
+If there are changes to our CKEditor fork, and you want to include those in Offprint, you'll need to recompile it. First, ensure the submodule is initialized as explained above. Then, ensure it is up to date:
 
-```
-/ckeditor5/packages/ckeditor5-build-offprint`
+```bash
+git pull --recurse-submodules
 ```
 
-Once you've made your desired changes to CKEditor, it must be recompiled, and replaced in the main `dragonfish` repo. To do that:
+Once you have the latest version, it must be recompiled, and replaced in the main `dragonfish` repo. To do that:
 
 ```bash
 # Navigate to the custom build folder
