@@ -133,7 +133,6 @@ export class UsersStore {
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
         return this.userModel.updateOne(
             { _id: userId },
-            //@ts-ignore
             { $pull: { 'audit.sessions': { '_id': hashedSessionId } } }
         );
     }
@@ -147,7 +146,6 @@ export class UsersStore {
     async buildFrontendUser(user: models.User, newToken?: string): Promise<models.FrontendUser> {
         return {
             _id: user._id,
-            email: user.email,
             username: user.username,
             profile: {
                 avatar: user.profile.avatar,
