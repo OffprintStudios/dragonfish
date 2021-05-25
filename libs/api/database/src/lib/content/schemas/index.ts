@@ -5,6 +5,7 @@ import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
+import { TagsSchema } from './tags.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { countWords, stripTags } from 'voca';
@@ -19,6 +20,7 @@ export { ProseContentDocument, ProseContentSchema } from './prose-content.schema
 export { RatingsDocument, RatingsSchema } from './ratings.schema';
 export { ReadingHistoryDocument, ReadingHistorySchema } from './reading-history.schema';
 export { SectionsDocument, SectionsSchema } from './sections.schema';
+export { TagsDocument, ChildTagsDocument, TagsSchema, ChildTagsSchema } from './tags.schema';
 
 //#endregion
 
@@ -95,6 +97,13 @@ export async function setupReadingHistoryCollection() {
     schema.plugin(MongoosePaginate);
 
     return schema;
+}
+
+/**
+ * Sets up the tags collection.
+ */
+export async function setupTagsCollection() {
+    return TagsSchema;
 }
 
 //#endregion

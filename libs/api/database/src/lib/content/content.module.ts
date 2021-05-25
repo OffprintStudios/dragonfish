@@ -33,6 +33,10 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
             {
                 name: 'Sections',
                 useFactory: Schemas.setupSectionsCollection,
+            },
+            {
+                name: 'Tags',
+                useFactory: Schemas.setupTagsCollection,
             }
         ])
     ],
@@ -46,6 +50,7 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
         Stores.NewsStore,
         Stores.PoetryStore,
         Stores.ProseStore,
+        Stores.TagsStore,
     ],
     exports: [
         Stores.ContentStore,
@@ -57,6 +62,7 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
         Stores.NewsStore,
         Stores.PoetryStore,
         Stores.ProseStore,
+        Stores.TagsStore,
     ]
 })
 export class ContentModule {}
