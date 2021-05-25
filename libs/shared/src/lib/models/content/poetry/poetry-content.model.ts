@@ -5,6 +5,7 @@ import { Genres } from '../genres.enum';
 import { ContentRating } from '../content-rating.enum';
 import { WorkStatus } from '../work-status.enum';
 import { PoetryForm } from './poetry-form.enum';
+import { TagReference } from '../tag-reference.model';
 
 export interface PoetryContent extends ContentModel {
     sections?: string[] | SectionInfo[];
@@ -12,7 +13,7 @@ export interface PoetryContent extends ContentModel {
         category: WorkKind;
         form: PoetryForm;
         collection: boolean;
-        fandoms?: string[];
+        fandoms: TagReference[] | null;
         genres: Genres[];
         rating: ContentRating;
         status: WorkStatus;

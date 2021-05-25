@@ -20,7 +20,8 @@ export { ProseContentDocument, ProseContentSchema } from './prose-content.schema
 export { RatingsDocument, RatingsSchema } from './ratings.schema';
 export { ReadingHistoryDocument, ReadingHistorySchema } from './reading-history.schema';
 export { SectionsDocument, SectionsSchema } from './sections.schema';
-export { TagsDocument, ChildTagsDocument, TagsSchema, ChildTagsSchema } from './tags.schema';
+export { TagsDocument, ChildTags, TagsSchema, ChildTagsSchema } from './tags.schema';
+export { TagReferenceDocument, TagReferenceSchema } from './tag-reference.schema';
 
 //#endregion
 

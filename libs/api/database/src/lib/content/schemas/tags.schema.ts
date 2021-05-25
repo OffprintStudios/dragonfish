@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { nanoid } from 'nanoid';
-import { ChildTagsModel, TagsModel } from '@dragonfish/shared/models/content';
+import { ChildTagsModel, TagsModel, TagKind } from '@dragonfish/shared/models/content';
 
 @Schema({ timestamps: true })
 export class ChildTags extends Types.Subdocument implements ChildTagsModel {
@@ -36,6 +36,9 @@ export class TagsDocument extends Document implements TagsModel {
 
     @Prop({ type: [ChildTagsSchema], default: [] })
     children: ChildTags[];
+
+    @Prop({ type: String, enum: Object.keys(TagKind), required: true })
+    readonly kind: TagKind;
 
     @Prop()
     readonly createdAt: Date;

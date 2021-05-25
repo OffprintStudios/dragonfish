@@ -11,6 +11,7 @@ import {
     PubStatus,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
+import { TagReferenceDocument, TagReferenceSchema } from './tag-reference.schema';
 
 @Schema()
 export class ProseContentDocument extends Document implements ProseContent {
@@ -27,14 +28,14 @@ export class ProseContentDocument extends Document implements ProseContent {
 
     @Prop(raw({
         category: { type: String, enum: Object.keys(WorkKind), required: true },
-        fandoms: { type: [String], default: null },
+        fandoms: { type: [TagReferenceSchema], default: null },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
     }))
     meta: {
         category: WorkKind;
-        fandoms?: string[];
+        fandoms: TagReferenceDocument[] | null;
         genres: Genres[];
         rating: ContentRating;
         warnings: string[];

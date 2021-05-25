@@ -10,8 +10,10 @@ import {
     ContentKind,
     PubStatus,
     PoetryForm,
+    TagReference,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
+import { TagReferenceDocument, TagReferenceSchema } from './tag-reference.schema';
 
 @Schema()
 export class PoetryContentDocument extends Document implements PoetryContent {
@@ -30,7 +32,7 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: { type: String, enum: Object.keys(WorkKind), required: true },
         form: { type: String, enum: Object.keys(PoetryForm), required: true },
         collection: { type: Boolean, default: false },
-        fandoms: { type: [String], default: null },
+        fandoms: { type: [TagReferenceSchema], default: null },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
@@ -39,7 +41,7 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: WorkKind;
         form: PoetryForm;
         collection: boolean;
-        fandoms?: string[];
+        fandoms: TagReferenceDocument[] | null;
         genres: Genres[];
         rating: ContentRating;
         status: WorkStatus;
