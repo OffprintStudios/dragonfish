@@ -19,7 +19,7 @@ export class SectionsService {
     public setAll(contentId: string) {
         return this.network.fetchSections(contentId).pipe(
             tap((result: Section[]) => {
-                this.sections.set(result);
+                this.sections.set(result.reverse());
             }),
             catchError(err => {
                 this.alerts.error(`Something went wrong fetching your content!`);
