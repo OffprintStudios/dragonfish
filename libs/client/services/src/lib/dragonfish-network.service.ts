@@ -5,7 +5,7 @@ import {
     ChangeUsername,
     CreateUser,
     FrontendUser,
-    LoginUser,
+    LoginUser, Roles,
     UpdateTagline,
     User,
 } from '@dragonfish/shared/models/users';
@@ -16,7 +16,8 @@ import {
     ContentKind,
     ContentModel, FormType,
     NewsContentModel, PubChange,
-    SetRating,
+    SetRating, TagKind, TagsForm,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -203,6 +204,79 @@ export class DragonfishNetworkService {
                 }),
             );
     }
+    //#endregion
+
+    //#region ---BROWSE---
+
+    /**
+     * Fetches the first few new works for the browse page.
+     * @param contentFilter The rating filter to apply to the fetch
+     */
+    public fetchFirstNew(contentFilter: ContentFilter) {
+        return handleResponse(
+            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
+                observe: 'response',
+                withCredentials: true,
+            })
+        );
+    }
+
+    /**
+     * Fetches all new works for the browse page.
+     *
+     * @param pageNum The current page
+     * @param kinds The kinds of work to fetch
+     * @param contentFilter The mature/explicit/etc. content filter to apply
+     */
+    public fetchAllNew(pageNum: number, kinds: ContentKind[], contentFilter: ContentFilter) {
+        const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
+        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
+
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
+        );
+    }
+
+    /**
+     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
+     * @param query The user's search string.
+     */
+    public searchInitialResults(query: string): Observable<InitialResults> {
+        return handleResponse(
+            this.http.get<InitialResults>(`${this.baseUrl}/search/get-initial-results?query=${query}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+        return handleResponse(
+            this.http.get<PaginateResult<User>>(
+                `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
     //#endregion
 
     //#region ---COLLECTIONS---
@@ -702,393 +776,6 @@ export class DragonfishNetworkService {
 
     //#endregion
 
-    //#region ---NEWS CONSUMPTION--
-
-    /**
-     * Gets the inital posts for the home page.
-     */
-    public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
-        return handleResponse(
-            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches a page of news results.
-     *
-     * @param pageNum The current page
-     */
-    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Grabs one newspost from the database.
-     *
-     * @param postId The post to fetch
-     */
-    public fetchNewsPost(postId: string) {
-        return handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---NOTIFICATIONS---
-
-    /**
-     * Gets all of the current user's notifications.
-     */
-    public fetchAllNotifications(): Observable<NotificationBase[]> {
-        return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Gets all of the current user's _unread_ notifications.
-     */
-    public fetchUnreadNotifications(): Observable<NotificationBase[]> {
-        return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/unread-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Marks the given notifications as read.
-     * @param toMark A list of notification IDs to mark as read.
-     */
-    public markNotificationsAsRead(toMark: MarkReadRequest): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(`${this.baseUrl}/notifications/mark-as-read`, toMark, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Gets a list of all the things the current user is subscribed to notifications for.
-     */
-    public fetchNotificationSubscriptions(): Observable<NotificationSubscription[]> {
-        return handleResponse(
-            this.http.get<NotificationSubscription[]>(`${this.baseUrl}/notifications/unread-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Subscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to subscribe to notifications for.
-     */
-    public subscribeToNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/subscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Unsubscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to unsubscribe from.
-     */
-    public unsubscribeFromNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/unsubscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    //#endregion
-
-    //#region ---BROWSE---
-
-    /**
-     * Fetches the first few new works for the browse page.
-     * @param contentFilter The rating filter to apply to the fetch
-     */
-    public fetchFirstNew(contentFilter: ContentFilter) {
-        return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-        );
-    }
-
-    /**
-     * Fetches all new works for the browse page.
-     *
-     * @param pageNum The current page
-     * @param kinds The kinds of work to fetch
-     * @param contentFilter The mature/explicit/etc. content filter to apply
-     */
-    public fetchAllNew(pageNum: number, kinds: ContentKind[], contentFilter: ContentFilter) {
-        const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
-        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
-
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
-        );
-    }
-
-    /**
-     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
-     * @param query The user's search string.
-     */
-    public searchInitialResults(query: string): Observable<InitialResults> {
-        return handleResponse(
-            this.http.get<InitialResults>(`${this.baseUrl}/search/get-initial-results?query=${query}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
-        return handleResponse(
-            this.http.get<PaginateResult<User>>(
-                `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    //#endregion
-
-    //#region ---STATS---
-
-    /**
-     * Fetches the stats for the footer.
-     */
-    public fetchFrontPageStats() {
-        return handleResponse(
-            this.http.get<FrontPageStats>(`${this.baseUrl}/meta/public-stats`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---USER---
-
-    /**
-     * Fetches the user whose portfolio the request belongs to.
-     *
-     * @param userId The user ID of a requested portfolio
-     */
-    public fetchUserInfo(userId: string): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.get<FrontendUser>(`${this.baseUrl}/user/get-user-info/${userId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches a specified user's profile for the portfolio home page.
-     *
-     * @param userId The user whose profile should be retrieved
-     * @param contentFilter The rating filter to apply to the user's content
-     */
-    public fetchUserProfile(userId: string, contentFilter: ContentFilter): Observable<{ works: ContentModel[], blogs: ContentModel[] }> {
-        return handleResponse(
-            this.http.get<{ works: ContentModel[], blogs: ContentModel[] }>(
-                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        )
-    }
-
-    /**
-     * Sends a request to change a user's email.
-     *
-     * @param newEmail The requested new email and current password.
-     */
-    public changeEmail(newEmail: ChangeEmail): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-email`, newEmail, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's username.
-     *
-     * @param newUsername The reuqested new username and current password.
-     */
-    public changeUsername(newUsername: ChangeUsername): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-username`, newUsername, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's password.
-     *
-     * @param newPasswordInfo The new password requested
-     */
-    public changePassword(newPasswordInfo: ChangePassword): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-password`, newPasswordInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's bio.
-     *
-     * @param newBioInfo The new profile info requested
-     */
-    public changeBio(newBioInfo: ChangeBio): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-bio`, newBioInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a message to the server instructing it to set the user's
-     * 'agreedToPolicies' field to true. On success, returns the updated
-     * user object.
-     */
-    public agreeToPolicies(): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.post<FrontendUser>(`${this.baseUrl}/user/agree-to-policies`, null, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Updates a user's tagline.
-     *
-     * @param tagline The new tagline
-     */
-    public updateTagline(tagline: UpdateTagline): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-tagline`, tagline, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---RATINGS---
-
-    public addOrFetchRatings(contentId: string) {
-        return handleResponse(
-            this.http.get<RatingsModel>(
-                `${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public addLike(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/add-like?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public addDislike(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/add-dislike?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public removeVote(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/set-no-vote?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    //#endregion
-
     //#region ---MY STUFF---
 
     /**
@@ -1273,6 +960,448 @@ export class DragonfishNetworkService {
                 pubStatus,
                 { observe: 'response', withCredentials: true },
             ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---NEWS CONSUMPTION--
+
+    /**
+     * Gets the inital posts for the home page.
+     */
+    public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
+        return handleResponse(
+            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches a page of news results.
+     *
+     * @param pageNum The current page
+     */
+    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Grabs one newspost from the database.
+     *
+     * @param postId The post to fetch
+     */
+    public fetchNewsPost(postId: string) {
+        return handleResponse(
+            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---NOTIFICATIONS---
+
+    /**
+     * Gets all of the current user's notifications.
+     */
+    public fetchAllNotifications(): Observable<NotificationBase[]> {
+        return handleResponse(
+            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-notifications`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Gets all of the current user's _unread_ notifications.
+     */
+    public fetchUnreadNotifications(): Observable<NotificationBase[]> {
+        return handleResponse(
+            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/unread-notifications`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Marks the given notifications as read.
+     * @param toMark A list of notification IDs to mark as read.
+     */
+    public markNotificationsAsRead(toMark: MarkReadRequest): Observable<void> {
+        return handleResponse(
+            this.http.post<void>(`${this.baseUrl}/notifications/mark-as-read`, toMark, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Gets a list of all the things the current user is subscribed to notifications for.
+     */
+    public fetchNotificationSubscriptions(): Observable<NotificationSubscription[]> {
+        return handleResponse(
+            this.http.get<NotificationSubscription[]>(`${this.baseUrl}/notifications/unread-notifications`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Subscribe to notifications on the source with the given ID.
+     * @param sourceId ID of the thing to subscribe to notifications for.
+     */
+    public subscribeToNotifications(sourceId: string): Observable<void> {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/notifications/subscribe?sourceId=${sourceId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Unsubscribe to notifications on the source with the given ID.
+     * @param sourceId ID of the thing to unsubscribe from.
+     */
+    public unsubscribeFromNotifications(sourceId: string): Observable<void> {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/notifications/unsubscribe?sourceId=${sourceId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---RATINGS---
+
+    public addOrFetchRatings(contentId: string) {
+        return handleResponse(
+            this.http.get<RatingsModel>(
+                `${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public addLike(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-like?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public addDislike(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-dislike?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    public removeVote(contentId: string) {
+        return handleResponse(
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/set-no-vote?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---STATS---
+
+    /**
+     * Fetches the stats for the footer.
+     */
+    public fetchFrontPageStats() {
+        return handleResponse(
+            this.http.get<FrontPageStats>(`${this.baseUrl}/meta/public-stats`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---TAGS---
+
+    /**
+     * Fetches all tags of a specified kind.
+     * @param kind
+     */
+    public fetchTags(kind: TagKind) {
+        return handleResponse(
+            this.http.get<TagsModel[]>(
+                `${this.baseUrl}/tags/fetch-tags?kind=${kind}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Creates a new tag.
+     * @param kind
+     * @param form
+     */
+    public createTag(kind: TagKind, form: TagsForm) {
+        return handleResponse(
+            this.http.post<TagsModel>(
+                `${this.baseUrl}/tags/create-tag?kind=${kind}`,
+                form,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Adds a child tag to a parent tag.
+     * @param parent
+     * @param form
+     */
+    public addChild(parent: string, form: TagsForm) {
+        return handleResponse(
+            this.http.patch<TagsModel>(
+                `${this.baseUrl}/tags/add-child?parent=${parent}`,
+                form,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Updates a tag.
+     * @param id
+     * @param form
+     */
+    public updateTag(id: string, form: TagsForm) {
+        return handleResponse(
+            this.http.patch<TagsModel>(
+                `${this.baseUrl}/tags/update-tag?id=${parent}`,
+                form,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Updates a child tag.
+     * @param parent
+     * @param child
+     * @param form
+     */
+    public updateChild(parent: string, child: string, form: TagsForm) {
+        return handleResponse(
+            this.http.patch<TagsModel>(
+                `${this.baseUrl}/tags/update-child?parent=${parent}&child=${child}`,
+                form,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Deletes a tag and all associated children.
+     * @param id
+     */
+    public deleteTag(id: string) {
+        return handleResponse(
+            this.http.patch<void>(
+                `${this.baseUrl}/tags/delete-tag?id=${id}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    /**
+     * Removes a child tag from a parent tag.
+     * @param parent
+     * @param child
+     */
+    public removeChild(parent: string, child: string) {
+        return handleResponse(
+            this.http.patch<TagsModel>(
+                `${this.baseUrl}/tags/remove-child?parent=${parent}&child=${child}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---USER---
+
+    /**
+     * Fetches the user whose portfolio the request belongs to.
+     *
+     * @param userId The user ID of a requested portfolio
+     */
+    public fetchUserInfo(userId: string): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.get<FrontendUser>(`${this.baseUrl}/user/get-user-info/${userId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches a specified user's profile for the portfolio home page.
+     *
+     * @param userId The user whose profile should be retrieved
+     * @param contentFilter The rating filter to apply to the user's content
+     */
+    public fetchUserProfile(userId: string, contentFilter: ContentFilter): Observable<{ works: ContentModel[], blogs: ContentModel[] }> {
+        return handleResponse(
+            this.http.get<{ works: ContentModel[], blogs: ContentModel[] }>(
+                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        )
+    }
+
+    /**
+     * Sends a request to change a user's email.
+     *
+     * @param newEmail The requested new email and current password.
+     */
+    public changeEmail(newEmail: ChangeEmail): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-email`, newEmail, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to change a user's username.
+     *
+     * @param newUsername The reuqested new username and current password.
+     */
+    public changeUsername(newUsername: ChangeUsername): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-username`, newUsername, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to change a user's password.
+     *
+     * @param newPasswordInfo The new password requested
+     */
+    public changePassword(newPasswordInfo: ChangePassword): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-password`, newPasswordInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to change a user's bio.
+     *
+     * @param newBioInfo The new profile info requested
+     */
+    public changeBio(newBioInfo: ChangeBio): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-bio`, newBioInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a message to the server instructing it to set the user's
+     * 'agreedToPolicies' field to true. On success, returns the updated
+     * user object.
+     */
+    public agreeToPolicies(): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.post<FrontendUser>(`${this.baseUrl}/user/agree-to-policies`, null, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Updates a user's tagline.
+     *
+     * @param tagline The new tagline
+     */
+    public updateTagline(tagline: UpdateTagline): Observable<FrontendUser> {
+        return handleResponse(
+            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-tagline`, tagline, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 

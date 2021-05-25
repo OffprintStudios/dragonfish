@@ -8,7 +8,7 @@ export class ChildTags extends Types.Subdocument implements ChildTagsModel {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ trim: true, required: true })
+    @Prop({ trim: true, required: true, index: 'text' })
     name: string;
 
     @Prop({ trim: true, required: true })

@@ -13,10 +13,11 @@ export class TagsStore {
     ) {}
 
     /**
-     * Returns all fandom tags, sorted alphabetically.
+     * Returns all tags of a specified kind, sorted alphabetically.
+     * @param kind
      */
-    async fetchFandomTags() {
-        return this.tags.find({ kind: TagKind.Fandom }).sort({ name: 1 });
+    async fetchTags(kind: TagKind): Promise<TagsDocument[]> {
+        return this.tags.find({ kind: kind }).sort({ name: 1 });
     }
 
     /**
@@ -76,7 +77,7 @@ export class TagsStore {
      * @param childId
      * @param form
      */
-    async updateChild(parentId: string, childId: string, form: TagsForm) {
+    async updateChild(parentId: string, childId: string, form: TagsForm): Promise<TagsDocument> {
         const parent = await this.tags.findById(parentId);
 
         if (isNullOrUndefined(parent)) {
@@ -99,7 +100,7 @@ export class TagsStore {
      * Deletes a parent tag.
      * @param parentId
      */
-    async deleteParent(parentId: string) {
+    async deleteParent(parentId: string): Promise<void> {
         await this.tags.findByIdAndDelete(parentId);
     }
 
@@ -108,7 +109,7 @@ export class TagsStore {
      * @param parentId
      * @param childId
      */
-    async removeChild(parentId: string, childId: string) {
+    async removeChild(parentId: string, childId: string): Promise<TagsDocument> {
         const parent = await this.tags.findById(parentId);
 
         if (isNullOrUndefined(parent)) {

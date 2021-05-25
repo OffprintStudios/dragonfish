@@ -1,4 +1,4 @@
-import { Controller, Post, Patch, Query, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Query, Body, UseGuards } from '@nestjs/common';
 import { TagsStore } from '@dragonfish/api/database/content/stores';
 import { RolesGuard } from '../../guards';
 import { Roles } from '@dragonfish/shared/models/users';
@@ -7,6 +7,12 @@ import { TagKind, TagsForm } from '@dragonfish/shared/models/content';
 @Controller('tags')
 export class TagsController {
     constructor(private readonly tagsStore: TagsStore) {}
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-tags')
+    async fetchTags(@Query('kind') kind: TagKind) {
+        return await this.tagsStore.fetchTags(kind);
+    }
 
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator]))
     @Post('create-tag')
