@@ -1,0 +1,28 @@
+<div class="flex flex-row items-center">
+    <h3 class="text-2xl font-medium">{{ formTitle }}</h3>
+    <div class="flex-1"><!--spacer--></div>
+    <button class="shadow-none border-none px-3.5 py-2.5 rounded-full">
+        <i-feather name="x" class="m-0"></i-feather>
+    </button>
+</div>
+
+<form [formGroup]="tagForm">
+    <dragonfish-text-field
+        [formControlName]="'name'"
+        [name]="'name'"
+        [type]="'text'"
+        [label]="'Tag Name'"
+        [placeholder]="'My Little Pony'"
+    ></dragonfish-text-field>
+
+    <dragonfish-text-area
+        [formControlName]="'desc'"
+        [name]="'desc'"
+        [label]="'Description'"
+        [placeholder]="'The wacky world of cartoon horses.'"
+    ></dragonfish-text-area>
+
+    <div class="flex flex-row items-center justify-center">
+        <button type="submit">Save</button>
+    </div>
+</form>

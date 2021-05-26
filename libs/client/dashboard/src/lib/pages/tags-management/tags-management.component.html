@@ -1,0 +1,49 @@
+<div class="tools">
+    <div class="flex flex-row items-center justify-center">
+        <button class="border-none shadow-none rounded-none" (click)="createTag()">
+            <i-feather name="plus"></i-feather>
+            Tag
+        </button>
+    </div>
+</div>
+
+<ng-container *ngIf="tagsQuery.loading$ | async else notLoading">
+    <div class="flex flex-row items-center justify-center h-72">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <ng-container *ngIf="tagsQuery.all$ | async as tags">
+        <ng-container *ngIf="tags.length === 0; else notEmpty">
+            <div class="empty">
+                <h3>Looks like there something missing here...</h3>
+                <p>If you think this is an error, contact your system administrator.</p>
+            </div>
+        </ng-container>
+        <ng-template #notEmpty>
+            <table class="table-auto">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Children</th>
+                        <th>Created At</th>
+                        <th>Last Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let tag of tags">
+                        <tr>
+                            <td>{{ tag.name }}</td>
+                            <td>{{ tag.desc }}</td>
+                            <td>{{ tag.children.length }}</td>
+                            <td>{{ tag.createdAt | localedate:'mediumDate' }}</td>
+                            <td>{{ tag.updatedAt | localedate:'mediumDate' }}</td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </ng-template>
+    </ng-container>
+</ng-template>

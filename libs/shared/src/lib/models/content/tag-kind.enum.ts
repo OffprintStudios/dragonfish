@@ -1,4 +1,4 @@
 export enum TagKind {
-    Fandom,
-    Warning,
+    Fandom = 'Fandom',
+    Warning = 'Warning',
 }

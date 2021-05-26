@@ -1,8 +1,8 @@
 <div class="dash-nav shadow-lg sticky top-0 z-40">
     <div class="w-11/12 mx-auto py-4">
         <div class="flex flex-row items-center">
-            <i-feather name="grid" class="text-white relative top-0.5 mr-4"></i-feather>
-            <h3 class="text-4xl text-white relative top-1.5 font-semibold pr-4">
+            <i-feather name="grid" class="text-white mr-2 relative -top-1"></i-feather>
+            <h3 class="text-3xl text-white font-semibold">
                 Dashboard
             </h3>
             <div class="flex-1"><!--spacer--></div>
@@ -37,6 +37,14 @@
             >
                 <span class="link-icon"><i-feather name="user-check"></i-feather></span>
                 Groups
+            </a>
+            <a
+                class="link"
+                [routerLink]="['tags']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="hash"></i-feather></span>
+                Tags
             </a>
             <a
                 class="link"

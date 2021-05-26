@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxsModule } from '@ngxs/store';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AlertsModule } from '@dragonfish/client/alerts';
@@ -17,9 +18,11 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { TagsManagementComponent } from './pages/tags-management/tags-management.component';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+import { TagFormComponent } from './components/tags-management';
 
 /* State */
 import { ApprovalQueueState } from './shared/approval-queue';
@@ -42,6 +45,8 @@ import { UserManagementService } from './shared/user-management/services';
         UsersManagementComponent,
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
+        TagsManagementComponent,
+        TagFormComponent,
     ],
     imports: [
         CommonModule,
@@ -52,6 +57,8 @@ import { UserManagementService } from './shared/user-management/services';
         UiModule,
         NgxPaginationModule,
         PipesModule,
+        FormsModule,
+        ReactiveFormsModule,
         NgxsModule.forFeature([ApprovalQueueState]),
     ],
     providers: [ApprovalQueueService, UserManagementService],
