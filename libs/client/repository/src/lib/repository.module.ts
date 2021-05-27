@@ -3,16 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgxsModule } from '@ngxs/store';
 
 /* States */
-import { CollectionsState } from './collections';
 import { HistoryState } from './history';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        NgxsModule.forFeature([
-            CollectionsState,
-            HistoryState
-        ]),
-    ],
+    imports: [CommonModule, NgxsModule.forFeature([HistoryState])],
 })
 export class RepositoryModule {}
