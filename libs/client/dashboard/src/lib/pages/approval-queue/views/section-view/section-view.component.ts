@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { SectionInfo } from '@dragonfish/shared/models/content';
-import { AuthorsNotePos, Section } from '@dragonfish/shared/models/sections';
+import { AuthorsNotePos } from '@dragonfish/shared/models/sections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ApprovalQueueState, AQNamespace } from '../../../../shared/approval-queue';
+import { ApprovalQueueQuery, ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
 
 @Component({
     selector: 'dragonfish-section-view',
@@ -14,9 +12,6 @@ import { ApprovalQueueState, AQNamespace } from '../../../../shared/approval-que
     styleUrls: ['./section-view.component.scss'],
 })
 export class SectionViewComponent {
-    @Select(ApprovalQueueState.selectedDocSections) currSections$: Observable<SectionInfo[]>;
-    @Select(ApprovalQueueState.selectedDocSection) currSection$: Observable<Section>;
-
     sections: SectionInfo[];
     loading = false;
 
@@ -26,7 +21,12 @@ export class SectionViewComponent {
 
     authorsNotePosOptions = AuthorsNotePos;
 
-    constructor(private store: Store, private route: ActivatedRoute, private router: Router) {
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        public queueQuery: ApprovalQueueQuery,
+        private queueService: ApprovalQueueService,
+    ) {
         this.fetchData();
     }
 
@@ -38,23 +38,28 @@ export class SectionViewComponent {
             this.indexNext = this.currIndex + 1;
             this.indexPrev = this.currIndex - 1;
 
-            this.currSections$.pipe(take(1)).subscribe((val) => {
+            this.queueQuery.selectedSections$.pipe(take(1)).subscribe((val) => {
                 this.sections = val;
 
-                this.store.dispatch(new AQNamespace.FetchSection(this.sections[this.currIndex]._id)).subscribe();
-                this.loading = false;
+                this.queueService.fetchSection(this.sections[this.currIndex]._id).subscribe(() => {
+                    this.loading = false;
+                });
             });
         });
     }
 
     goToNext() {
         const nextSection = this.sections[this.indexNext];
-        this.router.navigate([`${this.indexNext + 1}/${slugify(nextSection.title)}`], { relativeTo: this.route.parent });
+        this.router.navigate([`${this.indexNext + 1}/${slugify(nextSection.title)}`], {
+            relativeTo: this.route.parent,
+        });
     }
 
     goToPrev() {
         const prevSection = this.sections[this.indexPrev];
-        this.router.navigate([`${this.indexPrev + 1}/${slugify(prevSection.title)}`], { relativeTo: this.route.parent });
+        this.router.navigate([`${this.indexPrev + 1}/${slugify(prevSection.title)}`], {
+            relativeTo: this.route.parent,
+        });
     }
 
     changeSection(section: SectionInfo) {

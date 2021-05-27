@@ -5,6 +5,7 @@ import {
     ChangeUsername,
     CreateUser,
     FrontendUser,
+    InviteCodes,
     LoginUser,
     UpdateTagline,
     User,
@@ -14,8 +15,10 @@ import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/m
 import {
     ContentFilter,
     ContentKind,
-    ContentModel, FormType,
-    NewsContentModel, PubChange,
+    ContentModel,
+    FormType,
+    NewsContentModel,
+    PubChange,
     SetRating,
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
@@ -47,14 +50,14 @@ import { RatingsModel } from '@dragonfish/shared/models/ratings';
 })
 export class DragonfishNetworkService {
     private baseUrl = `/api`;
-    constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) { }
+    constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) {}
 
     //#region ---APPROVAL QUEUE---
 
     /**
      * Gets the entire queue.
      */
-    public fetchApprovalQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
+    public getQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
         return handleResponse(
             this.http.get<PaginateResult<ApprovalQueue>>(`${this.baseUrl}/approval-queue/get-queue/${pageNum}`, {
                 observe: 'response',
@@ -64,28 +67,46 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Claims a work from the approval queue..
+     * Gets the claimed works from one moderator.
+     */
+    public getQueueForMod(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ApprovalQueue>>(
+                `${this.baseUrl}/approval-queue/get-queue-for-mod/${pageNum}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    /**
+     * Claims a work.
      *
      * @param docId The document to claim
      */
     public claimWork(docId: string): Observable<ApprovalQueue> {
         return handleResponse(
             this.http.patch<ApprovalQueue>(
-                `${this.baseUrl}/approval-queue/claim-work/${docId}`,
+                `${this.baseUrl}/approval-queue/claim-content/${docId}`,
                 {},
-                { observe: 'response', withCredentials: true },
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
 
     /**
-     * Approves a work in the approval queue.
+     * Approves a work.
      *
      * @param decision Info about the decision.
      */
     public approveWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-content`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -93,13 +114,13 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Rejects a work in the approval queue.
+     * Rejects a work.
      *
      * @param decision Info about the decision.
      */
     public rejectWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-content`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -107,17 +128,20 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Fetches a piece of content for viewing within the dashboard.
+     * Fetches a piece of content for viewing.
      *
      * @param contentId The content ID
      * @param kind The content kind
      * @param userId The owner of the content
      */
-    public viewDashboardContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
+    public viewApprovalQueueContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
         return handleResponse(
             this.http.get<ContentModel>(
                 `${this.baseUrl}/approval-queue/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`,
-                { observe: 'response', withCredentials: true },
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
@@ -203,6 +227,79 @@ export class DragonfishNetworkService {
                 }),
             );
     }
+    //#endregion
+
+    //#region ---BROWSE---
+
+    /**
+     * Fetches the first few new works for the browse page.
+     * @param contentFilter The rating filter to apply to the fetch
+     */
+    public fetchFirstNew(contentFilter: ContentFilter) {
+        return handleResponse(
+            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches all new works for the browse page.
+     *
+     * @param pageNum The current page
+     * @param kinds The kinds of work to fetch
+     * @param contentFilter The mature/explicit/etc. content filter to apply
+     */
+    public fetchAllNew(pageNum: number, kinds: ContentKind[], contentFilter: ContentFilter) {
+        const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
+        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
+
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
+        );
+    }
+
+    /**
+     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
+     * @param query The user's search string.
+     */
+    public searchInitialResults(query: string): Observable<InitialResults> {
+        return handleResponse(
+            this.http.get<InitialResults>(`${this.baseUrl}/search/get-initial-results?query=${query}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+        return handleResponse(
+            this.http.get<PaginateResult<User>>(
+                `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
     //#endregion
 
     //#region ---COLLECTIONS---
@@ -425,9 +522,12 @@ export class DragonfishNetworkService {
      * @param contentId The content ID
      * @param kind The content kind
      */
-    public fetchContent(contentId: string, kind: ContentKind): Observable<{ content: ContentModel, ratings: RatingsModel }> {
+    public fetchContent(
+        contentId: string,
+        kind: ContentKind,
+    ): Observable<{ content: ContentModel; ratings: RatingsModel }> {
         return handleResponse(
-            this.http.get<{ content: ContentModel, ratings: RatingsModel }>(
+            this.http.get<{ content: ContentModel; ratings: RatingsModel }>(
                 `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}`,
                 { observe: 'response', withCredentials: true },
             ),
@@ -472,8 +572,7 @@ export class DragonfishNetworkService {
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
         if (userId) {
-            route =
-                `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
         } else {
             route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
         }
@@ -549,7 +648,7 @@ export class DragonfishNetworkService {
      * @param uploader The file uploader, prefilled with the URL and instructions for uploading the image.
      */
     public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
-        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === 'XSRF-TOKEN');
+        const xsrfHeader = uploader.options.headers.find((x) => x.name.toUpperCase() === 'XSRF-TOKEN');
         const currentXsrfToken = this.cookieService.get('XSRF-TOKEN') ?? '';
         if (!xsrfHeader) {
             uploader.options.headers.push({ name: 'XSRF-TOKEN', value: currentXsrfToken });
@@ -557,7 +656,12 @@ export class DragonfishNetworkService {
             xsrfHeader.value = currentXsrfToken;
         }
         return new Observable<T>((observer) => {
-            uploader.onCompleteItem = (_: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+            uploader.onCompleteItem = (
+                _: FileItem,
+                response: string,
+                status: number,
+                headers: ParsedResponseHeaders,
+            ) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = tryParseJsonHttpError(response);
                     if (!errorMessage) {
@@ -702,6 +806,192 @@ export class DragonfishNetworkService {
 
     //#endregion
 
+    //#region ---MY STUFF---
+
+    /**
+     * Fetches one piece of content from the backend.
+     *
+     * @param contentId The content to fetch
+     * @param kind The content kind
+     * @returns Observable
+     */
+    public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
+        return handleResponse(
+            this.http.get<ContentModel>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches all files related to the current user from the backend.
+     *
+     * @returns Observable
+     */
+    public fetchAll(): Observable<ContentModel[]> {
+        return handleResponse(
+            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to create a piece of content to the backend, with the route determined by its
+     * `ContentKind`.
+     *
+     * @param kind The content kind
+     * @param formInfo The form information
+     */
+    public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
+        return handleResponse(
+            this.http.put<ContentModel>(`${this.baseUrl}/content/create-one?kind=${kind}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to create a piece of content to the backend, with the route determined by its
+     * `ContentKind`.
+     *
+     * @param contentId The current content's ID
+     * @param kind The content kind
+     * @param formInfo The form information
+     */
+    public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
+        return handleResponse(
+            this.http.patch<ContentModel>(
+                `${this.baseUrl}/content/save-changes?contentId=${contentId}&kind=${kind}`,
+                formInfo,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    /**
+     * Sends a request to delete the specified content.
+     *
+     * @param contentId The content to delete
+     * @returns Observable
+     */
+    public deleteOne(contentId: string): Observable<void> {
+        return handleResponse(
+            this.http.patch<void>(
+                `${this.baseUrl}/content/delete-one?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    /**
+     * Sends a request to publish the specified content.
+     *
+     * @param contentId The content to publish
+     * @param pubChange (Optional) Used for blog and newspost publishing changes
+     * @returns Observable
+     */
+    public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
+        return handleResponse(
+            this.http.patch<ContentModel>(`${this.baseUrl}/content/publish-one?contentId=${contentId}`, pubChange, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches the sections belonging to the specified piece of content given its ID.
+     *
+     * @param contentId The content ID
+     */
+    public fetchSections(contentId: string): Observable<Section[]> {
+        return handleResponse(
+            this.http.get<Section[]>(`${this.baseUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to create a new section for the specified piece of content, given the content's ID
+     * and the new section info.
+     *
+     * @param contentId The content ID
+     * @param sectionInfo The info for the new section
+     */
+    public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
+        return handleResponse(
+            this.http.put<Section>(`${this.baseUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to save any edits to the specified section, belonging to the specified content.
+     *
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param sectionInfo The info to save
+     */
+    public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
+        return handleResponse(
+            this.http.patch<Section>(
+                `${this.baseUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
+                sectionInfo,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Sends a request to delete the specified section, belonging to the specified content.
+     *
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     */
+    public deleteSection(contentId: string, sectionId: string): Observable<Section> {
+        return handleResponse(
+            this.http.patch<Section>(
+                `${this.baseUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Sends a request to flip the current publishing status of the specified section.
+     *
+     * @param contentId The content ID
+     * @param sectionId The section ID
+     * @param pubStatus The publishing status
+     */
+    public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
+        return handleResponse(
+            this.http.patch<Section>(
+                `${this.baseUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
+                pubStatus,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    //#endregion
+
     //#region ---NEWS CONSUMPTION--
 
     /**
@@ -827,73 +1117,52 @@ export class DragonfishNetworkService {
 
     //#endregion
 
-    //#region ---BROWSE---
+    //#region ---RATINGS---
 
-    /**
-     * Fetches the first few new works for the browse page.
-     * @param contentFilter The rating filter to apply to the fetch
-     */
-    public fetchFirstNew(contentFilter: ContentFilter) {
+    public addOrFetchRatings(contentId: string) {
         return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
-                observe: 'response',
-                withCredentials: true,
-            })
-        );
-    }
-
-    /**
-     * Fetches all new works for the browse page.
-     *
-     * @param pageNum The current page
-     * @param kinds The kinds of work to fetch
-     * @param contentFilter The mature/explicit/etc. content filter to apply
-     */
-    public fetchAllNew(pageNum: number, kinds: ContentKind[], contentFilter: ContentFilter) {
-        const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
-        const route = `${this.baseUrl}/browse/fetch-all-new?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
-
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
-        );
-    }
-
-    /**
-     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
-     * @param query The user's search string.
-     */
-    public searchInitialResults(query: string): Observable<InitialResults> {
-        return handleResponse(
-            this.http.get<InitialResults>(`${this.baseUrl}/search/get-initial-results?query=${query}`, {
+            this.http.get<RatingsModel>(`${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
         );
     }
 
-    public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+    public addLike(contentId: string) {
         return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-like?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
 
-    public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+    public addDislike(contentId: string) {
         return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/add-dislike?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
 
-    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+    public removeVote(contentId: string) {
         return handleResponse(
-            this.http.get<PaginateResult<User>>(
-                `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
+            this.http.patch<RatingsModel>(
+                `${this.baseUrl}/ratings/set-no-vote?contentId=${contentId}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
@@ -938,14 +1207,19 @@ export class DragonfishNetworkService {
      * @param userId The user whose profile should be retrieved
      * @param contentFilter The rating filter to apply to the user's content
      */
-    public fetchUserProfile(userId: string, contentFilter: ContentFilter): Observable<{ works: ContentModel[], blogs: ContentModel[] }> {
+    public fetchUserProfile(
+        userId: string,
+        contentFilter: ContentFilter,
+    ): Observable<{ works: ContentModel[]; blogs: ContentModel[] }> {
         return handleResponse(
-            this.http.get<{ works: ContentModel[], blogs: ContentModel[] }>(
-                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        )
+            this.http.get<{ works: ContentModel[]; blogs: ContentModel[] }>(
+                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
     }
 
     /**
@@ -1032,247 +1306,15 @@ export class DragonfishNetworkService {
         );
     }
 
-    //#endregion
-
-    //#region ---RATINGS---
-
-    public addOrFetchRatings(contentId: string) {
-        return handleResponse(
-            this.http.get<RatingsModel>(
-                `${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public addLike(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/add-like?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public addDislike(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/add-dislike?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    public removeVote(contentId: string) {
-        return handleResponse(
-            this.http.patch<RatingsModel>(
-                `${this.baseUrl}/ratings/set-no-vote?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    //#endregion
-
-    //#region ---MY STUFF---
-
     /**
-     * Fetches one piece of content from the backend.
-     *
-     * @param contentId The content to fetch
-     * @param kind The content kind
-     * @returns Observable
+     * Generates a new invite code.
      */
-    public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
+    public generateCode() {
         return handleResponse(
-            this.http.get<ContentModel>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
+            this.http.get<InviteCodes>(`${this.baseUrl}/user-management/generate-code`, {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    /**
-     * Fetches all files related to the current user from the backend.
-     *
-     * @returns Observable
-     */
-    public fetchAll(): Observable<ContentModel[]> {
-        return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to create a piece of content to the backend, with the route determined by its
-     * `ContentKind`.
-     *
-     * @param kind The content kind
-     * @param formInfo The form information
-     */
-    public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return handleResponse(
-            this.http.put<ContentModel>(`${this.baseUrl}/content/create-one?kind=${kind}`, formInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to create a piece of content to the backend, with the route determined by its
-     * `ContentKind`.
-     *
-     * @param contentId The current content's ID
-     * @param kind The content kind
-     * @param formInfo The form information
-     */
-    public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
-        return handleResponse(
-            this.http.patch<ContentModel>(
-                `${this.baseUrl}/content/save-changes?contentId=${contentId}&kind=${kind}`,
-                formInfo,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to delete the specified content.
-     *
-     * @param contentId The content to delete
-     * @returns Observable
-     */
-    public deleteOne(contentId: string): Observable<void> {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/content/delete-one?contentId=${contentId}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to publish the specified content.
-     *
-     * @param contentId The content to publish
-     * @param pubChange (Optional) Used for blog and newspost publishing changes
-     * @returns Observable
-     */
-    public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
-        return handleResponse(
-            this.http.patch<ContentModel>(`${this.baseUrl}/content/publish-one?contentId=${contentId}`, pubChange, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches the sections belonging to the specified piece of content given its ID.
-     *
-     * @param contentId The content ID
-     */
-    public fetchSections(contentId: string): Observable<Section[]> {
-        return handleResponse(
-            this.http.get<Section[]>(
-                `${this.baseUrl}/sections/fetch-user-content-sections?contentId=${contentId}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to create a new section for the specified piece of content, given the content's ID
-     * and the new section info.
-     *
-     * @param contentId The content ID
-     * @param sectionInfo The info for the new section
-     */
-    public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
-        return handleResponse(
-            this.http.put<Section>(`${this.baseUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to save any edits to the specified section, belonging to the specified content.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     * @param sectionInfo The info to save
-     */
-    public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
-        return handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
-                sectionInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to delete the specified section, belonging to the specified content.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     */
-    public deleteSection(contentId: string, sectionId: string): Observable<Section> {
-        return handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to flip the current publishing status of the specified section.
-     *
-     * @param contentId The content ID
-     * @param sectionId The section ID
-     * @param pubStatus The publishing status
-     */
-    public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
-        return handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
-                pubStatus,
-                { observe: 'response', withCredentials: true },
-            ),
         );
     }
 

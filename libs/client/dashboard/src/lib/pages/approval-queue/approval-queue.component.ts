@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Store } from '@ngxs/store';
-import { AQNamespace } from '../../shared/approval-queue';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
+import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-approval-queue',
@@ -20,11 +19,11 @@ export class ApprovalQueueComponent implements OnInit {
     pageNum = 1;
 
     constructor(
-        private store: Store,
         public route: ActivatedRoute,
         private router: Router,
-        private snackBar: MatSnackBar,
+        private alerts: AlertsService,
         public sessionQuery: SessionQuery,
+        private queueService: ApprovalQueueService,
     ) {}
 
     ngOnInit(): void {
@@ -53,16 +52,15 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The approval queue entry
      */
     goToContentView(entry: ApprovalQueue) {
-        this.store.dispatch(new AQNamespace.SelectWork(entry)).subscribe(() => {
-            const content: ContentModel = entry.workToApprove as ContentModel;
-            if (content.kind === ContentKind.ProseContent) {
-                this.router.navigate(['view-prose'], { relativeTo: this.route });
-            } else if (content.kind === ContentKind.PoetryContent) {
-                this.router.navigate(['view-poetry'], { relativeTo: this.route });
-            } else {
-                this.snackBar.open(`...what's this doing here?`);
-            }
-        });
+        this.queueService.selectWork(entry);
+        const content: ContentModel = entry.workToApprove as ContentModel;
+        if (content.kind === ContentKind.ProseContent) {
+            this.router.navigate(['view-prose'], { relativeTo: this.route });
+        } else if (content.kind === ContentKind.PoetryContent) {
+            this.router.navigate(['view-poetry'], { relativeTo: this.route });
+        } else {
+            this.alerts.warn(`...what's this doing here?`);
+        }
     }
 
     /**
@@ -81,11 +79,7 @@ export class ApprovalQueueComponent implements OnInit {
      * Checks to see if the queue is empty.
      */
     queueIsEmpty() {
-        if (this.queue.docs.length === 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.queue.docs.length === 0;
     }
 
     /**
@@ -109,11 +103,7 @@ export class ApprovalQueueComponent implements OnInit {
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
             const whoClaimedThis = entry.claimedBy as UserInfo;
-            if (whoClaimedThis._id === this.sessionQuery.currentUser._id) {
-                return true;
-            } else {
-                return false;
-            }
+            return whoClaimedThis._id === this.sessionQuery.currentUser._id;
         } else {
             return false;
         }
@@ -125,7 +115,7 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The approval queue entry
      */
     claimWork(entry: ApprovalQueue) {
-        this.store.dispatch(new AQNamespace.ClaimWork(entry)).subscribe(() => {
+        this.queueService.claimWork(entry).subscribe(() => {
             this.forceRefresh();
         });
     }

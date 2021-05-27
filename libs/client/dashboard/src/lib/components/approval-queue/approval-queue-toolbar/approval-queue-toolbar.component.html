@@ -1,6 +1,6 @@
 <div class="tools">
     <div class="w-11/12 mx-auto flex flex-row items-center justify-center">
-        <ng-container *ngIf="selectedDoc$ | async as doc; else nothingSelected">
+        <ng-container *ngIf="queueQuery.selected$ | async as doc; else nothingSelected">
             <button matRipple class="tool" (click)="goBack()"><i-feather name="chevron-left"></i-feather>Back</button>
             <span class="mx-2"></span>
 
@@ -31,7 +31,7 @@
         <ng-template #nothingSelected>
             <button matRipple class="tool disabled"><i-feather name="chevron-left"></i-feather>Back</button>
             <span class="mx-2"></span>
-    
+
             <button matRipple class="tool disabled">
                 Claims<i-feather name="chevron-down" class="no-text"></i-feather>
             </button>

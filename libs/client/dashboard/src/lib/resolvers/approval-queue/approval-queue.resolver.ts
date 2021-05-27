@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { Store } from '@ngxs/store';
-
-import { AQNamespace, ApprovalQueueState } from '../../shared/approval-queue';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
 
 @Injectable()
 export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQueue>> {
     pageNum = 1;
 
-    constructor(private store: Store) {}
+    constructor(private queueService: ApprovalQueueService) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
@@ -24,10 +21,6 @@ export class ApprovalQueueResolver implements Resolve<PaginateResult<ApprovalQue
             this.pageNum = pageNum;
         }
 
-        return this.store.dispatch(new AQNamespace.GetQueue(this.pageNum)).pipe(
-            switchMap(() => {
-                return this.store.selectOnce<PaginateResult<ApprovalQueue>>(ApprovalQueueState.currPageDocs);
-            }),
-        );
+        return this.queueService.getQueue(this.pageNum);
     }
 }

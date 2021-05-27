@@ -1,5 +1,5 @@
 <ng-container *ngIf="!loading">
-    <ng-container *ngIf="currSection$ | async as thisSection">
+    <ng-container *ngIf="queueQuery.selectedSection$ | async as thisSection">
         <div class="section-container">
             <div class="section-title pb-2">
                 <div class="title">

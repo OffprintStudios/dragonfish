@@ -59,8 +59,6 @@ import { EditorModule } from '@dragonfish/client/editor';
 import { UiModule } from '@dragonfish/client/ui';
 import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
-import { MyStuffModule } from '@dragonfish/client/my-stuff';
-import { DashboardModule } from '@dragonfish/client/dashboard';
 import { ClientServicesModule } from '@dragonfish/client/services';
 
 /* State */
@@ -106,8 +104,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         MaterialModule,
         AlertsModule,
         EditorModule,
-        MyStuffModule,
-        DashboardModule,
         ClientServicesModule,
         Ng2FittextModule,
         NgxPaginationModule,
@@ -122,11 +118,10 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
         RepositoryModule,
-        NgxsModule.forRoot(
-            [], {
-                developmentMode: !environment.production,
-                selectorOptions: { suppressErrors: false, injectContainerState: false },
-            }),
+        NgxsModule.forRoot([], {
+            developmentMode: !environment.production,
+            selectorOptions: { suppressErrors: false, injectContainerState: false },
+        }),
         NgxsStoragePluginModule.forRoot({
             key: [
                 'auth.token',
@@ -134,7 +129,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
                 'global',
                 'myStuff.currContent',
                 'myStuff.currContentWordCount',
-                'myStuff.sections.currSection'
+                'myStuff.sections.currSection',
             ],
         }),
         NgxsReduxDevtoolsPluginModule.forRoot(),
@@ -147,8 +142,8 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 }},
-        { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
+        { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+        { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' } },
     ],
     bootstrap: [AppComponent],
 })
