@@ -1,6 +1,6 @@
 import { AlertType } from './alert-type.enum';
 
-export interface AlertsStateModel {
+export interface AlertModel {
     message: string;
     type: AlertType;
 }
