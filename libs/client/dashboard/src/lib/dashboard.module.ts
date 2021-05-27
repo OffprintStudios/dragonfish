@@ -22,7 +22,7 @@ import { TagsManagementComponent } from './pages/tags-management/tags-management
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
-import { TagFormComponent } from './components/tags-management';
+import { TagFormComponent, ChildTagFormComponent, ChildTagItemComponent } from './components/tags-management';
 
 /* State */
 import { ApprovalQueueState } from './shared/approval-queue';
@@ -47,6 +47,8 @@ import { UserManagementService } from './shared/user-management/services';
         ContentPreviewComponent,
         TagsManagementComponent,
         TagFormComponent,
+        ChildTagFormComponent,
+        ChildTagItemComponent,
     ],
     imports: [
         CommonModule,

@@ -1,16 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ChildTagsModel, TagsForm } from '@dragonfish/shared/models/content';
 
 @Component({
-    selector: 'dragonfish-tag-form',
-    templateUrl: './tag-form.component.html',
+    selector: 'dragonfish-child-tag-form',
+    templateUrl: './child-tag-form.component.html',
 })
-export class TagFormComponent implements OnInit {
-    formTitle = `Create a Tag`;
+export class ChildTagFormComponent implements OnInit {
+    formTitle = `Create a Child Tag`;
     editMode = false;
 
     tagForm = new FormGroup({
@@ -21,21 +21,21 @@ export class TagFormComponent implements OnInit {
     constructor(
         private alerts: AlertsService,
         private tagsService: TagsService,
-        public dialogRef: MatDialogRef<TagFormComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: { tag: TagsModel }
+        public dialogRef: MatDialogRef<ChildTagFormComponent>,
+        @Inject(MAT_DIALOG_DATA) private data: { parentId: string, child: ChildTagsModel }
     ) {}
 
     ngOnInit(): void {
-        if (this.data.tag) {
+        if (this.data.child) {
             this.tagForm.setValue({
-                name: this.data.tag.name,
-                desc: this.data.tag.desc,
+                name: this.data.child.name,
+                desc: this.data.child.desc,
             });
             this.editMode = true;
-            this.formTitle = `Editing Tag`;
+            this.formTitle = `Editing Child Tag`;
         } else {
             this.editMode = false;
-            this.formTitle = `Create a Tag`;
+            this.formTitle = `Create a Child Tag`;
         }
     }
 
@@ -56,11 +56,11 @@ export class TagFormComponent implements OnInit {
         };
 
         if (this.editMode) {
-            this.tagsService.updateTag(this.data.tag._id, form).subscribe(() => {
+            this.tagsService.updateChild(this.data.parentId, this.data.child._id, form).subscribe(() => {
                 this.dialogRef.close();
             });
         } else {
-            this.tagsService.createTag(TagKind.Fandom, form).subscribe(() => {
+            this.tagsService.addChild(this.data.parentId, form).subscribe(() => {
                 this.dialogRef.close();
             });
         }

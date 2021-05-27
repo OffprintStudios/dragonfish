@@ -34,7 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit(): void {
-        this.appQuery.theme$.pipe(untilDestroyed(this), delay(600)).subscribe(theme => {
+        this.appQuery.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
             const html = document.getElementsByTagName('html')[0];

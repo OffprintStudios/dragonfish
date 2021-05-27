@@ -45,7 +45,7 @@ export class TagsController {
     }
 
     @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator]))
-    @Patch('add-child')
+    @Patch('remove-child')
     async removeChild(@Query('parent') parent: string, @Query('child') child: string) {
         return await this.tagsStore.removeChild(parent, child);
     }

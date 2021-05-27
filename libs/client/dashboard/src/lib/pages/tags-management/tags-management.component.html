@@ -22,28 +22,37 @@
             </div>
         </ng-container>
         <ng-template #notEmpty>
-            <table class="table-auto">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Children</th>
-                        <th>Created At</th>
-                        <th>Last Modified</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="w-8/12 mx-auto my-8">
+                <mat-accordion>
                     <ng-container *ngFor="let tag of tags">
-                        <tr>
-                            <td>{{ tag.name }}</td>
-                            <td>{{ tag.desc }}</td>
-                            <td>{{ tag.children.length }}</td>
-                            <td>{{ tag.createdAt | localedate:'mediumDate' }}</td>
-                            <td>{{ tag.updatedAt | localedate:'mediumDate' }}</td>
-                        </tr>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{ tag.name }}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{ tag.desc }}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="flex flex-row items-center">
+                                <button (click)="addChild(tag._id)"><i-feather name="plus"></i-feather>Child</button>
+                                <div class="mx-1"><!--spacer--></div>
+                                <button (click)="editTag(tag)"><i-feather name="edit-3"></i-feather>Edit</button>
+                                <div class="flex-1"><!--spacer--></div>
+                                <button (click)="deleteTag(tag._id)"><i-feather name="trash-2"></i-feather>Delete</button>
+                            </div>
+                            <div class="my-2"><!--spacer--></div>
+                            <ul>
+                                <ng-container *ngFor="let child of tag.children">
+                                    <li class="py-2 px-1 border-t" style="border-color: var(--borders);">
+                                        <dragonfish-child-tag-item [parentId]="tag._id" [tag]="child"></dragonfish-child-tag-item>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </mat-expansion-panel>
                     </ng-container>
-                </tbody>
-            </table>
+                </mat-accordion>
+            </div>
         </ng-template>
     </ng-container>
 </ng-template>
