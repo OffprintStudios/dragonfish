@@ -1,18 +1,29 @@
+<div class="flex flex-row items-center mb-3.5">
+    <h3 class="text-3xl font-medium flex-1">Upload Profile Cover</h3>
+    <button class="border-none shadow-none px-2.5 py-1.5 rounded-full relative -top-0.5" (click)="close()">
+        <i-feather name="x" class="mr-0"></i-feather>
+    </button>
+</div>
 <div
     class="uploader-container flex flex-col items-center justify-center px-8 py-24"
     ng2FileDrop
     (onFileDrop)="fileDropped($event)"
     [uploader]="uploader"
 >
-    <h3 class="text-3xl font-medium">Drag & Drop To Upload</h3>
-    <p class="m-0">Or just click <a (click)="avatarInput.click()">browse</a> to find something awesome.</p>
-    <input
-        type="file"
-        class="hidden"
-        accept="image/png, image/jpeg, image/jpg"
-        ng2FileSelect
-        (onFileSelected)="fileDropped($event)"
-        [uploader]="uploader"
-        #avatarInput
-    />
+    <ng-container *ngIf="uploading; else notUploading">
+        <mat-spinner [diameter]="75"></mat-spinner><span class="ml-2.5">Uploading...</span>
+    </ng-container>
+    <ng-template #notUploading>
+        <h3 class="text-2xl font-medium">Drag & Drop To Upload</h3>
+        <p class="m-0">Or just click <a class="cursor-pointer" (click)="imageInput.click()">browse</a> to find something awesome.</p>
+        <input
+            type="file"
+            class="hidden"
+            accept="image/png, image/jpeg, image/jpg"
+            ng2FileSelect
+            (onFileSelected)="fileDropped($event)"
+            [uploader]="uploader"
+            #imageInput
+        />
+    </ng-template>
 </div>

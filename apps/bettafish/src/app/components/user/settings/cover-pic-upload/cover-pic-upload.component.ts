@@ -15,11 +15,11 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 export class CoverPicUploadComponent implements OnInit {
     token: string;
     fileToReturn: File;
-    showCropper = false;
+    uploading = false;
     uploader: FileUploader = new FileUploader({
         url: '/api/user/upload-cover',
         itemAlias: 'coverPic',
-        headers: []
+        headers: [],
     });
 
     constructor(
@@ -30,9 +30,13 @@ export class CoverPicUploadComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe(value => {
+        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe((value) => {
             this.token = value;
         });
+    }
+
+    close() {
+        this.dialogRef.close();
     }
 
     fileDropped(event: File[]): void {
@@ -41,11 +45,16 @@ export class CoverPicUploadComponent implements OnInit {
             return;
         }
 
-        if (event[0] && (event[0].type === 'image/png' || event[0].type === 'image/jpg' || event[0].type === 'image/jpeg')) {
+        if (
+            event[0] &&
+            (event[0].type === 'image/png' || event[0].type === 'image/jpg' || event[0].type === 'image/jpeg')
+        ) {
             this.uploader.authToken = `Bearer ${this.token}`;
+            this.uploading = true;
             this.uploader.clearQueue();
             this.uploader.addToQueue([event[0]]);
             this.user.changeProfileCover(this.uploader).subscribe(() => {
+                this.uploading = false;
                 this.dialogRef.close();
             });
         } else {
