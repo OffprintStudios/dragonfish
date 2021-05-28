@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InviteCodes } from '@dragonfish/shared/models/users';
-import { UserManagementService } from '../../shared/user-management/services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 @Component({
     selector: 'dragonfish-users-management',
@@ -10,10 +10,10 @@ import { UserManagementService } from '../../shared/user-management/services';
 export class UsersManagementComponent {
     currCode: InviteCodes;
 
-    constructor(private userManagement: UserManagementService) {}
+    constructor(private userManagement: DragonfishNetworkService) {}
 
     generateCode() {
-        this.userManagement.generateCode().subscribe(code => {
+        this.userManagement.generateCode().subscribe((code) => {
             this.currCode = code;
         });
     }

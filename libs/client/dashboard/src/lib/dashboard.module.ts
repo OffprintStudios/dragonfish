@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxsModule } from '@ngxs/store';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { IconsModule } from '@dragonfish/client/icons';
@@ -11,7 +10,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
+import {
+    ApprovalQueueComponent,
+    ApprovePoetryComponent,
+    ApproveProseComponent,
+    SectionViewComponent,
+} from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
@@ -20,13 +24,6 @@ import { UsersManagementComponent } from './pages/users-management';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
-
-/* State */
-import { ApprovalQueueState } from './shared/approval-queue';
-
-/* Services */
-import { ApprovalQueueService } from './shared/approval-queue/services';
-import { UserManagementService } from './shared/user-management/services';
 
 @NgModule({
     declarations: [
@@ -52,8 +49,6 @@ import { UserManagementService } from './shared/user-management/services';
         UiModule,
         NgxPaginationModule,
         PipesModule,
-        NgxsModule.forFeature([ApprovalQueueState]),
     ],
-    providers: [ApprovalQueueService, UserManagementService],
 })
 export class DashboardModule {}

@@ -1,6 +1,6 @@
 <dragonfish-content-preview [route]="route"></dragonfish-content-preview>
 
-<ng-container *ngIf="currDoc | async as doc">
+<ng-container *ngIf="queueQuery.selected$ | async as doc">
     <ng-container *ngIf="doc.workToApprove.meta.collection; else singlePoem">
         <router-outlet></router-outlet>
     </ng-container>

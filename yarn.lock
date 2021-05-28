@@ -2330,53 +2330,6 @@
   dependencies:
     enhanced-resolve "5.7.0"
 
-"@ngxs-labs/dispatch-decorator@^2.1.0":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/dispatch-decorator/-/dispatch-decorator-2.1.1.tgz#651a081f1216c9c474e68ea33ac6b6e1066eebfd"
-  integrity sha512-9HaY/2M74e0s7eefAaKwlvB3NyQOtJpVvP+hGE9pamQ9O3PnIm200KoXanhvOLl+BhvW6hTASlgNjrY9xKjCXw==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs-labs/select-snapshot@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@ngxs-labs/select-snapshot/-/select-snapshot-2.0.1.tgz#823a62666ca36aa8f6de42911aac5368606db256"
-  integrity sha512-trFLg1W/Knju/sx41cSEW7GEdXhdP3VA+ZyfQChm2DK6+yE6MpUvAGyxMEp6Vt1yA83GFDpds1jLY1PES1U9wA==
-
-"@ngxs/devtools-plugin@^3.7.1":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@ngxs/devtools-plugin/-/devtools-plugin-3.7.2.tgz#995424e5faf48df55a1b54b9e1b36ce9c47c1d52"
-  integrity sha512-kRuOx1GPXHHZZAeQMm1J1msTZxjgiAUY4NR7bzaQPn+UwSY2OgGEsd8driMM5YSTF1hOjcFHinaLCM1vmu8FmQ==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs/logger-plugin@^3.7.1":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@ngxs/logger-plugin/-/logger-plugin-3.7.2.tgz#32dc7b0c1feddc41dab159f015bc73381cc249c6"
-  integrity sha512-JGqgBUX+r/1uV0IkHMJtGyAFDrbjbUZWgmmlXCaJ4t1r+cY/TPJm5BeLtiIqdewf2ELfzOfA682mbk3EOlRymw==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs/router-plugin@^3.7.1":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@ngxs/router-plugin/-/router-plugin-3.7.2.tgz#7ad0e371966a184e53ece1cb37b06b2012e1ddee"
-  integrity sha512-PWhRJahd4G94JCfNSgsn6M0HNshMI7W+UpCYILkh5DQTlyxeUGtMA7QR0kIHA5h58y8lYNecA33loL84wGPkNQ==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs/storage-plugin@^3.7.1":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@ngxs/storage-plugin/-/storage-plugin-3.7.2.tgz#b04ce7d7a4bfa7ab6b453af9a1198acf886b8630"
-  integrity sha512-yK+Kqgd3DdWcGbKnlgcu+aY1awYgFiZj6k0UhPJQ0hNn9GfQrwntTlcBKYQePZqrQ2zazNiXFKqcFut6DYyjuQ==
-  dependencies:
-    tslib "^1.9.0"
-
-"@ngxs/store@^3.7.1":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@ngxs/store/-/store-3.7.2.tgz#1088b0669adc382d36ca7ae8438c603e55879b42"
-  integrity sha512-1cnAjHOGCovfvhjtcAWBajrMXos97Un3c8ekKoS8FIHnq3aQOzY/ePspDRNi9kTcuBJ/r/xl097JC1ssEuNbyg==
-  dependencies:
-    tslib "^1.9.0"
-
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"

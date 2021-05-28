@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { slugify } from 'voca';
-import { Store } from '@ngxs/store';
-import { Navigate } from '@ngxs/router-plugin';
 import { ContentKind } from '@dragonfish/shared/models/content';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'dragonfish-notification-item',
@@ -14,25 +13,23 @@ export class NotificationItemComponent {
     @Output() onSelected: EventEmitter<string> = new EventEmitter<string>();
     @Output() onDeselected: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor(private store: Store) {}
+    constructor(private router: Router) {}
 
     sendTo(): void {
         switch (this.notif.parentKind) {
             case ContentKind.ProseContent:
-                this.store.dispatch(new Navigate([`/prose/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]));
+                this.router.navigate([`/prose/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]);
                 break;
             case ContentKind.PoetryContent:
-                this.store.dispatch(
-                    new Navigate([`/poetry/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]),
-                );
+                this.router.navigate([`/poetry/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]);
                 break;
             case ContentKind.BlogContent:
-                this.store.dispatch(
-                    new Navigate([`/portfolio/${this.notif.destinationUserId}/a-human/blog/${this.notif.sourceId}`]),
-                );
+                this.router.navigate([
+                    `/portfolio/${this.notif.destinationUserId}/a-human/blog/${this.notif.sourceId}`,
+                ]);
                 break;
             case ContentKind.NewsContent:
-                this.store.dispatch(new Navigate([`/post/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]));
+                this.router.navigate([`/post/${this.notif.sourceId}/${slugify(this.notif.parentTitle)}`]);
                 break;
         }
     }

@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApprovalQueueState } from '../../../../shared/approval-queue';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { ApprovalQueueQuery } from '@dragonfish/client/repository/dashboard/approval-queue';
 
 @Component({
     selector: 'dragonfish-approve-poetry',
@@ -11,7 +8,5 @@ import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
     styleUrls: ['./approve-poetry.component.scss'],
 })
 export class ApprovePoetryComponent {
-    @Select(ApprovalQueueState.selectedDoc) currDoc: Observable<ApprovalQueue>;
-
-    constructor(public route: ActivatedRoute) {}
+    constructor(public route: ActivatedRoute, public queueQuery: ApprovalQueueQuery) {}
 }
