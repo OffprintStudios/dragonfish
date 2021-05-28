@@ -4,13 +4,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { NgxsModule } from '@ngxs/store';
-import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
-import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
-import { NgxsDispatchPluginModule } from '@ngxs-labs/dispatch-decorator';
-import { NgxsSelectSnapshotModule } from '@ngxs-labs/select-snapshot';
-import { NgxsRouterPluginModule } from '@ngxs/router-plugin';
 import { FileUploadModule } from 'ng2-file-upload';
 import { CookieModule } from 'ngx-cookie';
 import { Ng2FittextModule } from 'ng2-fittext';
@@ -60,9 +53,6 @@ import { UiModule } from '@dragonfish/client/ui';
 import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { ClientServicesModule } from '@dragonfish/client/services';
-
-/* State */
-import { RepositoryModule } from '@dragonfish/client/repository';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -117,26 +107,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ContextMenuModule,
         CookieModule.forRoot(),
         MarkdownModule.forRoot(),
-        RepositoryModule,
-        NgxsModule.forRoot([], {
-            developmentMode: !environment.production,
-            selectorOptions: { suppressErrors: false, injectContainerState: false },
-        }),
-        NgxsStoragePluginModule.forRoot({
-            key: [
-                'auth.token',
-                'user',
-                'global',
-                'myStuff.currContent',
-                'myStuff.currContentWordCount',
-                'myStuff.sections.currSection',
-            ],
-        }),
-        NgxsReduxDevtoolsPluginModule.forRoot(),
-        NgxsRouterPluginModule.forRoot(),
-        NgxsDispatchPluginModule.forRoot(),
-        NgxsSelectSnapshotModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot({ disabled: environment.production }),
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
     ],
