@@ -10,8 +10,9 @@ export interface CaseFile {
     readonly _id: string;
     reports: Report[];
     notes: Note[];
+    isClosed: boolean;
     action: {
-        type: ActionType;
+        hasType: ActionType;
         takenBy: string | FrontendUser;
         date: Date;
         reason: string;

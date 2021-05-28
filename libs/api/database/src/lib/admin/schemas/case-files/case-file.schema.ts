@@ -1,0 +1,56 @@
+import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+import { ActionType, CaseFile, CaseKind } from '@dragonfish/shared/models/case-files';
+import { nanoid } from 'nanoid';
+import { FrontendUser } from '@dragonfish/shared/models/users';
+import { ReportDocument, ReportSchema } from './reports.schema';
+import { NotesDocument, NotesSchema } from './notes.schema';
+
+@Schema({ timestamps: true, autoIndex: true, collection: 'case_files', discriminatorKey: 'kind' })
+export class CaseFileDocument extends Document implements CaseFile {
+    @Prop({ default: () => nanoid() })
+    readonly _id: string;
+
+    @Prop({ type: [ReportSchema], default: [] })
+    reports: ReportDocument[];
+
+    @Prop({ type: [NotesSchema], default: [] })
+    notes: NotesDocument[];
+
+    @Prop({ default: false })
+    isClosed: boolean;
+
+    @Prop(
+        raw({
+            hasType: { type: String, enum: Object.keys(ActionType), default: null },
+            takenBy: {
+                type: String,
+                ref: 'User',
+                autopopulate: {
+                    select:
+                        '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
+                },
+                default: null,
+            },
+            date: { type: Date, default: null },
+            reason: { type: String, default: null },
+        }),
+    )
+    action: {
+        hasType: ActionType;
+        takenBy: string | FrontendUser;
+        date: Date;
+        reason: string;
+    };
+
+    @Prop({ type: String, enum: Object.keys(CaseKind), required: true })
+    readonly kind: CaseKind;
+
+    @Prop()
+    readonly createdAt: Date;
+
+    @Prop()
+    readonly updatedAt: Date;
+}
+
+export const CaseFileSchema = SchemaFactory.createForClass(CaseFileDocument);

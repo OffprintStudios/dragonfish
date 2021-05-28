@@ -1,22 +1,18 @@
-export enum GeneralReportReason {
+export enum ReportReason {
+    /* General Reasons */
     AttackingAnotherUser = 'Attacking Another User',
     RacismDiscrimination = 'Racism/Discrimination',
     Spam = 'Spam',
     NSFWContent = 'NSFW Content',
     Other = 'Other',
-}
 
-export enum UserReportReason {
+    /* User-specific */
     BotAccount = 'Bot Account',
     BanEvasion = 'Ban Evasion',
-}
 
-export enum ContentReportReason {
+    /* Content-specific */
     NSFWArt = 'NSFW Art',
     IncorrectContentRating = 'Incorrect Content Rating',
     Plagiarism = 'Plagiarism',
     IncorrectTags = 'Incorrect Tags',
-    OtherViolation = 'Other Violation',
 }
-
-export type ReportReason = GeneralReportReason | UserReportReason | ContentReportReason;

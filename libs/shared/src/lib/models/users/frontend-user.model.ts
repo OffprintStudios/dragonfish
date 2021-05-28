@@ -14,7 +14,9 @@ export interface FrontendUser {
         readonly watchers: number;
         readonly watching: number;
     };
-    readonly roles: Roles[];
+    readonly audit: {
+        readonly roles: Roles[];
+    };
     readonly createdAt: Date;
     readonly token?: string;
 }
