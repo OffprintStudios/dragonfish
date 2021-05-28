@@ -7,18 +7,34 @@ import { ContentKind } from '@dragonfish/shared/models/content';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @UntilDestroy()
 @Component({
     selector: 'dragonfish-upload-cover-art',
     templateUrl: './upload-cover-art.component.html',
     styleUrls: ['./upload-cover-art.component.scss'],
+    animations: [
+        // the fade-in/fade-out animation.
+        trigger('simpleFadeAnimation', [
+            // the "in" style determines the "resting" state of the element when it is visible.
+            state('in', style({ opacity: 1 })),
+
+            // fade in when created. this could also be written as transition('void => *')
+            transition(':enter', [style({ opacity: 0 }), animate(600)]),
+
+            // fade out when destroyed. this could also be written as transition('void => *')
+            transition(':leave', animate(600, style({ opacity: 0 }))),
+        ]),
+    ],
 })
 export class UploadCoverArtComponent implements OnInit {
     workId: string;
     token: string;
-    imageChangedEvent: Event;
+    imageChangedEvent: any;
     croppedImage: any = '';
+    uploading = false;
 
     fileToReturn: File;
 
@@ -62,35 +78,28 @@ export class UploadCoverArtComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe(value => {
+        this.sessionQuery.token$.pipe(untilDestroyed(this)).subscribe((value) => {
             this.token = value;
         });
     }
 
-    fileChangeEvent(fileInput: Event): void {
-        this.loading = true;
-        const inputElement = fileInput.target as HTMLInputElement;
-        if (inputElement.files.length === 0) {
-            return;
-        }
-
-        this.setFileFormat(inputElement.files[0]).then(
-            () => {
-                this.loading = false;
-                this.imageChangedEvent = fileInput;
-                this.newImageAdded = true;
-            },
-            (rejectedReason: any) => {
-                this.loading = false;
-            },
-        );
-    }
-
-    async setFileFormat(imageFile: File): Promise<void> {
-        const uploadedImageFormat = await this.readFileFormat(imageFile);
-        if (!uploadedImageFormat) {
-            this.loadImageFailed();
-            throw new Error('Unsupported image format.');
+    fileChangeEvent(event: Event | File[]): void {
+        if (isNullOrUndefined(event[0]) !== true) {
+            const fileEvent = event as File[];
+            if (fileEvent.length > 1) {
+                this.alerts.error(`You're only allowed to upload one image!`);
+                return;
+            }
+            this.imageChangedEvent = {
+                target: {
+                    accept: 'image/png, image/jpeg, image/jpg',
+                    files: event as File[],
+                },
+            };
+            this.showCropper = true;
+        } else {
+            this.imageChangedEvent = event;
+            this.showCropper = true;
         }
     }
 
