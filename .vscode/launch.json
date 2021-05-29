@@ -5,15 +5,21 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Debug Node app",            
-            "port": 9229
+            "name": "Attach to Dragonfish",
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**",
+                "tslib.js"
+            ],
+            "smartStep": true
         },
         {
             "type": "node",
             "request": "launch",
             "name": "Launch with Debugger",
             "program": "${workspaceFolder}/dist/packages/server/main.js",
-            "smartStep": true,            
-        }        
+            "smartStep": true,
+        }
     ]
 }

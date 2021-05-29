@@ -5,7 +5,7 @@ import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
-import { TagsSchema } from './tags.schema';
+import { TagsDocument, TagsSchema } from './tags.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { countWords, stripTags } from 'voca';
@@ -20,8 +20,7 @@ export { ProseContentDocument, ProseContentSchema } from './prose-content.schema
 export { RatingsDocument, RatingsSchema } from './ratings.schema';
 export { ReadingHistoryDocument, ReadingHistorySchema } from './reading-history.schema';
 export { SectionsDocument, SectionsSchema } from './sections.schema';
-export { TagsDocument, ChildTags, TagsSchema, ChildTagsSchema } from './tags.schema';
-export { TagReferenceDocument, TagReferenceSchema } from './tag-reference.schema';
+export { TagsDocument, TagsSchema } from './tags.schema';
 
 //#endregion
 

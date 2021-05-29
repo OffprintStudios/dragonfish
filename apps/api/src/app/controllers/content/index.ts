@@ -7,6 +7,7 @@ import { CollectionsController } from './collections.controller';
 import { SectionsController } from './sections.controller';
 import { NewsController } from './news.controller';
 import { RatingsController } from './ratings.controller';
+import { TagsController } from './tags.controller';
 
 export const ContentRoutes = [
     ContentController,
@@ -18,4 +19,5 @@ export const ContentRoutes = [
     SectionsController,
     NewsController,
     RatingsController,
+    TagsController,
 ];

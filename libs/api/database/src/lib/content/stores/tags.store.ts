@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TagsDocument } from '../schemas';
 import { TagKind, TagsForm } from '@dragonfish/shared/models/content';
 import * as sanitize from 'sanitize-html';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 
 @Injectable()
 export class TagsStore {
+    private readonly logger: Logger = new Logger(TagsStore.name);
+
     constructor(
         @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
     ) {}
@@ -21,108 +24,137 @@ export class TagsStore {
     }
 
     /**
-     * Creates a new parent tag.
+     * Returns the given tag and all its descendants.
+     * @param king
+     * @param tagId
+     */
+    async fetchDescendants(tagId: string): Promise<TagsTree> {
+        const parentTag = await this.tags.findById(tagId);
+        if (!parentTag) {
+            throw new NotFoundException("No tag with that ID found.");
+        }
+
+        const root: TagsTree = {
+            ...parentTag.toObject(),
+            children: []
+        };
+        const tree = await this.buildDescendantTree(root);
+
+        return tree;
+    }
+
+    private async buildDescendantTree(tagNode: TagsTree): Promise<TagsTree> {
+        const currentRoot = await this.populateImmediateChildren(tagNode._id);
+        if (!currentRoot.children || currentRoot.children.length === 0) {
+            // If we can't find any children for this node, it is a leaf. Return it.
+            return tagNode;
+        }
+
+        // Otherwise, iterate through each child node, find _its_ children,
+        // and add them to the node's `children` property.
+        for (const child of currentRoot.children) {
+            child.children = (await this.buildDescendantTree(child))?.children;
+        }
+
+        return currentRoot;
+    }
+
+    /**
+     * Returns the Tag, with an extra `children` property array that contains all of this
+     * tag's immediate children.
+     * @param id The ID of the tag to populate.
+     */
+    private async populateImmediateChildren(id: string): Promise<TagsTree> {
+        // We force maxDepth to be 0 so that we only get the node's immediate children.
+        // If we went further, Mongo would just give us a flat array, and we'd have to
+        // put it together ourselves anyway.
+        const results: TagsTree[] = await this.tags.aggregate<TagsTree>([
+            { $match: { _id: id } }
+        ])
+        .graphLookup({
+            from: 'tags',
+            startWith: '$_id',
+            connectFromField: '_id',
+            connectToField: 'parent',
+            as: 'children', // Careful: this string should match the name of the property in `TagsTree`.
+            maxDepth: 0,
+        }).exec();
+        if (results.length === 0) {
+            return null;
+        }
+
+        // Because we specify maxDepth of 0, and look up a single ID, we don't
+        // expect (or care about) anything beyond the first result.
+        return results[0];
+    }
+
+    /**
+     * Creates a new tag.
      * @param form
      * @param tagKind
      */
-    async createParent(form: TagsForm, tagKind: TagKind): Promise<TagsDocument> {
+    async createTag(form: TagsForm, tagKind: TagKind): Promise<TagsDocument> {
+        if (form.parent) {
+            // Ensure the parent exists and its kind matches
+            const parentTag = await this.tags.findById(form.parent);
+            if (!parentTag) {
+                throw new NotFoundException("Could not find any parent tag with that ID.");
+            }
+            if (parentTag.kind !== tagKind) {
+                throw new BadRequestException("The parent tag's kind must match the new tag's kind.");
+            }
+        }
+
         const newTag = new this.tags({
             name: sanitize(form.name),
             desc: sanitize(form.desc),
             kind: tagKind,
+            parent: form.parent,
         });
 
         return newTag.save();
     }
 
     /**
-     * Adds a new child tag to a parent.
-     * @param parentId
-     * @param childForm
+     * Updates a tag.
+     * @param tagId The ID of the tag to update.
+     * @param form The details of the update operation.
      */
-    async addChild(parentId: string, childForm: TagsForm): Promise<TagsDocument> {
-        const parent = await this.tags.findById(parentId);
-
-        if (isNullOrUndefined(parent)) {
+    async updateTag(tagId: string, form: TagsForm): Promise<TagsDocument> {
+        const tag = await this.tags.findById(tagId);
+        if (!tag) {
             throw new NotFoundException(`The tag you're trying to update does not exist.`);
         }
 
-        // has to be cast to `any` because the mongoose overload of `push` for some reason doesn't have proper typings
-        parent.children.push(<any> { name: sanitize(childForm.name), desc: sanitize(childForm.desc) });
+        // If we're changing this tag's parent, make sure we aren't accidentally parenting it to
+        // any of its existing children
+        if (form.parent) {
+            const tagWithChildren = await this.populateImmediateChildren(tag._id);
+            if (tagWithChildren.children && tagWithChildren.children.length > 0) {
+                for (const child of tagWithChildren.children) {
+                    if (child._id === form.parent) {
+                        throw new BadRequestException("Cannot change this tag's parent to one of its children.");
+                    }
+                }
+            }
+        }
 
-        return parent.save();
+        tag.name = sanitize(form.name);
+        tag.desc = sanitize(form.desc);
+        if (form.parent) {
+            tag.parent = form.parent;
+        }
+
+        return tag.save();
     }
 
     /**
-     * Updates a parent tag.
-     * @param parentId
-     * @param form
-     */
-    async updateParent(parentId: string, form: TagsForm): Promise<TagsDocument> {
-        const parent = await this.tags.findById(parentId);
-
-        if (isNullOrUndefined(parent)) {
-            throw new NotFoundException(`The tag you're trying to update does not exist.`);
-        }
-
-        parent.name = sanitize(form.name);
-        parent.desc = sanitize(form.desc);
-
-        return parent.save();
-    }
-
-    /**
-     * Updates a child tag, belonging to the specified parent.
-     * @param parentId
-     * @param childId
-     * @param form
-     */
-    async updateChild(parentId: string, childId: string, form: TagsForm): Promise<TagsDocument> {
-        const parent = await this.tags.findById(parentId);
-
-        if (isNullOrUndefined(parent)) {
-            throw new NotFoundException(`The tag you're trying to update does not exist.`);
-        }
-
-        const childIndex = parent.children.findIndex(child => { return child._id === childId; });
-
-        if (childIndex === -1) {
-            throw new NotFoundException(`The tag you're trying to update does not exist.`);
-        }
-
-        parent.children[childIndex].name = sanitize(form.name);
-        parent.children[childIndex].desc = sanitize(form.desc);
-
-        return parent.save();
-    }
-
-    /**
-     * Deletes a parent tag.
+     * Deletes a tag.
      * @param parentId
      */
-    async deleteParent(parentId: string): Promise<void> {
+    async deleteTag(parentId: string): Promise<void> {
+        // TODO: We need to go through the whole damn database and clean up any references to this tag
+        // Should that be middleware?
         await this.tags.findByIdAndDelete(parentId);
-    }
-
-    /**
-     * Removes a child from a parent.
-     * @param parentId
-     * @param childId
-     */
-    async removeChild(parentId: string, childId: string): Promise<TagsDocument> {
-        const parent = await this.tags.findById(parentId);
-
-        if (isNullOrUndefined(parent)) {
-            throw new NotFoundException(`The tag you're trying to update does not exist.`);
-        }
-
-        const childIndex = parent.children.findIndex(child => { return child._id === childId; });
-
-        if (childIndex === -1) {
-            throw new NotFoundException(`The tag you're trying to update does not exist.`);
-        }
-
-        parent.children[childIndex].remove();
-        return parent.save();
     }
 }
