@@ -12,7 +12,7 @@ export class ReportDocument extends Types.Subdocument implements Report {
     readonly user: string;
 
     @Prop({ type: [String], enum: Object.keys(ReportReason), required: true })
-    reason: ReportReason[];
+    reasons: ReportReason[];
 
     @Prop({ trim: true, required: true })
     body: string;

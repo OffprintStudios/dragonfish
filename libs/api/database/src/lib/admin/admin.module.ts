@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './schemas';
+import * as Stores from './stores';
 
 @Module({
     imports: [
@@ -16,7 +17,7 @@ import * as Schemas from './schemas';
             },
         ]),
     ],
-    providers: [],
-    exports: [],
+    providers: [Stores.CaseFilesStore],
+    exports: [Stores.CaseFilesStore],
 })
 export class AdminModule {}
