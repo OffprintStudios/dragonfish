@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { getConnectionToken, MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './schemas';
 import * as Stores from './stores';
 
@@ -8,6 +8,7 @@ import * as Stores from './stores';
         MongooseModule.forFeatureAsync([
             {
                 name: 'CaseFiles',
+                inject: [getConnectionToken()],
                 useFactory: Schemas.setupCaseFileCollection,
                 discriminators: [
                     { name: 'ContentCaseFiles', schema: Schemas.ContentCaseFileSchema },

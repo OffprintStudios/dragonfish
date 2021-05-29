@@ -1,5 +1,7 @@
+import { Connection } from 'mongoose';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
+import * as MongooseSequence from 'mongoose-sequence';
 import { CaseFileSchema } from './case-files/case-file.schema';
 
 //#region ---EXPORTS---
@@ -13,10 +15,11 @@ export { ContentCaseFileSchema, ContentCaseFileDocument } from './case-files/con
 
 //#region ---SCHEMA FACTORIES---
 
-export async function setupCaseFileCollection() {
+export async function setupCaseFileCollection(connection: Connection) {
     const schema = CaseFileSchema;
     schema.plugin(MongooseAutopopulate);
     schema.plugin(MongoosePaginate);
+    schema.plugin(MongooseSequence(connection), { inc_field: '_id' });
     return schema;
 }
 

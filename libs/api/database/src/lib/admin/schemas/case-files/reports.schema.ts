@@ -1,12 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Report, ReportReason } from '@dragonfish/shared/models/case-files';
-import { nanoid } from 'nanoid';
 
-@Schema({ timestamps: true, autoIndex: true })
+@Schema({ timestamps: true, autoIndex: true, _id: false })
 export class ReportDocument extends Types.Subdocument implements Report {
-    @Prop({ default: () => nanoid() })
-    readonly _id: string;
+    @Prop({ type: Number })
+    readonly _id: number;
 
     @Prop({ type: String, ref: 'User', required: true })
     readonly user: string;

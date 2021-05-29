@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -65,7 +65,7 @@ export class CaseFilesStore {
      * @param caseId
      * @param form
      */
-    public async addNote(user: JwtPayload, caseId: string, form: NoteForm) {
+    public async addNote(user: JwtPayload, caseId: number, form: NoteForm) {
         const document = await this.caseFiles.findById(caseId).where({ isClosed: false });
 
         if (isNullOrUndefined(document)) {

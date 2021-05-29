@@ -8,7 +8,7 @@ import { Comment } from '@dragonfish/shared/models/comments';
 
 @Schema()
 export class CommentCaseFileDocument extends Document implements CommentCaseFile {
-    readonly _id: string;
+    readonly _id: number;
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;

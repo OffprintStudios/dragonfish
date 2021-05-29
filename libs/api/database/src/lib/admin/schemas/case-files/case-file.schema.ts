@@ -1,15 +1,14 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ActionType, CaseFile, CaseKind } from '@dragonfish/shared/models/case-files';
-import { nanoid } from 'nanoid';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ReportDocument, ReportSchema } from './reports.schema';
 import { NotesDocument, NotesSchema } from './notes.schema';
 
-@Schema({ timestamps: true, autoIndex: true, collection: 'case_files', discriminatorKey: 'kind' })
+@Schema({ timestamps: true, autoIndex: true, collection: 'case_files', discriminatorKey: 'kind', _id: false })
 export class CaseFileDocument extends Document implements CaseFile {
-    @Prop({ default: () => nanoid() })
-    readonly _id: string;
+    @Prop({ type: Number })
+    readonly _id: number;
 
     @Prop({ type: [ReportSchema], default: [] })
     reports: ReportDocument[];

@@ -1,13 +1,12 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Types } from 'mongoose';
 import { Note } from '@dragonfish/shared/models/case-files';
-import { nanoid } from 'nanoid';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 
-@Schema({ timestamps: true, autoIndex: true })
+@Schema({ timestamps: true, autoIndex: true, _id: false })
 export class NotesDocument extends Types.Subdocument implements Note {
-    @Prop({ default: () => nanoid() })
-    readonly _id: string;
+    @Prop({ type: Number })
+    readonly _id: number;
 
     @Prop({
         type: String,

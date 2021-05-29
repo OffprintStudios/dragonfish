@@ -7,7 +7,7 @@ import { ContentModel } from '@dragonfish/shared/models/content';
 import { ActionType } from './action.type';
 
 export interface CaseFile {
-    readonly _id: string;
+    readonly _id: number;
     reports: Report[];
     notes: Note[];
     isClosed: boolean;

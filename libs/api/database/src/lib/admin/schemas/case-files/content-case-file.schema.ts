@@ -8,7 +8,7 @@ import { ContentModel } from '@dragonfish/shared/models/content';
 
 @Schema()
 export class ContentCaseFileDocument extends Document implements ContentCaseFile {
-    readonly _id: string;
+    readonly _id: number;
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;

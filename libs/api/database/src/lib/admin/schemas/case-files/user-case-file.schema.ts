@@ -7,7 +7,7 @@ import { NotesDocument } from './notes.schema';
 
 @Schema()
 export class UserCaseFileDocument extends Document implements UserCaseFile {
-    readonly _id: string;
+    readonly _id: number;
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;
