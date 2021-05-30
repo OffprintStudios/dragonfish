@@ -39,7 +39,7 @@ import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
-import { CaseFile, CaseKind, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
+import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 
 /**
  * ## DragonfishNetworkService
@@ -352,7 +352,7 @@ export class DragonfishNetworkService {
      */
     public addNote(id: number, form: NoteForm) {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/case-files/add-note?id=${id}`, form, {
+            this.http.patch<Note>(`${this.baseUrl}/case-files/add-note?id=${id}`, form, {
                 observe: 'response',
                 withCredentials: true,
             }),
