@@ -11,7 +11,6 @@ export enum ReportReason {
     BanEvasion = 'Ban Evasion',
 
     /* Content-specific */
-    NSFWArt = 'NSFW Art',
     IncorrectContentRating = 'Incorrect Content Rating',
     Plagiarism = 'Plagiarism',
     IncorrectTags = 'Incorrect Tags',

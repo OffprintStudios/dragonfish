@@ -1,5 +1,5 @@
 export enum CaseKind {
-    Content,
-    Comments,
-    Users,
+    Content = 'Content',
+    Comments = 'Comments',
+    Users = 'Users',
 }

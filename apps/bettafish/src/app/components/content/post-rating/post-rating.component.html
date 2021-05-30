@@ -52,7 +52,10 @@
                         </button>
                     </ng-container>
                 </ng-container>
-                <button class="border-t-0 border-l-0 shadow-none px-2.5 py-1.5 rounded-bl-none rounded-t-none font-normal">
+                <button
+                    class="border-t-0 border-l-0 shadow-none px-2.5 py-1.5 rounded-bl-none rounded-t-none font-normal"
+                    (click)="openReportDialog(state.currContent._id)"
+                >
                     <i-feather name="more-vertical"></i-feather>
                 </button>
             </div>
@@ -68,11 +71,6 @@
                 <button class="border-t-0 border-l-0 shadow-none p-1.5 rounded-b-none rounded-t-none font-normal">
                     <i-feather name="thumbs-down"></i-feather>
                     <span class="relative bottom-1.5 ml-1">{{ state.dislikes | abbreviate }}</span>
-                </button>
-                <button
-                    class="border-t-0 border-l-0 shadow-none px-2.5 py-1.5 rounded-bl-none rounded-t-none font-normal"
-                >
-                    <i-feather name="more-vertical"></i-feather>
                 </button>
             </div>
         </div>
