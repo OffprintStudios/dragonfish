@@ -50,11 +50,14 @@ export class CaseFilesStore {
      * @param form
      */
     public async submitReport(user: JwtPayload, itemId: string, caseKind: CaseKind, form: ReportForm) {
+        console.log(`Submitting report for ${caseKind}...`);
         const document = await this.findDocumentByItemId(itemId, caseKind);
 
         if (isNullOrUndefined(document)) {
+            console.log(`Creating document...`);
             await this.createDocument(user, itemId, caseKind, form);
         } else {
+            console.log(`Adding report to document...`);
             await this.addReport(user, document, form);
         }
     }
@@ -74,7 +77,9 @@ export class CaseFilesStore {
 
         // has to be cast as `any` to avoid type errors, despite this being legitimate mongoose syntax.
         document.notes.push(<any>{ user: user.sub, body: sanitize(form.body) });
-        await document.save();
+        return await document.save().then((doc) => {
+            return doc.notes[length - 1];
+        });
     }
 
     //#region ---PRIVATE---
@@ -116,9 +121,11 @@ export class CaseFilesStore {
     ): Promise<void> {
         if (caseKind === CaseKind.Content) {
             const newDoc = new this.contentFiles({ content: itemId });
+            console.log(newDoc);
             await this.addReport(user, newDoc, form);
         } else if (caseKind === CaseKind.Users) {
             const newDoc = new this.userFiles({ user: itemId });
+            console.log(newDoc);
             await this.addReport(user, newDoc, form);
         } else if (caseKind === CaseKind.Comments) {
             throw new InternalServerErrorException(`This feature is not yet supported.`);
@@ -135,7 +142,9 @@ export class CaseFilesStore {
     private async addReport(user: JwtPayload, document: CaseFileDocument, form: ReportForm): Promise<void> {
         // has to be cast as `any` to avoid type errors, despite this being legitimate mongoose syntax.
         document.reports.push(<any>{ user: user.sub, reasons: form.reasons, body: sanitize(form.body) });
-        await document.save();
+        await document.save().then(() => {
+            console.log(`Saved!`);
+        });
     }
 
     //#endregion

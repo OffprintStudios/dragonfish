@@ -46,7 +46,7 @@
                     <i-feather name="folder-plus"></i-feather>Add to Collection
                 </button>
             </ng-container>
-            <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
+            <button mat-menu-item (click)="openReportDialog(state.currContent._id)"><i-feather name="flag"></i-feather>Report</button>
         </mat-menu>
     </ng-container>
     <ng-template #noHistory>
@@ -59,16 +59,6 @@
                 <i-feather name="thumbs-down"></i-feather
                 ><span class="button-text">{{ state.dislikes | abbreviate }}</span>
             </button>
-            <button class="end" [matMenuTriggerFor]="moreItemsNoUser">
-                <i-feather class="more" name="more-vertical"></i-feather>
-            </button>
         </div>
-
-        <mat-menu xPosition="before" #moreItemsNoUser="matMenu">
-            <button mat-menu-item>
-                <i-feather name="folder-plus"></i-feather>Add to Collection
-            </button>
-            <button mat-menu-item><i-feather name="flag"></i-feather>Report</button>
-        </mat-menu>
     </ng-template>
 </ng-container>

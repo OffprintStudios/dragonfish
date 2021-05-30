@@ -5,12 +5,14 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { MatDialog } from '@angular/material/dialog';
 import { AddToCollectionComponent } from '../collections/add-to-collection/add-to-collection.component';
 import { ContentViewQuery, ContentViewService } from '@dragonfish/client/repository/content-view';
+import { ReportDialogComponent } from '@dragonfish/client/ui';
+import { CaseKind } from '@dragonfish/shared/models/case-files';
 
 @UntilDestroy()
 @Component({
     selector: 'dragonfish-content-rating',
     templateUrl: './content-rating.component.html',
-    styleUrls: ['./content-rating.component.scss']
+    styleUrls: ['./content-rating.component.scss'],
 })
 export class ContentRatingComponent {
     ratingOption = RatingOption;
@@ -28,5 +30,13 @@ export class ContentRatingComponent {
      */
     openAddToCollectionDialog(content: ContentModel) {
         this.dialog.open(AddToCollectionComponent, { data: { content: content } });
+    }
+
+    /**
+     * Opens the report dialog.
+     * @param contentId
+     */
+    openReportDialog(contentId: string) {
+        this.dialog.open(ReportDialogComponent, { data: { kind: CaseKind.Content, itemId: contentId } });
     }
 }

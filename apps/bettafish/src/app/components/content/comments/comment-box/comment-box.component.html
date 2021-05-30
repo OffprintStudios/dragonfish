@@ -4,6 +4,7 @@
 			<a
                 class="name"
                 lang="en"
+                [matMenuTriggerFor]="userCard"
             >
                 {{ $any(comment.user).username }}
             </a>
@@ -108,4 +109,8 @@
     		</button>
         </ng-template>
 	</ng-template>
+</mat-menu>
+
+<mat-menu [class]="'user-card-panel'" #userCard="matMenu">
+    <dragonfish-user-card [user]="$any(comment.user)"></dragonfish-user-card>
 </mat-menu>

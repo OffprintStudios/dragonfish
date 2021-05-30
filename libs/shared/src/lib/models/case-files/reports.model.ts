@@ -1,7 +1,7 @@
 import { ReportReason } from '@dragonfish/shared/models/case-files/report-kind.enum';
 
 export interface Report {
-    readonly _id: number;
+    readonly _id: string;
     readonly user: string;
     reasons: ReportReason[]; // required
     body: string; // required

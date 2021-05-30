@@ -21,7 +21,7 @@ export class CaseFileDocument extends Document implements CaseFile {
 
     @Prop(
         raw({
-            hasType: { type: String, enum: Object.keys(ActionType), default: null },
+            hasType: { type: String, enum: Object.keys(ActionType), default: ActionType.None },
             takenBy: {
                 type: String,
                 ref: 'User',

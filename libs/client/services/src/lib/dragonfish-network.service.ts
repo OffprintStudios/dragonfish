@@ -39,6 +39,7 @@ import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
+import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 
 /**
  * ## DragonfishNetworkService
@@ -297,6 +298,64 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---CASE FILES---
+
+    /**
+     * Fetches all active case files.
+     */
+    public fetchActiveCaseFiles() {
+        return handleResponse(
+            this.http.get<CaseFile[]>(`${this.baseUrl}/case-files/fetch-active`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches all closed case files.
+     */
+    public fetchClosedCaseFiles() {
+        return handleResponse(
+            this.http.get<CaseFile[]>(`${this.baseUrl}/case-files/fetch-closed`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Submits a report on a given item.
+     * @param itemId
+     * @param caseKind
+     * @param form
+     */
+    public submitReport(itemId: string, caseKind: CaseKind, form: ReportForm) {
+        return handleResponse(
+            this.http.put<void>(
+                `${this.baseUrl}/case-files/submit-report?itemId=${itemId}&caseKind=${caseKind}`,
+                form,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Adds a note to an existing case file.
+     * @param id
+     * @param form
+     */
+    public addNote(id: number, form: NoteForm) {
+        return handleResponse(
+            this.http.patch<Note>(`${this.baseUrl}/case-files/add-note?id=${id}`, form, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 

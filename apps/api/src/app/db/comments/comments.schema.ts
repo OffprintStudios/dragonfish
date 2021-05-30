@@ -20,7 +20,8 @@ export const CommentsSchema = new Schema(
             required: true,
             index: true,
             autopopulate: {
-                select: '_id username profile.avatar profile.tagline audit.roles',
+                select:
+                    '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
             },
         },
         body: { type: String, required: true, trim: true },
@@ -48,7 +49,7 @@ export const CommentsSchema = new Schema(
         createdAt: { type: Date, default: Date.now() },
         updatedAt: { type: Date, default: Date.now() },
     },
-    { discriminatorKey: 'kind', autoIndex: true, timestamps: true, collection: 'comments' }
+    { discriminatorKey: 'kind', autoIndex: true, timestamps: true, collection: 'comments' },
 );
 
 CommentsSchema.plugin(MongooseAutopopulate);
