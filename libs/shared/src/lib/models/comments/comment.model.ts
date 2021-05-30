@@ -1,9 +1,9 @@
-import { Roles } from '../users';
+import { FrontendUser, Roles } from '../users';
 import { ContentAction } from './content-action.enum';
 
 export interface Comment {
     readonly _id: string;
-    readonly user: string | UserInfoComments;
+    readonly user: string | FrontendUser;
     body: string;
     readonly replies: string[];
     readonly stats: {

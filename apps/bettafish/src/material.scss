@@ -18,6 +18,18 @@
     border: 1px solid var(--borders);
 }
 
+.user-card-panel {
+    background: transparent !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    @apply py-0;
+
+    div.mat-menu-content:not(:empty) {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
 button.mat-menu-item {
     border-radius: 0;
     border: none;

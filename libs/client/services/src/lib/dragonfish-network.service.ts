@@ -302,6 +302,10 @@ export class DragonfishNetworkService {
 
     //#endregion
 
+    //#region ---CASE FILES---
+
+    //#endregion
+
     //#region ---COLLECTIONS---
 
     /**
