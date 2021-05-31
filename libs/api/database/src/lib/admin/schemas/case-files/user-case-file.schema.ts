@@ -11,9 +11,9 @@ export class UserCaseFileDocument extends Document implements UserCaseFile {
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;
+    claimedBy: string | FrontendUser;
     action: {
         hasType: ActionType;
-        takenBy: string | FrontendUser;
         date: Date;
         reason: string;
     };

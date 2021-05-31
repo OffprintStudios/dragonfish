@@ -1,9 +1,9 @@
 import { CaseKind } from './case-kind.enum';
 import { Report } from './reports.model';
 import { Note } from './notes.model';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { Comment } from '@dragonfish/shared/models/comments';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { FrontendUser } from '../users';
+import { Comment } from '../comments';
+import { ContentModel } from '../content';
 import { ActionType } from './action.type';
 
 export interface CaseFile {
@@ -11,9 +11,9 @@ export interface CaseFile {
     reports: Report[];
     notes: Note[];
     isClosed: boolean;
+    claimedBy: string | FrontendUser;
     action: {
         hasType: ActionType;
-        takenBy: string | FrontendUser;
         date: Date;
         reason: string;
     };

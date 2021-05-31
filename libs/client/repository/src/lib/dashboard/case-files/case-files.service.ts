@@ -7,6 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NoteForm } from '@dragonfish/shared/models/case-files';
 import { arrayAdd } from '@datorama/akita';
+import { FrontendUser } from '@dragonfish/shared/models/users';
 
 @Injectable({ providedIn: 'root' })
 export class CaseFilesService {
@@ -23,6 +24,36 @@ export class CaseFilesService {
                 this.caseFilesStore.set(value);
             }),
             catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public claimFile(id: number) {
+        return this.network.claimFile(id).pipe(
+            tap((value) => {
+                this.caseFilesStore.update(id, () => ({
+                    claimedBy: value.claimedBy as FrontendUser,
+                }));
+            }),
+            catchError((err) => {
+                console.log(err);
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public revokeClaim(id: number) {
+        return this.network.revokeClaim(id).pipe(
+            tap(() => {
+                this.caseFilesStore.update(id, () => ({
+                    claimedBy: null,
+                }));
+            }),
+            catchError((err) => {
+                console.log(err);
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),

@@ -1,4 +1,4 @@
-import { ReportReason } from '@dragonfish/shared/models/case-files/report-kind.enum';
+import { ReportReason } from './report-kind.enum';
 
 export interface Report {
     readonly _id: string;

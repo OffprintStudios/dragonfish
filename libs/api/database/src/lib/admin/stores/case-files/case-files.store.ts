@@ -1,4 +1,10 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -50,15 +56,48 @@ export class CaseFilesStore {
      * @param form
      */
     public async submitReport(user: JwtPayload, itemId: string, caseKind: CaseKind, form: ReportForm) {
-        console.log(`Submitting report for ${caseKind}...`);
         const document = await this.findDocumentByItemId(itemId, caseKind);
 
         if (isNullOrUndefined(document)) {
-            console.log(`Creating document...`);
             await this.createDocument(user, itemId, caseKind, form);
         } else {
-            console.log(`Adding report to document...`);
             await this.addReport(user, document, form);
+        }
+    }
+
+    /**
+     * Claims a case file.
+     * @param user
+     * @param fileId
+     */
+    public async claimFile(user: JwtPayload, fileId: number) {
+        const document = await this.caseFiles.findById(fileId);
+
+        if (isNullOrUndefined(document)) {
+            throw new NotFoundException(`The file you're trying to claim doesn't seem to exist.`);
+        } else {
+            if (isNullOrUndefined(document.claimedBy)) {
+                document.claimedBy = user.sub;
+                return await document.save();
+            } else {
+                throw new ConflictException(`Someone else has already claimed this file!`);
+            }
+        }
+    }
+
+    /**
+     * Revokes a claim on a file.
+     * @param user
+     * @param fileId
+     */
+    public async revokeClaim(user: JwtPayload, fileId: number) {
+        const document = await this.caseFiles.findOne({ _id: fileId, claimedBy: user.sub });
+
+        if (isNullOrUndefined(document)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            document.claimedBy = null;
+            return await document.save();
         }
     }
 
@@ -121,11 +160,9 @@ export class CaseFilesStore {
     ): Promise<void> {
         if (caseKind === CaseKind.Content) {
             const newDoc = new this.contentFiles({ content: itemId });
-            console.log(newDoc);
             await this.addReport(user, newDoc, form);
         } else if (caseKind === CaseKind.Users) {
             const newDoc = new this.userFiles({ user: itemId });
-            console.log(newDoc);
             await this.addReport(user, newDoc, form);
         } else if (caseKind === CaseKind.Comments) {
             throw new InternalServerErrorException(`This feature is not yet supported.`);
@@ -142,9 +179,7 @@ export class CaseFilesStore {
     private async addReport(user: JwtPayload, document: CaseFileDocument, form: ReportForm): Promise<void> {
         // has to be cast as `any` to avoid type errors, despite this being legitimate mongoose syntax.
         document.reports.push(<any>{ user: user.sub, reasons: form.reasons, body: sanitize(form.body) });
-        await document.save().then(() => {
-            console.log(`Saved!`);
-        });
+        await document.save();
     }
 
     //#endregion

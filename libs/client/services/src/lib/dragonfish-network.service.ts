@@ -346,6 +346,34 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * Claims a file.
+     * @param id
+     */
+    public claimFile(id: number) {
+        return handleResponse(
+            this.http.patch<CaseFile>(
+                `${this.baseUrl}/case-files/claim-file?id=${id}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Revokes a claim.
+     * @param id
+     */
+    public revokeClaim(id: number) {
+        return handleResponse(
+            this.http.patch<CaseFile>(
+                `${this.baseUrl}/case-files/revoke-claim?id=${id}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
      * Adds a note to an existing case file.
      * @param id
      * @param form
