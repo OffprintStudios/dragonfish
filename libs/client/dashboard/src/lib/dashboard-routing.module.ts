@@ -19,7 +19,7 @@ import { UsersManagementComponent } from './pages/users-management';
 import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/approval-queue';
 import { Roles } from '@dragonfish/shared/models/users';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
-import { CaseFilesComponent } from './pages/case-files';
+import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 const routes: Routes = [
     {
@@ -87,6 +87,14 @@ const routes: Routes = [
                 component: CaseFilesComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
+                children: [
+                    {
+                        path: 'file/:fileId',
+                        component: ViewFileComponent,
+                        canActivate: [AuthGuard],
+                        data: { roles: [Roles.Moderator, Roles.Admin] },
+                    },
+                ],
             },
             {
                 path: 'users-management',

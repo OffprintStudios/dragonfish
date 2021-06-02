@@ -22,7 +22,7 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
-import { CaseFilesComponent } from './pages/case-files';
+import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
@@ -42,6 +42,7 @@ import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './compon
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
         CaseFilesComponent,
+        ViewFileComponent,
     ],
     imports: [
         CommonModule,
