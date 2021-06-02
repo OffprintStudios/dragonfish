@@ -29,12 +29,11 @@ import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dr
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
-
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { Decision } from '@dragonfish/shared/models/contrib';
 import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { HttpError } from '@dragonfish/shared/models/util';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { CookieService } from 'ngx-cookie';
@@ -51,7 +50,11 @@ import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shar
 })
 export class DragonfishNetworkService {
     private baseUrl = `/api`;
-    constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) {}
+    constructor(
+        private readonly http: HttpClient,
+        private readonly cookieService: CookieService,
+        private _zone: NgZone,
+    ) {}
 
     //#region ---APPROVAL QUEUE---
 
@@ -1224,6 +1227,31 @@ export class DragonfishNetworkService {
                 },
             ),
         );
+    }
+
+    //#endregion
+
+    //#region ---SERVER-SENT EVENTS---
+
+    /**
+     * Gets the server-sent events given a URl.
+     * @param url 
+     * @returns 
+     */
+    public getServerSentEvent<T>(url: string): Observable<MessageEvent<T>> {
+        return new Observable<MessageEvent<T>>(observer => {
+            const eventSource = new EventSource(url);
+            eventSource.onmessage = (event: MessageEvent<T>) => {
+                this._zone.run(() => {
+                    observer.next(event);
+                });
+            }
+            eventSource.onerror = (error) => {
+                this._zone.run(() => {
+                    observer.error(error);
+                });
+            }
+        });
     }
 
     //#endregion
