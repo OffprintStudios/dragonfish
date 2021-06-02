@@ -21,45 +21,28 @@ import {
     NotificationSubscription,
 } from '@dragonfish/shared/models/notifications';
 import { Roles } from '@dragonfish/shared/models/users';
-import { Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { NotificationsService, UnsubscribeResult } from '@dragonfish/api/database/notifications';
 import { RolesGuard } from '../../guards';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
+@UseGuards(RolesGuard([Roles.User]))
 @Controller('notifications')
 export class NotificationsController {
     constructor(private readonly notificationsService: NotificationsService) {}
 
-    @UseGuards(RolesGuard([Roles.User]))
-    @Sse('sse')
-    getNotificationStream(@Request() req: any): Observable<MessageEvent> {
-        const userId: string = req.user.sub;
-        const observeNotif = from(this.notificationsService.getUnreadNotifications(userId));
-
-        return observeNotif.pipe(
-            map((notifData) => {
-                return { data: notifData };
-            }),
-        );
-    }
-
     @Get('all-notifications')
-    @UseGuards(RolesGuard([Roles.User]))
     async getAllNotifications(@Request() req: any): Promise<NotificationBase[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getAllNotifications(userId);
     }
 
     @Get('unread-notifications')
-    @UseGuards(RolesGuard([Roles.User]))
     async getUnreadNotifications(@Request() req: any): Promise<NotificationBase[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getUnreadNotifications(userId);
     }
 
     @Post('mark-as-read')
-    @UseGuards(RolesGuard([Roles.User]))
     async markAsRead(@Request() req: any, @Body() toMark: MarkReadRequest): Promise<void> {
         const userId: string = req.user.sub;
         if (!toMark.ids) {
@@ -75,14 +58,12 @@ export class NotificationsController {
     }
 
     @Get('subscriptions')
-    @UseGuards(RolesGuard([Roles.User]))
     async getSubscriptions(@Request() req: any): Promise<NotificationSubscription[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getSubscriptions(userId);
     }
 
     @Post('subscribe')
-    @UseGuards(RolesGuard([Roles.User]))
     async subscribe(
         @Request() req: any,
         @Query('sourceId') sourceId: string,
@@ -98,7 +79,6 @@ export class NotificationsController {
 
     @Post('unsubscribe')
     @HttpCode(200) // because a successful unsubscribe doesn't "create" anything, don't return Created
-    @UseGuards(RolesGuard([Roles.User]))
     async unsubscribe(
         @Request() req: any,
         @Query('sourceId') sourceId: string,
