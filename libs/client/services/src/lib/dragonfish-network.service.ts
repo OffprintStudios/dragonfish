@@ -11,7 +11,7 @@ import {
     User,
 } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
-import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
+import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
     ContentKind,
@@ -19,6 +19,7 @@ import {
     FormType,
     NewsContentModel,
     PubChange,
+    PubContent,
     SetRating,
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
@@ -541,19 +542,32 @@ export class DragonfishNetworkService {
 
     //#region ---COMMENTS---
 
-    public addContentComment(contentId: string, commentInfo: CreateComment) {
+    /**
+     * Adds a comment.
+     * @param itemId 
+     * @param kind 
+     * @param commentInfo 
+     * @returns 
+     */
+    public addComment(itemId: string, kind: CommentKind, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.put<ContentComment>(`${this.baseUrl}/comments/add-content-comment/${contentId}`, commentInfo, {
+            this.http.put<Comment>(`${this.baseUrl}/comments/add-comment?itemId=${itemId}&kind=${kind}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
         );
     }
 
-    public fetchContentComments(contentId: string, pageNum: number) {
+    /**
+     * Fetches a new page of comments
+     * @param contentId 
+     * @param pageNum 
+     * @returns 
+     */
+    public fetchComments(itemId: string, kind: CommentKind, pageNum: number) {
         return handleResponse(
-            this.http.get<PaginateResult<ContentComment>>(
-                `${this.baseUrl}/comments/get-content-comments/${contentId}/${pageNum}`,
+            this.http.get<PaginateResult<Comment>>(
+                `${this.baseUrl}/comments/fetch-comments?itemId=${itemId}&kind=${kind}&page=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -561,13 +575,12 @@ export class DragonfishNetworkService {
 
     /**
      * Edits a comment.
-     *
-     * @param commentId The comment to edit
+     * @param id The comment to edit
      * @param commentInfo The new info about it
      */
-    public editComment(commentId: string, commentInfo: EditComment) {
+    public editComment(id: string, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.patch(`${this.baseUrl}/comments/edit-comment/${commentId}`, commentInfo, {
+            this.http.patch(`${this.baseUrl}/comments/edit-comment?id=${id}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -587,10 +600,11 @@ export class DragonfishNetworkService {
     public fetchContent(
         contentId: string,
         kind: ContentKind,
-    ): Observable<{ content: ContentModel; ratings: RatingsModel }> {
+        page: number,
+    ): Observable<PubContent> {
         return handleResponse(
-            this.http.get<{ content: ContentModel; ratings: RatingsModel }>(
-                `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}`,
+            this.http.get<PubContent>(
+                `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}&page=${page}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -1235,22 +1249,22 @@ export class DragonfishNetworkService {
 
     /**
      * Gets the server-sent events given a URl.
-     * @param url 
-     * @returns 
+     * @param url
+     * @returns
      */
     public getServerSentEvent<T>(url: string): Observable<MessageEvent<T>> {
-        return new Observable<MessageEvent<T>>(observer => {
+        return new Observable<MessageEvent<T>>((observer) => {
             const eventSource = new EventSource(url);
             eventSource.onmessage = (event: MessageEvent<T>) => {
                 this._zone.run(() => {
                     observer.next(event);
                 });
-            }
+            };
             eventSource.onerror = (error) => {
                 this._zone.run(() => {
                     observer.error(error);
                 });
-            }
+            };
         });
     }
 

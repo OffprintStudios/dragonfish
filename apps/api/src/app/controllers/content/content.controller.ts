@@ -59,23 +59,13 @@ export class ContentController {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        if (isNullOrUndefined(page)) {
-            const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-            const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, 1);
-            return {
-                content: content,
-                ratings: ratings,
-                comments: comments,
-            };
-        } else {
-            const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-            const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
-            return {
-                content: content,
-                ratings: ratings,
-                comments: comments,
-            };
-        }
+        const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
+        const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
+        return {
+            content: content,
+            ratings: ratings,
+            comments: comments,
+        };
     }
 
     @ApiTags(DragonfishTags.Content)

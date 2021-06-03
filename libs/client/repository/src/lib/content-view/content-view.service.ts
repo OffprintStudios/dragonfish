@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ContentViewStore } from './content-view.store';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { ContentKind, SectionInfo, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentKind, SectionInfo, ContentModel, PubContent } from '@dragonfish/shared/models/content';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
@@ -19,8 +19,8 @@ export class ContentViewService {
         private alerts: AlertsService,
     ) {}
 
-    public fetchContent(contentId: string, kind: ContentKind): Observable<{content: ContentModel, ratings: RatingsModel}> {
-        return this.network.fetchContent(contentId, kind).pipe(tap(value => {
+    public fetchContent(contentId: string, kind: ContentKind, page: number): Observable<PubContent> {
+        return this.network.fetchContent(contentId, kind, page).pipe(tap(value => {
             const contentAny = value.content as any;
             let sections = null;
             if (value.content.kind === ContentKind.ProseContent || value.content.kind === ContentKind.PoetryContent) {
@@ -31,6 +31,8 @@ export class ContentViewService {
             this.contentView.update({
                 currContent: value.content,
                 allSections: sections,
+                currPageComments: value.comments,
+                currPage: page,
                 ratingsDoc: value.ratings,
                 currRating: (value.ratings && value.ratings.rating) ? value.ratings.rating : RatingOption.NoVote,
                 likes: value.content.stats.likes,
