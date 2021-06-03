@@ -40,8 +40,8 @@
     </ng-container>
 </ng-template>
 
-<div class="flex items-center justify-center pt-2 w-3/4 mx-auto">
-    <div *ngIf="contentQuery.currComments$ | async as comments">
+<ng-container *ngIf="contentQuery.currComments$ | async as comments">
+    <div class="flex items-center justify-center pt-2 w-3/4 mx-auto" *ngIf="comments.totalPages > 1">
         <pagination-controls
             [nextLabel]="''"
             [previousLabel]="''"
@@ -49,4 +49,4 @@
             id="comments"
         ></pagination-controls>
     </div>
-</div>
+</ng-container>
