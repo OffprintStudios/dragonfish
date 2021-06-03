@@ -40,7 +40,7 @@
     </ng-container>
 </ng-template>
 
-<div class="flex items-center justify-center pt-2 border-t w-3/4 mx-auto" style="border-color: var(--borders)">
+<div class="flex items-center justify-center pt-2 w-3/4 mx-auto">
     <div *ngIf="contentQuery.currComments$ | async as comments">
         <pagination-controls
             [nextLabel]="''"
