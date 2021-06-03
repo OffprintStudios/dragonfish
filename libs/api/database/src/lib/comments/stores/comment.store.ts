@@ -79,7 +79,7 @@ export class CommentStore {
      * @param form
      * @returns
      */
-    public async createDocument(
+    private async createDocument(
         userId: string,
         itemId: string,
         kind: CommentKind,
