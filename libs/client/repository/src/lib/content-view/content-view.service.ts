@@ -71,9 +71,11 @@ export class ContentViewService {
     }
 
     public fetchNextComments(contentId: string, page: number) {
+        this.contentView.setLoading(true);
         return this.network.fetchComments(contentId, CommentKind.ContentComment, page).pipe(
             tap((value) => {
                 this.contentView.update({ currPageComments: value, currPage: page });
+                this.contentView.setLoading(false);
             }),
         );
     }

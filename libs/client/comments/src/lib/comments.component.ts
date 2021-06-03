@@ -20,7 +20,7 @@ export class CommentsComponent {
     });
 
     constructor(
-        private contentQuery: ContentViewQuery,
+        public contentQuery: ContentViewQuery,
         private contentService: ContentViewService,
         private alerts: AlertsService,
     ) {}

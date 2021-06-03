@@ -8,6 +8,7 @@ export class ContentViewQuery extends Query<ContentViewState> {
     public state$ = this.select();
     public currContent$ = this.select('currContent');
     public currComments$ = this.select('currPageComments');
+    public loading$ = this.selectLoading();
     public currSection$ = this.select('currSection');
     public ratingsDoc$ = this.select('ratingsDoc');
 
