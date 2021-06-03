@@ -1,13 +1,5 @@
-export type {
-    Comment,
-    CommentHistory,
-    UserInfoComments,
-    ModInfo,
-    BlogComment,
-    WorkComment,
-    ContentComment,
-} from './comment.model';
-export type { CreateComment } from './create-comment.model';
-export type { EditComment } from './edit-comment.model';
-export { ContentAction } from './content-action.enum';
-export { ItemKind } from './item-kind.enum';
+export { Comment } from './comment.model';
+export { CommentHistory } from './comment-history.model';
+export { CommentKind } from './comment-kind.enum';
+export { CommentForm } from './comment-form.model';
+export { ContentComment } from './content-comment.model';
