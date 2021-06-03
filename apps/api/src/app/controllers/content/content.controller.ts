@@ -16,7 +16,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -54,7 +54,7 @@ export class ContentController {
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
         @Query('page') page: number,
-    ) {
+    ): Promise<PubContent> {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }

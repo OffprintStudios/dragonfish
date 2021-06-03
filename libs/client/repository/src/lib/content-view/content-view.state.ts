@@ -3,6 +3,7 @@ import { Section } from '@dragonfish/shared/models/sections';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { PaginateResult } from '@dragonfish/shared/models/util';
+import { Comment } from '@dragonfish/shared/models/comments';
 
 /**
  * Component state for Content Views
