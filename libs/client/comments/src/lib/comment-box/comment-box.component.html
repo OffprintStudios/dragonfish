@@ -38,7 +38,8 @@
                 </form>
             </ng-container>
             <ng-template #viewMode>
-                <div class="comment-content" [innerHTML]="comment.body | safeHtml"></div>
+                <markdown [data]="comment.body"></markdown>
+                <!--<div class="comment-content" [innerHTML]="comment.body | safeHtml"></div>-->
             </ng-template>
         </div>
     </div>

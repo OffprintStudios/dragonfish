@@ -95,8 +95,17 @@ a.button {
     box-shadow: var(--dropshadow);
     color: var(--text-color);
     user-select: none;
+    &.primary {
+        background: var(--accent);
+        color: white;
+        &:hover {
+            background: var(--accent-dark);
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+    }
     &:hover {
-        color: whitesmoke;
+        color: white;
         background: var(--accent);
         text-decoration: none;
         transition: all 0.15s ease;

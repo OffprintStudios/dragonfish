@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import { ContentViewQuery, ContentViewService } from '@dragonfish/client/repository/content-view';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-comments',
@@ -21,6 +22,7 @@ export class CommentsComponent {
 
     constructor(
         public contentQuery: ContentViewQuery,
+        public sessionQuery: SessionQuery,
         private contentService: ContentViewService,
         private alerts: AlertsService,
     ) {}

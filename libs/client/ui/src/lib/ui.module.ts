@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -25,6 +26,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { EditorLiteComponent } from './components/editor-lite/editor-lite.component';
 
 @NgModule({
     declarations: [
@@ -41,6 +43,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
+        EditorLiteComponent,
     ],
     imports: [
         CommonModule,
@@ -54,6 +57,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         LineTruncationLibModule,
         NgSelectModule,
         MaterialModule,
+        ClickOutsideModule,
         RouterModule.forChild([]),
     ],
     exports: [
@@ -70,6 +74,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
+        EditorLiteComponent,
     ],
 })
 export class UiModule {}

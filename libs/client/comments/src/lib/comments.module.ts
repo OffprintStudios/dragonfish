@@ -8,6 +8,7 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { EditorModule } from '@dragonfish/client/editor';
 import { IconsModule } from '@dragonfish/client/icons';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MarkdownModule } from 'ngx-markdown';
 
 /* Components */
 import { CommentsComponent } from './comments.component';
@@ -25,6 +26,7 @@ import { CommentBoxComponent } from './comment-box/comment-box.component';
         EditorModule,
         IconsModule,
         NgxPaginationModule,
+        MarkdownModule.forChild(),
     ],
     declarations: [CommentsComponent, CommentBoxComponent],
     exports: [CommentsComponent],
