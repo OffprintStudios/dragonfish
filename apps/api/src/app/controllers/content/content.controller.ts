@@ -16,7 +16,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -54,28 +54,18 @@ export class ContentController {
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
         @Query('page') page: number,
-    ) {
+    ): Promise<PubContent> {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        if (isNullOrUndefined(page)) {
-            const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-            const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, 1);
-            return {
-                content: content,
-                ratings: ratings,
-                comments: comments,
-            };
-        } else {
-            const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-            const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
-            return {
-                content: content,
-                ratings: ratings,
-                comments: comments,
-            };
-        }
+        const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
+        const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
+        return {
+            content: content,
+            ratings: ratings,
+            comments: comments,
+        };
     }
 
     @ApiTags(DragonfishTags.Content)

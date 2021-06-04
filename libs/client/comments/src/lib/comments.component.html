@@ -1,0 +1,52 @@
+<div class="flex items-center justify-center pb-2 mt-6 border-b w-3/4 mx-auto" style="border-color: var(--borders)">
+    <button>
+        <i-feather name="message-circle"></i-feather>
+        Add Comment
+    </button>
+    <div class="mx-1"><!--spacer--></div>
+    <button>
+        <i-feather name="settings"></i-feather>
+        Settings
+    </button>
+</div>
+
+<ng-container *ngIf="contentQuery.loading$ | async; else notLoading">
+    <div class="flex items-center justify-center h-72">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <ng-container *ngIf="contentQuery.currComments$ | async as comments">
+        <ng-container *ngIf="comments.docs.length === 0; else notEmpty">
+            <div class="empty">
+                <h3>No one's said anything yet...</h3>
+                <p>But you could be the first!</p>
+            </div>
+        </ng-container>
+        <ng-template #notEmpty>
+            <div
+                class="my-2"
+                *ngFor="let comment of comments.docs | paginate: {
+                    id: 'comments',
+                    itemsPerPage: comments.limit,
+                    currentPage: pageNum,
+                    totalItems: comments.totalDocs
+                }; let i = index"
+            >
+                <dragonfish-comment-box [comment]="comment" [index]="i"></dragonfish-comment-box>
+            </div>
+        </ng-template>
+    </ng-container>
+</ng-template>
+
+<ng-container *ngIf="contentQuery.currComments$ | async as comments">
+    <div class="flex items-center justify-center pt-2 w-3/4 mx-auto" *ngIf="comments.totalPages > 1">
+        <pagination-controls
+            [nextLabel]="''"
+            [previousLabel]="''"
+            (pageChange)="emitPageChange.emit($event)"
+            id="comments"
+        ></pagination-controls>
+    </div>
+</ng-container>

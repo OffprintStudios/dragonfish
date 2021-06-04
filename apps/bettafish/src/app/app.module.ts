@@ -40,7 +40,6 @@ import { ContentComponents } from './components/content';
 import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
-import { CommentsComponents } from './components/content/comments';
 import { FriendsComponents } from './components/user/friends';
 import { HistoryComponents } from './components/user/history';
 
@@ -53,6 +52,7 @@ import { UiModule } from '@dragonfish/client/ui';
 import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { ClientServicesModule } from '@dragonfish/client/services';
+import { CommentsModule } from '@dragonfish/client/comments';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -67,7 +67,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ...UserComponents,
         ...UserSettingsComponents,
         ...CollectionsComponents,
-        ...CommentsComponents,
         ...FriendsComponents,
         ...HistoryComponents,
         ...HomePages,
@@ -94,6 +93,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         MaterialModule,
         AlertsModule,
         EditorModule,
+        CommentsModule,
         ClientServicesModule,
         Ng2FittextModule,
         NgxPaginationModule,

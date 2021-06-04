@@ -36,9 +36,9 @@
     <div class="relative z-0">
         <dragonfish-comments
             [itemId]="currPost._id"
-            [itemKind]="itemKind"
+            [kind]="kind"
             [pageNum]="pageNum"
-            (emitPageChange)="onPageChange($event)"
+            (emitPageChange)="onPageChange($event, currPost._id)"
         ></dragonfish-comments>
     </div>
 </ng-container>

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ContentViewStore } from './content-view.store';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { ContentKind, SectionInfo, ContentModel } from '@dragonfish/shared/models/content';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { ContentKind, PubContent, SectionInfo } from '@dragonfish/shared/models/content';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { ContentViewQuery } from './content-view.query';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { Section } from '@dragonfish/shared/models/sections';
+import { CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 
 @Injectable({ providedIn: 'root' })
 export class ContentViewService {
@@ -19,32 +19,65 @@ export class ContentViewService {
         private alerts: AlertsService,
     ) {}
 
-    public fetchContent(contentId: string, kind: ContentKind): Observable<{content: ContentModel, ratings: RatingsModel}> {
-        return this.network.fetchContent(contentId, kind).pipe(tap(value => {
-            const contentAny = value.content as any;
-            let sections = null;
-            if (value.content.kind === ContentKind.ProseContent || value.content.kind === ContentKind.PoetryContent) {
-                sections = contentAny.sections.filter((x) => {
-                    return x.published === true;
-                }) as SectionInfo[];
-            }
-            this.contentView.update({
-                currContent: value.content,
-                allSections: sections,
-                ratingsDoc: value.ratings,
-                currRating: (value.ratings && value.ratings.rating) ? value.ratings.rating : RatingOption.NoVote,
-                likes: value.content.stats.likes,
-                dislikes: value.content.stats.dislikes,
-            });
-        }));
+    public fetchContent(contentId: string, kind: ContentKind, page: number): Observable<PubContent> {
+        return this.network.fetchContent(contentId, kind, page).pipe(
+            tap((value) => {
+                const contentAny = value.content as any;
+                let sections = null;
+                if (
+                    value.content.kind === ContentKind.ProseContent ||
+                    value.content.kind === ContentKind.PoetryContent
+                ) {
+                    sections = contentAny.sections.filter((x) => {
+                        return x.published === true;
+                    }) as SectionInfo[];
+                }
+                this.contentView.update({
+                    currContent: value.content,
+                    allSections: sections,
+                    currPageComments: value.comments,
+                    currPage: page,
+                    ratingsDoc: value.ratings,
+                    currRating: value.ratings && value.ratings.rating ? value.ratings.rating : RatingOption.NoVote,
+                    likes: value.content.stats.likes,
+                    dislikes: value.content.stats.dislikes,
+                });
+            }),
+        );
     }
 
     public fetchSection(sectionId: string): Observable<Section> {
-        return this.network.fetchSection(sectionId).pipe(tap(val => {
-            this.contentView.update({
-                currSection: val
-            });
-        }));
+        return this.network.fetchSection(sectionId).pipe(
+            tap((val) => {
+                this.contentView.update({
+                    currSection: val,
+                });
+            }),
+        );
+    }
+
+    public addComment(contentId: string, form: CommentForm) {
+        return this.network.addComment(contentId, CommentKind.ContentComment, form).pipe(
+            tap((value) => {
+                this.contentView.update(({ currPageComments }) => ({
+                    currPageComments: { ...currPageComments, docs: [...currPageComments.docs, value] },
+                }));
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public fetchNextComments(contentId: string, page: number) {
+        this.contentView.setLoading(true);
+        return this.network.fetchComments(contentId, CommentKind.ContentComment, page).pipe(
+            tap((value) => {
+                this.contentView.update({ currPageComments: value, currPage: page });
+                this.contentView.setLoading(false);
+            }),
+        );
     }
 
     public addLike(contentId: string): void {
@@ -67,7 +100,7 @@ export class ContentViewService {
                 break;
         }
 
-        this.network.addLike(contentId).subscribe(val => {
+        this.network.addLike(contentId).subscribe((val) => {
             this.contentView.update({
                 ratingsDoc: val,
                 currRating: val.rating,
@@ -95,7 +128,7 @@ export class ContentViewService {
                 break;
         }
 
-        this.network.addDislike(contentId).subscribe(val => {
+        this.network.addDislike(contentId).subscribe((val) => {
             this.contentView.update({
                 ratingsDoc: val,
                 currRating: val.rating,
@@ -119,7 +152,7 @@ export class ContentViewService {
                 break;
         }
 
-        this.network.removeVote(contentId).subscribe(val => {
+        this.network.removeVote(contentId).subscribe((val) => {
             this.contentView.update({
                 ratingsDoc: val,
                 currRating: val.rating,

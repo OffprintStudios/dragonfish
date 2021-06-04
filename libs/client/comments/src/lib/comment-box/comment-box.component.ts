@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Comment, EditComment, UserInfoComments } from '@dragonfish/shared/models/comments';
+import { Comment, CommentForm } from '@dragonfish/shared/models/comments';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ReplyCommentModel } from '../models';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { FrontendUser } from '@dragonfish/shared/models/users';
 
 @Component({
     selector: 'dragonfish-comment-box',
@@ -12,14 +13,14 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
     styleUrls: ['./comment-box.component.scss'],
 })
 export class CommentBoxComponent implements OnInit {
-    @Input() comment: Comment;
-    @Input() index: number;
+    @Input() comment!: Comment;
+    @Input() index!: number;
     @Output() reply = new EventEmitter<ReplyCommentModel>();
 
     editMode = false;
     editComment = new FormGroup({
-        body: new FormControl('', [Validators.minLength(10), Validators.required])
-    })
+        body: new FormControl('', [Validators.minLength(10), Validators.required]),
+    });
 
     constructor(
         private alerts: AlertsService,
@@ -43,7 +44,7 @@ export class CommentBoxComponent implements OnInit {
 
     replyToComment() {
         const replyOut: ReplyCommentModel = {
-            quoteUser: this.comment.user as UserInfoComments,
+            quoteUser: this.comment.user as FrontendUser,
             commentId: this.comment._id,
             commentBody: this.comment.body,
         };
@@ -52,8 +53,6 @@ export class CommentBoxComponent implements OnInit {
 
     /**
      * Submits edits on a comment.
-     *
-     * @param commentId The comment we're editing
      */
     submitEdits() {
         if (this.editCommentFields.body.invalid) {
@@ -61,8 +60,9 @@ export class CommentBoxComponent implements OnInit {
             return;
         }
 
-        const commInfo: EditComment = {
+        const commInfo: CommentForm = {
             body: this.editCommentFields.body.value,
+            repliesTo: [],
         };
 
         this.network.editComment(this.comment._id, commInfo).subscribe(() => {
