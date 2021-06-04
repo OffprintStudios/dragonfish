@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -54,6 +55,7 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         LineTruncationLibModule,
         NgSelectModule,
         MaterialModule,
+        ClickOutsideModule,
         RouterModule.forChild([]),
     ],
     exports: [

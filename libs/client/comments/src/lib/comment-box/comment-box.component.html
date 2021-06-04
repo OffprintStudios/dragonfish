@@ -27,7 +27,7 @@
             </div>
             <ng-container *ngIf="editMode; else viewMode">
                 <form [formGroup]="editComment" (ngSubmit)="submitEdits()">
-                    <dragonfish-editor [parentForm]="editComment" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></dragonfish-editor>
+                    <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
                     <div class="flex flex-row items-center justify-center pt-3">
                         <button type="submit">Save</button>
                         <div class="mx-2">
@@ -38,7 +38,7 @@
                 </form>
             </ng-container>
             <ng-template #viewMode>
-                <div class="comment-content" [innerHTML]="comment.body | safeHtml"></div>
+                <markdown [data]="comment.body"></markdown>
             </ng-template>
         </div>
     </div>
@@ -70,7 +70,7 @@
         </div>
         <ng-container *ngIf="editMode; else viewMode">
             <form [formGroup]="editComment" (ngSubmit)="submitEdits()">
-                <dragonfish-editor [parentForm]="editComment" [controlName]="'body'" [minHeight]="'200px'" [maxHeight]="'200px'"></dragonfish-editor>
+                <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
                 <div class="flex flex-row items-center justify-center pt-3">
                     <button type="submit">Save</button>
                     <div class="mx-2">
@@ -81,7 +81,7 @@
             </form>
         </ng-container>
         <ng-template #viewMode>
-            <div class="mobile-comment-body" [innerHTML]="comment.body | safeHtml"></div>
+            <markdown [data]="comment.body"></markdown>
         </ng-template>
     </div>
 </div>

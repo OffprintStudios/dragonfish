@@ -1,0 +1,25 @@
+textarea {
+    @apply block border bg-transparent w-full mb-0 relative rounded-b-md;
+    min-height: 10rem;
+    border-color: var(--borders);
+    color: var(--text-color);
+    &:focus {
+        --tw-ring-color: var(--accent);
+    }
+}
+
+div.preview-window {
+    min-height: 10rem;
+    @apply block py-2 px-3 bg-transparent mb-0 relative rounded-b-md border;
+    border-color: var(--borders);
+    color: var(--text-color);
+}
+
+button.active {
+    background: var(--accent);
+    color: white;
+    &:hover {
+        background: var(--accent-dark);
+        color: white;
+    }
+}
