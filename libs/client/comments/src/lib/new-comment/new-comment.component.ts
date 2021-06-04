@@ -30,6 +30,7 @@ export class NewCommentComponent {
 
     toggleCollapsed = () => {
         this.collapsed = !this.collapsed;
+        this.newComment.reset();
     };
 
     //#region ---PRIVATE---

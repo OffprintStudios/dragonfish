@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -106,7 +106,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ClickOutsideModule,
         ContextMenuModule,
         CookieModule.forRoot(),
-        MarkdownModule.forRoot(),
+        MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
     ],
