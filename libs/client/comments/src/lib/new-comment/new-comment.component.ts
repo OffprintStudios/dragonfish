@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ContentViewService } from '@dragonfish/client/repository/content-view';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { CommentForm } from '@dragonfish/shared/models/comments';
 
 @Component({
     selector: 'dragonfish-new-comment',
@@ -22,16 +25,36 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class NewCommentComponent {
     @Input() currUser!: FrontendUser;
+    @Input() itemId!: string;
     collapsed = true;
 
     newComment = new FormGroup({
         body: new FormControl('', [Validators.required, Validators.minLength(10)]),
     });
 
+    constructor(private viewService: ContentViewService, private alerts: AlertsService) {}
+
     toggleCollapsed = () => {
         this.collapsed = !this.collapsed;
         this.newComment.reset();
     };
+
+    submitForm() {
+        if (this.newComment.controls.body.invalid) {
+            this.alerts.error(`Comments must be longer than 10 characters.`);
+            return;
+        }
+
+        const form: CommentForm = {
+            body: this.newComment.controls.body.value,
+            repliesTo: [],
+        };
+
+        this.viewService.addComment(this.itemId, form).subscribe(() => {
+            this.newComment.reset();
+            this.collapsed = true;
+        });
+    }
 
     //#region ---PRIVATE---
 

@@ -58,6 +58,7 @@ div.comment {
                 @apply flex;
                 @apply items-center;
                 @apply pb-4;
+                @apply mb-2;
 
                 div.timestamp {
                     @apply inline-block;

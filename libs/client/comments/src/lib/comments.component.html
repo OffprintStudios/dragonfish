@@ -1,6 +1,6 @@
 <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-    <div class="pb-2 mt-6 border-b w-3/4 mx-auto" style="border-color: var(--borders)">
-        <dragonfish-new-comment [currUser]="currentUser"></dragonfish-new-comment>
+    <div class="pb-4 mt-6 w-3/4 mx-auto">
+        <dragonfish-new-comment [currUser]="currentUser" [itemId]="itemId"></dragonfish-new-comment>
     </div>
 </ng-container>
 
