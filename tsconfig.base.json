@@ -28,7 +28,8 @@
             "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"],
             "@dragonfish/api/database/*": ["libs/api/database/src/lib/*"],
             "@dragonfish/api/utilities/*": ["libs/api/utilities/src/lib/*"],
-            "@dragonfish/client/comments": ["libs/client/comments/src/index.ts"]
+            "@dragonfish/client/comments": ["libs/client/comments/src/index.ts"],
+            "@dragonfish/client/editor-lite": ["libs/client/editor-lite/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

@@ -17,5 +17,6 @@ module.exports = {
         '<rootDir>/libs/api/database',
         '<rootDir>/libs/api/utilities',
         '<rootDir>/libs/client/comments',
+        '<rootDir>/libs/client/editor-lite',
     ],
 };

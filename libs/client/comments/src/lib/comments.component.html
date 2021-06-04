@@ -1,23 +1,8 @@
-<div class="pb-2 mt-6 border-b w-3/4 mx-auto" style="border-color: var(--borders)">
-    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-        <dragonfish-editor-lite
-            [form]="newCommentForm"
-            [controlName]="'body'"
-            [expandable]="true"
-            [expandableTitle]="'Leave a Comment'"
-            [currUser]="currentUser"
-        ></dragonfish-editor-lite>
-    </ng-container>
-    <!--<button>
-        <i-feather name="message-circle"></i-feather>
-        Add Comment
-    </button>
-    <div class="mx-1"></div>
-    <button>
-        <i-feather name="settings"></i-feather>
-        Settings
-    </button>-->
-</div>
+<ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+    <div class="pb-2 mt-6 border-b w-3/4 mx-auto" style="border-color: var(--borders)">
+        <dragonfish-new-comment [currUser]="currentUser"></dragonfish-new-comment>
+    </div>
+</ng-container>
 
 <ng-container *ngIf="contentQuery.loading$ | async; else notLoading">
     <div class="flex items-center justify-center h-72">

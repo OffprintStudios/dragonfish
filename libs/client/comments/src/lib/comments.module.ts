@@ -5,14 +5,15 @@ import { AlertsModule } from '@dragonfish/client/alerts';
 import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
-import { EditorModule } from '@dragonfish/client/editor';
 import { IconsModule } from '@dragonfish/client/icons';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MarkdownModule } from 'ngx-markdown';
+import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Components */
 import { CommentsComponent } from './comments.component';
 import { CommentBoxComponent } from './comment-box/comment-box.component';
+import { NewCommentComponent } from './new-comment/new-comment.component';
 
 @NgModule({
     imports: [
@@ -23,12 +24,12 @@ import { CommentBoxComponent } from './comment-box/comment-box.component';
         UiModule,
         PipesModule,
         MaterialModule,
-        EditorModule,
+        EditorLiteModule,
         IconsModule,
         NgxPaginationModule,
         MarkdownModule.forChild(),
     ],
-    declarations: [CommentsComponent, CommentBoxComponent],
+    declarations: [CommentsComponent, CommentBoxComponent, NewCommentComponent],
     exports: [CommentsComponent],
 })
 export class CommentsModule {}

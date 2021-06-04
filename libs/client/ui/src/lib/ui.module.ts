@@ -26,7 +26,6 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
-import { EditorLiteComponent } from './components/editor-lite/editor-lite.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +42,6 @@ import { EditorLiteComponent } from './components/editor-lite/editor-lite.compon
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
-        EditorLiteComponent,
     ],
     imports: [
         CommonModule,
@@ -74,7 +72,6 @@ import { EditorLiteComponent } from './components/editor-lite/editor-lite.compon
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
-        EditorLiteComponent,
     ],
 })
 export class UiModule {}

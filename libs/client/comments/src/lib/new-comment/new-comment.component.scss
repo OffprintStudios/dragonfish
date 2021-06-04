@@ -29,13 +29,3 @@ div.expandable-bar {
         }
     }
 }
-
-textarea {
-    @apply block border bg-transparent w-full mb-0 relative rounded-b-md;
-    min-height: 10rem;
-    border-color: var(--borders);
-    color: var(--text-color);
-    &:focus {
-        --tw-ring-color: var(--accent);
-    }
-}
