@@ -7,15 +7,12 @@ import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ProseContentDocument } from '../schemas';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
 @Injectable()
 export class ProseStore {
     constructor(
         @InjectModel('ProseContent')
         private readonly proseModel: PaginateModel<ProseContentDocument>,
-        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -37,9 +34,6 @@ export class ProseStore {
         });
 
         const savedProse: ProseContentDocument = await newProse.save();
-
-        // Subscribe author to comments on their new prose document
-        await this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);
 
         return savedProse;
     }
@@ -63,7 +57,7 @@ export class ProseStore {
                 'meta.rating': proseInfo.rating,
                 'meta.status': proseInfo.status,
             },
-            { new: true }
+            { new: true },
         );
     }
 
@@ -78,7 +72,7 @@ export class ProseStore {
         return this.proseModel.findOneAndUpdate(
             { _id: proseId, author: user.sub, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true }
+            { new: true },
         );
     }
 

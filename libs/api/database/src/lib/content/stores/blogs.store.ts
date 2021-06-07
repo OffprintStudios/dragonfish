@@ -8,15 +8,13 @@ import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { UsersStore } from '../../users/users.store';
 import { BlogsContentDocument } from '../schemas';
 import { BlogForm, ContentKind, PubChange, PubStatus } from '@dragonfish/shared/models/content';
-import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 
 @Injectable()
 export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
-        private readonly usersService: UsersStore, private readonly notificationsService: NotificationsService,
+        private readonly usersService: UsersStore,
     ) {}
 
     /**
@@ -36,9 +34,6 @@ export class BlogsStore {
         });
 
         const savedBlog = await newBlog.save();
-
-        // Subscribe the author to comments on their new blog
-        await this.notificationsService.subscribe(user.sub, savedBlog._id, NotificationKind.CommentNotification);
 
         return savedBlog;
     }
@@ -62,7 +57,7 @@ export class BlogsStore {
                 'meta.rating': blogInfo.rating,
                 'stats.words': wordCount,
             },
-            { new: true }
+            { new: true },
         );
     }
 
@@ -88,7 +83,7 @@ export class BlogsStore {
                 'audit.published': pubChange.newStatus,
                 'audit.publishedOn': new Date(),
             },
-            { new: true }
+            { new: true },
         );
     }
 

@@ -6,16 +6,13 @@ import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CreatePoetry } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from '../schemas';
-import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
 export class PoetryStore {
     constructor(
         @InjectModel('PoetryContent')
         private readonly poetryModel: PaginateModel<PoetryContentDocument>,
-        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -30,7 +27,9 @@ export class PoetryStore {
             title: sanitizeHtml(poetryInfo.title),
             desc: sanitizeHtml(poetryInfo.desc),
             body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
-            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
+            'stats.words': poetryInfo.collection
+                ? 0
+                : countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
@@ -40,9 +39,6 @@ export class PoetryStore {
         });
 
         const savedPoetry: PoetryContentDocument = await newPoetry.save();
-
-        // Subscribe author to comments on their new poetry
-        await this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);
 
         return savedPoetry;
     }
@@ -68,7 +64,7 @@ export class PoetryStore {
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
                 },
-                { new: true }
+                { new: true },
             );
         } else {
             return this.poetryModel.findOneAndUpdate(
@@ -84,7 +80,7 @@ export class PoetryStore {
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
                 },
-                { new: true }
+                { new: true },
             );
         }
     }
@@ -100,7 +96,7 @@ export class PoetryStore {
         return this.poetryModel.findOneAndUpdate(
             { _id: poetryId, author: user.sub, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true }
+            { new: true },
         );
     }
 }

@@ -5,22 +5,14 @@ import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    ContentRating,
-    NewsContentModel,
-    NewsForm,
-    PubChange,
-    PubStatus,
-} from '@dragonfish/shared/models/content';
+import { ContentRating, NewsForm, PubChange } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { NewsContentDocument } from '../schemas';
 import { isAllowed } from '@dragonfish/shared/functions';
 
 @Injectable()
 export class NewsStore {
-    constructor(
-        @InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>,
-    ) {}
+    constructor(@InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>) {}
 
     /**
      * Creates a new newspost and saves it to the database.
@@ -62,7 +54,7 @@ export class NewsStore {
                     'meta.category': postInfo.category,
                     'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
                 },
-                { new: true }
+                { new: true },
             );
         } else {
             throw new UnauthorizedException(`You don't have permission to edit this post.`);
@@ -85,7 +77,7 @@ export class NewsStore {
                     'audit.published': pubChange.newStatus,
                     'audit.publishedOn': new Date(),
                 },
-                { new: true }
+                { new: true },
             );
         } else {
             throw new UnauthorizedException(`You don't have permission to publish this.`);
