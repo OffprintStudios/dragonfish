@@ -1,7 +1,6 @@
 import { Controller, UseGuards, Param, Get, Put, Body, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { Roles } from '@dragonfish/shared/models/users';
 import { CreateResponse, CreateInitialMessage } from '@dragonfish/shared/models/messages';
 import { JwtPayload } from '@dragonfish/shared/models/auth';

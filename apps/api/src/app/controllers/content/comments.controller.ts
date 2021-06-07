@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Body, Put, Patch, Query, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Roles } from '@dragonfish/shared/models/users';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -14,7 +14,11 @@ export class CommentsController {
     constructor(private readonly comments: CommentStore) {}
 
     @Get('fetch-comments')
-    async fetchComments(@Query('itemId') itemId: string, @Query('kind') kind: CommentKind, @Query('page') page: number) {
+    async fetchComments(
+        @Query('itemId') itemId: string,
+        @Query('kind') kind: CommentKind,
+        @Query('page') page: number,
+    ) {
         return await this.comments.fetch(itemId, kind, page);
     }
 

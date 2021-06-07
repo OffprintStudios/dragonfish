@@ -1,5 +1,5 @@
 import { Controller, Get, Put, UseGuards, Request, Query, Body } from '@nestjs/common';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { MigrationService } from './migration.service';
 import { Roles } from '@dragonfish/shared/models/users';
 import { MigrationForm } from '@dragonfish/shared/models/migration';

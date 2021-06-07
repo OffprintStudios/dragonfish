@@ -2,7 +2,6 @@ import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
-
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { User } from '@dragonfish/shared/models/users';
 import { InitialResults } from '@dragonfish/shared/models/util';
@@ -18,7 +17,7 @@ export class SearchController {
     @Get('get-initial-results')
     async getInitialResults(
         @Query('query') query: string,
-        @Cookies('contentFilter') contentFilter: ContentFilter
+        @Cookies('contentFilter') contentFilter: ContentFilter,
     ): Promise<InitialResults> {
         return await this.searchService.fetchInitialResults(query, contentFilter);
     }
@@ -27,7 +26,7 @@ export class SearchController {
     @Get('get-user-results')
     async getUserRequests(
         @Query('query') query: string,
-        @Query('pageNum') pageNum: number
+        @Query('pageNum') pageNum: number,
     ): Promise<PaginateResult<User>> {
         return await this.searchService.searchUsers(query, pageNum);
     }
@@ -37,7 +36,7 @@ export class SearchController {
     async getBlogResults(
         @Query('query') query: string,
         @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter
+        @Cookies('contentFilter') contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
@@ -47,7 +46,7 @@ export class SearchController {
     async getWorkResults(
         @Query('query') query: string,
         @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter
+        @Cookies('contentFilter') contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.searchService.searchContent(query, pageNum, contentFilter);
     }

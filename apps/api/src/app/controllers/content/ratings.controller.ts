@@ -1,8 +1,8 @@
-import { Controller, Query, Get, Patch, UseGuards } from '@nestjs/common';
+import { Controller, Query, Patch, UseGuards } from '@nestjs/common';
 import { RatingsStore } from '@dragonfish/api/database/content/stores';
 import { ApiTags } from '@nestjs/swagger';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { Roles } from '@dragonfish/shared/models/users';
 import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';

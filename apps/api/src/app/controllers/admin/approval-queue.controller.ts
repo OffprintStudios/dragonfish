@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, UseGuards, BadRequestException, Query, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
@@ -29,11 +29,11 @@ export class ApprovalQueueController {
         @User() _user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
-        @Query('userId') userId: string
+        @Query('userId') userId: string,
     ) {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind) || isNullOrUndefined(userId)) {
             throw new BadRequestException(
-                `This request requires the content ID, content kind, and userId of the content you're looking for.`
+                `This request requires the content ID, content kind, and userId of the content you're looking for.`,
             );
         }
 

@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { Processor, Process, OnQueueActive, OnQueueCompleted, OnQueueWaiting, OnQueueError } from '@nestjs/bull';
+import { Processor, Process, OnQueueActive, OnQueueCompleted, OnQueueError } from '@nestjs/bull';
 import { Job } from 'bull';
 import { NotificationQueueModel } from '@dragonfish/shared/models/notifications';
 
@@ -15,11 +15,6 @@ export class NotificationsProcessor {
     @OnQueueCompleted()
     async onQueueCompleted(job: Job<NotificationQueueModel>) {
         this.logger.log(`Job ${job.id} has completed!`);
-    }
-
-    @OnQueueWaiting()
-    async onQueueWaiting() {
-        this.logger.log(`Queue is waiting for jobs...`);
     }
 
     @OnQueueError()

@@ -1,7 +1,7 @@
 import { InviteCodes, Roles } from '@dragonfish/shared/models/users';
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { UsersStore } from '@dragonfish/api/database/users';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 
 @Controller('user-management')
 export class UserManagementController {

@@ -22,6 +22,9 @@ import { ContentServices } from './services/content';
 import { MigrationServices } from './controllers/migration';
 import { SearchServices } from './services/search';
 
+/* Feature Modules */
+import { NotificationsModule as NotificationsFeatureModule } from '@dragonfish/api/features/notifications';
+
 /* Database Modules */
 import { DatabaseModules } from './db';
 import { ContentModule } from '@dragonfish/api/database/content';
@@ -45,6 +48,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         ApprovalQueueModule,
         AdminModule,
         CommentsModule,
+        NotificationsFeatureModule,
         BullModule.forRoot({
             redis: {
                 host: process.env.REDIS_HOST,

@@ -1,7 +1,6 @@
 import { Controller, UseGuards, Body, Get, Put, Patch, Query, BadRequestException, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { Roles } from '@dragonfish/shared/models/users';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
@@ -30,7 +29,7 @@ export class CollectionsController {
     async getOneCollection(@User() user: JwtPayload, @Query('collId') collId: string) {
         if (isNullOrUndefined(collId)) {
             throw new BadRequestException(
-                `This request requires the collection ID and whether or not to grab a private collection.`
+                `This request requires the collection ID and whether or not to grab a private collection.`,
             );
         }
         return await this.collections.getCollection(user, collId);
@@ -105,11 +104,11 @@ export class CollectionsController {
     async removeContent(
         @User() user: JwtPayload,
         @Query('collId') collId: string,
-        @Query('contentId') contentId: string
+        @Query('contentId') contentId: string,
     ) {
         if (isNullOrUndefined(collId) || isNullOrUndefined(contentId)) {
             throw new BadRequestException(
-                `This request requires the collection ID, the collection item ID, and the content ID.`
+                `This request requires the collection ID, the collection item ID, and the content ID.`,
             );
         }
         return await this.collections.removeFrom(user, collId, contentId);

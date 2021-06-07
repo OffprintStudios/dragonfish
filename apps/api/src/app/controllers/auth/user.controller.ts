@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
 
 import { Roles, FrontendUser } from '@dragonfish/shared/models/users';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { ChangeEmailDTO, ChangePasswordDTO, ChangeBioDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
 import { IUser } from '../../shared/auth';
 import { IImages } from '../../shared/images';
@@ -102,7 +102,9 @@ export class UserController {
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator, Roles.Maintainer, Roles.Contributor, Roles.VIP]))
+    @UseGuards(
+        RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator, Roles.Maintainer, Roles.Contributor, Roles.VIP]),
+    )
     @Patch('update-tagline')
     async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {
         return await this.user.updateTagline(user, tagline);

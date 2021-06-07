@@ -1,6 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { DragonfishTags } from '@dragonfish/shared/models/util';

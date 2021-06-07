@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { SetCookies, Cookies } from '@nestjsplus/cookies';
 import { nanoid } from 'nanoid';
 
-import { RefreshGuard } from '../../guards';
+import { RefreshGuard } from '@dragonfish/api/utilities/guards';
 import { CreateUserDTO, LoginUserDTO } from './models';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { IAuth } from '../../shared/auth';

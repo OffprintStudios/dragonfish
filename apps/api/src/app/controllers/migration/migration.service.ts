@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-
 import { OldBlogsService } from '../../db/blogs/blogs.service';
 import { ContentStore } from '@dragonfish/api/database/content/stores';
 import { WorksService } from '../../db/works/works.service';
@@ -12,7 +11,7 @@ export class MigrationService {
     constructor(
         private readonly contentService: ContentStore,
         private readonly worksService: WorksService,
-        private readonly blogsService: OldBlogsService
+        private readonly blogsService: OldBlogsService,
     ) {}
 
     async fetchWorks(user: JwtPayload) {

@@ -1,8 +1,7 @@
 import { Controller, Inject, Get, Put, Patch, UseGuards, Query, BadRequestException, Body } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-
 import { ISections } from '../../shared/content';
-import { RolesGuard } from '../../guards';
+import { RolesGuard } from '@dragonfish/api/utilities/guards';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
 import { Roles } from '@dragonfish/shared/models/users';
@@ -37,7 +36,7 @@ export class SectionsController {
     async createSection(
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
-        @Body() sectionInfo: SectionForm
+        @Body() sectionInfo: SectionForm,
     ) {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You need to include the content ID for this request.`);
@@ -53,7 +52,7 @@ export class SectionsController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('sectionId') sectionId: string,
-        @Body() sectionInfo: SectionForm
+        @Body() sectionInfo: SectionForm,
     ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
@@ -69,7 +68,7 @@ export class SectionsController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('sectionId') sectionId: string,
-        @Body() pubStatus: PublishSection
+        @Body() pubStatus: PublishSection,
     ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
@@ -84,7 +83,7 @@ export class SectionsController {
     async deleteSection(
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
-        @Query('sectionId') sectionId: string
+        @Query('sectionId') sectionId: string,
     ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(sectionId)) {
             throw new BadRequestException(`You need to provide the section ID for this request.`);
