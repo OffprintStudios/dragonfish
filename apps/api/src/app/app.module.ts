@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { BullModule } from '@nestjs/bull';
 import { join } from 'path';
 
 /* Controllers */
@@ -43,6 +45,13 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         ApprovalQueueModule,
         AdminModule,
         CommentsModule,
+        BullModule.forRoot({
+            redis: {
+                host: process.env.REDIS_HOST,
+                port: +process.env.REDIS_PORT,
+            },
+        }),
+        EventEmitterModule.forRoot(),
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
