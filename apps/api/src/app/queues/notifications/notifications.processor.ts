@@ -9,22 +9,22 @@ export class NotificationsProcessor {
 
     @OnQueueActive()
     async onQueueActive(job: Job<NotificationQueueModel>) {
-        this.logger.debug(`Processing job ${job.id}...`);
+        this.logger.log(`Processing job ${job.id}...`);
     }
 
     @OnQueueCompleted()
     async onQueueCompleted(job: Job<NotificationQueueModel>) {
-        this.logger.debug(`Job ${job.id} has completed!`);
+        this.logger.log(`Job ${job.id} has completed!`);
     }
 
     @OnQueueWaiting()
     async onQueueWaiting() {
-        this.logger.debug(`Queue is waiting for jobs...`);
+        this.logger.log(`Queue is waiting for jobs...`);
     }
 
     @OnQueueError()
     async onQueueError(job: Job<NotificationQueueModel>) {
-        this.logger.debug(
+        this.logger.log(
             `Job ${job.id} has encountered an error after ${job.attemptsMade} attempts!\nReason: ${job.failedReason}`,
         );
     }
@@ -33,4 +33,8 @@ export class NotificationsProcessor {
     async handlePublish(job: Job<NotificationQueueModel>) {
         //TODO: handle this
     }
+
+    //#region ---PRIVATE---
+
+    //#endregion
 }
