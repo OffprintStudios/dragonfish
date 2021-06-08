@@ -7,14 +7,6 @@
 <div>
     <form [formGroup]="insertLink" (ngSubmit)="submit()">
         <dragonfish-text-field
-            [formControlName]="'text'"
-            [name]="'text'"
-            [type]="'text'"
-            [label]="'Text'"
-            [placeholder]="'Add some text'"
-        ></dragonfish-text-field>
-
-        <dragonfish-text-field
             [formControlName]="'link'"
             [name]="'link'"
             [type]="'text'"

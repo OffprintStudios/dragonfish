@@ -1,56 +1,76 @@
 <div class="w-3/4 mx-auto">
     <div class="flex items-center p-1 border border-b-0 rounded-t-md" style="border-color: var(--borders);">
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="addSimpleTag('**')">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="editor.chain().focus().toggleBold().run()"
+            [ngClass]="{ 'active': editor.isActive('bold') }"
+            [matTooltip]="'Bold'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
             <i-feather name="bold" class="mr-0"></i-feather>
         </button>
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="addSimpleTag('*')">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="editor.chain().focus().toggleItalic().run()"
+            [ngClass]="{ 'active': editor.isActive('italic') }"
+            [matTooltip]="'Italic'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
             <i-feather name="italic" class="mr-0"></i-feather>
         </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="editor.chain().focus().toggleUnderline().run()"
+            [ngClass]="{ 'active': editor.isActive('underline') }"
+            [matTooltip]="'Underline'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="underline" class="mr-0"></i-feather>
+        </button>
         <div class="mx-0.5">|</div>
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="openInsertLink()">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openInsertLink()"
+            [matTooltip]="'Insert Link'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
             <i-feather name="link" class="mr-0"></i-feather>
         </button>
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="openInsertMedia('Insert Image')">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="editor.chain().focus().unsetLink().run()"
+            *ngIf="editor.isActive('link')"
+            [matTooltip]="'Remove Link'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="x" class="mr-0"></i-feather>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openInsertMedia('Insert Image')"
+            [matTooltip]="'Insert Image'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
             <i-feather name="image" class="mr-0"></i-feather>
         </button>
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="openInsertMedia('Insert Media')">
+        <!--<button class="shadow-none border-none px-2.5 py-1.5" (click)="openInsertMedia('Insert Media')">
             <i-feather name="film" class="mr-0"></i-feather>
+        </button>-->
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="editor.chain().focus().toggleBlockquote().run()"
+            [ngClass]="{ 'active': editor.isActive('blockquote') }"
+            [matTooltip]="'Quote'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="message-square" class="mr-0"></i-feather>
         </button>
         <div class="mx-0.5">|</div>
         <button class="shadow-none border-none px-2.5 py-1.5" (click)="openEmojiPicker()">
             <i-feather name="smile" class="mr-0"></i-feather>
         </button>
-        <div class="flex-1"><!--spacer--></div>
-        <button
-            class="shadow-none border-none px-2.5 py-1.5"
-            [ngClass]="editMode ? 'active' : ''"
-            (click)="switchToEdit()"
-        >
-            <i-feather name="edit-3"></i-feather>
-            Edit
-        </button>
-        <div class="mx-0.5"><!--spacer--></div>
-        <button
-            class="shadow-none border-none px-2.5 py-1.5"
-            [ngClass]="editMode ? '' : 'active'"
-            (click)="switchToPreview()"
-        >
-            <i-feather name="eye"></i-feather>
-            Preview
-        </button>
+        <div class="flex-1"></div>
     </div>
-    <ng-container *ngIf="editMode; else previewMode">
-        <textarea
-            [placeholder]="placeholder"
-            [value]="value"
-            [disabled]="disabled"
-            (input)="onChange($any($event.target).value)"
-            #editor
-        ></textarea>
-    </ng-container>
-    <ng-template #previewMode>
-        <div class="preview-window">
-            <markdown [data]="tempValue"></markdown>
-        </div>
-    </ng-template>
+    <div class="editor-window" tiptap [editor]="editor" [ngModel]="value" (ngModelChange)="onChange($event)"></div>
 </div>

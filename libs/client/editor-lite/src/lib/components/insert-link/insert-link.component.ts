@@ -10,7 +10,6 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 })
 export class InsertLinkComponent {
     insertLink = new FormGroup({
-        text: new FormControl(''),
         link: new FormControl('', Validators.required),
     });
 
@@ -30,10 +29,6 @@ export class InsertLinkComponent {
             return;
         }
 
-        if (this.insertLink.controls.text.value === '' || isNullOrUndefined(this.insertLink.controls.text.value)) {
-            this.dialogRef.close(`[${this.insertLink.controls.link.value}](${this.insertLink.controls.link.value})`);
-        } else {
-            this.dialogRef.close(`[${this.insertLink.controls.text.value}](${this.insertLink.controls.link.value})`);
-        }
+        this.dialogRef.close(this.insertLink.controls.link.value);
     }
 }

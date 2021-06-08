@@ -9,6 +9,7 @@ import { AlertsModule } from '@dragonfish/client/alerts';
 import { InsertMediaComponent } from './components/insert-media/insert-media.component';
 import { InsertLinkComponent } from './components/insert-link/insert-link.component';
 import { UiModule } from '@dragonfish/client/ui';
+import { NgxTiptapModule } from 'ngx-tiptap';
 
 @NgModule({
     imports: [
@@ -20,6 +21,7 @@ import { UiModule } from '@dragonfish/client/ui';
         MarkdownModule.forChild(),
         AlertsModule,
         UiModule,
+        NgxTiptapModule,
     ],
     declarations: [EditorLiteComponent, InsertLinkComponent, InsertMediaComponent],
     exports: [EditorLiteComponent],

@@ -1,10 +1,18 @@
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
+import { take } from 'rxjs/operators';
 import { InsertLinkComponent } from './components/insert-link/insert-link.component';
 import { InsertMediaComponent } from './components/insert-media/insert-media.component';
-import { take } from 'rxjs/operators';
+import { Editor } from '@tiptap/core';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import Typography from '@tiptap/extension-typography';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import Blockquote from '@tiptap/extension-blockquote';
+import Code from '@tiptap/extension-code';
 
 @Component({
     selector: 'dragonfish-editor-lite',
@@ -17,14 +25,15 @@ import { take } from 'rxjs/operators';
             multi: true,
         },
     ],
+    encapsulation: ViewEncapsulation.None,
 })
-export class EditorLiteComponent implements ControlValueAccessor {
+export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     @Input() placeholder = `Leave a reply.`;
     @Input() disabled: boolean;
-    @ViewChild('editor', { static: false }) editor: ElementRef<HTMLTextAreaElement>;
 
-    editMode = true;
-    tempValue: string;
+    editor = new Editor({
+        extensions: [StarterKit, Underline, Typography, Image, Link, Blockquote, Code],
+    });
 
     value: string;
     onChange: (value: string) => void;
@@ -32,38 +41,8 @@ export class EditorLiteComponent implements ControlValueAccessor {
 
     constructor(private alerts: AlertsService, private dialog: MatDialog) {}
 
-    addSimpleTag(tag: string) {
-        const start = this.editor.nativeElement.selectionStart;
-        const end = this.editor.nativeElement.selectionEnd;
-        const inputText = this.editor.nativeElement.value;
-        const stringToModify = inputText.substring(start, end);
-        const modifiedString = tag + stringToModify + tag;
-        this.editor.nativeElement.value = inputText.substring(0, start) + modifiedString + inputText.substr(end);
-        this.editor.nativeElement.focus();
-        this.editor.nativeElement.selectionStart = start + tag.length + 2;
-        this.editor.nativeElement.selectionEnd = end + tag.length + 2;
-    }
-
-    addInsert(insert: string) {
-        const start = this.editor.nativeElement.selectionStart;
-        const end = this.editor.nativeElement.selectionEnd;
-        const inputText = this.editor.nativeElement.value;
-        this.editor.nativeElement.value = inputText.substring(0, start) + insert + inputText.substr(end);
-        this.editor.nativeElement.focus();
-    }
-
-    switchToPreview() {
-        if (this.editMode === true) {
-            this.tempValue = this.editor.nativeElement.value;
-            this.editMode = false;
-        }
-    }
-
-    switchToEdit() {
-        if (this.editMode === false) {
-            this.value = this.tempValue;
-            this.editMode = true;
-        }
+    ngOnDestroy() {
+        this.editor.destroy();
     }
 
     openEmojiPicker() {
@@ -76,7 +55,7 @@ export class EditorLiteComponent implements ControlValueAccessor {
             .pipe(take(1))
             .subscribe((val: string) => {
                 if (val) {
-                    this.addInsert(val);
+                    this.editor.chain().focus().setLink({ href: val }).run();
                 }
             });
     }
@@ -86,8 +65,8 @@ export class EditorLiteComponent implements ControlValueAccessor {
         ref.afterClosed()
             .pipe(take(1))
             .subscribe((val: string) => {
-                if (val) {
-                    this.addInsert(val);
+                if (val && title === 'Insert Image') {
+                    this.editor.chain().focus().setImage({ src: val }).run();
                 }
             });
     }

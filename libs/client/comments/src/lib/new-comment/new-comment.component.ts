@@ -41,6 +41,7 @@ export class NewCommentComponent {
 
     submitForm() {
         if (this.newComment.controls.body.invalid) {
+            console.log(this.newComment.controls.body.value);
             this.alerts.error(`Comments must be longer than 10 characters.`);
             return;
         }

@@ -150,7 +150,7 @@
         <div class="flex-1"><!--spacer--></div>
         <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+            <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a class="link">
                     <span class="link-icon"><i-feather name="grid"></i-feather></span>
                 </a>
@@ -218,7 +218,7 @@
         <div class="flex-1"><!--spacer--></div>
         <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+            <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a
                     class="link"
                     [routerLink]="['/dashboard']"
