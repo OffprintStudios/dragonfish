@@ -13,7 +13,7 @@ export class InsertMediaComponent implements OnInit {
     linkLabel = `Image Link`;
 
     insertMedia = new FormGroup({
-        title: new FormControl('', [Validators.required]),
+        title: new FormControl(''),
         link: new FormControl('', [Validators.required]),
     });
 
@@ -45,9 +45,7 @@ export class InsertMediaComponent implements OnInit {
         }
 
         if (this.data.title === `Insert Image`) {
-            this.dialogRef.close(
-                `![${this.insertMedia.controls.title.value}](${this.insertMedia.controls.link.value})`,
-            );
+            this.dialogRef.close(this.insertMedia.controls.link.value);
         } else {
             const title = this.insertMedia.controls.title.value;
             const link = `https://www.youtube.com/embed/${this.parseMediaLink(this.insertMedia.controls.link.value)}`;

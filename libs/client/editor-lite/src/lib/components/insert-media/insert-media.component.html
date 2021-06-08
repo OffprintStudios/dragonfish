@@ -6,13 +6,15 @@
 </div>
 <div>
     <form [formGroup]="insertMedia" (ngSubmit)="submit()">
-        <dragonfish-text-field
-            [formControlName]="'title'"
-            [name]="'title'"
-            [type]="'text'"
-            [label]="altTextLabel"
-            [placeholder]="'Add some alt text'"
-        ></dragonfish-text-field>
+        <ng-container *ngIf="title !== 'Insert Image'">
+            <dragonfish-text-field
+                [formControlName]="'title'"
+                [name]="'title'"
+                [type]="'text'"
+                [label]="altTextLabel"
+                [placeholder]="'Add some alt text'"
+            ></dragonfish-text-field>
+        </ng-container>
 
         <dragonfish-text-field
             [formControlName]="'link'"
