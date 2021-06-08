@@ -91,6 +91,7 @@
         "ngx-markdown": "^11.1.2",
         "ngx-pagination": "^5.0.0",
         "ngx-tabset": "^2.2.0",
+        "ngx-tiptap": "^2.1.0",
         "numeral": "^2.0.6",
         "postcss": "^8.2.8",
         "prerender-node": "^3.2.5",
