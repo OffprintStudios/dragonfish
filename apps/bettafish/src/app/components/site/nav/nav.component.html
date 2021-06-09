@@ -1,4 +1,19 @@
-<nav class="mobile">
+<nav>
+    <a class="link">
+        <span class="link-icon"><i-feather name="home"></i-feather></span>
+    </a>
+    <a class="link">
+        <span class="link-icon"><i-feather name="map"></i-feather></span>
+    </a>
+    <a class="link">
+        <span class="link-icon"><i-feather name="users"></i-feather></span>
+    </a>
+    <a class="link">
+        <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
+    </a>
+</nav>
+
+<!--<nav class="mobile">
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogInMobile">
         <ng-container *ngIf="sidenavService.isOpened; else notOpenedMobile">
             <a class="link active close-avatar" (click)="sidenavService.toggle()">
@@ -92,9 +107,6 @@
 </nav>
 
 <nav class="desktop h-full relative top-auto left-0 flex flex-col shadow-2xl py-2 z-50">
-    <div class="py-3" style="-webkit-app-region: drag" *ngIf="electron.isElectronApp">
-        <!--spacer-->
-    </div>
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogIn">
         <ng-container *ngIf="sidenavService.isOpened; else notOpened">
             <a class="link active close-avatar" (click)="sidenavService.toggle()">
@@ -137,7 +149,7 @@
                 <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
             </a>
         </ng-container>
-        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <div class="my-2.5 border-b border-white mx-2"></div>
         <a class="link">
             <span class="link-icon"><i-feather name="home"></i-feather></span>
         </a>
@@ -147,8 +159,8 @@
         <a class="link">
             <span class="link-icon"><i-feather name="users"></i-feather></span>
         </a>
-        <div class="flex-1"><!--spacer--></div>
-        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <div class="flex-1"></div>
+        <div class="my-2.5 border-b border-white mx-2"></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a class="link">
@@ -215,8 +227,8 @@
         >
             <span class="link-icon"><i-feather name="users"></i-feather></span>
         </a>
-        <div class="flex-1"><!--spacer--></div>
-        <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
+        <div class="flex-1"></div>
+        <div class="my-2.5 border-b border-white mx-2"></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a
@@ -242,4 +254,4 @@
             <span class="link-icon"><i-feather name="more-vertical" style="stroke-width: 2"></i-feather></span>
         </a>
     </ng-template>
-</nav>
+</nav>-->

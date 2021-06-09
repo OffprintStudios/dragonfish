@@ -1,67 +1,24 @@
-<ng-container *ngIf="electron.isElectronApp && !(sessionQuery.currentUser$ | async); else isInBrowser">
-    <dragonfish-auth-full></dragonfish-auth-full>
-</ng-container>
-
-<ng-template #isInBrowser>
-    <main class="content flex">
+<main class="content">
+    <div class="h-screen">
         <dragonfish-nav></dragonfish-nav>
-        <mat-drawer-container autosize>
-            <mat-drawer
-                #sidenav
-                class="offprint-sidenav"
-                mode="over"
-                (openedStart)="sidenavService.setCurrState()"
-                (closedStart)="sidenavService.setCurrState()"
-            >
-                <dragonfish-sidenav></dragonfish-sidenav>
-            </mat-drawer>
-            <div class="outlet">
-                <router-outlet></router-outlet>
-            </div>
-        </mat-drawer-container>
-    </main>
-
-    <!--<div class="lg:hidden">
-        <header class="mobile-header">
-            <h1 class="logo">
-                <a [routerLink]="['/home']">Offprint</a>
-            </h1>
-            <input class="menu-btn" type="checkbox" id="menu-btn" />
-            <label class="menu-icon" for="menu-btn">
-                <span class="navicon"></span>
-            </label>
-            <ul class="border-t border-gray-200 menu">
-                <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else anonymous">
-                    <li><a [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]">Portfolio</a></li>
-                    <li><a [routerLink]="['/my-stuff']">My Stuff</a></li>
-                    <li><a class="cursor-pointer" (click)="logout()">Log out</a></li>
-                    <li class="block border-b border-gray-200"></li>
-                </ng-container>
-                <ng-template #anonymous>
-                    <li class="border-b border-gray-200 cursor-pointer"><a (click)="openAuthModal()">Log in</a></li>
-                </ng-template>
-                <li><a [routerLink]="['/browse']">Browse</a></li>
-                <li><a [routerLink]="['/social']">Social</a></li>
-            </ul>
-        </header>
+        <div class="overflow-y-auto">
+            <router-outlet></router-outlet>
+        </div>
     </div>
-    <main class="lg:flex">
-        <dragonfish-nav class="hidden lg:flex"></dragonfish-nav>
-        <mat-drawer-container autosize>
-            <mat-drawer
-                #sidenav
-                class="offprint-sidenav"
-                mode="over"
-                (openedStart)="sidenavService.setCurrState()"
-                (closedStart)="sidenavService.setCurrState()"
-            >
-                <dragonfish-sidenav></dragonfish-sidenav>
-            </mat-drawer>
-            <div class="h-screen">
-                <router-outlet></router-outlet>
 
-                <div class="h-40"></div>
-            </div>
-        </mat-drawer-container>
-    </main>-->
-</ng-template>
+    <!--<dragonfish-nav></dragonfish-nav>
+    <mat-drawer-container autosize>
+        <mat-drawer
+            #sidenav
+            class="offprint-sidenav"
+            mode="over"
+            (openedStart)="sidenavService.setCurrState()"
+            (closedStart)="sidenavService.setCurrState()"
+        >
+            <dragonfish-sidenav></dragonfish-sidenav>
+        </mat-drawer>
+        <div class="outlet">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-container>-->
+</main>

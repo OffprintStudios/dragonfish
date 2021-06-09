@@ -57,13 +57,13 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.router.events.pipe(untilDestroyed(this), delay(300)).subscribe((event) => {
+        /*this.router.events.pipe(untilDestroyed(this), delay(300)).subscribe((event) => {
             if (this.sidenav) {
                 if (event instanceof NavigationStart) {
                     this.sidenavService.close();
                 }
             }
-        });
+        });*/
     }
 
     logout() {
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
             if (wantsToLogOut) {
                 this.auth.logout().subscribe(() => {
-                    this.sidenavService.close();
+                    // this.sidenavService.close();
                 });
             }
         });
@@ -86,10 +86,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.sessionQuery.currentUser$.pipe(untilDestroyed(this), delay(300)).subscribe((user) => {
+        /*this.sessionQuery.currentUser$.pipe(untilDestroyed(this), delay(300)).subscribe((user) => {
             if (user !== null || !this.electron.isElectronApp) {
                 this.sidenavService.setSidenav(this.sidenav);
             }
-        });
+        });*/
     }
 }

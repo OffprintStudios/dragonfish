@@ -1,4 +1,9 @@
-nav.desktop {
+nav {
+    @apply z-50 absolute bottom-0 w-full flex items-center p-1;
+    background: var(--accent-dark);
+}
+
+/*nav.desktop {
     z-index: 50;
     background: var(--accent-dark);
 
@@ -121,4 +126,4 @@ nav.mobile {
             }
         }
     }
-}
+}*/
