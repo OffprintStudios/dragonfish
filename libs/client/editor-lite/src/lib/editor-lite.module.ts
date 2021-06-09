@@ -10,6 +10,8 @@ import { InsertMediaComponent } from './components/insert-media/insert-media.com
 import { InsertLinkComponent } from './components/insert-link/insert-link.component';
 import { UiModule } from '@dragonfish/client/ui';
 import { NgxTiptapModule } from 'ngx-tiptap';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { PipesModule } from '@dragonfish/client/pipes';
 
 @NgModule({
     imports: [
@@ -22,6 +24,8 @@ import { NgxTiptapModule } from 'ngx-tiptap';
         AlertsModule,
         UiModule,
         NgxTiptapModule,
+        PickerModule,
+        PipesModule,
     ],
     declarations: [EditorLiteComponent, InsertLinkComponent, InsertMediaComponent],
     exports: [EditorLiteComponent],

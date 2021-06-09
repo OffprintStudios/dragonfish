@@ -2,7 +2,17 @@
     <div class="flex items-center p-1 border border-b-0 rounded-t-md" style="border-color: var(--borders);">
         <button
             class="shadow-none border-none px-2.5 py-1.5"
-            (click)="editor.chain().focus().toggleBold().run()"
+            [matMenuTriggerFor]="headings"
+            [ngClass]="{ 'active': headingMenuOpened }"
+            (menuOpened)="headingMenuOpened = true"
+            (menuClosed)="headingMenuOpened = false"
+        >
+            <i-feather name="type"></i-feather>Heading
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleBold().run()"
             [ngClass]="{ 'active': editor.isActive('bold') }"
             [matTooltip]="'Bold'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -11,7 +21,7 @@
         </button>
         <button
             class="shadow-none border-none px-2.5 py-1.5"
-            (click)="editor.chain().focus().toggleItalic().run()"
+            (click)="chainCommand().toggleItalic().run()"
             [ngClass]="{ 'active': editor.isActive('italic') }"
             [matTooltip]="'Italic'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -20,12 +30,22 @@
         </button>
         <button
             class="shadow-none border-none px-2.5 py-1.5"
-            (click)="editor.chain().focus().toggleUnderline().run()"
+            (click)="chainCommand().toggleUnderline().run()"
             [ngClass]="{ 'active': editor.isActive('underline') }"
             [matTooltip]="'Underline'"
             [matTooltipClass]="'offprint-tooltip'"
         >
             <i-feather name="underline" class="mr-0"></i-feather>
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            [matMenuTriggerFor]="alignments"
+            [ngClass]="{ 'active': alignmentMenuOpened }"
+            (menuOpened)="alignmentMenuOpened = true"
+            (menuClosed)="alignmentMenuOpened = false"
+        >
+            <i-feather name="align-left"></i-feather>Align
         </button>
         <div class="mx-0.5">|</div>
         <button
@@ -38,7 +58,7 @@
         </button>
         <button
             class="shadow-none border-none px-2.5 py-1.5"
-            (click)="editor.chain().focus().unsetLink().run()"
+            (click)="chainCommand().unsetLink().run()"
             *ngIf="editor.isActive('link')"
             [matTooltip]="'Remove Link'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -53,24 +73,120 @@
         >
             <i-feather name="image" class="mr-0"></i-feather>
         </button>
-        <!--<button class="shadow-none border-none px-2.5 py-1.5" (click)="openInsertMedia('Insert Media')">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openInsertMedia('Insert Media')"
+        >
             <i-feather name="film" class="mr-0"></i-feather>
-        </button>-->
+        </button>
         <div class="mx-0.5">|</div>
         <button
             class="shadow-none border-none px-2.5 py-1.5"
-            (click)="editor.chain().focus().toggleBlockquote().run()"
+            (click)="chainCommand().toggleBlockquote().run()"
             [ngClass]="{ 'active': editor.isActive('blockquote') }"
             [matTooltip]="'Quote'"
             [matTooltipClass]="'offprint-tooltip'"
         >
             <i-feather name="message-square" class="mr-0"></i-feather>
         </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().setHorizontalRule().run()"
+            [matTooltip]="'Horizontal Line'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="minus" class="mr-0"></i-feather>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleBulletList().run()"
+            [ngClass]="{ 'active': editor.isActive('bulletList') }"
+            [matTooltip]="'List'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="list" class="mr-0"></i-feather>
+        </button>
         <div class="mx-0.5">|</div>
-        <button class="shadow-none border-none px-2.5 py-1.5" (click)="openEmojiPicker()">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openEmojiPicker()"
+            [matTooltip]="'Reactions'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
             <i-feather name="smile" class="mr-0"></i-feather>
         </button>
         <div class="flex-1"></div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().undo().run()"
+            [matTooltip]="'Undo'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="corner-up-left" class="mr-0"></i-feather>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().redo().run()"
+            [matTooltip]="'Redo'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <i-feather name="corner-up-right" class="mr-0"></i-feather>
+        </button>
     </div>
     <div class="editor-window" tiptap [editor]="editor" [ngModel]="value" (ngModelChange)="onChange($event)"></div>
 </div>
+
+<mat-menu #alignments="matMenu">
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('left').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'left' }) }"
+    >
+        <i-feather name="align-left"></i-feather>Left
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('center').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'center' }) }"
+    >
+        <i-feather name="align-center"></i-feather>Center
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('right').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'right' }) }"
+    >
+        <i-feather name="align-right"></i-feather>Right
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('justify').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'justify' }) }"
+    >
+        <i-feather name="align-justify"></i-feather>Justify
+    </button>
+</mat-menu>
+
+<mat-menu #headings="matMenu">
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 2 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 2 }) }"
+    >
+        Heading 1
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 3 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 3 }) }"
+    >
+        Heading 2
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 4 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 4 }) }"
+    >
+        Heading 3
+    </button>
+</mat-menu>

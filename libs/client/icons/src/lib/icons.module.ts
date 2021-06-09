@@ -105,6 +105,10 @@ import {
     Underline,
     Film,
     Smile,
+    CornerUpRight,
+    AlignLeft,
+    AlignRight,
+    AlignCenter,
 } from 'angular-feather/icons';
 
 const icons = {
@@ -210,6 +214,10 @@ const icons = {
     Underline,
     Film,
     Smile,
+    CornerUpRight,
+    AlignLeft,
+    AlignRight,
+    AlignCenter,
 };
 
 @NgModule({
