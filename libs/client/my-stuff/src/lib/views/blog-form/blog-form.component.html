@@ -81,7 +81,7 @@
 
     <div class="w-8/12 mx-auto">
         <ng-container *ngIf="editMode; else previewBlog">
-            <form [formGroup]="blogForm" (ngSubmit)="submitForm(currBlog._id)" *ngIf="editMode">
+            <form [formGroup]="blogForm" *ngIf="editMode">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <dragonfish-text-field
@@ -146,7 +146,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="blogForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="blogForm">
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <dragonfish-text-field

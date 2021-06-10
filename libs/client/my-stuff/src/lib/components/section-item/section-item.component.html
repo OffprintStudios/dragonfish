@@ -69,7 +69,7 @@
         </ng-container>
         <ng-template #editMode>
             <div class="form-body">
-                <form [formGroup]="editForm" (ngSubmit)="saveChanges(section)">
+                <form [formGroup]="editForm">
                     <dragonfish-text-field
                         [formControlName]="'title'"
                         [name]="'title'"

@@ -13,7 +13,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="proseForm" (ngSubmit)="submitForm(currProse._id)">
+        <form [formGroup]="proseForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
@@ -97,7 +97,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="proseForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"

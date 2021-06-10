@@ -81,7 +81,7 @@
 
     <div class="w-8/12 mx-auto">
         <ng-container *ngIf="editMode; else previewBlog">
-            <form [formGroup]="postForm" (ngSubmit)="submitForm(currPost._id)" *ngIf="editMode">
+            <form [formGroup]="postForm" *ngIf="editMode">
                 <dragonfish-text-field
                     [formControlName]="'title'"
                     [name]="'title'"
@@ -142,7 +142,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="postForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="postForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
