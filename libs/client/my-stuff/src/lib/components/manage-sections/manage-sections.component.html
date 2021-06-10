@@ -49,21 +49,16 @@
                         <h3 class="text-4xl">Add a Section</h3>
                         <button (click)="submitForm(stuffQuery.currentId)">Save</button>
                     </div>
-                    <form [formGroup]="sectionForm" (ngSubmit)="submitForm(stuffQuery.currentId)">
+                    <form [formGroup]="sectionForm">
                         <dragonfish-text-field
-                            [formControlName]="'title'"
+                            [formControlName]="'title'"t
                             [name]="'title'"
                             [type]="'text'"
                             [label]="'Title'"
                             [placeholder]="'The Beginning Of A Great Adventure'"
                         ></dragonfish-text-field>
 
-                        <dragonfish-editor
-                            [parentForm]="sectionForm"
-                            [controlName]="'body'"
-                            [minHeight]="'750px'"
-                            [maxHeight]="'750px'"
-                        ></dragonfish-editor>
+                        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
                         <div class="authors-note">
                             <div class="header">
@@ -77,12 +72,7 @@
                                     </ng-select>
                                 </div>
                             </div>
-                            <dragonfish-editor
-                                [parentForm]="sectionForm"
-                                [controlName]="'authorsNote'"
-                                [minHeight]="'750px'"
-                                [maxHeight]="'750px'"
-                            ></dragonfish-editor>
+                            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
                         </div>
                     </form>
                 </div>

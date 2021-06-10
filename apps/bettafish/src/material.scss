@@ -22,6 +22,7 @@
     background: transparent !important;
     color: var(--text-color) !important;
     border: none !important;
+    max-width: max-content !important;
     @apply py-0;
 
     div.mat-menu-content:not(:empty) {

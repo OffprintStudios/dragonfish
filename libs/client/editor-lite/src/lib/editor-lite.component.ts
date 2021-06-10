@@ -13,6 +13,10 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Blockquote from '@tiptap/extension-blockquote';
 import Code from '@tiptap/extension-code';
+import TextAlign from '@tiptap/extension-text-align';
+import Placeholder from '@tiptap/extension-placeholder';
+import Dropcursor from '@tiptap/extension-dropcursor';
+import Iframe from './extensions';
 
 @Component({
     selector: 'dragonfish-editor-lite',
@@ -28,11 +32,24 @@ import Code from '@tiptap/extension-code';
     encapsulation: ViewEncapsulation.None,
 })
 export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
-    @Input() placeholder = `Leave a reply.`;
     @Input() disabled: boolean;
+    alignmentMenuOpened = false;
+    headingMenuOpened = false;
 
     editor = new Editor({
-        extensions: [StarterKit, Underline, Typography, Image, Link, Blockquote, Code],
+        extensions: [
+            StarterKit.configure({ heading: { levels: [2, 3, 4] } }),
+            Underline,
+            Typography,
+            Image,
+            Link,
+            Blockquote,
+            Code,
+            TextAlign,
+            Placeholder,
+            Dropcursor,
+            Iframe,
+        ],
     });
 
     value: string;
@@ -43,6 +60,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
 
     ngOnDestroy() {
         this.editor.destroy();
+    }
+
+    chainCommand() {
+        return this.editor.chain().focus();
     }
 
     openEmojiPicker() {
@@ -61,14 +82,16 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     }
 
     openInsertMedia(title: string) {
-        const ref = this.dialog.open(InsertMediaComponent, { data: { title: title } });
-        ref.afterClosed()
-            .pipe(take(1))
-            .subscribe((val: string) => {
-                if (val && title === 'Insert Image') {
+        if (title === 'Insert Image') {
+            const ref = this.dialog.open(InsertMediaComponent, { data: { title: title } });
+            ref.afterClosed()
+                .pipe(take(1))
+                .subscribe((val: string) => {
                     this.editor.chain().focus().setImage({ src: val }).run();
-                }
-            });
+                });
+        } else {
+            this.alerts.info(`This feature is not yet supported!`);
+        }
     }
 
     writeValue(obj: string): void {

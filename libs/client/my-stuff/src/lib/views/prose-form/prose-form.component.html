@@ -13,7 +13,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="proseForm" (ngSubmit)="submitForm(currProse._id)">
+        <form [formGroup]="proseForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
@@ -54,12 +54,7 @@
             ></dragonfish-text-field>
 
             <label>Long Description</label>
-            <dragonfish-editor
-                [parentForm]="proseForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -102,7 +97,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="proseForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="proseForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
@@ -143,12 +138,7 @@
             ></dragonfish-text-field>
 
             <label>Long Description</label>
-            <dragonfish-editor
-                [parentForm]="proseForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>

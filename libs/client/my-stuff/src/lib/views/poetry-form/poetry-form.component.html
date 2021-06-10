@@ -13,7 +13,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="poetryForm" (ngSubmit)="submitForm(currPoetry._id)">
+        <form [formGroup]="poetryForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
@@ -78,12 +78,7 @@
 
                 <label>Poem</label>
             </ng-template>
-            <dragonfish-editor
-                [parentForm]="poetryForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -128,7 +123,7 @@
     </div>
 
     <div class="w-8/12 mx-auto">
-        <form [formGroup]="poetryForm" (ngSubmit)="submitForm()">
+        <form [formGroup]="poetryForm">
             <dragonfish-text-field
                 [formControlName]="'title'"
                 [name]="'title'"
@@ -193,12 +188,7 @@
 
                 <label>Poem</label>
             </ng-template>
-            <dragonfish-editor
-                [parentForm]="poetryForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>

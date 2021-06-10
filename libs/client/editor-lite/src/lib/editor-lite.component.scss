@@ -7,6 +7,15 @@ div.editor-window {
     .ProseMirror {
         @apply py-0.5 px-3 bg-transparent mb-0 focus:outline-none;
         min-height: 10rem;
+
+        p.is-editor-empty:first-child::before {
+            content: attr(data-placeholder);
+            float: left;
+            color: #ced4da;
+            pointer-events: none;
+            height: 0;
+        }
+
         // Headers and default image style
         h1 { font-size: 3em; }
         h2 { font-size: 2em; }

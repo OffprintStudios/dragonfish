@@ -10,9 +10,9 @@
 </ng-container>
 
 <ng-template #showForm>
-    <form [formGroup]="newComment" [@inOutAnimation]>
+    <form [formGroup]="newComment" class="w-3/4 mx-auto" [@inOutAnimation]>
         <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
-        <div class="flex items-center justify-end p-1 w-3/4 mx-auto">
+        <div class="flex items-center justify-end p-1">
             <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="toggleCollapsed()">
                 <i-feather name="x"></i-feather>
                 Cancel
