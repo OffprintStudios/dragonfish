@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FeatherModule } from 'angular-feather';
+import { RemixIconModule } from 'angular-remix-icon';
+
+import { RiBold, RiItalic, RiUnderline, RiStrikethrough } from 'angular-remix-icon';
 
 import {
     Rss,
@@ -220,9 +223,16 @@ const icons = {
     AlignCenter,
 };
 
+const remixIcons = {
+    RiBold,
+    RiItalic,
+    RiUnderline,
+    RiStrikethrough,
+};
+
 @NgModule({
     declarations: [],
-    imports: [CommonModule, FeatherModule.pick(icons)],
-    exports: [FeatherModule],
+    imports: [CommonModule, FeatherModule.pick(icons), RemixIconModule.configure(remixIcons)],
+    exports: [FeatherModule, RemixIconModule],
 })
 export class IconsModule {}
