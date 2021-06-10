@@ -16,6 +16,8 @@ import Code from '@tiptap/extension-code';
 import TextAlign from '@tiptap/extension-text-align';
 import Placeholder from '@tiptap/extension-placeholder';
 import Dropcursor from '@tiptap/extension-dropcursor';
+import BubbleMenu from '@tiptap/extension-bubble-menu';
+import FloatingMenu from '@tiptap/extension-floating-menu';
 import Iframe from './extensions';
 
 @Component({
@@ -42,13 +44,15 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
             Underline,
             Typography,
             Image,
-            Link,
+            Link.configure({ openOnClick: false }),
             Blockquote,
             Code,
             TextAlign,
             Placeholder,
             Dropcursor,
             Iframe,
+            BubbleMenu.configure({ element: document.querySelector('.menu') }),
+            FloatingMenu.configure({ element: document.querySelector('.menu') }),
         ],
     });
 

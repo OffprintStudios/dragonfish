@@ -3,7 +3,32 @@ import { CommonModule } from '@angular/common';
 import { FeatherModule } from 'angular-feather';
 import { RemixIconModule } from 'angular-remix-icon';
 
-import { RiBold, RiItalic, RiUnderline, RiStrikethrough } from 'angular-remix-icon';
+import {
+    RiBold,
+    RiItalic,
+    RiUnderline,
+    RiStrikethrough,
+    RiLink,
+    RiLinkUnlink,
+    RiAlignLeft,
+    RiAlignRight,
+    RiAlignCenter,
+    RiAlignJustify,
+    RiDoubleQuotesL,
+    RiText,
+    RiH1,
+    RiH2,
+    RiH3,
+    RiSeparator,
+    RiListUnordered,
+    RiArrowGoForwardLine,
+    RiArrowGoBackLine,
+    RiImageAddLine,
+    RiFilmLine,
+    RiEmotionHappyLine,
+    RiCloseLine,
+    RiCheckLine,
+} from 'angular-remix-icon';
 
 import {
     Rss,
@@ -228,6 +253,26 @@ const remixIcons = {
     RiItalic,
     RiUnderline,
     RiStrikethrough,
+    RiLink,
+    RiLinkUnlink,
+    RiAlignLeft,
+    RiAlignCenter,
+    RiAlignRight,
+    RiAlignJustify,
+    RiDoubleQuotesL,
+    RiText,
+    RiH1,
+    RiH2,
+    RiH3,
+    RiListUnordered,
+    RiSeparator,
+    RiArrowGoForwardLine,
+    RiArrowGoBackLine,
+    RiImageAddLine,
+    RiFilmLine,
+    RiEmotionHappyLine,
+    RiCloseLine,
+    RiCheckLine,
 };
 
 @NgModule({

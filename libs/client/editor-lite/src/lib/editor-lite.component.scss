@@ -95,3 +95,9 @@ button.active {
         color: white;
     }
 }
+
+div.floating-menu, div.line-menu {
+    @apply flex items-center p-0.5 rounded-md shadow-2xl;
+    background: var(--background);
+    border: 1px solid var(--borders);
+}
