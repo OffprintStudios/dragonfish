@@ -8,12 +8,12 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
-import { EditorModule } from '@dragonfish/client/editor';
 import { UiModule } from '@dragonfish/client/ui';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { MaterialModule } from '@dragonfish/client/material';
 import { MyStuffRoutingModule } from './my-stuff-routing.module';
 import { CookieModule } from 'ngx-cookie';
+import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Components */
 import { MyStuffComponent } from './my-stuff.component';
@@ -63,7 +63,6 @@ import {
         NgSelectModule,
         IconsModule,
         PipesModule,
-        EditorModule,
         UiModule,
         AlertsModule,
         MaterialModule,
@@ -71,6 +70,7 @@ import {
         ClickOutsideModule,
         ContextMenuModule,
         CookieModule,
+        EditorLiteModule,
     ],
 })
 export class MyStuffModule {}

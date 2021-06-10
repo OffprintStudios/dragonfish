@@ -58,12 +58,7 @@
                             [placeholder]="'The Beginning Of A Great Adventure'"
                         ></dragonfish-text-field>
 
-                        <dragonfish-editor
-                            [parentForm]="sectionForm"
-                            [controlName]="'body'"
-                            [minHeight]="'750px'"
-                            [maxHeight]="'750px'"
-                        ></dragonfish-editor>
+                        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
                         <div class="authors-note">
                             <div class="header">
@@ -77,12 +72,7 @@
                                     </ng-select>
                                 </div>
                             </div>
-                            <dragonfish-editor
-                                [parentForm]="sectionForm"
-                                [controlName]="'authorsNote'"
-                                [minHeight]="'750px'"
-                                [maxHeight]="'750px'"
-                            ></dragonfish-editor>
+                            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
                         </div>
                     </form>
                 </div>

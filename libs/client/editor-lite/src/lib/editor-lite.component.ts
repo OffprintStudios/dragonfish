@@ -32,7 +32,6 @@ import Iframe from './extensions';
     encapsulation: ViewEncapsulation.None,
 })
 export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
-    @Input() placeholder = `Leave a reply.`;
     @Input() disabled: boolean;
     alignmentMenuOpened = false;
     headingMenuOpened = false;
@@ -83,17 +82,16 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     }
 
     openInsertMedia(title: string) {
-        const ref = this.dialog.open(InsertMediaComponent, { data: { title: title } });
-        ref.afterClosed()
-            .pipe(take(1))
-            .subscribe((val: string) => {
-                if (val && title === 'Insert Image') {
+        if (title === 'Insert Image') {
+            const ref = this.dialog.open(InsertMediaComponent, { data: { title: title } });
+            ref.afterClosed()
+                .pipe(take(1))
+                .subscribe((val: string) => {
                     this.editor.chain().focus().setImage({ src: val }).run();
-                } else {
-                    this.alerts.info(`This feature is not yet supported!`);
-                    //this.editor.chain().focus().setIframe({ src: val }).run();
-                }
-            });
+                });
+        } else {
+            this.alerts.info(`This feature is not yet supported!`);
+        }
     }
 
     writeValue(obj: string): void {

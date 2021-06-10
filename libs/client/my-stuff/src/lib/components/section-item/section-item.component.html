@@ -78,12 +78,7 @@
                         [placeholder]="'The Beginning Of A Great Adventure'"
                     ></dragonfish-text-field>
 
-                    <dragonfish-editor
-                        [parentForm]="editForm"
-                        [controlName]="'body'"
-                        [minHeight]="'750px'"
-                        [maxHeight]="'750px'"
-                    ></dragonfish-editor>
+                    <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
                     <div class="authors-note">
                         <div class="header">
@@ -98,12 +93,7 @@
                             </div>
                         </div>
 
-                        <dragonfish-editor
-                            [parentForm]="editForm"
-                            [controlName]="'authorsNote'"
-                            [minHeight]="'750px'"
-                            [maxHeight]="'750px'"
-                        ></dragonfish-editor>
+                        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
                     </div>
                 </form>
             </div>

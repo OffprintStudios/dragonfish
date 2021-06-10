@@ -99,12 +99,7 @@
                     </ng-select>
                 </div>
 
-                <dragonfish-editor
-                    [parentForm]="postForm"
-                    [controlName]="'body'"
-                    [minHeight]="'1000px'"
-                    [maxHeight]="'1000px'"
-                ></dragonfish-editor>
+                <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
             </form>
         </ng-container>
 
@@ -165,12 +160,7 @@
                 </ng-select>
             </div>
 
-            <dragonfish-editor
-                [parentForm]="postForm"
-                [controlName]="'body'"
-                [minHeight]="'1000px'"
-                [maxHeight]="'1000px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
         </form>
     </div>
 </ng-template>

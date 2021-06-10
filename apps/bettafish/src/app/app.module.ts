@@ -47,7 +47,6 @@ import { HistoryComponents } from './components/user/history';
 import { AppRoutingModule } from './app-routing.module';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
-import { EditorModule } from '@dragonfish/client/editor';
 import { UiModule } from '@dragonfish/client/ui';
 import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
@@ -92,7 +91,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         UiModule,
         MaterialModule,
         AlertsModule,
-        EditorModule,
         CommentsModule,
         ClientServicesModule,
         Ng2FittextModule,

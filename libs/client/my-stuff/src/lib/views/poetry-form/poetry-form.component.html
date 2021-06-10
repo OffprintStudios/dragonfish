@@ -78,12 +78,7 @@
 
                 <label>Poem</label>
             </ng-template>
-            <dragonfish-editor
-                [parentForm]="poetryForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -193,12 +188,7 @@
 
                 <label>Poem</label>
             </ng-template>
-            <dragonfish-editor
-                [parentForm]="poetryForm"
-                [controlName]="'body'"
-                [minHeight]="'300px'"
-                [maxHeight]="'300px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
             <div class="grid grid-cols-2 gap-4">
                 <div>
