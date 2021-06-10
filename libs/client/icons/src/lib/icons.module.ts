@@ -40,6 +40,11 @@ import {
     RiMore2Line,
     RiLoginCircleLine,
     RiLogoutCircleLine,
+    RiHistoryLine,
+    RiNotification3Line,
+    RiSettings5Line,
+    RiUserLine,
+    RiUserAddLine,
 } from 'angular-remix-icon';
 
 import {
@@ -297,6 +302,11 @@ const remixIcons = {
     RiMore2Line,
     RiLoginCircleLine,
     RiLogoutCircleLine,
+    RiHistoryLine,
+    RiNotification3Line,
+    RiSettings5Line,
+    RiUserLine,
+    RiUserAddLine,
 };
 
 @NgModule({
