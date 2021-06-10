@@ -4,6 +4,7 @@ import { FeatherModule } from 'angular-feather';
 import { RemixIconModule } from 'angular-remix-icon';
 
 import {
+    /* Editor */
     RiBold,
     RiItalic,
     RiUnderline,
@@ -28,6 +29,17 @@ import {
     RiEmotionHappyLine,
     RiCloseLine,
     RiCheckLine,
+
+    /* Other */
+    RiHardDrive2Line,
+    RiChatSmile3Line,
+    RiHome5Line,
+    RiCompass3Line,
+    RiGroupLine,
+    RiDashboardLine,
+    RiMore2Line,
+    RiLoginCircleLine,
+    RiLogoutCircleLine,
 } from 'angular-remix-icon';
 
 import {
@@ -249,6 +261,7 @@ const icons = {
 };
 
 const remixIcons = {
+    /* Editor */
     RiBold,
     RiItalic,
     RiUnderline,
@@ -273,6 +286,17 @@ const remixIcons = {
     RiEmotionHappyLine,
     RiCloseLine,
     RiCheckLine,
+
+    /* Other */
+    RiHardDrive2Line,
+    RiChatSmile3Line,
+    RiHome5Line,
+    RiCompass3Line,
+    RiGroupLine,
+    RiDashboardLine,
+    RiMore2Line,
+    RiLoginCircleLine,
+    RiLogoutCircleLine,
 };
 
 @NgModule({
