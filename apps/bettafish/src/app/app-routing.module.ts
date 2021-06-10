@@ -10,18 +10,16 @@ import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
-import { MigrationRoutes } from './pages/migration';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
 import { HomeResolvers } from './resolvers/home';
 import { PortfolioResolvers } from './resolvers/portfolio';
 import { Resolvers } from './resolvers';
-import { MigrationResolvers } from './pages/migration';
 
 /* Util */
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from '@dragonfish/client/repository/session/services'
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
 const routes: Routes = [
     ...HomeRoutes,
@@ -31,7 +29,6 @@ const routes: Routes = [
     ...PortfolioRoutes,
     ...MessagesRoutes,
     ...ContentViewRoutes,
-    ...MigrationRoutes,
     {
         path: 'my-stuff',
         canLoad: [AuthGuard],
@@ -55,12 +52,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [
-        ...DocsResolvers,
-        ...HomeResolvers,
-        ...PortfolioResolvers,
-        ...Resolvers,
-        ...MigrationResolvers,
-    ]
+    providers: [...DocsResolvers, ...HomeResolvers, ...PortfolioResolvers, ...Resolvers],
 })
 export class AppRoutingModule {}
