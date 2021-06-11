@@ -1,0 +1,70 @@
+@mixin content-body() {
+    // Headers and default image style
+    h1 { font-size: 3em; }
+    h2 { font-size: 2em; }
+    h3 { font-size: 1.5em; }
+    h4 { font-size: 1.25em; }
+    h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
+    h6 { font-size: 1em; text-transform: uppercase; }
+    img { max-width: 100% }
+
+    quote, blockquote {
+        margin-left: 0.75rem;
+        padding-left: 0.75rem;
+        border-left: 2px solid var(--borders);
+    }
+
+    // CKEditor-generated image styles
+    .image {
+        display: table;
+        clear: both;
+        text-align: center;
+        margin: 1em auto;
+    }
+
+    .image-style-align-{
+        &left {
+            float: left;
+            margin-right: 1.5em;
+        }
+        &center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        &right {
+            float: right;
+            margin-left: 1.5em;
+        }
+    }
+
+    // A little CSS hack to force images at the bottom of content bodies to not break out of their containers.
+    // More details here: http://bonrouge.com/br.php?page=floats
+    > :last-child:after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+        clear: both;
+        visibility: hidden;
+    }
+
+    // CKEditor-generated font sizes
+    span.text-{
+        &tiny { font-size: 0.7em; }
+        &small { font-size: 0.85em; }
+        &big { font-size: 1.4em; }
+        &huge { font-size: 1.85em; }
+    }
+    ul,ol {
+        margin-left: 2.5rem;
+    }
+    ul {
+        list-style-type: disc;
+    }
+    ol {
+        list-style-type: decimal;
+    }
+    li {
+        @apply my-1;
+    }
+}

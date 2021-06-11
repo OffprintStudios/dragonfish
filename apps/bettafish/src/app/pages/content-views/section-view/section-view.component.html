@@ -7,26 +7,26 @@
             <div class="section-selector">
                 <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">
                     <button matRipple class="selector left" (click)="goToPrev()">
-                        <i-feather name="chevron-left"></i-feather>
+                        <rmx-icon name="arrow-left-s-line"></rmx-icon>
                     </button>
                 </ng-container>
                 <ng-template #hasNoPrev>
                     <button matRipple class="selector left disabled">
-                        <i-feather name="chevron-left"></i-feather>
+                        <rmx-icon name="arrow-left-s-line"></rmx-icon>
                     </button>
                 </ng-template>
                 <div class="section-list-menu" [matMenuTriggerFor]="sectionList">
                     <span class="text">Sections</span>
-                    <span class="icon"><i-feather name="chevron-down"></i-feather></span>
+                    <span class="icon"><rmx-icon name="arrow-down-s-line"></rmx-icon></span>
                 </div>
                 <ng-container *ngIf="indexNext < sections.length; else hasNoNext">
                     <button matRipple class="selector right" (click)="goToNext()">
-                        <i-feather name="chevron-right"></i-feather>
+                        <rmx-icon name="arrow-right-s-line"></rmx-icon>
                     </button>
                 </ng-container>
                 <ng-template #hasNoNext>
                     <button matRipple class="selector right disabled">
-                        <i-feather name="chevron-right"></i-feather>
+                        <rmx-icon name="arrow-right-s-line"></rmx-icon>
                     </button>
                 </ng-template>
             </div>
@@ -54,23 +54,27 @@
             <div class="section-selector">
                 <ng-container *ngIf="indexPrev >= 0; else hasNoPrev">
                     <button matRipple class="selector left" (click)="goToPrev()">
-                        <i-feather name="chevron-left"></i-feather>
+                        <rmx-icon name="arrow-left-s-line"></rmx-icon>
                     </button>
                 </ng-container>
                 <ng-template #hasNoPrev>
-                    <button matRipple class="selector left disabled"><i-feather name="chevron-left"></i-feather></button>
+                    <button matRipple class="selector left disabled">
+                        <rmx-icon name="arrow-left-s-line"></rmx-icon>
+                    </button>
                 </ng-template>
                 <div class="section-list-menu" [matMenuTriggerFor]="sectionListBottom">
                     <span class="text">Sections</span>
-                    <span class="icon"><i-feather name="chevron-down"></i-feather></span>
+                    <span class="icon"><rmx-icon name="arrow-down-s-line"></rmx-icon></span>
                 </div>
                 <ng-container *ngIf="indexNext < sections.length; else hasNoNext">
                     <button matRipple class="selector right" (click)="goToNext()">
-                        <i-feather name="chevron-right"></i-feather>
+                        <rmx-icon name="arrow-right-s-line"></rmx-icon>
                     </button>
                 </ng-container>
                 <ng-template #hasNoNext>
-                    <button matRipple class="selector right disabled"><i-feather name="chevron-right"></i-feather></button>
+                    <button matRipple class="selector right disabled">
+                        <rmx-icon name="arrow-right-s-line"></rmx-icon>
+                    </button>
                 </ng-template>
             </div>
         </div>

@@ -1,6 +1,6 @@
 <div class="search-header">
     <div class="w-11/12 mx-auto pb-2 pt-4 flex flex-row justify-center">
-        <i-feather name="search" class="mr-4 header"></i-feather>
+        <rmx-icon name="search-line" class="mr-4 header"></rmx-icon>
         <h3 class="text-2xl italic text-white">Search Results</h3>
 
         <!--
@@ -21,7 +21,7 @@
 <ng-template #notLoading>
     <div class="w-11/12 mx-auto my-6">
         <div class="flex flex-row py-4 items-center" *ngIf="searchResults.works.length !== 0">
-            <i-feather name="book-open" class="relative -top-0.5 mr-2"></i-feather>
+            <rmx-icon name="book-open-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Works</h3>
         </div>
         <div class="grid grid-cols-3 gap-4">
@@ -32,7 +32,7 @@
         </div>
 
         <div class="flex flex-row py-4 items-center" *ngIf="searchResults.blogs.length !== 0">
-            <i-feather name="coffee" class="relative -top-0.5 mr-2"></i-feather>
+            <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Blogs</h3>
         </div>
         <div class="grid grid-cols-3 gap-4">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="flex flex-row py-4 items-center" *ngIf="searchResults.users.length !== 0">
-            <i-feather name="users" class="relative -top-0.5 mr-2"></i-feather>
+            <rmx-icon name="group-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Users</h3>
         </div>
         <div class="grid grid-cols-3 gap-4">

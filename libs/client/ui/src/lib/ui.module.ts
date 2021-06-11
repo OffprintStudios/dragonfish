@@ -26,6 +26,8 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { ContentApprovalComponent } from './components/content-approval/content-approval.component';
+import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +44,8 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
+        ContentApprovalComponent,
+        AddToCollectionComponent,
     ],
     imports: [
         CommonModule,
@@ -72,9 +76,12 @@ import { ReportDialogComponent } from './components/report-dialog/report-dialog.
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
+        ContentApprovalComponent,
+        AddToCollectionComponent,
     ],
 })
 export class UiModule {}
 
 export { PopupComponent } from './components/popup/popup.component';
 export { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+export { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
