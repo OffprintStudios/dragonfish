@@ -25,7 +25,13 @@
                     </div>
                 </div>
                 <div class="flex-1"><!--spacer--></div>
-                <dragonfish-news-rating></dragonfish-news-rating>
+                <dragonfish-content-approval
+                    [content]="currPost"
+                    [currRating]="viewState.currRating"
+                    [ratingsDoc]="viewState.ratingsDoc$ | async"
+                    [likes]="viewState.likes"
+                    [dislikes]="viewState.dislikes"
+                ></dragonfish-content-approval>
             </div>
         </div>
     </div>

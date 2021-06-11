@@ -51,6 +51,10 @@ import {
     RiEyeLine,
     RiArrowRightSLine,
     RiArrowLeftSLine,
+    RiHeartFill,
+    RiDislikeFill,
+    RiBookMarkLine,
+    RiFlagLine,
 } from 'angular-remix-icon';
 
 import {
@@ -319,6 +323,10 @@ const remixIcons = {
     RiEyeLine,
     RiArrowRightSLine,
     RiArrowLeftSLine,
+    RiHeartFill,
+    RiDislikeFill,
+    RiBookMarkLine,
+    RiFlagLine,
 };
 
 @NgModule({

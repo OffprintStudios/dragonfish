@@ -1,8 +1,7 @@
 div.approval-buttons {
     display: flex;
     button {
-        @apply shadow-none rounded-full border-none text-sm;
-        margin: 0 0.1rem 0 0.1rem;
+        @apply shadow-none rounded-full border-none text-sm mx-0.5;
         &.active {
             background: var(--accent-light);
         }
