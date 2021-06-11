@@ -59,6 +59,8 @@ import {
     RiArrowDownSLine,
     RiPenNibLine,
     RiCalendar2Line,
+    RiSearchLine,
+    RiCupLine,
 } from 'angular-remix-icon';
 
 import {
@@ -335,6 +337,8 @@ const remixIcons = {
     RiArrowDownSLine,
     RiPenNibLine,
     RiCalendar2Line,
+    RiSearchLine,
+    RiCupLine,
 };
 
 @NgModule({
