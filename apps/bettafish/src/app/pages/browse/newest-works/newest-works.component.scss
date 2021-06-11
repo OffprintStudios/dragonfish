@@ -4,7 +4,7 @@ div.newest-works-nav {
         &:hover {
             background: var(--accent-light);
         }
-        i-feather {
+        rmx-icon {
             width: 1.25rem !important;
             color: white;
             margin: 0;
@@ -15,7 +15,7 @@ div.newest-works-nav {
         }
         &.disabled {
             color: var(--accent-dark);
-            i-feather {
+            rmx-icon {
                 color: var(--accent-dark);
             }
             &:hover {
