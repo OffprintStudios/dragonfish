@@ -18,22 +18,22 @@
     <div class="post-body" [line-truncation]="6" [innerHTML]="post.body | safeHtml"></div>
     <div class="flex flex-row items-center">
         <div class="stat text-sm">
-            <i-feather name="eye"></i-feather>
+            <rmx-icon name="eye-line"></rmx-icon>
             {{ post.stats.views }}
         </div>
         <div class="mx-1">|</div>
         <div class="stat text-sm">
-            <i-feather name="message-circle"></i-feather>
+            <rmx-icon name="chat-3-line"></rmx-icon>
             {{ post.stats.comments }}
         </div>
         <div class="mx-1">|</div>
         <div class="stat" title="Likes">
-            <i-feather name="thumbs-up"></i-feather>
+            <rmx-icon name="heart-line"></rmx-icon>
             {{ post.stats.likes | abbreviate }}
         </div>
         <div class="mx-1">|</div>
         <div class="stat" title="Dislikes">
-            <i-feather name="thumbs-down"></i-feather>
+            <rmx-icon name="dislike-line"></rmx-icon>
             {{ post.stats.dislikes | abbreviate }}
         </div>
         <div class="flex-1"><!--spacer--></div>
@@ -43,7 +43,7 @@
                 [routerLink]="['/news', post._id, post.title | slugify]"
             >
                 Continue Reading
-                <i-feather name="chevron-right"></i-feather>
+                <rmx-icon name="arrow-right-s-line"></rmx-icon>
             </a>
         </div>
     </div>

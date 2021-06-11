@@ -4,31 +4,31 @@
             <ng-container [ngSwitch]="state.currRating">
                 <ng-container *ngSwitchCase="ratingOption.Liked">
                     <button class="active border-none shadow-none rounded-full p-2.5" (click)="setNoVote(state.currContent._id)">
-                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <rmx-icon name="heart-line" class="end-button"></rmx-icon>
                         <span>{{ state.likes | abbreviate }}</span>
                     </button>
                     <button class="border-none shadow-none rounded-full p-2.5" (click)="setDislike(state.currContent._id)">
-                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <rmx-icon name="dislike-line" class="end-button"></rmx-icon>
                         <span>{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
                 <ng-container *ngSwitchCase="ratingOption.Disliked">
                     <button class="border-none shadow-none rounded-full p-2.5" (click)="setLike(state.currContent._id)">
-                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <rmx-icon name="heart-line" class="end-button"></rmx-icon>
                         <span>{{ state.likes | abbreviate }}</span>
                     </button>
                     <button class="active border-none shadow-none rounded-full p-2.5" (click)="setNoVote(state.currContent._id)">
-                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <rmx-icon name="dislike-line" class="end-button"></rmx-icon>
                         <span>{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
                 <ng-container *ngSwitchDefault>
                     <button class="border-none shadow-none rounded-full p-2.5" (click)="setLike(state.currContent._id)">
-                        <i-feather name="thumbs-up" class="end-button"></i-feather>
+                        <rmx-icon name="heart-line" class="end-button"></rmx-icon>
                         <span>{{ state.likes | abbreviate }}</span>
                     </button>
                     <button class="border-none shadow-none rounded-full p-2.5" (click)="setDislike(state.currContent._id)">
-                        <i-feather name="thumbs-down" class="end-button"></i-feather>
+                        <rmx-icon name="dislike-line" class="end-button"></rmx-icon>
                         <span>{{ state.dislikes | abbreviate }}</span>
                     </button>
                 </ng-container>
@@ -36,11 +36,11 @@
         </ng-container>
         <ng-template #noHist>
             <button class="border-none shadow-none rounded-full p-2.5">
-                <i-feather name="thumbs-up" class="end-button"></i-feather>
+                <rmx-icon name="heart-line" class="end-button"></rmx-icon>
                 <span>{{ state.likes | abbreviate }}</span>
             </button>
             <button class="border-none shadow-none rounded-full p-2.5">
-                <i-feather name="thumbs-down" class="end-button"></i-feather>
+                <rmx-icon name="dislike-line" class="end-button"></rmx-icon>
                 <span>{{ state.dislikes | abbreviate }}</span>
             </button>
         </ng-template>

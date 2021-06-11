@@ -45,6 +45,12 @@ import {
     RiSettings5Line,
     RiUserLine,
     RiUserAddLine,
+    RiHeartLine,
+    RiDislikeLine,
+    RiChat3Line,
+    RiEyeLine,
+    RiArrowRightSLine,
+    RiArrowLeftSLine,
 } from 'angular-remix-icon';
 
 import {
@@ -307,6 +313,12 @@ const remixIcons = {
     RiSettings5Line,
     RiUserLine,
     RiUserAddLine,
+    RiHeartLine,
+    RiDislikeLine,
+    RiChat3Line,
+    RiEyeLine,
+    RiArrowRightSLine,
+    RiArrowLeftSLine,
 };
 
 @NgModule({
