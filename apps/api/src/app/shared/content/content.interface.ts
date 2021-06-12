@@ -104,5 +104,5 @@ export interface IContent {
      * Removes all references to the given tag in **all** content.
      * @param tagId The ID of the tag to remove.
      */
-    deleteTagReferences(tagId: string): Promise<void>;
+    removeTagReferences(tagId: string): Promise<void>;
 }

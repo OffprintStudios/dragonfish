@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { TagsStore } from "@dragonfish/api/database/content/stores";
 import { TagKind, TagsModel, TagsForm } from "@dragonfish/shared/models/content";
 import { TagsTree } from "@dragonfish/shared/models/content/tags.model";
@@ -28,7 +28,13 @@ export class TagsService implements ITagsService {
 
     async deleteTag(id: string): Promise<void> {        
         // First, delete all references to this tag elsewhere in the database
-        
+        const tagToDelete = await this.tagsStore.findOne(id);
+        if (!tagToDelete) {
+            throw new NotFoundException(`No tag with the ID ${id} could be found.`);
+        }
+
+        await this.contentService.removeTagReferences(tagToDelete._id);
+
         // Then, delete the tag itself
         const deletedDocument = await this.tagsStore.deleteTag(id);
         return deletedDocument;

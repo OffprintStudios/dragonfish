@@ -9,6 +9,7 @@ import {
     SectionInfo,
     ContentKind,
     PubStatus,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
@@ -52,6 +53,9 @@ export class ProseContentDocument extends Document implements ProseContent {
         },
     })
     sections: string[] | SectionInfo[];
+
+    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 }
 
 export const ProseContentSchema = SchemaFactory.createForClass(ProseContentDocument);
