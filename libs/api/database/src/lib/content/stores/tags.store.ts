@@ -8,7 +8,7 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 
 @Injectable()
-export class TagsStore {
+export class TagsStore {    
     private readonly logger: Logger = new Logger(TagsStore.name);
 
     constructor(
@@ -21,6 +21,15 @@ export class TagsStore {
      */
     async fetchTags(kind: TagKind): Promise<TagsDocument[]> {
         return this.tags.find({ kind: kind }).sort({ name: 1 });
+    }
+
+    /**
+     * Returns a single tag with the given ID, or null if not found.
+     * @param id The ID of the tag to find.
+     * @returns The tag with the ID.
+     */
+    async findOne(id: string): Promise<TagsDocument> {
+        return this.tags.findById(id);
     }
 
     /**
@@ -153,8 +162,6 @@ export class TagsStore {
      * @param parentId
      */
     async deleteTag(parentId: string): Promise<void> {
-        // TODO: We need to go through the whole damn database and clean up any references to this tag
-        // Should that be middleware?
         await this.tags.findByIdAndDelete(parentId);
     }
 }

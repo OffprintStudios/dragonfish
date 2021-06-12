@@ -31,7 +31,7 @@ import { SectionsStore } from './sections.store';
  * Functions that aggregate together multiple actions for creating and updating content.
  */
 @Injectable()
-export class ContentStore {
+export class ContentStore {    
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
@@ -506,6 +506,22 @@ export class ContentStore {
 
     async migrateWork(user: JwtPayload, formData: MigrationForm) {
         return await this.proseContent.migrateWork(user, formData);
+    }
+
+    //#endregion
+
+    //#region ---TAGS---
+
+    /**
+     * Go through every piece of content, and remove the given `tagId` from 
+     * its `tags` array.
+     * @param tagId The ID of the tag to remove.
+     */
+    public async removeTagReferences(tagId: string): Promise<void> {
+        await this.content.updateMany(
+            {},
+            { $pull: {tags: { _id: tagId }} }
+        );
     }
 
     //#endregion

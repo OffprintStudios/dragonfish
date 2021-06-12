@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { NewsContentModel, PubStatus, NewsCategory, ContentRating, ContentKind } from '@dragonfish/shared/models/content';
+import { Document, Schema as MongooseSchema } from 'mongoose';
+import { NewsContentModel, PubStatus, NewsCategory, ContentRating, ContentKind, TagsModel } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
 @Schema()
@@ -40,6 +40,9 @@ export class NewsContentDocument extends Document implements NewsContentModel {
         rating: ContentRating;
         warnings: string[]
     };
+
+    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 }
 
 export const NewsContentSchema = SchemaFactory.createForClass(NewsContentDocument);

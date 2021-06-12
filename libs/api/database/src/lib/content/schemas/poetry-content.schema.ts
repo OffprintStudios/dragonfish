@@ -10,6 +10,7 @@ import {
     ContentKind,
     PubStatus,
     PoetryForm,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
@@ -57,6 +58,9 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         },
     })
     sections?: string[] | SectionInfo[];
+
+    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 }
 
 export const PoetryContentSchema = SchemaFactory.createForClass(PoetryContentDocument);

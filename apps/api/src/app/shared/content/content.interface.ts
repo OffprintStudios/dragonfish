@@ -10,7 +10,7 @@ import {
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
-export interface IContent {
+export interface IContent {    
     /**
      * Fetches a single piece of content from the database regardless of its publishing status.
      *
@@ -99,4 +99,10 @@ export interface IContent {
      * @param coverArt The new cover art URL
      */
     updateCoverArt(user: JwtPayload, contentId: string, kind: ContentKind, coverArt: string): Promise<ContentModel>;
+
+    /**
+     * Removes all references to the given tag in **all** content.
+     * @param tagId The ID of the tag to remove.
+     */
+    deleteTagReferences(tagId: string): Promise<void>;
 }

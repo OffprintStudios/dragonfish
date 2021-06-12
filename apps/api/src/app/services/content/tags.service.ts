@@ -1,13 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { TagsStore } from "@dragonfish/api/database/content/stores";
 import { TagKind, TagsModel, TagsForm } from "@dragonfish/shared/models/content";
 import { TagsTree } from "@dragonfish/shared/models/content/tags.model";
-import { ITagsService } from "../../shared/content";
+import { IContent, ITagsService } from "../../shared/content";
 
 @Injectable()
 export class TagsService implements ITagsService {
     constructor(
-        private readonly tagsStore: TagsStore) { }
+        private readonly tagsStore: TagsStore,
+        @Inject('IContent') private readonly contentService: IContent) { }
 
     async fetchTags(kind: TagKind): Promise<TagsModel[]> {
         return await this.tagsStore.fetchTags(kind);
@@ -18,20 +19,18 @@ export class TagsService implements ITagsService {
     }
 
     async createTag(kind: TagKind, form: TagsForm): Promise<TagsModel> {
-        return await this.tagsStore.createTag(kind, form);
+        return await this.tagsStore.createTag(form, kind);
     }
 
     async updateTag(id: string, form: TagsForm): Promise<TagsModel> {
         return await this.tagsStore.updateTag(id, form);
     }
 
-    async deleteTag(id: string): Promise<void> {
-        // Delete from database
-        const deletedDocument = this.tagsStore.deleteTag(id);
-
-        // TODO: Remove from all content documents
-        // This should proably be a background process
-
+    async deleteTag(id: string): Promise<void> {        
+        // First, delete all references to this tag elsewhere in the database
+        
+        // Then, delete the tag itself
+        const deletedDocument = await this.tagsStore.deleteTag(id);
         return deletedDocument;
     }
 }
