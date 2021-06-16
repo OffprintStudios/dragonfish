@@ -1,5 +1,7 @@
 div.editor-window {
     min-height: 10rem;
+    max-height: 85vh;
+    overflow-y: scroll;
     @apply block relative rounded-b-md border;
     border-color: var(--borders);
     color: var(--text-color);
@@ -7,6 +9,7 @@ div.editor-window {
     .ProseMirror {
         @apply py-0.5 px-3 bg-transparent mb-0 focus:outline-none;
         min-height: 10rem;
+        max-height: 85vh;
 
         p.is-editor-empty:first-child::before {
             content: attr(data-placeholder);
@@ -96,7 +99,7 @@ button.active {
     }
 }
 
-div.floating-menu, div.line-menu {
+div.floating-menu {
     @apply flex items-center p-0.5 rounded-md shadow-2xl;
     background: var(--background);
     border: 1px solid var(--borders);
