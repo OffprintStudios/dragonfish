@@ -185,31 +185,6 @@
             </button>
         </div>
     </tiptap-bubble-menu>
-    <tiptap-floating-menu [editor]="editor">
-        <div class="line-menu">
-            <button
-                class="shadow-none border-none px-2.5 py-1.5"
-                (click)="chainCommand().toggleHeading({ level: 2 }).run()"
-                [ngClass]="{ 'active': editor.isActive('heading', { level: 2 }) }"
-            >
-                <rmx-icon name="h-1" class="mr-0"></rmx-icon>
-            </button>
-            <button
-                class="shadow-none border-none px-2.5 py-1.5"
-                (click)="chainCommand().toggleHeading({ level: 3 }).run()"
-                [ngClass]="{ 'active': editor.isActive('heading', { level: 3 }) }"
-            >
-                <rmx-icon name="h-2" class="mr-0"></rmx-icon>
-            </button>
-            <button
-                class="shadow-none border-none px-2.5 py-1.5"
-                (click)="chainCommand().toggleHeading({ level: 4 }).run()"
-                [ngClass]="{ 'active': editor.isActive('heading', { level: 4 }) }"
-            >
-                <rmx-icon name="h-3" class="mr-0"></rmx-icon>
-            </button>
-        </div>
-    </tiptap-floating-menu>
 </div>
 
 <mat-menu #alignments="matMenu">
