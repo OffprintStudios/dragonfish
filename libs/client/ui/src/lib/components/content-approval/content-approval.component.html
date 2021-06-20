@@ -1,0 +1,65 @@
+<ng-container *ngIf="ratingsDoc; else noHistory">
+    <div class="approval-buttons">
+        <ng-container [ngSwitch]="currRating">
+            <ng-container *ngSwitchCase="ratingOption.NoVote">
+                <button (click)="viewService.addLike(content._id)">
+                    <rmx-icon name="heart-line"></rmx-icon>
+                    <span class="button-text">{{ likes | abbreviate }}</span>
+                </button>
+                <button class="mid" (click)="viewService.addDislike(content._id)">
+                    <rmx-icon name="dislike-line"></rmx-icon>
+                    <span class="button-text">{{ dislikes | abbreviate }}</span>
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="ratingOption.Liked">
+                <button class="active" (click)="viewService.setNoVote(content._id)">
+                    <rmx-icon name="heart-fill"></rmx-icon>
+                    <span class="button-text">{{ likes | abbreviate }}</span>
+                </button>
+                <button class="mid" (click)="viewService.addDislike(content._id)">
+                    <rmx-icon name="dislike-line"></rmx-icon>
+                    <span class="button-text">{{ dislikes | abbreviate }}</span>
+                </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="ratingOption.Disliked">
+                <button (click)="viewService.addLike(content._id)">
+                    <rmx-icon name="heart-line"></rmx-icon>
+                    <span class="button-text">{{ likes | abbreviate }}</span>
+                </button>
+                <button class="mid active" (click)="viewService.setNoVote(content._id)">
+                    <rmx-icon name="dislike-fill"></rmx-icon>
+                    <span class="button-text">{{ dislikes | abbreviate }}</span>
+                </button>
+            </ng-container>
+        </ng-container>
+        <button class="end" [matMenuTriggerFor]="moreItems" (menuOpened)="optionsIsOpen = true" (menuClosed)="optionsIsOpen = false">
+            <rmx-icon class="mr-0" name="more-2-line"></rmx-icon>
+        </button>
+    </div>
+
+    <mat-menu xPosition="before" #moreItems="matMenu">
+        <ng-container
+            *ngIf="content.kind === contentKind.ProseContent || content.kind === contentKind.PoetryContent"
+        >
+            <button mat-menu-item (click)="openAddToCollectionDialog()">
+                <rmx-icon name="book-mark-line"></rmx-icon>Add to Collection
+            </button>
+        </ng-container>
+        <button mat-menu-item (click)="openReportDialog(content._id)">
+            <rmx-icon name="flag-line"></rmx-icon>Report
+        </button>
+    </mat-menu>
+</ng-container>
+
+<ng-template #noHistory>
+    <div class="approval-buttons">
+        <button>
+            <rmx-icon name="heart-line"></rmx-icon>
+            <span class="button-text">{{ likes | abbreviate }}</span>
+        </button>
+        <button class="mid">
+            <rmx-icon name="dislike-line"></rmx-icon>
+            <span class="button-text">{{ dislikes | abbreviate }}</span>
+        </button>
+    </div>
+</ng-template>

@@ -1,0 +1,31 @@
+div.expandable-bar {
+    @apply flex items-center p-2.5 border rounded-md w-3/4 mx-auto;
+    border-color: var(--borders);
+    div.avatar-block {
+        @apply border-r pr-2.5;
+        border-color: var(--borders);
+        img {
+            @apply w-10 rounded-md border;
+            border-color: var(--borders);
+        }
+    }
+    div.title {
+        @apply flex-1 pl-2.5;
+        h3 {
+            @apply text-lg font-medium relative top-0.5;
+        }
+    }
+    &:hover {
+        @apply cursor-pointer text-white;
+        background: var(--accent);
+        div.avatar-block {
+            @apply border-white;
+            img {
+                @apply border-white;
+            }
+        }
+        h3 {
+            @apply text-white;
+        }
+    }
+}

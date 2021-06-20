@@ -1,0 +1,53 @@
+<div class="flex flex-row items-center mb-3.5">
+    <h3 class="text-3xl font-medium flex-1">Submit a Report</h3>
+    <button class="border-none shadow-none px-2.5 py-1.5 rounded-full relative -top-0.5" (click)="cancel()">
+        <i-feather name="x" class="mr-0"></i-feather>
+    </button>
+</div>
+
+<div>
+    <form [formGroup]="reportForm" (ngSubmit)="submitForm()">
+        <div class="offprint-select">
+            <label>Reasons</label>
+            <ng-select
+                class="custom"
+                [formControlName]="'reasons'"
+                [searchable]="false"
+                [placeholder]="'Select All That Apply'"
+                [multiple]="true"
+            >
+                <ng-container *ngFor="let reason of reasons | keyvalue: undefined">
+                    <ng-container [ngSwitch]="data.kind">
+                        <ng-container *ngSwitchCase="caseKind.Content">
+                            <ng-container *ngIf="reason.key !== 'BotAccount' && reason.key !== 'BanEvasion'">
+                                <ng-option [value]="reason.key">
+                                    {{ reason.value }}
+                                </ng-option>
+                            </ng-container>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="caseKind.Users">
+                            <ng-container *ngIf="reason.key !== 'IncorrectContentRating' && reason.key !== 'Plagiarism' && reason.key !== 'IncorrectTags'">
+                                <ng-option [value]="reason.key">
+                                    {{ reason.value }}
+                                </ng-option>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </ng-select>
+        </div>
+
+        <dragonfish-text-area
+            [formControlName]="'body'"
+            [name]="'body'"
+            [label]="'Describe Issue (Supports Markdown)'"
+            [placeholder]="'Please be as clear and concise as you can possibly be. Every bit of info helps!'"
+        ></dragonfish-text-area>
+
+        <div class="flex items-center justify-center">
+            <button type="submit">
+                Send Report
+            </button>
+        </div>
+    </form>
+</div>

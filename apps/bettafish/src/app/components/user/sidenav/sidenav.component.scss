@@ -18,7 +18,7 @@ div.sidenav {
             &.active {
                 background: var(--accent-light);
             }
-            i-feather {
+            rmx-icon {
                 position: relative;
                 width: 1.5rem !important;
                 color: white;
@@ -43,7 +43,7 @@ div.sidenav {
     }
     div.tab {
         @apply p-2 flex flex-row items-center mx-0.5 rounded-md;
-        i-feather {
+        rmx-icon {
             position: relative;
             top: 0.2rem;
             width: 1rem;

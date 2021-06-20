@@ -2,7 +2,7 @@
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogInMobile">
         <ng-container *ngIf="sidenavService.isOpened; else notOpenedMobile">
             <a class="link active close-avatar" (click)="sidenavService.toggle()">
-                <span class="link-icon"><i-feather name="x"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
             </a>
         </ng-container>
         <ng-template #notOpenedMobile>
@@ -17,7 +17,7 @@
     <ng-template #noUserLogInMobile>
         <ng-container *ngIf="sidenavService.isOpened; else notOpenedMobileLogin">
             <a class="link active" (click)="sidenavService.toggle()">
-                <span class="link-icon"><i-feather name="x"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
             </a>
         </ng-container>
         <ng-template #notOpenedMobileLogin>
@@ -28,22 +28,22 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="sidenavService.toggle()"
             >
-                <span class="link-icon"><i-feather name="log-in"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
             </a>
         </ng-template>
     </ng-template>
     <ng-container *ngIf="sidenavService.isOpened; else noSidenavMobile">
         <a class="link">
-            <span class="link-icon"><i-feather name="home"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
         </a>
         <a class="link">
-            <span class="link-icon"><i-feather name="map"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <a class="link">
-            <span class="link-icon"><i-feather name="users"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
         </a>
         <a class="link">
-            <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
         </a>
     </ng-container>
     <ng-template #noSidenavMobile>
@@ -56,7 +56,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="home"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
         </a>
         <a
             class="link"
@@ -66,7 +66,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="map"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <a
             class="link"
@@ -76,7 +76,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="users"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
         </a>
         <a
             class="link"
@@ -86,7 +86,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="more-vertical"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
         </a>
     </ng-template>
 </nav>
@@ -98,7 +98,7 @@
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUserLogIn">
         <ng-container *ngIf="sidenavService.isOpened; else notOpened">
             <a class="link active close-avatar" (click)="sidenavService.toggle()">
-                <span class="link-icon"><i-feather name="x"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
             </a>
         </ng-container>
         <ng-template #notOpened>
@@ -113,7 +113,7 @@
     <ng-template #noUserLogIn>
         <ng-container *ngIf="sidenavService.isOpened; else notOpenedLogin">
             <a class="link active" (click)="sidenavService.toggle()">
-                <span class="link-icon"><i-feather name="x"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
             </a>
         </ng-container>
         <ng-template #notOpenedLogin>
@@ -124,40 +124,40 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="sidenavService.toggle()"
             >
-                <span class="link-icon"><i-feather name="log-in"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
             </a>
         </ng-template>
     </ng-template>
     <ng-container *ngIf="sidenavService.isOpened; else noSidenav">
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <a class="link">
-                <span class="link-icon"><i-feather name="hard-drive"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="hard-drive-2-line"></rmx-icon></span>
             </a>
             <a class="link">
-                <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="chat-smile-3-line"></rmx-icon></span>
             </a>
         </ng-container>
         <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
         <a class="link">
-            <span class="link-icon"><i-feather name="home"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
         </a>
         <a class="link">
-            <span class="link-icon"><i-feather name="map"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <a class="link">
-            <span class="link-icon"><i-feather name="users"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
         </a>
         <div class="flex-1"><!--spacer--></div>
         <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+            <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a class="link">
-                    <span class="link-icon"><i-feather name="grid"></i-feather></span>
+                    <span class="link-icon"><rmx-icon name="dashboard-line"></rmx-icon></span>
                 </a>
             </ng-container>
         </ng-container>
         <a class="link">
-            <span class="link-icon"><i-feather name="more-vertical" style="stroke-width: 2"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
         </a>
     </ng-container>
     <ng-template #noSidenav>
@@ -170,7 +170,7 @@
                 [matTooltipPosition]="'right'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <span class="link-icon"><i-feather name="hard-drive"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="hard-drive-2-line"></rmx-icon></span>
             </a>
             <a
                 class="link"
@@ -180,7 +180,7 @@
                 [matTooltipPosition]="'right'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <span class="link-icon"><i-feather name="message-circle"></i-feather></span>
+                <span class="link-icon"><rmx-icon name="chat-smile-3-line"></rmx-icon></span>
             </a>
         </ng-container>
         <div class="my-2.5 border-b border-white mx-2"></div>
@@ -193,7 +193,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="home"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
         </a>
         <a
             class="link"
@@ -203,7 +203,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="map"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <a
             class="link"
@@ -213,12 +213,12 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="users"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
         </a>
         <div class="flex-1"><!--spacer--></div>
         <div class="my-2.5 border-b border-white mx-2"><!--spacer--></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-            <ng-container *ngIf="canSeeDash(currentUser.roles)">
+            <ng-container *ngIf="canSeeDash(currentUser.audit.roles)">
                 <a
                     class="link"
                     [routerLink]="['/dashboard']"
@@ -227,7 +227,7 @@
                     [matTooltipPosition]="'right'"
                     [matTooltipClass]="'offprint-tooltip'"
                 >
-                    <span class="link-icon"><i-feather name="grid"></i-feather></span>
+                    <span class="link-icon"><rmx-icon name="dashboard-line"></rmx-icon></span>
                 </a>
             </ng-container>
         </ng-container>
@@ -239,7 +239,7 @@
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><i-feather name="more-vertical" style="stroke-width: 2"></i-feather></span>
+            <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
         </a>
     </ng-template>
 </nav>

@@ -15,7 +15,7 @@
                     (menuOpened)="toggleMoreMenu()"
                     (menuClosed)="toggleMoreMenu()"
                 >
-                    <i-feather name="more-vertical" class="mr-0"></i-feather>
+                    <rmx-icon name="more-2-line" class="mr-0"></rmx-icon>
                 </button>
             </div>
             <div class="tab-bar flex flex-row items-center justify-center">
@@ -24,7 +24,7 @@
                     [ngClass]="selectedTab === userTabs.Friends ? 'active' : ''"
                     (click)="switchUserTab(userTabs.Friends)"
                 >
-                    <i-feather name="users" class="mr-1"></i-feather>
+                    <rmx-icon name="group-line" class="mr-1"></rmx-icon>
                     <div class="text-sm">Friends</div>
                 </div>
                 <div
@@ -32,7 +32,7 @@
                     [ngClass]="selectedTab === userTabs.Notifications ? 'active' : ''"
                     (click)="switchUserTab(userTabs.Notifications)"
                 >
-                    <i-feather name="bell" class="mr-1"></i-feather>
+                    <rmx-icon name="notification-3-line" class="mr-1"></rmx-icon>
                     <div class="text-sm">Notifications</div>
                 </div>
                 <div
@@ -40,7 +40,7 @@
                     [ngClass]="selectedTab === userTabs.History ? 'active' : ''"
                     (click)="switchUserTab(userTabs.History)"
                 >
-                    <i-feather name="layers" class="mr-1"></i-feather>
+                    <rmx-icon name="history-line" class="mr-1"></rmx-icon>
                     <div class="text-sm">History</div>
                 </div>
             </div>
@@ -62,16 +62,16 @@
 
     <mat-menu #moreMenu="matMenu" xPosition="before">
         <button mat-menu-item [routerLink]="['/portfolio', currentUser._id, currentUser.username | slugify]">
-            <i-feather name="user"></i-feather>
+            <rmx-icon name="user-line"></rmx-icon>
             Portfolio
         </button>
         <button mat-menu-item [routerLink]="['/docs']">
-            <i-feather name="settings"></i-feather>
+            <rmx-icon name="settings-5-line"></rmx-icon>
             Settings
         </button>
         <div class="my-1.5 border-b" style="border-color: var(--borders)"><!--spacer--></div>
         <button mat-menu-item (click)="logout()">
-            <i-feather name="log-out"></i-feather>
+            <rmx-icon name="logout-circle-line"></rmx-icon>
             Log Out
         </button>
     </mat-menu>
@@ -90,7 +90,7 @@
                     [ngClass]="selectedAuthTab === authTabs.Login ? 'active' : ''"
                     (click)="switchAuthTab(authTabs.Login)"
                 >
-                    <i-feather name="log-in" class="mr-1 text-white"></i-feather>
+                    <rmx-icon name="login-circle-line" class="mr-1 text-white"></rmx-icon>
                     <div class="text-sm text-white">Log In</div>
                 </div>
                 <div
@@ -98,7 +98,7 @@
                     [ngClass]="selectedAuthTab === authTabs.Register ? 'active' : ''"
                     (click)="switchAuthTab(authTabs.Register)"
                 >
-                    <i-feather name="user-plus" class="mr-1 text-white"></i-feather>
+                    <rmx-icon name="user-add-line" class="mr-1 text-white"></rmx-icon>
                     <div class="text-sm text-white">Register</div>
                 </div>
             </div>

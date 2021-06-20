@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Store } from '@ngxs/store';
-import { ApprovalQueueState } from '../../shared/approval-queue';
-
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
+import { ApprovalQueueQuery } from '@dragonfish/client/repository/dashboard/approval-queue';
 
 @Injectable()
 export class ApproveContentResolver implements Resolve<ApprovalQueue> {
-    constructor(private store: Store) {}
+    constructor(private queueQuery: ApprovalQueueQuery) {}
 
     resolve(_route: ActivatedRouteSnapshot, _routerState: RouterStateSnapshot): Observable<ApprovalQueue> {
-        return this.store.selectOnce<ApprovalQueue>(ApprovalQueueState.selectedDoc);
+        return this.queueQuery.selected$;
     }
 }

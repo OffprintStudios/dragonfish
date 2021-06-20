@@ -5,19 +5,22 @@ import {
     ChangeUsername,
     CreateUser,
     FrontendUser,
-    LoginUser, Roles,
+    InviteCodes,
+    LoginUser,
     UpdateTagline,
     User,
 } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
-import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
+import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
     ContentKind,
-    ContentModel, FormType,
-    NewsContentModel, PubChange,
-    SetRating, TagKind, TagsForm,
-    TagsModel,
+    ContentModel,
+    FormType,
+    NewsContentModel,
+    PubChange,
+    PubContent,
+    SetRating,
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -27,16 +30,16 @@ import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dr
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
-
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { Decision } from '@dragonfish/shared/models/contrib';
 import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { HttpError } from '@dragonfish/shared/models/util';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
+import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 
 /**
  * ## DragonfishNetworkService
@@ -48,14 +51,18 @@ import { RatingsModel } from '@dragonfish/shared/models/ratings';
 })
 export class DragonfishNetworkService {
     private baseUrl = `/api`;
-    constructor(private readonly http: HttpClient, private readonly cookieService: CookieService) { }
+    constructor(
+        private readonly http: HttpClient,
+        private readonly cookieService: CookieService,
+        private _zone: NgZone,
+    ) {}
 
     //#region ---APPROVAL QUEUE---
 
     /**
      * Gets the entire queue.
      */
-    public fetchApprovalQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
+    public getQueue(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
         return handleResponse(
             this.http.get<PaginateResult<ApprovalQueue>>(`${this.baseUrl}/approval-queue/get-queue/${pageNum}`, {
                 observe: 'response',
@@ -65,28 +72,46 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Claims a work from the approval queue..
+     * Gets the claimed works from one moderator.
+     */
+    public getQueueForMod(pageNum: number): Observable<PaginateResult<ApprovalQueue>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ApprovalQueue>>(
+                `${this.baseUrl}/approval-queue/get-queue-for-mod/${pageNum}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    /**
+     * Claims a work.
      *
      * @param docId The document to claim
      */
     public claimWork(docId: string): Observable<ApprovalQueue> {
         return handleResponse(
             this.http.patch<ApprovalQueue>(
-                `${this.baseUrl}/approval-queue/claim-work/${docId}`,
+                `${this.baseUrl}/approval-queue/claim-content/${docId}`,
                 {},
-                { observe: 'response', withCredentials: true },
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
 
     /**
-     * Approves a work in the approval queue.
+     * Approves a work.
      *
      * @param decision Info about the decision.
      */
     public approveWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-content`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -94,13 +119,13 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Rejects a work in the approval queue.
+     * Rejects a work.
      *
      * @param decision Info about the decision.
      */
     public rejectWork(decision: Decision): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-work`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-content`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -108,17 +133,20 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Fetches a piece of content for viewing within the dashboard.
+     * Fetches a piece of content for viewing.
      *
      * @param contentId The content ID
      * @param kind The content kind
      * @param userId The owner of the content
      */
-    public viewDashboardContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
+    public viewApprovalQueueContent(contentId: string, kind: ContentKind, userId: string): Observable<ContentModel> {
         return handleResponse(
             this.http.get<ContentModel>(
                 `${this.baseUrl}/approval-queue/view-content?contentId=${contentId}&kind=${kind}&userId=${userId}`,
-                { observe: 'response', withCredentials: true },
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
             ),
         );
     }
@@ -217,7 +245,7 @@ export class DragonfishNetworkService {
             this.http.get<ContentModel[]>(`${this.baseUrl}/browse/fetch-first-new?filter=${contentFilter}`, {
                 observe: 'response',
                 withCredentials: true,
-            })
+            }),
         );
     }
 
@@ -274,6 +302,64 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---CASE FILES---
+
+    /**
+     * Fetches all active case files.
+     */
+    public fetchActiveCaseFiles() {
+        return handleResponse(
+            this.http.get<CaseFile[]>(`${this.baseUrl}/case-files/fetch-active`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches all closed case files.
+     */
+    public fetchClosedCaseFiles() {
+        return handleResponse(
+            this.http.get<CaseFile[]>(`${this.baseUrl}/case-files/fetch-closed`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Submits a report on a given item.
+     * @param itemId
+     * @param caseKind
+     * @param form
+     */
+    public submitReport(itemId: string, caseKind: CaseKind, form: ReportForm) {
+        return handleResponse(
+            this.http.put<void>(
+                `${this.baseUrl}/case-files/submit-report?itemId=${itemId}&caseKind=${caseKind}`,
+                form,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Adds a note to an existing case file.
+     * @param id
+     * @param form
+     */
+    public addNote(id: number, form: NoteForm) {
+        return handleResponse(
+            this.http.patch<Note>(`${this.baseUrl}/case-files/add-note?id=${id}`, form, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 
@@ -456,19 +542,32 @@ export class DragonfishNetworkService {
 
     //#region ---COMMENTS---
 
-    public addContentComment(contentId: string, commentInfo: CreateComment) {
+    /**
+     * Adds a comment.
+     * @param itemId
+     * @param kind
+     * @param commentInfo
+     * @returns
+     */
+    public addComment(itemId: string, kind: CommentKind, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.put<ContentComment>(`${this.baseUrl}/comments/add-content-comment/${contentId}`, commentInfo, {
+            this.http.put<Comment>(`${this.baseUrl}/comments/add-comment?itemId=${itemId}&kind=${kind}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
         );
     }
 
-    public fetchContentComments(contentId: string, pageNum: number) {
+    /**
+     * Fetches a new page of comments
+     * @param contentId
+     * @param pageNum
+     * @returns
+     */
+    public fetchComments(itemId: string, kind: CommentKind, pageNum: number) {
         return handleResponse(
-            this.http.get<PaginateResult<ContentComment>>(
-                `${this.baseUrl}/comments/get-content-comments/${contentId}/${pageNum}`,
+            this.http.get<PaginateResult<Comment>>(
+                `${this.baseUrl}/comments/fetch-comments?itemId=${itemId}&kind=${kind}&page=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -476,13 +575,12 @@ export class DragonfishNetworkService {
 
     /**
      * Edits a comment.
-     *
-     * @param commentId The comment to edit
+     * @param id The comment to edit
      * @param commentInfo The new info about it
      */
-    public editComment(commentId: string, commentInfo: EditComment) {
+    public editComment(id: string, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.patch(`${this.baseUrl}/comments/edit-comment/${commentId}`, commentInfo, {
+            this.http.patch(`${this.baseUrl}/comments/edit-comment?id=${id}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -499,10 +597,14 @@ export class DragonfishNetworkService {
      * @param contentId The content ID
      * @param kind The content kind
      */
-    public fetchContent(contentId: string, kind: ContentKind): Observable<{ content: ContentModel, ratings: RatingsModel }> {
+    public fetchContent(
+        contentId: string,
+        kind: ContentKind,
+        page: number,
+    ): Observable<PubContent> {
         return handleResponse(
-            this.http.get<{ content: ContentModel, ratings: RatingsModel }>(
-                `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}`,
+            this.http.get<PubContent>(
+                `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}&page=${page}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -546,8 +648,7 @@ export class DragonfishNetworkService {
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
         if (userId) {
-            route =
-                `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
+            route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}&userId=${userId}${kindFragment}`;
         } else {
             route = `${this.baseUrl}/content/fetch-all-published?filter=${contentFilter}&pageNum=${pageNum}${kindFragment}`;
         }
@@ -623,7 +724,7 @@ export class DragonfishNetworkService {
      * @param uploader The file uploader, prefilled with the URL and instructions for uploading the image.
      */
     public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
-        const xsrfHeader = uploader.options.headers.find(x => x.name.toUpperCase() === 'XSRF-TOKEN');
+        const xsrfHeader = uploader.options.headers.find((x) => x.name.toUpperCase() === 'XSRF-TOKEN');
         const currentXsrfToken = this.cookieService.get('XSRF-TOKEN') ?? '';
         if (!xsrfHeader) {
             uploader.options.headers.push({ name: 'XSRF-TOKEN', value: currentXsrfToken });
@@ -631,7 +732,12 @@ export class DragonfishNetworkService {
             xsrfHeader.value = currentXsrfToken;
         }
         return new Observable<T>((observer) => {
-            uploader.onCompleteItem = (_: FileItem, response: string, status: number, headers: ParsedResponseHeaders) => {
+            uploader.onCompleteItem = (
+                _: FileItem,
+                response: string,
+                status: number,
+                headers: ParsedResponseHeaders,
+            ) => {
                 if (status !== 201) {
                     const errorMessage: HttpError = tryParseJsonHttpError(response);
                     if (!errorMessage) {
@@ -887,13 +993,10 @@ export class DragonfishNetworkService {
      */
     public fetchSections(contentId: string): Observable<Section[]> {
         return handleResponse(
-            this.http.get<Section[]>(
-                `${this.baseUrl}/sections/fetch-user-content-sections?contentId=${contentId}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
+            this.http.get<Section[]>(`${this.baseUrl}/sections/fetch-user-content-sections?contentId=${contentId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 
@@ -1094,13 +1197,10 @@ export class DragonfishNetworkService {
 
     public addOrFetchRatings(contentId: string) {
         return handleResponse(
-            this.http.get<RatingsModel>(
-                `${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
+            this.http.get<RatingsModel>(`${this.baseUrl}/ratings/add-or-fetch-ratings?contentId=${contentId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 
@@ -1145,6 +1245,31 @@ export class DragonfishNetworkService {
 
     //#endregion
 
+    //#region ---SERVER-SENT EVENTS---
+
+    /**
+     * Gets the server-sent events given a URl.
+     * @param url
+     * @returns
+     */
+    public getServerSentEvent<T>(url: string): Observable<MessageEvent<T>> {
+        return new Observable<MessageEvent<T>>((observer) => {
+            const eventSource = new EventSource(url);
+            eventSource.onmessage = (event: MessageEvent<T>) => {
+                this._zone.run(() => {
+                    observer.next(event);
+                });
+            };
+            eventSource.onerror = (error) => {
+                this._zone.run(() => {
+                    observer.error(error);
+                });
+            };
+        });
+    }
+
+    //#endregion
+
     //#region ---STATS---
 
     /**
@@ -1156,134 +1281,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---TAGS---
-
-    /**
-     * Fetches all tags of a specified kind.
-     * @param kind
-     */
-    public fetchTags(kind: TagKind) {
-        return handleResponse(
-            this.http.get<TagsModel[]>(
-                `${this.baseUrl}/tags/fetch-tags?kind=${kind}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Creates a new tag.
-     * @param kind
-     * @param form
-     */
-    public createTag(kind: TagKind, form: TagsForm) {
-        return handleResponse(
-            this.http.post<TagsModel>(
-                `${this.baseUrl}/tags/create-tag?kind=${kind}`,
-                form,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Adds a child tag to a parent tag.
-     * @param parent
-     * @param form
-     */
-    public addChild(parent: string, form: TagsForm) {
-        return handleResponse(
-            this.http.patch<TagsModel>(
-                `${this.baseUrl}/tags/add-child?parent=${parent}`,
-                form,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Updates a tag.
-     * @param id
-     * @param form
-     */
-    public updateTag(id: string, form: TagsForm) {
-        return handleResponse(
-            this.http.patch<TagsModel>(
-                `${this.baseUrl}/tags/update-tag?id=${parent}`,
-                form,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Updates a child tag.
-     * @param parent
-     * @param child
-     * @param form
-     */
-    public updateChild(parent: string, child: string, form: TagsForm) {
-        return handleResponse(
-            this.http.patch<TagsModel>(
-                `${this.baseUrl}/tags/update-child?parent=${parent}&child=${child}`,
-                form,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Deletes a tag and all associated children.
-     * @param id
-     */
-    public deleteTag(id: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/tags/delete-tag?id=${id}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
-        );
-    }
-
-    /**
-     * Removes a child tag from a parent tag.
-     * @param parent
-     * @param child
-     */
-    public removeChild(parent: string, child: string) {
-        return handleResponse(
-            this.http.patch<TagsModel>(
-                `${this.baseUrl}/tags/remove-child?parent=${parent}&child=${child}`,
-                {},
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                }
-            ),
         );
     }
 
@@ -1311,14 +1308,19 @@ export class DragonfishNetworkService {
      * @param userId The user whose profile should be retrieved
      * @param contentFilter The rating filter to apply to the user's content
      */
-    public fetchUserProfile(userId: string, contentFilter: ContentFilter): Observable<{ works: ContentModel[], blogs: ContentModel[] }> {
+    public fetchUserProfile(
+        userId: string,
+        contentFilter: ContentFilter,
+    ): Observable<{ works: ContentModel[]; blogs: ContentModel[] }> {
         return handleResponse(
-            this.http.get<{ works: ContentModel[], blogs: ContentModel[] }>(
-                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        )
+            this.http.get<{ works: ContentModel[]; blogs: ContentModel[] }>(
+                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                }
+            ),
+        );
     }
 
     /**
@@ -1399,6 +1401,18 @@ export class DragonfishNetworkService {
     public updateTagline(tagline: UpdateTagline): Observable<FrontendUser> {
         return handleResponse(
             this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-tagline`, tagline, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Generates a new invite code.
+     */
+    public generateCode() {
+        return handleResponse(
+            this.http.get<InviteCodes>(`${this.baseUrl}/user-management/generate-code`, {
                 observe: 'response',
                 withCredentials: true,
             }),

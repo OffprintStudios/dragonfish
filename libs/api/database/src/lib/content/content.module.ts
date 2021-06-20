@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import * as Schemas from './schemas';
 import * as Stores from './stores';
 import { MongooseModule } from '@nestjs/mongoose';
-import { NotificationsModule } from '@dragonfish/api/database/notifications';
-import { UsersModule } from '@dragonfish/api/database/users';
-import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
+import { NotificationsModule } from '../notifications';
+import { UsersModule } from '../users';
+import { ApprovalQueueModule } from '../approval-queue';
 
 @Module({
     imports: [
@@ -20,7 +20,7 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
                     { name: 'NewsContent', schema: Schemas.NewsContentSchema },
                     { name: 'PoetryContent', schema: Schemas.PoetryContentSchema },
                     { name: 'ProseContent', schema: Schemas.ProseContentSchema },
-                ]
+                ],
             },
             {
                 name: 'Ratings',
@@ -38,7 +38,7 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
                 name: 'Tags',
                 useFactory: Schemas.setupTagsCollection,
             }
-        ])
+        ]),
     ],
     providers: [
         Stores.ContentStore,
@@ -63,6 +63,6 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
         Stores.PoetryStore,
         Stores.ProseStore,
         Stores.TagsStore,
-    ]
+    ],
 })
 export class ContentModule {}

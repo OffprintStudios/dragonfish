@@ -27,6 +27,8 @@ import { NotificationsModule } from '@dragonfish/api/database/notifications';
 import { UsersModule } from '@dragonfish/api/database/users';
 import { CollectionsModule } from '@dragonfish/api/database/collections';
 import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
+import { AdminModule } from '@dragonfish/api/database/admin/admin.module';
+import { CommentsModule } from '@dragonfish/api/database/comments';
 
 /* Utilities */
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
@@ -39,6 +41,8 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         UsersModule,
         CollectionsModule,
         ApprovalQueueModule,
+        AdminModule,
+        CommentsModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({

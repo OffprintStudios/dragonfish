@@ -17,6 +17,7 @@ export { SetRating } from './set-rating.model';
 export { TagsModel } from './tags.model';
 export { TagsForm } from './tags-form.model';
 export { TagKind } from './tag-kind.enum';
+export { PubContent } from './pub-content.model';
 
 export * from './news';
 export * from './blogs';

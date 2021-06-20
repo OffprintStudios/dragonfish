@@ -1,25 +1,4 @@
 div.uploader-container {
     border: 2px dashed var(--borders);
     @apply h-28 rounded-md;
-
-    .progress {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 12px;
-        border-radius: 10px;
-        background: var(--accent);
-
-        & .bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 12px;
-            background: linear-gradient(90deg, rgba(19,235,255,1) 0%, rgba(108,239,189,1) 100%);
-
-            &.is-done {
-                background: green;
-            }
-        }
-    }
 }

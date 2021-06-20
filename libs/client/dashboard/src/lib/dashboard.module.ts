@@ -12,7 +12,12 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
+import {
+    ApprovalQueueComponent,
+    ApprovePoetryComponent,
+    ApproveProseComponent,
+    SectionViewComponent,
+} from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
@@ -23,13 +28,6 @@ import { TagsManagementComponent } from './pages/tags-management/tags-management
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
 import { TagFormComponent, ChildTagFormComponent, ChildTagItemComponent } from './components/tags-management';
-
-/* State */
-import { ApprovalQueueState } from './shared/approval-queue';
-
-/* Services */
-import { ApprovalQueueService } from './shared/approval-queue/services';
-import { UserManagementService } from './shared/user-management/services';
 
 @NgModule({
     declarations: [
@@ -61,8 +59,6 @@ import { UserManagementService } from './shared/user-management/services';
         PipesModule,
         FormsModule,
         ReactiveFormsModule,
-        NgxsModule.forFeature([ApprovalQueueState]),
     ],
-    providers: [ApprovalQueueService, UserManagementService],
 })
 export class DashboardModule {}

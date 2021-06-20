@@ -24,9 +24,9 @@
     <ng-container *ngIf="!loading">
         <dragonfish-comments
             [itemId]="blogData._id"
-            [itemKind]="blogData.kind"
+            [kind]="kind"
             [pageNum]="pageNum"
-            (emitPageChange)="onPageChange($event)"
+            (emitPageChange)="onPageChange($event, blogData._id)"
         ></dragonfish-comments>
     </ng-container>
 </ng-container>

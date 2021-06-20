@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Ng2FittextModule } from 'ng2-fittext';
 import { FileUploadModule } from 'ng2-file-upload';
 import { ImageCropperModule } from 'ngx-image-cropper';
@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -24,6 +25,9 @@ import { ContentListItemComponent } from './components/content-list-item/content
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { ContentApprovalComponent } from './components/content-approval/content-approval.component';
+import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
 
 @NgModule({
     declarations: [
@@ -39,10 +43,14 @@ import { PopupComponent } from './components/popup/popup.component';
         SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
+        ReportDialogComponent,
+        ContentApprovalComponent,
+        AddToCollectionComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         IconsModule,
         PipesModule,
         Ng2FittextModule,
@@ -51,6 +59,7 @@ import { PopupComponent } from './components/popup/popup.component';
         LineTruncationLibModule,
         NgSelectModule,
         MaterialModule,
+        ClickOutsideModule,
         RouterModule.forChild([]),
     ],
     exports: [
@@ -66,8 +75,13 @@ import { PopupComponent } from './components/popup/popup.component';
         SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
+        ReportDialogComponent,
+        ContentApprovalComponent,
+        AddToCollectionComponent,
     ],
 })
 export class UiModule {}
 
 export { PopupComponent } from './components/popup/popup.component';
+export { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+export { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';

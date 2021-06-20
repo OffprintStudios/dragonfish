@@ -1,0 +1,116 @@
+<div class="comment">
+    <div class="comment-wrapper">
+        <div class="comment-author">
+            <a
+                class="name"
+                lang="en"
+                [matMenuTriggerFor]="userCard"
+            >
+                {{ $any(comment.user).username }}
+            </a>
+            <div class="title">{{ $any(comment.user).profile.tagline }}</div>
+            <img [src]="$any(comment.user).profile.avatar" />
+        </div>
+        <div class="comment-body">
+            <div class="comment-metadata">
+                <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false" [isStyled]="true"></dragonfish-role-badge>
+                <div class="timestamp">{{ comment.createdAt | localedate: 'fullDate' }}</div>
+                <ng-container *ngIf="!editMode">
+                    <div class="tools" *ngIf="sessionQuery.currentUser$ | async as currentUser">
+                        <ng-container *ngIf="currentUser._id">
+                            <a class="comment-edit" [matMenuTriggerFor]="optionsMenu">
+                                <i-feather name="more-horizontal"></i-feather>
+                            </a>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="editMode; else viewMode">
+                <form [formGroup]="editComment" (ngSubmit)="submitEdits()">
+                    <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+                    <div class="flex flex-row items-center justify-center pt-3">
+                        <button type="submit">Save</button>
+                        <div class="mx-2">
+                            <!--spacer-->
+                        </div>
+                        <button (click)="toggleEditMode()">Cancel</button>
+                    </div>
+                </form>
+            </ng-container>
+            <ng-template #viewMode>
+                <markdown [data]="comment.body"></markdown>
+            </ng-template>
+        </div>
+    </div>
+</div>
+<div class="mobile-comment">
+    <div class="mobile-comment-wrapper">
+        <div class="mobile-comment-header">
+            <div class="mobile-comment-author">
+                <img [src]="$any(comment.user).profile.avatar" />
+                <div class="authorlinks">
+                    <a>{{ $any(comment.user).username }}</a>
+                    <p *ngIf="$any(comment.user).profile.tagline; else noTagline" class="text-xs m-0">{{ $any(comment.user).profile.tagline }}</p>
+                    <ng-template #noTagline>
+                        <p class="text-xs m-0">Member</p>
+                    </ng-template>
+                </div>
+                <dragonfish-role-badge [roles]="$any(comment.user).audit.roles" [isCentered]="false" [isStyled]="true"></dragonfish-role-badge>
+                <div class="timestamp">{{ comment.createdAt | localedate: 'fullDate' }}</div>
+                <ng-container *ngIf="!editMode">
+                    <div class="tools" *ngIf="sessionQuery.currentUser$ | async as currentUser">
+                        <ng-container *ngIf="currentUser._id">
+                            <a class="comment-edit" [matMenuTriggerFor]="optionsMenu">
+                                <i-feather name="more-horizontal"></i-feather>
+                            </a>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngIf="editMode; else viewMode">
+            <form [formGroup]="editComment" (ngSubmit)="submitEdits()">
+                <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+                <div class="flex flex-row items-center justify-center pt-3">
+                    <button type="submit">Save</button>
+                    <div class="mx-2">
+                        <!--spacer-->
+                    </div>
+                    <button (click)="toggleEditMode()">Cancel</button>
+                </div>
+            </form>
+        </ng-container>
+        <ng-template #viewMode>
+            <markdown [data]="comment.body"></markdown>
+        </ng-template>
+    </div>
+</div>
+<mat-menu xPosition="before" #optionsMenu="matMenu">
+    <ng-template matMenuContent>
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+            <ng-container *ngIf="currentUser._id === $any(comment.user)._id; else notThisUser">
+                <button role="menuitem" class="mat-menu-item" (click)="toggleEditMode()">
+                    <i-feather name="edit-3"></i-feather>
+                    <span>Edit</span>
+                    <div matripple="" class="mat-ripple mat-menu-ripple"></div>
+                </button>
+            </ng-container>
+        </ng-container>
+        <button role="menuitem" class="mat-menu-item" (click)="replyToComment()">
+            <i-feather name="corner-up-left"></i-feather>
+            <span>Reply</span>
+            <div matripple="" class="mat-ripple mat-menu-ripple"></div>
+        </button>
+        <ng-template #notThisUser>
+            <button role="menuitem" class="mat-menu-item" (click)="reportComment()">
+                <i-feather name="flag"></i-feather>
+                <span>Report</span>
+                <div matripple="" class="mat-ripple mat-menu-ripple"></div>
+            </button>
+        </ng-template>
+    </ng-template>
+</mat-menu>
+
+<mat-menu [class]="'user-card-panel'" #userCard="matMenu">
+    <dragonfish-user-card [user]="$any(comment.user)"></dragonfish-user-card>
+</mat-menu>

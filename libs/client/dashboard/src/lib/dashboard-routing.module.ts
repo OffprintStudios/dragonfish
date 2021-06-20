@@ -3,7 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
+import {
+    ApprovalQueueComponent,
+    ApprovePoetryComponent,
+    ApproveProseComponent,
+    SectionViewComponent,
+} from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
@@ -44,9 +49,6 @@ const routes: Routes = [
                         component: ApproveProseComponent,
                         canActivate: [AuthGuard],
                         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
-                        resolve: {
-                            contentData: ApproveContentResolver,
-                        },
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
@@ -62,9 +64,6 @@ const routes: Routes = [
                         component: ApprovePoetryComponent,
                         canActivate: [AuthGuard],
                         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
-                        resolve: {
-                            contentData: ApproveContentResolver,
-                        },
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
@@ -115,9 +114,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [
-        ApprovalQueueResolver,
-        ApproveContentResolver,
-    ],
+    providers: [ApprovalQueueResolver, ApproveContentResolver],
 })
 export class DashboardRoutingModule {}

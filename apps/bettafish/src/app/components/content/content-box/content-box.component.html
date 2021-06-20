@@ -51,7 +51,13 @@
                         </div>
                     </div>
                     <div class='flex-1'><!--spacer--></div>
-                    <dragonfish-content-rating></dragonfish-content-rating>
+                    <dragonfish-content-approval
+                        [content]="content.currContent"
+                        [currRating]="viewQuery.currRating"
+                        [ratingsDoc]="viewQuery.ratingsDoc$ | async"
+                        [likes]="viewQuery.likes"
+                        [dislikes]="viewQuery.dislikes"
+                    ></dragonfish-content-approval>
                 </div>
                 <div class="flex-1 p-4">
                     <img

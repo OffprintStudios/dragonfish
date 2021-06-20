@@ -19,22 +19,21 @@
         </div>
         <div class="card-info flex flex-row items-center">
             <ng-container *ngIf="content.kind === contentKind.PoetryContent">
-                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'"
-                    ><i-feather name="feather" class="kind"></i-feather
-                ></span>
+                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'">
+                    <rmx-icon name="quill-pen-line" class="kind"></rmx-icon>
+                </span>
             </ng-container>
             <ng-container *ngIf="content.kind === contentKind.ProseContent">
-                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'"
-                    ><i-feather name="book-open" class="kind"></i-feather
-                ></span>
+                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'">
+                    <rmx-icon name="book-open-line" class="kind"></rmx-icon>
+                </span>
             </ng-container>
-            <span class="mx-1"><!--spacer--></span>
             <span class="tag">{{ content.meta.category }}</span>
             <span class="divider">//</span>
             <span class="tag genres">{{ content.meta.genres | separateGenres }}</span>
-            <span class="tag genres-mobile">Genres <i-feather name="chevron-down"></i-feather></span>
+            <span class="tag genres-mobile">Genres <rmx-icon name="arrow-down-s-line"></rmx-icon></span>
             <span class="tag end">
-                <i-feather name="heart"></i-feather>
+                <rmx-icon name="thumb-up-line"></rmx-icon>
                 <span class="relative -top-1.5">{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
             </span>
         </div>
@@ -48,10 +47,10 @@
         </div>
         <div>
             <div class="card-footer">
-                <i-feather name="bar-chart-2" title="Views"></i-feather>{{ content.stats.views | abbreviate }}<span>//</span>
-                <i-feather name="message-circle" title="Comments"></i-feather>{{ content.stats.comments | abbreviate
-                }}<span>//</span> <i-feather name="pen-tool" title="Words"></i-feather>{{ content.stats.words | abbreviate
-                }}<span>//</span> <i-feather name="calendar" title="Published On"></i-feather
+                <rmx-icon name="bar-chart-line" title="Views"></rmx-icon>{{ content.stats.views | abbreviate }}<span>//</span>
+                <rmx-icon name="chat-3-line" title="Comments"></rmx-icon>{{ content.stats.comments | abbreviate
+                }}<span>//</span> <rmx-icon name="pen-nib-line" title="Words"></rmx-icon>{{ content.stats.words | abbreviate
+                }}<span>//</span> <rmx-icon name="calendar-2-line" title="Published On"></rmx-icon
                 >{{ content.audit.publishedOn | localedate: 'shortDate' }}<span>//</span>
                 {{ content.meta.status }}
             </div>

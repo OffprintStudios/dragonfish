@@ -18,11 +18,9 @@ export class ManageSectionsComponent {
     selectedPos = AuthorsNotePos.Bottom;
     authorsNotePosOptions = AuthorsNotePos;
 
-    allNeededParts = zip(
-        this.stuffQuery.current$,
-        this.sectionsQuery.all$,
-        this.sectionsQuery.current$
-    ).pipe(untilDestroyed(this));
+    allNeededParts = zip(this.stuffQuery.current$, this.sectionsQuery.all$, this.sectionsQuery.current$).pipe(
+        untilDestroyed(this),
+    );
 
     sectionForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
@@ -36,7 +34,7 @@ export class ManageSectionsComponent {
         public stuffQuery: MyStuffQuery,
         public sectionsQuery: SectionsQuery,
         private sections: SectionsService,
-        private alerts: AlertsService
+        private alerts: AlertsService,
     ) {}
 
     exitEditMode() {
@@ -81,6 +79,10 @@ export class ManageSectionsComponent {
 
         this.sections.create(contentId, sectionForm).subscribe(() => {
             this.editMode = false;
+            this.sectionForm.reset();
+            this.sectionForm.patchValue({
+                authorsNotePos: AuthorsNotePos.Bottom,
+            });
         });
     }
 }

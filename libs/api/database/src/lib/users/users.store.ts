@@ -20,7 +20,7 @@ export class UsersStore {
     constructor(
         @InjectModel('User') private readonly userModel: PaginateModel<UserDocument>,
         @InjectModel('InviteCodes') private readonly inviteCodesModel: PaginateModel<InviteCodesDocument>,
-        private readonly collsService: CollectionsStore
+        private readonly collsService: CollectionsStore,
     ) {}
 
     /**
@@ -119,7 +119,7 @@ export class UsersStore {
                     },
                 },
             },
-            { new: true }
+            { new: true },
         );
         return updatedValue.audit.sessions.find((x) => x._id === hashedSessionId);
     }
@@ -131,10 +131,7 @@ export class UsersStore {
      */
     async clearRefreshToken(userId: string, sessionId: string) {
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
-        return this.userModel.updateOne(
-            { _id: userId },
-            { $pull: { 'audit.sessions': { '_id': hashedSessionId } } }
-        );
+        return this.userModel.updateOne({ _id: userId }, { $pull: { 'audit.sessions': { _id: hashedSessionId } } });
     }
 
     /**
@@ -159,7 +156,9 @@ export class UsersStore {
                 watchers: user.stats.watchers,
                 watching: user.stats.watching,
             },
-            roles: user.audit.roles,
+            audit: {
+                roles: user.audit.roles,
+            },
             createdAt: user.createdAt,
             token: newToken,
         };
@@ -282,11 +281,7 @@ export class UsersStore {
      * @param newBioInfo Their new profile info
      */
     async updateBio(userId: string, newBioInfo: models.ChangeBio): Promise<models.User> {
-        return this.userModel.findOneAndUpdate(
-            { _id: userId },
-            { 'profile.bio': newBioInfo.bio },
-            { new: true }
-        );
+        return this.userModel.findOneAndUpdate({ _id: userId }, { 'profile.bio': newBioInfo.bio }, { new: true });
     }
 
     /**
@@ -336,11 +331,7 @@ export class UsersStore {
      * @param pageNum The page of results to retrieve
      * @param maxPerPage The maximum number of results per page
      */
-    async findRelatedUsers(
-        query: string,
-        pageNum: number,
-        maxPerPage: number
-    ): Promise<PaginateResult<UserDocument>> {
+    async findRelatedUsers(query: string, pageNum: number, maxPerPage: number): Promise<PaginateResult<UserDocument>> {
         return await this.userModel.paginate(
             { $text: { $search: '"' + query + '"' } },
             {
@@ -348,7 +339,7 @@ export class UsersStore {
                     '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
                 page: pageNum,
                 limit: maxPerPage,
-            }
+            },
         );
     }
 
@@ -391,7 +382,7 @@ export class UsersStore {
         return this.userModel.findOneAndUpdate(
             { _id: userId },
             { 'profile.tagline': await sanitizeHtml(newTagline) },
-            { new: true }
+            { new: true },
         );
     }
 
@@ -434,7 +425,7 @@ export class UsersStore {
                 { 'audit.roles': 'Maintainer' },
                 { 'audit.roles': 'Contributor' },
                 { 'audit.roles': 'VIP' },
-                { 'audit.roles': 'Supporter' }
+                { 'audit.roles': 'Supporter' },
             ],
         });
 
@@ -453,9 +444,9 @@ export class UsersStore {
      */
     async generateInviteCode(): Promise<InviteCodesDocument> {
         const newCode = new this.inviteCodesModel({
-            "_id": nanoid(),
-            "used": false,
-            "byWho": null
+            _id: nanoid(),
+            used: false,
+            byWho: null,
         });
 
         return await newCode.save();

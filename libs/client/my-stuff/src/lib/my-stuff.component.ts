@@ -81,6 +81,6 @@ export class MyStuffComponent implements OnInit {
      * @param currentUser
      */
     checkIsAllowed(currentUser: FrontendUser) {
-        return isAllowed(currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
+        return isAllowed(currentUser.audit.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
     }
 }

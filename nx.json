@@ -1,37 +1,85 @@
 {
     "implicitDependencies": {
         "angular.json": "*",
-        "package.json": { "dependencies": "*", "devDependencies": "*" },
+        "package.json": {
+            "dependencies": "*",
+            "devDependencies": "*"
+        },
         "tsconfig.base.json": "*",
         "tslint.json": "*",
         ".eslintrc.json": "*",
         "nx.json": "*"
     },
-    "affected": { "defaultBase": "master" },
+    "affected": {
+        "defaultBase": "master"
+    },
     "npmScope": "dragonfish",
     "tasksRunnerOptions": {
         "default": {
             "runner": "@nrwl/workspace/tasks-runners/default",
-            "options": { "cacheableOperations": ["build", "lint", "test", "e2e"] }
+            "options": {
+                "cacheableOperations": ["build", "lint", "test", "e2e"]
+            }
         }
     },
     "projects": {
-        "bettafish": { "tags": [] },
-        "bettafish-e2e": { "tags": [], "implicitDependencies": ["bettafish"] },
-        "api": { "tags": [] },
-        "shared": { "tags": [] },
-        "client-pipes": { "tags": [] },
-        "client-ui": { "tags": [] },
-        "client-alerts": { "tags": [] },
-        "client-material": { "tags": [] },
-        "client-icons": { "tags": [] },
-        "bettafish-native": { "tags": [] },
-        "client-editor": { "tags": [] },
-        "client-my-stuff": { "tags": [] },
-        "client-dashboard": { "tags": [] },
-        "client-services": { "tags": [] },
-        "client-repository": { "tags": [] },
-        "api-database": { "tags": [] },
-        "api-utilities": { "tags": [] }
+        "bettafish": {
+            "tags": []
+        },
+        "bettafish-e2e": {
+            "tags": [],
+            "implicitDependencies": ["bettafish"]
+        },
+        "api": {
+            "tags": []
+        },
+        "shared": {
+            "tags": []
+        },
+        "client-pipes": {
+            "tags": []
+        },
+        "client-ui": {
+            "tags": []
+        },
+        "client-alerts": {
+            "tags": []
+        },
+        "client-material": {
+            "tags": []
+        },
+        "client-icons": {
+            "tags": []
+        },
+        "bettafish-native": {
+            "tags": []
+        },
+        "client-editor": {
+            "tags": []
+        },
+        "client-my-stuff": {
+            "tags": []
+        },
+        "client-dashboard": {
+            "tags": []
+        },
+        "client-services": {
+            "tags": []
+        },
+        "client-repository": {
+            "tags": []
+        },
+        "api-database": {
+            "tags": []
+        },
+        "api-utilities": {
+            "tags": []
+        },
+        "client-comments": {
+            "tags": []
+        },
+        "client-editor-lite": {
+            "tags": []
+        }
     }
 }

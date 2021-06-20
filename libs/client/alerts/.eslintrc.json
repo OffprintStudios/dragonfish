@@ -9,11 +9,11 @@
             "rules": {
                 "@angular-eslint/directive-selector": [
                     "error",
-                    { "type": "attribute", "prefix": "dragonfish-next", "style": "camelCase" }
+                    { "type": "attribute", "prefix": "dragonfish", "style": "camelCase" }
                 ],
                 "@angular-eslint/component-selector": [
                     "error",
-                    { "type": "element", "prefix": "dragonfish-next", "style": "kebab-case" }
+                    { "type": "element", "prefix": "dragonfish", "style": "kebab-case" }
                 ]
             }
         },

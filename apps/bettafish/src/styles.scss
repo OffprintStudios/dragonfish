@@ -41,10 +41,13 @@ $bettafish-theme: mat-light-theme((
 /* You can add global styles to this file, and also import other style files */
 @import './themes.scss';
 @import './material.scss';
+@import './mixins.scss';
 @import '~ngx-tabset/ngx-tabset.scss';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~@ctrl/ngx-emoji-mart/picker';
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 :root {
     /* Widths */
@@ -95,11 +98,26 @@ a.button {
     box-shadow: var(--dropshadow);
     color: var(--text-color);
     user-select: none;
+    &.primary {
+        background: var(--accent);
+        color: white;
+        &:hover {
+            background: var(--accent-dark);
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+    }
     &:hover {
-        color: whitesmoke;
+        color: white;
         background: var(--accent);
         text-decoration: none;
         transition: all 0.15s ease;
+    }
+    rmx-icon {
+        width: 16px !important;
+        position: relative;
+        top: 0.25rem;
+        margin-right: 0.275rem;
     }
     i-feather {
         width: 16px !important;
@@ -383,78 +401,14 @@ div.section-body,
 div.blog-body,
 div.authors-note,
 div.html-description {
-    // Headers and default image style
-    h1 { font-size: 3em; }
-    h2 { font-size: 2em; }
-    h3 { font-size: 1.5em; }
-    h4 { font-size: 1.25em; }
-    h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
-    h6 { font-size: 1em; text-transform: uppercase; }
-    img { max-width: 100% }
-
-    quote, blockquote {
-        margin-left: 0.75rem !important;
-        padding-left: 0.75rem !important;
-        border-left: 2px solid var(--borders) !important;
-    }
-
-    // CKEditor-generated image styles
-    .image {
-        display: table;
-        clear: both;
-        text-align: center;
-        margin: 1em auto;
-    }
-
-    .image-style-align-{
-        &left {
-            float: left;
-            margin-right: 1.5em;
-        }
-        &center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        &right {
-            float: right;
-            margin-left: 1.5em;
-        }
-    }
-
-    // A little CSS hack to force images at the bottom of content bodies to not break out of their containers.
-    // More details here: http://bonrouge.com/br.php?page=floats
-    > :last-child:after {
-        content: ".";
-        display: block;
-        height: 0;
-        overflow: hidden;
-        clear: both;
-        visibility: hidden;
-    }
-
-    // CKEditor-generated font sizes
-    span.text-{
-        &tiny { font-size: 0.7em; }
-        &small { font-size: 0.85em; }
-        &big { font-size: 1.4em; }
-        &huge { font-size: 1.85em; }
-    }
-    ul,ol {
-        margin-left: 2.5rem;
-    }
-    ul {
-        list-style-type: disc;
-    }
-    ol {
-        list-style-type: decimal;
-    }
-    li {
-        @apply my-1;
-    }
+    @include content-body();
 }
 
 .accented-content-box {
     color: white;
+    h1, h2, h3, h4, h5, h6 {
+        color: white !important;
+    }
     a {
         color: white;
         text-decoration: none;

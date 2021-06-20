@@ -6,35 +6,6 @@ nav.desktop {
         @apply hidden;
     }
 
-    button.link {
-        border: none;
-        padding: 15px 20px;
-        text-transform: none;
-        font-variant: normal;
-        color: whitesmoke;
-        border-radius: 0;
-        box-shadow: none;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-
-        &:hover {
-            background: var(--accent);
-        }
-
-        &.avatar {
-            padding: 10px 12px;
-        }
-
-        i-feather {
-            width: 28px !important;
-            stroke-width: 1;
-            position: relative !important;
-            top: -0.125rem;
-        }
-    }
-
     a.link {
         color: whitesmoke;
         padding: 15px 26px;
@@ -57,7 +28,7 @@ nav.desktop {
         }
 
         &.close-avatar {
-            padding: 17.5px 17px;
+            padding: 20.5px 17px;
         }
 
         &.active {
@@ -68,9 +39,8 @@ nav.desktop {
 
         span.link-icon {
             position: relative;
-            left: -0.05rem;
-            top: 0.15rem;
-            i-feather {
+            top: -0.1rem;
+            i-feather, rmx-icon {
                 width: 26px;
                 stroke-width: 1;
             }
@@ -114,7 +84,7 @@ nav.mobile {
         }
         span.link-icon {
             @apply relative top-0.5;
-            i-feather {
+            i-feather, rmx-icon {
                 width: 24px;
                 stroke-width: 1;
                 color: white;

@@ -10,6 +10,8 @@ module.exports = {
             './libs/client/my-stuff/src/lib/**/*.{html,ts}',
             './libs/client/dashboard/src/lib/**/*.{html,ts}',
             './libs/client/alerts/src/lib/**/*.{html,ts}',
+            './libs/client/comments/src/lib/**/*.{html,ts}',
+            './libs/client/editor-lite/src/lib/**/*.{html,ts}',
         ],
     },
     darkMode: 'class', // or 'media' or 'class'
