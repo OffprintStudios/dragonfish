@@ -31,7 +31,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: { type: String, enum: Object.keys(WorkKind), required: true },
         form: { type: String, enum: Object.keys(PoetryForm), required: true },
         collection: { type: Boolean, default: false },
-        fandoms: { type: [MongooseSchema.Types.ObjectId], default: null, ref: 'TagsDocument' },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
@@ -40,7 +39,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: WorkKind;
         form: PoetryForm;
         collection: boolean;
-        fandoms: string[] | null;
         genres: Genres[];
         rating: ContentRating;
         status: WorkStatus;

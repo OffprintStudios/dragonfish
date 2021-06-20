@@ -27,7 +27,6 @@ export const WorksSchema = new Schema(
         longDesc: { type: String, trim: true, required: true },
         meta: {
             category: { type: String, enum: Object.keys(models.Categories), required: true },
-            fandoms: { type: [String], enum: Object.keys(models.Fandoms) },
             genres: {
                 type: [String],
                 enum: Object.keys(models.GenresFiction).concat(Object.keys(models.GenresPoetry)),
@@ -70,9 +69,6 @@ WorksSchema.pre<documents.WorkDocument>('save', async function (next: HookNextFu
     this.set('shortDesc', await sanitizeHtml(this.shortDesc));
     this.set('longDesc', await sanitizeHtml(this.longDesc, sanitizeOptions));
     this.set('meta.category', this.meta.category);
-    if (this.meta.fandoms) {
-        this.set('meta.fandoms', this.meta.fandoms);
-    }
     this.set('meta.genres', this.meta.genres);
     this.set('meta.rating', this.meta.rating);
     this.set('meta.status', this.meta.status);

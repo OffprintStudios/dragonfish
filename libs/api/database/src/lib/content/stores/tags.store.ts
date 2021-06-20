@@ -4,11 +4,10 @@ import { Model } from 'mongoose';
 import { TagsDocument } from '../schemas';
 import { TagKind, TagsForm } from '@dragonfish/shared/models/content';
 import * as sanitize from 'sanitize-html';
-import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 
 @Injectable()
-export class TagsStore {    
+export class TagsStore {
     private readonly logger: Logger = new Logger(TagsStore.name);
 
     constructor(
@@ -55,7 +54,7 @@ export class TagsStore {
     private async buildDescendantTree(tagNode: TagsTree): Promise<TagsTree> {
         const currentRoot = await this.populateImmediateChildren(tagNode._id);
         if (!currentRoot.children || currentRoot.children.length === 0) {
-            // If we can't find any children for this node, it is a leaf. Return it.
+            // BASE CASE: If we can't find any children for this node, it is a leaf. Return it.
             return tagNode;
         }
 

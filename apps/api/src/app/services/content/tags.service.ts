@@ -26,7 +26,7 @@ export class TagsService implements ITagsService {
         return await this.tagsStore.updateTag(id, form);
     }
 
-    async deleteTag(id: string): Promise<void> {        
+    async deleteTag(id: string): Promise<void> {
         // First, delete all references to this tag elsewhere in the database
         const tagToDelete = await this.tagsStore.findOne(id);
         if (!tagToDelete) {

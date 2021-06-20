@@ -17,7 +17,7 @@ export class TagsController {
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-descendants')
-    async fetchChildren(@Query('id') id: string): Promise<TagsTree> {
+    async fetchDescendants(@Query('id') id: string): Promise<TagsTree> {
         return await this.tagsService.fetchDescendants(id);
     }
 

@@ -28,14 +28,12 @@ export class ProseContentDocument extends Document implements ProseContent {
 
     @Prop(raw({
         category: { type: String, enum: Object.keys(WorkKind), required: true },
-        fandoms: { type: [MongooseSchema.Types.ObjectId], default: null, ref: 'TagsDocument' },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
     }))
     meta: {
         category: WorkKind;
-        fandoms: string[] | null;
         genres: Genres[];
         rating: ContentRating;
         warnings: string[];

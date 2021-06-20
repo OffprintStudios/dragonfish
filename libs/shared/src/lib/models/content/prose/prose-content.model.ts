@@ -9,7 +9,6 @@ export interface ProseContent extends ContentModel {
     sections: string[] | SectionInfo[];
     meta: {
         category: WorkKind;
-        fandoms: string[] | null;
         genres: Genres[];
         rating: ContentRating;
         warnings: string[];

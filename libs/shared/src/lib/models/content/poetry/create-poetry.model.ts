@@ -11,10 +11,6 @@ export interface CreatePoetry {
     readonly category: WorkKind;
     readonly collection: boolean;
     readonly form: PoetryForm;
-    readonly fandoms: {
-        readonly parentId: string,
-        readonly childId: string | null,
-    }[] | null;
     readonly genres: Genres[];
     readonly rating: ContentRating;
     readonly status: WorkStatus;
