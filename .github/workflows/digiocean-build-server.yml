@@ -8,6 +8,7 @@ on:
     - 'package.json'
     - 'workspace.json'
     - 'libs/shared/**'
+    - 'libs/api/**'
     - 'apps/api/**'
     - '.github/workflows/digiocean-build-server.yml'
     - '.github/workflows/digioncean-deploy-server.yml'
