@@ -28,6 +28,8 @@ import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { ContentApprovalComponent } from './components/content-approval/content-approval.component';
 import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
+import { SidebarComponent } from './components/nav/sidebar/sidebar.component';
+import { TopbarComponent } from './components/nav/topbar/topbar.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +48,8 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
         ReportDialogComponent,
         ContentApprovalComponent,
         AddToCollectionComponent,
+        SidebarComponent,
+        TopbarComponent,
     ],
     imports: [
         CommonModule,
@@ -78,6 +82,8 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
         ReportDialogComponent,
         ContentApprovalComponent,
         AddToCollectionComponent,
+        SidebarComponent,
+        TopbarComponent,
     ],
 })
 export class UiModule {}

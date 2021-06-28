@@ -1,9 +1,9 @@
 <ng-container *ngIf="route.children.length === 0">
-    <div class="header shadow-xl sticky top-0 z-40">
+    <dragonfish-topbar></dragonfish-topbar>
+    <div class="header shadow-xl">
         <div class="w-11/12 mx-auto p-3 text-center">
             <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />
             <h2>{{ rotatingSlogan }}</h2>
-            <h3 class="site-version absolute top-0 right-0 text-white p-2">ver. {{ siteVersion }}</h3>
         </div>
     </div>
 

@@ -1,0 +1,46 @@
+<div class="flex items-center w-full z-50 sticky top-0 p-2 shadow-2xl" style="background: var(--accent);">
+    <ng-content></ng-content>
+    <div class="flex-1"><!--spacer--></div>
+    <div class="mx-0.5 text-white text-xl">|</div>
+    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else login">
+        <a
+            class="link-with-avatar"
+            [matMenuTriggerFor]="accountMenu"
+        >
+            <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
+            <div class="info ml-1 text-white text-xs">
+                <div class="font-bold truncate">{{ currentUser.username }}</div>
+                <div class="truncate">{{ currentUser.profile.tagline }}</div>
+            </div>
+        </a>
+        <a
+            class="link"
+            [matTooltip]="'Inbox'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="inbox-line"></rmx-icon></span>
+        </a>
+        <a
+            class="link"
+            [matTooltip]="'Settings'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
+        </a>
+    </ng-container>
+    <ng-template #login>
+        <a
+            class="link"
+            [matTooltip]="'Log In'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
+        </a>
+    </ng-template>
+</div>
+
+<mat-menu #accountMenu="matMenu">
+    <button mat-menu-item><rmx-icon name="user-line"></rmx-icon>Profile</button>
+    <div class="border-b w-full border-gray-500 my-2"><!--spacer--></div>
+    <button mat-menu-item><rmx-icon name="logout-circle-line"></rmx-icon>Logout</button>
+</mat-menu>
