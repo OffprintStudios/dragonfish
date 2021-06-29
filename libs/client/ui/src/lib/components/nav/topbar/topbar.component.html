@@ -16,9 +16,11 @@
                     </div>
                 </a>
                 <a
-                    class="link"
+                    class="link cursor-pointer"
                     [matTooltip]="'Inbox'"
                     [matTooltipClass]="'offprint-tooltip'"
+                    [ngClass]="{ 'active': activeInbox }"
+                    (click)="openInbox()"
                 >
                     <span class="link-icon"><rmx-icon name="inbox-line"></rmx-icon></span>
                 </a>

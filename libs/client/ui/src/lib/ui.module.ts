@@ -37,6 +37,9 @@ import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.comp
 import { LoginFormComponent } from './components/auth/login-form/login-form.component';
 import { RegisterFormComponent } from './components/auth/register-form/register-form.component';
 import { UserMenuComponent } from './components/auth/user-menu/user-menu.component';
+import { InboxComponent } from './components/inbox/inbox.component';
+import { MessagesTabComponent } from './components/inbox/messages-tab/messages-tab.component';
+import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
 
 @NgModule({
     declarations: [
@@ -61,6 +64,9 @@ import { UserMenuComponent } from './components/auth/user-menu/user-menu.compone
         LoginFormComponent,
         RegisterFormComponent,
         UserMenuComponent,
+        InboxComponent,
+        MessagesTabComponent,
+        NotificationsTabComponent,
     ],
     imports: [
         CommonModule,
@@ -98,9 +104,6 @@ import { UserMenuComponent } from './components/auth/user-menu/user-menu.compone
         AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
-        AuthModalComponent,
-        LoginFormComponent,
-        RegisterFormComponent,
     ],
 })
 export class UiModule {}

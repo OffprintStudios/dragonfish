@@ -1,0 +1,35 @@
+<ng-container *ngIf="sessionQuery.currentUser$ | async as user">
+    <div class="absolute top-14 right-8 z-50 rounded-md" style="box-shadow: var(--dropshadow);">
+        <div class="menu-box">
+            <div
+                class="flex items-center justify-center h-12 z-40 sticky top-0 text-sm text-white rounded-t-md"
+                style="background: var(--accent); box-shadow: var(--dropshadow);"
+            >
+                <div
+                    class="tab flex items-center mx-1"
+                    [ngClass]="selectedTab === inboxTabs.Messages ? 'active' : ''"
+                    (click)="switchTab(inboxTabs.Messages)"
+                >
+                    <rmx-icon name="chat-smile-3-line"></rmx-icon>
+                    <span class="ml-1">Messages</span>
+                </div>
+                <div
+                    class="tab flex items-center mx-1"
+                    [ngClass]="selectedTab === inboxTabs.Notifications ? 'active' : ''"
+                    (click)="switchTab(inboxTabs.Notifications)"
+                >
+                    <rmx-icon name="notification-3-line"></rmx-icon>
+                    <span class="ml-1">Notifications</span>
+                </div>
+            </div>
+            <ng-container [ngSwitch]="selectedTab">
+                <ng-container *ngSwitchCase="inboxTabs.Messages">
+                    <dragonfish-messages-tab></dragonfish-messages-tab>
+                </ng-container>
+                <ng-container *ngSwitchCase="inboxTabs.Notifications">
+                    <dragonfish-notifications-tab></dragonfish-notifications-tab>
+                </ng-container>
+            </ng-container>
+        </div>
+    </div>
+</ng-container>

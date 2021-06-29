@@ -7,6 +7,7 @@ import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { InboxComponent } from '../../inbox/inbox.component';
 
 @UntilDestroy()
 @Component({
@@ -17,6 +18,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class TopbarComponent implements OnInit {
     private userMenu: ViewRef;
     activeUserMenu = false;
+
+    private inbox: ViewRef;
+    activeInbox = false;
 
     constructor(
         public sessionQuery: SessionQuery,
@@ -34,6 +38,12 @@ export class TopbarComponent implements OnInit {
                     this.userMenu = undefined;
                     this.activeUserMenu = false;
                 }
+
+                if (this.inbox) {
+                    this.inbox.destroy();
+                    this.inbox = undefined;
+                    this.activeInbox = false;
+                }
             }
         });
     }
@@ -43,7 +53,14 @@ export class TopbarComponent implements OnInit {
     }
 
     openUserMenu() {
-        if (!this.userMenu) {
+        if (!this.userMenu && this.inbox) {
+            this.inbox.destroy();
+            this.inbox = undefined;
+            this.activeInbox = false;
+            this.userMenu = this.viewService.createView(UserMenuComponent);
+            document.body.appendChild(this.userMenu.getElement() as any);
+            this.activeUserMenu = true;
+        } else if (!this.userMenu) {
             this.userMenu = this.viewService.createView(UserMenuComponent);
             document.body.appendChild(this.userMenu.getElement() as any);
             this.activeUserMenu = true;
@@ -51,6 +68,25 @@ export class TopbarComponent implements OnInit {
             this.userMenu.destroy();
             this.userMenu = undefined;
             this.activeUserMenu = false;
+        }
+    }
+
+    openInbox() {
+        if (!this.inbox && this.userMenu) {
+            this.userMenu.destroy();
+            this.userMenu = undefined;
+            this.activeUserMenu = false;
+            this.inbox = this.viewService.createView(InboxComponent);
+            document.body.appendChild(this.inbox.getElement() as any);
+            this.activeInbox = true;
+        } else if (!this.inbox) {
+            this.inbox = this.viewService.createView(InboxComponent);
+            document.body.appendChild(this.inbox.getElement() as any);
+            this.activeInbox = true;
+        } else {
+            this.inbox.destroy();
+            this.inbox = undefined;
+            this.activeInbox = false;
         }
     }
 }
