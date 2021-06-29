@@ -12,6 +12,8 @@ import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { TabsModule } from 'ngx-tabset';
+import { DynamicViewModule } from '@ngneat/overview';
+import { TeleportModule } from '@ngneat/overview';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -34,6 +36,7 @@ import { TopbarComponent } from './components/nav/topbar/topbar.component';
 import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
 import { LoginFormComponent } from './components/auth/login-form/login-form.component';
 import { RegisterFormComponent } from './components/auth/register-form/register-form.component';
+import { UserMenuComponent } from './components/auth/user-menu/user-menu.component';
 
 @NgModule({
     declarations: [
@@ -57,6 +60,7 @@ import { RegisterFormComponent } from './components/auth/register-form/register-
         AuthModalComponent,
         LoginFormComponent,
         RegisterFormComponent,
+        UserMenuComponent,
     ],
     imports: [
         CommonModule,
@@ -73,6 +77,8 @@ import { RegisterFormComponent } from './components/auth/register-form/register-
         ClickOutsideModule,
         RouterModule.forChild([]),
         TabsModule,
+        DynamicViewModule,
+        TeleportModule,
     ],
     exports: [
         RatingIconComponent,

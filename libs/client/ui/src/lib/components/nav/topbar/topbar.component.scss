@@ -19,7 +19,7 @@ div.topbar {
 
     a.link-with-avatar {
         @apply mx-1 p-0.5 flex items-center rounded-md;
-        &:hover {
+        &:hover, &.active {
             background: var(--accent-light);
             text-decoration: none;
         }

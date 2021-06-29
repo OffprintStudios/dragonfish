@@ -1,12 +1,17 @@
-div.user-card {
-    border: 1px solid var(--borders);
-    box-shadow: var(--dropshadow);
-    div.has-accent {
-        background: var(--accent);
-    }
+div.menu-box {
+    @apply border-t-4 border rounded-md w-64 flex flex-col;
+    border-top-color: var(--accent);
+    border-right-color: var(--borders);
+    border-left-color: var(--borders);
+    border-bottom-color: var(--borders);
+    background: var(--background);
     div.cover-pic {
+        @apply top-1;
         -webkit-mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
         mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+    }
+    div.has-accent {
+        background: var(--accent);
     }
     div.user-header {
         div.user-avatar {

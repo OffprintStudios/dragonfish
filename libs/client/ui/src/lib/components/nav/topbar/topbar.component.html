@@ -5,8 +5,9 @@
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else login">
             <div class="flex items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
                 <a
-                    class="link-with-avatar"
-                    [matMenuTriggerFor]="accountMenu"
+                    class="link-with-avatar cursor-pointer"
+                    [ngClass]="{ 'active': activeUserMenu }"
+                    (click)="openUserMenu()"
                 >
                     <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
                     <div class="info ml-1 text-white text-xs">
@@ -32,7 +33,7 @@
         </ng-container>
         <ng-template #login>
             <div class="flex items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
-                <a class="link flex items-center text-sm" (click)="openAuthModal()">
+                <a class="link flex items-center text-sm cursor-pointer" (click)="openAuthModal()">
                     <span class="link-icon mr-1"><rmx-icon name="login-circle-line"></rmx-icon></span>
                     <span>Log In</span>
                 </a>
@@ -47,9 +48,3 @@
         </ng-template>
     </div>
 </div>
-
-<mat-menu #accountMenu="matMenu">
-    <button mat-menu-item><rmx-icon name="user-line"></rmx-icon>Profile</button>
-    <div class="border-b w-full border-gray-500 my-2"><!--spacer--></div>
-    <button mat-menu-item (click)="logout()"><rmx-icon name="logout-circle-line"></rmx-icon>Logout</button>
-</mat-menu>

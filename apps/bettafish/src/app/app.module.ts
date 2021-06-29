@@ -20,7 +20,7 @@ import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
-import { TippyModule, tooltipVariation, popperVariation } from '@ngneat/helipopper';
+import { DynamicViewModule } from '@ngneat/overview';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -102,13 +102,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
-        TippyModule.forRoot({
-            defaultVariation: 'popper',
-            variations: {
-                tooltip: tooltipVariation,
-                popper: popperVariation,
-            },
-        }),
+        DynamicViewModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

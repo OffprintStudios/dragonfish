@@ -1,0 +1,77 @@
+<ng-container *ngIf="sessionQuery.currentUser$ | async as user">
+    <div class="absolute top-14 right-8 z-50 rounded-md" style="box-shadow: var(--dropshadow);">
+        <div class="menu-box">
+            <div
+                class="cover-pic absolute blur z-10 w-full h-20 rounded-t-md left-0 pointer-events-none overflow-hidden"
+                [ngClass]="user.profile.coverPic ? '' : 'has-accent'"
+            >
+                <img
+                    class="object-cover object-top object-center w-full h-full"
+                    [src]="user.profile.coverPic"
+                    *ngIf="user.profile.coverPic"
+                />
+            </div>
+            <div class="user-header p-1.5 relative z-20 mt-8">
+                <div class="flex flex-row items-center">
+                    <div class="user-avatar">
+                        <img [src]="user.profile.avatar" />
+                    </div>
+                    <div class="ml-2">
+                        <h2 class="text-xl font-medium">
+                            {{ user.username }}
+                        </h2>
+                        <h3 class="text-xs font-medium">
+                            {{ user.profile.tagline }}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="stats flex flex-row items-center justify-center">
+                <div
+                    class="flex flex-row items-center select-none cursor-default"
+                    [matTooltip]="'Works'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                >
+                    <rmx-icon name="quill-pen-line"></rmx-icon>
+                    <span class="select-none">{{ user.stats.works | abbreviate }}</span>
+                </div>
+                <div class="mx-1 select-none cursor-default">|</div>
+                <div
+                    class="flex flex-row items-center select-none cursor-default"
+                    [matTooltip]="'Blogs'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                >
+                    <rmx-icon name="cup-line"></rmx-icon>
+                    <span class="select-none">{{ user.stats.blogs | abbreviate }}</span>
+                </div>
+                <div class="mx-1 select-none cursor-default">|</div>
+                <div
+                    class="flex flex-row items-center select-none cursor-default"
+                    [matTooltip]="'Watchers'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                >
+                    <rmx-icon name="eye-line"></rmx-icon>
+                    <span class="select-none">{{ user.stats.watchers | abbreviate }}</span>
+                </div>
+            </div>
+            <div class="my-2"><!--spacer--></div>
+            <div>
+                <a
+                    class="button w-full"
+                    [routerLink]="['/portfolio', user._id, user.username | slugify]"
+                >
+                    <rmx-icon name="user-line"></rmx-icon>
+                    View Profile
+                </a>
+                <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                <a class="button bottom w-full cursor-pointer" (click)="logout()">
+                    <rmx-icon name="logout-circle-line"></rmx-icon>
+                    Log Out
+                </a>
+            </div>
+        </div>
+    </div>
+</ng-container>
