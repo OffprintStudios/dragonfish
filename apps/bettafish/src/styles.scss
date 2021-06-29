@@ -209,6 +209,24 @@ div.topbar-header {
         }
     }
 }
+div.topbar-tools {
+    @apply flex items-center px-2.5 w-full;
+}
+
+/* Offprint Pagebar */
+div.pagebar {
+    div.pages {
+        @apply text-white w-full flex flex-col;
+        a {
+            @apply w-full p-2 rounded-md text-white my-0.5;
+            &:hover, &.active {
+                background: var(--accent-light);
+                text-decoration: none;
+                color: white;
+            }
+        }
+    }
+}
 
 /* Offprint Tabs */
 .offprint-tabs-nav {

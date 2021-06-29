@@ -40,6 +40,7 @@ import { UserMenuComponent } from './components/auth/user-menu/user-menu.compone
 import { InboxComponent } from './components/inbox/inbox.component';
 import { MessagesTabComponent } from './components/inbox/messages-tab/messages-tab.component';
 import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
+import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
 
 @NgModule({
     declarations: [
@@ -67,6 +68,7 @@ import { NotificationsTabComponent } from './components/inbox/notifications-tab/
         InboxComponent,
         MessagesTabComponent,
         NotificationsTabComponent,
+        PagebarComponent,
     ],
     imports: [
         CommonModule,
@@ -104,6 +106,7 @@ import { NotificationsTabComponent } from './components/inbox/notifications-tab/
         AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
+        PagebarComponent,
     ],
 })
 export class UiModule {}
