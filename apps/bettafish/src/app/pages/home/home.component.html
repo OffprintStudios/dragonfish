@@ -1,6 +1,11 @@
 <ng-container *ngIf="route.children.length === 0">
-    <dragonfish-topbar></dragonfish-topbar>
-    <div class="header shadow-xl">
+    <dragonfish-topbar>
+        <div class="topbar-header">
+            <rmx-icon name="home-5-line"></rmx-icon>
+            <h3>Home</h3>
+        </div>
+    </dragonfish-topbar>
+    <div class="header shadow-xl mt-6 w-11/12 mx-auto rounded-md relative">
         <div class="w-11/12 mx-auto p-3 text-center">
             <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />
             <h2>{{ rotatingSlogan }}</h2>

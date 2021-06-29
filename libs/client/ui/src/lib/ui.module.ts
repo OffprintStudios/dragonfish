@@ -11,6 +11,7 @@ import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { TabsModule } from 'ngx-tabset';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -30,6 +31,9 @@ import { ContentApprovalComponent } from './components/content-approval/content-
 import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
 import { SidebarComponent } from './components/nav/sidebar/sidebar.component';
 import { TopbarComponent } from './components/nav/topbar/topbar.component';
+import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
+import { LoginFormComponent } from './components/auth/login-form/login-form.component';
+import { RegisterFormComponent } from './components/auth/register-form/register-form.component';
 
 @NgModule({
     declarations: [
@@ -50,6 +54,9 @@ import { TopbarComponent } from './components/nav/topbar/topbar.component';
         AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
+        AuthModalComponent,
+        LoginFormComponent,
+        RegisterFormComponent,
     ],
     imports: [
         CommonModule,
@@ -65,6 +72,7 @@ import { TopbarComponent } from './components/nav/topbar/topbar.component';
         MaterialModule,
         ClickOutsideModule,
         RouterModule.forChild([]),
+        TabsModule,
     ],
     exports: [
         RatingIconComponent,
@@ -84,6 +92,9 @@ import { TopbarComponent } from './components/nav/topbar/topbar.component';
         AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
+        AuthModalComponent,
+        LoginFormComponent,
+        RegisterFormComponent,
     ],
 })
 export class UiModule {}

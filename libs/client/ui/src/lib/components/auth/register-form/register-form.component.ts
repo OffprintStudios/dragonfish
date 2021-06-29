@@ -6,7 +6,6 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 @Component({
     selector: 'dragonfish-register-form',
     templateUrl: './register-form.component.html',
-    styleUrls: ['./register-form.component.scss'],
 })
 export class RegisterFormComponent {
     @Output() isSuccess = new EventEmitter<boolean>();

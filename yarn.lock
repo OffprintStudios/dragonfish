@@ -2305,6 +2305,14 @@
   dependencies:
     tslib "^2.0.0"
 
+"@ngneat/helipopper@3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/helipopper/-/helipopper-3.6.0.tgz#64c59785424b98fbba675619d52ea388a315469f"
+  integrity sha512-RVgkfU2NINkrsuI2GlR9EWWtIaldoOvfl9j1en9nrwz8db7jrMS4LiqTQgdl1XSg9bXFJo5S/8ntfeDxJqf9lQ==
+  dependencies:
+    tippy.js "^6.2.3"
+    tslib "^2.0.0"
+
 "@ngneat/until-destroy@^8.0.4":
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-8.0.4.tgz#08c61fc791012d38fcb3310ec03de4f4df9f29d1"
@@ -15551,7 +15559,7 @@ tiny-emitter@^2.0.0:
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
-tippy.js@^6.3.1:
+tippy.js@^6.2.3, tippy.js@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/tippy.js/-/tippy.js-6.3.1.tgz#3788a007be7015eee0fd589a66b98fb3f8f10181"
   integrity sha512-JnFncCq+rF1dTURupoJ4yPie5Cof978inW6/4S6kmWV7LL9YOSEVMifED3KdrVPEG+Z/TFH2CDNJcQEfaeuQww==

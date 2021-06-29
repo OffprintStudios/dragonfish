@@ -20,6 +20,7 @@ import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { TippyModule, tooltipVariation, popperVariation } from '@ngneat/helipopper';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -33,8 +34,6 @@ import { ErrorPages } from './pages/errors';
 
 /* Components */
 import { AppComponent } from './app.component';
-import { SiteComponents } from './components/site';
-import { AuthComponents } from './components/auth';
 import { ContentComponents } from './components/content';
 import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
@@ -59,8 +58,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
 @NgModule({
     declarations: [
         AppComponent,
-        ...SiteComponents,
-        ...AuthComponents,
         ...ContentComponents,
         ...UserComponents,
         ...UserSettingsComponents,
@@ -105,6 +102,13 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
+        TippyModule.forRoot({
+            defaultVariation: 'popper',
+            variations: {
+                tooltip: tooltipVariation,
+                popper: popperVariation,
+            },
+        }),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -7,7 +7,6 @@ import { AlertsService } from '@dragonfish/client/alerts';
 @Component({
     selector: 'dragonfish-login-form',
     templateUrl: './login-form.component.html',
-    styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent {
     @Output() isSuccess = new EventEmitter<boolean>();

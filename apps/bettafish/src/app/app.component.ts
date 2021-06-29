@@ -8,7 +8,6 @@ import { NavigationStart, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { delay } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { PopupModel } from '@dragonfish/shared/models/util';
@@ -79,10 +78,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 });
             }
         });
-    }
-
-    openAuthModal() {
-        this.dialog.open(AuthModalComponent);
     }
 
     ngAfterViewInit() {
