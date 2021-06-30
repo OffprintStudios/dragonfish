@@ -62,6 +62,8 @@ import {
     RiSearchLine,
     RiCupLine,
     RiInboxLine,
+    RiSunLine,
+    RiNewspaperLine,
 } from 'angular-remix-icon';
 
 import {
@@ -341,6 +343,8 @@ const remixIcons = {
     RiSearchLine,
     RiCupLine,
     RiInboxLine,
+    RiSunLine,
+    RiNewspaperLine,
 };
 
 @NgModule({

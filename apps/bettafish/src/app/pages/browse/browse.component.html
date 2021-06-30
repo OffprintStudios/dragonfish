@@ -19,8 +19,12 @@
 
 <div class="flex" style="height: calc(100vh - 52px);">
     <dragonfish-pagebar>
-        <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">A taste of today</a>
-        <a [routerLink]="['newest-works']" [routerLinkActive]="'active'">What's new</a>
+        <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+            <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
+        </a>
+        <a [routerLink]="['newest-works']" [routerLinkActive]="'active'">
+            <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>What's new
+        </a>
     </dragonfish-pagebar>
     <ng-container *ngIf="route.children.length === 0; else routerOutlet">
         <div class="mx-auto my-6">

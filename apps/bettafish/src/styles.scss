@@ -186,7 +186,7 @@ div.empty {
 
 /* Offprint Topbar */
 div.topbar-header {
-    @apply flex items-center text-sm text-white w-64 border-r h-full pl-2.5;
+    @apply flex items-center text-sm text-white w-64 border-r h-full pl-2.5 flex-shrink-0;
     border-color: var(--accent-light);
     rmx-icon {
         @apply mr-1;
@@ -218,11 +218,18 @@ div.pagebar {
     div.pages {
         @apply text-white w-full flex flex-col;
         a {
-            @apply w-full p-2 rounded-md text-white my-0.5;
+            @apply w-full p-2 rounded-md text-white my-0.5 flex items-center;
             &:hover, &.active {
                 background: var(--accent-light);
                 text-decoration: none;
                 color: white;
+            }
+            span.link-icon {
+                @apply mr-1;
+                rmx-icon {
+                    width: 24px;
+                    stroke-width: 1;
+                }
             }
         }
     }
