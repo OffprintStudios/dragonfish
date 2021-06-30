@@ -10,6 +10,7 @@ import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
+import { SettingsRoutes } from './pages/settings';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
@@ -29,6 +30,7 @@ const routes: Routes = [
     ...PortfolioRoutes,
     ...MessagesRoutes,
     ...ContentViewRoutes,
+    ...SettingsRoutes,
     {
         path: 'my-stuff',
         canLoad: [AuthGuard],
