@@ -38,8 +38,6 @@ import { ContentComponents } from './components/content';
 import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
-import { FriendsComponents } from './components/user/friends';
-import { HistoryComponents } from './components/user/history';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -62,8 +60,6 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ...UserComponents,
         ...UserSettingsComponents,
         ...CollectionsComponents,
-        ...FriendsComponents,
-        ...HistoryComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
