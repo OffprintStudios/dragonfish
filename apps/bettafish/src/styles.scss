@@ -183,6 +183,58 @@ div.empty {
         margin-bottom: 0;
     }
 }
+
+/* Offprint Topbar */
+div.topbar-header {
+    @apply flex items-center text-sm text-white w-64 border-r h-full pl-2.5 flex-shrink-0;
+    border-color: var(--accent-light);
+    rmx-icon {
+        @apply mr-1;
+    }
+    h3 {
+        @apply font-medium text-base text-white relative top-0.5;
+    }
+    a {
+        @apply p-0.5 mx-0.5 rounded-md text-white cursor-pointer;
+        &:hover, &.active {
+            @apply no-underline;
+            background: var(--accent-light);
+            color: white;
+        }
+        span.link-icon {
+            rmx-icon {
+                width: 24px;
+                stroke-width: 1;
+            }
+        }
+    }
+}
+div.topbar-tools {
+    @apply flex items-center px-2.5 w-full;
+}
+
+/* Offprint Pagebar */
+div.pagebar {
+    div.pages {
+        @apply text-white w-full flex flex-col;
+        a {
+            @apply w-full p-2 rounded-md text-white my-0.5 flex items-center;
+            &:hover, &.active {
+                background: var(--accent-light);
+                text-decoration: none;
+                color: white;
+            }
+            span.link-icon {
+                @apply mr-1;
+                rmx-icon {
+                    width: 24px;
+                    stroke-width: 1;
+                }
+            }
+        }
+    }
+}
+
 /* Offprint Tabs */
 .offprint-tabs-nav {
     justify-content: center;

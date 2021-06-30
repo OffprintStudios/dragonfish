@@ -31,7 +31,7 @@
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="600"
         >
-            <i-feather name="feather"></i-feather>
+            <rmx-icon name="quill-pen-line"></rmx-icon>
             <span class="select-none">{{ user.stats.works | abbreviate }}</span>
         </div>
         <div class="mx-1 select-none cursor-default">|</div>
@@ -41,7 +41,7 @@
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="600"
         >
-            <i-feather name="coffee"></i-feather>
+            <rmx-icon name="cup-line"></rmx-icon>
             <span class="select-none">{{ user.stats.blogs | abbreviate }}</span>
         </div>
         <div class="mx-1 select-none cursor-default">|</div>
@@ -51,7 +51,7 @@
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="600"
         >
-            <i-feather name="eye"></i-feather>
+            <rmx-icon name="eye-line"></rmx-icon>
             <span class="select-none">{{ user.stats.watchers | abbreviate }}</span>
         </div>
     </div>
@@ -65,17 +65,17 @@
             class="button w-full"
             [routerLink]="['/portfolio', user._id, user.username | slugify]"
         >
-            <i-feather name="user"></i-feather>
-            View Portfolio
+            <rmx-icon name="user-line"></rmx-icon>
+            View Profile
         </a>
         <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
         <a class="button w-full">
-            <i-feather name="message-circle"></i-feather>
+            <rmx-icon name="chat-3-line"></rmx-icon>
             Send Message
         </a>
         <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
         <a class="button bottom w-full">
-            <i-feather name="user-plus"></i-feather>
+            <rmx-icon name="user-add-line"></rmx-icon>
             Add Friend
         </a>
     </div>

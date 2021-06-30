@@ -64,6 +64,8 @@
         "@nestjsplus/cookies": "^1.1.1",
         "@ng-select/ng-select": "^6.1.0",
         "@ngneat/content-loader": "^6.0.0",
+        "@ngneat/helipopper": "3.6.0",
+        "@ngneat/overview": "^2.0.2",
         "@ngneat/until-destroy": "^8.0.4",
         "@nrwl/angular": "12.3.5",
         "@tiptap/core": "^2.0.0-beta.81",

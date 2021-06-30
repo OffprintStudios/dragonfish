@@ -1,15 +1,20 @@
 <ng-container *ngIf="route.children.length === 0">
-    <div class="header shadow-xl sticky top-0 z-40">
+    <dragonfish-topbar>
+        <div class="topbar-header">
+            <rmx-icon name="home-5-line"></rmx-icon>
+            <h3>Home</h3>
+        </div>
+    </dragonfish-topbar>
+    <div class="header shadow-xl mt-6 w-11/12 mx-auto rounded-md relative">
         <div class="w-11/12 mx-auto p-3 text-center">
             <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />
             <h2>{{ rotatingSlogan }}</h2>
-            <h3 class="site-version absolute top-0 right-0 text-white p-2">ver. {{ siteVersion }}</h3>
         </div>
     </div>
 
     <div class="my-6">
         <div class="section-header flex flex-row items-center p-2 mb-4 w-11/12 mx-auto">
-            <h3 class="text-3xl font-medium flex-1">All the Latest</h3>
+            <h3 class="text-3xl font-medium flex-1">All The Latest</h3>
             <a [routerLink]="['news']" class="text-sm">See More >></a>
         </div>
         <ng-container *ngIf="loadingLatest; else notLoadingLatest">

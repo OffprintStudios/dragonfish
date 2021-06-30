@@ -1,16 +1,9 @@
-<div class="sticky top-0">
-    <div class="news-feed-nav shadow-lg relative z-40">
-        <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
-            <button class="border-none rounded-full shadow-none p-2.5" [routerLink]="['/']">
-                <rmx-icon name="arrow-left-s-line" class="text-white relative top-0.5 mr-4"></rmx-icon>
-            </button>
-            <h3 class="text-4xl text-white relative top-1.5 font-semibold">
-                All the Latest
-            </h3>
-            <div class="flex-1"><!--spacer--></div>
-        </div>
+<dragonfish-topbar>
+    <div class="topbar-header">
+        <a [routerLink]="['/']"><rmx-icon name="arrow-left-s-line"></rmx-icon></a>
+        <h3>All The Latest</h3>
     </div>
-</div>
+</dragonfish-topbar>
 
 <ng-container *ngIf="loading; else notLoading">
     <div class="flex flex-row items-center justify-center max-h-40">
