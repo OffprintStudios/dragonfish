@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThemePref } from '@dragonfish/shared/models/users';
@@ -17,6 +17,9 @@ import { AppQuery } from '@dragonfish/client/repository/app';
 })
 export class AppComponent implements OnInit {
     @ViewChild('sidenav') public sidenav: MatSidenav;
+    screenWidth: number;
+    screenHeight: number;
+    mobileMode = false;
 
     constructor(
         private auth: AuthService,
@@ -25,7 +28,9 @@ export class AppComponent implements OnInit {
         private router: Router,
         public sessionQuery: SessionQuery,
         private appQuery: AppQuery,
-    ) {}
+    ) {
+        this.onResize();
+    }
 
     ngOnInit(): void {
         this.appQuery.theme$.pipe(untilDestroyed(this)).subscribe((theme) => {
@@ -50,5 +55,13 @@ export class AppComponent implements OnInit {
                 body.classList.replace(currTheme, 'crimson');
             }
         });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
+
+        this.mobileMode = this.screenWidth < 1100;
     }
 }
