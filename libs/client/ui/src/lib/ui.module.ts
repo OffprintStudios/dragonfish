@@ -41,6 +41,7 @@ import { InboxComponent } from './components/inbox/inbox.component';
 import { MessagesTabComponent } from './components/inbox/messages-tab/messages-tab.component';
 import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
 import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
+import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.component';
 
 @NgModule({
     declarations: [
@@ -69,6 +70,7 @@ import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
         MessagesTabComponent,
         NotificationsTabComponent,
         PagebarComponent,
+        MobileNavComponent,
     ],
     imports: [
         CommonModule,
@@ -107,6 +109,7 @@ import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
         SidebarComponent,
         TopbarComponent,
         PagebarComponent,
+        MobileNavComponent,
     ],
 })
 export class UiModule {}
