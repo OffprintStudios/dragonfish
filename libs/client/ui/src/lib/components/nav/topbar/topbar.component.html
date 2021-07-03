@@ -26,11 +26,11 @@
                 </a>
                 <a
                     class="link"
-                    [matTooltip]="'Settings'"
+                    [matTooltip]="'More'"
                     [matTooltipClass]="'offprint-tooltip'"
-                    [routerLink]="['/settings']"
+                    [matMenuTriggerFor]="moreMenu"
                 >
-                    <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
+                    <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
                 </a>
             </div>
         </ng-container>
@@ -45,13 +45,37 @@
                 </a>
                 <a
                     class="link"
-                    [matTooltip]="'Settings'"
+                    [matTooltip]="'More'"
                     [matTooltipClass]="'offprint-tooltip'"
-                    [routerLink]="['/settings']"
+                    [matMenuTriggerFor]="moreMenu"
                 >
-                    <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
+                    <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
                 </a>
             </div>
         </ng-template>
     </div>
 </div>
+
+<mat-menu #moreMenu="matMenu">
+    <button mat-menu-item [routerLink]="['/settings']">
+        <rmx-icon name="settings-5-line"></rmx-icon>App Settings
+    </button>
+    <button mat-menu-item [routerLink]="['/what-is-offprint']">
+        About Offprint
+    </button>
+    <button mat-menu-item [routerLink]="['/omnibus']">
+        The Offprint Omnibus
+    </button>
+    <button mat-menu-item [routerLink]="['/terms-of-service']">
+        Terms of Service & Privacy Policy
+    </button>
+    <button mat-menu-item [routerLink]="['/code-of-conduct']">
+        Code of Conduct
+    </button>
+    <button mat-menu-item [routerLink]="['/staff']">
+        Offprint Staff
+    </button>
+    <button mat-menu-item [routerLink]="['/supporters']">
+        Offprint Supporters
+    </button>
+</mat-menu>
