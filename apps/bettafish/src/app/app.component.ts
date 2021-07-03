@@ -1,11 +1,8 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ThemePref } from '@dragonfish/shared/models/users';
-import { ElectronService } from 'ngx-electron';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
-import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AppQuery } from '@dragonfish/client/repository/app';
 
@@ -16,15 +13,13 @@ import { AppQuery } from '@dragonfish/client/repository/app';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    @ViewChild('sidenav') public sidenav: MatSidenav;
     screenWidth: number;
     screenHeight: number;
     mobileMode = false;
+    showNav = true;
 
     constructor(
         private auth: AuthService,
-        private dialog: MatDialog,
-        public electron: ElectronService,
         private router: Router,
         public sessionQuery: SessionQuery,
         private appQuery: AppQuery,
@@ -53,6 +48,12 @@ export class AppComponent implements OnInit {
                 }
             } else {
                 body.classList.replace(currTheme, 'crimson');
+            }
+        });
+
+        this.router.events.pipe(untilDestroyed(this)).subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                this.showNav = this.router.url !== '/registration';
             }
         });
     }

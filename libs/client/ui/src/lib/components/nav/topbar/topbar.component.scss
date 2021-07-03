@@ -2,6 +2,8 @@ div.topbar {
     background: var(--accent);
     box-shadow: var(--dropshadow);
     height: 52px;
+    position: -webkit-sticky;
+    position: sticky;
     a.link {
         @apply p-1.5 mx-0.5 rounded-md text-white;
         &:hover, &.active {

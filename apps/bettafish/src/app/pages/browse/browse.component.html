@@ -3,8 +3,10 @@
         <rmx-icon name="compass-3-line"></rmx-icon>
         <h3>Browse</h3>
     </div>
-    <div class="topbar-tools">
-        <div class="flex-1"><!--spacer--></div>
+</dragonfish-topbar>
+
+<div class="flex" style="height: calc(100vh - 52px);">
+    <dragonfish-pagebar>
         <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
             <dragonfish-text-field
                 [formControlName]="'query'"
@@ -14,11 +16,7 @@
                 [searchBox]="true"
             ></dragonfish-text-field>
         </form>
-    </div>
-</dragonfish-topbar>
-
-<div class="flex" style="height: calc(100vh - 52px);">
-    <dragonfish-pagebar>
+        <div class="my-2 border-b w-full border-white"><!--spacer--></div>
         <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
             <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
         </a>
@@ -27,28 +25,32 @@
         </a>
     </dragonfish-pagebar>
     <ng-container *ngIf="route.children.length === 0; else routerOutlet">
-        <div class="mx-auto my-6">
-            <div class="section-header flex flex-row items-center p-2 mb-4">
-                <h3 class="text-3xl font-medium flex-1">What's new</h3>
-                <a [routerLink]="['newest-works']" class="text-sm">See More >></a>
+        <div class="w-full overflow-y-auto">
+            <div class="w-11/12 mx-auto my-6">
+                <div class="section-header flex flex-row items-center p-2 mb-4">
+                    <h3 class="text-3xl font-medium flex-1">What's new</h3>
+                    <a [routerLink]="['newest-works']" class="text-sm">See More >></a>
+                </div>
+                <ng-container *ngIf="loadingNew; else notLoadingNew">
+                    <div class="flex flex-row items-center justify-center h-72">
+                        <mat-spinner></mat-spinner>
+                    </div>
+                </ng-container>
+                <ng-template #notLoadingNew>
+                    <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                        <ng-container *ngFor="let work of newWorks">
+                            <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+                        </ng-container>
+                    </div>
+                </ng-template>
             </div>
-            <ng-container *ngIf="loadingNew; else notLoadingNew">
-                <div class="flex flex-row items-center justify-center h-72">
-                    <mat-spinner></mat-spinner>
-                </div>
-            </ng-container>
-            <ng-template #notLoadingNew>
-                <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-                    <ng-container *ngFor="let work of newWorks">
-                        <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
-                    </ng-container>
-                </div>
-            </ng-template>
         </div>
     </ng-container>
     <ng-template #routerOutlet>
-        <div class="mx-auto my-6">
-            <router-outlet></router-outlet>
+        <div class="w-full overflow-y-auto">
+            <div class="w-11/12 mx-auto my-6">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </ng-template>
 </div>

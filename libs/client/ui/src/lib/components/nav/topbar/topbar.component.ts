@@ -31,7 +31,7 @@ export class TopbarComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.router.events.pipe(untilDestroyed(this)).subscribe(event => {
+        this.router.events.pipe(untilDestroyed(this)).subscribe((event) => {
             if (event instanceof NavigationStart) {
                 if (this.userMenu) {
                     this.userMenu.destroy();
@@ -46,10 +46,6 @@ export class TopbarComponent implements OnInit {
                 }
             }
         });
-    }
-
-    openAuthModal() {
-        this.dialog.open(AuthModalComponent);
     }
 
     openUserMenu() {
