@@ -32,6 +32,7 @@ import { MessagesPages } from './pages/messages';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
 import { SettingsPages } from './pages/settings';
+import { RegistrationPages } from './pages/registration';
 
 /* Components */
 import { AppComponent } from './app.component';
@@ -70,6 +71,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ...ContentViewPages,
         ...ErrorPages,
         ...SettingsPages,
+        ...RegistrationPages,
     ],
     imports: [
         BrowserModule,

@@ -110,6 +110,8 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         TopbarComponent,
         PagebarComponent,
         MobileNavComponent,
+        RegisterFormComponent,
+        LoginFormComponent,
     ],
 })
 export class UiModule {}

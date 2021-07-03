@@ -1,0 +1,23 @@
+div.register-box {
+    border-color: var(--borders);
+    background: var(--background);
+    box-shadow: var(--dropshadow);
+    max-height: 100vh;
+}
+
+div.tab {
+    @apply p-1.5 rounded-md text-white;
+    &:hover {
+        background: var(--accent-light);
+        color: white;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+    rmx-icon {
+        @apply mr-1;
+    }
+    &.active {
+        background: var(--accent-light);
+        color: white;
+    }
+}

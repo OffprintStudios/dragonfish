@@ -1,0 +1,30 @@
+<div class="flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" style="background: var(--background)">
+    <div class="register-box flex flex-col w-full border rounded-md">
+        <div class="flex items-center sticky justify-center p-2 md:p-4 rounded-t-md" style="background: var(--accent);">
+            <div
+                class="tab flex items-center mx-1 md:text-base text-xs"
+                [ngClass]="selectedTab === registrationTabs.LogIn ? 'active' : ''"
+                (click)="switchTab(registrationTabs.LogIn)"
+            >
+                <rmx-icon name="login-circle-line"></rmx-icon>
+                Log In
+            </div>
+            <div
+                class="tab flex items-center md:text-base text-xs"
+                [ngClass]="selectedTab === registrationTabs.Register ? 'active' : ''"
+                (click)="switchTab(registrationTabs.Register)"
+            >
+                <rmx-icon name="user-add-line"></rmx-icon>
+                Register
+            </div>
+        </div>
+        <div class="p-3.5 overflow-y-auto" [ngSwitch]="selectedTab">
+            <ng-container *ngSwitchCase="registrationTabs.LogIn">
+                <dragonfish-login-form (isSuccess)="isSuccess($event)"></dragonfish-login-form>
+            </ng-container>
+            <ng-container *ngSwitchCase="registrationTabs.Register">
+                <dragonfish-register-form (isSuccess)="isSuccess($event)"></dragonfish-register-form>
+            </ng-container>
+        </div>
+    </div>
+</div>

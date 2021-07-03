@@ -36,7 +36,10 @@
         </ng-container>
         <ng-template #login>
             <div class="flex flex-shrink-0 items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
-                <a class="link flex items-center text-sm cursor-pointer" (click)="openAuthModal()">
+                <a
+                    class="link flex items-center text-sm cursor-pointer"
+                    [routerLink]="['/registration']"
+                >
                     <span class="link-icon mr-1"><rmx-icon name="login-circle-line"></rmx-icon></span>
                     <span>Log In</span>
                 </a>
