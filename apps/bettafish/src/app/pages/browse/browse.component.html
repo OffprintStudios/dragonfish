@@ -3,8 +3,10 @@
         <rmx-icon name="compass-3-line"></rmx-icon>
         <h3>Browse</h3>
     </div>
-    <div class="topbar-tools">
-        <div class="flex-1"><!--spacer--></div>
+</dragonfish-topbar>
+
+<div class="flex" style="height: calc(100vh - 52px);">
+    <dragonfish-pagebar>
         <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
             <dragonfish-text-field
                 [formControlName]="'query'"
@@ -14,11 +16,7 @@
                 [searchBox]="true"
             ></dragonfish-text-field>
         </form>
-    </div>
-</dragonfish-topbar>
-
-<div class="flex" style="height: calc(100vh - 52px);">
-    <dragonfish-pagebar>
+        <div class="my-2 border-b w-full border-white"><!--spacer--></div>
         <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
             <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
         </a>

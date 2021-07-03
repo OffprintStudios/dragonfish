@@ -38,14 +38,11 @@ div.search-field {
         border: 1px solid transparent;
         background: var(--accent-light);
         color: white;
-        @apply text-sm rounded-full py-1 px-2 w-40;
+        @apply text-base rounded-full py-1.5 px-2 w-full;
         &:focus {
             --tw-ring-color: var(--accent);
             border: 1px solid whitesmoke;
-            @apply w-64 shadow-md transition-all;
-            @media (max-width: 1020px) {
-                @apply w-56
-            }
+            @apply shadow-md transition-all;
         }
         &:not(:focus) {
             @apply transition-all;
