@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 enum RegistrationTabs {
     LogIn,
@@ -15,7 +16,7 @@ export class RegistrationComponent {
     registrationTabs = RegistrationTabs;
     selectedTab = RegistrationTabs.LogIn;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private location: Location) {}
 
     switchTab(newTab: RegistrationTabs) {
         this.selectedTab = newTab;
@@ -27,5 +28,9 @@ export class RegistrationComponent {
                 console.log(err);
             });
         }
+    }
+
+    goBack() {
+        this.location.back();
     }
 }
