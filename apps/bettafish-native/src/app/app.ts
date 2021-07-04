@@ -111,7 +111,7 @@ export default class App {
                     pathname: join(__dirname, '..', rendererAppName, 'index.html'),
                     protocol: 'file:',
                     slashes: true,
-                })
+                }),
             );
         }
     }

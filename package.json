@@ -158,7 +158,7 @@
     "cross-env": "^7.0.3",
     "cypress": "^6.0.1",
     "dotenv": "8.2.0",
-    "electron": "^11.3.0",
+    "electron": "^13.1.5",
     "eslint": "7.22.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",

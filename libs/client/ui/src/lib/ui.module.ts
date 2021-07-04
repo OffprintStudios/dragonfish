@@ -14,6 +14,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { TabsModule } from 'ngx-tabset';
 import { DynamicViewModule } from '@ngneat/overview';
 import { TeleportModule } from '@ngneat/overview';
+import { NgxElectronModule } from 'ngx-electron';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -89,6 +90,7 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         TabsModule,
         DynamicViewModule,
         TeleportModule,
+        NgxElectronModule,
     ],
     exports: [
         RatingIconComponent,
