@@ -7,6 +7,8 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { QuillModule } from 'ngx-quill';
+import * as QuillNamespace from 'quill';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
