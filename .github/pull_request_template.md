@@ -13,18 +13,21 @@ Addresses ticket #
 - [ ] Registration
 - [ ] Settings
 
+.
 - [ ] Profile
 - [ ] My Stuff (main page)
 - [ ] Editor
 - [ ] Browse
 - [ ] Work Card
 
+.
 - [ ] Work Page
 - [ ] Blog Page
 - [ ] Collections
 - [ ] Comments
 - [ ] Other Pages
 
+.
 - [ ] Account Authentication
 - [ ] Dashboard
 - [ ] Mobile
