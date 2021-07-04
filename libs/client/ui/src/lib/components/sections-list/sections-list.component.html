@@ -21,7 +21,8 @@
                             [matTooltipClass]="'offprint-tooltip'"
                         >
                                 <i-feather name="calendar"></i-feather>
-                            {{ section.audit.publishedOn | localedate: 'mediumDate' }}
+                            <ng-container *ngIf="section.audit.publishedOn; else createdAt"> {{ section.audit.publishedOn | localedate: 'mediumDate' }} </ng-container>
+                            <ng-template #createdAt> {{ section.createdAt | localedate: 'mediumDate' }} </ng-template>
                             </span>
                     </div>
                     <div class="section-button">
