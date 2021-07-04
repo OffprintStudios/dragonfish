@@ -13,3 +13,10 @@ a.link {
         }
     }
 }
+
+div.traffic-lights {
+    @apply flex items-center py-3.5;
+    div.light {
+
+    }
+}

@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isAllowed } from '@dragonfish/shared/functions';
-import { ElectronService } from 'ngx-electron';
-import { ipcMain, ipcRenderer } from 'electron';
+import { DragonfishElectronService } from '@dragonfish/client/services';
 
 @Component({
     selector: 'dragonfish-sidebar',
@@ -11,15 +10,9 @@ import { ipcMain, ipcRenderer } from 'electron';
     styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-    isElectron = false;
-    isMacOs = false;
-    isWindows = false;
-
-    constructor(public sessionQuery: SessionQuery, public electron: ElectronService) {}
+    constructor(public sessionQuery: SessionQuery, public electron: DragonfishElectronService) {}
 
     canSeeDash(userRoles: Roles[]) {
         return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
     }
-
-    detectElectron() {}
 }

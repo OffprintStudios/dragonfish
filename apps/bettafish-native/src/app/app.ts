@@ -69,12 +69,14 @@ export default class App {
             minWidth: minWidth,
             minHeight: minHeight,
             show: false,
-            titleBarStyle: 'hiddenInset',
+            titleBarStyle: 'hidden',
+            trafficLightPosition: { x: 7, y: 10 },
             icon: join(__dirname, './assets/icons/mac/icon.icns'),
             webPreferences: {
                 enableRemoteModule: true,
-                contextIsolation: true,
+                contextIsolation: false,
                 backgroundThrottling: false,
+                nodeIntegration: true,
                 preload: join(__dirname, 'preload.js'),
             },
         });
