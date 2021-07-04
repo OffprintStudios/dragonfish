@@ -16,7 +16,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentModel, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';

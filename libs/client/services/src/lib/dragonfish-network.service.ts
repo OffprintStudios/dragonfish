@@ -544,10 +544,10 @@ export class DragonfishNetworkService {
 
     /**
      * Adds a comment.
-     * @param itemId 
-     * @param kind 
-     * @param commentInfo 
-     * @returns 
+     * @param itemId
+     * @param kind
+     * @param commentInfo
+     * @returns
      */
     public addComment(itemId: string, kind: CommentKind, commentInfo: CommentForm) {
         return handleResponse(
@@ -560,9 +560,9 @@ export class DragonfishNetworkService {
 
     /**
      * Fetches a new page of comments
-     * @param contentId 
-     * @param pageNum 
-     * @returns 
+     * @param contentId
+     * @param pageNum
+     * @returns
      */
     public fetchComments(itemId: string, kind: CommentKind, pageNum: number) {
         return handleResponse(
@@ -713,6 +713,7 @@ export class DragonfishNetworkService {
             }),
         );
     }
+
     //#endregion
 
     //#region ---COVER ART & AVATARS---

@@ -12750,12 +12750,12 @@ ngx-pagination@^5.0.0:
   resolved "https://registry.yarnpkg.com/ngx-pagination/-/ngx-pagination-5.1.0.tgz#b09ad72c20283b392fb9ea457ec2d4825e149358"
   integrity sha512-GDI5GwmYIaeLu3hW3tgdIw/LXOzLj05PjVhtf2Ze63QsJ6zhZ7g5tg6S4EhhuUOdbMdXWyOng/uMVZwbYpi0Eg==
 
-ngx-quill@12.0.1:
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-12.0.1.tgz#a35cc65519d3626f593f4f94888fdb1f697cd940"
-  integrity sha512-XSyj1ABpfdoIsRguV4vCemOUU0VnDeISBtF6O6XU11AUYSSP1Eh58x0ct2SEJuNIW/qruEGexQvLAYHkuA6+Xw==
+ngx-quill@14.1.2:
+  version "14.1.2"
+  resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-14.1.2.tgz#302ffce53a0e3e28700acb29ab9f73225f998a60"
+  integrity sha512-pmBm2WCdwp3dClu/a56Rh1H6WxoeWRAm8y+h5B+iI5C80irw7cyb2hY5RtdVZkXrKQspNkpvh3z6ZjSyyyybfQ==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.2.0"
 
 ngx-tabset@^2.2.0:
   version "2.2.0"

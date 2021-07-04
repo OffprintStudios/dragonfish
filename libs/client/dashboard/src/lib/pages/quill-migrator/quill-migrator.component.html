@@ -1,0 +1,16 @@
+<div class="quill-migrator-container">
+    <div class="old-work-list">
+        <ul>
+            <li *ngFor="let content of contentData">
+                <h2>{{content.title}}</h2>
+                <ul>
+                    <li *ngFor="let sec of content.sections">
+                        <h4>{{sec.title}}</h4>
+                        <p>{{sec.body}}</p>
+                        <button (click)="onSectionView(sec)">View</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

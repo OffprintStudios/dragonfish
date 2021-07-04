@@ -1,0 +1,13 @@
+div.quill-migrator-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    div.old-work-list {
+        width: 91.666667%;
+        margin: 0 auto 0 auto;
+
+        h2 {
+            font-size: 2.25rem;
+        }
+    }
+}

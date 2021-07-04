@@ -8,7 +8,6 @@ import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { QuillModule } from 'ngx-quill';
-import * as QuillNamespace from 'quill';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -23,6 +22,7 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
@@ -41,6 +41,7 @@ import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './compon
         UsersManagementComponent,
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
+        QuillMigratorComponent,
     ],
     imports: [
         CommonModule,
@@ -51,6 +52,9 @@ import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './compon
         UiModule,
         NgxPaginationModule,
         PipesModule,
+        QuillModule.forRoot({
+            format: 'json'
+        }),
     ],
 })
 export class DashboardModule {}
