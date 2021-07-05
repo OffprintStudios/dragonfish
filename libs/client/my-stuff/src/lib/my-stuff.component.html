@@ -1,61 +1,41 @@
 <ng-container *ngIf="route.children.length === 0">
     <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
-        <div class="my-stuff-nav shadow-lg relative sticky top-0 z-40">
-            <div class="mx-8 py-4">
-                <div class="flex flex-row items-center">
-                    <i-feather name="hard-drive" class="text-white relative mr-2"></i-feather>
-                    <h3 class="text-3xl text-white relative font-medium top-1">
-                        My Stuff
-                    </h3>
-                    <div class="flex-1"><!--spacer--></div>
-                    <button
-                        class="border-none shadow-none rounded-full px-2 py-1.5"
-                        [ngClass]="createMenuOpened ? 'active': ''"
-                        [matMenuTriggerFor]="createMenu"
-                        (menuOpened)="toggleCreateMenu()"
-                        (menuClosed)="toggleCreateMenu()"
-                    >
-                        <i-feather name="loader" class="text-white relative top-0.5"></i-feather>
-                        <span class="text-white ml-1">Create</span>
-                    </button>
-                    <div class="text-white mx-1.5 select-none cursor-default">|</div>
-                    <button
-                        class="border-none shadow-none rounded-full px-2 py-1.5"
-                        [ngClass]="isIconView ? '' : 'active'"
-                    >
-                        <i-feather name="list" class="text-white relative top-0.5"></i-feather>
-                    </button>
-                    <button
-                        class="border-none shadow-none rounded-full px-2 py-1.5"
-                        [ngClass]="isIconView ? 'active' : ''"
-                    >
-                        <i-feather name="grid" class="text-white relative top-0.5"></i-feather>
-                    </button>
-                    <div class="text-white mx-1.5 select-none cursor-default">|</div>
-                    <button
-                        class="border-none shadow-none rounded-full px-2 py-1.5"
-                        [ngClass]="filterMenuOpened ? 'active': ''"
-                        [matMenuTriggerFor]="filterMenu"
-                        (menuOpened)="toggleFilterMenu()"
-                        (menuClosed)="toggleFilterMenu()"
-                    >
-                        <i-feather name="filter" class="text-white relative top-0.5"></i-feather>
-                    </button>
-                    <div class="mx-1.5"><!--spacer--></div>
-                    <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-                        <dragonfish-text-field
-                            [formControlName]="'query'"
-                            [name]="'query'"
-                            [type]="'text'"
-                            [placeholder]="'Search...'"
-                            [searchBox]="true"
-                        ></dragonfish-text-field>
-                    </form>
-                </div>
+        <dragonfish-topbar>
+            <div class="topbar-header">
+                <rmx-icon name="hard-drive-2-line"></rmx-icon>
+                <h3>My Stuff</h3>
             </div>
-        </div>
+            <div class="topbar-tools">
+                <div class="flex-1"></div>
+                <button
+                    [ngClass]="createMenuOpened ? 'active': ''"
+                    [matMenuTriggerFor]="createMenu"
+                    (menuOpened)="toggleCreateMenu()"
+                    (menuClosed)="toggleCreateMenu()"
+                >
+                    <rmx-icon name="loader-2-line"></rmx-icon>
+                    Create
+                </button>
+                <div class="text-white mx-1.5 select-none cursor-default">|</div>
+                <button [ngClass]="isIconView ? '' : 'active'">
+                    <rmx-icon name="list-unordered" class="no-text"></rmx-icon>
+                </button>
+                <button [ngClass]="isIconView ? 'active' : ''">
+                    <rmx-icon name="layout-grid-fill" class="no-text"></rmx-icon>
+                </button>
+                <div class="text-white mx-1.5 select-none cursor-default">|</div>
+                <button
+                    [ngClass]="filterMenuOpened ? 'active': ''"
+                    [matMenuTriggerFor]="filterMenu"
+                    (menuOpened)="toggleFilterMenu()"
+                    (menuClosed)="toggleFilterMenu()"
+                >
+                    <rmx-icon name="filter-line" class="no-text"></rmx-icon>
+                </button>
+            </div>
+        </dragonfish-topbar>
 
-        <mat-menu #createMenu="matMenu">
+        <mat-menu #createMenu="matMenu" xPosition="before">
             <button mat-menu-item (click)="createContent(contentKind.ProseContent)">
                 <i-feather name="book-open"></i-feather>Add Prose
             </button>
@@ -72,7 +52,7 @@
             </button>
         </mat-menu>
 
-        <mat-menu #filterMenu="matMenu">
+        <mat-menu #filterMenu="matMenu" xPosition="before">
             <button mat-menu-item>All</button>
             <button mat-menu-item>Published</button>
             <button mat-menu-item>Unpublished</button>
@@ -83,11 +63,28 @@
 </ng-container>
 
 <ng-container *ngIf="route.children.length === 0; else openedView">
-    <dragonfish-content-page></dragonfish-content-page>
+    <div class="flex" style="height: calc(100vh - 52px);">
+        <dragonfish-pagebar>
+            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+                <dragonfish-text-field
+                    [formControlName]="'query'"
+                    [name]="'query'"
+                    [type]="'text'"
+                    [placeholder]="'Search...'"
+                    [searchBox]="true"
+                ></dragonfish-text-field>
+            </form>
+            <div class="my-2 border-b w-full border-white"><!--spacer--></div>
+            <a [routerLink]="['/my-stuff']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>Home
+            </a>
+        </dragonfish-pagebar>
+        <div class="w-full overflow-y-auto">
+            <dragonfish-content-page></dragonfish-content-page>
+        </div>
+    </div>
 </ng-container>
 
 <ng-template #openedView>
-    <div class="mb-8">
-        <router-outlet></router-outlet>
-    </div>
+    <router-outlet></router-outlet>
 </ng-template>

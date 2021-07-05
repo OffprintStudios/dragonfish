@@ -64,6 +64,9 @@ import {
     RiInboxLine,
     RiSunLine,
     RiNewspaperLine,
+    RiLoader2Line,
+    RiLayoutGridFill,
+    RiFilterLine,
 } from 'angular-remix-icon';
 
 import {
@@ -345,6 +348,9 @@ const remixIcons = {
     RiInboxLine,
     RiSunLine,
     RiNewspaperLine,
+    RiLoader2Line,
+    RiLayoutGridFill,
+    RiFilterLine,
 };
 
 @NgModule({
