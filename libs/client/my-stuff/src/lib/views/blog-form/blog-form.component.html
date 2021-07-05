@@ -1,84 +1,87 @@
-<ng-container *ngIf="stuffQuery.current$ | async as currBlog; else createMode">
-    <div class="form-nav relative sticky top-0 z-40">
-        <div class="mx-6 flex flex-row items-center py-4">
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
-                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
-            </button>
-            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
-            <div class="flex-1"><!--spacer--></div>
+<dragonfish-topbar>
+    <div class="topbar-header">
+        <a [routerLink]="['/my-stuff']"><rmx-icon name="arrow-left-s-line"></rmx-icon></a>
+        <h3>{{ formTitle }}</h3>
+    </div>
+    <div class="topbar-tools">
+        <div class="flex-1"></div>
+        <ng-container *ngIf="stuffQuery.current$ | async as currBlog; else createModeTools">
             <ng-container [ngSwitch]="currBlog.audit.published">
                 <button
                     *ngSwitchCase="pubStatus.Published"
-                    class="border-none shadow-none rounded-full px-2 py-1.5"
                     (click)="publish(currBlog)"
                 >
-                    <i-feather name="check-circle" class="text-white relative top-0.5"></i-feather>
-                    <span class="ml-1">Published</span>
+                    <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                    Published
                 </button>
                 <button
                     *ngSwitchCase="pubStatus.Unpublished"
-                    class="border-none shadow-none rounded-full px-2 py-1.5"
                     (click)="publish(currBlog)"
                 >
-                    <i-feather name="circle" class="text-white relative top-0.5"></i-feather>
-                    <span class="ml-1">Unpublished</span>
+                    <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                    Unpublished
                 </button>
             </ng-container>
             <ng-container *ngIf="editMode; else previewSave">
                 <button
-                    class="border-none shadow-none rounded-full px-2 py-1.5"
                     [matTooltip]="'Save'"
                     [matTooltipClass]="'offprint-tooltip'"
                     [matTooltipShowDelay]="600"
                     (click)="submitForm(currBlog._id)"
                 >
-                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    Save
                 </button>
             </ng-container>
             <ng-template #previewSave>
                 <button
-                    class="border-none shadow-none rounded-full px-2 py-1.5 disabled"
                     [matTooltip]="'Save'"
                     [matTooltipClass]="'offprint-tooltip'"
                     [matTooltipShowDelay]="600"
                 >
-                    <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    Save
                 </button>
             </ng-template>
             <div class="text-white mx-1.5 select-none cursor-default">|</div>
             <button
-                class="border-none shadow-none rounded-full px-2 py-1.5"
                 [matTooltip]="'Preview'"
                 [matTooltipClass]="'offprint-tooltip'"
                 [matTooltipShowDelay]="600"
                 [ngClass]="{ active: !editMode }"
                 (click)="switchView()"
             >
-                <i-feather name="eye" class="text-white relative top-0.5"></i-feather>
+                <rmx-icon name="eye-line" class="no-text"></rmx-icon>
             </button>
             <button
-                class="border-none shadow-none rounded-full px-2 py-1.5"
                 [matTooltip]="'Edit'"
                 [matTooltipClass]="'offprint-tooltip'"
                 [matTooltipShowDelay]="600"
                 [ngClass]="{ active: editMode }"
                 (click)="switchView()"
             >
-                <i-feather name="edit-3" class="text-white relative top-0.5"></i-feather>
+                <rmx-icon name="edit-line" class="no-text"></rmx-icon>
             </button>
             <div class="text-white mx-1.5 select-none cursor-default">|</div>
             <button
-                class="border-none shadow-none rounded-full px-2 py-1.5"
                 [matTooltip]="'Delete'"
                 [matTooltipClass]="'offprint-tooltip'"
                 [matTooltipShowDelay]="600"
                 (click)="deleteContent(currBlog)"
             >
-                <i-feather name="trash-2" class="text-white relative top-0.5"></i-feather>
+                <rmx-icon name="delete-bin-2-line" class="no-text"></rmx-icon>
             </button>
-        </div>
+        </ng-container>
+        <ng-template #createModeTools>
+            <button class="border-none shadow-none rounded-full px-2 py-1.5"  (click)="submitForm()">
+                <rmx-icon name="save-3-line"></rmx-icon>
+                Save
+            </button>
+        </ng-template>
     </div>
+</dragonfish-topbar>
 
+<ng-container *ngIf="stuffQuery.current$ | async as currBlog; else createMode">
     <div class="w-8/12 mx-auto">
         <ng-container *ngIf="editMode; else previewBlog">
             <form [formGroup]="blogForm" *ngIf="editMode">
@@ -115,10 +118,10 @@
                         <div>
                             <div class="tag">{{ currBlog.audit.publishedOn | localedate: 'fullDate' }}</div>
                             <div class="separator">//</div>
-                            <div class="tag" title="Views"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</div>
+                            <div class="tag" title="Views"><rmx-icon name="eye-line"></rmx-icon>{{ currBlog.stats.views }}</div>
                             <div class="separator">//</div>
                             <div class="tag" title="Comments">
-                                <i-feather name="message-circle"></i-feather>{{ currBlog.stats.comments }}
+                                <rmx-icon name="chat-3-line"></rmx-icon>{{ currBlog.stats.comments }}
                             </div>
                         </div>
                     </div>
@@ -132,19 +135,6 @@
 </ng-container>
 
 <ng-template #createMode>
-    <div class="form-nav relative sticky top-0 z-40">
-        <div class="mx-6 flex flex-row items-center py-4">
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
-                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
-            </button>
-            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
-            <div class="flex-1"><!--spacer--></div>
-            <button class="border-none shadow-none rounded-full px-2 py-1.5"  (click)="submitForm()">
-                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
-            </button>
-        </div>
-    </div>
-
     <div class="w-8/12 mx-auto">
         <form [formGroup]="blogForm">
             <div class="grid grid-cols-2 gap-4">
