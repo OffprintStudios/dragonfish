@@ -64,6 +64,17 @@ import {
     RiInboxLine,
     RiSunLine,
     RiNewspaperLine,
+    RiLoader2Line,
+    RiLayoutGridFill,
+    RiFilterLine,
+    RiCheckboxBlankCircleLine,
+    RiCheckboxCircleLine,
+    RiSave3Line,
+    RiEditLine,
+    RiDeleteBin2Line,
+    RiGlobalLine,
+    RiTimeLine,
+    RiCloseCircleLine,
 } from 'angular-remix-icon';
 
 import {
@@ -345,6 +356,17 @@ const remixIcons = {
     RiInboxLine,
     RiSunLine,
     RiNewspaperLine,
+    RiLoader2Line,
+    RiLayoutGridFill,
+    RiFilterLine,
+    RiCheckboxBlankCircleLine,
+    RiCheckboxCircleLine,
+    RiSave3Line,
+    RiEditLine,
+    RiDeleteBin2Line,
+    RiGlobalLine,
+    RiTimeLine,
+    RiCloseCircleLine,
 };
 
 @NgModule({

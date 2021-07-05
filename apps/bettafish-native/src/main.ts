@@ -27,6 +27,7 @@ export default class Main {
 }
 
 // handle setup events as quickly as possible
+require('@electron/remote/main').initialize();
 Main.initialize();
 
 // bootstrap app

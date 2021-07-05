@@ -117,6 +117,9 @@ a.button {
         position: relative;
         top: 0.25rem;
         margin-right: 0.275rem;
+        &.no-text {
+            margin-right: 0;
+        }
     }
     i-feather {
         width: 16px !important;
@@ -210,6 +213,15 @@ div.topbar-header {
 }
 div.topbar-tools {
     @apply flex items-center px-2.5 w-full;
+    button {
+        @apply border-none text-white shadow-none rounded-md px-2 py-1.5;
+        &:hover, &.active {
+            background: var(--accent-light);
+        }
+        rmx-icon {
+            @apply relative top-1;
+        }
+    }
 }
 
 /* Offprint Pagebar */

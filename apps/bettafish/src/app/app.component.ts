@@ -5,6 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AppQuery } from '@dragonfish/client/repository/app';
+import { DragonfishElectronService } from '@dragonfish/client/services';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
         private router: Router,
         public sessionQuery: SessionQuery,
         private appQuery: AppQuery,
+        public electron: DragonfishElectronService,
     ) {
         this.onResize();
     }
