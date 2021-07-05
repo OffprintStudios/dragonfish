@@ -1,217 +1,116 @@
-<ng-container *ngIf="stuffQuery.current$ | async as currPoetry; else creationForm">
-    <div class="form-nav relative sticky top-0 z-40">
-        <div class="mx-6 flex flex-row items-center py-4">
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
-                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
-            </button>
-            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
-            <div class="flex-1"><!--spacer--></div>
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm(currPoetry._id)">
-                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
-            </button>
-        </div>
+<dragonfish-topbar>
+    <div class="topbar-header">
+        <a class="cursor-pointer" (click)="goBack()"><rmx-icon name="arrow-left-s-line"></rmx-icon></a>
+        <h3>{{ formTitle }}</h3>
     </div>
-
-    <div class="w-8/12 mx-auto">
-        <form [formGroup]="poetryForm">
-            <dragonfish-text-field
-                [formControlName]="'title'"
-                [name]="'title'"
-                [type]="'text'"
-                [label]="'Title'"
-                [placeholder]="'There\'s Something I Gotta Say...'"
-            ></dragonfish-text-field>
-
-            <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <div class="offprint-select">
-                        <label>Category</label>
-                        <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
-                            <ng-option *ngFor="let category of categories | keyvalue" [value]="category.key">
-                                {{ category.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Form</label>
-                        <ng-select class="custom" [formControlName]="'form'" [searchable]="false" [placeholder]="'Select a Form'">
-                            <ng-option *ngFor="let form of forms | keyvalue" [value]="form.key">
-                                {{ form.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Genre(s)</label>
-                        <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
-                            <ng-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">
-                                {{ genre.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-            </div>
-
-            <ng-container *ngIf="isCollection; else isSingle">
-                <dragonfish-text-field
-                    [formControlName]="'desc'"
-                    [name]="'desc'"
-                    [type]="'text'"
-                    [label]="'Short Description'"
-                    [placeholder]="'One of the best things never told'"
-                ></dragonfish-text-field>
-
-                <label>Long Description</label>
-            </ng-container>
-
-            <ng-template #isSingle>
-                <dragonfish-text-field
-                    [formControlName]="'desc'"
-                    [name]="'desc'"
-                    [type]="'text'"
-                    [label]="'Description'"
-                    [placeholder]="'One of the best things never told'"
-                ></dragonfish-text-field>
-
-                <label>Poem</label>
-            </ng-template>
-            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <div class="offprint-select">
-                        <label>Rating</label>
-                        <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
-                            <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
-                                {{ rating.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Status</label>
-                        <ng-select class="custom" [formControlName]="'status'" [searchable]="false" [placeholder]="'Select a Status'">
-                            <ng-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
-                                {{ status.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-</ng-container>
-
-<ng-template #creationForm>
-    <div class="form-nav relative sticky top-0 z-40">
-        <div class="mx-6 flex flex-row items-center py-4">
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="goBack()">
-                <i-feather name="chevron-left" class="text-white relative top-0.5"></i-feather>
+    <div class="topbar-tools">
+        <div class="flex-1"></div>
+        <ng-container *ngIf="stuffQuery.current$ | async as currPoetry; else createForm">
+            <button (click)="submitForm(currPoetry._id)">
+                <rmx-icon name="save-3-line"></rmx-icon>
+                Save
             </button>
-            <h3 class="text-3xl font-medium text-white relative top-1">{{ formTitle }}</h3>
-            <div class="flex-1"><!--spacer--></div>
-            <button class="border-none shadow-none rounded-full px-2 py-1.5" (click)="submitForm()">
-                <i-feather name="save" class="text-white relative top-0.5"></i-feather><span class="ml-2">Save</span>
+        </ng-container>
+        <ng-template #createForm>
+            <button (click)="submitForm()">
+                <rmx-icon name="save-3-line"></rmx-icon>
+                Save
             </button>
             <div class="text-white mx-1.5 select-none cursor-default">|</div>
             <dragonfish-toggle [(ngModel)]="isCollection">Collection</dragonfish-toggle>
-        </div>
+        </ng-template>
     </div>
+</dragonfish-topbar>
 
-    <div class="w-8/12 mx-auto">
-        <form [formGroup]="poetryForm">
+<div class="w-8/12 mx-auto">
+    <form [formGroup]="poetryForm">
+        <dragonfish-text-field
+            [formControlName]="'title'"
+            [name]="'title'"
+            [type]="'text'"
+            [label]="'Title'"
+            [placeholder]="'There\'s Something I Gotta Say...'"
+        ></dragonfish-text-field>
+
+        <div class="grid grid-cols-3 gap-4">
+            <div>
+                <div class="offprint-select">
+                    <label>Category</label>
+                    <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
+                        <ng-option *ngFor="let category of categories | keyvalue" [value]="category.key">
+                            {{ category.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div>
+                <div class="offprint-select">
+                    <label>Form</label>
+                    <ng-select class="custom" [formControlName]="'form'" [searchable]="false" [placeholder]="'Select a Form'">
+                        <ng-option *ngFor="let form of forms | keyvalue" [value]="form.key">
+                            {{ form.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+            <div>
+                <div class="offprint-select">
+                    <label>Genre(s)</label>
+                    <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
+                        <ng-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">
+                            {{ genre.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+
+        <ng-container *ngIf="isCollection; else isSingle">
             <dragonfish-text-field
-                [formControlName]="'title'"
-                [name]="'title'"
+                [formControlName]="'desc'"
+                [name]="'desc'"
                 [type]="'text'"
-                [label]="'Title'"
-                [placeholder]="'There\'s Something I Gotta Say...'"
+                [label]="'Short Description'"
+                [placeholder]="'One of the best things never told'"
             ></dragonfish-text-field>
 
-            <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <div class="offprint-select">
-                        <label>Category</label>
-                        <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
-                            <ng-option *ngFor="let category of categories | keyvalue" [value]="category.key">
-                                {{ category.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Form</label>
-                        <ng-select class="custom" [formControlName]="'form'" [searchable]="false" [placeholder]="'Select a Form'">
-                            <ng-option *ngFor="let form of forms | keyvalue" [value]="form.key">
-                                {{ form.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Genres</label>
-                        <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
-                            <ng-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">
-                                {{ genre.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
+            <label>Long Description</label>
+        </ng-container>
+
+        <ng-template #isSingle>
+            <dragonfish-text-field
+                [formControlName]="'desc'"
+                [name]="'desc'"
+                [type]="'text'"
+                [label]="'Description'"
+                [placeholder]="'One of the best things never told'"
+            ></dragonfish-text-field>
+
+            <label>Poem</label>
+        </ng-template>
+        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <div class="offprint-select">
+                    <label>Rating</label>
+                    <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
+                        <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
+                            {{ rating.value }}
+                        </ng-option>
+                    </ng-select>
                 </div>
             </div>
-
-            <ng-container *ngIf="isCollection; else isSingle">
-                <dragonfish-text-field
-                    [formControlName]="'desc'"
-                    [name]="'desc'"
-                    [type]="'text'"
-                    [label]="'Short Description'"
-                    [placeholder]="'One of the best things never told'"
-                ></dragonfish-text-field>
-
-                <label>Long Description</label>
-            </ng-container>
-
-            <ng-template #isSingle>
-                <dragonfish-text-field
-                    [formControlName]="'desc'"
-                    [name]="'desc'"
-                    [type]="'text'"
-                    [label]="'Description'"
-                    [placeholder]="'One of the best things never told'"
-                ></dragonfish-text-field>
-
-                <label>Poem</label>
-            </ng-template>
-            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <div class="offprint-select">
-                        <label>Rating</label>
-                        <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
-                            <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
-                                {{ rating.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
-                </div>
-                <div>
-                    <div class="offprint-select">
-                        <label>Status</label>
-                        <ng-select class="custom" [formControlName]="'status'" [searchable]="false" [placeholder]="'Select a Status'">
-                            <ng-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
-                                {{ status.value }}
-                            </ng-option>
-                        </ng-select>
-                    </div>
+            <div>
+                <div class="offprint-select">
+                    <label>Status</label>
+                    <ng-select class="custom" [formControlName]="'status'" [searchable]="false" [placeholder]="'Select a Status'">
+                        <ng-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                            {{ status.value }}
+                        </ng-option>
+                    </ng-select>
                 </div>
             </div>
-        </form>
-    </div>
-</ng-template>
+        </div>
+    </form>
+</div>
