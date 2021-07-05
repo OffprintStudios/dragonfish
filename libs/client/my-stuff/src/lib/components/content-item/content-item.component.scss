@@ -25,7 +25,7 @@ div.content-box {
         border-top: 1px solid var(--borders);
         background: var(--background);
 
-        i-feather {
+        rmx-icon {
             position: relative;
             width: 16px;
             top: 0.2rem;
@@ -40,7 +40,7 @@ div.content-box {
             margin: 0 0.15rem 0 0.15rem;
             top: 0.35rem;
             @apply select-none cursor-default;
-            i-feather.stat-icon {
+            rmx-icon.stat-icon {
                 margin-left: 0.15rem;
                 margin-right: 0.15rem;
             }
@@ -57,7 +57,7 @@ div.content-box {
         p {
             color: var(--text-color);
         }
-        i-feather {
+        rmx-icon {
             position: relative;
             width: 100px;
             top: 20%;
@@ -102,7 +102,7 @@ div.content-box {
             text-overflow: ellipsis;
             color: whitesmoke;
         }
-        i-feather {
+        rmx-icon {
             display: inline-block;
             vertical-align: middle;
             margin-right: 0.5rem;

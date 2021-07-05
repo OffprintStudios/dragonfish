@@ -72,6 +72,9 @@ import {
     RiSave3Line,
     RiEditLine,
     RiDeleteBin2Line,
+    RiGlobalLine,
+    RiTimeLine,
+    RiCloseCircleLine,
 } from 'angular-remix-icon';
 
 import {
@@ -361,6 +364,9 @@ const remixIcons = {
     RiSave3Line,
     RiEditLine,
     RiDeleteBin2Line,
+    RiGlobalLine,
+    RiTimeLine,
+    RiCloseCircleLine,
 };
 
 @NgModule({
