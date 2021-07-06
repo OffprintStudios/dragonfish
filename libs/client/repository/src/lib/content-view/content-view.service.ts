@@ -71,6 +71,11 @@ export class ContentViewService {
     }
 
     public fetchNextComments(contentId: string, page: number) {
+        // As a temporary solution, reloads the page; original code below
+        location.reload();
+
+        // Inexplicably, this.network.fetchComments() doesn't return any Observables
+        // Leaving intact to more easily follow the intended flow, but reload() makes the below pointless
         this.contentView.setLoading(true);
         return this.network.fetchComments(contentId, CommentKind.ContentComment, page).pipe(
             tap((value) => {
