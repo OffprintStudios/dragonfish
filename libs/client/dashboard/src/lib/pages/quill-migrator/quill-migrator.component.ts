@@ -1,7 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ContentModel } from '@dragonfish/shared/models/content';
+import { Section } from '@dragonfish/shared/models/sections';
 import { SectionInfo } from '@dragonfish/shared/models/works';
 
 @Component({
@@ -11,6 +12,8 @@ import { SectionInfo } from '@dragonfish/shared/models/works';
 })
 export class QuillMigratorComponent implements OnInit {
     public contentData: ContentModel[];
+    public currentContent?: ContentModel;
+    public currentSection?: Section;
 
     constructor(public route: ActivatedRoute,
         private readonly networkService: DragonfishNetworkService ) { }
@@ -21,9 +24,9 @@ export class QuillMigratorComponent implements OnInit {
         });
     }
 
-    async onSectionView(sec: SectionInfo): Promise<void> {
-        const sectionInfo = await this.networkService.fetchSection(sec._id).toPromise();
-        console.log(`SectionInfo: ${sectionInfo.body}`);
+    async onSectionView(sec: SectionInfo, content: ContentModel): Promise<void> {
+        this.currentContent = content;
+        this.currentSection = await this.networkService.fetchSection(sec._id).toPromise();
     }
 
 }
