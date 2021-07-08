@@ -26,6 +26,7 @@ import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.co
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+import { OldDataService } from './pages/quill-migrator/old-data-service';
 
 @NgModule({
     declarations: [
@@ -56,5 +57,6 @@ import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './compon
             format: 'json'
         }),
     ],
+    providers: [ OldDataService ],
 })
 export class DashboardModule {}

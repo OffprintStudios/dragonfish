@@ -8,16 +8,19 @@ h4 {
     font-size: 1.1rem;
 }
 button {
-    padding: 5px;
-    font-size: 12px;
+    &:hover{
+        h4 {
+            color: white;
+        }
+    }
 }
 
 .bg-nav {
     background-color: var(--nav-background);
 }
 
-.h-full-minus-120 {
-    height: calc(100% - 120px);
+.h-full-minus-110 {
+    height: calc(100% - 130px);
 }
 
 quill-view {
