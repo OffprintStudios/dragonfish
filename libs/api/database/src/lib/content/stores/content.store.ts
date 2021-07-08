@@ -508,29 +508,6 @@ export class ContentStore {
         return await this.proseContent.migrateWork(user, formData);
     }
 
-    // const work = await this.content.findOne(
-    //     { _id: contentId, author: user.sub, 'audit.isDeleted': false },
-    //     { autopopulate: false }
-    // );
-
-    // if (isNullOrUndefined(work)) {
-    //     throw new UnauthorizedException(`You don't have permission to do that.`);
-    // } else {
-    //     const sec: SectionsDocument = await this.sectionsStore.editSection(sectionId, sectionInfo);
-    //     if (sec.published === true) {
-    //         await this.content.updateOne(
-    //             { _id: contentId, author: user.sub, 'audit.isDeleted': false },
-    //             { $inc: { 'stats.words': -sectionInfo.oldWords } }
-    //         );
-    //         await this.content.updateOne(
-    //             { _id: contentId, author: user.sub, 'audit.isDeleted': false },
-    //             { $inc: { 'stats.words': sec.stats.words } }
-    //         );
-    //     }
-
-    //     return sec;
-    // }
-
     // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
     async migrateQuillContent(
         authorId: string,

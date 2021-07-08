@@ -7,7 +7,7 @@ import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CreatePoetry } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
-import { ContentDocument, PoetryContentDocument } from '../schemas';
+import { PoetryContentDocument } from '../schemas';
 import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
