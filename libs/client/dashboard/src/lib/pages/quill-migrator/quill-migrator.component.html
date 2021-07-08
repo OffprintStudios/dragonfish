@@ -1,4 +1,5 @@
 <div class="grid grid-cols-2 h-full-minus-120">
+
     <!-- Left panel -->
     <div class="overflow-y-auto mx-5 mt-5">
         <div *ngFor="let content of contentData"
@@ -13,16 +14,27 @@
                         <h4>{{sec.title}}</h4>
                         <div class="ml-10 justify-self-end">Updated: {{sec.updatedAt}}</div>
                     </div>
-                    <button (click)="onSectionView(sec, content)">View</button>
+                    <button (click)="onViewSectionClick(sec, content)">View</button>
                 </li>
             </ul>
         </div>
     </div>
+
     <!-- Right panel -->
     <div class="overflow-y-auto mx-5 mt-5">
         <h2>Currently viewing: {{ currentContent?.title}}</h2>
         <h3>{{ currentSection?.title}}</h3>
-        <quill-view [content]="currentSection?.body" ></quill-view>
-        <button>Do converty things</button>
+        <div class="h-full-minus-120 overflow-y-auto block">
+            <quill-view id="contentView" [content]="currentSection?.body" format="json"></quill-view>
+            <ng-container *ngIf="currentSection?.authorsNote">
+                <quill-view id="authorsNoteView" [content]="currentSection?.authorsNote" format="json"></quill-view>
+            </ng-container>
+        </div>
+        <div class="flex items-center">
+            <button (click)="onConvertClick()">Do converty things</button>
+            <ng-container *ngIf="isConverting">
+                <mat-spinner [diameter]="15"></mat-spinner><span class="ml-2.5">Converting...</span>
+            </ng-container>
+        </div>
     </div>
 </div>

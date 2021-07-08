@@ -19,3 +19,65 @@ button {
 .h-full-minus-120 {
     height: calc(100% - 120px);
 }
+
+quill-view {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-editor {
+            iframe {
+                width: 500px;
+                height: 300px;
+            }
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+            &.ql-blank::before {
+                margin: 1em 0px;
+            }
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+            }
+        }
+    }
+}
+
+quill-view-html {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-edtior.ql-blank::before {
+            margin: 1em 0px;
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+                text-decoration: underline !important;
+            }
+        }
+    }
+}
