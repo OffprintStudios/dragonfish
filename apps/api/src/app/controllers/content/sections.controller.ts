@@ -1,4 +1,4 @@
-import { Controller, Inject, Get, Put, Patch, UseGuards, Query, BadRequestException, Body } from '@nestjs/common';
+import { Controller, Inject, Get, Put, Patch, UseGuards, Query, BadRequestException, Body, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { ISections } from '../../shared/content';
@@ -8,7 +8,7 @@ import { User } from '@dragonfish/api/utilities/decorators';
 import { Roles } from '@dragonfish/shared/models/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
-import { SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
+import { SectionForm, PublishSection, Section } from '@dragonfish/shared/models/sections';
 
 @Controller('sections')
 export class SectionsController {
@@ -91,5 +91,22 @@ export class SectionsController {
         }
 
         return await this.sections.delete(user, contentId, sectionId);
+    }
+
+    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
+    @ApiTags(DragonfishTags.Content)
+    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator]))
+    @Patch('migrate-quill-section')
+    async migrateQuillSection(
+        @Query('authorId') authorId: string,
+        @Query('contentId') contentId: string,
+        @Query('sectionId') sectionId: string,
+        @Body() sectionInfo: SectionForm,
+    ): Promise<Section> {
+        if (isNullOrUndefined(authorId) || isNullOrUndefined(contentId) || isNullOrUndefined(sectionId)) {
+            throw new BadRequestException("Either authorId, contentId or sectionId were null or undefined. 🗞");
+        }
+
+        return await this.sections.migrateQuillSection(authorId, contentId, sectionId, sectionInfo);
     }
 }

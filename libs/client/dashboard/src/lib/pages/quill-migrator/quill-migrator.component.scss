@@ -1,0 +1,86 @@
+h2 {
+    font-size: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1.1rem;
+}
+button {
+    &:hover{
+        h4 {
+            color: white;
+        }
+    }
+}
+
+.bg-nav {
+    background-color: var(--nav-background);
+}
+
+.h-full-minus-110 {
+    height: calc(100% - 130px);
+}
+
+quill-view {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-editor {
+            iframe {
+                width: 500px;
+                height: 300px;
+            }
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+            &.ql-blank::before {
+                margin: 1em 0px;
+            }
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+            }
+        }
+    }
+}
+
+quill-view-html {
+    div.ql-container, div.ql-snow {
+        font-size: 16px;
+        font-family: 'Raleway';
+        height: 100%;
+
+        p {
+            margin: 1em 0px;
+        }
+
+        div.ql-edtior.ql-blank::before {
+            margin: 1em 0px;
+        }
+
+        a {
+            color: var(--site-accent) !important;
+            text-decoration: none !important;
+
+            &:hover {
+                color: var(--site-accent-hover) !important;
+                text-decoration: underline !important;
+            }
+        }
+    }
+}

@@ -34,4 +34,9 @@ export class SectionsService implements ISections {
     async delete(user: JwtPayload, contentId: string, sectionId: string): Promise<void> {
         return await this.content.deleteSection(user, contentId, sectionId);
     }
+
+    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
+    async migrateQuillSection(authorId: string, contentId: string, sectionId: string, sectionInfo: SectionForm): Promise<Section> {
+        return await this.content.migrateQuillContent(authorId, contentId, sectionId, sectionInfo);
+    }
 }

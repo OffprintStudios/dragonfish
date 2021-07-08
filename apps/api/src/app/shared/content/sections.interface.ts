@@ -55,4 +55,7 @@ export interface ISections {
      * @param sectionId The section ID
      */
     delete(user: JwtPayload, contentId: string, sectionId: string): Promise<void>;
+
+    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
+    migrateQuillSection(authorId: string, contentId: string, sectionId: string, sectionInfo: SectionForm): Promise<Section>;
 }

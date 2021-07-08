@@ -544,10 +544,10 @@ export class DragonfishNetworkService {
 
     /**
      * Adds a comment.
-     * @param itemId 
-     * @param kind 
-     * @param commentInfo 
-     * @returns 
+     * @param itemId
+     * @param kind
+     * @param commentInfo
+     * @returns
      */
     public addComment(itemId: string, kind: CommentKind, commentInfo: CommentForm) {
         return handleResponse(
@@ -560,9 +560,9 @@ export class DragonfishNetworkService {
 
     /**
      * Fetches a new page of comments
-     * @param contentId 
-     * @param pageNum 
-     * @returns 
+     * @param contentId
+     * @param pageNum
+     * @returns
      */
     public fetchComments(itemId: string, kind: CommentKind, pageNum: number) {
         return handleResponse(
@@ -713,6 +713,7 @@ export class DragonfishNetworkService {
             }),
         );
     }
+
     //#endregion
 
     //#region ---COVER ART & AVATARS---
@@ -1027,6 +1028,17 @@ export class DragonfishNetworkService {
         return handleResponse(
             this.http.patch<Section>(
                 `${this.baseUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
+                sectionInfo,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
+    public migrateQuillSection(authorId: string, contentId: string, sectionId: string, sectionInfo: SectionForm) : Observable<Section> {
+        return handleResponse(
+            this.http.patch<Section>(
+                `${this.baseUrl}/sections/migrate-quill-section?authorId=${authorId}&contentId=${contentId}&sectionId=${sectionId}`,
                 sectionInfo,
                 { observe: 'response', withCredentials: true },
             ),

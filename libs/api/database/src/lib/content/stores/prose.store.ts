@@ -5,7 +5,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ProseContentDocument } from '../schemas';
+import { ContentDocument, ProseContentDocument } from '../schemas';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
@@ -111,5 +111,12 @@ export class ProseStore {
         });
 
         return await newProse.save();
+    }
+
+    // Temporary. If it's still here after 2020-08-04, remove it. -PingZing
+    async getOldProse(): Promise<ContentDocument[]> {
+        return this.proseModel.find({
+            'sections.updatedAt': { lte: new Date(2020, 8, 18) } // 8 == september, because it's an INDEX. augh.
+        });
     }
 }
