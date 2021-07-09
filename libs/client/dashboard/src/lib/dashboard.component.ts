@@ -9,10 +9,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
         trigger('inOutAnimation', [
             transition(':enter', [
                 style({ height: 0, opacity: 0 }),
-                animate('.250s ease-in-out', style({ height: 122, opacity: 1 })),
+                animate('.250s ease-in-out', style({ height: 160, opacity: 1 })),
             ]),
             transition(':leave', [
-                style({ height: 122, opacity: 1 }),
+                style({ height: 160, opacity: 1 }),
                 animate('.250s ease-in-out', style({ height: 0, opacity: 0 })),
             ]),
         ]),

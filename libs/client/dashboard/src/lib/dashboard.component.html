@@ -46,6 +46,14 @@
             </a>
             <a
                 class="link dropdown-item"
+                [routerLink]="['audit-log']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
+                Audit Log
+            </a>
+            <a
+                class="link dropdown-item"
                 [routerLink]="['users-management']"
                 [routerLinkActive]="'active'"
             >
