@@ -65,7 +65,24 @@ body {
     height: 100%;
     overflow-x:hidden;
     overflow-y:hidden;
+	scrollbar-width: thin;
+	scrollbar-color: var(--accent-dark);
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    box-shadow: none
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: var(--accent-dark); 
+}
+
 body {
     color: var(--text-color);
     margin: 0;
