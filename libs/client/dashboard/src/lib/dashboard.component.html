@@ -3,6 +3,14 @@
         <rmx-icon name="dashboard-line"></rmx-icon>
         <h3>Dashboard</h3>
     </div>
+    <div class="topbar-tools">
+        <div class="flex-1"></div>
+        <ng-container [ngSwitch]="selectedPage">
+            <ng-container *ngSwitchCase="pages.ApprovalQueue">
+                <dragonfish-approval-queue-toolbar></dragonfish-approval-queue-toolbar>
+            </ng-container>
+        </ng-container>
+    </div>
 </dragonfish-topbar>
 
 <div class="flex" style="height: calc(100vh - 52px);">

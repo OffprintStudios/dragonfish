@@ -22,6 +22,7 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { CaseFilesComponent } from './pages/case-files';
 import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Components */
@@ -43,6 +44,7 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
         QuillMigratorComponent,
+        CaseFilesComponent,
     ],
     imports: [
         CommonModule,
@@ -54,9 +56,9 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         NgxPaginationModule,
         PipesModule,
         QuillModule.forRoot({
-            format: 'json'
+            format: 'json',
         }),
     ],
-    providers: [ OldDataService ],
+    providers: [OldDataService],
 })
 export class DashboardModule {}

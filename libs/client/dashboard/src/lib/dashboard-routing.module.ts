@@ -21,6 +21,7 @@ import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/appro
 import { Roles } from '@dragonfish/shared/models/users';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
 import { QuillMigratorResolver } from './pages/quill-migrator/quill-migrator-resolver';
+import { CaseFilesComponent } from './pages/case-files';
 
 const routes: Routes = [
     {
@@ -84,8 +85,8 @@ const routes: Routes = [
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
             {
-                path: 'reports',
-                component: ReportsComponent,
+                path: 'case-files',
+                component: CaseFilesComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },

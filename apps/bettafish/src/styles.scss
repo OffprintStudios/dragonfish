@@ -235,6 +235,12 @@ div.topbar-tools {
         &:hover, &.active {
             background: var(--accent-light);
         }
+        &.disabled {
+            color: var(--accent-dark);
+            &:hover {
+                @apply cursor-not-allowed bg-transparent;
+            }
+        }
         rmx-icon {
             @apply relative top-1;
         }
