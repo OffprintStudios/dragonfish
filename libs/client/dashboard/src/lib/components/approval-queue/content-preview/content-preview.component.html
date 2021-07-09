@@ -1,4 +1,4 @@
-<ng-container *ngIf="currDoc$ | async as currDoc">
+<ng-container *ngIf="queueQuery.selected$ | async as currDoc">
     <div class="content-box rounded-md w-11/12 mx-auto my-6">
         <dragonfish-rating-icon [rating]="currDoc.workToApprove.meta.rating" [size]="'large'"></dragonfish-rating-icon>
         <div class="flex flex-col p-4">

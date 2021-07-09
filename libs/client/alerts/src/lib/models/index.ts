@@ -1,2 +1,2 @@
 export { AlertType } from './alert-type.enum';
-export { AlertsStateModel } from './alert-state.model';
+export { AlertModel } from './alert.model';

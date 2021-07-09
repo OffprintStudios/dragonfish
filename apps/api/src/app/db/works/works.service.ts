@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult } from 'mongoose';
 
@@ -16,7 +16,7 @@ export class WorksService {
      * @param user The user whose works we're fetching.
      */
     async fetchUserWorks(user: any): Promise<documents.WorkDocument[]> {
-        return await this.workModel
+        return this.workModel
             .find({ author: user.sub, 'audit.isDeleted': false }, { autopopulate: false })
             .sort({ createdAt: -1 });
     }
@@ -216,7 +216,7 @@ export class WorksService {
      * Gets an estimated count of _all_ non-deleted works, included upublished works.
      */
     async getTotalWorkCount(): Promise<number> {
-        return await this.workModel
+        return this.workModel
             .countDocuments()
             .where('audit.published', models.ApprovalStatus.Approved)
             .where('audit.isDeleted', false);

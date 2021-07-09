@@ -1,7 +1,7 @@
 import { PaginateResult } from 'mongoose';
 
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentComment, CreateComment, EditComment } from '@dragonfish/shared/models/comments';
+import { ContentComment, CommentForm } from '@dragonfish/shared/models/comments';
 
 export interface IComments {
     /**
@@ -19,7 +19,7 @@ export interface IComments {
      * @param contentId The content the comment belongs to
      * @param commentInfo The comment's info
      */
-    create(user: JwtPayload, contentId: string, commentInfo: CreateComment): Promise<ContentComment>;
+    create(user: JwtPayload, contentId: string, commentInfo: CommentForm): Promise<ContentComment>;
 
     /**
      * Edits a comment belonging to a user, given its ID.
@@ -28,5 +28,5 @@ export interface IComments {
      * @param commentId The comment's ID
      * @param commentInfo The comment's new info
      */
-    edit(user: JwtPayload, commentId: string, commentInfo: EditComment): Promise<void>;
+    edit(user: JwtPayload, commentId: string, commentInfo: CommentForm): Promise<void>;
 }

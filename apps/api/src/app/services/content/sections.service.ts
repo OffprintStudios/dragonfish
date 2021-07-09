@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { ContentStore } from '../../db/content';
-import { SectionsStore } from '../../db/sections/sections.store';
+import { ContentStore } from '@dragonfish/api/database/content/stores';
 import { ISections } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { Section, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
@@ -10,10 +9,10 @@ import { Section, SectionForm, PublishSection } from '@dragonfish/shared/models/
 export class SectionsService implements ISections {
     private readonly logger: Logger = new Logger(SectionsService.name);
 
-    constructor(private readonly sections: SectionsStore, private readonly content: ContentStore) {}
+    constructor(private readonly content: ContentStore) {}
 
     async fetchOneById(sectionId: string, published?: boolean): Promise<Section> {
-        return await this.sections.fetchSectionById(sectionId, published);
+        return await this.content.fetchSectionById(sectionId, published);
     }
 
     async fetchUserContentSections(user: JwtPayload, contentId: string): Promise<Section[]> {
@@ -34,5 +33,10 @@ export class SectionsService implements ISections {
 
     async delete(user: JwtPayload, contentId: string, sectionId: string): Promise<void> {
         return await this.content.deleteSection(user, contentId, sectionId);
+    }
+
+    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
+    async migrateQuillSection(authorId: string, contentId: string, sectionId: string, sectionInfo: SectionForm): Promise<Section> {
+        return await this.content.migrateQuillContent(authorId, contentId, sectionId, sectionInfo);
     }
 }

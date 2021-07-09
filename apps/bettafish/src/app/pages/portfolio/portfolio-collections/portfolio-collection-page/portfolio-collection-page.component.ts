@@ -1,39 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Select } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { Collection } from '@dragonfish/shared/models/collections';
-import { UserState } from '../../../../repo/user';
-import { PortfolioState } from '../../../../repo/portfolio';
-import { NetworkService } from '../../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { CollectionFormComponent } from '../../../../components/content/collections/collection-form/collection-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
 
 @Component({
     selector: 'dragonfish-portfolio-collection-page',
     templateUrl: './portfolio-collection-page.component.html',
     styleUrls: ['./portfolio-collection-page.component.scss']
 })
-export class PortfolioCollectionPageComponent {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+export class PortfolioCollectionPageComponent implements OnInit {
     collData: Collection;
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private network: NetworkService,
+        private network: DragonfishNetworkService,
         private location: Location,
         private dialog: MatDialog,
+        public sessionQuery: SessionQuery,
+        public portQuery: PortfolioQuery,
     ) {}
 
     ngOnInit(): void {
         this.route.data.subscribe((data) => {
             this.collData = data.collData as Collection;
+            setTwoPartTitle(this.collData.name);
         });
     }
 

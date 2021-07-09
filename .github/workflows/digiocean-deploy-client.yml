@@ -1,6 +1,6 @@
 name: Deploy Client (DO)
 
-on: 
+on:
   # Trigger on a successful run of the 'Buidl Client (DO)' workflow.
   workflow_run:
     workflows: [ "Build Client (DO)" ]
@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SSH_USER: 'dragonfish-cd'
-    
+
     steps:
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: digiocean-build-client.yml        
+        workflow: digiocean-build-client.yml
         workflow_conclusion: success
         name: frontend_artifact
         commit: ${{ github.sha }}
@@ -38,10 +38,10 @@ jobs:
           mkdir -p /opt/dragonfish/frontend-deploy-cache
 
     - name: Upload frontend client zip file to the remote server
-      env: 
+      env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
-        # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation
         echo "$SSH_KEY" >> key.txt
         chmod 400 key.txt
         rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.TEST_SERVER_IP }}:/opt/dragonfish/frontend-deploy-cache
@@ -89,6 +89,34 @@ jobs:
             echo "No backend has been deployed yet. No symlink to set up. Terminating..."
           fi
 
+    - name: 'Remote: Delete oldest release(s)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.TEST_SERVER_IP }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+            cd /opt/dragonfish/releases/client
+            shopt -s nullglob
+            echo "Collecting all folders into an array sorted reverse chronologically by release number..."
+            folders=(*)
+            folders2=($(for folder in "${folders[@]}"; do echo $folder; done | sort -t '-' -k2,2nr))
+
+            echo "Deleting oldest indices..."
+            for ((i = 0; i < ${#folders2[@]}; ++i))
+            do
+                if [ $i -gt 4 ]; then
+                    echo "Deleting index $i..."
+                    rm -rf ${folders2[$i]}
+                    echo "Success!"
+                else
+                    echo "Skipping index $i..."
+                fi
+            done
+
+            echo "Done!"
+            shopt -u nullglob
+
 # TODO: Repeat this process for Prod, but in the "dragonfish-prod" GitHub environment
 
   deploy_to_prod:
@@ -97,13 +125,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SSH_USER: 'dragonfish-cd'
-    
+
     steps:
     # Need to use this custom action, because the default GitHub download-artifact doesn't allow sharing of artifacts between workflows
     - name: Download dist.tar.gz
       uses: dawidd6/action-download-artifact@v2
       with:
-        workflow: digiocean-build-client.yml        
+        workflow: digiocean-build-client.yml
         workflow_conclusion: success
         name: frontend_artifact
         commit: ${{ github.sha }}
@@ -120,10 +148,10 @@ jobs:
           mkdir -p /opt/dragonfish/frontend-deploy-cache
 
     - name: Upload frontend client zip file to the remote server
-      env: 
+      env:
         SSH_KEY: ${{ secrets.SSH_KEY }}
       run: |
-        # Write key out to a file, so we can use it via rsync's 'ssh' invocation        
+        # Write key out to a file, so we can use it via rsync's 'ssh' invocation
         echo "$SSH_KEY" >> key.txt
         chmod 400 key.txt
         rsync -e "ssh -o StrictHostKeyChecking=no -i key.txt" dist.tar.gz $SSH_USER@${{ secrets.PROD_IP_1 }}:/opt/dragonfish/frontend-deploy-cache
@@ -170,3 +198,31 @@ jobs:
           else
             echo "No backend has been deployed yet. No symlink to set up. Terminating..."
           fi
+
+    - name: 'Remote: Delete oldest release(s)'
+      uses: garygrossgarten/github-action-ssh@release
+      with:
+        host: ${{ secrets.PROD_IP_1 }}
+        username: 'dragonfish-cd'
+        privateKey: ${{ secrets.SSH_KEY }}
+        command: |
+            cd /opt/dragonfish/releases/client
+            shopt -s nullglob
+            echo "Collecting all folders into an array sorted reverse chronologically by release number..."
+            folders=(*)
+            folders2=($(for folder in "${folders[@]}"; do echo $folder; done | sort -t '-' -k2,2nr))
+
+            echo "Deleting oldest indices..."
+            for ((i = 0; i < ${#folders2[@]}; ++i))
+            do
+                if [ $i -gt 4 ]; then
+                    echo "Deleting index $i..."
+                    rm -rf ${folders2[$i]}
+                    echo "Success!"
+                else
+                    echo "Skipping index $i..."
+                fi
+            done
+
+            echo "Done!"
+            shopt -u nullglob

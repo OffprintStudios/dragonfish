@@ -1,5 +1,7 @@
 div.post {
     border: 1px solid var(--borders);
+    min-height: 9rem;
+    max-height: 17rem;
     div.post-byline {
         border-bottom: 1px solid var(--borders);
     }
@@ -8,7 +10,7 @@ div.post {
         flex-direction: row;
         align-items: center;
         @apply text-xs;
-        i-feather {
+        rmx-icon {
             stroke-width: 1;
             width: 0.875rem;
             position: relative;
@@ -28,8 +30,9 @@ div.post {
         font-size: 0.825rem;
         position: relative;
         top: -0.2rem;
-        i-feather {
+        rmx-icon {
             position: relative;
+            display: inline-block;
             top: 0.45rem;
             stroke-width: 1;
         }

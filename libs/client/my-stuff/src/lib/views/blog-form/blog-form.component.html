@@ -1,15 +1,90 @@
-<ng-container *ngIf="currContent$ | async as currBlog; else createMode">
-    <div class="form-container">
-        <div class="form-header">
-            <button class="form-button left" [ngClass]="{ selected: !editMode }" (click)="switchView()">Preview</button>
-            <button class="form-button right" [ngClass]="{ selected: editMode }" (click)="switchView()">Edit</button>
-            <div style="flex: 1; text-align: right">
-                <button class="form-button save" *ngIf="editMode" (click)="submitForm(currBlog._id)">Save</button>
-            </div>
-        </div>
+<dragonfish-topbar>
+    <div class="topbar-header">
+        <a [routerLink]="['/my-stuff']"><rmx-icon name="arrow-left-s-line"></rmx-icon></a>
+        <h3>{{ formTitle }}</h3>
+    </div>
+    <div class="topbar-tools">
+        <div class="flex-1"></div>
+        <ng-container *ngIf="stuffQuery.current$ | async as currBlog; else createModeTools">
+            <ng-container [ngSwitch]="currBlog.audit.published">
+                <button
+                    *ngSwitchCase="pubStatus.Published"
+                    (click)="publish(currBlog)"
+                >
+                    <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                    Published
+                </button>
+                <button
+                    *ngSwitchCase="pubStatus.Unpublished"
+                    (click)="publish(currBlog)"
+                >
+                    <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                    Unpublished
+                </button>
+            </ng-container>
+            <ng-container *ngIf="editMode; else previewSave">
+                <button
+                    [matTooltip]="'Save'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                    (click)="submitForm(currBlog._id)"
+                >
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    Save
+                </button>
+            </ng-container>
+            <ng-template #previewSave>
+                <button
+                    [matTooltip]="'Save'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matTooltipShowDelay]="600"
+                >
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    Save
+                </button>
+            </ng-template>
+            <div class="text-white mx-1.5 select-none cursor-default">|</div>
+            <button
+                [matTooltip]="'Preview'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                [ngClass]="{ active: !editMode }"
+                (click)="switchView()"
+            >
+                <rmx-icon name="eye-line" class="no-text"></rmx-icon>
+            </button>
+            <button
+                [matTooltip]="'Edit'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                [ngClass]="{ active: editMode }"
+                (click)="switchView()"
+            >
+                <rmx-icon name="edit-line" class="no-text"></rmx-icon>
+            </button>
+            <div class="text-white mx-1.5 select-none cursor-default">|</div>
+            <button
+                [matTooltip]="'Delete'"
+                [matTooltipClass]="'offprint-tooltip'"
+                [matTooltipShowDelay]="600"
+                (click)="deleteContent(currBlog)"
+            >
+                <rmx-icon name="delete-bin-2-line" class="no-text"></rmx-icon>
+            </button>
+        </ng-container>
+        <ng-template #createModeTools>
+            <button class="border-none shadow-none rounded-full px-2 py-1.5"  (click)="submitForm()">
+                <rmx-icon name="save-3-line"></rmx-icon>
+                Save
+            </button>
+        </ng-template>
+    </div>
+</dragonfish-topbar>
 
+<ng-container *ngIf="stuffQuery.current$ | async as currBlog; else createMode">
+    <div class="w-8/12 mx-auto">
         <ng-container *ngIf="editMode; else previewBlog">
-            <form class="w-3/4 mx-auto" [formGroup]="blogForm" (ngSubmit)="submitForm(currBlog._id)" *ngIf="editMode">
+            <form [formGroup]="blogForm" *ngIf="editMode">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <dragonfish-text-field
@@ -30,17 +105,12 @@
                     </div>
                 </div>
 
-                <dragonfish-editor
-                    [parentForm]="blogForm"
-                    [controlName]="'body'"
-                    [minHeight]="'1000px'"
-                    [maxHeight]="'1000px'"
-                ></dragonfish-editor>
+                <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
             </form>
         </ng-container>
 
         <ng-template #previewBlog>
-            <div class="post-container rounded-md mx-auto w-3/4" *ngIf="currBlog">
+            <div class="post-container rounded-md mt-4" *ngIf="currBlog">
                 <dragonfish-rating-icon [rating]="currBlog.meta.rating" [size]="'large'"></dragonfish-rating-icon>
                 <div class="p-12 pt-16">
                     <div class="post-header">
@@ -48,10 +118,10 @@
                         <div>
                             <div class="tag">{{ currBlog.audit.publishedOn | localedate: 'fullDate' }}</div>
                             <div class="separator">//</div>
-                            <div class="tag" title="Views"><i-feather name="eye"></i-feather>{{ currBlog.stats.views }}</div>
+                            <div class="tag" title="Views"><rmx-icon name="eye-line"></rmx-icon>{{ currBlog.stats.views }}</div>
                             <div class="separator">//</div>
                             <div class="tag" title="Comments">
-                                <i-feather name="message-circle"></i-feather>{{ currBlog.stats.comments }}
+                                <rmx-icon name="chat-3-line"></rmx-icon>{{ currBlog.stats.comments }}
                             </div>
                         </div>
                     </div>
@@ -65,12 +135,8 @@
 </ng-container>
 
 <ng-template #createMode>
-    <div class="form-container">
-        <div class="form-header pb-2">
-            <h3 class="text-4xl">{{ formTitle }}</h3>
-            <button class="form-button" (click)="submitForm()">Save</button>
-        </div>
-        <form class="w-3/4 mx-auto" [formGroup]="blogForm" (ngSubmit)="submitForm()">
+    <div class="w-8/12 mx-auto">
+        <form [formGroup]="blogForm">
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <dragonfish-text-field
@@ -91,12 +157,7 @@
                 </div>
             </div>
 
-            <dragonfish-editor
-                [parentForm]="blogForm"
-                [controlName]="'body'"
-                [minHeight]="'1000px'"
-                [maxHeight]="'1000px'"
-            ></dragonfish-editor>
+            <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
         </form>
     </div>
 </ng-template>

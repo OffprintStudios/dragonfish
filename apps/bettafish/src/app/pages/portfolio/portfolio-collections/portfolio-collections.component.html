@@ -1,11 +1,11 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
     <ng-container *ngIf="loading; else notLoading">
         <div class="flex h-40 items-center justify-center">
             <mat-spinner></mat-spinner>
         </div>
     </ng-container>
     <ng-template #notLoading>
-        <ng-container *ngIf="currentUser$ | async as currentUser">
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
             <ng-container *ngIf="currentUser._id === portUser._id">
                 <div class="mb-6">
                     <dragonfish-collections-toolbar></dragonfish-collections-toolbar>
@@ -26,7 +26,7 @@
         <ng-template #noDocs>
             <div class="empty">
                 <h3>There's nothing here...</h3>
-                <ng-container *ngIf="currentUser$ | async as currentUser; else noUser">
+                <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUser">
                     <p *ngIf="currentUser._id === portUser._id; else notSameUser">Why not hit the Create button and add one?</p>
                     <ng-template #notSameUser>
                         <p>Check back later to see if {{ portUser.username }} adds anything!</p>

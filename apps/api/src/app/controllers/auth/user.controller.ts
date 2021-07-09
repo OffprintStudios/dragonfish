@@ -6,6 +6,7 @@ import {
     Post,
     Body,
     Param,
+    Query,
     UseInterceptors,
     UploadedFile,
     BadRequestException,
@@ -19,9 +20,10 @@ import { RolesGuard } from '../../guards';
 import { ChangeEmailDTO, ChangePasswordDTO, ChangeBioDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
 import { IUser } from '../../shared/auth';
 import { IImages } from '../../shared/images';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
+import { ContentFilter } from '@dragonfish/shared/models/content';
 
 @Controller('user')
 export class UserController {
@@ -31,6 +33,12 @@ export class UserController {
     @Get('get-user-info/:userId')
     async getUserInfo(@Param('userId') userId: string) {
         return await this.user.getOneUser(userId);
+    }
+
+    @ApiTags(DragonfishTags.Users)
+    @Get('get-user-profile')
+    async getUserProfile(@Query('userId') userId: string, @Query('filter') filter: ContentFilter) {
+        return await this.user.getUserProfile(userId, filter);
     }
 
     @ApiTags(DragonfishTags.Users)
@@ -84,7 +92,17 @@ export class UserController {
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator]))
+    @UseGuards(RolesGuard([Roles.User]))
+    @UseInterceptors(FileInterceptor('coverPic'))
+    @Post('upload-cover')
+    async uploadCover(@UploadedFile() coverImage: any, @User() user: JwtPayload) {
+        const avatarUrl = await this.images.upload(coverImage, user.sub, 'cover-pics');
+        const avatar = `${process.env.IMAGES_HOSTNAME}/cover-pics/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
+        return await this.user.updateCoverPic(user, avatar);
+    }
+
+    @ApiTags(DragonfishTags.Users)
+    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator, Roles.Maintainer, Roles.Contributor, Roles.VIP]))
     @Patch('update-tagline')
     async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {
         return await this.user.updateTagline(user, tagline);

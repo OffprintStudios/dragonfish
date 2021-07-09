@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -16,9 +18,15 @@ export class NewestWorksComponent implements OnInit {
     works: PaginateResult<ContentModel>;
     pageNum = 1;
 
-    constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private network: DragonfishNetworkService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private appQuery: AppQuery,
+    ) { }
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.NEWEST_WORKS);
         this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
             if (params.has('page')) {
                 this.pageNum = +params.get('page');
@@ -35,7 +43,7 @@ export class NewestWorksComponent implements OnInit {
      */
     private fetchData(pageNum: number): void {
         this.loading = true;
-        this.network.fetchAllNew(pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent])
+        this.network.fetchAllNew(pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent], this.appQuery.filter)
             .subscribe(result => {
                 this.works = result;
                 this.loading = false;

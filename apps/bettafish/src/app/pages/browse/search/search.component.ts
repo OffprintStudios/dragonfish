@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 @Component({
     selector: 'dragonfish-search',
@@ -12,7 +12,7 @@ export class SearchComponent {
     loading = false;
     searchResults: InitialResults;
 
-    constructor(private network: NetworkService, public route: ActivatedRoute) {}
+    constructor(private network: DragonfishNetworkService, public route: ActivatedRoute) {}
 
     ngOnInit(): void {
         const queryParams = this.route.snapshot.queryParamMap;

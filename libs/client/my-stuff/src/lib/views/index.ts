@@ -4,3 +4,5 @@ export { PoetryFormComponent } from './poetry-form/poetry-form.component';
 export { ProseFormComponent } from './prose-form/prose-form.component';
 export { ViewPoetryComponent } from './view-poetry/view-poetry.component';
 export { ViewProseComponent } from './view-prose/view-prose.component';
+export { ContentPageComponent } from './content-page/content-page.component';
+export { SectionsPageComponent } from './sections-page/sections-page.component';

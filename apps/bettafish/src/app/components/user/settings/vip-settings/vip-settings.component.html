@@ -2,8 +2,8 @@
     <div class="header border-b mb-5">
         <h3 class="text-3xl font-medium">VIP Settings</h3>
     </div>
-    <ng-container *ngIf="currentUser$ | async as currentUser">
-        <div class="grid grid-cols-3" *ngIf="isAllowed(currentUser.roles); else notAllowed">
+    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+        <div class="grid grid-cols-3" *ngIf="isAllowed(currentUser.audit.roles); else notAllowed">
             <div class="pl-2 flex flex-col">
                 <h5 class="text-xl font-medium text-center">Update Tagline</h5>
                 <form [formGroup]="taglineForm" (ngSubmit)="submitTagline()" class="flex-1">

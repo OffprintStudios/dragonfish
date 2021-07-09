@@ -1,34 +1,26 @@
-div.form-container {
-    width: 85%;
-    margin: 0 auto;
-
-    div.form-header {
-        border-bottom: 1px solid var(--borders);
-        margin-bottom: 2rem;
-        button.form-button {
-            &.left {
-                border-right: none;
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
+div.form-nav {
+    background: var(--accent);
+    button {
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            width: 1.25rem !important;
+            color: white;
+            margin: 0;
+            right: -0.025rem;
+        }
+        &.active {
+            background: var(--accent-light);
+        }
+        &.disabled {
+            color: var(--accent-dark);
+            i-feather {
+                color: var(--accent-dark);
             }
-
-            &.right {
-                border-top-left-radius: 0;
-                border-bottom-left-radius: 0;
-            }
-
-            &.save {
-                margin-left: 1rem;
-            }
-
-            &.selected {
-                background-color: var(--accent);
-                color: whitesmoke;
-
-                &:hover {
-                    background-color: var(--accent-dark);
-                    color: whitesmoke;
-                }
+            &:hover {
+                background: var(--accent);
+                cursor: not-allowed;
             }
         }
     }

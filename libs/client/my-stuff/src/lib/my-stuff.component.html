@@ -1,68 +1,90 @@
-<div class="my-stuff-nav shadow-lg sticky top-0 z-40">
-    <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
-        <i-feather name="hard-drive" class="text-white relative top-0.5 mr-4"></i-feather>
-        <h3 class="text-4xl text-white relative top-1.5 font-semibold">
-            <a class="text-white hover:text-white" [routerLink]="['/my-stuff']">My Stuff</a>
-        </h3>
-        <div class="flex-1"><!--spacer--></div>
-
-        <!--<form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-            <dragonfish-text-field
-                [formControlName]="'query'"
-                [name]="'query'"
-                [type]="'text'"
-                [placeholder]="'Search...'"
-                [searchBox]="true"
-            ></dragonfish-text-field>
-        </form>-->
-    </div>
-</div>
-
-<dragonfish-my-stuff-toolbar></dragonfish-my-stuff-toolbar>
-
-<ng-container *ngIf="route.children.length === 0; else openedView">
-    <ng-container *ngIf="myStuff$ | async as myStuff">
-        <ng-container *ngIf="loading; else notLoading">
-            <div class="flex flex-row items-center justify-center h-full">
-                <mat-spinner></mat-spinner>
+<ng-container *ngIf="route.children.length === 0">
+    <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+        <dragonfish-topbar>
+            <div class="topbar-header">
+                <rmx-icon name="hard-drive-2-line"></rmx-icon>
+                <h3>My Stuff</h3>
             </div>
-        </ng-container>
-        <ng-template #notLoading>
-            <!--Migration notice-->
-            <div class="migration-notice">
-                <div class="migration-prompt">
-                    <h4 class="text-2xl">Looking for something?</h4>
-                    <p class="text-sm">Not to worry! Let's bring some of your old stuff over, shall we?</p>
-                </div>
-                <div class="migration-button">
-                    <button matRipple [routerLink]="['/migration']">View Old Content</button>
-                </div>
+            <div class="topbar-tools">
+                <div class="flex-1"></div>
+                <button
+                    [ngClass]="createMenuOpened ? 'active': ''"
+                    [matMenuTriggerFor]="createMenu"
+                    (menuOpened)="toggleCreateMenu()"
+                    (menuClosed)="toggleCreateMenu()"
+                >
+                    <rmx-icon name="loader-2-line"></rmx-icon>
+                    Create
+                </button>
+                <div class="text-white mx-1.5 select-none cursor-default">|</div>
+                <button [ngClass]="isIconView ? '' : 'active'">
+                    <rmx-icon name="list-unordered" class="no-text"></rmx-icon>
+                </button>
+                <button [ngClass]="isIconView ? 'active' : ''">
+                    <rmx-icon name="layout-grid-fill" class="no-text"></rmx-icon>
+                </button>
+                <div class="text-white mx-1.5 select-none cursor-default">|</div>
+                <button
+                    [ngClass]="filterMenuOpened ? 'active': ''"
+                    [matMenuTriggerFor]="filterMenu"
+                    (menuOpened)="toggleFilterMenu()"
+                    (menuClosed)="toggleFilterMenu()"
+                >
+                    <rmx-icon name="filter-line" class="no-text"></rmx-icon>
+                </button>
             </div>
+        </dragonfish-topbar>
 
-            <!--User has nothing-->
-            <ng-container *ngIf="myStuff.myStuff.length ===0; else hasContent">
-                <div class="empty">
-                    <h3>It's pretty lonely here...</h3>
-                    <p>Why not add some content by hitting the Create button?</p>
-                </div>
-            </ng-container>
+        <mat-menu #createMenu="matMenu" xPosition="before">
+            <button mat-menu-item (click)="createContent(contentKind.ProseContent)">
+                <i-feather name="book-open"></i-feather>Add Prose
+            </button>
+            <button mat-menu-item (click)="createContent(contentKind.PoetryContent)">
+                <i-feather name="feather"></i-feather>Add Poetry
+            </button>
+            <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Nonfiction</button>-->
+            <!--<button mat-menu-item><i-feather name="globe"></i-feather>Add Script</button>-->
+            <button mat-menu-item (click)="createContent(contentKind.BlogContent)">
+                <i-feather name="coffee"></i-feather>Add Blog
+            </button>
+            <button mat-menu-item (click)="createContent(contentKind.NewsContent)" *ngIf="checkIsAllowed(currentUser)">
+                <i-feather name="globe"></i-feather>Add Newspost
+            </button>
+        </mat-menu>
 
-            <!--User has content-->
-            <ng-template #hasContent>
-                <div class="content-block">
-                    <div class="content-grid">
-                        <ng-container *ngFor="let content of myStuff.myStuff">
-                            <dragonfish-content-item [content]="content" (viewItem)="viewContent($event)"></dragonfish-content-item>
-                        </ng-container>
-                    </div>
-                </div>
-            </ng-template>
-        </ng-template>
+        <mat-menu #filterMenu="matMenu" xPosition="before">
+            <button mat-menu-item>All</button>
+            <button mat-menu-item>Published</button>
+            <button mat-menu-item>Unpublished</button>
+            <button mat-menu-item>Newest</button>
+            <button mat-menu-item>Oldest</button>
+        </mat-menu>
     </ng-container>
 </ng-container>
 
-<ng-template #openedView>
-    <div class="mb-8">
-        <router-outlet></router-outlet>
+<ng-container *ngIf="route.children.length === 0; else openedView">
+    <div class="flex" style="height: calc(100vh - 52px);">
+        <dragonfish-pagebar>
+            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
+                <dragonfish-text-field
+                    [formControlName]="'query'"
+                    [name]="'query'"
+                    [type]="'text'"
+                    [placeholder]="'Search...'"
+                    [searchBox]="true"
+                ></dragonfish-text-field>
+            </form>
+            <div class="my-2 border-b w-full border-white"><!--spacer--></div>
+            <a [routerLink]="['/my-stuff']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>Home
+            </a>
+        </dragonfish-pagebar>
+        <div class="w-full overflow-y-auto">
+            <dragonfish-content-page></dragonfish-content-page>
+        </div>
     </div>
+</ng-container>
+
+<ng-template #openedView>
+    <router-outlet></router-outlet>
 </ng-template>

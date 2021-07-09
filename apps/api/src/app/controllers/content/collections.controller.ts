@@ -4,9 +4,9 @@ import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '../../guards';
 import { Roles } from '@dragonfish/shared/models/users';
 import { CollectionForm } from '@dragonfish/shared/models/collections';
-import { isNullOrUndefined } from '../../util';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ICollections } from '../../shared/content';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 

@@ -7,7 +7,7 @@ import { CreateResponse, CreateInitialMessage } from '@dragonfish/shared/models/
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IMessages } from '../../shared/content';
-import { User } from '../../util/decorators';
+import { User } from '@dragonfish/api/utilities/decorators';
 
 @Controller('messages')
 export class MessagesController {

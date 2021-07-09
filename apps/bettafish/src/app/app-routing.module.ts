@@ -8,9 +8,10 @@ import { SocialRoutes } from './pages/social';
 import { DocsRoutes } from './pages/docs';
 import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
-import { NotificationsRoutes } from './pages/notifications';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
+import { SettingsRoutes } from './pages/settings';
+import { RegistrationRoutes } from './pages/registration';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
@@ -20,7 +21,7 @@ import { Resolvers } from './resolvers';
 
 /* Util */
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from './repo/auth/services';
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
 const routes: Routes = [
     ...HomeRoutes,
@@ -29,8 +30,9 @@ const routes: Routes = [
     ...DocsRoutes,
     ...PortfolioRoutes,
     ...MessagesRoutes,
-    ...NotificationsRoutes,
     ...ContentViewRoutes,
+    ...SettingsRoutes,
+    ...RegistrationRoutes,
     {
         path: 'my-stuff',
         canLoad: [AuthGuard],
@@ -54,11 +56,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [
-        ...DocsResolvers,
-        ...HomeResolvers,
-        ...PortfolioResolvers,
-        ...Resolvers,
-    ]
+    providers: [...DocsResolvers, ...HomeResolvers, ...PortfolioResolvers, ...Resolvers],
 })
 export class AppRoutingModule {}

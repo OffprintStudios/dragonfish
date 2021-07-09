@@ -1,7 +1,7 @@
 {
     "version": 1,
     "cli": {
-        "defaultCollection": "@nrwl/angular"
+        "defaultCollection": "@datorama/akita"
     },
     "defaultProject": "bettafish",
     "schematics": {
@@ -452,6 +452,142 @@
                     "options": {
                         "jestConfig": "libs/client/dashboard/jest.config.js",
                         "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "client-services": {
+            "projectType": "library",
+            "root": "libs/client/services",
+            "sourceRoot": "libs/client/services/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/services/src/**/*.ts", "libs/client/services/src/**/*.html"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/services"],
+                    "options": {
+                        "jestConfig": "libs/client/services/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "client-repository": {
+            "projectType": "library",
+            "root": "libs/client/repository",
+            "sourceRoot": "libs/client/repository/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "libs/client/repository/src/**/*.ts",
+                            "libs/client/repository/src/**/*.html"
+                        ]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/repository"],
+                    "options": {
+                        "jestConfig": "libs/client/repository/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "api-database": {
+            "root": "libs/api/database",
+            "sourceRoot": "libs/api/database/src",
+            "projectType": "library",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/api/database/**/*.ts"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/api/database"],
+                    "options": {
+                        "jestConfig": "libs/api/database/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "api-utilities": {
+            "root": "libs/api/utilities",
+            "sourceRoot": "libs/api/utilities/src",
+            "projectType": "library",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/api/utilities/**/*.ts"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/api/utilities"],
+                    "options": {
+                        "jestConfig": "libs/api/utilities/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "client-comments": {
+            "projectType": "library",
+            "root": "libs/client/comments",
+            "sourceRoot": "libs/client/comments/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/comments"],
+                    "options": {
+                        "jestConfig": "libs/client/comments/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/comments/src/**/*.ts", "libs/client/comments/src/**/*.html"]
+                    }
+                }
+            }
+        },
+        "client-editor-lite": {
+            "projectType": "library",
+            "root": "libs/client/editor-lite",
+            "sourceRoot": "libs/client/editor-lite/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/editor-lite"],
+                    "options": {
+                        "jestConfig": "libs/client/editor-lite/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "libs/client/editor-lite/src/**/*.ts",
+                            "libs/client/editor-lite/src/**/*.html"
+                        ]
                     }
                 }
             }

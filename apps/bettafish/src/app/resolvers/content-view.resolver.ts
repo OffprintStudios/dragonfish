@@ -1,26 +1,29 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot, UrlSegment } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import * as Content from '../repo/content';
-import { ContentKind } from '@dragonfish/shared/models/content';
+import { ContentKind, PubContent } from '@dragonfish/shared/models/content';
+import { ContentViewService } from '@dragonfish/client/repository/content-view';
 
 @Injectable()
-export class ContentViewResolver implements Resolve<void> {
-    constructor(private store: Store) {}
+export class ContentViewResolver implements Resolve<Observable<PubContent>> {
+    private pageNum = 1;
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot) {
+    constructor(private viewService: ContentViewService) {}
+
+    resolve(route: ActivatedRouteSnapshot) {
         const contentId = route.paramMap.get('contentId');
+        if (route.queryParamMap.has('page')) {
+            this.pageNum = +route.queryParamMap.get('page');
+        }
 
         if (route.url[0].path === 'prose') {
-            return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.ProseContent));
+            return this.viewService.fetchContent(contentId, ContentKind.ProseContent, this.pageNum);
         } else if (route.url[0].path === 'poetry') {
-            return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.PoetryContent));
+            return this.viewService.fetchContent(contentId, ContentKind.PoetryContent, this.pageNum);
         } else if (route.url[0].path === 'news') {
-            return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.NewsContent));
+            return this.viewService.fetchContent(contentId, ContentKind.NewsContent, this.pageNum);
         } else if (route.url[0].path === 'post') {
-            return this.store.dispatch(new Content.FetchOne(contentId, ContentKind.BlogContent));
+            return this.viewService.fetchContent(contentId, ContentKind.BlogContent, this.pageNum);
         }
     }
 }

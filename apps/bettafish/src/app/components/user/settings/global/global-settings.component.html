@@ -16,20 +16,30 @@
         </div>
         <div class="pl-2 flex flex-col">
             <h5 class="text-xl font-medium text-center">Change Content Filter</h5>
-            <form [formGroup]="setContentFilter" (ngSubmit)="submitContentFilter()">
-                <div class="flex flex-col items-center justify-center">
+            <ng-container *ngIf="canSeeFilters; else cantSeeFilters">
+                <form [formGroup]="setContentFilter" (ngSubmit)="submitContentFilter()">
+                    <div class="flex flex-col items-center justify-center">
                     <span class="toggles">
                         <dragonfish-toggle [formControlName]="'enableMature'">Enable Mature</dragonfish-toggle>
                     </span>
-                    <span class="toggles">
+                        <span class="toggles">
                         <dragonfish-toggle [formControlName]="'enableExplicit'">Enable Explicit</dragonfish-toggle>
                     </span>
+                    </div>
+                    <div class="my-2"><!--spacer--></div>
+                    <div class="flex flex-col items-center justify-center">
+                        <button type="submit" class="button-primary">Set Filters</button>
+                    </div>
+                </form>
+            </ng-container>
+            <ng-template #cantSeeFilters>
+                <div class="empty">
+                    <p>You must be 18 years of age or older to access these settings.</p>
+                    <div class="flex flex-row items-center justify-center mt-6">
+                        <button (click)="setOfAge()">Verify Age</button>
+                    </div>
                 </div>
-                <div class="my-2"><!--spacer--></div>
-                <div class="flex flex-col items-center justify-center">
-                    <button type="submit" class="button-primary">Set Filters</button>
-                </div>
-            </form>
+            </ng-template>
         </div>
     </div>
 </div>

@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { setTwoPartTitle } from '@dragonfish/shared/constants';
-import { Select } from '@ngxs/store';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import { UserState } from '../../repo/user';
-import { PortfolioState } from '../../repo/portfolio';
+import { CoverPicUploadComponent } from '../../components/user/settings/cover-pic-upload/cover-pic-upload.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
 
 @UntilDestroy()
 @Component({
@@ -14,15 +12,21 @@ import { PortfolioState } from '../../repo/portfolio';
     templateUrl: './portfolio.component.html',
     styleUrls: ['./portfolio.component.scss']
 })
-export class PortfolioComponent implements OnInit {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+export class PortfolioComponent {
+    canSeeCoverButton = false;
 
-    constructor(public route: ActivatedRoute) {}
+    constructor(
+        public route: ActivatedRoute,
+        private dialog: MatDialog,
+        public sessionQuery: SessionQuery,
+        public portQuery: PortfolioQuery,
+    ) {}
 
-    ngOnInit(): void {
-        this.portUser$.pipe(untilDestroyed(this)).subscribe(user => {
-            setTwoPartTitle(user.username);
-        });
+    openCoverPicUploader() {
+        const dialogRef = this.dialog.open(CoverPicUploadComponent);
+    }
+
+    toggleCoverButton() {
+        this.canSeeCoverButton = !this.canSeeCoverButton;
     }
 }

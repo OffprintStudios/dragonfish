@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 
 import { NewsContentModel } from '@dragonfish/shared/models/content';
 
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 
 @Injectable()
 export class HomePageResolver implements Resolve<NewsContentModel[]> {
-    constructor(private networkService: NetworkService) {}
+    constructor(private networkService: DragonfishNetworkService) {}
 
     resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<NewsContentModel[]> {
         return this.networkService.fetchInitialNewsPosts();

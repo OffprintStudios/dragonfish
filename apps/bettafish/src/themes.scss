@@ -4,11 +4,13 @@
     --accent-dark:	    rgb(133,56,54);
     --accent-light:	    rgb(221,142,142);
     --background:       rgb(251,251,251);
+    --nav-background:   rgb(236,236,236);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(0,0,0);
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-crimson {
@@ -16,11 +18,13 @@
     --accent-dark:	    rgb(102,43,41);
     --accent-light:	    rgb(133,56,54);
     --background:       rgb(39,39,39);
+    --nav-background:   rgb(47,46,46);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(245,245,245);
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .aqua {
@@ -28,11 +32,13 @@
     --accent-dark:	    rgb(64,98,136);
     --accent-light:	    rgb(152,187,224);
     --background:       rgb(251,251,251);
+    --nav-background:   rgb(236,236,236);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(0,0,0);
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-aqua {
@@ -40,11 +46,13 @@
     --accent-dark:	    rgb(49,75,104);
     --accent-light:	    rgb(64,98,136);
     --background:       rgb(39,39,39);
+    --nav-background:   rgb(47,46,46);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(245,245,245);
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .royal {
@@ -52,11 +60,13 @@
     --accent-dark:	    rgb(95,53,110);
     --accent-light:	    rgb(183,142,198);
     --background:       rgb(251,251,251);
+    --nav-background:   rgb(236,236,236);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(0,0,0);
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dark-royal {
@@ -64,11 +74,13 @@
     --accent-dark:	    rgb(73,41,84);
     --accent-light:	    rgb(95,53,110);
     --background:       rgb(39,39,39);
+    --nav-background:   rgb(47,46,46);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(245,245,245);
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .autumn {
@@ -76,11 +88,13 @@
     --accent-dark:	    rgb(133,77,38);
     --accent-light:	    rgb(222,165,123);
     --background:       rgb(251,251,251);
+    --nav-background:   rgb(236,236,236);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(0,0,0);
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .dusk-autumn {
@@ -88,11 +102,13 @@
     --accent-dark:	    rgb(102,59,29);
     --accent-light:	    rgb(133,77,38);
     --background:       rgb(39,39,39);
+    --nav-background:   rgb(47,46,46);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(245,245,245);
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .field {
@@ -100,11 +116,13 @@
     --accent-dark:	    rgb(50,82,34);
     --accent-light:	    rgb(137,171,121);
     --background:       rgb(251,251,251);
+    --nav-background:   rgb(236,236,236);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(0,0,0);
     --borders:          rgb(128,128,128);
     --code-background:  rgb(211,211,211);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }
 
 .midnight-field {
@@ -112,9 +130,11 @@
     --accent-dark:	    rgb(39,63,26);
     --accent-light:	    rgb(50,82,34);
     --background:       rgb(39,39,39);
+    --nav-background:   rgb(47,46,46);
     --dropshadow:       0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     --text-color:       rgb(245,245,245);
     --borders:          rgb(255,255,255);
     --code-background:  rgb(58,58,58);
     --placeholder:      rgba(127, 127, 127, 0.6);
+    @apply              transition-all;
 }

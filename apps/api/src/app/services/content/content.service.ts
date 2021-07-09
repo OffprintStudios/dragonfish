@@ -1,35 +1,37 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { ContentStore, PoetryStore, ProseStore } from '../../db/content';
-import { IContent } from '../../shared/content/content.interface';
+import { BrowseStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
+import { IContent } from '../../shared/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
     ContentModel,
     ContentKind,
     FormType,
-    SetRating,
     ContentFilter,
     PubChange,
+    PubStatus,
 } from '@dragonfish/shared/models/content';
-import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
+import { NotificationsService } from '@dragonfish/api/database/notifications';
+import { NotificationKind } from '@dragonfish/shared/models/notifications';
+import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
 @Injectable()
 export class ContentService implements IContent {
-    private readonly logger: Logger = new Logger(ContentService.name);
-
     constructor(
         private readonly content: ContentStore,
+        private readonly browse: BrowseStore,
         private readonly poetry: PoetryStore,
-        private readonly prose: ProseStore
-    ) {}
+        private readonly prose: ProseStore,
+        private readonly notifications: NotificationsService,
+    ) { }
 
-    async fetchOne(contentId: string, kind: ContentKind, user: JwtPayload): Promise<ContentModel> {
+    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
     }
 
-    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
-        return await this.content.fetchOnePublished(contentId, kind, user);
+    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]> {
+        return await this.browse.fetchOnePublished(contentId, kind, user);
     }
 
     async fetchAll(user: JwtPayload): Promise<ContentModel[]> {
@@ -42,7 +44,7 @@ export class ContentService implements IContent {
         filter: ContentFilter,
         userId?: string
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.content.fetchAllPublished(pageNum, kinds, filter, userId);
+        return await this.browse.fetchAllPublished(pageNum, kinds, filter, userId);
     }
 
     async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {
@@ -58,19 +60,14 @@ export class ContentService implements IContent {
     }
 
     async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
-        return await this.content.publishOne(user, contentId, pubChange);
-    }
+        const publishedContent = await this.content.publishOne(user, contentId, pubChange);
 
-    async setLike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setLike(user, setRating.workId, setRating.oldApprovalRating);
-    }
+        // If this content is being published, subscribe the author to comments on it.
+        if (pubChange.newStatus === PubStatus.Published) {
+            await this.notifications.subscribe(user.sub, contentId, NotificationKind.CommentNotification);
+        }
 
-    async setDislike(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setDislike(user, setRating.workId, setRating.oldApprovalRating);
-    }
-
-    async setNoVote(user: JwtPayload, setRating: SetRating): Promise<ReadingHistory> {
-        return await this.content.setNoVote(user, setRating.workId, setRating.oldApprovalRating);
+        return publishedContent;
     }
 
     async updateCoverArt(

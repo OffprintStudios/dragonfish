@@ -1,5 +1,5 @@
-import { Roles } from './roles.enum';
 import { AuditSession } from './audit-session.model';
+import { Roles } from './roles.enum';
 
 export interface User {
     readonly _id: string;
@@ -10,6 +10,7 @@ export interface User {
         readonly avatar: string;
         readonly bio: string | null;
         readonly tagline: string | null;
+        readonly coverPic: string | null;
     };
     readonly stats: {
         readonly works: number;

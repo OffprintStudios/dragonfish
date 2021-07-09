@@ -23,7 +23,37 @@ div.dash-nav {
             color: white;
             margin: 0;
             top: -0.025rem;
-            stroke-width: 1;
+        }
+    }
+    a.link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 8px 16px;
+        font-size: 1.125rem;
+        color: white;
+        font-weight: 500;
+        font-family: 'Josefin Sans', sans-serif;
+        @apply rounded-md mx-0.5;
+        &:hover {
+            transition: 0.125s;
+            background: var(--accent-light);
+            text-decoration: none;
+            color: whitesmoke;
+            @apply rounded-md;
+        }
+        &.active {
+            background: var(--accent-light);
+        }
+        span.link-icon {
+            display: inline-block;
+            margin-right: 0.5rem;
+            i-feather {
+                position: relative;
+                height: 18px;
+                width: 18px;
+                top: 0.15rem;
+            }
         }
     }
 }

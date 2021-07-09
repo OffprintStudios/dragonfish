@@ -1,37 +1,54 @@
-<h1 mat-dialog-title>Change Cover Art</h1>
-<mat-dialog-content>
+<div class="flex flex-row items-center mb-3.5">
+    <h3 class="text-3xl font-medium flex-1">Upload Cover Art</h3>
+    <button class="border-none shadow-none px-2.5 py-1.5 rounded-full relative -top-0.5" (click)="cancel()">
+        <i-feather name="x" class="mr-0"></i-feather>
+    </button>
+</div>
+<div
+    class="uploader-container flex flex-col items-center justify-center px-8 py-24 h-28"
+    ng2FileDrop
+    [uploader]="uploader"
+    (onFileDrop)="fileChangeEvent($event)"
+    *ngIf="showCropper === false; else cropper"
+>
+    <h3 class="text-2xl font-medium">Drag & Drop To Upload</h3>
+    <p class="m-0">Or just click <a class="cursor-pointer" (click)="coverArtInput.click()">browse</a> to find something awesome.</p>
     <input
         type="file"
-        style="display: none"
+        class="hidden"
         (change)="fileChangeEvent($event)"
         accept="image/png, image/jpeg, image/jpg"
         ng2FileSelect
         [uploader]="uploader"
-        #coverartInput
+        #coverArtInput
     />
-
-    <image-cropper
-        [imageChangedEvent]="imageChangedEvent"
-        [maintainAspectRatio]="false"
-        [containWithinAspectRatio]="true"
-        [aspectRatio]="1 / 1.41421"
-        format="jpeg"
-        imageQuality="95"
-        [(cropper)]="cropperDimensions"
-        (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"
-        (loadImageFailed)="loadImageFailed()"
-    ></image-cropper>
-</mat-dialog-content>
-<mat-dialog-actions>
-    <ng-template #isLoading>
-        <div class="loader" *ngIf="loading">
-            <div class="lds-dual-ring"></div>
+</div>
+<ng-template #cropper>
+    <div [@simpleFadeAnimation]="'in'">
+        <div class="uploader-container flex flex-col items-center justify-center" style="max-width: 32rem;">
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="false"
+                [aspectRatio]="1 / 1.41421"
+                [resizeToWidth]="256"
+                [cropperMinWidth]="128"
+                [onlyScaleDown]="true"
+                format="jpeg"
+                imageQuality="95"
+                (imageCropped)="imageCropped($event)"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
         </div>
-    </ng-template>
-    <div class="actions" *ngIf="!loading; else isLoading">
-        <button (click)="coverartInput.click()">Select Cover Art</button>
-        <button class="button-primary" *ngIf="croppedImage !== ''" (click)="uploadCoverArt()">Upload</button>
-        <button type="button" (click)="cancel()">Cancel</button>
+        <div class="flex items-center justify-center pt-2.5" *ngIf="!uploading; else isUploading">
+            <button *ngIf="croppedImage !== ''" (click)="uploadCoverArt()">
+                <i-feather name="upload-cloud"></i-feather>
+                Upload
+            </button>
+        </div>
+        <ng-template #isUploading>
+            <div class="flex items-center justify-center pt-2.5">
+                <mat-spinner [diameter]="40"></mat-spinner><span class="ml-2.5">Uploading...</span>
+            </div>
+        </ng-template>
     </div>
-</mat-dialog-actions>
+</ng-template>

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Select } from '@ngxs/store';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FrontendUser, ThemePref } from '@dragonfish/shared/models/users';
-import { UserState } from './repo/user';
-import { ElectronService } from 'ngx-electron';
-import { GlobalState } from './repo/global';
+import { ThemePref } from '@dragonfish/shared/models/users';
+import { NavigationEnd, Router } from '@angular/router';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { AuthService } from '@dragonfish/client/repository/session/services';
+import { AppQuery } from '@dragonfish/client/repository/app';
+import { DragonfishElectronService } from '@dragonfish/client/services';
 
 @UntilDestroy()
 @Component({
@@ -14,21 +14,57 @@ import { GlobalState } from './repo/global';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    @Select(GlobalState.theme) theme$: Observable<ThemePref>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
+    screenWidth: number;
+    screenHeight: number;
+    mobileMode = false;
+    showNav = true;
 
-    constructor(public electron: ElectronService) {}
+    constructor(
+        private auth: AuthService,
+        private router: Router,
+        public sessionQuery: SessionQuery,
+        private appQuery: AppQuery,
+        public electron: DragonfishElectronService,
+    ) {
+        this.onResize();
+    }
 
     ngOnInit(): void {
-        this.theme$.pipe(untilDestroyed(this)).subscribe(theme => {
+        this.appQuery.theme$.pipe(untilDestroyed(this)).subscribe((theme) => {
             const body = document.getElementsByTagName('body')[0];
             const currTheme = body.classList.item(0);
-            console.log(typeof ThemePref[theme]);
+            const html = document.getElementsByTagName('html')[0];
             if (ThemePref[theme] !== null && ThemePref[theme] !== undefined) {
-                body.classList.replace(currTheme, ThemePref[theme]);
+                if (
+                    ThemePref[theme] == 'dark-aqua' ||
+                    ThemePref[theme] == 'dark-crimson' ||
+                    ThemePref[theme] == 'dark-field' ||
+                    ThemePref[theme] == 'dark-royal' ||
+                    ThemePref[theme] === 'dusk-autumn'
+                ) {
+                    body.classList.replace(currTheme, ThemePref[theme]);
+                    html.classList.add('dark');
+                } else {
+                    body.classList.replace(currTheme, ThemePref[theme]);
+                    html.classList.remove('dark');
+                }
             } else {
                 body.classList.replace(currTheme, 'crimson');
             }
         });
+
+        this.router.events.pipe(untilDestroyed(this)).subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                this.showNav = this.router.url !== '/registration';
+            }
+        });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
+
+        this.mobileMode = this.screenWidth < 1100;
     }
 }

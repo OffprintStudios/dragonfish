@@ -1,4 +1,4 @@
-<ng-container *ngIf="currSection$ | async as section">
+<ng-container *ngIf="sectionsQuery.current$ | async as section">
     <div class="form-container">
         <div class="form-header flex flex-row items-center">
             <ng-container *ngIf="section.published === true; else notPublishedPreview">
@@ -69,7 +69,7 @@
         </ng-container>
         <ng-template #editMode>
             <div class="form-body">
-                <form [formGroup]="editForm" (ngSubmit)="saveChanges(section)">
+                <form [formGroup]="editForm">
                     <dragonfish-text-field
                         [formControlName]="'title'"
                         [name]="'title'"
@@ -78,12 +78,7 @@
                         [placeholder]="'The Beginning Of A Great Adventure'"
                     ></dragonfish-text-field>
 
-                    <dragonfish-editor
-                        [parentForm]="editForm"
-                        [controlName]="'body'"
-                        [minHeight]="'750px'"
-                        [maxHeight]="'750px'"
-                    ></dragonfish-editor>
+                    <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
                     <div class="authors-note">
                         <div class="header">
@@ -98,12 +93,7 @@
                             </div>
                         </div>
 
-                        <dragonfish-editor
-                            [parentForm]="editForm"
-                            [controlName]="'authorsNote'"
-                            [minHeight]="'750px'"
-                            [maxHeight]="'750px'"
-                        ></dragonfish-editor>
+                        <dragonfish-editor-lite [formControlName]="'authorsNote'"></dragonfish-editor-lite>
                     </div>
                 </form>
             </div>

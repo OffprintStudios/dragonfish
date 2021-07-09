@@ -3,9 +3,8 @@ div.content-box {
     flex-direction: column;
     border: 1px solid var(--borders);
     border-radius: 4px;
-    width: 225px;
+    max-width: 240px;
     height: 225px;
-    margin: 0.75rem;
     cursor: pointer;
     color: var(--text-color);
     overflow: hidden;
@@ -19,37 +18,36 @@ div.content-box {
     div.content-stats {
         position: relative;
         text-align: center;
-        width: 225px;
+        width: 100%;
         margin: 0 auto;
         top: -1.9rem;
         border-radius: 0 0 4px 4px;
-        background-image: linear-gradient(rgba(255, 255, 255, 0.37), var(--background));
-        backdrop-filter: blur(7px);
+        border-top: 1px solid var(--borders);
+        background: var(--background);
 
-        i-feather {
+        rmx-icon {
             position: relative;
             width: 16px;
-            top: 0.2rem;
             top: 0.2rem;
         }
 
         span.stat-block {
-            font-size: 14px;
+            font-size: 12px;
             display: inline-flex;
             flex-direction: row;
             align-items: center;
             position: relative;
             margin: 0 0.15rem 0 0.15rem;
             top: 0.35rem;
-            i-feather.stat-icon {
+            @apply select-none cursor-default;
+            rmx-icon.stat-icon {
                 margin-left: 0.15rem;
                 margin-right: 0.15rem;
             }
         }
 
         span.stat-divider {
-            border-left: 1px solid var(--borders);
-            margin: 0 0.15rem 0 0.15rem;
+            @apply m-0.5 select-none cursor-default;
         }
     }
 
@@ -59,7 +57,7 @@ div.content-box {
         p {
             color: var(--text-color);
         }
-        i-feather {
+        rmx-icon {
             position: relative;
             width: 100px;
             top: 20%;
@@ -104,7 +102,7 @@ div.content-box {
             text-overflow: ellipsis;
             color: whitesmoke;
         }
-        i-feather {
+        rmx-icon {
             display: inline-block;
             vertical-align: middle;
             margin-right: 0.5rem;

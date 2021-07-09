@@ -16,20 +16,23 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange, SetRating } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
-import { isNullOrUndefined } from '../../util';
-import { User } from '../../util/decorators';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IContent } from '../../shared/content';
 import { IImages } from '../../shared/images';
+import { CommentStore } from '@dragonfish/api/database/comments/stores';
+import { CommentKind } from '@dragonfish/shared/models/comments';
 
 @Controller('content')
 export class ContentController {
     constructor(
         @Inject('IContent') private readonly content: IContent,
-        @Inject('IImages') private readonly images: IImages
+        @Inject('IImages') private readonly images: IImages,
+        private readonly comments: CommentStore,
     ) {}
 
     @ApiTags(DragonfishTags.Content)
@@ -49,13 +52,20 @@ export class ContentController {
     async fetchOnePublished(
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
-        @Query('kind') kind: ContentKind
-    ) {
+        @Query('kind') kind: ContentKind,
+        @Query('page') page: number,
+    ): Promise<PubContent> {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.content.fetchOnePublished(contentId, kind, user);
+        const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
+        const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
+        return {
+            content: content,
+            ratings: ratings,
+            comments: comments,
+        };
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -71,7 +81,7 @@ export class ContentController {
         @Query('filter') filter: ContentFilter,
         @Query('pageNum') pageNum: number,
         @Query('userId') userId: string,
-        @Query('kind') kind: ContentKind[]
+        @Query('kind') kind: ContentKind[],
     ) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
@@ -98,7 +108,7 @@ export class ContentController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
-        @Body() formInfo: FormType
+        @Body() formInfo: FormType,
     ) {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
@@ -131,37 +141,16 @@ export class ContentController {
 
     @ApiTags(DragonfishTags.Content)
     @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-like')
-    async setLike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setLike(user, setRating);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-dislike')
-    async setDislike(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setDislike(user, setRating);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('set-no-vote')
-    async setNoVote(@User() user: JwtPayload, @Body() setRating: SetRating) {
-        return await this.content.setNoVote(user, setRating);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('prose/upload-coverart/:proseId')
     async uploadProseCoverArt(
         @UploadedFile() coverArtImage: any,
         @User() user: JwtPayload,
-        @Param('proseId') proseId: string
+        @Param('proseId') proseId: string,
     ) {
         const coverArtUrl = await this.images.upload(coverArtImage, proseId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(
-            coverArtUrl.lastIndexOf('/') + 1
+            coverArtUrl.lastIndexOf('/') + 1,
         )}`;
         return await this.content.updateCoverArt(user, proseId, ContentKind.ProseContent, coverArt);
     }
@@ -173,11 +162,11 @@ export class ContentController {
     async uploadPoetryCoverArt(
         @UploadedFile() coverArtImage: any,
         @User() user: JwtPayload,
-        @Param('poetryId') poetryId: string
+        @Param('poetryId') poetryId: string,
     ) {
         const coverArtUrl = await this.images.upload(coverArtImage, poetryId, 'coverart');
         const coverArt = `${process.env.IMAGES_HOSTNAME}/coverart/${coverArtUrl.substr(
-            coverArtUrl.lastIndexOf('/') + 1
+            coverArtUrl.lastIndexOf('/') + 1,
         )}`;
         return await this.content.updateCoverArt(user, poetryId, ContentKind.PoetryContent, coverArt);
     }

@@ -1,7 +1,7 @@
-<ng-container *ngIf="portUser$ | async as portUser">
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
     <div class="collection-page-header my-8 w-11/12 mx-auto">
         <div class="coll-name">
-            <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
                 <ng-container *ngIf="portUser._id === currentUser._id">
                     <div class="set-coll-visibility">
                         <ng-container [ngSwitch]="collData.audit.isPublic">
@@ -22,7 +22,7 @@
                 </ng-container>
             </ng-container>
             <h2 class="text-4xl">{{ collData.name }}</h2>
-            <ng-container *ngIf="currentUser$ | async as currentUser">
+            <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
                 <ng-container *ngIf="portUser._id === currentUser._id">
                     <div class="coll-tools flex flex-row items-center mb-1">
                         <button class="tool left shadow-none" (click)="openEditCollectionModal(collData)">
@@ -48,7 +48,7 @@
             </div>
         </ng-container>
         <ng-template #hasContent>
-            <div class="grid grid-cols-3">
+            <div class="grid grid-cols-3 gap-4">
                 <ng-container *ngFor="let content of collData.contains">
                     <dragonfish-work-card [content]="content" [showAuthor]="true"></dragonfish-work-card>
                 </ng-container>

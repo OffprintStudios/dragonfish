@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Select } from '@ngxs/store';
-import { FrontendUser, Roles, UpdateTagline } from '@dragonfish/shared/models/users';
+import { Roles, UpdateTagline } from '@dragonfish/shared/models/users';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable } from 'rxjs';
-import { UserState } from '../../../../repo/user';
-import { UserService } from '../../../../repo/user/services';
+import { UserService } from '@dragonfish/client/repository/session/services';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @UntilDestroy()
 @Component({
@@ -16,16 +14,14 @@ import { UserService } from '../../../../repo/user/services';
     styleUrls: ['./vip-settings.component.scss'],
 })
 export class VipSettingsComponent implements OnInit {
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-
     taglineForm = new FormGroup({
         tagline: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
     });
 
-    constructor(private user: UserService, private alerts: AlertsService) {}
+    constructor(private user: UserService, private alerts: AlertsService, public sessionQuery: SessionQuery) {}
 
     ngOnInit(): void {
-        this.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
+        this.sessionQuery.currentUser$.pipe(untilDestroyed(this)).subscribe((user) => {
             this.taglineForm.setValue({
                 tagline: user.profile.tagline,
             });
@@ -54,6 +50,6 @@ export class VipSettingsComponent implements OnInit {
             newTagline: this.taglineFields.tagline.value
         };
 
-        return this.user.updateTagline(changeRequest);
+        return this.user.updateTagline(changeRequest).subscribe();
     }
 }

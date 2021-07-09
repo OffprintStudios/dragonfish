@@ -1,7 +1,8 @@
 div.blog-box {
     border: 1px solid var(--borders);
     background: var(--background);
-
+    min-height: 15rem;
+    max-height: 25rem;
     div.header {
         border-bottom: 1px solid var(--borders);
         padding-bottom: 1rem;
@@ -36,7 +37,7 @@ div.blog-box {
     }
 
     a.continue-reading {
-        font-size: 14px;
+        font-size: 0.875rem;
         i-feather {
             position: relative;
             top: 0.45rem;

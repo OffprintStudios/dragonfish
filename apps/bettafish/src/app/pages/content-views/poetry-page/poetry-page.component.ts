@@ -1,47 +1,59 @@
-import { Component } from '@angular/core';
-import { Select } from '@ngxs/store';
-import { ContentState } from '../../../repo/content';
-import { Observable } from 'rxjs';
-import { PoetryContent } from '@dragonfish/shared/models/content';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { ContentViewQuery, ContentViewService } from '@dragonfish/client/repository/content-view';
+import { combineLatest } from 'rxjs';
+import { untilDestroyed } from '@ngneat/until-destroy';
+import { CommentKind } from '@dragonfish/shared/models/comments';
 
 @Component({
     selector: 'dragonfish-poetry-page',
     templateUrl: './poetry-page.component.html',
 })
-export class PoetryPageComponent {
-    @Select(ContentState.currContent) currPoetry$: Observable<PoetryContent>;
+export class PoetryPageComponent implements OnInit {
     pageNum = 1;
+    kind = CommentKind.ContentComment; // Sets the item kind for comments
 
-    constructor(public route: ActivatedRoute, private router: Router) {}
+    constructor(
+        public route: ActivatedRoute,
+        private router: Router,
+        public viewQuery: ContentViewQuery,
+        private viewService: ContentViewService,
+    ) {}
 
     ngOnInit(): void {
-        this.fetchData();
-    }
+        combineLatest(this.viewQuery.currContent$, this.route.queryParamMap)
+            .pipe(untilDestroyed(this))
+            .subscribe((value) => {
+                const [content, queryParams] = value;
+                setTwoPartTitle(content.title);
 
-    /**
-     * Fetches the current page of comments.
-     */
-    private fetchData() {
-        const queryParams = this.route.snapshot.queryParamMap;
-        if (queryParams.get('page') !== null) {
-            this.pageNum = +queryParams.get('page');
-        }
+                if (queryParams.has('page')) {
+                    this.pageNum = +queryParams.get('page');
+                }
+            });
     }
 
     /**
      * Changes query params to the appropriate page.
      * @param event The page changed to
+     * @param contentId
      */
-    onPageChange(event: number) {
+    onPageChange(event: number, contentId: string) {
         if (event !== 1) {
-            this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: { page: event },
-                queryParamsHandling: 'merge',
-            });
+            this.router
+                .navigate([], {
+                    relativeTo: this.route,
+                    queryParams: { page: event },
+                    queryParamsHandling: 'merge',
+                })
+                .then(() => {
+                    this.viewService.fetchNextComments(contentId, event);
+                });
         } else {
-            this.router.navigate([], { relativeTo: this.route });
+            this.router.navigate([], { relativeTo: this.route }).then(() => {
+                this.viewService.fetchNextComments(contentId, 1);
+            });
         }
     }
 }

@@ -3,17 +3,24 @@ import { RouterModule, Routes } from '@angular/router';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
-import { ApprovalQueueComponent, ApprovePoetryComponent, ApproveProseComponent, SectionViewComponent } from './pages/approval-queue';
+import {
+    ApprovalQueueComponent,
+    ApprovePoetryComponent,
+    ApproveProseComponent,
+    SectionViewComponent,
+} from './pages/approval-queue';
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Util */
 import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/approval-queue';
 import { Roles } from '@dragonfish/shared/models/users';
-import { AuthGuard } from './util';
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { QuillMigratorResolver } from './pages/quill-migrator/quill-migrator-resolver';
 
 const routes: Routes = [
     {
@@ -43,9 +50,6 @@ const routes: Routes = [
                         component: ApproveProseComponent,
                         canActivate: [AuthGuard],
                         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
-                        resolve: {
-                            contentData: ApproveContentResolver,
-                        },
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
@@ -61,9 +65,6 @@ const routes: Routes = [
                         component: ApprovePoetryComponent,
                         canActivate: [AuthGuard],
                         data: { roles: [Roles.WorkApprover, Roles.Moderator, Roles.Admin] },
-                        resolve: {
-                            contentData: ApproveContentResolver,
-                        },
                         runGuardsAndResolvers: 'always',
                         children: [
                             {
@@ -100,6 +101,16 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
+            {
+                path: 'quill-migrator',
+                component: QuillMigratorComponent,
+                resolve: {
+                    workData: QuillMigratorResolver,
+                },
+                runGuardsAndResolvers: 'always',
+                canActivate: [AuthGuard],
+                data: { roles: [Roles.Moderator, Roles.Admin] },
+            },
             { path: '', redirectTo: '/dashboard/overview', pathMatch: 'full' },
         ],
     },
@@ -108,10 +119,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [
-        AuthGuard,
-        ApprovalQueueResolver,
-        ApproveContentResolver,
-    ],
+    providers: [ApprovalQueueResolver, ApproveContentResolver, QuillMigratorResolver],
 })
 export class DashboardRoutingModule {}

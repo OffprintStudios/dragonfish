@@ -1,0 +1,46 @@
+<ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+    <div class="pb-4 mt-6 w-3/4 mx-auto">
+        <dragonfish-new-comment [currUser]="currentUser" [itemId]="itemId"></dragonfish-new-comment>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="contentQuery.loading$ | async; else notLoading">
+    <div class="flex items-center justify-center h-72">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <ng-container *ngIf="contentQuery.currComments$ | async as comments">
+        <ng-container *ngIf="comments.docs.length === 0; else notEmpty">
+            <div class="empty">
+                <h3>No one's said anything yet...</h3>
+                <p>But you could be the first!</p>
+            </div>
+        </ng-container>
+        <ng-template #notEmpty>
+            <div
+                class="my-2"
+                *ngFor="let comment of comments.docs | paginate: {
+                    id: 'comments',
+                    itemsPerPage: comments.limit,
+                    currentPage: pageNum,
+                    totalItems: comments.totalDocs
+                }; let i = index"
+            >
+                <dragonfish-comment-box [comment]="comment" [index]="i"></dragonfish-comment-box>
+            </div>
+        </ng-template>
+    </ng-container>
+</ng-template>
+
+<ng-container *ngIf="contentQuery.currComments$ | async as comments">
+    <div class="flex items-center justify-center pt-2 w-3/4 mx-auto" *ngIf="comments.totalPages > 1">
+        <pagination-controls
+            [nextLabel]="''"
+            [previousLabel]="''"
+            (pageChange)="emitPageChange.emit($event)"
+            id="comments"
+        ></pagination-controls>
+    </div>
+</ng-container>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { AlertsStateModel, AlertType } from './models';
+import { AlertModel, AlertType } from './models';
 
 @Component({
     selector: 'dragonfish-alerts',
@@ -10,7 +10,7 @@ import { AlertsStateModel, AlertType } from './models';
 export class AlertsComponent implements OnInit {
     public alertType = AlertType;
 
-    constructor(@Inject(MAT_SNACK_BAR_DATA) public data: AlertsStateModel) {}
+    constructor(@Inject(MAT_SNACK_BAR_DATA) public data: AlertModel) {}
 
     ngOnInit(): void {
         switch (this.data.type) {

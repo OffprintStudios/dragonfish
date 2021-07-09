@@ -5,14 +5,14 @@ import * as sanitizeHtml from 'sanitize-html';
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { UsersStore } from '../../db/users/users.store';
-import { ContentStore } from '../../db/content';
+import { UsersStore } from '@dragonfish/api/database/users';
+import { BrowseStore } from '@dragonfish/api/database/content/stores';
 import { User } from '@dragonfish/shared/models/users';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class SearchService implements ISearch {
-    constructor(private readonly usersStore: UsersStore, private readonly contentStore: ContentStore) {}
+    constructor(private readonly usersStore: UsersStore, private readonly contentStore: BrowseStore) {}
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;

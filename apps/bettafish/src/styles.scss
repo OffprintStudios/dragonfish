@@ -41,10 +41,13 @@ $bettafish-theme: mat-light-theme((
 /* You can add global styles to this file, and also import other style files */
 @import './themes.scss';
 @import './material.scss';
+@import './mixins.scss';
 @import '~ngx-tabset/ngx-tabset.scss';
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import '~@ctrl/ngx-emoji-mart/picker';
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 :root {
     /* Widths */
@@ -92,12 +95,31 @@ a.button {
     line-height: 20px;
     border: 1px solid var(--borders);
     border-radius: 6px;
-    box-shadow: var(--dropshadow);
+    color: var(--text-color);
+    user-select: none;
+    &.primary {
+        background: var(--accent);
+        color: white;
+        &:hover {
+            background: var(--accent-dark);
+            transition: all 0.15s ease;
+            text-decoration: none;
+        }
+    }
     &:hover {
-        color: whitesmoke;
+        color: white;
         background: var(--accent);
         text-decoration: none;
         transition: all 0.15s ease;
+    }
+    rmx-icon {
+        width: 16px !important;
+        position: relative;
+        top: 0.25rem;
+        margin-right: 0.275rem;
+        &.no-text {
+            margin-right: 0;
+        }
     }
     i-feather {
         width: 16px !important;
@@ -163,21 +185,85 @@ div.empty {
         margin-bottom: 0;
     }
 }
+
+/* Offprint Topbar */
+div.topbar-header {
+    @apply flex items-center text-sm text-white w-64 border-r h-full pl-2.5 flex-shrink-0;
+    border-color: var(--accent-light);
+    rmx-icon {
+        @apply mr-1;
+    }
+    h3 {
+        @apply font-medium text-base text-white relative top-0.5;
+    }
+    a {
+        @apply p-0.5 mx-0.5 rounded-md text-white cursor-pointer;
+        &:hover, &.active {
+            @apply no-underline;
+            background: var(--accent-light);
+            color: white;
+        }
+        span.link-icon {
+            rmx-icon {
+                width: 24px;
+                stroke-width: 1;
+            }
+        }
+    }
+}
+div.topbar-tools {
+    @apply flex items-center px-2.5 w-full;
+    button {
+        @apply border-none text-white shadow-none rounded-md px-2 py-1.5;
+        &:hover, &.active {
+            background: var(--accent-light);
+        }
+        rmx-icon {
+            @apply relative top-1;
+        }
+    }
+}
+
+/* Offprint Pagebar */
+div.pagebar {
+    div.pages {
+        @apply text-white w-full flex flex-col;
+        a {
+            @apply w-full p-2 rounded-md text-white my-0.5 flex items-center;
+            &:hover, &.active {
+                background: var(--accent-light);
+                text-decoration: none;
+                color: white;
+            }
+            span.link-icon {
+                @apply mr-1;
+                rmx-icon {
+                    width: 24px;
+                    stroke-width: 1;
+                }
+            }
+        }
+    }
+}
+
 /* Offprint Tabs */
 .offprint-tabs-nav {
     justify-content: center;
     //border-bottom: 1px solid var(--borders);
     margin-bottom: 1.5rem;
-}
-.nav-tab {
-    font-size: 18px;
-    text-transform: lowercase;
-    font-variant: small-caps;
-    font-weight: 700;
-    letter-spacing: 2px;
-    &:hover {
-        color: var(--accent);
-        transition: all 0.15s ease;
+    .nav-tab {
+        @apply text-lg;
+        text-transform: lowercase;
+        font-variant: small-caps;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--text-color);
+        border-bottom-width: 2px;
+        border-color: transparent;
+        &:hover {
+            color: var(--accent);
+            transition: all 0.15s ease;
+        }
     }
 }
 .nav-tabset:not(.disable-style) .nav-tab.active {
@@ -373,61 +459,37 @@ div.context-menu {
  * innerHtml AND view encapsulation, we can move all this back down to the
  * component level.
 */
+div.comment-body,
 div.section-body,
 div.blog-body,
 div.authors-note,
 div.html-description {
-    // Headers and default image style
-    h1 { font-size: 3em; }
-    h2 { font-size: 2em; }
-    h3 { font-size: 1.5em; }
-    h4 { font-size: 1.25em; }
-    h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
-    h6 { font-size: 1em; text-transform: uppercase; }
-    img { max-width: 100% }
+    @include content-body();
+}
 
-    // CKEditor-generated image styles
-    .image {
-        display: table;
-        clear: both;
-        text-align: center;
-        margin: 1em auto;
+.accented-content-box {
+    color: white;
+    h1, h2, h3, h4, h5, h6 {
+        color: white !important;
     }
-
-    .image-style-align-{
-        &left {
-            float: left;
-            margin-right: 1.5em;
-        }
-        &center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        &right {
-            float: right;
-            margin-left: 1.5em;
+    a {
+        color: white;
+        text-decoration: none;
+        background: linear-gradient(0deg, var(--accent) 0%, var(--accent-light) 10%, var(--accent) 50%);
+        transition: all 0.15s ease;
+        &:hover {
+            color: white;
+            background: linear-gradient(0deg, var(--accent) 0%, var(--accent-light) 10%, var(--accent-light) 90%, var(--accent) 100%);
+            text-decoration: none;
         }
     }
-
-    // A little CSS hack to force images at the bottom of content bodies to not break out of their containers.
-    // More details here: http://bonrouge.com/br.php?page=floats
-    > :last-child:after {
-        content: ".";
-        display: block;
-        height: 0;
-        overflow: hidden;
-        clear: both;
-        visibility: hidden;
-    }
-
-    // CKEditor-generated font sizes
-    span.text-{
-        &tiny { font-size: 0.7em; }
-        &small { font-size: 0.85em; }
-        &big { font-size: 1.4em; }
-        &huge { font-size: 1.85em; }
-    }
-    ul,ol {
-        margin-left: 2.5rem;
+    &.dark {
+        a {
+            background: linear-gradient(0deg, var(--accent-light) 0%, var(--accent) 10%, var(--accent-light) 50%);
+            transition: all 0.15s ease;
+            &:hover {
+                background: linear-gradient(0deg, var(--accent-light) 0%, var(--accent) 10%, var(--accent) 90%, var(--accent-light) 100%);
+            }
+        }
     }
 }

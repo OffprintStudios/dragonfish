@@ -1,12 +1,28 @@
-<ng-container *ngIf="electron.isElectronApp && !(currentUser$ | async); else isInBrowser">
-    <dragonfish-auth-full></dragonfish-auth-full>
+<ng-container *ngIf="!mobileMode; else mobile">
+    <ng-container *ngIf="showNav; else onRegistrationDesktop">
+        <div class="absolute w-full h-2.5 z-50" *ngIf="electron.isElectron" style="-webkit-app-region: drag;"></div>
+        <main class="flex flex-row h-screen">
+            <dragonfish-sidebar></dragonfish-sidebar>
+            <div class="flex-auto h-screen overflow-y-auto">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </ng-container>
+    <ng-template #onRegistrationDesktop>
+        <router-outlet></router-outlet>
+    </ng-template>
 </ng-container>
 
-<ng-template #isInBrowser>
-    <main class="content flex flex-row">
-        <dragonfish-nav></dragonfish-nav>
-        <div class="flex-auto overflow-y-auto">
-            <router-outlet></router-outlet>
-        </div>
-    </main>
+<ng-template #mobile>
+    <ng-container *ngIf="showNav; else onRegistrationMobile">
+        <main class="flex flex-col h-screen">
+            <dragonfish-mobile-nav></dragonfish-mobile-nav>
+            <div class="flex-auto h-screen overflow-y-auto">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </ng-container>
+    <ng-template #onRegistrationMobile>
+        <router-outlet></router-outlet>
+    </ng-template>
 </ng-template>

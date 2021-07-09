@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Select } from '@ngxs/store';
-import { Observable, combineLatest } from 'rxjs';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { BlogsContentModel, ContentKind } from '@dragonfish/shared/models/content';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
-import { UserState } from '../../../repo/user';
-import { PortfolioState } from '../../../repo/portfolio';
-import { NetworkService } from '../../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PortfolioQuery } from '@dragonfish/client/repository/portfolio';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @UntilDestroy()
 @Component({
@@ -17,23 +15,26 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
     templateUrl: './portfolio-blog.component.html'
 })
 export class PortfolioBlogComponent implements OnInit {
-    @Select(PortfolioState.currPortfolio) portUser$: Observable<FrontendUser>;
-    @Select(UserState.currUser) currentUser$: Observable<FrontendUser>;
-
     loading = false;
     blogsData: PaginateResult<BlogsContentModel>;
 
     pageNum = 1;
 
-    constructor(private network: NetworkService, private route: ActivatedRoute, private router: Router) {}
+    constructor(
+        private network: DragonfishNetworkService,
+        private route: ActivatedRoute,
+        private router: Router,
+        public sessionQuery: SessionQuery,
+        public portQuery: PortfolioQuery,
+        private appQuery: AppQuery,
+    ) { }
 
     ngOnInit(): void {
-        combineLatest(this.portUser$, this.route.queryParamMap).pipe(untilDestroyed(this))
-            .subscribe(value => {
-                const [portUser, params] = value;
+        this.route.queryParamMap.pipe(untilDestroyed(this))
+            .subscribe(params => {
                 this.pageNum = params.has('page') ? +params.get('page') : 1;
-                setThreePartTitle(portUser.username, Constants.BLOGS);
-                this.fetchData(this.pageNum, portUser._id);
+                setThreePartTitle(this.portQuery.portUserName, Constants.BLOGS);
+                this.fetchData(this.pageNum, this.portQuery.portUserId);
             });
     }
 
@@ -46,9 +47,9 @@ export class PortfolioBlogComponent implements OnInit {
      */
     private fetchData(pageNum: number, userId: string): void {
         this.loading = true;
-        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], userId)
+        this.network.fetchAllContent(pageNum, [ContentKind.BlogContent], this.appQuery.filter, userId)
             .subscribe(content => {
-                this.blogsData = content as any;
+                this.blogsData = content as PaginateResult<BlogsContentModel>;
                 this.loading = false;
             });
     }
@@ -57,6 +58,7 @@ export class PortfolioBlogComponent implements OnInit {
      * Handles page changing
      *
      * @param event The new page
+     * @param userId
      */
     onPageChange(event: number, userId: string) {
         this.router.navigate([], {

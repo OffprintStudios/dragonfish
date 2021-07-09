@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants } from '@dragonfish/shared/constants';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { slogans } from '../../models/site';
-import { NetworkService } from '../../services';
+import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ActivatedRoute } from '@angular/router';
 import { NewsContentModel } from '@dragonfish/shared/models/content';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'dragonfish-home',
@@ -16,12 +17,14 @@ export class HomeComponent implements OnInit {
     loadingLatest = false;
     latestPosts: NewsContentModel[];
 
-    constructor(private network: NetworkService, public route: ActivatedRoute) {}
+    constructor(private network: DragonfishNetworkService, public route: ActivatedRoute) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.HOME);
+
         // Load the latest posts
         this.loadingLatest = true;
-        this.network.fetchInitialNewsPosts().subscribe(data => {
+        this.network.fetchInitialNewsPosts().pipe(delay(500)).subscribe(data => {
             this.latestPosts = data;
             this.loadingLatest = false;
         }, () => {

@@ -1,43 +1,49 @@
 <ng-container [ngSwitch]="determineProminentRole()">
     <div
-        class="role admin"
         *ngSwitchCase="'Admin'"
+        [ngClass]="isStyled ? 'role admin' : ''"
     >
         Admin
     </div>
     <div
-        class="role moderator"
         *ngSwitchCase="'Moderator'"
+        [ngClass]="isStyled ? 'role moderator' : ''"
     >
         Moderator
     </div>
     <div
-        class="role chat-moderator"
         *ngSwitchCase="'ChatModerator'"
+        [ngClass]="isStyled ? 'role chat-moderator' : ''"
     >
         Chat Moderator
     </div>
     <div
-        class="role contributor"
+        *ngSwitchCase="'Maintainer'"
+        [ngClass]="isStyled ? 'role maintainer': ''"
+    >
+        Maintainer
+    </div>
+    <div
         *ngSwitchCase="'Contributor'"
+        [ngClass]="isStyled ? 'role contributor' : ''"
     >
         Contributor
     </div>
     <div
-        class="role work-approver"
         *ngSwitchCase="'WorkApprover'"
+        [ngClass]="isStyled ? 'role work-approver' : ''"
     >
         Work Approver
     </div>
     <div
-        class="role vip"
         *ngSwitchCase="'VIP'"
+        [ngClass]="isStyled ? 'role vip' : ''"
     >
         VIP
     </div>
     <div
-        class="role supporter"
         *ngSwitchCase="'Supporter'"
+        [ngClass]="isStyled ? 'role supporter' : ''"
     >
         Supporter
     </div>

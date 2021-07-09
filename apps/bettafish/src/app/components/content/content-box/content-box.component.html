@@ -1,4 +1,4 @@
-<ng-container *ngIf="content$ | async as content">
+<ng-container *ngIf="viewQuery.state$ | async as content">
     <div class="content-box shadow-2xl mb-6">
         <dragonfish-rating-icon [rating]="content.currContent.meta.rating" [size]="'large'"></dragonfish-rating-icon>
         <div class='w-11/12 mx-auto'>
@@ -51,7 +51,13 @@
                         </div>
                     </div>
                     <div class='flex-1'><!--spacer--></div>
-                    <dragonfish-content-rating></dragonfish-content-rating>
+                    <dragonfish-content-approval
+                        [content]="content.currContent"
+                        [currRating]="viewQuery.currRating"
+                        [ratingsDoc]="viewQuery.ratingsDoc$ | async"
+                        [likes]="viewQuery.likes"
+                        [dislikes]="viewQuery.dislikes"
+                    ></dragonfish-content-approval>
                 </div>
                 <div class="flex-1 p-4">
                     <img
@@ -63,17 +69,17 @@
                     <ng-container [ngSwitch]="content.currContent.kind">
                         <ng-container *ngSwitchCase="content.currContent.kind === contentKind.PoetryContent">
                             <ng-container *ngIf="$any(content.currContent.meta).collection; else singlePoemDesc">
-                                <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                                <div class="html-description accented-content-box" [innerHtml]="content.currContent.body | safeHtml"></div>
                             </ng-container>
                             <ng-template #singlePoemDesc>
-                                <div class="html-description" [innerHTML]="content.currContent.desc | safeHtml"></div>
+                                <div class="html-description accented-content-box" [innerHTML]="content.currContent.desc | safeHtml"></div>
                             </ng-template>
                         </ng-container>
                         <ng-container *ngSwitchCase="content.currContent.kind === contentKind.ProseContent">
-                            <div class="html-description" [innerHTML]="content.currContent.body | safeHtml"></div>
+                            <div class="html-description accented-content-box" [innerHTML]="content.currContent.body | safeHtml"></div>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
-                            <div class="html-description" [innerHtml]="content.currContent.body | safeHtml"></div>
+                            <div class="html-description accented-content-box" [innerHtml]="content.currContent.body | safeHtml"></div>
                         </ng-container>
                     </ng-container>
                 </div>

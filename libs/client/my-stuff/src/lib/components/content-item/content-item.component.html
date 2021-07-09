@@ -11,30 +11,30 @@
 >
     <div class="content-description">
         <ng-container [ngSwitch]="content.kind">
-            <i-feather
+            <rmx-icon
                 *ngSwitchCase="contentKind.BlogContent"
-                name="coffee"
+                name="cup-line"
                 [matTooltip]="'Blog'"
                 [matTooltipClass]="'offprint-tooltip'"
-            ></i-feather>
-            <i-feather
+            ></rmx-icon>
+            <rmx-icon
                 *ngSwitchCase="contentKind.PoetryContent"
-                name="feather"
+                name="quill-pen-line"
                 [matTooltip]="'Poetry'"
                 [matTooltipClass]="'offprint-tooltip'"
-            ></i-feather>
-            <i-feather
+            ></rmx-icon>
+            <rmx-icon
                 *ngSwitchCase="contentKind.ProseContent"
-                name="book-open"
+                name="book-open-line"
                 [matTooltip]="'Prose'"
                 [matTooltipClass]="'offprint-tooltip'"
-            ></i-feather>
-            <i-feather
+            ></rmx-icon>
+            <rmx-icon
                 *ngSwitchCase="contentKind.NewsContent"
-                name="globe"
+                name="global-line"
                 [matTooltip]="'News'"
                 [matTooltipClass]="'offprint-tooltip'"
-            ></i-feather>
+            ></rmx-icon>
         </ng-container>
         <h5>{{ content.title }}</h5>
     </div>
@@ -43,21 +43,21 @@
     </div>
     <div class="content-stats">
         <span class="stat-block" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
-            <i-feather class="stat-icon" name="eye"></i-feather>{{ content.stats.views | abbreviate }}
+            <rmx-icon class="stat-icon" name="eye-line"></rmx-icon>{{ content.stats.views | abbreviate }}
         </span>
-        <span class="stat-divider"></span>
+        <span class="stat-divider">|</span>
         <span class="stat-block" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
-            <i-feather class="stat-icon" name="message-circle"></i-feather>{{ content.stats.comments | abbreviate }}
+            <rmx-icon class="stat-icon" name="chat-3-line"></rmx-icon>{{ content.stats.comments | abbreviate }}
         </span>
-        <span class="stat-divider"></span>
+        <span class="stat-divider">|</span>
         <span class="stat-block" [matTooltip]="'Likes'" [matTooltipClass]="'offprint-tooltip'">
-            <i-feather class="stat-icon" name="thumbs-up"></i-feather>{{ content.stats.likes | abbreviate }}
+            <rmx-icon class="stat-icon" name="heart-line"></rmx-icon>{{ content.stats.likes | abbreviate }}
         </span>
-        <span class="stat-divider"></span>
+        <span class="stat-divider">|</span>
         <span class="stat-block" [matTooltip]="'Dislikes'" [matTooltipClass]="'offprint-tooltip'">
-            <i-feather class="stat-icon" name="thumbs-down"></i-feather>{{ content.stats.dislikes | abbreviate }}
+            <rmx-icon class="stat-icon" name="dislike-line"></rmx-icon>{{ content.stats.dislikes | abbreviate }}
         </span>
-        <span class="stat-divider"></span>
+        <span class="stat-divider">|</span>
         <ng-container [ngSwitch]="content.audit.published">
             <span
                 *ngSwitchCase="pubStatus.Published"
@@ -65,7 +65,7 @@
                 [matTooltip]="'Published'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <i-feather class="stat-icon" name="check-circle"></i-feather>
+                <rmx-icon class="stat-icon" name="checkbox-circle-line"></rmx-icon>
             </span>
             <span
                 *ngSwitchCase="pubStatus.Unpublished"
@@ -73,7 +73,7 @@
                 [matTooltip]="'Unpublished'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <i-feather class="stat-icon" name="circle"></i-feather>
+                <rmx-icon class="stat-icon" name="checkbox-blank-circle-line"></rmx-icon>
             </span>
             <span
                 *ngSwitchCase="pubStatus.Pending"
@@ -81,7 +81,7 @@
                 [matTooltip]="'Pending'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <i-feather class="stat-icon" name="clock"></i-feather>
+                <rmx-icon class="stat-icon" name="time-line"></rmx-icon>
             </span>
             <span
                 *ngSwitchCase="pubStatus.Rejected"
@@ -89,7 +89,7 @@
                 [matTooltip]="'Rejected'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <i-feather class="stat-icon" name="x-circle"></i-feather>
+                <rmx-icon class="stat-icon" name="close-circle-line"></rmx-icon>
             </span>
             <span
                 *ngSwitchCase="pubStatus.ApprovedUnpublished"
@@ -97,7 +97,7 @@
                 [matTooltip]="'Approved (Unpublished)'"
                 [matTooltipClass]="'offprint-tooltip'"
             >
-                <i-feather class="stat-icon" name="circle"></i-feather>
+                <rmx-icon class="stat-icon" name="checkbox-blank-circle-line"></rmx-icon>
             </span>
         </ng-container>
     </div>

@@ -1,5 +1,11 @@
+<dragonfish-topbar>
+    <div class="topbar-header">
+        <h3>Supporters</h3>
+    </div>
+</dragonfish-topbar>
+
 <div class="w-11/12 mx-auto mt-8">
-    <div class="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-4 place-items-center">
+    <div class="grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4 place-items-center">
         <ng-container *ngFor="let user of supporters">
             <dragonfish-user-card [user]="user"></dragonfish-user-card>
         </ng-container>

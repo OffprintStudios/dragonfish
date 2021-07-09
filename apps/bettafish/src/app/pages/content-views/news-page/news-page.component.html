@@ -1,9 +1,9 @@
-<ng-container *ngIf="currContent$ | async as currPost">
+<ng-container *ngIf="viewState.currContent$ | async as currPost">
     <div class="sticky top-0 z-40">
         <div class="news-post-nav shadow-lg relative z-40">
             <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
                 <button class="go-back border-none rounded-full shadow-none p-2.5" [routerLink]="['/news']">
-                    <i-feather name="chevron-left" class="text-white relative top-0.5 mr-4"></i-feather>
+                    <rmx-icon name="arrow-left-s-line" class="text-white relative top-0.5 mr-4"></rmx-icon>
                 </button>
                 <div>
                     <h3 class="text-4xl text-white relative top-1.5 font-semibold">
@@ -19,28 +19,32 @@
                             </a>
                         </span>
                         <span class="mx-2">//</span>
-                        <span>{{ category[currPost.meta.category] }}</span>
+                        <span>{{ category[$any(currPost.meta).category] }}</span>
                         <span class="mx-2">//</span>
                         <span>{{ currPost.audit.publishedOn | localedate: 'fullDate' }}</span>
                     </div>
                 </div>
                 <div class="flex-1"><!--spacer--></div>
-                <dragonfish-news-rating></dragonfish-news-rating>
+                <dragonfish-content-approval
+                    [content]="currPost"
+                    [currRating]="viewState.currRating"
+                    [ratingsDoc]="viewState.ratingsDoc$ | async"
+                    [likes]="viewState.likes"
+                    [dislikes]="viewState.dislikes"
+                ></dragonfish-content-approval>
             </div>
         </div>
     </div>
-    <div class="post-container">
-        <div class="prose mx-auto">
-            <div class="html-description" [innerHtml]="currPost.body | safeHtml"></div>
-        </div>
+    <div class="post-container w-6/12 mx-auto">
+        <div class="blog-body" [innerHtml]="currPost.body | safeHtml"></div>
     </div>
 
     <div class="relative z-0">
         <dragonfish-comments
             [itemId]="currPost._id"
-            [itemKind]="itemKind"
+            [kind]="kind"
             [pageNum]="pageNum"
-            (emitPageChange)="onPageChange($event)"
+            (emitPageChange)="onPageChange($event, currPost._id)"
         ></dragonfish-comments>
     </div>
 </ng-container>

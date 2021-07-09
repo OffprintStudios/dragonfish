@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { DocsComponent } from './docs.component';
 import { TosComponent } from './tos/tos.component';
 import { OmnibusComponent } from './omnibus/omnibus.component';
 import { CodeOfConductComponent } from './code-of-conduct/code-of-conduct.component';
@@ -11,7 +10,6 @@ import { SupportersComponent } from './supporters/supporters.component';
 import { SiteStaffResolver, SupportersResolver } from '../../resolvers/docs';
 
 export const DocsPages = [
-    DocsComponent,
     TosComponent,
     OmnibusComponent,
     CodeOfConductComponent,
@@ -21,26 +19,24 @@ export const DocsPages = [
 ];
 
 export const DocsRoutes: Routes = [
-    { path: 'docs', component: DocsComponent, children: [
-        { path: 'terms-of-service', component: TosComponent },
-        { path: 'omnibus', component: OmnibusComponent },
-        { path: 'what-is-offprint', component: AboutOffprintComponent },
-        { path: 'code-of-conduct', component: CodeOfConductComponent },
-        {
-            path: 'site-staff',
-            component: SiteStaffComponent,
-            resolve: {
-                staffData: SiteStaffResolver,
-            },
-            runGuardsAndResolvers: 'always',
+    { path: 'terms-of-service', component: TosComponent },
+    { path: 'omnibus', component: OmnibusComponent },
+    { path: 'what-is-offprint', component: AboutOffprintComponent },
+    { path: 'code-of-conduct', component: CodeOfConductComponent },
+    {
+        path: 'staff',
+        component: SiteStaffComponent,
+        resolve: {
+            staffData: SiteStaffResolver,
         },
-        {
-            path: 'supporters',
-            component: SupportersComponent,
-            resolve: {
-                supporterData: SupportersResolver,
-            },
-            runGuardsAndResolvers: 'always',
+        runGuardsAndResolvers: 'always',
+    },
+    {
+        path: 'supporters',
+        component: SupportersComponent,
+        resolve: {
+            supporterData: SupportersResolver,
         },
-    ] },
+        runGuardsAndResolvers: 'always',
+    },
 ];
