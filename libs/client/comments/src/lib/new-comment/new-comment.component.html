@@ -1,0 +1,27 @@
+<ng-container *ngIf="collapsed; else showForm">
+    <div class="expandable-bar" (click)="toggleCollapsed()">
+        <div class="avatar-block" *ngIf="currUser">
+            <img [src]="currUser.profile.avatar" [alt]="'avatar'">
+        </div>
+        <div class="title">
+            <h3>Add a Comment</h3>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #showForm>
+    <form [formGroup]="newComment" class="w-3/4 mx-auto" [@inOutAnimation]>
+        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+        <div class="flex items-center justify-end p-1">
+            <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="toggleCollapsed()">
+                <rmx-icon name="close-line"></rmx-icon>
+                Cancel
+            </button>
+            <div class="mx-1"><!--spacer--></div>
+            <button type="button" class="primary shadow-none border-none px-2.5 py-1.5" (click)="submitForm()">
+                <rmx-icon name="check-line"></rmx-icon>
+                Submit
+            </button>
+        </div>
+    </form>
+</ng-template>

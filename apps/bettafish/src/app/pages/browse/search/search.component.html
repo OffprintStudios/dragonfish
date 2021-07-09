@@ -1,0 +1,56 @@
+<div class="search-header">
+    <div class="w-11/12 mx-auto pb-2 pt-4 flex flex-row justify-center">
+        <rmx-icon name="search-line" class="mr-4 header"></rmx-icon>
+        <h3 class="text-2xl italic text-white">Search Results</h3>
+
+        <!--
+        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">Initial Results</a>
+        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Works</a>
+        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Blogs</a>
+        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Users</a>
+        -->
+    </div>
+</div>
+
+<ng-container *ngIf="loading; else notLoading">
+    <div class="flex flex-row items-center justify-center h-full">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <div class="w-11/12 mx-auto my-6">
+        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.works.length !== 0">
+            <rmx-icon name="book-open-line" class="relative -top-0.5 mr-2"></rmx-icon>
+            <h3 class="text-4xl font-medium">Works</h3>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <!--Works-->
+            <ng-container *ngFor="let work of searchResults.works">
+                <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+            </ng-container>
+        </div>
+
+        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.blogs.length !== 0">
+            <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
+            <h3 class="text-4xl font-medium">Blogs</h3>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <!--Blogs-->
+            <ng-container *ngFor="let blog of searchResults.blogs">
+                <dragonfish-blog-card [blog]="blog" [showAuthor]="true"></dragonfish-blog-card>
+            </ng-container>
+        </div>
+
+        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.users.length !== 0">
+            <rmx-icon name="group-line" class="relative -top-0.5 mr-2"></rmx-icon>
+            <h3 class="text-4xl font-medium">Users</h3>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <!--Users-->
+            <ng-container *ngFor="let user of searchResults.users">
+                <dragonfish-user-card [user]="user"></dragonfish-user-card>
+            </ng-container>
+        </div>
+    </div>
+</ng-template>

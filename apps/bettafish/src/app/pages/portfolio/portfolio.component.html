@@ -1,0 +1,71 @@
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
+    <div class="portfolio-header relative z-40" [ngClass]="portUser.profile.coverPic ? 'with-cover' : 'no-cover'" (mouseenter)="toggleCoverButton()" (mouseleave)="toggleCoverButton()">
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser">
+            <ng-container *ngIf="currentUser._id === portUser._id">
+                <div class="absolute right-0 mt-3.5 mr-3.5 z-40" *ngIf="canSeeCoverButton">
+                    <button class="change-cover rounded-md text-white p-1" (click)="openCoverPicUploader()">
+                        <i-feather name="image"></i-feather>
+                    </button>
+                </div>
+            </ng-container>
+        </ng-container>
+        <img class="object-cover absolute w-full z-20" style="height: 18.75rem;" [src]="portUser.profile.coverPic" *ngIf="portUser.profile.coverPic">
+        <div class="flex flex-col items-center justify-center px-4 py-10">
+            <div class="flex flex-col items-center justify-center p-2 z-50" [ngClass]="portUser.profile.coverPic ? 'info-with-cover' : ''">
+                <div class="flex flex-row items-center self-start">
+                    <div>
+                        <img class="avatar shadow-2xl" [alt]="'Avatar'" [src]="portUser.profile.avatar" />
+                    </div>
+                    <div class="ml-4 flex flex-col items-start justify-center">
+                        <h1 class="text-4xl font-bold text-white">{{ portUser.username }}</h1>
+                        <h3 class="text-2xl italic text-white">{{ portUser.profile.tagline }}</h3>
+                        <div
+                            class="my-1"
+                            *ngIf="portUser.profile.tagline === undefined || portUser.profile.tagline === null || portUser.profile.tagline === ''"
+                        >
+                            <!--spacer-->
+                        </div>
+                        <dragonfish-role-badge [roles]="portUser.audit.roles" [isCentered]="false" [isStyled]="true"></dragonfish-role-badge>
+                    </div>
+                </div>
+                <div class="mt-2 flex flex-row items-center">
+                    <a
+                        class="link ml-0"
+                        [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
+                        [routerLink]="['/portfolio', portUser._id, portUser.username | slugify]"
+                        [routerLinkActive]="'active'"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                    >
+                        <span class="link-icon"><i-feather name="home"></i-feather></span>Home
+                    </a>
+                    <a
+                        class="link"
+                        [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
+                        [routerLink]="['works']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <span class="link-icon"><i-feather name="feather"></i-feather></span>{{ portUser.stats.works | abbreviate }} Work{{ portUser.stats.works | pluralize}}
+                    </a>
+                    <a
+                        class="link"
+                        [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
+                        [routerLink]="['blog']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <span class="link-icon"><i-feather name="coffee"></i-feather></span>{{ portUser.stats.blogs | abbreviate }} Blog{{ portUser.stats.blogs | pluralize }}
+                    </a>
+                    <a
+                        class="link end"
+                        [ngClass]="portUser.profile.coverPic ? 'with-cover' : ''"
+                        [routerLink]="['collections']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <span class="link-icon"><i-feather name="bookmark"></i-feather></span>Collections
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <dragonfish-portfolio-toolbar></dragonfish-portfolio-toolbar>
+    <router-outlet></router-outlet>
+</ng-container>

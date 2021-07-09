@@ -1,0 +1,249 @@
+<div class="mx-auto">
+    <div class="flex items-center p-1 border border-b-0 rounded-t-md" style="border-color: var(--borders);">
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            [matMenuTriggerFor]="headings"
+            [ngClass]="{ 'active': headingMenuOpened }"
+            (menuOpened)="headingMenuOpened = true"
+            (menuClosed)="headingMenuOpened = false"
+        >
+            <span class="relative -top-0.5">Heading</span>
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleBold().run()"
+            [ngClass]="{ 'active': editor.isActive('bold') }"
+            [matTooltip]="'Bold'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="bold" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleItalic().run()"
+            [ngClass]="{ 'active': editor.isActive('italic') }"
+            [matTooltip]="'Italic'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="italic" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleUnderline().run()"
+            [ngClass]="{ 'active': editor.isActive('underline') }"
+            [matTooltip]="'Underline'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="underline" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleStrike().run()"
+            [ngClass]="{ 'active': editor.isActive('strike') }"
+            [matTooltip]="'Strikethrough'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="strikethrough" class="mr-0"></rmx-icon>
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            [matMenuTriggerFor]="alignments"
+            [ngClass]="{ 'active': alignmentMenuOpened }"
+            (menuOpened)="alignmentMenuOpened = true"
+            (menuClosed)="alignmentMenuOpened = false"
+        >
+            <rmx-icon name="align-left"></rmx-icon>Align
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openInsertMedia('Insert Image')"
+            [matTooltip]="'Insert Image'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="image-add-line" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openInsertMedia('Insert Media')"
+        >
+            <rmx-icon name="film-line" class="mr-0"></rmx-icon>
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleBlockquote().run()"
+            [ngClass]="{ 'active': editor.isActive('blockquote') }"
+            [matTooltip]="'Quote'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="double-quotes-l" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().setHorizontalRule().run()"
+            [matTooltip]="'Horizontal Line'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="separator" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().toggleBulletList().run()"
+            [ngClass]="{ 'active': editor.isActive('bulletList') }"
+            [matTooltip]="'List'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="list-unordered" class="mr-0"></rmx-icon>
+        </button>
+        <div class="mx-0.5">|</div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="openEmojiPicker()"
+            [matTooltip]="'Reactions'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="emotion-happy-line" class="mr-0"></rmx-icon>
+        </button>
+        <div class="flex-1"></div>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().undo().run()"
+            [matTooltip]="'Undo'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="arrow-go-back-line" class="mr-0"></rmx-icon>
+        </button>
+        <button
+            class="shadow-none border-none px-2.5 py-1.5"
+            (click)="chainCommand().redo().run()"
+            [matTooltip]="'Redo'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <rmx-icon name="arrow-go-forward-line" class="mr-0"></rmx-icon>
+        </button>
+    </div>
+    <div class="editor-window" tiptap [editor]="editor" [ngModel]="value" (ngModelChange)="onChange($event)"></div>
+    <tiptap-bubble-menu [editor]="editor">
+        <div class="floating-menu">
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="chainCommand().toggleBold().run()"
+                [ngClass]="{ 'active': editor.isActive('bold') }"
+                [matTooltip]="'Bold'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="bold" class="mr-0"></rmx-icon>
+            </button>
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="chainCommand().toggleItalic().run()"
+                [ngClass]="{ 'active': editor.isActive('italic') }"
+                [matTooltip]="'Italic'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="italic" class="mr-0"></rmx-icon>
+            </button>
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="chainCommand().toggleUnderline().run()"
+                [ngClass]="{ 'active': editor.isActive('underline') }"
+                [matTooltip]="'Underline'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="underline" class="mr-0"></rmx-icon>
+            </button>
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="chainCommand().toggleStrike().run()"
+                [ngClass]="{ 'active': editor.isActive('strike') }"
+                [matTooltip]="'Strikethrough'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="strikethrough" class="mr-0"></rmx-icon>
+            </button>
+            <div class="mx-0.5">|</div>
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="openInsertLink()"
+                *ngIf="!editor.isActive('link')"
+                [matTooltip]="'Link'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="link" class="mr-0"></rmx-icon>
+            </button>
+            <button
+                class="shadow-none border-none px-2.5 py-1.5"
+                (click)="chainCommand().unsetLink().run()"
+                *ngIf="editor.isActive('link')"
+                [matTooltip]="'Unlink'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <rmx-icon name="link-unlink" class="mr-0"></rmx-icon>
+            </button>
+        </div>
+    </tiptap-bubble-menu>
+</div>
+
+<mat-menu #alignments="matMenu">
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('left').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'left' }) }"
+    >
+        <rmx-icon name="align-left"></rmx-icon>Left
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('center').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'center' }) }"
+    >
+        <rmx-icon name="align-center"></rmx-icon>Center
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('right').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'right' }) }"
+    >
+        <rmx-icon name="align-right"></rmx-icon>Right
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().setTextAlign('justify').run()"
+        [ngClass]="{ 'active': editor.isActive({ textAlign: 'justify' }) }"
+    >
+        <rmx-icon name="align-justify"></rmx-icon>Justify
+    </button>
+</mat-menu>
+
+<mat-menu #headings="matMenu">
+    <button
+        mat-menu-item
+        (click)="chainCommand().setParagraph().run()"
+    >
+        <rmx-icon name="text"></rmx-icon>Normal
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 2 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 2 }) }"
+    >
+        <rmx-icon name="h-1"></rmx-icon>Heading 1
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 3 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 3 }) }"
+    >
+        <rmx-icon name="h-2"></rmx-icon>Heading 2
+    </button>
+    <button
+        mat-menu-item
+        (click)="chainCommand().toggleHeading({ level: 4 }).run()"
+        [ngClass]="{ 'active': editor.isActive('heading', { level: 4 }) }"
+    >
+        <rmx-icon name="h-3"></rmx-icon>Heading 3
+    </button>
+</mat-menu>

@@ -1,0 +1,19 @@
+div.tools {
+    background: var(--accent-light);
+    button {
+        border: none;
+        border-radius: 0;
+        color: white;
+        &.disabled {
+            color: var(--accent-dark);
+            &:hover {
+                cursor: not-allowed;
+                background: var(--accent-light);
+                color: var(--accent-dark);
+            }
+        }
+        &:hover {
+            background: var(--accent);
+        }
+    }
+}

@@ -1,0 +1,32 @@
+<ng-container *ngIf="viewQuery.currContent$ | async as blogData">
+    <div class="post-container rounded-md my-8 mx-auto w-3/4">
+        <dragonfish-post-rating></dragonfish-post-rating>
+        <dragonfish-rating-icon [rating]="blogData.meta.rating" [size]="'large'"></dragonfish-rating-icon>
+        <div class="p-12 pt-16">
+            <div class="post-header">
+                <h1 class="text-5xl">{{ blogData.title }}</h1>
+                <div>
+                    <div class="tag">{{ blogData.audit.publishedOn | localedate: 'fullDate' }}</div>
+                    <div class="separator">//</div>
+                    <div class="tag" title="Views"><i-feather name="eye"></i-feather>{{ blogData.stats.views }}</div>
+                    <div class="separator">//</div>
+                    <div class="tag" title="Comments">
+                        <i-feather name="message-circle"></i-feather>{{ blogData.stats.comments }}
+                    </div>
+                </div>
+            </div>
+            <div class="post-body">
+                <div class="blog-body" [innerHtml]="blogData.body | safeHtml"></div>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="!loading">
+        <dragonfish-comments
+            [itemId]="blogData._id"
+            [kind]="kind"
+            [pageNum]="pageNum"
+            (emitPageChange)="onPageChange($event, blogData._id)"
+        ></dragonfish-comments>
+    </ng-container>
+</ng-container>

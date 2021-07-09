@@ -2,3 +2,6 @@
 
 /dist
 /coverage
+README.md
+yarn.lock
+yarn-error.log

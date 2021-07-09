@@ -1,0 +1,34 @@
+<mat-dialog-content>
+    <div class="create-collection-header">
+        <h3>Create Collection</h3>
+    </div>
+    <div class="create-collection-body">
+        <form [formGroup]="collectionForm">
+            <dragonfish-text-field
+                [formControlName]="'name'"
+                [name]="'name'"
+                [type]="'text'"
+                [label]="'Name'"
+                [placeholder]="'A Brand New Collection'"
+            ></dragonfish-text-field>
+
+            <dragonfish-text-area
+                [formControlName]="'desc'"
+                [name]="'desc'"
+                [label]="'Description'"
+                [placeholder]="'Full of all the things I can\'t forget'"
+            ></dragonfish-text-area>
+
+            <dragonfish-toggle [formControlName]="'public'">Public</dragonfish-toggle>
+        </form>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <div class="actions flex flex-row items-center justify-center">
+        <button class="create" type="submit" (click)="submitCollection()">
+            <ng-container *ngIf="editMode; else createMode"> Save </ng-container>
+            <ng-template #createMode> Create </ng-template>
+        </button>
+        <button (click)="askCancel()">Cancel</button>
+    </div>
+</mat-dialog-actions>

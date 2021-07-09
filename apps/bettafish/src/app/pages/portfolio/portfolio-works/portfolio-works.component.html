@@ -1,0 +1,43 @@
+<ng-container *ngIf="portQuery.portUser$ | async as portUser">
+    <ng-container *ngIf="loading; else notLoading">
+        <div class="flex h-40 items-center justify-center">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #notLoading>
+        <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto my-8" *ngIf="contentData.totalDocs !== 0; else noGalleryWorks">
+            <ng-container
+                *ngFor="
+                let work of contentData.docs
+                    | paginate
+                        : {
+                              itemsPerPage: contentData.limit,
+                              currentPage: pageNum,
+                              totalItems: contentData.totalDocs
+                          }
+            "
+            >
+                <dragonfish-work-card [content]="work" [showAuthor]="false"></dragonfish-work-card>
+            </ng-container>
+        </div>
+        <ng-template #noGalleryWorks>
+            <div class="empty">
+                <h3>There's nothing here...</h3>
+                <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else noUser">
+                    <p *ngIf="currentUser._id === portUser._id; else notSameUser">
+                        Why not head to My Stuff and add some new prose or poetry?
+                    </p>
+                    <ng-template #notSameUser>
+                        <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                    </ng-template>
+                </ng-container>
+                <ng-template #noUser>
+                    <p>Check back later to see if {{ portUser.username }} adds anything!</p>
+                </ng-template>
+            </div>
+        </ng-template>
+        <ng-container *ngIf="contentData.totalDocs > 0">
+            <pagination-controls (pageChange)="onPageChange($event, portUser._id)" previousLabel="" nextLabel=""></pagination-controls>
+        </ng-container>
+    </ng-template>
+</ng-container>

@@ -1,0 +1,112 @@
+div.content-box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--borders);
+    border-radius: 4px;
+    max-width: 240px;
+    height: 225px;
+    cursor: pointer;
+    color: var(--text-color);
+    overflow: hidden;
+    user-select: none;
+
+    &.selected {
+        border: 1px solid var(--accent);
+        box-shadow: var(--dropshadow);
+    }
+
+    div.content-stats {
+        position: relative;
+        text-align: center;
+        width: 100%;
+        margin: 0 auto;
+        top: -1.9rem;
+        border-radius: 0 0 4px 4px;
+        border-top: 1px solid var(--borders);
+        background: var(--background);
+
+        rmx-icon {
+            position: relative;
+            width: 16px;
+            top: 0.2rem;
+        }
+
+        span.stat-block {
+            font-size: 12px;
+            display: inline-flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+            margin: 0 0.15rem 0 0.15rem;
+            top: 0.35rem;
+            @apply select-none cursor-default;
+            rmx-icon.stat-icon {
+                margin-left: 0.15rem;
+                margin-right: 0.15rem;
+            }
+        }
+
+        span.stat-divider {
+            @apply m-0.5 select-none cursor-default;
+        }
+    }
+
+    div.content-preview {
+        flex: 1;
+        padding: 5px;
+        p {
+            color: var(--text-color);
+        }
+        rmx-icon {
+            position: relative;
+            width: 100px;
+            top: 20%;
+            stroke-width: 1;
+        }
+
+        div.html-description {
+            display: block;
+            height: 175px;
+            overflow: hidden;
+            font-size: 10px;
+        }
+        div.html-description::-webkit-scrollbar {
+            width: 4px;
+        }
+        div.html-description::-webkit-scrollbar-track {
+            background: transparent;
+            box-shadow: none;
+        }
+        div.html-description::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background: grey;
+        }
+    }
+
+    div.content-description {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        padding: 5px;
+        font-size: 0;
+        background: var(--accent);
+        color: whitesmoke;
+        h5 {
+            width: 175px;
+            display: inline-block;
+            vertical-align: middle;
+            font-weight: 500;
+            font-size: 16px;
+            margin-bottom: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            color: whitesmoke;
+        }
+        rmx-icon {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+            color: whitesmoke;
+        }
+    }
+}

@@ -1,0 +1,40 @@
+div.post {
+    border: 1px solid var(--borders);
+    min-height: 9rem;
+    max-height: 17rem;
+    div.post-byline {
+        border-bottom: 1px solid var(--borders);
+    }
+    div.stat {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        @apply text-xs;
+        rmx-icon {
+            stroke-width: 1;
+            width: 0.875rem;
+            position: relative;
+            top: 0.25rem;
+            margin-right: 0.15rem;
+        }
+    }
+    div.divider {
+        border-right: 1px solid var(--borders);
+        background: var(--borders);
+    }
+    div.post-body {
+        flex: 1;
+        font-size: 0.75rem;
+    }
+    a.continue-reading {
+        font-size: 0.825rem;
+        position: relative;
+        top: -0.2rem;
+        rmx-icon {
+            position: relative;
+            display: inline-block;
+            top: 0.45rem;
+            stroke-width: 1;
+        }
+    }
+}

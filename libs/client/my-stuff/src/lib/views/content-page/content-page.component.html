@@ -1,0 +1,23 @@
+<ng-container *ngIf="myStuffQuery.loading$ | async; else notLoading">
+    <div class="flex flex-row items-center justify-center h-72 w-full">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+<ng-template #notLoading>
+    <ng-container *ngIf="myStuffQuery.all$ | async as myStuff">
+        <ng-container *ngIf="myStuff.length === 0; else hasContent">
+            <div class="empty w-11/12 mx-auto">
+                <h3>It's pretty lonely here...</h3>
+                <p>Why not add some content by hitting the Create button?</p>
+            </div>
+        </ng-container>
+
+        <ng-template #hasContent>
+            <div class="grid 2xl:grid-cols-4 xl:grid-cols-3 lg:grid-cols-2 my-4 mx-auto w-11/12 gap-2">
+                <ng-container *ngFor="let content of myStuff">
+                    <dragonfish-content-item [content]="content" (viewItem)="viewContent($event)"></dragonfish-content-item>
+                </ng-container>
+            </div>
+        </ng-template>
+    </ng-container>
+</ng-template>
