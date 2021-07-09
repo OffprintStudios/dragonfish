@@ -1,0 +1,45 @@
+div.user-card {
+    border: 1px solid var(--borders);
+    box-shadow: var(--dropshadow);
+    div.has-accent {
+        background: var(--accent);
+    }
+    div.cover-pic {
+        -webkit-mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+        mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+    }
+    div.user-header {
+        div.user-avatar {
+            align-self: center;
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 0.375rem;
+                border: 1px solid var(--borders);
+                box-shadow: var(--dropshadow);
+            }
+        }
+        h2, h3 {
+            color: var(--text-color);
+        }
+    }
+    div.badge {
+        border-color: var(--borders);
+    }
+    div.stats {
+        rmx-icon {
+            width: 1.15rem;
+            position: relative;
+            top: 0.175rem;
+            margin-right: 0.25rem;
+        }
+    }
+    a.button {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        &.bottom {
+            @apply rounded-b-md;
+        }
+    }
+}

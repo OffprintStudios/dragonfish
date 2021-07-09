@@ -1,0 +1,18 @@
+<ng-container *ngIf="stuffQuery.current$ | async as myPoetry">
+    <dragonfish-content-preview></dragonfish-content-preview>
+    <ng-container *ngIf="myPoetry.meta.collection; else singlePoem">
+        <ng-container *ngIf="sectionsQuery.loading$ | async; else notLoading">
+            <div class="flex flex-row items-center justify-center h-72">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-container>
+        <ng-template #notLoading>
+            <dragonfish-manage-sections></dragonfish-manage-sections>
+        </ng-template>
+    </ng-container>
+    <ng-template #singlePoem>
+        <div class="view-body w-3/4 mx-auto mt-8">
+            <div class="html-description" [innerHtml]="myPoetry.body | safeHtml"></div>
+        </div>
+    </ng-template>
+</ng-container>

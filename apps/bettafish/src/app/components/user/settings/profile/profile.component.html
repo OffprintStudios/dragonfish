@@ -1,0 +1,54 @@
+<div class="box w-full border rounded-md p-4 shadow-lg">
+    <div class="header border-b mb-5">
+        <h3 class="text-3xl font-medium">Profile</h3>
+    </div>
+    <div class="grid grid-cols-3">
+        <div *ngIf="sessionQuery.currentUser$ | async as currentUser" class="bordered">
+            <h5 class="text-xl font-medium text-center">Avatar</h5>
+            <img [alt]="'Avatar'" [src]="currentUser.profile.avatar" class="avatar" />
+            <div class="flex flex-row items-center justify-center">
+                <button type="button" class="mt-10 shadow-lg" (click)="changeAvatar()">Change Avatar</button>
+            </div>
+        </div>
+        <div class="bordered pl-2 pr-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Change Username</h5>
+            <form [formGroup]="changeUsernameForm" (ngSubmit)="submitUsernameForm()" class="flex-1">
+                <div>
+                    <dragonfish-text-field
+                        [formControlName]="'username'"
+                        [name]="'username'"
+                        [type]="'text'"
+                        [label]="'Username'"
+                        [placeholder]="'Beatriz Ex Machina'"
+                    ></dragonfish-text-field>
+                    <dragonfish-text-field
+                        [formControlName]="'currPassword'"
+                        [name]="'currPassword'"
+                        [type]="'password'"
+                        [label]="'Current Password'"
+                        [placeholder]="'••••••••••'"
+                    ></dragonfish-text-field>
+                </div>
+            </form>
+            <div class="flex flex-row items-center justify-center mt-4">
+                <button type="submit" class="shadow-lg" (click)="submitUsernameForm()">Save Changes</button>
+            </div>
+        </div>
+        <div class="pl-2 flex flex-col">
+            <h5 class="text-xl font-medium text-center">Update Bio</h5>
+            <form [formGroup]="changeBioForm" (ngSubmit)="submitBioForm()" class="flex-1">
+                <div>
+                    <dragonfish-text-area
+                        [formControlName]="'bio'"
+                        [name]="'bio'"
+                        [label]="'Bio'"
+                        [placeholder]="'Just another face in the crowd'"
+                    ></dragonfish-text-area>
+                </div>
+            </form>
+            <div class="flex flex-row items-center justify-center mt-4">
+                <button type="submit" class="shadow-lg" (click)="submitBioForm()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>

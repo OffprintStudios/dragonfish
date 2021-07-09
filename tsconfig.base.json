@@ -1,28 +1,36 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2017", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@pulp-fiction/models/*": ["packages/models/src/lib/*"],
-      "@pulp-fiction/word_counter": ["packages/word_counter/src/index.ts"],
-      "@pulp-fiction/html_sanitizer": ["packages/html_sanitizer/src/index.ts"],
-      "@pulp-fiction/material": ["packages/material/src/index.ts"],
-      "@pulp-fiction/icons": ["packages/icons/src/index.ts"],
-      "@pulp-fiction/loading": ["packages/loading/src/index.ts"]
-    }
-  },
-  "exclude": ["node_modules", "tmp"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "module": "esnext",
+        "lib": ["es2017", "dom"],
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@dragonfish/shared/*": ["libs/shared/src/lib/*"],
+            "@dragonfish/client/pipes": ["libs/client/pipes/src/index.ts"],
+            "@dragonfish/client/ui": ["libs/client/ui/src/index.ts"],
+            "@dragonfish/client/alerts": ["libs/client/alerts/src/index.ts"],
+            "@dragonfish/client/material": ["libs/client/material/src/index.ts"],
+            "@dragonfish/client/icons": ["libs/client/icons/src/index.ts"],
+            "@dragonfish/client/editor": ["libs/client/editor/src/index.ts"],
+            "@dragonfish/client/my-stuff": ["libs/client/my-stuff/src/index.ts"],
+            "@dragonfish/client/dashboard": ["libs/client/dashboard/src/index.ts"],
+            "@dragonfish/client/services": ["libs/client/services/src/index.ts"],
+            "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"],
+            "@dragonfish/api/database/*": ["libs/api/database/src/lib/*"],
+            "@dragonfish/api/utilities/*": ["libs/api/utilities/src/lib/*"],
+            "@dragonfish/client/comments": ["libs/client/comments/src/index.ts"],
+            "@dragonfish/client/editor-lite": ["libs/client/editor-lite/src/index.ts"]
+        }
+    },
+    "exclude": ["node_modules", "tmp"]
 }

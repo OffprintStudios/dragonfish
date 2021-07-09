@@ -1,0 +1,30 @@
+<form [formGroup]="loginForm" (ngSubmit)="submitForm()">
+    <dragonfish-text-field
+        [formControlName]="'email'"
+        [name]="'email'"
+        [type]="'email'"
+        [label]="'Email Address'"
+        [placeholder]="'someone@example.com'"
+    ></dragonfish-text-field>
+
+    <dragonfish-text-field
+        [formControlName]="'password'"
+        [name]="'password'"
+        [type]="'password'"
+        [label]="'Password'"
+        [placeholder]="'••••••••••'"
+    ></dragonfish-text-field>
+
+    <hr />
+
+    <div class="flex flex-row items-center mt-5">
+        <div class="flex-1">
+            <dragonfish-toggle [formControlName]="'rememberMe'">
+                Remember Me
+            </dragonfish-toggle>
+        </div>
+        <div>
+            <button type="submit">Log In</button>
+        </div>
+    </div>
+</form>

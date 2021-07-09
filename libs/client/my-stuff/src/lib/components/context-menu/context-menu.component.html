@@ -1,0 +1,41 @@
+<div
+    class="context-menu "
+    [@menu]="_state"
+    (@menu.done)="_onAnimationDone($event)"
+>
+    <ng-container [ngSwitch]="content.audit.published">
+        <a *ngSwitchCase="pubStatus.Published" (click)="publish()">
+            <span class="link-icon"><i-feather name="check-circle"></i-feather></span>
+            Published
+        </a>
+        <a *ngSwitchCase="pubStatus.Unpublished" (click)="publish()">
+            <span class="link-icon"><i-feather name="circle"></i-feather></span>
+            Unpublished
+        </a>
+        <a *ngSwitchCase="pubStatus.Pending" (click)="publish()">
+            <span class="link-icon"><i-feather name="clock"></i-feather></span>
+            Pending
+        </a>
+        <a *ngSwitchCase="pubStatus.Rejected" (click)="publish()">
+            <span class="link-icon"><i-feather name="x-circle"></i-feather></span>
+            Rejected
+        </a>
+        <a *ngSwitchCase="pubStatus.ApprovedUnpublished" (click)="publish()">
+            <span class="link-icon"><i-feather name="circle"></i-feather></span>
+            Approved/Unpublished
+        </a>
+    </ng-container>
+    <a (click)="viewContent()">
+        <span class="link-icon"><i-feather name="edit-3"></i-feather></span>
+        Edit
+    </a>
+    <a (click)="getShareLink()">
+        <span class="link-icon"><i-feather name="link"></i-feather></span>
+        Get Public Link
+    </a>
+    <div class="spacer"><!--spacer--></div>
+    <a (click)="deleteContent()">
+        <span class="link-icon"><i-feather name="trash-2"></i-feather></span>
+        Delete
+    </a>
+</div>

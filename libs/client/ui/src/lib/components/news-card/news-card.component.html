@@ -1,0 +1,50 @@
+<div class="post flex flex-col p-2 shadow-lg rounded-md">
+    <div>
+        <h4 class="text-xl font-medium">
+            <a [routerLink]="['/news', post._id, post.title | slugify]">{{ post.title }}</a>
+        </h4>
+    </div>
+    <div class="post-byline flex flex-row py-1 text-sm">
+        <div>
+            by <a [routerLink]="['/portfolio', $any(post.author)._id, $any(post.author).username | slugify]">
+                {{ $any(post.author).username }}
+            </a>
+        </div>
+        <div class="mx-1">//</div>
+        <div>
+            {{ post.audit.publishedOn | localedate: 'longDate' }}
+        </div>
+    </div>
+    <div class="post-body" [line-truncation]="6" [innerHTML]="post.body | safeHtml"></div>
+    <div class="flex flex-row items-center">
+        <div class="stat text-sm">
+            <rmx-icon name="eye-line"></rmx-icon>
+            {{ post.stats.views }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat text-sm">
+            <rmx-icon name="chat-3-line"></rmx-icon>
+            {{ post.stats.comments }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat" title="Likes">
+            <rmx-icon name="heart-line"></rmx-icon>
+            {{ post.stats.likes | abbreviate }}
+        </div>
+        <div class="mx-1">|</div>
+        <div class="stat" title="Dislikes">
+            <rmx-icon name="dislike-line"></rmx-icon>
+            {{ post.stats.dislikes | abbreviate }}
+        </div>
+        <div class="flex-1"><!--spacer--></div>
+        <div>
+            <a
+                class="continue-reading"
+                [routerLink]="['/news', post._id, post.title | slugify]"
+            >
+                Continue Reading
+                <rmx-icon name="arrow-right-s-line"></rmx-icon>
+            </a>
+        </div>
+    </div>
+</div>

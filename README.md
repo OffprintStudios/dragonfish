@@ -1,78 +1,83 @@
-# Pulp Fiction
+# Dragonfish
+
+> Fire in its own way.
 
 This is the backend repository for the Offprint fiction website.
 
 It's still very much a work in progress.
 
 ## Build Status
-|Pulp Fiction|Build|Test|Production|
-|------------|-----|----|----------|
-|Server|![Build Server (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Server%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
-|Client|![Build Client (Dev)](https://github.com/OffprintStudios/pulp-fiction/workflows/Build%20Client%20(Dev)/badge.svg)|![Deploy Test Environment](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20Test%20Environment/badge.svg)|![Deploy to Production](https://github.com/OffprintStudios/pulp-fiction/workflows/Deploy%20to%20Production/badge.svg)|
+
+| Dragonfish | Build | Test | Production |
+| ---------- | ----- | ---- | ---------- |
+| Server     | [![Build Server (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-server.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-server.yml) | [![Deploy Server (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digioncean-deploy-server.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digioncean-deploy-server.yml) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
+| Client     | [![Build Client (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-client.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-build-client.yml) | [![Deploy Client (DO)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-deploy-client.yml/badge.svg)](https://github.com/OffprintStudios/dragonfish/actions/workflows/digiocean-deploy-client.yml) | ![Deploy to Production](https://github.com/OffprintStudios/dragonfish/workflows/Deploy%20to%20Production/badge.svg) |
 
 ## Setting up the dev environment
 
 You must have the following tools installed on your system or in a docker container (use listed versions or latest):
 
-* NodeJS 14.6.0
-* Yarn 1.22.4 (don't use 2.x)
-* MongoDB Community Server 4.2.1
-    * MongoDB Compass is recommended
-* The [Rust 1.30 (or later) toolchain](https://rustup.rs/).
-    * You'll also need a working C compiler. On Ubuntu, the `build-essential` apt package is sufficient.
+- NodeJS 14.17.0
+- Yarn 1.22.10 (don't use 2.x)
+- MongoDB Community Server 4.2.1
+  - MongoDB Compass is recommended
 
 For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 
-* The Angular CLI 10.0.4 (globally, via Yarn)
-* The NestJS CLI 7.4.1 (globally, via Yarn)
-* The `nx` CLI (globally, via Yarn)
+- The Angular CLI 12.1.1 or higher (globally, via Yarn)
+- The NestJS CLI 8.0.1 or higher (globally, via Yarn)
+- The `nx` CLI (globally, via Yarn)
 
 ## Building the application
 
 Once you've installed and verified that these dependencies are working as expected...
 
 - Create a file named `.env` at the root of the repository
-- Copy  the contents of `sample.env` to your new `.env`
-- Edit `.env` to set DATABASE_URL=mongodb://localhost:27017
-- Edit `.env` to set JWT_SECRET to an *actual* secret, such as a plain random string
-- If you intend to test out image functionality, fill in the DIGITALOCEAN_SPACES_* variables with your information
-
-Run `./build-dev.sh` in the root project directory to start an initial compilation and fetch all necessary libraries. SH files can be run using Git Bash on Windows.
+- Copy the contents of `sample.env` to your new `.env`
+- Edit `.env` to set `MONGO_URL=mongodb://localhost:27017`
+- Edit `.env` to set `JWT_SECRET` to an _actual_ secret, such as a plain random string
+- If you intend to test out image functionality, fill in the `DIGITALOCEAN_SPACES` variables with your information
+- Run `yarn install` in the repository root to install all the dependencies.
 
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
 
-To view the source files, VS Code is recommended.
+VS Code is the recommended editor.
 
-### Developing in Docker
+### Editing our fork of CKEditor
 
-If you just want to use `docker-compose`, you can follow these steps.
+We use a custom build of CKEditor, which is kept in this repository as a git submodule. If you'd like to makes changes to it, make sure you've initialized the submodule, as explained above.
 
+If you want to make any changes to it, you should branch off the submodule's `offprint` branch and, once done, open up a PR in the [forked repo](https://github.com/OffprintStudios/ckeditor5) on GitHub.
 
-#### Building the image
+### Compiling a new version of the editor
 
-- Run `docker-compose build`
-
-Once the container is created you can get a shell inside of it with the following docker command:
+If there are changes to our CKEditor fork, and you want to include those in Offprint, you'll need to recompile it. First, ensure the submodule is initialized as explained above. Then, ensure it is up to date:
 
 ```bash
-docker container exec -it <your container ID> /bin/bash
+git pull --recurse-submodules
 ```
 
-(You can obtain your container ID with `docker container ls`. Look for the container using the `pulp-fiction_pulpd` image.)
+Once you have the latest version, it must be recompiled, and replaced in the main `dragonfish` repo. To do that:
 
-If you're a Visual Studio Code user, you can use the "Open Folder in Container" feature of the [Remote Development extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) to automate all of the above:
+```bash
+# Navigate to the custom build folder
+> cd ckeditor5/packages/ckeditor5-build-offprint
 
-- Open VSCode.
-- Hit Ctrl + P to open the command palette.
-- Type "Remote Containers: Open Folder in Container..."
-- Find your `pulp-fiction` folder.
-- When prompted, selected `docker-compose.yml`.
-- When prompted again, select `pulpd`.
-- Let it build.
+# Install its dependencies. WARNING: THIS MIGHT REQUIRE PYTHON 2. Node-gyp will first look for an executable named 
+# 'python2'. If it doesn't find that, it will try to use 'python'. If this is a Python 3 executable, the build will fail.
+# You can work around this by installing Python 2, ensuring it is in your PATH, 
+# and renaming its 'python' executable to 'python2'. Shockingly, this works.
+yarn install
 
-Once it's done, VSCode will be operating inside the docker container, and opening the terminal with `Ctrl + ` ` will give you a bash environment running in the container.
+# Build the editor
+yarn build
+```
 
-Once inside the docker container, you can follow the directions from "Building the applications".
+The resulting editor files will be generated in `/ckeditor5/packages/ckeditor5-build-offprint/build`.
+
+In order to ensure that your new editor actually _works_, you can view the test HTML page in `ckeditor5/packages/ckeditor5-build-offprint/sample/`, with a browser, which is set up to try to run it automatically.
+
+Once you're sure the editor works, copy `ckeditor.js` and `ckeditor.js.map` over to `/libs/client/editor/src/lib`, and replace the old files.
 
 ## Running the application
 
@@ -81,48 +86,34 @@ Installing MongoDB should have resulted in a persistent MongoDB service running,
 Note that by default, the backend serves up the frontend, so in order to test the website, both of them must be running.
 
 To run the backend:
+
 ```bash
-nx serve server
+nx serve api
 ```
 
 To run the frontend:
+
 ```bash
-nx build client
+nx serve bettafish
 ```
 
 On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
+
 ```bash
-nx build client --watch --poll=2000
+nx build bettafish --watch --poll=2000
 ```
 
-Then you should find the website at http://localhost:3333
-
-To run the Dashboard:
-```bash
-nx serve dashboard
-```
-
-Then you should find the website at http://localhost:4200. Note the backend still needs to be run for this.
-
-## Troubleshooting
-
-When running the backend, if you get a message like this:
-```bash
-nx run server:serve
-ð§  Checking for wasm-pack...
-
-â¹ï¸  Installing wasm-pack
-
-spawn npm ENOENT
-```
-
-Then you may have to manually install [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/).
+Then you should find the website at <http://localhost:3333>
 
 ## Contributing
 
 Check out the Contribution guides in the wiki!
 
 TODO: Flesh this section out.
+
+## Deployment
+
+For more information on deploying the server and client, and the project's infrastructure, take a look at [deployment folder's readme](/deploy).
 
 ## Want to talk about the project?
 

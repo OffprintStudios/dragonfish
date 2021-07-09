@@ -4,14 +4,16 @@
 /dist
 /tmp
 /out-tsc
-target
-
-# Compiled rust module output
-/packages/html_sanitizer/src/lib/*
-/packages/word_counter/src/lib/*
 
 # dependencies
 /node_modules
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
 
 # IDEs and editors
 /.idea
@@ -21,11 +23,10 @@ target
 *.launch
 .settings/
 *.sublime-workspace
+.devcontainer/*
 
 # IDE - VSCode
-.vscode
 .vscode/*
-.devcontainer/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

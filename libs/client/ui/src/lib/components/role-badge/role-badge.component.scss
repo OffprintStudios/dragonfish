@@ -1,0 +1,52 @@
+div.role {
+    text-align: center;
+    border: 1px solid whitesmoke;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    color: whitesmoke;
+    max-width: 200px;
+    min-width: 150px;
+
+    @media (max-width: 1150px) {
+        font-size: 12px;
+        max-width: 125px;
+        min-width: 75px;
+    }
+}
+
+div.admin {
+    background-color: rgb(235, 69, 63);
+}
+
+div.moderator {
+    background-color: rgb(246, 195, 57);
+}
+
+div.chat-moderator {
+    background-color: rgb(235, 123, 49);
+}
+
+div.maintainer {
+    background-color: darkgreen;
+}
+
+div.contributor {
+    background-color: rgb(18, 154, 216);
+}
+
+div.work-approver {
+    background-color: rgb(154, 89, 177);
+}
+
+div.vip {
+    background-color: rgb(0, 189, 158);
+}
+
+div.supporter {
+    background-color: rgb(176, 2, 85);
+}
+
+.not-styled {
+
+}

@@ -1,0 +1,31 @@
+::ng-deep .mat-snack-bar-container {
+    border-radius: 4px;
+    border: 1px solid var(--borders);
+    background: var(--alert-color);
+    color: whitesmoke;
+}
+
+::ng-deep .mat-simple-snackbar {
+    font-family: Raleway, sans-serif;
+}
+
+::ng-deep .mat-simple-snackbar-action {
+    color: var(--accent);
+}
+
+div.alert {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    span.alert-icon {
+        position: relative;
+        top: 0.25rem;
+        margin-right: 0.75rem;
+    }
+
+    span.alert-title {
+        font-weight: 700;
+        margin-right: 1rem;
+    }
+}

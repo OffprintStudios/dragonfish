@@ -1,0 +1,81 @@
+<div class="topbar z-50 top-0">
+    <div class="flex items-center w-full h-full">
+        <ng-content></ng-content>
+        <div class="flex-1"><!--spacer--></div>
+        <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else login">
+            <div class="flex flex-shrink-0 items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
+                <a
+                    class="link-with-avatar cursor-pointer"
+                    [ngClass]="{ 'active': activeUserMenu }"
+                    (click)="openUserMenu()"
+                >
+                    <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
+                    <div class="info ml-1 text-white text-xs">
+                        <div class="font-bold truncate">{{ currentUser.username }}</div>
+                        <div class="truncate">{{ currentUser.profile.tagline }}</div>
+                    </div>
+                </a>
+                <a
+                    class="link cursor-pointer"
+                    [matTooltip]="'Inbox'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [ngClass]="{ 'active': activeInbox }"
+                    (click)="openInbox()"
+                >
+                    <span class="link-icon"><rmx-icon name="inbox-line"></rmx-icon></span>
+                </a>
+                <a
+                    class="link"
+                    [matTooltip]="'More'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matMenuTriggerFor]="moreMenu"
+                >
+                    <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
+                </a>
+            </div>
+        </ng-container>
+        <ng-template #login>
+            <div class="flex flex-shrink-0 items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
+                <a
+                    class="link flex items-center text-sm cursor-pointer"
+                    [routerLink]="['/registration']"
+                >
+                    <span class="link-icon mr-1"><rmx-icon name="login-circle-line"></rmx-icon></span>
+                    <span>Log In</span>
+                </a>
+                <a
+                    class="link"
+                    [matTooltip]="'More'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matMenuTriggerFor]="moreMenu"
+                >
+                    <span class="link-icon"><rmx-icon name="more-2-line"></rmx-icon></span>
+                </a>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<mat-menu #moreMenu="matMenu">
+    <button mat-menu-item [routerLink]="['/settings']">
+        <rmx-icon name="settings-5-line"></rmx-icon>App Settings
+    </button>
+    <button mat-menu-item [routerLink]="['/what-is-offprint']">
+        About Offprint
+    </button>
+    <button mat-menu-item [routerLink]="['/omnibus']">
+        The Offprint Omnibus
+    </button>
+    <button mat-menu-item [routerLink]="['/terms-of-service']">
+        Terms of Service & Privacy Policy
+    </button>
+    <button mat-menu-item [routerLink]="['/code-of-conduct']">
+        Code of Conduct
+    </button>
+    <button mat-menu-item [routerLink]="['/staff']">
+        Offprint Staff
+    </button>
+    <button mat-menu-item [routerLink]="['/supporters']">
+        Offprint Supporters
+    </button>
+</mat-menu>

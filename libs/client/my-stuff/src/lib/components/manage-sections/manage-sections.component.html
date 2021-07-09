@@ -1,0 +1,103 @@
+<ng-container *ngIf="sectionsQuery.all$ | async as sections">
+    <div class="flex flex-row w-5/6 mx-auto">
+        <div class="sections-list">
+            <ng-container *ngIf="!editMode; else disabledAddButton">
+                <div class="add-section" (click)="addSection()">
+                    <i-feather name="plus"></i-feather><span class="button-text">SECTION</span>
+                </div>
+            </ng-container>
+            <ng-template #disabledAddButton>
+                <div class="add-section" (click)="exitEditMode()">
+                    <i-feather name="chevron-left"></i-feather><span class="button-text">BACK</span>
+                </div>
+            </ng-template>
+            <ng-container *ngIf="!editMode; else disabledSections">
+                <ng-container *ngFor="let section of sections">
+                    <div
+                        class="section-box"
+                        [ngClass]="{ active: sectionsQuery.current && sectionsQuery.currentId === section._id }"
+                        (click)="setCurrSection(section)"
+                    >
+                        <div class="section-indicator">
+                            <ng-container *ngIf="section.published; else sectionUnpublished">
+                                <i-feather name="check-circle"></i-feather>
+                            </ng-container>
+                            <ng-template #sectionUnpublished>
+                                <i-feather name="circle"></i-feather>
+                            </ng-template>
+                        </div>
+                        <div class="section-title">
+                            {{ section.title }}
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <ng-template #disabledSections>
+                <ng-container *ngFor="let section of sections">
+                    <div class="section-box disabled">
+                        <div class="section-title">
+                            {{ section.title }}
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+        </div>
+        <div class="section-container">
+            <ng-container *ngIf="editMode; else viewMode">
+                <div class="form-container">
+                    <div class="form-header pb-2">
+                        <h3 class="text-4xl">Add a Section</h3>
+                        <button (click)="submitForm(stuffQuery.currentId)">Save</button>
+                    </div>
+                    <form [formGroup]="sectionForm">
+                        <dragonfish-text-field
+                            [formControlName]="'title'"
+                            [name]="'title'"
+                            [type]="'text'"
+                            [label]="'Title'"
+                            [placeholder]="'The Beginning Of A Great Adventure'"
+                        ></dragonfish-text-field>
+
+                        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+
+                        <div class="authors-note">
+                            <div class="header">
+                                <h2 class="text-4xl">Author's Note</h2>
+                                <div class="offprint-select">
+                                    <label>Position</label>
+                                    <ng-select class="custom" [formControlName]="'authorsNotePos'" [searchable]="false" [placeholder]="'Select a Position'">
+                                        <ng-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">
+                                            {{ pos.value }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <dragonfish-editor-lite [formControlName]="'authorsNote'"></dragonfish-editor-lite>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+
+            <ng-template #viewMode>
+                <ng-container *ngIf="sections.length === 0; else selectSection">
+                    <div class="empty">
+                        <h3>It's lonely in here...</h3>
+                        <p>Looks like you haven't added any sections yet.</p>
+                        <p>Why not hit the Add Section button on the side?</p>
+                    </div>
+                </ng-container>
+                <ng-template #selectSection>
+                    <ng-container *ngIf="sectionsQuery.current$ | async; else nothingSelected">
+                        <dragonfish-section-item [contentId]="stuffQuery.currentId"></dragonfish-section-item>
+                    </ng-container>
+                    <ng-template #nothingSelected>
+                        <div class="empty">
+                            <h3>You haven't selected a section yet</h3>
+                            <p>Click on any of the tabs to the left to get started!</p>
+                        </div>
+                    </ng-template>
+                </ng-template>
+            </ng-template>
+        </div>
+    </div>
+</ng-container>

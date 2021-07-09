@@ -1,0 +1,30 @@
+{
+    "$schema": "../../../../../node_modules/nx-electron/src/validation/maker.schema.json",
+    "productName": "Offprint",
+    "copyright": "Copyright © 2021 Alyx Mote",
+    "electronCompile": false,
+    "npmRebuild": false,
+    "asar": true,
+    "appId": "com.offprintstudios.offprint",
+    "directories": {
+        "buildResources": "apps/bettafish-native/src/assets"
+    },
+    "files": [
+        "**/*",
+        "apps/bettafish-native/src/assets/icons/mac/icon.icns",
+        "apps/bettafish-native/src/assets/icons/win/icon.ico"
+    ],
+    "win": {
+        "target": "appx",
+        "publisherName": "Offprint Studios"
+    },
+    "appx": {
+        "displayName": "Offprint",
+        "publisherDisplayName": "Offprint Studios",
+        "backgroundColor": "transparent"
+    },
+    "mac": {
+        "target": "dmg",
+        "icon": "apps/bettafish-native/src/assets/icons/mac/icon.icns"
+    }
+}

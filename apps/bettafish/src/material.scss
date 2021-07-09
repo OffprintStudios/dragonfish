@@ -1,0 +1,92 @@
+/* Material Dialog */
+.mat-dialog-container {
+    margin: 0 auto;
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border-radius: 4px !important;
+    border: 1px solid var(--borders);
+}
+
+.mat-dialog-title {
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+/* Material Menu */
+.mat-menu-panel {
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--borders);
+    font-family: 'Inter', sans-serif !important;
+}
+
+.user-card-panel {
+    background: transparent !important;
+    color: var(--text-color) !important;
+    border: none !important;
+    max-width: max-content !important;
+    @apply py-0;
+
+    div.mat-menu-content:not(:empty) {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+button.mat-menu-item {
+    border-radius: 0;
+    border: none;
+    margin: 0;
+    color: var(--text-color);
+    text-transform: none !important;
+    font-variant: normal;
+    font-family: 'Inter', sans-serif;
+    box-shadow: none;
+    i-feather, rmx-icon {
+        position: relative;
+        width: 16px;
+        top: 0.65rem;
+        margin-right: 0.5rem;
+        display: inline-block;
+    }
+}
+
+.mat-menu-item:hover:not([disabled]),
+.mat-menu-item.cdk-program-focused:not([disabled]),
+.mat-menu-item.cdk-keyboard-focused:not([disabled]),
+.mat-menu-item-highlighted:not([disabled]) {
+    background: var(--accent) !important;
+    color: whitesmoke;
+}
+
+.mat-menu-panel {
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--borders);
+}
+
+/* Material Tooltip */
+.offprint-tooltip {
+    font-family: Inter, sans-serif !important;
+    border: 1px solid var(--borders) !important;
+    background: var(--background) !important;
+    color: var(--text-color) !important;
+    border-radius: 0.375rem !important;
+    box-shadow: var(--dropshadow);
+}
+
+/* Material Progress Spinner */
+.mat-progress-spinner circle, .mat-spinner circle {
+    stroke: var(--accent);
+}
+
+/* Mat sidenav */
+.mat-drawer-container {
+    width: 100%;
+    background-color: var(--background) !important;
+    color: var(--text-color) !important;
+}
+
+.mat-drawer {
+    background-color: var(--background) !important;
+    color: var(--text-color) !important;
+}

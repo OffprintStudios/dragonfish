@@ -1,0 +1,12 @@
+div.portfolio-toolbar {
+    background: var(--accent-light);
+    button.control {
+        color: white;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        &:hover {
+            background: var(--accent);
+        }
+    }
+}

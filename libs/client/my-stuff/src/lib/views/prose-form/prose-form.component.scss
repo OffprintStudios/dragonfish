@@ -1,0 +1,27 @@
+div.form-nav {
+    background: var(--accent);
+    button {
+        &:hover {
+            background: var(--accent-light);
+        }
+        i-feather {
+            width: 1.25rem !important;
+            color: white;
+            margin: 0;
+            right: -0.025rem;
+        }
+        &.active {
+            background: var(--accent-light);
+        }
+        &.disabled {
+            color: var(--accent-dark);
+            i-feather {
+                color: var(--accent-dark);
+            }
+            &:hover {
+                background: var(--accent);
+                cursor: not-allowed;
+            }
+        }
+    }
+}

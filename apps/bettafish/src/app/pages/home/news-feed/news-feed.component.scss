@@ -1,0 +1,27 @@
+div.news-feed-nav {
+    background: var(--accent);
+    button {
+        margin: 0 0.25rem 0 0.25rem;
+        &:hover {
+            background: var(--accent-light);
+        }
+        rmx-icon {
+            position: relative;
+            width: 1.5rem !important;
+            color: white;
+            margin: 0;
+            top: -0.025rem;
+            stroke-width: 2;
+        }
+    }
+}
+
+div.news-feed-toolbar {
+    background: var(--accent-light);
+    button {
+        color: white;
+        &:hover {
+            background: var(--accent);
+        }
+    }
+}
