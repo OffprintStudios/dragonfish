@@ -80,7 +80,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: var(--accent-dark); 
+    background: var(--accent-dark);
 }
 
 body {
@@ -245,48 +245,36 @@ div.topbar-tools {
 div.pagebar {
     div.pages {
         @apply text-white w-full flex flex-col;
-        a {
-            @apply w-full p-2 rounded-md text-white my-0.5 flex items-center;
+        a.link {
+            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none;
             &:hover, &.active {
                 background: var(--accent-light);
                 text-decoration: none;
                 color: white;
             }
+            span.text {
+                @apply flex-1;
+            }
             span.link-icon {
-                @apply mr-1;
+                @apply mr-1 relative top-0.5;
                 rmx-icon {
-                    width: 24px;
+                    width: 18px;
                     stroke-width: 1;
                 }
             }
+            &.dropdown-item {
+                &:hover, &.active {
+                    background: var(--accent-dark);
+                }
+            }
+        }
+        div.dropdown-nav {
+            @apply mb-0.5 rounded-md p-1;
+            background: var(--accent-light);
         }
     }
 }
 
-/* Offprint Tabs */
-.offprint-tabs-nav {
-    justify-content: center;
-    //border-bottom: 1px solid var(--borders);
-    margin-bottom: 1.5rem;
-    .nav-tab {
-        @apply text-lg;
-        text-transform: lowercase;
-        font-variant: small-caps;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--text-color);
-        border-bottom-width: 2px;
-        border-color: transparent;
-        &:hover {
-            color: var(--accent);
-            transition: all 0.15s ease;
-        }
-    }
-}
-.nav-tabset:not(.disable-style) .nav-tab.active {
-    border-bottom-width: 2px;
-    border-color: var(--accent);
-}
 /* Doc pages */
 div.doc {
     h1 {

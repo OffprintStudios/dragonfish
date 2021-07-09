@@ -77,6 +77,8 @@ import {
     RiCloseCircleLine,
     RiAlertLine,
     RiClipboardLine,
+    RiBriefcase2Line,
+    RiArrowUpSLine,
 } from 'angular-remix-icon';
 
 import {
@@ -371,6 +373,8 @@ const remixIcons = {
     RiCloseCircleLine,
     RiAlertLine,
     RiClipboardLine,
+    RiBriefcase2Line,
+    RiArrowUpSLine,
 };
 
 @NgModule({

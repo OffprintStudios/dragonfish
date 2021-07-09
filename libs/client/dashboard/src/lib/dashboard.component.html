@@ -25,36 +25,42 @@
         </a>
         <a
             class="link"
-            [routerLink]="['group-queue']"
-            [routerLinkActive]="'active'"
+            [ngClass]="{ 'active': showModTools }"
+            (click)="showModTools = !showModTools"
         >
-            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
-            Groups
+            <span class="link-icon"><rmx-icon name="briefcase-2-line"></rmx-icon></span>
+            <span class="text">Moderation</span>
+            <span class="link-icon" *ngIf="!showModTools; else openedDropdown"><rmx-icon name="arrow-down-s-line"></rmx-icon></span>
+            <ng-template #openedDropdown>
+                <span class="link-icon"><rmx-icon name="arrow-up-s-line"></rmx-icon></span>
+            </ng-template>
         </a>
-        <a
-            class="link"
-            [routerLink]="['reports']"
-            [routerLinkActive]="'active'"
-        >
-            <span class="link-icon"><rmx-icon name="alert-line"></rmx-icon></span>
-            Reports
-        </a>
-        <a
-            class="link"
-            [routerLink]="['users-management']"
-            [routerLinkActive]="'active'"
-        >
-            <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
-            Users
-        </a>
-        <a
-            class="link"
-            [routerLink]="['audit-log']"
-            [routerLinkActive]="'active'"
-        >
-            <span class="link-icon"><rmx-icon name="clipboard-line"></rmx-icon></span>
-            Audit Log
-        </a>
+        <div class="dropdown-nav" [@inOutAnimation] *ngIf="showModTools">
+            <a
+                class="link dropdown-item"
+                [routerLink]="['case-files']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><rmx-icon name="clipboard-line"></rmx-icon></span>
+                Case Files
+            </a>
+            <a
+                class="link dropdown-item"
+                [routerLink]="['users-management']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+                Users
+            </a>
+            <a
+                class="link dropdown-item"
+                [routerLink]="['group-queue']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+                Groups
+            </a>
+        </div>
         <a
             class="link"
             [routerLink]="['quill-migrator']"
