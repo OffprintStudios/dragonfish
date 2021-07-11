@@ -65,11 +65,9 @@ body {
     height: 100%;
     overflow-x:hidden;
     overflow-y:hidden;
-	scrollbar-width: thin;
-	scrollbar-color: var(--accent-dark);
 }
 
-::-webkit-scrollbar {
+/*::-webkit-scrollbar {
     width: 4px;
 }
 
@@ -81,7 +79,7 @@ body {
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: var(--accent-dark);
-}
+}*/
 
 body {
     color: var(--text-color);
