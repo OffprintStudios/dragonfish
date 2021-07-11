@@ -30,6 +30,10 @@ export class CaseFilesService {
         );
     }
 
+    public setCurrent(id: number) {
+        this.caseFilesStore.setActive(id);
+    }
+
     public claimFile(id: number) {
         return this.network.claimFile(id).pipe(
             tap((value) => {
