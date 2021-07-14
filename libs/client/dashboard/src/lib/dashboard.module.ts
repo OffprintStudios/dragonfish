@@ -8,6 +8,7 @@ import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { QuillModule } from 'ngx-quill';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -54,9 +55,12 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         NgxPaginationModule,
         PipesModule,
         QuillModule.forRoot({
-            format: 'json'
+            format: 'json',
+        }),
+        NgScrollbarModule.withConfig({
+            appearance: 'standard',
         }),
     ],
-    providers: [ OldDataService ],
+    providers: [OldDataService],
 })
 export class DashboardModule {}
