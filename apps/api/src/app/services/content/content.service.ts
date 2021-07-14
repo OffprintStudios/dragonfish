@@ -25,7 +25,6 @@ export class ContentService implements IContent {
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
     ) { }
-
     async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
     }
@@ -83,5 +82,10 @@ export class ContentService implements IContent {
         } else {
             throw new BadRequestException(`Invalid content kind.`);
         }
+    }
+
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
+        return await this.content.migrateQuillLongDesc(contentId, newLongDesc);
     }
 }

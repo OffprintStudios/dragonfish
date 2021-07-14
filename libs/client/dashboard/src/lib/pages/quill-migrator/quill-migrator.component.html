@@ -11,8 +11,13 @@
         <div *ngFor="let content of contentData"
             class="mb-5 p-2 border-solid border-2 border-gray-200 shadow-lg rounded-md" >
             <h2>{{content.title}}</h2>
-            <h3>Long description:</h3>
-            <div [innerHTML]="content.body | safeHtml"></div>
+            <div class="flex justify-between">
+                <h3>Long description:</h3>
+                <ng-container *ngIf="isLongDescQuill(content)">
+                    <button (click)="onConvertLongDesc(content)">Convert long-desc</button>
+                </ng-container>
+            </div>
+            <quill-view id="longDescView" [content]="content.body" format="json" sanitize="true"></quill-view>
             <h3>Sections:</h3>
             <ul>
                 <li *ngFor="let sec of content.sections" id="{{sec._id}}" class="mb-2">

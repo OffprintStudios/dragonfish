@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { ContentModel, FormType } from '@dragonfish/shared/models/content';
 import { Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { UserInfo } from '@dragonfish/shared/models/users';
 import { SectionInfo } from '@dragonfish/shared/models/works';
+import { firstValueFrom } from 'rxjs';
 import { OldDataService } from './old-data-service';
 
 @Component({
@@ -36,6 +37,28 @@ export class QuillMigratorComponent implements OnInit {
         this.currentSection = undefined;
         this.currentContent = content;
         this.currentSection = await this.networkService.fetchSection(sec._id).toPromise();
+    }
+
+    async onConvertLongDesc(content: ContentModel): Promise<void> {
+        // Probably not necessary, but let's double-check:
+        const longDescIsQuill = this.isLongDescQuill(content);
+        if (!longDescIsQuill) {
+            this.alertsService.error("Looks like this long description isn't in Quill format.");
+            return;
+        }
+
+        try {
+            const renderedLongDesc = this.getQuillHtml(document.querySelector("#longDescView"));
+            const editForm = <FormType>{
+                body: renderedLongDesc
+            };
+            const updatedWork = await firstValueFrom(this.networkService.migrateQuillLongDesc(content._id, editForm));
+            content.body = updatedWork.body;
+            this.alertsService.success(`Successfully converted ${content.title}'s long description!`);
+        }
+        catch(e) {
+            this.alertsService.error(`Failed to update the long description for '${content.title}'. Details: ${e}`);
+        }
     }
 
     async onConvertClick(): Promise<void> {
@@ -115,6 +138,10 @@ export class QuillMigratorComponent implements OnInit {
 
        // Replace all newline chars with a <br>, and return the resulting HTML string
        return wrapperDiv.innerHTML.replace(/(?:\r\n|\r|\n)/g, '<br>');;
+    }
+
+    isLongDescQuill(content: ContentModel): boolean {
+        return content.body.startsWith("{\"ops\":");
     }
 
 }
