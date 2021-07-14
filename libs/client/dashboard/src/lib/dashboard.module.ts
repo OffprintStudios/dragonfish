@@ -8,6 +8,7 @@ import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { QuillModule } from 'ngx-quill';
+import { MomentModule } from 'ngx-moment';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -56,6 +57,7 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         UiModule,
         NgxPaginationModule,
         PipesModule,
+        MomentModule,
         QuillModule.forRoot({
             format: 'json',
         }),
