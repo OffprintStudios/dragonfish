@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'dragonfish-case-files',
     templateUrl: './case-files.component.html',
+    styleUrls: ['./case-files.component.scss'],
 })
 export class CaseFilesComponent implements OnInit {
     caseKind = CaseKind;
@@ -15,7 +16,7 @@ export class CaseFilesComponent implements OnInit {
         public caseQuery: CaseFilesQuery,
         private caseService: CaseFilesService,
         private router: Router,
-        private route: ActivatedRoute,
+        public route: ActivatedRoute,
     ) {}
 
     ngOnInit() {
