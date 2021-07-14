@@ -1,91 +1,95 @@
 <ng-container *ngIf="route.children.length === 0">
-    <dragonfish-topbar>
-        <div class="topbar-header">
-            <rmx-icon name="home-5-line"></rmx-icon>
-            <h3>Home</h3>
-        </div>
-    </dragonfish-topbar>
-
-    <div class="header shadow-xl mt-6 w-11/12 mx-auto rounded-md relative">
-        <div class="w-11/12 mx-auto p-3 text-center">
-            <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />
-            <h2>{{ rotatingSlogan }}</h2>
-        </div>
-    </div>
-
-    <div class="my-6">
-        <div class="section-header flex flex-row items-center p-2 mb-4 w-11/12 mx-auto">
-            <h3 class="text-3xl font-medium flex-1">All The Latest</h3>
-            <a [routerLink]="['news']" class="text-sm">See More >></a>
-        </div>
-        <ng-container *ngIf="loadingLatest; else notLoadingLatest">
-            <div class="flex flex-row items-center justify-center h-40">
-                <mat-spinner></mat-spinner>
+    <div class="flex flex-col w-full h-screen">
+        <dragonfish-topbar>
+            <div class="topbar-header">
+                <rmx-icon name="home-5-line"></rmx-icon>
+                <h3>Home</h3>
             </div>
-        </ng-container>
-        <ng-template #notLoadingLatest>
-            <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto">
-                <ng-container *ngFor="let posts of latestPosts">
-                    <dragonfish-news-card [post]="posts"></dragonfish-news-card>
+        </dragonfish-topbar>
+
+        <div class="flex-1 overflow-y-auto">
+            <div class="header shadow-xl mt-6 w-11/12 mx-auto rounded-md relative">
+                <div class="w-11/12 mx-auto p-3 text-center">
+                    <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />
+                    <h2>{{ rotatingSlogan }}</h2>
+                </div>
+            </div>
+
+            <div class="my-6">
+                <div class="section-header flex flex-row items-center p-2 mb-4 w-11/12 mx-auto">
+                    <h3 class="text-3xl font-medium flex-1">All The Latest</h3>
+                    <a [routerLink]="['news']" class="text-sm">See More >></a>
+                </div>
+                <ng-container *ngIf="loadingLatest; else notLoadingLatest">
+                    <div class="flex flex-row items-center justify-center h-40">
+                        <mat-spinner></mat-spinner>
+                    </div>
                 </ng-container>
+                <ng-template #notLoadingLatest>
+                    <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto">
+                        <ng-container *ngFor="let posts of latestPosts">
+                            <dragonfish-news-card [post]="posts"></dragonfish-news-card>
+                        </ng-container>
+                    </div>
+                </ng-template>
             </div>
-        </ng-template>
-    </div>
 
-    <div class="flex flex-row container md:w-11/12 mx-auto mb-8">
-        <div class="w-1/2">
-            <h2 style="margin-bottom: 0">Welcome to Offprint!</h2>
-            <hr style="margin-top: 0" />
-            <p>Hey there!</p>
-            <p>
-                Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, friendly, and
-                open community of writers and readers.
-            </p>
-            <p>
-                The site is currently under heavy active development, so there's a lot of stuff still missing or
-                even completely broken. Want to sign up?
-                <a href="https://forms.gle/VBHoKhneJzg34GSA8" target="_blank" rel="noreferrer noopener">Click here</a> to add your name to the list!
-            </p>
-            <p>
-                If you want to contribute&mdash;or just want to give us a star&mdash;check out our
-                <a href="https://github.com/Figments/pulp-fiction" target="_blank" rel="noreferrer noopener">GitHub</a> repository. We also have a community
-                <a href="https://discord.gg/9cnSwfn" target="_blank" rel="noreferrer noopener">Discord server</a> if you want to chat about the site, or
-                writing in general. And if you want to throw some money our way, to help fund Offprint's
-                development,
-                <a href="https://www.patreon.com/offprintstudios?fan_landing=true" target="_blank" rel="noreferrer noopener">we have a Patreon</a>, as well as
-                a <a href="https://ko-fi.com/offprintstudios" target="_blank" rel="noreferrer noopener">Ko-Fi</a> for one-time donations!
-                If you already have an account, please use <a href="https://offprint.net/news/rV7-_W6wz5U_MgaxhHWh8/this-is-a-temporary-support-hub">this support page</a>
-                for any issues you'd like to report.
-            </p>
-            <p>With all that said, see you guys on the flip side!</p>
-            <p style="text-align: right">&mdash;Offprint Studios</p>
-            <div class="flex flex-row items-center justify-center w-full">
-                <a href="https://www.patreon.com/bePatron?u=39187121">
-                    <img
-                        class="rounded-md"
-                        height='36'
-                        style='border:0px;height:36px;'
-                        src='https://cloakandmeeple.files.wordpress.com/2017/06/become_a_patron_button3x.png?w=610'
-                        border='0'
-                        alt='Become a patron!'
-                    />
-                </a>
-                <div class="mx-2"><!--spacer--></div>
-                <a href='https://ko-fi.com/L4L04OOFL' target='_blank'>
-                    <img
-                        height='36'
-                        style='border:0px;height:36px;'
-                        src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2'
-                        border='0'
-                        alt='Buy Me a Coffee at ko-fi.com'
-                    />
-                </a>
-            </div>
-        </div>
-        <div class="w-1/2 text-center">
-            <div class="flex flex-col items-center">
-                <img class="beatriz" src="assets/images/Beatriz.png" alt="Beatriz">
-                <span class="text-xs">Art created by Momoruuu</span>
+            <div class="flex flex-row container md:w-11/12 mx-auto mb-8">
+                <div class="w-1/2">
+                    <h2 style="margin-bottom: 0">Welcome to Offprint!</h2>
+                    <hr style="margin-top: 0" />
+                    <p>Hey there!</p>
+                    <p>
+                        Say hello to Offprint&mdash;a website built from the ground up to foster an engaging, friendly, and
+                        open community of writers and readers.
+                    </p>
+                    <p>
+                        The site is currently under heavy active development, so there's a lot of stuff still missing or
+                        even completely broken. Want to sign up?
+                        <a href="https://forms.gle/VBHoKhneJzg34GSA8" target="_blank" rel="noreferrer noopener">Click here</a> to add your name to the list!
+                    </p>
+                    <p>
+                        If you want to contribute&mdash;or just want to give us a star&mdash;check out our
+                        <a href="https://github.com/Figments/pulp-fiction" target="_blank" rel="noreferrer noopener">GitHub</a> repository. We also have a community
+                        <a href="https://discord.gg/9cnSwfn" target="_blank" rel="noreferrer noopener">Discord server</a> if you want to chat about the site, or
+                        writing in general. And if you want to throw some money our way, to help fund Offprint's
+                        development,
+                        <a href="https://www.patreon.com/offprintstudios?fan_landing=true" target="_blank" rel="noreferrer noopener">we have a Patreon</a>, as well as
+                        a <a href="https://ko-fi.com/offprintstudios" target="_blank" rel="noreferrer noopener">Ko-Fi</a> for one-time donations!
+                        If you already have an account, please use <a href="https://offprint.net/news/rV7-_W6wz5U_MgaxhHWh8/this-is-a-temporary-support-hub">this support page</a>
+                        for any issues you'd like to report.
+                    </p>
+                    <p>With all that said, see you guys on the flip side!</p>
+                    <p style="text-align: right">&mdash;Offprint Studios</p>
+                    <div class="flex flex-row items-center justify-center w-full">
+                        <a href="https://www.patreon.com/bePatron?u=39187121">
+                            <img
+                                class="rounded-md"
+                                height='36'
+                                style='border:0px;height:36px;'
+                                src='https://cloakandmeeple.files.wordpress.com/2017/06/become_a_patron_button3x.png?w=610'
+                                border='0'
+                                alt='Become a patron!'
+                            />
+                        </a>
+                        <div class="mx-2"><!--spacer--></div>
+                        <a href='https://ko-fi.com/L4L04OOFL' target='_blank'>
+                            <img
+                                height='36'
+                                style='border:0px;height:36px;'
+                                src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2'
+                                border='0'
+                                alt='Buy Me a Coffee at ko-fi.com'
+                            />
+                        </a>
+                    </div>
+                </div>
+                <div class="w-1/2 text-center">
+                    <div class="flex flex-col items-center">
+                        <img class="beatriz" src="assets/images/Beatriz.png" alt="Beatriz">
+                        <span class="text-xs">Art created by Momoruuu</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
