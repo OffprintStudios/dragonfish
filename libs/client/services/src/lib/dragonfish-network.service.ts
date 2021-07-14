@@ -1045,6 +1045,17 @@ export class DragonfishNetworkService {
         );
     }
 
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    public migrateQuillLongDesc(contentId: string, editForm: FormType): Observable<ContentModel> {
+        return handleResponse(
+            this.http.patch<ContentModel>(
+                `${this.baseUrl}/content/migrate-quill-long-desc?contentId=${contentId}`,
+                editForm,
+                { observe: 'response', withCredentials: true }
+            ),
+        );
+    }
+
     /**
      * Sends a request to delete the specified section, belonging to the specified content.
      *

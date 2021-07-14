@@ -16,7 +16,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentModel, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -169,5 +169,16 @@ export class ContentController {
             coverArtUrl.lastIndexOf('/') + 1,
         )}`;
         return await this.content.updateCoverArt(user, poetryId, ContentKind.PoetryContent, coverArt);
+    }
+
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    @ApiTags(DragonfishTags.Content)
+    @UseGuards(RolesGuard([Roles.Moderator, Roles.Admin]))
+    @Patch('migrate-quill-long-desc')
+    async migrateQuillLongDesc(
+        @Query('contentId') contentId: string,
+        @Body() formInfo: FormType,
+    ): Promise<ContentModel> {
+        return await this.content.migrateQuillLongDesc(contentId, formInfo.body);
     }
 }

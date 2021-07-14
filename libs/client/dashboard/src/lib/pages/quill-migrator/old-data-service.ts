@@ -30,12 +30,15 @@ export class OldDataService {
         }
 
         const otherPages = flatten((await Promise.all(pagePromises)).map(x => x.docs));
-        const allPages = firstPage.docs.concat(otherPages);
-        console.log(`All docs count: ${allPages.length}`);
+        const allContent = firstPage.docs.concat(otherPages);
+        console.log(`All docs count: ${allContent.length}`);
         // Only return anything with at least one section that hasn't been updated since Sep 18, 2020,
         // as that was when we did the big Quill cahngeover
-        return allPages.filter(x =>
-           (x as ProseContent).sections.some(sec => new Date(sec.updatedAt) < new Date(2020, 8, 18))
-        );
+        // OR content that still has a Quilly long desc
+        return allContent.filter(x => {
+            const hasOldSections = (x as ProseContent).sections.some(sec => new Date(sec.updatedAt) < new Date(2020, 8, 18));
+            const hasQuillLongDesc = x.body.startsWith("{\"ops\":");
+            return hasOldSections || hasQuillLongDesc;
+        });
     }
 }

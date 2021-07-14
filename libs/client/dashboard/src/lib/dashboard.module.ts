@@ -7,7 +7,6 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { QuillModule } from 'ngx-quill';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -22,11 +21,18 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+
+// Delete this once done migrating: Quill stuff
 import { OldDataService } from './pages/quill-migrator/old-data-service';
+import { Divider, dividerHandler } from './pages/quill-migrator/quill-divider-blot';
+import { QuillModule } from 'ngx-quill';
+import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
+import * as QuillNamespace from 'quill';
+const Quill: any = QuillNamespace;
+Quill.register(Divider);
 
 @NgModule({
     declarations: [
@@ -54,7 +60,14 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         NgxPaginationModule,
         PipesModule,
         QuillModule.forRoot({
-            format: 'json'
+            format: 'json',
+            modules: {
+                toolbar: {
+                  handlers: {
+                    'divider': dividerHandler,
+                  }
+                }
+            }
         }),
     ],
     providers: [ OldDataService ],
