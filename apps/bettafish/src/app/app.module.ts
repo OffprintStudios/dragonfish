@@ -21,6 +21,7 @@ import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { DynamicViewModule } from '@ngneat/overview';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -103,6 +104,9 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
         DynamicViewModule,
+        NgScrollbarModule.withConfig({
+            appearance: 'standard',
+        }),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

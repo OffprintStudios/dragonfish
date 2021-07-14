@@ -108,6 +108,7 @@
     "ngx-markdown": "^11.1.2",
     "ngx-pagination": "^5.0.0",
     "ngx-quill": "14.1.2",
+    "ngx-scrollbar": "^7.5.6",
     "ngx-tabset": "^2.2.0",
     "ngx-tiptap": "^2.1.0",
     "numeral": "^2.0.6",
