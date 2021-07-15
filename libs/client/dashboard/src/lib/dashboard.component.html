@@ -85,11 +85,9 @@
             Quill Migrator
         </a>
     </dragonfish-pagebar>
-    <div class="w-full overflow-y-auto">
-        <router-outlet></router-outlet>
+    <div class="w-full">
+        <ng-scrollbar>
+            <router-outlet></router-outlet>
+        </ng-scrollbar>
     </div>
-
-    <ng-scrollbar>
-        <router-outlet></router-outlet>
-    </ng-scrollbar>
 </div>
