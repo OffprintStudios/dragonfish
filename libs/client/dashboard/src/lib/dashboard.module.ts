@@ -24,7 +24,6 @@ import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
 import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
