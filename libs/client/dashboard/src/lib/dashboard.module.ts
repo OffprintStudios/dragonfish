@@ -23,11 +23,18 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+
+// Delete this once done migrating: Quill stuff
 import { OldDataService } from './pages/quill-migrator/old-data-service';
+import { Divider, dividerHandler } from './pages/quill-migrator/quill-divider-blot';
+import { QuillModule } from 'ngx-quill';
+import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
+import * as QuillNamespace from 'quill';
+const Quill: any = QuillNamespace;
+Quill.register(Divider);
 
 @NgModule({
     declarations: [
@@ -56,6 +63,13 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         PipesModule,
         QuillModule.forRoot({
             format: 'json',
+            modules: {
+                toolbar: {
+                  handlers: {
+                    'divider': dividerHandler,
+                  }
+                }
+            }
         }),
         NgScrollbarModule.withConfig({
             appearance: 'standard',

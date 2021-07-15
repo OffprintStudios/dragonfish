@@ -4,7 +4,7 @@ import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { CreatePoetry } from '@dragonfish/shared/models/content';
+import { ContentModel, CreatePoetry } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from '../schemas';
@@ -102,5 +102,12 @@ export class PoetryStore {
             { 'meta.coverArt': coverArt },
             { new: true }
         );
+    }
+
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
+        const poetry = await this.poetryModel.findById(contentId);
+        poetry.body = newLongDesc;
+        return await poetry.save();
     }
 }
