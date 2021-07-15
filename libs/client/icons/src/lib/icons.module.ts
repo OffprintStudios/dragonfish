@@ -80,6 +80,7 @@ import {
     RiBriefcase2Line,
     RiArrowUpSLine,
     RiCheckboxBlankLine,
+    RiAddBoxLine,
 } from 'angular-remix-icon';
 
 import {
@@ -377,6 +378,7 @@ const remixIcons = {
     RiBriefcase2Line,
     RiArrowUpSLine,
     RiCheckboxBlankLine,
+    RiAddBoxLine,
 };
 
 @NgModule({
