@@ -5,6 +5,7 @@ import { ContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
     ContentKind,
+    ContentModel,
     CreatePoetry, CreateProse,
     FormType,
     NewsForm, PubChange,
@@ -529,6 +530,22 @@ export class ContentStore {
         }
 
         return sec;
+    }
+
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
+        const content = await this.content.findOne({ _id: contentId, 'audit.isDeleted': false });
+
+        if (isNullOrUndefined(content)) {
+            throw new UnauthorizedException(`You don't have permission to do that.`);
+        } else {
+            switch (content.kind) {
+                case ContentKind.PoetryContent:
+                    return await this.poetryContent.migrateQuillLongDesc(contentId, newLongDesc);
+                case ContentKind.ProseContent:
+                    return await this.proseContent.migrateQuillLongDesc(contentId, newLongDesc);
+            }
+        }
     }
 
     //#endregion

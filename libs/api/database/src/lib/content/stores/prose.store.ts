@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, CreateProse } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentDocument, ProseContentDocument } from '../schemas';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
@@ -113,10 +113,10 @@ export class ProseStore {
         return await newProse.save();
     }
 
-    // Temporary. If it's still here after 2020-08-04, remove it. -PingZing
-    async getOldProse(): Promise<ContentDocument[]> {
-        return this.proseModel.find({
-            'sections.updatedAt': { lte: new Date(2020, 8, 18) } // 8 == september, because it's an INDEX. augh.
-        });
+    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
+    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
+        const prose = await this.proseModel.findById(contentId);
+        prose.body = newLongDesc;
+        return await prose.save();
     }
 }

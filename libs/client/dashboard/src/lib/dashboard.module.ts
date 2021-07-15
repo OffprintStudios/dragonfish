@@ -7,8 +7,8 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { QuillModule } from 'ngx-quill';
 import { MomentModule } from 'ngx-moment';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -28,7 +28,15 @@ import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.co
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+
+// Delete this once done migrating: Quill stuff
 import { OldDataService } from './pages/quill-migrator/old-data-service';
+import { Divider, dividerHandler } from './pages/quill-migrator/quill-divider-blot';
+import { QuillModule } from 'ngx-quill';
+import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
+import * as QuillNamespace from 'quill';
+const Quill: any = QuillNamespace;
+Quill.register(Divider);
 
 @NgModule({
     declarations: [
@@ -60,6 +68,16 @@ import { OldDataService } from './pages/quill-migrator/old-data-service';
         MomentModule,
         QuillModule.forRoot({
             format: 'json',
+            modules: {
+                toolbar: {
+                    handlers: {
+                        divider: dividerHandler,
+                    },
+                },
+            },
+        }),
+        NgScrollbarModule.withConfig({
+            appearance: 'standard',
         }),
     ],
     providers: [OldDataService],
