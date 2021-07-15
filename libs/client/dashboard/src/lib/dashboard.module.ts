@@ -7,7 +7,6 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { UiModule } from '@dragonfish/client/ui';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { QuillModule } from 'ngx-quill';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
@@ -65,11 +64,11 @@ Quill.register(Divider);
             format: 'json',
             modules: {
                 toolbar: {
-                  handlers: {
-                    'divider': dividerHandler,
-                  }
-                }
-            }
+                    handlers: {
+                        divider: dividerHandler,
+                    },
+                },
+            },
         }),
         NgScrollbarModule.withConfig({
             appearance: 'standard',
