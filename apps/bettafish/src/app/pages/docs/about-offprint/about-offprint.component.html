@@ -1,9 +1,13 @@
-<dragonfish-topbar>
-    <div class="topbar-header">
-        <h3>What is Offprint?</h3>
-    </div>
-</dragonfish-topbar>
+<div class="flex flex-col w-full h-screen">
+    <dragonfish-topbar>
+        <div class="topbar-header">
+            <h3>What is Offprint?</h3>
+        </div>
+    </dragonfish-topbar>
 
-<div class="doc prose lg:prose-xl max-w-prose mx-auto mt-8">
-    <markdown [src]="'assets/docs/what-is-offprint.md'"></markdown>
+    <ng-scrollbar>
+        <div class="doc prose lg:prose-xl max-w-prose mx-auto mt-8">
+            <markdown [src]="'assets/docs/what-is-offprint.md'"></markdown>
+        </div>
+    </ng-scrollbar>
 </div>

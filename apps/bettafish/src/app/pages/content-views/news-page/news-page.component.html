@@ -35,16 +35,18 @@
             </div>
         </div>
     </div>
-    <div class="post-container w-6/12 mx-auto">
-        <div class="blog-body" [innerHtml]="currPost.body | safeHtml"></div>
-    </div>
+    <ng-scrollbar>
+        <div class="post-container w-6/12 mx-auto">
+            <div class="blog-body" [innerHtml]="currPost.body | safeHtml"></div>
+        </div>
 
-    <div class="relative z-0">
-        <dragonfish-comments
-            [itemId]="currPost._id"
-            [kind]="kind"
-            [pageNum]="pageNum"
-            (emitPageChange)="onPageChange($event, currPost._id)"
-        ></dragonfish-comments>
-    </div>
+        <div class="relative z-0">
+            <dragonfish-comments
+                [itemId]="currPost._id"
+                [kind]="kind"
+                [pageNum]="pageNum"
+                (emitPageChange)="onPageChange($event, currPost._id)"
+            ></dragonfish-comments>
+        </div>
+    </ng-scrollbar>
 </ng-container>
