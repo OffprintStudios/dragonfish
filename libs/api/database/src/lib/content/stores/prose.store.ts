@@ -112,11 +112,4 @@ export class ProseStore {
 
         return await newProse.save();
     }
-
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
-        const prose = await this.proseModel.findById(contentId);
-        prose.body = newLongDesc;
-        return await prose.save();
-    }
 }
