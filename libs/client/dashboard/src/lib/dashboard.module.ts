@@ -26,15 +26,6 @@ import { UsersManagementComponent } from './pages/users-management';
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
 
-// Delete this once done migrating: Quill stuff
-import { OldDataService } from './pages/quill-migrator/old-data-service';
-import { Divider, dividerHandler } from './pages/quill-migrator/quill-divider-blot';
-import { QuillModule } from 'ngx-quill';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
-import * as QuillNamespace from 'quill';
-const Quill: any = QuillNamespace;
-Quill.register(Divider);
-
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -49,7 +40,6 @@ Quill.register(Divider);
         UsersManagementComponent,
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
-        QuillMigratorComponent,
     ],
     imports: [
         CommonModule,
@@ -60,20 +50,9 @@ Quill.register(Divider);
         UiModule,
         NgxPaginationModule,
         PipesModule,
-        QuillModule.forRoot({
-            format: 'json',
-            modules: {
-                toolbar: {
-                    handlers: {
-                        divider: dividerHandler,
-                    },
-                },
-            },
-        }),
         NgScrollbarModule.withConfig({
             appearance: 'standard',
         }),
     ],
-    providers: [OldDataService],
 })
 export class DashboardModule {}

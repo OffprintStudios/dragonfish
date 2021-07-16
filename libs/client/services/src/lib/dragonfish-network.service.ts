@@ -1034,28 +1034,6 @@ export class DragonfishNetworkService {
         );
     }
 
-    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
-    public migrateQuillSection(authorId: string, contentId: string, sectionId: string, sectionInfo: SectionForm) : Observable<Section> {
-        return handleResponse(
-            this.http.patch<Section>(
-                `${this.baseUrl}/sections/migrate-quill-section?authorId=${authorId}&contentId=${contentId}&sectionId=${sectionId}`,
-                sectionInfo,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    public migrateQuillLongDesc(contentId: string, editForm: FormType): Observable<ContentModel> {
-        return handleResponse(
-            this.http.patch<ContentModel>(
-                `${this.baseUrl}/content/migrate-quill-long-desc?contentId=${contentId}`,
-                editForm,
-                { observe: 'response', withCredentials: true }
-            ),
-        );
-    }
-
     /**
      * Sends a request to delete the specified section, belonging to the specified content.
      *

@@ -14,13 +14,11 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
 
 /* Util */
 import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/approval-queue';
 import { Roles } from '@dragonfish/shared/models/users';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
-import { QuillMigratorResolver } from './pages/quill-migrator/quill-migrator-resolver';
 
 const routes: Routes = [
     {
@@ -101,16 +99,6 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
-            {
-                path: 'quill-migrator',
-                component: QuillMigratorComponent,
-                resolve: {
-                    workData: QuillMigratorResolver,
-                },
-                runGuardsAndResolvers: 'always',
-                canActivate: [AuthGuard],
-                data: { roles: [Roles.Moderator, Roles.Admin] },
-            },
             { path: '', redirectTo: '/dashboard/overview', pathMatch: 'full' },
         ],
     },
@@ -119,6 +107,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ApprovalQueueResolver, ApproveContentResolver, QuillMigratorResolver],
+    providers: [ApprovalQueueResolver, ApproveContentResolver],
 })
 export class DashboardRoutingModule {}

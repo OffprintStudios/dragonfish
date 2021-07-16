@@ -99,7 +99,4 @@ export interface IContent {
      * @param coverArt The new cover art URL
      */
     updateCoverArt(user: JwtPayload, contentId: string, kind: ContentKind, coverArt: string): Promise<ContentModel>;
-
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel>;
 }
