@@ -120,7 +120,7 @@ export class CaseFilesStore {
         // has to be cast as `any` to avoid type errors, despite this being legitimate mongoose syntax.
         document.notes.push(<any>{ user: user.sub, body: sanitize(form.body) });
         return await document.save().then((doc) => {
-            return doc.notes[length - 1];
+            return doc.notes[doc.notes.length - 1];
         });
     }
 
