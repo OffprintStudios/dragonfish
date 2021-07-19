@@ -1,11 +1,10 @@
 <ng-container *ngIf="fileQuery.current$ | async as current">
-    <div class="w-full h-screen">
-        <ng-scrollbar>
-            <div class="w-11/12 mx-auto my-4">
-                <div class="w-full flex items-center p-2.5 mb-4 border-b border-gray-600 dark:border-white">
-                    <div class="flex-1">
-                        <h1 class="text-4xl font-medium">Case #{{ current._id }}</h1>
-                        <span class="text-2xl italic">
+    <div class="w-full h-screen my-4">
+        <div class="w-11/12 mx-auto">
+            <div class="w-full flex items-center p-2.5 mb-4 border-b border-gray-600 dark:border-white">
+                <div class="flex-1">
+                    <h1 class="text-4xl font-medium">Case #{{ current._id }}</h1>
+                    <span class="text-2xl italic">
                             <ng-container [ngSwitch]="current.kind">
                                 <ng-container *ngSwitchCase="caseKind.Users">
                                     Regarding User <strong class="ml-1">{{ $any(current).user.username }}</strong>
@@ -15,20 +14,47 @@
                                 </ng-container>
                             </ng-container>
                         </span>
-                    </div>
-                    <button><rmx-icon name="add-box-line"></rmx-icon>Claim</button>
                 </div>
-                <div class="w-full rounded-md border border-gray-600 dark:border-white p-4">
-                    <ng-container [ngSwitch]="current.kind">
-                        <ng-container *ngSwitchCase="caseKind.Users">
-                            a user report
-                        </ng-container>
-                        <ng-container *ngSwitchCase="caseKind.Content">
-                            <dragonfish-content-report [content]="$any(current).content"></dragonfish-content-report>
-                        </ng-container>
+                <button><rmx-icon name="add-box-line"></rmx-icon>Claim</button>
+            </div>
+            <div class="w-full rounded-md border border-gray-600 dark:border-white p-4 mb-4">
+                <ng-container [ngSwitch]="current.kind">
+                    <ng-container *ngSwitchCase="caseKind.Users">
+                        a user report
                     </ng-container>
+                    <ng-container *ngSwitchCase="caseKind.Content">
+                        <dragonfish-content-report [content]="$any(current).content"></dragonfish-content-report>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="flex items-center w-full">
+                <div class="w-1/2 border border-r-0 border-gray-600 dark:border-white rounded-l-md h-[24rem]">
+                    <div class="w-full px-4 py-2 rounded-tl-md border-b border-gray-600 dark:border-white sticky" style="background: var(--accent);">
+                        <h3 class="text-2xl font-medium text-white relative top-0.5">{{ current.reports.length | abbreviate }} Report{{ current.reports.length | pluralize }}</h3>
+                    </div>
+                    <div class="h-[calc(24rem-50px)]">
+                        <ng-scrollbar>
+                            <dragonfish-report-item [reports]="current.reports"></dragonfish-report-item>
+                        </ng-scrollbar>
+                    </div>
+                </div>
+                <div class="w-1/2 border border-gray-600 dark:border-white rounded-r-md h-[24rem] flex flex-col">
+                    <div class="w-full px-4 py-2 rounded-tr-md border-b border-gray-600 dark:border-white" style="background: var(--accent);">
+                        <h3 class="text-2xl font-medium text-white relative top-0.5">{{ current.notes.length | abbreviate }} Note{{ current.notes.length | pluralize }}</h3>
+                    </div>
+                    <div class="flex-1">notes chat feed</div>
+                    <div class="w-11/12 mx-auto my-2 flex items-center">
+                        <input
+                            class="flex-1 py-2.5 px-2 border border-gray-600 dark:border-white rounded-l-md"
+                            placeholder="Reply"
+                            style="background: var(--background);"
+                        >
+                        <div class="p-2.5 border border-l-0 border-gray-600 dark:border-white rounded-r-md">
+                            <rmx-icon name="send-plane-2-line"></rmx-icon>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </ng-scrollbar>
+        </div>
     </div>
 </ng-container>

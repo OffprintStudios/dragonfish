@@ -9,6 +9,7 @@ import { PipesModule } from '@dragonfish/client/pipes';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MomentModule } from 'ngx-moment';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { MarkdownModule } from 'ngx-markdown';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -27,7 +28,7 @@ import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
-import { ContentReportComponent, UserReportComponent } from './components/case-files';
+import { ContentReportComponent, UserReportComponent, ReportItemComponent } from './components/case-files';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { ContentReportComponent, UserReportComponent } from './components/case-f
         ViewFileComponent,
         ContentReportComponent,
         UserReportComponent,
+        ReportItemComponent,
     ],
     imports: [
         CommonModule,
@@ -58,6 +60,7 @@ import { ContentReportComponent, UserReportComponent } from './components/case-f
         NgxPaginationModule,
         PipesModule,
         MomentModule,
+        MarkdownModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
         }),
