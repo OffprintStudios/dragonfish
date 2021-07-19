@@ -27,6 +27,7 @@ import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+import { ContentReportComponent, UserReportComponent } from './components/case-files';
 
 // Delete this once done migrating: Quill stuff
 import { OldDataService } from './pages/quill-migrator/old-data-service';
@@ -54,6 +55,8 @@ Quill.register(Divider);
         QuillMigratorComponent,
         CaseFilesComponent,
         ViewFileComponent,
+        ContentReportComponent,
+        UserReportComponent,
     ],
     imports: [
         CommonModule,

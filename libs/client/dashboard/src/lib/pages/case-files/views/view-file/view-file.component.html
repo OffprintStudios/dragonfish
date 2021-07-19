@@ -18,8 +18,15 @@
                     </div>
                     <button><rmx-icon name="add-box-line"></rmx-icon>Claim</button>
                 </div>
-                <div class="w-full">
-
+                <div class="w-full rounded-md border border-gray-600 dark:border-white p-4">
+                    <ng-container [ngSwitch]="current.kind">
+                        <ng-container *ngSwitchCase="caseKind.Users">
+                            a user report
+                        </ng-container>
+                        <ng-container *ngSwitchCase="caseKind.Content">
+                            <dragonfish-content-report [content]="$any(current).content"></dragonfish-content-report>
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
         </ng-scrollbar>

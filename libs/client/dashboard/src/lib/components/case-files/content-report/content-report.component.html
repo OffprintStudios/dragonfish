@@ -1,0 +1,25 @@
+<div class="flex flex-row items-center w-full">
+    <div *ngIf="content.meta.coverArt">
+        cover art
+    </div>
+    <div class="flex-1">
+        <ul>
+            <li class="p-2"><span class="font-bold mr-2">Type:</span>{{ contentKind[content.kind] }}</li>
+            <li class="p-2"><span class="font-bold mr-2">Title:</span>{{ content.title }}</li>
+            <li class="p-2"><span class="font-bold mr-2">Author:</span>{{ content.author.username }}</li>
+            <ng-container *ngIf="content.kind === contentKind.ProseContent; else poetry">
+                <li class="p-2"><span class="font-bold mr-2">Short Description:</span>{{ content.desc }}</li>
+                <li class="p-2"><span class="font-bold mr-2">Long Description:</span>{{ content.body }}</li>
+            </ng-container>
+            <ng-template #poetry>
+                <ng-container *ngIf="$any(content).meta.collection; else singlePoem">
+                    <li class="p-2"><span class="font-bold mr-2">Short Description:</span>{{ content.desc }}</li>
+                    <li class="p-2"><span class="font-bold mr-2">Long Description:</span>{{ content.body }}</li>
+                </ng-container>
+                <ng-template #singlePoem>
+                    <li class="p-2"><span class="font-bold mr-2">Description:</span>{{ content.desc }}</li>
+                </ng-template>
+            </ng-template>
+        </ul>
+    </div>
+</div>
