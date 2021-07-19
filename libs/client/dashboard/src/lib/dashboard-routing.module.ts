@@ -13,8 +13,6 @@ import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { UsersManagementComponent } from './pages/users-management';
-import { QuillMigratorComponent } from './pages/quill-migrator/quill-migrator.component';
-import { QuillMigratorResolver } from './pages/quill-migrator/quill-migrator-resolver';
 import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Util */
@@ -109,16 +107,6 @@ const routes: Routes = [
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
-            {
-                path: 'quill-migrator',
-                component: QuillMigratorComponent,
-                resolve: {
-                    workData: QuillMigratorResolver,
-                },
-                runGuardsAndResolvers: 'always',
-                canActivate: [AuthGuard],
-                data: { roles: [Roles.Moderator, Roles.Admin] },
-            },
             { path: '', redirectTo: '/dashboard/overview', pathMatch: 'full' },
         ],
     },
@@ -127,6 +115,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ApprovalQueueResolver, ApproveContentResolver, QuillMigratorResolver],
+    providers: [ApprovalQueueResolver, ApproveContentResolver],
 })
 export class DashboardRoutingModule {}

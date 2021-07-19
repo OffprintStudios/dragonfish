@@ -103,11 +103,4 @@ export class PoetryStore {
             { new: true }
         );
     }
-
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
-        const poetry = await this.poetryModel.findById(contentId);
-        poetry.body = newLongDesc;
-        return await poetry.save();
-    }
 }
