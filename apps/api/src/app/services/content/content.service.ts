@@ -84,8 +84,4 @@ export class ContentService implements IContent {
         }
     }
 
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
-        return await this.content.migrateQuillLongDesc(contentId, newLongDesc);
-    }
 }

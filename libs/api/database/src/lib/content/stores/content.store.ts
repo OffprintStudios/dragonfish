@@ -5,7 +5,6 @@ import { ContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
     ContentKind,
-    ContentModel,
     CreatePoetry, CreateProse,
     FormType,
     NewsForm, PubChange,
@@ -23,7 +22,7 @@ import { UsersStore } from '@dragonfish/api/database/users';
 import { NotificationsService, UnsubscribeResult } from '@dragonfish/api/database/notifications';
 import { ApprovalQueueStore } from '@dragonfish/api/database/approval-queue';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
+import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
 
 /**
@@ -508,45 +507,5 @@ export class ContentStore {
     async migrateWork(user: JwtPayload, formData: MigrationForm) {
         return await this.proseContent.migrateWork(user, formData);
     }
-
-    // Tempoary method. If it's still around by 2021-08-07, delete it. -PingZing
-    async migrateQuillContent(
-        authorId: string,
-        contentId: string,
-        sectionId: string,
-        sectionInfo: SectionForm
-    ): Promise<Section> {
-        // Basically a clone of editSection, but without permission checks
-        const sec: SectionsDocument = await this.sectionsStore.editSection(sectionId, sectionInfo);
-        if (sec.published === true) {
-            await this.content.updateOne(
-                {_id: contentId, author: authorId, 'audit.isDeleted': false},
-                { $inc: { 'stats.words': -sectionInfo.oldWords }}
-            );
-            await this.content.updateOne(
-                {_id: contentId, author: authorId, 'audit.isDeleted': false},
-                { $inc: { 'stats.words': sec.stats.words }}
-            );
-        }
-
-        return sec;
-    }
-
-    // Temporary method. If it's still around by 2021-08-7, delete it. - PingZing
-    async migrateQuillLongDesc(contentId: string, newLongDesc: string): Promise<ContentModel> {
-        const content = await this.content.findOne({ _id: contentId, 'audit.isDeleted': false });
-
-        if (isNullOrUndefined(content)) {
-            throw new UnauthorizedException(`You don't have permission to do that.`);
-        } else {
-            switch (content.kind) {
-                case ContentKind.PoetryContent:
-                    return await this.poetryContent.migrateQuillLongDesc(contentId, newLongDesc);
-                case ContentKind.ProseContent:
-                    return await this.proseContent.migrateQuillLongDesc(contentId, newLongDesc);
-            }
-        }
-    }
-
     //#endregion
 }
