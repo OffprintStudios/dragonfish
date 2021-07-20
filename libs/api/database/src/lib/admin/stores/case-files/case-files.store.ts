@@ -119,8 +119,9 @@ export class CaseFilesStore {
 
         // has to be cast as `any` to avoid type errors, despite this being legitimate mongoose syntax.
         document.notes.push(<any>{ user: user.sub, body: sanitize(form.body) });
-        return await document.save().then((doc) => {
-            return doc.notes[doc.notes.length - 1];
+        return await document.save().then(async () => {
+            const newDoc = await this.caseFiles.findById(caseId).where({ isClosed: false });
+            return newDoc.notes[newDoc.notes.length - 1];
         });
     }
 

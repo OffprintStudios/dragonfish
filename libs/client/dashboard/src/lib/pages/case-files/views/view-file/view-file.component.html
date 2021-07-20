@@ -50,7 +50,7 @@
                             </div>
                         </ng-container>
                         <ng-template #scrollContainer>
-                            <ng-scrollbar>
+                            <ng-scrollbar #notesBoxScrollbar>
                                 <ng-container *ngFor="let note of current.notes">
                                     <div class="flex items-center my-2 w-full px-4">
                                         <div class="mr-4">
