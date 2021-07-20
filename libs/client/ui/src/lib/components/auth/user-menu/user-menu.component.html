@@ -69,13 +69,6 @@
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a
                     class="button w-full"
-                >
-                    <rmx-icon name="book-mark-line"></rmx-icon>
-                    Library
-                </a>
-                <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
-                <a
-                    class="button w-full"
                     [routerLink]="['/my-stuff']"
                 >
                     <rmx-icon name="hard-drive-2-line"></rmx-icon>
@@ -89,6 +82,16 @@
                     Reading History
                 </a>
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                <ng-container *ngIf="canSeeDash(user.audit.roles)">
+                    <a
+                        class="button w-full"
+                        [routerLink]="['/dashboard/overview']"
+                    >
+                        <rmx-icon name="dashboard-line"></rmx-icon>
+                        Dashboard
+                    </a>
+                    <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                </ng-container>
                 <a class="button bottom w-full cursor-pointer" (click)="logout()">
                     <rmx-icon name="logout-circle-line"></rmx-icon>
                     Log Out
