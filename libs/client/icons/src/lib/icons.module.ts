@@ -75,6 +75,13 @@ import {
     RiGlobalLine,
     RiTimeLine,
     RiCloseCircleLine,
+    RiAlertLine,
+    RiClipboardLine,
+    RiBriefcase2Line,
+    RiArrowUpSLine,
+    RiCheckboxBlankLine,
+    RiAddBoxLine,
+    RiSendPlane2Line,
 } from 'angular-remix-icon';
 
 import {
@@ -367,6 +374,13 @@ const remixIcons = {
     RiGlobalLine,
     RiTimeLine,
     RiCloseCircleLine,
+    RiAlertLine,
+    RiClipboardLine,
+    RiBriefcase2Line,
+    RiArrowUpSLine,
+    RiCheckboxBlankLine,
+    RiAddBoxLine,
+    RiSendPlane2Line,
 };
 
 @NgModule({

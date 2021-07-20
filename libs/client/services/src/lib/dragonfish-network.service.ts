@@ -350,6 +350,34 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * Claims a file.
+     * @param id
+     */
+    public claimFile(id: number) {
+        return handleResponse(
+            this.http.patch<CaseFile>(
+                `${this.baseUrl}/case-files/claim-file?id=${id}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Revokes a claim.
+     * @param id
+     */
+    public revokeClaim(id: number) {
+        return handleResponse(
+            this.http.patch<CaseFile>(
+                `${this.baseUrl}/case-files/revoke-claim?id=${id}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
      * Adds a note to an existing case file.
      * @param id
      * @param form
@@ -597,11 +625,7 @@ export class DragonfishNetworkService {
      * @param contentId The content ID
      * @param kind The content kind
      */
-    public fetchContent(
-        contentId: string,
-        kind: ContentKind,
-        page: number,
-    ): Observable<PubContent> {
+    public fetchContent(contentId: string, kind: ContentKind, page: number): Observable<PubContent> {
         return handleResponse(
             this.http.get<PubContent>(
                 `${this.baseUrl}/content/fetch-one-published?contentId=${contentId}&kind=${kind}&page=${page}`,

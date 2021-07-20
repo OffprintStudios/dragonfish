@@ -12,8 +12,8 @@ import {
 import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
-import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Util */
 import { ApprovalQueueResolver, ApproveContentResolver } from './resolvers/approval-queue';
@@ -82,10 +82,18 @@ const routes: Routes = [
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },
             {
-                path: 'reports',
-                component: ReportsComponent,
+                path: 'case-files',
+                component: CaseFilesComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
+                children: [
+                    {
+                        path: 'view-file',
+                        component: ViewFileComponent,
+                        canActivate: [AuthGuard],
+                        data: { roles: [Roles.Moderator, Roles.Admin] },
+                    },
+                ],
             },
             {
                 path: 'users-management',
