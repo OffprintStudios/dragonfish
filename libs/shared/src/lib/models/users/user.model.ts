@@ -1,5 +1,6 @@
 import { AuditSession } from './audit-session.model';
 import { Roles } from './roles.enum';
+import { Presence } from './presence.enum';
 
 export interface User {
     readonly _id: string;
@@ -20,6 +21,7 @@ export interface User {
     };
     readonly audit: {
         readonly roles: Roles[];
+        readonly presence: Presence;
         readonly sessions: AuditSession[];
         readonly termsAgree: boolean;
         readonly emailConfirmed: boolean;

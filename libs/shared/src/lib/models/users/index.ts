@@ -12,6 +12,7 @@ export type { ChangeUsername } from './change-username.model';
 export { UpdateTagline } from './update-tagline.model';
 export { UserInfo } from './user-info.model';
 export * from './theme';
+export { Presence } from './presence.enum';
 
 // Delete after the Offprint Alpha ends
 export { InviteCodes } from './invite-codes.model';

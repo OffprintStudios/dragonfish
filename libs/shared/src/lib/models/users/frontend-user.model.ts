@@ -1,4 +1,6 @@
 import { Roles } from './roles.enum';
+import { Presence } from './presence.enum';
+
 export interface FrontendUser {
     readonly _id: string;
     readonly username: string;
@@ -16,6 +18,7 @@ export interface FrontendUser {
     };
     readonly audit: {
         readonly roles: Roles[];
+        readonly presence: Presence;
     };
     readonly createdAt: Date;
     readonly token?: string;
