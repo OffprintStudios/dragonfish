@@ -3,6 +3,7 @@ import { Types } from 'mongoose';
 import { Note } from '@dragonfish/shared/models/case-files';
 import { FrontendUser } from '@dragonfish/shared/models/users';
 import { nanoid } from 'nanoid';
+import { Constants } from '@dragonfish/shared/constants';
 
 @Schema({ timestamps: true, autoIndex: true })
 export class NotesDocument extends Types.Subdocument implements Note {
@@ -13,8 +14,7 @@ export class NotesDocument extends Types.Subdocument implements Note {
         type: String,
         ref: 'User',
         autopopulate: {
-            select:
-                '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
+            select: Constants.USER_QUERY,
         },
         required: true,
     })

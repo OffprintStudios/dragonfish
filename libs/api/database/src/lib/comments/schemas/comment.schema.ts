@@ -5,6 +5,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ActionType } from '@dragonfish/shared/models/case-files';
 import { CommentHistoryDocument, CommentHistorySchema } from './comment-history.scema';
 import { Comment, CommentKind } from '@dragonfish/shared/models/comments';
+import { Constants } from '@dragonfish/shared/constants';
 
 @Schema({ timestamps: true, collection: 'comments', autoIndex: true, discriminatorKey: 'kind' })
 export class CommentDocument extends Document implements Comment {
@@ -17,8 +18,7 @@ export class CommentDocument extends Document implements Comment {
         required: true,
         index: true,
         autopopulate: {
-            select:
-                '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
+            select: Constants.USER_QUERY,
         },
     })
     readonly user: string | FrontendUser;
@@ -43,8 +43,7 @@ export class CommentDocument extends Document implements Comment {
                 ref: 'User',
                 default: null,
                 autopopulate: {
-                    select:
-                        '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
+                    select: Constants.USER_QUERY,
                 },
             },
         }),

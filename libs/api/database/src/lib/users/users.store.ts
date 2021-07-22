@@ -158,6 +158,7 @@ export class UsersStore {
             },
             audit: {
                 roles: user.audit.roles,
+                presence: user.audit.presence,
             },
             createdAt: user.createdAt,
             token: newToken,
@@ -335,8 +336,7 @@ export class UsersStore {
         return await this.userModel.paginate(
             { $text: { $search: '"' + query + '"' } },
             {
-                select:
-                    '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
+                select: '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
                 page: pageNum,
                 limit: maxPerPage,
             },

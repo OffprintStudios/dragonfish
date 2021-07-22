@@ -3,12 +3,15 @@ export class Constants {
 
     public static FIVE_MINUTES = 300000;
 
+    public static USER_QUERY =
+        '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt';
+
     public static ABOUT = 'About';
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
     public static CODE_OF_CONDUCT = 'Code of Conduct';
     public static COLLECTIONS = 'Collections';
-    public static GLOBAL_SETTINGS = "Global Settings";
+    public static GLOBAL_SETTINGS = 'Global Settings';
     public static GROUPS = 'Groups';
     public static HISTORY = 'History';
 

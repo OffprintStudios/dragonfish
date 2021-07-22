@@ -1,4 +1,4 @@
-import { AuditSession, Roles, User } from '@dragonfish/shared/models/users';
+import { AuditSession, Presence, Roles, User } from '@dragonfish/shared/models/users';
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { AuditSessionSchema } from './audit-session.schema';
 import { Document } from 'mongoose';
@@ -11,12 +11,14 @@ export class UserDocument extends Document implements User {
     @Prop({ required: true, unique: true }) username: string;
     @Prop({ required: true }) password: string;
 
-    @Prop(raw({
-        avatar: { type: String, trim: true, default: 'https://images.offprint.net/avatars/avatar.png' },
-        bio: { type: String, trim: true, default: null },
-        tagline: { type: String, trim: true, default: null },
-        coverPic: { type: String, trim: true, default: null },
-    }))
+    @Prop(
+        raw({
+            avatar: { type: String, trim: true, default: 'https://images.offprint.net/avatars/avatar.png' },
+            bio: { type: String, trim: true, default: null },
+            tagline: { type: String, trim: true, default: null },
+            coverPic: { type: String, trim: true, default: null },
+        }),
+    )
     profile: {
         avatar: string;
         bio: string;
@@ -24,33 +26,39 @@ export class UserDocument extends Document implements User {
         coverPic: string;
     };
 
-    @Prop(raw({
-        works: { type: Number, default: 0 },
-        blogs: { type: Number, default: 0 },
-        watchers: { type: Number, default: 0 },
-        watching: { type: Number, default: 0 },
-    }))
+    @Prop(
+        raw({
+            works: { type: Number, default: 0 },
+            blogs: { type: Number, default: 0 },
+            watchers: { type: Number, default: 0 },
+            watching: { type: Number, default: 0 },
+        }),
+    )
     stats: {
         works: number;
         blogs: number;
         watchers: number;
         watching: number;
-    }
+    };
 
-    @Prop(raw({
-        roles: { type: [String], enum: Object.keys(Roles), default: ['User'] },
-        sessions: { type: [AuditSessionSchema], default: null },
-        termsAgree: { type: Boolean, default: false },
-        emailConfirmed: { type: Boolean, default: false },
-        isDeleted: { type: String, default: false },
-    }))
+    @Prop(
+        raw({
+            roles: { type: [String], enum: Object.keys(Roles), default: ['User'] },
+            presence: { type: String, enum: Object.keys(Presence), default: ['Offline'] },
+            sessions: { type: [AuditSessionSchema], default: null },
+            termsAgree: { type: Boolean, default: false },
+            emailConfirmed: { type: Boolean, default: false },
+            isDeleted: { type: String, default: false },
+        }),
+    )
     audit: {
-        roles: Roles[],
-        sessions: AuditSession[],
-        termsAgree: boolean,
-        emailConfirmed: boolean,
-        deleted: boolean,
-    }
+        roles: Roles[];
+        presence: Presence;
+        sessions: AuditSession[];
+        termsAgree: boolean;
+        emailConfirmed: boolean;
+        deleted: boolean;
+    };
 
     @Prop() createdAt: Date;
     @Prop() updatedAt: Date;
