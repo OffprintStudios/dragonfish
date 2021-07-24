@@ -1,9 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
+import { Bookshelf } from '@dragonfish/shared/models/users/content-library';
 
 @Schema({ timestamps: true, collection: 'bookshelves', autoIndex: true })
-export class BookshelfDocument extends Document {
+export class BookshelfDocument extends Document implements Bookshelf {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 

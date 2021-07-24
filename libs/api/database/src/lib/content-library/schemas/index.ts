@@ -1,8 +1,11 @@
 import { ContentLibrarySchema } from './content-library.schema';
-import { BookshelfSchema } from './bookshelf.schema';
+import { BookshelfDocument, BookshelfSchema } from './bookshelf.schema';
 import { ShelfItemSchema } from './shelf-item.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
+import { HookNextFunction } from 'mongoose';
+import * as sanitizeHtml from 'sanitize-html';
+import { sanitizeOptions } from '@dragonfish/shared/models/util';
 
 //#region ---EXPORTS---
 
@@ -33,6 +36,13 @@ export async function setupBookshelvesCollection() {
     const schema = BookshelfSchema;
 
     schema.plugin(MongoosePaginate);
+    schema.pre<BookshelfDocument>('save', async function (next: HookNextFunction) {
+        this.set('name', sanitizeHtml(this.name, sanitizeOptions));
+        if (this.isModified('desc')) {
+            this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
+        }
+        return next();
+    });
 
     return schema;
 }
