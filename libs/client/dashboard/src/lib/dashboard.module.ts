@@ -66,6 +66,7 @@ import { ContentReportComponent, UserReportComponent, ReportItemComponent } from
         ReactiveFormsModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
+            track: 'all',
         }),
     ],
 })

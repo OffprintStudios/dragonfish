@@ -106,6 +106,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         DynamicViewModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
+            track: 'all',
         }),
     ],
     providers: [
