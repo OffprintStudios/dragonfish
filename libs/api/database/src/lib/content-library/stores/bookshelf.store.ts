@@ -68,7 +68,7 @@ export class BookshelfStore {
      */
     public async deleteShelf(user: JwtPayload, shelfId: string): Promise<void> {
         if (await this.shelfExists(user.sub, shelfId)) {
-            await this.bookshelf.remove({ _id: shelfId }).then(async () => {
+            await this.bookshelf.remove({ _id: shelfId, userId: user.sub }).then(async () => {
                 await this.shelfItem.remove({ shelfId: shelfId });
             });
         } else {
