@@ -14,6 +14,7 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { MyStuffRoutingModule } from './my-stuff-routing.module';
 import { CookieModule } from 'ngx-cookie';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Components */
 import { MyStuffComponent } from './my-stuff.component';
@@ -71,6 +72,10 @@ import {
         ContextMenuModule,
         CookieModule,
         EditorLiteModule,
+        NgScrollbarModule.withConfig({
+            appearance: 'standard',
+            track: 'all',
+        }),
     ],
 })
 export class MyStuffModule {}

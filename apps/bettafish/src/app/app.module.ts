@@ -20,6 +20,8 @@ import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
+import { DynamicViewModule } from '@ngneat/overview';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
 import { HomePages } from './pages/home';
@@ -30,17 +32,15 @@ import { PortfolioPages } from './pages/portfolio';
 import { MessagesPages } from './pages/messages';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
+import { SettingsPages } from './pages/settings';
+import { RegistrationPages } from './pages/registration';
 
 /* Components */
 import { AppComponent } from './app.component';
-import { SiteComponents } from './components/site';
-import { AuthComponents } from './components/auth';
 import { ContentComponents } from './components/content';
 import { UserComponents } from './components/user';
 import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
-import { FriendsComponents } from './components/user/friends';
-import { HistoryComponents } from './components/user/history';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -59,14 +59,10 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
 @NgModule({
     declarations: [
         AppComponent,
-        ...SiteComponents,
-        ...AuthComponents,
         ...ContentComponents,
         ...UserComponents,
         ...UserSettingsComponents,
         ...CollectionsComponents,
-        ...FriendsComponents,
-        ...HistoryComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
@@ -75,6 +71,8 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ...MessagesPages,
         ...ContentViewPages,
         ...ErrorPages,
+        ...SettingsPages,
+        ...RegistrationPages,
     ],
     imports: [
         BrowserModule,
@@ -105,6 +103,11 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         MarkdownModule.forRoot({ sanitize: SecurityContext.NONE }),
         environment.production ? [] : AkitaNgDevtools.forRoot(),
         AkitaNgRouterStoreModule,
+        DynamicViewModule,
+        NgScrollbarModule.withConfig({
+            appearance: 'standard',
+            track: 'all',
+        }),
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

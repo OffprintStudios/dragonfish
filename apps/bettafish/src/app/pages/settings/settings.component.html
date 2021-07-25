@@ -1,0 +1,23 @@
+<div class="flex flex-col w-full h-screen">
+    <dragonfish-topbar>
+        <div class="topbar-header">
+            <rmx-icon name="settings-5-line"></rmx-icon>
+            <h3>Settings</h3>
+        </div>
+    </dragonfish-topbar>
+    <div class="flex-1">
+        <ng-scrollbar>
+            <div class="my-8 w-11/12 mx-auto">
+                <ng-container *ngIf="sessionQuery.currentUser$ | async">
+                    <dragonfish-account></dragonfish-account>
+                    <div class="my-5"><!--spacer--></div>
+                    <dragonfish-profile></dragonfish-profile>
+                    <div class="my-5"><!--spacer--></div>
+                    <dragonfish-vip-settings></dragonfish-vip-settings>
+                    <div class="my-5"><!--spacer--></div>
+                </ng-container>
+                <dragonfish-global-settings></dragonfish-global-settings>
+            </div>
+        </ng-scrollbar>
+    </div>
+</div>

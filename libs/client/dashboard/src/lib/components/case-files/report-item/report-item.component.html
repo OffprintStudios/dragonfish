@@ -1,0 +1,14 @@
+<ng-container *ngFor="let report of reports">
+    <div class="my-0.5 mx-4 border-b border-gray-600 dark:border-white p-1.5">
+        <h4 class="text-lg font-medium">Report ID: {{ report._id }}</h4>
+        <div>
+            Reason(s):
+            <ng-container *ngFor="let reason of $any(report.reasons) | keyvalue">
+                <span class="mx-1">{{ reason.value }}</span>
+            </ng-container>
+        </div>
+        <div>
+            <markdown>{{ report.body }}</markdown>
+        </div>
+    </div>
+</ng-container>

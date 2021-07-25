@@ -6,7 +6,6 @@ import { take } from 'rxjs/operators';
 import { InsertLinkComponent } from './components/insert-link/insert-link.component';
 import { InsertMediaComponent } from './components/insert-media/insert-media.component';
 import { Editor } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Typography from '@tiptap/extension-typography';
 import Image from '@tiptap/extension-image';
@@ -18,6 +17,20 @@ import Placeholder from '@tiptap/extension-placeholder';
 import Dropcursor from '@tiptap/extension-dropcursor';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
 import FloatingMenu from '@tiptap/extension-floating-menu';
+import Bold from '@tiptap/extension-bold';
+import BulletList from '@tiptap/extension-bullet-list';
+import Document from '@tiptap/extension-document';
+import Gapcursor from '@tiptap/extension-gapcursor';
+import HardBreak from '@tiptap/extension-hard-break';
+import Heading from '@tiptap/extension-heading';
+import History from '@tiptap/extension-history';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Italic from '@tiptap/extension-italic';
+import ListItem from '@tiptap/extension-list-item';
+import OrderedList from '@tiptap/extension-ordered-list';
+import Paragraph from '@tiptap/extension-paragraph';
+import Strike from '@tiptap/extension-strike';
+import Text from '@tiptap/extension-text';
 import Iframe from './extensions';
 
 @Component({
@@ -40,8 +53,21 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
 
     editor = new Editor({
         extensions: [
-            StarterKit.configure({ heading: { levels: [2, 3, 4] } }),
+            Bold,
+            Italic,
             Underline,
+            Strike,
+            Paragraph,
+            Text,
+            BulletList,
+            ListItem,
+            OrderedList,
+            Document,
+            Gapcursor,
+            HardBreak,
+            Heading,
+            History.configure({ levels: [2, 3, 4] } as any),
+            HorizontalRule,
             Typography,
             Image,
             Link.configure({ openOnClick: false }),

@@ -1,0 +1,5 @@
+img.cover-art {
+    max-width: 14rem;
+    object-fit: cover;
+    @apply rounded-md;
+}

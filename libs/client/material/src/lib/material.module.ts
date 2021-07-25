@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,7 +14,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
     imports: [
         FlexLayoutModule,
-        MatSidenavModule,
         MatIconModule,
         MatMenuModule,
         MatTooltipModule,
@@ -29,7 +27,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
     ],
     exports: [
         FlexLayoutModule,
-        MatSidenavModule,
         MatIconModule,
         MatMenuModule,
         MatTooltipModule,

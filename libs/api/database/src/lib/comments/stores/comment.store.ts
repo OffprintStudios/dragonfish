@@ -5,12 +5,14 @@ import { CommentDocument, ContentCommentDocument } from '../schemas';
 import { CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { ContentDocument } from '../../content/schemas';
 
 @Injectable()
 export class CommentStore {
     constructor(
         @InjectModel('Comment') private readonly comments: PaginateModel<CommentDocument>,
         @InjectModel('ContentComment') private readonly contentComments: PaginateModel<ContentCommentDocument>,
+        @InjectModel('Content') private readonly contents: PaginateModel<ContentDocument>
     ) {}
 
     /**
@@ -45,7 +47,11 @@ export class CommentStore {
         form: CommentForm,
     ): Promise<CommentDocument> {
         const newComment = await this.createDocument(user.sub, itemId, kind, form);
-        return await newComment.save();
+        const savedComment = await newComment.save();
+
+        await this.updateCount(itemId);
+
+        return savedComment;
     }
 
     /**
@@ -67,6 +73,23 @@ export class CommentStore {
 
             return await comment.save();
         }
+    }
+
+    /**
+     * Updates the number of comments listed for a work
+     * @param itemId ID of the work being updated
+     */
+    public async updateCount(itemId: string) {
+        // Get total number of comments
+        const totalComments = await this.comments.countDocuments({contentId: itemId});
+
+        // Update content's comment count
+        await this.contents.findOneAndUpdate(
+            { _id: itemId, 'audit.isDeleted': false },
+            {
+                'stats.comments': totalComments
+            }
+        );
     }
 
     //#region ---PRIVATE---

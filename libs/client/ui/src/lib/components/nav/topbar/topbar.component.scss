@@ -1,0 +1,36 @@
+div.topbar {
+    background: var(--accent);
+    box-shadow: var(--dropshadow);
+    height: 52px;
+    position: -webkit-sticky;
+    position: sticky;
+    a.link {
+        @apply p-1.5 mx-0.5 rounded-md text-white;
+        &:hover, &.active {
+            @apply no-underline;
+            background: var(--accent-light);
+            color: white;
+        }
+        span.link-icon {
+            rmx-icon {
+                width: 24px;
+                stroke-width: 1;
+            }
+        }
+    }
+
+    a.link-with-avatar {
+        @apply mx-1 p-0.5 flex items-center rounded-md;
+        &:hover, &.active {
+            background: var(--accent-light);
+            text-decoration: none;
+        }
+        div.info {
+            max-width: 6.25rem;
+        }
+        img.avatar {
+            max-width: 26px;
+            @apply rounded-md relative;
+        }
+    }
+}

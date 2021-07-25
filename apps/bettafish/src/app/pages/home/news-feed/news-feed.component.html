@@ -1,35 +1,30 @@
-<div class="sticky top-0">
-    <div class="news-feed-nav shadow-lg relative z-40">
-        <div class="w-11/12 mx-auto py-4 flex flex-row items-center">
-            <button class="border-none rounded-full shadow-none p-2.5" [routerLink]="['/']">
-                <rmx-icon name="arrow-left-s-line" class="text-white relative top-0.5 mr-4"></rmx-icon>
-            </button>
-            <h3 class="text-4xl text-white relative top-1.5 font-semibold">
-                All the Latest
-            </h3>
-            <div class="flex-1"><!--spacer--></div>
+<div class="flex flex-col w-full h-screen">
+    <dragonfish-topbar>
+        <div class="topbar-header">
+            <a [routerLink]="['/']"><rmx-icon name="arrow-left-s-line"></rmx-icon></a>
+            <h3>All The Latest</h3>
         </div>
-    </div>
-</div>
+    </dragonfish-topbar>
 
-<ng-container *ngIf="loading; else notLoading">
-    <div class="flex flex-row items-center justify-center max-h-40">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-container>
+    <ng-scrollbar>
+        <ng-container *ngIf="loading; else notLoading">
+            <div class="flex flex-row items-center justify-center max-h-40">
+                <mat-spinner></mat-spinner>
+            </div>
+        </ng-container>
 
-<ng-template #notLoading>
-    <ng-container *ngIf="posts.totalDocs === 0; else hasDocs">
-        <div class="empty">
-            <h3>Surprisingly, there's nothing here.</h3>
-            <p>Contact an admin if you think something should be here.</p>
-        </div>
-    </ng-container>
+        <ng-template #notLoading>
+            <ng-container *ngIf="posts.totalDocs === 0; else hasDocs">
+                <div class="empty">
+                    <h3>Surprisingly, there's nothing here.</h3>
+                    <p>Contact an admin if you think something should be here.</p>
+                </div>
+            </ng-container>
 
-    <ng-template #hasDocs>
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8">
-            <ng-container
-                *ngFor="
+            <ng-template #hasDocs>
+                <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8">
+                    <ng-container
+                        *ngFor="
                 let post of posts.docs
                     | paginate
                         : {
@@ -38,10 +33,13 @@
                               totalItems: posts.totalDocs
                           }
             "
-            >
-                <dragonfish-news-card [post]="post"></dragonfish-news-card>
-            </ng-container>
-        </div>
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-    </ng-template>
-</ng-template>
+                    >
+                        <dragonfish-news-card [post]="post"></dragonfish-news-card>
+                    </ng-container>
+                </div>
+                <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+                <div class="my-4"></div>
+            </ng-template>
+        </ng-template>
+    </ng-scrollbar>
+</div>

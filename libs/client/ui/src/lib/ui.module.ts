@@ -11,6 +11,9 @@ import { IconsModule } from '@dragonfish/client/icons';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { MaterialModule } from '@dragonfish/client/material';
 import { ClickOutsideModule } from 'ng-click-outside';
+import { TabsModule } from 'ngx-tabset';
+import { DynamicViewModule } from '@ngneat/overview';
+import { TeleportModule } from '@ngneat/overview';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -28,6 +31,17 @@ import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 import { ContentApprovalComponent } from './components/content-approval/content-approval.component';
 import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
+import { SidebarComponent } from './components/nav/sidebar/sidebar.component';
+import { TopbarComponent } from './components/nav/topbar/topbar.component';
+import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
+import { LoginFormComponent } from './components/auth/login-form/login-form.component';
+import { RegisterFormComponent } from './components/auth/register-form/register-form.component';
+import { UserMenuComponent } from './components/auth/user-menu/user-menu.component';
+import { InboxComponent } from './components/inbox/inbox.component';
+import { MessagesTabComponent } from './components/inbox/messages-tab/messages-tab.component';
+import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
+import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
+import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +60,17 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
         ReportDialogComponent,
         ContentApprovalComponent,
         AddToCollectionComponent,
+        SidebarComponent,
+        TopbarComponent,
+        AuthModalComponent,
+        LoginFormComponent,
+        RegisterFormComponent,
+        UserMenuComponent,
+        InboxComponent,
+        MessagesTabComponent,
+        NotificationsTabComponent,
+        PagebarComponent,
+        MobileNavComponent,
     ],
     imports: [
         CommonModule,
@@ -61,6 +86,9 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
         MaterialModule,
         ClickOutsideModule,
         RouterModule.forChild([]),
+        TabsModule,
+        DynamicViewModule,
+        TeleportModule,
     ],
     exports: [
         RatingIconComponent,
@@ -78,6 +106,12 @@ import { AddToCollectionComponent } from './components/add-to-collection/add-to-
         ReportDialogComponent,
         ContentApprovalComponent,
         AddToCollectionComponent,
+        SidebarComponent,
+        TopbarComponent,
+        PagebarComponent,
+        MobileNavComponent,
+        RegisterFormComponent,
+        LoginFormComponent,
     ],
 })
 export class UiModule {}

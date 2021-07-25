@@ -4,7 +4,7 @@ import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { CreatePoetry } from '@dragonfish/shared/models/content';
+import { ContentModel, CreatePoetry } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from '../schemas';

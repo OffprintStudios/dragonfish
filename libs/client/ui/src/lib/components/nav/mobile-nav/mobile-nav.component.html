@@ -1,0 +1,33 @@
+<div class="flex items-center justify-center absolute bottom-0 z-50 w-full" style="background: var(--accent-dark);">
+    <a
+        class="link"
+        [routerLink]="['/']"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: true }"
+        [matTooltip]="'Home'"
+        [matTooltipPosition]="'right'"
+        [matTooltipClass]="'offprint-tooltip'"
+    >
+        <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
+    </a>
+    <a
+        class="link"
+        [routerLink]="['/browse']"
+        [routerLinkActive]="'active'"
+        [matTooltip]="'Browse'"
+        [matTooltipPosition]="'right'"
+        [matTooltipClass]="'offprint-tooltip'"
+    >
+        <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
+    </a>
+    <a
+        class="link"
+        [routerLink]="['/social']"
+        [routerLinkActive]="'active'"
+        [matTooltip]="'Social'"
+        [matTooltipPosition]="'right'"
+        [matTooltipClass]="'offprint-tooltip'"
+    >
+        <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+    </a>
+</div>

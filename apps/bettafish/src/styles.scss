@@ -47,7 +47,6 @@ $bettafish-theme: mat-light-theme((
 @import '~@ctrl/ngx-emoji-mart/picker';
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
-@import url('https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css');
 
 :root {
     /* Widths */
@@ -66,6 +65,7 @@ body {
     overflow-x:hidden;
     overflow-y:hidden;
 }
+
 body {
     color: var(--text-color);
     margin: 0;
@@ -95,7 +95,6 @@ a.button {
     line-height: 20px;
     border: 1px solid var(--borders);
     border-radius: 6px;
-    box-shadow: var(--dropshadow);
     color: var(--text-color);
     user-select: none;
     &.primary {
@@ -118,6 +117,9 @@ a.button {
         position: relative;
         top: 0.25rem;
         margin-right: 0.275rem;
+        &.no-text {
+            margin-right: 0;
+        }
     }
     i-feather {
         width: 16px !important;
@@ -183,30 +185,85 @@ div.empty {
         margin-bottom: 0;
     }
 }
-/* Offprint Tabs */
-.offprint-tabs-nav {
-    justify-content: center;
-    //border-bottom: 1px solid var(--borders);
-    margin-bottom: 1.5rem;
-    .nav-tab {
-        @apply text-lg;
-        text-transform: lowercase;
-        font-variant: small-caps;
-        font-weight: 700;
-        letter-spacing: 2px;
-        color: var(--text-color);
-        border-bottom-width: 2px;
-        border-color: transparent;
-        &:hover {
-            color: var(--accent);
-            transition: all 0.15s ease;
+
+/* Offprint Topbar */
+div.topbar-header {
+    @apply flex items-center text-sm text-white w-64 border-r h-full pl-2.5 flex-shrink-0;
+    border-color: var(--accent-light);
+    rmx-icon {
+        @apply mr-1;
+    }
+    h3 {
+        @apply font-medium text-base text-white relative top-0.5;
+    }
+    a {
+        @apply p-0.5 mx-0.5 rounded-md text-white cursor-pointer;
+        &:hover, &.active {
+            @apply no-underline;
+            background: var(--accent-light);
+            color: white;
+        }
+        span.link-icon {
+            rmx-icon {
+                width: 24px;
+                stroke-width: 1;
+            }
         }
     }
 }
-.nav-tabset:not(.disable-style) .nav-tab.active {
-    border-bottom-width: 2px;
-    border-color: var(--accent);
+div.topbar-tools {
+    @apply flex items-center px-2.5 w-full;
+    button {
+        @apply border-none text-white shadow-none rounded-md px-2 py-1.5;
+        &:hover, &.active {
+            background: var(--accent-light);
+        }
+        &.disabled {
+            color: var(--accent-dark);
+            &:hover {
+                @apply cursor-not-allowed bg-transparent;
+            }
+        }
+        rmx-icon {
+            @apply relative top-1;
+        }
+    }
 }
+
+/* Offprint Pagebar */
+div.pagebar {
+    div.pages {
+        @apply text-white w-full flex flex-col;
+        a.link {
+            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none;
+            &:hover, &.active {
+                background: var(--accent-light);
+                text-decoration: none;
+                color: white;
+            }
+            span.text {
+                @apply flex-1;
+            }
+            span.link-icon {
+                @apply mr-1 relative top-0.5;
+                rmx-icon {
+                    width: 18px;
+                    stroke-width: 1;
+                }
+            }
+            &.dropdown-item {
+                &:hover, &.active {
+                    background: var(--accent-dark);
+                }
+            }
+        }
+        div.dropdown-nav {
+            @apply mb-0.5 rounded-md p-1;
+            background: var(--accent-light);
+        }
+    }
+}
+
 /* Doc pages */
 div.doc {
     h1 {
