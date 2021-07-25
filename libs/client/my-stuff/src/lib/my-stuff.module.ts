@@ -74,6 +74,7 @@ import {
         EditorLiteModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
+            track: 'all',
         }),
     ],
 })
