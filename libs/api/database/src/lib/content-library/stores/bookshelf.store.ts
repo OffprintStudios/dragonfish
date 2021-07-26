@@ -86,10 +86,28 @@ export class BookshelfStore {
 
     /**
      * Fetches all public shelves only.
-     * @param user
+     * @param userId
      */
-    public async fetchPublicShelves(user: JwtPayload) {
-        return this.bookshelf.find({ userId: user.sub, public: true });
+    public async fetchPublicShelves(userId: string) {
+        return this.bookshelf.find({ userId: userId, public: true });
+    }
+
+    /**
+     * Fetches one shelf.
+     * @param user
+     * @param shelfId
+     */
+    public async fetchOneShelf(user: JwtPayload, shelfId: string) {
+        return this.bookshelf.find({ _id: shelfId, userId: user.sub });
+    }
+
+    /**
+     * Fetches one public shelf.
+     * @param userId
+     * @param shelfId
+     */
+    public async fetchOnePublicShelf(userId: string, shelfId: string) {
+        return this.bookshelf.find({ _id: shelfId, userId: userId, public: true });
     }
 
     //#endregion
@@ -127,11 +145,11 @@ export class BookshelfStore {
 
     /**
      * Fetches all items related to a bookshelf.
-     * @param user
+     * @param userId
      * @param shelfId
      */
-    public async fetchItems(user: JwtPayload, shelfId: string) {
-        if (await this.shelfExists(user.sub, shelfId)) {
+    public async fetchItems(userId: string, shelfId: string) {
+        if (await this.shelfExists(userId, shelfId)) {
             return this.shelfItem.find({ shelfId: shelfId });
         } else {
             throw new NotFoundException(`The shelf you're trying to fetch does not exist.`);
