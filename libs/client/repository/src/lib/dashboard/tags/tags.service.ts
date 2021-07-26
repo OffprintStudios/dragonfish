@@ -21,7 +21,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -33,7 +33,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -45,7 +45,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -57,7 +57,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -69,7 +69,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -82,7 +82,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -95,7 +95,7 @@ export class TagsService {
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
