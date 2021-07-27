@@ -1,16 +1,20 @@
-<div class="topbar z-50 top-0">
+<div class="topbar z-50 top-0" [ngClass]="{ 'transparent': transparent, 'transition': !transparent, 'duration-500': !transparent, 'ease-in-out': !transparent }">
     <div class="flex items-center w-full h-full">
         <ng-content></ng-content>
         <div class="flex-1"><!--spacer--></div>
         <ng-container *ngIf="sessionQuery.currentUser$ | async as currentUser; else login">
-            <div class="flex flex-shrink-0 items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
+            <div
+                class="flex flex-shrink-0 items-center h-full pr-2.5 pl-1.5"
+                [ngClass]="transparent ? 'border-l-0' : 'border-l'"
+                style="border-color: var(--accent-light);"
+            >
                 <a
                     class="link-with-avatar cursor-pointer"
                     [ngClass]="{ 'active': activeUserMenu }"
                     (click)="openUserMenu()"
                 >
                     <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
-                    <div class="info ml-1 text-white text-xs">
+                    <div class="info ml-1 text-xs" [ngClass]="transparent ? 'hover:text-white' : 'text-white'">
                         <div class="font-bold truncate">{{ currentUser.username }}</div>
                         <div class="truncate">{{ currentUser.profile.tagline }}</div>
                     </div>
@@ -35,7 +39,11 @@
             </div>
         </ng-container>
         <ng-template #login>
-            <div class="flex flex-shrink-0 items-center h-full border-l pr-2.5 pl-1.5" style="border-color: var(--accent-light);">
+            <div
+                class="flex flex-shrink-0 items-center h-full pr-2.5 pl-1.5"
+                [ngClass]="transparent ? 'border-l-0' : 'border-l'"
+                style="border-color: var(--accent-light);"
+            >
                 <a
                     class="link flex items-center text-sm cursor-pointer"
                     [routerLink]="['/registration']"

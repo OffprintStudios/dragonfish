@@ -86,7 +86,7 @@ a.button {
     display: flex;
     flex-direction: row;
     margin: 0;
-    padding: 10px 15px;
+    @apply px-2 py-1.5;
     font-size: 16px;
     text-transform: lowercase;
     font-variant: small-caps;

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { MatDialog } from '@angular/material/dialog';
 import { NavigationStart, Router } from '@angular/router';
-import { AuthModalComponent } from '../../auth/auth-modal/auth-modal.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -16,6 +15,8 @@ import { InboxComponent } from '../../inbox/inbox.component';
     styleUrls: ['./topbar.component.scss'],
 })
 export class TopbarComponent implements OnInit {
+    @Input() transparent = false;
+
     private userMenu: ViewRef;
     activeUserMenu = false;
 

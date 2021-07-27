@@ -1,7 +1,6 @@
 require('dotenv').config();
 
 module.exports = {
-    mode: 'jit',
     purge: {
         enabled: process.env.NODE_ENV === 'production',
         content: [
@@ -9,6 +8,7 @@ module.exports = {
             './libs/client/editor/src/lib/**/*.{html,ts}',
             './libs/client/ui/src/lib/**/*.{html,ts}',
             './libs/client/my-stuff/src/lib/**/*.{html,ts}',
+            './libs/client/my-library/src/lib/**/*.{html,ts}',
             './libs/client/dashboard/src/lib/**/*.{html,ts}',
             './libs/client/alerts/src/lib/**/*.{html,ts}',
             './libs/client/comments/src/lib/**/*.{html,ts}',
