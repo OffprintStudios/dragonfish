@@ -41,7 +41,7 @@ export class NewsContentDocument extends Document implements NewsContentModel {
         warnings: string[]
     };
 
-    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
     tags: TagsModel[];
 }
 

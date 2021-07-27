@@ -74,7 +74,7 @@ export class ContentDocument extends Document implements ContentModel {
     @Prop({ type: String, enum: Object.keys(ContentKind), index: true })
     readonly kind: ContentKind;
 
-    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
     tags: TagsModel[];
 
     @Prop()

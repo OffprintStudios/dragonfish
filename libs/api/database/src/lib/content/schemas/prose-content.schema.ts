@@ -52,7 +52,7 @@ export class ProseContentDocument extends Document implements ProseContent {
     })
     sections: string[] | SectionInfo[];
 
-    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
     tags: TagsModel[];
 }
 

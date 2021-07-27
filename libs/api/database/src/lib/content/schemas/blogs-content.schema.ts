@@ -26,7 +26,7 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
 
     readonly kind: ContentKind;
 
-    @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: 'TagsDocument'}] })
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
     tags: TagsModel[];
     
     readonly createdAt: Date;
