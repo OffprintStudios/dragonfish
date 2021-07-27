@@ -27,7 +27,12 @@ export class TagsManagementComponent implements OnInit {
     }
 
     addChild(parentId: string) {
-        this.dialog.open(ChildTagFormComponent, { data: { parentId: parentId }});
+        const alertData: PopupModel = {
+            message: 'Currently disabled',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        // this.dialog.open(ChildTagFormComponent, { data: { parentId: parentId }});
     }
 
     editTag(tag: TagsModel) {
