@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ChildTagsModel, TagsForm } from '@dragonfish/shared/models/content';
+import { TagsModel, TagsForm, TagKind } from '@dragonfish/shared/models/content';
 
 @Component({
     selector: 'dragonfish-child-tag-form',
@@ -22,7 +22,7 @@ export class ChildTagFormComponent implements OnInit {
         private alerts: AlertsService,
         private tagsService: TagsService,
         public dialogRef: MatDialogRef<ChildTagFormComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: { parentId: string, child: ChildTagsModel }
+        @Inject(MAT_DIALOG_DATA) private data: { parentId: string, child: TagsModel }
     ) {}
 
     ngOnInit(): void {
@@ -30,6 +30,7 @@ export class ChildTagFormComponent implements OnInit {
             this.tagForm.setValue({
                 name: this.data.child.name,
                 desc: this.data.child.desc,
+                parent: this.data.parentId,
             });
             this.editMode = true;
             this.formTitle = `Editing Child Tag`;
@@ -53,14 +54,15 @@ export class ChildTagFormComponent implements OnInit {
         const form: TagsForm = {
             name: this.fields.name.value,
             desc: this.fields.desc.value,
+            parent: this.data.parentId,
         };
 
         if (this.editMode) {
-            this.tagsService.updateChild(this.data.parentId, this.data.child._id, form).subscribe(() => {
+            this.tagsService.updateTag(this.data.child._id, form).subscribe(() => {
                 this.dialogRef.close();
             });
         } else {
-            this.tagsService.addChild(this.data.parentId, form).subscribe(() => {
+            this.tagsService.createTag(TagKind.Fandom, form).subscribe(() => {
                 this.dialogRef.close();
             });
         }
