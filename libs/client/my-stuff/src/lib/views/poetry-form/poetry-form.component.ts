@@ -103,7 +103,6 @@ export class PoetryFormComponent implements OnInit {
             category: this.fields.category.value,
             collection: this.isCollection,
             form: this.fields.form.value,
-            fandoms: null,
             genres: this.fields.genres.value,
             rating: this.fields.rating.value,
             status: this.fields.status.value,

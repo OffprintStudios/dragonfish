@@ -22,13 +22,7 @@ export class StringifyMetaPipe implements PipeTransform {
         if (Categories[value.category] === Categories.OriginalFiction) {
             return `${categoryString} // ${genreString}`;
         }
-        if (!value.fandoms || value.fandoms.length === 0) {
-            return `${categoryString} // ${genreString}`;
-        }
-
-        const fandomString: string =
-            value.fandoms.length === 1 ? Fandoms[value.fandoms[0]] : value.fandoms.map((x) => Fandoms[x]).join(', ');
-
-        return `${categoryString} // ${genreString} // ${fandomString}`;
+        // Insert fandom tags code later for Fanwork
+        return `${categoryString} // ${genreString}`;
     }
 }
