@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import {
     PoetryContent,
     WorkKind,
@@ -10,6 +10,7 @@ import {
     ContentKind,
     PubStatus,
     PoetryForm,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
@@ -30,7 +31,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: { type: String, enum: Object.keys(WorkKind), required: true },
         form: { type: String, enum: Object.keys(PoetryForm), required: true },
         collection: { type: Boolean, default: false },
-        fandoms: { type: [String], default: null },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
@@ -39,7 +39,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         category: WorkKind;
         form: PoetryForm;
         collection: boolean;
-        fandoms?: string[];
         genres: Genres[];
         rating: ContentRating;
         status: WorkStatus;
@@ -57,6 +56,9 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         },
     })
     sections?: string[] | SectionInfo[];
+
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 }
 
 export const PoetryContentSchema = SchemaFactory.createForClass(PoetryContentDocument);

@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { ContentModel, ContentKind, PubStatus, ContentRating } from '@dragonfish/shared/models/content';
-import { Document } from 'mongoose';
+import { ContentModel, ContentKind, PubStatus, ContentRating, TagsModel } from '@dragonfish/shared/models/content';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
@@ -73,6 +73,9 @@ export class ContentDocument extends Document implements ContentModel {
 
     @Prop({ type: String, enum: Object.keys(ContentKind), index: true })
     readonly kind: ContentKind;
+
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 
     @Prop()
     readonly createdAt: Date;

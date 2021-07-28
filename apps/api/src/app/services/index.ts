@@ -77,4 +77,10 @@ export const InterfaceProviders = [
             return x.name === 'MessagesService';
         }),
     },
+    {
+        provide: 'ITagsService',
+        useClass: ContentServices.find((x) => {
+            return x.name === 'TagsService';
+        }),
+    }
 ];

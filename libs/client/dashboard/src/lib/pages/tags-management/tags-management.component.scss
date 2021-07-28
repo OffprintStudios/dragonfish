@@ -1,0 +1,10 @@
+div.tools {
+    background: var(--accent-light);
+    button {
+        background: var(--accent-light);
+        color: white;
+        &:hover {
+            background: var(--accent);
+        }
+    }
+}

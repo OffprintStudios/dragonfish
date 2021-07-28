@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import {
     ProseContent,
     WorkKind,
@@ -9,6 +9,7 @@ import {
     SectionInfo,
     ContentKind,
     PubStatus,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 
@@ -27,14 +28,12 @@ export class ProseContentDocument extends Document implements ProseContent {
 
     @Prop(raw({
         category: { type: String, enum: Object.keys(WorkKind), required: true },
-        fandoms: { type: [String], default: null },
         genres: { type: [String], enum: Object.keys(Genres), required: true },
         status: { type: String, enum: Object.keys(WorkStatus), required: true },
         coverArt: { type: String, trim: true, default: null },
     }))
     meta: {
         category: WorkKind;
-        fandoms?: string[];
         genres: Genres[];
         rating: ContentRating;
         warnings: string[];
@@ -52,6 +51,9 @@ export class ProseContentDocument extends Document implements ProseContent {
         },
     })
     sections: string[] | SectionInfo[];
+
+    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
+    tags: TagsModel[];
 }
 
 export const ProseContentSchema = SchemaFactory.createForClass(ProseContentDocument);
