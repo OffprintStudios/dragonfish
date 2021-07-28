@@ -4,6 +4,7 @@ import { MyLibraryRoutingModule } from './my-library-routing.module';
 import { UiModule } from '@dragonfish/client/ui';
 import { IconsModule } from '@dragonfish/client/icons';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { MaterialModule } from '@dragonfish/client/material';
 
 /* Pages */
 import { MyLibraryComponent } from './my-library.component';
@@ -15,6 +16,7 @@ import { MyLibraryComponent } from './my-library.component';
         MyLibraryRoutingModule,
         UiModule,
         IconsModule,
+        MaterialModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
         }),

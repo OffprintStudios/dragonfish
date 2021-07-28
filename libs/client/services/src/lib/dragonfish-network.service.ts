@@ -40,6 +40,7 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
+import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 
 /**
  * ## DragonfishNetworkService
@@ -899,6 +900,38 @@ export class DragonfishNetworkService {
     public createResponse(response: CreateResponse) {
         return handleResponse(
             this.http.put<void>(`${this.baseUrl}/messages/create-response`, response, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---MY LIBRARY---
+
+    public fetchLibrary() {
+        return handleResponse(
+            this.http.get<ContentLibrary[]>(`${this.baseUrl}/content-library/fetch`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public addToLibrary(contentId: string) {
+        return handleResponse(
+            this.http.put<void>(
+                `${this.baseUrl}/content-library/add-to?contentId=${contentId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public removeFromLibrary(contentId: string) {
+        return handleResponse(
+            this.http.delete<void>(`${this.baseUrl}/content-library/remove?contentId=${contentId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),

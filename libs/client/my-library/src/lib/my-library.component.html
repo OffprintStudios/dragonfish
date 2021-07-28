@@ -1,26 +1,26 @@
-<div class="flex flex-col w-full h-screen">
-    <dragonfish-topbar [transparent]="transparent">
-        <ng-container *ngIf="!transparent">
-            <div class="topbar-header">
-                <rmx-icon name="book-mark-line"></rmx-icon>
-                <h3>My Library</h3>
-            </div>
-            <div class="topbar-tools">
-                <div class="flex-1"></div>
-                <button>
-                    <rmx-icon name="add-box-line"></rmx-icon>
-                    Bookshelf
-                </button>
-                <div class="mx-0.5"></div>
-                <button>
-                    <rmx-icon name="filter-line"></rmx-icon>
-                    Filter
-                </button>
-            </div>
-        </ng-container>
-    </dragonfish-topbar>
-    <ng-scrollbar #mainScroll>
-        <ng-container *ngIf="route.children.length === 0; else routed">
+<ng-container *ngIf="route.children.length === 0; else routed">
+    <div class="flex flex-col w-full h-screen">
+        <dragonfish-topbar [transparent]="transparent">
+            <ng-container *ngIf="!transparent">
+                <div class="topbar-header">
+                    <rmx-icon name="book-mark-line"></rmx-icon>
+                    <h3>My Library</h3>
+                </div>
+                <div class="topbar-tools">
+                    <div class="flex-1"></div>
+                    <button>
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        Bookshelf
+                    </button>
+                    <div class="mx-0.5"></div>
+                    <button>
+                        <rmx-icon name="filter-line"></rmx-icon>
+                        Filter
+                    </button>
+                </div>
+            </ng-container>
+        </dragonfish-topbar>
+        <ng-scrollbar #mainScroll>
             <div class="flex items-center my-4 w-11/12 mx-auto border-b border-gray-600 dark:border-white pb-2.5">
                 <h1 class="text-4xl font-bold flex-1">My Library</h1>
                 <button>
@@ -33,40 +33,26 @@
                     Filter
                 </button>
             </div>
-            <div class="w-11/12 mx-auto">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed felis eget velit aliquet sagittis id. Integer eget aliquet nibh praesent tristique magna. Leo urna molestie at elementum eu facilisis sed. Pretium aenean pharetra magna ac placerat. Cras sed felis eget velit. Scelerisque purus semper eget duis at tellus. Mattis ullamcorper velit sed ullamcorper. Commodo ullamcorper a lacus vestibulum sed. Viverra adipiscing at in tellus. Mollis nunc sed id semper risus in hendrerit gravida rutrum. Scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada. Felis bibendum ut tristique et. Aenean sed adipiscing diam donec adipiscing. Eget nunc lobortis mattis aliquam faucibus purus. Amet est placerat in egestas erat imperdiet. Massa enim nec dui nunc mattis.
+            <ng-container *ngIf="loading; else notLoading">
+                <div class="w-full h-72">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #notLoading>
+                <ng-container *ngIf="libraryItems.length === 0; else hasItems">
+                    <div class="empty">
+                        <h3>You haven't added anything yet.</h3>
+                        <p>Head on over to any work and click the Add to Library button to start tracking your favorites!</p>
+                    </div>
+                </ng-container>
+                <ng-template #hasItems>
+                    there's some items here.
+                </ng-template>
+            </ng-template>
+        </ng-scrollbar>
+    </div>
+</ng-container>
 
-                Placerat vestibulum lectus mauris ultrices eros in cursus turpis. Volutpat maecenas volutpat blandit aliquam. Aliquam ultrices sagittis orci a scelerisque purus semper eget. Imperdiet proin fermentum leo vel orci porta non pulvinar. Elit ullamcorper dignissim cras tincidunt lobortis feugiat vivamus at. Et tortor at risus viverra adipiscing at in tellus integer. Et malesuada fames ac turpis egestas integer eget. Diam volutpat commodo sed egestas. Et egestas quis ipsum suspendisse ultrices gravida. Risus pretium quam vulputate dignissim suspendisse in est.
-
-                Accumsan lacus vel facilisis volutpat est velit. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Sit amet consectetur adipiscing elit duis tristique sollicitudin nibh sit. Pellentesque diam volutpat commodo sed egestas egestas fringilla. Mattis nunc sed blandit libero volutpat sed cras ornare. Nulla facilisi etiam dignissim diam quis enim lobortis scelerisque fermentum. Est ullamcorper eget nulla facilisi etiam dignissim diam. Id diam vel quam elementum pulvinar etiam. Eget magna fermentum iaculis eu. Maecenas ultricies mi eget mauris pharetra et. Egestas fringilla phasellus faucibus scelerisque eleifend donec pretium. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Viverra tellus in hac habitasse. Augue ut lectus arcu bibendum at. Sit amet tellus cras adipiscing enim eu. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Eget nunc lobortis mattis aliquam faucibus purus in. In metus vulputate eu scelerisque felis.
-
-                Vulputate eu scelerisque felis imperdiet. Habitasse platea dictumst quisque sagittis purus sit. Adipiscing commodo elit at imperdiet dui accumsan. Elementum facilisis leo vel fringilla. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Est placerat in egestas erat. Non blandit massa enim nec dui nunc mattis enim ut. Facilisi cras fermentum odio eu feugiat pretium nibh. Bibendum enim facilisis gravida neque convallis a cras semper auctor. Arcu risus quis varius quam quisque id diam vel. Sed vulputate mi sit amet. Pulvinar pellentesque habitant morbi tristique senectus et. Faucibus pulvinar elementum integer enim neque volutpat ac tincidunt. Scelerisque fermentum dui faucibus in. Aenean et tortor at risus viverra adipiscing at in tellus.
-
-                Consequat semper viverra nam libero justo laoreet sit amet cursus. Nascetur ridiculus mus mauris vitae ultricies leo. Vitae sapien pellentesque habitant morbi tristique senectus. At elementum eu facilisis sed. Vel pretium lectus quam id leo in. Congue eu consequat ac felis donec et odio pellentesque diam. Adipiscing elit ut aliquam purus sit. Sapien nec sagittis aliquam malesuada bibendum. Enim tortor at auctor urna nunc. Viverra aliquet eget sit amet tellus cras adipiscing enim eu. Id cursus metus aliquam eleifend mi. Magna sit amet purus gravida quis blandit turpis cursus.
-
-                Mauris vitae ultricies leo integer malesuada nunc. Et ligula ullamcorper malesuada proin libero nunc consequat. Mauris pharetra et ultrices neque. Faucibus a pellentesque sit amet porttitor eget. Ac placerat vestibulum lectus mauris ultrices eros in cursus turpis. Etiam dignissim diam quis enim. Felis eget velit aliquet sagittis id. Tempor commodo ullamcorper a lacus. Tristique sollicitudin nibh sit amet commodo nulla. Tristique sollicitudin nibh sit amet commodo nulla. Nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Mi ipsum faucibus vitae aliquet nec. Scelerisque purus semper eget duis at. Risus at ultrices mi tempus imperdiet nulla malesuada pellentesque. Imperdiet massa tincidunt nunc pulvinar sapien et ligula ullamcorper. Vel pharetra vel turpis nunc eget lorem dolor. In cursus turpis massa tincidunt dui ut ornare lectus sit. Eget nulla facilisi etiam dignissim diam quis enim. Feugiat pretium nibh ipsum consequat nisl vel pretium lectus quam. Libero enim sed faucibus turpis.
-
-                Lectus mauris ultrices eros in cursus turpis. Interdum varius sit amet mattis vulputate enim nulla aliquet porttitor. Non odio euismod lacinia at quis risus. Laoreet id donec ultrices tincidunt. In aliquam sem fringilla ut morbi tincidunt augue interdum. Nunc congue nisi vitae suscipit tellus. Vivamus arcu felis bibendum ut tristique et. Sollicitudin nibh sit amet commodo nulla. Posuere sollicitudin aliquam ultrices sagittis orci. Nunc faucibus a pellentesque sit amet. At ultrices mi tempus imperdiet nulla malesuada pellentesque elit. Suspendisse ultrices gravida dictum fusce ut placerat orci. Nisi est sit amet facilisis magna etiam tempor orci eu. Mattis molestie a iaculis at.
-
-                Vivamus at augue eget arcu. In massa tempor nec feugiat nisl. Et tortor at risus viverra adipiscing at in. Accumsan lacus vel facilisis volutpat est velit egestas dui id. Diam vel quam elementum pulvinar etiam non. In cursus turpis massa tincidunt dui ut. In iaculis nunc sed augue lacus. In nulla posuere sollicitudin aliquam ultrices sagittis orci. Aenean et tortor at risus viverra. Arcu non odio euismod lacinia at quis. Consequat ac felis donec et odio pellentesque diam volutpat. Blandit cursus risus at ultrices mi.
-
-                Quisque sagittis purus sit amet volutpat consequat mauris. Enim blandit volutpat maecenas volutpat blandit. Id eu nisl nunc mi. Velit sed ullamcorper morbi tincidunt ornare massa eget. Lectus mauris ultrices eros in. In nibh mauris cursus mattis. Mus mauris vitae ultricies leo integer. Porttitor leo a diam sollicitudin. Fames ac turpis egestas sed tempus urna. Nulla facilisi morbi tempus iaculis. Ultricies lacus sed turpis tincidunt id. Massa sed elementum tempus egestas sed sed risus. Faucibus interdum posuere lorem ipsum dolor sit amet consectetur adipiscing. Adipiscing elit ut aliquam purus sit amet luctus. Habitant morbi tristique senectus et netus et malesuada fames ac. Phasellus vestibulum lorem sed risus ultricies tristique. Etiam tempor orci eu lobortis. Vivamus arcu felis bibendum ut tristique et egestas quis. Tristique sollicitudin nibh sit amet.
-
-                Est lorem ipsum dolor sit amet. Sed elementum tempus egestas sed sed risus pretium quam. Scelerisque varius morbi enim nunc faucibus a pellentesque. A scelerisque purus semper eget duis at tellus. Magna ac placerat vestibulum lectus mauris ultrices. Massa vitae tortor condimentum lacinia quis vel eros donec. Eu consequat ac felis donec. Massa tempor nec feugiat nisl. Neque vitae tempus quam pellentesque nec. Mi proin sed libero enim sed faucibus turpis. Aliquam etiam erat velit scelerisque in dictum non. Massa id neque aliquam vestibulum morbi blandit. Eget felis eget nunc lobortis mattis aliquam. Ornare arcu odio ut sem nulla pharetra. Vehicula ipsum a arcu cursus vitae congue. Pellentesque habitant morbi tristique senectus et netus et malesuada. Eget egestas purus viverra accumsan. At lectus urna duis convallis convallis tellus id. Fermentum leo vel orci porta non pulvinar. Pretium fusce id velit ut tortor pretium viverra suspendisse.
-
-                Vitae tempus quam pellentesque nec nam. Pretium viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Vitae nunc sed velit dignissim sodales ut eu. Neque viverra justo nec ultrices dui. Mauris commodo quis imperdiet massa tincidunt. Urna duis convallis convallis tellus id interdum velit laoreet. Vel risus commodo viverra maecenas accumsan lacus vel. Fermentum dui faucibus in ornare quam viverra orci sagittis eu. Est ante in nibh mauris cursus mattis molestie a. Nam aliquam sem et tortor.
-
-                Non arcu risus quis varius quam quisque id diam. Ultrices gravida dictum fusce ut placerat orci. Nisl nunc mi ipsum faucibus vitae aliquet nec ullamcorper sit. Nisl nisi scelerisque eu ultrices vitae auctor. Ut aliquam purus sit amet luctus venenatis lectus magna. Eu scelerisque felis imperdiet proin. Dui id ornare arcu odio. Egestas integer eget aliquet nibh praesent tristique magna. Id cursus metus aliquam eleifend mi in. Rhoncus est pellentesque elit ullamcorper dignissim cras. Lacus luctus accumsan tortor posuere ac. Felis bibendum ut tristique et egestas quis ipsum suspendisse. Nunc pulvinar sapien et ligula ullamcorper malesuada proin libero. Donec ac odio tempor orci dapibus ultrices. Quis risus sed vulputate odio ut enim blandit volutpat. Eget dolor morbi non arcu risus quis varius quam quisque. Sapien pellentesque habitant morbi tristique senectus. Fermentum odio eu feugiat pretium nibh ipsum consequat nisl vel.
-
-                Nec tincidunt praesent semper feugiat nibh sed. Orci sagittis eu volutpat odio facilisis mauris sit amet. Consequat ac felis donec et odio pellentesque diam volutpat. Porttitor lacus luctus accumsan tortor. Ultrices sagittis orci a scelerisque purus semper eget duis at. Sit amet consectetur adipiscing elit ut. Eget nunc lobortis mattis aliquam faucibus purus. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Dui sapien eget mi proin sed libero enim. Enim ut sem viverra aliquet eget sit. Sit amet justo donec enim diam vulputate ut pharetra. Pellentesque elit eget gravida cum sociis natoque. In tellus integer feugiat scelerisque varius. Ut pharetra sit amet aliquam id diam maecenas ultricies mi. Sit amet commodo nulla facilisi nullam vehicula ipsum. Quam quisque id diam vel quam elementum pulvinar etiam. Et netus et malesuada fames ac.
-
-                Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Nibh ipsum consequat nisl vel. Malesuada fames ac turpis egestas maecenas pharetra convallis. Pellentesque elit eget gravida cum sociis natoque penatibus et. Sociis natoque penatibus et magnis dis parturient montes nascetur. Quis ipsum suspendisse ultrices gravida dictum fusce ut. Amet purus gravida quis blandit turpis cursus in hac. Pharetra pharetra massa massa ultricies mi quis hendrerit. Nunc non blandit massa enim nec dui nunc. Enim eu turpis egestas pretium aenean pharetra magna ac placerat. Facilisis mauris sit amet massa vitae tortor.
-
-                Maecenas volutpat blandit aliquam etiam erat velit scelerisque in. In egestas erat imperdiet sed euismod nisi porta lorem. Sed lectus vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt. Congue nisi vitae suscipit tellus mauris a diam maecenas. Justo nec ultrices dui sapien eget mi proin sed. Mauris vitae ultricies leo integer malesuada nunc. Tristique senectus et netus et malesuada fames. Mattis enim ut tellus elementum. Cras adipiscing enim eu turpis egestas pretium aenean pharetra magna. Vel fringilla est ullamcorper eget nulla facilisi etiam. Faucibus ornare suspendisse sed nisi lacus sed viverra tellus. Nunc sed id semper risus in hendrerit. Feugiat pretium nibh ipsum consequat. Gravida cum sociis natoque penatibus. Ullamcorper a lacus vestibulum sed arcu non. Convallis convallis tellus id interdum velit laoreet id donec. Aliquet nibh praesent tristique magna sit amet purus gravida quis. Nulla malesuada pellentesque elit eget gravida cum sociis natoque.
-            </div>
-        </ng-container>
-        <ng-template #routed>
-            <router-outlet></router-outlet>
-        </ng-template>
-    </ng-scrollbar>
-</div>
+<ng-template #routed>
+    <router-outlet></router-outlet>
+</ng-template>
