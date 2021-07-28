@@ -23,6 +23,25 @@ export class TagsStore {
     }
 
     /**
+     * Returns all tags of a specified kind, sorted by parent (none first) then alphabetically.
+     * @param kind
+     */
+    async fetchTagsSortedByParent(kind: TagKind): Promise<TagsDocument[]> {
+        return this.tags.find({ kind: kind }).sort({ parent: 1, name: 1 });
+    }
+
+    /**
+     * Returns all tags of a specified kind without parents, sorted alphabetically.
+     * @param kind
+     */
+    async fetchParentTags(kind: TagKind): Promise<TagsDocument[]> {
+        return this.tags.find({
+            kind: kind,
+            parent: null,
+        }).sort({ name: 1 });
+    }
+
+    /**
      * Returns a single tag with the given ID, or null if not found.
      * @param id The ID of the tag to find.
      * @returns The tag with the ID.
@@ -33,7 +52,6 @@ export class TagsStore {
 
     /**
      * Returns the given tag and all its descendants.
-     * @param king
      * @param tagId
      */
     async fetchDescendants(tagId: string): Promise<TagsTree> {

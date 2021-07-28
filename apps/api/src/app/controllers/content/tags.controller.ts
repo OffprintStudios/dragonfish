@@ -16,6 +16,18 @@ export class TagsController {
     }
 
     @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-tags-sorted-by-parent')
+    async fetchTagsSortedByParent(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
+        return await this.tagsService.fetchTagsSortedByParent(kind);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-parent-tags')
+    async fetchParentTags(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
+        return await this.tagsService.fetchParentTags(kind);
+    }
+
+    @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-descendants')
     async fetchDescendants(@Query('id') id: string): Promise<TagsTree> {
         return await this.tagsService.fetchDescendants(id);

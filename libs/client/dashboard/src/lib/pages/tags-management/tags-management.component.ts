@@ -19,7 +19,7 @@ export class TagsManagementComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.tagsService.fetchTags(TagKind.Fandom).subscribe();
+        this.tagsService.fetchTagsSortedByParent(TagKind.Fandom).subscribe();
     }
 
     createTag() {
@@ -27,12 +27,7 @@ export class TagsManagementComponent implements OnInit {
     }
 
     addChild(parentId: string) {
-        const alertData: PopupModel = {
-            message: 'Currently disabled',
-            confirm: true,
-        };
-        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
-        // this.dialog.open(ChildTagFormComponent, { data: { parentId: parentId }});
+        this.dialog.open(ChildTagFormComponent, { data: { parentId: parentId }});
     }
 
     editTag(tag: TagsModel) {

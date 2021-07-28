@@ -27,6 +27,49 @@ export class TagsService {
         );
     }
 
+    public fetchTagsSortedByParent(kind: TagKind): Observable<TagsModel[]> {
+        return this.network.fetchTagsSortedByParent(kind).pipe(
+            tap(value => {
+                var map = new Map<String, TagsTree>();
+                for (let tag of value) {
+                    const tree: TagsTree = {
+                        ...tag,
+                        children: []
+                    }
+                    // If tag is a parent tag, then set it as root tag, indexed by its ID
+                    if (tree.parent == null || tree.parent == undefined) {
+                        map.set(tree._id, tree);
+                    }
+                    // If tag is a child tag, then access parent tag and add as its child
+                    // Since tags are sorted by parent, parent tags should all be added first
+                    else {
+                        const parent = map.get(tree.parent)
+                        if (parent != null) {
+                            parent.children.push(tree);
+                        }
+                    }
+                }
+                this.tagsStore.set(Array.from(map.values()))
+            }),
+            catchError(err => {
+                this.alerts.error(err.error.message);
+                return throwError(() => err);
+            }),
+        );
+    }
+
+    public fetchParentTags(kind: TagKind): Observable<TagsModel[]> {
+        return this.network.fetchParentTags(kind).pipe(
+            tap(value => {
+                this.tagsStore.set(value);
+            }),
+            catchError(err => {
+                this.alerts.error(err.error.message);
+                return throwError(() => err);
+            }),
+        );
+    }
+
     public fetchDescendants(id: string): Observable<TagsTree> {
         return this.network.fetchDescendants(id).pipe(
             tap(() => {}),

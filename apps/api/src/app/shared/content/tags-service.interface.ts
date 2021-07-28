@@ -8,6 +8,19 @@ export interface ITagsService {
      * @param kind The `TagKind` of the tags to look for.
      */
     fetchTags(kind: TagKind): Promise<TagsModel[]>;
+    
+    /**
+     * Get all tags of the given `TagKind`, sorted by parent (none first) then alphabetically.
+     * @param kind The `TagKind` of the tags to look for.
+     */
+    fetchTagsSortedByParent(kind: TagKind): Promise<TagsModel[]>;
+
+    /**
+     * Get all tags of the given `TagKind` that don't have parents.
+     * @param kind The `TagKind` of the tags to look for.
+     */
+     fetchParentTags(kind: TagKind): Promise<TagsModel[]>;
+
 
     /**
      * Get all children of the tag with the given ID.

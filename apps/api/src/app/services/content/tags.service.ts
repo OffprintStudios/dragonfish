@@ -14,6 +14,14 @@ export class TagsService implements ITagsService {
         return await this.tagsStore.fetchTags(kind);
     }
 
+    async fetchTagsSortedByParent(kind: TagKind): Promise<TagsModel[]> {
+        return await this.tagsStore.fetchTagsSortedByParent(kind);
+    }
+
+    async fetchParentTags(kind: TagKind): Promise<TagsModel[]> {
+        return await this.tagsStore.fetchParentTags(kind);
+    }
+
     async fetchDescendants(id: string): Promise<TagsTree> {
         return await this.tagsStore.fetchDescendants(id);
     }
