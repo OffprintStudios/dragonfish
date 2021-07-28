@@ -1,13 +1,15 @@
 <ng-container *ngIf="route.children.length === 0">
     <div class="flex flex-col w-full h-screen">
-        <dragonfish-topbar>
-            <div class="topbar-header">
-                <rmx-icon name="home-5-line"></rmx-icon>
-                <h3>Home</h3>
-            </div>
+        <dragonfish-topbar [transparent]="transparent">
+            <ng-container *ngIf="!transparent">
+                <div class="topbar-header">
+                    <rmx-icon name="home-5-line"></rmx-icon>
+                    <h3>Home</h3>
+                </div>
+            </ng-container>
         </dragonfish-topbar>
 
-        <ng-scrollbar>
+        <ng-scrollbar #mainScroll>
             <div class="header shadow-xl mt-6 w-11/12 mx-auto rounded-md relative">
                 <div class="w-11/12 mx-auto p-3 text-center">
                     <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" />

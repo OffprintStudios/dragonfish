@@ -4,6 +4,25 @@ div.topbar {
     height: 52px;
     position: -webkit-sticky;
     position: sticky;
+
+    &.transparent {
+        background: transparent;
+        box-shadow: none;
+        a.link {
+            color: var(--text-color);
+            &:hover, &.active {
+                background: var(--accent);
+                color: white;
+            }
+        }
+        a.link-with-avatar {
+            color: var(--text-color);
+            &:hover, &.active {
+                background: var(--accent);
+            }
+        }
+    }
+
     a.link {
         @apply p-1.5 mx-0.5 rounded-md text-white;
         &:hover, &.active {
