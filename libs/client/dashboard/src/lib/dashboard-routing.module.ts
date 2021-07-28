@@ -13,6 +13,7 @@ import { AuditLogComponent } from './pages/audit-log';
 import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { UsersManagementComponent } from './pages/users-management';
+import { TagsManagementComponent } from './pages/tags-management/tags-management.component';
 import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Util */
@@ -104,6 +105,12 @@ const routes: Routes = [
             {
                 path: 'audit-log',
                 component: AuditLogComponent,
+                canActivate: [AuthGuard],
+                data: { roles: [Roles.Moderator, Roles.Admin] },
+            },
+            {
+                path: 'tags',
+                component: TagsManagementComponent,
                 canActivate: [AuthGuard],
                 data: { roles: [Roles.Moderator, Roles.Admin] },
             },

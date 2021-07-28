@@ -1,5 +1,4 @@
 import { Categories } from './categories.enum';
-import { Fandoms } from './fandoms.enum';
 import { Genres } from './genres.enum';
 import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
@@ -52,7 +51,6 @@ export interface SectionInfo {
 
 export interface WorkMetadata {
     readonly category: Categories;
-    readonly fandoms?: Fandoms[];
     readonly genres: Genres[];
     readonly rating: ContentRating;
     readonly status: WorkStatus;

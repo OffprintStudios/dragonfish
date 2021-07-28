@@ -21,6 +21,9 @@ import {
     PubChange,
     PubContent,
     SetRating,
+    TagKind,
+    TagsForm,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -40,6 +43,7 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
+import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 
 /**
  * ## DragonfishNetworkService
@@ -1343,7 +1347,7 @@ export class DragonfishNetworkService {
                 {
                     observe: 'response',
                     withCredentials: true,
-                },
+                }
             ),
         );
     }
@@ -1444,5 +1448,84 @@ export class DragonfishNetworkService {
         );
     }
 
+    //#endregion
+
+    //#region ---TAGS---
+
+    /**
+     * Get all tags of the given `TagKind`.
+     * 
+     * @param kind The `TagKind` of the tags to look for.
+     */
+    public fetchTags(kind: TagKind): Observable<TagsModel[]> {
+        return handleResponse(
+            this.http.get<TagsModel[]>(`${this.baseUrl}/tags/fetch-tags?kind=${kind}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Get all children of the tag with the given ID.
+     * Returns both the parent tag's information, and a `children` array,
+     * which will either contain the child tags, or be empty.
+     * 
+     * @param id The tag whose children will be searched for.
+     */
+    public fetchDescendants(id: string): Observable<TagsTree> {
+        return handleResponse(
+            this.http.get<TagsTree>(`${this.baseUrl}/tags/fetch-descendants?id=${id}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Create a tag of the given kind, with the given information.
+     * 
+     * @param kind The `TagKind` to create.
+     * @param form The input information used to create the tag.
+     */
+     public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
+        return handleResponse(
+            this.http.post<TagsModel>(`${this.baseUrl}/tags/create-tag?kind=${kind}`, form, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Set the tag with the given ID's attributes to those contained in the given `TagsForm`.
+     * 
+     * @param id The ID of the tag to update.
+     * @param form The new attributes to apply to the given tag.
+     */
+    public updateTag(id: string, form: TagsForm): Observable<TagsModel> {
+        return handleResponse(
+            this.http.patch<TagsModel>(`${this.baseUrl}/tags/update-tag?id=${id}`, form, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Delete the tag with the given ID from the tags collection, and remove 
+     * **all** references to it from **all** content.
+     * 
+     * @param id The ID of the tag to delete.
+     */
+    public deleteTag(id: string): Observable<void> {
+        return handleResponse(
+            this.http.patch<void>(`${this.baseUrl}/tags/delete-tag?id=${id}`, {}, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+    
     //#endregion
 }

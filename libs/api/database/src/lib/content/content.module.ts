@@ -34,6 +34,10 @@ import { ApprovalQueueModule } from '../approval-queue';
                 name: 'Sections',
                 useFactory: Schemas.setupSectionsCollection,
             },
+            {
+                name: 'Tags',
+                useFactory: Schemas.setupTagsCollection,
+            }
         ]),
     ],
     providers: [
@@ -46,6 +50,7 @@ import { ApprovalQueueModule } from '../approval-queue';
         Stores.NewsStore,
         Stores.PoetryStore,
         Stores.ProseStore,
+        Stores.TagsStore,
     ],
     exports: [
         Stores.ContentStore,
@@ -57,6 +62,7 @@ import { ApprovalQueueModule } from '../approval-queue';
         Stores.NewsStore,
         Stores.PoetryStore,
         Stores.ProseStore,
+        Stores.TagsStore,
     ],
 })
 export class ContentModule {}

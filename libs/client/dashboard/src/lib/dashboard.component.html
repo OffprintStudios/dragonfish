@@ -1,3 +1,4 @@
+
 <dragonfish-topbar>
     <div class="topbar-header">
         <rmx-icon name="dashboard-line"></rmx-icon>
@@ -51,6 +52,14 @@
             >
                 <span class="link-icon"><rmx-icon name="clipboard-line"></rmx-icon></span>
                 Case Files
+            </a>
+            <a
+                class="link"
+                [routerLink]="['tags']"
+                [routerLinkActive]="'active'"
+            >
+                <span class="link-icon"><i-feather name="hash"></i-feather></span>
+                Tags
             </a>
             <a
                 class="link dropdown-item"

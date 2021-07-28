@@ -25,10 +25,12 @@ import { GroupQueueComponent } from './pages/group-queue';
 import { OverviewComponent } from './pages/overview';
 import { ReportsComponent } from './pages/reports';
 import { UsersManagementComponent } from './pages/users-management';
+import { TagsManagementComponent } from './pages/tags-management/tags-management.component';
 import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
+import { TagFormComponent, ChildTagFormComponent, ChildTagItemComponent } from './components/tags-management';
 import { ContentReportComponent, UserReportComponent, ReportItemComponent } from './components/case-files';
 
 @NgModule({
@@ -45,6 +47,10 @@ import { ContentReportComponent, UserReportComponent, ReportItemComponent } from
         UsersManagementComponent,
         ApprovalQueueToolbarComponent,
         ContentPreviewComponent,
+        TagsManagementComponent,
+        TagFormComponent,
+        ChildTagFormComponent,
+        ChildTagItemComponent,
         CaseFilesComponent,
         ViewFileComponent,
         ContentReportComponent,

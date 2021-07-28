@@ -24,20 +24,21 @@ export class ContentService implements IContent {
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
-    ) { }
-    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
+    ) { }    
+
+    public async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
     }
 
-    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]> {
+    public async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]> {
         return await this.browse.fetchOnePublished(contentId, kind, user);
     }
 
-    async fetchAll(user: JwtPayload): Promise<ContentModel[]> {
+    public async fetchAll(user: JwtPayload): Promise<ContentModel[]> {
         return await this.content.fetchAll(user);
     }
 
-    async fetchAllPublished(
+    public async fetchAllPublished(
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
@@ -46,19 +47,19 @@ export class ContentService implements IContent {
         return await this.browse.fetchAllPublished(pageNum, kinds, filter, userId);
     }
 
-    async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {
+    public async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {
         return await this.content.createOne(user, kind, formInfo);
     }
 
-    async saveOne(user: JwtPayload, contentId: string, formInfo: FormType): Promise<ContentModel> {
+    public async saveOne(user: JwtPayload, contentId: string, formInfo: FormType): Promise<ContentModel> {
         return await this.content.saveChanges(user, contentId, formInfo);
     }
 
-    async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
+    public async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
         return await this.content.deleteOne(user, contentId);
     }
 
-    async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
+    public async publishOne(user: JwtPayload, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
         const publishedContent = await this.content.publishOne(user, contentId, pubChange);
 
         // If this content is being published, subscribe the author to comments on it.
@@ -69,7 +70,7 @@ export class ContentService implements IContent {
         return publishedContent;
     }
 
-    async updateCoverArt(
+    public async updateCoverArt(
         user: JwtPayload,
         contentId: string,
         kind: ContentKind,
@@ -84,4 +85,7 @@ export class ContentService implements IContent {
         }
     }
 
+    public async removeTagReferences(tagId: string): Promise<void> {
+        await this.content.removeTagReferences(tagId);
+    }
 }

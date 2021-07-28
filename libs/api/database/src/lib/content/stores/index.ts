@@ -7,3 +7,4 @@ export { BlogsStore } from './blogs.store';
 export { NewsStore } from './news.store';
 export { PoetryStore } from './poetry.store';
 export { ProseStore } from './prose.store';
+export { TagsStore } from './tags.store';

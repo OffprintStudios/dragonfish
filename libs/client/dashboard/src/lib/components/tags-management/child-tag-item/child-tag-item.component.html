@@ -1,0 +1,18 @@
+<div class="flex flex-row items-center">
+    <div
+        class="text-lg font-medium"
+        style="font-family: 'Josefin Sans', sans-serif; color: var(--accent);"
+    >
+        {{ tag.name }}
+    </div>
+    <div class="flex-1 text-center mx-2 relative -top-0.5">
+        {{ tag.desc }}
+    </div>
+    <button class="py-1.5 px-2.5 rounded-full border-none shadow-none" (click)="editTag()">
+        <i-feather name="edit-3" class="mr-0"></i-feather>
+    </button>
+    <div class="mx-1">|</div>
+    <button class="py-1.5 px-2.5 rounded-full border-none shadow-none" (click)="removeTag()">
+        <i-feather name="trash-2" class="mr-0"></i-feather>
+    </button>
+</div>

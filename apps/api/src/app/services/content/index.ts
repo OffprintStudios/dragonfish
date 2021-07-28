@@ -3,6 +3,7 @@ import { SectionsService } from './sections.service';
 import { CollectionsService } from './collections.service';
 import { HistoryService } from './history.service';
 import { MessagesService } from './messages.service';
+import { TagsService } from './tags.service';
 
 export const ContentServices = [
     ContentService,
@@ -10,4 +11,5 @@ export const ContentServices = [
     CollectionsService,
     HistoryService,
     MessagesService,
+    TagsService,
 ];
