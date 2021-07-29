@@ -73,6 +73,13 @@ export class TagsService {
     public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
         return this.network.fetchTagsTrees(kind).pipe(
             tap(value => {
+                for (let tree of value) {
+                    if (tree.children != null) {
+                        tree.children.sort(
+                            (a,b) => a.name > b.name ? 1 : -1
+                        )
+                    }
+                }
                 this.tagsStore.set(value)
             }),
             catchError(err => {

@@ -57,32 +57,6 @@ export class TagsStore {
             as: 'children', // Careful: this string should match the name of the property in `TagsTree`.
             maxDepth: 0,
         })
-        .unwind("$children")
-        .sort({ "children.name": 1 })
-        .group({
-            _id: '$_id',
-            name: {
-                $first: '$name'
-            },
-            desc: {
-                $first: '$desc'
-            },
-            parent: {
-                $first: '$parent'
-            },
-            kind: {
-                $first: '$kind'
-            },
-            createdAt: {
-                $first: '$createdAt'
-            },
-            updatedAt: {
-                $first: '$updatedAt'
-            },
-            children: {
-                $push: '$children'
-            }
-        })
         .exec();
         if (results.length === 0) {
             return null;
