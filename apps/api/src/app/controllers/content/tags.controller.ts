@@ -26,6 +26,12 @@ export class TagsController {
     async fetchParentTags(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
         return await this.tagsService.fetchParentTags(kind);
     }
+    
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('fetch-tags-trees')
+    async fetchTagsTrees(@Query('kind') kind: TagKind): Promise<TagsTree[]> {
+        return await this.tagsService.fetchTagsTrees(kind);
+    }
 
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-descendants')

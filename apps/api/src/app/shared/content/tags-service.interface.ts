@@ -19,8 +19,13 @@ export interface ITagsService {
      * Get all tags of the given `TagKind` that don't have parents.
      * @param kind The `TagKind` of the tags to look for.
      */
-     fetchParentTags(kind: TagKind): Promise<TagsModel[]>;
+    fetchParentTags(kind: TagKind): Promise<TagsModel[]>;
 
+    /**
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * @param kind The `TagKind` of the tags to look for.
+     */
+     fetchTagsTrees(kind: TagKind): Promise<TagsTree[]>;
 
     /**
      * Get all children of the tag with the given ID.

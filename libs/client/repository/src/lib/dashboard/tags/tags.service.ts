@@ -70,6 +70,18 @@ export class TagsService {
         );
     }
 
+    public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
+        return this.network.fetchTagsTrees(kind).pipe(
+            tap(value => {
+                this.tagsStore.set(value)
+            }),
+            catchError(err => {
+                this.alerts.error(err.error.message);
+                return throwError(() => err);
+            }),
+        );
+    }
+
     public fetchDescendants(id: string): Observable<TagsTree> {
         return this.network.fetchDescendants(id).pipe(
             tap(() => {}),

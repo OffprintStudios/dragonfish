@@ -19,7 +19,7 @@ export class TagsManagementComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.tagsService.fetchTagsSortedByParent(TagKind.Fandom).subscribe();
+        this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
     }
 
     createTag() {

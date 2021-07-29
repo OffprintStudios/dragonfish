@@ -1528,6 +1528,20 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * 
+     * @param kind The `TagKind` of the tags to look for.
+     */
+    public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
+        return handleResponse(
+            this.http.get<TagsTree[]>(`${this.baseUrl}/tags/fetch-tags-trees?kind=${kind}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
      * Get all children of the tag with the given ID.
      * Returns both the parent tag's information, and a `children` array,
      * which will either contain the child tags, or be empty.

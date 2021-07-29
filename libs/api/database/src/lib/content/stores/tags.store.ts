@@ -41,6 +41,29 @@ export class TagsStore {
         }).sort({ name: 1 });
     }
 
+    async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
+        // We force maxDepth to be 0 so that we only get the node's immediate children.
+        // If we went further, Mongo would just give us a flat array, and we'd have to
+        // put it together ourselves anyway.
+        const results: TagsTree[] = await this.tags.aggregate<TagsTree>([
+            { $match: { kind: kind, parent: null } }
+        ])
+        .sort({ name: 1 })
+        .graphLookup({
+            from: 'tags',
+            startWith: '$_id',
+            connectFromField: '_id',
+            connectToField: 'parent',
+            as: 'children', // Careful: this string should match the name of the property in `TagsTree`.
+            maxDepth: 0,
+        }).exec();
+        if (results.length === 0) {
+            return null;
+        }
+
+        return results;
+    }
+
     /**
      * Returns a single tag with the given ID, or null if not found.
      * @param id The ID of the tag to find.
