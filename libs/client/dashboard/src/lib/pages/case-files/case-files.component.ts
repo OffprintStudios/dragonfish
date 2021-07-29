@@ -27,4 +27,8 @@ export class CaseFilesComponent implements OnInit {
         this.caseService.setCurrent(id);
         this.router.navigate(['view-file'], { relativeTo: this.route }).catch((err) => console.log(err));
     }
+
+    claimCase(id: number) {
+        this.caseService.claimFile(id).subscribe();
+    }
 }

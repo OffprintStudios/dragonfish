@@ -18,14 +18,15 @@
                     <ng-container *ngFor="let caseFile of caseFiles">
                         <div class="flex items-center w-full my-2">
                             <div
-                                class="claim-button h-[74px] w-[74px] p-2.5 border border-r-0 rounded-l-md border-gray-600 dark:border-white"
+                                class="claim-button p-2.5 border border-r-0 rounded-l-md border-gray-600 dark:border-white"
+                                style="width: 74px; height: 100%;"
                                 [matTooltip]="'Claim Case'"
                                 [matTooltipClass]="'offprint-tooltip'"
                             >
                                 <rmx-icon name="add-box-line"></rmx-icon>
                             </div>
                             <div
-                                class="case-file flex items-center flex-1 p-2.5 rounded-r-md border border-gray-600 dark:border-white"
+                                class="case-file flex h-full items-center flex-1 p-2.5 rounded-r-md border border-gray-600 dark:border-white"
                                 (click)="viewCase(caseFile._id)"
                             >
                                 <div class="flex-1">
