@@ -76,7 +76,7 @@ export class TagsService {
                 for (let tree of value) {
                     if (tree.children != null) {
                         tree.children.sort(
-                            (a,b) => a.name > b.name ? 1 : -1
+                            (a,b) => a.name < b.name ? -1 : 1
                         )
                     }
                 }
