@@ -61,6 +61,7 @@
             <div>
                 <a
                     class="button w-full"
+                    style="padding: 10px 12px;"
                     [routerLink]="['/portfolio', user._id, user.username | slugify]"
                 >
                     <rmx-icon name="user-line"></rmx-icon>
@@ -69,6 +70,7 @@
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a
                     class="button w-full"
+                    style="padding: 10px 12px;"
                     [routerLink]="['/my-stuff']"
                 >
                     <rmx-icon name="hard-drive-2-line"></rmx-icon>
@@ -77,6 +79,7 @@
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a
                     class="button w-full"
+                    style="padding: 10px 12px;"
                 >
                     <rmx-icon name="history-line"></rmx-icon>
                     Reading History
@@ -85,6 +88,7 @@
                 <ng-container *ngIf="canSeeDash(user.audit.roles)">
                     <a
                         class="button w-full"
+                        style="padding: 10px 12px;"
                         [routerLink]="['/dashboard/overview']"
                     >
                         <rmx-icon name="dashboard-line"></rmx-icon>
@@ -92,7 +96,7 @@
                     </a>
                     <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 </ng-container>
-                <a class="button bottom w-full cursor-pointer" (click)="logout()">
+                <a class="button bottom w-full cursor-pointer" style="padding: 10px 12px;" (click)="logout()">
                     <rmx-icon name="logout-circle-line"></rmx-icon>
                     Log Out
                 </a>
