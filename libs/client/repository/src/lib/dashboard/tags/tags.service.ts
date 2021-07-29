@@ -30,7 +30,7 @@ export class TagsService {
     public fetchTagsSortedByParent(kind: TagKind): Observable<TagsModel[]> {
         return this.network.fetchTagsSortedByParent(kind).pipe(
             tap(value => {
-                var map = new Map<String, TagsTree>();
+                let tagRoots = new Map<String, TagsTree>();
                 for (let tag of value) {
                     const tree: TagsTree = {
                         ...tag,
@@ -38,18 +38,18 @@ export class TagsService {
                     }
                     // If tag is a parent tag, then set it as root tag, indexed by its ID
                     if (tree.parent == null || tree.parent == undefined) {
-                        map.set(tree._id, tree);
+                        tagRoots.set(tree._id, tree);
                     }
                     // If tag is a child tag, then access parent tag and add as its child
                     // Since tags are sorted by parent, parent tags should all be added first
                     else {
-                        const parent = map.get(tree.parent)
+                        const parent = tagRoots.get(tree.parent)
                         if (parent != null) {
                             parent.children.push(tree);
                         }
                     }
                 }
-                this.tagsStore.set(Array.from(map.values()))
+                this.tagsStore.set(Array.from(tagRoots.values()))
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
