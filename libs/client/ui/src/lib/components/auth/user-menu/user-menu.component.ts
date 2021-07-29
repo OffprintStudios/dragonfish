@@ -5,14 +5,21 @@ import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { Router } from '@angular/router';
+import { Roles } from '@dragonfish/shared/models/users';
+import { isAllowed } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-user-menu',
     templateUrl: './user-menu.component.html',
-    styleUrls: ['./user-menu.component.scss']
+    styleUrls: ['./user-menu.component.scss'],
 })
 export class UserMenuComponent {
-    constructor(public sessionQuery: SessionQuery, private dialog: MatDialog, private auth: AuthService, private router: Router) {}
+    constructor(
+        public sessionQuery: SessionQuery,
+        private dialog: MatDialog,
+        private auth: AuthService,
+        private router: Router,
+    ) {}
 
     logout() {
         const alertData: PopupModel = {
@@ -23,9 +30,13 @@ export class UserMenuComponent {
         dialogRef.afterClosed().subscribe((wantsToLogOut: boolean) => {
             if (wantsToLogOut) {
                 this.auth.logout().subscribe(() => {
-                    this.router.navigate(['/']).catch(err => console.log(err));
+                    this.router.navigate(['/']).catch((err) => console.log(err));
                 });
             }
         });
+    }
+
+    canSeeDash(userRoles: Roles[]) {
+        return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
     }
 }

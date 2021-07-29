@@ -10,6 +10,7 @@ import { AuthRoutes } from './controllers/auth';
 import { ContentRoutes } from './controllers/content';
 import { MigrationRoutes } from './controllers/migration';
 import { SearchRoutes } from './controllers/search';
+import { ContentLibraryRoutes } from './controllers/content-library';
 
 /* Services */
 import { InterfaceProviders } from './services';
@@ -29,6 +30,7 @@ import { CollectionsModule } from '@dragonfish/api/database/collections';
 import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
 import { AdminModule } from '@dragonfish/api/database/admin/admin.module';
 import { CommentsModule } from '@dragonfish/api/database/comments';
+import { ContentLibraryModule } from '@dragonfish/api/database/content-library';
 
 /* Utilities */
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
@@ -43,6 +45,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         ApprovalQueueModule,
         AdminModule,
         CommentsModule,
+        ContentLibraryModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
@@ -60,7 +63,14 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
             }),
         }),
     ],
-    controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...MigrationRoutes, ...SearchRoutes],
+    controllers: [
+        ...AdminRoutes,
+        ...AuthRoutes,
+        ...ContentRoutes,
+        ...MigrationRoutes,
+        ...SearchRoutes,
+        ...ContentLibraryRoutes,
+    ],
     providers: [
         ...AdminServices,
         ...AuthServices,

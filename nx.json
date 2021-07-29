@@ -23,50 +23,7 @@
         }
     },
     "projects": {
-        "bettafish": {
-            "tags": []
-        },
-        "bettafish-e2e": {
-            "tags": [],
-            "implicitDependencies": ["bettafish"]
-        },
         "api": {
-            "tags": []
-        },
-        "shared": {
-            "tags": []
-        },
-        "client-pipes": {
-            "tags": []
-        },
-        "client-ui": {
-            "tags": []
-        },
-        "client-alerts": {
-            "tags": []
-        },
-        "client-material": {
-            "tags": []
-        },
-        "client-icons": {
-            "tags": []
-        },
-        "bettafish-native": {
-            "tags": []
-        },
-        "client-editor": {
-            "tags": []
-        },
-        "client-my-stuff": {
-            "tags": []
-        },
-        "client-dashboard": {
-            "tags": []
-        },
-        "client-services": {
-            "tags": []
-        },
-        "client-repository": {
             "tags": []
         },
         "api-database": {
@@ -75,10 +32,56 @@
         "api-utilities": {
             "tags": []
         },
+        "bettafish": {
+            "tags": []
+        },
+        "bettafish-e2e": {
+            "tags": [],
+            "implicitDependencies": ["bettafish"]
+        },
+        "bettafish-native": {
+            "tags": []
+        },
+        "client-alerts": {
+            "tags": []
+        },
         "client-comments": {
             "tags": []
         },
+        "client-dashboard": {
+            "tags": []
+        },
+        "client-editor": {
+            "tags": []
+        },
         "client-editor-lite": {
+            "tags": []
+        },
+        "client-icons": {
+            "tags": []
+        },
+        "client-material": {
+            "tags": []
+        },
+        "client-my-library": {
+            "tags": []
+        },
+        "client-my-stuff": {
+            "tags": []
+        },
+        "client-pipes": {
+            "tags": []
+        },
+        "client-repository": {
+            "tags": []
+        },
+        "client-services": {
+            "tags": []
+        },
+        "client-ui": {
+            "tags": []
+        },
+        "shared": {
             "tags": []
         }
     }

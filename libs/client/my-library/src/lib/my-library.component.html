@@ -1,0 +1,58 @@
+<ng-container *ngIf="route.children.length === 0; else routed">
+    <div class="flex flex-col w-full h-screen">
+        <dragonfish-topbar [transparent]="transparent">
+            <ng-container *ngIf="!transparent">
+                <div class="topbar-header">
+                    <rmx-icon name="book-mark-line"></rmx-icon>
+                    <h3>My Library</h3>
+                </div>
+                <div class="topbar-tools">
+                    <div class="flex-1"></div>
+                    <button>
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        Bookshelf
+                    </button>
+                    <div class="mx-0.5"></div>
+                    <button>
+                        <rmx-icon name="filter-line"></rmx-icon>
+                        Filter
+                    </button>
+                </div>
+            </ng-container>
+        </dragonfish-topbar>
+        <ng-scrollbar #mainScroll>
+            <div class="flex items-center my-4 w-11/12 mx-auto border-b border-gray-600 dark:border-white pb-2.5">
+                <h1 class="text-4xl font-bold flex-1">My Library</h1>
+                <button>
+                    <rmx-icon name="add-box-line"></rmx-icon>
+                    Bookshelf
+                </button>
+                <div class="mx-0.5"></div>
+                <button>
+                    <rmx-icon name="filter-line"></rmx-icon>
+                    Filter
+                </button>
+            </div>
+            <ng-container *ngIf="loading; else notLoading">
+                <div class="w-full h-72">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-container>
+            <ng-template #notLoading>
+                <ng-container *ngIf="libraryItems.length === 0; else hasItems">
+                    <div class="empty">
+                        <h3>You haven't added anything yet.</h3>
+                        <p>Head on over to any work and click the Add to Library button to start tracking your favorites!</p>
+                    </div>
+                </ng-container>
+                <ng-template #hasItems>
+                    there's some items here.
+                </ng-template>
+            </ng-template>
+        </ng-scrollbar>
+    </div>
+</ng-container>
+
+<ng-template #routed>
+    <router-outlet></router-outlet>
+</ng-template>
