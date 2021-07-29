@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ContentKind } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentRating } from '@dragonfish/shared/models/content';
 
 @Component({
     selector: 'dragonfish-content-report',
@@ -10,4 +10,5 @@ export class ContentReportComponent {
     @Input() content: any;
 
     contentKind = ContentKind;
+    contentRatings = ContentRating;
 }

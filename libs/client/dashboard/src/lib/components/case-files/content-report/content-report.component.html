@@ -5,6 +5,7 @@
     <div class="flex-1">
         <ul>
             <li class="p-2"><span class="font-bold mr-2">Type:</span>{{ contentKind[content.kind] }}</li>
+            <li class="p-2"><span class="font-bold mr-2">Rating:</span>{{ contentRatings[content.meta.rating] }}</li>
             <li class="p-2"><span class="font-bold mr-2">Title:</span>{{ content.title }}</li>
             <li class="p-2"><span class="font-bold mr-2">Author:</span>{{ content.author.username }}</li>
             <ng-container *ngIf="content.kind === contentKind.ProseContent; else poetry">
@@ -31,5 +32,18 @@
                 </ng-template>
             </ng-template>
         </ul>
+        <div class="w-full text-center">
+            <ng-container [ngSwitch]="content.kind">
+                <ng-container *ngSwitchCase="contentKind.ProseContent">
+                    <a [routerLink]="['/prose', content._id, content.title | slugify]">View Content >></a>
+                </ng-container>
+                <ng-container *ngSwitchCase="contentKind.PoetryContent">
+                    <a [routerLink]="['/poetry', content._id, content.title | slugify]">View Content >></a>
+                </ng-container>
+                <ng-container *ngSwitchCase="contentKind.BlogContent">
+                    <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify, 'blog', content._id, content.title | slugify]">View Content >></a>
+                </ng-container>
+            </ng-container>
+        </div>
     </div>
 </div>

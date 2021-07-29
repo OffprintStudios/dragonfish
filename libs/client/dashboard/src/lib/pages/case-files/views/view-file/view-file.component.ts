@@ -49,4 +49,8 @@ export class ViewFileComponent implements AfterViewInit {
                 .catch((err) => console.log(err));
         });
     }
+
+    claimFile(id: number) {
+        this.fileService.claimFile(id).subscribe();
+    }
 }
