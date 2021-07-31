@@ -14,7 +14,7 @@ export class TagsDocument extends Document implements TagsModel {
     @Prop({ trim: true, required: true })
     desc: string;
 
-    @Prop({ type: String, default: undefined, ref: 'TagsDocument', index: true })
+    @Prop({ type: String, default: undefined, ref: 'TagsDocument' })
     parent?: string;
 
     @Prop({ type: String, enum: Object.keys(TagKind), required: true })
@@ -28,3 +28,4 @@ export class TagsDocument extends Document implements TagsModel {
 }
 
 export const TagsSchema = SchemaFactory.createForClass(TagsDocument);
+TagsSchema.index({ parent: 1, name: 1 })
