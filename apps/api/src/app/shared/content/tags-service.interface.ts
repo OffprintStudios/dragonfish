@@ -5,6 +5,7 @@ export interface ITagsService {
 
     /**
      * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * NOTE: Children are not sorted alphabetically.
      * @param kind The `TagKind` of the tags to look for.
      */
      fetchTagsTrees(kind: TagKind): Promise<TagsTree[]>;

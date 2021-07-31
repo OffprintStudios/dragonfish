@@ -35,6 +35,17 @@ export class TagsService implements ITagsService {
 
         await this.contentService.removeTagReferences(tagToDelete._id);
 
+        // Clear parent for its children
+        const tagTree = await this.tagsStore.fetchDescendants(id);
+        for (let child of tagTree.children) {
+            const form: TagsForm = {
+                name: child.name,
+                desc: child.desc,
+                parent: null,
+            };
+            await this.tagsStore.updateTag(child._id, form);
+        }
+
         // Then, delete the tag itself
         const deletedDocument = await this.tagsStore.deleteTag(id);
         return deletedDocument;

@@ -14,6 +14,11 @@ export class TagsStore {
         @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
     ) {}
 
+    /**
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * NOTE: Children are not sorted alphabetically.
+     * @param kind The `TagKind` of the tags to look for.
+     */
     async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
         // We force maxDepth to be 0 so that we only get the node's immediate children.
         // If we went further, Mongo would just give us a flat array, and we'd have to
@@ -164,8 +169,14 @@ export class TagsStore {
 
         tag.name = sanitize(form.name);
         tag.desc = sanitize(form.desc);
+
         if (form.parent) {
             tag.parent = form.parent;
+        }
+
+        // Allows to set parent as null
+        if (form.parent === null) {
+            tag.parent = null;
         }
 
         return tag.save();
