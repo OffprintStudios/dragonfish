@@ -11,6 +11,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MomentModule } from 'ngx-moment';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MarkdownModule } from 'ngx-markdown';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 /* Pages */
 import { DashboardComponent } from './dashboard.component';
@@ -70,6 +71,7 @@ import { ContentReportComponent, UserReportComponent, ReportItemComponent } from
         MarkdownModule,
         FormsModule,
         ReactiveFormsModule,
+        NgSelectModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
             track: 'all',

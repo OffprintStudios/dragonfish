@@ -1,9 +1,10 @@
 import { Component, ViewEncapsulation, ViewChild, AfterViewInit } from '@angular/core';
 import { CaseFilesQuery, CaseFilesService } from '@dragonfish/client/repository/dashboard/case-files';
-import { CaseKind, NoteForm } from '@dragonfish/shared/models/case-files';
+import { CaseKind, NoteForm, ActionType } from '@dragonfish/shared/models/case-files';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-view-file',
@@ -15,15 +16,22 @@ export class ViewFileComponent implements AfterViewInit {
     @ViewChild('notesBoxScrollbar') notesBoxScrollbar: NgScrollbar;
 
     caseKind = CaseKind;
+    actions = ActionType;
 
     noteForm = new FormGroup({
         body: new FormControl('', [Validators.required]),
+    });
+
+    actionForm = new FormGroup({
+        action: new FormControl(null, [Validators.required]),
+        reason: new FormControl('', [Validators.required]),
     });
 
     constructor(
         public fileQuery: CaseFilesQuery,
         private fileService: CaseFilesService,
         private alerts: AlertsService,
+        public sessionQuery: SessionQuery,
     ) {}
 
     ngAfterViewInit(): void {
