@@ -10,18 +10,6 @@ export class TagsService implements ITagsService {
         private readonly tagsStore: TagsStore,
         @Inject('IContent') private readonly contentService: IContent) { }
 
-    async fetchTags(kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsStore.fetchTags(kind);
-    }
-
-    async fetchTagsSortedByParent(kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsStore.fetchTagsSortedByParent(kind);
-    }
-
-    async fetchParentTags(kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsStore.fetchParentTags(kind);
-    }
-
     async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
         return await this.tagsStore.fetchTagsTrees(kind);
     }

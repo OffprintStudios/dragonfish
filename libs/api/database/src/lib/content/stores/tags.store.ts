@@ -14,33 +14,6 @@ export class TagsStore {
         @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
     ) {}
 
-    /**
-     * Returns all tags of a specified kind, sorted alphabetically.
-     * @param kind
-     */
-    async fetchTags(kind: TagKind): Promise<TagsDocument[]> {
-        return this.tags.find({ kind: kind }).sort({ name: 1 });
-    }
-
-    /**
-     * Returns all tags of a specified kind, sorted by parent (none first) then alphabetically.
-     * @param kind
-     */
-    async fetchTagsSortedByParent(kind: TagKind): Promise<TagsDocument[]> {
-        return this.tags.find({ kind: kind }).sort({ parent: 1, name: 1 });
-    }
-
-    /**
-     * Returns all tags of a specified kind without parents, sorted alphabetically.
-     * @param kind
-     */
-    async fetchParentTags(kind: TagKind): Promise<TagsDocument[]> {
-        return this.tags.find({
-            kind: kind,
-            parent: null,
-        }).sort({ name: 1 });
-    }
-
     async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
         // We force maxDepth to be 0 so that we only get the node's immediate children.
         // If we went further, Mongo would just give us a flat array, and we'd have to

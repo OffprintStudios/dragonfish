@@ -8,24 +8,6 @@ import { ITagsService } from '../../shared/content';
 @Controller('tags')
 export class TagsController {
     constructor(@Inject('ITagsService') private readonly tagsService: ITagsService) {}
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-tags')
-    async fetchTags(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsService.fetchTags(kind);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-tags-sorted-by-parent')
-    async fetchTagsSortedByParent(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsService.fetchTagsSortedByParent(kind);
-    }
-
-    @UseGuards(RolesGuard([Roles.User]))
-    @Get('fetch-parent-tags')
-    async fetchParentTags(@Query('kind') kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsService.fetchParentTags(kind);
-    }
     
     @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-tags-trees')

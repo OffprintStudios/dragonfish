@@ -15,61 +15,6 @@ export class TagsService {
         private alerts: AlertsService,
     ) {}
 
-    public fetchTags(kind: TagKind): Observable<TagsModel[]> {
-        return this.network.fetchTags(kind).pipe(
-            tap(value => {
-                this.tagsStore.set(value);
-            }),
-            catchError(err => {
-                this.alerts.error(err.error.message);
-                return throwError(() => err);
-            }),
-        );
-    }
-
-    public fetchTagsSortedByParent(kind: TagKind): Observable<TagsModel[]> {
-        return this.network.fetchTagsSortedByParent(kind).pipe(
-            tap(value => {
-                let tagRoots = new Map<String, TagsTree>();
-                for (let tag of value) {
-                    const tree: TagsTree = {
-                        ...tag,
-                        children: []
-                    }
-                    // If tag is a parent tag, then set it as root tag, indexed by its ID
-                    if (tree.parent == null || tree.parent == undefined) {
-                        tagRoots.set(tree._id, tree);
-                    }
-                    // If tag is a child tag, then access parent tag and add as its child
-                    // Since tags are sorted by parent, parent tags should all be added first
-                    else {
-                        const parent = tagRoots.get(tree.parent)
-                        if (parent != null) {
-                            parent.children.push(tree);
-                        }
-                    }
-                }
-                this.tagsStore.set(Array.from(tagRoots.values()))
-            }),
-            catchError(err => {
-                this.alerts.error(err.error.message);
-                return throwError(() => err);
-            }),
-        );
-    }
-
-    public fetchParentTags(kind: TagKind): Observable<TagsModel[]> {
-        return this.network.fetchParentTags(kind).pipe(
-            tap(value => {
-                this.tagsStore.set(value);
-            }),
-            catchError(err => {
-                this.alerts.error(err.error.message);
-                return throwError(() => err);
-            }),
-        );
-    }
-
     public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
         return this.network.fetchTagsTrees(kind).pipe(
             tap(value => {
