@@ -47,7 +47,7 @@ export class TagsService {
     public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
         return this.network.createTag(kind, form).pipe(
             tap(newTag => {
-                location.reload();
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
@@ -59,7 +59,7 @@ export class TagsService {
     public updateTag(id: string, form: TagsForm): Observable<TagsModel> {
         return this.network.updateTag(id, form).pipe(
             tap(updatedTag => {
-                location.reload();
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
@@ -71,7 +71,8 @@ export class TagsService {
     public deleteTag(id: string): Observable<void> {
         return this.network.deleteTag(id).pipe(
             tap(() => {
-                location.reload();
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
+                this.alerts.success(`Tag successfully deleted.`);
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
