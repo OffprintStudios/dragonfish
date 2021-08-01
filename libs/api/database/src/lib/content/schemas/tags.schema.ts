@@ -11,8 +11,8 @@ export class TagsDocument extends Document implements TagsModel {
     @Prop({ trim: true, required: true, index: 'text' })
     name: string;
 
-    @Prop({ trim: true, required: true })
-    desc: string;
+    @Prop({ trim: true, default: undefined })
+    desc?: string;
 
     @Prop({ type: String, default: undefined, ref: 'TagsDocument' })
     parent?: string;
