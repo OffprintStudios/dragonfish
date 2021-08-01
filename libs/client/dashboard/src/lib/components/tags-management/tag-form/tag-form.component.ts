@@ -15,7 +15,7 @@ export class TagFormComponent implements OnInit {
 
     tagForm = new FormGroup({
         name: new FormControl('', [Validators.required]),
-        desc: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        desc: new FormControl('', [Validators.maxLength(100)]),
         parent: new FormControl(null)
     });
 
@@ -26,7 +26,7 @@ export class TagFormComponent implements OnInit {
         public tagsQuery: TagsQuery,
         private tagsService: TagsService,
         public dialogRef: MatDialogRef<TagFormComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: { tag: TagsModel }
+        @Inject(MAT_DIALOG_DATA) private data: { parentId: string, tag: TagsModel }
     ) {}
 
     ngOnInit(): void {
@@ -39,6 +39,13 @@ export class TagFormComponent implements OnInit {
             this.editMode = true;
             this.formTitle = `Editing Tag`;
         } else {
+            if (this.data.parentId) {
+                this.tagForm.setValue({
+                    name: null,
+                    desc: null,
+                    parent: this.data.parentId,
+                })
+            }
             this.editMode = false;
             this.formTitle = `Create a Tag`;
         }
@@ -49,10 +56,12 @@ export class TagFormComponent implements OnInit {
     submitForm() {
         if (this.fields.name.invalid) {
             this.alerts.info(`Tags must have a name.`);
+            return;
         }
 
         if (this.fields.desc.invalid) {
-            this.alerts.info(`You must include a description, and it cannot exceed 100 characters.`);
+            this.alerts.info(`Description cannot exceed 100 characters.`);
+            return;
         }
 
         const parentVal = (this.fields.parent.value === this.NO_PARENT)? null : this.fields.parent.value;

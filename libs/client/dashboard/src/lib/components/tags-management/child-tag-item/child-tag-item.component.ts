@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
-import { ChildTagFormComponent } from '../child-tag-form/child-tag-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { TagsModel } from '@dragonfish/shared/models/content';

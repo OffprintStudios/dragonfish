@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { TagKind, TagsModel } from '@dragonfish/shared/models/content';
 import { MatDialog } from '@angular/material/dialog';
-import { ChildTagFormComponent, TagFormComponent } from '../../components/tags-management';
+import { TagFormComponent } from '../../components/tags-management';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 
@@ -27,7 +27,7 @@ export class TagsManagementComponent implements OnInit {
     }
 
     addChild(parentId: string) {
-        this.dialog.open(ChildTagFormComponent, { data: { parentId: parentId }});
+        this.dialog.open(TagFormComponent, { data: { parentId: parentId }});
     }
 
     editTag(tag: TagsModel) {

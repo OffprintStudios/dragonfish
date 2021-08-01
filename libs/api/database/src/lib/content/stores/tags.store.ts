@@ -133,6 +133,10 @@ export class TagsStore {
             }
         }
 
+        if (!form.name || form.name.length < 1) {
+            throw new BadRequestException("You must provide a name.");
+        }
+
         const newTag = new this.tags({
             name: sanitize(form.name),
             desc: sanitize(form.desc),

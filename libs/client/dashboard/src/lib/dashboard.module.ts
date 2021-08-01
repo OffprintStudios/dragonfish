@@ -30,7 +30,7 @@ import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 
 /* Components */
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
-import { TagFormComponent, ChildTagFormComponent, ChildTagItemComponent } from './components/tags-management';
+import { TagFormComponent, ChildTagItemComponent } from './components/tags-management';
 import { ContentReportComponent, UserReportComponent, ReportItemComponent } from './components/case-files';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -50,7 +50,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
         ContentPreviewComponent,
         TagsManagementComponent,
         TagFormComponent,
-        ChildTagFormComponent,
         ChildTagItemComponent,
         CaseFilesComponent,
         ViewFileComponent,
