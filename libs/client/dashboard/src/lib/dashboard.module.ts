@@ -32,6 +32,7 @@ import { CaseFilesComponent, ViewFileComponent } from './pages/case-files';
 import { ApprovalQueueToolbarComponent, ContentPreviewComponent } from './components/approval-queue';
 import { TagFormComponent, ChildTagFormComponent, ChildTagItemComponent } from './components/tags-management';
 import { ContentReportComponent, UserReportComponent, ReportItemComponent } from './components/case-files';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
     declarations: [
@@ -70,6 +71,7 @@ import { ContentReportComponent, UserReportComponent, ReportItemComponent } from
         MarkdownModule,
         FormsModule,
         ReactiveFormsModule,
+        NgSelectModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
             track: 'all',
