@@ -155,15 +155,14 @@ export class TagsStore {
         }
 
         // If we're changing this tag's parent, make sure we aren't accidentally parenting it to
-        // any of its existing children
+        // itself; and if it has children, then for now, we shouldn't allow the parent to be changed
         if (form.parent) {
+            if (form.parent === tag._id) {
+                throw new BadRequestException("Cannot change this tag's parent to itself.");
+            }
             const tagWithChildren = await this.populateImmediateChildren(tag._id);
             if (tagWithChildren.children && tagWithChildren.children.length > 0) {
-                for (const child of tagWithChildren.children) {
-                    if (child._id === form.parent) {
-                        throw new BadRequestException("Cannot change this tag's parent to one of its children.");
-                    }
-                }
+                throw new BadRequestException("Don't assign a parent to a tag with children.");
             }
         }
 
