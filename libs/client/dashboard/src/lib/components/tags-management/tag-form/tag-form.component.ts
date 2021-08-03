@@ -67,8 +67,8 @@ export class TagFormComponent implements OnInit {
         const parentVal = (this.fields.parent.value === this.NO_PARENT)? null : this.fields.parent.value;
 
         const form: TagsForm = {
-            name: this.fields.name.value,
-            desc: this.fields.desc.value,
+            name: (this.fields.name.value as string).trim(),
+            desc: (this.fields.desc.value as string).trim(),
             parent: parentVal,
         };
 
