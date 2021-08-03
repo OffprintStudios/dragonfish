@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
+import { TagsQuery, TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -15,14 +15,18 @@ export class TagFormComponent implements OnInit {
 
     tagForm = new FormGroup({
         name: new FormControl('', [Validators.required]),
-        desc: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+        desc: new FormControl('', [Validators.maxLength(1000)]),
+        parent: new FormControl(null)
     });
+
+    NO_PARENT = "NO PARENT";
 
     constructor(
         private alerts: AlertsService,
+        public tagsQuery: TagsQuery,
         private tagsService: TagsService,
         public dialogRef: MatDialogRef<TagFormComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: { tag: TagsModel }
+        @Inject(MAT_DIALOG_DATA) private data: { parentId: string, tag: TagsModel }
     ) {}
 
     ngOnInit(): void {
@@ -30,10 +34,18 @@ export class TagFormComponent implements OnInit {
             this.tagForm.setValue({
                 name: this.data.tag.name,
                 desc: this.data.tag.desc,
+                parent: (this.data.tag.parent || this.NO_PARENT),
             });
             this.editMode = true;
             this.formTitle = `Editing Tag`;
         } else {
+            if (this.data.parentId) {
+                this.tagForm.setValue({
+                    name: null,
+                    desc: null,
+                    parent: this.data.parentId,
+                })
+            }
             this.editMode = false;
             this.formTitle = `Create a Tag`;
         }
@@ -44,15 +56,20 @@ export class TagFormComponent implements OnInit {
     submitForm() {
         if (this.fields.name.invalid) {
             this.alerts.info(`Tags must have a name.`);
+            return;
         }
 
         if (this.fields.desc.invalid) {
-            this.alerts.info(`You must include a description, and it cannot exceed 100 characters.`);
+            this.alerts.info(`Description cannot exceed 100 characters.`);
+            return;
         }
 
+        const parentVal = (this.fields.parent.value === this.NO_PARENT)? null : this.fields.parent.value;
+
         const form: TagsForm = {
-            name: this.fields.name.value,
-            desc: this.fields.desc.value,
+            name: (this.fields.name.value as string).trim(),
+            desc: (this.fields.desc.value as string).trim(),
+            parent: parentVal,
         };
 
         if (this.editMode) {

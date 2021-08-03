@@ -1486,13 +1486,14 @@ export class DragonfishNetworkService {
     //#region ---TAGS---
 
     /**
-     * Get all tags of the given `TagKind`.
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * NOTE: Children are not sorted alphabetically.
      * 
      * @param kind The `TagKind` of the tags to look for.
      */
-    public fetchTags(kind: TagKind): Observable<TagsModel[]> {
+    public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
         return handleResponse(
-            this.http.get<TagsModel[]>(`${this.baseUrl}/tags/fetch-tags?kind=${kind}`, {
+            this.http.get<TagsTree[]>(`${this.baseUrl}/tags/fetch-tags-trees?kind=${kind}`, {
                 observe: 'response',
                 withCredentials: true,
             }),

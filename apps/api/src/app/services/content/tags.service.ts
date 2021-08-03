@@ -10,8 +10,8 @@ export class TagsService implements ITagsService {
         private readonly tagsStore: TagsStore,
         @Inject('IContent') private readonly contentService: IContent) { }
 
-    async fetchTags(kind: TagKind): Promise<TagsModel[]> {
-        return await this.tagsStore.fetchTags(kind);
+    async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
+        return await this.tagsStore.fetchTagsTrees(kind);
     }
 
     async fetchDescendants(id: string): Promise<TagsTree> {
@@ -34,6 +34,17 @@ export class TagsService implements ITagsService {
         }
 
         await this.contentService.removeTagReferences(tagToDelete._id);
+
+        // Clear parent for its children
+        const tagTree = await this.tagsStore.fetchDescendants(id);
+        for (let child of tagTree.children) {
+            const form: TagsForm = {
+                name: child.name,
+                desc: child.desc,
+                parent: null,
+            };
+            await this.tagsStore.updateTag(child._id, form);
+        }
 
         // Then, delete the tag itself
         const deletedDocument = await this.tagsStore.deleteTag(id);

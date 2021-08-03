@@ -22,6 +22,20 @@
         [placeholder]="'The wacky world of cartoon horses.'"
     ></dragonfish-text-area>
 
+    <ng-container *ngIf="tagsQuery.all$ | async as tags">
+        <div class="offprint-select">
+            <label>Parent</label>
+            <ng-select class="custom" [formControlName]="'parent'" [searchable]="false" [placeholder]="'Select Tag'">
+                <ng-option [value]="NO_PARENT">
+                    No Parent
+                </ng-option>
+                <ng-option *ngFor="let tag of tags" [value]="tag._id">
+                    {{ tag.name }}
+                </ng-option>
+            </ng-select>
+        </div>
+    </ng-container>
+
     <div class="flex flex-row items-center justify-center">
         <button type="submit">Save</button>
     </div>
