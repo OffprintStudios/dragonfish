@@ -15,7 +15,7 @@ export class TagFormComponent implements OnInit {
 
     tagForm = new FormGroup({
         name: new FormControl('', [Validators.required]),
-        desc: new FormControl('', [Validators.maxLength(100)]),
+        desc: new FormControl('', [Validators.maxLength(1000)]),
         parent: new FormControl(null)
     });
 
