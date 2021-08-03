@@ -53,6 +53,15 @@ export class TagsStore {
     }
 
     /**
+     * Returns a single tag with the given name, or null if not found.
+     * @param name The name of the tag to find.
+     * @returns The tag with the name.
+     */
+    async findTagByName(name: string): Promise<TagsDocument> {
+        return this.tags.findOne({ name: name })
+    }
+
+    /**
      * Returns the given tag and all its descendants.
      * @param tagId
      */
@@ -144,6 +153,12 @@ export class TagsStore {
             parent: form.parent,
         });
 
+        // Check that name not already in use
+        const tagWithSameName = await this.findTagByName(newTag.name)
+        if (tagWithSameName) {
+            throw new BadRequestException("There is already a tag with this name.");
+        }
+
         return newTag.save();
     }
 
@@ -180,6 +195,12 @@ export class TagsStore {
         // Allows to set parent as null
         if (form.parent === null) {
             tag.parent = null;
+        }
+
+        // Check if changed name to that of another tag
+        const tagWithSameName = await this.findTagByName(tag.name);
+        if (tagWithSameName && tagId !== tagWithSameName._id) {
+            throw new BadRequestException("There is already another tag with this new name.");
         }
 
         return tag.save();
