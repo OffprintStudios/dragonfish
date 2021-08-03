@@ -3,6 +3,9 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 import { TagsModel, TagKind } from '@dragonfish/shared/models/content';
 import { nanoid } from 'nanoid';
 
+/**
+ * Note that a compound index is defined at the bottom of this file
+ */
 @Schema({ timestamps: true, collection: 'tags', autoIndex: true, discriminatorKey: 'kind' })
 export class TagsDocument extends Document implements TagsModel {
     @Prop({ type: String, default: () => nanoid() })
@@ -11,10 +14,10 @@ export class TagsDocument extends Document implements TagsModel {
     @Prop({ trim: true, required: true, index: 'text' })
     name: string;
 
-    @Prop({ trim: true, default: undefined })
+    @Prop({ trim: true, default: null })
     desc?: string;
 
-    @Prop({ type: String, default: undefined, ref: 'TagsDocument' })
+    @Prop({ type: String, default: null, ref: 'TagsDocument' })
     parent?: string;
 
     @Prop({ type: String, enum: Object.keys(TagKind), required: true })
