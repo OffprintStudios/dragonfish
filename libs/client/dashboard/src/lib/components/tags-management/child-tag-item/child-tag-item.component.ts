@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
+import { TagsService } from '@dragonfish/client/repository/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupModel } from '@dragonfish/shared/models/util';

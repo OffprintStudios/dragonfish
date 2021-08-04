@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TagsQuery, TagsService } from '@dragonfish/client/repository/dashboard/tags';
+import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { TagKind, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { MatDialog } from '@angular/material/dialog';
 import { TagFormComponent } from '../../components/tags-management';
