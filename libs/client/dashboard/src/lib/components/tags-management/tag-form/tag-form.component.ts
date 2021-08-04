@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content';
+import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({

@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { LocalTagsStore } from './local-tags.store';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content';
+import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 
 @Injectable({ providedIn: 'root' })
 export class TagsService {

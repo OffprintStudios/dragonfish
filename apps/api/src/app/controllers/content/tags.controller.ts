@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Patch, Query, Body, UseGuards, Inject } from '@nestjs/common';
 import { RolesGuard } from '../../guards';
 import { Roles } from '@dragonfish/shared/models/users';
-import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content';
-import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
+import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { ITagsService } from '../../shared/content';
 
 @Controller('tags')

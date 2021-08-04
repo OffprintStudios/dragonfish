@@ -2,9 +2,9 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TagsDocument } from '../schemas';
-import { TagKind, TagsForm } from '@dragonfish/shared/models/content';
+import { TagKind, TagsForm } from '@dragonfish/shared/models/content/tags';
 import * as sanitize from 'sanitize-html';
-import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 
 @Injectable()
 export class TagsStore {
