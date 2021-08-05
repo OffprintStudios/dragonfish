@@ -91,8 +91,36 @@ export class PoetryFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.poetryForm.invalid) {
-            this.alerts.warn(`Looks like something's wrong with the stuff you've entered.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.desc.invalid) {
+            this.alerts.warn('Short description has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
+            return;
+        }
+        if (this.fields.form.invalid) {
+            this.alerts.warn('Form is required.');
+            return;
+        }
+        if (this.fields.genres.invalid) {
+            this.alerts.warn('Invalid number of genres. Limit is 3.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
+            return;
+        }
+        if (this.fields.status.invalid) {
+            this.alerts.warn('Status is required.');
             return;
         }
 

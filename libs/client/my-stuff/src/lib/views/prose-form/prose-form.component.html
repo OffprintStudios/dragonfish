@@ -58,7 +58,7 @@
                 <ng-container *ngIf="tagsQuery.all$ | async as tags">
                     <div class="offprint-select">
                         <label>Tags</label>
-                        <ng-select class="custom" [formControlName]="'parent'" [searchable]="false" [multiple]="true" [placeholder]="'Select Tag(s)'">
+                        <ng-select class="custom" [formControlName]="'tags'" [searchable]="false" [multiple]="true" [placeholder]="'Select Tag(s)'">
                             <div *ngFor="let tag of tags">
                                 <ng-option [value]="tag._id">
                                     {{ tag.name }}

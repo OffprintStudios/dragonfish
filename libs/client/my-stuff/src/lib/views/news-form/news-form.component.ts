@@ -109,8 +109,16 @@ export class NewsFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.postForm.invalid) {
-            this.alerts.warn(`Check the form fields for any errors.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
             return;
         }
 

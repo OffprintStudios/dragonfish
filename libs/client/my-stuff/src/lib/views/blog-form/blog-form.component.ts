@@ -107,8 +107,16 @@ export class BlogFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.blogForm.invalid) {
-            this.alerts.warn(`Something's not right with the data you entered.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
             return;
         }
 

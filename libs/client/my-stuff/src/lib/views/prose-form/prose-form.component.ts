@@ -37,6 +37,7 @@ export class ProseFormComponent implements OnInit {
         body: new FormControl('', [Validators.required, Validators.minLength(3)]),
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
+        tags: new FormControl([], [Validators.maxLength(5)]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -63,6 +64,7 @@ export class ProseFormComponent implements OnInit {
                     body: content.body,
                     category: content.meta.category,
                     genres: content.meta.genres,
+                    tags: [],
                     rating: content.meta.rating,
                     status: content.meta.status,
                 });
@@ -73,6 +75,7 @@ export class ProseFormComponent implements OnInit {
                     body: '',
                     category: null,
                     genres: [],
+                    tags: [],
                     rating: null,
                     status: null,
                 });
@@ -89,8 +92,36 @@ export class ProseFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.proseForm.invalid) {
-            this.alerts.warn(`Looks like something's wrong with the stuff you've entered.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.desc.invalid) {
+            this.alerts.warn('Short description has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
+            return;
+        }
+        if (this.fields.genres.invalid) {
+            this.alerts.warn('Invalid number of genres. Limit is 3.');
+            return;
+        }
+        if (this.fields.tags.invalid) {
+            this.alerts.warn('Invalid number of tags. Limit is 5.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
+            return;
+        }
+        if (this.fields.status.invalid) {
+            this.alerts.warn('Status is required.');
             return;
         }
 
