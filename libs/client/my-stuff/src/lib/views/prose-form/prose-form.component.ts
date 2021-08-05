@@ -9,11 +9,13 @@ import {
     CreateProse,
     ContentKind,
     ProseContent,
+    TagKind,
 } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Location } from '@angular/common';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
+import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 
 @UntilDestroy()
 @Component({
@@ -44,10 +46,14 @@ export class ProseFormComponent implements OnInit {
         public stuffQuery: MyStuffQuery,
         private alerts: AlertsService,
         private location: Location,
-        private router: Router
+        private router: Router,
+        public tagsQuery: TagsQuery,
+        private tagsService: TagsService,
     ) {}
 
     ngOnInit(): void {
+        this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
+
         this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: ProseContent) => {
             if (content !== null) {
                 this.formTitle = `Editing "${content.title}"`;
