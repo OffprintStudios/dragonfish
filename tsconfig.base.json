@@ -16,6 +16,7 @@
         "baseUrl": ".",
         "paths": {
             "@dragonfish/api/database/*": ["libs/api/database/src/lib/*"],
+            "@dragonfish/api/mail": ["libs/api/mail/src/index.ts"],
             "@dragonfish/api/utilities/*": ["libs/api/utilities/src/lib/*"],
             "@dragonfish/client/alerts": ["libs/client/alerts/src/index.ts"],
             "@dragonfish/client/comments": ["libs/client/comments/src/index.ts"],
