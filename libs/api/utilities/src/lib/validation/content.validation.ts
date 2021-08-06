@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import {
     CreateWork,
     EditWork,
-    MAX_FANDOMS_PER_STORY,
     MAX_GENRES_PER_FICTION,
     MAX_GENRES_PER_POEM,
     Categories,
@@ -36,9 +35,6 @@ export function validateWork(work: CreateWork | EditWork): void {
 
     // Category-specific validation
     if (work.category === Categories.Fanfiction) {
-        if (work.fandoms.length < 1 || work.fandoms.length > MAX_FANDOMS_PER_STORY) {
-            throw new BadRequestException(`You must select between 1 and ${MAX_FANDOMS_PER_STORY} fandoms.`);
-        }
         if (work.genres.length < 1 || work.genres.length > MAX_GENRES_PER_FICTION) {
             throw new BadRequestException(`You must select between 1 and ${MAX_GENRES_PER_FICTION} genres.`);
         }
