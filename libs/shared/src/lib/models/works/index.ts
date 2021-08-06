@@ -6,11 +6,3 @@ export { Genres, GenresFiction, GenresPoetry, MAX_GENRES_PER_FICTION, MAX_GENRES
 export { WorkStatus } from './work-status.enum';
 export { ApprovalStatus } from './approval-status.enum';
 export { ContentFilter } from './content-filter.enum';
-
-/* Data transfer objects */
-export { CreateWork } from './create-work.model';
-export { CreateSection } from './create-section.model';
-export { EditWork } from './edit-work.model';
-export { EditSection } from './edit-section.model';
-export { PublishSection } from './publish-section.model';
-export { SetApprovalRating } from './set-approval-rating.model';
