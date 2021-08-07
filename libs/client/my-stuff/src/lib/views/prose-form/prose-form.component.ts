@@ -131,6 +131,7 @@ export class ProseFormComponent implements OnInit {
             body: this.fields.body.value,
             category: this.fields.category.value,
             genres: this.fields.genres.value,
+            tags: this.fields.tags.value,
             rating: this.fields.rating.value,
             status: this.fields.status.value,
         };

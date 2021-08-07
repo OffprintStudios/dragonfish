@@ -34,6 +34,7 @@ export class ProseStore {
             'meta.genres': proseInfo.genres,
             'meta.rating': proseInfo.rating,
             'meta.status': proseInfo.status,
+            tags: proseInfo.tags,
         });
 
         const savedProse: ProseContentDocument = await newProse.save();
@@ -62,6 +63,7 @@ export class ProseStore {
                 'meta.genres': proseInfo.genres,
                 'meta.rating': proseInfo.rating,
                 'meta.status': proseInfo.status,
+                tags: proseInfo.tags,
             },
             { new: true }
         );
