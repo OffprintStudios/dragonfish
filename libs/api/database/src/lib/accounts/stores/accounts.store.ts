@@ -7,7 +7,6 @@ import * as sanitizeHtml from 'sanitize-html';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { argon2id, hash } from 'argon2';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
-import { SessionInfo } from '@dragonfish/shared/models/accounts/audit';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 
 @Injectable()
