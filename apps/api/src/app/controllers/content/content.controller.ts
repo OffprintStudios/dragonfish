@@ -12,6 +12,7 @@ import {
     UseInterceptors,
     UploadedFile,
     Inject,
+    Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';

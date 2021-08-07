@@ -11,7 +11,10 @@ export class SessionInfoDocument extends Types.Subdocument implements SessionInf
     readonly expires: Date;
 
     @Prop({ required: true })
-    readonly deviceId: string;
+    readonly deviceOS: string;
+
+    @Prop({ required: true })
+    readonly deviceBrowser: string;
 
     @Prop({ required: true })
     readonly ipAddr: string;
