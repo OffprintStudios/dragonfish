@@ -75,7 +75,7 @@ export class ContentDocument extends Document implements ContentModel {
     readonly kind: ContentKind;
 
     @Prop({type: [{type: String, ref: 'TagsDocument'}] })
-    tags: TagsModel[];
+    tags?: string[] | TagsModel[];
 
     @Prop()
     readonly createdAt: Date;
