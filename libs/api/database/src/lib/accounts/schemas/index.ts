@@ -2,6 +2,7 @@ import { AccountDocument, AccountSchema } from './account.schema';
 import { PseudonymDocument, PseudonymSchema } from './pseudonym.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
+import * as MongooseUniqueValidator from 'mongoose-unique-validator';
 import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
@@ -36,6 +37,7 @@ export async function setupAccountCollection() {
 
     schema.plugin(MongooseAutopopulate);
     schema.plugin(MongoosePaginate);
+    schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 
@@ -64,6 +66,7 @@ export async function setupPseudonymCollection() {
 
     schema.plugin(MongooseAutopopulate);
     schema.plugin(MongoosePaginate);
+    schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 

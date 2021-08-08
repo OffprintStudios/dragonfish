@@ -11,7 +11,7 @@ export class AccountDocument extends Document implements Account {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ trim: true, required: true, index: true })
+    @Prop({ trim: true, required: true, index: true, unique: true })
     email: string;
 
     @Prop({ trim: true, required: true })

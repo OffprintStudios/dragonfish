@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountDocument } from '../schemas';
@@ -34,7 +34,11 @@ export class AccountsStore {
             termsAgree: formInfo.termsAgree,
         });
 
-        return await newAccount.save();
+        return await newAccount.save(function (err) {
+            if (err.errors.email) {
+                throw new BadRequestException(`This email is already taken.`);
+            }
+        });
     }
 
     public async updateEmail(accountId: string, formInfo: ChangeEmail): Promise<AccountDocument> {
