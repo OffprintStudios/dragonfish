@@ -65,7 +65,7 @@ export class ProseFormComponent implements OnInit {
                     body: content.body,
                     category: content.meta.category,
                     genres: content.meta.genres,
-                    tags: content.tags.map((tag) => tag._id),
+                    tags: content.tags.map((tag) => (tag as TagsModel)._id),
                     rating: content.meta.rating,
                     status: content.meta.status,
                 });
