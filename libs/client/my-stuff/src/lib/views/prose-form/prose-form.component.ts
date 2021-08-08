@@ -10,6 +10,7 @@ import {
     ContentKind,
     ProseContent,
     TagKind,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Location } from '@angular/common';
@@ -64,7 +65,7 @@ export class ProseFormComponent implements OnInit {
                     body: content.body,
                     category: content.meta.category,
                     genres: content.meta.genres,
-                    tags: content.tags,
+                    tags: content.tags.map((tag) => tag._id),
                     rating: content.meta.rating,
                     status: content.meta.status,
                 });

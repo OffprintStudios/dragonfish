@@ -28,7 +28,7 @@ export interface ContentModel {
         isDeleted: boolean;
     };
     readonly kind: ContentKind;
-    tags?: string[] | TagsModel[];
+    tags?: TagsModel[];
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }
