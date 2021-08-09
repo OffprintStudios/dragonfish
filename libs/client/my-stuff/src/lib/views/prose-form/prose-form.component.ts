@@ -57,7 +57,7 @@ export class ProseFormComponent implements OnInit {
         this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
 
         this.stuffQuery.current$.pipe(untilDestroyed(this)).subscribe((content: ProseContent) => {
-            if (content !== null) {
+            if (content) {
                 this.formTitle = `Editing "${content.title}"`;
                 this.proseForm.setValue({
                     title: content.title,
