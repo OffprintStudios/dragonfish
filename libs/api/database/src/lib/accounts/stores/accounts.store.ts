@@ -8,6 +8,7 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { argon2id, hash } from 'argon2';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
+import { User } from '@dragonfish/shared/models/users';
 
 @Injectable()
 export class AccountsStore {
@@ -55,6 +56,12 @@ export class AccountsStore {
         return await account.save();
     }
 
+    public async addPseudonym(accountId: string, pseudId: string) {
+        const account = await this.retrieveAccount(accountId);
+        account.pseudonyms.push(pseudId as any);
+        return await account.save();
+    }
+
     //#endregion
 
     //#region ---AUTH---
@@ -84,6 +91,22 @@ export class AccountsStore {
     public async checkSession(accountId: string, sessionId: string): Promise<boolean> {
         const validAccount = await this.accountModel.findOne({ _id: accountId, 'sessions._id': sessionId });
         return !!validAccount;
+    }
+
+    //#endregion
+
+    //#region ---ACCOUNT MIGRATION (DELETE AFTER ACCOUNTS HAVE BEEN MIGRATED)---
+
+    public async migrateAccount(user: User) {
+        const newAccount = new this.accountModel({
+            email: user.email,
+            password: user.password,
+            termsAgree: user.audit.termsAgree,
+            roles: user.audit.roles,
+            createdAt: user.createdAt,
+        });
+
+        return await newAccount.save();
     }
 
     //#endregion

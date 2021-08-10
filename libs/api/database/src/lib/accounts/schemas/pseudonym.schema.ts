@@ -39,21 +39,21 @@ export class PseudonymDocument extends Document implements Pseudonym {
         raw({
             works: { type: Number, default: 0 },
             blogs: { type: Number, default: 0 },
-            watchers: { type: Number, default: 0 },
-            watching: { type: Number, default: 0 },
+            followers: { type: Number, default: 0 },
+            following: { type: Number, default: 0 },
         }),
     )
     stats: {
         works: number;
         blogs: number;
-        watchers: number;
-        watching: number;
+        followers: number;
+        following: number;
     };
 
     @Prop({ type: String, enum: Object.keys(Presence), default: Presence.Offline })
     presence: Presence;
 
-    @Prop({ type: String, enum: Object.keys(Roles), default: Roles.User })
+    @Prop({ type: [String], enum: Object.keys(Roles), default: Roles.User })
     roles: Roles[];
 
     @Prop()

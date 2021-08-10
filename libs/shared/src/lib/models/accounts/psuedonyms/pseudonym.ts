@@ -16,8 +16,8 @@ export interface Pseudonym {
     stats: {
         works: number;
         blogs: number;
-        watchers: number;
-        watching: number;
+        followers: number;
+        following: number;
     };
     presence: Presence;
     readonly createdAt: Date;
