@@ -15,11 +15,32 @@ export class TagsStore {
     ) {}
 
     /**
-     * Returns all tags of a specified kind, sorted alphabetically.
-     * @param kind
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * NOTE: Children are not sorted alphabetically.
+     * @param kind The `TagKind` of the tags to look for.
      */
-    async fetchTags(kind: TagKind): Promise<TagsDocument[]> {
-        return this.tags.find({ kind: kind }).sort({ name: 1 });
+    async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
+        // We force maxDepth to be 0 so that we only get the node's immediate children.
+        // If we went further, Mongo would just give us a flat array, and we'd have to
+        // put it together ourselves anyway.
+        const results: TagsTree[] = await this.tags.aggregate<TagsTree>([
+            { $match: { kind: kind, parent: null } }
+        ])
+        .sort({ name: 1 })
+        .graphLookup({
+            from: 'tags',
+            startWith: '$_id',
+            connectFromField: '_id',
+            connectToField: 'parent',
+            as: 'children', // Careful: this string should match the name of the property in `TagsTree`.
+            maxDepth: 0,
+        })
+        .exec();
+        if (results.length === 0) {
+            return null;
+        }
+
+        return results;
     }
 
     /**
@@ -32,8 +53,16 @@ export class TagsStore {
     }
 
     /**
+     * Returns a single tag with the given name, or null if not found.
+     * @param name The name of the tag to find.
+     * @returns The tag with the name.
+     */
+    async findTagByName(name: string): Promise<TagsDocument> {
+        return this.tags.findOne({ name: name })
+    }
+
+    /**
      * Returns the given tag and all its descendants.
-     * @param king
      * @param tagId
      */
     async fetchDescendants(tagId: string): Promise<TagsTree> {
@@ -113,12 +142,22 @@ export class TagsStore {
             }
         }
 
+        if (!form.name || form.name.length < 1) {
+            throw new BadRequestException("You must provide a name.");
+        }
+
         const newTag = new this.tags({
             name: sanitize(form.name),
             desc: sanitize(form.desc),
             kind: tagKind,
             parent: form.parent,
         });
+
+        // Check that name not already in use
+        const tagWithSameName = await this.findTagByName(newTag.name)
+        if (tagWithSameName) {
+            throw new BadRequestException("There is already a tag with this name.");
+        }
 
         return newTag.save();
     }
@@ -135,22 +174,33 @@ export class TagsStore {
         }
 
         // If we're changing this tag's parent, make sure we aren't accidentally parenting it to
-        // any of its existing children
+        // itself; and if it has children, then for now, we shouldn't allow the parent to be changed
         if (form.parent) {
+            if (form.parent === tag._id) {
+                throw new BadRequestException("Cannot change this tag's parent to itself.");
+            }
             const tagWithChildren = await this.populateImmediateChildren(tag._id);
             if (tagWithChildren.children && tagWithChildren.children.length > 0) {
-                for (const child of tagWithChildren.children) {
-                    if (child._id === form.parent) {
-                        throw new BadRequestException("Cannot change this tag's parent to one of its children.");
-                    }
-                }
+                throw new BadRequestException("Don't assign a parent to a tag with children.");
             }
         }
 
         tag.name = sanitize(form.name);
         tag.desc = sanitize(form.desc);
+
         if (form.parent) {
             tag.parent = form.parent;
+        }
+
+        // Allows to set parent as null
+        if (form.parent === null) {
+            tag.parent = null;
+        }
+
+        // Check if changed name to that of another tag
+        const tagWithSameName = await this.findTagByName(tag.name);
+        if (tagWithSameName && tagId !== tagWithSameName._id) {
+            throw new BadRequestException("There is already another tag with this new name.");
         }
 
         return tag.save();

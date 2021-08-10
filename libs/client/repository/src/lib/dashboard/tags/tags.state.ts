@@ -1,4 +1,4 @@
 import { ActiveState, EntityState } from '@datorama/akita';
-import { TagsModel } from '@dragonfish/shared/models/content';
+import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 
-export interface TagsState extends EntityState<TagsModel, string>, ActiveState {}
+export interface TagsState extends EntityState<TagsTree, string>, ActiveState {}

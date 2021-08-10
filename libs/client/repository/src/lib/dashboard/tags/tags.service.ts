@@ -15,10 +15,17 @@ export class TagsService {
         private alerts: AlertsService,
     ) {}
 
-    public fetchTags(kind: TagKind): Observable<TagsModel[]> {
-        return this.network.fetchTags(kind).pipe(
+    public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
+        return this.network.fetchTagsTrees(kind).pipe(
             tap(value => {
-                this.tagsStore.set(value);
+                for (let tree of value) {
+                    if (tree.children != null) {
+                        tree.children.sort(
+                            (a,b) => a.name < b.name ? -1 : 1
+                        )
+                    }
+                }
+                this.tagsStore.set(value)
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
@@ -39,8 +46,8 @@ export class TagsService {
 
     public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
         return this.network.createTag(kind, form).pipe(
-            tap(value => {
-                this.tagsStore.add(value);
+            tap(newTag => {
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
@@ -51,8 +58,8 @@ export class TagsService {
 
     public updateTag(id: string, form: TagsForm): Observable<TagsModel> {
         return this.network.updateTag(id, form).pipe(
-            tap(value => {
-                this.tagsStore.update(id, value);
+            tap(updatedTag => {
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
             catchError(err => {
                 this.alerts.error(err.error.message);
@@ -64,7 +71,7 @@ export class TagsService {
     public deleteTag(id: string): Observable<void> {
         return this.network.deleteTag(id).pipe(
             tap(() => {
-                this.tagsStore.remove(id);
+                this.fetchTagsTrees(TagKind.Fandom).subscribe();
                 this.alerts.success(`Tag successfully deleted.`);
             }),
             catchError(err => {

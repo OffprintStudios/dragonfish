@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { TagsService } from '@dragonfish/client/repository/dashboard/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
-import { ChildTagFormComponent } from '../child-tag-form/child-tag-form.component';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { TagsModel } from '@dragonfish/shared/models/content';
+import { TagFormComponent } from '..';
 
 @Component({
     selector: 'dragonfish-child-tag-item',
@@ -22,7 +22,7 @@ export class ChildTagItemComponent {
     ) {}
 
     editTag() {
-        this.dialog.open(ChildTagFormComponent, { data: { parentId: this.parentId, child: this.tag }});
+        this.dialog.open(TagFormComponent, { data: { tag: this.tag } });
     }
 
     removeTag() {

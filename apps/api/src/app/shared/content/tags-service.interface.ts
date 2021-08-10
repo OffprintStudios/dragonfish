@@ -4,10 +4,11 @@ import { TagsTree } from "@dragonfish/shared/models/content/tags.model";
 export interface ITagsService {
 
     /**
-     * Get all tags of the given `TagKind`.
+     * Get all tags of the given `TagKind`, sorted into TagsTrees.
+     * NOTE: Children are not sorted alphabetically.
      * @param kind The `TagKind` of the tags to look for.
      */
-    fetchTags(kind: TagKind): Promise<TagsModel[]>;
+     fetchTagsTrees(kind: TagKind): Promise<TagsTree[]>;
 
     /**
      * Get all children of the tag with the given ID.
