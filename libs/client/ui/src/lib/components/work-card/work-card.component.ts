@@ -15,7 +15,13 @@ export class WorkCardComponent {
     contentKind = ContentKind;
     contentGenres = Genres;
 
+    showAllTags = false;
+
     calcApprovalRating(likes: number, dislikes: number) {
         return calculateApprovalRating(likes, dislikes);
+    }
+
+    toggleShowAllTags() {
+        this.showAllTags = !this.showAllTags;
     }
 }
