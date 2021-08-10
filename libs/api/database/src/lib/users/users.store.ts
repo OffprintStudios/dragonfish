@@ -456,6 +456,6 @@ export class UsersStore {
     }
 
     async markAsMigrated(id: string) {
-        return this.userModel.findByIdAndUpdate(id, { 'audit.isMigrated': true });
+        return this.userModel.updateOne({ _id: id }, { isMigrated: true });
     }
 }
