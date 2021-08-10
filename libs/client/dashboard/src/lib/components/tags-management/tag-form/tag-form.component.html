@@ -25,7 +25,7 @@
     <ng-container *ngIf="tagsQuery.all$ | async as tags">
         <div class="offprint-select">
             <label>Parent</label>
-            <ng-select class="custom" [formControlName]="'parent'" [searchable]="false" [placeholder]="'Select Tag'">
+            <ng-select class="custom" [formControlName]="'parent'" [searchable]="false" [placeholder]="'Select Tag'" dropdownPosition="top">
                 <ng-option [value]="NO_PARENT">
                     No Parent
                 </ng-option>
