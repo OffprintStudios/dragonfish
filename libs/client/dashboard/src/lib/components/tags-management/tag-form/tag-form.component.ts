@@ -41,8 +41,8 @@ export class TagFormComponent implements OnInit {
         } else {
             if (this.data.parentId) {
                 this.tagForm.setValue({
-                    name: null,
-                    desc: null,
+                    name: '',
+                    desc: '',
                     parent: this.data.parentId,
                 })
             }
