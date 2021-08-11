@@ -8,7 +8,7 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { argon2id, hash } from 'argon2';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
-import { User } from '@dragonfish/shared/models/users';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class AccountsStore {
@@ -66,11 +66,16 @@ export class AccountsStore {
 
     //#region ---AUTH---
 
-    public async saveSession(accountId: string, sessionId: string, deviceInfo: DeviceInfo): Promise<AccountDocument> {
+    public async saveSession(
+        accountId: string,
+        sessionId: string,
+        deviceInfo: DeviceInfo,
+        expiration: Date,
+    ): Promise<AccountDocument> {
         const account = await this.retrieveAccount(accountId);
-
+        const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
         account.sessions.push({
-            _id: sessionId,
+            _id: hashedSessionId,
             expires: new Date(Date.now() + REFRESH_EXPIRATION),
             deviceOS: deviceInfo.os,
             deviceBrowser: deviceInfo.browser,
