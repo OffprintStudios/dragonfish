@@ -335,8 +335,7 @@ export class UsersStore {
         return await this.userModel.paginate(
             { $text: { $search: '"' + query + '"' } },
             {
-                select:
-                    '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
+                select: '-password -agreedToPolicies -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -audit.isDeleted',
                 page: pageNum,
                 limit: maxPerPage,
             },
@@ -450,5 +449,13 @@ export class UsersStore {
         });
 
         return await newCode.save();
+    }
+
+    async retrieveAllUsers() {
+        return this.userModel.find({ 'audit.isDeleted': 'false' });
+    }
+
+    async markAsMigrated(id: string) {
+        return this.userModel.updateOne({ _id: id }, { isMigrated: true });
     }
 }

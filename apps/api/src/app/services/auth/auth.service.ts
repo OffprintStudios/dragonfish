@@ -12,10 +12,9 @@ import { nanoid } from 'nanoid';
 import { User, FrontendUser, CreateUser, AuditSession } from '@dragonfish/shared/models/users';
 import { UsersStore } from '@dragonfish/api/database/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { IAuth } from '../../shared/auth';
 
 @Injectable()
-export class AuthService implements IAuth {
+export class AuthService {
     private readonly logger: Logger = new Logger(AuthService.name);
 
     constructor(private readonly usersStore: UsersStore, private readonly jwtService: JwtService) {}
@@ -31,7 +30,7 @@ export class AuthService implements IAuth {
                 }
             } catch (err) {
                 throw new InternalServerErrorException(
-                    'Something went wrong logging you in. Try again in a little bit.'
+                    'Something went wrong logging you in. Try again in a little bit.',
                 );
             }
         } else {
