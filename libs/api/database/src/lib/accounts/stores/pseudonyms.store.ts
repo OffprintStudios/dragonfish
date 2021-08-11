@@ -55,32 +55,6 @@ export class PseudonymsStore {
 
     //#endregion
 
-    //#region ---ACCOUNT MIGRATION (DELETE AFTER ACCOUNTS HAVE BEEN MIGRATED)---
-
-    public async migrateAccount(user: User, accountId: string) {
-        const newUserTag = chain(user.username).latinise().replace(' ', '').value();
-        const pseud = new this.pseudModel({
-            _id: user._id,
-            accountId: accountId,
-            userTag: newUserTag,
-            screenName: user.username,
-            'profile.avatar': user.profile.avatar,
-            'profile.bio': user.profile.bio,
-            'profile.tagline': user.profile.tagline,
-            'profile.coverPic': user.profile.coverPic,
-            'stats.works': user.stats.works,
-            'stats.blogs': user.stats.blogs,
-            'stats.followers': user.stats.watchers,
-            'stats.following': user.stats.watching,
-            roles: user.audit.roles,
-            createdAt: user.createdAt,
-        });
-
-        return await pseud.save();
-    }
-
-    //#endregion
-
     //#region ---PRIVATE---
 
     private async retrievePseud(id: string): Promise<PseudonymDocument> {

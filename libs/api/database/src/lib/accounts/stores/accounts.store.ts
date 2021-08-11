@@ -95,22 +95,6 @@ export class AccountsStore {
 
     //#endregion
 
-    //#region ---ACCOUNT MIGRATION (DELETE AFTER ACCOUNTS HAVE BEEN MIGRATED)---
-
-    public async migrateAccount(user: User) {
-        const newAccount = new this.accountModel({
-            email: user.email,
-            password: user.password,
-            termsAgree: user.audit.termsAgree,
-            roles: user.audit.roles,
-            createdAt: user.createdAt,
-        });
-
-        return await newAccount.save();
-    }
-
-    //#endregion
-
     //#region ---PRIVATE---
 
     private async retrieveAccount(accountId: string): Promise<AccountDocument> {
