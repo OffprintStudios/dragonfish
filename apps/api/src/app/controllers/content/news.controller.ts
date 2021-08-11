@@ -1,6 +1,5 @@
 import { Controller, Param, Get, UseGuards } from '@nestjs/common';
 import { Cookies } from '@nestjsplus/cookies';
-
 import { BrowseStore } from '@dragonfish/api/database/content/stores';
 import { OptionalAuthGuard } from '../../guards';
 import { ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
@@ -27,7 +26,7 @@ export class NewsController {
         return await this.browse.fetchOnePublished(
             postId, // the contentId of the post
             ContentKind.NewsContent, // fetch only a news post
-            user // add a view if there's a user
+            user, // add a view if there's a user
         );
     }
 }

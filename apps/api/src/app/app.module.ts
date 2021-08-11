@@ -31,9 +31,11 @@ import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
 import { AdminModule } from '@dragonfish/api/database/admin/admin.module';
 import { CommentsModule } from '@dragonfish/api/database/comments';
 import { ContentLibraryModule } from '@dragonfish/api/database/content-library';
+import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 /* Utilities */
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
+import { MailModule } from '@dragonfish/api/mail';
 
 @Module({
     imports: [
@@ -46,6 +48,8 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         AdminModule,
         CommentsModule,
         ContentLibraryModule,
+        AccountsModule,
+        MailModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({

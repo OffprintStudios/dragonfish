@@ -104,6 +104,27 @@
                 }
             }
         },
+        "api-mail": {
+            "root": "libs/api/mail",
+            "sourceRoot": "libs/api/mail/src",
+            "projectType": "library",
+            "architect": {
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/api/mail/**/*.ts"]
+                    }
+                },
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/api/mail"],
+                    "options": {
+                        "jestConfig": "libs/api/mail/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                }
+            }
+        },
         "api-utilities": {
             "root": "libs/api/utilities",
             "sourceRoot": "libs/api/utilities/src",
