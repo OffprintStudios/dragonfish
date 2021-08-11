@@ -98,7 +98,7 @@ export class AccountsStore {
     //#region ---PRIVATE---
 
     private async retrieveAccount(accountId: string): Promise<AccountDocument> {
-        const account = await this.accountModel.findById(accountId);
+        const account = await this.accountModel.findById(accountId).select('-email -password');
 
         if (isNullOrUndefined(account)) {
             throw new NotFoundException(`The account you're looking for doesn't exist.`);
