@@ -2,7 +2,14 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountDocument } from '../schemas';
-import { AccountForm, ChangeEmail, ChangePassword, FrontendAccount, Account } from '@dragonfish/shared/models/accounts';
+import {
+    AccountForm,
+    ChangeEmail,
+    ChangePassword,
+    FrontendAccount,
+    Account,
+    Roles,
+} from '@dragonfish/shared/models/accounts';
 import * as sanitizeHtml from 'sanitize-html';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { argon2id, hash } from 'argon2';
@@ -22,6 +29,11 @@ export class AccountsStore {
 
     public async fetchAccountByEmail(email: string): Promise<AccountDocument> {
         return this.accountModel.findOne({ email: sanitizeHtml(email) });
+    }
+
+    public async fetchRoles(id: string): Promise<Roles[]> {
+        const thisUser = await this.accountModel.findById(id);
+        return thisUser.roles;
     }
 
     //#endregion

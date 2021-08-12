@@ -3,7 +3,7 @@ import { SessionStore } from '../session.store';
 import { SessionQuery } from '../session.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { LoginModel, AccountForm } from '@dragonfish/shared/models/accounts';
+import { LoginModel, AccountForm, PseudonymForm, Pseudonym } from '@dragonfish/shared/models/accounts';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
@@ -97,6 +97,21 @@ export class AuthService {
                         token: result,
                     });
                 }
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public createPseudonym(formData: PseudonymForm) {
+        return this.network.addPseudonym(formData).pipe(
+            tap((result: Pseudonym) => {
+                this.sessionStore.update(({ currAccount }) => {
+                    currAccount.pseudonyms = [...currAccount.pseudonyms, result];
+                });
+                this.pseudService.addOne(result);
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);

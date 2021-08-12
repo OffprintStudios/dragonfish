@@ -26,7 +26,7 @@ export class RegistrationComponent {
     announceText = `Please wait...`;
     hasRegistered = false;
     delayRouting = from([1, 2, 3]).pipe(
-        concatMap((item) => of(item).pipe(delay(1000))),
+        concatMap((item) => of(item).pipe(delay(1200))),
         takeLast(1),
     );
 
@@ -47,7 +47,7 @@ export class RegistrationComponent {
         this.announceText = `Logging you in...`;
         this.auth
             .login(event)
-            .pipe(delay(3000))
+            .pipe(delay(1500))
             .subscribe(
                 () => {
                     this.loading = false;
@@ -72,7 +72,7 @@ export class RegistrationComponent {
         this.announceText = `Signing you up...`;
         this.auth
             .register(event)
-            .pipe(delay(3000))
+            .pipe(delay(1500))
             .subscribe(
                 () => {
                     this.loading = false;

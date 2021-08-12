@@ -1,7 +1,7 @@
 <div class="p-3.5 flex flex-col justify-center items-center h-96" [@fadeInOut]="'in'">
     <h1 class="text-3xl font-medium">Add Profile</h1>
     <div class="w-8/12 mx-auto items-center px-6 pb-4">
-        <form [formGroup]="pseudForm">
+        <form [formGroup]="pseudForm" (ngSubmit)="submitForm()">
             <dragonfish-text-field
                 [formControlName]="'userTag'"
                 [name]="'userTag'"
@@ -29,11 +29,16 @@
 
             <div class="my-2.5"></div>
 
-            <div class="flex items-center justify-center">
+            <div class="flex items-center justify-center" *ngIf="!loading; else isLoading">
                 <button type="button" [routerLink]="['/registration/select-pseud']"><rmx-icon name="close-line"></rmx-icon>Cancel</button>
                 <div class="mx-0.5"></div>
                 <button type="submit"><rmx-icon name="check-line"></rmx-icon>Add</button>
             </div>
+            <ng-template #isLoading>
+                <div class="flex items-center justify-center">
+                    <rmx-icon name="loader-4-line" class="mr-1.5 animate-spin"></rmx-icon>Please wait...
+                </div>
+            </ng-template>
         </form>
     </div>
 </div>

@@ -4,8 +4,8 @@ import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
 
 import { Roles } from '@dragonfish/shared/models/users';
-import { UsersStore } from '@dragonfish/api/database/users';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { AccountsStore } from '@dragonfish/api/database/accounts/stores';
 
 /**
  * This is a mixin so we can do stuff like UseGuards(RolesGuard(['Admin','Moderator'])).
@@ -15,7 +15,7 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 export const RolesGuard = (requiredRoles: Roles[]) => {
     @Injectable()
     class RolesGuardMixin implements CanActivate {
-        constructor(private readonly usersService: UsersStore, private readonly jwtService: JwtService) {}
+        constructor(private readonly accountStore: AccountsStore, private readonly jwtService: JwtService) {}
 
         async canActivate(context: ExecutionContext) {
             // Getting the request.
@@ -47,7 +47,7 @@ export const RolesGuard = (requiredRoles: Roles[]) => {
             }
 
             if (verifiedToken) {
-                const userRoles = await this.usersService.fetchRoles(verifiedToken.sub);
+                const userRoles = await this.accountStore.fetchRoles(verifiedToken.sub);
                 const hasRoles = lodash.intersection(userRoles, requiredRoles);
 
                 if (hasRoles.length !== 0) {
