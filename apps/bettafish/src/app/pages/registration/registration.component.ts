@@ -6,6 +6,7 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { from, of } from 'rxjs';
 import { delay, concatMap, takeLast } from 'rxjs/operators';
 import { fadeInOut } from '@dragonfish/client/ui';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 enum RegistrationTabs {
     LogIn,
@@ -35,6 +36,7 @@ export class RegistrationComponent {
         private location: Location,
         public route: ActivatedRoute,
         private auth: AuthService,
+        public pseudQuery: PseudonymsQuery,
     ) {}
 
     switchTab(newTab: RegistrationTabs) {

@@ -1,8 +1,9 @@
-<div class="flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" style="background: var(--background)">
-    <div class="absolute top-4 right-4 cursor-pointer" [routerLink]="['/']">
+<div class="registration-page flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" [ngClass]="pseudQuery.currentCover ? 'with-cover' : 'no-cover'">
+    <img class="object-cover absolute w-full z-20" [src]="pseudQuery.currentCover" *ngIf="pseudQuery.currentCover" [@fadeInOut]="'in'">
+    <div class="absolute z-50 top-4 right-4 cursor-pointer" [routerLink]="['/']">
         <rmx-icon name="close-line" class="w-16"></rmx-icon>
     </div>
-    <div class="register-box flex flex-col w-full border rounded-md">
+    <div class="register-box z-50 flex flex-col w-full border rounded-md">
         <ng-container *ngIf="route.children.length === 0; else displayRoutes">
             <div class="p-3.5 flex flex-col items-center justify-center h-96" *ngIf="seeLoadingPage; else notSeeingLoading">
                 <ng-container *ngIf="loading; else notLoading">

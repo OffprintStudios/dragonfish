@@ -9,7 +9,7 @@
     <div class="flex items-center overflow-x-auto p-6">
         <ng-container *ngIf="pseudQuery.all$ | async as pseudonyms">
             <ng-container *ngIf="pseudonyms.length !== 0">
-                <div class="profile-box without-border" *ngFor="let pseud of pseudonyms">
+                <div class="profile-box without-border" *ngFor="let pseud of pseudonyms" (click)="selectAndClose(pseud._id)" (mouseenter)="selectPseud(pseud._id)" (mouseleave)="deselectPseud()">
                     <img [src]="pseud.profile.avatar" class="border border-gray-600 dark:border-white rounded-md mb-0.5" style="max-width: 4rem">
                     <div class="flex-1 flex flex-col items-center justify-center">
                         <span class="text-xs text-center">{{ pseud.screenName }}</span>
@@ -20,7 +20,7 @@
         </ng-container>
         <ng-container *ngIf="canHaveFivePseuds(sessionQuery.currAccount.roles); else hasOnlyThree">
             <ng-container *ngIf="pseudQuery.numPseuds !== 5">
-                <div class="profile-box" [routerLink]="['/registration/setup-pseud']">
+                <div class="profile-box" [routerLink]="['/registration/setup-pseud']" (mouseenter)="deselectPseud()">
                     <span class="text-4xl font-extralight">+</span>
                     <span>Add</span>
                     <span>Profile</span>

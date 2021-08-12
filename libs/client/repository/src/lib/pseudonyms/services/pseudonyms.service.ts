@@ -14,6 +14,10 @@ export class PseudonymsService {
         this.pseudStore.setActive(id);
     }
 
+    public deselect() {
+        this.pseudStore.setActive(null);
+    }
+
     public addOne(pseudonym: Pseudonym) {
         this.pseudStore.add(pseudonym);
     }

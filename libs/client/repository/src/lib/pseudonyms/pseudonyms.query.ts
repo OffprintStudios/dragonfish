@@ -18,6 +18,14 @@ export class PseudonymsQuery extends QueryEntity<PseudonymsState> {
         return this.getActive()._id;
     }
 
+    public get currentCover() {
+        if (this.getActive()) {
+            return this.getActive().profile.coverPic;
+        } else {
+            return null;
+        }
+    }
+
     public get numPseuds() {
         return this.getValue().ids.length;
     }
