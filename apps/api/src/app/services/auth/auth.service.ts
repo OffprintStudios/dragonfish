@@ -1,16 +1,10 @@
-import {
-    Injectable,
-    InternalServerErrorException,
-    Logger,
-    NotFoundException,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { argon2id, verify } from 'argon2';
 import { nanoid } from 'nanoid';
 import { JwtPayload, LoginPackage } from '@dragonfish/shared/models/auth';
 import { AccountsStore } from '@dragonfish/api/database/accounts/stores';
-import { Account, AccountForm } from '@dragonfish/shared/models/accounts';
+import { Account, AccountForm, FrontendAccount } from '@dragonfish/shared/models/accounts';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 
@@ -28,7 +22,6 @@ export class AuthService {
                     return potentialAccount;
                 } else {
                     this.logger.warn(`Someone attempted to log into Account ${potentialAccount._id} and failed!`);
-                    throw new UnauthorizedException(`Either your email or password is invalid.`);
                 }
             } catch (err) {
                 throw new InternalServerErrorException(`Something went wrong! Code: sunfish`);
@@ -38,12 +31,20 @@ export class AuthService {
         }
     }
 
-    public async login(user: Account, req, device: DeviceInfo, expires: boolean): Promise<LoginPackage> {
+    public async login(user: Account, req, device: DeviceInfo, rememberMe: boolean): Promise<LoginPackage> {
         const payload = await AuthService.createPayload(user);
-        if (!expires) {
-            await this.createSession(user._id, req, device);
+        if (rememberMe) {
+            const userWithSession = await this.createSession(user._id, req, device);
+            return await AuthService.buildLoginPackage(
+                this.jwtService.sign(payload),
+                await this.accountStore.createFrontendAccount(userWithSession),
+            );
+        } else {
+            return await AuthService.buildLoginPackage(
+                this.jwtService.sign(payload),
+                await this.accountStore.createFrontendAccount(user),
+            );
         }
-        return await AuthService.buildLoginPackage(this.jwtService.sign(payload), user);
     }
 
     public async register(req, device: DeviceInfo, formInfo: AccountForm): Promise<LoginPackage> {
@@ -82,18 +83,18 @@ export class AuthService {
         };
     }
 
-    private static async buildLoginPackage(signedPayload: string, user: Account): Promise<LoginPackage> {
+    private static async buildLoginPackage(signedPayload: string, user: FrontendAccount): Promise<LoginPackage> {
         return {
             token: signedPayload,
             account: user,
         };
     }
 
-    private async createSession(accountId: string, req, deviceInfo: DeviceInfo): Promise<void> {
+    private async createSession(accountId: string, req, deviceInfo: DeviceInfo): Promise<Account> {
         const sessionId = nanoid();
         const expiration = new Date(Date.now() + REFRESH_EXPIRATION);
-        await this.accountStore.saveSession(accountId, sessionId, deviceInfo, expiration);
         req._cookies = [{ name: 'refreshToken', value: sessionId, options: { httpOnly: true, expires: expiration } }];
+        return await this.accountStore.saveSession(accountId, sessionId, deviceInfo, expiration);
     }
 
     //#endregion

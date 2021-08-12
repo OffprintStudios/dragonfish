@@ -1,6 +1,6 @@
-import { Account } from '../accounts';
+import { FrontendAccount } from '../accounts';
 
 export interface LoginPackage {
-    readonly account: Account;
+    readonly account: FrontendAccount;
     readonly token: string;
 }

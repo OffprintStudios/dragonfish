@@ -82,6 +82,7 @@ import {
     RiCheckboxBlankLine,
     RiAddBoxLine,
     RiSendPlane2Line,
+    RiLoader4Line,
 } from 'angular-remix-icon';
 
 import {
@@ -381,6 +382,7 @@ const remixIcons = {
     RiCheckboxBlankLine,
     RiAddBoxLine,
     RiSendPlane2Line,
+    RiLoader4Line,
 };
 
 @NgModule({

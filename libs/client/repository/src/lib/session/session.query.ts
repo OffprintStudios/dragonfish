@@ -8,6 +8,7 @@ export class SessionQuery extends Query<SessionState> {
     public state$ = this.select();
     public token$ = this.select('token');
     public currentUser$ = this.select('currentUser');
+    public currAccount$ = this.select('currAccount');
 
     constructor(protected store: SessionStore) {
         super(store);
@@ -15,6 +16,10 @@ export class SessionQuery extends Query<SessionState> {
 
     public get currentUser() {
         return this.getValue().currentUser;
+    }
+
+    public get currAccount() {
+        return this.getValue().currAccount;
     }
 
     public get token() {

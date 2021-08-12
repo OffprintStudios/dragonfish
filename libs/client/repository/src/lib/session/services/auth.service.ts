@@ -3,9 +3,10 @@ import { SessionStore } from '../session.store';
 import { SessionQuery } from '../session.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { CreateUser, FrontendUser, LoginUser } from '@dragonfish/shared/models/users';
+import { LoginModel, AccountForm } from '@dragonfish/shared/models/accounts';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
+import { LoginPackage } from '@dragonfish/shared/models/auth';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -20,16 +21,15 @@ export class AuthService {
      * Logs a user in.
      * @param payload
      */
-    public login(payload: LoginUser) {
+    public login(payload: LoginModel) {
         return this.network.login(payload).pipe(
-            tap((user: FrontendUser) => {
+            tap((user: LoginPackage) => {
                 this.sessionStore.update({
                     token: user.token,
-                    currentUser: user,
+                    currAccount: user.account,
                 });
-                this.alerts.success(`Welcome back!`);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),
@@ -40,16 +40,15 @@ export class AuthService {
      * Registers a new user.
      * @param payload
      */
-    public register(payload: CreateUser) {
+    public register(payload: AccountForm) {
         return this.network.register(payload).pipe(
-            tap((user: FrontendUser) => {
+            tap((user: LoginPackage) => {
                 this.sessionStore.update({
                     token: user.token,
-                    currentUser: user,
+                    currAccount: user.account,
                 });
-                this.alerts.success(`Glad you could make it!`);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),
@@ -64,11 +63,11 @@ export class AuthService {
             tap(() => {
                 this.sessionStore.update({
                     token: null,
-                    currentUser: null,
+                    currAccount: null,
                 });
                 this.alerts.success(`See you next time!`);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),
@@ -84,7 +83,7 @@ export class AuthService {
                 if (result === null) {
                     this.sessionStore.update({
                         token: null,
-                        currentUser: null,
+                        currAccount: null,
                     });
                     this.alerts.info(`Your token has expired, and you've been logged out.`);
                 } else {
@@ -93,7 +92,7 @@ export class AuthService {
                     });
                 }
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),
