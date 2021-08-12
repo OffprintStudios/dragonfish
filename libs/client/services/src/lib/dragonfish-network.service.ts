@@ -44,7 +44,7 @@ import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shar
 import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
-import { AccountForm, LoginModel } from '@dragonfish/shared/models/accounts';
+import { AccountForm, LoginModel, Pseudonym, PseudonymForm } from '@dragonfish/shared/models/accounts';
 
 /**
  * ## DragonfishNetworkService
@@ -1250,6 +1250,23 @@ export class DragonfishNetworkService {
                 {},
                 { observe: 'response', withCredentials: true },
             ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---PSEUDONYMS---
+
+    /**
+     * Adds a pseudonym to your account.
+     * @param formInfo
+     */
+    public addPseudonym(formInfo: PseudonymForm): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.post<Pseudonym>(`${this.baseUrl}/auth/add-pseudonym`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
         );
     }
 

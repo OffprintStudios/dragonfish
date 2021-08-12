@@ -3,16 +3,23 @@ import { JwtService } from '@nestjs/jwt';
 import { argon2id, verify } from 'argon2';
 import { nanoid } from 'nanoid';
 import { JwtPayload, LoginPackage } from '@dragonfish/shared/models/auth';
-import { AccountsStore } from '@dragonfish/api/database/accounts/stores';
-import { Account, AccountForm, FrontendAccount } from '@dragonfish/shared/models/accounts';
+import { AccountsStore, PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import { Account, AccountForm, FrontendAccount, PseudonymForm, Pseudonym } from '@dragonfish/shared/models/accounts';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @Injectable()
 export class AuthService {
     private readonly logger: Logger = new Logger(AuthService.name);
 
-    constructor(private readonly accountStore: AccountsStore, private readonly jwtService: JwtService) {}
+    constructor(
+        private readonly accountStore: AccountsStore,
+        private readonly pseudStore: PseudonymsStore,
+        private readonly jwtService: JwtService,
+    ) {}
+
+    //#region ---ACCOUNTS---
 
     public async validateAccount(email: string, password: string): Promise<Account> {
         const potentialAccount = await this.accountStore.fetchAccountByEmail(email);
@@ -73,6 +80,24 @@ export class AuthService {
     public async clearRefreshToken(userId: string, oldSessionId: string): Promise<void> {
         await this.accountStore.removeSession(userId, oldSessionId);
     }
+
+    //#endregion
+
+    //#region ---PSEUDONYMS---
+
+    public async createPseudonym(user: JwtPayload, formInfo: PseudonymForm): Promise<Pseudonym> {
+        const thisAccount = await this.accountStore.fetchAccountById(user.sub);
+
+        if (isNullOrUndefined(thisAccount)) {
+            throw new NotFoundException(`The account you're trying to edit could not be found.`);
+        }
+
+        const newPseud = await this.pseudStore.createPseud(user, formInfo);
+        await this.accountStore.addPseudonym(thisAccount._id, newPseud._id);
+        return newPseud;
+    }
+
+    //#endregion
 
     //#region ---PRIVATE---
 

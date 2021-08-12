@@ -1,13 +1,14 @@
-import { Controller, Request, Body, Get, Post, UseGuards, ForbiddenException } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { SetCookies, Cookies } from '@nestjsplus/cookies';
-import { RefreshGuard } from '../../guards';
-import { User, Device } from '@dragonfish/api/utilities/decorators';
+import { Cookies, SetCookies } from '@nestjsplus/cookies';
+import { RefreshGuard, RolesGuard } from '../../guards';
+import { Device, User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload, LoginPackage } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { AuthService } from '../../services/auth';
-import { AccountForm, LoginModel } from '@dragonfish/shared/models/accounts';
+import { AccountForm, LoginModel, PseudonymForm, Pseudonym } from '@dragonfish/shared/models/accounts';
+import { Roles } from '@dragonfish/shared/models/users';
 
 @Controller('auth')
 export class AuthController {
@@ -68,5 +69,12 @@ export class AuthController {
             await this.auth.clearRefreshToken(req.user.sub, refreshToken);
         }
         return await this.auth.logout(req);
+    }
+
+    @ApiTags(DragonfishTags.Auth)
+    @UseGuards(RolesGuard([Roles.User]))
+    @Post('add-pseudonym')
+    async addPseudonym(@User() user: JwtPayload, @Body() formData: PseudonymForm): Promise<Pseudonym> {
+        return await this.auth.createPseudonym(user, formData);
     }
 }

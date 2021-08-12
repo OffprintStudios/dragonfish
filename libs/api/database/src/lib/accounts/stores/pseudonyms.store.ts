@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PseudonymDocument } from '../schemas';
@@ -30,11 +30,7 @@ export class PseudonymsStore {
             roles: user.roles,
         });
 
-        return newPseud.save(function (err) {
-            if (err.errors.userTag) {
-                throw new BadRequestException('This user tag is already taken.');
-            }
-        });
+        return await newPseud.save();
     }
 
     public async changeUserTag(pseudId: string, formInfo: ChangeUserTag): Promise<PseudonymDocument> {

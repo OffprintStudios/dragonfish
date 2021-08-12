@@ -7,12 +7,14 @@ import { LoginModel, AccountForm } from '@dragonfish/shared/models/accounts';
 import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
+import { PseudonymsService } from '../../pseudonyms/services';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     constructor(
         private sessionStore: SessionStore,
         private sessionQuery: SessionQuery,
+        private pseudService: PseudonymsService,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
     ) {}
@@ -28,6 +30,7 @@ export class AuthService {
                     token: user.token,
                     currAccount: user.account,
                 });
+                this.pseudService.setAll(user.account.pseudonyms);
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
@@ -47,6 +50,7 @@ export class AuthService {
                     token: user.token,
                     currAccount: user.account,
                 });
+                this.pseudService.setAll(user.account.pseudonyms);
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
@@ -65,6 +69,7 @@ export class AuthService {
                     token: null,
                     currAccount: null,
                 });
+                this.pseudService.clearAll();
                 this.alerts.success(`See you next time!`);
             }),
             catchError((err) => {
@@ -85,6 +90,7 @@ export class AuthService {
                         token: null,
                         currAccount: null,
                     });
+                    this.pseudService.clearAll();
                     this.alerts.info(`Your token has expired, and you've been logged out.`);
                 } else {
                     this.sessionStore.update({
