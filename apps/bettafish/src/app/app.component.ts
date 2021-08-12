@@ -55,7 +55,10 @@ export class AppComponent implements OnInit {
 
         this.router.events.pipe(untilDestroyed(this)).subscribe((event) => {
             if (event instanceof NavigationEnd) {
-                this.showNav = this.router.url !== '/registration';
+                this.showNav =
+                    this.router.url !== '/registration' &&
+                    this.router.url !== '/registration/select-pseud' &&
+                    this.router.url !== '/registration/setup-pseud';
             }
         });
     }

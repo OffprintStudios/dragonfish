@@ -1,0 +1,39 @@
+<div class="p-3.5 flex flex-col justify-center items-center h-96" [@fadeInOut]="'in'">
+    <h1 class="text-3xl font-medium">Add Profile</h1>
+    <div class="w-8/12 mx-auto items-center px-6 pb-4">
+        <form [formGroup]="pseudForm">
+            <dragonfish-text-field
+                [formControlName]="'userTag'"
+                [name]="'userTag'"
+                [type]="'text'"
+                [label]="'User Tag'"
+                [placeholder]="'ABrandNewSoul'"
+            ></dragonfish-text-field>
+
+            <dragonfish-text-field
+                [formControlName]="'screenName'"
+                [name]="'screenName'"
+                [type]="'text'"
+                [label]="'Screen Name'"
+                [placeholder]="'A Brand New Soul'"
+            ></dragonfish-text-field>
+
+            <div class="offprint-select">
+                <label>Pronouns</label>
+                <ng-select class="custom" [formControlName]="'pronouns'" [multiple]="true" [searchable]="false" [placeholder]="'Select your pronouns'">
+                    <ng-option *ngFor="let pronoun of pronouns | keyvalue" [value]="pronoun.key">
+                        {{ pronoun.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+
+            <div class="my-2.5"></div>
+
+            <div class="flex items-center justify-center">
+                <button type="button" [routerLink]="['/registration/select-pseud']"><rmx-icon name="close-line"></rmx-icon>Cancel</button>
+                <div class="mx-0.5"></div>
+                <button type="submit"><rmx-icon name="check-line"></rmx-icon>Add</button>
+            </div>
+        </form>
+    </div>
+</div>

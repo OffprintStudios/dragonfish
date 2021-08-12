@@ -1,0 +1,23 @@
+div.profile-box {
+    @apply flex flex-col items-center justify-center p-2 border border-gray-600 dark:border-white h-36 w-28 rounded-md transition transform my-2;
+
+    &:hover {
+        @apply text-white scale-105 cursor-pointer;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+    }
+
+    &:active {
+        @apply text-white scale-100 cursor-pointer shadow-inner;
+        background: var(--accent-dark);
+    }
+
+    &.active {
+        @apply text-white;
+        background: var(--accent);
+    }
+
+    &.without-border {
+        @apply border-0;
+    }
+}

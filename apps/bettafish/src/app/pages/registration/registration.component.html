@@ -1,22 +1,20 @@
 <div class="flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" style="background: var(--background)">
-    <div class="absolute top-4 right-4 cursor-pointer" (click)="goBack()">
+    <div class="absolute top-4 right-4 cursor-pointer" [routerLink]="['/']">
         <rmx-icon name="close-line" class="w-16"></rmx-icon>
     </div>
     <div class="register-box flex flex-col w-full border rounded-md">
         <ng-container *ngIf="route.children.length === 0; else displayRoutes">
-            <div class="p-3.5 flex flex-col items-center justify-center h-96" *ngIf="seeLoadingPage; else notSeeingLoading" [@fadeInOut]="'in'">
+            <div class="p-3.5 flex flex-col items-center justify-center h-96" *ngIf="seeLoadingPage; else notSeeingLoading">
                 <ng-container *ngIf="loading; else notLoading">
-                    <h1 class="text-3xl mb-4">{{ announceText }}</h1>
+                    <h1 class="text-3xl mb-4 font-medium">{{ announceText }}</h1>
                     <mat-spinner [diameter]="64"></mat-spinner>
                 </ng-container>
                 <ng-template #notLoading>
-                    <h1 class="text-3xl" [@fadeInOut]="'in'">{{ announceText }}</h1>
-                    <ng-container *ngIf="hasRegistered">
-                        <p>
-                            Let's get you all set up, shall we?
-                        </p>
-                        <button>Proceed<rmx-icon name="arrow-right-s-line" class="mr-0"></rmx-icon></button>
-                    </ng-container>
+                    <h1 class="text-3xl mb-4 font-medium" [@fadeInOut]="'in'">{{ announceText }}</h1>
+                    <div class="flex items-center" [@fadeInOut]="'in'">
+                        <rmx-icon name="loader-4-line" class="animate-spin mr-1.5"></rmx-icon>
+                        <span>Fetching profiles...</span>
+                    </div>
                 </ng-template>
             </div>
             <ng-template #notSeeingLoading>
@@ -49,7 +47,9 @@
             </ng-template>
         </ng-container>
         <ng-template #displayRoutes>
-            <router-outlet></router-outlet>
+            <div [@fadeInOut]="'in'">
+                <router-outlet></router-outlet>
+            </div>
         </ng-template>
     </div>
 </div>

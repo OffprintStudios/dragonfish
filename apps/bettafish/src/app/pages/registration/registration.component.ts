@@ -3,7 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AccountForm, LoginModel } from '@dragonfish/shared/models/accounts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
-import { delay } from 'rxjs/operators';
+import { from, of } from 'rxjs';
+import { delay, concatMap, takeLast } from 'rxjs/operators';
 import { fadeInOut } from '@dragonfish/client/ui';
 
 enum RegistrationTabs {
@@ -24,6 +25,10 @@ export class RegistrationComponent {
     loading = false;
     announceText = `Please wait...`;
     hasRegistered = false;
+    delayRouting = from([1, 2, 3]).pipe(
+        concatMap((item) => of(item).pipe(delay(1000))),
+        takeLast(1),
+    );
 
     constructor(
         private router: Router,
@@ -47,6 +52,12 @@ export class RegistrationComponent {
                 () => {
                     this.loading = false;
                     this.announceText = `Welcome back!`;
+                    this.delayRouting.subscribe(() => {
+                        this.seeLoadingPage = false;
+                        this.router
+                            .navigate(['select-pseud'], { relativeTo: this.route })
+                            .catch((err) => console.log(err));
+                    });
                 },
                 () => {
                     this.loading = false;
@@ -67,6 +78,11 @@ export class RegistrationComponent {
                     this.loading = false;
                     this.hasRegistered = true;
                     this.announceText = `Welcome aboard!`;
+                    this.delayRouting.subscribe(() => {
+                        this.router
+                            .navigate(['select-pseud'], { relativeTo: this.route })
+                            .catch((err) => console.log(err));
+                    });
                 },
                 () => {
                     this.loading = false;
