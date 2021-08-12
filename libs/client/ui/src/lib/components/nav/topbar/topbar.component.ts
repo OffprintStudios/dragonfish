@@ -7,6 +7,7 @@ import { ViewRef, ViewService } from '@ngneat/overview';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { InboxComponent } from '../../inbox/inbox.component';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 @UntilDestroy()
 @Component({
@@ -19,12 +20,14 @@ export class TopbarComponent implements OnInit {
 
     private userMenu: ViewRef;
     activeUserMenu = false;
+    tagShown = false;
 
     private inbox: ViewRef;
     activeInbox = false;
 
     constructor(
         public sessionQuery: SessionQuery,
+        public pseudQuery: PseudonymsQuery,
         private auth: AuthService,
         private dialog: MatDialog,
         private router: Router,
@@ -85,5 +88,9 @@ export class TopbarComponent implements OnInit {
             this.inbox = undefined;
             this.activeInbox = false;
         }
+    }
+
+    toggleUserTag() {
+        this.tagShown = !this.tagShown;
     }
 }

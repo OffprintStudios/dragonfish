@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PopupModel } from '@dragonfish/shared/models/util';
-import { PopupComponent } from '@dragonfish/client/ui';
+import { PopupComponent } from '../../popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { Router } from '@angular/router';
-import { Roles } from '@dragonfish/shared/models/users';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 @Component({
     selector: 'dragonfish-user-menu',
@@ -15,6 +16,7 @@ import { isAllowed } from '@dragonfish/shared/functions';
 })
 export class UserMenuComponent {
     constructor(
+        public pseudQuery: PseudonymsQuery,
         public sessionQuery: SessionQuery,
         private dialog: MatDialog,
         private auth: AuthService,

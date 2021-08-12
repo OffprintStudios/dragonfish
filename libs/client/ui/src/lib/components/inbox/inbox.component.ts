@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SessionQuery } from '@dragonfish/client/repository/session';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 enum InboxTabs {
     Messages,
@@ -9,13 +9,15 @@ enum InboxTabs {
 @Component({
     selector: 'dragonfish-inbox',
     templateUrl: './inbox.component.html',
-    styleUrls: ['./inbox.component.scss']
+    styleUrls: ['./inbox.component.scss'],
 })
 export class InboxComponent {
     inboxTabs = InboxTabs;
     selectedTab = InboxTabs.Messages;
 
-    constructor(public sessionQuery: SessionQuery) {}
+    constructor(public pseudQuery: PseudonymsQuery) {}
 
-    switchTab = (newTab: InboxTabs) => { this.selectedTab = newTab };
+    switchTab = (newTab: InboxTabs) => {
+        this.selectedTab = newTab;
+    };
 }
