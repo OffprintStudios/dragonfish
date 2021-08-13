@@ -15,6 +15,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ContentConstants } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -33,12 +34,12 @@ export class PoetryFormComponent implements OnInit {
     isCollection = false;
 
     poetryForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
+        desc: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_DESC_LENGTH]),
+        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
         category: new FormControl(null, [Validators.required]),
         form: new FormControl(null, [Validators.required]),
-        genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
+        genres: new FormControl([], [Validators.required, ContentConstants.VAL_MIN_GENRES, ContentConstants.VAL_MAX_GENRES]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -112,7 +113,7 @@ export class PoetryFormComponent implements OnInit {
             return;
         }
         if (this.fields.genres.invalid) {
-            this.alerts.warn('Invalid number of genres. Limit is 3.');
+            this.alerts.warn('Invalid number of genres. Limit is ' + ContentConstants.MAX_GENRES + '.');
             return;
         }
         if (this.fields.rating.invalid) {

@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
+import { ContentConstants } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -31,8 +32,8 @@ export class NewsFormComponent implements OnInit {
     pubStatus = PubStatus;
 
     postForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
+        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
         category: new FormControl(null, [Validators.required]),
     });
 

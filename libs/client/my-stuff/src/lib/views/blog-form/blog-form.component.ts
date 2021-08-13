@@ -15,6 +15,7 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
 import { untilDestroyed } from '@ngneat/until-destroy';
+import { ContentConstants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-blog-form',
@@ -29,8 +30,8 @@ export class BlogFormComponent implements OnInit {
     formTitle = `Create a Blog`;
 
     blogForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
+        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
         rating: new FormControl(null, [Validators.required]),
     });
 

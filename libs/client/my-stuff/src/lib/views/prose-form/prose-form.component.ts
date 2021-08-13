@@ -17,6 +17,7 @@ import { Location } from '@angular/common';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
+import { ContentConstants } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -33,12 +34,12 @@ export class ProseFormComponent implements OnInit {
     statuses = WorkStatus;
 
     proseForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
+        desc: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_DESC_LENGTH]),
+        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
         category: new FormControl(null, [Validators.required]),
-        genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
-        tags: new FormControl([], [Validators.maxLength(5)]),
+        genres: new FormControl([], [Validators.required, ContentConstants.VAL_MIN_GENRES, ContentConstants.VAL_MAX_GENRES]),
+        tags: new FormControl([], [ContentConstants.VAL_MAX_TAGS]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -110,11 +111,11 @@ export class ProseFormComponent implements OnInit {
             return;
         }
         if (this.fields.genres.invalid) {
-            this.alerts.warn('Invalid number of genres. Limit is 3.');
+            this.alerts.warn('Invalid number of genres. Limit is ' + ContentConstants.MAX_GENRES + '.');
             return;
         }
         if (this.fields.tags.invalid) {
-            this.alerts.warn('Invalid number of tags. Limit is 5.');
+            this.alerts.warn('Invalid number of tags. Limit is ' + ContentConstants.MAX_TAGS + '.');
             return;
         }
         if (this.fields.rating.invalid) {
