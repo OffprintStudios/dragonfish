@@ -10,11 +10,7 @@ export class DisplayTagsPipe implements PipeTransform {
         if (tags.length === 1) {
             return this.formatTagName(tags[0]);
         } else {
-            const theseTags: string[] = [];
-            tags.forEach((tag) => {
-                theseTags.push(this.formatTagName(tag));
-            });
-            return theseTags.join(', ');
+            return tags.map(x => this.formatTagName(x)).join(', ');
         }
     }
 
