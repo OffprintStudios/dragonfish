@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
-import { ContentConstants } from '@dragonfish/shared/constants';
+import { MAX_DESC_LENGTH, MAX_GENRES, MAX_TAGS, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -34,12 +34,12 @@ export class ProseFormComponent implements OnInit {
     statuses = WorkStatus;
 
     proseForm = new FormGroup({
-        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
-        desc: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_DESC_LENGTH]),
-        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
+        title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
+        desc: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_DESC_LENGTH)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         category: new FormControl(null, [Validators.required]),
-        genres: new FormControl([], [Validators.required, ContentConstants.VAL_MIN_GENRES, ContentConstants.VAL_MAX_GENRES]),
-        tags: new FormControl([], [ContentConstants.VAL_MAX_TAGS]),
+        genres: new FormControl([], [Validators.required, Validators.minLength(MIN_GENRES), Validators.maxLength(MAX_GENRES)]),
+        tags: new FormControl([], [Validators.maxLength(MAX_TAGS)]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -111,11 +111,11 @@ export class ProseFormComponent implements OnInit {
             return;
         }
         if (this.fields.genres.invalid) {
-            this.alerts.warn('Invalid number of genres. Limit is ' + ContentConstants.MAX_GENRES + '.');
+            this.alerts.warn('Invalid number of genres. Limit is ' + MAX_GENRES + '.');
             return;
         }
         if (this.fields.tags.invalid) {
-            this.alerts.warn('Invalid number of tags. Limit is ' + ContentConstants.MAX_TAGS + '.');
+            this.alerts.warn('Invalid number of tags. Limit is ' + MAX_TAGS + '.');
             return;
         }
         if (this.fields.rating.invalid) {

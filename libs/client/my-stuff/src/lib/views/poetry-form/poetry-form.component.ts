@@ -15,7 +15,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { ContentConstants } from '@dragonfish/shared/constants';
+import { MAX_DESC_LENGTH, MAX_GENRES, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -34,12 +34,12 @@ export class PoetryFormComponent implements OnInit {
     isCollection = false;
 
     poetryForm = new FormGroup({
-        title: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_TITLE_LENGTH]),
-        desc: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH, ContentConstants.VAL_MAX_DESC_LENGTH]),
-        body: new FormControl('', [Validators.required, ContentConstants.VAL_MIN_TEXT_LENGTH]),
+        title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
+        desc: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_DESC_LENGTH)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         category: new FormControl(null, [Validators.required]),
         form: new FormControl(null, [Validators.required]),
-        genres: new FormControl([], [Validators.required, ContentConstants.VAL_MIN_GENRES, ContentConstants.VAL_MAX_GENRES]),
+        genres: new FormControl([], [Validators.required, Validators.minLength(MIN_GENRES), Validators.maxLength(MAX_GENRES)]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -113,7 +113,7 @@ export class PoetryFormComponent implements OnInit {
             return;
         }
         if (this.fields.genres.invalid) {
-            this.alerts.warn('Invalid number of genres. Limit is ' + ContentConstants.MAX_GENRES + '.');
+            this.alerts.warn('Invalid number of genres. Limit is ' + MAX_GENRES + '.');
             return;
         }
         if (this.fields.rating.invalid) {
