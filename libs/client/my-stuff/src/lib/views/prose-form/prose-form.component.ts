@@ -17,7 +17,7 @@ import { Location } from '@angular/common';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
-import { MAX_DESC_LENGTH, MAX_GENRES, MAX_TAGS, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
+import { MAX_DESC_LENGTH, MAX_GENRES, MAX_FANDOM_TAGS, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -39,7 +39,7 @@ export class ProseFormComponent implements OnInit {
         body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl([], [Validators.required, Validators.minLength(MIN_GENRES), Validators.maxLength(MAX_GENRES)]),
-        tags: new FormControl([], [Validators.maxLength(MAX_TAGS)]),
+        tags: new FormControl([], [Validators.maxLength(MAX_FANDOM_TAGS)]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -115,7 +115,7 @@ export class ProseFormComponent implements OnInit {
             return;
         }
         if (this.fields.tags.invalid) {
-            this.alerts.warn('Invalid number of tags. Limit is ' + MAX_TAGS + '.');
+            this.alerts.warn('Invalid number of tags. Limit is ' + MAX_FANDOM_TAGS + '.');
             return;
         }
         if (this.fields.rating.invalid) {
