@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <ng-container *ngIf="proseForm.controls.category.value === categories.Fanwork">
+                <ng-container *ngIf="proseForm.controls.category.value === categories.Fanwork && tagsEnabled">
                     <ng-container *ngIf="tagsQuery.all$ | async as tags">
                         <div class="offprint-select">
                             <label>Tags</label>

@@ -17,7 +17,15 @@ import { Location } from '@angular/common';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
-import { MAX_DESC_LENGTH, MAX_GENRES, MAX_FANDOM_TAGS, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
+import { 
+    MAX_DESC_LENGTH,
+    MAX_GENRES,
+    MAX_FANDOM_TAGS,
+    MAX_TITLE_LENGTH,
+    MIN_GENRES,
+    MIN_TEXT_LENGTH,
+    TAGS_ENABLED,
+} from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +40,8 @@ export class ProseFormComponent implements OnInit {
     genres = Genres;
     ratings = ContentRating;
     statuses = WorkStatus;
+
+    tagsEnabled = TAGS_ENABLED;
 
     proseForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
