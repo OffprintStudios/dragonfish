@@ -8,6 +8,7 @@ import { throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
 import { PseudonymsService } from '../../pseudonyms/services';
+import { Router } from '@angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
         private pseudService: PseudonymsService,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
+        private router: Router,
     ) {}
 
     /**
@@ -70,6 +72,7 @@ export class AuthService {
                     currAccount: null,
                 });
                 this.pseudService.clearAll();
+                this.router.navigate(['/']).catch((err) => console.log(err));
                 this.alerts.success(`See you next time!`);
             }),
             catchError((err) => {
@@ -91,6 +94,7 @@ export class AuthService {
                         currAccount: null,
                     });
                     this.pseudService.clearAll();
+                    this.router.navigate(['/']).catch((err) => console.log(err));
                     this.alerts.info(`Your token has expired, and you've been logged out.`);
                 } else {
                     this.sessionStore.update({

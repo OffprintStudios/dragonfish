@@ -20,7 +20,6 @@ export class TopbarComponent implements OnInit {
 
     private userMenu: ViewRef;
     activeUserMenu = false;
-    tagShown = false;
 
     private inbox: ViewRef;
     activeInbox = false;
@@ -88,9 +87,5 @@ export class TopbarComponent implements OnInit {
             this.inbox = undefined;
             this.activeInbox = false;
         }
-    }
-
-    toggleUserTag() {
-        this.tagShown = !this.tagShown;
     }
 }

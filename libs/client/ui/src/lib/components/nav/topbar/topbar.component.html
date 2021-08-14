@@ -13,17 +13,15 @@
                         class="link-with-avatar cursor-pointer"
                         [ngClass]="{ 'active': activeUserMenu }"
                         (click)="openUserMenu()"
-                        (mouseenter)="toggleUserTag()"
-                        (mouseleave)="toggleUserTag()"
                     >
                         <img class="avatar" [src]="currentUser.profile.avatar" [alt]="'Avatar'" />
                         <div class="info ml-1 text-xs" [ngClass]="transparent ? 'hover:text-white' : 'text-white'">
                             <div class="font-bold truncate">{{ currentUser.screenName }}</div>
-                            <ng-container *ngIf="tagShown; else taglineShown">
-                                <div class="truncate">@{{ currentUser.userTag }}</div>
+                            <ng-container *ngIf="currentUser.profile.tagline; else taglineShown">
+                                <div class="truncate">{{ currentUser.profile.tagline }}</div>
                             </ng-container>
                             <ng-template #taglineShown>
-                                <div class="truncate">{{ currentUser.profile.tagline }}</div>
+                                <div class="truncate">@{{ currentUser.userTag }}</div>
                             </ng-template>
                         </div>
                     </a>

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import * as lodash from 'lodash';
 
-import { Roles } from '@dragonfish/shared/models/users';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { AccountsStore } from '@dragonfish/api/database/accounts/stores';
 

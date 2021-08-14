@@ -8,6 +8,7 @@ import { Account, AccountForm, FrontendAccount, PseudonymForm, Pseudonym } from 
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -74,11 +75,13 @@ export class AuthService {
     }
 
     public async checkRefreshToken(accountId: string, sessionId: string): Promise<boolean> {
-        return await this.accountStore.checkSession(accountId, sessionId);
+        const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
+        return await this.accountStore.checkSession(accountId, hashedSessionId);
     }
 
     public async clearRefreshToken(userId: string, oldSessionId: string): Promise<void> {
-        await this.accountStore.removeSession(userId, oldSessionId);
+        const hashedSessionId = createHash('sha256').update(oldSessionId).digest('base64');
+        await this.accountStore.removeSession(userId, hashedSessionId);
     }
 
     //#endregion

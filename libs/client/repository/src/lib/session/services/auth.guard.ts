@@ -10,7 +10,7 @@ import {
 } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { Roles } from '@dragonfish/shared/models/users';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed, isNullOrUndefined } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { SessionQuery } from '../session.query';
@@ -87,7 +87,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         if (token) {
             if (!isNullOrUndefined(route.data)) {
                 if (!isNullOrUndefined(route.data.roles)) {
-                    console.log(`something is present...`);
                     if (isAllowed(decodedToken.roles as Roles[], route.data.roles)) {
                         return true;
                     } else {
