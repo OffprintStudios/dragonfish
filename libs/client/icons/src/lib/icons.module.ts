@@ -84,6 +84,7 @@ import {
     RiSendPlane2Line,
     RiLoader4Line,
     RiAddCircleLine,
+    RiGroup2Line,
 } from 'angular-remix-icon';
 
 import {
@@ -385,6 +386,7 @@ const remixIcons = {
     RiSendPlane2Line,
     RiLoader4Line,
     RiAddCircleLine,
+    RiGroup2Line,
 };
 
 @NgModule({

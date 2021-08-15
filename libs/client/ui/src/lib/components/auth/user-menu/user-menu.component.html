@@ -77,6 +77,7 @@
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a
                     class="button w-full"
+                    [routerLink]="['/reading-history']"
                 >
                     <rmx-icon name="history-line"></rmx-icon>
                     Reading History
@@ -94,6 +95,11 @@
                         <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                     </ng-container>
                 </ng-container>
+                <a class="button w-full" [routerLink]="['/registration/select-pseud']">
+                    <rmx-icon name="group-2-line"></rmx-icon>
+                    Switch Profile
+                </a>
+                <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a class="button bottom w-full cursor-pointer" (click)="logout()">
                     <rmx-icon name="logout-circle-line"></rmx-icon>
                     Log Out
