@@ -23,6 +23,13 @@ div.card {
     }
     div.card-tags {
         border-bottom: 1px solid whitesmoke;
+        a {
+            cursor: pointer;
+            color: whitesmoke;
+            &:hover {
+                background: var(--accent-dark);
+            }
+        }
     }
     span.divider {
         font-size: 14px;

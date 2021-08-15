@@ -22,6 +22,7 @@ import { Resolvers } from './resolvers';
 /* Util */
 import { Roles } from '@dragonfish/shared/models/users';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { TagRoutes } from './pages/tags';
 
 const routes: Routes = [
     ...HomeRoutes,
@@ -33,6 +34,7 @@ const routes: Routes = [
     ...ContentViewRoutes,
     ...SettingsRoutes,
     ...RegistrationRoutes,
+    ...TagRoutes,
     {
         path: 'my-stuff',
         canLoad: [AuthGuard],
