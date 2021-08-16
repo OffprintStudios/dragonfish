@@ -103,7 +103,11 @@ export async function setupReadingHistoryCollection() {
  * Sets up the tags collection.
  */
 export async function setupTagsCollection() {
-    return TagsSchema;
+    const schema = TagsSchema;
+
+    schema.plugin(MongooseAutopopulate);
+
+    return schema;
 }
 
 //#endregion

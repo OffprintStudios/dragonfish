@@ -15,6 +15,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { MAX_DESC_LENGTH, MAX_GENRES, MAX_TITLE_LENGTH, MIN_GENRES, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -33,12 +34,12 @@ export class PoetryFormComponent implements OnInit {
     isCollection = false;
 
     poetryForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        desc: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(250)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
+        desc: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_DESC_LENGTH)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         category: new FormControl(null, [Validators.required]),
         form: new FormControl(null, [Validators.required]),
-        genres: new FormControl([], [Validators.required, Validators.minLength(1), Validators.maxLength(3)]),
+        genres: new FormControl([], [Validators.required, Validators.minLength(MIN_GENRES), Validators.maxLength(MAX_GENRES)]),
         rating: new FormControl(null, [Validators.required]),
         status: new FormControl(null, [Validators.required]),
     });
@@ -91,8 +92,36 @@ export class PoetryFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.poetryForm.invalid) {
-            this.alerts.warn(`Looks like something's wrong with the stuff you've entered.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.desc.invalid) {
+            this.alerts.warn('Short description has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
+            return;
+        }
+        if (this.fields.form.invalid) {
+            this.alerts.warn('Form is required.');
+            return;
+        }
+        if (this.fields.genres.invalid) {
+            this.alerts.warn('Invalid number of genres. Limit is ' + MAX_GENRES + '.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
+            return;
+        }
+        if (this.fields.status.invalid) {
+            this.alerts.warn('Status is required.');
             return;
         }
 

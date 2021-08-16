@@ -1,5 +1,5 @@
-import { TagKind, TagsForm, TagsModel } from "@dragonfish/shared/models/content";
-import { TagsTree } from "@dragonfish/shared/models/content/tags.model";
+import { TagKind, TagsForm, TagsModel } from "@dragonfish/shared/models/content/tags";
+import { TagsTree } from "@dragonfish/shared/models/content/tags/tags.model";
 
 export interface ITagsService {
 

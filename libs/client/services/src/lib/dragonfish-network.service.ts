@@ -21,10 +21,8 @@ import {
     PubChange,
     PubContent,
     SetRating,
-    TagKind,
-    TagsForm,
-    TagsModel,
 } from '@dragonfish/shared/models/content';
+import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
@@ -44,7 +42,7 @@ import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
-import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 
 /**
  * ## DragonfishNetworkService

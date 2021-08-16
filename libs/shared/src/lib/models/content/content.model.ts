@@ -2,7 +2,7 @@ import { UserInfo } from '../users';
 import { PubStatus } from './pub-status.enum';
 import { ContentKind } from './content-kind.enum';
 import { ContentRating } from '../works';
-import { TagsModel } from './tags.model';
+import { TagsModel } from './tags/tags.model';
 
 export interface ContentModel {
     readonly _id: string;
@@ -28,7 +28,7 @@ export interface ContentModel {
         isDeleted: boolean;
     };
     readonly kind: ContentKind;
-    tags: TagsModel[];
+    tags?: string[] | TagsModel[];
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

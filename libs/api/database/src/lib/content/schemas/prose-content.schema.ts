@@ -52,8 +52,8 @@ export class ProseContentDocument extends Document implements ProseContent {
     })
     sections: string[] | SectionInfo[];
 
-    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
-    tags: TagsModel[];
+    @Prop({type: [{type: String, ref: 'Tags'}] })
+    tags?: string[] | TagsModel[];
 }
 
 export const ProseContentSchema = SchemaFactory.createForClass(ProseContentDocument);

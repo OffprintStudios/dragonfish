@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { TagsStore } from "@dragonfish/api/database/content/stores";
-import { TagKind, TagsModel, TagsForm } from "@dragonfish/shared/models/content";
-import { TagsTree } from "@dragonfish/shared/models/content/tags.model";
+import { TagKind, TagsModel, TagsForm } from "@dragonfish/shared/models/content/tags";
+import { TagsTree } from "@dragonfish/shared/models/content/tags/tags.model";
 import { IContent, ITagsService } from "../../shared/content";
 
 @Injectable()
