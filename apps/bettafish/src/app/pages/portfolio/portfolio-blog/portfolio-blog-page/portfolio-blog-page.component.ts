@@ -24,7 +24,7 @@ export class PortfolioBlogPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        combineLatest(this.viewQuery.currContent$, this.route.queryParamMap)
+        combineLatest([this.viewQuery.currContent$, this.route.queryParamMap])
             .pipe(untilDestroyed(this))
             .subscribe((x) => {
                 const [content, queryParams] = x;
