@@ -99,8 +99,8 @@ export class ContentController {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
-        if (formInfo && (formInfo as CreateProse).tags && (formInfo as CreateProse).tags.length > MAX_FANDOM_TAGS) {
-            throw new BadRequestException('You included too many fandom tags with this request.');
+        if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
+            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
         }
 
         return await this.content.createOne(user, kind, formInfo);
@@ -118,8 +118,8 @@ export class ContentController {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
         }
-        if (formInfo && (formInfo as CreateProse).tags && (formInfo as CreateProse).tags.length > MAX_FANDOM_TAGS) {
-            throw new BadRequestException('You included too many fandom tags with this request.');
+        if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
+            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
         }
 
         return await this.content.saveOne(user, contentId, formInfo);
