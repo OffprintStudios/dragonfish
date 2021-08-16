@@ -60,8 +60,17 @@
                             <div class="tag">{{ $any(content.currContent.meta).genres | separateGenres }}</div>
                         </div>
                         <ng-container *ngIf="content.currContent.tags !== null && content.currContent.tags.length > 0">
-                            <div class="flex flex-row items-center uppercase text-sm">
-                                <span class="tag tags">{{ content.currContent.tags | displayTags }}</span>
+                            <div class="content-tags flex flex-row items-center uppercase text-sm">
+                                <span class="tag tags">
+                                    <ng-container *ngFor="let tag of content.currContent.tags; let i = index">   
+                                        <a [routerLink]="['/tag']">
+                                            {{ tag | displayTags }}
+                                        </a>
+                                        <ng-container *ngIf="i < content.currContent.tags.length - 1">
+                                            , 
+                                        </ng-container>
+                                    </ng-container>
+                                </span>
                             </div>
                         </ng-container>
                     </div>
