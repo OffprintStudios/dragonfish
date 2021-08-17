@@ -86,7 +86,7 @@
                     <div class="content-tags flex flex-row items-center uppercase text-sm">
                         <span class="tag tags">
                             <ng-container *ngFor="let tag of currContent.tags; let i = index">   
-                                <a [routerLink]="['/tag']">
+                                <a [routerLink]="['/tag', tag._id, tag.name | slugify]">
                                     {{ tag | displayTags }}
                                 </a>
                                 <ng-container *ngIf="i < currContent.tags.length - 1">

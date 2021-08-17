@@ -41,7 +41,7 @@
             <div class="card-tags flex flex-row items-center">
                 <ng-container *ngIf="content.tags.length === 1; else multipleTags">
                     <span class="tag tags">
-                        <a [routerLink]="['/tag']">
+                        <a [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]">
                             {{ content.tags[0] | displayTags }}
                         </a>
                     </span>
@@ -50,7 +50,7 @@
                     <ng-container *ngIf="showAllTags; else showOneTag">
                         <span class="tag tags">
                             <ng-container *ngFor="let tag of content.tags; let i = index">   
-                                <a [routerLink]="['/tag']">
+                                <a [routerLink]="['/tag', tag._id, tag.name | slugify]">
                                     {{ tag | displayTags }}
                                 </a>
                                 <ng-container *ngIf="i < content.tags.length - 1">
@@ -62,7 +62,7 @@
                     </ng-container>
                     <ng-template #showOneTag>
                         <span class="tag tags">
-                            <a [routerLink]="['/tag']">
+                            <a [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]">
                                 {{ content.tags[0] | displayTags }}
                             </a>
                         </span>

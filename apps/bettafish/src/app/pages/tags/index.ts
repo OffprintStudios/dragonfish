@@ -6,5 +6,5 @@ export const TagPages = [
 ];
 
 export const TagRoutes: Routes = [
-    { path: 'tag', component: TagPageComponent },
+    { path: 'tag/:tagId/:tagName', component: TagPageComponent },
 ];
