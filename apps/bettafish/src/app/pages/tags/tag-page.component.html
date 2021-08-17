@@ -4,3 +4,46 @@
         <h3>{{ tagId }}</h3>
     </div>
 </dragonfish-topbar>
+
+<ng-container *ngIf="tagsQuery.loading$ | async else notLoading">
+    <div class="flex flex-row items-center justify-center h-72">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-container>
+
+<ng-template #notLoading>
+    <ng-container *ngIf="tagsQuery.all$ | async as tags">
+        <ng-container *ngIf="tags.length === 0; else notEmpty">
+            <div class="empty">
+                <h3>Looks like there something missing here...</h3>
+                <p>If you think this is an error, contact your system administrator.</p>
+            </div>
+        </ng-container>
+        <ng-template #notEmpty>
+            <div class="w-8/12 mx-auto my-8">
+                <mat-accordion>
+                    <ng-container *ngFor="let tag of tags">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{ tag.name }}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{ tag.desc }}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="my-2"><!--spacer--></div>
+                            <ul>
+                                <ng-container *ngFor="let child of tag.children">
+                                    <li class="py-2 px-1 border-t" style="border-color: var(--borders);">
+                                        <dragonfish-child-tag-item [parentId]="tag._id" [tag]="child"></dragonfish-child-tag-item>
+                                    </li>
+                                </ng-container>
+                            </ul>
+                        </mat-expansion-panel>
+                    </ng-container>
+                </mat-accordion>
+            </div>
+        </ng-template>
+    </ng-container>
+</ng-template>

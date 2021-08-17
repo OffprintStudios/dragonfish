@@ -19,6 +19,7 @@ export class TagPageComponent implements OnInit {
     ngOnInit(): void {
         this.route.paramMap.subscribe((params) => {
             this.tagId = params.get("tagId");
+            this.tagsService.fetchDescendants(this.tagId).subscribe();
         });
     }
 }
