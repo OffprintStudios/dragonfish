@@ -8,7 +8,7 @@ export class ReportDocument extends Types.Subdocument implements Report {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ type: String, ref: 'User', required: true })
+    @Prop({ type: String, ref: 'Account', required: true })
     readonly user: string;
 
     @Prop({ type: [String], enum: Object.keys(ReportReason), required: true })

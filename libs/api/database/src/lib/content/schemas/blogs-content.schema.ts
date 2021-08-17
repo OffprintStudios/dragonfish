@@ -1,21 +1,29 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
 import { BlogsContentModel, PubStatus, ContentRating, ContentKind, TagsModel } from '@dragonfish/shared/models/content';
-import { UserInfo } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Schema()
 export class BlogsContentDocument extends Document implements BlogsContentModel {
     readonly _id: string;
-    readonly author: string | UserInfo;
+    readonly author: string | Pseudonym;
     title: string;
     desc: string;
     body: string;
     meta: { rating: ContentRating; warnings: string[] };
-    readonly stats: { words: number; readonly views: number; likes: number; dislikes: number; readonly comments: number };
+    readonly stats: {
+        words: number;
+        readonly views: number;
+        likes: number;
+        dislikes: number;
+        readonly comments: number;
+    };
 
-    @Prop(raw({
-        releaseOn: { type: Date, default: null },
-    }))
+    @Prop(
+        raw({
+            releaseOn: { type: Date, default: null },
+        }),
+    )
     audit: {
         published: PubStatus;
         publishedOn: Date;
@@ -26,9 +34,9 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
 
     readonly kind: ContentKind;
 
-    @Prop({type: [{type: String, ref: 'TagsDocument'}] })
+    @Prop({ type: [{ type: String, ref: 'TagsDocument' }] })
     tags: TagsModel[];
-    
+
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

@@ -1,9 +1,9 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ActionType, CaseKind, UserCaseFile } from '@dragonfish/shared/models/case-files';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ReportDocument } from './reports.schema';
 import { NotesDocument } from './notes.schema';
+import { Account, Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Schema()
 export class UserCaseFileDocument extends Document implements UserCaseFile {
@@ -11,7 +11,7 @@ export class UserCaseFileDocument extends Document implements UserCaseFile {
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;
-    claimedBy: string | FrontendUser;
+    claimedBy: string | Pseudonym;
     action: {
         hasType: ActionType;
         date: Date;
@@ -23,13 +23,13 @@ export class UserCaseFileDocument extends Document implements UserCaseFile {
 
     @Prop({
         type: String,
-        ref: 'User',
+        ref: 'Account',
         autopopulate: {
-            select: '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
+            select: '-password -email -sessions -termsAgree -emailConfirmed -updatedAt',
         },
         required: true,
     })
-    user: string | FrontendUser;
+    user: string | Account;
 }
 
 export const UserCaseFileSchema = SchemaFactory.createForClass(UserCaseFileDocument);

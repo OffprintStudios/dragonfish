@@ -1,17 +1,17 @@
 import { CaseKind } from './case-kind.enum';
 import { Report } from './reports.model';
 import { Note } from './notes.model';
-import { FrontendUser } from '@dragonfish/shared/models/users';
-import { Comment } from '@dragonfish/shared/models/comments';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { Comment } from '../comments';
+import { ContentModel } from '../content';
 import { ActionType } from './action.type';
+import { Account, Pseudonym } from '../accounts';
 
 export interface CaseFile {
     readonly _id: number;
     reports: Report[];
     notes: Note[];
     isClosed: boolean;
-    claimedBy: string | FrontendUser;
+    claimedBy: string | Pseudonym;
     action: {
         hasType: ActionType;
         date: Date;
@@ -31,5 +31,5 @@ export interface CommentCaseFile extends CaseFile {
 }
 
 export interface UserCaseFile extends CaseFile {
-    user: string | FrontendUser;
+    user: string | Account;
 }

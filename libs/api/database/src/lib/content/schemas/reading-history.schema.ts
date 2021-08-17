@@ -1,4 +1,4 @@
-import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { RatingOption, ReadingHistory } from '@dragonfish/shared/models/reading-history';
 import { Document } from 'mongoose';
@@ -9,7 +9,7 @@ export class ReadingHistoryDocument extends Document implements ReadingHistory {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ ref: 'User', required: true, index: true })
+    @Prop({ ref: 'Account', required: true, index: true })
     readonly owner: string;
 
     @Prop({ type: String, ref: 'Content', required: true, autopopulate: true })
