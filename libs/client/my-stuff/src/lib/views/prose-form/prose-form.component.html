@@ -55,6 +55,26 @@
                     </div>
                 </div>
 
+                <ng-container *ngIf="proseForm.controls.category.value === categories.Fanwork && tagsEnabled">
+                    <ng-container *ngIf="tagsQuery.all$ | async as tags">
+                        <div class="offprint-select">
+                            <label>Tags</label>
+                            <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Tag(s)'">
+                                <div *ngFor="let tag of tags">
+                                    <ng-option [value]="tag._id">
+                                        {{ tag.name }}
+                                    </ng-option>
+                                    <div *ngFor="let child of tag.children">
+                                        <ng-option [value]="child._id">
+                                            {{ tag.name }} — {{ child.name }}
+                                        </ng-option>
+                                    </div>
+                                </div>
+                            </ng-select>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
                 <dragonfish-text-field
                     [formControlName]="'desc'"
                     [name]="'desc'"

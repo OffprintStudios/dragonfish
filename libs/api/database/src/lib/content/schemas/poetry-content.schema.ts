@@ -65,7 +65,7 @@ export class PoetryContentDocument extends Document implements PoetryContent {
     })
     sections?: string[] | SectionInfo[];
 
-    @Prop({ type: [{ type: String, ref: 'TagsDocument' }] })
+    @Prop({type: [{type: String, ref: 'Tags'}] })
     tags: TagsModel[];
 }
 

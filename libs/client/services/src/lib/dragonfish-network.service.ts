@@ -19,10 +19,8 @@ import {
     PubChange,
     PubContent,
     SetRating,
-    TagKind,
-    TagsForm,
-    TagsModel,
 } from '@dragonfish/shared/models/content';
+import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';

@@ -27,7 +27,7 @@ export class MyStuffService {
                     }),
                     catchError(err => {
                         this.alerts.error(`Something went wrong fetching your content!`);
-                        return throwError(err);
+                        return throwError(() => err);
                     }),
                 );
 
@@ -49,7 +49,7 @@ export class MyStuffService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -62,7 +62,7 @@ export class MyStuffService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -75,7 +75,7 @@ export class MyStuffService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -88,7 +88,7 @@ export class MyStuffService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -101,7 +101,7 @@ export class MyStuffService {
             }),
             catchError((err) => {
                 this.alerts.error(`Something went wrong! Try again in a little bit.`);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }

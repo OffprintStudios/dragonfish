@@ -37,6 +37,23 @@
                 <span class="relative -top-1.5">{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
             </span>
         </div>
+        <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
+            <div class="card-tags flex flex-row items-center">
+                <ng-container *ngIf="content.tags.length === 1; else multipleTags">
+                    <span class="tag tags">{{ content.tags[0] | displayTags }}</span>
+                </ng-container>
+                <ng-template #multipleTags>
+                    <ng-container *ngIf="showAllTags; else showOneTag">
+                        <span class="tag tags">{{ content.tags | displayTags }}</span>
+                        <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
+                    </ng-container>
+                    <ng-template #showOneTag>
+                        <span class="tag tags">{{ content.tags[0] | displayTags }}</span>
+                        <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </ng-container>
         <div class="card-body">
             <div *ngIf="content.meta.coverArt">
                 <img class="cover-art" [alt]="'Cover Art'" [src]="content.meta.coverArt" />

@@ -15,6 +15,7 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
 import { untilDestroyed } from '@ngneat/until-destroy';
+import { MAX_TITLE_LENGTH, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @Component({
     selector: 'dragonfish-blog-form',
@@ -29,8 +30,8 @@ export class BlogFormComponent implements OnInit {
     formTitle = `Create a Blog`;
 
     blogForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         rating: new FormControl(null, [Validators.required]),
     });
 
@@ -107,8 +108,16 @@ export class BlogFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.blogForm.invalid) {
-            this.alerts.warn(`Something's not right with the data you entered.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
             return;
         }
 

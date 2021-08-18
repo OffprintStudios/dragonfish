@@ -9,6 +9,7 @@ export interface CreateProse {
     readonly body: string;
     readonly category: WorkKind;
     readonly genres: Genres[];
+    readonly tags: string[];
     readonly rating: ContentRating;
     readonly status: WorkStatus;
 }

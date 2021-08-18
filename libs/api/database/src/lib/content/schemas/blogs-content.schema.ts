@@ -34,7 +34,7 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
 
     readonly kind: ContentKind;
 
-    @Prop({ type: [{ type: String, ref: 'TagsDocument' }] })
+    @Prop({type: [{type: String, ref: 'Tags'}] })
     tags: TagsModel[];
 
     readonly createdAt: Date;

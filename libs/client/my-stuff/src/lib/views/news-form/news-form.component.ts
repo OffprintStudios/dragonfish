@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
+import { MAX_TITLE_LENGTH, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @UntilDestroy()
 @Component({
@@ -31,8 +32,8 @@ export class NewsFormComponent implements OnInit {
     pubStatus = PubStatus;
 
     postForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH), Validators.maxLength(MAX_TITLE_LENGTH)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
         category: new FormControl(null, [Validators.required]),
     });
 
@@ -109,8 +110,16 @@ export class NewsFormComponent implements OnInit {
     }
 
     submitForm(contentId?: string) {
-        if (this.postForm.invalid) {
-            this.alerts.warn(`Check the form fields for any errors.`);
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
             return;
         }
 

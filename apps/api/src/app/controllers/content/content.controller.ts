@@ -17,7 +17,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, CreateProse, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -27,6 +27,7 @@ import { IContent } from '../../shared/content';
 import { IImages } from '../../shared/images';
 import { CommentStore } from '@dragonfish/api/database/comments/stores';
 import { CommentKind } from '@dragonfish/shared/models/comments';
+import { MAX_FANDOM_TAGS } from '@dragonfish/shared/constants/content-constants';
 
 @Controller('content')
 export class ContentController {
@@ -98,6 +99,9 @@ export class ContentController {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
+        if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
+            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
+        }
 
         return await this.content.createOne(user, kind, formInfo);
     }
@@ -113,6 +117,9 @@ export class ContentController {
     ) {
         if (isNullOrUndefined(contentId) || isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
+        }
+        if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
+            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
         }
 
         return await this.content.saveOne(user, contentId, formInfo);

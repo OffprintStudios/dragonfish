@@ -14,14 +14,12 @@ export { WorkKind } from './work-kind.enum';
 export { WorkStatus } from './work-status.enum';
 export { ContentFilter } from './content-filter.enum';
 export { SetRating } from './set-rating.model';
-export { TagsModel } from './tags.model';
-export { TagsForm } from './tags-form.model';
-export { TagKind } from './tag-kind.enum';
 export { PubContent } from './pub-content.model';
 
 export * from './news';
 export * from './blogs';
 export * from './prose';
 export * from './poetry';
+export * from './tags';
 
 export type FormType = CreateProse | CreatePoetry | BlogForm | NewsForm;
