@@ -62,7 +62,7 @@
                         <ng-container *ngIf="content.currContent.tags !== null && content.currContent.tags.length > 0">
                             <div class="content-tags flex flex-row items-center uppercase text-sm">
                                 <span class="tag tags">
-                                    <ng-container *ngFor="let tag of content.currContent.tags; let i = index">   
+                                    <ng-container *ngFor="let tag of content.currContent.tags; let i = index">
                                         <a [routerLink]="['/tag', tag._id, tag.name | slugify]">
                                             {{ tag | displayTags }}
                                         </a>

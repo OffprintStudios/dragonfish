@@ -21,28 +21,16 @@
         </ng-container>
         <ng-template #notEmpty>
             <div class="w-8/12 mx-auto my-8">
-                <mat-accordion>
-                    <ng-container *ngFor="let tag of tags">
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    {{ tag.name }}
-                                </mat-panel-title>
-                                <mat-panel-description>
-                                    {{ tag.desc }}
-                                </mat-panel-description>
-                            </mat-expansion-panel-header>
-                            <div class="my-2"><!--spacer--></div>
-                            <ul>
-                                <ng-container *ngFor="let child of tag.children">
-                                    <li class="py-2 px-1 border-t" style="border-color: var(--borders);">
-                                        <dragonfish-child-tag-item [parentId]="tag._id" [tag]="child"></dragonfish-child-tag-item>
-                                    </li>
-                                </ng-container>
-                            </ul>
-                        </mat-expansion-panel>
+                <h3>
+                    <ng-container *ngIf="tags[0].parent">
+                        <a [routerLink]="['/tag', tags[0].parent._id, tags[0].parent.name | slugify]">
+                            {{ tags[0].parent.name }}
+                        </a>
+                        &nbsp;— 
                     </ng-container>
-                </mat-accordion>
+                    {{ tags[0].name }}
+                </h3>
+                <p>{{ tags[0].desc }}</p>
             </div>
         </ng-template>
     </ng-container>
