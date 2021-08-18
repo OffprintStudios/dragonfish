@@ -1,4 +1,4 @@
-<ng-container *ngIf="sessionQuery.currentUser$ | async as user">
+<ng-container *ngIf="pseudQuery.current$ | async as user">
     <div class="absolute top-14 right-8 z-50 rounded-md" style="box-shadow: var(--dropshadow);">
         <div class="menu-box">
             <div
@@ -18,7 +18,7 @@
                     </div>
                     <div class="ml-2">
                         <h2 class="text-xl font-medium">
-                            {{ user.username }}
+                            {{ user.screenName }}
                         </h2>
                         <h3 class="text-xs font-medium">
                             {{ user.profile.tagline }}
@@ -49,19 +49,19 @@
                 <div class="mx-1 select-none cursor-default">|</div>
                 <div
                     class="flex flex-row items-center select-none cursor-default"
-                    [matTooltip]="'Watchers'"
+                    [matTooltip]="'Followers'"
                     [matTooltipClass]="'offprint-tooltip'"
                     [matTooltipShowDelay]="600"
                 >
                     <rmx-icon name="eye-line"></rmx-icon>
-                    <span class="select-none">{{ user.stats.watchers | abbreviate }}</span>
+                    <span class="select-none">{{ user.stats.followers | abbreviate }}</span>
                 </div>
             </div>
             <div class="my-2"><!--spacer--></div>
             <div>
                 <a
                     class="button w-full"
-                    [routerLink]="['/portfolio', user._id, user.username | slugify]"
+                    [routerLink]="['/portfolio', user._id, user.userTag | slugify]"
                 >
                     <rmx-icon name="user-line"></rmx-icon>
                     View Profile
@@ -77,21 +77,29 @@
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a
                     class="button w-full"
+                    [routerLink]="['/reading-history']"
                 >
                     <rmx-icon name="history-line"></rmx-icon>
                     Reading History
                 </a>
                 <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
-                <ng-container *ngIf="canSeeDash(user.audit.roles)">
-                    <a
-                        class="button w-full"
-                        [routerLink]="['/dashboard/overview']"
-                    >
-                        <rmx-icon name="dashboard-line"></rmx-icon>
-                        Dashboard
-                    </a>
-                    <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
+                    <ng-container *ngIf="canSeeDash(account.roles)">
+                        <a
+                            class="button w-full"
+                            [routerLink]="['/dashboard/overview']"
+                        >
+                            <rmx-icon name="dashboard-line"></rmx-icon>
+                            Dashboard
+                        </a>
+                        <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                    </ng-container>
                 </ng-container>
+                <a class="button w-full" [routerLink]="['/registration/select-pseud']">
+                    <rmx-icon name="group-2-line"></rmx-icon>
+                    Switch Profile
+                </a>
+                <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
                 <a class="button bottom w-full cursor-pointer" (click)="logout()">
                     <rmx-icon name="logout-circle-line"></rmx-icon>
                     Log Out

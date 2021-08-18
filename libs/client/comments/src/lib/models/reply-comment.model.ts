@@ -1,7 +1,7 @@
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface ReplyCommentModel {
-    quoteUser: FrontendUser;
+    quoteUser: Pseudonym;
     commentId: string;
     commentBody: string;
 }

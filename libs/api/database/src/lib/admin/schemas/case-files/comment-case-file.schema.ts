@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { ActionType, CaseKind, CommentCaseFile } from '@dragonfish/shared/models/case-files';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ReportDocument } from './reports.schema';
 import { NotesDocument } from './notes.schema';
 import { Comment } from '@dragonfish/shared/models/comments';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Schema()
 export class CommentCaseFileDocument extends Document implements CommentCaseFile {
@@ -12,7 +12,7 @@ export class CommentCaseFileDocument extends Document implements CommentCaseFile
     reports: ReportDocument[];
     notes: NotesDocument[];
     isClosed: boolean;
-    claimedBy: string | FrontendUser;
+    claimedBy: string | Pseudonym;
     action: {
         hasType: ActionType;
         date: Date;

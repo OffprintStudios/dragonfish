@@ -8,7 +8,7 @@ export class RatingsDocument extends Document implements RatingsModel {
     @Prop({ type: String, ref: 'Content', required: true, index: true })
     readonly contentId: string;
 
-    @Prop({ type: String, ref: 'User', required: true, index: true })
+    @Prop({ type: String, ref: 'Account', required: true, index: true })
     readonly userId: string;
 
     @Prop({ type: String, enum: Object.keys(RatingOption), default: RatingOption.NoVote, index: true })

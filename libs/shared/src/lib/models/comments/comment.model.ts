@@ -1,11 +1,11 @@
 import { ActionType } from '../case-files';
-import { FrontendUser } from '../users';
 import { CommentHistory } from './comment-history.model';
 import { CommentKind } from './comment-kind.enum';
+import { Pseudonym } from '../accounts';
 
 export interface Comment {
     readonly _id: string;
-    readonly user: string | FrontendUser;
+    readonly user: string | Pseudonym;
     body: string;
     repliesTo: string[];
     history: CommentHistory[];
@@ -14,7 +14,7 @@ export interface Comment {
         canEdit: boolean;
         action: ActionType;
         actionReason: string;
-        actionedBy: string | FrontendUser;
+        actionedBy: string | Pseudonym;
     };
     readonly createdAt: Date;
     readonly updatedAt: Date;

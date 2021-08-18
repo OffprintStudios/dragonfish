@@ -3,9 +3,9 @@ import { Location } from '@angular/common';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentModel } from '@dragonfish/shared/models/content';
 import { Decision } from '@dragonfish/shared/models/contrib';
-import { UserInfo } from '@dragonfish/shared/models/users';
 import { Router } from '@angular/router';
 import { ApprovalQueueService, ApprovalQueueQuery } from '@dragonfish/client/repository/dashboard/approval-queue';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-approval-queue-toolbar',
@@ -26,7 +26,7 @@ export class ApprovalQueueToolbarComponent {
 
     approveWork(doc: ApprovalQueue) {
         const thisWork = doc.workToApprove as ContentModel;
-        const thisWorksAuthor = thisWork.author as UserInfo;
+        const thisWorksAuthor = thisWork.author as Pseudonym;
         const decision: Decision = {
             docId: doc._id,
             workId: thisWork._id,
@@ -39,7 +39,7 @@ export class ApprovalQueueToolbarComponent {
 
     rejectWork(doc: ApprovalQueue) {
         const thisWork = doc.workToApprove as ContentModel;
-        const thisWorksAuthor = thisWork.author as UserInfo;
+        const thisWorksAuthor = thisWork.author as Pseudonym;
         const decision: Decision = {
             docId: doc._id,
             workId: thisWork._id,

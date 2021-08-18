@@ -16,11 +16,9 @@ export class ApprovalQueueDocument extends Document implements ApprovalQueue {
 
     @Prop({
         type: String,
-        ref: 'User',
+        ref: 'Pseudonym',
         default: null,
-        autopopulate: {
-            select: '_id username profile.avatar audit.roles',
-        },
+        autopopulate: true,
     })
     claimedBy: string | UserInfo;
 

@@ -3,10 +3,8 @@ import {
     ChangeEmail,
     ChangePassword,
     ChangeUsername,
-    CreateUser,
     FrontendUser,
     InviteCodes,
-    LoginUser,
     UpdateTagline,
     User,
 } from '@dragonfish/shared/models/users';
@@ -43,6 +41,8 @@ import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
+import { LoginPackage } from '@dragonfish/shared/models/auth';
+import { AccountForm, LoginModel, Pseudonym, PseudonymForm } from '@dragonfish/shared/models/accounts';
 
 /**
  * ## DragonfishNetworkService
@@ -180,9 +180,9 @@ export class DragonfishNetworkService {
      *
      * @param credentials A user's credentials.
      */
-    public register(credentials: CreateUser): Observable<FrontendUser> {
+    public register(credentials: AccountForm): Observable<LoginPackage> {
         return handleResponse(
-            this.http.post<FrontendUser>(`${this.baseUrl}/auth/register`, credentials, {
+            this.http.post<LoginPackage>(`${this.baseUrl}/auth/register`, credentials, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -196,9 +196,9 @@ export class DragonfishNetworkService {
      *
      * @param credentials A user's credentials.
      */
-    public login(credentials: LoginUser): Observable<FrontendUser> {
+    public login(credentials: LoginModel): Observable<LoginPackage> {
         return handleResponse(
-            this.http.post<FrontendUser>(`${this.baseUrl}/auth/login`, credentials, {
+            this.http.post<LoginPackage>(`${this.baseUrl}/auth/login`, credentials, {
                 withCredentials: true,
                 observe: 'response',
             }),
@@ -591,7 +591,8 @@ export class DragonfishNetworkService {
 
     /**
      * Fetches a new page of comments
-     * @param contentId
+     * @param itemId
+     * @param kind
      * @param pageNum
      * @returns
      */
@@ -627,6 +628,7 @@ export class DragonfishNetworkService {
      *
      * @param contentId The content ID
      * @param kind The content kind
+     * @param page
      */
     public fetchContent(contentId: string, kind: ContentKind, page: number): Observable<PubContent> {
         return handleResponse(
@@ -1253,6 +1255,23 @@ export class DragonfishNetworkService {
 
     //#endregion
 
+    //#region ---PSEUDONYMS---
+
+    /**
+     * Adds a pseudonym to your account.
+     * @param formInfo
+     */
+    public addPseudonym(formInfo: PseudonymForm): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.post<Pseudonym>(`${this.baseUrl}/auth/add-pseudonym`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    //#endregion
+
     //#region ---RATINGS---
 
     public addOrFetchRatings(contentId: string) {
@@ -1378,7 +1397,7 @@ export class DragonfishNetworkService {
                 {
                     observe: 'response',
                     withCredentials: true,
-                }
+                },
             ),
         );
     }
@@ -1486,7 +1505,7 @@ export class DragonfishNetworkService {
     /**
      * Get all tags of the given `TagKind`, sorted into TagsTrees.
      * NOTE: Children are not sorted alphabetically.
-     * 
+     *
      * @param kind The `TagKind` of the tags to look for.
      */
     public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
@@ -1502,7 +1521,7 @@ export class DragonfishNetworkService {
      * Get all children of the tag with the given ID.
      * Returns both the parent tag's information, and a `children` array,
      * which will either contain the child tags, or be empty.
-     * 
+     *
      * @param id The tag whose children will be searched for.
      */
     public fetchDescendants(id: string): Observable<TagsTree> {
@@ -1516,11 +1535,11 @@ export class DragonfishNetworkService {
 
     /**
      * Create a tag of the given kind, with the given information.
-     * 
+     *
      * @param kind The `TagKind` to create.
      * @param form The input information used to create the tag.
      */
-     public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
+    public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
         return handleResponse(
             this.http.post<TagsModel>(`${this.baseUrl}/tags/create-tag?kind=${kind}`, form, {
                 observe: 'response',
@@ -1531,7 +1550,7 @@ export class DragonfishNetworkService {
 
     /**
      * Set the tag with the given ID's attributes to those contained in the given `TagsForm`.
-     * 
+     *
      * @param id The ID of the tag to update.
      * @param form The new attributes to apply to the given tag.
      */
@@ -1545,19 +1564,23 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Delete the tag with the given ID from the tags collection, and remove 
+     * Delete the tag with the given ID from the tags collection, and remove
      * **all** references to it from **all** content.
-     * 
+     *
      * @param id The ID of the tag to delete.
      */
     public deleteTag(id: string): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/tags/delete-tag?id=${id}`, {}, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.patch<void>(
+                `${this.baseUrl}/tags/delete-tag?id=${id}`,
+                {},
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
-    
+
     //#endregion
 }

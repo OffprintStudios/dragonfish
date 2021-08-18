@@ -1,18 +1,17 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { CreateUser } from '@dragonfish/shared/models/users';
 import { AuthService } from '@dragonfish/client/repository/session/services';
+import { AccountForm } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-register-form',
     templateUrl: './register-form.component.html',
 })
 export class RegisterFormComponent {
-    @Output() isSuccess = new EventEmitter<boolean>();
+    @Output() isSuccess = new EventEmitter<AccountForm>();
 
     registerForm = new FormGroup({
         email: new FormControl('', [Validators.required, Validators.email]),
-        username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(36)]),
         password: new FormControl('', [Validators.required, Validators.minLength(8)]),
         repeatPassword: new FormControl('', [Validators.required, Validators.minLength(8)]),
         inviteCode: new FormControl('', [Validators.required]),
@@ -37,16 +36,13 @@ export class RegisterFormComponent {
             return;
         }
 
-        const info: CreateUser = {
+        const info: AccountForm = {
             email: this.fields.email.value,
-            username: this.fields.username.value,
             password: this.fields.password.value,
             inviteCode: this.fields.inviteCode.value,
-            agreedToPolicies: this.fields.termsAgree.value,
+            termsAgree: this.fields.termsAgree.value,
         };
 
-        this.auth.register(info).subscribe(() => {
-            this.isSuccess.emit(true);
-        });
+        this.isSuccess.emit(info);
     }
 }

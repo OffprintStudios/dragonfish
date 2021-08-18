@@ -11,11 +11,8 @@ export class NotesDocument extends Types.Subdocument implements Note {
 
     @Prop({
         type: String,
-        ref: 'User',
-        autopopulate: {
-            select:
-                '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
-        },
+        ref: 'Pseudonym',
+        autopopulate: true,
         required: true,
     })
     readonly user: string | FrontendUser;

@@ -10,16 +10,10 @@ if (environment.production) {
 }
 
 const storage = persistState({
-    include: [
-        'session',
-        'portfolio',
-        'app',
-    ],
+    include: ['session', 'pseudonyms', 'portfolio', 'app'],
 });
 
-const providers = [
-    { provide: 'persistStorage', useValue: storage },
-];
+const providers = [{ provide: 'persistStorage', useValue: storage }];
 
 platformBrowserDynamic(providers)
     .bootstrapModule(AppModule)

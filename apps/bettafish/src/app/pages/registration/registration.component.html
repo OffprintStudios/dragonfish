@@ -1,33 +1,56 @@
-<div class="flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" style="background: var(--background)">
-    <div class="absolute top-4 right-4 cursor-pointer" (click)="goBack()">
+<div class="registration-page flex items-center justify-center md:w-6/12 h-screen mx-auto sm:w-11/12" [ngClass]="pseudQuery.currentCover ? 'with-cover' : 'no-cover'">
+    <img class="object-cover absolute w-full z-20" [src]="pseudQuery.currentCover" *ngIf="pseudQuery.currentCover" [@fadeInOut]="'in'">
+    <div class="absolute z-50 top-4 right-4 cursor-pointer" [routerLink]="['/']">
         <rmx-icon name="close-line" class="w-16"></rmx-icon>
     </div>
-    <div class="register-box flex flex-col w-full border rounded-md">
-        <div class="flex items-center sticky justify-center p-2 md:p-4 rounded-t-md" style="background: var(--accent);">
-            <div
-                class="tab flex items-center mx-1 md:text-base text-xs"
-                [ngClass]="selectedTab === registrationTabs.LogIn ? 'active' : ''"
-                (click)="switchTab(registrationTabs.LogIn)"
-            >
-                <rmx-icon name="login-circle-line"></rmx-icon>
-                Log In
+    <div class="register-box z-50 flex flex-col w-full border rounded-md">
+        <ng-container *ngIf="route.children.length === 0; else displayRoutes">
+            <div class="p-3.5 flex flex-col items-center justify-center h-96" *ngIf="seeLoadingPage; else notSeeingLoading">
+                <ng-container *ngIf="loading; else notLoading">
+                    <h1 class="text-3xl mb-4 font-medium">{{ announceText }}</h1>
+                    <mat-spinner [diameter]="64"></mat-spinner>
+                </ng-container>
+                <ng-template #notLoading>
+                    <h1 class="text-3xl mb-4 font-medium" [@fadeInOut]="'in'">{{ announceText }}</h1>
+                    <div class="flex items-center" [@fadeInOut]="'in'">
+                        <rmx-icon name="loader-4-line" class="animate-spin mr-1.5"></rmx-icon>
+                        <span>Fetching profiles...</span>
+                    </div>
+                </ng-template>
             </div>
-            <div
-                class="tab flex items-center md:text-base text-xs"
-                [ngClass]="selectedTab === registrationTabs.Register ? 'active' : ''"
-                (click)="switchTab(registrationTabs.Register)"
-            >
-                <rmx-icon name="user-add-line"></rmx-icon>
-                Register
+            <ng-template #notSeeingLoading>
+                <div class="flex items-center sticky justify-center p-2 md:p-4 rounded-t-md" style="background: var(--accent);">
+                    <div
+                        class="tab flex items-center mx-1 md:text-base text-xs"
+                        [ngClass]="selectedTab === registrationTabs.LogIn ? 'active' : ''"
+                        (click)="switchTab(registrationTabs.LogIn)"
+                    >
+                        <rmx-icon name="login-circle-line"></rmx-icon>
+                        Log In
+                    </div>
+                    <div
+                        class="tab flex items-center md:text-base text-xs"
+                        [ngClass]="selectedTab === registrationTabs.Register ? 'active' : ''"
+                        (click)="switchTab(registrationTabs.Register)"
+                    >
+                        <rmx-icon name="user-add-line"></rmx-icon>
+                        Register
+                    </div>
+                </div>
+                <div class="p-3.5 overflow-y-auto" [ngSwitch]="selectedTab">
+                    <ng-container *ngSwitchCase="registrationTabs.LogIn">
+                        <dragonfish-login-form (isSuccess)="isLoggingIn($event)"></dragonfish-login-form>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="registrationTabs.Register">
+                        <dragonfish-register-form (isSuccess)="isRegistering($event)"></dragonfish-register-form>
+                    </ng-container>
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-template #displayRoutes>
+            <div [@fadeInOut]="'in'">
+                <router-outlet></router-outlet>
             </div>
-        </div>
-        <div class="p-3.5 overflow-y-auto" [ngSwitch]="selectedTab">
-            <ng-container *ngSwitchCase="registrationTabs.LogIn">
-                <dragonfish-login-form (isSuccess)="isSuccess($event)"></dragonfish-login-form>
-            </ng-container>
-            <ng-container *ngSwitchCase="registrationTabs.Register">
-                <dragonfish-register-form (isSuccess)="isSuccess($event)"></dragonfish-register-form>
-            </ng-container>
-        </div>
+        </ng-template>
     </div>
 </div>
