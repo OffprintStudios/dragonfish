@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ContextMenuService, MenuComponent, MenuPackage } from '@ctrl/ngx-rightclick';
 import { ContentKind, ContentModel, PubChange, PubStatus } from '@dragonfish/shared/models/content';
-import { UserInfo } from '@dragonfish/shared/models/users';
 import { slugify } from 'voca';
 import { MyStuffService } from '@dragonfish/client/repository/my-stuff';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -11,16 +10,14 @@ import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-context-menu',
     templateUrl: './context-menu.component.html',
     animations: [
         trigger('menu', [
-            state(
-                'enter',
-                style({ opacity: 1, marginTop: '0px', visibility: 'visible' }),
-            ),
+            state('enter', style({ opacity: 1, marginTop: '0px', visibility: 'visible' })),
             state('exit, void', style({ opacity: 0, marginTop: '-15px' })),
             transition('* => *', animate('120ms ease-in')),
         ]),
@@ -53,7 +50,8 @@ export class ContextMenuComponent extends MenuComponent {
     publish() {
         const pubChange: PubChange = {
             oldStatus: this.content.audit.published,
-            newStatus: this.content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished,
+            newStatus:
+                this.content.audit.published === PubStatus.Unpublished ? PubStatus.Published : PubStatus.Unpublished,
         };
 
         if (this.content.kind === ContentKind.BlogContent || this.content.kind === ContentKind.NewsContent) {
@@ -108,11 +106,11 @@ export class ContextMenuComponent extends MenuComponent {
             return;
         }
 
-        const authorInfo = this.content.author as UserInfo;
+        const authorInfo = this.content.author as Pseudonym;
 
         if (this.content.kind === ContentKind.BlogContent) {
             this.clipboard.copy(
-                `https://offprint.net/portfolio/${authorInfo._id}/${slugify(authorInfo.username)}/blog/${slugify(
+                `https://offprint.net/portfolio/${authorInfo._id}/${slugify(authorInfo.userTag)}/blog/${slugify(
                     this.content.title,
                 )}`,
             );

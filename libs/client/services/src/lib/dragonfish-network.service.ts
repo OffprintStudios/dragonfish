@@ -40,7 +40,7 @@ import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
 import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
-import { TagsTree } from '@dragonfish/shared/models/content/tags.model';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
 import { AccountForm, LoginModel, Pseudonym, PseudonymForm } from '@dragonfish/shared/models/accounts';
 
@@ -591,7 +591,8 @@ export class DragonfishNetworkService {
 
     /**
      * Fetches a new page of comments
-     * @param contentId
+     * @param itemId
+     * @param kind
      * @param pageNum
      * @returns
      */
@@ -627,6 +628,7 @@ export class DragonfishNetworkService {
      *
      * @param contentId The content ID
      * @param kind The content kind
+     * @param page
      */
     public fetchContent(contentId: string, kind: ContentKind, page: number): Observable<PubContent> {
         return handleResponse(

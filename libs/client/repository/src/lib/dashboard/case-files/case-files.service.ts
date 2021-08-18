@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { NoteForm } from '@dragonfish/shared/models/case-files';
 import { arrayAdd } from '@datorama/akita';
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Injectable({ providedIn: 'root' })
 export class CaseFilesService {
@@ -38,7 +38,7 @@ export class CaseFilesService {
         return this.network.claimFile(id).pipe(
             tap((value) => {
                 this.caseFilesStore.update(id, () => ({
-                    claimedBy: value.claimedBy as FrontendUser,
+                    claimedBy: value.claimedBy as Pseudonym,
                 }));
             }),
         );
