@@ -5,13 +5,8 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    ContentFilter,
-    ContentKind,
-    ContentRating,
-    PubStatus,
-} from '@dragonfish/shared/models/content';
-import { UserInfo } from '@dragonfish/shared/models/users';
+import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
  * ## Browse Store
@@ -36,15 +31,13 @@ export class BrowseStore {
     public async fetchFirstNew(filter: ContentFilter) {
         const query = {
             kind: {
-                $in: [ContentKind.PoetryContent, ContentKind.ProseContent]
+                $in: [ContentKind.PoetryContent, ContentKind.ProseContent],
             },
             'audit.isDeleted': false,
-            'audit.published': PubStatus.Published
+            'audit.published': PubStatus.Published,
         };
-        const filteredQuery = await this.determineContentFilter(query, filter);
-        return this.content.find(filteredQuery)
-            .sort({'audit.publishedOn': -1})
-            .limit(6);
+        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
+        return this.content.find(filteredQuery).sort({ 'audit.publishedOn': -1 }).limit(6);
     }
 
     public async fetchFirstUpdated() {
@@ -59,7 +52,11 @@ export class BrowseStore {
      * Fetches news content for the home page.
      */
     async fetchForHome(): Promise<ContentDocument[]> {
-        const query = { 'kind': ContentKind.NewsContent, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
+        const query = {
+            kind: ContentKind.NewsContent,
+            'audit.isDeleted': false,
+            'audit.published': PubStatus.Published,
+        };
         return this.content.find(query).sort({ 'audit.publishedOn': -1 }).limit(6);
     }
 
@@ -74,10 +71,10 @@ export class BrowseStore {
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
-        userId?: string
+        userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredQuery = await this.determineContentFilter(query, filter);
+        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
         const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
 
         if (userId) {
@@ -93,7 +90,11 @@ export class BrowseStore {
      * @param kind A content's Kind
      * @param user (Optional) The user making the request
      */
-    async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentDocument, RatingsDocument]> {
+    async fetchOnePublished(
+        contentId: string,
+        kind: ContentKind,
+        user?: JwtPayload,
+    ): Promise<[ContentDocument, RatingsDocument]> {
         const doc = await this.content.findOne({
             _id: contentId,
             kind: kind,
@@ -104,7 +105,7 @@ export class BrowseStore {
             await this.incrementViewCount(contentId);
             return [doc, null];
         } else {
-            const authorInfo = doc.author as UserInfo;
+            const authorInfo = doc.author as Pseudonym;
             if (authorInfo._id !== user.sub) {
                 await this.incrementViewCount(contentId);
             }
@@ -119,14 +120,27 @@ export class BrowseStore {
      * @param filter
      * @param userId
      */
-    async fetchFirstThreePublished(filter: ContentFilter, userId: string): Promise<{ works: ContentDocument[], blogs: ContentDocument[] }> {
-        const worksQuery = { 'author': userId, kind: { $in: [ContentKind.ProseContent, ContentKind.PoetryContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredWorksQuery = await this.determineContentFilter(worksQuery, filter);
-        const works = await this.content.find(filteredWorksQuery).sort({'audit.publishedOn': -1}).limit(3);
+    async fetchFirstThreePublished(
+        filter: ContentFilter,
+        userId: string,
+    ): Promise<{ works: ContentDocument[]; blogs: ContentDocument[] }> {
+        const worksQuery = {
+            author: userId,
+            kind: { $in: [ContentKind.ProseContent, ContentKind.PoetryContent] },
+            'audit.isDeleted': false,
+            'audit.published': PubStatus.Published,
+        };
+        const filteredWorksQuery = await BrowseStore.determineContentFilter(worksQuery, filter);
+        const works = await this.content.find(filteredWorksQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
 
-        const blogsQuery = { 'author': userId, kind: { $in: [ContentKind.BlogContent] }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredBlogsQuery = await this.determineContentFilter(blogsQuery, filter);
-        const blogs = await this.content.find(filteredBlogsQuery).sort({'audit.publishedOn': -1}).limit(3);
+        const blogsQuery = {
+            author: userId,
+            kind: { $in: [ContentKind.BlogContent] },
+            'audit.isDeleted': false,
+            'audit.published': PubStatus.Published,
+        };
+        const filteredBlogsQuery = await BrowseStore.determineContentFilter(blogsQuery, filter);
+        const blogs = await this.content.find(filteredBlogsQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
 
         return { works: works, blogs: blogs };
     }
@@ -143,10 +157,10 @@ export class BrowseStore {
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
-        userId?: string
+        userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredQuery = await this.determineContentFilter(query, filter);
+        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
         const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
 
         if (userId) {
@@ -173,7 +187,7 @@ export class BrowseStore {
         kinds: ContentKind[],
         pageNum: number,
         maxPerPage: number,
-        filter: ContentFilter
+        filter: ContentFilter,
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
             page: pageNum,
@@ -185,7 +199,7 @@ export class BrowseStore {
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
-        await this.determineContentFilter(paginateQuery, filter);
+        await BrowseStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
@@ -203,7 +217,7 @@ export class BrowseStore {
             { _id: contentId },
             {
                 $inc: { 'stats.views': 1 },
-            }
+            },
         );
     }
 
@@ -251,7 +265,7 @@ export class BrowseStore {
                 {
                     viewedOn: new Date(),
                     visible: true,
-                }
+                },
             );
         }
     }
@@ -262,7 +276,7 @@ export class BrowseStore {
      * @param filter The current filter settings
      * @private
      */
-    private async determineContentFilter(query: any, filter: ContentFilter): Promise<any> {
+    private static async determineContentFilter(query, filter: ContentFilter) {
         switch (filter) {
             case ContentFilter.Everything:
                 break;
