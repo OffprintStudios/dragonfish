@@ -9,7 +9,7 @@ export class CollectionDocument extends Document implements Collection {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ type: String, ref: 'User', required: true })
+    @Prop({ type: String, ref: 'Pseudonym', required: true })
     readonly owner: string;
 
     @Prop({ trim: true, required: true })
@@ -25,7 +25,7 @@ export class CollectionDocument extends Document implements Collection {
         raw({
             isPublic: { type: Boolean, default: false },
             isDeleted: { type: Boolean, default: false },
-        })
+        }),
     )
     audit: {
         isPublic: boolean;

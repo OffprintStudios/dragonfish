@@ -450,12 +450,4 @@ export class UsersStore {
 
         return await newCode.save();
     }
-
-    async retrieveAllUsers() {
-        return this.userModel.find({ 'audit.isDeleted': 'false' });
-    }
-
-    async markAsMigrated(id: string) {
-        return this.userModel.updateOne({ _id: id }, { isMigrated: true });
-    }
 }

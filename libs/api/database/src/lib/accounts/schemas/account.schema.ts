@@ -17,7 +17,7 @@ export class AccountDocument extends Document implements Account {
     @Prop({ trim: true, required: true })
     password: string;
 
-    @Prop({ type: [String], ref: 'Pseudonym', default: [], autopopulate: true })
+    @Prop({ type: [String], ref: 'Pseudonym', default: [], autopopulate: { select: '-accountId' } })
     pseudonyms: string[] | PseudonymDocument[];
 
     @Prop({ type: [String], enum: Object.keys(Roles), default: ['User'] })

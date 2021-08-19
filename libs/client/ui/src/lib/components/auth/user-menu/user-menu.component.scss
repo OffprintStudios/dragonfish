@@ -39,6 +39,8 @@ div.menu-box {
         border: none;
         border-radius: 0;
         box-shadow: none;
+        padding: 10px 15px;
+        @apply transition-none transform-none;
         &.bottom {
             @apply rounded-b-md;
         }

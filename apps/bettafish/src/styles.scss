@@ -86,14 +86,13 @@ a.button {
     display: flex;
     flex-direction: row;
     margin: 0;
-    @apply px-2 py-1.5;
+    @apply px-2 py-1.5 transition transform;
     font-size: 16px;
     text-transform: lowercase;
     font-variant: small-caps;
     font-weight: 700;
     letter-spacing: 1px;
     line-height: 20px;
-    border: 1px solid var(--borders);
     border-radius: 6px;
     color: var(--text-color);
     user-select: none;
@@ -102,7 +101,7 @@ a.button {
         color: white;
         &:hover {
             background: var(--accent-dark);
-            transition: all 0.15s ease;
+            @apply scale-105;
             text-decoration: none;
         }
     }
@@ -110,7 +109,11 @@ a.button {
         color: white;
         background: var(--accent);
         text-decoration: none;
-        transition: all 0.15s ease;
+        @apply scale-105;
+    }
+    &:active {
+        @apply text-white scale-100 cursor-pointer shadow-inner;
+        background: var(--accent-dark);
     }
     rmx-icon {
         width: 16px !important;

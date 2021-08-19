@@ -1,10 +1,10 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { ActionType } from '@dragonfish/shared/models/case-files';
 import { CommentHistoryDocument, CommentHistorySchema } from './comment-history.scema';
 import { Comment, CommentKind } from '@dragonfish/shared/models/comments';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Schema({ timestamps: true, collection: 'comments', autoIndex: true, discriminatorKey: 'kind' })
 export class CommentDocument extends Document implements Comment {
@@ -13,15 +13,12 @@ export class CommentDocument extends Document implements Comment {
 
     @Prop({
         type: String,
-        ref: 'User',
+        ref: 'Pseudonym',
         required: true,
         index: true,
-        autopopulate: {
-            select:
-                '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
-        },
+        autopopulate: true,
     })
-    readonly user: string | FrontendUser;
+    readonly user: string | Pseudonym;
 
     @Prop()
     body: string;
@@ -40,12 +37,9 @@ export class CommentDocument extends Document implements Comment {
             actionReason: { type: String, default: 'Created' },
             actionedBy: {
                 type: String,
-                ref: 'User',
+                ref: 'Pseudonym',
                 default: null,
-                autopopulate: {
-                    select:
-                        '-password -email -audit.sessions -audit.termsAgree -audit.emailConfirmed -audit.deleted -updatedAt',
-                },
+                autopopulate: true,
             },
         }),
     )
@@ -54,7 +48,7 @@ export class CommentDocument extends Document implements Comment {
         canEdit: boolean;
         action: ActionType;
         actionReason: string;
-        actionedBy: string | FrontendUser;
+        actionedBy: string | Pseudonym;
     };
 
     @Prop({ type: String, enum: Object.keys(CommentKind), required: true })

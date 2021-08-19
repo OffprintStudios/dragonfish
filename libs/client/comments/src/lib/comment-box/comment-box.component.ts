@@ -5,7 +5,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ReplyCommentModel } from '../models';
 import { SessionQuery } from '@dragonfish/client/repository/session';
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-comment-box',
@@ -44,7 +44,7 @@ export class CommentBoxComponent implements OnInit {
 
     replyToComment() {
         const replyOut: ReplyCommentModel = {
-            quoteUser: this.comment.user as FrontendUser,
+            quoteUser: this.comment.user as Pseudonym,
             commentId: this.comment._id,
             commentBody: this.comment.body,
         };

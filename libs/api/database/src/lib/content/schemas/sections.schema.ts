@@ -1,13 +1,15 @@
 import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
-
 import { Section, AuthorsNotePos } from '@dragonfish/shared/models/sections';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'sections' })
 export class SectionsDocument extends Document implements Section {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
+
+    @Prop({ trim: true, required: true })
+    readonly contentId: string;
 
     @Prop({ trim: true, required: true })
     title: string;
@@ -27,7 +29,7 @@ export class SectionsDocument extends Document implements Section {
     @Prop(
         raw({
             words: { type: Number, default: 0 },
-        })
+        }),
     )
     stats: {
         words: number;
@@ -37,7 +39,7 @@ export class SectionsDocument extends Document implements Section {
         raw({
             publishedOn: { type: Date, default: null },
             isDeleted: { type: Boolean, default: false },
-        })
+        }),
     )
     audit: {
         publishedOn: Date;

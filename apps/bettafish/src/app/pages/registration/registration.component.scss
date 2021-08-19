@@ -1,3 +1,13 @@
+div.registration-page {
+    &.with-cover {
+        background: transparent;
+    }
+
+    &.no-cover {
+        background: var(--background);
+    }
+}
+
 div.register-box {
     border-color: var(--borders);
     background: var(--background);

@@ -8,14 +8,6 @@
     ></dragonfish-text-field>
 
     <dragonfish-text-field
-        [formControlName]="'username'"
-        [name]="'username'"
-        [type]="'text'"
-        [label]="'Username'"
-        [placeholder]="'Beatriz Ex Machina'"
-    ></dragonfish-text-field>
-
-    <dragonfish-text-field
         [formControlName]="'password'"
         [name]="'password'"
         [type]="'password'"
@@ -49,6 +41,6 @@
     </dragonfish-toggle>
 
     <div class="flex flex-row justify-end">
-        <button type="submit">Register</button>
+        <button type="submit"><rmx-icon name="user-add-line"></rmx-icon>Register</button>
     </div>
 </form>

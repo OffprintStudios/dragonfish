@@ -12,10 +12,12 @@ export class SectionsStore {
      * Creates a new section and adds it to the database, updating the associated work's
      * array of sections. Returns the newly created section as a promise.
      *
+     * @param contentId
      * @param sectionInfo The new section's info
      */
-    async createNewSection(sectionInfo: SectionForm): Promise<SectionsDocument> {
+    async createNewSection(contentId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
         const newSection = new this.sectionModel({
+            contentId: contentId,
             title: sectionInfo.title,
             body: sectionInfo.body,
             authorsNote: sectionInfo.authorsNote,
@@ -52,13 +54,13 @@ export class SectionsStore {
             return this.sectionModel.findOneAndUpdate(
                 { _id: sectionId },
                 { published: pubStatus.newPub, 'audit.publishedOn': new Date() },
-                { new: true }
+                { new: true },
             );
         } else {
             return this.sectionModel.findByIdAndUpdate(
                 { _id: sectionId },
                 { published: pubStatus.newPub },
-                { new: true }
+                { new: true },
             );
         }
     }
@@ -69,8 +71,7 @@ export class SectionsStore {
      * @param sectionId The section ID
      */
     async deleteSection(sectionId: string): Promise<SectionsDocument> {
-        return this.sectionModel
-            .findOneAndUpdate({ _id: sectionId }, { 'audit.isDeleted': true }, { new: true });
+        return this.sectionModel.findOneAndUpdate({ _id: sectionId }, { 'audit.isDeleted': true }, { new: true });
     }
 
     /**
@@ -88,8 +89,6 @@ export class SectionsStore {
      * @param sectionIds A work's list of sections
      */
     async fetchSectionsList(sectionIds: string[]): Promise<SectionsDocument[]> {
-        return this.sectionModel
-            .find({ _id: { $in: sectionIds }, 'audit.isDeleted': false })
-            .sort({ createdAt: -1 });
+        return this.sectionModel.find({ _id: { $in: sectionIds }, 'audit.isDeleted': false }).sort({ createdAt: -1 });
     }
 }
