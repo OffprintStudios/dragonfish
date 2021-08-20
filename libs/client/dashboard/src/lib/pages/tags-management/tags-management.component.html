@@ -28,12 +28,13 @@
                         <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                    {{ tag.name }}
+                                    <div class="tag-name" [innerHtml]="tag.name | safeHtml"></div>
                                 </mat-panel-title>
-                                <mat-panel-description>
-                                    {{ tag.desc }}
-                                </mat-panel-description>
+                                <!-- <mat-panel-description>
+                                    <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>
+                                </mat-panel-description> -->
                             </mat-expansion-panel-header>
+                            <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>
                             <div class="flex flex-row items-center">
                                 <button (click)="addChild(tag._id)"><i-feather name="plus"></i-feather>Child</button>
                                 <div class="mx-1"><!--spacer--></div>

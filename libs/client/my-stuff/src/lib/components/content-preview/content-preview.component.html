@@ -84,7 +84,7 @@
                 </div>
                 <ng-container *ngIf="currContent.tags !== null && currContent.tags.length > 0">
                     <div class="flex flex-row items-center pb-1">
-                        <span class="tag tags">{{ currContent.tags | displayTags }}</span>
+                        <span class="tag tags" [innerHtml]="currContent.tags | displayTags | safeHtml"></span>
                     </div>
                 </ng-container>
             </div>
