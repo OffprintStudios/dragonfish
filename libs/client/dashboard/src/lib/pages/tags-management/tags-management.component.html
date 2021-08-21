@@ -25,14 +25,11 @@
             <div class="w-8/12 mx-auto my-8">
                 <mat-accordion>
                     <ng-container *ngFor="let tag of tags">
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="(tag._id === openPanelId)? true : false" (opened)="onOpen(tag._id)">
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
                                     <div class="tag-name" [innerHtml]="tag.name | safeHtml"></div>
                                 </mat-panel-title>
-                                <!-- <mat-panel-description>
-                                    <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>
-                                </mat-panel-description> -->
                             </mat-expansion-panel-header>
                             <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>
                             <div class="flex flex-row items-center">
