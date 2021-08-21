@@ -40,15 +40,37 @@
         <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
             <div class="card-tags flex flex-row items-center">
                 <ng-container *ngIf="content.tags.length === 1; else multipleTags">
-                    <span class="tag tags" [innerHtml]="content.tags[0] | displayTags | safeHtml"></span>
+                    <span class="tag tags">
+                        <a
+                           [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                           [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                        ></a>
+                    </span>
                 </ng-container>
                 <ng-template #multipleTags>
                     <ng-container *ngIf="showAllTags; else showOneTag">
-                        <span class="tag tags" [innerHtml]="content.tags | displayTags | safeHtml"></span>
+                        <span class="tag tags">
+                            <ng-container *ngFor="let tag of content.tags; let i = index">   
+                                <a
+                                   [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                   [innerHtml]="tag | displayTags | safeHtml"
+                                >
+                                    {{ tag | displayTags }}
+                                </a>
+                                <ng-container *ngIf="i < content.tags.length - 1">
+                                    , 
+                                </ng-container>
+                            </ng-container>
+                        </span>
                         <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                     </ng-container>
                     <ng-template #showOneTag>
-                        <span class="tag tags" [innerHtml]="content.tags[0] | displayTags | safeHtml"></span>
+                        <span class="tag tags">
+                            <a
+                               [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                               [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                            ></a>
+                        </span>
                         <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                     </ng-template>
                 </ng-template>
