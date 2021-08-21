@@ -32,8 +32,8 @@ export class TagFormComponent implements OnInit {
     ngOnInit(): void {
         if (this.data.tag) {
             this.tagForm.setValue({
-                name: this.data.tag.name,
-                desc: this.data.tag.desc,
+                name: this.htmlDecode(this.data.tag.name),
+                desc: this.htmlDecode(this.data.tag.desc),
                 parent: (this.data.tag.parent || this.NO_PARENT),
             });
             this.editMode = true;
@@ -81,5 +81,10 @@ export class TagFormComponent implements OnInit {
                 this.dialogRef.close();
             });
         }
+    }
+
+    htmlDecode(input: string) {
+        var doc = new DOMParser().parseFromString(input, "text/html");
+        return doc.documentElement.textContent;
     }
 }
