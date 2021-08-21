@@ -62,6 +62,25 @@ export class TagsStore {
     }
 
     /**
+     * Returns a single parent tag (with no parents of its own) with the given name, or null if not found.
+     * @param name The name of the tag to find.
+     * @returns The tag with the name.
+     */
+    async findParentTagByName(name: string): Promise<TagsDocument> {
+        return this.tags.findOne({ name: name, parent: null})
+    }
+
+    /**
+     * Returns a single child tag with the given name and parent, or null if not found
+     * @param name The name of the tag to find
+     * @param parentId The ID of the parent tag
+     * @returns The tag with the name.
+     */
+    async findChildTagByNameAndParent(name: string, parentId: string): Promise<TagsDocument> {
+        return this.tags.findOne({ name: name, parent: parentId })
+    }
+
+    /**
      * Returns the given tag and all its descendants.
      * @param tagId
      */
@@ -153,10 +172,20 @@ export class TagsStore {
             parent: form.parent,
         });
 
-        // Check that name not already in use
-        const tagWithSameName = await this.findTagByName(newTag.name)
-        if (tagWithSameName) {
-            throw new BadRequestException("There is already a tag with this name.");
+        // If child tag, check that name not already in use by its siblings
+        if (form.parent) {
+            const tagWithSameName = await this.findChildTagByNameAndParent(newTag.name, form.parent);
+            if (tagWithSameName) {
+                throw new BadRequestException("There is already a child tag of this parent with this name.");
+            }
+        }
+        // If parent tag, check that name not already in use by another parent tag
+        // Don't check for duplicates with children
+        else {
+            const tagWithSameName = await this.findParentTagByName(newTag.name)
+            if (tagWithSameName) {
+                throw new BadRequestException("There is already a parent tag with this name.");
+            }
         }
 
         return newTag.save();
@@ -197,10 +226,20 @@ export class TagsStore {
             tag.parent = null;
         }
 
-        // Check if changed name to that of another tag
-        const tagWithSameName = await this.findTagByName(tag.name);
-        if (tagWithSameName && tagId !== tagWithSameName._id) {
-            throw new BadRequestException("There is already another tag with this new name.");
+        // If child tag, check if changed name to that of one of its siblings
+        if (form.parent) {
+            const tagWithSameName = await this.findChildTagByNameAndParent(tag.name, form.parent);
+            if (tagWithSameName && tagId !== tagWithSameName._id) {
+                throw new BadRequestException("There is already another child tag of this parent with this name.");
+            }
+        }
+        // If parent tag, check if changed name to that of another parent tag
+        // Don't check for duplicates with children
+        else {
+            const tagWithSameName = await this.findParentTagByName(tag.name);
+            if (tagWithSameName && tagId !== tagWithSameName._id) {
+                throw new BadRequestException("There is already another parent tag with this name.");
+            }
         }
 
         return tag.save();
