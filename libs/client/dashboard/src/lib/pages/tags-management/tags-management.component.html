@@ -28,7 +28,11 @@
                         <mat-expansion-panel [expanded]="(tag._id === openPanelId)? true : false" (opened)="onOpen(tag._id)">
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                    <div class="tag-name" [innerHtml]="tag.name | safeHtml"></div>
+                                    <a
+                                        class="tag-name"
+                                        [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                        [innerHtml]="tag.name | safeHtml"
+                                    ></a>
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>

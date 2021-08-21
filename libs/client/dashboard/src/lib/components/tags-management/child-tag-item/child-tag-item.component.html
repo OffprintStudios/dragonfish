@@ -3,7 +3,11 @@
         class="text-lg font-medium"
         style="font-family: 'Josefin Sans', sans-serif; color: var(--accent);"
     >
-        <div class="tag-name" [innerHtml]="tag.name | safeHtml"></div>
+        <a
+            class="tag-name"
+            [routerLink]="['/tag', tag._id, tag.name | slugify]"
+            [innerHtml]="tag.name | safeHtml"
+        ></a>
     </div>
     <div class="flex-1 text-center mx-2 relative -top-0.5">
         <div class="tag-desc" [innerHtml]="tag.desc | safeHtml"></div>
