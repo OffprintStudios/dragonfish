@@ -24,25 +24,29 @@ export class ContentService implements IContent {
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
-    ) { }    
+    ) {}
 
     public async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
         return await this.content.fetchOne(contentId, kind, user);
     }
 
-    public async fetchOnePublished(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<[ContentModel, RatingsModel]> {
+    public async fetchOnePublished(
+        contentId: string,
+        kind: ContentKind,
+        user?: JwtPayload,
+    ): Promise<[ContentModel, RatingsModel]> {
         return await this.browse.fetchOnePublished(contentId, kind, user);
     }
 
-    public async fetchAll(user: JwtPayload): Promise<ContentModel[]> {
-        return await this.content.fetchAll(user);
+    public async fetchAll(userId: string): Promise<ContentModel[]> {
+        return await this.content.fetchAll(userId);
     }
 
     public async fetchAllPublished(
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
-        userId?: string
+        userId?: string,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.browse.fetchAllPublished(pageNum, kinds, filter, userId);
     }
@@ -74,7 +78,7 @@ export class ContentService implements IContent {
         user: JwtPayload,
         contentId: string,
         kind: ContentKind,
-        coverArt: string
+        coverArt: string,
     ): Promise<ContentModel> {
         if (kind === ContentKind.PoetryContent) {
             return await this.poetry.updateCoverArt(user, contentId, coverArt);

@@ -108,12 +108,12 @@ export class ContentStore {
      * Finds a bunch of content documents belonging to a user, per that user's
      * request.
      *
-     * @param user The user making the request
+     * @param userId The user making the request
      */
-    async fetchAll(user: JwtPayload): Promise<ContentDocument[]> {
+    async fetchAll(userId: string): Promise<ContentDocument[]> {
         return this.content
             .find({
-                author: user.sub,
+                author: userId,
                 'audit.isDeleted': false,
             })
             .sort({ createdAt: 1 });

@@ -12,12 +12,18 @@ import {
     UseInterceptors,
     UploadedFile,
     Inject,
-    Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { OptionalAuthGuard, RolesGuard } from '../../guards';
-import { ContentFilter, ContentKind, CreateProse, FormType, PubChange, PubContent } from '@dragonfish/shared/models/content';
+import { OptionalAuthGuard, IdentityGuard } from '../../guards';
+import {
+    ContentFilter,
+    ContentKind,
+    CreateProse,
+    FormType,
+    PubChange,
+    PubContent,
+} from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { User } from '@dragonfish/api/utilities/decorators';
@@ -38,7 +44,7 @@ export class ContentController {
     ) {}
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Get('fetch-one')
     async fetchOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
@@ -71,10 +77,10 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Get('fetch-all')
-    async fetchAll(@User() user: JwtPayload) {
-        return await this.content.fetchAll(user);
+    async fetchAll(@User() user: JwtPayload, @Query('pseudId') pseudId: string) {
+        return await this.content.fetchAll(pseudId);
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -93,21 +99,23 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Put('create-one')
     async createOne(@User() user: JwtPayload, @Query('kind') kind: ContentKind, @Body() formInfo: FormType) {
         if (isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content kind with this request.`);
         }
         if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
-            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
+            throw new BadRequestException(
+                `You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`,
+            );
         }
 
         return await this.content.createOne(user, kind, formInfo);
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Patch('save-changes')
     async saveChanges(
         @User() user: JwtPayload,
@@ -119,14 +127,16 @@ export class ContentController {
             throw new BadRequestException(`You must include both the content ID and content kind with this request.`);
         }
         if ((formInfo as CreateProse)?.tags?.length > MAX_FANDOM_TAGS) {
-            throw new BadRequestException(`You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`);
+            throw new BadRequestException(
+                `You included too many fandom tags with this request. The max is ${MAX_FANDOM_TAGS}`,
+            );
         }
 
         return await this.content.saveOne(user, contentId, formInfo);
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Patch('delete-one')
     async deleteOne(@User() user: JwtPayload, @Query('contentId') contentId: string) {
         if (isNullOrUndefined(contentId)) {
@@ -137,7 +147,7 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @Patch('publish-one')
     async publishOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Body() pubChange?: PubChange) {
         if (isNullOrUndefined(contentId)) {
@@ -148,7 +158,7 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('prose/upload-coverart/:proseId')
     async uploadProseCoverArt(
@@ -164,7 +174,7 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('poetry/upload-coverart/:poetryId')
     async uploadPoetryCoverArt(

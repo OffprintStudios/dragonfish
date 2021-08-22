@@ -8,24 +8,26 @@ import { catchError, tap, switchMap } from 'rxjs/operators';
 import { ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
 import { FileUploader } from 'ng2-file-upload';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
+import { PseudonymsQuery } from '../pseudonyms';
 
 @Injectable({ providedIn: 'root' })
 export class MyStuffService {
     constructor(
         private myStuffStore: MyStuffStore,
         private myStuffQuery: MyStuffQuery,
+        private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
-        private alerts: AlertsService
+        private alerts: AlertsService,
     ) {}
 
     public setAll() {
         return this.myStuffQuery.selectHasCache().pipe(
-            switchMap(hasCache => {
-                const apiCall = this.network.fetchAll().pipe(
+            switchMap((hasCache) => {
+                const apiCall = this.network.fetchAll(this.pseudQuery.currentId).pipe(
                     tap((result: ContentModel[]) => {
                         this.myStuffStore.set(result);
                     }),
-                    catchError(err => {
+                    catchError((err) => {
                         this.alerts.error(`Something went wrong fetching your content!`);
                         return throwError(() => err);
                     }),
@@ -41,7 +43,7 @@ export class MyStuffService {
     }
 
     public create(kind: ContentKind, formInfo: FormType) {
-        return this.network.createContent(kind, formInfo).pipe(
+        return this.network.createContent(this.pseudQuery.currentId, kind, formInfo).pipe(
             tap((result: ContentModel) => {
                 this.myStuffStore.add(result);
                 this.myStuffStore.setActive(result._id);
@@ -55,7 +57,7 @@ export class MyStuffService {
     }
 
     public save(contentId: string, kind: ContentKind, formInfo: FormType) {
-        return this.network.saveContent(contentId, kind, formInfo).pipe(
+        return this.network.saveContent(this.pseudQuery.currentId, contentId, kind, formInfo).pipe(
             tap((result: ContentModel) => {
                 this.myStuffStore.update(contentId, result);
                 this.alerts.success(`Changes saved!`);
@@ -68,7 +70,7 @@ export class MyStuffService {
     }
 
     public delete(contentId: string) {
-        return this.network.deleteOne(contentId).pipe(
+        return this.network.deleteOne(this.pseudQuery.currentId, contentId).pipe(
             tap(() => {
                 this.myStuffStore.remove(contentId);
                 this.alerts.success(`Content successfully deleted!`);
@@ -81,7 +83,7 @@ export class MyStuffService {
     }
 
     public publish(contentId: string, pubChange?: PubChange) {
-        return this.network.publishOne(contentId, pubChange).pipe(
+        return this.network.publishOne(this.pseudQuery.currentId, contentId, pubChange).pipe(
             tap((result: ContentModel) => {
                 this.myStuffStore.update(contentId, result);
                 this.alerts.success(`Changes saved!`);
@@ -109,7 +111,7 @@ export class MyStuffService {
     public updateWordCount(section: Section, pubStatus: PublishSection) {
         if (section.published === true && pubStatus.oldPub === false) {
             // if newly published
-            this.myStuffStore.update(this.myStuffQuery.currentId, entity => {
+            this.myStuffStore.update(this.myStuffQuery.currentId, (entity) => {
                 return {
                     ...entity,
                     stats: {
@@ -120,7 +122,7 @@ export class MyStuffService {
             });
         } else if (section.published === false && pubStatus.oldPub === true) {
             // if unpublished
-            this.myStuffStore.update(this.myStuffQuery.currentId, entity => {
+            this.myStuffStore.update(this.myStuffQuery.currentId, (entity) => {
                 return {
                     ...entity,
                     stats: {
