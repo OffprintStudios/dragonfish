@@ -23,14 +23,17 @@
             <div class="w-8/12 mx-auto my-8">
                 <h3>
                     <ng-container *ngIf="tags[0].parent">
-                        <a [routerLink]="['/tag', tags[0].parent._id, tags[0].parent.name | slugify]">
-                            {{ tags[0].parent.name }}
-                        </a>
+                        <a
+                            [routerLink]="['/tag', tags[0].parent._id, tags[0].parent.name | slugify]"
+                            [innerHtml]="tags[0].parent.name | safeHtml"
+                        ></a>
                         &nbsp;— 
                     </ng-container>
-                    {{ tags[0].name }}
+                    <span [innerHtml]="tags[0].name | safeHtml"></span>
                 </h3>
-                <p>{{ tags[0].desc }}</p>
+                <p>
+                    <span [innerHtml]="tags[0].desc | safeHtml"></span>
+                </p>
             </div>
         </ng-template>
     </ng-container>

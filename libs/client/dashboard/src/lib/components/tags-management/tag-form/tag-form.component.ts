@@ -4,6 +4,7 @@ import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { htmlDecode } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-tag-form',
@@ -32,8 +33,8 @@ export class TagFormComponent implements OnInit {
     ngOnInit(): void {
         if (this.data.tag) {
             this.tagForm.setValue({
-                name: this.htmlDecode(this.data.tag.name),
-                desc: this.htmlDecode(this.data.tag.desc),
+                name: htmlDecode(this.data.tag.name),
+                desc: htmlDecode(this.data.tag.desc),
                 parent: (this.data.tag.parent || this.NO_PARENT),
             });
             this.editMode = true;
@@ -81,10 +82,5 @@ export class TagFormComponent implements OnInit {
                 this.dialogRef.close();
             });
         }
-    }
-
-    htmlDecode(input: string) {
-        var doc = new DOMParser().parseFromString(input, "text/html");
-        return doc.documentElement.textContent;
     }
 }

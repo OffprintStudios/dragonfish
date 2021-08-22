@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { TagsQuery, TagsService } from "@dragonfish/client/repository/tags";
 import { setTwoPartTitle } from "@dragonfish/shared/constants";
+import { htmlDecode } from "@dragonfish/shared/functions";
 import { TagsModel } from "@dragonfish/shared/models/content";
 
 @Component({
@@ -23,10 +24,10 @@ export class TagPageComponent implements OnInit {
             this.tagId = params.get("tagId");
             this.tagsService.fetchDescendants(this.tagId).subscribe((tagsTree) => {
                 if (tagsTree.parent) {
-                    setTwoPartTitle((tagsTree.parent as TagsModel).name + " — " + tagsTree.name);
+                    setTwoPartTitle(htmlDecode((tagsTree.parent as TagsModel).name + " — " + tagsTree.name));
                 }
                 else {
-                    setTwoPartTitle(tagsTree.name);
+                    setTwoPartTitle(htmlDecode(tagsTree.name));
                 }
             });
         });
