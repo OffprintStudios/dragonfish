@@ -38,4 +38,12 @@ export interface ISearch {
      * @param contentFilter
      */
     searchContent(query: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
+
+    /**
+     * Finds content tagged with the given fandom tag.
+     * @param tagId Tag that searching for in content.
+     * @param pageNum The current results page
+     * @param contentFilter The content filter to apply to returned results.
+     */
+    searchFandomTagContent(tagId: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
 }
