@@ -6,7 +6,10 @@ import { setTwoPartTitle } from "@dragonfish/shared/constants";
 import { htmlDecode } from "@dragonfish/shared/functions";
 import { ContentModel, TagsModel } from "@dragonfish/shared/models/content";
 import { PaginateResult } from "@dragonfish/shared/models/util";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { combineLatest } from "rxjs";
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-tag-page',
     templateUrl: './tag-page.component.html',
@@ -26,15 +29,16 @@ export class TagPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe((params) => {
-            this.tagId = params.get("tagId");
-            console.log(params.keys);
-            //TODO: Not detecting page
-            if (params.has('page')) {
-                this.pageNum = +params.get('page');
-            }
-            this.fetchData(this.tagId, this.pageNum);
-        });
+        combineLatest([this.route.paramMap, this.route.queryParamMap])
+            .pipe(untilDestroyed(this))
+            .subscribe((value) => {
+                const [params, queryParams] = value;
+                this.tagId = params.get("tagId");
+                if (queryParams.has('page')) {
+                    this.pageNum = +params.get('page');
+                }
+                this.fetchData(this.tagId, this.pageNum);
+            });
     }
 
     private fetchData(tagId: string, pageNum: number): void {

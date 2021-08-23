@@ -41,18 +41,15 @@
                     <p>
                         <span [innerHtml]="tags[0].desc | safeHtml"></span>
                     </p>
-                    <ng-container *ngIf="searchResults && searchResults.totalDocs > 0; else noResults">
-                        <div class="grid grid-cols-3 gap-4">
-                                <ng-container *ngFor="let result of searchResults.docs | paginate: {itemsPerPage: searchResults.limit, currentPage: 1, totalItems: searchResults.totalDocs}">
-                                    <dragonfish-work-card [content]="result" [showAuthor]="false"></dragonfish-work-card>
-                                </ng-container>
-                        </div>
-                        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-                    </ng-container>
-                    <ng-template #noResults>
-                        <p>There are no stories with this tag.</p>
-                    </ng-template>
+                    <div class="grid grid-cols-3 gap-4">
+                        <ng-container *ngIf="searchResults">
+                            <ng-container *ngFor="let result of searchResults.docs | paginate: {itemsPerPage: searchResults.limit, currentPage: 1, totalItems: searchResults.totalDocs}">
+                                <dragonfish-work-card [content]="result" [showAuthor]="false"></dragonfish-work-card>
+                            </ng-container>
+                        </ng-container>
+                    </div>
                 </div>
+                <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
             </ng-template>
         </ng-container>
     </ng-template>
