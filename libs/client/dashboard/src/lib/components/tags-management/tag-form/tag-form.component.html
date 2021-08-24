@@ -30,7 +30,7 @@
                     No Parent
                 </ng-option>
                 <ng-option *ngFor="let tag of tags" [value]="tag._id">
-                    <div class="tag-name" [innerHtml]="tag.name | safeHtml"></div>
+                    <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
                 </ng-option>
             </ng-select>
         </div>
