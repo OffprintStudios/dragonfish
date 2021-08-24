@@ -8,7 +8,6 @@ import { join } from 'path';
 import { AdminRoutes } from './controllers/admin';
 import { AuthRoutes } from './controllers/auth';
 import { ContentRoutes } from './controllers/content';
-import { MigrationRoutes } from './controllers/migration';
 import { SearchRoutes } from './controllers/search';
 import { ContentLibraryRoutes } from './controllers/content-library';
 
@@ -18,7 +17,6 @@ import { AdminServices } from './services/admin';
 import { AuthServices } from './services/auth';
 import { ImagesServices } from './services/images';
 import { ContentServices } from './services/content';
-import { MigrationServices } from './controllers/migration';
 import { SearchServices } from './services/search';
 
 /* Database Modules */
@@ -67,20 +65,12 @@ import { MailModule } from '@dragonfish/api/mail';
             }),
         }),
     ],
-    controllers: [
-        ...AdminRoutes,
-        ...AuthRoutes,
-        ...ContentRoutes,
-        ...MigrationRoutes,
-        ...SearchRoutes,
-        ...ContentLibraryRoutes,
-    ],
+    controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...SearchRoutes, ...ContentLibraryRoutes],
     providers: [
         ...AdminServices,
         ...AuthServices,
         ...ContentServices,
         ...ImagesServices,
-        ...MigrationServices,
         ...SearchServices,
         ...InterfaceProviders,
     ],

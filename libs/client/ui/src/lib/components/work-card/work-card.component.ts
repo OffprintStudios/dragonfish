@@ -9,7 +9,7 @@ import { calculateApprovalRating } from '@dragonfish/shared/functions';
     styleUrls: ['./work-card.component.scss'],
 })
 export class WorkCardComponent {
-    @Input() content: any;
+    @Input() content;
     @Input() showAuthor: boolean;
 
     contentKind = ContentKind;

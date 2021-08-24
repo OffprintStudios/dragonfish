@@ -11,8 +11,8 @@
                 </ng-container>
                 <span class="font-light text-xs italic inline-block ml-1" *ngIf="showAuthor">
                     by
-                    <a [routerLink]="['/portfolio', content.author._id, content.author.username | slugify]">
-                        {{ content.author.username }}
+                    <a [routerLink]="['/portfolio', content.author._id, content.author.userTag | slugify]">
+                        {{ content.author.screenName }}
                     </a>
                 </span>
             </h3>

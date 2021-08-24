@@ -23,7 +23,6 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { UsersStore } from '../../users';
 import { NotificationsService, UnsubscribeResult } from '../../notifications';
 import { ApprovalQueueStore } from '../../approval-queue';
-import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
 
@@ -139,9 +138,9 @@ export class ContentStore {
      * @param user The author of the content
      * @param contentId The content ID
      */
-    async fetchUserContentSections(user: JwtPayload, contentId: string): Promise<SectionsDocument[]> {
+    async fetchUserContentSections(user: string, contentId: string): Promise<SectionsDocument[]> {
         const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { _id: contentId, author: user, 'audit.isDeleted': false },
             { autopopulate: false },
         );
 
@@ -162,20 +161,20 @@ export class ContentStore {
      * Routes a request for creating some content to the appropriate API functions, given the specified
      * `ContentKind`.
      *
-     * @param user The author of the content
+     * @param userId The author of the content
      * @param kind The content kind
      * @param formInfo The form information
      */
-    async createOne(user: JwtPayload, kind: ContentKind, formInfo: FormType) {
+    async createOne(userId: string, kind: ContentKind, formInfo: FormType) {
         switch (kind) {
             case ContentKind.BlogContent:
-                return await this.blogContent.createNewBlog(user, formInfo as BlogForm);
+                return await this.blogContent.createNewBlog(userId, formInfo as BlogForm);
             case ContentKind.NewsContent:
-                return await this.newsContent.createNewPost(user, formInfo as NewsForm);
+                return await this.newsContent.createNewPost(userId, formInfo as NewsForm);
             case ContentKind.PoetryContent:
-                return await this.poetryContent.createPoetry(user, formInfo as CreatePoetry);
+                return await this.poetryContent.createPoetry(userId, formInfo as CreatePoetry);
             case ContentKind.ProseContent:
-                return await this.proseContent.createProse(user, formInfo as CreateProse);
+                return await this.proseContent.createProse(userId, formInfo as CreateProse);
         }
     }
 
@@ -187,8 +186,8 @@ export class ContentStore {
      * @param contentId The content ID
      * @param formInfo The form information
      */
-    async saveChanges(user: JwtPayload, contentId: string, formInfo: FormType) {
-        const content = await this.content.findOne({ _id: contentId, author: user.sub, 'audit.isDeleted': false });
+    async saveChanges(user: string, contentId: string, formInfo: FormType) {
+        const content = await this.content.findOne({ _id: contentId, author: user, 'audit.isDeleted': false });
 
         if (isNullOrUndefined(content)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
@@ -215,11 +214,11 @@ export class ContentStore {
      * @param pubChange (Optional) Publishing status updates for Blogs and News
      */
     async publishOne(
-        user: JwtPayload,
+        user: string,
         contentId: string,
         pubChange?: PubChange,
     ): Promise<ContentDocument | BlogsContentDocument | NewsContentDocument> {
-        const content = await this.content.findOne({ _id: contentId, author: user.sub, 'audit.isDeleted': false });
+        const content = await this.content.findOne({ _id: contentId, author: user, 'audit.isDeleted': false });
 
         if (isNullOrUndefined(content)) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
@@ -245,18 +244,18 @@ export class ContentStore {
      * @param user The owner of this content
      * @param contentId The content's ID
      */
-    async deleteOne(user: JwtPayload, contentId: string): Promise<void> {
-        await this.content.updateOne({ _id: contentId, author: user.sub }, { 'audit.isDeleted': true });
+    async deleteOne(user: string, contentId: string): Promise<void> {
+        await this.content.updateOne({ _id: contentId, author: user }, { 'audit.isDeleted': true });
 
         // Unsubscribe the user from comments on the now-deleted work
         const unsubResult: UnsubscribeResult = await this.notifications.unsubscribe(
-            user.sub,
+            user,
             contentId,
             NotificationKind.CommentNotification,
         );
         if (unsubResult !== UnsubscribeResult.Success) {
             console.error(
-                `Failed to unsubscribe user '${user.username}' (ID: ${user.sub}) from notifications on content with ID: '${contentId}'. Reason: ${unsubResult}`,
+                `Failed to unsubscribe user '${user}' from notifications on content with ID: '${contentId}'. Reason: ${unsubResult}`,
             );
         }
 
@@ -274,10 +273,10 @@ export class ContentStore {
      * @param user The author of the content
      * @param contentId The content to submit
      */
-    async submitForApproval(user: JwtPayload, contentId: string): Promise<ContentDocument> {
+    async submitForApproval(user: string, contentId: string): Promise<ContentDocument> {
         const thisContent = await this.content.findOne({
             _id: contentId,
-            author: user.sub,
+            author: user,
             'audit.isDeleted': false,
         });
 
@@ -286,7 +285,7 @@ export class ContentStore {
         }
 
         await this.queue.addOneWork(contentId);
-        return await this.pendingWork(contentId, user.sub);
+        return await this.pendingWork(contentId, user);
     }
 
     /**
@@ -350,9 +349,9 @@ export class ContentStore {
      * @param contentId The content ID
      * @param sectionInfo The new section's info
      */
-    async createSection(user: JwtPayload, contentId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
+    async createSection(user: string, contentId: string, sectionInfo: SectionForm): Promise<SectionsDocument> {
         const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { _id: contentId, author: user, 'audit.isDeleted': false },
             { autopopulate: false },
         );
 
@@ -361,7 +360,7 @@ export class ContentStore {
         } else {
             const sec: SectionsDocument = await this.sectionsStore.createNewSection(contentId, sectionInfo);
             await this.content.updateOne(
-                { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                { _id: contentId, author: user, 'audit.isDeleted': false },
                 { $push: { sections: sec._id } },
                 { strict: false },
             );
@@ -378,13 +377,13 @@ export class ContentStore {
      * @param sectionInfo The new section info
      */
     async editSection(
-        user: JwtPayload,
+        user: string,
         contentId: string,
         sectionId: string,
         sectionInfo: SectionForm,
     ): Promise<SectionsDocument> {
         const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { _id: contentId, author: user, 'audit.isDeleted': false },
             { autopopulate: false },
         );
 
@@ -394,11 +393,11 @@ export class ContentStore {
             const sec: SectionsDocument = await this.sectionsStore.editSection(sectionId, sectionInfo);
             if (sec.published === true) {
                 await this.content.updateOne(
-                    { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, 'audit.isDeleted': false },
                     { $inc: { 'stats.words': -sectionInfo.oldWords } },
                 );
                 await this.content.updateOne(
-                    { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, 'audit.isDeleted': false },
                     { $inc: { 'stats.words': sec.stats.words } },
                 );
             }
@@ -417,13 +416,13 @@ export class ContentStore {
      * @param pubStatus The publishing status for this section
      */
     async publishSection(
-        user: JwtPayload,
+        user: string,
         contentId: string,
         sectionId: string,
         pubStatus: PublishSection,
     ): Promise<SectionsDocument> {
         const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { _id: contentId, author: user, 'audit.isDeleted': false },
             { autopopulate: false },
         );
 
@@ -434,14 +433,14 @@ export class ContentStore {
             if (sec.published === true && pubStatus.oldPub === false) {
                 // if newly published
                 await this.content.updateOne(
-                    { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, 'audit.isDeleted': false },
                     { $inc: { 'stats.words': sec.stats.words } },
                     { strict: false },
                 );
             } else if (sec.published === false && pubStatus.oldPub === true) {
                 // if unpublished
                 await this.content.updateOne(
-                    { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, 'audit.isDeleted': false },
                     { $inc: { 'stats.words': -sec.stats.words } },
                     { strict: false },
                 );
@@ -457,9 +456,9 @@ export class ContentStore {
      * @param contentId The content ID
      * @param sectionId The section ID
      */
-    async deleteSection(user: JwtPayload, contentId: string, sectionId: string): Promise<void> {
+    async deleteSection(user: string, contentId: string, sectionId: string): Promise<void> {
         const work = await this.content.findOne(
-            { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+            { _id: contentId, author: user, 'audit.isDeleted': false },
             { autopopulate: false },
         );
 
@@ -469,7 +468,7 @@ export class ContentStore {
             const sec = await this.sectionsStore.deleteSection(sectionId);
             if (sec.published === true) {
                 await this.content.updateOne(
-                    { _id: contentId, author: user.sub, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, 'audit.isDeleted': false },
                     {
                         $inc: { 'stats.totWords': -sec.stats.words },
                         $pull: { sections: sec._id },
@@ -498,17 +497,6 @@ export class ContentStore {
         );
     }
 
-    //#endregion
-
-    //#region ---MIGRATION---
-
-    async migrateBlog(user: JwtPayload, formData: MigrationForm) {
-        return await this.blogContent.migrateBlog(user, formData);
-    }
-
-    async migrateWork(user: JwtPayload, formData: MigrationForm) {
-        return await this.proseContent.migrateWork(user, formData);
-    }
     //#endregion
 
     //#region ---TAGS---
