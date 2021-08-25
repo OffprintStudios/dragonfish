@@ -1,20 +1,25 @@
 <div class="flex flex-col w-full h-screen">
-    <dragonfish-topbar>
-        <div class="topbar-header">
+    <dragonfish-topbar [transparent]="transparent">
+        <div class="topbar-header" *ngIf="!transparent">
             <rmx-icon name="settings-5-line"></rmx-icon>
             <h3>Settings</h3>
         </div>
     </dragonfish-topbar>
     <div class="flex-1">
-        <ng-scrollbar>
+        <ng-scrollbar #mainScroll>
+            <div class="flex items-center my-4 w-11/12 mx-auto border-b border-gray-600 dark:border-white pb-2.5">
+                <h1 class="text-4xl font-bold flex-1">Settings</h1>
+            </div>
             <div class="my-8 w-11/12 mx-auto">
-                <ng-container *ngIf="sessionQuery.currentUser$ | async">
+                <ng-container *ngIf="sessionQuery.currAccount$ | async">
                     <dragonfish-account></dragonfish-account>
                     <div class="my-5"><!--spacer--></div>
-                    <dragonfish-profile></dragonfish-profile>
-                    <div class="my-5"><!--spacer--></div>
-                    <dragonfish-vip-settings></dragonfish-vip-settings>
-                    <div class="my-5"><!--spacer--></div>
+                    <ng-container *ngIf="pseudQuery.current$ | async">
+                        <dragonfish-profile></dragonfish-profile>
+                        <div class="my-5"><!--spacer--></div>
+                        <dragonfish-vip-settings></dragonfish-vip-settings>
+                        <div class="my-5"><!--spacer--></div>
+                    </ng-container>
                 </ng-container>
                 <dragonfish-global-settings></dragonfish-global-settings>
             </div>

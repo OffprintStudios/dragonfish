@@ -28,7 +28,9 @@ export class VipSettingsComponent implements OnInit {
         });
     }
 
-    get taglineFields() { return this.taglineForm.controls; }
+    get taglineFields() {
+        return this.taglineForm.controls;
+    }
 
     isAllowed(userRoles: Roles[]) {
         return isAllowed(userRoles, [
@@ -47,9 +49,10 @@ export class VipSettingsComponent implements OnInit {
             return;
         }
         const changeRequest: UpdateTagline = {
-            newTagline: this.taglineFields.tagline.value
+            newTagline: this.taglineFields.tagline.value,
         };
 
-        return this.user.updateTagline(changeRequest).subscribe();
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.updateTagline(changeRequest).subscribe();
     }
 }
