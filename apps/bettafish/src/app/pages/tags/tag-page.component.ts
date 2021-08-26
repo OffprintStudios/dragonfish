@@ -50,7 +50,7 @@ export class TagPageComponent implements OnInit {
                 setTwoPartTitle(htmlDecode(tagsTree.name));
             }
         });
-        this.network.searchFandomTagContent(tagId, pageNum).subscribe((results) => {
+        this.network.getContentByFandomTag(tagId, pageNum).subscribe((results) => {
             this.searchResults = results;
         })
     }

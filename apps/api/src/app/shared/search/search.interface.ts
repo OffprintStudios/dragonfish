@@ -45,5 +45,5 @@ export interface ISearch {
      * @param pageNum The current results page
      * @param contentFilter The content filter to apply to returned results.
      */
-    searchFandomTagContent(tagId: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
+    getContentByFandomTag(tagId: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
 }

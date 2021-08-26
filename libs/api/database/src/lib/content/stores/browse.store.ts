@@ -212,7 +212,7 @@ export class BrowseStore {
      * @param filter The content filter to apply to returned results.
      * @returns 
      */
-    public async findFandomTagContent(
+    public async getContentByFandomTag(
         tagId: string,
         kinds: ContentKind[],
         pageNum: number,
@@ -220,6 +220,7 @@ export class BrowseStore {
         filter: ContentFilter,
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
+            sort: { 'audit.publishedOn': -1 },
             page: pageNum,
             limit: maxPerPage,
         };

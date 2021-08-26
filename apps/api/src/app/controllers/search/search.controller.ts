@@ -53,12 +53,12 @@ export class SearchController {
     }
 
     @ApiTags(DragonfishTags.Search)
-    @Get('get-fandom-tag-content')
-    async getFandomTagContent(
+    @Get('get-content-by-fandom-tag')
+    async getContentByFandomTag(
         @Query('tagId') tagId: string,
         @Query('pageNum') pageNum: number,
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.searchService.searchFandomTagContent(tagId, pageNum, contentFilter);
+        return await this.searchService.getContentByFandomTag(tagId, pageNum, contentFilter);
     }
 }

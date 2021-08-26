@@ -12,9 +12,9 @@ import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class SearchService implements ISearch {
-    INITIAL_PAGE = 1;
-    INITIAL_MAX_PER_PAGE = 6;
-    MAX_PER_PAGE = 15;
+    readonly INITIAL_PAGE = 1;
+    readonly INITIAL_MAX_PER_PAGE = 6;
+    readonly MAX_PER_PAGE = 15;
 
     constructor(private readonly usersStore: UsersStore, private readonly contentStore: BrowseStore) {}
 
@@ -81,12 +81,12 @@ export class SearchService implements ISearch {
         );
     }
 
-    async searchFandomTagContent(
+    async getContentByFandomTag(
         tagId: string,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.contentStore.findFandomTagContent(
+        return await this.contentStore.getContentByFandomTag(
             tagId,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,
