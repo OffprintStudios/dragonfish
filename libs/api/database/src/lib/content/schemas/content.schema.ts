@@ -79,7 +79,7 @@ export class ContentDocument extends Document implements ContentModel {
             select: '_id name desc parent kind createdAt updatedAt',
         },
     }] })
-    tags?: TagsModel[];
+    tags?: string[] | TagsModel[];
 
     @Prop()
     readonly createdAt: Date;

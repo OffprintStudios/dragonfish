@@ -26,7 +26,7 @@ export class NewsPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        combineLatest(this.viewState.currContent$, this.route.queryParamMap)
+        combineLatest([this.viewState.currContent$, this.route.queryParamMap])
             .pipe(untilDestroyed(this))
             .subscribe((x) => {
                 const [content, queryParams] = x;

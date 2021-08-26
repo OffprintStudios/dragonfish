@@ -22,7 +22,7 @@ export class PoetryPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        combineLatest(this.viewQuery.currContent$, this.route.queryParamMap)
+        combineLatest([this.viewQuery.currContent$, this.route.queryParamMap])
             .pipe(untilDestroyed(this))
             .subscribe((value) => {
                 const [content, queryParams] = value;

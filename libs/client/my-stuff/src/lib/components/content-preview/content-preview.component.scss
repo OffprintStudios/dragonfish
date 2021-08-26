@@ -56,6 +56,15 @@ div.content-box {
             }
         }
     }
+    div.content-tags {
+        a {
+            cursor: pointer;
+            color: whitesmoke;
+            &:hover {
+                background: var(--accent-dark);
+            }
+        }
+    }
     div.edit-cover-art {
         position: relative;
         cursor: pointer;
