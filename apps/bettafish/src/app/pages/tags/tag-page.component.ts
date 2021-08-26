@@ -33,23 +33,29 @@ export class TagPageComponent implements OnInit {
             .pipe(untilDestroyed(this))
             .subscribe((value) => {
                 const [params, queryParams] = value;
-                this.tagId = params.get("tagId");
                 if (queryParams.has('page')) {
-                    this.pageNum = +params.get('page');
+                    this.pageNum = +queryParams.get('page');
                 }
-                this.fetchData(this.tagId, this.pageNum);
+                else {
+                    this.pageNum = 1;
+                }
+                this.fetchData(params.get("tagId"), this.pageNum);
             });
     }
 
     private fetchData(tagId: string, pageNum: number): void {
-        this.tagsService.fetchDescendants(tagId).subscribe((tagsTree) => {
-            if (tagsTree.parent) {
-                setTwoPartTitle(htmlDecode((tagsTree.parent as TagsModel).name + " — " + tagsTree.name));
-            }
-            else {
-                setTwoPartTitle(htmlDecode(tagsTree.name));
-            }
-        });
+        if (this.tagId != tagId) {
+            this.tagId = tagId;
+            this.tagsService.fetchDescendants(tagId).subscribe((tagsTree) => {
+                if (tagsTree.parent) {
+                    setTwoPartTitle(htmlDecode((tagsTree.parent as TagsModel).name + " — " + tagsTree.name));
+                }
+                else {
+                    setTwoPartTitle(htmlDecode(tagsTree.name));
+                }
+            });
+        }
+        
         this.network.getContentByFandomTag(tagId, pageNum).subscribe((results) => {
             this.searchResults = results;
         })

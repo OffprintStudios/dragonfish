@@ -1,5 +1,5 @@
-<dragonfish-topbar></dragonfish-topbar>
 <ng-scrollbar>
+    <dragonfish-topbar></dragonfish-topbar>
     <ng-container *ngIf="tagsQuery.loading$ | async else notLoading">
         <div class="flex flex-row items-center justify-center h-72">
             <mat-spinner></mat-spinner>
@@ -43,7 +43,7 @@
                     </p>
                     <div class="grid grid-cols-3 gap-4">
                         <ng-container *ngIf="searchResults">
-                            <ng-container *ngFor="let result of searchResults.docs | paginate: {itemsPerPage: searchResults.limit, currentPage: 1, totalItems: searchResults.totalDocs}">
+                            <ng-container *ngFor="let result of searchResults.docs | paginate: {itemsPerPage: searchResults.limit, currentPage: pageNum, totalItems: searchResults.totalDocs}">
                                 <dragonfish-work-card [content]="result" [showAuthor]="false"></dragonfish-work-card>
                             </ng-container>
                         </ng-container>
