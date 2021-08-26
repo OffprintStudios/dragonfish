@@ -18,24 +18,25 @@ export class AuthService {
         private readonly accountStore: AccountsStore,
         private readonly pseudStore: PseudonymsStore,
         private readonly jwtService: JwtService,
-    ) {}
+    ) { }
 
     //#region ---ACCOUNTS---
 
-    public async validateAccount(email: string, password: string): Promise<Account> {
+    public async validateAccount(email: string, password: string): Promise<Account | null> {
         const potentialAccount = await this.accountStore.fetchAccountByEmail(email);
-        if (potentialAccount) {
-            try {
-                if (await verify(potentialAccount.password, password, { type: argon2id })) {
-                    return potentialAccount;
-                } else {
-                    this.logger.warn(`Someone attempted to log into Account ${potentialAccount._id} and failed!`);
-                }
-            } catch (err) {
-                throw new InternalServerErrorException(`Something went wrong! Code: sunfish`);
+        if (!potentialAccount) {
+            throw new NotFoundException(`No user with those credentials found. Have you signed up?`);
+        }
+
+        try {
+            if (!(await verify(potentialAccount.password, password, { type: argon2id }))) {
+                this.logger.warn(`Someone attempted to log into Account ${potentialAccount._id} and failed!`);
+                return null;
             }
-        } else {
-            throw new NotFoundException(`Looks like you don't exist yet. Why not try signing up?`);
+
+            return potentialAccount;
+        } catch (err) {
+            throw new InternalServerErrorException(`Something went wrong! Code: sunfish. Details: ${err}`);
         }
     }
 
