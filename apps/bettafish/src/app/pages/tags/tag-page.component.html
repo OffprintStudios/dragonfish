@@ -16,7 +16,7 @@
             </ng-container>
             <ng-template #notEmpty>
                 <div class="w-11/12 mx-auto my-6">
-                    <div class="tag-header">
+                    <div class="text-2xl">
                         <ng-container *ngIf="tags[0].parent">
                             <a
                                 [routerLink]="['/tag', tags[0].parent._id, tags[0].parent.name | slugify]"
