@@ -183,6 +183,7 @@
         "eslint": "7.22.0",
         "eslint-config-prettier": "8.1.0",
         "eslint-plugin-cypress": "^2.10.3",
+        "eslint-plugin-prettier": "^3.4.1",
         "exitzero": "^1.0.1",
         "jest": "27.0.3",
         "jest-preset-angular": "9.0.3",

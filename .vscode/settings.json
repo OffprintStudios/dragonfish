@@ -1,4 +1,12 @@
 {
     "vsicons.presets.angular": true,
-    "angular.enable-strict-mode-prompt": false
+    "angular.enable-strict-mode-prompt": false,
+    "typescript.referencesCodeLens.enabled": true, // why is this not a default? baffling.
+    "editor.codeActionsOnSave": {
+        // Auto-format on save
+        "source.fixAll": true,
+    },
+    "javascript.format.enable": true,
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
 }
