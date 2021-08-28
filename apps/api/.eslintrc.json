@@ -1,9 +1,35 @@
 {
-    "extends": "../../.eslintrc.json",
+    "extends": ["../../.eslintrc.json", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended", "prettier"],
     "ignorePatterns": [
         "!**/*"
     ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2019,
+        "sourceType": "module",
+        "tsconfigRootDir": "apps/api",
+        "project": "tsconfig.app.json"
+    },
+    "plugins": ["@typescript-eslint", "prettier"],
+    "env": {
+        "node": true
+    },
     "rules": {
-        "@typescript-eslint/no-namespace": "off"
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/naming-convention": [
+            "warn",
+            {
+                "selector": "variable",
+                "format": ["camelCase", "UPPER_CASE"]
+            },
+            {
+                "selector": ["variable", "function"],
+                "format": ["camelCase"]
+            }
+        ],
+        "require-await": "off",
+        "@typescript-eslint/require-await": "warn",
+        "@typescript-eslint/explicit-function-return-type": ["warn"],
+        "prettier/prettier": ["error", { "endOfLine": "auto" }]
     }
 }
