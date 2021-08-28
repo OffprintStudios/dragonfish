@@ -16,7 +16,7 @@
             </ng-container>
             <ng-template #notEmpty>
                 <div class="w-11/12 mx-auto my-6">
-                    <h3>
+                    <div class="text-2xl">
                         <ng-container *ngIf="tags[0].parent">
                             <a
                                 [routerLink]="['/tag', tags[0].parent._id, tags[0].parent.name | slugify]"
@@ -25,7 +25,7 @@
                             &nbsp;— 
                         </ng-container>
                         <span [innerHtml]="tags[0].name | safeHtml"></span>
-                    </h3>
+                    </div>
                     <ng-container *ngIf="tags[0].children && tags[0].children.length > 0">
                         Child Tags: 
                         <ng-container *ngFor="let child of tags[0].children; let i = index">

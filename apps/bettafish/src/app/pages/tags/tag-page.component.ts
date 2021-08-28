@@ -13,6 +13,7 @@ import { combineLatest } from "rxjs";
 @Component({
     selector: 'dragonfish-tag-page',
     templateUrl: './tag-page.component.html',
+    styleUrls: ['./tag-page.component.scss'],
 })
 export class TagPageComponent implements OnInit {
     tagId = "";
