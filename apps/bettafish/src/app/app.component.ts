@@ -6,6 +6,7 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AppQuery } from '@dragonfish/client/repository/app';
 import { DragonfishElectronService } from '@dragonfish/client/services';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @UntilDestroy()
 @Component({
@@ -14,8 +15,6 @@ import { DragonfishElectronService } from '@dragonfish/client/services';
     styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-    screenWidth: number;
-    screenHeight: number;
     mobileMode = false;
     showNav = true;
 
@@ -65,9 +64,6 @@ export class AppComponent implements OnInit {
 
     @HostListener('window:resize', ['$event'])
     onResize() {
-        this.screenHeight = window.innerHeight;
-        this.screenWidth = window.innerWidth;
-
-        this.mobileMode = this.screenWidth < 1100;
+        this.mobileMode = isMobile();
     }
 }
