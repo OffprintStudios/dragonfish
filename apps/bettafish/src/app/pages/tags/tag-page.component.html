@@ -41,7 +41,7 @@
                     <p>
                         <span [innerHtml]="tags[0].desc | safeHtml"></span>
                     </p>
-                    <div class="grid grid-cols-3 gap-4">
+                    <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
                         <ng-container *ngIf="searchResults">
                             <ng-container *ngFor="let result of searchResults.docs | paginate: {itemsPerPage: searchResults.limit, currentPage: pageNum, totalItems: searchResults.totalDocs}">
                                 <dragonfish-work-card [content]="result" [showAuthor]="false"></dragonfish-work-card>
