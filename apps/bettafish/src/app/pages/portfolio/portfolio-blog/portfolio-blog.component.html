@@ -5,7 +5,7 @@
         </div>
     </ng-container>
     <ng-template #notLoading>
-        <div class="grid grid-cols-2 gap-6 my-8 w-11/12 mx-auto" *ngIf="blogsData.totalDocs !== 0; else noGalleryBlogs">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 my-8 w-11/12 mx-auto" *ngIf="blogsData.totalDocs !== 0; else noGalleryBlogs">
             <ng-container *ngFor="let blog of blogsData.docs | paginate: {itemsPerPage: blogsData.limit, currentPage: pageNum, totalItems: blogsData.totalDocs}">
                 <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
             </ng-container>
