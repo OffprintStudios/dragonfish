@@ -1,13 +1,12 @@
 <div class="p-3.5 flex flex-col mt-6">
     <div class="flex items-center">
         <h1 class="text-3xl font-medium flex-1">Select Profile</h1>
-        <ng-container *ngIf="canHaveFivePseuds(sessionQuery.currAccount.roles); else onlyThreePseuds">
-            <span class="italic mr-2">{{ pseudQuery.numPseuds }} out of 5</span>
+        <ng-container *ngIf="pseudQuery.numPseuds !== 3; else equalsThree">
+            <span class="italic mr-4">{{ pseudQuery.numPseuds }} out of 3</span>
             <button><rmx-icon name="add-box-line"></rmx-icon>Add Profile</button>
         </ng-container>
-        <ng-template #onlyThreePseuds>
-            <span class="italic">{{ pseudQuery.numPseuds }} out of 3. Want more? Become a VIP.</span>
-            <button><rmx-icon name="add-box-line"></rmx-icon>Add Profile</button>
+        <ng-template #equalsThree>
+            <span class="italic">{{ pseudQuery.numPseuds }} out of 3.</span>
         </ng-template>
     </div>
     <div class="flex items-center justify-center overflow-x-auto">
@@ -84,23 +83,16 @@
                 </div>
             </ng-container>
         </ng-container>
-        <ng-container *ngIf="canHaveFivePseuds(sessionQuery.currAccount.roles); else hasOnlyThree">
-            <ng-container *ngIf="pseudQuery.numPseuds !== 5">
-                <div class="profile-box" [routerLink]="['/registration/setup-pseud']" (mouseenter)="deselectPseud()">
-                    <span class="text-4xl font-extralight">+</span>
-                    <span>Add</span>
-                    <span>Profile</span>
-                </div>
-            </ng-container>
-        </ng-container>
-        <ng-template #hasOnlyThree>
-            <ng-container *ngIf="pseudQuery.numPseuds !== 3">
-                <div class="profile-box" [routerLink]="['/registration/setup-pseud']">
-                    <span class="text-4xl font-extralight">+</span>
-                    <span>Add</span>
-                    <span>Profile</span>
-                </div>
-            </ng-container>
-        </ng-template>
     </div>
+</div>
+<div class="flex flex-col items-center mx-auto w-7/12">
+    <ng-component *ngIf="pseudQuery.current$ | async as user">
+        <div>
+            <h3 class="text-xl font-medium">Change Avatar</h3>
+            <img [alt]="'Avatar'" [src]="user.profile.avatar" class="avatar" />
+            <div class="flex flex-row items-center justify-center">
+                <button type="button" class="mt-10 shadow-lg" (click)="changeAvatar()">Change Avatar</button>
+            </div>
+        </div>
+    </ng-component>
 </div>
