@@ -86,6 +86,10 @@ import {
     RiAddCircleLine,
     RiGroup2Line,
     RiMenuUnfoldLine,
+    RiUserSettingsLine,
+    RiShieldUserLine,
+    RiNotificationBadgeLine,
+    RiApps2Line,
 } from 'angular-remix-icon';
 
 import {
@@ -389,6 +393,10 @@ const remixIcons = {
     RiAddCircleLine,
     RiGroup2Line,
     RiMenuUnfoldLine,
+    RiUserSettingsLine,
+    RiShieldUserLine,
+    RiNotificationBadgeLine,
+    RiApps2Line,
 };
 
 @NgModule({

@@ -1,28 +1,47 @@
 <div class="flex flex-col w-full h-screen">
-    <dragonfish-topbar [transparent]="transparent">
-        <div class="topbar-header" *ngIf="!transparent">
+    <dragonfish-topbar>
+        <div class="topbar-header">
             <rmx-icon name="settings-5-line"></rmx-icon>
             <h3>Settings</h3>
         </div>
     </dragonfish-topbar>
-    <div class="flex-1">
-        <ng-scrollbar #mainScroll>
-            <div class="flex items-center my-4 w-11/12 mx-auto border-b border-gray-600 dark:border-white pb-2.5">
-                <h1 class="text-4xl font-bold flex-1">Settings</h1>
-            </div>
-            <div class="my-8 w-11/12 mx-auto">
-                <ng-container *ngIf="sessionQuery.currAccount$ | async">
-                    <dragonfish-account></dragonfish-account>
-                    <div class="my-5"><!--spacer--></div>
-                    <ng-container *ngIf="pseudQuery.current$ | async">
-                        <dragonfish-profile></dragonfish-profile>
-                        <div class="my-5"><!--spacer--></div>
-                        <dragonfish-vip-settings></dragonfish-vip-settings>
-                        <div class="my-5"><!--spacer--></div>
+    <div class="flex" style="height: calc(100vh - 52px);">
+        <dragonfish-pagebar>
+            <a class="link" [routerLink]="['/settings']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                <span class="link-icon"><rmx-icon name="apps-2-line"></rmx-icon></span>General
+            </a>
+            <ng-container *ngIf="sessionQuery.currAccount$ | async">
+                <a class="link" [routerLink]="['account']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="shield-user-line"></rmx-icon></span>Account
+                </a>
+                <a class="link" [routerLink]="['profile']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="user-settings-line"></rmx-icon></span>Profile
+                </a>
+                <a class="link" [routerLink]="['social']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>Social
+                </a>
+                <a class="link" [routerLink]="['notifications']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="notification-badge-line"></rmx-icon></span>Notifications
+                </a>
+            </ng-container>
+        </dragonfish-pagebar>
+        <div class="w-full h-full">
+            <ng-scrollbar>
+                <div class="my-8 w-11/12 mx-auto">
+                    <router-outlet></router-outlet>
+                    <!--<ng-container *ngIf="sessionQuery.currAccount$ | async">
+                        <dragonfish-account></dragonfish-account>
+                        <div class="my-5"></div>
+                        <ng-container *ngIf="pseudQuery.current$ | async">
+                            <dragonfish-profile></dragonfish-profile>
+                            <div class="my-5"></div>
+                            <dragonfish-vip-settings></dragonfish-vip-settings>
+                            <div class="my-5"></div>
+                        </ng-container>
                     </ng-container>
-                </ng-container>
-                <dragonfish-global-settings></dragonfish-global-settings>
-            </div>
-        </ng-scrollbar>
+                    <dragonfish-global-settings></dragonfish-global-settings>-->
+                </div>
+            </ng-scrollbar>
+        </div>
     </div>
 </div>
