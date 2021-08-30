@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Roles, UpdateTagline } from '@dragonfish/shared/models/users';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -28,7 +28,9 @@ export class VipSettingsComponent implements OnInit {
         });
     }
 
-    get taglineFields() { return this.taglineForm.controls; }
+    get taglineFields() {
+        return this.taglineForm.controls;
+    }
 
     isAllowed(userRoles: Roles[]) {
         return isAllowed(userRoles, [
@@ -46,10 +48,11 @@ export class VipSettingsComponent implements OnInit {
             this.alerts.info(`Taglines can only be between 3 and 36 characters long.`);
             return;
         }
-        const changeRequest: UpdateTagline = {
-            newTagline: this.taglineFields.tagline.value
-        };
+        /*const changeRequest: UpdateTagline = {
+            newTagline: this.taglineFields.tagline.value,
+        };*/
 
-        return this.user.updateTagline(changeRequest).subscribe();
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.updateTagline(changeRequest).subscribe();
     }
 }

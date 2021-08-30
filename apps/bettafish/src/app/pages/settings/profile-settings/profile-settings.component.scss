@@ -1,0 +1,83 @@
+div.profile-box {
+    @apply flex flex-col items-center justify-center p-2 h-36 w-28 rounded-md transition transform mx-2.5;
+
+    &:hover {
+        @apply text-white scale-105 cursor-pointer;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+    }
+
+    &:active {
+        @apply text-white scale-100 cursor-pointer shadow-inner;
+        background: var(--accent-dark);
+    }
+
+    &.active {
+        @apply text-white;
+        background: var(--accent);
+    }
+}
+
+div.user-card {
+    @apply m-2.5 transition transform shadow-2xl;
+    border: 1px solid var(--borders);
+    &.active {
+        border: 1px solid var(--accent);
+    }
+    &:hover {
+        @apply scale-105 cursor-pointer;
+    }
+    div.has-accent {
+        background: var(--accent);
+    }
+    div.cover-pic {
+        -webkit-mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+        mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+    }
+    div.user-header {
+        div.user-avatar {
+            align-self: center;
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 0.375rem;
+                border: 1px solid var(--borders);
+                box-shadow: var(--dropshadow);
+            }
+        }
+        h2, h3 {
+            color: var(--text-color);
+        }
+    }
+    div.badge {
+        border-color: var(--borders);
+    }
+    div.stats {
+        rmx-icon {
+            width: 1.15rem;
+            position: relative;
+            top: 0.175rem;
+            margin-right: 0.25rem;
+        }
+    }
+    a.button {
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        &.bottom {
+            @apply rounded-b-md;
+        }
+    }
+}
+
+img.avatar {
+    @apply rounded-md mr-4;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    border: 1px solid var(--site-borders);
+    object-fit: cover;
+    object-position: 50% 50%; // Determines the viewport position
+    display: block;
+    text-align: center;
+}

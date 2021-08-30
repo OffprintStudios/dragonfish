@@ -976,9 +976,9 @@ export class DragonfishNetworkService {
      *
      * @returns Observable
      */
-    public fetchAll(): Observable<ContentModel[]> {
+    public fetchAll(pseudId: string): Observable<ContentModel[]> {
         return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all`, {
+            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all?pseudId=${pseudId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -989,15 +989,20 @@ export class DragonfishNetworkService {
      * Sends a request to create a piece of content to the backend, with the route determined by its
      * `ContentKind`.
      *
+     * @param pseudId
      * @param kind The content kind
      * @param formInfo The form information
      */
-    public createContent(kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
+    public createContent(pseudId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
         return handleResponse(
-            this.http.put<ContentModel>(`${this.baseUrl}/content/create-one?kind=${kind}`, formInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.put<ContentModel>(
+                `${this.baseUrl}/content/create-one?pseudId=${pseudId}&kind=${kind}`,
+                formInfo,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
@@ -1005,14 +1010,20 @@ export class DragonfishNetworkService {
      * Sends a request to create a piece of content to the backend, with the route determined by its
      * `ContentKind`.
      *
+     * @param pseudId
      * @param contentId The current content's ID
      * @param kind The content kind
      * @param formInfo The form information
      */
-    public saveContent(contentId: string, kind: ContentKind, formInfo: FormType): Observable<ContentModel> {
+    public saveContent(
+        pseudId: string,
+        contentId: string,
+        kind: ContentKind,
+        formInfo: FormType,
+    ): Observable<ContentModel> {
         return handleResponse(
             this.http.patch<ContentModel>(
-                `${this.baseUrl}/content/save-changes?contentId=${contentId}&kind=${kind}`,
+                `${this.baseUrl}/content/save-changes?pseudId=${pseudId}&contentId=${contentId}&kind=${kind}`,
                 formInfo,
                 {
                     observe: 'response',
@@ -1025,13 +1036,14 @@ export class DragonfishNetworkService {
     /**
      * Sends a request to delete the specified content.
      *
+     * @param pseudId
      * @param contentId The content to delete
      * @returns Observable
      */
-    public deleteOne(contentId: string): Observable<void> {
+    public deleteOne(pseudId: string, contentId: string): Observable<void> {
         return handleResponse(
             this.http.patch<void>(
-                `${this.baseUrl}/content/delete-one?contentId=${contentId}`,
+                `${this.baseUrl}/content/delete-one?pseudId=${pseudId}&contentId=${contentId}`,
                 {},
                 {
                     observe: 'response',
@@ -1044,16 +1056,21 @@ export class DragonfishNetworkService {
     /**
      * Sends a request to publish the specified content.
      *
+     * @param pseudId
      * @param contentId The content to publish
      * @param pubChange (Optional) Used for blog and newspost publishing changes
      * @returns Observable
      */
-    public publishOne(contentId: string, pubChange?: PubChange): Observable<ContentModel> {
+    public publishOne(pseudId: string, contentId: string, pubChange?: PubChange): Observable<ContentModel> {
         return handleResponse(
-            this.http.patch<ContentModel>(`${this.baseUrl}/content/publish-one?contentId=${contentId}`, pubChange, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.patch<ContentModel>(
+                `${this.baseUrl}/content/publish-one?pseudId=${pseudId}&contentId=${contentId}`,
+                pubChange,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 

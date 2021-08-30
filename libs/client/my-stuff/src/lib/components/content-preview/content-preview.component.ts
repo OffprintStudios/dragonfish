@@ -6,7 +6,7 @@ import {
     PubStatus,
     WorkStatus,
 } from '@dragonfish/shared/models/content';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 import { MyStuffQuery, MyStuffService } from '@dragonfish/client/repository/my-stuff';
@@ -20,7 +20,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
     templateUrl: './content-preview.component.html',
     styleUrls: ['./content-preview.component.scss'],
 })
-export class ContentPreviewComponent {
+export class ContentPreviewComponent implements OnInit {
     contentKind = ContentKind;
     contentStatus = WorkStatus;
     contentGenres = Genres;
@@ -33,8 +33,12 @@ export class ContentPreviewComponent {
         private stuff: MyStuffService,
         public stuffQuery: MyStuffQuery,
         private router: Router,
-        private alerts: AlertsService
+        private alerts: AlertsService,
     ) {}
+
+    ngOnInit() {
+        this.stuffQuery.current$.subscribe((x) => console.log(x));
+    }
 
     uploadCoverArt(contentId: string, kind: ContentKind) {
         this.dialog.open(UploadCoverArtComponent, { data: { kind: kind, contentId: contentId } });

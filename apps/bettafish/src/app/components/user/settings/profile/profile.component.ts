@@ -44,8 +44,12 @@ export class ProfileComponent implements OnInit {
         });
     }
 
-    get changeUsernameFields() { return this.changeUsernameForm.controls; }
-    get changeBioFields() { return this.changeBioForm.controls; }
+    get changeUsernameFields() {
+        return this.changeUsernameForm.controls;
+    }
+    get changeBioFields() {
+        return this.changeBioForm.controls;
+    }
 
     changeAvatar() {
         this.dialog.open(UploadAvatarComponent);
@@ -61,7 +65,8 @@ export class ProfileComponent implements OnInit {
             currentPassword: this.changeUsernameFields.currPassword.value,
         };
 
-        return this.user.changeUsername(changeRequest);
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.changeUsername(changeRequest);
     }
 
     submitBioForm() {
@@ -73,6 +78,7 @@ export class ProfileComponent implements OnInit {
             bio: this.changeBioFields.bio.value,
         };
 
-        return this.user.changeBio(changeRequest).subscribe();
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.changeBio(changeRequest).subscribe();
     }
 }

@@ -58,7 +58,8 @@ export class AccountComponent implements OnInit {
             newEmail: this.changeEmailFields.email.value,
         };
 
-        return this.user.changeEmail(changeRequest).subscribe();
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.changeEmail(changeRequest).subscribe();
     }
 
     submitPasswordForm() {
@@ -75,6 +76,7 @@ export class AccountComponent implements OnInit {
             currentPassword: this.changePasswordFields.currPassword.value,
         };
 
-        return this.user.changePassword(changeRequest).subscribe();
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        //return this.user.changePassword(changeRequest).subscribe();
     }
 }

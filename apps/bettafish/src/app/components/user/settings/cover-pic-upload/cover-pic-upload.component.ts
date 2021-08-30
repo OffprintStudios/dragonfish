@@ -53,10 +53,11 @@ export class CoverPicUploadComponent implements OnInit {
             this.uploading = true;
             this.uploader.clearQueue();
             this.uploader.addToQueue([event[0]]);
-            this.user.changeProfileCover(this.uploader).subscribe(() => {
+            this.alerts.info(`This feature has been temporarily disabled.`);
+            /*this.user.changeProfileCover(this.uploader).subscribe(() => {
                 this.uploading = false;
                 this.dialogRef.close();
-            });
+            });*/
         } else {
             this.alerts.error(`Only images are allowed.`);
             return;

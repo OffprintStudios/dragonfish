@@ -1,11 +1,6 @@
 <div class="p-3.5 flex flex-col justify-center items-center h-96">
     <h1 class="text-3xl font-medium">Select Profile</h1>
-    <ng-container *ngIf="canHaveFivePseuds(sessionQuery.currAccount.roles); else onlyThreePseuds">
-        <span class="italic">{{ pseudQuery.numPseuds }} out of 5</span>
-    </ng-container>
-    <ng-template #onlyThreePseuds>
-        <span class="italic">{{ pseudQuery.numPseuds }} out of 3. Want more? Become a VIP.</span>
-    </ng-template>
+    <span class="italic">{{ pseudQuery.numPseuds }} out of 3</span>
     <div class="flex items-center overflow-x-auto p-6">
         <ng-container *ngIf="pseudQuery.all$ | async as pseudonyms">
             <ng-container *ngIf="pseudonyms.length !== 0">
@@ -18,23 +13,12 @@
                 </div>
             </ng-container>
         </ng-container>
-        <ng-container *ngIf="canHaveFivePseuds(sessionQuery.currAccount.roles); else hasOnlyThree">
-            <ng-container *ngIf="pseudQuery.numPseuds !== 5">
-                <div class="profile-box" [routerLink]="['/registration/setup-pseud']" (mouseenter)="deselectPseud()">
-                    <span class="text-4xl font-extralight">+</span>
-                    <span>Add</span>
-                    <span>Profile</span>
-                </div>
-            </ng-container>
+        <ng-container *ngIf="pseudQuery.numPseuds !== 3">
+            <div class="profile-box" [routerLink]="['/registration/setup-pseud']">
+                <span class="text-4xl font-extralight">+</span>
+                <span>Add</span>
+                <span>Profile</span>
+            </div>
         </ng-container>
-        <ng-template #hasOnlyThree>
-            <ng-container *ngIf="pseudQuery.numPseuds !== 3">
-                <div class="profile-box" [routerLink]="['/registration/setup-pseud']">
-                    <span class="text-4xl font-extralight">+</span>
-                    <span>Add</span>
-                    <span>Profile</span>
-                </div>
-            </ng-container>
-        </ng-template>
     </div>
 </div>

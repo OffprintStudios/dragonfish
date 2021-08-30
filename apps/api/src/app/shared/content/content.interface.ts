@@ -1,16 +1,10 @@
 import { PaginateResult } from 'mongoose';
 
-import {
-    FormType,
-    ContentFilter,
-    ContentKind,
-    ContentModel,
-    PubChange,
-} from '@dragonfish/shared/models/content';
+import { FormType, ContentFilter, ContentKind, ContentModel, PubChange } from '@dragonfish/shared/models/content';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 
-export interface IContent {    
+export interface IContent {
     /**
      * Fetches a single piece of content from the database regardless of its publishing status.
      *
@@ -33,9 +27,9 @@ export interface IContent {
     /**
      * Finds a bunch of content documents belonging to a user, per that user's request.
      *
-     * @param user — The user making the request
+     * @param userId — The user making the request
      */
-    fetchAll(user: JwtPayload): Promise<ContentModel[]>;
+    fetchAll(userId: string): Promise<ContentModel[]>;
 
     /**
      * Fetches all published documents based on kind, limited by page number.
@@ -49,7 +43,7 @@ export interface IContent {
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
-        userId?: string
+        userId?: string,
     ): Promise<PaginateResult<ContentModel>>;
 
     /**

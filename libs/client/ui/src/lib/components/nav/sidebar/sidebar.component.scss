@@ -1,7 +1,17 @@
 a.link {
-    @apply p-2.5 mb-1 border-2 border-transparent rounded-md text-white;
-    &:hover, &.active {
-        @apply no-underline shadow-xl transition-all;
+    @apply p-2.5 mx-2 mb-1 border-2 border-transparent rounded-md text-white transition transform;
+    &.no-padding {
+        @apply cursor-pointer p-0;
+    }
+    &:hover {
+        @apply no-underline scale-110;
+        box-shadow: var(--dropshadow);
+        background: var(--accent);
+        color: white;
+        border-color: white;
+    }
+    &.active {
+        @apply no-underline shadow-xl;
         background: var(--accent);
         color: white;
         border-color: white;
