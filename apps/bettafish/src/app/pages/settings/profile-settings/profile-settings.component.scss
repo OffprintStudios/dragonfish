@@ -71,10 +71,9 @@ div.user-card {
 }
 
 img.avatar {
-    @apply rounded-md mr-4;
+    @apply rounded-md;
     width: 90px;
     height: 90px;
-    margin: 0 auto;
     border: 1px solid var(--site-borders);
     object-fit: cover;
     object-position: 50% 50%; // Determines the viewport position

@@ -15,7 +15,7 @@ import { AccountsStore, PseudonymsStore } from '@dragonfish/api/database/account
 import { isAllowed } from '@dragonfish/shared/functions';
 
 /**
- * This is a mixin so we can do stuff like UseGuards(RolesGuard(['Admin','Moderator'])).
+ * This guard mixin checks to see if a pseudonym belongs to the user making the request.
  *
  * @param roles The roles required to activate the associated route
  */

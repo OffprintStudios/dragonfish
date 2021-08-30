@@ -85,17 +85,61 @@
         </ng-container>
     </div>
 </div>
-<div class="flex flex-col items-center mx-auto w-7/12">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mx-auto w-11/12">
     <ng-container *ngIf="pseudQuery.current$ | async as user">
-        <div>
-            <h3 class="text-xl font-medium text-center">Change Avatar</h3>
-            <div class="flex flex-row items-center justify-center">
+        <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
+            <h3 class="text-xl font-medium text-center">Avatar</h3>
+            <div class="flex flex-col items-center justify-center">
                 <img [alt]="'Avatar'" [src]="user.profile.avatar" class="avatar" />
-                <button type="button" class="ml-4 shadow-lg" (click)="changeAvatar()">
+                <button class="mt-2.5" (click)="changeAvatar()">
                     <rmx-icon name="image-edit-line"></rmx-icon>
                     Change Avatar
                 </button>
             </div>
+        </div>
+        <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
+            <h3 class="text-xl font-medium text-center">Display Name</h3>
+            <form [formGroup]="changeScreenNameForm" class="flex flex-col items-center">
+                <div class="flex-1">
+                    <dragonfish-text-field
+                        [formControlName]="'screenName'"
+                        [name]="'screenName'"
+                        [type]="'text'"
+                        [label]="'Display Name'"
+                        [placeholder]="'Beatriz Ex Machina'"
+                    ></dragonfish-text-field>
+                </div>
+                <button type="submit"><rmx-icon name="save-3-line"></rmx-icon>Save</button>
+            </form>
+        </div>
+        <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
+            <h3 class="text-xl font-medium text-center">About Me</h3>
+            <form [formGroup]="changeBioForm" class="flex flex-col items-center">
+                <div class="flex-1">
+                    <dragonfish-text-area
+                        [formControlName]="'bio'"
+                        [name]="'bio'"
+                        [label]="'About Me'"
+                        [placeholder]="'Just another face in the crowd'"
+                    ></dragonfish-text-area>
+                </div>
+                <button type="submit"><rmx-icon name="save-3-line"></rmx-icon>Save</button>
+            </form>
+        </div>
+        <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl" *ngIf="canSeeTaglineForm(user.roles)">
+            <h3 class="text-xl font-medium text-center">Tagline</h3>
+            <form [formGroup]="taglineForm" class="flex flex-col items-center">
+                <div class="flex-1">
+                    <dragonfish-text-field
+                        [formControlName]="'tagline'"
+                        [name]="'tagline'"
+                        [type]="'text'"
+                        [label]="'Tagline'"
+                        [placeholder]="'Member'"
+                    ></dragonfish-text-field>
+                </div>
+                <button type="submit"><rmx-icon name="save-3-line"></rmx-icon>Save</button>
+            </form>
         </div>
     </ng-container>
 </div>
