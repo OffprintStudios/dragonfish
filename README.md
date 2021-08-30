@@ -24,7 +24,7 @@ You must have the following tools installed on your system or in a docker contai
 
 For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 
-- The Angular CLI 12.1.1 or higher (globally, via Yarn)
+- The Angular CLI 12.2.3 or higher (globally, via Yarn)
 - The NestJS CLI 8.0.1 or higher (globally, via Yarn)
 - The `nx` CLI (globally, via Yarn)
 
