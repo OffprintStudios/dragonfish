@@ -27,20 +27,7 @@
         </dragonfish-pagebar>
         <div class="w-full h-full">
             <ng-scrollbar>
-                <div class="my-8 w-11/12 mx-auto">
-                    <router-outlet></router-outlet>
-                    <!--<ng-container *ngIf="sessionQuery.currAccount$ | async">
-                        <dragonfish-account></dragonfish-account>
-                        <div class="my-5"></div>
-                        <ng-container *ngIf="pseudQuery.current$ | async">
-                            <dragonfish-profile></dragonfish-profile>
-                            <div class="my-5"></div>
-                            <dragonfish-vip-settings></dragonfish-vip-settings>
-                            <div class="my-5"></div>
-                        </ng-container>
-                    </ng-container>
-                    <dragonfish-global-settings></dragonfish-global-settings>-->
-                </div>
+                <router-outlet></router-outlet>
             </ng-scrollbar>
         </div>
     </div>

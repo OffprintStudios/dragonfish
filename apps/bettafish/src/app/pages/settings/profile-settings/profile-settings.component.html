@@ -1,4 +1,4 @@
-<div class="p-3.5 flex flex-col mt-6">
+<div class="p-3.5 flex flex-col mt-6 mx-auto w-11/12">
     <div class="flex items-center">
         <h1 class="text-3xl font-medium flex-1">Select Profile</h1>
         <ng-container *ngIf="pseudQuery.numPseuds !== 3; else equalsThree">
@@ -6,10 +6,10 @@
             <button><rmx-icon name="add-box-line"></rmx-icon>Add Profile</button>
         </ng-container>
         <ng-template #equalsThree>
-            <span class="italic">{{ pseudQuery.numPseuds }} out of 3.</span>
+            <span class="italic">{{ pseudQuery.numPseuds }} out of 3</span>
         </ng-template>
     </div>
-    <div class="flex items-center justify-center overflow-x-auto">
+    <div class="flex items-center justify-center overflow-x-auto border-b border-gray-700 dark:border-white">
         <ng-container *ngIf="pseudQuery.all$ | async as pseudonyms">
             <ng-container *ngIf="pseudonyms.length !== 0">
                 <div
@@ -86,13 +86,16 @@
     </div>
 </div>
 <div class="flex flex-col items-center mx-auto w-7/12">
-    <ng-component *ngIf="pseudQuery.current$ | async as user">
+    <ng-container *ngIf="pseudQuery.current$ | async as user">
         <div>
-            <h3 class="text-xl font-medium">Change Avatar</h3>
-            <img [alt]="'Avatar'" [src]="user.profile.avatar" class="avatar" />
+            <h3 class="text-xl font-medium text-center">Change Avatar</h3>
             <div class="flex flex-row items-center justify-center">
-                <button type="button" class="mt-10 shadow-lg" (click)="changeAvatar()">Change Avatar</button>
+                <img [alt]="'Avatar'" [src]="user.profile.avatar" class="avatar" />
+                <button type="button" class="ml-4 shadow-lg" (click)="changeAvatar()">
+                    <rmx-icon name="image-edit-line"></rmx-icon>
+                    Change Avatar
+                </button>
             </div>
         </div>
-    </ng-component>
+    </ng-container>
 </div>

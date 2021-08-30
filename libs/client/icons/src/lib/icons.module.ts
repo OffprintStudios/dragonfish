@@ -90,6 +90,7 @@ import {
     RiShieldUserLine,
     RiNotificationBadgeLine,
     RiApps2Line,
+    RiImageEditLine,
 } from 'angular-remix-icon';
 
 import {
@@ -397,6 +398,7 @@ const remixIcons = {
     RiShieldUserLine,
     RiNotificationBadgeLine,
     RiApps2Line,
+    RiImageEditLine,
 };
 
 @NgModule({
