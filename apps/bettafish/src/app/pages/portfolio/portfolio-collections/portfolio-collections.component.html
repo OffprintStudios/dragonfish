@@ -12,7 +12,7 @@
                 </div>
             </ng-container>
         </ng-container>
-        <div class="grid grid-cols-3 gap-4 mb-6 w-11/12 mx-auto" *ngIf="currPageCollections.docs.length !== 0; else noDocs">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 mb-6 w-11/12 mx-auto" *ngIf="currPageCollections.docs.length !== 0; else noDocs">
             <ng-container
                 *ngFor="let coll of currPageCollections.docs | paginate: {
                     itemsPerPage: currPageCollections.limit,

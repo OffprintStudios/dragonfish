@@ -36,7 +36,9 @@ export class TagsService {
 
     public fetchDescendants(id: string): Observable<TagsTree> {
         return this.network.fetchDescendants(id).pipe(
-            tap(() => {}),
+            tap((tagTree) => {
+                this.tagsStore.set([tagTree]);
+            }),
             catchError(err => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);

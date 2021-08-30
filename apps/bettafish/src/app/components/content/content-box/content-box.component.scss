@@ -37,4 +37,13 @@ div.content-box {
             }
         }
     }
+    div.content-tags {
+        a {
+            cursor: pointer;
+            color: whitesmoke;
+            &:hover {
+                background: var(--accent-dark);
+            }
+        }
+    }
 }

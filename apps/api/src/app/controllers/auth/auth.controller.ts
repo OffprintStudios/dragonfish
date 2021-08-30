@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, NotFoundException, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Cookies, SetCookies } from '@nestjsplus/cookies';
 import { RefreshGuard, RolesGuard } from '../../guards';
@@ -34,6 +34,9 @@ export class AuthController {
         const oldSessionId: string | null = cookies['refreshToken'];
 
         const verifiedUser = await this.auth.validateAccount(login.email, login.password);
+        if (!verifiedUser) {
+            throw new NotFoundException(`No user with those credentials found. Have you signed up?`);
+        }
 
         if (oldSessionId) {
             await this.auth.clearRefreshToken(verifiedUser._id, oldSessionId);

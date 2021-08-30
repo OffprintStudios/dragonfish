@@ -29,7 +29,7 @@ export class PortfolioCollectionsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        combineLatest(this.sessionQuery.currentUser$, this.route.queryParamMap)
+        combineLatest([this.sessionQuery.currentUser$, this.route.queryParamMap])
             .pipe(untilDestroyed(this))
             .subscribe(value => {
                 const [currUser, params] = value;

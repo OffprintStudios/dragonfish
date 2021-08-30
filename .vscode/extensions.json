@@ -4,6 +4,7 @@
         "angular.ng-template",
         "ms-vscode.vscode-typescript-tslint-plugin",
         "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
         "firsttris.vscode-jest-runner"
     ]
 }

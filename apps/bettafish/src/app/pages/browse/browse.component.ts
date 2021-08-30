@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -6,6 +6,7 @@ import { ContentModel } from '@dragonfish/shared/models/content';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { AppQuery } from '@dragonfish/client/repository/app';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-browse',
@@ -18,6 +19,7 @@ export class BrowseComponent implements OnInit {
     searchForm = new FormGroup({
         query: new FormControl('')
     });
+    mobileMode = false;
 
     constructor(
         public route: ActivatedRoute,
@@ -30,6 +32,7 @@ export class BrowseComponent implements OnInit {
     ngOnInit() {
         setTwoPartTitle(Constants.BROWSE);
         this.loadFirstNew();
+        this.onResize();
     }
 
     loadFirstNew() {
@@ -50,5 +53,10 @@ export class BrowseComponent implements OnInit {
         }).catch(() => {
             this.alerts.error(`Something went wrong! Try again in a little bit.`);
         });
+    }
+    
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 }

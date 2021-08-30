@@ -308,6 +308,15 @@ export class DragonfishNetworkService {
         );
     }
 
+    public getContentByFandomTag(tagId: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/get-content-by-fandom-tag?tagId=${tagId}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
     //#endregion
 
     //#region ---CASE FILES---
