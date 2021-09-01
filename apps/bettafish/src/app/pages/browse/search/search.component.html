@@ -2,13 +2,6 @@
     <div class="w-11/12 mx-auto pb-2 pt-4 flex flex-row justify-center">
         <rmx-icon name="search-line" class="mr-4 header"></rmx-icon>
         <h3 class="text-2xl italic text-white">Search Results</h3>
-
-        <!--
-        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">Initial Results</a>
-        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Works</a>
-        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Blogs</a>
-        <a class="text-lg text-white px-3.5 py-2.5 hover:no-underline hover:text-white">All Users</a>
-        -->
     </div>
 </div>
 
@@ -24,7 +17,7 @@
             <rmx-icon name="book-open-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Works</h3>
         </div>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
             <!--Works-->
             <ng-container *ngFor="let work of searchResults.works">
                 <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
@@ -35,7 +28,7 @@
             <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Blogs</h3>
         </div>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
             <!--Blogs-->
             <ng-container *ngFor="let blog of searchResults.blogs">
                 <dragonfish-blog-card [blog]="blog" [showAuthor]="true"></dragonfish-blog-card>
@@ -46,7 +39,7 @@
             <rmx-icon name="group-line" class="relative -top-0.5 mr-2"></rmx-icon>
             <h3 class="text-4xl font-medium">Users</h3>
         </div>
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
             <!--Users-->
             <ng-container *ngFor="let user of searchResults.users">
                 <dragonfish-user-card [user]="user"></dragonfish-user-card>

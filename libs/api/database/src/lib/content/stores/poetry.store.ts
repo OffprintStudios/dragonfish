@@ -4,8 +4,7 @@ import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { ContentModel, CreatePoetry } from '@dragonfish/shared/models/content';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { CreatePoetry } from '@dragonfish/shared/models/content';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from '../schemas';
 import { NotificationsService } from '../../notifications/notifications.service';
@@ -24,13 +23,15 @@ export class PoetryStore {
      * @param user The author of this poetry
      * @param poetryInfo The poetry info
      */
-    async createPoetry(user: JwtPayload, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
+    async createPoetry(user: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         const newPoetry = new this.poetryModel({
-            author: user.sub,
+            author: user,
             title: sanitizeHtml(poetryInfo.title),
             desc: sanitizeHtml(poetryInfo.desc),
             body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
-            'stats.words': poetryInfo.collection ? 0 : countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
+            'stats.words': poetryInfo.collection
+                ? 0
+                : countWords(stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions))),
             'meta.category': poetryInfo.category,
             'meta.collection': poetryInfo.collection,
             'meta.form': poetryInfo.form,
@@ -42,7 +43,7 @@ export class PoetryStore {
         const savedPoetry: PoetryContentDocument = await newPoetry.save();
 
         // Subscribe author to comments on their new poetry
-        await this.notificationsService.subscribe(user.sub, savedPoetry._id, NotificationKind.CommentNotification);
+        await this.notificationsService.subscribe(user, savedPoetry._id, NotificationKind.CommentNotification);
 
         return savedPoetry;
     }
@@ -54,10 +55,10 @@ export class PoetryStore {
      * @param poetryId The poetry ID
      * @param poetryInfo The poetry info
      */
-    async editPoetry(user: JwtPayload, poetryId: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
+    async editPoetry(user: string, poetryId: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         if (poetryInfo.collection === true) {
             return this.poetryModel.findOneAndUpdate(
-                { _id: poetryId, author: user.sub },
+                { _id: poetryId, author: user },
                 {
                     title: sanitizeHtml(poetryInfo.title),
                     desc: sanitizeHtml(poetryInfo.desc),
@@ -68,11 +69,11 @@ export class PoetryStore {
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
                 },
-                { new: true }
+                { new: true },
             );
         } else {
             return this.poetryModel.findOneAndUpdate(
-                { _id: poetryId, author: user.sub },
+                { _id: poetryId, author: user },
                 {
                     title: sanitizeHtml(poetryInfo.title),
                     desc: sanitizeHtml(poetryInfo.desc),
@@ -84,7 +85,7 @@ export class PoetryStore {
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
                 },
-                { new: true }
+                { new: true },
             );
         }
     }
@@ -96,11 +97,11 @@ export class PoetryStore {
      * @param poetryId The poetry ID
      * @param coverArt The new cover art
      */
-    async updateCoverArt(user: JwtPayload, poetryId: string, coverArt: string): Promise<PoetryContentDocument> {
+    async updateCoverArt(user: string, poetryId: string, coverArt: string): Promise<PoetryContentDocument> {
         return this.poetryModel.findOneAndUpdate(
-            { _id: poetryId, author: user.sub, 'audit.isDeleted': false },
+            { _id: poetryId, author: user, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true }
+            { new: true },
         );
     }
 }

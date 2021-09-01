@@ -1,48 +1,119 @@
-<div class="flex flex-col items-center p-2 h-screen z-50 relative" style="background: var(--accent-dark);">
+<div class="flex flex-col items-center py-2 h-screen z-50 relative" style="background: var(--accent-dark);">
     <ng-container *ngIf="electron.isMacOS">
         <div class="my-3"><!--spacer--></div>
     </ng-container>
-    <a
-        class="link"
-        [routerLink]="['/']"
-        [routerLinkActive]="'active'"
-        [routerLinkActiveOptions]="{ exact: true }"
-        [matTooltip]="'Home'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
-    </a>
-    <a
-        class="link"
-        [routerLink]="['/browse']"
-        [routerLinkActive]="'active'"
-        [matTooltip]="'Browse'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
-    </a>
-    <ng-container *ngIf="sessionQuery.currAccount$ | async">
+
+    <ng-container *ngIf="sessionQuery.currAccount$ | async; else login">
+        <ng-container *ngIf="pseudQuery.current$ | async as profile; else selectProfile">
+            <a
+                class="link cursor-pointer"
+                [matTooltip]="'My Profile'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (click)="openUserMenu()"
+                [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
+            >
+                <span class="link-icon">
+                    <ng-container *ngIf="!userMenu; else userMenuOpened">
+                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;">
+                    </ng-container>
+                    <ng-template #userMenuOpened>
+                        <rmx-icon name="close-line"></rmx-icon>
+                    </ng-template>
+                </span>
+            </a>
+        </ng-container>
+        <ng-template #selectProfile>
+            <a
+                class="link"
+                [routerLink]="['/registration/select-pseud']"
+                [routerLinkActive]="'active'"
+                [matTooltip]="'Select Profile'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+            </a>
+        </ng-template>
+    </ng-container>
+
+    <ng-template #login>
         <a
             class="link"
-            [routerLink]="['/my-library']"
+            [routerLink]="['/registration']"
             [routerLinkActive]="'active'"
-            [matTooltip]="'My Library'"
+            [matTooltip]="'Login/Register'"
             [matTooltipPosition]="'right'"
             [matTooltipClass]="'offprint-tooltip'"
         >
-            <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+            <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
         </a>
-    </ng-container>
+    </ng-template>
+
+    <div class="flex flex-col items-center justify-center flex-1">
+        <a
+            class="link"
+            [routerLink]="['/']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [matTooltip]="'Home'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
+        </a>
+        <a
+            class="link"
+            [routerLink]="['/browse']"
+            [routerLinkActive]="'active'"
+            [matTooltip]="'Browse'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
+        </a>
+        <ng-container *ngIf="sessionQuery.currAccount$ | async">
+            <a
+                class="link"
+                [routerLink]="['/my-library']"
+                [routerLinkActive]="'active'"
+                [matTooltip]="'My Library'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+            </a>
+            <a
+                class="link"
+                [routerLink]="['/my-stuff']"
+                [routerLinkActive]="'active'"
+                [matTooltip]="'My Stuff'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><rmx-icon name="hard-drive-2-line"></rmx-icon></span>
+            </a>
+        </ng-container>
+        <a
+            class="link"
+            [routerLink]="['/social']"
+            [routerLinkActive]="'active'"
+            [matTooltip]="'Social'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+        </a>
+    </div>
+
     <a
         class="link"
-        [routerLink]="['/social']"
+        [routerLink]="['/settings']"
         [routerLinkActive]="'active'"
-        [matTooltip]="'Social'"
+        [matTooltip]="'Settings'"
         [matTooltipPosition]="'right'"
         [matTooltipClass]="'offprint-tooltip'"
     >
-        <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+        <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
     </a>
 </div>

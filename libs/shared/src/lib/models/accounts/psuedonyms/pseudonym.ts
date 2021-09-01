@@ -1,5 +1,6 @@
 import { Pronouns } from './pronouns';
 import { Presence } from './presence';
+import { Roles } from '../audit/roles';
 
 export interface Pseudonym {
     readonly _id: string;
@@ -20,6 +21,7 @@ export interface Pseudonym {
         following: number;
     };
     presence: Presence;
+    roles: Roles[];
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

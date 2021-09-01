@@ -3,9 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { ContentKind, ContentModel, CreateProse } from '@dragonfish/shared/models/content';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentDocument, ProseContentDocument } from '../schemas';
+import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
+import { ProseContentDocument } from '../schemas';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
@@ -24,9 +23,9 @@ export class ProseStore {
      * @param user The author of this prose
      * @param proseInfo The prose info
      */
-    async createProse(user: JwtPayload, proseInfo: CreateProse): Promise<ProseContentDocument> {
+    async createProse(user: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
         const newProse = new this.proseModel({
-            author: user.sub,
+            author: user,
             title: sanitizeHtml(proseInfo.title),
             desc: sanitizeHtml(proseInfo.desc),
             body: sanitizeHtml(proseInfo.body, sanitizeOptions),
@@ -40,7 +39,7 @@ export class ProseStore {
         const savedProse: ProseContentDocument = await newProse.save();
 
         // Subscribe author to comments on their new prose document
-        await this.notificationsService.subscribe(user.sub, savedProse._id, NotificationKind.CommentNotification);
+        await this.notificationsService.subscribe(user, savedProse._id, NotificationKind.CommentNotification);
 
         return savedProse;
     }
@@ -52,9 +51,9 @@ export class ProseStore {
      * @param proseId The prose ID
      * @param proseInfo The prose info
      */
-    async editProse(user: JwtPayload, proseId: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
+    async editProse(user: string, proseId: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
         return this.proseModel.findOneAndUpdate(
-            { _id: proseId, author: user.sub },
+            { _id: proseId, author: user },
             {
                 title: sanitizeHtml(proseInfo.title),
                 desc: sanitizeHtml(proseInfo.desc),
@@ -65,7 +64,7 @@ export class ProseStore {
                 'meta.status': proseInfo.status,
                 tags: proseInfo.tags,
             },
-            { new: true }
+            { new: true },
         );
     }
 
@@ -76,18 +75,18 @@ export class ProseStore {
      * @param proseId The prose ID
      * @param coverArt The new cover art
      */
-    async updateCoverArt(user: JwtPayload, proseId: string, coverArt: string): Promise<ProseContentDocument> {
+    async updateCoverArt(user: string, proseId: string, coverArt: string): Promise<ProseContentDocument> {
         return this.proseModel.findOneAndUpdate(
-            { _id: proseId, author: user.sub, 'audit.isDeleted': false },
+            { _id: proseId, author: user, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true }
+            { new: true },
         );
     }
 
-    async migrateWork(user: JwtPayload, formData: MigrationForm) {
+    async migrateWork(user: string, formData: MigrationForm) {
         const newProse = new this.proseModel({
             _id: formData._id,
-            author: user.sub,
+            author: user,
             title: sanitizeHtml(formData.title),
             desc: sanitizeHtml(formData.desc),
             body: sanitizeHtml(formData.body, sanitizeOptions),

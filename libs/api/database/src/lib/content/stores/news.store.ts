@@ -1,26 +1,15 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    ContentRating,
-    NewsContentModel,
-    NewsForm,
-    PubChange,
-    PubStatus,
-} from '@dragonfish/shared/models/content';
-import { Roles } from '@dragonfish/shared/models/users';
+import { ContentRating, NewsForm, PubChange } from '@dragonfish/shared/models/content';
 import { NewsContentDocument } from '../schemas';
-import { isAllowed } from '@dragonfish/shared/functions';
 
 @Injectable()
 export class NewsStore {
-    constructor(
-        @InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>,
-    ) {}
+    constructor(@InjectModel('NewsContent') private readonly newsModel: PaginateModel<NewsContentDocument>) {}
 
     /**
      * Creates a new newspost and saves it to the database.
@@ -28,21 +17,17 @@ export class NewsStore {
      * @param user The user creating the post
      * @param postInfo The post's info
      */
-    async createNewPost(user: JwtPayload, postInfo: NewsForm): Promise<NewsContentDocument> {
-        if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Moderator, Roles.Admin])) {
-            const newPost = new this.newsModel({
-                author: user.sub,
-                title: sanitizeHtml(postInfo.title),
-                body: sanitizeHtml(postInfo.body, sanitizeOptions),
-                'meta.category': postInfo.category,
-                'meta.rating': ContentRating.Everyone,
-                'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
-            });
+    async createNewPost(user: string, postInfo: NewsForm): Promise<NewsContentDocument> {
+        const newPost = new this.newsModel({
+            author: user,
+            title: sanitizeHtml(postInfo.title),
+            body: sanitizeHtml(postInfo.body, sanitizeOptions),
+            'meta.category': postInfo.category,
+            'meta.rating': ContentRating.Everyone,
+            'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
+        });
 
-            return newPost.save();
-        } else {
-            throw new UnauthorizedException(`You don't have permission to create news posts.`);
-        }
+        return newPost.save();
     }
 
     /**
@@ -52,9 +37,9 @@ export class NewsStore {
      * @param postId The post to edit
      * @param postInfo The new info to add
      */
-    async editPost(user: JwtPayload, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
-        if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Admin, Roles.Moderator])) {
-            return this.newsModel.findByIdAndUpdate(
+    async editPost(user: string, postId: string, postInfo: NewsForm): Promise<NewsContentDocument> {
+        return this.newsModel
+            .findByIdAndUpdate(
                 postId,
                 {
                     title: sanitizeHtml(postInfo.title),
@@ -62,11 +47,9 @@ export class NewsStore {
                     'meta.category': postInfo.category,
                     'stats.words': countWords(stripTags(sanitizeHtml(postInfo.body, sanitizeOptions))),
                 },
-                { new: true }
-            );
-        } else {
-            throw new UnauthorizedException(`You don't have permission to edit this post.`);
-        }
+                { new: true },
+            )
+            .where('author', user);
     }
 
     /**
@@ -77,18 +60,14 @@ export class NewsStore {
      * @param postId The post itself
      * @param pubChange The publish flag
      */
-    async setPublishStatus(user: JwtPayload, postId: string, pubChange: PubChange): Promise<NewsContentDocument> {
-        if (isAllowed(user.roles as Roles[], [Roles.Contributor, Roles.Admin, Roles.Moderator])) {
-            return this.newsModel.findOneAndUpdate(
-                { _id: postId, author: user.sub },
-                {
-                    'audit.published': pubChange.newStatus,
-                    'audit.publishedOn': new Date(),
-                },
-                { new: true }
-            );
-        } else {
-            throw new UnauthorizedException(`You don't have permission to publish this.`);
-        }
+    async setPublishStatus(user: string, postId: string, pubChange: PubChange): Promise<NewsContentDocument> {
+        return this.newsModel.findOneAndUpdate(
+            { _id: postId, author: user },
+            {
+                'audit.published': pubChange.newStatus,
+                'audit.publishedOn': new Date(),
+            },
+            { new: true },
+        );
     }
 }

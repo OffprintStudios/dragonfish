@@ -12,6 +12,8 @@ import { PopupComponent } from '@dragonfish/client/ui';
     styleUrls: ['./tags-management.component.scss'],
 })
 export class TagsManagementComponent implements OnInit {
+    openPanelId: string;
+
     constructor(
         public tagsQuery: TagsQuery,
         private tagsService: TagsService,
@@ -24,6 +26,10 @@ export class TagsManagementComponent implements OnInit {
 
     createTag() {
         this.dialog.open(TagFormComponent);
+    }
+
+    onOpen(id: string) {
+        this.openPanelId = id;
     }
 
     addChild(parentId: string) {

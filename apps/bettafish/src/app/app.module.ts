@@ -55,6 +55,7 @@ import { CommentsModule } from '@dragonfish/client/comments';
 /* Util */
 import { environment } from '../environments/environment';
 import { AuthInterceptor } from '@dragonfish/client/repository/session/services';
+import { TagPages } from './pages/tags';
 
 @NgModule({
     declarations: [
@@ -73,6 +74,7 @@ import { AuthInterceptor } from '@dragonfish/client/repository/session/services'
         ...ErrorPages,
         ...SettingsPages,
         ...RegistrationPages,
+        ...TagPages,
     ],
     imports: [
         BrowserModule,

@@ -32,7 +32,7 @@
                     [placeholder]="'There\'s Something I Gotta Say...'"
                 ></dragonfish-text-field>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
                     <div>
                         <div class="offprint-select">
                             <label>Category</label>
@@ -62,11 +62,11 @@
                             <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Tag(s)'">
                                 <div *ngFor="let tag of tags">
                                     <ng-option [value]="tag._id">
-                                        {{ tag.name }}
+                                        <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
                                     </ng-option>
                                     <div *ngFor="let child of tag.children">
                                         <ng-option [value]="child._id">
-                                            {{ tag.name }} — {{ child.name }}
+                                            <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
                                         </ng-option>
                                     </div>
                                 </div>
@@ -86,7 +86,7 @@
                 <label>Long Description</label>
                 <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
 
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
                     <div>
                         <div class="offprint-select">
                             <label>Rating</label>

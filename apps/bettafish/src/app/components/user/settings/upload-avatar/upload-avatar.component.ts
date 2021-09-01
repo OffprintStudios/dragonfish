@@ -110,7 +110,8 @@ export class UploadAvatarComponent implements OnInit {
         this.uploader.clearQueue();
         this.uploader.addToQueue([this.fileToReturn]);
 
-        this.user.changeAvatar(this.uploader).subscribe(
+        this.alerts.info(`This feature has been temporarily disabled.`);
+        /*this.user.changeAvatar(this.uploader).subscribe(
             () => {
                 this.uploading = false;
                 this.dialogRef.close();
@@ -118,6 +119,6 @@ export class UploadAvatarComponent implements OnInit {
             () => {
                 this.uploading = false;
             },
-        );
+        );*/
     }
 }

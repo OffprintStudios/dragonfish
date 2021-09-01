@@ -28,7 +28,7 @@
                     </div>
                 </ng-container>
                 <ng-template #notLoadingLatest>
-                    <div class="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto">
+                    <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto">
                         <ng-container *ngFor="let posts of latestPosts">
                             <dragonfish-news-card [post]="posts"></dragonfish-news-card>
                         </ng-container>

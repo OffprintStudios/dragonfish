@@ -9,6 +9,7 @@ import { FrontendUser, Roles } from '@dragonfish/shared/models/users';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { FrontendAccount } from '@dragonfish/shared/models/accounts';
 
 @UntilDestroy()
 @Component({
@@ -80,7 +81,7 @@ export class MyStuffComponent implements OnInit {
      * Checks to see if the currently signed in user is allowed to access the newspost form.
      * @param currentUser
      */
-    checkIsAllowed(currentUser: FrontendUser) {
-        return isAllowed(currentUser.audit.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
+    checkIsAllowed(currentUser: FrontendAccount) {
+        return isAllowed(currentUser.roles, [Roles.Contributor, Roles.Admin, Roles.Moderator]);
     }
 }

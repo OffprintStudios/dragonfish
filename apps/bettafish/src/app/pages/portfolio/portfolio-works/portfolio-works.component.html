@@ -5,7 +5,7 @@
         </div>
     </ng-container>
     <ng-template #notLoading>
-        <div class="grid grid-cols-3 gap-4 w-11/12 mx-auto my-8" *ngIf="contentData.totalDocs !== 0; else noGalleryWorks">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8" *ngIf="contentData.totalDocs !== 0; else noGalleryWorks">
             <ng-container
                 *ngFor="
                 let work of contentData.docs

@@ -12,19 +12,28 @@ import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class SearchService implements ISearch {
+    readonly INITIAL_PAGE = 1;
+    readonly INITIAL_MAX_PER_PAGE = 6;
+    readonly MAX_PER_PAGE = 15;
+
     constructor(private readonly usersStore: UsersStore, private readonly contentStore: BrowseStore) {}
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
 
         const [initialUsers, initialBlogs, initialContent] = await Promise.all([
-            this.usersStore.findRelatedUsers(parsedQuery, 1, 6),
-            this.contentStore.findRelatedContent(parsedQuery, [ContentKind.BlogContent], 1, 6, contentFilter),
+            this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
+            this.contentStore.findRelatedContent(parsedQuery,
+                [ContentKind.BlogContent],
+                this.INITIAL_PAGE,
+                this.INITIAL_MAX_PER_PAGE,
+                contentFilter
+            ),
             this.contentStore.findRelatedContent(
                 parsedQuery,
                 [ContentKind.PoetryContent, ContentKind.ProseContent],
-                1,
-                6,
+                this.INITIAL_PAGE,
+                this.INITIAL_MAX_PER_PAGE,
                 contentFilter
             ),
         ]);
@@ -39,7 +48,7 @@ export class SearchService implements ISearch {
 
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, 15);
+        return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 
     async searchBlogs(
@@ -52,7 +61,7 @@ export class SearchService implements ISearch {
             parsedQuery,
             [ContentKind.BlogContent],
             pageNum,
-            15,
+            this.MAX_PER_PAGE,
             contentFilter
         );
     }
@@ -67,8 +76,22 @@ export class SearchService implements ISearch {
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,
-            15,
+            this.MAX_PER_PAGE,
             contentFilter
         );
+    }
+
+    async getContentByFandomTag(
+        tagId: string,
+        pageNum: number,
+        contentFilter: ContentFilter
+    ): Promise<PaginateResult<ContentModel>> {
+        return await this.contentStore.getContentByFandomTag(
+            tagId,
+            [ContentKind.PoetryContent, ContentKind.ProseContent],
+            pageNum,
+            this.MAX_PER_PAGE,
+            contentFilter
+        )
     }
 }
