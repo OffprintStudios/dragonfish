@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { PortfolioState } from './portfolio.state';
-import { PortfolioStore } from '@dragonfish/client/repository/portfolio/portfolio.store';
+import { PortfolioStore } from './portfolio.store';
 
 @Injectable({ providedIn: 'root' })
 export class PortfolioQuery extends Query<PortfolioState> {
@@ -12,7 +12,7 @@ export class PortfolioQuery extends Query<PortfolioState> {
     }
 
     public get portUserName() {
-        return this.getValue().currPortfolio.username;
+        return this.getValue().currPortfolio.userTag;
     }
 
     public get portUserId() {

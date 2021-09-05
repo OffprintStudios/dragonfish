@@ -5,8 +5,9 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from '@ngneat/until-destroy';
-import { Roles } from '@dragonfish/shared/models/accounts';
+import { ChangeBio, ChangeScreenName, ChangeTagline, Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-profile-settings',
@@ -31,6 +32,7 @@ export class ProfileSettingsComponent implements OnInit {
         private pseudService: PseudonymsService,
         public sessionQuery: SessionQuery,
         private router: Router,
+        private alerts: AlertsService,
     ) {}
 
     ngOnInit(): void {
@@ -70,5 +72,48 @@ export class ProfileSettingsComponent implements OnInit {
             Roles.ChatModerator,
             Roles.Admin,
         ]);
+    }
+
+    submitScreenName() {
+        if (this.changeScreenNameForm.invalid) {
+            this.alerts.error(`Display names must be between 3 and 32 characters.`);
+            return;
+        }
+
+        const formInfo: ChangeScreenName = {
+            newScreenName: this.changeScreenNameForm.controls.screenName.value,
+        };
+
+        this.pseudService.changeScreenName(formInfo).subscribe();
+    }
+
+    submitBio() {
+        if (this.changeBioForm.invalid) {
+            this.alerts.error(`Bios must be between 3 and 160 characters.`);
+        }
+
+        const formInfo: ChangeBio = {
+            bio: this.changeBioForm.controls.bio.value,
+        };
+
+        this.pseudService.changeBio(formInfo).subscribe();
+    }
+
+    submitTagline() {
+        if (this.canSeeTaglineForm(this.sessionQuery.currAccount.roles)) {
+            if (this.taglineForm.invalid) {
+                this.alerts.error(`Taglines must be between 3 and 36 characters.`);
+                return;
+            }
+
+            const formInfo: ChangeTagline = {
+                tagline: this.taglineForm.controls.tagline.value,
+            };
+
+            this.pseudService.changeTagline(formInfo).subscribe();
+        } else {
+            this.alerts.info(`...how did you get here?`);
+            return;
+        }
     }
 }

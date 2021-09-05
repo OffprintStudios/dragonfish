@@ -5,7 +5,6 @@ import {
     Get,
     Post,
     Body,
-    Param,
     Query,
     UseInterceptors,
     UploadedFile,
@@ -27,15 +26,15 @@ export class UserController {
     constructor(@Inject('IImages') private readonly images: IImages, private readonly user: UserService) {}
 
     @ApiTags(DragonfishTags.Users)
-    @Get('get-user-info/:userId')
-    async getUserInfo(@Param('userId') userId: string) {
-        return await this.user.getOneUser(userId);
+    @Get('get-profile')
+    async getProfile(@Query('pseudId') pseudId: string) {
+        return await this.user.getOneUser(pseudId);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @Get('get-user-profile')
-    async getUserProfile(@Query('userId') userId: string, @Query('filter') filter: ContentFilter) {
-        return await this.user.getUserProfile(userId, filter);
+    @Get('get-profile-content')
+    async getProfileContent(@Query('pseudId') pseudId: string, @Query('filter') filter: ContentFilter) {
+        return await this.user.getUserProfile(pseudId, filter);
     }
 
     @ApiTags(DragonfishTags.Users)
@@ -47,7 +46,7 @@ export class UserController {
 
     @ApiTags(DragonfishTags.Users)
     @UseGuards(IdentityGuard([Roles.User]))
-    @Patch('update-bio')
+    @Patch('change-bio')
     async updateBio(@Query('pseudId') pseudId: string, @Body() newBio: ChangeBio) {
         return await this.user.updateBio(pseudId, newBio);
     }
@@ -84,7 +83,7 @@ export class UserController {
             Roles.VIP,
         ]),
     )
-    @Patch('update-tagline')
+    @Patch('change-tagline')
     async updateTagline(@User() user: JwtPayload, @Query('pseudId') pseudId: string, @Body() tagline: ChangeTagline) {
         return await this.user.updateTagline(user, pseudId, tagline);
     }

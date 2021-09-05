@@ -1,13 +1,4 @@
-import {
-    ChangeBio,
-    ChangeEmail,
-    ChangePassword,
-    ChangeUsername,
-    FrontendUser,
-    InviteCodes,
-    UpdateTagline,
-    User,
-} from '@dragonfish/shared/models/users';
+import { FrontendUser, InviteCodes, User } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
@@ -42,7 +33,15 @@ import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shar
 import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
-import { AccountForm, LoginModel, Pseudonym, PseudonymForm } from '@dragonfish/shared/models/accounts';
+import {
+    AccountForm,
+    ChangeScreenName,
+    LoginModel,
+    Pseudonym,
+    PseudonymForm,
+    ChangeBio,
+    ChangeTagline,
+} from '@dragonfish/shared/models/accounts';
 
 /**
  * ## DragonfishNetworkService
@@ -762,7 +761,7 @@ export class DragonfishNetworkService {
      *
      * @param uploader The file uploader, prefilled with the URL and instructions for uploading the image.
      */
-    public changeImage<T extends FrontendUser | ContentModel>(uploader: FileUploader): Observable<T> {
+    public changeImage<T extends Pseudonym | ContentModel>(uploader: FileUploader): Observable<T> {
         const xsrfHeader = uploader.options.headers.find((x) => x.name.toUpperCase() === 'XSRF-TOKEN');
         const currentXsrfToken = this.cookieService.get('XSRF-TOKEN') ?? '';
         if (!xsrfHeader) {
@@ -1296,6 +1295,86 @@ export class DragonfishNetworkService {
         );
     }
 
+    /**
+     * Fetches a pseudonym from the backend.
+     *
+     * @param pseudId
+     */
+    public getProfile(pseudId: string): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.get<Pseudonym>(`${this.baseUrl}/user/get-profile?pseudId=${pseudId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Fetches a specified user's profile for the profile home page.
+     *
+     * @param pseudId The user whose profile should be retrieved
+     * @param contentFilter The rating filter to apply to the user's content
+     */
+    public getProfileContent(
+        pseudId: string,
+        contentFilter: ContentFilter,
+    ): Observable<{ works: ContentModel[]; blogs: ContentModel[] }> {
+        return handleResponse(
+            this.http.get<{ works: ContentModel[]; blogs: ContentModel[] }>(
+                `${this.baseUrl}/user/get-profile-content?pseudId=${pseudId}&filter=${contentFilter}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
+    /**
+     * Sends a request to change a pseudonym's screen name.
+     *
+     * @param pseudId
+     * @param formInfo The requested new username and current password.
+     */
+    public changeScreenName(pseudId: string, formInfo: ChangeScreenName): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.patch<Pseudonym>(`${this.baseUrl}/user/change-screen-name?pseudId=${pseudId}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Sends a request to change a pseudonym's bio.
+     *
+     * @param pseudId
+     * @param formInfo The new profile info requested
+     */
+    public changeBio(pseudId: string, formInfo: ChangeBio): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.patch<Pseudonym>(`${this.baseUrl}/user/change-bio?pseudId=${pseudId}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
+     * Changes a pseudonym's tagline.
+     *
+     * @param pseudId
+     * @param formInfo The new tagline
+     */
+    public changeTagline(pseudId: string, formInfo: ChangeTagline): Observable<Pseudonym> {
+        return handleResponse(
+            this.http.patch<Pseudonym>(`${this.baseUrl}/user/change-tagline?pseudId=${pseudId}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
     //#endregion
 
     //#region ---RATINGS---
@@ -1392,125 +1471,6 @@ export class DragonfishNetworkService {
     //#endregion
 
     //#region ---USER---
-
-    /**
-     * Fetches the user whose portfolio the request belongs to.
-     *
-     * @param userId The user ID of a requested portfolio
-     */
-    public fetchUserInfo(userId: string): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.get<FrontendUser>(`${this.baseUrl}/user/get-user-info/${userId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches a specified user's profile for the portfolio home page.
-     *
-     * @param userId The user whose profile should be retrieved
-     * @param contentFilter The rating filter to apply to the user's content
-     */
-    public fetchUserProfile(
-        userId: string,
-        contentFilter: ContentFilter,
-    ): Observable<{ works: ContentModel[]; blogs: ContentModel[] }> {
-        return handleResponse(
-            this.http.get<{ works: ContentModel[]; blogs: ContentModel[] }>(
-                `${this.baseUrl}/user/get-user-profile?userId=${userId}&filter=${contentFilter}`,
-                {
-                    observe: 'response',
-                    withCredentials: true,
-                },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's email.
-     *
-     * @param newEmail The requested new email and current password.
-     */
-    public changeEmail(newEmail: ChangeEmail): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-email`, newEmail, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's username.
-     *
-     * @param newUsername The reuqested new username and current password.
-     */
-    public changeUsername(newUsername: ChangeUsername): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-username`, newUsername, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's password.
-     *
-     * @param newPasswordInfo The new password requested
-     */
-    public changePassword(newPasswordInfo: ChangePassword): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/change-password`, newPasswordInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a request to change a user's bio.
-     *
-     * @param newBioInfo The new profile info requested
-     */
-    public changeBio(newBioInfo: ChangeBio): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-bio`, newBioInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends a message to the server instructing it to set the user's
-     * 'agreedToPolicies' field to true. On success, returns the updated
-     * user object.
-     */
-    public agreeToPolicies(): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.post<FrontendUser>(`${this.baseUrl}/user/agree-to-policies`, null, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Updates a user's tagline.
-     *
-     * @param tagline The new tagline
-     */
-    public updateTagline(tagline: UpdateTagline): Observable<FrontendUser> {
-        return handleResponse(
-            this.http.patch<FrontendUser>(`${this.baseUrl}/user/update-tagline`, tagline, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
 
     /**
      * Generates a new invite code.

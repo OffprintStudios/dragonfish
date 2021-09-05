@@ -1,25 +1,16 @@
-import { Routes } from '@angular/router';
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { SettingsComponent } from './settings.component';
-import { GeneralSettingsComponent } from './general-settings/general-settings.component';
-import { AccountSettingsComponent } from './account-settings/account-settings.component';
-import { ProfileSettingsComponent } from './profile-settings/profile-settings.component';
-import { SocialSettingsComponent } from './social-settings/social-settings.component';
-import { NotificationSettingsComponent } from './notification-settings/notification-settings.component';
+import { AccountSettingsComponent } from './views/account-settings/account-settings.component';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { ProfileSettingsComponent } from './views/profile-settings/profile-settings.component';
+import { SocialSettingsComponent } from './views/social-settings/social-settings.component';
+import { NotificationSettingsComponent } from './views/notification-settings/notification-settings.component';
+import { GeneralSettingsComponent } from './views/general-settings/general-settings.component';
 
-export const SettingsPages = [
-    SettingsComponent,
-    GeneralSettingsComponent,
-    AccountSettingsComponent,
-    ProfileSettingsComponent,
-    SocialSettingsComponent,
-    NotificationSettingsComponent,
-];
-
-export const SettingsRoutes: Routes = [
+const routes: Routes = [
     {
-        path: 'settings',
+        path: '',
         component: SettingsComponent,
         children: [
             {
@@ -49,3 +40,9 @@ export const SettingsRoutes: Routes = [
         ],
     },
 ];
+
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+})
+export class SettingsRouterModule {}

@@ -25,7 +25,8 @@
         "@nrwl/angular:library": {
             "style": "scss",
             "linter": "eslint",
-            "unitTestRunner": "jest"
+            "unitTestRunner": "jest",
+            "strict": false
         },
         "@nrwl/angular:component": {
             "style": "scss"
@@ -591,6 +592,28 @@
                     "options": {
                         "jestConfig": "libs/client/services/jest.config.js",
                         "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "client-settings": {
+            "projectType": "library",
+            "root": "libs/client/settings",
+            "sourceRoot": "libs/client/settings/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/settings"],
+                    "options": {
+                        "jestConfig": "libs/client/settings/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/settings/src/**/*.ts", "libs/client/settings/src/**/*.html"]
                     }
                 }
             }

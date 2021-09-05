@@ -99,7 +99,7 @@
         </div>
         <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
             <h3 class="text-xl font-medium text-center">Display Name</h3>
-            <form [formGroup]="changeScreenNameForm" class="flex flex-col items-center">
+            <form [formGroup]="changeScreenNameForm" class="flex flex-col items-center" (ngSubmit)="submitScreenName()">
                 <div class="flex-1">
                     <dragonfish-text-field
                         [formControlName]="'screenName'"
@@ -114,7 +114,7 @@
         </div>
         <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
             <h3 class="text-xl font-medium text-center">About Me</h3>
-            <form [formGroup]="changeBioForm" class="flex flex-col items-center">
+            <form [formGroup]="changeBioForm" class="flex flex-col items-center" (ngSubmit)="submitBio()">
                 <div class="flex-1">
                     <dragonfish-text-area
                         [formControlName]="'bio'"
@@ -128,7 +128,7 @@
         </div>
         <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl" *ngIf="canSeeTaglineForm(user.roles)">
             <h3 class="text-xl font-medium text-center">Tagline</h3>
-            <form [formGroup]="taglineForm" class="flex flex-col items-center">
+            <form [formGroup]="taglineForm" class="flex flex-col items-center" (ngSubmit)="submitTagline()">
                 <div class="flex-1">
                     <dragonfish-text-field
                         [formControlName]="'tagline'"
