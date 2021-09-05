@@ -75,6 +75,9 @@
         "client-pipes": {
             "tags": []
         },
+        "client-profile": {
+            "tags": []
+        },
         "client-repository": {
             "tags": []
         },

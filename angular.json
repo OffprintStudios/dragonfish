@@ -549,6 +549,28 @@
                 }
             }
         },
+        "client-profile": {
+            "projectType": "library",
+            "root": "libs/client/profile",
+            "sourceRoot": "libs/client/profile/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/profile"],
+                    "options": {
+                        "jestConfig": "libs/client/profile/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/profile/src/**/*.ts", "libs/client/profile/src/**/*.html"]
+                    }
+                }
+            }
+        },
         "client-repository": {
             "projectType": "library",
             "root": "libs/client/repository",
