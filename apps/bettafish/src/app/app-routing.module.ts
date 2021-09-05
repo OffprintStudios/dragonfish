@@ -34,6 +34,10 @@ const routes: Routes = [
     ...RegistrationRoutes,
     ...TagRoutes,
     {
+        path: 'profile',
+        loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
+    },
+    {
         path: 'settings',
         loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
     },
