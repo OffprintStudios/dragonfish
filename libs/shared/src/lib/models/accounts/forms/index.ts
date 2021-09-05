@@ -5,3 +5,6 @@ export { PseudonymForm } from './pseudonym.form';
 export { ChangeUserTag } from './change-user-tag';
 export { ChangeScreenName } from './change-screen-name';
 export { LoginModel } from './login.model';
+export { ChangeBio } from './change-bio';
+export { ChangeTagline } from './change-tagline';
+export { ChangePronouns } from './change-pronouns';

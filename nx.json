@@ -81,6 +81,9 @@
         "client-services": {
             "tags": []
         },
+        "client-settings": {
+            "tags": []
+        },
         "client-ui": {
             "tags": []
         },

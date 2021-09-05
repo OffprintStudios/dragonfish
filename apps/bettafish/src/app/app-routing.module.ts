@@ -10,7 +10,6 @@ import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
-import { SettingsRoutes } from './pages/settings';
 import { RegistrationRoutes } from './pages/registration';
 
 /* Resolvers */
@@ -32,9 +31,12 @@ const routes: Routes = [
     ...PortfolioRoutes,
     ...MessagesRoutes,
     ...ContentViewRoutes,
-    ...SettingsRoutes,
     ...RegistrationRoutes,
     ...TagRoutes,
+    {
+        path: 'settings',
+        loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
+    },
     {
         path: 'my-stuff',
         canLoad: [AuthGuard],

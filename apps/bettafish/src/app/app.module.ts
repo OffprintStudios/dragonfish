@@ -32,7 +32,6 @@ import { PortfolioPages } from './pages/portfolio';
 import { MessagesPages } from './pages/messages';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
-import { SettingsPages } from './pages/settings';
 import { RegistrationPages } from './pages/registration';
 
 /* Components */
@@ -72,7 +71,6 @@ import { TagPages } from './pages/tags';
         ...MessagesPages,
         ...ContentViewPages,
         ...ErrorPages,
-        ...SettingsPages,
         ...RegistrationPages,
         ...TagPages,
     ],

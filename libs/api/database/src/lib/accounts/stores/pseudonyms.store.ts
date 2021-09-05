@@ -4,7 +4,14 @@ import { Model } from 'mongoose';
 import { PseudonymDocument } from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { PseudonymForm, ChangeUserTag, ChangeScreenName } from '@dragonfish/shared/models/accounts';
+import {
+    PseudonymForm,
+    ChangeUserTag,
+    ChangeScreenName,
+    ChangeBio,
+    ChangeTagline,
+    ChangePronouns,
+} from '@dragonfish/shared/models/accounts';
 import { chain } from 'voca';
 
 @Injectable()
@@ -44,6 +51,38 @@ export class PseudonymsStore {
         const pseud = await this.retrievePseud(pseudId);
 
         pseud.screenName = formInfo.newScreenName;
+        return await pseud.save();
+    }
+
+    public async changeBio(pseudId: string, formInfo: ChangeBio): Promise<PseudonymDocument> {
+        const pseud = await this.retrievePseud(pseudId);
+
+        pseud.profile.bio = formInfo.bio;
+        return await pseud.save();
+    }
+
+    public async changeTagline(pseudId: string, formInfo: ChangeTagline): Promise<PseudonymDocument> {
+        const pseud = await this.retrievePseud(pseudId);
+
+        pseud.profile.tagline = formInfo.tagline;
+        return await pseud.save();
+    }
+
+    public async changePronouns(pseudId: string, formInfo: ChangePronouns): Promise<PseudonymDocument> {
+        const pseud = await this.retrievePseud(pseudId);
+        pseud.profile.pronouns = formInfo.pronouns;
+        return await pseud.save();
+    }
+
+    public async updateAvatar(pseudId: string, avatarUrl: string): Promise<PseudonymDocument> {
+        const pseud = await this.retrievePseud(pseudId);
+        pseud.profile.avatar = avatarUrl;
+        return await pseud.save();
+    }
+
+    public async updateCover(pseudId: string, coverUrl: string): Promise<PseudonymDocument> {
+        const pseud = await this.retrievePseud(pseudId);
+        pseud.profile.coverPic = coverUrl;
         return await pseud.save();
     }
 

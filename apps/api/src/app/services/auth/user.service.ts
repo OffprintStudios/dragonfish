@@ -1,112 +1,65 @@
-import {
-    ChangeBio,
-    ChangeEmail,
-    ChangePassword,
-    ChangeUsername,
-    FrontendUser,
-    UpdateTagline,
-} from '@dragonfish/shared/models/users';
-import {
-    Injectable,
-    InternalServerErrorException,
-    Logger,
-    NotFoundException,
-    UnauthorizedException,
-} from '@nestjs/common';
-import { argon2id, verify } from 'argon2';
-import { IUser } from '../../shared/auth';
+import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { UsersStore } from '@dragonfish/api/database/users';
 import { BrowseStore } from '@dragonfish/api/database/content/stores';
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
+import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import { ChangeBio, ChangeScreenName, ChangeTagline, Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
+import { isAllowed } from '@dragonfish/shared/functions';
 
 @Injectable()
-export class UserService implements IUser {
+export class UserService {
     private readonly logger: Logger = new Logger(UserService.name);
 
-    constructor(private readonly usersStore: UsersStore, private readonly contentStore: BrowseStore) {}
+    constructor(private readonly pseudStore: PseudonymsStore, private readonly contentStore: BrowseStore) {}
 
-    async getOneUser(userId: string): Promise<FrontendUser> {
-        return await this.usersStore.getOneUser(userId);
+    async getOneUser(userId: string): Promise<Pseudonym> {
+        return await this.pseudStore.fetchPseud(userId);
     }
 
-    async getUserProfile(userId: string, filter: ContentFilter): Promise<{ works: ContentModel[], blogs: ContentModel[] }> {
-        return await this.contentStore.fetchFirstThreePublished(filter, userId,);
+    async getUserProfile(
+        userId: string,
+        filter: ContentFilter,
+    ): Promise<{ works: ContentModel[]; blogs: ContentModel[] }> {
+        return await this.contentStore.fetchFirstThreePublished(filter, userId);
     }
 
-    async changeUsername(jwtPayload: JwtPayload, changeUsernameRequest: ChangeUsername): Promise<FrontendUser> {
-        const potentialUser = await this.usersStore.findOneById(jwtPayload.sub);
-        if (!potentialUser) {
-            // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
-            throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`);
+    async changeScreenName(userId: string, screenNameForm: ChangeScreenName): Promise<Pseudonym> {
+        if (screenNameForm.newScreenName.length > 32 || screenNameForm.newScreenName.length < 3) {
+            throw new BadRequestException(`Your screen name must be longer than 3 characters, but shorter than 32.`);
         }
-
-        if (!(await verify(potentialUser.password, changeUsernameRequest.currentPassword, { type: argon2id }))) {
-            throw new UnauthorizedException(`You don't have permission to do that.`);
-        }
-        const updatedUser = await this.usersStore.changeUsername(potentialUser._id, changeUsernameRequest.newUsername);
-        return this.usersStore.buildFrontendUser(updatedUser);
+        return await this.pseudStore.changeScreenName(userId, screenNameForm);
     }
 
-    async changeEmail(jwtPayload: JwtPayload, changeEmailRequest: ChangeEmail): Promise<FrontendUser> {
-        const potentialUser = await this.usersStore.findOneById(jwtPayload.sub);
-        if (!potentialUser) {
-            // This happening is _super_ fishy. Either a well-meaning tinkerer playing with the API, or something malicious.
-            throw new NotFoundException(`Can't seem to find you. Try again in a little bit.`);
+    async updateBio(userId: string, bioForm: ChangeBio): Promise<Pseudonym> {
+        if (bioForm.bio && bioForm.bio.length > 160) {
+            throw new BadRequestException('Your bio must not be longer than 160 characters.');
         }
-
-        if (!(await verify(potentialUser.password, changeEmailRequest.currentPassword, { type: argon2id }))) {
-            throw new UnauthorizedException(`You don't have permission to do that.`);
-        }
-
-        const updatedUser = await this.usersStore.changeEmail(potentialUser._id, changeEmailRequest.newEmail);
-        return this.usersStore.buildFrontendUser(updatedUser);
+        return await this.pseudStore.changeBio(userId, bioForm);
     }
 
-    async changePassword(user: JwtPayload, newPassword: ChangePassword): Promise<FrontendUser> {
-        const potentialUser = await this.usersStore.findOneById(user.sub);
-        if (potentialUser) {
-            try {
-                if (await verify(potentialUser.password, newPassword.currentPassword, { type: argon2id })) {
-                    const newUserInfo = await this.usersStore.changePassword(potentialUser._id, newPassword);
-                    return this.usersStore.buildFrontendUser(newUserInfo);
-                } else {
-                    throw new UnauthorizedException(`You don't have permission to do that.`);
-                }
-            } catch (err) {
-                throw new InternalServerErrorException(
-                    `Something went wrong verifying your credentials. Try again in a little bit.`
-                );
-            }
+    async updateAvatar(userId: string, newAvatarUrl: string): Promise<Pseudonym> {
+        return await this.pseudStore.updateAvatar(userId, newAvatarUrl);
+    }
+
+    async updateCoverPic(userId: string, coverPicUrl: string): Promise<Pseudonym> {
+        return await this.pseudStore.updateCover(userId, coverPicUrl);
+    }
+
+    async updateTagline(token: JwtPayload, userId: string, newTagline: ChangeTagline): Promise<Pseudonym> {
+        if (
+            isAllowed(token.roles as Roles[], [
+                Roles.Admin,
+                Roles.ChatModerator,
+                Roles.Contributor,
+                Roles.Moderator,
+                Roles.ChatModerator,
+                Roles.WorkApprover,
+                Roles.VIP,
+            ])
+        ) {
+            return await this.pseudStore.changeTagline(userId, newTagline);
         } else {
-            throw new NotFoundException(
-                `It doesn't look like you exist! Try again in a little bit, or create an account.`
-            );
+            throw new UnauthorizedException(`You don't have permission to do that.`);
         }
-    }
-
-    async updateBio(user: JwtPayload, newProfileInfo: ChangeBio): Promise<FrontendUser> {
-        const newUserInfo = await this.usersStore.updateBio(user.sub, newProfileInfo);
-        return this.usersStore.buildFrontendUser(newUserInfo);
-    }
-
-    async agreeToPolicies(user: JwtPayload): Promise<FrontendUser> {
-        const updatedUserInfo = await this.usersStore.agreeToPolicies(user.sub);
-        return this.usersStore.buildFrontendUser(updatedUserInfo);
-    }
-
-    async updateAvatar(user: JwtPayload, newAvatarUrl: string): Promise<FrontendUser> {
-        const updatedUser = await this.usersStore.updateAvatar(user.sub, newAvatarUrl);
-        return this.usersStore.buildFrontendUser(updatedUser);
-    }
-
-    async updateCoverPic(user: JwtPayload, coverPicUrl: string): Promise<FrontendUser> {
-        const updatedUser = await this.usersStore.updateCoverPic(user.sub, coverPicUrl);
-        return this.usersStore.buildFrontendUser(updatedUser);
-    }
-
-    async updateTagline(user: JwtPayload, newTagline: UpdateTagline): Promise<FrontendUser> {
-        const updatedUser = await this.usersStore.updateTagline(user.sub, newTagline.newTagline);
-        return this.usersStore.buildFrontendUser(updatedUser);
     }
 }

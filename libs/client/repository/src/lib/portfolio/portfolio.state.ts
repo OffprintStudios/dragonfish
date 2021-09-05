@@ -1,7 +1,7 @@
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface PortfolioState {
-    currPortfolio: FrontendUser | null;
+    currPortfolio: Pseudonym | null;
 }
 
 export function createInitialState(): PortfolioState {

@@ -1,0 +1,28 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mx-auto my-6 w-11/12">
+    <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
+        <h3 class="text-xl font-medium text-center">Theme</h3>
+        <div class="offprint-select">
+            <label>Theme</label>
+            <ng-select class="custom" [(ngModel)]="selectedTheme" [searchable]="false" [clearable]="false" (change)="onThemeChange($event)">
+                <ng-option *ngFor="let theme of themes | keyvalue" [value]="theme.key">
+                    {{ theme.value }}
+                </ng-option>
+            </ng-select>
+        </div>
+    </div>
+    <div class="p-2 border border-gray-600 dark:border-white rounded-md shadow-xl">
+        <h3 class="text-xl font-medium text-center">Ratings Filter</h3>
+        <form [formGroup]="setContentFilter" class="flex flex-col items-center" (ngSubmit)="submitContentFilter()">
+            <div class="flex flex-col items-center justify-center">
+                    <span class="toggles">
+                        <dragonfish-toggle [formControlName]="'enableMature'">Enable Mature</dragonfish-toggle>
+                    </span>
+                <span class="toggles">
+                        <dragonfish-toggle [formControlName]="'enableExplicit'">Enable Explicit</dragonfish-toggle>
+                    </span>
+            </div>
+            <div class="my-2"><!--spacer--></div>
+            <button type="submit"><rmx-icon name="save-3-line"></rmx-icon>Save</button>
+        </form>
+    </div>
+</div>
