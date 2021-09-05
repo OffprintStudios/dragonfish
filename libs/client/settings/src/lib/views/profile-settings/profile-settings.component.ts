@@ -8,6 +8,8 @@ import { untilDestroyed } from '@ngneat/until-destroy';
 import { ChangeBio, ChangeScreenName, ChangeTagline, Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { CoverPicUploadComponent, UploadAvatarComponent } from '../../components';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'dragonfish-profile-settings',
@@ -33,6 +35,7 @@ export class ProfileSettingsComponent implements OnInit {
         public sessionQuery: SessionQuery,
         private router: Router,
         private alerts: AlertsService,
+        private dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -60,7 +63,11 @@ export class ProfileSettingsComponent implements OnInit {
     }
 
     changeAvatar() {
-        return;
+        this.dialog.open(UploadAvatarComponent);
+    }
+
+    changeCover() {
+        this.dialog.open(CoverPicUploadComponent);
     }
 
     canSeeTaglineForm(roles: Roles[]) {

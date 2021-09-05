@@ -74,9 +74,19 @@ img.avatar {
     @apply rounded-md;
     width: 90px;
     height: 90px;
-    border: 1px solid var(--site-borders);
+    border: 1px solid var(--borders);
     object-fit: cover;
     object-position: 50% 50%; // Determines the viewport position
+    display: block;
+    text-align: center;
+}
+
+img.cover {
+    @apply rounded-md;
+    max-width: 250px;
+    max-height: 150px;
+    border: 1px solid var(--borders);
+    object-fit: cover;
     display: block;
     text-align: center;
 }
