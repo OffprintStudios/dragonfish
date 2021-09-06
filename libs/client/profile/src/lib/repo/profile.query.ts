@@ -13,4 +13,12 @@ export class ProfileQuery extends Query<ProfileState> {
     constructor(protected store: ProfileStore) {
         super(store);
     }
+
+    public get userTag() {
+        return this.getValue().currProfile.userTag;
+    }
+
+    public get profileId() {
+        return this.getValue().currProfile._id;
+    }
 }

@@ -96,6 +96,7 @@ import {
     RiMore2Fill,
     RiShareBoxLine,
     RiForbidLine,
+    RiGift2Line,
 } from 'angular-remix-icon';
 
 import {
@@ -409,6 +410,7 @@ const remixIcons = {
     RiMore2Fill,
     RiShareBoxLine,
     RiForbidLine,
+    RiGift2Line,
 };
 
 @NgModule({

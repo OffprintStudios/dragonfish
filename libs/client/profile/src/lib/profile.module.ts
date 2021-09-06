@@ -8,9 +8,11 @@ import { PipesModule } from '@dragonfish/client/pipes';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { CommentsModule } from '@dragonfish/client/comments';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 /* Views */
 import { ProfileComponent } from './profile.component';
+import { Views } from './views';
 
 /* Components */
 import { ProfileTopbarComponent } from './components';
@@ -19,7 +21,7 @@ import { ProfileTopbarComponent } from './components';
 import { ProfileStore, ProfileQuery, ProfileService } from './repo';
 
 @NgModule({
-    declarations: [ProfileComponent, ProfileTopbarComponent],
+    declarations: [ProfileComponent, ProfileTopbarComponent, ...Views],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -29,6 +31,7 @@ import { ProfileStore, ProfileQuery, ProfileService } from './repo';
         PipesModule,
         AlertsModule,
         CommentsModule,
+        NgxPaginationModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
             track: 'all',
