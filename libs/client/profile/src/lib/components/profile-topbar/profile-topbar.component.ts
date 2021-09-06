@@ -10,7 +10,7 @@ import { ProfileQuery } from '../../repo';
         trigger('inOutBig', [
             transition(':enter', [
                 style({ height: '*', opacity: 0 }),
-                animate('.250s ease-in', style({ height: '26.25rem', opacity: 1 })),
+                animate('.250s ease-in', style({ height: '29rem', opacity: 1 })),
             ]),
             transition(':leave', [
                 style({ height: '7.5rem', opacity: 1 }),

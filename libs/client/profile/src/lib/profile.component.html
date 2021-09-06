@@ -1,37 +1,6 @@
 <div class="flex flex-col w-full h-screen">
     <dragonfish-profile-topbar [scrolled]="scrolled"></dragonfish-profile-topbar>
     <ng-scrollbar #mainScroll>
-        <div class="w-8/12 mx-auto border-b border-gray-600 dark:border-white my-6 py-1">
-            <div class="flex items-center justify-center">
-                <ng-container *ngIf="profileQuery.profile$ | async as profile">
-                    <a
-                        class="link"
-                        [routerLink]="['/profile', profile._id, profile.userTag]"
-                        [routerLinkActive]="'active'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                    >
-                        <rmx-icon name="home-5-line"></rmx-icon>
-                        <span>Home</span>
-                    </a>
-                    <a
-                        class="link"
-                        [routerLink]="['works']"
-                        [routerLinkActive]="'active'"
-                    >
-                        <rmx-icon name="quill-pen-line"></rmx-icon>
-                        <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
-                    </a>
-                    <a
-                        class="link"
-                        [routerLink]="['blogs']"
-                        [routerLinkActive]="'active'"
-                    >
-                        <rmx-icon name="cup-line"></rmx-icon>
-                        <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
-                    </a>
-                </ng-container>
-            </div>
-        </div>
         <div>
             <router-outlet></router-outlet>
         </div>

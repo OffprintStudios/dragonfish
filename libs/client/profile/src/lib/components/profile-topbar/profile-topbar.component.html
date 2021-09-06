@@ -4,7 +4,7 @@
             <div class="scrolled-header">
                 <div class="scrolled-header-items">
                     <img class="avatar" [src]="profile.profile.avatar">
-                    <div class="flex-1">
+                    <div>
                         <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
                         <h4 class="italic text-white">@{{ profile.userTag }}</h4>
                         <div class="flex items-center text-white text-xs">
@@ -12,6 +12,33 @@
                             <span class="text-xl mx-1.5">·</span>
                             <span>{{ profile.stats.following | abbreviate }} Following</span>
                         </div>
+                    </div>
+                    <div class="flex-1 flex items-center justify-center">
+                        <a
+                            class="link"
+                            [routerLink]="['/profile', profile._id, profile.userTag]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <rmx-icon name="home-5-line"></rmx-icon>
+                            <span>Home</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['works']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="quill-pen-line"></rmx-icon>
+                            <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['blogs']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="cup-line"></rmx-icon>
+                            <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
+                        </a>
                     </div>
                     <button
                         class="px-2.5"
@@ -76,6 +103,33 @@
                             <rmx-icon name="user-add-line"></rmx-icon>
                             <span>Follow</span>
                         </button>
+                    </div>
+                    <div class="nav-items">
+                        <a
+                            class="link"
+                            [routerLink]="['/profile', profile._id, profile.userTag]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <rmx-icon name="home-5-line"></rmx-icon>
+                            <span>Home</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['works']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="quill-pen-line"></rmx-icon>
+                            <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['blogs']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="cup-line"></rmx-icon>
+                            <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
+                        </a>
                     </div>
                 </div>
             </div>
