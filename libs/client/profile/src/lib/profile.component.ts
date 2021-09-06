@@ -17,7 +17,7 @@ export class ProfileComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this.scrollbarRef.scrolled.pipe(untilDestroyed(this)).subscribe((x) => {
-            this.scrolled = !(x.target.scrollTop < 125);
+            this.scrolled = !(x.target.scrollTop < 25);
         });
     }
 }

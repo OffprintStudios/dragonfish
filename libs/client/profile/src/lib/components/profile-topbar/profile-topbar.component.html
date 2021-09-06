@@ -6,7 +6,12 @@
                     <img class="avatar" [src]="profile.profile.avatar">
                     <div class="flex-1">
                         <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
-                        <h4 class="text-lg text-white">@{{ profile.userTag }}</h4>
+                        <h4 class="italic text-white">@{{ profile.userTag }}</h4>
+                        <div class="flex items-center text-white text-xs">
+                            <span>{{ profile.stats.followers | abbreviate }} Followers</span>
+                            <span class="text-xl mx-1.5">·</span>
+                            <span>{{ profile.stats.following | abbreviate }} Following</span>
+                        </div>
                     </div>
                     <button
                         class="px-2.5"
@@ -42,7 +47,12 @@
                         <img class="avatar" [src]="profile.profile.avatar">
                         <div class="flex-1">
                             <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
-                            <h4 class="text-lg text-white">@{{ profile.userTag }}</h4>
+                            <h4 class="italic text-white">@{{ profile.userTag }}</h4>
+                            <div class="flex items-center text-white text-xs">
+                                <span>{{ profile.stats.followers | abbreviate }} Followers</span>
+                                <span class="text-xl mx-1.5">·</span>
+                                <span>{{ profile.stats.following | abbreviate }} Following</span>
+                            </div>
                         </div>
                         <button
                             class="px-2.5"
