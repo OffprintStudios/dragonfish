@@ -1,0 +1,39 @@
+div.profile-header {
+    @apply sticky relative z-50 top-0;
+    box-shadow: var(--dropshadow);
+    img.cover {
+        @apply object-cover w-full z-20;
+        height: 18.75rem;
+    }
+    div.header-bar {
+        background: var(--accent);
+        @apply relative w-full;
+        height: 7.5rem;
+        div.header-items {
+            @apply w-11/12 md:w-8/12 lg:w-7/12 mx-auto flex items-center relative;
+            height: 7.5rem;
+            img.avatar {
+                @apply object-cover h-44 w-44 relative rounded-md -top-10 border-4 border-white mr-4;
+                box-shadow: var(--dropshadow);
+            }
+        }
+    }
+    div.scrolled-header {
+        @apply py-4;
+        background: var(--accent);
+        div.scrolled-header-items {
+            @apply flex items-center w-11/12 mx-auto;
+            img.avatar {
+                @apply object-cover h-24 w-24 relative rounded-md border-2 border-white mr-4;
+                box-shadow: var(--dropshadow);
+            }
+        }
+    }
+    button {
+        @apply text-white border border-white ml-1;
+        &:hover, &.active {
+            background: var(--accent-light);
+        }
+    }
+}
+

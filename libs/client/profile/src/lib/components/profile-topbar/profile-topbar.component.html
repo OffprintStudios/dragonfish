@@ -1,0 +1,74 @@
+<ng-container *ngIf="profileQuery.profile$ | async as profile">
+    <div class="profile-header">
+        <ng-container *ngIf="scrolled; else notScrolled">
+            <div class="scrolled-header">
+                <div class="scrolled-header-items">
+                    <img class="avatar" [src]="profile.profile.avatar">
+                    <div class="flex-1">
+                        <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
+                        <h4 class="text-lg text-white">@{{ profile.userTag }}</h4>
+                    </div>
+                    <button
+                        class="px-2.5"
+                        [matTooltip]="'More'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                        [matMenuTriggerFor]="moreOptions"
+                    >
+                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                    </button>
+                    <button
+                        class="px-2.5"
+                        [matTooltip]="'Send Friend Request'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                    >
+                        <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                    </button>
+                    <button>
+                        <rmx-icon name="user-add-line"></rmx-icon>
+                        <span>Follow</span>
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #notScrolled>
+            <div [@inOutBig]>
+                <img class="cover" [src]="profile.profile.coverPic" *ngIf="profile.profile.coverPic">
+                <div class="header-bar">
+                    <div class="header-items">
+                        <img class="avatar" [src]="profile.profile.avatar">
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
+                            <h4 class="text-lg text-white">@{{ profile.userTag }}</h4>
+                        </div>
+                        <button
+                            class="px-2.5"
+                            [matTooltip]="'More'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            [matMenuTriggerFor]="moreOptions"
+                        >
+                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                        </button>
+                        <button
+                            class="px-2.5"
+                            [matTooltip]="'Send Friend Request'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                        >
+                            <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                        </button>
+                        <button>
+                            <rmx-icon name="user-add-line"></rmx-icon>
+                            <span>Follow</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <mat-menu #moreOptions='matMenu'>
+        <button mat-menu-item class="hover:scale-100 tracking-normal"><rmx-icon name="share-box-line"></rmx-icon>Share this profile</button>
+        <button mat-menu-item class="hover:scale-100 tracking-normal"><rmx-icon name="forbid-line"></rmx-icon>Block this user</button>
+        <button mat-menu-item class="hover:scale-100 tracking-normal"><rmx-icon name="alert-line"></rmx-icon>Report to staff</button>
+    </mat-menu>
+</ng-container>

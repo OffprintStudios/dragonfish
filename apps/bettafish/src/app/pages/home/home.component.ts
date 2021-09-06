@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { slogans } from '../../models/site';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
@@ -13,7 +13,7 @@ import { untilDestroyed } from '@ngneat/until-destroy';
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit, AfterViewChecked {
     @ViewChild('mainScroll') scrollbarRef: NgScrollbar;
     rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
     siteVersion = Constants.SITE_VERSION;
@@ -42,9 +42,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
             );
     }
 
-    ngAfterViewInit() {
-        this.scrollbarRef.scrolled.pipe(untilDestroyed(this)).subscribe((x) => {
-            this.transparent = x.target.scrollTop < 52;
-        });
+    ngAfterViewChecked() {
+        if (this.scrollbarRef) {
+            this.scrollbarRef.scrolled.pipe(untilDestroyed(this)).subscribe((x) => {
+                this.transparent = x.target.scrollTop < 52;
+            });
+        }
     }
 }

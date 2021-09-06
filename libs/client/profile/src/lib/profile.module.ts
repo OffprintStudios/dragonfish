@@ -12,8 +12,14 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 /* Views */
 import { ProfileComponent } from './profile.component';
 
+/* Components */
+import { ProfileTopbarComponent } from './components';
+
+/* Repository */
+import { ProfileStore, ProfileQuery, ProfileService } from './repo';
+
 @NgModule({
-    declarations: [ProfileComponent],
+    declarations: [ProfileComponent, ProfileTopbarComponent],
     imports: [
         CommonModule,
         ProfileRoutingModule,
@@ -28,5 +34,6 @@ import { ProfileComponent } from './profile.component';
             track: 'all',
         }),
     ],
+    providers: [ProfileStore, ProfileQuery, ProfileService],
 })
 export class ProfileModule {}
