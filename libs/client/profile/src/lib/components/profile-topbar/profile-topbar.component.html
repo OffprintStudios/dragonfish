@@ -10,9 +10,12 @@
                     </div>
                     <button
                         class="px-2.5"
+                        [ngClass]="{'active': isMoreOpened}"
                         [matTooltip]="'More'"
                         [matTooltipClass]="'offprint-tooltip'"
                         [matMenuTriggerFor]="moreOptions"
+                        (menuOpened)="toggleMore()"
+                        (menuClosed)="toggleMore()"
                     >
                         <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
                     </button>
@@ -43,9 +46,12 @@
                         </div>
                         <button
                             class="px-2.5"
+                            [ngClass]="{'active': isMoreOpened}"
                             [matTooltip]="'More'"
                             [matTooltipClass]="'offprint-tooltip'"
                             [matMenuTriggerFor]="moreOptions"
+                            (menuOpened)="toggleMore()"
+                            (menuClosed)="toggleMore()"
                         >
                             <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
                         </button>

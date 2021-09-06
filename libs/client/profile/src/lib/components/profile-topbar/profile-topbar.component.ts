@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ProfileQuery } from '../../repo';
 
@@ -19,10 +19,13 @@ import { ProfileQuery } from '../../repo';
         ]),
     ],
 })
-export class ProfileTopbarComponent implements OnInit {
+export class ProfileTopbarComponent {
     @Input() scrolled = false;
+    isMoreOpened = false;
 
     constructor(public profileQuery: ProfileQuery) {}
 
-    ngOnInit() {}
+    toggleMore() {
+        this.isMoreOpened = !this.isMoreOpened;
+    }
 }
