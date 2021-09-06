@@ -1,5 +1,5 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
-import { BrowseStore } from '@dragonfish/api/database/content/stores';
+import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { ApiTags } from '@nestjs/swagger';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ContentFilter, ContentKind } from '@dragonfish/shared/models/content';
@@ -8,11 +8,11 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 @ApiTags(DragonfishTags.Content)
 @Controller('browse')
 export class BrowseController {
-    constructor(private readonly browseStore: BrowseStore) {}
+    constructor(private readonly contentGroupStore: ContentGroupStore) {}
 
     @Get('fetch-first-new')
     async fetchFirstNew(@Query('filter') filter: ContentFilter) {
-        return await this.browseStore.fetchFirstNew(filter);
+        return await this.contentGroupStore.fetchFirstNew(filter);
     }
 
     @Get('fetch-all-new')
@@ -26,6 +26,6 @@ export class BrowseController {
             throw new BadRequestException(`You must include both the page number and content kind in your request.`);
         }
 
-        return await this.browseStore.fetchAllNew(pageNum, kind, filter, userId);
+        return await this.contentGroupStore.fetchAllNew(pageNum, kind, filter, userId);
     }
 }
