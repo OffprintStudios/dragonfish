@@ -28,7 +28,6 @@ import { HomePages } from './pages/home';
 import { BrowsePages } from './pages/browse';
 import { SocialPages } from './pages/social';
 import { DocsPages } from './pages/docs';
-import { PortfolioPages } from './pages/portfolio';
 import { MessagesPages } from './pages/messages';
 import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
@@ -67,7 +66,6 @@ import { TagPages } from './pages/tags';
         ...BrowsePages,
         ...SocialPages,
         ...DocsPages,
-        ...PortfolioPages,
         ...MessagesPages,
         ...ContentViewPages,
         ...ErrorPages,
