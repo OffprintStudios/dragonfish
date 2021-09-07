@@ -6,7 +6,7 @@ import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { UsersStore } from '@dragonfish/api/database/users';
-import { BrowseStore } from '@dragonfish/api/database/content/stores';
+import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { User } from '@dragonfish/shared/models/users';
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 
@@ -16,20 +16,20 @@ export class SearchService implements ISearch {
     readonly INITIAL_MAX_PER_PAGE = 6;
     readonly MAX_PER_PAGE = 15;
 
-    constructor(private readonly usersStore: UsersStore, private readonly contentStore: BrowseStore) {}
+    constructor(private readonly usersStore: UsersStore, private readonly contentGroupStore: ContentGroupStore) {}
 
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
 
         const [initialUsers, initialBlogs, initialContent] = await Promise.all([
             this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
-            this.contentStore.findRelatedContent(parsedQuery,
+            this.contentGroupStore.findRelatedContent(parsedQuery,
                 [ContentKind.BlogContent],
                 this.INITIAL_PAGE,
                 this.INITIAL_MAX_PER_PAGE,
                 contentFilter
             ),
-            this.contentStore.findRelatedContent(
+            this.contentGroupStore.findRelatedContent(
                 parsedQuery,
                 [ContentKind.PoetryContent, ContentKind.ProseContent],
                 this.INITIAL_PAGE,
@@ -57,7 +57,7 @@ export class SearchService implements ISearch {
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentStore.findRelatedContent(
+        return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.BlogContent],
             pageNum,
@@ -72,7 +72,7 @@ export class SearchService implements ISearch {
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentStore.findRelatedContent(
+        return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,
@@ -86,7 +86,7 @@ export class SearchService implements ISearch {
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.contentStore.getContentByFandomTag(
+        return await this.contentGroupStore.getContentByFandomTag(
             tagId,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,

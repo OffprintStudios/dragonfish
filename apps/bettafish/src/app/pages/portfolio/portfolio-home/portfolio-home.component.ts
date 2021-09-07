@@ -9,7 +9,7 @@ import { AppQuery } from '@dragonfish/client/repository/app';
 @UntilDestroy()
 @Component({
     selector: 'dragonfish-portfolio-home',
-    templateUrl: './portfolio-home.component.html'
+    templateUrl: './portfolio-home.component.html',
 })
 export class PortfolioHomeComponent implements OnInit {
     loading = false;
@@ -20,18 +20,18 @@ export class PortfolioHomeComponent implements OnInit {
         private network: DragonfishNetworkService,
         public portQuery: PortfolioQuery,
         private appQuery: AppQuery,
-    ) { }
+    ) {}
 
     ngOnInit(): void {
-        this.portQuery.portUser$.pipe(untilDestroyed(this)).subscribe(user => {
+        this.portQuery.portUser$.pipe(untilDestroyed(this)).subscribe((user) => {
             this.fetchData(user._id);
-            setThreePartTitle(user.username, Constants.HOME);
+            setThreePartTitle(user.userTag, Constants.HOME);
         });
     }
 
     private fetchData(userId: string) {
         this.loading = true;
-        this.network.fetchUserProfile(userId, this.appQuery.filter).subscribe(data => {
+        this.network.getProfileContent(userId, this.appQuery.filter).subscribe((data) => {
             this.works = data.works;
             this.blogs = data.blogs as BlogsContentModel[];
             this.loading = false;

@@ -5,106 +5,86 @@ import {
     Get,
     Post,
     Body,
-    Param,
     Query,
     UseInterceptors,
     UploadedFile,
-    BadRequestException,
     Inject,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
-
-import { Roles, FrontendUser } from '@dragonfish/shared/models/users';
-import { RolesGuard } from '../../guards';
-import { ChangeEmailDTO, ChangePasswordDTO, ChangeBioDTO, ChangeUsernameDTO, UpdateTaglineDTO } from './models';
-import { IUser } from '../../shared/auth';
+import { IdentityGuard } from '../../guards';
 import { IImages } from '../../shared/images';
 import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/content';
+import { UserService } from '../../services/auth/user.service';
+import { ChangeBio, ChangeScreenName, ChangeTagline, Roles } from '@dragonfish/shared/models/accounts';
 
 @Controller('user')
 export class UserController {
-    constructor(@Inject('IUser') private readonly user: IUser, @Inject('IImages') private readonly images: IImages) {}
+    constructor(@Inject('IImages') private readonly images: IImages, private readonly user: UserService) {}
 
     @ApiTags(DragonfishTags.Users)
-    @Get('get-user-info/:userId')
-    async getUserInfo(@Param('userId') userId: string) {
-        return await this.user.getOneUser(userId);
+    @Get('get-profile')
+    async getProfile(@Query('pseudId') pseudId: string) {
+        return await this.user.getOneUser(pseudId);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @Get('get-user-profile')
-    async getUserProfile(@Query('userId') userId: string, @Query('filter') filter: ContentFilter) {
-        return await this.user.getUserProfile(userId, filter);
+    @Get('get-profile-content')
+    async getProfileContent(@Query('pseudId') pseudId: string, @Query('filter') filter: ContentFilter) {
+        return await this.user.getUserProfile(pseudId, filter);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('change-email')
-    async changeEmail(@User() user: JwtPayload, @Body() changeEmailRequest: ChangeEmailDTO) {
-        return await this.user.changeEmail(user, changeEmailRequest);
+    @UseGuards(IdentityGuard([Roles.User]))
+    @Patch('change-screen-name')
+    async changeScreenName(@Query('pseudId') pseudId: string, @Body() formInfo: ChangeScreenName) {
+        return await this.user.changeScreenName(pseudId, formInfo);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('change-username')
-    async changeUsername(@User() user: JwtPayload, @Body() changeUsernameRequest: ChangeUsernameDTO) {
-        // TODO: Determine how we want to handle this.
-        // We should decide what--and if we need--restrictions to have around name changes.
-        //return await this.user.changeUsername(user, changeUsernameRequest);
+    @UseGuards(IdentityGuard([Roles.User]))
+    @Patch('change-bio')
+    async updateBio(@Query('pseudId') pseudId: string, @Body() newBio: ChangeBio) {
+        return await this.user.updateBio(pseudId, newBio);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('change-password')
-    async changePassword(@User() user: JwtPayload, @Body() newPassword: ChangePasswordDTO) {
-        return await this.user.changePassword(user, newPassword);
-    }
-
-    @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Patch('update-bio')
-    async updateBio(@User() user: JwtPayload, @Body() newBio: ChangeBioDTO) {
-        if (newBio.bio && newBio.bio.length > 160) {
-            throw new BadRequestException('Your bio must not be longer than 160 characters.');
-        }
-        return await this.user.updateBio(user, newBio);
-    }
-
-    @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
-    @Post('agree-to-policies')
-    async agreeToPolicies(@User() user: JwtPayload): Promise<FrontendUser> {
-        return await this.user.agreeToPolicies(user);
-    }
-
-    @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('avatar'))
     @Post('upload-avatar')
-    async uploadAvatar(@UploadedFile() avatarImage: any, @User() user: JwtPayload) {
-        const avatarUrl = await this.images.upload(avatarImage, user.sub, 'avatars');
+    async uploadAvatar(@UploadedFile() avatarImage: any, @Query('pseudId') pseudId: string) {
+        const avatarUrl = await this.images.upload(avatarImage, pseudId, 'avatars');
         const avatar = `${process.env.IMAGES_HOSTNAME}/avatars/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
-        return await this.user.updateAvatar(user, avatar);
+        return await this.user.updateAvatar(pseudId, avatar);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User]))
     @UseInterceptors(FileInterceptor('coverPic'))
     @Post('upload-cover')
-    async uploadCover(@UploadedFile() coverImage: any, @User() user: JwtPayload) {
-        const avatarUrl = await this.images.upload(coverImage, user.sub, 'cover-pics');
+    async uploadCover(@UploadedFile() coverImage: any, @Query('pseudId') pseudId: string) {
+        const avatarUrl = await this.images.upload(coverImage, pseudId, 'cover-pics');
         const avatar = `${process.env.IMAGES_HOSTNAME}/cover-pics/${avatarUrl.substr(avatarUrl.lastIndexOf('/') + 1)}`;
-        return await this.user.updateCoverPic(user, avatar);
+        return await this.user.updateCoverPic(pseudId, avatar);
     }
 
     @ApiTags(DragonfishTags.Users)
-    @UseGuards(RolesGuard([Roles.Admin, Roles.Moderator, Roles.ChatModerator, Roles.Maintainer, Roles.Contributor, Roles.VIP]))
-    @Patch('update-tagline')
-    async updateTagline(@User() user: JwtPayload, @Body() tagline: UpdateTaglineDTO) {
-        return await this.user.updateTagline(user, tagline);
+    @UseGuards(
+        IdentityGuard([
+            Roles.Admin,
+            Roles.Moderator,
+            Roles.ChatModerator,
+            Roles.Maintainer,
+            Roles.Contributor,
+            Roles.WorkApprover,
+            Roles.VIP,
+        ]),
+    )
+    @Patch('change-tagline')
+    async updateTagline(@User() user: JwtPayload, @Query('pseudId') pseudId: string, @Body() tagline: ChangeTagline) {
+        return await this.user.updateTagline(user, pseudId, tagline);
     }
 }
