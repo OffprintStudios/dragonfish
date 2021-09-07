@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { BrowseStore } from '@dragonfish/api/database/content/stores';
+import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 import { ChangeBio, ChangeScreenName, ChangeTagline, Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
@@ -10,7 +10,7 @@ import { isAllowed } from '@dragonfish/shared/functions';
 export class UserService {
     private readonly logger: Logger = new Logger(UserService.name);
 
-    constructor(private readonly pseudStore: PseudonymsStore, private readonly contentStore: BrowseStore) {}
+    constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
     async getOneUser(userId: string): Promise<Pseudonym> {
         return await this.pseudStore.fetchPseud(userId);
@@ -20,7 +20,7 @@ export class UserService {
         userId: string,
         filter: ContentFilter,
     ): Promise<{ works: ContentModel[]; blogs: ContentModel[] }> {
-        return await this.contentStore.fetchFirstThreePublished(filter, userId);
+        return await this.contentGroupStore.fetchFirstThreePublished(filter, userId);
     }
 
     async changeScreenName(userId: string, screenNameForm: ChangeScreenName): Promise<Pseudonym> {

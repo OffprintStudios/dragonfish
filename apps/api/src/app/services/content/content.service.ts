@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { BrowseStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
+import { ContentGroupStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
     ContentModel,
@@ -19,7 +19,7 @@ import { RatingsModel } from '@dragonfish/shared/models/ratings';
 export class ContentService {
     constructor(
         private readonly content: ContentStore,
-        private readonly browse: BrowseStore,
+        private readonly contentGroup: ContentGroupStore,
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
@@ -34,7 +34,7 @@ export class ContentService {
         kind: ContentKind,
         user?: JwtPayload,
     ): Promise<[ContentModel, RatingsModel]> {
-        return await this.browse.fetchOnePublished(contentId, kind, user);
+        return await this.contentGroup.fetchOnePublished(contentId, kind, user);
     }
 
     public async fetchAll(userId: string): Promise<ContentModel[]> {
@@ -47,7 +47,7 @@ export class ContentService {
         filter: ContentFilter,
         userId?: string,
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.browse.fetchAllPublished(pageNum, kinds, filter, userId);
+        return await this.contentGroup.fetchAllPublished(pageNum, kinds, filter, userId);
     }
 
     public async createOne(user: string, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {

@@ -14,7 +14,7 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
  * Functions that find and filter published content.
  */
 @Injectable()
-export class BrowseStore {
+export class ContentGroupStore {
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
@@ -36,7 +36,7 @@ export class BrowseStore {
             'audit.isDeleted': false,
             'audit.published': PubStatus.Published,
         };
-        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
+        const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
         return this.content.find(filteredQuery).sort({ 'audit.publishedOn': -1 }).limit(6);
     }
 
@@ -74,7 +74,7 @@ export class BrowseStore {
         userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
+        const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
         const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
 
         if (userId) {
@@ -130,7 +130,7 @@ export class BrowseStore {
             'audit.isDeleted': false,
             'audit.published': PubStatus.Published,
         };
-        const filteredWorksQuery = await BrowseStore.determineContentFilter(worksQuery, filter);
+        const filteredWorksQuery = await ContentGroupStore.determineContentFilter(worksQuery, filter);
         const works = await this.content.find(filteredWorksQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
 
         const blogsQuery = {
@@ -139,7 +139,7 @@ export class BrowseStore {
             'audit.isDeleted': false,
             'audit.published': PubStatus.Published,
         };
-        const filteredBlogsQuery = await BrowseStore.determineContentFilter(blogsQuery, filter);
+        const filteredBlogsQuery = await ContentGroupStore.determineContentFilter(blogsQuery, filter);
         const blogs = await this.content.find(filteredBlogsQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
 
         return { works: works, blogs: blogs };
@@ -160,7 +160,7 @@ export class BrowseStore {
         userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
-        const filteredQuery = await BrowseStore.determineContentFilter(query, filter);
+        const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
         const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
 
         if (userId) {
@@ -199,7 +199,7 @@ export class BrowseStore {
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
-        await BrowseStore.determineContentFilter(paginateQuery, filter);
+        await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
@@ -230,7 +230,7 @@ export class BrowseStore {
             kind: { $in: kinds },
             tags: tagId,
         };
-        await BrowseStore.determineContentFilter(paginateQuery, filter);
+        await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
