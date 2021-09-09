@@ -44,16 +44,6 @@ export class BrowseComponent implements OnInit {
             this.loadingNew = false;
         });
     }
-
-    submitSearch() {
-        this.router.navigate(['search'], {
-            relativeTo: this.route,
-            queryParams: { query: this.searchForm.controls.query.value },
-            queryParamsHandling: 'merge',
-        }).catch(() => {
-            this.alerts.error(`Something went wrong! Try again in a little bit.`);
-        });
-    }
     
     @HostListener('window:resize', ['$event'])
     onResize() {

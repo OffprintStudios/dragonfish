@@ -15,13 +15,13 @@ export const BrowseRoutes: Routes = [
         component: BrowseComponent,
         children: [
             {
-                path: 'search',
-                component: SearchComponent,
-            },
-            {
                 path: 'newest-works',
                 component: NewestWorksComponent,
             },
         ],
+    },
+    {
+        path: 'search',
+        component: SearchComponent,
     },
 ];

@@ -9,12 +9,13 @@ import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfis
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
- * ## Browse Store
+ * ## Content Group Store
  *
  * Functions that find and filter published content.
  */
 @Injectable()
 export class ContentGroupStore {
+    readonly NEWEST_FIRST = -1
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
@@ -37,7 +38,7 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        return this.content.find(filteredQuery).sort({ 'audit.publishedOn': -1 }).limit(6);
+        return this.content.find(filteredQuery).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(6);
     }
 
     public async fetchFirstUpdated() {
@@ -57,7 +58,7 @@ export class ContentGroupStore {
             'audit.isDeleted': false,
             'audit.published': PubStatus.Published,
         };
-        return this.content.find(query).sort({ 'audit.publishedOn': -1 }).limit(6);
+        return this.content.find(query).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(6);
     }
 
     /**
@@ -75,7 +76,7 @@ export class ContentGroupStore {
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
+        const paginateOptions = { sort: { 'audit.publishedOn': this.NEWEST_FIRST }, page: pageNum, limit: 15 };
 
         if (userId) {
             filteredQuery['author'] = userId;
@@ -131,7 +132,7 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredWorksQuery = await ContentGroupStore.determineContentFilter(worksQuery, filter);
-        const works = await this.content.find(filteredWorksQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
+        const works = await this.content.find(filteredWorksQuery).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(3);
 
         const blogsQuery = {
             author: userId,
@@ -140,7 +141,7 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredBlogsQuery = await ContentGroupStore.determineContentFilter(blogsQuery, filter);
-        const blogs = await this.content.find(filteredBlogsQuery).sort({ 'audit.publishedOn': -1 }).limit(3);
+        const blogs = await this.content.find(filteredBlogsQuery).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(3);
 
         return { works: works, blogs: blogs };
     }
@@ -161,7 +162,7 @@ export class ContentGroupStore {
     ): Promise<PaginateResult<ContentDocument>> {
         const query = { kind: { $in: kinds }, 'audit.isDeleted': false, 'audit.published': PubStatus.Published };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        const paginateOptions = { sort: { 'audit.publishedOn': -1 }, page: pageNum, limit: 15 };
+        const paginateOptions = { sort: { 'audit.publishedOn': this.NEWEST_FIRST }, page: pageNum, limit: 15 };
 
         if (userId) {
             filteredQuery['author'] = userId;
@@ -220,7 +221,7 @@ export class ContentGroupStore {
         filter: ContentFilter,
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
-            sort: { 'audit.publishedOn': -1 },
+            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: maxPerPage,
         };
