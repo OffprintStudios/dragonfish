@@ -1,6 +1,6 @@
 <div class="flex flex-col w-full h-screen">
-    <dragonfish-profile-topbar [scrolled]="scrolled"></dragonfish-profile-topbar>
-    <ng-scrollbar #mainScroll>
+    <ng-scrollbar>
+        <dragonfish-profile-topbar></dragonfish-profile-topbar>
         <div>
             <router-outlet></router-outlet>
         </div>

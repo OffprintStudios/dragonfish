@@ -35,6 +35,7 @@ import { ProfileStore, ProfileQuery, ProfileService } from './repo';
         NgScrollbarModule.withConfig({
             appearance: 'standard',
             track: 'all',
+            visibility: 'native',
         }),
     ],
     providers: [ProfileStore, ProfileQuery, ProfileService],

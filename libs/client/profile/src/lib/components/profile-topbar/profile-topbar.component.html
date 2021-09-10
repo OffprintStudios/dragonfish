@@ -1,10 +1,16 @@
 <ng-container *ngIf="profileQuery.profile$ | async as profile">
     <div class="profile-header">
-        <ng-container *ngIf="scrolled; else notScrolled">
-            <div class="scrolled-header">
-                <div class="scrolled-header-items">
+        <div>
+            <ng-container *ngIf="profile.profile.coverPic; else noCoverPic">
+                <img class="cover" [src]="profile.profile.coverPic">
+            </ng-container>
+            <ng-template #noCoverPic>
+                <div class="cover"></div>
+            </ng-template>
+            <div class="header-bar">
+                <div class="header-items">
                     <img class="avatar" [src]="profile.profile.avatar">
-                    <div>
+                    <div class="flex-1">
                         <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
                         <h4 class="italic text-white">@{{ profile.userTag }}</h4>
                         <div class="flex items-center text-white text-xs">
@@ -12,33 +18,6 @@
                             <span class="text-xl mx-1.5">·</span>
                             <span>{{ profile.stats.following | abbreviate }} Following</span>
                         </div>
-                    </div>
-                    <div class="flex-1 flex items-center justify-center">
-                        <a
-                            class="link"
-                            [routerLink]="['/profile', profile._id, profile.userTag]"
-                            [routerLinkActive]="'active'"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                        >
-                            <rmx-icon name="home-5-line"></rmx-icon>
-                            <span>Home</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['works']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="quill-pen-line"></rmx-icon>
-                            <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['blogs']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="cup-line"></rmx-icon>
-                            <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
-                        </a>
                     </div>
                     <button
                         class="px-2.5"
@@ -63,77 +42,35 @@
                         <span>Follow</span>
                     </button>
                 </div>
-            </div>
-        </ng-container>
-
-        <ng-template #notScrolled>
-            <div [@inOutBig]>
-                <img class="cover" [src]="profile.profile.coverPic" *ngIf="profile.profile.coverPic">
-                <div class="header-bar">
-                    <div class="header-items">
-                        <img class="avatar" [src]="profile.profile.avatar">
-                        <div class="flex-1">
-                            <h3 class="text-3xl font-medium text-white">{{ profile.screenName }}</h3>
-                            <h4 class="italic text-white">@{{ profile.userTag }}</h4>
-                            <div class="flex items-center text-white text-xs">
-                                <span>{{ profile.stats.followers | abbreviate }} Followers</span>
-                                <span class="text-xl mx-1.5">·</span>
-                                <span>{{ profile.stats.following | abbreviate }} Following</span>
-                            </div>
-                        </div>
-                        <button
-                            class="px-2.5"
-                            [ngClass]="{'active': isMoreOpened}"
-                            [matTooltip]="'More'"
-                            [matTooltipClass]="'offprint-tooltip'"
-                            [matMenuTriggerFor]="moreOptions"
-                            (menuOpened)="toggleMore()"
-                            (menuClosed)="toggleMore()"
-                        >
-                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                        </button>
-                        <button
-                            class="px-2.5"
-                            [matTooltip]="'Send Friend Request'"
-                            [matTooltipClass]="'offprint-tooltip'"
-                        >
-                            <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
-                        </button>
-                        <button>
-                            <rmx-icon name="user-add-line"></rmx-icon>
-                            <span>Follow</span>
-                        </button>
-                    </div>
-                    <div class="nav-items">
-                        <a
-                            class="link"
-                            [routerLink]="['/profile', profile._id, profile.userTag]"
-                            [routerLinkActive]="'active'"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                        >
-                            <rmx-icon name="home-5-line"></rmx-icon>
-                            <span>Home</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['works']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="quill-pen-line"></rmx-icon>
-                            <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['blogs']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="cup-line"></rmx-icon>
-                            <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
-                        </a>
-                    </div>
+                <div class="nav-items">
+                    <a
+                        class="link"
+                        [routerLink]="['/profile', profile._id, profile.userTag]"
+                        [routerLinkActive]="'active'"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                    >
+                        <rmx-icon name="home-5-line"></rmx-icon>
+                        <span>Home</span>
+                    </a>
+                    <a
+                        class="link"
+                        [routerLink]="['works']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <rmx-icon name="quill-pen-line"></rmx-icon>
+                        <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
+                    </a>
+                    <a
+                        class="link"
+                        [routerLink]="['blogs']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <rmx-icon name="cup-line"></rmx-icon>
+                        <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
+                    </a>
                 </div>
             </div>
-        </ng-template>
+        </div>
     </div>
 
     <mat-menu #moreOptions='matMenu'>

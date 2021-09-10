@@ -1,10 +1,14 @@
 div.profile-header {
-    @apply sticky relative z-40 top-0;
+    @apply relative z-40 top-0;
     box-shadow: var(--dropshadow);
     background: var(--accent);
     img.cover {
         @apply object-cover w-full z-20;
         mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 150px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
+        height: 18.75rem;
+    }
+    div.cover {
+        background: var(--accent);
         height: 18.75rem;
     }
     div.header-bar {
