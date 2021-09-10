@@ -8,15 +8,6 @@
 <div class="flex" style="height: calc(100vh - 52px);">
     <ng-container *ngIf="!mobileMode">
         <dragonfish-pagebar>
-            <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-                <dragonfish-text-field
-                    [formControlName]="'query'"
-                    [name]="'query'"
-                    [type]="'text'"
-                    [placeholder]="'Search...'"
-                    [searchBox]="true"
-                ></dragonfish-text-field>
-            </form>
             <div class="my-2 border-b w-full border-white"><!--spacer--></div>
             <a class="link" [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
                 <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
@@ -28,17 +19,6 @@
     </ng-container>
     <div class="w-full">
         <ng-scrollbar>
-            <ng-container *ngIf="mobileMode">
-                <form [formGroup]="searchForm" (ngSubmit)="submitSearch()">
-                    <dragonfish-text-field
-                        [formControlName]="'query'"
-                        [name]="'query'"
-                        [type]="'text'"
-                        [placeholder]="'Search...'"
-                        [searchBox]="true"
-                    ></dragonfish-text-field>
-                </form>
-            </ng-container>
             <ng-container *ngIf="route.children.length === 0; else routerOutlet">
                 <div class="w-11/12 mx-auto my-6">
                     <div class="section-header flex flex-row items-center p-2 mb-4">
