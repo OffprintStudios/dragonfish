@@ -91,6 +91,12 @@ import {
     RiNotificationBadgeLine,
     RiApps2Line,
     RiImageEditLine,
+    RiUserFollowLine,
+    RiUserSmileLine,
+    RiMore2Fill,
+    RiShareBoxLine,
+    RiForbidLine,
+    RiGift2Line,
 } from 'angular-remix-icon';
 
 import {
@@ -399,6 +405,12 @@ const remixIcons = {
     RiNotificationBadgeLine,
     RiApps2Line,
     RiImageEditLine,
+    RiUserFollowLine,
+    RiUserSmileLine,
+    RiMore2Fill,
+    RiShareBoxLine,
+    RiForbidLine,
+    RiGift2Line,
 };
 
 @NgModule({

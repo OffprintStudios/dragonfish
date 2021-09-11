@@ -28,6 +28,7 @@
             "@dragonfish/client/my-library": ["libs/client/my-library/src/index.ts"],
             "@dragonfish/client/my-stuff": ["libs/client/my-stuff/src/index.ts"],
             "@dragonfish/client/pipes": ["libs/client/pipes/src/index.ts"],
+            "@dragonfish/client/profile": ["libs/client/profile/src/index.ts"],
             "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"],
             "@dragonfish/client/services": ["libs/client/services/src/index.ts"],
             "@dragonfish/client/settings": ["libs/client/settings/src/index.ts"],

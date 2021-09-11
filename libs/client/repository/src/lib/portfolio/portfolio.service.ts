@@ -4,7 +4,6 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { PortfolioStore } from './portfolio.store';
 import { PortfolioQuery } from './portfolio.query';
 import { catchError, tap } from 'rxjs/operators';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { throwError } from 'rxjs';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 

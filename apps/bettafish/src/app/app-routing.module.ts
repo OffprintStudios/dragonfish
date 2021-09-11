@@ -6,7 +6,6 @@ import { HomeRoutes } from './pages/home';
 import { BrowseRoutes } from './pages/browse';
 import { SocialRoutes } from './pages/social';
 import { DocsRoutes } from './pages/docs';
-import { PortfolioRoutes } from './pages/portfolio';
 import { MessagesRoutes } from './pages/messages';
 import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
@@ -15,7 +14,6 @@ import { RegistrationRoutes } from './pages/registration';
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
 import { HomeResolvers } from './resolvers/home';
-import { PortfolioResolvers } from './resolvers/portfolio';
 import { Resolvers } from './resolvers';
 
 /* Util */
@@ -28,11 +26,14 @@ const routes: Routes = [
     ...BrowseRoutes,
     ...SocialRoutes,
     ...DocsRoutes,
-    ...PortfolioRoutes,
     ...MessagesRoutes,
     ...ContentViewRoutes,
     ...RegistrationRoutes,
     ...TagRoutes,
+    {
+        path: 'profile',
+        loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
+    },
     {
         path: 'settings',
         loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
@@ -65,6 +66,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [...DocsResolvers, ...HomeResolvers, ...PortfolioResolvers, ...Resolvers],
+    providers: [...DocsResolvers, ...HomeResolvers, ...Resolvers],
 })
 export class AppRoutingModule {}
