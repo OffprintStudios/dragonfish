@@ -3,6 +3,9 @@ import { ContentModel, ContentKind, PubStatus, ContentRating, TagsModel } from '
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import * as MongooseFuzzySearching from 'mongoose-fuzzy-searching';
+import { MongooseFuzzyModel } from 'mongoose-fuzzy-search';
+const mongoose = require('mongoose');
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'content', discriminatorKey: 'kind' })
 export class ContentDocument extends Document implements ContentModel {
@@ -17,6 +20,7 @@ export class ContentDocument extends Document implements ContentModel {
     })
     readonly author: string | Pseudonym;
 
+    // Indexes by title as text in index file
     @Prop({ trim: true, required: true })
     title: string;
 
@@ -89,3 +93,5 @@ export class ContentDocument extends Document implements ContentModel {
 }
 
 export const ContentSchema = SchemaFactory.createForClass(ContentDocument);
+ContentSchema.plugin(MongooseFuzzySearching, { fields: ['title'] });
+export const Content = mongoose.model('Content', ContentSchema) as MongooseFuzzyModel<ContentDocument>;

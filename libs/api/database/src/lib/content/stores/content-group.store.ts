@@ -7,6 +7,7 @@ import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { MongooseFuzzyModel } from 'mongoose-fuzzy-search';
 
 /**
  * ## Content Group Store
@@ -16,12 +17,15 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
 @Injectable()
 export class ContentGroupStore {
     readonly NEWEST_FIRST = -1
+    private fuzzySearchableContent: MongooseFuzzyModel<ContentDocument>;
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
-    ) {}
+    ) {
+        this.fuzzySearchableContent = content as unknown as MongooseFuzzyModel<ContentDocument>;  
+      }
 
     //#region ---FETCHING---
 
@@ -201,7 +205,8 @@ export class ContentGroupStore {
             kind: { $in: kinds },
         };
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
-        return await this.content.paginate(paginateQuery, paginateOptions);
+        return await this.fuzzySearchableContent.fuzzySearch(query);
+        // return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
     /**
