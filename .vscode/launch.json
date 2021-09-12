@@ -18,7 +18,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch with Debugger",
-            "program": "${workspaceFolder}/dist/packages/server/main.js",
+            "program": "${workspaceFolder}/dist/apps/api/main.js",
             "smartStep": true,
         }
     ]

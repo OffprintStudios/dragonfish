@@ -5,10 +5,12 @@ import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
-import { TagsDocument, TagsSchema } from './tags.schema';
+import { TagsSchema } from './tags.schema';
 import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { countWords, stripTags } from 'voca';
+import { MongooseFuzzyOptions } from 'mongoose-fuzzy-searching';
+import registerFuzzySearch from 'mongoose-fuzzy-searching';
 
 //#region ---EXPORTS---
 
@@ -35,19 +37,24 @@ export async function setupContentCollection() {
     // making a text index on the title field for search
     schema.index({ title: 'text' });
 
-    schema.pre<ContentDocument>('save', async function (next: HookNextFunction) {
-        this.set('title', sanitizeHtml(this.title, sanitizeOptions));
-        this.set('body', sanitizeHtml(this.body, sanitizeOptions));
+    schema.plugin<MongooseFuzzyOptions<ContentDocument>>(registerFuzzySearch,{
+        fields: ['title'],
+        // Middlewares must be defined inside the fuzzy-search plugin, otherwise it will override them.
+        middlewares: {
+            preSave: async function (next: HookNextFunction) {
+                this.set('title', sanitizeHtml(this.title, sanitizeOptions));
+                this.set('body', sanitizeHtml(this.body, sanitizeOptions));
 
-        // this will only trigger if any creation or editing functions has modified the `desc` field,
-        // otherwise we'll leave it alone
-        if (this.isModified('desc')) {
-            this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
+                // this will only trigger if any creation or editing functions has modified the `desc` field,
+                // otherwise we'll leave it alone
+                if (this.isModified('desc')) {
+                    this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
+                }
+
+                return next();
+            }
         }
-
-        return next();
     });
-
     schema.plugin(MongooseAutopopulate);
     schema.plugin(MongoosePaginate);
 
