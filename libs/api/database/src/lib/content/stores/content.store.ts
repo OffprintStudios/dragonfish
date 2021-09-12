@@ -25,6 +25,7 @@ import { NotificationsService, UnsubscribeResult } from '../../notifications';
 import { ApprovalQueueStore } from '../../approval-queue';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
+import { MongooseFuzzyModel } from 'mongoose-fuzzy-searching';
 
 /**
  * ## Content Store
@@ -36,6 +37,7 @@ export class ContentStore {
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
+        @InjectModel('Content') private readonly fuzzySearchableContent: MongooseFuzzyModel<ContentDocument>,
         private readonly users: UsersStore,
         private readonly blogContent: BlogsStore,
         private readonly newsContent: NewsStore,

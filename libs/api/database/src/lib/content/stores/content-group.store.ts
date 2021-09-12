@@ -7,7 +7,7 @@ import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
-import { MongooseFuzzyModel } from 'mongoose-fuzzy-search';
+import { MongooseFuzzyModel } from 'mongoose-fuzzy-searching';
 
 /**
  * ## Content Group Store
@@ -17,15 +17,13 @@ import { MongooseFuzzyModel } from 'mongoose-fuzzy-search';
 @Injectable()
 export class ContentGroupStore {
     readonly NEWEST_FIRST = -1
-    private fuzzySearchableContent: MongooseFuzzyModel<ContentDocument>;
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
+        @InjectModel('Content') private readonly fuzzySearchableContent: MongooseFuzzyModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
-    ) {
-        this.fuzzySearchableContent = content as unknown as MongooseFuzzyModel<ContentDocument>;  
-      }
+    ) {}
 
     //#region ---FETCHING---
 
@@ -205,8 +203,8 @@ export class ContentGroupStore {
             kind: { $in: kinds },
         };
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
-        return await this.fuzzySearchableContent.fuzzySearch(query);
-        // return await this.content.paginate(paginateQuery, paginateOptions);
+        const fuzzySearchedContent = await this.fuzzySearchableContent.fuzzySearch(query);
+         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
     /**
@@ -216,7 +214,7 @@ export class ContentGroupStore {
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
-     * @returns 
+     * @returns
      */
     public async getContentByFandomTag(
         tagId: string,
