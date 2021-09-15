@@ -50,5 +50,9 @@ import { UploadAvatarComponent, CoverPicUploadComponent } from './components';
             track: 'all',
         }),
     ],
+    exports: [CoverPicUploadComponent],
 })
 export class SettingsModule {}
+
+/* Other exports */
+export { CoverPicUploadComponent } from './components';

@@ -109,6 +109,10 @@ export class AuthService {
         );
     }
 
+    /**
+     * Creates a new Pseudonym associated with the current account
+     * @param formData
+     */
     public createPseudonym(formData: PseudonymForm) {
         return this.network.addPseudonym(formData).pipe(
             tap((result: Pseudonym) => {
@@ -122,5 +126,17 @@ export class AuthService {
                 return throwError(err);
             }),
         );
+    }
+
+    /**
+     * Checks to see if the current pseudonym is owned by the current session.
+     * @param pseudId
+     */
+    public checkPseudonym(pseudId: string) {
+        if (this.sessionQuery.currAccount) {
+            return this.sessionQuery.currAccount.pseudonyms.some((elem) => elem._id === pseudId);
+        } else {
+            return false;
+        }
     }
 }
