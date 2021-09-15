@@ -19,7 +19,6 @@
                             <span>{{ profile.stats.following | abbreviate }} Following</span>
                         </div>
                     </div>
-                        [matTooltip]="'More'"
                     <ng-container *ngIf="auth.checkPseudonym(profile._id); else notThisUser">
                         <button
                             class="px-2.5"
