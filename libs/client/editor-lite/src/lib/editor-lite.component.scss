@@ -14,7 +14,7 @@ div.editor-window {
         p.is-editor-empty:first-child::before {
             content: attr(data-placeholder);
             float: left;
-            color: #ced4da;
+            color: rgb(97,103,116);
             pointer-events: none;
             height: 0;
         }

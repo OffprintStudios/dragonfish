@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileRoutingModule } from './profile-routing.module';
 import { UiModule } from '@dragonfish/client/ui';
 import { IconsModule } from '@dragonfish/client/icons';
@@ -9,6 +10,7 @@ import { AlertsModule } from '@dragonfish/client/alerts';
 import { CommentsModule } from '@dragonfish/client/comments';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Views */
 import { ProfileComponent } from './profile.component';
@@ -32,6 +34,9 @@ import { ProfileStore, ProfileQuery, ProfileService } from './repo';
         AlertsModule,
         CommentsModule,
         NgxPaginationModule,
+        FormsModule,
+        ReactiveFormsModule,
+        EditorLiteModule,
         NgScrollbarModule.withConfig({
             appearance: 'standard',
             track: 'all',
