@@ -29,16 +29,20 @@
                 </div>
                 <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
                 <div class="flex items-center p-1">
-                    <dragonfish-toggle [formControlName]="'saveAsDraft'">Save as draft</dragonfish-toggle>
-                    <div class="flex-1"></div>
                     <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="toggleForm()">
                         <rmx-icon name="close-line"></rmx-icon>
                         Cancel
                     </button>
+                    <div class="flex-1"></div>
+                    <div class="mx-1"><!--spacer--></div>
+                    <button type="button" class="shadow-none border-none px-2.5 py-1.5">
+                        <rmx-icon name="save-3-line"></rmx-icon>
+                        Save Draft
+                    </button>
                     <div class="mx-1"><!--spacer--></div>
                     <button type="button" class="primary shadow-none border-none px-2.5 py-1.5" (click)="toggleForm()">
                         <rmx-icon name="check-line"></rmx-icon>
-                        Submit
+                        Publish
                     </button>
                 </div>
             </form>

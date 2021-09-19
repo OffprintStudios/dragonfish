@@ -28,7 +28,6 @@ export class BlogsListComponent {
     blogForm = new FormGroup({
         title: new FormControl(''),
         body: new FormControl(''),
-        saveAsDraft: new FormControl(false),
     });
 
     constructor(public pseudQuery: PseudonymsQuery, public auth: AuthService, public sessionQuery: SessionQuery) {}
