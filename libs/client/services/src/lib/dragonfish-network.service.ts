@@ -1,4 +1,4 @@
-import { FrontendUser, InviteCodes, User } from '@dragonfish/shared/models/users';
+import { InviteCodes, User } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
@@ -692,6 +692,25 @@ export class DragonfishNetworkService {
 
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(route, { observe: 'response', withCredentials: true }),
+        );
+    }
+
+    /**
+     * Fetches all content by kind, for use on profiles owned by the current user.
+     *
+     * @param pseudId
+     * @param kinds
+     */
+    public fetchAllByKind(pseudId: string, kinds: ContentFilter[]): Observable<ContentModel[]> {
+        // If we just include the kind array as-is, it'll be serialized as "&kind=Kind1,Kind2" which the backend will interpret as
+        // the string 'Kind1,Kind2' which is not what we want. So, we manually split it out into a query string
+        // which becomes "&kind=Kind1&kind=Kind2", etc.
+        const kindFragment = kinds.map((k) => `&kinds=${k}`).join('');
+        return handleResponse(
+            this.http.get<ContentModel[]>(
+                `${this.baseUrl}/content/fetch-all-by-kind?pseudId=${pseudId}${kindFragment}`,
+                { observe: 'response', withCredentials: true },
+            ),
         );
     }
 
