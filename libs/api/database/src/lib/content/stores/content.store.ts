@@ -119,6 +119,22 @@ export class ContentStore {
     }
 
     /**
+     * Finds a bunch of content documents belonging to a user, per that user's request, filtered by ContentKind.
+     *
+     * @param userId
+     * @param kinds
+     */
+    async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<ContentDocument[]> {
+        return this.content.find({
+            author: userId,
+            kind: {
+                $in: kinds,
+            },
+            'audit.isDeleted': false,
+        });
+    }
+
+    /**
      * Fetches a section by ID. Optionally performs an extra check to only fetch a published section.
      *
      * @param sectionId The section ID
