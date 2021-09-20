@@ -26,6 +26,8 @@ import { BlogsContentModel } from '@dragonfish/shared/models/content';
 })
 export class BlogsListComponent implements OnInit {
     blogs: BlogsContentModel[];
+    publishedBlogs: BlogsContentModel[];
+    draftBlogs: BlogsContentModel[];
     loading = false;
     collapsed = true;
 
@@ -54,6 +56,14 @@ export class BlogsListComponent implements OnInit {
         this.loading = true;
         this.content.fetchBlogs(this.pseudQuery.currentId).subscribe((content) => {
             this.blogs = content as BlogsContentModel[];
+
+            this.publishedBlogs = content.filter((item) => {
+                return item.audit.published === 'Published';
+            }) as BlogsContentModel[];
+            this.draftBlogs = content.filter((item) => {
+                return item.audit.published === 'Unpublished';
+            }) as BlogsContentModel[];
+
             this.loading = false;
         });
     }
