@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { ContentService } from '../../repo';
+import { BlogsContentModel } from '@dragonfish/shared/models/content';
 
 @Component({
     selector: 'dragonfish-blogs-list',
@@ -22,7 +24,9 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
         ]),
     ],
 })
-export class BlogsListComponent {
+export class BlogsListComponent implements OnInit {
+    blogs: BlogsContentModel[];
+    loading = false;
     collapsed = true;
 
     blogForm = new FormGroup({
@@ -30,10 +34,27 @@ export class BlogsListComponent {
         body: new FormControl(''),
     });
 
-    constructor(public pseudQuery: PseudonymsQuery, public auth: AuthService, public sessionQuery: SessionQuery) {}
+    constructor(
+        public pseudQuery: PseudonymsQuery,
+        public auth: AuthService,
+        public sessionQuery: SessionQuery,
+        private content: ContentService,
+    ) {}
+
+    ngOnInit() {
+        this.fetchData();
+    }
 
     toggleForm() {
         this.collapsed = !this.collapsed;
         this.blogForm.reset();
+    }
+
+    private fetchData() {
+        this.loading = true;
+        this.content.fetchBlogs(this.pseudQuery.currentId).subscribe((content) => {
+            this.blogs = content as BlogsContentModel[];
+            this.loading = false;
+        });
     }
 }

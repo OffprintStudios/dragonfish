@@ -17,6 +17,10 @@
     color: var(--text-color) !important;
     border: 1px solid var(--borders);
     font-family: 'Inter', sans-serif !important;
+    div.mat-menu-content:not(:empty) {
+        padding-top: 0.25rem !important;
+        padding-bottom: 0.25rem !important;
+    }
 }
 
 .user-card-panel {

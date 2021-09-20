@@ -1,47 +1,18 @@
-div.blog-box {
-    border: 1px solid var(--borders);
-    background: var(--background);
-    min-height: 15rem;
-    max-height: 25rem;
-    div.header {
-        border-bottom: 1px solid var(--borders);
-        padding-bottom: 1rem;
-    }
-
-    div.title-padding {
-        padding-left: 0.5rem;
-    }
-
-    span.byline {
-        margin-left: 0.35rem;
-        font-size: 18px;
-        font-weight: 300;
-    }
-
-    div.tag {
-        text-transform: uppercase;
-        font-size: 14px;
+div.tag {
+    text-transform: uppercase;
+    font-size: 14px;
+    display: inline-block;
+    rmx-icon {
+        width: 16px;
+        position: relative;
         display: inline-block;
-        i-feather {
-            width: 16px;
-            position: relative;
-            display: inline-block;
-            top: 0.65rem;
-        }
+        top: 0.65rem;
     }
+}
 
-    div.separator {
-        margin-left: 0.25rem;
-        margin-right: 0.25rem;
-        display: inline-block;
-    }
-
-    a.continue-reading {
-        font-size: 0.875rem;
-        i-feather {
-            position: relative;
-            top: 0.45rem;
-            stroke-width: 1;
-        }
-    }
+div.separator {
+    position: relative;
+    top: 0.25rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
 }

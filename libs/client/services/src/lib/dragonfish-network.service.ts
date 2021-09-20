@@ -701,7 +701,7 @@ export class DragonfishNetworkService {
      * @param pseudId
      * @param kinds
      */
-    public fetchAllByKind(pseudId: string, kinds: ContentFilter[]): Observable<ContentModel[]> {
+    public fetchAllByKind(pseudId: string, kinds: ContentKind[]): Observable<ContentModel[]> {
         // If we just include the kind array as-is, it'll be serialized as "&kind=Kind1,Kind2" which the backend will interpret as
         // the string 'Kind1,Kind2' which is not what we want. So, we manually split it out into a query string
         // which becomes "&kind=Kind1&kind=Kind2", etc.

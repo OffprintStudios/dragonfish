@@ -20,7 +20,7 @@ import { Views } from './views';
 import { ProfileTopbarComponent } from './components';
 
 /* Repository */
-import { ProfileStore, ProfileQuery, ProfileService } from './repo';
+import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './repo';
 
 @NgModule({
     declarations: [ProfileComponent, ProfileTopbarComponent, ...Views],
@@ -43,6 +43,6 @@ import { ProfileStore, ProfileQuery, ProfileService } from './repo';
             visibility: 'native',
         }),
     ],
-    providers: [ProfileStore, ProfileQuery, ProfileService],
+    providers: [ProfileStore, ProfileQuery, ProfileService, ContentService],
 })
 export class ProfileModule {}

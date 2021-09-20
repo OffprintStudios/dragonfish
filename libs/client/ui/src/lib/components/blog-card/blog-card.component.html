@@ -1,75 +1,79 @@
-<div class="blog-box flex flex-col rounded-md shadow-xl">
-    <dragonfish-rating-icon [rating]="blog.meta.rating" [size]="'medium'"></dragonfish-rating-icon>
-    <div class="p-4">
-        <div class="header flex flex-row items-center">
-            <div class="avatar pr-2" *ngIf="showAuthor">
-                <img class="w-24 h-24 rounded-md" [alt]="'Avatar'" [src]="blog.author.profile.avatar" />
-            </div>
-            <div [ngClass]="{ 'title-padding': showAuthor }">
-                <div>
-                    <h3 class="text-3xl font-medium">
-                        <a
-                            [routerLink]="[
-                                '/portfolio',
-                                blog.author._id,
-                                blog.author.username | slugify,
-                                'post',
-                                blog._id,
-                                blog.title | slugify,
-                            ]"
-                            >{{ blog.title }}</a
-                        >
-                        <span class="byline" *ngIf="showAuthor"
-                            >by
-                            <a [routerLink]="['/portfolio', blog.author._id, blog.author.username | slugify]">
-                                {{ blog.author.username }}
-                            </a></span
-                        >
-                    </h3>
-                </div>
-                <div>
-                    <div class="tag">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</div>
-                </div>
-            </div>
+<div class="w-full my-2 h-72 relative flex flex-col rounded-md shadow-xl border border-gray-600 dark:border-white">
+    <button
+        class="absolute right-0.5 top-0.5"
+        [ngClass]="{'active': editMenuOpened}"
+        *ngIf="showEditMenu"
+        [matMenuTriggerFor]="editingMenu"
+        (menuOpened)="toggleMenu()"
+        (menuClosed)="toggleMenu()"
+    >
+        <rmx-icon name="more-2-fill" class="mr-0 w-8"></rmx-icon>
+    </button>
+    <div class="p-4 flex items-center">
+        <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="showAuthor">
+            <img class="w-16 h-16 rounded-md border border-gray-600 dark:border-white" [alt]="'Avatar'" [src]="blog.author.profile.avatar" />
         </div>
-        <div class="blog-body flex-1" [line-truncation]="6" [innerHTML]="blog.body | safeHtml"></div>
-        <div class="flex flex-row items-center">
-            <div class="flex-1">
-                <div class="tag" title="Views">
-                    <i-feather name="bar-chart-2"></i-feather>
+        <div class="w-full" [ngClass]="{ 'pl-2.5': showAuthor }">
+            <h3 class="text-3xl font-medium">
+                <a [routerLink]="['/profile', blog.author._id, blog.author.userTag, 'post', blog._id, blog.title | slugify]">{{ blog.title }}</a>
+                <span class="text-xl pl-0.5 font-normal italic" *ngIf="showAuthor">
+                    by <a [routerLink]="['/profile', blog.author._id, blog.author.userTag]">{{ blog.author.screenName }}</a>
+                </span>
+            </h3>
+            <div class="flex items-center text-sm uppercase w-full">
+                <div class="flex-1">
+                    <ng-container *ngIf="blog.audit.publishedOn; else createdAt">
+                        {{ blog.audit.publishedOn | localedate: 'fullDate' }}
+                    </ng-container>
+                    <ng-template #createdAt>
+                        {{ blog.createdAt | localedate: 'fullDate' }}
+                    </ng-template>
+                </div>
+                <div class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
+                    <rmx-icon name="bar-chart-box-line"></rmx-icon>
                     {{ blog.stats.views | abbreviate }}
                 </div>
                 <div class="separator">|</div>
-                <div class="tag" title="Comments">
-                    <i-feather name="message-circle"></i-feather>
+                <div class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
+                    <rmx-icon name="discuss-line"></rmx-icon>
                     {{ blog.stats.comments | abbreviate }}
                 </div>
-                <div class="separator">|</div>
-                <div class="tag" title="Likes">
-                    <i-feather name="thumbs-up"></i-feather>
-                    {{ blog.stats.likes | abbreviate }}
-                </div>
-                <div class="separator">|</div>
-                <div class="tag" title="Dislikes">
-                    <i-feather name="thumbs-down"></i-feather>
-                    {{ blog.stats.dislikes | abbreviate }}
-                </div>
             </div>
-            <div>
-                <a
-                    class="continue-reading"
-                    [routerLink]="[
-                        '/portfolio',
+        </div>
+    </div>
+    <div class="blog-body px-4 flex-1 line-clamp-6" [innerHTML]="blog.body | safeHtml"></div>
+    <div class="flex flex-row items-center p-4">
+        <div class="flex-1"></div>
+        <div>
+            <a
+                class="text-sm flex items-center font-medium"
+                [routerLink]="[
+                        '/profile',
                         blog.author._id,
                         blog.author.username | slugify,
                         'post',
                         blog._id,
                         blog.title | slugify,
                     ]">
-                    Continue Reading
-                    <i-feather name="chevron-right"></i-feather>
-                </a>
-            </div>
+                Continue Reading
+                <rmx-icon name="arrow-right-s-line"></rmx-icon>
+            </a>
         </div>
     </div>
 </div>
+
+<mat-menu #editingMenu='matMenu' [xPosition]="'before'">
+    <button mat-menu-item class="hover:scale-100" (click)="editBlog()">
+        <rmx-icon name="edit-line"></rmx-icon>
+        <span>Edit blog</span>
+    </button>
+    <button mat-menu-item class="hover:scale-100" (click)="publishBlog()">
+        <rmx-icon name="check-line"></rmx-icon>
+        <span>Publish</span>
+    </button>
+    <div class="w-full my-0.5 border-b border-gray-600 dark:border-white"></div>
+    <button mat-menu-item class="hover:scale-100" (click)="deleteBlog()">
+        <rmx-icon name="delete-bin-line"></rmx-icon>
+        <span>Delete</span>
+    </button>
+</mat-menu>
