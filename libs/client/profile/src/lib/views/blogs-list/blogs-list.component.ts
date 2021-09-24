@@ -4,10 +4,11 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { SessionQuery } from '@dragonfish/client/repository/session';
-import { ContentService } from '../../repo';
-import { BlogsContentModel } from '@dragonfish/shared/models/content';
+import { ProfileQuery, ProfileService } from '../../repo';
 import { ListPages } from '../../models';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-blogs-list',
     templateUrl: './blogs-list.component.html',
@@ -26,10 +27,6 @@ import { ListPages } from '../../models';
     ],
 })
 export class BlogsListComponent implements OnInit {
-    blogs: BlogsContentModel[];
-    publishedBlogs: BlogsContentModel[];
-    draftBlogs: BlogsContentModel[];
-    loading = false;
     collapsed = true;
 
     tabs = ListPages;
@@ -42,13 +39,14 @@ export class BlogsListComponent implements OnInit {
 
     constructor(
         public pseudQuery: PseudonymsQuery,
+        public profileQuery: ProfileQuery,
         public auth: AuthService,
         public sessionQuery: SessionQuery,
-        private content: ContentService,
+        private profile: ProfileService,
     ) {}
 
     ngOnInit() {
-        this.fetchData();
+        this.profile.fetchBlogsList().pipe(untilDestroyed(this)).subscribe();
     }
 
     toggleForm() {
@@ -58,21 +56,5 @@ export class BlogsListComponent implements OnInit {
 
     changeTab(newTab: ListPages) {
         this.selectedTab = newTab;
-    }
-
-    private fetchData() {
-        this.loading = true;
-        this.content.fetchBlogs(this.pseudQuery.currentId).subscribe((content) => {
-            this.blogs = content as BlogsContentModel[];
-
-            this.publishedBlogs = content.filter((item) => {
-                return item.audit.published === 'Published';
-            }) as BlogsContentModel[];
-            this.draftBlogs = content.filter((item) => {
-                return item.audit.published === 'Unpublished';
-            }) as BlogsContentModel[];
-
-            this.loading = false;
-        });
     }
 }

@@ -64,7 +64,7 @@
             <span>Scheduled</span>
         </button>
     </div>
-    <ng-container *ngIf="loading; else notLoading">
+    <ng-container *ngIf="profileQuery.loading$ | async; else notLoading">
         <div class="flex flex-col items-center justify-center h-72">
             <mat-spinner></mat-spinner>
         </div>
@@ -72,14 +72,14 @@
     <ng-template #notLoading>
         <ng-container [ngSwitch]="selectedTab">
             <ng-container *ngSwitchCase="tabs.Published">
-                <ng-container *ngIf="publishedBlogs.length === 0; else hasPubBlogs">
+                <ng-container *ngIf="profileQuery.numPubBlogs === 0; else hasPubBlogs">
                     <div class="empty">
                         <h3>You haven't posted anything yet</h3>
                         <p>Why not add something to start off?</p>
                     </div>
                 </ng-container>
                 <ng-template #hasPubBlogs>
-                    <div class="w-7/12 mx-auto my-6">
+                    <div class="w-7/12 mx-auto my-6" *ngIf="profileQuery.pubBlogs$ | async as publishedBlogs">
                         <ng-container *ngFor="let blog of publishedBlogs">
                             <dragonfish-blog-card [blog]="blog" [showAuthor]="true" [showEditMenu]="true"></dragonfish-blog-card>
                         </ng-container>
@@ -87,14 +87,14 @@
                 </ng-template>
             </ng-container>
             <ng-container *ngSwitchCase="tabs.Unpublished">
-                <ng-container *ngIf="draftBlogs.length === 0; else hasDraftBlogs">
+                <ng-container *ngIf="profileQuery.numDraftBlogs === 0; else hasDraftBlogs">
                     <div class="empty">
                         <h3>You haven't saved any drafts yet</h3>
                         <p>Why not add something to start off?</p>
                     </div>
                 </ng-container>
                 <ng-template #hasDraftBlogs>
-                    <div class="w-7/12 mx-auto my-6">
+                    <div class="w-7/12 mx-auto my-6" *ngIf="profileQuery.draftBlogs$ | async as draftBlogs">
                         <ng-container *ngFor="let blog of draftBlogs">
                             <dragonfish-blog-card [blog]="blog" [showAuthor]="true" [showEditMenu]="true"></dragonfish-blog-card>
                         </ng-container>
