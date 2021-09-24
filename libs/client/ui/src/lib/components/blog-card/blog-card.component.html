@@ -11,14 +11,16 @@
     </button>
     <div class="p-4 flex items-center">
         <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="showAuthor">
-            <img class="w-16 h-16 rounded-md border border-gray-600 dark:border-white" [alt]="'Avatar'" [src]="$any(blog.author).profile.avatar" />
+            <img
+                class="w-16 h-16 rounded-md border border-gray-600 dark:border-white"
+                [alt]="'Avatar'"
+                [src]="$any(blog.author).profile.avatar"
+                [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag]"
+            />
         </div>
         <div class="w-full" [ngClass]="{ 'pl-2.5': showAuthor }">
             <h3 class="text-3xl font-medium">
                 <a [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag, 'post', blog._id, blog.title | slugify]">{{ blog.title }}</a>
-                <span class="text-xl pl-0.5 font-normal italic" *ngIf="showAuthor">
-                    by <a [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag]">{{ $any(blog.author).screenName }}</a>
-                </span>
             </h3>
             <div class="flex items-center text-sm uppercase w-full">
                 <div class="flex-1">

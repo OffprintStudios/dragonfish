@@ -29,3 +29,8 @@ div.expandable-bar {
         }
     }
 }
+
+button.active {
+    @apply text-white;
+    background: var(--accent);
+}

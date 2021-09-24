@@ -100,6 +100,7 @@ import {
     RiDeleteBinLine,
     RiBarChartBoxLine,
     RiDiscussLine,
+    RiDraftLine,
 } from 'angular-remix-icon';
 
 import {
@@ -417,6 +418,7 @@ const remixIcons = {
     RiDeleteBinLine,
     RiBarChartBoxLine,
     RiDiscussLine,
+    RiDraftLine,
 };
 
 @NgModule({

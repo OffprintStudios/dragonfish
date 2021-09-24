@@ -6,6 +6,7 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ContentService } from '../../repo';
 import { BlogsContentModel } from '@dragonfish/shared/models/content';
+import { ListPages } from '../../models';
 
 @Component({
     selector: 'dragonfish-blogs-list',
@@ -31,6 +32,9 @@ export class BlogsListComponent implements OnInit {
     loading = false;
     collapsed = true;
 
+    tabs = ListPages;
+    selectedTab = ListPages.Published;
+
     blogForm = new FormGroup({
         title: new FormControl(''),
         body: new FormControl(''),
@@ -50,6 +54,10 @@ export class BlogsListComponent implements OnInit {
     toggleForm() {
         this.collapsed = !this.collapsed;
         this.blogForm.reset();
+    }
+
+    changeTab(newTab: ListPages) {
+        this.selectedTab = newTab;
     }
 
     private fetchData() {
