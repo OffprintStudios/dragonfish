@@ -14,6 +14,21 @@ export interface ISearch {
     fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults>;
 
     /**
+     * Fetches search results given query for the specified kids
+     * 
+     * @param query The user's query
+     * @param searchKind The kind of content that searching for
+     * @param pageNum The current results page
+     * @param contentFilter Any available content filter
+     */
+    findRelatedContent(
+        query: string,
+        searchKind: string,
+        pageNum: number,
+        contentFilter: ContentFilter
+    ): Promise<PaginateResult<ContentModel>>;
+
+    /**
      * Finds the current page of user results matching a user's query.
      *
      * @param query The user's query

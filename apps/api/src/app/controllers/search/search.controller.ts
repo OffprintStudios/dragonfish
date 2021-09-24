@@ -24,6 +24,17 @@ export class SearchController {
     }
 
     @ApiTags(DragonfishTags.Search)
+    @Get('find-related-content')
+    async findRelatedContent(
+        @Query('query') query: string,
+        @Query('kind') kind: string,
+        @Query('pageNum') pageNum: number,
+        @Cookies('contentFilter') contentFilter: ContentFilter
+    ): Promise<PaginateResult<ContentModel>> {
+        return await this.searchService.findRelatedContent(query, kind, pageNum, contentFilter);
+    }
+
+    @ApiTags(DragonfishTags.Search)
     @Get('get-user-results')
     async getUserRequests(
         @Query('query') query: string,
