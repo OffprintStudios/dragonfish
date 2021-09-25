@@ -16,8 +16,10 @@ import { User } from '@dragonfish/shared/models/users';
     styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
+    kindOptions = SearchKind;
     loading = false;
     pageNum = 1;
+    currentSearchKind = SearchKind.ProseAndPoetry;
     searchResultWorks: PaginateResult<ContentModel>;
     searchResultBlogs: PaginateResult<ContentModel>;
     searchResultNews: PaginateResult<ContentModel>;
@@ -28,7 +30,6 @@ export class SearchComponent implements OnInit {
     });
     mobileMode = false;
     showAdvancedOptions = false;
-    kindOptions = SearchKind;
 
     constructor(
         private network: DragonfishNetworkService,
@@ -43,11 +44,10 @@ export class SearchComponent implements OnInit {
         if (queryParams.has('query')) {
             const query = queryParams.get('query');
 
-            const kind: SearchKind | undefined = (<any>SearchKind)[queryParams.get('kind')];
-            const searchKind: SearchKind = kind? kind : SearchKind.ProseAndPoetry;
+            this.currentSearchKind = this.parseKind(queryParams.get('kind'));
             this.searchForm.setValue({
                 query: query,
-                kind: searchKind,
+                kind: this.currentSearchKind,
             });
             
             if (queryParams.has('page')) {
@@ -57,7 +57,12 @@ export class SearchComponent implements OnInit {
                 this.pageNum = 1;
             }
 
-            this.fetchData(query, searchKind, this.pageNum);
+            this.fetchData(query, this.currentSearchKind, this.pageNum);
+        } else {
+            this.searchForm.setValue({
+                query: '',
+                kind: this.currentSearchKind,
+            })
         }
         this.onResize();
     }
@@ -70,17 +75,20 @@ export class SearchComponent implements OnInit {
     }
     
     submitSearch() {
+        this.currentSearchKind = this.parseKind(this.searchForm.controls.kind.value);
+        this.pageNum = 1;
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { 
                 query: this.searchForm.controls.query.value,
-                kind: this.searchForm.controls.kind.value,
+                kind: this.currentSearchKind,
+                page: this.pageNum,
             },
             queryParamsHandling: 'merge',
         }).catch(() => {
             this.alerts.error(`Something went wrong! Try again in a little bit.`);
         }).then(() => {
-            this.fetchData(this.searchForm.controls.query.value, this.searchForm.controls.kind.value, 1);
+            this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, this.pageNum);
         });
     }
 
@@ -94,12 +102,12 @@ export class SearchComponent implements OnInit {
             relativeTo: this.route,
             queryParams: { 
                 query: this.searchForm.controls.query.value,
-                kind: this.searchForm.controls.kind.value,
+                kind: this.currentSearchKind,
                 page: event,
             },
             queryParamsHandling: 'merge',
         }).then(() => {
-            this.fetchData(this.searchForm.controls.query.value, this.searchForm.controls.kind.value, event);
+            this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, event);
         });
         this.pageNum = event;
     }
@@ -111,6 +119,11 @@ export class SearchComponent implements OnInit {
 
     toggleShowAdvancedOptions() {
         this.showAdvancedOptions = !this.showAdvancedOptions;
+    }
+
+    private parseKind(kindString: string): SearchKind {
+        const kind: SearchKind = kindString as SearchKind;
+        return Object.values(SearchKind).indexOf(kind) >= 0? kind : SearchKind.ProseAndPoetry;
     }
 
     private fetchData(query: string, searchKind: SearchKind, pageNum: number) {
