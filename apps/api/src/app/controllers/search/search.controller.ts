@@ -9,6 +9,7 @@ import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
+import { SearchKind } from '@dragonfish/shared/models/search';
 
 @Controller('search')
 export class SearchController {
@@ -27,7 +28,7 @@ export class SearchController {
     @Get('find-related-content')
     async findRelatedContent(
         @Query('query') query: string,
-        @Query('kind') kind: string,
+        @Query('kind') kind: SearchKind,
         @Query('pageNum') pageNum: number,
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 
@@ -49,13 +49,13 @@ export class SearchService implements ISearch {
 
     async findRelatedContent(
         query: string,
-        searchKind: string,
+        searchKind: SearchKind,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
         const kinds: ContentKind[] = [];
-        switch (searchKind as SearchKind) {
+        switch (searchKind) {
             case SearchKind.Blog:
                 kinds.push(ContentKind.BlogContent);
                 break;
@@ -72,7 +72,7 @@ export class SearchService implements ISearch {
                 kinds.push(ContentKind.ProseContent);
                 break;
             case SearchKind.User:
-                // Doesn't handle, call searchUsers() instead
+                throw new BadRequestException('Use proper method to search users.');
             default:
                 kinds.push(ContentKind.PoetryContent, ContentKind.ProseContent);
         }

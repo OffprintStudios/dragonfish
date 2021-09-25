@@ -3,6 +3,7 @@ import { PaginateResult } from 'mongoose';
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { User } from '@dragonfish/shared/models/users';
 import { InitialResults } from '@dragonfish/shared/models/util';
+import { SearchKind } from '@dragonfish/shared/models/search';
 
 export interface ISearch {
     /**
@@ -23,7 +24,7 @@ export interface ISearch {
      */
     findRelatedContent(
         query: string,
-        searchKind: string,
+        searchKind: SearchKind,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;
