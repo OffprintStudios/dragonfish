@@ -9,11 +9,24 @@
                     [placeholder]="'Search...'"
                     [searchBox]="true"
                 ></dragonfish-text-field>
+                <button
+                    class="py-1.5 px-2.5 rounded-full border-none shadow-none"
+                    (click)="submitSearch()"
+                >Search</button>
+                <div class="offprint-select">
+                    <ng-select class="custom" [formControlName]="'kind'" [searchable]="false" [placeholder]="'Select Kind(s)'">
+                        <ng-option *ngFor="let kind of kindOptions | keyvalue" [value]="kind.key ">
+                            {{ kind.value }}
+                        </ng-option>
+                    </ng-select>
+                </div>
+                <ng-container *ngIf="showAdvancedOptions; else simpleSearch">
+                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Hide Advanced Options</span>
+                </ng-container>
+                <ng-template #simpleSearch>
+                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Show Advanced Options</span>
+                </ng-template>
             </form>
-            <button
-                class="py-1.5 px-2.5 rounded-full border-none shadow-none"
-                (click)="submitSearch()"
-            >Search</button>
         </dragonfish-pagebar>
     </ng-container>
     <div class="w-full">
@@ -48,40 +61,60 @@
                 </ng-container>
                 
                 <ng-template #notLoading>
-                    <div class="w-11/12 mx-auto my-6" *ngIf="searchResults">
-                        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.works.length !== 0">
-                            <rmx-icon name="book-open-line" class="relative -top-0.5 mr-2"></rmx-icon>
-                            <h3 class="text-4xl font-medium">Works</h3>
-                        </div>
-                        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-                            <!--Works-->
-                            <ng-container *ngFor="let work of searchResults.works">
-                                <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
-                            </ng-container>
-                        </div>
+                    <div class="w-11/12 mx-auto my-6">
+                        <span *ngIf="searchResultWorks">
+                            <div class="flex flex-row py-4 items-center">
+                                <rmx-icon name="book-open-line" class="relative -top-0.5 mr-2"></rmx-icon>
+                                <h3 class="text-4xl font-medium">Works</h3>
+                            </div>
+                            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                                <!--Works-->
+                                <ng-container *ngFor="let work of searchResultWorks.docs | paginate: {itemsPerPage: searchResultWorks.limit, currentPage: pageNum, totalItems: searchResultWorks.totalDocs}">
+                                    <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+                                </ng-container>
+                            </div>
+                        </span>
                 
-                        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.blogs.length !== 0">
-                            <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
-                            <h3 class="text-4xl font-medium">Blogs</h3>
-                        </div>
-                        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-                            <!--Blogs-->
-                            <ng-container *ngFor="let blog of searchResults.blogs">
-                                <dragonfish-blog-card [blog]="blog" [showAuthor]="true"></dragonfish-blog-card>
-                            </ng-container>
-                        </div>
+                        <span *ngIf="searchResultBlogs">
+                            <div class="flex flex-row py-4 items-center">
+                                <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
+                                <h3 class="text-4xl font-medium">Blogs</h3>
+                            </div>
+                            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                                <!--Blogs-->
+                                <ng-container *ngFor="let blog of searchResultBlogs.docs | paginate: {itemsPerPage: searchResultBlogs.limit, currentPage: pageNum, totalItems: searchResultBlogs.totalDocs}">
+                                    <dragonfish-blog-card [blog]="blog" [showAuthor]="true"></dragonfish-blog-card>
+                                </ng-container>
+                            </div>
+                        </span>
                 
-                        <div class="flex flex-row py-4 items-center" *ngIf="searchResults.users.length !== 0">
-                            <rmx-icon name="group-line" class="relative -top-0.5 mr-2"></rmx-icon>
-                            <h3 class="text-4xl font-medium">Users</h3>
-                        </div>
-                        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
-                            <!--Users-->
-                            <ng-container *ngFor="let user of searchResults.users">
-                                <dragonfish-user-card [user]="user"></dragonfish-user-card>
-                            </ng-container>
-                        </div>
+                        <span *ngIf="searchResultNews">
+                            <div class="flex flex-row py-4 items-center">
+                                <rmx-icon name="cup-line" class="relative -top-0.5 mr-2"></rmx-icon>
+                                <h3 class="text-4xl font-medium">News</h3>
+                            </div>
+                            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                                <!--News-->
+                                <ng-container *ngFor="let news of searchResultNews.docs | paginate: {itemsPerPage: searchResultNews.limit, currentPage: pageNum, totalItems: searchResultNews.totalDocs}">
+                                    <dragonfish-news-card [post]="news"></dragonfish-news-card>
+                                </ng-container>
+                            </div>
+                        </span>
+                
+                        <span *ngIf="searchResultUsers">
+                            <div class="flex flex-row py-4 items-center">
+                                <rmx-icon name="group-line" class="relative -top-0.5 mr-2"></rmx-icon>
+                                <h3 class="text-4xl font-medium">Users</h3>
+                            </div>
+                            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                                <!--Users-->
+                                <ng-container *ngFor="let user of searchResultUsers.docs | paginate: {itemsPerPage: searchResultUsers.limit, currentPage: pageNum, totalItems: searchResultUsers.totalDocs}">
+                                    <dragonfish-user-card [user]="user"></dragonfish-user-card>
+                                </ng-container>
+                            </div>
+                        </span>
                     </div>
+                    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
                 </ng-template>
             </div>
         </ng-scrollbar>

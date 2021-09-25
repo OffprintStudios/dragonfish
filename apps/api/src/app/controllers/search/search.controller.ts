@@ -9,6 +9,7 @@ import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
+import { SearchKind } from '@dragonfish/shared/models/search';
 
 @Controller('search')
 export class SearchController {
@@ -21,6 +22,17 @@ export class SearchController {
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<InitialResults> {
         return await this.searchService.fetchInitialResults(query, contentFilter);
+    }
+
+    @ApiTags(DragonfishTags.Search)
+    @Get('find-related-content')
+    async findRelatedContent(
+        @Query('query') query: string,
+        @Query('kind') kind: SearchKind,
+        @Query('pageNum') pageNum: number,
+        @Cookies('contentFilter') contentFilter: ContentFilter
+    ): Promise<PaginateResult<ContentModel>> {
+        return await this.searchService.findRelatedContent(query, kind, pageNum, contentFilter);
     }
 
     @ApiTags(DragonfishTags.Search)
