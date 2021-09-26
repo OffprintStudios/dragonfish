@@ -42,6 +42,7 @@ import {
     ChangeBio,
     ChangeTagline,
 } from '@dragonfish/shared/models/accounts';
+import { SearchKind } from '@dragonfish/shared/models/search';
 
 /**
  * ## DragonfishNetworkService
@@ -277,6 +278,23 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+
+    /**
+     * Fetches search results given query for the specified kids
+     * 
+     * @param query The user's query
+     * @param kind The kind of content that searching for
+     * @param pageNum The current results page
+     */
+    public findRelatedContent(query: string, kind: SearchKind, pageNum: number): Observable<PaginateResult<ContentModel>> {
+        return handleResponse(
+            this.http.get<PaginateResult<ContentModel>>(
+                `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
+                { observe: 'response', withCredentials: true },
+            ),
         );
     }
 
