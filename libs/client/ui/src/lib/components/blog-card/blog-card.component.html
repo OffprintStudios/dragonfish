@@ -10,7 +10,7 @@
         <rmx-icon name="more-2-fill" class="mr-0 w-8"></rmx-icon>
     </button>
     <div class="p-4 flex items-center">
-        <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="showAuthor">
+        <div class="pr-2.5 border-r border-gray-600 dark:border-white">
             <img
                 class="w-16 h-16 rounded-md border border-gray-600 dark:border-white"
                 [alt]="'Avatar'"
@@ -18,7 +18,7 @@
                 [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag]"
             />
         </div>
-        <div class="w-full" [ngClass]="{ 'pl-2.5': showAuthor }">
+        <div class="w-full pl-2.5">
             <h3 class="text-3xl font-medium">
                 <a [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag, 'post', blog._id, blog.title | slugify]">{{ blog.title }}</a>
             </h3>

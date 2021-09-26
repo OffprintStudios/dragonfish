@@ -35,12 +35,12 @@
                     </button>
                     <div class="flex-1"></div>
                     <div class="mx-1"><!--spacer--></div>
-                    <button type="button" class="shadow-none border-none px-2.5 py-1.5">
+                    <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="submitForm(true)">
                         <rmx-icon name="save-3-line"></rmx-icon>
                         Save Draft
                     </button>
                     <div class="mx-1"><!--spacer--></div>
-                    <button type="button" class="primary shadow-none border-none px-2.5 py-1.5" (click)="toggleForm()">
+                    <button type="button" class="primary shadow-none border-none px-2.5 py-1.5" (click)="submitForm(false)">
                         <rmx-icon name="check-line"></rmx-icon>
                         Publish
                     </button>

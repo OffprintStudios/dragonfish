@@ -7,6 +7,8 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ProfileQuery, ProfileService } from '../../repo';
 import { ListPages } from '../../models';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { BlogForm, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
 
 @UntilDestroy()
 @Component({
@@ -43,6 +45,7 @@ export class BlogsListComponent implements OnInit {
         public auth: AuthService,
         public sessionQuery: SessionQuery,
         private profile: ProfileService,
+        private alerts: AlertsService,
     ) {}
 
     ngOnInit() {
@@ -56,5 +59,31 @@ export class BlogsListComponent implements OnInit {
 
     changeTab(newTab: ListPages) {
         this.selectedTab = newTab;
+    }
+
+    submitForm(asDraft: boolean) {
+        if (this.blogForm.invalid) {
+            this.alerts.error(`Check the info you entered and try again.`);
+            return;
+        }
+
+        const formInfo: BlogForm = {
+            title: this.blogForm.controls.title.value,
+            body: this.blogForm.controls.body.value,
+            rating: ContentRating.Everyone,
+        };
+
+        this.profile.createBlog(formInfo).subscribe((content) => {
+            if (!asDraft) {
+                this.profile
+                    .publishBlog(content._id, {
+                        oldStatus: content.audit.published,
+                        newStatus: PubStatus.Published,
+                    })
+                    .subscribe();
+            }
+
+            this.toggleForm();
+        });
     }
 }
