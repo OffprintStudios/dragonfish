@@ -1,20 +1,78 @@
-<div class="post-container rounded-md my-8 mx-auto w-3/4">
-    <dragonfish-rating-icon [rating]="blog.meta.rating" [size]="'large'"></dragonfish-rating-icon>
-    <div class="p-12 pt-16">
-        <div class="post-header">
-            <h1 class="text-5xl">{{ blog.title }}</h1>
-            <div>
-                <div class="tag">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</div>
-                <div class="separator">//</div>
-                <div class="tag" title="Views"><i-feather name="eye"></i-feather>{{ blog.stats.views }}</div>
-                <div class="separator">//</div>
-                <div class="tag" title="Comments">
-                    <i-feather name="message-circle"></i-feather>{{ blog.stats.comments }}
+<div class="post-container relative rounded-md my-8 mx-auto w-3/4">
+    <div class="absolute top-0.5 right-1 flex items-center">
+        <ng-container *ngIf="!editMode; else isEditing">
+            <button (click)="toggleEdits()">
+                <rmx-icon name="edit-line"></rmx-icon>
+                <span>Edit</span>
+            </button>
+            <button (click)="publishBlog()">
+                <rmx-icon name="check-line"></rmx-icon>
+                <span>Publish</span>
+            </button>
+            <div class="mx-4 text-lg">|</div>
+            <button (click)="deleteBlog()">
+                <rmx-icon name="delete-bin-line"></rmx-icon>
+                <span>Delete</span>
+            </button>
+        </ng-container>
+        <ng-template #isEditing>
+            <button (click)="submitForm()">
+                <rmx-icon name="save-3-line"></rmx-icon>
+                <span>Save</span>
+            </button>
+            <button (click)="toggleEdits()">
+                <rmx-icon name="close-line"></rmx-icon>
+                <span>Cancel</span>
+            </button>
+        </ng-template>
+    </div>
+    <div class="p-12">
+        <ng-container *ngIf="!editMode; else bringUpForm">
+            <div class="post-header">
+                <h1 class="text-5xl">{{ blog.title }}</h1>
+                <div class="flex items-center">
+                    <div class="tag">
+                        <ng-container *ngIf="blog.audit.publishedOn; else createdAt">
+                            <span>{{ blog.audit.publishedOn | localedate: 'fullDate' }}</span>
+                        </ng-container>
+                        <ng-template #createdAt>
+                            <span>{{ blog.createdAt | localedate: 'fullDate' }}</span>
+                        </ng-template>
+                    </div>
+                    <div class="flex-1"></div>
+                    <div class="tag" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
+                        <rmx-icon name="bar-chart-box-line"></rmx-icon>
+                        <span>{{ blog.stats.views }}</span>
+                    </div>
+                    <div class="separator">|</div>
+                    <div class="tag" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
+                        <rmx-icon name="discuss-line"></rmx-icon>
+                        <span>{{ blog.stats.comments }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="post-body">
-            <div class="blog-body" [innerHtml]="blog.body | safeHtml"></div>
-        </div>
+            <div class="post-body">
+                <div class="blog-body" [innerHtml]="blog.body | safeHtml"></div>
+            </div>
+        </ng-container>
+        <ng-template #bringUpForm>
+            <form [formGroup]="blogForm" class="mx-auto">
+                <div class="flex items-center p-2.5 border border-gray-600 dark:border-white rounded-t-md">
+                    <div class="pr-2.5 border-r border-gray-600 dark:border-white">
+                        <img class="w-10 rounded-md border" [src]="blog.author.profile.avatar" [alt]="'avatar'">
+                    </div>
+                    <div class="flex-1 pl-2.5">
+                        <input
+                            type="text"
+                            [formControlName]="'title'"
+                            class="w-full text-2xl font-medium border-0 p-0 focus:ring-0 relative top-0.5"
+                            placeholder="Title"
+                            style="background: var(--background); font-family: 'Josefin Sans', sans-serif; color: var(--accent);"
+                        >
+                    </div>
+                </div>
+                <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
+            </form>
+        </ng-template>
     </div>
 </div>

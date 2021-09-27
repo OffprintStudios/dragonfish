@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { AuthService } from '@dragonfish/client/repository/session/services';
@@ -38,8 +38,8 @@ export class BlogsListComponent implements OnInit {
     selectedTab = ListPages.Published;
 
     blogForm = new FormGroup({
-        title: new FormControl(''),
-        body: new FormControl(''),
+        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
     });
 
     constructor(

@@ -55,17 +55,17 @@ export class ContentStore {
      * @param kind A content's Kind
      * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, user?: string): Promise<ContentDocument> {
         if (user) {
             if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
                 return this.content.findOne(
-                    { _id: contentId, author: user.sub, kind: kind, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, kind: kind, 'audit.isDeleted': false },
                     { autopopulate: false },
                 );
             } else {
                 return this.content.findOne({
                     _id: contentId,
-                    author: user.sub,
+                    author: user,
                     kind: kind,
                     'audit.isDeleted': false,
                 });

@@ -83,7 +83,7 @@ export class ProfileService {
     }
 
     public fetchOneUnpublished(id: string, kind: ContentKind) {
-        return this.network.fetchOne(id, kind);
+        return this.network.fetchOne(this.profileQuery.profileId, id, kind);
     }
 
     //#region ---CRUD OPERATIONS---

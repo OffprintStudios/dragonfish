@@ -281,15 +281,18 @@ export class DragonfishNetworkService {
         );
     }
 
-
     /**
      * Fetches search results given query for the specified kids
-     * 
+     *
      * @param query The user's query
      * @param kind The kind of content that searching for
      * @param pageNum The current results page
      */
-    public findRelatedContent(query: string, kind: SearchKind, pageNum: number): Observable<PaginateResult<ContentModel>> {
+    public findRelatedContent(
+        query: string,
+        kind: SearchKind,
+        pageNum: number,
+    ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
@@ -994,16 +997,20 @@ export class DragonfishNetworkService {
     /**
      * Fetches one piece of content from the backend.
      *
+     * @param pseudId
      * @param contentId The content to fetch
      * @param kind The content kind
      * @returns Observable
      */
-    public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
+    public fetchOne(pseudId: string, contentId: string, kind: ContentKind): Observable<ContentModel> {
         return handleResponse(
-            this.http.get<ContentModel>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.get<ContentModel>(
+                `${this.baseUrl}/content/fetch-one?pseudId=${pseudId}&contentId=${contentId}&kind=${kind}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 

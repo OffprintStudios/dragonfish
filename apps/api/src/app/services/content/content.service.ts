@@ -25,8 +25,8 @@ export class ContentService {
         private readonly notifications: NotificationsService,
     ) {}
 
-    public async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
-        return await this.content.fetchOne(contentId, kind, user);
+    public async fetchOne(contentId: string, kind: ContentKind, pseudId?: string): Promise<ContentModel> {
+        return await this.content.fetchOne(contentId, kind, pseudId);
     }
 
     public async fetchOnePublished(
