@@ -81,7 +81,6 @@
                 <ng-template #hasPubBlogs>
                     <div class="w-7/12 mx-auto my-6" *ngIf="profileQuery.pubBlogs$ | async as publishedBlogs">
                         <ng-container *ngFor="let blog of publishedBlogs">
-                            <dragonfish-blog-card [blog]="blog" [showAuthor]="true" [showEditMenu]="true"></dragonfish-blog-card>
                             <dragonfish-blog-card
                                 [blog]="blog"
                                 [showEditMenu]="true"
