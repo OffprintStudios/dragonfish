@@ -65,13 +65,13 @@
 </div>
 
 <mat-menu #editingMenu='matMenu' [xPosition]="'before'">
-    <button mat-menu-item class="hover:scale-100" (click)="editBlog()">
-        <rmx-icon name="edit-line"></rmx-icon>
-        <span>Edit blog</span>
-    </button>
-    <button mat-menu-item class="hover:scale-100" (click)="publishBlog()">
+    <button mat-menu-item class="hover:scale-100" (click)="publishBlog()" *ngIf="blog.audit.published === 'Unpublished'">
         <rmx-icon name="check-line"></rmx-icon>
         <span>Publish</span>
+    </button>
+    <button mat-menu-item class="hover:scale-100" (click)="unpublishBlog()" *ngIf="blog.audit.published === 'Published'">
+        <rmx-icon name="draft-line"></rmx-icon>
+        <span>Convert to Draft</span>
     </button>
     <div class="w-full my-0.5 border-b border-gray-600 dark:border-white"></div>
     <button mat-menu-item class="hover:scale-100" (click)="deleteBlog()">

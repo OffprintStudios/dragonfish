@@ -11,8 +11,8 @@ export class BlogCardComponent {
     @Input() showAuthor: boolean;
     @Input() showEditMenu = false;
 
-    @Output() toEdit = new EventEmitter<string>();
-    @Output() toPublish = new EventEmitter<string>();
+    @Output() toPublish = new EventEmitter<BlogsContentModel>();
+    @Output() toUnpublish = new EventEmitter<BlogsContentModel>();
     @Output() toDelete = new EventEmitter<string>();
 
     contentKind = ContentKind;
@@ -22,12 +22,12 @@ export class BlogCardComponent {
         this.editMenuOpened = !this.editMenuOpened;
     }
 
-    editBlog() {
-        this.toEdit.emit(this.blog._id);
+    publishBlog() {
+        this.toPublish.emit(this.blog);
     }
 
-    publishBlog() {
-        this.toPublish.emit(this.blog._id);
+    unpublishBlog() {
+        this.toUnpublish.emit(this.blog);
     }
 
     deleteBlog() {

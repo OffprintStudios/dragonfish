@@ -82,6 +82,13 @@
                     <div class="w-7/12 mx-auto my-6" *ngIf="profileQuery.pubBlogs$ | async as publishedBlogs">
                         <ng-container *ngFor="let blog of publishedBlogs">
                             <dragonfish-blog-card [blog]="blog" [showAuthor]="true" [showEditMenu]="true"></dragonfish-blog-card>
+                            <dragonfish-blog-card
+                                [blog]="blog"
+                                [showEditMenu]="true"
+                                (toPublish)="publishBlog($event)"
+                                (toUnpublish)="unpublishBlog($event)"
+                                (toDelete)="deleteBlog($event)"
+                            ></dragonfish-blog-card>
                         </ng-container>
                     </div>
                 </ng-template>
@@ -96,7 +103,13 @@
                 <ng-template #hasDraftBlogs>
                     <div class="w-7/12 mx-auto my-6" *ngIf="profileQuery.draftBlogs$ | async as draftBlogs">
                         <ng-container *ngFor="let blog of draftBlogs">
-                            <dragonfish-blog-card [blog]="blog" [showAuthor]="true" [showEditMenu]="true"></dragonfish-blog-card>
+                            <dragonfish-blog-card
+                                [blog]="blog"
+                                [showEditMenu]="true"
+                                (toPublish)="publishBlog($event)"
+                                (toUnpublish)="unpublishBlog($event)"
+                                (toDelete)="deleteBlog($event)"
+                            ></dragonfish-blog-card>
                         </ng-container>
                     </div>
                 </ng-template>
