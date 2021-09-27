@@ -16,3 +16,8 @@ div.separator {
     margin-left: 0.25rem;
     margin-right: 0.25rem;
 }
+
+button.active {
+    background: var(--accent);
+    color: white;
+}

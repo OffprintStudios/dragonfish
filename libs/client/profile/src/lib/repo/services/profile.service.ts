@@ -82,6 +82,10 @@ export class ProfileService {
             );
     }
 
+    public fetchOneUnpublished(id: string, kind: ContentKind) {
+        return this.network.fetchOne(id, kind);
+    }
+
     //#region ---CRUD OPERATIONS---
 
     public createBlog(formInfo: BlogForm) {
