@@ -1,7 +1,10 @@
 <div class="mx-auto">
-    <div class="flex items-center p-1 border border-b-0 rounded-t-md" style="border-color: var(--borders);">
+    <div
+        class="flex items-center p-1 border border-b-0 border-gray-600 dark:border-white rounded-t-md"
+        [ngClass]="{'rounded-t-md': !attachedToTop, 'border-t-0': attachedToTop}"
+    >
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             [matMenuTriggerFor]="headings"
             [ngClass]="{ 'active': headingMenuOpened }"
             (menuOpened)="headingMenuOpened = true"
@@ -11,7 +14,7 @@
         </button>
         <div class="mx-0.5">|</div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleBold().run()"
             [ngClass]="{ 'active': editor.isActive('bold') }"
             [matTooltip]="'Bold'"
@@ -20,7 +23,7 @@
             <rmx-icon name="bold" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleItalic().run()"
             [ngClass]="{ 'active': editor.isActive('italic') }"
             [matTooltip]="'Italic'"
@@ -29,7 +32,7 @@
             <rmx-icon name="italic" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleUnderline().run()"
             [ngClass]="{ 'active': editor.isActive('underline') }"
             [matTooltip]="'Underline'"
@@ -38,7 +41,7 @@
             <rmx-icon name="underline" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleStrike().run()"
             [ngClass]="{ 'active': editor.isActive('strike') }"
             [matTooltip]="'Strikethrough'"
@@ -48,7 +51,7 @@
         </button>
         <div class="mx-0.5">|</div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             [matMenuTriggerFor]="alignments"
             [ngClass]="{ 'active': alignmentMenuOpened }"
             (menuOpened)="alignmentMenuOpened = true"
@@ -58,7 +61,7 @@
         </button>
         <div class="mx-0.5">|</div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="openInsertMedia('Insert Image')"
             [matTooltip]="'Insert Image'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -66,14 +69,14 @@
             <rmx-icon name="image-add-line" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="openInsertMedia('Insert Media')"
         >
             <rmx-icon name="film-line" class="mr-0"></rmx-icon>
         </button>
         <div class="mx-0.5">|</div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleBlockquote().run()"
             [ngClass]="{ 'active': editor.isActive('blockquote') }"
             [matTooltip]="'Quote'"
@@ -82,7 +85,7 @@
             <rmx-icon name="double-quotes-l" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().setHorizontalRule().run()"
             [matTooltip]="'Horizontal Line'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -90,7 +93,7 @@
             <rmx-icon name="separator" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().toggleBulletList().run()"
             [ngClass]="{ 'active': editor.isActive('bulletList') }"
             [matTooltip]="'List'"
@@ -100,7 +103,7 @@
         </button>
         <div class="mx-0.5">|</div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="openEmojiPicker()"
             [matTooltip]="'Reactions'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -109,7 +112,7 @@
         </button>
         <div class="flex-1"></div>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().undo().run()"
             [matTooltip]="'Undo'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -117,7 +120,7 @@
             <rmx-icon name="arrow-go-back-line" class="mr-0"></rmx-icon>
         </button>
         <button
-            class="shadow-none border-none px-2.5 py-1.5"
+            class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
             (click)="chainCommand().redo().run()"
             [matTooltip]="'Redo'"
             [matTooltipClass]="'offprint-tooltip'"
@@ -129,7 +132,7 @@
     <tiptap-bubble-menu [editor]="editor">
         <div class="floating-menu">
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleBold().run()"
                 [ngClass]="{ 'active': editor.isActive('bold') }"
                 [matTooltip]="'Bold'"
@@ -138,7 +141,7 @@
                 <rmx-icon name="bold" class="mr-0"></rmx-icon>
             </button>
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleItalic().run()"
                 [ngClass]="{ 'active': editor.isActive('italic') }"
                 [matTooltip]="'Italic'"
@@ -147,7 +150,7 @@
                 <rmx-icon name="italic" class="mr-0"></rmx-icon>
             </button>
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleUnderline().run()"
                 [ngClass]="{ 'active': editor.isActive('underline') }"
                 [matTooltip]="'Underline'"
@@ -156,7 +159,7 @@
                 <rmx-icon name="underline" class="mr-0"></rmx-icon>
             </button>
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleStrike().run()"
                 [ngClass]="{ 'active': editor.isActive('strike') }"
                 [matTooltip]="'Strikethrough'"
@@ -166,7 +169,7 @@
             </button>
             <div class="mx-0.5">|</div>
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="openInsertLink()"
                 *ngIf="!editor.isActive('link')"
                 [matTooltip]="'Link'"
@@ -175,7 +178,7 @@
                 <rmx-icon name="link" class="mr-0"></rmx-icon>
             </button>
             <button
-                class="shadow-none border-none px-2.5 py-1.5"
+                class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().unsetLink().run()"
                 *ngIf="editor.isActive('link')"
                 [matTooltip]="'Unlink'"
@@ -191,6 +194,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().setTextAlign('left').run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'left' }) }"
     >
         <rmx-icon name="align-left"></rmx-icon>Left
@@ -198,6 +202,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().setTextAlign('center').run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'center' }) }"
     >
         <rmx-icon name="align-center"></rmx-icon>Center
@@ -205,6 +210,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().setTextAlign('right').run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'right' }) }"
     >
         <rmx-icon name="align-right"></rmx-icon>Right
@@ -212,6 +218,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().setTextAlign('justify').run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'justify' }) }"
     >
         <rmx-icon name="align-justify"></rmx-icon>Justify
@@ -222,12 +229,14 @@
     <button
         mat-menu-item
         (click)="chainCommand().setParagraph().run()"
+        class="hover:scale-100"
     >
         <rmx-icon name="text"></rmx-icon>Normal
     </button>
     <button
         mat-menu-item
         (click)="chainCommand().toggleHeading({ level: 2 }).run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive('heading', { level: 2 }) }"
     >
         <rmx-icon name="h-1"></rmx-icon>Heading 1
@@ -235,6 +244,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().toggleHeading({ level: 3 }).run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive('heading', { level: 3 }) }"
     >
         <rmx-icon name="h-2"></rmx-icon>Heading 2
@@ -242,6 +252,7 @@
     <button
         mat-menu-item
         (click)="chainCommand().toggleHeading({ level: 4 }).run()"
+        class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive('heading', { level: 4 }) }"
     >
         <rmx-icon name="h-3"></rmx-icon>Heading 3

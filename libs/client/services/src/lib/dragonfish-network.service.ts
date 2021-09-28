@@ -1,4 +1,4 @@
-import { FrontendUser, InviteCodes, User } from '@dragonfish/shared/models/users';
+import { InviteCodes, User } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
@@ -281,15 +281,18 @@ export class DragonfishNetworkService {
         );
     }
 
-
     /**
      * Fetches search results given query for the specified kids
-     * 
+     *
      * @param query The user's query
      * @param kind The kind of content that searching for
      * @param pageNum The current results page
      */
-    public findRelatedContent(query: string, kind: SearchKind, pageNum: number): Observable<PaginateResult<ContentModel>> {
+    public findRelatedContent(
+        query: string,
+        kind: SearchKind,
+        pageNum: number,
+    ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
@@ -714,6 +717,25 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * Fetches all content by kind, for use on profiles owned by the current user.
+     *
+     * @param pseudId
+     * @param kinds
+     */
+    public fetchAllByKind(pseudId: string, kinds: ContentKind[]): Observable<ContentModel[]> {
+        // If we just include the kind array as-is, it'll be serialized as "&kind=Kind1,Kind2" which the backend will interpret as
+        // the string 'Kind1,Kind2' which is not what we want. So, we manually split it out into a query string
+        // which becomes "&kind=Kind1&kind=Kind2", etc.
+        const kindFragment = kinds.map((k) => `&kinds=${k}`).join('');
+        return handleResponse(
+            this.http.get<ContentModel[]>(
+                `${this.baseUrl}/content/fetch-all-by-kind?pseudId=${pseudId}${kindFragment}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
      * Fetches one section from the API using the provided `sectionID`.
      *
      * @param sectionId The section ID
@@ -975,16 +997,20 @@ export class DragonfishNetworkService {
     /**
      * Fetches one piece of content from the backend.
      *
+     * @param pseudId
      * @param contentId The content to fetch
      * @param kind The content kind
      * @returns Observable
      */
-    public fetchOne(contentId: string, kind: ContentKind): Observable<ContentModel> {
+    public fetchOne(pseudId: string, contentId: string, kind: ContentKind): Observable<ContentModel> {
         return handleResponse(
-            this.http.get<ContentModel>(`${this.baseUrl}/content/fetch-one?contentId=${contentId}&kind=${kind}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.get<ContentModel>(
+                `${this.baseUrl}/content/fetch-one?pseudId=${pseudId}&contentId=${contentId}&kind=${kind}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 

@@ -46,12 +46,16 @@ export class ContentController {
     @ApiTags(DragonfishTags.Content)
     @UseGuards(IdentityGuard([Roles.User]))
     @Get('fetch-one')
-    async fetchOne(@User() user: JwtPayload, @Query('contentId') contentId: string, @Query('kind') kind: ContentKind) {
+    async fetchOne(
+        @Query('pseudId') pseudId: string,
+        @Query('contentId') contentId: string,
+        @Query('kind') kind: ContentKind,
+    ) {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.content.fetchOne(contentId, kind, user);
+        return await this.content.fetchOne(contentId, kind, pseudId);
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -81,6 +85,13 @@ export class ContentController {
     @Get('fetch-all')
     async fetchAll(@User() user: JwtPayload, @Query('pseudId') pseudId: string) {
         return await this.content.fetchAll(pseudId);
+    }
+
+    @ApiTags(DragonfishTags.Content)
+    @UseGuards(IdentityGuard([Roles.User]))
+    @Get('fetch-all-by-kind')
+    async fetchAllByKind(@Query('pseudId') pseudId: string, @Query('kinds') kinds: ContentKind[]) {
+        return await this.content.fetchAllByKind(pseudId, kinds);
     }
 
     @ApiTags(DragonfishTags.Content)

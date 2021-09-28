@@ -55,17 +55,17 @@ export class ContentStore {
      * @param kind A content's Kind
      * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentDocument> {
+    async fetchOne(contentId: string, kind: ContentKind, user?: string): Promise<ContentDocument> {
         if (user) {
             if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
                 return this.content.findOne(
-                    { _id: contentId, author: user.sub, kind: kind, 'audit.isDeleted': false },
+                    { _id: contentId, author: user, kind: kind, 'audit.isDeleted': false },
                     { autopopulate: false },
                 );
             } else {
                 return this.content.findOne({
                     _id: contentId,
-                    author: user.sub,
+                    author: user,
                     kind: kind,
                     'audit.isDeleted': false,
                 });
@@ -116,6 +116,22 @@ export class ContentStore {
                 'audit.isDeleted': false,
             })
             .sort({ createdAt: 1 });
+    }
+
+    /**
+     * Finds a bunch of content documents belonging to a user, per that user's request, filtered by ContentKind.
+     *
+     * @param userId
+     * @param kinds
+     */
+    async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<ContentDocument[]> {
+        return this.content.find({
+            author: userId,
+            kind: {
+                $in: kinds,
+            },
+            'audit.isDeleted': false,
+        });
     }
 
     /**

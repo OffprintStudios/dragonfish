@@ -25,8 +25,8 @@ export class ContentService {
         private readonly notifications: NotificationsService,
     ) {}
 
-    public async fetchOne(contentId: string, kind: ContentKind, user?: JwtPayload): Promise<ContentModel> {
-        return await this.content.fetchOne(contentId, kind, user);
+    public async fetchOne(contentId: string, kind: ContentKind, pseudId?: string): Promise<ContentModel> {
+        return await this.content.fetchOne(contentId, kind, pseudId);
     }
 
     public async fetchOnePublished(
@@ -39,6 +39,10 @@ export class ContentService {
 
     public async fetchAll(userId: string): Promise<ContentModel[]> {
         return await this.content.fetchAll(userId);
+    }
+
+    public async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<ContentModel[]> {
+        return await this.content.fetchAllByKind(userId, kinds);
     }
 
     public async fetchAllPublished(

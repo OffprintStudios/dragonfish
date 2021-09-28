@@ -97,6 +97,10 @@ import {
     RiShareBoxLine,
     RiForbidLine,
     RiGift2Line,
+    RiDeleteBinLine,
+    RiBarChartBoxLine,
+    RiDiscussLine,
+    RiDraftLine,
 } from 'angular-remix-icon';
 
 import {
@@ -411,6 +415,10 @@ const remixIcons = {
     RiShareBoxLine,
     RiForbidLine,
     RiGift2Line,
+    RiDeleteBinLine,
+    RiBarChartBoxLine,
+    RiDiscussLine,
+    RiDraftLine,
 };
 
 @NgModule({
