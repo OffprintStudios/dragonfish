@@ -27,21 +27,13 @@ div.post-container {
     }
 
     div.tag {
-        text-transform: uppercase;
-        font-size: 14px;
-        display: inline-block;
-        i-feather {
-            width: 16px;
-            position: relative;
-            display: inline-block;
-            top: 0.65rem;
-            margin-right: 0.25rem;
+        @apply flex items-center uppercase text-sm;
+        rmx-icon {
+            @apply w-4 relative mr-1 top-1;
         }
     }
 
     div.separator {
-        margin-left: 0.25rem;
-        margin-right: 0.25rem;
-        display: inline-block;
+        @apply mx-1 relative -top-0.5;
     }
 }
