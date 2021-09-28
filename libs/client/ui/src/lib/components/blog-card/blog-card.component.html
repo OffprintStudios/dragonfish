@@ -90,7 +90,7 @@
 </div>
 
 <mat-menu #editingMenu='matMenu' [xPosition]="'before'">
-    <button mat-menu-item class="hover:scale-100" [routerLink]="['draft', blog._id]">
+    <button mat-menu-item class="hover:scale-100" [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag | slugify, 'draft', blog._id,]">
         <rmx-icon name="edit-line"></rmx-icon>
         <span>Edit blog</span>
     </button>
