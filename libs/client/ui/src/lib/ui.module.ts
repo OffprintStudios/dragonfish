@@ -42,6 +42,7 @@ import { MessagesTabComponent } from './components/inbox/messages-tab/messages-t
 import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
 import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
 import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.component';
+import { WorkFormComponent } from './components/work-form/work-form.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +72,7 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         NotificationsTabComponent,
         PagebarComponent,
         MobileNavComponent,
+        WorkFormComponent,
     ],
     imports: [
         CommonModule,
