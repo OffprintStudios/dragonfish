@@ -17,13 +17,13 @@ import { ProfileComponent } from './profile.component';
 import { Views } from './views';
 
 /* Components */
-import { ProfileTopbarComponent } from './components';
+import { ProfileTopbarComponent, CreateWorkComponent } from './components';
 
 /* Repository */
 import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './repo';
 
 @NgModule({
-    declarations: [ProfileComponent, ProfileTopbarComponent, ...Views],
+    declarations: [ProfileComponent, ProfileTopbarComponent, CreateWorkComponent, ...Views],
     imports: [
         CommonModule,
         ProfileRoutingModule,
