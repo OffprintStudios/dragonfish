@@ -14,6 +14,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { TabsModule } from 'ngx-tabset';
 import { DynamicViewModule } from '@ngneat/overview';
 import { TeleportModule } from '@ngneat/overview';
+import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -91,6 +92,7 @@ import { WorkFormComponent } from './components/work-form/work-form.component';
         TabsModule,
         DynamicViewModule,
         TeleportModule,
+        EditorLiteModule,
     ],
     exports: [
         RatingIconComponent,
@@ -114,6 +116,7 @@ import { WorkFormComponent } from './components/work-form/work-form.component';
         MobileNavComponent,
         RegisterFormComponent,
         LoginFormComponent,
+        WorkFormComponent,
     ],
 })
 export class UiModule {}
@@ -121,3 +124,5 @@ export class UiModule {}
 export { PopupComponent } from './components/popup/popup.component';
 export { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 export { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
+export { WorkFormComponent } from './components/work-form/work-form.component';
+export { WorkFormData } from './components/work-form/work-form-data';

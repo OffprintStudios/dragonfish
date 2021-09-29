@@ -1,0 +1,101 @@
+<div class="flex items-center">
+    <h1 class="text-3xl font-medium flex-1">{{ formTitle }}</h1>
+    <button>
+        <rmx-icon name="save-3-line"></rmx-icon>
+        <span>Save</span>
+    </button>
+    <div class="mx-2"></div>
+    <button>
+        <rmx-icon name="close-line"></rmx-icon>
+        <span>Cancel</span>
+    </button>
+</div>
+
+<form [formGroup]="workForm">
+    <dragonfish-text-field
+        [formControlName]="'title'"
+        [name]="'title'"
+        [type]="'text'"
+        [label]="'Title'"
+        [placeholder]="'There\'s Something I Gotta Say...'"
+    ></dragonfish-text-field>
+
+    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+        <div>
+            <div class="offprint-select">
+                <label>Category</label>
+                <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select a Category'">
+                    <ng-option *ngFor="let category of categories | keyvalue" [value]="category.key">
+                        {{ category.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div>
+            <div class="offprint-select">
+                <label>Genre(s)</label>
+                <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
+                    <ng-option *ngFor="let genre of genres | keyvalue" [value]="genre.key">
+                        {{ genre.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="workForm.controls.category.value === categories.Fanwork && tagsEnabled">
+        <ng-container *ngIf="tagsQuery.all$ | async as tags">
+            <div class="offprint-select">
+                <label>Tags</label>
+                <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Tag(s)'">
+                    <div *ngFor="let tag of tags">
+                        <ng-option [value]="tag._id">
+                            <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
+                        </ng-option>
+                        <div *ngFor="let child of tag.children">
+                            <ng-option [value]="child._id">
+                                <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
+                            </ng-option>
+                        </div>
+                    </div>
+                </ng-select>
+            </div>
+        </ng-container>
+    </ng-container>
+
+    <dragonfish-text-field
+        [formControlName]="'desc'"
+        [name]="'desc'"
+        [type]="'text'"
+        [label]="'Short Description'"
+        [placeholder]="'One of the best things never told'"
+    ></dragonfish-text-field>
+
+    <div class="border-l border-b border-gray-600 dark:border-white text-xs uppercase pl-0.5 font-light tracking-widest">
+        Long Description
+    </div>
+    <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
+
+    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4">
+        <div>
+            <div class="offprint-select">
+                <label>Rating</label>
+                <ng-select class="custom" [formControlName]="'rating'" [searchable]="false" [placeholder]="'Select a Rating'">
+                    <ng-option *ngFor="let rating of ratings | keyvalue" [value]="rating.key">
+                        {{ rating.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div>
+            <div class="offprint-select">
+                <label>Status</label>
+                <ng-select class="custom" [formControlName]="'status'" [searchable]="false" [placeholder]="'Select a Status'">
+                    <ng-option *ngFor="let status of statuses | keyvalue" [value]="status.key">
+                        {{ status.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+    </div>
+</form>

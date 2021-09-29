@@ -8,7 +8,6 @@ import { MarkdownModule } from 'ngx-markdown';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { InsertMediaComponent } from './components/insert-media/insert-media.component';
 import { InsertLinkComponent } from './components/insert-link/insert-link.component';
-import { UiModule } from '@dragonfish/client/ui';
 import { NgxTiptapModule } from 'ngx-tiptap';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { PipesModule } from '@dragonfish/client/pipes';
@@ -22,7 +21,6 @@ import { PipesModule } from '@dragonfish/client/pipes';
         MaterialModule,
         MarkdownModule.forChild(),
         AlertsModule,
-        UiModule,
         NgxTiptapModule,
         PickerModule,
         PipesModule,
