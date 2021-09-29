@@ -18,8 +18,12 @@ import {
     WorkKind,
     WorkStatus,
     ContentModel,
+    PoetryForm,
+    CreatePoetry,
+    CreateProse,
 } from '@dragonfish/shared/models/content';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
+import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-work-form',
@@ -31,6 +35,9 @@ export class WorkFormComponent implements OnInit {
     ratings = ContentRating;
     statuses = WorkStatus;
     formTitle = 'Create Prose';
+    forms = PoetryForm;
+    isCollection = false;
+    kind = ContentKind;
 
     tagsEnabled = TAGS_ENABLED;
 
@@ -46,6 +53,7 @@ export class WorkFormComponent implements OnInit {
             Validators.maxLength(MAX_DESC_LENGTH),
         ]),
         body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
+        form: new FormControl(null),
         category: new FormControl(null, [Validators.required]),
         genres: new FormControl(
             [],
@@ -59,6 +67,7 @@ export class WorkFormComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: WorkFormData,
         public tagsQuery: TagsQuery,
+        private alerts: AlertsService,
         private tagsService: TagsService,
     ) {}
 
@@ -84,6 +93,83 @@ export class WorkFormComponent implements OnInit {
                 this.formTitle = 'Create Prose';
                 break;
         }
+    }
+
+    submitForm(contentId?: string) {
+        if (this.fields.title.invalid) {
+            this.alerts.warn('Title field has an invalid length.');
+            return;
+        }
+        if (this.fields.desc.invalid) {
+            this.alerts.warn('Short description has an invalid length.');
+            return;
+        }
+        if (this.fields.body.invalid) {
+            this.alerts.warn('Body text is too short.');
+            return;
+        }
+        if (this.fields.category.invalid) {
+            this.alerts.warn('Category is required.');
+            return;
+        }
+        if (this.data.kind === ContentKind.PoetryContent && this.fields.form.value === null) {
+            this.alerts.warn('Form is required.');
+            return;
+        }
+        if (this.fields.genres.invalid) {
+            this.alerts.warn('Invalid number of genres. Limit is ' + MAX_GENRES + '.');
+            return;
+        }
+        if (this.fields.rating.invalid) {
+            this.alerts.warn('Rating is required.');
+            return;
+        }
+        if (this.fields.status.invalid) {
+            this.alerts.warn('Status is required.');
+            return;
+        }
+
+        /*if (contentId) {
+            this.stuff.save(contentId, ContentKind.PoetryContent, poetryInfo).subscribe(() => {
+                this.router.navigate(['/my-stuff/view-poetry']);
+            });
+        } else {
+            this.stuff.create(ContentKind.PoetryContent, poetryInfo).subscribe(content => {
+                this.stuff.setActive(content._id);
+                this.router.navigate(['/my-stuff/view-prose']);
+            });
+        }*/
+    }
+
+    private get fields() {
+        return this.workForm.controls;
+    }
+
+    private createProse(): CreateProse {
+        return {
+            title: this.fields.title.value,
+            desc: this.fields.desc.value,
+            body: this.fields.body.value,
+            category: this.fields.category.value,
+            genres: this.fields.genres.value,
+            tags: this.fields.tags.value,
+            rating: this.fields.rating.value,
+            status: this.fields.status.value,
+        };
+    }
+
+    private createPoetry(): CreatePoetry {
+        return {
+            title: this.fields.title.value,
+            desc: this.fields.desc.value,
+            body: this.fields.body.value,
+            category: this.fields.category.value,
+            collection: this.isCollection,
+            form: this.fields.form.value,
+            genres: this.fields.genres.value,
+            rating: this.fields.rating.value,
+            status: this.fields.status.value,
+        };
     }
 
     private setFormValue(content: ContentModel) {

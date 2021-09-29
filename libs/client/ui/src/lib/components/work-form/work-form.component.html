@@ -98,4 +98,17 @@
             </div>
         </div>
     </div>
+    <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4" *ngIf="data.kind === kind.PoetryContent">
+        <div class="offprint-select">
+            <label>Form</label>
+            <ng-select class="custom" [formControlName]="'form'" [searchable]="false" [placeholder]="'Select a Form'">
+                <ng-option *ngFor="let form of forms | keyvalue" [value]="form.key">
+                    {{ form.value }}
+                </ng-option>
+            </ng-select>
+        </div>
+        <div class="relative top-8">
+            <dragonfish-toggle [(ngModel)]="isCollection">Collection</dragonfish-toggle>
+        </div>
+    </div>
 </form>
