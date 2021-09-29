@@ -11,7 +11,7 @@
                 </ng-container>
                 <span class="font-light text-xs italic inline-block ml-1" *ngIf="showAuthor">
                     by
-                    <a [routerLink]="['/portfolio', content.author._id, content.author.userTag | slugify]">
+                    <a [routerLink]="['/profile', content.author._id, content.author.userTag | slugify]">
                         {{ content.author.screenName }}
                     </a>
                 </span>
@@ -56,7 +56,7 @@
                                    [innerHtml]="tag | displayTags | safeHtml"
                                 ></a>
                                 <ng-container *ngIf="i < content.tags.length - 1">
-                                    , 
+                                    ,
                                 </ng-container>
                             </ng-container>
                         </span>
