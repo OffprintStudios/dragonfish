@@ -21,6 +21,7 @@ import {
     PoetryForm,
     CreatePoetry,
     CreateProse,
+    PoetryContent,
 } from '@dragonfish/shared/models/content';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -85,6 +86,7 @@ export class WorkFormComponent implements OnInit {
                 if (this.data.content) {
                     this.formTitle = 'Editing Poetry';
                     this.setFormValue(this.data.content);
+                    this.isCollection = (this.data.content as PoetryContent).meta.collection;
                 } else {
                     this.formTitle = 'Create Poetry';
                 }
