@@ -131,24 +131,19 @@ export class WorkFormComponent implements OnInit {
             return;
         }
 
-        /*if (contentId) {
-            this.stuff.save(contentId, ContentKind.PoetryContent, poetryInfo).subscribe(() => {
-                this.router.navigate(['/my-stuff/view-poetry']);
-            });
-        } else {
-            this.stuff.create(ContentKind.PoetryContent, poetryInfo).subscribe(content => {
-                this.stuff.setActive(content._id);
-                this.router.navigate(['/my-stuff/view-prose']);
-            });
-        }*/
+        if (this.data.kind === ContentKind.ProseContent) {
+            this.saveProse();
+        } else if (this.data.kind === ContentKind.PoetryContent) {
+            this.savePoetry();
+        }
     }
 
     private get fields() {
         return this.workForm.controls;
     }
 
-    private createProse(): CreateProse {
-        return {
+    private saveProse(): void {
+        const formInfo: CreateProse = {
             title: this.fields.title.value,
             desc: this.fields.desc.value,
             body: this.fields.body.value,
@@ -160,8 +155,8 @@ export class WorkFormComponent implements OnInit {
         };
     }
 
-    private createPoetry(): CreatePoetry {
-        return {
+    private savePoetry(): void {
+        const formInfo: CreatePoetry = {
             title: this.fields.title.value,
             desc: this.fields.desc.value,
             body: this.fields.body.value,
