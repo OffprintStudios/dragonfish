@@ -662,6 +662,28 @@
                 }
             }
         },
+        "client-work-page": {
+            "projectType": "library",
+            "root": "libs/client/work-page",
+            "sourceRoot": "libs/client/work-page/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/work-page"],
+                    "options": {
+                        "jestConfig": "libs/client/work-page/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/work-page/src/**/*.ts", "libs/client/work-page/src/**/*.html"]
+                    }
+                }
+            }
+        },
         "shared": {
             "root": "libs/shared",
             "sourceRoot": "libs/shared/src",

@@ -18,3 +18,8 @@ div.button {
         }
     }
 }
+
+button.active {
+    @apply text-white;
+    background: var(--accent);
+}

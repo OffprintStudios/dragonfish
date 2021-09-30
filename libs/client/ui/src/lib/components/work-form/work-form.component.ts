@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { WorkFormData } from './work-form-data';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
@@ -21,10 +21,10 @@ import {
     PoetryForm,
     CreatePoetry,
     CreateProse,
-    PoetryContent,
 } from '@dragonfish/shared/models/content';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { WorkPageService } from '@dragonfish/client/repository/work-page';
 
 @Component({
     selector: 'dragonfish-work-form',
@@ -37,7 +37,6 @@ export class WorkFormComponent implements OnInit {
     statuses = WorkStatus;
     formTitle = 'Create Prose';
     forms = PoetryForm;
-    isCollection = false;
     kind = ContentKind;
 
     tagsEnabled = TAGS_ENABLED;
@@ -67,9 +66,11 @@ export class WorkFormComponent implements OnInit {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: WorkFormData,
+        public dialogRef: MatDialogRef<WorkFormComponent>,
         public tagsQuery: TagsQuery,
         private alerts: AlertsService,
         private tagsService: TagsService,
+        private workPage: WorkPageService,
     ) {}
 
     ngOnInit(): void {
@@ -86,7 +87,6 @@ export class WorkFormComponent implements OnInit {
                 if (this.data.content) {
                     this.formTitle = 'Editing Poetry';
                     this.setFormValue(this.data.content);
-                    this.isCollection = (this.data.content as PoetryContent).meta.collection;
                 } else {
                     this.formTitle = 'Create Poetry';
                 }
@@ -97,7 +97,11 @@ export class WorkFormComponent implements OnInit {
         }
     }
 
-    submitForm(contentId?: string) {
+    cancel() {
+        this.dialogRef.close();
+    }
+
+    submitForm() {
         if (this.fields.title.invalid) {
             this.alerts.warn('Title field has an invalid length.');
             return;
@@ -153,6 +157,14 @@ export class WorkFormComponent implements OnInit {
             rating: this.fields.rating.value,
             status: this.fields.status.value,
         };
+
+        if (this.data.content) {
+            // TODO: implement editing
+        } else {
+            this.workPage.createWork(ContentKind.ProseContent, formInfo).subscribe(() => {
+                this.dialogRef.close();
+            });
+        }
     }
 
     private savePoetry(): void {
@@ -167,6 +179,14 @@ export class WorkFormComponent implements OnInit {
             rating: this.fields.rating.value,
             status: this.fields.status.value,
         };
+
+        if (this.data.content) {
+            // TODO: implement editing
+        } else {
+            this.workPage.createWork(ContentKind.PoetryContent, formInfo).subscribe(() => {
+                this.dialogRef.close();
+            });
+        }
     }
 
     private setFormValue(content: ContentModel) {

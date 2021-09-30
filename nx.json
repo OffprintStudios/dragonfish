@@ -90,6 +90,9 @@
         "client-ui": {
             "tags": []
         },
+        "client-work-page": {
+            "tags": []
+        },
         "shared": {
             "tags": []
         }

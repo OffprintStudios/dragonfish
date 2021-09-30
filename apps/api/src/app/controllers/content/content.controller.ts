@@ -65,18 +65,15 @@ export class ContentController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
-        @Query('page') page: number,
     ): Promise<PubContent> {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
         const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-        const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
         return {
             content: content,
             ratings: ratings,
-            comments: comments,
         };
     }
 

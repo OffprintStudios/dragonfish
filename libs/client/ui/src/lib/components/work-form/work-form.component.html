@@ -1,11 +1,11 @@
 <div class="flex items-center">
     <h1 class="text-3xl font-medium flex-1">{{ formTitle }}</h1>
-    <button>
+    <button (click)="submitForm()">
         <rmx-icon name="save-3-line"></rmx-icon>
         <span>Save</span>
     </button>
     <div class="mx-2"></div>
-    <button>
+    <button (click)="cancel()">
         <rmx-icon name="close-line"></rmx-icon>
         <span>Cancel</span>
     </button>

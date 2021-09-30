@@ -22,5 +22,6 @@ module.exports = {
         '<rootDir>/libs/api/mail',
         '<rootDir>/libs/client/settings',
         '<rootDir>/libs/client/profile',
+        '<rootDir>/libs/client/work-page',
     ],
 };
