@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { ContentKind } from '@dragonfish/shared/models/content';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -9,6 +10,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 export class WorkBannerComponent {
     @Input() content;
     moreMenuOpened = false;
+    addEditIcon = false;
 
     constructor(private alerts: AlertsService) {}
 
@@ -25,6 +27,10 @@ export class WorkBannerComponent {
     }
 
     reportContent() {
+        this.alerts.info(`This feature is not yet available!`);
+    }
+
+    uploadCoverArt(id: string, kind: ContentKind) {
         this.alerts.info(`This feature is not yet available!`);
     }
 }

@@ -22,7 +22,30 @@
                 <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
             </button>
         </div>
-        <div class="flex items-center">
+        <div class="flex">
+            <ng-container *ngIf="content.meta.coverArt; else uploadArt">
+                <div
+                    class="edit-cover-art rounded-md"
+                    [matTooltip]="'Edit Cover Art'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (mouseenter)="addEditIcon = true"
+                    (mouseleave)="addEditIcon = false"
+                    (click)="uploadCoverArt(content._id, content.kind)"
+                >
+                    <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
+                    <img class="rounded-md" [src]="content.meta.coverArt" />
+                </div>
+            </ng-container>
+            <ng-template #uploadArt>
+                <div
+                    class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-row items-center justify-center"
+                    [matTooltip]="'Add Cover Art'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (click)="uploadCoverArt(content._id, content.kind)"
+                >
+                    <rmx-icon name="add-box-line"></rmx-icon>
+                </div>
+            </ng-template>
             <div class="rounded-md py-2 px-8 flex-1" style="color: var(--text-color); background: var(--background); box-shadow: var(--dropshadow);">
                 <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
             </div>
