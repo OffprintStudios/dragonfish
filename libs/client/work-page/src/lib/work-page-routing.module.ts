@@ -11,6 +11,7 @@ const routes: Routes = [
     {
         path: ':id/:title',
         resolve: { data: WorkPageResolver },
+        runGuardsAndResolvers: 'paramsChange',
         children: [
             {
                 path: '',

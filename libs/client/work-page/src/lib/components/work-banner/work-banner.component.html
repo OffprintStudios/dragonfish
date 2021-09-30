@@ -1,0 +1,43 @@
+<div class="header">
+    <div class="w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
+        <div class="flex items-center">
+            <div class="flex-1">
+                <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
+                <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
+                    by {{ content.author.screenName }}
+                </h2>
+            </div>
+            <button class="header-button" (click)="addToLibrary()">
+                <rmx-icon name="add-box-line"></rmx-icon>
+                <span>Library</span>
+            </button>
+            <div class="mx-1"></div>
+            <button
+                class="header-button"
+                [matMenuTriggerFor]="moreMenu"
+                [ngClass]="{'active': moreMenuOpened}"
+                (menuOpened)="toggleMoreMenu()"
+                (menuClosed)="toggleMoreMenu()"
+            >
+                <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+            </button>
+        </div>
+        <div class="flex items-center">
+            <div class="rounded-md py-2 px-8 flex-1" style="color: var(--text-color); background: var(--background); box-shadow: var(--dropshadow);">
+                <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<mat-menu #moreMenu='matMenu' xPosition="before">
+    <button mat-menu-item class="hover:scale-100" (click)="shareContent()">
+        <rmx-icon name="share-box-line"></rmx-icon>
+        <span>Share this</span>
+    </button>
+    <div class="w-full border-b border-gray-600 dark:border-white my-1"></div>
+    <button mat-menu-item class="hover:scale-100" (click)="reportContent()">
+        <rmx-icon name="alert-line"></rmx-icon>
+        <span>Send report</span>
+    </button>
+</mat-menu>
