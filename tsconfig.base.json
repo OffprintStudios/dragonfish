@@ -26,7 +26,6 @@
             "@dragonfish/client/icons": ["libs/client/icons/src/index.ts"],
             "@dragonfish/client/material": ["libs/client/material/src/index.ts"],
             "@dragonfish/client/my-library": ["libs/client/my-library/src/index.ts"],
-            "@dragonfish/client/my-stuff": ["libs/client/my-stuff/src/index.ts"],
             "@dragonfish/client/pipes": ["libs/client/pipes/src/index.ts"],
             "@dragonfish/client/profile": ["libs/client/profile/src/index.ts"],
             "@dragonfish/client/repository/*": ["libs/client/repository/src/lib/*"],

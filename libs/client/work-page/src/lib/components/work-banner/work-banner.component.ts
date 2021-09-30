@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
-import { UploadCoverArtComponent } from '../../../../../my-stuff/src/lib/components';
+import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({

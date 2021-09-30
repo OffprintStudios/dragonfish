@@ -7,7 +7,6 @@ module.exports = {
             './apps/bettafish/src/**/*.{html,ts}',
             './libs/client/editor/src/lib/**/*.{html,ts}',
             './libs/client/ui/src/lib/**/*.{html,ts}',
-            './libs/client/my-stuff/src/lib/**/*.{html,ts}',
             './libs/client/my-library/src/lib/**/*.{html,ts}',
             './libs/client/dashboard/src/lib/**/*.{html,ts}',
             './libs/client/alerts/src/lib/**/*.{html,ts}',

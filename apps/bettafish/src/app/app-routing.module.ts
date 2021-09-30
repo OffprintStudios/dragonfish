@@ -47,11 +47,6 @@ const routes: Routes = [
         loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
     },
     {
-        path: 'my-stuff',
-        canLoad: [AuthGuard],
-        loadChildren: () => import('@dragonfish/client/my-stuff').then((m) => m.MyStuffModule),
-    },
-    {
         path: 'my-library',
         canLoad: [AuthGuard],
         loadChildren: () => import('@dragonfish/client/my-library').then((m) => m.MyLibraryModule),
