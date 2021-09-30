@@ -1,1 +1,1 @@
-export * from './lib/client-work-page.module';
+export * from './lib/work-page.module';

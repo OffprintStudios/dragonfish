@@ -35,6 +35,14 @@ const routes: Routes = [
         loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
     },
     {
+        path: 'prose',
+        loadChildren: () => import('@dragonfish/client/work-page').then((m) => m.WorkPageModule),
+    },
+    {
+        path: 'poetry',
+        loadChildren: () => import('@dragonfish/client/work-page').then((m) => m.WorkPageModule),
+    },
+    {
         path: 'settings',
         loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
     },
