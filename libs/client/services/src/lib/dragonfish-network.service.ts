@@ -286,16 +286,19 @@ export class DragonfishNetworkService {
      *
      * @param query The user's query
      * @param kind The kind of content that searching for
+     * @param author (Optional) The author of content that searching for 
      * @param pageNum The current results page
      */
     public findRelatedContent(
         query: string,
         kind: SearchKind,
+        author: string,
         pageNum: number,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
+                `${this.baseUrl}/search/find-related-content?query=`
+                 + `${query}&kind=${kind}&author=${author}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );

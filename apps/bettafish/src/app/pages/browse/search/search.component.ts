@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
+import { PaginateResult } from '@dragonfish/shared/models/util';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { FormGroup, FormControl } from '@angular/forms';
 import { isMobile } from '@dragonfish/shared/functions';
@@ -18,8 +18,12 @@ import { User } from '@dragonfish/shared/models/users';
 export class SearchComponent implements OnInit {
     kindOptions = SearchKind;
     loading = false;
-    pageNum = 1;
+
+    currentQuery = '';
     currentSearchKind = SearchKind.ProseAndPoetry;
+    currentAuthor = '';
+    pageNum = 1;
+
     searchResultWorks: PaginateResult<ContentModel>;
     searchResultBlogs: PaginateResult<ContentModel>;
     searchResultNews: PaginateResult<ContentModel>;
@@ -27,6 +31,7 @@ export class SearchComponent implements OnInit {
     searchForm = new FormGroup({
         query: new FormControl(''),
         kind: new FormControl(null),
+        author: new FormControl(''),
     });
     mobileMode = false;
     showAdvancedOptions = false;
@@ -41,28 +46,28 @@ export class SearchComponent implements OnInit {
     ngOnInit(): void {
         setTwoPartTitle(Constants.SEARCH);
         const queryParams = this.route.snapshot.queryParamMap;
-        if (queryParams.has('query')) {
-            const query = queryParams.get('query');
 
-            this.currentSearchKind = this.parseKind(queryParams.get('kind'));
-            this.searchForm.setValue({
-                query: query,
-                kind: this.currentSearchKind,
-            });
-            
-            if (queryParams.has('page')) {
-                this.pageNum = +queryParams.get('page');
-            }
-            else {
-                this.pageNum = 1;
-            }
+        this.currentQuery = queryParams.get('query');
+        this.currentSearchKind = this.parseKind(queryParams.get('kind'));
+        this.currentAuthor = queryParams.get('author');
+        if (queryParams.has('page')) {
+            this.pageNum = +queryParams.get('page');
+        }
+        else {
+            this.pageNum = 1;
+        }
 
-            this.fetchData(query, this.currentSearchKind, this.pageNum);
-        } else {
-            this.searchForm.setValue({
-                query: '',
-                kind: this.currentSearchKind,
-            })
+        this.searchForm.setValue({
+            query: this.currentQuery,
+            kind: this.currentSearchKind,
+            author: this.currentAuthor,
+        });
+
+        if (this.currentQuery) {
+            this.fetchData(this.currentQuery, this.currentSearchKind, this.currentAuthor, this.pageNum);
+        }
+        if (this.currentAuthor) {
+            this.showAdvancedOptions = true;
         }
         this.onResize();
     }
@@ -75,21 +80,27 @@ export class SearchComponent implements OnInit {
     }
     
     submitSearch() {
+        this.currentQuery = this.searchForm.controls.query.value;
         this.currentSearchKind = this.parseKind(this.searchForm.controls.kind.value);
+        this.currentAuthor = this.searchForm.controls.author.value;
         this.pageNum = 1;
-        this.router.navigate([], {
-            relativeTo: this.route,
-            queryParams: { 
-                query: this.searchForm.controls.query.value,
-                kind: this.currentSearchKind,
-                page: this.pageNum,
-            },
-            queryParamsHandling: 'merge',
-        }).catch(() => {
-            this.alerts.error(`Something went wrong! Try again in a little bit.`);
-        }).then(() => {
-            this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, this.pageNum);
-        });
+
+        if (this.currentQuery) {
+            this.router.navigate([], {
+                relativeTo: this.route,
+                queryParams: { 
+                    query: this.currentQuery,
+                    kind: this.currentSearchKind,
+                    author: this.currentAuthor ? this.currentAuthor : null,
+                    page: this.pageNum,
+                },
+                queryParamsHandling: 'merge',
+            }).catch(() => {
+                this.alerts.error(`Something went wrong! Try again in a little bit.`);
+            }).then(() => {
+                this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, this.currentAuthor, this.pageNum);
+            });
+        }
     }
 
     /**
@@ -103,11 +114,12 @@ export class SearchComponent implements OnInit {
             queryParams: { 
                 query: this.searchForm.controls.query.value,
                 kind: this.currentSearchKind,
+                author: this.currentAuthor,
                 page: event,
             },
             queryParamsHandling: 'merge',
         }).then(() => {
-            this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, event);
+            this.fetchData(this.searchForm.controls.query.value, this.currentSearchKind, this.currentAuthor, event);
         });
         this.pageNum = event;
     }
@@ -126,36 +138,36 @@ export class SearchComponent implements OnInit {
         return Object.values(SearchKind).indexOf(kind) >= 0? kind : SearchKind.ProseAndPoetry;
     }
 
-    private fetchData(query: string, searchKind: SearchKind, pageNum: number) {
+    private fetchData(query: string, searchKind: SearchKind, author: string, pageNum: number) {
         this.loading = true;
         this.clearResults();
         switch(searchKind) {
             case SearchKind.Blog:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultBlogs = results;
                     this.loading = false;
                 })
                 break;
             case SearchKind.News:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultNews = results;
                     this.loading = false;
                 });
                 break;
             case SearchKind.Poetry:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultWorks = results;
                     this.loading = false;
                 });
                 break;
             case SearchKind.ProseAndPoetry:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultWorks = results;
                     this.loading = false;
                 });
                 break;
             case SearchKind.Prose:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultWorks = results;
                     this.loading = false;
                 });
@@ -167,7 +179,7 @@ export class SearchComponent implements OnInit {
                 });
                 break;
             default:
-                this.network.findRelatedContent(query, searchKind, pageNum).subscribe((results) => {
+                this.network.findRelatedContent(query, searchKind, author, pageNum).subscribe((results) => {
                     this.searchResultWorks = results;
                     this.loading = false;
                 });

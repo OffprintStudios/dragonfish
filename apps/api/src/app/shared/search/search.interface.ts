@@ -19,12 +19,14 @@ export interface ISearch {
      * 
      * @param query The user's query
      * @param searchKind The kind of content that searching for
+     * @param author (Optional) The author of content that searching for 
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
     findRelatedContent(
         query: string,
         searchKind: SearchKind,
+        author: string,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;

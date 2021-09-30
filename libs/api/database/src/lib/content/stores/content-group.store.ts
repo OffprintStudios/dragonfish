@@ -179,6 +179,7 @@ export class ContentGroupStore {
      * Finds content related to the user's query.
      * @param query The string the user searched for.
      * @param kinds The kind of document to fetch.
+     * @param authorId (Optional) ID of author of work that searching for.
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
@@ -186,6 +187,7 @@ export class ContentGroupStore {
     public async findRelatedContent(
         query: string,
         kinds: ContentKind[],
+        authorId: string,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -200,6 +202,10 @@ export class ContentGroupStore {
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
+        if (authorId) {
+            paginateQuery['author'] = authorId;
+        }
+        console.log(paginateQuery);
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }

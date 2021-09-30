@@ -26,6 +26,7 @@ export class SearchService implements ISearch {
             this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
             this.contentGroupStore.findRelatedContent(parsedQuery,
                 [ContentKind.BlogContent],
+                null,
                 this.INITIAL_PAGE,
                 this.INITIAL_MAX_PER_PAGE,
                 contentFilter
@@ -33,6 +34,7 @@ export class SearchService implements ISearch {
             this.contentGroupStore.findRelatedContent(
                 parsedQuery,
                 [ContentKind.PoetryContent, ContentKind.ProseContent],
+                null,
                 this.INITIAL_PAGE,
                 this.INITIAL_MAX_PER_PAGE,
                 contentFilter
@@ -50,6 +52,7 @@ export class SearchService implements ISearch {
     async findRelatedContent(
         query: string,
         searchKind: SearchKind,
+        author: string,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -76,10 +79,18 @@ export class SearchService implements ISearch {
             default:
                 kinds.push(ContentKind.PoetryContent, ContentKind.ProseContent);
         }
-        console.log(kinds);
+        let authorId: string = null;
+        if (author) {
+            let users = await this.searchUsers(author, 1);
+            if (users.totalDocs > 0) {
+                authorId = users.docs[0]._id;
+            }
+        }
+
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             kinds,
+            authorId,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -100,6 +111,7 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.BlogContent],
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -115,6 +127,7 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter

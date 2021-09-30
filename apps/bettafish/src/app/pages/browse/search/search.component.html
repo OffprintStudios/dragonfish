@@ -21,10 +21,22 @@
                     </ng-select>
                 </div>
                 <ng-container *ngIf="showAdvancedOptions; else simpleSearch">
-                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Hide Advanced Options</span>
+                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Hide Advanced</span>
+                    <div class="advanced-options">
+                        <ng-container *ngIf="searchForm.controls.kind.value !== kindOptions.User">
+                            <div>Author</div>
+                            <dragonfish-text-field
+                                [formControlName]="'author'"
+                                [name]="'author'"
+                                [type]="'text'"
+                                [placeholder]="''"
+                                [searchBox]="true"
+                            ></dragonfish-text-field>
+                        </ng-container>
+                    </div>
                 </ng-container>
                 <ng-template #simpleSearch>
-                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Show Advanced Options</span>
+                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Show Advanced</span>
                 </ng-template>
             </form>
         </dragonfish-pagebar>
