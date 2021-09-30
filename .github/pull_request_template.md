@@ -25,6 +25,7 @@ Addresses ticket #
 - [ ] Blog Page
 - [ ] Collections
 - [ ] Comments
+- [ ] Search
 - [ ] Other Pages
 
 .
