@@ -9,6 +9,9 @@ div.tag-pill {
     &:hover {
         @apply scale-105;
     }
+    &:active {
+        @apply scale-100;
+    }
     &.fandom {}
 
     &.warning {}
