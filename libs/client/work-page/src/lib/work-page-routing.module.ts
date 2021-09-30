@@ -1,7 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+/* Views */
+import { ContentHomeComponent } from './views/content-home/content-home.component';
+
+const routes: Routes = [
+    {
+        path: ':id/:title',
+        children: [
+            {
+                path: '',
+                component: ContentHomeComponent,
+            },
+        ],
+    },
+];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
