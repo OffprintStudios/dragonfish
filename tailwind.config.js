@@ -15,6 +15,7 @@ module.exports = {
             './libs/client/editor-lite/src/lib/**/*.{html,ts}',
             './libs/client/settings/src/lib/**/*.{html,ts}',
             './libs/client/profile/src/lib/**/*.{html,ts}',
+            './libs/client/work-page/src/lib/**/*.{html,ts}',
         ],
     },
     darkMode: 'class', // or 'media' or 'class'

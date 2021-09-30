@@ -1,5 +1,6 @@
 div.button {
     @apply flex items-center p-2 border border-gray-600 dark:border-white rounded-md w-full mx-3 transition transform;
+    border-color: var(--borders);
     rmx-icon {
         @apply w-8 block relative -top-1 ml-0.5;
         color: var(--accent);
