@@ -18,8 +18,9 @@ import { isAllowed } from '@dragonfish/shared/functions';
  * This guard mixin checks to see if a pseudonym belongs to the user making the request.
  *
  * @param roles The roles required to activate the associated route
+ * @param optional Checks to see if this guard is optional
  */
-export const IdentityGuard = (roles: Roles[]) => {
+export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
     @Injectable()
     class IdentityGuardMixin implements CanActivate {
         logger = new Logger(`Identity Guard`);
@@ -35,6 +36,18 @@ export const IdentityGuard = (roles: Roles[]) => {
             // Getting the request.
             const request = context.switchToHttp().getRequest();
 
+            if (optional) {
+                if (request.headers['authorization']) {
+                    return await this.verifyToken(request);
+                } else {
+                    return true;
+                }
+            } else {
+                return await this.verifyToken(request);
+            }
+        }
+
+        private async verifyToken(request: any): Promise<boolean> {
             this.logger.log(`Getting the JSON Web Token from the authorization header.`);
             // Getting the JSON Web Token from the authorization header.
             const jwtToken: string = request.headers['authorization'];

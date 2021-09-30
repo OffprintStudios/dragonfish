@@ -54,13 +54,12 @@ export class ProseContentDocument extends Document implements ProseContent {
         ref: 'Sections',
         default: null,
         autopopulate: {
-            select: '_id title published stats.words audit.publishedOn createdAt updatedAt',
             match: { 'audit.isDeleted': false },
         },
     })
     sections: string[] | SectionInfo[];
 
-    @Prop({type: [{type: String, ref: 'Tags'}] })
+    @Prop({ type: [{ type: String, ref: 'Tags' }] })
     tags?: string[] | TagsModel[];
 }
 
