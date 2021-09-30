@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind } from '@dragonfish/shared/models/content';
+import { UploadCoverArtComponent } from '../../../../../my-stuff/src/lib/components';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -12,7 +14,7 @@ export class WorkBannerComponent {
     moreMenuOpened = false;
     addEditIcon = false;
 
-    constructor(private alerts: AlertsService) {}
+    constructor(private alerts: AlertsService, private dialog: MatDialog) {}
 
     toggleMoreMenu() {
         this.moreMenuOpened = !this.moreMenuOpened;
@@ -31,6 +33,6 @@ export class WorkBannerComponent {
     }
 
     uploadCoverArt(id: string, kind: ContentKind) {
-        this.alerts.info(`This feature is not yet available!`);
+        this.dialog.open(UploadCoverArtComponent, { data: { kind: kind, contentId: id } });
     }
 }

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
-import { AlertsService } from '@dragonfish/client/alerts';
 
 @Component({
     selector: 'dragonfish-content-home',
