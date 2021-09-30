@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { ContentKind } from '@dragonfish/shared/models/content';
+import { ContentKind, Genres, TagKind } from '@dragonfish/shared/models/content';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -13,6 +13,8 @@ export class WorkBannerComponent {
     @Input() content;
     moreMenuOpened = false;
     addEditIcon = false;
+    tagKind = TagKind;
+    genres = Genres;
 
     constructor(private alerts: AlertsService, private dialog: MatDialog) {}
 

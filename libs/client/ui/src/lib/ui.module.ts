@@ -44,6 +44,7 @@ import { NotificationsTabComponent } from './components/inbox/notifications-tab/
 import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
 import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.component';
 import { WorkFormComponent } from './components/work-form/work-form.component';
+import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 
 @NgModule({
     declarations: [
@@ -74,6 +75,7 @@ import { WorkFormComponent } from './components/work-form/work-form.component';
         PagebarComponent,
         MobileNavComponent,
         WorkFormComponent,
+        TagBadgeComponent,
     ],
     imports: [
         CommonModule,
@@ -117,6 +119,7 @@ import { WorkFormComponent } from './components/work-form/work-form.component';
         RegisterFormComponent,
         LoginFormComponent,
         WorkFormComponent,
+        TagBadgeComponent,
     ],
 })
 export class UiModule {}

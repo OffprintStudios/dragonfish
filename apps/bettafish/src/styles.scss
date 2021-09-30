@@ -463,30 +463,3 @@ div.authors-note,
 div.html-description {
     @include content-body();
 }
-
-.accented-content-box {
-    color: white;
-    h1, h2, h3, h4, h5, h6 {
-        color: white !important;
-    }
-    a {
-        color: white;
-        text-decoration: none;
-        background: linear-gradient(0deg, var(--accent) 0%, var(--accent-light) 10%, var(--accent) 50%);
-        transition: all 0.15s ease;
-        &:hover {
-            color: white;
-            background: linear-gradient(0deg, var(--accent) 0%, var(--accent-light) 10%, var(--accent-light) 90%, var(--accent) 100%);
-            text-decoration: none;
-        }
-    }
-    &.dark {
-        a {
-            background: linear-gradient(0deg, var(--accent-light) 0%, var(--accent) 10%, var(--accent-light) 50%);
-            transition: all 0.15s ease;
-            &:hover {
-                background: linear-gradient(0deg, var(--accent-light) 0%, var(--accent) 10%, var(--accent) 90%, var(--accent-light) 100%);
-            }
-        }
-    }
-}

@@ -22,6 +22,27 @@
                 <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
             </button>
         </div>
+        <div class="border-b border-white mb-2 flex items-center w-full">
+            <dragonfish-tag-badge [kind]="tagKind.Type">
+                <ng-container *ngIf="content.kind === 'ProseContent'">
+                    <rmx-icon name="book-open-line"></rmx-icon>
+                    <span>Prose</span>
+                </ng-container>
+                <ng-container *ngIf="content.kind === 'PoetryContent'">
+                    <rmx-icon name="quill-pen-line"></rmx-icon>
+                    <span>Poetry</span>
+                </ng-container>
+            </dragonfish-tag-badge>
+            <dragonfish-tag-badge [kind]="tagKind.Category">
+                <ng-container *ngIf="content.meta.category === 'Original'">
+                    <rmx-icon name="loader-2-line"></rmx-icon>
+                    <span>{{ content.meta.category }}</span>
+                </ng-container>
+            </dragonfish-tag-badge>
+            <ng-container *ngFor="let genre of content.meta.genres">
+                <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre"></dragonfish-tag-badge>
+            </ng-container>
+        </div>
         <div class="flex">
             <ng-container *ngIf="content.meta.coverArt; else uploadArt">
                 <div

@@ -101,6 +101,19 @@ import {
     RiBarChartBoxLine,
     RiDiscussLine,
     RiDraftLine,
+    RiSwordLine,
+    RiMagicLine,
+    RiAliensLine,
+    RiFilePaper2Line,
+    RiEmotionLaughLine,
+    RiGhost2Line,
+    RiSearchEyeLine,
+    RiHome3Line,
+    RiHeartsLine,
+    RiSkullLine,
+    RiSpyLine,
+    RiMeteorLine,
+    RiDoorClosedLine,
 } from 'angular-remix-icon';
 
 import {
@@ -419,6 +432,19 @@ const remixIcons = {
     RiBarChartBoxLine,
     RiDiscussLine,
     RiDraftLine,
+    RiSwordLine,
+    RiMagicLine,
+    RiAliensLine,
+    RiFilePaper2Line,
+    RiEmotionLaughLine,
+    RiGhost2Line,
+    RiSearchEyeLine,
+    RiHome3Line,
+    RiHeartsLine,
+    RiSkullLine,
+    RiSpyLine,
+    RiMeteorLine,
+    RiDoorClosedLine,
 };
 
 @NgModule({
