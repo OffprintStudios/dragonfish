@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, FormType } from '@dragonfish/shared/models/content';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page/work-page.query';
 import { WorkPageStore } from '@dragonfish/client/repository/work-page/work-page.store';
 import { catchError, tap } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { throwError } from 'rxjs';
 import { FileUploader } from 'ng2-file-upload';
 import { Router } from '@angular/router';
+import { SectionsService } from './sections';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -19,6 +20,7 @@ export class WorkPageService {
         private workStore: WorkPageStore,
         private alerts: AlertsService,
         private router: Router,
+        private sections: SectionsService,
     ) {}
 
     //#region ---FETCHING---
@@ -30,6 +32,7 @@ export class WorkPageService {
                     content: result.content,
                     ratings: result.ratings,
                 });
+                this.sections.setSections((result.content as any).sections);
             }),
             catchError((err) => {
                 this.alerts.error(`Something went wrong!`);

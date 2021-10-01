@@ -1,0 +1,10 @@
+div.add-button {
+    @apply px-4 py-2 mb-6 w-full flex items-center border rounded-md transition transform cursor-pointer;
+    &:hover {
+        @apply scale-105;
+        background: var(--accent);
+    }
+    &:active {
+        @apply scale-100;
+    }
+}
