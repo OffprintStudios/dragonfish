@@ -4,7 +4,7 @@
             <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
         </button>
         <div class="mx-0.5"></div>
-        <button>
+        <button *ngIf="!createMode">
             <rmx-icon name="list-unordered"></rmx-icon>
             <span>Chapters</span>
         </button>
@@ -14,45 +14,139 @@
                 &mdash; by <a class="text-white underline hover:no-underline" [routerLink]="['/profile', workPageQuery.author._id, workPageQuery.author.userTag]">{{ workPageQuery.author.screenName }}</a>
             </div>
         </div>
-        <button>
-            <rmx-icon name="font-size"></rmx-icon>
-            <span>Formatting</span>
-        </button>
-        <div class="mx-0.5"></div>
-        <button>
-            <rmx-icon name="bookmark-line" class="mr-0"></rmx-icon>
-        </button>
+        <ng-container *ngIf="createMode; else viewMode">
+            <button>
+                <rmx-icon name="save-3-line"></rmx-icon>
+                <span>Save</span>
+            </button>
+        </ng-container>
+        <ng-template #viewMode>
+            <ng-container *ngIf="!previewMode; else viewButtons">
+                <button>
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    <span>Save</span>
+                </button>
+                <button>
+                    <rmx-icon name="close-line"></rmx-icon>
+                    <span>Cancel</span>
+                </button>
+            </ng-container>
+            <ng-template #viewButtons>
+                <button>
+                    <rmx-icon name="font-size"></rmx-icon>
+                    <span>Formatting</span>
+                </button>
+                <div class="mx-0.5"></div>
+                <ng-container *ngIf="!auth.checkPseudonym(workPageQuery.authorId); else editButton">
+                    <button>
+                        <rmx-icon name="bookmark-line" class="mr-0"></rmx-icon>
+                    </button>
+                </ng-container>
+                <ng-template #editButton>
+                    <button>
+                        <rmx-icon name="edit-line"></rmx-icon>
+                        <span>Edit</span>
+                    </button>
+                </ng-template>
+            </ng-template>
+        </ng-template>
     </div>
-    <ng-container *ngIf="sectionsQuery.current$ | async as section; else creatingSection">
 
-    </ng-container>
-    <ng-template #creatingSection>
-        <ng-container *ngIf="auth.checkPseudonym(workPageQuery.authorId); else notTheAuthor">
-            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
-                <h2 class="text-4xl">A new chapter title</h2>
-                <div class="w-full border-b border-gray-600 dark:border-white my-4"></div>
-                <div>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed vulputate odio ut enim blandit volutpat. Ac orci phasellus egestas tellus rutrum tellus pellentesque eu. Est ullamcorper eget nulla facilisi etiam dignissim diam quis enim. Porttitor eget dolor morbi non arcu risus quis varius. Bibendum neque egestas congue quisque egestas diam. Maecenas volutpat blandit aliquam etiam erat. Nulla at volutpat diam ut venenatis. Sociis natoque penatibus et magnis dis parturient. Lectus urna duis convallis convallis tellus id. Leo urna molestie at elementum. Massa ultricies mi quis hendrerit. Scelerisque eu ultrices vitae auctor eu. Lacus suspendisse faucibus interdum posuere lorem. Tellus orci ac auctor augue mauris. Tortor dignissim convallis aenean et tortor at risus viverra. Id neque aliquam vestibulum morbi blandit cursus risus at.
-                    <br>
-                    <br>
-                    Arcu cursus vitae congue mauris rhoncus aenean. In metus vulputate eu scelerisque felis imperdiet proin. Facilisis leo vel fringilla est ullamcorper eget nulla facilisi. In nisl nisi scelerisque eu. Mattis enim ut tellus elementum sagittis vitae et leo duis. Blandit aliquam etiam erat velit. Tellus at urna condimentum mattis pellentesque id. Enim sit amet venenatis urna. Non tellus orci ac auctor. Nunc aliquet bibendum enim facilisis. Amet nisl suscipit adipiscing bibendum est ultricies integer quis auctor. Venenatis tellus in metus vulputate eu. Diam maecenas sed enim ut sem viverra aliquet eget.
-                    <br>
-                    <br>
-                    Turpis massa tincidunt dui ut. Cursus turpis massa tincidunt dui ut ornare lectus. Nisi lacus sed viverra tellus in hac. Eget est lorem ipsum dolor sit amet consectetur adipiscing elit. Tortor id aliquet lectus proin nibh nisl. Diam sit amet nisl suscipit adipiscing bibendum. Faucibus in ornare quam viverra. Mattis nunc sed blandit libero volutpat. Netus et malesuada fames ac turpis. Pulvinar sapien et ligula ullamcorper.
-                    <br>
-                    <br>
-                    Enim lobortis scelerisque fermentum dui faucibus in ornare quam viverra. Ac placerat vestibulum lectus mauris ultrices. Egestas purus viverra accumsan in nisl nisi scelerisque. Dictumst quisque sagittis purus sit amet. Integer enim neque volutpat ac tincidunt vitae semper quis. A pellentesque sit amet porttitor eget dolor morbi non arcu. Sed ullamcorper morbi tincidunt ornare massa eget egestas purus viverra. Hac habitasse platea dictumst quisque. Nec feugiat nisl pretium fusce id velit ut tortor pretium. Justo donec enim diam vulputate ut pharetra sit. Vitae turpis massa sed elementum tempus. Semper viverra nam libero justo laoreet sit amet. Tortor pretium viverra suspendisse potenti nullam ac tortor. Nibh tortor id aliquet lectus proin nibh nisl. Tempus egestas sed sed risus pretium quam vulputate. Nulla porttitor massa id neque aliquam vestibulum. Rhoncus aenean vel elit scelerisque. Turpis tincidunt id aliquet risus feugiat in ante. Pulvinar sapien et ligula ullamcorper malesuada proin libero nunc consequat.
-                    <br>
-                    <br>
-                    Sem et tortor consequat id porta nibh venenatis cras sed. Ornare arcu odio ut sem nulla pharetra diam sit amet. Tortor condimentum lacinia quis vel eros donec ac. Non enim praesent elementum facilisis leo vel fringilla. Ut pharetra sit amet aliquam id diam maecenas. Facilisis sed odio morbi quis. Congue mauris rhoncus aenean vel. Ipsum consequat nisl vel pretium lectus quam id leo. A condimentum vitae sapien pellentesque habitant morbi. Mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare massa. Non sodales neque sodales ut. Sodales neque sodales ut etiam sit. Nunc scelerisque viverra mauris in aliquam. Vitae aliquet nec ullamcorper sit amet risus nullam eget felis. Phasellus vestibulum lorem sed risus.
+    <!--Creation Mode-->
+    <ng-container *ngIf="createMode; else editModePage">
+        <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+            <form [formGroup]="sectionForm">
+                <dragonfish-text-field
+                    [formControlName]="'title'"
+                    [name]="'title'"
+                    [type]="'text'"
+                    [label]="'Title'"
+                    [placeholder]="'The Beginning Of A Great Adventure'"
+                ></dragonfish-text-field>
+
+                <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+
+                <div class="authors-note">
+                    <div class="header">
+                        <h2 class="text-2xl font-medium relative top-4">Author's Note</h2>
+                        <div class="offprint-select">
+                            <label>Position</label>
+                            <ng-select class="custom" [formControlName]="'authorsNotePos'" [searchable]="false" [placeholder]="'Select a Position'">
+                                <ng-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">
+                                    {{ pos.value }}
+                                </ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+
+                    <dragonfish-editor-lite [formControlName]="'authorsNote'"></dragonfish-editor-lite>
                 </div>
+            </form>
+        </div>
+    </ng-container>
+
+    <!--View/Edit Modes-->
+    <ng-template #editModePage>
+        <ng-container *ngIf="sectionsQuery.current$ | async as section">
+            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+                <ng-container *ngIf="previewMode; else editMode">
+                    <div class="w-full border-b border-gray-600 dark:border-white p-2 mb-6">
+                        <h2 class="text-4xl">{{ section.title }}</h2>
+                    </div>
+                    <ng-container *ngIf="section.authorsNote">
+                        <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Top">
+                            <div class="authors-note-box">
+                                <h3>A word from the author&mdash;</h3>
+                                <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+                    <ng-container *ngIf="section.authorsNote">
+                        <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Bottom">
+                            <div class="authors-note-box">
+                                <h3>A word from the author&mdash;</h3>
+                                <div class="html-description" [innerHTML]="section.authorsNote | safeHtml"></div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+                <ng-template #editMode>
+                    <form [formGroup]="sectionForm" *ngIf="auth.checkPseudonym(workPageQuery.authorId); else notTheAuthorEditing">
+                        <dragonfish-text-field
+                            [formControlName]="'title'"
+                            [name]="'title'"
+                            [type]="'text'"
+                            [label]="'Title'"
+                            [placeholder]="'The Beginning Of A Great Adventure'"
+                        ></dragonfish-text-field>
+
+                        <dragonfish-editor-lite [formControlName]="'body'"></dragonfish-editor-lite>
+
+                        <div class="authors-note">
+                            <div class="header">
+                                <h2 class="text-2xl font-medium relative top-4">Author's Note</h2>
+                                <div class="offprint-select">
+                                    <label>Position</label>
+                                    <ng-select class="custom" [formControlName]="'authorsNotePos'" [searchable]="false" [placeholder]="'Select a Position'" [clearable]="false">
+                                        <ng-option *ngFor="let pos of authorsNotePosOptions | keyvalue" [value]="pos.key">
+                                            {{ pos.value }}
+                                        </ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+
+                            <dragonfish-editor-lite [formControlName]="'authorsNote'"></dragonfish-editor-lite>
+                        </div>
+                    </form>
+                    <ng-template #notTheAuthorEditing>
+                        <div class="empty">
+                            <h3>403: Forbidden</h3>
+                            <p>You don't have permission to view this page.</p>
+                        </div>
+                    </ng-template>
+                </ng-template>
             </div>
         </ng-container>
-        <ng-template #notTheAuthor>
-            <div class="empty">
-                <h3>403: Forbidden</h3>
-                <p>You don't have permission to view this page.</p>
-            </div>
-        </ng-template>
     </ng-template>
 </div>

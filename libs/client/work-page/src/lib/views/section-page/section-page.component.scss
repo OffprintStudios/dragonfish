@@ -1,5 +1,5 @@
 div.section-topbar {
-    @apply w-full px-4 py-2 flex items-center relative z-50 mb-6;
+    @apply w-full px-4 py-2 flex items-center relative z-50 mb-6 sticky top-0;
     background: var(--accent);
     box-shadow: var(--dropshadow);
     button {
@@ -7,5 +7,36 @@ div.section-topbar {
         &:hover, &.active {
             background: var(--accent-light);
         }
+    }
+}
+
+div.authors-note {
+    margin-top: 2rem;
+
+    div.header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 5px 10px;
+        h2 {
+            flex: 1;
+            margin: 0;
+        }
+    }
+}
+
+div.authors-note-box {
+    max-width: 75%;
+    margin: 0 auto 2rem auto;
+    border: 1px solid var(--borders);
+    border-radius: 4px;
+    padding: 10px;
+
+    h3 {
+        font-size: 28px;
+    }
+
+    p {
+        margin: 0;
     }
 }

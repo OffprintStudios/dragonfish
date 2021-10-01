@@ -10,6 +10,8 @@ import { SectionPageComponent } from './views/section-page/section-page.componen
 
 /* Misc */
 import { WorkPageResolver } from './work-page.resolver';
+import { SectionPageResolver } from './section-page.resolver';
+import { AuthGuard } from '@dragonfish/client/repository/session/services';
 
 const routes: Routes = [
     {
@@ -36,14 +38,16 @@ const routes: Routes = [
                 ],
             },
             {
-                path: 'section',
+                path: 'create-section',
                 component: SectionPageComponent,
-                children: [
-                    {
-                        path: ':id/:title',
-                        component: SectionPageComponent,
-                    },
-                ],
+                data: { createMode: true },
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'section/:sectionId/:sectionTitle',
+                component: SectionPageComponent,
+                data: { createMode: false },
+                resolve: { section: SectionPageResolver },
             },
         ],
     },
@@ -52,6 +56,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [WorkPageResolver],
+    providers: [WorkPageResolver, SectionPageResolver],
 })
 export class WorkPageRoutingModule {}
