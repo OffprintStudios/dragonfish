@@ -4,15 +4,15 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
 
 @Component({
-    selector: 'dragonfish-sections-list',
-    templateUrl: './sections-list.component.html',
-    styleUrls: ['./sections-list.component.scss'],
+    selector: 'dragonfish-section-page',
+    templateUrl: './section-page.component.html',
+    styleUrls: ['./section-page.component.scss'],
 })
-export class SectionsListComponent {
+export class SectionPageComponent {
     constructor(
         public sectionsQuery: SectionsQuery,
+        private sectionsService: SectionsService,
         public auth: AuthService,
         public workPageQuery: WorkPageQuery,
-        private sectionsService: SectionsService,
     ) {}
 }

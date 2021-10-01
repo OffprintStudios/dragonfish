@@ -116,6 +116,8 @@ import {
     RiDoorClosedLine,
     RiInformationLine,
     RiCollageLine,
+    RiFontSize,
+    RiBookmarkLine,
 } from 'angular-remix-icon';
 
 import {
@@ -449,6 +451,8 @@ const remixIcons = {
     RiDoorClosedLine,
     RiInformationLine,
     RiCollageLine,
+    RiFontSize,
+    RiBookmarkLine,
 };
 
 @NgModule({

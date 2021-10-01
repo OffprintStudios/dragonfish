@@ -23,6 +23,10 @@ export class WorkPageQuery extends Query<WorkPageState> {
         return author._id;
     }
 
+    public get author() {
+        return this.getValue().content.author as Pseudonym;
+    }
+
     public get likes() {
         return this.getValue().content.stats.likes;
     }

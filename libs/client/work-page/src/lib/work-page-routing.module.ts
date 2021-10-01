@@ -6,6 +6,7 @@ import { ContentHomeComponent } from './views/content-home/content-home.componen
 import { ContentInfoComponent } from './views/content-info/content-info.component';
 import { ContentCommentsComponent } from './views/content-comments/content-comments.component';
 import { ContentRelatedComponent } from './views/content-related/content-related.component';
+import { SectionPageComponent } from './views/section-page/section-page.component';
 
 /* Misc */
 import { WorkPageResolver } from './work-page.resolver';
@@ -31,6 +32,16 @@ const routes: Routes = [
                     {
                         path: 'related',
                         component: ContentRelatedComponent,
+                    },
+                ],
+            },
+            {
+                path: 'section',
+                component: SectionPageComponent,
+                children: [
+                    {
+                        path: ':id/:title',
+                        component: SectionPageComponent,
                     },
                 ],
             },
