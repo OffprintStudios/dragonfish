@@ -26,7 +26,6 @@ import { ToggleComponent } from './components/toggle/toggle.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { ContentListItemComponent } from './components/content-list-item/content-list-item.component';
-import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
@@ -57,7 +56,6 @@ import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
         TextAreaComponent,
         BlogCardComponent,
         ContentListItemComponent,
-        SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
@@ -106,7 +104,6 @@ import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
         TextAreaComponent,
         BlogCardComponent,
         ContentListItemComponent,
-        SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
