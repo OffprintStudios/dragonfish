@@ -114,6 +114,8 @@ import {
     RiSpyLine,
     RiMeteorLine,
     RiDoorClosedLine,
+    RiInformationLine,
+    RiCollageLine,
 } from 'angular-remix-icon';
 
 import {
@@ -445,6 +447,8 @@ const remixIcons = {
     RiSpyLine,
     RiMeteorLine,
     RiDoorClosedLine,
+    RiInformationLine,
+    RiCollageLine,
 };
 
 @NgModule({

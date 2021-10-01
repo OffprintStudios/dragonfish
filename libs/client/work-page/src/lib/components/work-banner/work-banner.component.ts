@@ -1,22 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind, Genres, TagKind } from '@dragonfish/shared/models/content';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '@dragonfish/client/repository/session/services';
+import { slugify } from 'voca';
 
 @Component({
     selector: 'dragonfish-work-banner',
     templateUrl: './work-banner.component.html',
     styleUrls: ['./work-banner.component.scss'],
 })
-export class WorkBannerComponent {
+export class WorkBannerComponent implements OnInit {
     @Input() content;
+    contentUrl = [];
     moreMenuOpened = false;
     addEditIcon = false;
     tagKind = TagKind;
     genres = Genres;
 
-    constructor(private alerts: AlertsService, private dialog: MatDialog) {}
+    constructor(private alerts: AlertsService, private dialog: MatDialog, public auth: AuthService) {}
+
+    ngOnInit(): void {
+        if (this.content.kind === 'ProseContent') {
+            this.contentUrl = ['/prose', this.content._id, slugify(this.content.title)];
+        } else if (this.content.kind === 'PoetryContent') {
+            this.contentUrl = ['/poetry', this.content._id, slugify(this.content.title)];
+        }
+    }
 
     toggleMoreMenu() {
         this.moreMenuOpened = !this.moreMenuOpened;
