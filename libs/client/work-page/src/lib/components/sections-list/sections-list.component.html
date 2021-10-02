@@ -1,7 +1,3 @@
-<div class="add-button border-gray-600 dark:border-white" [routerLink]="['create-section']">
-    <rmx-icon name="add-box-line" class="mr-2"></rmx-icon>
-    <span>Add a chapter</span>
-</div>
 <ng-container *ngIf="sectionsQuery.all$ | async as sections">
     <ng-container *ngIf="sectionsQuery.numSections === 0; else hasSections">
         <div class="empty">
@@ -13,7 +9,16 @@
     </ng-container>
     <ng-template #hasSections>
         <ng-container *ngIf="auth.checkPseudonym(this.workPageQuery.authorId); else notThisUser">
-            this user
+            <ul class="my-6 list-none ">
+                <ng-container *ngFor="let section of sections">
+                    <li
+                        class="section-item border-gray-600 dark:border-white"
+                        [routerLink]="['section', section._id, section.title | slugify]"
+                    >
+                        <div class="px-4 py-2">{{ section.title }}</div>
+                    </li>
+                </ng-container>
+            </ul>
         </ng-container>
         <ng-template #notThisUser>
             not this user

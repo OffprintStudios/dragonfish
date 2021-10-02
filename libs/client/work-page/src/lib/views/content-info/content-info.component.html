@@ -8,7 +8,13 @@
                 </div>
             </div>
             <div>
-                <h3 class="text-2xl font-medium">Chapters</h3>
+                <div class="flex items-center">
+                    <h3 class="text-2xl font-medium flex-1">Chapters</h3>
+                    <button class="border border-gray-600 dark:border-white" [routerLink]="['create-section']">
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        <span>Add Chapter</span>
+                    </button>
+                </div>
                 <dragonfish-sections-list></dragonfish-sections-list>
             </div>
         </div>
