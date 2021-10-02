@@ -3,7 +3,7 @@ import { PaginateResult } from 'mongoose';
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { User } from '@dragonfish/shared/models/users';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 
 export interface ISearch {
     /**
@@ -19,7 +19,8 @@ export interface ISearch {
      * 
      * @param query The user's query
      * @param searchKind The kind of content that searching for
-     * @param author (Optional) The author of content that searching for 
+     * @param author (Optional) The author of content that searching for
+     * @param category (Optional) The category of content that searching for
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
@@ -27,6 +28,7 @@ export interface ISearch {
         query: string,
         searchKind: SearchKind,
         author: string,
+        category: SearchCategory,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;

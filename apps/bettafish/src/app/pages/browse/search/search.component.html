@@ -21,7 +21,7 @@
                     </ng-select>
                 </div>
                 <ng-container *ngIf="showAdvancedOptions; else simpleSearch">
-                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Hide Advanced</span>
+                    <span (click)="toggleShowAdvancedOptions()">Hide Advanced</span>
                     <div class="advanced-options">
                         <ng-container *ngIf="searchForm.controls.kind.value !== kindOptions.User">
                             <div>Author</div>
@@ -32,11 +32,19 @@
                                 [placeholder]="''"
                                 [searchBox]="true"
                             ></dragonfish-text-field>
+                            <div>Category</div>
+                            <div class="offprint-select">
+                                <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select Category'">
+                                    <ng-option *ngFor="let category of categoryOptions | keyvalue" [value]="category.key ">
+                                        {{ category.value }}
+                                    </ng-option>
+                                </ng-select>
+                            </div>
                         </ng-container>
                     </div>
                 </ng-container>
                 <ng-template #simpleSearch>
-                    <span (click)="toggleShowAdvancedOptions(kindOptions)">Show Advanced</span>
+                    <span (click)="toggleShowAdvancedOptions()">Show Advanced</span>
                 </ng-template>
             </form>
         </dragonfish-pagebar>

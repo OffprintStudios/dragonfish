@@ -5,7 +5,7 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentRating, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
@@ -188,6 +188,7 @@ export class ContentGroupStore {
         query: string,
         kinds: ContentKind[],
         authorId: string,
+        category: WorkKind,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -205,7 +206,9 @@ export class ContentGroupStore {
         if (authorId) {
             paginateQuery['author'] = authorId;
         }
-        console.log(paginateQuery);
+        if (category) {
+            paginateQuery['meta.category'] = category;
+        }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }

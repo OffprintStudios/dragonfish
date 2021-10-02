@@ -9,7 +9,7 @@ import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 
 @Controller('search')
 export class SearchController {
@@ -30,6 +30,7 @@ export class SearchController {
         @Query('query') query: string,
         @Query('kind') kind: SearchKind,
         @Query('author') author: string,
+        @Query('category') category: SearchCategory,
         @Query('pageNum') pageNum: number,
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -37,6 +38,7 @@ export class SearchController {
             query,
             kind,
             author,
+            category,
             pageNum,
             contentFilter
         );

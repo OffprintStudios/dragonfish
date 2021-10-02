@@ -42,7 +42,7 @@ import {
     ChangeBio,
     ChangeTagline,
 } from '@dragonfish/shared/models/accounts';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 
 /**
  * ## DragonfishNetworkService
@@ -293,12 +293,13 @@ export class DragonfishNetworkService {
         query: string,
         kind: SearchKind,
         author: string,
+        category: SearchCategory,
         pageNum: number,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?query=`
-                 + `${query}&kind=${kind}&author=${author}&pageNum=${pageNum}`,
+                 + `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );

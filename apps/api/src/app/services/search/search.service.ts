@@ -5,11 +5,11 @@ import * as sanitizeHtml from 'sanitize-html';
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 import { UsersStore } from '@dragonfish/api/database/users';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { User } from '@dragonfish/shared/models/users';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class SearchService implements ISearch {
@@ -19,6 +19,7 @@ export class SearchService implements ISearch {
 
     constructor(private readonly usersStore: UsersStore, private readonly contentGroupStore: ContentGroupStore) {}
 
+    /** DEPRECATED */
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         const parsedQuery = `"${sanitizeHtml(query)}"`;
 
@@ -27,6 +28,7 @@ export class SearchService implements ISearch {
             this.contentGroupStore.findRelatedContent(parsedQuery,
                 [ContentKind.BlogContent],
                 null,
+                null,
                 this.INITIAL_PAGE,
                 this.INITIAL_MAX_PER_PAGE,
                 contentFilter
@@ -34,6 +36,7 @@ export class SearchService implements ISearch {
             this.contentGroupStore.findRelatedContent(
                 parsedQuery,
                 [ContentKind.PoetryContent, ContentKind.ProseContent],
+                null,
                 null,
                 this.INITIAL_PAGE,
                 this.INITIAL_MAX_PER_PAGE,
@@ -53,6 +56,7 @@ export class SearchService implements ISearch {
         query: string,
         searchKind: SearchKind,
         author: string,
+        searchCategory: SearchCategory,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -86,11 +90,20 @@ export class SearchService implements ISearch {
                 authorId = users.docs[0]._id;
             }
         }
+        let category: WorkKind = null;
+        if (searchCategory == SearchCategory.Fanwork) {
+            category = WorkKind.Fanwork;
+        }
+        else if (searchCategory == SearchCategory.Original) {
+            category = WorkKind.Original;
+        }
+        // Keep category null if it's Any, since then we don't filter by category
 
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             kinds,
             authorId,
+            category,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -102,6 +115,7 @@ export class SearchService implements ISearch {
         return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 
+    /** DEPRECATED */
     async searchBlogs(
         query: string,
         pageNum: number,
@@ -112,12 +126,14 @@ export class SearchService implements ISearch {
             parsedQuery,
             [ContentKind.BlogContent],
             null,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
         );
     }
 
+    /** DEPRECATED */
     async searchContent(
         query: string,
         pageNum: number,
@@ -127,6 +143,7 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
+            null,
             null,
             pageNum,
             this.MAX_PER_PAGE,
