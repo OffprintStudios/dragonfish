@@ -4,6 +4,7 @@ import { ContentRating } from './content-rating.enum';
 import { WorkStatus } from './work-status.enum';
 import { ApprovalStatus } from './approval-status.enum';
 
+/** DEPRECATED */
 export interface Work {
     readonly _id: string;
     readonly author: AuthorInfo;

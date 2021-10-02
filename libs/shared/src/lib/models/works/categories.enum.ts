@@ -1,3 +1,4 @@
+/** DEPRECATED */
 export enum Categories {
     OriginalFiction = 'Original Fiction',
     Fanfiction = 'Fanfiction',
