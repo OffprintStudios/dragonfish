@@ -6,6 +6,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/sections';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 @Injectable({ providedIn: 'root' })
 export class SectionsService {
@@ -14,6 +15,7 @@ export class SectionsService {
         private sectionsQuery: SectionsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
+        private pseudQuery: PseudonymsQuery,
     ) {}
 
     public setSections(sections: Section[]) {
@@ -32,7 +34,7 @@ export class SectionsService {
     //#region ---CRUD OPERATIONS---
 
     public create(contentId: string, sectionInfo: SectionForm) {
-        return this.network.createSection(contentId, sectionInfo).pipe(
+        return this.network.createSection(this.pseudQuery.currentId, contentId, sectionInfo).pipe(
             tap((result: Section) => {
                 this.sectionsStore.add(result);
                 this.alerts.success(`Section created!`);
@@ -45,7 +47,7 @@ export class SectionsService {
     }
 
     public save(contentId: string, sectionId: string, sectionInfo: SectionForm) {
-        return this.network.editSection(contentId, sectionId, sectionInfo).pipe(
+        return this.network.editSection(this.pseudQuery.currentId, contentId, sectionId, sectionInfo).pipe(
             tap((result: Section) => {
                 this.sectionsStore.update(sectionId, result);
                 this.alerts.success(`Changes saved!`);
@@ -58,7 +60,7 @@ export class SectionsService {
     }
 
     public publish(contentId: string, sectionId: string, pubStatus: PublishSection) {
-        return this.network.publishSection(contentId, sectionId, pubStatus).pipe(
+        return this.network.publishSection(this.pseudQuery.currentId, contentId, sectionId, pubStatus).pipe(
             tap((result: Section) => {
                 this.sectionsStore.update(sectionId, result);
                 //this.stuff.updateWordCount(result, pubStatus);
@@ -71,7 +73,7 @@ export class SectionsService {
     }
 
     public delete(contentId: string, sectionId: string) {
-        return this.network.deleteSection(contentId, sectionId).pipe(
+        return this.network.deleteSection(this.pseudQuery.currentId, contentId, sectionId).pipe(
             tap(() => {
                 this.sectionsStore.remove(sectionId);
                 this.sectionsStore.setActive(null);

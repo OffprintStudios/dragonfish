@@ -1132,29 +1132,40 @@ export class DragonfishNetworkService {
      * Sends a request to create a new section for the specified piece of content, given the content's ID
      * and the new section info.
      *
+     * @param pseudId
      * @param contentId The content ID
      * @param sectionInfo The info for the new section
      */
-    public createSection(contentId: string, sectionInfo: SectionForm): Observable<Section> {
+    public createSection(pseudId: string, contentId: string, sectionInfo: SectionForm): Observable<Section> {
         return handleResponse(
-            this.http.put<Section>(`${this.baseUrl}/sections/create-section?contentId=${contentId}`, sectionInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.put<Section>(
+                `${this.baseUrl}/sections/create-section?pseudId=${pseudId}&contentId=${contentId}`,
+                sectionInfo,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
     /**
      * Sends a request to save any edits to the specified section, belonging to the specified content.
      *
+     * @param pseudId
      * @param contentId The content ID
      * @param sectionId The section ID
      * @param sectionInfo The info to save
      */
-    public editSection(contentId: string, sectionId: string, sectionInfo: SectionForm): Observable<Section> {
+    public editSection(
+        pseudId: string,
+        contentId: string,
+        sectionId: string,
+        sectionInfo: SectionForm,
+    ): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.baseUrl}/sections/edit-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.baseUrl}/sections/edit-section?pseudId=${pseudId}&contentId=${contentId}&sectionId=${sectionId}`,
                 sectionInfo,
                 { observe: 'response', withCredentials: true },
             ),
@@ -1164,13 +1175,14 @@ export class DragonfishNetworkService {
     /**
      * Sends a request to delete the specified section, belonging to the specified content.
      *
+     * @param pseudId
      * @param contentId The content ID
      * @param sectionId The section ID
      */
-    public deleteSection(contentId: string, sectionId: string): Observable<Section> {
+    public deleteSection(pseudId: string, contentId: string, sectionId: string): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.baseUrl}/sections/delete-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.baseUrl}/sections/delete-section?pseudId=${pseudId}&contentId=${contentId}&sectionId=${sectionId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
@@ -1180,14 +1192,20 @@ export class DragonfishNetworkService {
     /**
      * Sends a request to flip the current publishing status of the specified section.
      *
+     * @param pseudId
      * @param contentId The content ID
      * @param sectionId The section ID
      * @param pubStatus The publishing status
      */
-    public publishSection(contentId: string, sectionId: string, pubStatus: PublishSection): Observable<Section> {
+    public publishSection(
+        pseudId: string,
+        contentId: string,
+        sectionId: string,
+        pubStatus: PublishSection,
+    ): Observable<Section> {
         return handleResponse(
             this.http.patch<Section>(
-                `${this.baseUrl}/sections/publish-section?contentId=${contentId}&sectionId=${sectionId}`,
+                `${this.baseUrl}/sections/publish-section?pseudId=${pseudId}&contentId=${contentId}&sectionId=${sectionId}`,
                 pubStatus,
                 { observe: 'response', withCredentials: true },
             ),

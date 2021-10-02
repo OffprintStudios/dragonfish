@@ -5,13 +5,11 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AuthorsNotePos, Section, SectionForm, PublishSection } from '@dragonfish/shared/models/sections';
-import { MatDialog } from '@angular/material/dialog';
-import { PopupComponent } from '@dragonfish/client/ui';
-import { PopupModel } from '@dragonfish/shared/models/util';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
+import { Location } from '@angular/common';
 
 @UntilDestroy()
 @Component({
@@ -36,10 +34,10 @@ export class SectionPageComponent implements OnInit {
         private sectionsService: SectionsService,
         public auth: AuthService,
         public workPageQuery: WorkPageQuery,
-        private dialog: MatDialog,
         private alerts: AlertsService,
         private route: ActivatedRoute,
         private router: Router,
+        private location: Location,
     ) {}
 
     ngOnInit(): void {
@@ -69,7 +67,11 @@ export class SectionPageComponent implements OnInit {
         this.previewMode = this.previewMode !== true;
     }
 
-    saveChanges(section: Section) {
+    goBack() {
+        this.location.back();
+    }
+
+    saveChanges(section?: Section) {
         if (this.fields.title.invalid) {
             this.alerts.warn(`Titles must be between 3 and 100 characters.`);
             return;
@@ -86,25 +88,18 @@ export class SectionPageComponent implements OnInit {
             usesNewEditor: true,
             authorsNote: this.fields.authorsNote.value,
             authorsNotePos: this.fields.authorsNotePos.value,
-            oldWords: section.stats.words,
+            oldWords: section ? section.stats.words : null,
         };
 
-        this.sectionsService.save(this.workPageQuery.contentId, section._id, sectionInfo).subscribe((section) => {
-            this.router.navigate(['section', section._id, slugify(section.title)]);
-        });
-    }
-
-    delete(sectionId: string) {
-        const alertData: PopupModel = {
-            message: 'Are you sure you want to delete this? This action is irreversible.',
-            confirm: true,
-        };
-        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
-        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
-            if (wantsToDelete) {
-                this.sectionsService.delete(this.workPageQuery.contentId, sectionId).subscribe();
-            }
-        });
+        if (this.createMode === true) {
+            this.sectionsService.create(this.workPageQuery.contentId, sectionInfo).subscribe((content) => {
+                this.router.navigate(['section', content._id, slugify(content.title)]);
+            });
+        } else {
+            this.sectionsService.save(this.workPageQuery.contentId, section._id, sectionInfo).subscribe(() => {
+                this.previewMode = true;
+            });
+        }
     }
 
     pubUnPub(section: Section) {

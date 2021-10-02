@@ -1,6 +1,6 @@
 <div class="w-full h-screen overflow-y-auto">
     <div class="section-topbar">
-        <button>
+        <button (click)="goBack()">
             <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
         </button>
         <div class="mx-0.5"></div>
@@ -15,18 +15,20 @@
             </div>
         </div>
         <ng-container *ngIf="createMode; else viewMode">
-            <button>
+            <button (click)="saveChanges()">
                 <rmx-icon name="save-3-line"></rmx-icon>
                 <span>Save</span>
             </button>
         </ng-container>
         <ng-template #viewMode>
             <ng-container *ngIf="!previewMode; else viewButtons">
-                <button>
-                    <rmx-icon name="save-3-line"></rmx-icon>
-                    <span>Save</span>
-                </button>
-                <button>
+                <ng-container *ngIf="sectionsQuery.current$ | async as section">
+                    <button (click)="saveChanges(section)">
+                        <rmx-icon name="save-3-line"></rmx-icon>
+                        <span>Save</span>
+                    </button>
+                </ng-container>
+                <button (click)="switchView()">
                     <rmx-icon name="close-line"></rmx-icon>
                     <span>Cancel</span>
                 </button>
@@ -43,7 +45,7 @@
                     </button>
                 </ng-container>
                 <ng-template #editButton>
-                    <button>
+                    <button (click)="switchView()">
                         <rmx-icon name="edit-line"></rmx-icon>
                         <span>Edit</span>
                     </button>
@@ -101,7 +103,7 @@
                             </div>
                         </ng-container>
                     </ng-container>
-                    <div class="html-description" [innerHtml]="section.body | safeHtml"></div>
+                    <div class="section-body" [innerHtml]="section.body | safeHtml"></div>
                     <ng-container *ngIf="section.authorsNote">
                         <ng-container *ngIf="section.authorsNotePos === authorsNotePosOptions.Bottom">
                             <div class="authors-note-box">
