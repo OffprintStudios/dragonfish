@@ -131,13 +131,14 @@ export class SearchComponent implements OnInit {
     }
 
     private navigate() {
+        let notUserSearch = this.currentSearchKind != SearchKind.User;
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { 
                 query: this.currentQuery,
                 kind: this.currentSearchKind != SearchKind.ProseAndPoetry ? this.currentSearchKind : null,
-                author: this.currentAuthor ? this.currentAuthor : null,
-                category: this.currentCategory != SearchCategory.Any ? this.currentCategory : null,
+                author: (this.currentAuthor && notUserSearch) ? this.currentAuthor : null,
+                category: (this.currentCategory != SearchCategory.Any && notUserSearch) ? this.currentCategory : null,
                 page: this.pageNum != 1 ? this.pageNum : null,
             },
             queryParamsHandling: 'merge',
