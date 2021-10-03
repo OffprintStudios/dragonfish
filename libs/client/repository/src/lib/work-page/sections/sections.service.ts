@@ -7,7 +7,6 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { PseudonymsQuery } from '../../pseudonyms';
-import { WorkPageService } from '../work-page.service';
 
 @Injectable({ providedIn: 'root' })
 export class SectionsService {
@@ -17,7 +16,6 @@ export class SectionsService {
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
         private pseudQuery: PseudonymsQuery,
-        private worksService: WorkPageService,
     ) {}
 
     public setSections(sections: Section[]) {
@@ -65,7 +63,8 @@ export class SectionsService {
         return this.network.publishSection(this.pseudQuery.currentId, contentId, sectionId, pubStatus).pipe(
             tap((result: Section) => {
                 this.sectionsStore.update(sectionId, result);
-                this.worksService.updateWordCount(result, pubStatus);
+                location.reload();
+                //this.worksService.updateWordCount(result, pubStatus);
             }),
             catchError((err) => {
                 this.alerts.error(err.error);
