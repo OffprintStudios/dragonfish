@@ -4,17 +4,18 @@ import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
 import { ContentModel } from '@dragonfish/shared/models/content';
-import { User } from '@dragonfish/shared/models/users';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
 import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Controller('search')
 export class SearchController {
     constructor(@Inject('ISearch') private readonly searchService: ISearch) {}
 
+    /** DEPRECATED */
     @ApiTags(DragonfishTags.Search)
     @Get('get-initial-results')
     async getInitialResults(
@@ -46,13 +47,14 @@ export class SearchController {
 
     @ApiTags(DragonfishTags.Search)
     @Get('get-user-results')
-    async getUserRequests(
+    async getUserResults(
         @Query('query') query: string,
         @Query('pageNum') pageNum: number
-    ): Promise<PaginateResult<User>> {
+    ): Promise<PaginateResult<Pseudonym>> {
         return await this.searchService.searchUsers(query, pageNum);
     }
 
+    /** DEPRECATED */
     @ApiTags(DragonfishTags.Search)
     @Get('get-blog-results')
     async getBlogResults(
@@ -63,6 +65,7 @@ export class SearchController {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
 
+    /** DEPRECATED */
     @ApiTags(DragonfishTags.Search)
     @Get('get-work-results')
     async getWorkResults(

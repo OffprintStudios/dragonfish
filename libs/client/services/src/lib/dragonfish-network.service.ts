@@ -268,6 +268,7 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** DEPRECATED */
     /**
      * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
      * @param query The user's search string.
@@ -305,6 +306,7 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** DEPRECATED */
     public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -314,6 +316,7 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** DEPRECATED */
     public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -323,9 +326,9 @@ export class DragonfishNetworkService {
         );
     }
 
-    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<Pseudonym>> {
         return handleResponse(
-            this.http.get<PaginateResult<User>>(
+            this.http.get<PaginateResult<Pseudonym>>(
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),

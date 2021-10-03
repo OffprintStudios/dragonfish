@@ -8,7 +8,7 @@ import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 import { ContentModel } from '@dragonfish/shared/models/content';
-import { User } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-search',
@@ -29,7 +29,7 @@ export class SearchComponent implements OnInit {
     searchResultWorks: PaginateResult<ContentModel>;
     searchResultBlogs: PaginateResult<ContentModel>;
     searchResultNews: PaginateResult<ContentModel>;
-    searchResultUsers: PaginateResult<User>;
+    searchResultUsers: PaginateResult<Pseudonym>;
     searchForm = new FormGroup({
         query: new FormControl(''),
         kind: new FormControl(null),

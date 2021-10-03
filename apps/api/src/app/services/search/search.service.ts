@@ -6,10 +6,10 @@ import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
-import { UsersStore } from '@dragonfish/api/database/users';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
-import { User } from '@dragonfish/shared/models/users';
 import { ContentKind, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
+import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Injectable()
 export class SearchService implements ISearch {
@@ -17,39 +17,40 @@ export class SearchService implements ISearch {
     readonly INITIAL_MAX_PER_PAGE = 6;
     readonly MAX_PER_PAGE = 15;
 
-    constructor(private readonly usersStore: UsersStore, private readonly contentGroupStore: ContentGroupStore) {}
+    constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
     /** DEPRECATED */
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
+        // const parsedQuery = `"${sanitizeHtml(query)}"`;
 
-        const [initialUsers, initialBlogs, initialContent] = await Promise.all([
-            this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
-            this.contentGroupStore.findRelatedContent(parsedQuery,
-                [ContentKind.BlogContent],
-                null,
-                null,
-                this.INITIAL_PAGE,
-                this.INITIAL_MAX_PER_PAGE,
-                contentFilter
-            ),
-            this.contentGroupStore.findRelatedContent(
-                parsedQuery,
-                [ContentKind.PoetryContent, ContentKind.ProseContent],
-                null,
-                null,
-                this.INITIAL_PAGE,
-                this.INITIAL_MAX_PER_PAGE,
-                contentFilter
-            ),
-        ]);
+        // const [initialUsers, initialBlogs, initialContent] = await Promise.all([
+        //     this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
+        //     this.contentGroupStore.findRelatedContent(parsedQuery,
+        //         [ContentKind.BlogContent],
+        //         null,
+        //         null,
+        //         this.INITIAL_PAGE,
+        //         this.INITIAL_MAX_PER_PAGE,
+        //         contentFilter
+        //     ),
+        //     this.contentGroupStore.findRelatedContent(
+        //         parsedQuery,
+        //         [ContentKind.PoetryContent, ContentKind.ProseContent],
+        //         null,
+        //         null,
+        //         this.INITIAL_PAGE,
+        //         this.INITIAL_MAX_PER_PAGE,
+        //         contentFilter
+        //     ),
+        // ]);
 
-        const result: InitialResults = {
-            users: initialUsers.docs,
-            blogs: initialBlogs.docs,
-            works: initialContent.docs,
-        };
-        return result;
+        // const result: InitialResults = {
+        //     users: initialUsers.docs,
+        //     blogs: initialBlogs.docs,
+        //     works: initialContent.docs,
+        // };
+        // return result;
+        return null;
     }
 
     async findRelatedContent(
@@ -110,9 +111,9 @@ export class SearchService implements ISearch {
         );
     }
 
-    async searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
+    async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
+        const parsedQuery = sanitizeHtml(query);
+        return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 
     /** DEPRECATED */
