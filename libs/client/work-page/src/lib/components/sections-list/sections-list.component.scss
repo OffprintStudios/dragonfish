@@ -3,6 +3,9 @@ li.section-item {
     &:last-child {
         @apply border-b rounded-b-md rounded-t-none;
     }
+    &:first-child {
+        @apply rounded-t-md;
+    }
     div.section-button {
         @apply flex items-center px-4 py-2 flex-1 rounded-r-md cursor-pointer;
         &:hover {

@@ -10,6 +10,7 @@ import { throwError } from 'rxjs';
 import { FileUploader } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { SectionsService } from './sections';
+import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -109,6 +110,22 @@ export class WorkPageService {
                 return throwError(() => err);
             }),
         );
+    }
+
+    public updateWordCount(section: Section, pubStatus: PublishSection) {
+        if (section.published === true && pubStatus.oldPub === false) {
+            // if newly published
+            this.workStore.update((state) => {
+                state.content.stats.words = state.content.stats.words + section.stats.words;
+            });
+        } else if (section.published === false && pubStatus.oldPub === true) {
+            // if unpublished
+            this.workStore.update((state) => {
+                if (state.content.stats.words !== 0) {
+                    state.content.stats.words = state.content.stats.words - section.stats.words;
+                }
+            });
+        }
     }
 
     //#endregion
