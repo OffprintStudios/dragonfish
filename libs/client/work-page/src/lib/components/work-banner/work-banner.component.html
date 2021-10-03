@@ -78,42 +78,18 @@
                     <rmx-icon name="information-line"></rmx-icon>
                     <span>Info</span>
                 </div>
+                <div class="mx-0.5"></div>
                 <div class="nav-link px-7" [routerLink]="['comments']" [routerLinkActive]="'active'">
                     <rmx-icon name="discuss-line"></rmx-icon>
                     <span>{{ content.stats.comments | abbreviate }} Comment{{ content.stats.comments | pluralize }}</span>
                 </div>
+                <div class="mx-0.5"></div>
                 <div class="nav-link px-6" [routerLink]="['related']" [routerLinkActive]="'active'">
                     <rmx-icon name="collage-line"></rmx-icon>
                     <span>Related Stuff</span>
                 </div>
             </div>
         </div>
-        <!--<div class="flex">
-            <ng-container *ngIf="content.meta.coverArt; else uploadArt">
-                <div
-                    class="edit-cover-art rounded-md"
-                    [matTooltip]="'Edit Cover Art'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    (mouseenter)="addEditIcon = true"
-                    (mouseleave)="addEditIcon = false"
-                    (click)="uploadCoverArt(content._id, content.kind)"
-                >
-                    <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
-                    <img class="rounded-md" [src]="content.meta.coverArt" />
-                </div>
-            </ng-container>
-            <ng-template #uploadArt>
-                <div
-                    class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-row items-center justify-center"
-                    [matTooltip]="'Add Cover Art'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    (click)="uploadCoverArt(content._id, content.kind)"
-                >
-                    <rmx-icon name="add-box-line"></rmx-icon>
-                </div>
-            </ng-template>
-
-        </div>-->
     </div>
 </div>
 
