@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
+import { PseudonymsQuery } from '../pseudonyms';
 import { ContentKind, ContentModel, FormType } from '@dragonfish/shared/models/content';
-import { WorkPageQuery } from '@dragonfish/client/repository/work-page/work-page.query';
-import { WorkPageStore } from '@dragonfish/client/repository/work-page/work-page.store';
+import { WorkPageQuery } from './work-page.query';
+import { WorkPageStore } from './work-page.store';
 import { catchError, tap } from 'rxjs/operators';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { throwError } from 'rxjs';
@@ -32,6 +32,7 @@ export class WorkPageService {
                 this.workStore.update({
                     content: result.content,
                     ratings: result.ratings,
+                    wordCount: result.content.stats.words,
                 });
                 this.sections.setSections((result.content as any).sections);
             }),
@@ -115,16 +116,16 @@ export class WorkPageService {
     public updateWordCount(section: Section, pubStatus: PublishSection) {
         if (section.published === true && pubStatus.oldPub === false) {
             // if newly published
-            this.workStore.update((state) => {
-                state.content.stats.words = state.content.stats.words + section.stats.words;
+            this.workStore.update({
+                wordCount: this.workQuery.wordCount + section.stats.words,
             });
         } else if (section.published === false && pubStatus.oldPub === true) {
             // if unpublished
-            this.workStore.update((state) => {
-                if (state.content.stats.words !== 0) {
-                    state.content.stats.words = state.content.stats.words - section.stats.words;
-                }
-            });
+            if (this.workQuery.wordCount !== 0) {
+                this.workStore.update({
+                    wordCount: this.workQuery.wordCount - section.stats.words,
+                });
+            }
         }
     }
 

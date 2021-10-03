@@ -42,7 +42,7 @@
             </div>
             <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
                 <h4 class="text-xl font-medium">Words</h4>
-                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.stats.words }}</span>
+                <span class="uppercase font-semibold font-serif text-lg tracking-wider" *ngIf="workQuery.wordCount$ | async as wordCount">{{ wordCount }}</span>
             </div>
             <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
                 <h4 class="text-xl font-medium">Views</h4>

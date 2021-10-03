@@ -9,6 +9,7 @@ export class WorkPageQuery extends Query<WorkPageState> {
     public state$ = this.select();
     public content$ = this.select('content');
     public ratings$ = this.select('ratings');
+    public wordCount$ = this.select('wordCount');
 
     constructor(protected store: WorkPageStore) {
         super(store);
@@ -29,6 +30,10 @@ export class WorkPageQuery extends Query<WorkPageState> {
 
     public get author() {
         return this.getValue().content.author as Pseudonym;
+    }
+
+    public get wordCount() {
+        return this.getValue().content.stats.words;
     }
 
     public get likes() {

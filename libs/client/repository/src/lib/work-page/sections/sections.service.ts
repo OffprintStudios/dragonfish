@@ -17,7 +17,7 @@ export class SectionsService {
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
         private pseudQuery: PseudonymsQuery,
-        private workService: WorkPageService,
+        private worksService: WorkPageService,
     ) {}
 
     public setSections(sections: Section[]) {
@@ -65,7 +65,7 @@ export class SectionsService {
         return this.network.publishSection(this.pseudQuery.currentId, contentId, sectionId, pubStatus).pipe(
             tap((result: Section) => {
                 this.sectionsStore.update(sectionId, result);
-                this.workService.updateWordCount(result, pubStatus);
+                this.worksService.updateWordCount(result, pubStatus);
             }),
             catchError((err) => {
                 this.alerts.error(err.error);
