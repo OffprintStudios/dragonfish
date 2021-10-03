@@ -1,6 +1,26 @@
 li.section-item {
     @apply flex items-center border-t border-l border-r rounded-t-md;
     &:last-child {
-        @apply border-b rounded-b-md;
+        @apply border-b rounded-b-md rounded-t-none;
+    }
+    div.section-button {
+        @apply flex items-center px-4 py-2 flex-1 rounded-r-md cursor-pointer;
+        &:hover {
+            @apply text-white;
+            background: var(--accent);
+        }
+    }
+    div.pub-button {
+        @apply border-r h-full py-2 px-2 cursor-pointer rounded-l-md;
+        &:hover {
+            @apply text-white;
+            background: var(--accent);
+        }
+        &.published {
+            @apply bg-green-500 text-white;
+            &:hover {
+                @apply bg-green-700;
+            }
+        }
     }
 }

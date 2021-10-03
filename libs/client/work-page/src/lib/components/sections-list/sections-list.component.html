@@ -15,7 +15,26 @@
                         class="section-item border-gray-600 dark:border-white"
                         [routerLink]="['section', section._id, section.title | slugify]"
                     >
-                        <div class="px-4 py-2">{{ section.title }}</div>
+                        <div
+                            class="pub-button border-gray-600 dark:border-white"
+                            [matTooltip]="'Publish'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            *ngIf="section.published === false"
+                        >
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                        </div>
+                        <div
+                            class="pub-button published border-gray-600 dark:border-white"
+                            [matTooltip]="'Convert to Draft'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            *ngIf="section.published === true"
+                        >
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                        </div>
+                        <div class="section-button">
+                            <div class="flex-1">{{ section.title }}</div>
+                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                        </div>
                     </li>
                 </ng-container>
             </ul>
