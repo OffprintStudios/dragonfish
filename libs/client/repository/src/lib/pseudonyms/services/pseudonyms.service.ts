@@ -6,7 +6,6 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PseudonymsQuery } from '../pseudonyms.query';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { FileUploader } from 'ng2-file-upload';
-import { FrontendUser } from '@dragonfish/shared/models/users';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { throwError } from 'rxjs';
 

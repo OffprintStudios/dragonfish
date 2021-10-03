@@ -15,6 +15,7 @@ import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { UserDocument } from './users.schema';
 import { InviteCodesDocument } from './invite-codes.schema';
 
+/** DEPRECATED */
 @Injectable()
 export class UsersStore {
     constructor(

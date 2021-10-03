@@ -4,6 +4,7 @@ import { AuditSessionSchema } from './audit-session.schema';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
 
+/** DEPRECATED */
 @Schema({ timestamps: true, autoIndex: true, collection: 'users' })
 export class UserDocument extends Document implements User {
     @Prop({ type: String, default: () => nanoid() }) readonly _id: string;
