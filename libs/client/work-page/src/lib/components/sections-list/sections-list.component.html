@@ -13,13 +13,13 @@
                 <ng-container *ngFor="let section of sections">
                     <li
                         class="section-item border-gray-600 dark:border-white"
-                        [routerLink]="['section', section._id, section.title | slugify]"
                     >
                         <div
                             class="pub-button border-gray-600 dark:border-white"
                             [matTooltip]="'Publish'"
                             [matTooltipClass]="'offprint-tooltip'"
                             *ngIf="section.published === false"
+                            (click)="pubUnPub(section)"
                         >
                             <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
                         </div>
@@ -28,10 +28,11 @@
                             [matTooltip]="'Convert to Draft'"
                             [matTooltipClass]="'offprint-tooltip'"
                             *ngIf="section.published === true"
+                            (click)="pubUnPub(section)"
                         >
-                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            <rmx-icon name="checkbox-circle-line"></rmx-icon>
                         </div>
-                        <div class="section-button">
+                        <div class="section-button" [routerLink]="['section', section._id, section.title | slugify]">
                             <div class="flex-1">{{ section.title }}</div>
                             <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
                         </div>

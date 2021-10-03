@@ -93,7 +93,9 @@ export class SectionPageComponent implements OnInit {
 
         if (this.createMode === true) {
             this.sectionsService.create(this.workPageQuery.contentId, sectionInfo).subscribe((content) => {
-                this.router.navigate(['section', content._id, slugify(content.title)]);
+                this.router.navigate(['section', content._id, slugify(content.title)], {
+                    relativeTo: this.route.parent,
+                });
             });
         } else {
             this.sectionsService.save(this.workPageQuery.contentId, section._id, sectionInfo).subscribe(() => {
