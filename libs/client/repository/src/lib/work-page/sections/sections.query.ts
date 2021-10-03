@@ -21,4 +21,10 @@ export class SectionsQuery extends QueryEntity<SectionsState> {
     public get numSections() {
         return this.getCount();
     }
+
+    public get pubSections() {
+        return this.getAll().filter((item) => {
+            return item.published === true;
+        });
+    }
 }

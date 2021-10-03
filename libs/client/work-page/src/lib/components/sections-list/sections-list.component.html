@@ -36,6 +36,14 @@
                             <div class="flex-1">{{ section.title }}</div>
                             <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
                         </div>
+                        <div
+                            class="pub-button end border-gray-600 dark:border-white"
+                            [matTooltip]="'Delete'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            (click)="delete(section._id)"
+                        >
+                            <rmx-icon name="delete-bin-line"></rmx-icon>
+                        </div>
                     </li>
                 </ng-container>
             </ul>

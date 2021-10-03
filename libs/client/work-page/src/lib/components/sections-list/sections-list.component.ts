@@ -3,6 +3,9 @@ import { SectionsQuery, SectionsService } from '@dragonfish/client/repository/wo
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
 
 @Component({
     selector: 'dragonfish-sections-list',
@@ -15,6 +18,7 @@ export class SectionsListComponent {
         public auth: AuthService,
         public workPageQuery: WorkPageQuery,
         private sectionsService: SectionsService,
+        private dialog: MatDialog,
     ) {}
 
     pubUnPub(section: Section) {
@@ -24,5 +28,18 @@ export class SectionsListComponent {
         };
 
         this.sectionsService.publish(this.workPageQuery.contentId, section._id, pubStatus).subscribe();
+    }
+
+    delete(sectionId: string) {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
+            if (wantsToDelete) {
+                this.sectionsService.delete(this.workPageQuery.contentId, sectionId).subscribe();
+            }
+        });
     }
 }

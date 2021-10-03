@@ -22,5 +22,8 @@ li.section-item {
                 @apply bg-green-700;
             }
         }
+        &.end {
+            @apply border-r-0 border-l rounded-l-none rounded-r-md;
+        }
     }
 }
