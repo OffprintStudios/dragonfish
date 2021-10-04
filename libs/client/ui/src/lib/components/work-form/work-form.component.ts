@@ -159,7 +159,9 @@ export class WorkFormComponent implements OnInit {
         };
 
         if (this.data.content) {
-            // TODO: implement editing
+            this.workPage.save(this.data.content._id, ContentKind.ProseContent, formInfo).subscribe(() => {
+                this.dialogRef.close();
+            });
         } else {
             this.workPage.createWork(ContentKind.ProseContent, formInfo).subscribe(() => {
                 this.dialogRef.close();
@@ -181,7 +183,9 @@ export class WorkFormComponent implements OnInit {
         };
 
         if (this.data.content) {
-            // TODO: implement editing
+            this.workPage.save(this.data.content._id, ContentKind.PoetryContent, formInfo).subscribe(() => {
+                this.dialogRef.close();
+            });
         } else {
             this.workPage.createWork(ContentKind.PoetryContent, formInfo).subscribe(() => {
                 this.dialogRef.close();
@@ -197,7 +201,7 @@ export class WorkFormComponent implements OnInit {
             category: (content.meta as any).category,
             form: content.kind === 'PoetryContent' ? (content.meta as any).form : null,
             genres: (content.meta as any).genres,
-            tags: (content.meta as any).tags,
+            tags: content.tags,
             rating: content.meta.rating,
             status: (content.meta as any).status,
         });

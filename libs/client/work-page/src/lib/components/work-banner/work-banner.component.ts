@@ -5,6 +5,8 @@ import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.co
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { slugify } from 'voca';
+import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
+import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -19,7 +21,13 @@ export class WorkBannerComponent implements OnInit {
     tagKind = TagKind;
     genres = Genres;
 
-    constructor(private alerts: AlertsService, private dialog: MatDialog, public auth: AuthService) {}
+    constructor(
+        private alerts: AlertsService,
+        private dialog: MatDialog,
+        public auth: AuthService,
+        private workService: WorkPageService,
+        public workQuery: WorkPageQuery,
+    ) {}
 
     ngOnInit(): void {
         if (this.content.kind === 'ProseContent') {
@@ -31,6 +39,15 @@ export class WorkBannerComponent implements OnInit {
 
     toggleMoreMenu() {
         this.moreMenuOpened = !this.moreMenuOpened;
+    }
+
+    openEditModal() {
+        const formData: WorkFormData = {
+            kind: this.content.kind,
+            content: this.content,
+        };
+        console.log(this.content);
+        this.dialog.open(WorkFormComponent, { data: formData });
     }
 
     addToLibrary() {

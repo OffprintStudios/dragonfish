@@ -32,20 +32,32 @@
                         by {{ content.author.screenName }}
                     </h2>
                 </div>
-                <button class="header-button" (click)="addToLibrary()">
-                    <rmx-icon name="add-box-line"></rmx-icon>
-                    <span>Library</span>
-                </button>
-                <div class="mx-1"></div>
-                <button
-                    class="header-button"
-                    [matMenuTriggerFor]="moreMenu"
-                    [ngClass]="{'active': moreMenuOpened}"
-                    (menuOpened)="toggleMoreMenu()"
-                    (menuClosed)="toggleMoreMenu()"
-                >
-                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                </button>
+                <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
+                    <button class="header-button">
+                        <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                        <span>Publish</span>
+                    </button>
+                    <div class="mx-1"></div>
+                    <button class="header-button" [matTooltip]="'Edit info'" [matTooltipClass]="'offprint-tooltip'" (click)="openEditModal()">
+                        <rmx-icon name="edit-line" class="mr-0"></rmx-icon>
+                    </button>
+                </ng-container>
+                <ng-template #otherButtons>
+                    <button class="header-button" (click)="addToLibrary()">
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        <span>Library</span>
+                    </button>
+                    <div class="mx-1"></div>
+                    <button
+                        class="header-button"
+                        [matMenuTriggerFor]="moreMenu"
+                        [ngClass]="{'active': moreMenuOpened}"
+                        (menuOpened)="toggleMoreMenu()"
+                        (menuClosed)="toggleMoreMenu()"
+                    >
+                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                    </button>
+                </ng-template>
             </div>
             <div class="flex items-center w-full">
                 <dragonfish-tag-badge [kind]="tagKind.Type">
