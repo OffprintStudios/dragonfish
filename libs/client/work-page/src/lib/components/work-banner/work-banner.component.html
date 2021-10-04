@@ -33,10 +33,28 @@
                     </h2>
                 </div>
                 <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
-                    <button class="header-button">
-                        <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
-                        <span>Publish</span>
-                    </button>
+                    <ng-container [ngSwitch]="content.audit.published">
+                        <button class="header-button" *ngSwitchCase="pubStatus.Unpublished" (click)="submitToQueue()">
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            <span>Publish</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Published">
+                            <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                            <span>Published</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Rejected">
+                            <rmx-icon name="close-circle-line"></rmx-icon>
+                            <span>Rejected</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.ApprovedUnpublished">
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            <span>Approved</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Pending">
+                            <rmx-icon name="time-line"></rmx-icon>
+                            <span>Pending</span>
+                        </button>
+                    </ng-container>
                     <div class="mx-1"></div>
                     <button class="header-button" [matTooltip]="'Edit info'" [matTooltipClass]="'offprint-tooltip'" (click)="openEditModal()">
                         <rmx-icon name="edit-line" class="mr-0"></rmx-icon>

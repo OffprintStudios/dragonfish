@@ -4,9 +4,9 @@ import { PseudonymsQuery } from '../pseudonyms';
 import { ContentKind, ContentModel, FormType } from '@dragonfish/shared/models/content';
 import { WorkPageQuery } from './work-page.query';
 import { WorkPageStore } from './work-page.store';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, take, tap } from 'rxjs/operators';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { FileUploader } from 'ng2-file-upload';
 import { Router } from '@angular/router';
 import { SectionsService } from './sections';
@@ -84,6 +84,11 @@ export class WorkPageService {
     }
 
     public publish(contentId: string) {
+        if (this.workQuery.wordCount < 750) {
+            this.alerts.error(`Works need a minimum of 750 words before you can submit.`);
+            return of(null).pipe(take(1));
+        }
+
         return this.network.publishOne(this.pseudQuery.currentId, contentId).pipe(
             tap((result: ContentModel) => {
                 this.workStore.update({

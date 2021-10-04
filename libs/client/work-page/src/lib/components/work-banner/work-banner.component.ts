@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { ContentKind, Genres, TagKind } from '@dragonfish/shared/models/content';
+import { ContentKind, Genres, PubStatus, TagKind } from '@dragonfish/shared/models/content';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
@@ -20,6 +20,7 @@ export class WorkBannerComponent implements OnInit {
     addEditIcon = false;
     tagKind = TagKind;
     genres = Genres;
+    pubStatus = PubStatus;
 
     constructor(
         private alerts: AlertsService,
@@ -48,6 +49,10 @@ export class WorkBannerComponent implements OnInit {
         };
         console.log(this.content);
         this.dialog.open(WorkFormComponent, { data: formData });
+    }
+
+    submitToQueue() {
+        this.workService.publish(this.content._id).subscribe();
     }
 
     addToLibrary() {
