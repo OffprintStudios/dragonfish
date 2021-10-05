@@ -42,7 +42,7 @@ import {
     ChangeBio,
     ChangeTagline,
 } from '@dragonfish/shared/models/accounts';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 
 /**
  * ## DragonfishNetworkService
@@ -268,6 +268,7 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** DEPRECATED */
     /**
      * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
      * @param query The user's search string.
@@ -286,21 +287,26 @@ export class DragonfishNetworkService {
      *
      * @param query The user's query
      * @param kind The kind of content that searching for
+     * @param author (Optional) The author of content that searching for 
      * @param pageNum The current results page
      */
     public findRelatedContent(
         query: string,
         kind: SearchKind,
+        author: string,
+        category: SearchCategory,
         pageNum: number,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
+                `${this.baseUrl}/search/find-related-content?query=`
+                 + `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
     }
 
+    /** DEPRECATED */
     public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -310,6 +316,7 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** DEPRECATED */
     public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -319,9 +326,9 @@ export class DragonfishNetworkService {
         );
     }
 
-    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<Pseudonym>> {
         return handleResponse(
-            this.http.get<PaginateResult<User>>(
+            this.http.get<PaginateResult<Pseudonym>>(
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),

@@ -5,6 +5,7 @@ import { PaginateModel, PaginateResult } from 'mongoose';
 import * as models from '@dragonfish/shared/models/works';
 import * as documents from './models';
 
+/** DEPRECATED */
 @Injectable()
 export class WorksService {
     constructor(@InjectModel('Work') private readonly workModel: PaginateModel<documents.WorkDocument>) {}

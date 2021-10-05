@@ -1,9 +1,9 @@
 import { PaginateResult } from 'mongoose';
 
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
-import { User } from '@dragonfish/shared/models/users';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface ISearch {
     /**
@@ -19,12 +19,16 @@ export interface ISearch {
      * 
      * @param query The user's query
      * @param searchKind The kind of content that searching for
+     * @param author (Optional) The author of content that searching for
+     * @param category (Optional) The category of content that searching for
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
     findRelatedContent(
         query: string,
         searchKind: SearchKind,
+        author: string,
+        category: SearchCategory,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;
@@ -35,7 +39,7 @@ export interface ISearch {
      * @param query The user's query
      * @param pageNum The current results page
      */
-    searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>>;
+    searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>>;
 
     /**
      * Finds the current page of blog results matching a user's query.
