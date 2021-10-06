@@ -19,7 +19,9 @@ export class SearchService implements ISearch {
 
     constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
         // const parsedQuery = `"${sanitizeHtml(query)}"`;
 
@@ -111,7 +113,9 @@ export class SearchService implements ISearch {
         return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     async searchBlogs(
         query: string,
         pageNum: number,
@@ -129,7 +133,9 @@ export class SearchService implements ISearch {
         );
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     async searchContent(
         query: string,
         pageNum: number,

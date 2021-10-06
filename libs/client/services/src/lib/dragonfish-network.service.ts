@@ -269,8 +269,8 @@ export class DragonfishNetworkService {
         );
     }
 
-    /** DEPRECATED */
     /**
+     * @deprecated No longer used
      * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
      * @param query The user's search string.
      */
@@ -308,7 +308,9 @@ export class DragonfishNetworkService {
         );
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -318,7 +320,9 @@ export class DragonfishNetworkService {
         );
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(

@@ -15,7 +15,9 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
 export class SearchController {
     constructor(@Inject('ISearch') private readonly searchService: ISearch) {}
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-initial-results')
     async getInitialResults(
@@ -54,7 +56,9 @@ export class SearchController {
         return await this.searchService.searchUsers(query, pageNum);
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-blog-results')
     async getBlogResults(
@@ -65,7 +69,9 @@ export class SearchController {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
 
-    /** DEPRECATED */
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-work-results')
     async getWorkResults(
