@@ -5,7 +5,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind } from '@dragonfish/shared/models/search';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { ContentKind, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
@@ -56,8 +56,8 @@ export class SearchService implements ISearch {
     async findRelatedContent(
         query: string,
         searchKind: SearchKind,
-        author: string,
-        searchCategory: SearchCategory,
+        author: string | null,
+        category: WorkKind | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -91,14 +91,9 @@ export class SearchService implements ISearch {
                 authorId = users.docs[0]._id;
             }
         }
-        let category: WorkKind = null;
-        if (searchCategory == SearchCategory.Fanwork) {
-            category = WorkKind.Fanwork;
+        if (Object.values(WorkKind).indexOf(category) < 0) {
+            category = null;
         }
-        else if (searchCategory == SearchCategory.Original) {
-            category = WorkKind.Original;
-        }
-        // Keep category null if it's Any, since then we don't filter by category
 
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,

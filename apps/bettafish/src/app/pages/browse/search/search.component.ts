@@ -6,8 +6,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { isMobile } from '@dragonfish/shared/functions';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
-import { ContentModel } from '@dragonfish/shared/models/content';
+import { SearchKind } from '@dragonfish/shared/models/search';
+import { ContentModel, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
@@ -17,13 +17,15 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
 })
 export class SearchComponent implements OnInit {
     kindOptions = SearchKind;
-    categoryOptions = SearchCategory;
+    categoryOptions = WorkKind;
     loading = false;
+
+    ANY_CATEGORY = "Any";
 
     currentQuery = '';
     currentSearchKind = SearchKind.ProseAndPoetry;
     currentAuthor = '';
-    currentCategory = SearchCategory.Any;
+    currentCategory: WorkKind = null;
     pageNum = 1;
 
     searchResultWorks: PaginateResult<ContentModel>;
@@ -65,7 +67,7 @@ export class SearchComponent implements OnInit {
             query: this.currentQuery,
             kind: this.currentSearchKind,
             author: this.currentAuthor,
-            category: this.currentCategory,
+            category: (this.currentCategory || this.ANY_CATEGORY),
         });
 
         if (this.currentQuery) {
@@ -76,7 +78,7 @@ export class SearchComponent implements OnInit {
                 this.currentCategory,
                 this.pageNum);
         }
-        if (this.currentAuthor || this.currentCategory != SearchCategory.Any) {
+        if (this.currentAuthor || this.currentCategory != null) {
             this.showAdvancedOptions = true;
         }
         this.onResize();
@@ -125,9 +127,9 @@ export class SearchComponent implements OnInit {
         return Object.values(SearchKind).indexOf(kind) >= 0 ? kind : SearchKind.ProseAndPoetry;
     }
 
-    private parseCategory(categoryString: string): SearchCategory {
-        const category: SearchCategory = categoryString as SearchCategory;
-        return Object.values(SearchCategory).indexOf(category) >= 0 ? category : SearchCategory.Any;
+    private parseCategory(categoryString: string): WorkKind {
+        const category: WorkKind = categoryString as WorkKind;
+        return Object.values(WorkKind).indexOf(category) >= 0 ? category : null;
     }
 
     private navigate() {
@@ -138,7 +140,7 @@ export class SearchComponent implements OnInit {
                 query: this.currentQuery,
                 kind: this.currentSearchKind != SearchKind.ProseAndPoetry ? this.currentSearchKind : null,
                 author: (this.currentAuthor && notUserSearch) ? this.currentAuthor : null,
-                category: (this.currentCategory != SearchCategory.Any && notUserSearch) ? this.currentCategory : null,
+                category: (this.currentCategory != null && notUserSearch) ? this.currentCategory : null,
                 page: this.pageNum != 1 ? this.pageNum : null,
             },
             queryParamsHandling: 'merge',
@@ -158,8 +160,8 @@ export class SearchComponent implements OnInit {
     private fetchData(
         query: string,
         searchKind: SearchKind,
-        author: string,
-        searchCategory: SearchCategory,
+        author: string | null,
+        searchCategory: WorkKind | null,
         pageNum: number
         ) {
         this.loading = true;
