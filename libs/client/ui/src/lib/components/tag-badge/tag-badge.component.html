@@ -9,7 +9,30 @@
         'user': kind === kinds.User
     }"
 >
-    <ng-content></ng-content>
+    <ng-container *ngIf="kind === kinds.Type">
+        <ng-container [ngSwitch]="type">
+            <ng-container *ngSwitchCase="types.ProseContent">
+                <rmx-icon name="book-open-line"></rmx-icon>
+                <span>Prose</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="types.PoetryContent">
+                <rmx-icon name="quill-pen-line"></rmx-icon>
+                <span>Poetry</span>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="kind === kinds.Category">
+        <ng-container [ngSwitch]="category">
+            <ng-container *ngSwitchCase="categories.Original">
+                <rmx-icon name="loader-2-line"></rmx-icon>
+                <span>Original</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="categories.Fanwork">
+                <rmx-icon name="empathize-line"></rmx-icon>
+                <span>Fanwork</span>
+            </ng-container>
+        </ng-container>
+    </ng-container>
     <ng-container *ngIf="kind === kinds.Genre">
         <ng-container [ngSwitch]="genre">
             <ng-container *ngSwitchCase="genres.Comedy">

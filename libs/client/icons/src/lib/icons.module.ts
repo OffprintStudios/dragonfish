@@ -118,6 +118,7 @@ import {
     RiCollageLine,
     RiFontSize,
     RiBookmarkLine,
+    RiEmpathizeLine,
 } from 'angular-remix-icon';
 
 import {
@@ -453,6 +454,7 @@ const remixIcons = {
     RiCollageLine,
     RiFontSize,
     RiBookmarkLine,
+    RiEmpathizeLine,
 };
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { Genres, TagKind } from '@dragonfish/shared/models/content';
+import { ContentKind, Genres, TagKind, WorkKind } from '@dragonfish/shared/models/content';
 
 @Component({
     selector: 'dragonfish-tag-badge',
@@ -9,8 +9,12 @@ import { Genres, TagKind } from '@dragonfish/shared/models/content';
 })
 export class TagBadgeComponent {
     @Input() kind: TagKind;
+    @Input() type: ContentKind;
+    @Input() category: WorkKind;
     @Input() genre: Genres;
 
+    types = ContentKind;
+    categories = WorkKind;
     kinds = TagKind;
     genres = Genres;
 }
