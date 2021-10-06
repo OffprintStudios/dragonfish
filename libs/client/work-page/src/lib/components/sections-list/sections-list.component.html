@@ -9,7 +9,7 @@
     </ng-container>
     <ng-template #hasSections>
         <ng-container *ngIf="auth.checkPseudonym(this.workPageQuery.authorId); else notThisUser">
-            <ul class="my-6 list-none ">
+            <ul class="my-6 list-none">
                 <ng-container *ngFor="let section of sections">
                     <li
                         class="section-item border-gray-600 dark:border-white"
@@ -32,7 +32,7 @@
                         >
                             <rmx-icon name="checkbox-circle-line"></rmx-icon>
                         </div>
-                        <div class="section-button" [routerLink]="['section', section._id, section.title | slugify]">
+                        <div class="section-button" [routerLink]="['view-section', section._id]">
                             <div class="flex-1">{{ section.title }}</div>
                             <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
                         </div>
@@ -49,7 +49,18 @@
             </ul>
         </ng-container>
         <ng-template #notThisUser>
-            not this user
+            <ul class="my-6 list-none">
+                <ng-container *ngFor="let section of sectionsQuery.pubSections; let i = index">
+                    <li
+                        class="section-item border-gray-600 dark:border-white"
+                    >
+                        <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
+                            <div class="flex-1">{{ section.title }}</div>
+                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
         </ng-template>
     </ng-template>
 </ng-container>

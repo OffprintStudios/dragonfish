@@ -7,8 +7,13 @@ export class SectionPageResolver implements Resolve<void> {
     constructor(private sectionsService: SectionsService) {}
 
     resolve(route: ActivatedRouteSnapshot) {
-        const sectionId = route.paramMap.get('sectionId');
+        if (route.paramMap.has('sectionId')) {
+            const sectionId = route.paramMap.get('sectionId');
 
-        return this.sectionsService.setActive(sectionId);
+            return this.sectionsService.setActive(sectionId);
+        } else if (route.paramMap.has('index')) {
+            const index = +route.paramMap.get('index');
+            this.sectionsService.goToSection(index);
+        }
     }
 }

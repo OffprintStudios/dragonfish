@@ -3,4 +3,5 @@ import { ActiveState, EntityState } from '@datorama/akita';
 
 export interface SectionsState extends EntityState<Section, string>, ActiveState {
     pubSecList: Section[];
+    currIndex: number;
 }

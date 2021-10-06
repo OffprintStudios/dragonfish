@@ -27,4 +27,12 @@ export class SectionsQuery extends QueryEntity<SectionsState> {
             return item.published === true;
         });
     }
+
+    public get lastPage() {
+        return this.getValue().currIndex - 1;
+    }
+
+    public get nextPage() {
+        return this.getValue().currIndex + 1;
+    }
 }

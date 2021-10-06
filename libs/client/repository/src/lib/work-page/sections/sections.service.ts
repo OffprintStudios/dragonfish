@@ -88,4 +88,16 @@ export class SectionsService {
     }
 
     //#endregion
+
+    //#region ---SECTION NAVIGATION---
+
+    public goToSection(index: number) {
+        const currSection = this.sectionsQuery.pubSections[index - 1];
+        this.sectionsStore.setActive(currSection._id);
+        this.sectionsStore.update({
+            currIndex: index,
+        });
+    }
+
+    //#endregion
 }

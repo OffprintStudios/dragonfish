@@ -6,6 +6,6 @@ import { SectionsState } from './sections.state';
 @StoreConfig({ name: 'content-sections', idKey: '_id' })
 export class SectionsStore extends EntityStore<SectionsState> {
     constructor() {
-        super({ pubSecList: [] });
+        super({ pubSecList: [], currIndex: 1 });
     }
 }
