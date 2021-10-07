@@ -29,4 +29,8 @@ export class SessionQuery extends Query<SessionState> {
     public get isLoggedIn() {
         return !!this.getValue().token;
     }
+
+    public get roles() {
+        return this.getValue().currAccount.roles;
+    }
 }

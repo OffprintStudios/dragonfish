@@ -27,7 +27,7 @@ export interface IApprovalQueue {
      * @param user The staff user claiming the content
      * @param docId The approval queue document
      */
-    claimContent(user: JwtPayload, docId: string): Promise<ApprovalQueue>;
+    claimContent(user: string, docId: string): Promise<ApprovalQueue>;
 
     /**
      * Approves a piece of content for publishing.
@@ -37,7 +37,7 @@ export interface IApprovalQueue {
      * @param contentId The content ID
      * @param authorId The author ID
      */
-    approveContent(user: JwtPayload, docId: string, contentId: string, authorId: string): Promise<void>;
+    approveContent(user: string, docId: string, contentId: string, authorId: string): Promise<void>;
 
     /**
      * Rejects a piece of content for publishing.
@@ -47,5 +47,5 @@ export interface IApprovalQueue {
      * @param contentId The content ID
      * @param authorId The author ID
      */
-    rejectContent(user: JwtPayload, docId: string, contentId: string, authorId: string): Promise<void>;
+    rejectContent(user: string, docId: string, contentId: string, authorId: string): Promise<void>;
 }

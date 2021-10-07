@@ -24,10 +24,20 @@
                 *ngFor="let entry of queue.docs | paginate: { itemsPerPage: queue.limit, currentPage: pageNum, totalItems: queue.totalDocs }"
             >
                 <td class="p-2 border-r border-gray-600 dark:border-white">
-                    <button>
-                        <rmx-icon name="add-box-line"></rmx-icon>
-                        <span>Claim</span>
-                    </button>
+                    <ng-container *ngIf="checkIfClaimed(entry); else notClaimed">
+                        <ng-container *ngIf="checkIfClaimedByThisUser(entry); else notThisUser">
+                            <a>View >></a>
+                        </ng-container>
+                        <ng-template #notThisUser>
+                            <img class="w-12 h-12 rounded-md border border-gray-600 dark:border-white" [src]="entry.claimedBy.profile.avatar" [alt]="'avatar'">
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #notClaimed>
+                        <button (click)="claimWork(entry)">
+                            <rmx-icon name="add-box-line"></rmx-icon>
+                            <span>Claim</span>
+                        </button>
+                    </ng-template>
                 </td>
                 <td class="p-2 border-r border-gray-600 dark:border-white">
                     {{ entry.workToApprove.title }}

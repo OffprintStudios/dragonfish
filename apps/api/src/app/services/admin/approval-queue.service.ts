@@ -26,10 +26,10 @@ export class ApprovalQueueService implements IApprovalQueue {
     }
 
     async approveContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        return await this.contentService.approveWork(docId, user.sub, workId, authorId);
+        return await this.contentService.approveWork(docId, user, workId, authorId);
     }
 
     async rejectContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        return await this.contentService.rejectWork(docId, user.sub, workId, authorId);
+        return await this.contentService.rejectWork(docId, user, workId, authorId);
     }
 }
