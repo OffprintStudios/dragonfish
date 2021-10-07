@@ -55,7 +55,7 @@
                 <button
                     class="page-turn right"
                     *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
-                    (click)="goToNext();"
+                    (click)="goToNext()"
                 >
                     <rmx-icon name="arrow-right-s-line" class="mr-0"></rmx-icon>
                 </button>
