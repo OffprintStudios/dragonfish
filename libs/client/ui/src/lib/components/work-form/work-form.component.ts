@@ -21,6 +21,8 @@ import {
     PoetryForm,
     CreatePoetry,
     CreateProse,
+    TagKind,
+    TagsModel,
 } from '@dragonfish/shared/models/content';
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -74,6 +76,8 @@ export class WorkFormComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
+
         switch (this.data.kind) {
             case ContentKind.ProseContent:
                 if (this.data.content) {
@@ -201,7 +205,7 @@ export class WorkFormComponent implements OnInit {
             category: (content.meta as any).category,
             form: content.kind === 'PoetryContent' ? (content.meta as any).form : null,
             genres: (content.meta as any).genres,
-            tags: content.tags,
+            tags: content.tags.map((tag) => (tag as TagsModel)._id),
             rating: content.meta.rating,
             status: (content.meta as any).status,
         });

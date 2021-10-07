@@ -17,17 +17,15 @@ export class TagsService {
 
     public fetchTagsTrees(kind: TagKind): Observable<TagsTree[]> {
         return this.network.fetchTagsTrees(kind).pipe(
-            tap(value => {
-                for (let tree of value) {
+            tap((value) => {
+                for (const tree of value) {
                     if (tree.children != null) {
-                        tree.children.sort(
-                            (a,b) => a.name < b.name ? -1 : 1
-                        )
+                        tree.children.sort((a, b) => (a.name < b.name ? -1 : 1));
                     }
                 }
-                this.tagsStore.set(value)
+                this.tagsStore.set(value);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);
             }),
@@ -39,19 +37,19 @@ export class TagsService {
             tap((tagTree) => {
                 this.tagsStore.set([tagTree]);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);
-            })
-        )
+            }),
+        );
     }
 
     public createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> {
         return this.network.createTag(kind, form).pipe(
-            tap(newTag => {
+            tap((newTag) => {
                 this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);
             }),
@@ -60,10 +58,10 @@ export class TagsService {
 
     public updateTag(id: string, form: TagsForm): Observable<TagsModel> {
         return this.network.updateTag(id, form).pipe(
-            tap(updatedTag => {
+            tap((updatedTag) => {
                 this.fetchTagsTrees(TagKind.Fandom).subscribe();
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);
             }),
@@ -76,7 +74,7 @@ export class TagsService {
                 this.fetchTagsTrees(TagKind.Fandom).subscribe();
                 this.alerts.success(`Tag successfully deleted.`);
             }),
-            catchError(err => {
+            catchError((err) => {
                 this.alerts.error(err.error.message);
                 return throwError(() => err);
             }),
