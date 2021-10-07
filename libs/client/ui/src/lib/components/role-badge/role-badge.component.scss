@@ -1,52 +1,47 @@
 div.role {
-    text-align: center;
-    border: 1px solid whitesmoke;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 1rem;
-    color: whitesmoke;
-    max-width: 200px;
-    min-width: 150px;
-
-    @media (max-width: 1150px) {
-        font-size: 12px;
-        max-width: 125px;
-        min-width: 75px;
+    @apply text-white rounded-md;
+    &.admin {
+        @apply bg-red-700;
     }
-}
 
-div.admin {
-    background-color: rgb(235, 69, 63);
-}
+    &.moderator {
+        @apply bg-yellow-400;
+    }
 
-div.moderator {
-    background-color: rgb(246, 195, 57);
-}
+    &.chat-moderator {
+        @apply bg-yellow-700;
+    }
 
-div.chat-moderator {
-    background-color: rgb(235, 123, 49);
-}
+    &.maintainer {
+        @apply bg-green-800;
+    }
 
-div.maintainer {
-    background-color: darkgreen;
-}
+    &.contributor {
+        @apply bg-blue-500;
+    }
 
-div.contributor {
-    background-color: rgb(18, 154, 216);
-}
+    &.work-approver {
+        @apply bg-purple-600;
+    }
 
-div.work-approver {
-    background-color: rgb(154, 89, 177);
-}
+    &.vip {
+        @apply bg-green-400;
+    }
 
-div.vip {
-    background-color: rgb(0, 189, 158);
-}
+    &.supporter {
+        @apply bg-pink-600;
+    }
 
-div.supporter {
-    background-color: rgb(176, 2, 85);
-}
+    &.normal {
+        @apply p-1;
+    }
 
-.not-styled {
-
+    &.small {
+        @apply flex flex-col items-center justify-center;
+        padding: 0.075rem;
+        rmx-icon {
+            @apply w-5 block;
+            height: 20px;
+        }
+    }
 }

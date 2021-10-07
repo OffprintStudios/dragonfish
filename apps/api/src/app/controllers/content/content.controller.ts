@@ -43,23 +43,27 @@ export class ContentController {
     ) {}
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User], true))
+    @UseGuards(OptionalAuthGuard)
     @Get('fetch-one')
-    async fetchOne(
-        @User() account: JwtPayload,
-        @Query('pseudId') pseudId: string,
-        @Query('contentId') contentId: string,
-    ): Promise<PubContent> {
+    async fetchOne(@Query('contentId') contentId: string, @User() account?: JwtPayload): Promise<PubContent> {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        const ratings = await this.ratings.fetchRatingsDoc(account.sub, contentId);
-        const content = await this.content.fetchOne(contentId, pseudId);
-        return {
-            content: content,
-            ratings: ratings,
-        };
+        if (account) {
+            const ratings = await this.ratings.fetchRatingsDoc(account.sub, contentId);
+            const content = await this.content.fetchOne(contentId);
+            return {
+                content: content,
+                ratings: ratings,
+            };
+        } else {
+            const content = await this.content.fetchOne(contentId);
+            return {
+                content: content,
+                ratings: null,
+            };
+        }
     }
 
     @ApiTags(DragonfishTags.Content)

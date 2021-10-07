@@ -17,9 +17,12 @@
                         <img [src]="user.profile.avatar" />
                     </div>
                     <div class="ml-2">
-                        <h2 class="text-xl font-medium">
-                            {{ user.screenName }}
-                        </h2>
+                        <div class="flex items-center">
+                            <dragonfish-role-badge [roles]="user.roles" [size]="'small'"></dragonfish-role-badge>
+                            <h2 class="text-xl font-medium relative top-0.5">
+                                {{ user.screenName }}
+                            </h2>
+                        </div>
                         <h3 class="text-xs font-medium">
                             {{ user.profile.tagline }}
                         </h3>

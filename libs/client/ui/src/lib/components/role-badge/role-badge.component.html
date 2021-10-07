@@ -1,50 +1,74 @@
 <ng-container [ngSwitch]="determineProminentRole()">
     <div
         *ngSwitchCase="'Admin'"
-        [ngClass]="isStyled ? 'role admin' : ''"
+        class="role admin"
+        [ngClass]="size"
+        [matTooltip]="'Admin'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Admin
+        <rmx-icon name="auction-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'Moderator'"
-        [ngClass]="isStyled ? 'role moderator' : ''"
+        class="role moderator"
+        [ngClass]="size"
+        [matTooltip]="'Moderator'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Moderator
+        <rmx-icon name="scales-3-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'ChatModerator'"
-        [ngClass]="isStyled ? 'role chat-moderator' : ''"
+        class="role chat-moderator"
+        [ngClass]="size"
+        [matTooltip]="'Chat Moderator'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Chat Moderator
+        <rmx-icon name="chat-private-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'Maintainer'"
-        [ngClass]="isStyled ? 'role maintainer': ''"
+        class="role maintainer"
+        [ngClass]="size"
+        [matTooltip]="'Maintainer'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Maintainer
+        <rmx-icon name="bug-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'Contributor'"
-        [ngClass]="isStyled ? 'role contributor' : ''"
+        class="role contributor"
+        [ngClass]="size"
+        [matTooltip]="'Contributor'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Contributor
+        <rmx-icon name="service-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'WorkApprover'"
-        [ngClass]="isStyled ? 'role work-approver' : ''"
+        class="role work-approver"
+        [ngClass]="size"
+        [matTooltip]="'Work Approver'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Work Approver
+        <rmx-icon name="book-read-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'VIP'"
-        [ngClass]="isStyled ? 'role vip' : ''"
+        class="role vip"
+        [ngClass]="size"
+        [matTooltip]="'VIP'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        VIP
+        <rmx-icon name="vip-diamond-line"></rmx-icon>
     </div>
     <div
         *ngSwitchCase="'Supporter'"
-        [ngClass]="isStyled ? 'role supporter' : ''"
+        class="role supporter"
+        [ngClass]="size"
+        [matTooltip]="'Supporter'"
+        [matTooltipClass]="'offprint-tooltip'"
     >
-        Supporter
+        <rmx-icon name="copper-coin-line"></rmx-icon>
     </div>
 </ng-container>

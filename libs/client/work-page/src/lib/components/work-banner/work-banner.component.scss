@@ -58,3 +58,12 @@ div.nav-link {
         background: var(--accent-light);
     }
 }
+div.content-tags {
+    a {
+        cursor: pointer;
+        color: whitesmoke;
+        &:hover {
+            background: var(--accent-dark);
+        }
+    }
+}

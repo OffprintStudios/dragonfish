@@ -9,7 +9,7 @@
     </ng-container>
     <ng-template #hasSections>
         <ng-container *ngIf="auth.checkPseudonym(this.workPageQuery.authorId); else notThisUser">
-            <ul class="my-6 list-none">
+            <ul class="mt-3 mb-6 list-none">
                 <ng-container *ngFor="let section of sections">
                     <li
                         class="section-item border-gray-600 dark:border-white"
@@ -49,7 +49,7 @@
             </ul>
         </ng-container>
         <ng-template #notThisUser>
-            <ul class="my-6 list-none">
+            <ul class="mb-6 list-none">
                 <ng-container *ngFor="let section of sectionsQuery.pubSections; let i = index">
                     <li
                         class="section-item border-gray-600 dark:border-white"

@@ -8,7 +8,7 @@ export class SectionsDocument extends Document implements Section {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ trim: true, required: true })
+    @Prop({ trim: true })
     readonly contentId: string;
 
     @Prop({ trim: true, required: true })

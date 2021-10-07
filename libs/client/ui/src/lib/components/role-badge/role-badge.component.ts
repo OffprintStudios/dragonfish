@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import * as lodash from 'lodash';
-import { Roles } from '@dragonfish/shared/models/users';
+import { Roles } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-role-badge',
@@ -11,11 +11,10 @@ export class RoleBadgeComponent {
     @Input() roles: Roles[];
     @Input() isCentered: boolean;
     @Input() isStyled: boolean;
+    @Input() size: 'small' | 'normal' = 'normal';
 
     /**
      * Checks to see what the prominent role for this user is so it can be displayed.
-     *
-     * @param roles The roles to check
      */
     determineProminentRole(): Roles {
         // this will totally need retooling to figure out a much better way to verify what the top-level
@@ -47,14 +46,6 @@ export class RoleBadgeComponent {
             return Roles.Supporter;
         } else {
             return Roles.User;
-        }
-    }
-
-    determineCentering() {
-        if (this.isCentered === true) {
-            return { margin: '0 auto 1.5rem auto' };
-        } else {
-            return { margin: '0 0 1.5rem 0' };
         }
     }
 }

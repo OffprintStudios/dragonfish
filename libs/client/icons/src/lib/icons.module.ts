@@ -119,6 +119,14 @@ import {
     RiFontSize,
     RiBookmarkLine,
     RiEmpathizeLine,
+    RiAuctionLine,
+    RiScales3Line,
+    RiChatPrivateLine,
+    RiBugLine,
+    RiServiceLine,
+    RiBookReadLine,
+    RiVipDiamondLine,
+    RiCopperCoinLine,
 } from 'angular-remix-icon';
 
 import {
@@ -455,6 +463,14 @@ const remixIcons = {
     RiFontSize,
     RiBookmarkLine,
     RiEmpathizeLine,
+    RiAuctionLine,
+    RiScales3Line,
+    RiChatPrivateLine,
+    RiBugLine,
+    RiServiceLine,
+    RiBookReadLine,
+    RiVipDiamondLine,
+    RiCopperCoinLine,
 };
 
 @NgModule({

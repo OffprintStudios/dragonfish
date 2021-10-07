@@ -5,12 +5,21 @@
     <div class="my-4"><!--spacer--></div>
     <div class="flex flex-row items-center justify-center">
         <ng-container *ngIf="data.confirm; else alert">
-            <button class="shadow-none" [mat-dialog-close]="true">Yes</button>
+            <button class="shadow-none" [mat-dialog-close]="true">
+                <rmx-icon name="check-line"></rmx-icon>
+                Yes
+            </button>
             <div class="mx-2"><!--spacer--></div>
-            <button class="shadow-none" [mat-dialog-close]="false">No</button>
+            <button class="shadow-none" [mat-dialog-close]="false">
+                <rmx-icon name="close-line"></rmx-icon>
+                No
+            </button>
         </ng-container>
         <ng-template #alert>
-            <button class="shadow-none" (click)="closeDialog()">Okay</button>
+            <button class="shadow-none" (click)="closeDialog()">
+                <rmx-icon name="check-line"></rmx-icon>
+                Okay
+            </button>
         </ng-template>
     </div>
 </div>

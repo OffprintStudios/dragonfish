@@ -5,7 +5,7 @@ import { RatingOption } from '@dragonfish/shared/models/reading-history';
 export interface WorkPageState {
     content: ContentModel;
     ratings: RatingsModel;
-    selectedRating: RatingOption;
+    selectedRating: RatingOption | null;
     likes: number;
     dislikes: number;
     wordCount: number;
