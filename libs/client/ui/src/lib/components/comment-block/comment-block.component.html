@@ -1,0 +1,47 @@
+<ng-container *ngIf="createMode; else viewMode">
+    <ng-container *ngIf="!editMode; else showForm">
+        <div class="expandable-bar" (click)="toggleEditMode()">
+            <div class="avatar-block" *ngIf="pseudQuery.currentId">
+                <img [src]="pseudQuery.current.profile.avatar" [alt]="'avatar'">
+            </div>
+            <div class="title">
+                <h3>Add a Comment</h3>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #showForm>
+        <form [formGroup]="commentForm" class="mx-auto">
+            <div class="expandable-bar no-bottom">
+                <div class="avatar-block" *ngIf="pseudQuery.currentId">
+                    <img [src]="pseudQuery.current.profile.avatar" [alt]="'avatar'">
+                </div>
+                <div class="title flex-1">
+                    <h3>Add a Comment</h3>
+                </div>
+                <div>
+                    <button (click)="openMultiQuote()">
+                        <rmx-icon name="double-quotes-l"></rmx-icon>
+                        <span>Multiquote</span>
+                    </button>
+                </div>
+            </div>
+            <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
+            <div class="flex items-center justify-end p-1">
+                <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="toggleEditMode()">
+                    <rmx-icon name="close-line"></rmx-icon>
+                    Cancel
+                </button>
+                <div class="mx-1"><!--spacer--></div>
+                <button type="button" class="primary shadow-none border-none px-2.5 py-1.5">
+                    <rmx-icon name="check-line"></rmx-icon>
+                    Submit
+                </button>
+            </div>
+        </form>
+    </ng-template>
+</ng-container>
+
+<ng-template #viewMode>
+
+</ng-template>

@@ -14,6 +14,10 @@ export class PseudonymsQuery extends QueryEntity<PseudonymsState> {
         super(store);
     }
 
+    public get current() {
+        return this.getActive();
+    }
+
     public get currentId() {
         return this.getActive()._id;
     }
