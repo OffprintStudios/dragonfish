@@ -1,0 +1,36 @@
+div.tag-pill {
+    @apply px-1 py-0.5 flex items-center rounded-md mx-0.5 my-1 text-white transition transform cursor-pointer;
+    rmx-icon {
+        @apply w-4 relative mr-1 top-1;
+    }
+    span {
+        @apply text-sm;
+    }
+    &:hover {
+        @apply scale-105;
+    }
+    &:active {
+        @apply scale-100;
+    }
+    &.fandom {}
+
+    &.warning {}
+
+    &.category {
+        @apply bg-purple-600 hover:bg-purple-800;
+    }
+
+    &.genre {
+        @apply bg-green-600 hover:bg-green-800;
+    }
+
+    &.type {
+        @apply bg-indigo-600 hover:bg-indigo-800;
+    }
+
+    &.user {}
+
+    &.no-icon {
+        @apply py-1;
+    }
+}

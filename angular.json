@@ -505,28 +505,6 @@
                 }
             }
         },
-        "client-my-stuff": {
-            "projectType": "library",
-            "root": "libs/client/my-stuff",
-            "sourceRoot": "libs/client/my-stuff/src",
-            "prefix": "dragonfish",
-            "architect": {
-                "lint": {
-                    "builder": "@nrwl/linter:eslint",
-                    "options": {
-                        "lintFilePatterns": ["libs/client/my-stuff/src/**/*.ts", "libs/client/my-stuff/src/**/*.html"]
-                    }
-                },
-                "test": {
-                    "builder": "@nrwl/jest:jest",
-                    "outputs": ["coverage/libs/client/my-stuff"],
-                    "options": {
-                        "jestConfig": "libs/client/my-stuff/jest.config.js",
-                        "passWithNoTests": true
-                    }
-                }
-            }
-        },
         "client-pipes": {
             "projectType": "library",
             "root": "libs/client/pipes",
@@ -658,6 +636,28 @@
                     "options": {
                         "jestConfig": "libs/client/ui/jest.config.js",
                         "passWithNoTests": true
+                    }
+                }
+            }
+        },
+        "client-work-page": {
+            "projectType": "library",
+            "root": "libs/client/work-page",
+            "sourceRoot": "libs/client/work-page/src",
+            "prefix": "dragonfish",
+            "architect": {
+                "test": {
+                    "builder": "@nrwl/jest:jest",
+                    "outputs": ["coverage/libs/client/work-page"],
+                    "options": {
+                        "jestConfig": "libs/client/work-page/jest.config.js",
+                        "passWithNoTests": true
+                    }
+                },
+                "lint": {
+                    "builder": "@nrwl/linter:eslint",
+                    "options": {
+                        "lintFilePatterns": ["libs/client/work-page/src/**/*.ts", "libs/client/work-page/src/**/*.html"]
                     }
                 }
             }

@@ -1,0 +1,122 @@
+<div class="header">
+    <div class="flex w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
+        <ng-container *ngIf="content.meta.coverArt; else uploadArt">
+            <div
+                class="edit-cover-art rounded-md"
+                [matTooltip]="'Edit Cover Art'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (mouseenter)="addEditIcon = true"
+                (mouseleave)="addEditIcon = false"
+                (click)="uploadCoverArt(content._id, content.kind)"
+            >
+                <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
+                <img class="rounded-md" [src]="content.meta.coverArt" />
+            </div>
+        </ng-container>
+        <ng-template #uploadArt>
+            <div
+                class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-col items-center justify-center"
+                [matTooltip]="'Add Cover Art'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (click)="uploadCoverArt(content._id, content.kind)"
+                *ngIf="auth.checkPseudonym(content.author._id)"
+            >
+                <rmx-icon name="add-box-line"></rmx-icon>
+            </div>
+        </ng-template>
+        <div class="flex-1 flex flex-col justify-end">
+            <div class="flex items-center">
+                <div class="flex-1">
+                    <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
+                    <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
+                        by {{ content.author.screenName }}
+                    </h2>
+                </div>
+                <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
+                    <ng-container [ngSwitch]="content.audit.published">
+                        <button class="header-button" *ngSwitchCase="pubStatus.Unpublished" (click)="submitToQueue()">
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            <span>Publish</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Published">
+                            <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                            <span>Published</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Rejected">
+                            <rmx-icon name="close-circle-line"></rmx-icon>
+                            <span>Rejected</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.ApprovedUnpublished">
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            <span>Approved</span>
+                        </button>
+                        <button class="header-button" *ngSwitchCase="pubStatus.Pending">
+                            <rmx-icon name="time-line"></rmx-icon>
+                            <span>Pending</span>
+                        </button>
+                    </ng-container>
+                    <div class="mx-1"></div>
+                    <button class="header-button" [matTooltip]="'Edit info'" [matTooltipClass]="'offprint-tooltip'" (click)="openEditModal()">
+                        <rmx-icon name="edit-line" class="mr-0"></rmx-icon>
+                    </button>
+                </ng-container>
+                <ng-template #otherButtons>
+                    <button class="header-button" (click)="addToLibrary()">
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        <span>Library</span>
+                    </button>
+                    <div class="mx-1"></div>
+                    <button
+                        class="header-button"
+                        [matMenuTriggerFor]="moreMenu"
+                        [ngClass]="{'active': moreMenuOpened}"
+                        (menuOpened)="toggleMoreMenu()"
+                        (menuClosed)="toggleMoreMenu()"
+                    >
+                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                    </button>
+                </ng-template>
+            </div>
+            <div class="flex items-center w-full">
+                <dragonfish-tag-badge [kind]="tagKind.Type" [type]="content.kind"></dragonfish-tag-badge>
+                <dragonfish-tag-badge [kind]="tagKind.Category" [category]="content.meta.category"></dragonfish-tag-badge>
+                <ng-container *ngFor="let genre of content.meta.genres">
+                    <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre"></dragonfish-tag-badge>
+                </ng-container>
+            </div>
+            <div class="flex items-center w-full mt-6 border-b-2 border-white">
+                <div
+                    class="nav-link px-10"
+                    [routerLink]="contentUrl"
+                    [routerLinkActive]="'active'"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    <rmx-icon name="information-line"></rmx-icon>
+                    <span>Info</span>
+                </div>
+                <div class="mx-0.5"></div>
+                <div class="nav-link px-7" [routerLink]="['comments']" [routerLinkActive]="'active'">
+                    <rmx-icon name="discuss-line"></rmx-icon>
+                    <span>{{ content.stats.comments | abbreviate }} Comment{{ content.stats.comments | pluralize }}</span>
+                </div>
+                <div class="mx-0.5"></div>
+                <div class="nav-link px-6" [routerLink]="['related']" [routerLinkActive]="'active'">
+                    <rmx-icon name="collage-line"></rmx-icon>
+                    <span>Related Stuff</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<mat-menu #moreMenu='matMenu' xPosition="before">
+    <button mat-menu-item class="hover:scale-100" (click)="shareContent()">
+        <rmx-icon name="share-box-line"></rmx-icon>
+        <span>Share this</span>
+    </button>
+    <div class="w-full border-b border-gray-600 dark:border-white my-1"></div>
+    <button mat-menu-item class="hover:scale-100" (click)="reportContent()">
+        <rmx-icon name="alert-line"></rmx-icon>
+        <span>Send report</span>
+    </button>
+</mat-menu>

@@ -30,32 +30,36 @@ import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IImages } from '../../shared/images';
-import { CommentStore } from '@dragonfish/api/database/comments/stores';
-import { CommentKind } from '@dragonfish/shared/models/comments';
 import { MAX_FANDOM_TAGS } from '@dragonfish/shared/constants/content-constants';
 import { ContentService } from '../../services/content/content.service';
+import { RatingsService } from '../../services/content/ratings.service';
 
 @Controller('content')
 export class ContentController {
     constructor(
         private readonly content: ContentService,
         @Inject('IImages') private readonly images: IImages,
-        private readonly comments: CommentStore,
+        private readonly ratings: RatingsService,
     ) {}
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard([Roles.User], true))
     @Get('fetch-one')
     async fetchOne(
+        @User() account: JwtPayload,
         @Query('pseudId') pseudId: string,
         @Query('contentId') contentId: string,
-        @Query('kind') kind: ContentKind,
-    ) {
-        if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
+    ): Promise<PubContent> {
+        if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
-        return await this.content.fetchOne(contentId, kind, pseudId);
+        const ratings = await this.ratings.fetchRatingsDoc(account.sub, contentId);
+        const content = await this.content.fetchOne(contentId, pseudId);
+        return {
+            content: content,
+            ratings: ratings,
+        };
     }
 
     @ApiTags(DragonfishTags.Content)
@@ -65,18 +69,15 @@ export class ContentController {
         @User() user: JwtPayload,
         @Query('contentId') contentId: string,
         @Query('kind') kind: ContentKind,
-        @Query('page') page: number,
     ): Promise<PubContent> {
         if (isNullOrUndefined(contentId) && isNullOrUndefined(kind)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
         const [content, ratings] = await this.content.fetchOnePublished(contentId, kind, user);
-        const comments = await this.comments.fetch(content._id, CommentKind.ContentComment, page);
         return {
             content: content,
             ratings: ratings,
-            comments: comments,
         };
     }
 

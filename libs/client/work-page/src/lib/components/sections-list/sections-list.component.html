@@ -1,0 +1,66 @@
+<ng-container *ngIf="sectionsQuery.all$ | async as sections">
+    <ng-container *ngIf="sectionsQuery.numSections === 0; else hasSections">
+        <div class="empty">
+            <h3>You haven't added anything yet!</h3>
+            <p>
+                Add some chapters to fill out your work.<br/>Check out the Offprint Omnibus for posting guidelines.
+            </p>
+        </div>
+    </ng-container>
+    <ng-template #hasSections>
+        <ng-container *ngIf="auth.checkPseudonym(this.workPageQuery.authorId); else notThisUser">
+            <ul class="my-6 list-none">
+                <ng-container *ngFor="let section of sections">
+                    <li
+                        class="section-item border-gray-600 dark:border-white"
+                    >
+                        <div
+                            class="pub-button border-gray-600 dark:border-white"
+                            [matTooltip]="'Publish'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            *ngIf="section.published === false"
+                            (click)="pubUnPub(section)"
+                        >
+                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                        </div>
+                        <div
+                            class="pub-button published border-gray-600 dark:border-white"
+                            [matTooltip]="'Convert to Draft'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            *ngIf="section.published === true"
+                            (click)="pubUnPub(section)"
+                        >
+                            <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                        </div>
+                        <div class="section-button mid" [routerLink]="['view-section', section._id]">
+                            <div class="flex-1">{{ section.title }}</div>
+                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                        </div>
+                        <div
+                            class="pub-button end border-gray-600 dark:border-white"
+                            [matTooltip]="'Delete'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                            (click)="delete(section._id)"
+                        >
+                            <rmx-icon name="delete-bin-line"></rmx-icon>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+        </ng-container>
+        <ng-template #notThisUser>
+            <ul class="my-6 list-none">
+                <ng-container *ngFor="let section of sectionsQuery.pubSections; let i = index">
+                    <li
+                        class="section-item border-gray-600 dark:border-white"
+                    >
+                        <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
+                            <div class="flex-1">{{ section.title }}</div>
+                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+        </ng-template>
+    </ng-template>
+</ng-container>

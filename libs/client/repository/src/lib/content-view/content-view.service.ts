@@ -35,7 +35,6 @@ export class ContentViewService {
                 this.contentView.update({
                     currContent: value.content,
                     allSections: sections,
-                    currPageComments: value.comments,
                     currPage: page,
                     ratingsDoc: value.ratings,
                     currRating: value.ratings && value.ratings.rating ? value.ratings.rating : RatingOption.NoVote,

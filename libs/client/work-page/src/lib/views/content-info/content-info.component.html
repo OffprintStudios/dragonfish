@@ -1,0 +1,83 @@
+<ng-container *ngIf="workQuery.content$ | async as content">
+    <div class="w-11/12 md:w-9/12 lg:7/12 mx-auto flex my-6">
+        <div class="flex flex-col flex-1 mr-6">
+            <div class="mb-6">
+                <h3 class="text-2xl font-medium">Description</h3>
+                <div class="rounded-md py-2 px-8 flex-1 border border-gray-600 dark:border-white" style="box-shadow: var(--dropshadow);">
+                    <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center">
+                    <h3 class="text-2xl font-medium flex-1">Chapters</h3>
+                    <button class="border border-gray-600 dark:border-white" [routerLink]="['create-section']">
+                        <rmx-icon name="add-box-line"></rmx-icon>
+                        <span>Add Chapter</span>
+                    </button>
+                </div>
+                <dragonfish-sections-list></dragonfish-sections-list>
+            </div>
+        </div>
+        <div class="flex flex-col items-center" style="width: 10.83625rem;">
+            <div class="flex items-center border-b border-gray-600 dark:border-white pb-2">
+                <ng-container [ngSwitch]="workQuery.currRating">
+                    <ng-container *ngSwitchCase="ratingOption.NoVote">
+                        <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                            <rmx-icon name="heart-line"></rmx-icon>
+                            <span>Like</span>
+                        </button>
+                        <div class="mx-0.5"></div>
+                        <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                            <rmx-icon name="dislike-line"></rmx-icon>
+                            <span>Dislike</span>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="ratingOption.Liked">
+                        <button class="border border-gray-600 dark:border-white px-3.5 active" (click)="workPage.setNoVote(content._id)">
+                            <rmx-icon name="heart-fill"></rmx-icon>
+                            <span>Liked</span>
+                        </button>
+                        <div class="mx-0.5"></div>
+                        <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                            <rmx-icon name="dislike-line"></rmx-icon>
+                            <span>Dislike</span>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="ratingOption.Disliked">
+                        <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                            <rmx-icon name="heart-line"></rmx-icon>
+                            <span>Like</span>
+                        </button>
+                        <div class="mx-0.5"></div>
+                        <button class="border border-gray-600 dark:border-white active" (click)="workPage.setNoVote(content._id)">
+                            <rmx-icon name="dislike-fill"></rmx-icon>
+                            <span>Disliked</span>
+                        </button>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
+                <ng-container *ngIf="content.audit.published === 'Published'">
+                    <h4 class="text-xl font-medium">Published on</h4>
+                    <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.audit.publishedOn | localedate:'mediumDate' }}</span>
+                </ng-container>
+                <ng-container *ngIf="content.audit.published === 'Unpublished'">
+                    <h4 class="text-xl font-medium">Created on</h4>
+                    <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.createdAt | localedate:'mediumDate' }}</span>
+                </ng-container>
+            </div>
+            <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
+                <h4 class="text-xl font-medium">Words</h4>
+                <span class="uppercase font-semibold font-serif text-lg tracking-wider" *ngIf="workQuery.wordCount$ | async as wordCount">{{ wordCount }}</span>
+            </div>
+            <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
+                <h4 class="text-xl font-medium">Views</h4>
+                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.stats.views }}</span>
+            </div>
+            <div class="text-center py-2 w-full">
+                <h4 class="text-xl font-medium">Status</h4>
+                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ $any(content.meta).status }}</span>
+            </div>
+        </div>
+    </div>
+</ng-container>

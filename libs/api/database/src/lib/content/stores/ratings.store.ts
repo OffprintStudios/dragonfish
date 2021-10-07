@@ -5,6 +5,7 @@ import { RatingsDocument, ContentDocument } from '../schemas';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { PubStatus } from '@dragonfish/shared/models/content';
+import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 /**
  * ## Ratings Store
@@ -17,6 +18,26 @@ export class RatingsStore {
         @InjectModel('Content') private readonly content: Model<ContentDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
     ) {}
+
+    /**
+     * Fetches a user's ratings doc. If one doesn't exist, add one and return the result.
+     * @param accountId
+     * @param contentId
+     */
+    public async addOrFetchRatingsDoc(accountId: string, contentId: string): Promise<RatingsDocument> {
+        const existingDoc = await this.ratings.findOne({ contentId: contentId, userId: accountId });
+
+        if (isNullOrUndefined(existingDoc)) {
+            const newDoc = new this.ratings({
+                contentId: contentId,
+                userId: accountId,
+            });
+
+            return newDoc.save();
+        } else {
+            return existingDoc;
+        }
+    }
 
     /**
      * Switches a user's rating option to Liked.
@@ -68,10 +89,11 @@ export class RatingsStore {
     private async updateCounts(contentId: string): Promise<void> {
         await this.content
             .findByIdAndUpdate(contentId, {
-                'stats.likes':
-                    await this.ratings.countDocuments({ contentId: contentId, rating: RatingOption.Liked }),
-                'stats.dislikes':
-                    await this.ratings.countDocuments({ contentId: contentId, rating: RatingOption.Disliked }),
+                'stats.likes': await this.ratings.countDocuments({ contentId: contentId, rating: RatingOption.Liked }),
+                'stats.dislikes': await this.ratings.countDocuments({
+                    contentId: contentId,
+                    rating: RatingOption.Disliked,
+                }),
             })
             .where({ 'audit.isDeleted': false, 'audit.published': PubStatus.Published });
     }

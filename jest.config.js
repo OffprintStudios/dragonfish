@@ -10,7 +10,6 @@ module.exports = {
         '<rootDir>/libs/client/icons',
         '<rootDir>/apps/bettafish-native',
         '<rootDir>/libs/client/editor',
-        '<rootDir>/libs/client/my-stuff',
         '<rootDir>/libs/client/dashboard',
         '<rootDir>/libs/client/services',
         '<rootDir>/libs/client/repository',
@@ -22,5 +21,6 @@ module.exports = {
         '<rootDir>/libs/api/mail',
         '<rootDir>/libs/client/settings',
         '<rootDir>/libs/client/profile',
+        '<rootDir>/libs/client/work-page',
     ],
 };

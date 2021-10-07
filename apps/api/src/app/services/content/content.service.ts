@@ -25,8 +25,8 @@ export class ContentService {
         private readonly notifications: NotificationsService,
     ) {}
 
-    public async fetchOne(contentId: string, kind: ContentKind, pseudId?: string): Promise<ContentModel> {
-        return await this.content.fetchOne(contentId, kind, pseudId);
+    public async fetchOne(contentId: string, pseudId?: string): Promise<ContentModel> {
+        return await this.content.fetchOne(contentId, pseudId);
     }
 
     public async fetchOnePublished(

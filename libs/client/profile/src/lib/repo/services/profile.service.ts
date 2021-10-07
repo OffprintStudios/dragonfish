@@ -112,6 +112,16 @@ export class ProfileService {
         return this.createContent(kind, formInfo);
     }
 
+    public refetchContent(kind: ContentKind) {
+        if (kind === 'BlogContent') {
+            this.fetchBlogsList().pipe(take(1)).subscribe();
+        } else if (kind === 'NewsContent') {
+            this.alerts.info(`News content fetching not yet implemented.`);
+        } else {
+            this.fetchWorksList().pipe(take(1)).subscribe();
+        }
+    }
+
     //#endregion
 
     //#region ---PRIVATE---
@@ -122,16 +132,6 @@ export class ProfileService {
                 this.refetchContent(kind);
             }),
         );
-    }
-
-    private refetchContent(kind: ContentKind) {
-        if (kind === 'BlogContent') {
-            this.fetchBlogsList().pipe(take(1)).subscribe();
-        } else if (kind === 'NewsContent') {
-            this.alerts.info(`News content fetching not yet implemented.`);
-        } else {
-            this.fetchWorksList().pipe(take(1)).subscribe();
-        }
     }
 
     //#endregion

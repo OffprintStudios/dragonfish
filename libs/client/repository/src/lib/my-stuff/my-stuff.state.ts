@@ -10,5 +10,5 @@ export enum FilterOptions {
 }
 
 export interface MyStuffState extends EntityState<ContentModel, string>, ActiveState {
-    filter: FilterOptions,
+    filter: FilterOptions;
 }

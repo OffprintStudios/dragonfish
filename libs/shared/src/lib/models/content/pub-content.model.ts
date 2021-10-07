@@ -6,5 +6,4 @@ import { Comment } from '../comments';
 export interface PubContent {
     content: ContentModel;
     ratings: RatingsModel;
-    comments: PaginateResult<Comment>;
 }

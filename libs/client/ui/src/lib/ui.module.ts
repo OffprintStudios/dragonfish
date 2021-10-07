@@ -14,6 +14,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { TabsModule } from 'ngx-tabset';
 import { DynamicViewModule } from '@ngneat/overview';
 import { TeleportModule } from '@ngneat/overview';
+import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -25,7 +26,6 @@ import { ToggleComponent } from './components/toggle/toggle.component';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { BlogCardComponent } from './components/blog-card/blog-card.component';
 import { ContentListItemComponent } from './components/content-list-item/content-list-item.component';
-import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
@@ -42,6 +42,8 @@ import { MessagesTabComponent } from './components/inbox/messages-tab/messages-t
 import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
 import { PagebarComponent } from './components/nav/pagebar/pagebar.component';
 import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.component';
+import { WorkFormComponent } from './components/work-form/work-form.component';
+import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 
 @NgModule({
     declarations: [
@@ -54,7 +56,6 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         TextAreaComponent,
         BlogCardComponent,
         ContentListItemComponent,
-        SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
@@ -71,6 +72,8 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         NotificationsTabComponent,
         PagebarComponent,
         MobileNavComponent,
+        WorkFormComponent,
+        TagBadgeComponent,
     ],
     imports: [
         CommonModule,
@@ -89,6 +92,7 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         TabsModule,
         DynamicViewModule,
         TeleportModule,
+        EditorLiteModule,
     ],
     exports: [
         RatingIconComponent,
@@ -100,7 +104,6 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         TextAreaComponent,
         BlogCardComponent,
         ContentListItemComponent,
-        SectionsListComponent,
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
@@ -112,6 +115,8 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
         MobileNavComponent,
         RegisterFormComponent,
         LoginFormComponent,
+        WorkFormComponent,
+        TagBadgeComponent,
     ],
 })
 export class UiModule {}
@@ -119,3 +124,5 @@ export class UiModule {}
 export { PopupComponent } from './components/popup/popup.component';
 export { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
 export { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
+export { WorkFormComponent } from './components/work-form/work-form.component';
+export { WorkFormData } from './components/work-form/work-form-data';

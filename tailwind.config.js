@@ -7,7 +7,6 @@ module.exports = {
             './apps/bettafish/src/**/*.{html,ts}',
             './libs/client/editor/src/lib/**/*.{html,ts}',
             './libs/client/ui/src/lib/**/*.{html,ts}',
-            './libs/client/my-stuff/src/lib/**/*.{html,ts}',
             './libs/client/my-library/src/lib/**/*.{html,ts}',
             './libs/client/dashboard/src/lib/**/*.{html,ts}',
             './libs/client/alerts/src/lib/**/*.{html,ts}',
@@ -15,6 +14,7 @@ module.exports = {
             './libs/client/editor-lite/src/lib/**/*.{html,ts}',
             './libs/client/settings/src/lib/**/*.{html,ts}',
             './libs/client/profile/src/lib/**/*.{html,ts}',
+            './libs/client/work-page/src/lib/**/*.{html,ts}',
         ],
     },
     darkMode: 'class', // or 'media' or 'class'

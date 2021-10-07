@@ -1,0 +1,60 @@
+div.header {
+    @apply w-full;
+    background: var(--accent);
+    box-shadow: var(--dropshadow);
+    button.header-button {
+        @apply text-white border border-white;
+        &:hover,&.active {
+            background: var(--accent-light);
+        }
+    }
+}
+
+div.edit-cover-art {
+    @apply relative cursor-pointer border-4 border-white mr-6 mb-6;
+    span.edit-icon {
+        @apply absolute rounded-md w-full h-full;
+        rmx-icon {
+            @apply relative;
+            width: 3.125rem;
+            top: 38%;
+            left: 38%;
+            color: black;
+        }
+    }
+    img {
+        @apply object-contain rounded-md border-4 border-white;
+        max-width: 180px;
+        max-height: 275px;
+        z-index: -1;
+    }
+    &:hover {
+        span.edit-icon {
+            @apply backdrop-blur;
+        }
+    }
+}
+div.add-cover-art {
+    @apply border-4 border-white mr-6;
+    &:hover {
+        @apply text-white;
+        background: var(--accent-light);
+    }
+    rmx-icon {
+        @apply relative w-16 text-white;
+        top: -1.15rem;
+    }
+}
+
+div.nav-link {
+    @apply flex items-center py-2 text-white rounded-t-md cursor-pointer;
+    rmx-icon {
+        @apply mr-2;
+    }
+    span {
+        @apply uppercase text-sm;
+    }
+    &:hover, &.active {
+        background: var(--accent-light);
+    }
+}

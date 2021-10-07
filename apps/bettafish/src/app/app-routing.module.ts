@@ -35,13 +35,16 @@ const routes: Routes = [
         loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
     },
     {
-        path: 'settings',
-        loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
+        path: 'prose',
+        loadChildren: () => import('@dragonfish/client/work-page').then((m) => m.WorkPageModule),
     },
     {
-        path: 'my-stuff',
-        canLoad: [AuthGuard],
-        loadChildren: () => import('@dragonfish/client/my-stuff').then((m) => m.MyStuffModule),
+        path: 'poetry',
+        loadChildren: () => import('@dragonfish/client/work-page').then((m) => m.WorkPageModule),
+    },
+    {
+        path: 'settings',
+        loadChildren: () => import('@dragonfish/client/settings').then((m) => m.SettingsModule),
     },
     {
         path: 'my-library',

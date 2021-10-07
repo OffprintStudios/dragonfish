@@ -1,0 +1,10 @@
+div.header {
+    @apply w-full;
+    background: var(--accent);
+    button.header-button {
+        @apply text-white border border-white;
+        &:hover,&.active {
+            background: var(--accent-light);
+        }
+    }
+}

@@ -1,0 +1,6 @@
+<ng-container *ngIf="pageQuery.content$ | async as content">
+    <div class="w-full h-screen overflow-y-auto">
+        <dragonfish-work-banner [content]="content"></dragonfish-work-banner>
+        <router-outlet></router-outlet>
+    </div>
+</ng-container>

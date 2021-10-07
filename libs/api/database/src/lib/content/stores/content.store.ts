@@ -49,41 +49,18 @@ export class ContentStore {
     //#region ---FETCHING---
 
     /**
-     * Fetches one item from the content collection via ID and ContentKind,
-     * regardless of publishing status.
+     * Fetches one item from the content collection via ID.
      * @param contentId A content's ID
-     * @param kind A content's Kind
      * @param user The user making this request
      */
-    async fetchOne(contentId: string, kind: ContentKind, user?: string): Promise<ContentDocument> {
+    async fetchOne(contentId: string, user?: string): Promise<ContentDocument> {
+        const query = { _id: contentId, 'audit.isDeleted': false };
+
         if (user) {
-            if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
-                return this.content.findOne(
-                    { _id: contentId, author: user, kind: kind, 'audit.isDeleted': false },
-                    { autopopulate: false },
-                );
-            } else {
-                return this.content.findOne({
-                    _id: contentId,
-                    author: user,
-                    kind: kind,
-                    'audit.isDeleted': false,
-                });
-            }
-        } else {
-            if (kind === ContentKind.ProseContent || kind === ContentKind.PoetryContent) {
-                return this.content.findOne(
-                    { _id: contentId, kind: kind, 'audit.isDeleted': false },
-                    { autopopulate: false },
-                );
-            } else {
-                return this.content.findOne({
-                    _id: contentId,
-                    kind: kind,
-                    'audit.isDeleted': false,
-                });
-            }
+            query['author'] = user;
         }
+
+        return this.content.findOne(query);
     }
 
     /**
