@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PaginateModel, PaginateResult } from 'mongoose';
 import { PseudonymDocument } from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
@@ -16,12 +16,43 @@ import { chain } from 'voca';
 
 @Injectable()
 export class PseudonymsStore {
-    constructor(@InjectModel('Pseudonym') private readonly pseudModel: Model<PseudonymDocument>) {}
+    constructor(@InjectModel('Pseudonym') private readonly pseudModel: PaginateModel<PseudonymDocument>) {}
 
     //#region ---FETCH PSEUDONYMS---
 
     public async fetchPseud(id: string): Promise<PseudonymDocument> {
         return this.retrievePseud(id);
+    }
+
+    /**
+     * Finds any related users given the provided search parameters.
+     * Looks at both screen name and user tag.
+     * If the query starts with @, then it only searches user tag.
+     *
+     * @param query The relevant search parameters
+     * @param pageNum The page of results to retrieve
+     * @param maxPerPage The maximum number of results per page
+     */
+    async findRelatedUsers(query: string, pageNum: number, maxPerPage: number): Promise<PaginateResult<PseudonymDocument>> {
+        if (query.charAt(0) === '@') {
+            return await this.pseudModel.paginate(
+                { userTag: query.substr(1) },
+                {
+                    page: pageNum,
+                    limit: maxPerPage,
+                },
+            );
+        }
+        return await this.pseudModel.paginate(
+            { $or: [
+                { $text: { $search: '"' + query + '"' } },
+                { userTag: query }
+            ] },
+            {
+                page: pageNum,
+                limit: maxPerPage,
+            },
+        );
     }
 
     //#endregion

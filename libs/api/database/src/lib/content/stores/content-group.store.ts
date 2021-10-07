@@ -5,7 +5,7 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentRating, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
@@ -179,6 +179,8 @@ export class ContentGroupStore {
      * Finds content related to the user's query.
      * @param query The string the user searched for.
      * @param kinds The kind of document to fetch.
+     * @param authorId (Optional) ID of author of work that searching for.
+     * @param category (Optional) The category of content that searching for.
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
@@ -186,6 +188,8 @@ export class ContentGroupStore {
     public async findRelatedContent(
         query: string,
         kinds: ContentKind[],
+        authorId: string | null,
+        category: WorkKind | null,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -200,6 +204,12 @@ export class ContentGroupStore {
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
+        if (authorId) {
+            paginateQuery['author'] = authorId;
+        }
+        if (category) {
+            paginateQuery['meta.category'] = category;
+        }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
