@@ -9,6 +9,7 @@ import * as models from '@dragonfish/shared/models/works';
 import * as documents from './models';
 
 /**
+ *  @deprecated No longer used
  * The Mongoose schema for works.
  */
 export const WorksSchema = new Schema(

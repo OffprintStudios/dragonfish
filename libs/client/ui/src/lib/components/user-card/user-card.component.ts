@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FrontendUser } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Component({
     selector: 'dragonfish-user-card',
@@ -7,7 +7,7 @@ import { FrontendUser } from '@dragonfish/shared/models/users';
     styleUrls: ['./user-card.component.scss'],
 })
 export class UserCardComponent {
-    @Input() user: FrontendUser;
+    @Input() user: Pseudonym;
 
     constructor() {}
 }

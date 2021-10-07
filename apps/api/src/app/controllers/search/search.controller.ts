@@ -3,18 +3,21 @@ import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
-import { ContentModel } from '@dragonfish/shared/models/content';
-import { User } from '@dragonfish/shared/models/users';
+import { ContentModel, WorkKind } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
 import { SearchKind } from '@dragonfish/shared/models/search';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Controller('search')
 export class SearchController {
     constructor(@Inject('ISearch') private readonly searchService: ISearch) {}
 
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-initial-results')
     async getInitialResults(
@@ -29,21 +32,33 @@ export class SearchController {
     async findRelatedContent(
         @Query('query') query: string,
         @Query('kind') kind: SearchKind,
+        @Query('author') author: string | null,
+        @Query('category') category: WorkKind | null,
         @Query('pageNum') pageNum: number,
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.searchService.findRelatedContent(query, kind, pageNum, contentFilter);
+        return await this.searchService.findRelatedContent(
+            query,
+            kind,
+            author,
+            category,
+            pageNum,
+            contentFilter
+        );
     }
 
     @ApiTags(DragonfishTags.Search)
     @Get('get-user-results')
-    async getUserRequests(
+    async getUserResults(
         @Query('query') query: string,
         @Query('pageNum') pageNum: number
-    ): Promise<PaginateResult<User>> {
+    ): Promise<PaginateResult<Pseudonym>> {
         return await this.searchService.searchUsers(query, pageNum);
     }
 
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-blog-results')
     async getBlogResults(
@@ -54,6 +69,9 @@ export class SearchController {
         return await this.searchService.searchBlogs(query, pageNum, contentFilter);
     }
 
+    /** 
+     * @deprecated No longer used
+     */
     @ApiTags(DragonfishTags.Search)
     @Get('get-work-results')
     async getWorkResults(

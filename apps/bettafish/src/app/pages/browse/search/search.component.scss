@@ -10,6 +10,11 @@ div.search-header {
     }
 }
 
+div.advanced-options {
+    border-top: 1px solid whitesmoke;
+    margin-top: 0.5rem;
+}
+
 rmx-icon {
     color: var(--accent);
     &.header {

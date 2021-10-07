@@ -10,6 +10,7 @@ import {
     PubChange,
     PubContent,
     SetRating,
+    WorkKind,
 } from '@dragonfish/shared/models/content';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
@@ -269,6 +270,7 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * @deprecated No longer used
      * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
      * @param query The user's search string.
      */
@@ -286,21 +288,29 @@ export class DragonfishNetworkService {
      *
      * @param query The user's query
      * @param kind The kind of content that searching for
+     * @param author (Optional) The author of content that searching for
+     * @param category (Optional) The category of content that searching for
      * @param pageNum The current results page
      */
     public findRelatedContent(
         query: string,
         kind: SearchKind,
+        author: string | null,
+        category: WorkKind | null,
         pageNum: number,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?query=${query}&kind=${kind}&pageNum=${pageNum}`,
+                `${this.baseUrl}/search/find-related-content?query=`
+                 + `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
     }
 
+    /** 
+     * @deprecated No longer used
+     */
     public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -310,6 +320,9 @@ export class DragonfishNetworkService {
         );
     }
 
+    /** 
+     * @deprecated No longer used
+     */
     public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
@@ -319,9 +332,9 @@ export class DragonfishNetworkService {
         );
     }
 
-    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<User>> {
+    public searchUsers(query: string, pageNum: number): Observable<PaginateResult<Pseudonym>> {
         return handleResponse(
-            this.http.get<PaginateResult<User>>(
+            this.http.get<PaginateResult<Pseudonym>>(
                 `${this.baseUrl}/search/get-user-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
