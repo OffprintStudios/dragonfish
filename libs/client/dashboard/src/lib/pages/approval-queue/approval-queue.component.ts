@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, TagKind } from '@dragonfish/shared/models/content';
 import { UserInfo } from '@dragonfish/shared/models/users';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
@@ -16,6 +16,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 export class ApprovalQueueComponent implements OnInit {
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
+    tagKinds = TagKind;
     pageNum = 1;
 
     constructor(
