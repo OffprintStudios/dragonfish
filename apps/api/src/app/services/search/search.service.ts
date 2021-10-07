@@ -5,11 +5,11 @@ import * as sanitizeHtml from 'sanitize-html';
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
-import { UsersStore } from '@dragonfish/api/database/users';
+import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
-import { User } from '@dragonfish/shared/models/users';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
+import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Injectable()
 export class SearchService implements ISearch {
@@ -17,39 +17,47 @@ export class SearchService implements ISearch {
     readonly INITIAL_MAX_PER_PAGE = 6;
     readonly MAX_PER_PAGE = 15;
 
-    constructor(private readonly usersStore: UsersStore, private readonly contentGroupStore: ContentGroupStore) {}
+    constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
+    /** DEPRECATED */
     async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
+        // const parsedQuery = `"${sanitizeHtml(query)}"`;
 
-        const [initialUsers, initialBlogs, initialContent] = await Promise.all([
-            this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
-            this.contentGroupStore.findRelatedContent(parsedQuery,
-                [ContentKind.BlogContent],
-                this.INITIAL_PAGE,
-                this.INITIAL_MAX_PER_PAGE,
-                contentFilter
-            ),
-            this.contentGroupStore.findRelatedContent(
-                parsedQuery,
-                [ContentKind.PoetryContent, ContentKind.ProseContent],
-                this.INITIAL_PAGE,
-                this.INITIAL_MAX_PER_PAGE,
-                contentFilter
-            ),
-        ]);
+        // const [initialUsers, initialBlogs, initialContent] = await Promise.all([
+        //     this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
+        //     this.contentGroupStore.findRelatedContent(parsedQuery,
+        //         [ContentKind.BlogContent],
+        //         null,
+        //         null,
+        //         this.INITIAL_PAGE,
+        //         this.INITIAL_MAX_PER_PAGE,
+        //         contentFilter
+        //     ),
+        //     this.contentGroupStore.findRelatedContent(
+        //         parsedQuery,
+        //         [ContentKind.PoetryContent, ContentKind.ProseContent],
+        //         null,
+        //         null,
+        //         this.INITIAL_PAGE,
+        //         this.INITIAL_MAX_PER_PAGE,
+        //         contentFilter
+        //     ),
+        // ]);
 
-        const result: InitialResults = {
-            users: initialUsers.docs,
-            blogs: initialBlogs.docs,
-            works: initialContent.docs,
-        };
-        return result;
+        // const result: InitialResults = {
+        //     users: initialUsers.docs,
+        //     blogs: initialBlogs.docs,
+        //     works: initialContent.docs,
+        // };
+        // return result;
+        return null;
     }
 
     async findRelatedContent(
         query: string,
         searchKind: SearchKind,
+        author: string,
+        searchCategory: SearchCategory,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -76,21 +84,39 @@ export class SearchService implements ISearch {
             default:
                 kinds.push(ContentKind.PoetryContent, ContentKind.ProseContent);
         }
-        console.log(kinds);
+        let authorId: string = null;
+        if (author) {
+            let users = await this.searchUsers(author, 1);
+            if (users.totalDocs > 0) {
+                authorId = users.docs[0]._id;
+            }
+        }
+        let category: WorkKind = null;
+        if (searchCategory == SearchCategory.Fanwork) {
+            category = WorkKind.Fanwork;
+        }
+        else if (searchCategory == SearchCategory.Original) {
+            category = WorkKind.Original;
+        }
+        // Keep category null if it's Any, since then we don't filter by category
+
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             kinds,
+            authorId,
+            category,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
         );
     }
 
-    async searchUsers(query: string, pageNum: number): Promise<PaginateResult<User>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.usersStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
+    async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
+        const parsedQuery = sanitizeHtml(query);
+        return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 
+    /** DEPRECATED */
     async searchBlogs(
         query: string,
         pageNum: number,
@@ -100,12 +126,15 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.BlogContent],
+            null,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
         );
     }
 
+    /** DEPRECATED */
     async searchContent(
         query: string,
         pageNum: number,
@@ -115,6 +144,8 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
+            null,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter

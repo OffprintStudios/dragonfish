@@ -1,4 +1,5 @@
 import { Roles } from './roles.enum';
+/** DEPRECATED */
 export interface FrontendUser {
     readonly _id: string;
     readonly username: string;

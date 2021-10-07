@@ -12,10 +12,10 @@ export class PseudonymDocument extends Document implements Pseudonym {
     @Prop({ type: String, required: true, ref: 'Account' })
     readonly accountId: string;
 
-    @Prop({ type: String, required: true, index: 'text', unique: true })
+    @Prop({ type: String, required: true, index: true, unique: true })
     userTag: string;
 
-    @Prop({ type: String })
+    @Prop({ type: String, index: 'text' })
     screenName: string;
 
     @Prop(
