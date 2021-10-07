@@ -32,7 +32,7 @@
                         >
                             <rmx-icon name="checkbox-circle-line"></rmx-icon>
                         </div>
-                        <div class="section-button" [routerLink]="['view-section', section._id]">
+                        <div class="section-button mid" [routerLink]="['view-section', section._id]">
                             <div class="flex-1">{{ section.title }}</div>
                             <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
                         </div>
