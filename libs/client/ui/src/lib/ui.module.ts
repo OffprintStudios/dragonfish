@@ -45,6 +45,7 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
 import { WorkFormComponent } from './components/work-form/work-form.component';
 import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
+import { CommentBlockComponent } from './components/comment-block/comment-block.component';
 
 @NgModule({
     declarations: [
@@ -76,6 +77,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         WorkFormComponent,
         TagBadgeComponent,
         SectionsListComponent,
+        CommentBlockComponent,
     ],
     imports: [
         CommonModule,
@@ -120,6 +122,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         WorkFormComponent,
         TagBadgeComponent,
         SectionsListComponent,
+        CommentBlockComponent,
     ],
 })
 export class UiModule {}
