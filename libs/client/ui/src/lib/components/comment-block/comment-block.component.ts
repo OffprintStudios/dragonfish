@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Comment } from '@dragonfish/shared/models/comments';
+import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { CommentsService } from '@dragonfish/client/repository/comments';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -13,6 +13,8 @@ import { AlertsService } from '@dragonfish/client/alerts';
 export class CommentBlockComponent {
     @Input() createMode = false;
     @Input() comment: Comment;
+    @Input() itemId: string;
+    @Input() commentKind: CommentKind;
 
     editMode = false;
 
@@ -35,6 +37,30 @@ export class CommentBlockComponent {
 
     openMultiQuote() {
         this.alerts.info(`This feature is not yet available!`);
+    }
+
+    submitForm() {
+        if (this.fields.body.invalid) {
+            console.log(this.fields.body.value);
+            this.alerts.error(`Comments must be longer than 10 characters.`);
+            return;
+        }
+
+        const form: CommentForm = {
+            body: this.fields.body.value,
+            repliesTo: [],
+        };
+
+        if (this.createMode) {
+            this.commentsService.addComment(this.itemId, this.commentKind, form).subscribe(() => {
+                this.commentForm.reset();
+                this.editMode = false;
+            });
+        } else {
+            this.commentsService.editComment(this.comment._id, form).subscribe(() => {
+                this.editMode = false;
+            });
+        }
     }
 
     private get fields() {

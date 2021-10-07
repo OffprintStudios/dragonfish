@@ -1,3 +1,23 @@
 <div class="my-6 w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
-    <dragonfish-comment-block [createMode]="true"></dragonfish-comment-block>
+    <ng-container *ngIf="paginatorRef.isLoading$ | async; else notLoading">
+        <div class="flex items-center justify-center w-full mb-6">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #notLoading>
+        <ng-container *ngIf="comments$ | async as comments">
+            <ng-container *ngIf="comments.total === 0; else hasComments">
+                <div class="empty mb-6">
+                    <h3>Nobody's said anything yet...</h3>
+                    <p>But you could be the first!</p>
+                </div>
+            </ng-container>
+            <ng-template #hasComments>
+                <div class="my-6" *ngFor="let comment of comments.data">
+                    <dragonfish-comment-block [comment]="comment"></dragonfish-comment-block>
+                </div>
+            </ng-template>
+        </ng-container>
+    </ng-template>
+    <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="workQuery.contentId"></dragonfish-comment-block>
 </div>
