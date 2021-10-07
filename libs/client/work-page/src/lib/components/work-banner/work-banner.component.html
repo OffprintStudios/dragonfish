@@ -84,6 +84,21 @@
                     <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre"></dragonfish-tag-badge>
                 </ng-container>
             </div>
+            <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
+                <div class="content-tags flex flex-row items-center uppercase text-sm">
+                    <span class="tag tags">
+                        <ng-container *ngFor="let tag of content.tags; let i = index">
+                            <a
+                                [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                [innerHtml]="tag | displayTags | safeHtml"
+                            ></a>
+                            <ng-container *ngIf="i < content.tags.length - 1">
+                                ,
+                            </ng-container>
+                        </ng-container>
+                    </span>
+                </div>
+            </ng-container>
             <div class="flex items-center w-full mt-6 border-b-2 border-white">
                 <div
                     class="nav-link px-10"
