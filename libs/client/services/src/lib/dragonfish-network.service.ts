@@ -997,14 +997,12 @@ export class DragonfishNetworkService {
     /**
      * Fetches one piece of content from the backend.
      *
-     * @param pseudId
      * @param contentId The content to fetch
-     * @param kind The content kind
      * @returns Observable
      */
-    public fetchOne(pseudId: string, contentId: string, kind?: ContentKind): Observable<PubContent> {
+    public fetchOne(contentId: string): Observable<PubContent> {
         return handleResponse(
-            this.http.get<PubContent>(`${this.baseUrl}/content/fetch-one?pseudId=${pseudId}&contentId=${contentId}`, {
+            this.http.get<PubContent>(`${this.baseUrl}/content/fetch-one?&contentId=${contentId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),

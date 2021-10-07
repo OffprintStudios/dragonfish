@@ -28,12 +28,12 @@ export class WorkPageService {
     //#region ---FETCHING---
 
     public fetchContent(id: string) {
-        return this.network.fetchOne(this.pseudQuery.currentId, id).pipe(
+        return this.network.fetchOne(id).pipe(
             tap((result) => {
                 this.workStore.update({
                     content: result.content,
                     ratings: result.ratings,
-                    selectedRating: result.ratings.rating,
+                    selectedRating: result.ratings !== null ? result.ratings.rating : null,
                     wordCount: result.content.stats.words,
                 });
                 this.sections.setSections((result.content as any).sections);

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentModel } from '@dragonfish/shared/models/content';
 import { ProfileService } from './profile.service';
 import { map } from 'rxjs';
 
@@ -11,7 +11,7 @@ export class DraftBlogResolver implements Resolve<ContentModel> {
     resolve(route: ActivatedRouteSnapshot) {
         const contentId = route.paramMap.get('contentId');
 
-        return this.profile.fetchOneUnpublished(contentId, ContentKind.BlogContent).pipe(
+        return this.profile.fetchOneUnpublished(contentId).pipe(
             map((result) => {
                 return result.content;
             }),

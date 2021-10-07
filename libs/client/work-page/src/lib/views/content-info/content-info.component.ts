@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-content-info',
@@ -10,5 +11,5 @@ import { RatingOption } from '@dragonfish/shared/models/reading-history';
 export class ContentInfoComponent {
     ratingOption = RatingOption;
 
-    constructor(public workQuery: WorkPageQuery, public workPage: WorkPageService) {}
+    constructor(public workQuery: WorkPageQuery, public workPage: WorkPageService, public session: SessionQuery) {}
 }
