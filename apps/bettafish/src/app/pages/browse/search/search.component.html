@@ -35,6 +35,9 @@
                             <div>Category</div>
                             <div class="offprint-select">
                                 <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select Category'">
+                                    <ng-option [value]="ANY_CATEGORY">
+                                        {{ ANY_CATEGORY }}
+                                    </ng-option>
                                     <ng-option *ngFor="let category of categoryOptions | keyvalue" [value]="category.key ">
                                         {{ category.value }}
                                     </ng-option>

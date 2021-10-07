@@ -1,8 +1,8 @@
 import { PaginateResult } from 'mongoose';
 
-import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchCategory, SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind } from '@dragonfish/shared/models/search';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface ISearch {
@@ -27,8 +27,8 @@ export interface ISearch {
     findRelatedContent(
         query: string,
         searchKind: SearchKind,
-        author: string,
-        category: SearchCategory,
+        author: string | null,
+        category: WorkKind | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;
