@@ -8,6 +8,7 @@ import { AlertsModule } from '@dragonfish/client/alerts';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { WorkPageRoutingModule } from './work-page-routing.module';
 import { Views } from './views';
 import { Components } from './components';
@@ -25,6 +26,7 @@ import { Components } from './components';
         ReactiveFormsModule,
         EditorLiteModule,
         NgSelectModule,
+        NgxPaginationModule,
     ],
     declarations: [...Views, ...Components],
 })
