@@ -94,11 +94,12 @@ export class DragonfishNetworkService {
      * Claims a work.
      *
      * @param docId The document to claim
+     * @param pseudId
      */
-    public claimWork(docId: string): Observable<ApprovalQueue> {
+    public claimWork(docId: string, pseudId: string): Observable<ApprovalQueue> {
         return handleResponse(
             this.http.patch<ApprovalQueue>(
-                `${this.baseUrl}/approval-queue/claim-content/${docId}`,
+                `${this.baseUrl}/approval-queue/claim-content?pseudId=${pseudId}&docId=${docId}`,
                 {},
                 {
                     observe: 'response',
@@ -112,10 +113,11 @@ export class DragonfishNetworkService {
      * Approves a work.
      *
      * @param decision Info about the decision.
+     * @param pseudId
      */
-    public approveWork(decision: Decision): Observable<void> {
+    public approveWork(decision: Decision, pseudId: string): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-content`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/approve-content?pseudId=${pseudId}`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -126,10 +128,11 @@ export class DragonfishNetworkService {
      * Rejects a work.
      *
      * @param decision Info about the decision.
+     * @param pseudId
      */
-    public rejectWork(decision: Decision): Observable<void> {
+    public rejectWork(decision: Decision, pseudId: string): Observable<void> {
         return handleResponse(
-            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-content`, decision, {
+            this.http.patch<void>(`${this.baseUrl}/approval-queue/reject-content?pseudId=${pseudId}`, decision, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -301,14 +304,14 @@ export class DragonfishNetworkService {
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?query=`
-                 + `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
+                `${this.baseUrl}/search/find-related-content?query=` +
+                    `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
     }
 
-    /** 
+    /**
      * @deprecated No longer used
      */
     public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
@@ -320,7 +323,7 @@ export class DragonfishNetworkService {
         );
     }
 
-    /** 
+    /**
      * @deprecated No longer used
      */
     public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {

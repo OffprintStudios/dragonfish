@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
-import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
-import { UserInfo } from '@dragonfish/shared/models/users';
+import { ContentKind, ContentModel, TagKind } from '@dragonfish/shared/models/content';
 import { PaginateResult } from '@dragonfish/shared/models/util';
 import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
 import { AlertsService } from '@dragonfish/client/alerts';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 
 @Component({
     selector: 'dragonfish-approval-queue',
@@ -16,6 +17,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 export class ApprovalQueueComponent implements OnInit {
     queue: PaginateResult<ApprovalQueue>;
     contentKind = ContentKind;
+    tagKinds = TagKind;
     pageNum = 1;
 
     constructor(
@@ -24,6 +26,7 @@ export class ApprovalQueueComponent implements OnInit {
         private alerts: AlertsService,
         public sessionQuery: SessionQuery,
         private queueService: ApprovalQueueService,
+        private auth: AuthService,
     ) {}
 
     ngOnInit(): void {
@@ -88,11 +91,7 @@ export class ApprovalQueueComponent implements OnInit {
      * @param entry The approval queue entry
      */
     checkIfClaimed(entry: ApprovalQueue) {
-        if (entry.claimedBy === null || entry.claimedBy === undefined) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(entry.claimedBy === null || entry.claimedBy === undefined);
     }
 
     /**
@@ -102,8 +101,8 @@ export class ApprovalQueueComponent implements OnInit {
      */
     checkIfClaimedByThisUser(entry: ApprovalQueue) {
         if (entry.claimedBy !== null && entry.claimedBy !== undefined) {
-            const whoClaimedThis = entry.claimedBy as UserInfo;
-            return whoClaimedThis._id === this.sessionQuery.currentUser._id;
+            const whoClaimedThis = entry.claimedBy as Pseudonym;
+            return this.auth.checkPseudonym(whoClaimedThis._id);
         } else {
             return false;
         }

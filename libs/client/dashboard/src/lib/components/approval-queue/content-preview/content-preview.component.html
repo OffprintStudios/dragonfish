@@ -71,13 +71,13 @@
                     <ng-container *ngSwitchCase="currDoc.workToApprove.kind === contentKind.PoetryContent">
                         <ng-container *ngIf="$any(currDoc.workToApprove.meta).collection">
                             <div>
-                                <dragonfish-sections-list [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list>
+                                <dragonfish-sections-list-old [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list-old>
                             </div>
                         </ng-container>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         <div>
-                            <dragonfish-sections-list [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list>
+                            <dragonfish-sections-list-old [sections]="$any(currDoc.workToApprove).sections"></dragonfish-sections-list-old>
                         </div>
                     </ng-container>
                 </ng-container>

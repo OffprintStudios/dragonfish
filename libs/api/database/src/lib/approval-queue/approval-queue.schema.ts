@@ -1,10 +1,10 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
 
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentModel } from '@dragonfish/shared/models/content';
-import { UserInfo } from '@dragonfish/shared/models/users';
+import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'approval_queue' })
 export class ApprovalQueueDocument extends Document implements ApprovalQueue {
@@ -20,7 +20,7 @@ export class ApprovalQueueDocument extends Document implements ApprovalQueue {
         default: null,
         autopopulate: true,
     })
-    claimedBy: string | UserInfo;
+    claimedBy: string | Pseudonym;
 
     @Prop()
     createdAt: Date;

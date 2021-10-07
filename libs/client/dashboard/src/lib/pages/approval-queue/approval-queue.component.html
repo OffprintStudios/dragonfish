@@ -1,108 +1,68 @@
-<div class="approval-queue-container mx-auto my-4" *ngIf="route.children.length === 0">
-    <div class="queue-list">
-        <h4 class="text-center text-2xl" *ngIf="queueIsEmpty()">Surprisingly, no one's submitted anything yet.</h4>
-        <div class="work-list" *ngIf="queue && queue.docs">
-            <div
-                class="work-item"
-                *ngFor="
-                    let entry of queue.docs
-                        | paginate
-                            : {
-                                  itemsPerPage: queue.limit,
-                                  currentPage: pageNum,
-                                  totalItems: queue.totalDocs
-                              }
-                "
-            >
-                <div class="work-cover-art" *ngIf="entry.workToApprove.meta.coverArt">
-                    <img class="cover" [src]="entry.workToApprove.meta.coverArt" />
-                </div>
-                <div class="work-info">
-                    <div class="info">
-                        <div class="work-header">
-                            <rating-icon [rating]="entry.workToApprove.meta.rating" [size]="'small'"></rating-icon>
-                            <h3>
-                                <a>{{ entry.workToApprove.title }}</a>
-                            </h3>
-                            <h4 class="author-byline">
-                                by
-                                <a
-                                    [routerLink]="[
-                                        '/portfolio',
-                                        entry.workToApprove.author._id,
-                                        entry.workToApprove.author.username | slugify
-                                    ]"
-                                >
-                                    {{ entry.workToApprove.author.username }}
-                                </a>
-                            </h4>
-                        </div>
-                        <div class="info-bits">
-                            <ng-container [ngSwitch]="entry.workToApprove.kind">
-                                <ng-container *ngSwitchCase="contentKind.ProseContent">
-                                    <h4 [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'">
-                                        <i-feather name="book-open"></i-feather>
-                                    </h4>
-                                    <span>//</span>
-                                </ng-container>
-                                <ng-container *ngSwitchCase="contentKind.PoetryContent">
-                                    <h4 [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'">
-                                        <i-feather name="feather"></i-feather>
-                                    </h4>
-                                    <span>//</span>
-                                </ng-container>
-                            </ng-container>
-                            <h4>{{ entry.workToApprove.meta.category }}</h4>
-                            <span>//</span>
-                            <h4>{{ entry.workToApprove.meta.genres | separateGenres }}</h4>
-                        </div>
-                        <div class="stats">
-                            <h4>{{ entry.workToApprove.meta.status }}</h4>
-                            <span>//</span>
-                            <h4 title="Words">
-                                <i-feather name="pen-tool"></i-feather
-                                >{{ entry.workToApprove.stats.words | toLocaleString }} word{{
-                                    entry.workToApprove.stats.words | pluralize
-                                }}
-                            </h4>
-                            <span>//</span>
-                            <h4 title="Last Updated">
-                                <i-feather name="calendar"></i-feather
-                                >{{ entry.workToApprove.updatedAt | date: 'short' }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="claimed-by" *ngIf="checkIfClaimed(entry) || checkIfClaimedByThisUser(entry)">
-                    <img
-                        matTooltip="Claimed by {{ entry.claimedBy.username }}"
-                        matTooltipClass="offprint-tooltip"
-                        class="claimed-avatar"
-                        src="{{ entry.claimedBy.profile.avatar }}"
-                    />
-                </div>
-                <div class="work-control-buttons" *ngIf="!checkIfClaimed(entry) && !checkIfClaimedByThisUser(entry)">
-                    <button
-                        matTooltip="Claim work"
-                        matTooltipClass="offprint-tooltip"
-                        class="work-controls-single"
-                        (click)="claimWork(entry)"
-                    >
-                        <i-feather name="plus-square"></i-feather>
-                    </button>
-                </div>
-                <div class="work-control-buttons" *ngIf="checkIfClaimedByThisUser(entry)">
-                    <button
-                        [matTooltip]="'View Content'"
-                        [matTooltipClass]="'offprint-tooltip'"
-                        class="work-controls-single"
-                        (click)="goToContentView(entry)"
-                    >
-                        <i-feather name="chevron-right"></i-feather>
-                    </button>
-                </div>
-            </div>
+<ng-container *ngIf="route.children.length === 0; else navigated">
+    <ng-container *ngIf="queueIsEmpty(); else notEmpty">
+        <div class="empty">
+            <h3>Queue's clear!</h3>
+            <p>If that was you, well done! If it wasn't, then just sit around and wait for more I guess.</p>
         </div>
+    </ng-container>
+
+    <ng-template #notEmpty>
+        <table class="table-auto my-6 w-11/12 mx-auto border-collapse">
+            <thead class="border-b border-gray-600 dark:border-white">
+            <tr>
+                <th>Claims</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Tags</th>
+                <th>Rating</th>
+                <th>Submitted</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+                class="border-b border-gray-600 dark:border-white"
+                *ngFor="let entry of queue.docs | paginate: { itemsPerPage: queue.limit, currentPage: pageNum, totalItems: queue.totalDocs }"
+            >
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    <ng-container *ngIf="checkIfClaimed(entry); else notClaimed">
+                        <ng-container *ngIf="checkIfClaimedByThisUser(entry); else notThisUser">
+                            <a class="cursor-pointer" (click)="goToContentView(entry)">View >></a>
+                        </ng-container>
+                        <ng-template #notThisUser>
+                            <img class="w-12 h-12 rounded-md border border-gray-600 dark:border-white" [src]="entry.claimedBy.profile.avatar" [alt]="'avatar'">
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #notClaimed>
+                        <button (click)="claimWork(entry)">
+                            <rmx-icon name="add-box-line"></rmx-icon>
+                            <span>Claim</span>
+                        </button>
+                    </ng-template>
+                </td>
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    {{ entry.workToApprove.title }}
+                </td>
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    <a [routerLink]="['/profile', entry.workToApprove.author._id, entry.workToApprove.author.userTag]">
+                        {{ entry.workToApprove.author.screenName }}
+                    </a>
+                </td>
+                <td class="p-2 flex items-center flex-wrap border-r border-gray-600 dark:border-white">
+                    <dragonfish-tag-badge [kind]="tagKinds.Type" [type]="entry.workToApprove.kind"></dragonfish-tag-badge>
+                    <dragonfish-tag-badge [kind]="tagKinds.Category" [category]="entry.workToApprove.meta.category"></dragonfish-tag-badge>
+                    <ng-container *ngFor="let genre of entry.workToApprove.meta.genres">
+                        <dragonfish-tag-badge [kind]="tagKinds.Genre" [genre]="genre"></dragonfish-tag-badge>
+                    </ng-container>
+                </td>
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    {{ entry.workToApprove.meta.rating }}
+                </td>
+                <td class="p-2">
+                    {{ entry.createdAt | localedate: 'shortDate' }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
         <pagination-controls
             (pageChange)="onPageChange($event)"
@@ -110,9 +70,9 @@
             nextLabel=""
             *ngIf="!queueIsEmpty()"
         ></pagination-controls>
-    </div>
-</div>
-
-<ng-container *ngIf="route.children.length !== 0">
-    <router-outlet></router-outlet>
+    </ng-template>
 </ng-container>
+
+<ng-template #navigated>
+    <router-outlet></router-outlet>
+</ng-template>
