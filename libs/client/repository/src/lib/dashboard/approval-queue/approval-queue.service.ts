@@ -9,7 +9,7 @@ import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { Decision } from '@dragonfish/shared/models/contrib';
 import { PoetryContent, ProseContent, SectionInfo } from '@dragonfish/shared/models/content';
 import { isAllowed } from '@dragonfish/shared/functions';
-import { Roles } from '@dragonfish/shared/models/accounts';
+import { Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
 import { PseudonymsQuery } from '../../pseudonyms';
 
 @Injectable({ providedIn: 'root' })
@@ -32,8 +32,11 @@ export class ApprovalQueueService {
                 ) {
                     // current behavior will reset the `claimedDocs` every time the page changes; this will be addressed
                     // in a future update to determine if docs have already been added to the array
-                    const ownedDocs = result.docs.filter((doc: any) => {
-                        return doc.claimedBy !== null && doc.claimedBy._id === this.sessionQuery.currAccount._id;
+                    const ownedDocs = result.docs.filter((doc) => {
+                        return (
+                            doc.claimedBy !== null &&
+                            (doc.claimedBy as Pseudonym)._id === this.sessionQuery.currAccount._id
+                        );
                     });
                     this.queueStore.update({
                         currPageDocs: result,
