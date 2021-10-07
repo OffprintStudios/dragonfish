@@ -42,7 +42,7 @@
                 </div>
             </ng-container>
             <ng-template #hasPubBlogs>
-                <div class="grid grid-cols-2 gap-4" *ngIf="profileQuery.pubWorks$ | async as publishedBlogs">
+                <div class="grid grid-cols-2 gap-4 w-7/12 mx-auto my-6" *ngIf="profileQuery.pubWorks$ | async as publishedBlogs">
                     <ng-container *ngFor="let blog of publishedBlogs">
                         <dragonfish-work-card [content]="blog"></dragonfish-work-card>
                     </ng-container>
