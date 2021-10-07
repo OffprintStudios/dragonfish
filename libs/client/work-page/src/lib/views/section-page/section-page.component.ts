@@ -20,6 +20,7 @@ import { Location } from '@angular/common';
 export class SectionPageComponent implements OnInit {
     createMode = false;
     previewMode = true;
+    sectionListOpened = false;
     authorsNotePosOptions = AuthorsNotePos;
 
     sectionForm = new FormGroup({
@@ -67,8 +68,70 @@ export class SectionPageComponent implements OnInit {
         this.previewMode = this.previewMode !== true;
     }
 
-    goBack() {
-        this.location.back();
+    toggleSectionList() {
+        this.sectionListOpened = !this.sectionListOpened;
+    }
+
+    goBackToWork() {
+        if (this.workPageQuery.contentKind === 'PoetryContent') {
+            return ['/poetry', this.workPageQuery.contentId, slugify(this.workPageQuery.contentTitle)];
+        } else if (this.workPageQuery.contentKind === 'ProseContent') {
+            return ['/prose', this.workPageQuery.contentId, slugify(this.workPageQuery.contentTitle)];
+        }
+    }
+
+    goToSectionAuthor(sectionId: string) {
+        if (this.workPageQuery.contentKind === 'PoetryContent') {
+            return [
+                '/poetry',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'view-section',
+                sectionId,
+            ];
+        } else if (this.workPageQuery.contentKind === 'ProseContent') {
+            return [
+                '/prose',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'view-section',
+                sectionId,
+            ];
+        }
+    }
+
+    goToSectionReader(index: number, title: string) {
+        if (this.workPageQuery.contentKind === 'PoetryContent') {
+            return [
+                '/poetry',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'section',
+                index + 1,
+                slugify(title),
+            ];
+        } else if (this.workPageQuery.contentKind === 'ProseContent') {
+            return [
+                '/prose',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'section',
+                index + 1,
+                slugify(title),
+            ];
+        }
+    }
+
+    goToNext() {
+        if (this.sectionsQuery.currIndex !== this.sectionsQuery.pubSections.length) {
+            this.router.navigate(['section', this.sectionsQuery.nextPage, 'next'], { relativeTo: this.route.parent });
+        }
+    }
+
+    goToPrev() {
+        if (this.sectionsQuery.lastPage !== 0) {
+            this.router.navigate(['section', this.sectionsQuery.lastPage, 'prev'], { relativeTo: this.route.parent });
+        }
     }
 
     saveChanges(section?: Section) {

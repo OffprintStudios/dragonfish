@@ -23,6 +23,10 @@ export class WorkPageQuery extends Query<WorkPageState> {
         return this.getValue().content._id;
     }
 
+    public get contentKind() {
+        return this.getValue().content.kind;
+    }
+
     public get currRating() {
         return this.getValue().selectedRating;
     }

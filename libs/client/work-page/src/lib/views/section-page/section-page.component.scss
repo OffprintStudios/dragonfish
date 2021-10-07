@@ -40,3 +40,18 @@ div.authors-note-box {
         margin: 0;
     }
 }
+
+button.page-turn {
+    &.left {
+        @apply rounded-r-none;
+        border-right: 0 !important;
+    }
+    &.right {
+        @apply rounded-l-none;
+        border-left: 0 !important;
+    }
+}
+
+button.not-rounded {
+    @apply rounded-none;
+}

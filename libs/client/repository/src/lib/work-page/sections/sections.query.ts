@@ -28,6 +28,10 @@ export class SectionsQuery extends QueryEntity<SectionsState> {
         });
     }
 
+    public get currIndex() {
+        return this.getValue().currIndex;
+    }
+
     public get lastPage() {
         return this.getValue().currIndex - 1;
     }
