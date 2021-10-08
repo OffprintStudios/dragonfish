@@ -39,7 +39,14 @@ export class CommentsService {
     public addComment(itemId: string, kind: CommentKind, formInfo: CommentForm) {
         return this.network.addComment(this.pseudQuery.currentId, itemId, kind, formInfo).pipe(
             tap((comment: Comment) => {
-                this.comments.add(comment);
+                if (this.commentsQuery.totalComments === 0) {
+                    this.comments.set([comment]);
+                    this.comments.update({
+                        totalComments: 1,
+                    });
+                } else {
+                    this.comments.add(comment);
+                }
             }),
             catchError((err) => {
                 this.alerts.error(`Something went wrong adding a comment!`);
