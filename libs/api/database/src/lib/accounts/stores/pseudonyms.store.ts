@@ -34,6 +34,16 @@ export class PseudonymsStore {
      * @param maxPerPage The maximum number of results per page
      */
     async findRelatedUsers(query: string, pageNum: number, maxPerPage: number): Promise<PaginateResult<PseudonymDocument>> {
+        if (!query) {
+            return await this.pseudModel.paginate(
+                {},
+                {
+                    sort: { screenName: 1 },
+                    page: pageNum,
+                    limit: maxPerPage,
+                },
+            );
+        }
         if (query.charAt(0) === '@') {
             return await this.pseudModel.paginate(
                 { userTag: query.substr(1) },
@@ -49,6 +59,7 @@ export class PseudonymsStore {
                 { userTag: query }
             ] },
             {
+                sort: { screenName: 1 },
                 page: pageNum,
                 limit: maxPerPage,
             },

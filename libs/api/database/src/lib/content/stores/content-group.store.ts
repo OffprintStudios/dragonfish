@@ -5,7 +5,7 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentRating, Genres, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
@@ -196,25 +196,32 @@ export class ContentGroupStore {
         kinds: ContentKind[],
         authorId: string | null,
         category: WorkKind | null,
+        genre: Genres | null,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
+            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: maxPerPage,
         };
         const paginateQuery = {
-            $text: { $search: query },
             'audit.published': PubStatus.Published,
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
+        if (query) {
+            paginateQuery['$text'] = { $search: query };
+        }
         if (authorId) {
             paginateQuery['author'] = authorId;
         }
         if (category) {
             paginateQuery['meta.category'] = category;
+        }
+        if (genre) {
+            paginateQuery['meta.genres'] = genre;
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);

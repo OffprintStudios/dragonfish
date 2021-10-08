@@ -7,7 +7,7 @@ import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { SearchKind } from '@dragonfish/shared/models/search';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
-import { ContentKind, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
@@ -60,10 +60,11 @@ export class SearchService implements ISearch {
         searchKind: SearchKind,
         author: string | null,
         category: WorkKind | null,
+        genre: Genres | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
+        const parsedQuery = sanitizeHtml(query);
         const kinds: ContentKind[] = [];
         switch (searchKind) {
             case SearchKind.Blog:
@@ -96,12 +97,16 @@ export class SearchService implements ISearch {
         if (Object.values(WorkKind).indexOf(category) < 0) {
             category = null;
         }
+        if (Object.values(Genres).indexOf(genre) < 0) {
+            genre = null;
+        }
 
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             kinds,
             authorId,
             category,
+            genre,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -127,6 +132,7 @@ export class SearchService implements ISearch {
             [ContentKind.BlogContent],
             null,
             null,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -145,6 +151,7 @@ export class SearchService implements ISearch {
         return await this.contentGroupStore.findRelatedContent(
             parsedQuery,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
+            null,
             null,
             null,
             pageNum,

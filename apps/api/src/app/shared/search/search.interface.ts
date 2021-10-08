@@ -1,6 +1,6 @@
 import { PaginateResult } from 'mongoose';
 
-import { ContentFilter, ContentModel, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { SearchKind } from '@dragonfish/shared/models/search';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
@@ -29,6 +29,7 @@ export interface ISearch {
         searchKind: SearchKind,
         author: string | null,
         category: WorkKind | null,
+        genre: Genres | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;

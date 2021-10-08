@@ -1,3 +1,6 @@
+/**
+ * @deprecated
+ */
 export type Genres = GenresPoetry | GenresFiction;
 
 export enum GenresFiction {
