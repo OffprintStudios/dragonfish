@@ -26,7 +26,11 @@ export class ContentService {
     ) {}
 
     public async fetchOne(contentId: string, pseudId?: string): Promise<ContentModel> {
-        return await this.content.fetchOne(contentId, pseudId);
+        const content = await this.content.fetchOne(contentId, pseudId);
+        if (content.audit.published === 'Published') {
+            await this.contentGroup.incrementViewCount(content._id);
+        }
+        return content;
     }
 
     public async fetchOnePublished(
