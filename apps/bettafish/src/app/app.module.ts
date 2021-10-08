@@ -36,8 +36,6 @@ import { RegistrationPages } from './pages/registration';
 /* Components */
 import { AppComponent } from './app.component';
 import { ContentComponents } from './components/content';
-import { UserComponents } from './components/user';
-import { UserSettingsComponents } from './components/user/settings';
 import { CollectionsComponents } from './components/content/collections';
 
 /* Modules */
@@ -48,7 +46,6 @@ import { UiModule } from '@dragonfish/client/ui';
 import { MaterialModule } from '@dragonfish/client/material';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { ClientServicesModule } from '@dragonfish/client/services';
-import { CommentsModule } from '@dragonfish/client/comments';
 
 /* Util */
 import { environment } from '../environments/environment';
@@ -59,8 +56,6 @@ import { TagPages } from './pages/tags';
     declarations: [
         AppComponent,
         ...ContentComponents,
-        ...UserComponents,
-        ...UserSettingsComponents,
         ...CollectionsComponents,
         ...HomePages,
         ...BrowsePages,
@@ -85,7 +80,6 @@ import { TagPages } from './pages/tags';
         UiModule,
         MaterialModule,
         AlertsModule,
-        CommentsModule,
         ClientServicesModule,
         Ng2FittextModule,
         NgxPaginationModule,

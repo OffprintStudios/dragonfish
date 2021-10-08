@@ -7,7 +7,6 @@ import { IconsModule } from '@dragonfish/client/icons';
 import { MaterialModule } from '@dragonfish/client/material';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { AlertsModule } from '@dragonfish/client/alerts';
-import { CommentsModule } from '@dragonfish/client/comments';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
@@ -32,7 +31,6 @@ import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './re
         MaterialModule,
         PipesModule,
         AlertsModule,
-        CommentsModule,
         NgxPaginationModule,
         FormsModule,
         ReactiveFormsModule,
