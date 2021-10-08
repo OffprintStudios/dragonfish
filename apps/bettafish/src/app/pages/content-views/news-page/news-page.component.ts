@@ -7,6 +7,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ContentViewQuery, ContentViewService } from '@dragonfish/client/repository/content-view';
 import { combineLatest } from 'rxjs';
 
+/**
+ * This has been deprecated.
+ * @deprecated
+ */
 @UntilDestroy()
 @Component({
     selector: 'dragonfish-news-page',

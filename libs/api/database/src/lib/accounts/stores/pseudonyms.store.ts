@@ -20,6 +20,10 @@ export class PseudonymsStore {
 
     //#region ---FETCH PSEUDONYMS---
 
+    /**
+     * Fetches a pseudonym via its ID.
+     * @param id
+     */
     public async fetchPseud(id: string): Promise<PseudonymDocument> {
         return this.retrievePseud(id);
     }
@@ -33,7 +37,11 @@ export class PseudonymsStore {
      * @param pageNum The page of results to retrieve
      * @param maxPerPage The maximum number of results per page
      */
-    async findRelatedUsers(query: string, pageNum: number, maxPerPage: number): Promise<PaginateResult<PseudonymDocument>> {
+    async findRelatedUsers(
+        query: string,
+        pageNum: number,
+        maxPerPage: number,
+    ): Promise<PaginateResult<PseudonymDocument>> {
         if (!query) {
             return await this.pseudModel.paginate(
                 {},
@@ -54,10 +62,7 @@ export class PseudonymsStore {
             );
         }
         return await this.pseudModel.paginate(
-            { $or: [
-                { $text: { $search: '"' + query + '"' } },
-                { userTag: query }
-            ] },
+            { $or: [{ $text: { $search: '"' + query + '"' } }, { userTag: query }] },
             {
                 sort: { screenName: 1 },
                 page: pageNum,
