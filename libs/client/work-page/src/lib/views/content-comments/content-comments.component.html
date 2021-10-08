@@ -1,4 +1,4 @@
-<div class="my-6 w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+<div class="my-6 w-11/12 md:w-9/12 lg:w-7/12 mx-auto max-w-4xl">
     <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="workQuery.contentId"></dragonfish-comment-block>
     <ng-container *ngIf="commentsQuery.totalComments === 0; else hasComments">
         <div class="empty mb-6">
