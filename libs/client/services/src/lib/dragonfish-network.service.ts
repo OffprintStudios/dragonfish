@@ -6,6 +6,7 @@ import {
     ContentKind,
     ContentModel,
     FormType,
+    Genres,
     NewsContentModel,
     PubChange,
     PubContent,
@@ -300,12 +301,13 @@ export class DragonfishNetworkService {
         kind: SearchKind,
         author: string | null,
         category: WorkKind | null,
+        genre: Genres | null,
         pageNum: number,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?query=` +
-                    `${query}&kind=${kind}&author=${author}&category=${category}&pageNum=${pageNum}`,
+                    `${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );

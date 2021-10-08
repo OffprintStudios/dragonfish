@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
-import { ContentModel, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
@@ -34,6 +34,7 @@ export class SearchController {
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
         @Query('category') category: WorkKind | null,
+        @Query('genre') genre: Genres | null,
         @Query('pageNum') pageNum: number,
         @Cookies('contentFilter') contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -42,6 +43,7 @@ export class SearchController {
             kind,
             author,
             category,
+            genre,
             pageNum,
             contentFilter
         );
