@@ -224,7 +224,6 @@ export class ContentGroupStore {
             paginateQuery['meta.genres'] = genre;
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
-        console.log(paginateQuery);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
@@ -333,7 +332,6 @@ export class ContentGroupStore {
      * @private
      */
     private static async determineContentFilter(query, filter: ContentFilter) {
-        console.log(filter);
         switch (filter) {
             case ContentFilter.Everything:
                 break;
