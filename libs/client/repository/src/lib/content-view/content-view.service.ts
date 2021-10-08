@@ -56,7 +56,7 @@ export class ContentViewService {
     }
 
     public addComment(contentId: string, form: CommentForm) {
-        return this.network.addComment(contentId, CommentKind.ContentComment, form).pipe(
+        /*return this.network.addComment(contentId, CommentKind.ContentComment, form).pipe(
             tap((value) => {
                 this.contentView.update(({ currPageComments }) => ({
                     currPageComments: { ...currPageComments, docs: [...currPageComments.docs, value] },
@@ -66,7 +66,7 @@ export class ContentViewService {
                 this.alerts.error(err.error.message);
                 return throwError(err);
             }),
-        );
+        );*/
     }
 
     public fetchNextComments(contentId: string, page: number) {

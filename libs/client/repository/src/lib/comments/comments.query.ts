@@ -26,12 +26,4 @@ export class CommentsQuery extends QueryEntity<CommentsState> {
     public get perPage() {
         return this.getValue().perPage;
     }
-
-    public get prevPage() {
-        return this.getValue().currPage - 1;
-    }
-
-    public get nextPage() {
-        return this.getValue().currPage + 1;
-    }
 }

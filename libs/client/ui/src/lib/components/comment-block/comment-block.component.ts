@@ -39,6 +39,10 @@ export class CommentBlockComponent {
         this.alerts.info(`This feature is not yet available!`);
     }
 
+    addReaction() {
+        this.alerts.info(`This feature is not yet available!`);
+    }
+
     submitForm() {
         if (this.fields.body.invalid) {
             console.log(this.fields.body.value);

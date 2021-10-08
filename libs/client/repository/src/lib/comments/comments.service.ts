@@ -3,15 +3,17 @@ import { CommentsStore } from './comments.store';
 import { CommentsQuery } from './comments.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { CommentKind, CommentForm } from '@dragonfish/shared/models/comments';
+import { CommentKind, CommentForm, Comment } from '@dragonfish/shared/models/comments';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { PseudonymsQuery } from '../pseudonyms';
 
 @Injectable({ providedIn: 'root' })
 export class CommentsService {
     constructor(
         private comments: CommentsStore,
         private commentsQuery: CommentsQuery,
+        private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
     ) {}
@@ -35,8 +37,8 @@ export class CommentsService {
     }
 
     public addComment(itemId: string, kind: CommentKind, formInfo: CommentForm) {
-        return this.network.addComment(itemId, kind, formInfo).pipe(
-            tap((comment) => {
+        return this.network.addComment(this.pseudQuery.currentId, itemId, kind, formInfo).pipe(
+            tap((comment: Comment) => {
                 this.comments.add(comment);
             }),
             catchError((err) => {
@@ -47,7 +49,7 @@ export class CommentsService {
     }
 
     public editComment(commentId: string, formInfo: CommentForm) {
-        return this.network.editComment(commentId, formInfo).pipe(
+        return this.network.editComment(this.pseudQuery.currentId, commentId, formInfo).pipe(
             tap(() => {
                 this.comments.update(commentId, {
                     body: formInfo.body,

@@ -51,10 +51,10 @@ export class NewCommentComponent {
             repliesTo: [],
         };
 
-        this.viewService.addComment(this.itemId, form).subscribe(() => {
+        /*this.viewService.addComment(this.itemId, form).subscribe(() => {
             this.newComment.reset();
             this.collapsed = true;
-        });
+        });*/
     }
 
     //#region ---PRIVATE---

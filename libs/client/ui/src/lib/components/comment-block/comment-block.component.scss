@@ -40,3 +40,27 @@ div.expandable-bar {
         }
     }
 }
+
+div.comment-box {
+    @apply border rounded-md;
+    div.comment-top {
+        @apply flex items-center px-2 py-1 border-b;
+    }
+    div.comment-body {
+        @apply p-4;
+        min-height: 7rem;
+    }
+    div.comment-reactions {
+        @apply flex items-center px-2 py-1;
+        a {
+            @apply text-gray-500 flex items-center text-xs cursor-pointer;
+            rmx-icon {
+                @apply w-4 relative mr-0.5;
+                top: 0.2175rem;
+            }
+            &:hover {
+                @apply no-underline text-gray-700;
+            }
+        }
+    }
+}

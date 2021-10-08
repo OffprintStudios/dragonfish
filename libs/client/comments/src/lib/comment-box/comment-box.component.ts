@@ -65,10 +65,10 @@ export class CommentBoxComponent implements OnInit {
             repliesTo: [],
         };
 
-        this.network.editComment(this.comment._id, commInfo).subscribe(() => {
+        /*this.network.editComment(this.comment._id, commInfo).subscribe(() => {
             this.comment.body = this.editCommentFields.body.value;
             this.editMode = false;
-        });
+        });*/
     }
 
     reportComment() {

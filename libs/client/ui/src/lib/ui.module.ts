@@ -15,6 +15,7 @@ import { TabsModule } from 'ngx-tabset';
 import { DynamicViewModule } from '@ngneat/overview';
 import { TeleportModule } from '@ngneat/overview';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
+import { MarkdownModule } from 'ngx-markdown';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -97,6 +98,7 @@ import { CommentBlockComponent } from './components/comment-block/comment-block.
         DynamicViewModule,
         TeleportModule,
         EditorLiteModule,
+        MarkdownModule.forChild(),
     ],
     exports: [
         RatingIconComponent,

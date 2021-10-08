@@ -48,8 +48,8 @@ export class CommentsComponent {
             repliesTo: [],
         };
 
-        this.contentService.addComment(this.itemId, formData).subscribe(() => {
+        /*this.contentService.addComment(this.itemId, formData).subscribe(() => {
             this.newCommentForm.reset();
-        });
+        });*/
     }
 }
