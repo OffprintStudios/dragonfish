@@ -43,44 +43,95 @@
 </ng-container>
 
 <ng-template #viewMode>
-    <div class="comment-box border-gray-600 dark:border-white">
-        <div class="comment-top border-gray-600 dark:border-white">
-            <img class="block border-2 border-gray-600 dark:border-white rounded-md w-10 h-10" [src]="comment.user.profile.avatar" [alt]="'avatar'">
-            <div class="mx-1"></div>
-            <div class="ml-0.5">
-                <div class="flex items-center relative top-1">
-                    <dragonfish-role-badge [roles]="comment.user.roles" [size]="'small'"></dragonfish-role-badge>
-                    <h5 class="font-medium ml-0.5 relative top-0.5">
-                        <a [routerLink]="['/profile', comment.user._id, comment.user.userTag]">
-                            {{ comment.user.screenName }}
-                        </a>
-                    </h5>
+    <ng-container *ngIf="editMode; else viewingComment">
+        <div class="comment-box border-gray-600 dark:border-white">
+            <div class="comment-top border-gray-600 dark:border-white">
+                <img class="block border-2 border-gray-600 dark:border-white rounded-md w-10 h-10" [src]="comment.user.profile.avatar" [alt]="'avatar'">
+                <div class="mx-1"></div>
+                <div class="ml-0.5">
+                    <div class="flex items-center relative top-1">
+                        <dragonfish-role-badge [roles]="comment.user.roles" [size]="'small'"></dragonfish-role-badge>
+                        <h5 class="font-medium ml-0.5 relative top-0.5">
+                            <a [routerLink]="['/profile', comment.user._id, comment.user.userTag]">
+                                {{ comment.user.screenName }}
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs italic relative top-0.5">{{ comment.user.profile.tagline ? comment.user.profile.tagline : 'Member' }}</span>
+                        <span class="mx-1">•</span>
+                        <span class="text-xs italic relative top-0.5">{{ comment.createdAt | localedate: 'mediumDate' }}</span>
+                    </div>
                 </div>
-                <div class="flex items-center">
-                    <span class="text-xs italic relative top-0.5">{{ comment.user.profile.tagline ? comment.user.profile.tagline : 'Member' }}</span>
-                    <span class="mx-1">•</span>
-                    <span class="text-xs italic relative top-0.5">{{ comment.createdAt | localedate: 'mediumDate' }}</span>
-                </div>
+                <div class="flex-1"></div>
+                <button>
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    <span>Save</span>
+                </button>
+                <button (click)="toggleEditMode()">
+                    <rmx-icon name="close-line"></rmx-icon>
+                    <span>Cancel</span>
+                </button>
             </div>
-            <div class="flex-1"></div>
-            <button>
-                <rmx-icon name="reply-line"></rmx-icon>
-                <span>Reply</span>
-            </button>
-            <div class="mx-0.5"></div>
-            <button>
-                <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-            </button>
+            <form [formGroup]="commentForm">
+                <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true" [showBorders]="false"></dragonfish-editor-lite>
+            </form>
         </div>
-        <div class="comment-body">
-            <markdown [data]="comment.body"></markdown>
+    </ng-container>
+    <ng-template #viewingComment>
+        <div class="comment-box border-gray-600 dark:border-white">
+            <div class="comment-top border-gray-600 dark:border-white">
+                <img class="block border-2 border-gray-600 dark:border-white rounded-md w-10 h-10" [src]="comment.user.profile.avatar" [alt]="'avatar'">
+                <div class="mx-1"></div>
+                <div class="ml-0.5">
+                    <div class="flex items-center relative top-1">
+                        <dragonfish-role-badge [roles]="comment.user.roles" [size]="'small'"></dragonfish-role-badge>
+                        <h5 class="font-medium ml-0.5 relative top-0.5">
+                            <a [routerLink]="['/profile', comment.user._id, comment.user.userTag]">
+                                {{ comment.user.screenName }}
+                            </a>
+                        </h5>
+                    </div>
+                    <div class="flex items-center">
+                        <span class="text-xs italic relative top-0.5">{{ comment.user.profile.tagline ? comment.user.profile.tagline : 'Member' }}</span>
+                        <span class="mx-1">•</span>
+                        <span class="text-xs italic relative top-0.5">{{ comment.createdAt | localedate: 'mediumDate' }}</span>
+                    </div>
+                </div>
+                <div class="flex-1"></div>
+                <ng-container *ngIf="auth.checkPseudonym(comment.user._id); else notThisUser">
+                    <button>
+                        <rmx-icon name="reply-line"></rmx-icon>
+                        <span>Reply</span>
+                    </button>
+                    <button (click)="toggleEditMode()">
+                        <rmx-icon name="edit-line"></rmx-icon>
+                        <span>Edit</span>
+                    </button>
+                </ng-container>
+                <ng-template #notThisUser>
+                    <ng-container *ngIf="session.isLoggedIn">
+                        <button>
+                            <rmx-icon name="reply-line"></rmx-icon>
+                            <span>Reply</span>
+                        </button>
+                        <div class="mx-0.5"></div>
+                        <button>
+                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                        </button>
+                    </ng-container>
+                </ng-template>
+            </div>
+            <div class="comment-body">
+                <markdown [data]="comment.body"></markdown>
+            </div>
+            <div class="comment-reactions">
+                <div class="flex-1"></div>
+                <a (click)="addReaction()">
+                    <rmx-icon name="emotion-happy-line"></rmx-icon>
+                    <span>React</span>
+                </a>
+            </div>
         </div>
-        <div class="comment-reactions">
-            <div class="flex-1"></div>
-            <a (click)="addReaction()">
-                <rmx-icon name="emotion-happy-line"></rmx-icon>
-                <span>React</span>
-            </a>
-        </div>
-    </div>
+    </ng-template>
 </ng-template>
