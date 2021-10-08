@@ -3,9 +3,8 @@ import { CommentsStore } from './comments.store';
 import { CommentsQuery } from './comments.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { CommentKind, Comment, CommentForm } from '@dragonfish/shared/models/comments';
-import { catchError, map, tap } from 'rxjs/operators';
-import { PaginationResponse } from '@datorama/akita';
+import { CommentKind, CommentForm } from '@dragonfish/shared/models/comments';
+import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -19,15 +18,14 @@ export class CommentsService {
 
     public getPage(itemId: string, kind: CommentKind, page: number) {
         return this.network.fetchComments(itemId, kind, page).pipe(
-            map((comments) => {
-                const paginateComments: PaginationResponse<Comment> = {
-                    currentPage: comments.page,
-                    data: comments.docs,
-                    total: comments.totalDocs,
-                    lastPage: comments.totalPages,
+            tap((comments) => {
+                this.comments.set(comments.docs);
+                this.comments.update({
+                    currPage: page,
+                    totalComments: comments.totalDocs,
+                    totalPages: comments.totalPages,
                     perPage: comments.limit,
-                };
-                return paginateComments;
+                });
             }),
             catchError((err) => {
                 this.alerts.error(`Something went wrong fetching the current page!`);

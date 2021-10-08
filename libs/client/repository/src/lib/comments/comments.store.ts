@@ -6,6 +6,6 @@ import { CommentsState } from './comments.state';
 @StoreConfig({ name: 'comments', idKey: '_id' })
 export class CommentsStore extends EntityStore<CommentsState> {
     constructor() {
-        super();
+        super({ currPage: 1, totalComments: 0, perPage: 50, totalPages: 1 });
     }
 }

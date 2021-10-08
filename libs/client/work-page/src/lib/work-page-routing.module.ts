@@ -12,6 +12,7 @@ import { SectionPageComponent } from './views/section-page/section-page.componen
 import { WorkPageResolver } from './work-page.resolver';
 import { SectionPageResolver } from './section-page.resolver';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { CommentsResolver } from './comments.resolver';
 
 const routes: Routes = [
     {
@@ -30,6 +31,8 @@ const routes: Routes = [
                     {
                         path: 'comments',
                         component: ContentCommentsComponent,
+                        resolve: { comments: CommentsResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                     {
                         path: 'related',
@@ -65,6 +68,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [WorkPageResolver, SectionPageResolver],
+    providers: [WorkPageResolver, SectionPageResolver, CommentsResolver],
 })
 export class WorkPageRoutingModule {}

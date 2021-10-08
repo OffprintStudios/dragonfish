@@ -1,4 +1,9 @@
 import { EntityState } from '@datorama/akita';
 import { Comment } from '@dragonfish/shared/models/comments';
 
-export type CommentsState = EntityState<Comment, string>;
+export interface CommentsState extends EntityState<Comment, string> {
+    currPage: number;
+    totalComments: number;
+    perPage: number;
+    totalPages: number;
+}
