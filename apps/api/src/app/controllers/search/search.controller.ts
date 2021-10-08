@@ -36,7 +36,7 @@ export class SearchController {
         @Query('category') category: WorkKind | null,
         @Query('genre') genre: Genres | null,
         @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter
+        @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.searchService.findRelatedContent(
             query,
@@ -45,7 +45,7 @@ export class SearchController {
             category,
             genre,
             pageNum,
-            contentFilter
+            filter
         );
     }
 

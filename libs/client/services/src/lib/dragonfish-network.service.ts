@@ -1,4 +1,4 @@
-import { InviteCodes, User } from '@dragonfish/shared/models/users';
+import { InviteCodes } from '@dragonfish/shared/models/users';
 import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
@@ -295,6 +295,7 @@ export class DragonfishNetworkService {
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category of content that searching for
      * @param pageNum The current results page
+     * @param contentFilter The mature/explicit/etc. content filter to apply
      */
     public findRelatedContent(
         query: string,
@@ -303,11 +304,13 @@ export class DragonfishNetworkService {
         category: WorkKind | null,
         genre: Genres | null,
         pageNum: number,
+        contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?query=` +
-                    `${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}&pageNum=${pageNum}`,
+                `${this.baseUrl}/search/find-related-content?`
+                 + `query=${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}`
+                 + `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),
         );

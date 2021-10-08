@@ -202,15 +202,18 @@ export class ContentGroupStore {
         filter: ContentFilter,
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
+            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: maxPerPage,
         };
         const paginateQuery = {
-            $text: { $search: query },
             'audit.published': PubStatus.Published,
             'audit.isDeleted': false,
             kind: { $in: kinds },
         };
+        if (query) {
+            paginateQuery['$text'] = { $search: query };
+        }
         if (authorId) {
             paginateQuery['author'] = authorId;
         }
@@ -221,6 +224,7 @@ export class ContentGroupStore {
             paginateQuery['meta.genres'] = genre;
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
+        console.log(paginateQuery);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
@@ -329,6 +333,7 @@ export class ContentGroupStore {
      * @private
      */
     private static async determineContentFilter(query, filter: ContentFilter) {
+        console.log(filter);
         switch (filter) {
             case ContentFilter.Everything:
                 break;

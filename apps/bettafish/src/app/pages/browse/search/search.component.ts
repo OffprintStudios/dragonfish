@@ -9,6 +9,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { SearchKind } from '@dragonfish/shared/models/search';
 import { ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { AppQuery } from '@dragonfish/client/repository/app';
 
 @Component({
     selector: 'dragonfish-search',
@@ -47,6 +48,7 @@ export class SearchComponent implements OnInit {
         public route: ActivatedRoute,
         private router: Router,
         private alerts: AlertsService,
+        private appQuery: AppQuery,
     ) {}
 
     ngOnInit(): void {
@@ -66,7 +68,7 @@ export class SearchComponent implements OnInit {
         }
 
         this.searchForm.setValue({
-            query: this.currentQuery,
+            query: (this.currentQuery || ''),
             kind: this.currentSearchKind,
             author: this.currentAuthor,
             category: this.currentCategory,
@@ -103,9 +105,7 @@ export class SearchComponent implements OnInit {
         this.currentGenre = this.parseGenre(this.searchForm.controls.genre.value);
         this.pageNum = 1;
 
-        if (this.currentQuery) {
-            this.navigate()
-        }
+        this.navigate();
     }
 
     /**
@@ -187,7 +187,8 @@ export class SearchComponent implements OnInit {
                     author,
                     searchCategory,
                     genre,
-                    pageNum
+                    pageNum,
+                    this.appQuery.filter,
                 ).subscribe((results) => {
                     this.searchResultBlogs = results;
                     this.loading = false;
@@ -200,7 +201,8 @@ export class SearchComponent implements OnInit {
                     author,
                     searchCategory,
                     genre,
-                    pageNum
+                    pageNum,
+                    this.appQuery.filter,
                 ).subscribe((results) => {
                     this.searchResultNews = results;
                     this.loading = false;
@@ -222,7 +224,8 @@ export class SearchComponent implements OnInit {
                     author,
                     searchCategory,
                     genre,
-                    pageNum
+                    pageNum,
+                    this.appQuery.filter,
                 ).subscribe((results) => {
                     this.searchResultWorks = results;
                     this.loading = false;

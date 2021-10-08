@@ -64,7 +64,7 @@ export class SearchService implements ISearch {
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
+        const parsedQuery = sanitizeHtml(query);
         const kinds: ContentKind[] = [];
         switch (searchKind) {
             case SearchKind.Blog:
