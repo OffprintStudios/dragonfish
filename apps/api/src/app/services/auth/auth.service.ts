@@ -1,4 +1,10 @@
-import { Injectable, InternalServerErrorException, Logger, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    InternalServerErrorException,
+    Logger,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { argon2id, verify } from 'argon2';
 import { nanoid } from 'nanoid';
@@ -9,6 +15,7 @@ import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { REFRESH_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { createHash } from 'crypto';
+import { UsersStore } from '@dragonfish/api/database/users';
 
 @Injectable()
 export class AuthService {
@@ -16,9 +23,10 @@ export class AuthService {
 
     constructor(
         private readonly accountStore: AccountsStore,
+        private readonly usersStore: UsersStore,
         private readonly pseudStore: PseudonymsStore,
         private readonly jwtService: JwtService,
-    ) { }
+    ) {}
 
     //#region ---ACCOUNTS---
 
@@ -57,9 +65,16 @@ export class AuthService {
     }
 
     public async register(req, device: DeviceInfo, formInfo: AccountForm): Promise<LoginPackage> {
-        const addedUser = await this.accountStore.createAccount(formInfo);
-        this.logger.log(`New user created with ID: ${addedUser._id}`);
-        return await this.login(addedUser, req, device, false);
+        const validCode = await this.usersStore.findOneInviteCode(formInfo.inviteCode);
+
+        if (validCode !== null) {
+            const addedUser = await this.accountStore.createAccount(formInfo);
+            await this.usersStore.useInviteCode(formInfo.inviteCode, addedUser._id);
+            this.logger.log(`New user created with ID: ${addedUser._id}`);
+            return await this.login(addedUser, req, device, false);
+        } else {
+            throw new UnauthorizedException(`You need a valid invite code to register!`);
+        }
     }
 
     public async logout(req): Promise<void> {
