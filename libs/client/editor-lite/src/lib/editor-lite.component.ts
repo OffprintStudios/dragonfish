@@ -31,7 +31,6 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import Strike from '@tiptap/extension-strike';
 import Text from '@tiptap/extension-text';
-import Iframe from './extensions';
 
 @Component({
     selector: 'dragonfish-editor-lite',
@@ -78,7 +77,6 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
             TextAlign,
             Placeholder,
             Dropcursor,
-            Iframe,
             BubbleMenu.configure({ element: document.querySelector('.menu') }),
             FloatingMenu.configure({ element: document.querySelector('.menu') }),
         ],

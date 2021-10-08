@@ -45,20 +45,22 @@ export const Iframe = Node.create<IframeOptions>({
     },
     addCommands() {
         return {
-            setIframe: (options) => ({ commands }) => {
-                return commands.insertContent({
-                    type: this.name,
-                    attrs: options,
-                });
-            },
+            setIframe:
+                (options) =>
+                ({ commands }) => {
+                    return commands.insertContent({
+                        type: this.name,
+                        attrs: options,
+                    });
+                },
         };
     },
-    addInputRules() {
+    /*addInputRules() {
         return [
             nodeInputRule(inputRegex, this.type, (match) => {
                 const [, src, title] = match;
                 return { src, title };
             }),
         ];
-    },
+    },*/
 });
