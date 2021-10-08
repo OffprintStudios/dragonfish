@@ -33,7 +33,7 @@ export class NotificationDocument extends Document implements NotificationBase {
     @Prop({ required: true })
     sourceId: string;
 
-    @Prop({required: false})
+    @Prop({ required: false })
     creatorUserId?: string;
 
     // Gotta do these naming and type shenanaigans because Mongo discriminator names must be unique,
@@ -43,8 +43,6 @@ export class NotificationDocument extends Document implements NotificationBase {
         required: true,
         type: String,
         enum: Object.keys(NotificationDocumentKind),
-        get: (ndk) => NotificationEnumConverters.ndkAsNotificationKind(ndk),
-        set: (notifKind) => NotificationEnumConverters.notificationKindAsNDK(notifKind),
     })
     kind: NotificationKind;
 
@@ -61,13 +59,41 @@ export class NotificationDocument extends Document implements NotificationBase {
 export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
 
 export const NotificationSubSchemaProviders: Provider[] = [
-    getSubSchemaProvider<NotificationDocument, WorkNotificationDocument>('WorkNotification', NOTIFICATION_MODEL_TOKEN, getWorkNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, SectionNotificationDocument>('SectionNotification', NOTIFICATION_MODEL_TOKEN, getSectionNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, BlogNotificationDocument>('BlogNotification', NOTIFICATION_MODEL_TOKEN, getBlogNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, CommentNotificationDocument>('CommentNotification', NOTIFICATION_MODEL_TOKEN, getCommentNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, NewsPostNotificationDocument>('NewsPostNotification', NOTIFICATION_MODEL_TOKEN, getNewsPostNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, PMThreadNotificationDocument>('PMThreadNotification', NOTIFICATION_MODEL_TOKEN, getPMThreadNotificationSubSchema),
-    getSubSchemaProvider<NotificationDocument, PMReplyNotificationDocument>('PMReplyNotification', NOTIFICATION_MODEL_TOKEN, getPMReplyNotificationSubSchema),
+    getSubSchemaProvider<NotificationDocument, WorkNotificationDocument>(
+        'WorkNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getWorkNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, SectionNotificationDocument>(
+        'SectionNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getSectionNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, BlogNotificationDocument>(
+        'BlogNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getBlogNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, CommentNotificationDocument>(
+        'CommentNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getCommentNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, NewsPostNotificationDocument>(
+        'NewsPostNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getNewsPostNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, PMThreadNotificationDocument>(
+        'PMThreadNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getPMThreadNotificationSubSchema,
+    ),
+    getSubSchemaProvider<NotificationDocument, PMReplyNotificationDocument>(
+        'PMReplyNotification',
+        NOTIFICATION_MODEL_TOKEN,
+        getPMReplyNotificationSubSchema,
+    ),
 ];
 
 // Builders for sub-schemas

@@ -20,7 +20,7 @@ export class ReportDocument extends Types.Subdocument implements Report {
     @Prop()
     readonly createdAt: Date;
 
-    @Prop(0)
+    @Prop()
     readonly updatedAt: Date;
 }
 

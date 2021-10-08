@@ -44,8 +44,6 @@ export class NotificationQueueDocument extends Document implements NotificationQ
         required: true,
         type: String,
         enum: Object.keys(NotificationQueueDocumentKind),
-        get: (nqdk) => NotificationEnumConverters.nqdkAsNotificationKind(nqdk),
-        set: (notifKind) => NotificationEnumConverters.notificationKindAsNQDK(notifKind),
     })
     kind: NotificationKind;
 
