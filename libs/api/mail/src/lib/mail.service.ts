@@ -31,4 +31,15 @@ export class MailService {
             },
         });
     }
+
+    public async sendInviteCode(email: string, inviteCode: string) {
+        await this.mailer.sendMail({
+            to: email,
+            subject: 'Welcome to Offprint!',
+            template: 'invite_code',
+            context: {
+                inviteCode,
+            },
+        });
+    }
 }
