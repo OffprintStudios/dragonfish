@@ -15,6 +15,7 @@ import { TabsModule } from 'ngx-tabset';
 import { DynamicViewModule } from '@ngneat/overview';
 import { TeleportModule } from '@ngneat/overview';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
+import { MarkdownModule } from 'ngx-markdown';
 
 /* Components */
 import { RatingIconComponent } from './components/rating-icon/rating-icon.component';
@@ -45,6 +46,7 @@ import { MobileNavComponent } from './components/nav/mobile-nav/mobile-nav.compo
 import { WorkFormComponent } from './components/work-form/work-form.component';
 import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
+import { CommentBlockComponent } from './components/comment-block/comment-block.component';
 
 @NgModule({
     declarations: [
@@ -76,6 +78,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         WorkFormComponent,
         TagBadgeComponent,
         SectionsListComponent,
+        CommentBlockComponent,
     ],
     imports: [
         CommonModule,
@@ -95,6 +98,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         DynamicViewModule,
         TeleportModule,
         EditorLiteModule,
+        MarkdownModule.forChild(),
     ],
     exports: [
         RatingIconComponent,
@@ -120,6 +124,7 @@ import { SectionsListComponent } from './components/sections-list/sections-list.
         WorkFormComponent,
         TagBadgeComponent,
         SectionsListComponent,
+        CommentBlockComponent,
     ],
 })
 export class UiModule {}

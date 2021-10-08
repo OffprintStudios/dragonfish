@@ -12,7 +12,7 @@ export class CommentStore {
     constructor(
         @InjectModel('Comment') private readonly comments: PaginateModel<CommentDocument>,
         @InjectModel('ContentComment') private readonly contentComments: PaginateModel<ContentCommentDocument>,
-        @InjectModel('Content') private readonly contents: PaginateModel<ContentDocument>
+        @InjectModel('Content') private readonly contents: PaginateModel<ContentDocument>,
     ) {}
 
     /**
@@ -40,13 +40,8 @@ export class CommentStore {
      * @param form
      * @returns
      */
-    public async create(
-        user: JwtPayload,
-        itemId: string,
-        kind: CommentKind,
-        form: CommentForm,
-    ): Promise<CommentDocument> {
-        const newComment = await this.createDocument(user.sub, itemId, kind, form);
+    public async create(user: string, itemId: string, kind: CommentKind, form: CommentForm): Promise<CommentDocument> {
+        const newComment = await this.createDocument(user, itemId, kind, form);
         const savedComment = await newComment.save();
 
         await this.updateCount(itemId);
@@ -61,8 +56,8 @@ export class CommentStore {
      * @param form
      * @returns
      */
-    public async edit(user: JwtPayload, commentId: string, form: CommentForm): Promise<CommentDocument> {
-        const comment = await this.comments.findById(commentId).where({ user: user.sub });
+    public async edit(user: string, commentId: string, form: CommentForm): Promise<CommentDocument> {
+        const comment = await this.comments.findById(commentId).where({ user: user });
 
         if (isNullOrUndefined(comment)) {
             throw new NotFoundException(`The comment you're trying to edit doesn't seem to exist.`);
@@ -81,14 +76,14 @@ export class CommentStore {
      */
     public async updateCount(itemId: string) {
         // Get total number of comments
-        const totalComments = await this.comments.countDocuments({contentId: itemId});
+        const totalComments = await this.comments.countDocuments({ contentId: itemId });
 
         // Update content's comment count
         await this.contents.findOneAndUpdate(
             { _id: itemId, 'audit.isDeleted': false },
             {
-                'stats.comments': totalComments
-            }
+                'stats.comments': totalComments,
+            },
         );
     }
 

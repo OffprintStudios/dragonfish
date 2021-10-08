@@ -2,7 +2,7 @@ div.editor-window {
     min-height: 10rem;
     max-height: 85vh;
     overflow-y: scroll;
-    @apply block relative rounded-b-md border;
+    @apply block relative rounded-b-md;
     border-color: var(--borders);
     color: var(--text-color);
 

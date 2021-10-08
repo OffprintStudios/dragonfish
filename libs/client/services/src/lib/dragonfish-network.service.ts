@@ -620,17 +620,22 @@ export class DragonfishNetworkService {
 
     /**
      * Adds a comment.
+     * @param pseudId
      * @param itemId
      * @param kind
      * @param commentInfo
      * @returns
      */
-    public addComment(itemId: string, kind: CommentKind, commentInfo: CommentForm) {
+    public addComment(pseudId: string, itemId: string, kind: CommentKind, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.put<Comment>(`${this.baseUrl}/comments/add-comment?itemId=${itemId}&kind=${kind}`, commentInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.put<Comment>(
+                `${this.baseUrl}/comments/add-comment?pseudId=${pseudId}&itemId=${itemId}&kind=${kind}`,
+                commentInfo,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
@@ -652,12 +657,13 @@ export class DragonfishNetworkService {
 
     /**
      * Edits a comment.
+     * @param pseudId
      * @param id The comment to edit
      * @param commentInfo The new info about it
      */
-    public editComment(id: string, commentInfo: CommentForm) {
+    public editComment(pseudId: string, id: string, commentInfo: CommentForm) {
         return handleResponse(
-            this.http.patch(`${this.baseUrl}/comments/edit-comment?id=${id}`, commentInfo, {
+            this.http.patch(`${this.baseUrl}/comments/edit-comment?pseudId=${pseudId}&id=${id}`, commentInfo, {
                 observe: 'response',
                 withCredentials: true,
             }),

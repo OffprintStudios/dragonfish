@@ -1,0 +1,32 @@
+<div class="my-6 w-11/12 md:w-9/12 lg:w-7/12 mx-auto max-w-4xl">
+    <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="workQuery.contentId"></dragonfish-comment-block>
+    <ng-container *ngIf="commentsQuery.totalComments === 0; else hasComments">
+        <div class="empty mb-6">
+            <h3>Nobody's said anything yet...</h3>
+            <p>But you could be the first!</p>
+        </div>
+    </ng-container>
+    <ng-template #hasComments>
+        <ng-container *ngIf="commentsQuery.currPage$ | async as comments">
+            <div
+                class="my-6"
+                *ngFor="let comment of comments | paginate: {
+                    id: 'comments',
+                    itemsPerPage: commentsQuery.perPage,
+                    currentPage: commentsQuery.currPage,
+                    totalItems: commentsQuery.totalComments
+                }"
+            >
+                <dragonfish-comment-block [comment]="comment"></dragonfish-comment-block>
+            </div>
+            <div class="flex items-center justify-center pt-2 w-3/4 mx-auto" *ngIf="commentsQuery.totalPages > 1">
+                <pagination-controls
+                    [nextLabel]="''"
+                    [previousLabel]="''"
+                    (pageChange)="onPageChange($event)"
+                    id="comments"
+                ></pagination-controls>
+            </div>
+        </ng-container>
+    </ng-template>
+</div>

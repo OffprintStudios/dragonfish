@@ -4,7 +4,6 @@ import { SessionQuery } from '../session.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ChangeEmail, ChangePassword } from '@dragonfish/shared/models/users';
-import { PortfolioService } from '../../portfolio';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -13,7 +12,6 @@ export class UserService {
         private sessionQuery: SessionQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
-        private portService: PortfolioService,
     ) {}
 
     /**

@@ -49,6 +49,7 @@ import Iframe from './extensions';
 export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     @Input() disabled: boolean;
     @Input() attachedToTop = false;
+    @Input() showBorders = true;
     alignmentMenuOpened = false;
     headingMenuOpened = false;
 

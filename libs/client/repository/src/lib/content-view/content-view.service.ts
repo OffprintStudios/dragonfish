@@ -55,20 +55,6 @@ export class ContentViewService {
         );
     }
 
-    public addComment(contentId: string, form: CommentForm) {
-        return this.network.addComment(contentId, CommentKind.ContentComment, form).pipe(
-            tap((value) => {
-                this.contentView.update(({ currPageComments }) => ({
-                    currPageComments: { ...currPageComments, docs: [...currPageComments.docs, value] },
-                }));
-            }),
-            catchError((err) => {
-                this.alerts.error(err.error.message);
-                return throwError(err);
-            }),
-        );
-    }
-
     public fetchNextComments(contentId: string, page: number) {
         this.contentView.setLoading(true);
         return this.network.fetchComments(contentId, CommentKind.ContentComment, page).pipe(

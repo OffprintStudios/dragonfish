@@ -15,7 +15,7 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
  */
 @Injectable()
 export class ContentGroupStore {
-    readonly NEWEST_FIRST = -1
+    readonly NEWEST_FIRST = -1;
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
@@ -132,7 +132,10 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredWorksQuery = await ContentGroupStore.determineContentFilter(worksQuery, filter);
-        const works = await this.content.find(filteredWorksQuery).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(3);
+        const works = await this.content
+            .find(filteredWorksQuery)
+            .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
+            .limit(3);
 
         const blogsQuery = {
             author: userId,
@@ -141,7 +144,10 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredBlogsQuery = await ContentGroupStore.determineContentFilter(blogsQuery, filter);
-        const blogs = await this.content.find(filteredBlogsQuery).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(3);
+        const blogs = await this.content
+            .find(filteredBlogsQuery)
+            .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
+            .limit(3);
 
         return { works: works, blogs: blogs };
     }
@@ -221,7 +227,7 @@ export class ContentGroupStore {
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
-     * @returns 
+     * @returns
      */
     public async getContentByFandomTag(
         tagId: string,
@@ -245,16 +251,12 @@ export class ContentGroupStore {
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
 
-    //#endregion
-
-    //#region ---PRIVATE---
-
     /**
      * Increments a content's view count.
      * @param contentId
      * @private
      */
-    private async incrementViewCount(contentId: string) {
+    public async incrementViewCount(contentId: string) {
         return this.content.updateOne(
             { _id: contentId },
             {
@@ -262,6 +264,10 @@ export class ContentGroupStore {
             },
         );
     }
+
+    //#endregion
+
+    //#region ---PRIVATE---
 
     /**
      * Fetches a user's ratings doc. If one doesn't exist, add one and return the result.

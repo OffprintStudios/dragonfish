@@ -19,7 +19,7 @@ export interface IComments {
      * @param contentId The content the comment belongs to
      * @param commentInfo The comment's info
      */
-    create(user: JwtPayload, contentId: string, commentInfo: CommentForm): Promise<ContentComment>;
+    create(user: string, contentId: string, commentInfo: CommentForm): Promise<ContentComment>;
 
     /**
      * Edits a comment belonging to a user, given its ID.
@@ -28,5 +28,5 @@ export interface IComments {
      * @param commentId The comment's ID
      * @param commentInfo The comment's new info
      */
-    edit(user: JwtPayload, commentId: string, commentInfo: CommentForm): Promise<void>;
+    edit(user: string, commentId: string, commentInfo: CommentForm): Promise<void>;
 }

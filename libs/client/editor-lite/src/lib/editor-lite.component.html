@@ -1,7 +1,7 @@
 <div class="mx-auto">
     <div
         class="flex items-center p-1 border border-b-0 border-gray-600 dark:border-white rounded-t-md"
-        [ngClass]="{'rounded-t-md': !attachedToTop, 'border-t-0': attachedToTop}"
+        [ngClass]="{'rounded-t-md': !attachedToTop, 'border-t-0': attachedToTop, 'border-l-0': !showBorders, 'border-r-0': !showBorders}"
     >
         <button
             class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
@@ -128,7 +128,14 @@
             <rmx-icon name="arrow-go-forward-line" class="mr-0"></rmx-icon>
         </button>
     </div>
-    <div class="editor-window" tiptap [editor]="editor" [ngModel]="value" (ngModelChange)="onChange($event)"></div>
+    <div
+        class="editor-window border-t"
+        [ngClass]="{'border-b': showBorders, 'border-l': showBorders, 'border-r': showBorders}"
+        tiptap
+        [editor]="editor"
+        [ngModel]="value"
+        (ngModelChange)="onChange($event)"
+    ></div>
     <tiptap-bubble-menu [editor]="editor">
         <div class="floating-menu">
             <button

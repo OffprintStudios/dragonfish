@@ -1,0 +1,66 @@
+div.expandable-bar {
+    @apply flex items-center p-2.5 border rounded-md mx-auto;
+    border-color: var(--borders);
+    &.no-bottom {
+        @apply rounded-b-none;
+        &:hover {
+            @apply cursor-default;
+            background: var(--background);
+            color: var(--text-color);
+            h3 {
+                color: var(--accent) !important;
+            }
+        }
+    }
+    div.avatar-block {
+        @apply border-r pr-2.5;
+        border-color: var(--borders);
+        img {
+            @apply w-10 rounded-md border;
+            border-color: var(--borders);
+        }
+    }
+    div.title {
+        @apply flex-1 pl-2.5;
+        h3 {
+            @apply text-lg font-medium relative top-0.5;
+        }
+    }
+    &:hover {
+        @apply cursor-pointer text-white;
+        background: var(--accent);
+        div.avatar-block {
+            @apply border-white;
+            img {
+                @apply border-white;
+            }
+        }
+        h3 {
+            @apply text-white;
+        }
+    }
+}
+
+div.comment-box {
+    @apply border rounded-md;
+    div.comment-top {
+        @apply flex items-center px-2 py-1 border-b;
+    }
+    div.comment-body {
+        @apply p-4;
+        min-height: 7rem;
+    }
+    div.comment-reactions {
+        @apply flex items-center px-2 py-1;
+        a {
+            @apply text-gray-500 flex items-center text-xs cursor-pointer;
+            rmx-icon {
+                @apply w-4 relative mr-0.5;
+                top: 0.2175rem;
+            }
+            &:hover {
+                @apply no-underline text-gray-700;
+            }
+        }
+    }
+}
