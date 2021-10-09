@@ -2,7 +2,7 @@ import { InviteCodes, Roles } from '@dragonfish/shared/models/users';
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UsersStore } from '@dragonfish/api/database/users';
 import { RolesGuard } from '../../guards';
-import { MailService } from '@dragonfish/api/mail';
+import { MailService } from '../../services/admin/mail.service';
 import * as sanitize from 'sanitize-html';
 
 @Controller('user-management')

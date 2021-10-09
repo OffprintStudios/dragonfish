@@ -308,9 +308,9 @@ export class DragonfishNetworkService {
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/find-related-content?`
-                 + `query=${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}`
-                 + `&pageNum=${pageNum}&filter=${contentFilter}`,
+                `${this.baseUrl}/search/find-related-content?` +
+                    `query=${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}` +
+                    `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
@@ -1565,6 +1565,16 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+    public sendInviteCode(email: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/user-management/send-invite-code`,
+                { emailAddress: email },
+                { observe: 'response', withCredentials: true },
+            ),
         );
     }
 

@@ -17,4 +17,19 @@
             </span>
         </ng-template>
     </div>
+    <div class="my-6">
+        <h2 class="text-4xl">Send a code</h2>
+        <div class="w-11/12 mx-auto">
+            <form [formGroup]="sendCode" (ngSubmit)="sendInviteCode()">
+                <dragonfish-text-field
+                    [placeholder]="'somebody@example.com'"
+                    [label]="'Email Address'"
+                    [name]="'email'"
+                    [type]="'email'"
+                    [formControlName]="'email'"
+                ></dragonfish-text-field>
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
 </div>
