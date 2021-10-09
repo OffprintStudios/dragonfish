@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel } from 'mongoose';
+import { Model, PaginateModel, PaginateResult } from 'mongoose';
 import { ContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
@@ -12,7 +12,6 @@ import {
     PubChange,
     PubStatus,
 } from '@dragonfish/shared/models/content';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { BlogsContentDocument, NewsContentDocument } from '../schemas';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { BlogsStore } from './blogs.store';
@@ -33,6 +32,8 @@ import { SectionsStore } from './sections.store';
  */
 @Injectable()
 export class ContentStore {
+    readonly NEWEST_FIRST = -1;
+
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
@@ -100,15 +101,18 @@ export class ContentStore {
      *
      * @param userId
      * @param kinds
+     * @param page,
      */
-    async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<ContentDocument[]> {
-        return this.content.find({
+    async fetchAllByKind(userId: string, kinds: ContentKind[], page: number): Promise<PaginateResult<ContentDocument>> {
+        const query = {
             author: userId,
-            kind: {
-                $in: kinds,
-            },
+            kind: { $in: kinds },
             'audit.isDeleted': false,
-        });
+            'audit.published': PubStatus.Published,
+        };
+        const paginateOptions = { sort: { 'audit.publishedOn': this.NEWEST_FIRST }, page: page, limit: 15 };
+
+        return await this.content.paginate(query, paginateOptions);
     }
 
     /**
