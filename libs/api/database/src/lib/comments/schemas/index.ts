@@ -1,10 +1,9 @@
 import { CommentDocument, CommentSchema } from './comment.schema';
-import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { HookNextFunction, Schema } from 'mongoose';
+import { Schema } from 'mongoose';
 import * as sanitize from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
- 
+
 //#region ---EXPORTS---
 
 export { CommentDocument, CommentSchema } from './comment.schema';
@@ -17,17 +16,18 @@ export { ContentCommentDocument, ContentCommentSchema } from './content-comment.
 
 /**
  * Sets up the comment collection.
- * @returns 
+ * @returns
  */
 export async function setupCommentCollection(): Promise<Schema<CommentDocument>> {
     const schema = CommentSchema;
-    
-    schema.pre<CommentDocument>('save', async function (next: HookNextFunction) {
+
+    schema.pre<CommentDocument>('save', async function (next) {
         this.set('body', sanitize(this.body, sanitizeOptions));
         return next();
     });
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
 
     return schema;

@@ -22,7 +22,6 @@ import { ContentServices } from './services/content';
 import { SearchServices } from './services/search';
 
 /* Database Modules */
-import { DatabaseModules } from './db';
 import { ContentModule } from '@dragonfish/api/database/content';
 import { NotificationsModule } from '@dragonfish/api/database/notifications';
 import { UsersModule } from '@dragonfish/api/database/users';
@@ -38,7 +37,6 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
 
 @Module({
     imports: [
-        ...DatabaseModules,
         ContentModule,
         NotificationsModule,
         UsersModule,
@@ -52,10 +50,8 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         MongooseModule.forRootAsync({
             useFactory: () => ({
                 uri: process.env.MONGO_URL,
-                useCreateIndex: true,
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
-                useFindAndModify: false,
             }),
         }),
         JwtModule.registerAsync({

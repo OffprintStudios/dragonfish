@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountDocument } from '../schemas';
@@ -80,8 +80,11 @@ export class AccountsStore {
         deviceInfo: DeviceInfo,
         expiration: Date,
     ): Promise<AccountDocument> {
+        const logger = new Logger(`Account`);
+        logger.log(`Saving session in account store...`);
         const account = await this.retrieveAccount(accountId);
         const hashedSessionId = createHash('sha256').update(sessionId).digest('base64');
+        logger.log(`Hashed Session ID: ${hashedSessionId}`);
         account.sessions.push({
             _id: hashedSessionId,
             expires: expiration,

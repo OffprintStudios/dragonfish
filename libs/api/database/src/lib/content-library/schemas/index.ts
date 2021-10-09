@@ -1,9 +1,7 @@
 import { ContentLibrarySchema } from './content-library.schema';
 import { BookshelfDocument, BookshelfSchema } from './bookshelf.schema';
 import { ShelfItemSchema } from './shelf-item.schema';
-import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
-import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 
@@ -23,7 +21,8 @@ export { ShelfItemDocument, ShelfItemSchema } from './shelf-item.schema';
 export async function setupContentLibraryCollection() {
     const schema = ContentLibrarySchema;
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
 
     return schema;
@@ -36,7 +35,7 @@ export async function setupBookshelvesCollection() {
     const schema = BookshelfSchema;
 
     schema.plugin(MongoosePaginate);
-    schema.pre<BookshelfDocument>('save', async function (next: HookNextFunction) {
+    schema.pre<BookshelfDocument>('save', async function (next) {
         this.set('name', sanitizeHtml(this.name, sanitizeOptions));
         if (this.isModified('desc')) {
             this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
@@ -53,7 +52,8 @@ export async function setupBookshelvesCollection() {
 export async function setupShelfItemsCollection() {
     const schema = ShelfItemSchema;
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
 
     return schema;

@@ -1,12 +1,10 @@
-import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
 import { SectionsDocument, SectionsSchema } from './sections.schema';
-import { TagsDocument, TagsSchema } from './tags.schema';
-import * as MongooseAutopopulate from 'mongoose-autopopulate';
+import { TagsSchema } from './tags.schema';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import { countWords, stripTags } from 'voca';
 
@@ -35,7 +33,7 @@ export async function setupContentCollection() {
     // making a text index on the title field for search
     schema.index({ title: 'text' });
 
-    schema.pre<ContentDocument>('save', async function (next: HookNextFunction) {
+    schema.pre<ContentDocument>('save', async function (next) {
         this.set('title', sanitizeHtml(this.title, sanitizeOptions));
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
 
@@ -48,7 +46,8 @@ export async function setupContentCollection() {
         return next();
     });
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
 
     return schema;
@@ -59,7 +58,7 @@ export async function setupContentCollection() {
  */
 export async function setupSectionsCollection() {
     const schema = SectionsSchema;
-    schema.pre<SectionsDocument>('save', async function (next: HookNextFunction) {
+    schema.pre<SectionsDocument>('save', async function (next) {
         this.set('title', sanitizeHtml(this.title, sanitizeOptions));
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
         if (this.authorsNote) {
@@ -93,7 +92,8 @@ export async function setupRatingsCollection() {
 export async function setupReadingHistoryCollection() {
     const schema = ReadingHistorySchema;
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
 
     return schema;
@@ -105,7 +105,8 @@ export async function setupReadingHistoryCollection() {
 export async function setupTagsCollection() {
     const schema = TagsSchema;
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
 
     return schema;
 }
