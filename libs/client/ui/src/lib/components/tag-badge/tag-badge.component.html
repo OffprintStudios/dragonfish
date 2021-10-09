@@ -34,7 +34,7 @@
         </ng-container>
     </ng-container>
     <ng-container *ngIf="kind === kinds.Genre">
-        <ng-container [ngSwitch]="genre">
+        <ng-container [ngSwitch]="genres[genre]">
             <ng-container *ngSwitchCase="genres.Comedy">
                 <rmx-icon name="emotion-laugh-line"></rmx-icon>
                 <span>Comedy</span>
