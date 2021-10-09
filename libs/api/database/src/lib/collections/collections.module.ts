@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-import { HookNextFunction } from 'mongoose';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CollectionDocument, CollectionSchema } from './collection.schema';
 import { CollectionsStore } from './collections.store';
@@ -14,9 +13,11 @@ import { CollectionsStore } from './collections.store';
                 useFactory: () => {
                     const schema = CollectionSchema;
                     schema.index({ name: 'text' });
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     schema.plugin(require('mongoose-autopopulate'));
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     schema.plugin(require('mongoose-paginate-v2'));
-                    schema.pre<CollectionDocument>('save', async function (next: HookNextFunction) {
+                    schema.pre<CollectionDocument>('save', async function (next) {
                         this.set('name', sanitizeHtml(this.name, sanitizeOptions));
                         this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
 

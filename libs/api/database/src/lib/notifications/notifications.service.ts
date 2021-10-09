@@ -41,7 +41,6 @@ const NS_PER_MS = 1_000_000;
 
 @Injectable()
 export class NotificationsService {
-
     private readonly logger: Logger = new Logger(NotificationsService.name);
 
     private active = false;
@@ -129,10 +128,10 @@ export class NotificationsService {
      * @param userId The ID of the user to retreive notifications for.
      */
     async getUnreadNotifications(userId: string): Promise<NotificationBase[]> {
-        return await this.notificationModel.find({
+        return (await this.notificationModel.find({
             destinationUserId: userId,
             read: false,
-        }) as NotificationBase[];
+        })) as NotificationBase[];
     }
 
     /**
@@ -140,9 +139,9 @@ export class NotificationsService {
      * @param userId The ID of the user to retreive notifications for.
      */
     async getAllNotifications(userId: string): Promise<NotificationBase[]> {
-        return await this.notificationModel.find({
+        return (await this.notificationModel.find({
             destinationUserId: userId,
-        }) as NotificationBase[];
+        })) as NotificationBase[];
     }
 
     /**
@@ -163,11 +162,11 @@ export class NotificationsService {
             },
         );
 
-        if (result.ok !== 1) {
+        /*if (result.ok !== 1) {
             throw new InternalServerErrorException(
                 `Failed to mark as read. Matched ${result.n} documents, and modified ${result.nModified}`,
             );
-        }
+        }*/
     }
 
     /**
@@ -222,11 +221,11 @@ export class NotificationsService {
         const deleteResult = await this.subscriptionModel.deleteOne({
             userId: userId,
             notificationSourceId: sourceId,
-            notificationKind: notificationKind
+            notificationKind: notificationKind,
         });
-        if (deleteResult.ok !== 1) {
+        /*if (deleteResult.ok !== 1) {
             return UnsubscribeResult.Failure;
-        }
+        }*/
         if (deleteResult.deletedCount !== 1) {
             return UnsubscribeResult.NotFound;
         }
@@ -294,7 +293,7 @@ export class NotificationsService {
                 const subscribers = await this.subscriptionModel.find({
                     notificationSourceId: toPublish.sourceId,
                     notificationKind: toPublish.kind,
-                    userId: { $ne: toPublish.creatorUserId } // so we don't send your own notifications to you
+                    userId: { $ne: toPublish.creatorUserId }, // so we don't send your own notifications to you
                 });
 
                 // Publish this notification to all subscribers.
@@ -336,7 +335,9 @@ export class NotificationsService {
 
         const [sec, ns] = process.hrtime(tickStart);
         const elapsedMs = (sec * NS_PER_SEC + ns) / NS_PER_MS;
-        this.logger.debug(`NotificationsService wakeup completed in ${elapsedMs}ms. Processed ${processed} notifications. Sleeping...`);
+        this.logger.debug(
+            `NotificationsService wakeup completed in ${elapsedMs}ms. Processed ${processed} notifications. Sleeping...`,
+        );
 
         // Queue the next wakeup
         setTimeout(async () => {

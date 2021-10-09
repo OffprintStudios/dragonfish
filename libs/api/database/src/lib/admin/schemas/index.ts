@@ -1,5 +1,4 @@
 import { Connection } from 'mongoose';
-import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import * as MongooseSequence from 'mongoose-sequence';
 import { CaseFileSchema } from './case-files/case-file.schema';
@@ -17,7 +16,9 @@ export { ContentCaseFileSchema, ContentCaseFileDocument } from './case-files/con
 
 export async function setupCaseFileCollection(connection: Connection) {
     const schema = CaseFileSchema;
-    schema.plugin(MongooseAutopopulate);
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
     schema.plugin(MongooseSequence(connection), { inc_field: '_id' });
     return schema;

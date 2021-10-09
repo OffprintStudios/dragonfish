@@ -1,12 +1,19 @@
 import { AccountDocument, AccountSchema } from './account.schema';
 import { PseudonymDocument, PseudonymSchema } from './pseudonym.schema';
-import * as MongooseAutopopulate from 'mongoose-autopopulate';
 import * as MongoosePaginate from 'mongoose-paginate-v2';
 import * as MongooseUniqueValidator from 'mongoose-unique-validator';
-import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { argon2id, hash } from 'argon2';
+
+/**
+ * NOTE: MongooseUniqueValidator has been commented out because a current bug
+ * with the latest version prevents it from working correctly, e.g. whenever a
+ * document is saved, it counts the document's `_id` as a violation of the unique
+ * constraint, even though it isn't.
+ *
+ * It will be re-enabled in a future update.
+ */
 
 //#region ---EXPORTS---
 
@@ -21,7 +28,7 @@ export { SessionInfoDocument, SessionInfoSchema } from './session-info.schema';
 export async function setupAccountCollection() {
     const schema = AccountSchema;
 
-    schema.pre<AccountDocument>('save', async function (next: HookNextFunction) {
+    schema.pre<AccountDocument>('save', async function (next) {
         if (!this.isModified('password')) {
             return next();
         }
@@ -35,16 +42,17 @@ export async function setupAccountCollection() {
         }
     });
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
-    schema.plugin(MongooseUniqueValidator);
+    //schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 
 export async function setupPseudonymCollection() {
     const schema = PseudonymSchema;
 
-    schema.pre<PseudonymDocument>('save', async function (next: HookNextFunction) {
+    schema.pre<PseudonymDocument>('save', async function (next) {
         if (this.isModified('userTag')) {
             this.set('userTag', sanitizeHtml(this.userTag));
         }
@@ -64,9 +72,10 @@ export async function setupPseudonymCollection() {
         return next();
     });
 
-    schema.plugin(MongooseAutopopulate);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
-    schema.plugin(MongooseUniqueValidator);
+    //schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 

@@ -4,7 +4,6 @@ import { UserDocument, UserSchema } from './users.schema';
 import { UsersStore } from './users.store';
 import { InviteCodesSchema } from './invite-codes.schema';
 import { CollectionsModule } from '../collections/collections.module';
-import { HookNextFunction } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
 import { hash, argon2id } from 'argon2';
 
@@ -16,10 +15,12 @@ import { hash, argon2id } from 'argon2';
                 name: 'User',
                 useFactory: () => {
                     const schema = UserSchema;
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     schema.plugin(require('mongoose-autopopulate'));
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     schema.plugin(require('mongoose-paginate-v2'));
                     schema.index({ username: 'text' });
-                    schema.pre<UserDocument>('save', async function (next: HookNextFunction) {
+                    schema.pre<UserDocument>('save', async function (next) {
                         if (!this.isModified('password')) {
                             return next();
                         }
@@ -42,6 +43,7 @@ import { hash, argon2id } from 'argon2';
                 name: 'InviteCodes',
                 useFactory: () => {
                     const schema = InviteCodesSchema;
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     schema.plugin(require('mongoose-autopopulate'));
                     return schema;
                 },
