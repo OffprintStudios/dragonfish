@@ -50,14 +50,14 @@ export class ProfileService {
         this.profileStore.setLoading(true);
         return this.network.fetchAllByKind(this.profileQuery.profileId, [ContentKind.BlogContent]).pipe(
             tap((content) => {
-                this.profileStore.update({
+                /*this.profileStore.update({
                     pubBlogs: content.filter((item) => {
                         return item.audit.published === 'Published';
                     }) as BlogsContentModel[],
                     draftBlogs: content.filter((item) => {
                         return item.audit.published === 'Unpublished';
                     }) as BlogsContentModel[],
-                });
+                });*/
                 this.profileStore.setLoading(false);
             }),
         );
@@ -69,14 +69,14 @@ export class ProfileService {
             .fetchAllByKind(this.profileQuery.profileId, [ContentKind.PoetryContent, ContentKind.ProseContent])
             .pipe(
                 tap((content) => {
-                    this.profileStore.update({
+                    /*this.profileStore.update({
                         pubWorks: content.filter((item) => {
                             return item.audit.published === 'Published';
                         }) as ContentModel[],
                         draftWorks: content.filter((item) => {
                             return item.audit.published === 'Unpublished';
                         }) as ContentModel[],
-                    });
+                    });*/
                     this.profileStore.setLoading(false);
                 }),
             );
