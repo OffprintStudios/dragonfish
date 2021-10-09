@@ -6,6 +6,15 @@ import * as sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { argon2id, hash } from 'argon2';
 
+/**
+ * NOTE: MongooseUniqueValidator has been commented out because a current bug
+ * with the latest version prevents it from working correctly, e.g. whenever a
+ * document is saved, it counts the document's `_id` as a violation of the unique
+ * constraint, even though it isn't.
+ *
+ * It will be re-enabled in a future update.
+ */
+
 //#region ---EXPORTS---
 
 export { AccountDocument, AccountSchema } from './account.schema';
@@ -36,7 +45,7 @@ export async function setupAccountCollection() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
-    schema.plugin(MongooseUniqueValidator);
+    //schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 
@@ -66,7 +75,7 @@ export async function setupPseudonymCollection() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
     schema.plugin(MongoosePaginate);
-    schema.plugin(MongooseUniqueValidator);
+    //schema.plugin(MongooseUniqueValidator);
     return schema;
 }
 
