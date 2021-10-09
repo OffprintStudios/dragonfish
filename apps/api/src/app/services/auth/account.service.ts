@@ -1,5 +1,5 @@
 import { AccountsStore } from '@dragonfish/api/database/accounts/stores';
-import { MailService } from '@dragonfish/api/mail';
+import { MailService } from '../admin/mail.service';
 import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
