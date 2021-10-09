@@ -71,6 +71,11 @@ jobs:
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           # This next one needs quotes, because the URL has some characters that shells like to do funny things with
           echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_USER=${{ secrets.MAIL_USER }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_FROM=${{ secrets.MAIL_FROM }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
@@ -221,6 +226,11 @@ jobs:
           echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           # This next one needs quotes, because the URL has some characters that shells like to do funny things with
           echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_USER=${{ secrets.MAIL_USER }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "MAIL_FROM=${{ secrets.MAIL_FROM }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release

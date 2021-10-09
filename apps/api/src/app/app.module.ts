@@ -3,6 +3,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 /* Controllers */
 import { AdminRoutes } from './controllers/admin';
@@ -33,7 +35,6 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 /* Utilities */
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
-import { MailModule } from '@dragonfish/api/mail';
 
 @Module({
     imports: [
@@ -47,7 +48,6 @@ import { MailModule } from '@dragonfish/api/mail';
         CommentsModule,
         ContentLibraryModule,
         AccountsModule,
-        MailModule,
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
@@ -63,6 +63,27 @@ import { MailModule } from '@dragonfish/api/mail';
                 secret: getJwtSecretKey(),
                 signOptions: { expiresIn: JWT_EXPIRATION },
             }),
+        }),
+        MailerModule.forRoot({
+            transport: {
+                host: process.env.MAIL_HOST,
+                secure: false,
+                port: +process.env.MAIL_PORT,
+                auth: {
+                    user: process.env.MAIL_USER,
+                    pass: process.env.MAIL_PASSWORD,
+                },
+            },
+            defaults: {
+                from: `"Beatriz" <${process.env.MAIL_FROM}>`,
+            },
+            template: {
+                dir: join(__dirname, 'assets/templates'),
+                adapter: new HandlebarsAdapter(),
+                options: {
+                    strict: true,
+                },
+            },
         }),
     ],
     controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...SearchRoutes, ...ContentLibraryRoutes],

@@ -29,9 +29,6 @@
         "api-database": {
             "tags": []
         },
-        "api-mail": {
-            "tags": []
-        },
         "api-utilities": {
             "tags": []
         },

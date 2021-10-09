@@ -17,7 +17,6 @@ module.exports = {
         '<rootDir>/libs/api/utilities',
         '<rootDir>/libs/client/editor-lite',
         '<rootDir>/libs/client/my-library',
-        '<rootDir>/libs/api/mail',
         '<rootDir>/libs/client/settings',
         '<rootDir>/libs/client/profile',
         '<rootDir>/libs/client/work-page',
