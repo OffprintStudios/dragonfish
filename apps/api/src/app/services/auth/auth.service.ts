@@ -51,9 +51,7 @@ export class AuthService {
     public async login(user: Account, req, device: DeviceInfo, rememberMe: boolean): Promise<LoginPackage> {
         const payload = await AuthService.createPayload(user);
         if (rememberMe) {
-            this.logger.log(`Creating a session...`);
             const userWithSession = await this.createSession(user._id, req, device);
-            this.logger.log(`Session created!`);
             return await AuthService.buildLoginPackage(
                 this.jwtService.sign(payload),
                 await this.accountStore.createFrontendAccount(userWithSession),
@@ -137,9 +135,7 @@ export class AuthService {
     }
 
     private async createSession(accountId: string, req, deviceInfo: DeviceInfo): Promise<Account> {
-        this.logger.log(`Session being created...`);
         const sessionId = nanoid();
-        this.logger.log(`Session ID: ${sessionId}`);
         const expiration = new Date(Date.now() + REFRESH_EXPIRATION);
         req._cookies = [{ name: 'refreshToken', value: sessionId, options: { httpOnly: true, expires: expiration } }];
         return await this.accountStore.saveSession(accountId, sessionId, deviceInfo, expiration);
