@@ -110,7 +110,7 @@ export class ContentStore {
             'audit.isDeleted': false,
             'audit.published': PubStatus.Published,
         };
-        const paginateOptions = { sort: { 'audit.publishedOn': this.NEWEST_FIRST }, page: page, limit: 15 };
+        const paginateOptions = { sort: { createdAt: this.NEWEST_FIRST }, page: page, limit: 15 };
 
         return await this.content.paginate(query, paginateOptions);
     }
