@@ -37,6 +37,10 @@ const routes: Routes = [
                         resolve: { data: UserBlogsResolver },
                         runGuardsAndResolvers: 'always',
                     },
+                    {
+                        path: 'home',
+                        redirectTo: '',
+                    },
                 ],
             },
             {

@@ -36,7 +36,6 @@ const routes: Routes = [
     },
     {
         path: 'portfolio', redirectTo: 'profile',
-        // loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
     },
     {
         path: 'prose',
