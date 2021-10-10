@@ -1,74 +1,108 @@
 import { Component, OnInit } from '@angular/core';
-import { PaginateResult } from '@dragonfish/shared/models/util';
-import { BlogsContentModel, ContentKind } from '@dragonfish/shared/models/content';
-import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SessionQuery } from '@dragonfish/client/repository/session';
-import { AppQuery } from '@dragonfish/client/repository/app';
-import { untilDestroyed } from '@ngneat/until-destroy';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 import { ProfileQuery } from '../../repo';
+import { UserBlogsQuery, UserBlogsService } from '@dragonfish/client/repository/profile/user-blogs';
+import { ListPages } from '../../models';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BlogForm, BlogsContentModel, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { take } from 'rxjs/operators';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 
 @Component({
     selector: 'dragonfish-profile-blogs',
     templateUrl: './blogs.component.html',
 })
 export class BlogsComponent implements OnInit {
-    loading = false;
-    blogsData: PaginateResult<BlogsContentModel>;
+    collapsed = true;
 
-    pageNum = 1;
+    tabs = ListPages;
+    selectedTab = ListPages.Published;
+
+    blogForm = new FormGroup({
+        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
+        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    });
 
     constructor(
-        private network: DragonfishNetworkService,
+        private userBlogs: UserBlogsService,
         private route: ActivatedRoute,
         private router: Router,
-        public sessionQuery: SessionQuery,
+        private dialog: MatDialog,
+        private alerts: AlertsService,
+        public auth: AuthService,
         public profileQuery: ProfileQuery,
-        private appQuery: AppQuery,
+        public userBlogsQuery: UserBlogsQuery,
     ) {}
 
     ngOnInit(): void {
-        this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe((params) => {
-            this.pageNum = params.has('page') ? +params.get('page') : 1;
-            setThreePartTitle(this.profileQuery.userTag, Constants.BLOGS);
-            this.fetchData(this.pageNum, this.profileQuery.profileId);
+        setThreePartTitle(this.profileQuery.userTag, Constants.BLOGS);
+    }
+
+    toggleForm() {
+        this.collapsed = !this.collapsed;
+        this.blogForm.reset();
+    }
+
+    changeTab(newTab: ListPages) {
+        this.selectedTab = newTab;
+    }
+
+    onPageChange(event: number) {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { page: event },
+            queryParamsHandling: 'merge',
         });
     }
 
-    /**
-     * Fetches data for the current page.
-     *
-     * @param pageNum The page number
-     * @param userId The user ID related to the content
-     * @private
-     */
-    private fetchData(pageNum: number, userId: string): void {
-        this.loading = true;
-        this.network
-            .fetchAllContent(pageNum, [ContentKind.BlogContent], this.appQuery.filter, userId)
-            .subscribe((content) => {
-                this.blogsData = content as PaginateResult<BlogsContentModel>;
-                this.loading = false;
-            });
+    submitForm(asDraft: boolean) {
+        if (this.blogForm.invalid) {
+            this.alerts.error(`Check the info you entered and try again.`);
+            return;
+        }
+
+        const formInfo: BlogForm = {
+            title: this.blogForm.controls.title.value,
+            body: this.blogForm.controls.body.value,
+            rating: ContentRating.Everyone,
+        };
+
+        this.userBlogs.create(formInfo).subscribe((content) => {
+            if (!asDraft) {
+                this.publishBlog(content as BlogsContentModel, PubStatus.Published);
+            }
+
+            this.toggleForm();
+        });
     }
 
-    /**
-     * Handles page changing
-     *
-     * @param event The new page
-     * @param userId
-     */
-    onPageChange(event: number, userId: string) {
-        this.router
-            .navigate([], {
-                relativeTo: this.route,
-                queryParams: { page: event },
-                queryParamsHandling: 'merge',
+    publishBlog(blog: BlogsContentModel, pubStatus: PubStatus) {
+        this.userBlogs
+            .publish(blog._id, {
+                oldStatus: blog.audit.published,
+                newStatus: pubStatus,
             })
-            .then(() => {
-                this.fetchData(event, userId);
+            .subscribe();
+    }
+
+    deleteBlog(id: string) {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef
+            .afterClosed()
+            .pipe(take(1))
+            .subscribe((wantsToDelete: boolean) => {
+                if (wantsToDelete) {
+                    this.userBlogs.delete(id).subscribe();
+                }
             });
-        this.pageNum = event;
     }
 }

@@ -1,4 +1,4 @@
-<ng-container *ngIf="profileQuery.profile$ | async as portUser">
+<!--<ng-container *ngIf="profileQuery.profile$ | async as portUser">
     <ng-container *ngIf="loading; else notLoading">
         <div class="flex h-40 items-center justify-center">
             <mat-spinner></mat-spinner>
@@ -28,4 +28,72 @@
             <pagination-controls (pageChange)="onPageChange($event, portUser._id)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
     </ng-template>
-</ng-container>
+</ng-container>-->
+
+<div class="w-11/12 mx-auto mt-6 mb-10">
+    <ng-container *ngIf="auth.checkPseudonym(profileQuery.profileId)">
+        <ng-container *ngIf="collapsed; else showForm">
+            <div class="expandable-bar" (click)="toggleForm()">
+                <div class="avatar-block" *ngIf="profileQuery.profile$ | async as profile">
+                    <img [src]="profile.profile.avatar" [alt]="'avatar'">
+                </div>
+                <div class="title">
+                    <h3>What's on your mind?</h3>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #showForm>
+            <form [formGroup]="blogForm" class="w-7/12 mx-auto">
+                <div class="flex items-center p-2.5 border border-gray-600 dark:border-white rounded-t-md">
+                    <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="profileQuery.profile$ | async as profile">
+                        <img class="w-10 rounded-md border" [src]="profile.profile.avatar" [alt]="'avatar'">
+                    </div>
+                    <div class="flex-1 pl-2.5">
+                        <input
+                            type="text"
+                            [formControlName]="'title'"
+                            class="w-full text-2xl font-medium border-0 p-0 focus:ring-0 relative top-0.5"
+                            placeholder="Title"
+                            style="background: var(--background); font-family: 'Josefin Sans', sans-serif; color: var(--accent);"
+                        >
+                    </div>
+                </div>
+                <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
+                <div class="flex items-center p-1">
+                    <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="toggleForm()">
+                        <rmx-icon name="close-line"></rmx-icon>
+                        Cancel
+                    </button>
+                    <div class="flex-1"></div>
+                    <div class="mx-1"><!--spacer--></div>
+                    <button type="button" class="shadow-none border-none px-2.5 py-1.5" (click)="submitForm(true)">
+                        <rmx-icon name="save-3-line"></rmx-icon>
+                        Save Draft
+                    </button>
+                    <div class="mx-1"><!--spacer--></div>
+                    <button type="button" class="primary shadow-none border-none px-2.5 py-1.5" (click)="submitForm(false)">
+                        <rmx-icon name="check-line"></rmx-icon>
+                        Publish
+                    </button>
+                </div>
+            </form>
+        </ng-template>
+        <div class="w-7/12 mt-6 mx-auto flex items-center justify-center py-2 border-t border-b border-gray-600 dark:border-white">
+            <button [ngClass]="{'active': selectedTab === tabs.Published}" (click)="changeTab(tabs.Published)">
+                <rmx-icon name="check-line"></rmx-icon>
+                <span>Published</span>
+            </button>
+            <div class="mx-0.5"></div>
+            <button [ngClass]="{'active': selectedTab === tabs.Unpublished}" (click)="changeTab(tabs.Unpublished)">
+                <rmx-icon name="draft-line"></rmx-icon>
+                <span>Drafts</span>
+            </button>
+            <div class="mx-0.5"></div>
+            <button [ngClass]="{'active': selectedTab === tabs.Scheduled}" (click)="changeTab(tabs.Scheduled)">
+                <rmx-icon name="time-line"></rmx-icon>
+                <span>Scheduled</span>
+            </button>
+        </div>
+    </ng-container>
+</div>

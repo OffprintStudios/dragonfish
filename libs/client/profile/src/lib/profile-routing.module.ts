@@ -11,6 +11,7 @@ import { BlogPageComponent } from './views/blog-page/blog-page.component';
 /* Misc */
 import { ProfileResolver } from './profile.resolver';
 import { BlogResolver } from './blog.resolver';
+import { UserBlogsResolver } from './user-blogs.resolver';
 
 const routes: Routes = [
     {
@@ -33,6 +34,8 @@ const routes: Routes = [
                     {
                         path: 'blogs',
                         component: BlogsComponent,
+                        resolve: { data: UserBlogsResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                 ],
             },
@@ -51,6 +54,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver],
+    providers: [ProfileResolver, BlogResolver, UserBlogsResolver],
 })
 export class ProfileRoutingModule {}
