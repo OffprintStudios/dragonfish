@@ -95,12 +95,8 @@ export class ContentController {
     @ApiTags(DragonfishTags.Content)
     @UseGuards(IdentityGuard([Roles.User]))
     @Get('fetch-all-by-kind')
-    async fetchAllByKind(
-        @Query('pseudId') pseudId: string,
-        @Query('kinds') kinds: ContentKind[],
-        @Query('page') page: number,
-    ) {
-        return await this.content.fetchAllByKind(pseudId, kinds, page);
+    async fetchAllByKind(@Query('pseudId') pseudId: string, @Query('kinds') kinds: ContentKind[]) {
+        return await this.content.fetchAllByKind(pseudId, kinds);
     }
 
     @ApiTags(DragonfishTags.Content)

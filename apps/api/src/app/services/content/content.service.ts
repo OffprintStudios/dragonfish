@@ -45,12 +45,8 @@ export class ContentService {
         return await this.content.fetchAll(userId);
     }
 
-    public async fetchAllByKind(
-        userId: string,
-        kinds: ContentKind[],
-        page: number,
-    ): Promise<PaginateResult<ContentModel>> {
-        return await this.content.fetchAllByKind(userId, kinds, page);
+    public async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<PaginateResult<ContentModel>> {
+        return await this.content.fetchAllByKind(userId, kinds);
     }
 
     public async fetchAllPublished(

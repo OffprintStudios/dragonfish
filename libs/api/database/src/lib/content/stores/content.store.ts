@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PaginateModel, PaginateResult } from 'mongoose';
+import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import { ContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
@@ -101,16 +101,14 @@ export class ContentStore {
      *
      * @param userId
      * @param kinds
-     * @param page,
      */
-    async fetchAllByKind(userId: string, kinds: ContentKind[], page: number): Promise<PaginateResult<ContentDocument>> {
+    async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<PaginateResult<ContentDocument>> {
         const query = {
             author: userId,
             kind: { $in: kinds },
             'audit.isDeleted': false,
-            'audit.published': PubStatus.Published,
         };
-        const paginateOptions = { sort: { createdAt: this.NEWEST_FIRST }, page: page, limit: 15 };
+        const paginateOptions: PaginateOptions = { sort: { createdAt: this.NEWEST_FIRST }, pagination: false };
 
         return await this.content.paginate(query, paginateOptions);
     }
