@@ -3,9 +3,9 @@ import { ProfileQuery } from '../../repo';
 
 @Component({
     selector: 'dragonfish-profile-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+    templateUrl: './profile-info.component.html',
+    styleUrls: ['./profile-info.component.scss'],
 })
-export class HomeComponent {
+export class ProfileInfoComponent {
     constructor(public profileQuery: ProfileQuery) {}
 }

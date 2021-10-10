@@ -11,13 +11,12 @@ import { PseudonymsQuery } from '../../pseudonyms';
 import { throwError } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class UserBlogsService {
+export class BlogPageService {
     constructor(
         private blogPageStore: BlogPageStore,
         private blogPageQuery: BlogPageQuery,
         private appQuery: AppQuery,
         private profileQuery: ProfileQuery,
-        private userBlogsService: UserBlogsService,
         private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,

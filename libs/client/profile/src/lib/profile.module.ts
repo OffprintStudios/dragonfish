@@ -12,7 +12,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 
 /* Views */
-import { ProfileComponent } from './profile.component';
 import { Views } from './views';
 
 /* Components */
@@ -22,7 +21,7 @@ import { ProfileTopbarComponent } from './components';
 import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './repo';
 
 @NgModule({
-    declarations: [ProfileComponent, ProfileTopbarComponent, ...Views],
+    declarations: [ProfileTopbarComponent, ...Views],
     imports: [
         CommonModule,
         ProfileRoutingModule,
