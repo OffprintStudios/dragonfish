@@ -37,7 +37,7 @@ export class UserBlogsService {
                     }),
                 );
         } else {
-            return this.network.fetchAllByKind(this.pseudQuery.currentId, [ContentKind.BlogContent], page).pipe(
+            return this.network.fetchAllByKind(this.pseudQuery.currentId, [ContentKind.BlogContent]).pipe(
                 tap((content) => {
                     this.userBlogsStore.set(content.docs as BlogsContentModel[]);
                     this.userBlogsStore.update({

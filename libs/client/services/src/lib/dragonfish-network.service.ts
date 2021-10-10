@@ -748,20 +748,15 @@ export class DragonfishNetworkService {
      *
      * @param pseudId
      * @param kinds
-     * @param page
      */
-    public fetchAllByKind(
-        pseudId: string,
-        kinds: ContentKind[],
-        page?: number,
-    ): Observable<PaginateResult<ContentModel>> {
+    public fetchAllByKind(pseudId: string, kinds: ContentKind[]): Observable<PaginateResult<ContentModel>> {
         // If we just include the kind array as-is, it'll be serialized as "&kind=Kind1,Kind2" which the backend will interpret as
         // the string 'Kind1,Kind2' which is not what we want. So, we manually split it out into a query string
         // which becomes "&kind=Kind1&kind=Kind2", etc.
         const kindFragment = kinds.map((k) => `&kinds=${k}`).join('');
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/content/fetch-all-by-kind?pseudId=${pseudId}&page=${page}${kindFragment}`,
+                `${this.baseUrl}/content/fetch-all-by-kind?pseudId=${pseudId}${kindFragment}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
