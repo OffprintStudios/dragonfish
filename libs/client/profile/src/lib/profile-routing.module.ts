@@ -26,6 +26,9 @@ const routes: Routes = [
                 component: HomeComponent,
             },
             {
+                path: 'home', redirectTo: '',
+            },
+            {
                 path: 'works',
                 component: WorksComponent,
             },
