@@ -3,8 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { SendGridModule } from '@anchan828/nest-sendgrid';
 
 /* Controllers */
 import { AdminRoutes } from './controllers/admin';
@@ -60,26 +59,13 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
                 signOptions: { expiresIn: JWT_EXPIRATION },
             }),
         }),
-        MailerModule.forRoot({
-            transport: {
-                host: process.env.MAIL_HOST,
-                secure: false,
-                port: +process.env.MAIL_PORT,
-                auth: {
-                    user: process.env.MAIL_USER,
-                    pass: process.env.MAIL_PASSWORD,
+        SendGridModule.forRootAsync({
+            useFactory: () => ({
+                apikey: process.env.SENDGRID_API_KEY,
+                defaultMailData: {
+                    from: process.env.SUPPORT_ADDRESS,
                 },
-            },
-            defaults: {
-                from: `"Beatriz" <${process.env.MAIL_FROM}>`,
-            },
-            template: {
-                dir: join(__dirname, 'assets/templates'),
-                adapter: new HandlebarsAdapter(),
-                options: {
-                    strict: true,
-                },
-            },
+            }),
         }),
     ],
     controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...SearchRoutes, ...ContentLibraryRoutes],

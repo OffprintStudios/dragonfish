@@ -36,6 +36,7 @@
     },
     "private": true,
     "dependencies": {
+        "@anchan828/nest-sendgrid": "^0.5.16",
         "@angular/animations": "^12.1.1",
         "@angular/cdk": "^12.1.1",
         "@angular/common": "^12.1.1",
@@ -54,7 +55,6 @@
         "@datorama/akita-ng-entity-service": "^6.2.0",
         "@datorama/akita-ng-router-store": "^6.0.2",
         "@electron/remote": "^1.2.0",
-        "@nestjs-modules/mailer": "^1.6.0",
         "@nestjs/common": "^8.0.1",
         "@nestjs/core": "^8.0.1",
         "@nestjs/graphql": "^7.9.11",

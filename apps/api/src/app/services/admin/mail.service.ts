@@ -1,47 +1,40 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
 import { Account } from '@dragonfish/shared/models/accounts';
+import { SendGridService } from '@anchan828/nest-sendgrid';
 
 @Injectable()
 export class MailService {
     private logger = new Logger('Mail');
 
-    constructor(private mailer: MailerService) {}
+    constructor(private readonly sendGrid: SendGridService) {}
 
-    public async sendResetEmail(user: Account, token: string) {
-        const url = `https://offprint.net/account/reset-password?userId=${user._id}&token=${token}`;
-
-        await this.mailer.sendMail({
+    public async sendResetPasswordEmail(user: Account, token: string) {
+        await this.sendGrid.send({
             to: user.email,
-            subject: 'Resetting your Offprint password',
-            template: './reset_password',
-            context: {
-                url,
+            templateId: process.env.RESET_PASSWORD_TEMPLATE,
+            dynamicTemplateData: {
+                url: `https://offprint.net/account/reset-password?userId=${user._id}&token=${token}`,
             },
         });
     }
 
     public async sendConfirmationEmail(user: Account, token: string) {
-        const url = `https://offprint.net/account/confirm-email?userId=${user._id}&token=${token}`;
-
-        await this.mailer.sendMail({
+        await this.sendGrid.send({
             to: user.email,
-            subject: 'Welcome to Offprint! Please confirm your email address',
-            template: './confirm_email',
-            context: {
-                url,
+            templateId: process.env.CONFIRM_EMAIL_TEMPLATE,
+            dynamicTemplateData: {
+                url: `https://offprint.net/account/confirm-email?userId=${user._id}&token=${token}`,
             },
         });
     }
 
     public async sendInviteCode(email: string, inviteCode: string) {
         this.logger.log(`Sending invite code ${inviteCode}...`);
-        await this.mailer.sendMail({
+        await this.sendGrid.send({
             to: email,
-            subject: 'Welcome to Offprint!',
-            template: './invite_code',
-            context: {
-                inviteCode,
+            templateId: process.env.INVITE_CODE_TEMPLATE,
+            dynamicTemplateData: {
+                code: inviteCode,
             },
         });
     }
