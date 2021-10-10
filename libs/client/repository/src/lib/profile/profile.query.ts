@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { ProfileState } from './profile.state';
 import { ProfileStore } from './profile.store';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProfileQuery extends Query<ProfileState> {
     public profile$ = this.select('currProfile');
     public works$ = this.select('homeWorks');

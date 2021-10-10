@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProfileQuery } from '../../repo';
+import { ProfileQuery } from '@dragonfish/client/repository/profile';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { SessionQuery } from '@dragonfish/client/repository/session';

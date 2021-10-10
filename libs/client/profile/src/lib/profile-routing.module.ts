@@ -9,7 +9,8 @@ import { BlogsComponent } from './views/blogs/blogs.component';
 import { BlogPageComponent } from './views/blog-page/blog-page.component';
 
 /* Misc */
-import { BlogResolver, DraftBlogResolver, ProfileResolver } from './repo';
+import { ProfileResolver } from './profile.resolver';
+import { BlogResolver } from './blog.resolver';
 
 const routes: Routes = [
     {
@@ -50,6 +51,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver, DraftBlogResolver],
+    providers: [ProfileResolver, BlogResolver],
 })
 export class ProfileRoutingModule {}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProfileQuery } from '../../repo';
+import { ProfileQuery } from '@dragonfish/client/repository/profile';
 
 @Component({
     selector: 'dragonfish-profile-home',

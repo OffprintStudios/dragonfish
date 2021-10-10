@@ -3,7 +3,7 @@ import { Store, StoreConfig } from '@datorama/akita';
 import { BlogPageState, createInitialState } from './blog-page.state';
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'content-view' })
+@StoreConfig({ name: 'blog-page' })
 export class BlogPageStore extends Store<BlogPageState> {
     constructor() {
         super(createInitialState());

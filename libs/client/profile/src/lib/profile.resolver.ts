@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { untilDestroyed } from '@ngneat/until-destroy';
-import { ProfileService } from './profile.service';
+import { ProfileService } from '@dragonfish/client/repository/profile';
 
 @Injectable()
 export class ProfileResolver implements Resolve<any> {

@@ -7,7 +7,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { throwError, zip } from 'rxjs';
 import { AppQuery } from '@dragonfish/client/repository/app';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ProfileService {
     constructor(
         private profileQuery: ProfileQuery,

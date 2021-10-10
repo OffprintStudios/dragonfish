@@ -15,13 +15,13 @@ import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 import { Views } from './views';
 
 /* Components */
-import { ProfileTopbarComponent } from './components';
+import { Components } from './components';
 
 /* Repository */
 import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './repo';
 
 @NgModule({
-    declarations: [ProfileTopbarComponent, ...Views],
+    declarations: [...Views, ...Components],
     imports: [
         CommonModule,
         ProfileRoutingModule,
