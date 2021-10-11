@@ -5,7 +5,7 @@ import { setTwoPartTitle } from '@dragonfish/shared/constants';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { MatDialog } from '@angular/material/dialog';
 import { BlogPageQuery, BlogPageService } from '@dragonfish/client/repository/profile/blog-page';
-import { BlogForm, BlogsContentModel } from '@dragonfish/shared/models/content';
+import { BlogForm, BlogsContentModel, PubStatus } from '@dragonfish/shared/models/content';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
@@ -21,6 +21,7 @@ export class BlogPageComponent implements OnInit {
     editMode = false;
     moreMenuOpened = false;
     kind = CommentKind.ContentComment; // Sets the item kind for comments
+    pubStatus = PubStatus;
 
     blogForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
@@ -70,5 +71,14 @@ export class BlogPageComponent implements OnInit {
         this.blog.edit(blog._id, formInfo).subscribe(() => {
             this.toggleEdits();
         });
+    }
+
+    publishBlog(blog: BlogsContentModel, pubStatus: PubStatus) {
+        this.blogService
+            .publish(blog._id, {
+                oldStatus: blog.audit.published,
+                newStatus: pubStatus,
+            })
+            .subscribe();
     }
 }

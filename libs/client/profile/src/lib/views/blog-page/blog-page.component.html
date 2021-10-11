@@ -188,13 +188,13 @@
 
     <mat-menu #moreEditing='matMenu' xPosition="before">
         <ng-container *ngIf="blog.audit.published === 'Published'; else draftPost">
-            <button mat-menu-item class="hover:scale-100">
+            <button mat-menu-item class="hover:scale-100" (click)="publishBlog(blog, pubStatus.Unpublished)">
                 <rmx-icon name="checkbox-circle-line"></rmx-icon>
                 <span>Published</span>
             </button>
         </ng-container>
         <ng-template #draftPost>
-            <button mat-menu-item class="hover:scale-100">
+            <button mat-menu-item class="hover:scale-100" (click)="publishBlog(blog, pubStatus.Published)">
                 <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
                 <span>Publish</span>
             </button>
