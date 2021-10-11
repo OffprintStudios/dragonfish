@@ -8,7 +8,8 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
-import { WorkPageService } from '@dragonfish/client/repository/work-page';
+import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
+import { AuthService } from '@dragonfish/client/repository/session/services';
 
 @UntilDestroy()
 @Component({
@@ -61,16 +62,19 @@ export class UploadCoverArtComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) private data: { kind: ContentKind; contentId: string },
         private workService: WorkPageService,
         private sessionQuery: SessionQuery,
+        private auth: AuthService,
+        private workPage: WorkPageQuery,
     ) {
+        const pseudId = this.auth.checkPseudonym(this.workPage.authorId) ? this.workPage.authorId : '';
         if (this.data.kind === ContentKind.ProseContent) {
             this.uploader = new FileUploader({
-                url: `/api/content/prose/upload-coverart/${this.data.contentId}`,
+                url: `/api/content/prose/upload-coverart/${this.data.contentId}?pseudId=${pseudId}`,
                 itemAlias: 'coverart',
                 headers: [],
             });
         } else if (this.data.kind === ContentKind.PoetryContent) {
             this.uploader = new FileUploader({
-                url: `/api/content/poetry/upload-coverart/${this.data.contentId}`,
+                url: `/api/content/poetry/upload-coverart/${this.data.contentId}?pseudId=${pseudId}`,
                 itemAlias: 'coverart',
                 headers: [],
             });
