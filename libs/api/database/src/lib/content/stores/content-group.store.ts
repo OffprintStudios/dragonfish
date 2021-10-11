@@ -5,7 +5,14 @@ import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocum
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, Genres, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
+import {
+    ContentFilter,
+    ContentKind,
+    ContentRating,
+    Genres,
+    PubStatus,
+    WorkKind,
+} from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
@@ -187,6 +194,7 @@ export class ContentGroupStore {
      * @param kinds The kind of document to fetch.
      * @param authorId (Optional) ID of author of work that searching for.
      * @param category (Optional) The category of content that searching for.
+     * @param genre
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
@@ -205,6 +213,9 @@ export class ContentGroupStore {
             sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: maxPerPage,
+            options: {
+                strict: false,
+            },
         };
         const paginateQuery = {
             'audit.published': PubStatus.Published,
