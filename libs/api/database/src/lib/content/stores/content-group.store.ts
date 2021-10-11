@@ -205,6 +205,9 @@ export class ContentGroupStore {
             sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: maxPerPage,
+            options: {
+                strictQuery: false,
+            },
         };
         const paginateQuery = {
             'audit.published': PubStatus.Published,
