@@ -116,7 +116,7 @@
     </ng-container>
     <ng-template #notThisUser>
         <ng-container *ngIf="profileQuery.profile$ | async as portUser">
-            <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 my-8 w-11/12 mx-auto" *ngIf="userBlogsQuery.totalBlogs !== 0; else noGalleryBlogs">
+            <div class="my-6 w-7/12 mx-auto" *ngIf="userBlogsQuery.totalBlogs !== 0; else noGalleryBlogs">
                 <ng-container *ngFor="let blog of userBlogsQuery.pubBlogs | paginate: {itemsPerPage: userBlogsQuery.perPage, currentPage: userBlogsQuery.currPage, totalItems: userBlogsQuery.totalBlogs}">
                     <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
                 </ng-container>

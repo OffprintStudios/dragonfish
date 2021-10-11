@@ -1,5 +1,7 @@
 <div class="w-11/12 mx-auto max-w-4xl">
-    <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="blogQuery.blogId"></dragonfish-comment-block>
+    <ng-container *ngIf="session.isLoggedIn">
+        <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="blogQuery.blogId"></dragonfish-comment-block>
+    </ng-container>
     <ng-container *ngIf="commentsQuery.totalComments === 0; else hasComments">
         <div class="empty mb-6">
             <h3>Nobody's said anything yet...</h3>

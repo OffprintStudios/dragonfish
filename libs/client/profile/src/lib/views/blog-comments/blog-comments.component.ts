@@ -3,6 +3,7 @@ import { CommentKind } from '@dragonfish/shared/models/comments';
 import { CommentsQuery, CommentsService } from '@dragonfish/client/repository/comments';
 import { BlogPageQuery } from '@dragonfish/client/repository/profile/blog-page';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-blog-comments',
@@ -18,6 +19,7 @@ export class BlogCommentsComponent {
         public blogQuery: BlogPageQuery,
         private router: Router,
         private route: ActivatedRoute,
+        public session: SessionQuery,
     ) {}
 
     onPageChange(event: number) {
