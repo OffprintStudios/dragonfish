@@ -27,6 +27,7 @@ import {
 import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { WorkPageService } from '@dragonfish/client/repository/work-page';
+import { UserWorksService } from '@dragonfish/client/repository/profile/user-works';
 
 @Component({
     selector: 'dragonfish-work-form',
@@ -73,6 +74,7 @@ export class WorkFormComponent implements OnInit {
         private alerts: AlertsService,
         private tagsService: TagsService,
         private workPage: WorkPageService,
+        private userWorks: UserWorksService,
     ) {}
 
     ngOnInit(): void {
@@ -167,7 +169,7 @@ export class WorkFormComponent implements OnInit {
                 this.dialogRef.close();
             });
         } else {
-            this.workPage.createWork(ContentKind.ProseContent, formInfo).subscribe(() => {
+            this.userWorks.create(ContentKind.ProseContent, formInfo).subscribe(() => {
                 this.dialogRef.close();
             });
         }
@@ -191,7 +193,7 @@ export class WorkFormComponent implements OnInit {
                 this.dialogRef.close();
             });
         } else {
-            this.workPage.createWork(ContentKind.PoetryContent, formInfo).subscribe(() => {
+            this.userWorks.create(ContentKind.PoetryContent, formInfo).subscribe(() => {
                 this.dialogRef.close();
             });
         }

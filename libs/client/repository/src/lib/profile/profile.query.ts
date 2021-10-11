@@ -14,6 +14,10 @@ export class ProfileQuery extends Query<ProfileState> {
         super(store);
     }
 
+    public get screenName() {
+        return this.getValue().currProfile.screenName;
+    }
+
     public get userTag() {
         return this.getValue().currProfile.userTag;
     }

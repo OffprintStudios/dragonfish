@@ -14,6 +14,7 @@ import { ProfileResolver } from './profile.resolver';
 import { BlogResolver } from './blog.resolver';
 import { UserBlogsResolver } from './user-blogs.resolver';
 import { BlogCommentsResolver } from './blog-comments.resolver';
+import { UserWorksResolver } from './user-works.resolver';
 
 const routes: Routes = [
     {
@@ -32,6 +33,8 @@ const routes: Routes = [
                     {
                         path: 'works',
                         component: WorksComponent,
+                        resolve: { data: UserWorksResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                     {
                         path: 'blogs',
@@ -70,6 +73,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver, UserBlogsResolver, BlogCommentsResolver],
+    providers: [ProfileResolver, BlogResolver, UserBlogsResolver, UserWorksResolver, BlogCommentsResolver],
 })
 export class ProfileRoutingModule {}
