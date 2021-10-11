@@ -11,7 +11,7 @@ div.header {
 }
 
 div.edit-cover-art {
-    @apply relative cursor-pointer border-4 border-white mr-6 mb-6;
+    @apply relative cursor-pointer mr-6;
     span.edit-icon {
         @apply absolute rounded-md w-full h-full;
         rmx-icon {
@@ -27,8 +27,14 @@ div.edit-cover-art {
         max-width: 180px;
         max-height: 275px;
         z-index: -1;
+        &:hover {
+            @apply blur-lg;
+        }
     }
     &:hover {
+        img {
+            @apply blur-lg;
+        }
         span.edit-icon {
             @apply backdrop-blur;
         }

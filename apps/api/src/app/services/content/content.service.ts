@@ -4,16 +4,16 @@ import { PaginateResult } from 'mongoose';
 import { ContentGroupStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import {
-    ContentModel,
-    ContentKind,
-    FormType,
     ContentFilter,
+    ContentKind,
+    ContentModel,
+    FormType,
     PubChange,
     PubStatus,
 } from '@dragonfish/shared/models/content';
 import { NotificationsService } from '@dragonfish/api/database/notifications';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
+import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 
 @Injectable()
 export class ContentService {
@@ -23,6 +23,7 @@ export class ContentService {
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly notifications: NotificationsService,
+        private readonly pseudonyms: PseudonymsStore,
     ) {}
 
     public async fetchOne(contentId: string, pseudId?: string): Promise<ContentModel> {
@@ -45,7 +46,7 @@ export class ContentService {
         return await this.content.fetchAll(userId);
     }
 
-    public async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<ContentModel[]> {
+    public async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<PaginateResult<ContentModel>> {
         return await this.content.fetchAllByKind(userId, kinds);
     }
 
@@ -73,9 +74,18 @@ export class ContentService {
     public async publishOne(user: string, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
         const publishedContent = await this.content.publishOne(user, contentId, pubChange);
 
-        // If this content is being published, subscribe the author to comments on it.
         if (pubChange.newStatus === PubStatus.Published) {
-            await this.notifications.subscribe(user, contentId, NotificationKind.CommentNotification);
+            if (publishedContent.kind === ContentKind.BlogContent) {
+                await this.pseudonyms.updateBlogCount(
+                    user,
+                    await this.content.countContent(user, [ContentKind.BlogContent]),
+                );
+            } else {
+                await this.pseudonyms.updateWorkCount(
+                    user,
+                    await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),
+                );
+            }
         }
 
         return publishedContent;

@@ -133,6 +133,18 @@ export class PseudonymsStore {
         return await pseud.save();
     }
 
+    public async updateWorkCount(pseudId: string, numWorks: number) {
+        const pseud = await this.retrievePseud(pseudId);
+        pseud.stats.works = numWorks;
+        return await pseud.save();
+    }
+
+    public async updateBlogCount(pseudId: string, numBlogs: number) {
+        const pseud = await this.retrievePseud(pseudId);
+        pseud.stats.blogs = numBlogs;
+        return await pseud.save();
+    }
+
     //#endregion
 
     //#region ---PRIVATE---

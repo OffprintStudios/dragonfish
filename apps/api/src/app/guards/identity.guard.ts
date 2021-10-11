@@ -32,7 +32,6 @@ export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
         ) {}
 
         async canActivate(context: ExecutionContext) {
-            this.logger.log(`Getting the request.`);
             // Getting the request.
             const request = context.switchToHttp().getRequest();
 
@@ -48,18 +47,15 @@ export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
         }
 
         private async verifyToken(request: any): Promise<boolean> {
-            this.logger.log(`Getting the JSON Web Token from the authorization header.`);
             // Getting the JSON Web Token from the authorization header.
             const jwtToken: string = request.headers['authorization'];
 
-            this.logger.log(`Getting the pseudonym query parameter`);
             // Getting the pseudonym query parameter
             const pseudId: string = request.query.pseudId.toString();
             if (!pseudId) {
                 throw new BadRequestException(`This route requires a pseudonym ID in query parameters.`);
             }
 
-            this.logger.log(`Checking to see if the token matches the correct format.`);
             // Checking to see if the token matches the correct format.
             // If it does, then grab the token. If not, throw an
             // Unauthorized exception.
@@ -70,7 +66,6 @@ export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
                 throw new UnauthorizedException(`You don't have permission to do that.`);
             }
 
-            this.logger.log(`Verifying that the token is legitimate.`);
             // Verifying that the token is legitimate.
             const verifiedToken = await this.jwtService
                 .verifyAsync<JwtPayload>(bearerToken, { ignoreExpiration: false })
@@ -82,7 +77,6 @@ export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
                     }
                 });
 
-            this.logger.log(`Check to see if the account owns the pseudonym`);
             // Check to see if the account owns the pseudonym
             const account: Account = await this.accountStore.fetchAccountById(verifiedToken.sub);
             if (account.pseudonyms.some((elem) => elem._id === pseudId)) {
@@ -90,11 +84,11 @@ export const IdentityGuard = (roles: Roles[], optional?: boolean) => {
                     request.user = verifiedToken;
                     return true;
                 } else {
-                    this.logger.error(`You don't have permission to do that. Couldn't find pseud.`);
+                    this.logger.error(`Someone attempted to impersonate User ${account._id}!`);
                     throw new UnauthorizedException(`You don't have permission to do that.`);
                 }
             } else {
-                this.logger.error(`You don't have permission to do that.`);
+                this.logger.error(`Someone attempted to impersonate User ${account._id}!`);
                 throw new UnauthorizedException(`You don't have permission to do that.`);
             }
         }

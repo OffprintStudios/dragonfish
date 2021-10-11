@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommentKind } from '@dragonfish/shared/models/comments';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ContentViewQuery, ContentViewService } from '@dragonfish/client/repository/content-view';
-import { combineLatest } from 'rxjs';
-import { untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
-import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { PopupModel } from '@dragonfish/shared/models/util';
-import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
-import { ProfileService } from '../../repo';
-import { BlogForm, BlogsContentModel } from '@dragonfish/shared/models/content';
+import { BlogPageQuery, BlogPageService } from '@dragonfish/client/repository/profile/blog-page';
+import { BlogForm, BlogsContentModel, PubStatus } from '@dragonfish/shared/models/content';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
+import { ActivatedRoute } from '@angular/router';
 
+@UntilDestroy()
 @Component({
     selector: 'dragonfish-blog-page',
     templateUrl: './blog-page.component.html',
@@ -24,7 +20,9 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 export class BlogPageComponent implements OnInit {
     pageNum = 1;
     editMode = false;
+    moreMenuOpened = false;
     kind = CommentKind.ContentComment; // Sets the item kind for comments
+    pubStatus = PubStatus;
 
     blogForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
@@ -32,59 +30,32 @@ export class BlogPageComponent implements OnInit {
     });
 
     constructor(
-        private route: ActivatedRoute,
-        private router: Router,
-        public viewQuery: ContentViewQuery,
         public session: AuthService,
         public pseudQuery: PseudonymsQuery,
-        private viewService: ContentViewService,
+        public blogQuery: BlogPageQuery,
+        public route: ActivatedRoute,
+        private blogService: BlogPageService,
         private dialog: MatDialog,
-        private profile: ProfileService,
+        private blog: BlogPageService,
         private alerts: AlertsService,
     ) {}
 
     ngOnInit(): void {
-        combineLatest([this.viewQuery.currContent$, this.route.queryParamMap])
-            .pipe(untilDestroyed(this))
-            .subscribe((x) => {
-                const [content, queryParams] = x;
-                setTwoPartTitle(content.title);
-                this.blogForm.setValue({
-                    title: content.title,
-                    body: content.body,
-                });
-
-                if (queryParams.has('page')) {
-                    this.pageNum = +queryParams.get('page');
-                }
+        this.blogQuery.blog$.pipe(untilDestroyed(this)).subscribe((blog) => {
+            setTwoPartTitle(blog.title);
+            this.blogForm.setValue({
+                title: blog.title,
+                body: blog.body,
             });
-    }
-
-    /**
-     * Changes query params to the appropriate page.
-     * @param event The page changed to
-     * @param contentId
-     */
-    onPageChange(event: number, contentId: string) {
-        if (event !== 1) {
-            this.router
-                .navigate([], {
-                    relativeTo: this.route,
-                    queryParams: { page: event },
-                    queryParamsHandling: 'merge',
-                })
-                .then(() => {
-                    this.viewService.fetchNextComments(contentId, event);
-                });
-        } else {
-            this.router.navigate([], { relativeTo: this.route }).then(() => {
-                this.viewService.fetchNextComments(contentId, 1);
-            });
-        }
+        });
     }
 
     toggleEdits() {
         this.editMode = !this.editMode;
+    }
+
+    toggleMoreMenu() {
+        this.moreMenuOpened = !this.moreMenuOpened;
     }
 
     submitForm(blog: BlogsContentModel) {
@@ -99,21 +70,17 @@ export class BlogPageComponent implements OnInit {
             rating: blog.meta.rating,
         };
 
-        this.profile.editBlog(blog._id, formInfo).subscribe(() => {
+        this.blog.edit(blog._id, formInfo).subscribe(() => {
             this.toggleEdits();
         });
     }
 
-    deleteBlog(id: string) {
-        const alertData: PopupModel = {
-            message: 'Are you sure you want to delete this? This action is irreversible.',
-            confirm: true,
-        };
-        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
-        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
-            if (wantsToDelete) {
-                this.profile.deleteBlog(id).subscribe();
-            }
-        });
+    publishBlog(blog: BlogsContentModel, pubStatus: PubStatus) {
+        this.blogService
+            .publish(blog._id, {
+                oldStatus: blog.audit.published,
+                newStatus: pubStatus,
+            })
+            .subscribe();
     }
 }

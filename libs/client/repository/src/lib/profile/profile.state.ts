@@ -5,10 +5,6 @@ export interface ProfileState {
     currProfile: Pseudonym;
     homeWorks: ContentModel[];
     homeBlogs: ContentModel[];
-    pubBlogs: ContentModel[];
-    draftBlogs: ContentModel[];
-    pubWorks: ContentModel[];
-    draftWorks: ContentModel[];
 }
 
 export function createInitialState(): ProfileState {
@@ -16,9 +12,5 @@ export function createInitialState(): ProfileState {
         currProfile: null,
         homeWorks: null,
         homeBlogs: null,
-        pubBlogs: null,
-        draftBlogs: null,
-        pubWorks: null,
-        draftWorks: null,
     };
 }

@@ -1,6 +1,6 @@
-<div class="my-6 w-11/12 md:w-9/12 lg:w-7/12 mx-auto max-w-4xl">
+<div class="w-11/12 mx-auto max-w-4xl">
     <ng-container *ngIf="session.isLoggedIn">
-        <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="workQuery.contentId"></dragonfish-comment-block>
+        <dragonfish-comment-block [createMode]="true" [commentKind]="commentKinds.ContentComment" [itemId]="blogQuery.blogId"></dragonfish-comment-block>
     </ng-container>
     <ng-container *ngIf="commentsQuery.totalComments === 0; else hasComments">
         <div class="empty mb-6">

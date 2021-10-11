@@ -1,25 +1,25 @@
 import { Component } from '@angular/core';
 import { CommentKind } from '@dragonfish/shared/models/comments';
 import { CommentsQuery, CommentsService } from '@dragonfish/client/repository/comments';
-import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
+import { BlogPageQuery } from '@dragonfish/client/repository/profile/blog-page';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
-    selector: 'dragonfish-content-comments',
-    templateUrl: './content-comments.component.html',
-    styleUrls: ['./content-comments.component.scss'],
+    selector: 'dragonfish-blog-comments',
+    templateUrl: './blog-comments.component.html',
+    styleUrls: ['./blog-comments.component.scss'],
 })
-export class ContentCommentsComponent {
+export class BlogCommentsComponent {
     commentKinds = CommentKind;
 
     constructor(
         private commentsService: CommentsService,
         public commentsQuery: CommentsQuery,
-        public workQuery: WorkPageQuery,
-        public session: SessionQuery,
+        public blogQuery: BlogPageQuery,
         private router: Router,
         private route: ActivatedRoute,
+        public session: SessionQuery,
     ) {}
 
     onPageChange(event: number) {

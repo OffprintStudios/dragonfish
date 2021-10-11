@@ -22,13 +22,6 @@
             <h3 class="text-3xl font-medium">
                 <a
                     [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag, 'post', blog._id, blog.title | slugify]"
-                    *ngIf="blog.audit.published === 'Published'"
-                >
-                    {{ blog.title }}
-                </a>
-                <a
-                    [routerLink]="['/profile', $any(blog.author)._id, $any(blog.author).userTag, 'draft', blog._id]"
-                    *ngIf="blog.audit.published === 'Unpublished'"
                 >
                     {{ blog.title }}
                 </a>

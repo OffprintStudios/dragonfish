@@ -1,4 +1,4 @@
-<ng-container *ngIf="profileQuery.profile$ | async as portUser">
+<!--<ng-container *ngIf="profileQuery.profile$ | async as portUser">
     <ng-container *ngIf="loading; else notLoading">
         <div class="flex h-40 items-center justify-center">
             <mat-spinner></mat-spinner>
@@ -40,4 +40,109 @@
             <pagination-controls (pageChange)="onPageChange($event, portUser._id)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
     </ng-template>
+</ng-container>-->
+
+<ng-container *ngIf="auth.checkPseudonym(profileQuery.profileId); else nonUserWorksList">
+    <div class="my-6 flex items-center justify-center w-7/12 mx-auto">
+        <div class="button dark:border-white" (click)="openForm(kind.ProseContent)">
+            <rmx-icon name="book-open-line"></rmx-icon>
+            <div class="separator">|</div>
+            <h3>Create Prose</h3>
+        </div>
+        <div class="button dark:border-white" (click)="openForm(kind.PoetryContent)">
+            <rmx-icon name="quill-pen-line"></rmx-icon>
+            <div class="separator">|</div>
+            <h3>Create Poetry</h3>
+        </div>
+    </div>
+    <div class="w-7/12 mt-6 mx-auto flex items-center justify-center py-2 border-t border-b border-gray-600 dark:border-white">
+        <button [ngClass]="{'active': selectedTab === tabs.Published}" (click)="changeTab(tabs.Published)">
+            <rmx-icon name="check-line"></rmx-icon>
+            <span>Published</span>
+        </button>
+        <div class="mx-0.5"></div>
+        <button [ngClass]="{'active': selectedTab === tabs.Unpublished}" (click)="changeTab(tabs.Unpublished)">
+            <rmx-icon name="draft-line"></rmx-icon>
+            <span>Drafts</span>
+        </button>
+        <div class="mx-0.5"></div>
+        <button [ngClass]="{'active': selectedTab === tabs.Scheduled}" (click)="changeTab(tabs.Scheduled)">
+            <rmx-icon name="time-line"></rmx-icon>
+            <span>Pending</span>
+        </button>
+    </div>
+    <ng-container [ngSwitch]="selectedTab">
+        <ng-container *ngSwitchCase="tabs.Published">
+            <ng-container *ngIf="userWorks.pubWorks.length === 0; else hasPubWorks">
+                <div class="empty">
+                    <h3>You haven't posted anything yet</h3>
+                    <p>Why not add something to start off?</p>
+                </div>
+            </ng-container>
+            <ng-template #hasPubWorks>
+                <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-6">
+                    <ng-container *ngFor="let blog of userWorks.pubWorks">
+                        <dragonfish-work-card [content]="blog"></dragonfish-work-card>
+                    </ng-container>
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-container *ngSwitchCase="tabs.Unpublished">
+            <ng-container *ngIf="userWorks.draftWorks.length === 0; else hasDraftWorks">
+                <div class="empty">
+                    <h3>You haven't saved any drafts yet</h3>
+                    <p>Why not add something to start off?</p>
+                </div>
+            </ng-container>
+            <ng-template #hasDraftWorks>
+                <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-6">
+                    <ng-container *ngFor="let work of userWorks.draftWorks">
+                        <dragonfish-work-card [content]="work"></dragonfish-work-card>
+                    </ng-container>
+                </div>
+            </ng-template>
+        </ng-container>
+        <ng-container *ngSwitchCase="tabs.Scheduled">
+            <ng-container *ngIf="userWorks.pendingWorks.length === 0; else hasPendingWorks">
+                <div class="empty">
+                    <h3>Pardon the dust—</h3>
+                    <p>This feature will be available in a later update.</p>
+                </div>
+            </ng-container>
+            <ng-template #hasPendingWorks>
+                <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-6">
+                    <ng-container *ngFor="let work of userWorks.pendingWorks">
+                        <dragonfish-work-card [content]="work"></dragonfish-work-card>
+                    </ng-container>
+                </div>
+            </ng-template>
+        </ng-container>
+    </ng-container>
 </ng-container>
+
+<ng-template #nonUserWorksList>
+    <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8" *ngIf="userWorks.totalWorks !== 0; else noGalleryWorks">
+        <ng-container
+            *ngFor="
+                let work of userWorks.pubWorks
+                    | paginate
+                        : {
+                              itemsPerPage: userWorks.perPage,
+                              currentPage: userWorks.currPage,
+                              totalItems: userWorks.totalWorks
+                          }
+            "
+        >
+            <dragonfish-work-card [content]="work" [showAuthor]="false"></dragonfish-work-card>
+        </ng-container>
+    </div>
+    <ng-template #noGalleryWorks>
+        <div class="empty">
+            <h3>There's nothing here...</h3>
+            <p>Check back later to see if {{ profileQuery.screenName }} adds anything!</p>
+        </div>
+    </ng-template>
+    <ng-container *ngIf="userWorks.currPage > 1">
+        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+    </ng-container>
+</ng-template>

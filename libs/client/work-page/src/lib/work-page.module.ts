@@ -8,6 +8,7 @@ import { AlertsModule } from '@dragonfish/client/alerts';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { EditorLiteModule } from '@dragonfish/client/editor-lite';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { WorkPageRoutingModule } from './work-page-routing.module';
 import { Views } from './views';
@@ -27,6 +28,7 @@ import { Components } from './components';
         EditorLiteModule,
         NgSelectModule,
         NgxPaginationModule,
+        ImageCropperModule,
     ],
     declarations: [...Views, ...Components],
 })
