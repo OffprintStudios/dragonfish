@@ -23,6 +23,7 @@ export class BlogsComponent implements OnInit {
 
     tabs = ListPages;
     selectedTab = ListPages.Published;
+    pubStatus = PubStatus;
 
     blogForm = new FormGroup({
         title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),

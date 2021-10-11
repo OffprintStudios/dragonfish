@@ -17,6 +17,6 @@ export class UserBlogsResolver implements Resolve<PaginateResult<ContentModel>> 
             this.page = +route.queryParamMap.get('page');
         }
 
-        return this.userBlogs.getPage(this.page, this.auth.checkPseudonym(this.profileQuery.profileId));
+        return this.userBlogs.getPage(this.page, !this.auth.checkPseudonym(this.profileQuery.profileId));
     }
 }

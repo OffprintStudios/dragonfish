@@ -58,11 +58,11 @@ export class UserBlogsService {
             tap((content) => {
                 if (this.userBlogsQuery.totalBlogs === 0) {
                     this.userBlogsStore.set([content as BlogsContentModel]);
-                } else {
-                    this.userBlogsStore.add(content as BlogsContentModel);
                     this.userBlogsStore.update({
                         totalBlogs: 1,
                     });
+                } else {
+                    this.userBlogsStore.add(content as BlogsContentModel, { prepend: true });
                 }
                 this.alerts.success(`Blog created successfully!`);
             }),
