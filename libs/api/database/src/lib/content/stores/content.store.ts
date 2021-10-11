@@ -258,6 +258,23 @@ export class ContentStore {
         // ...maybe work for another background queue processor
     }
 
+    /**
+     * Counts the number of published documents for a specific user ID, filtered by `kinds`.
+     *
+     * @param user
+     * @param kinds
+     */
+    async countContent(user: string, kinds: ContentKind[]) {
+        const query = {
+            author: user,
+            kind: { $in: kinds },
+            'audit.isDeleted': false,
+            'audit.published': 'Published',
+        };
+
+        return this.content.count(query);
+    }
+
     //#endregion
 
     //#region ---WORKS PUBLISHING---

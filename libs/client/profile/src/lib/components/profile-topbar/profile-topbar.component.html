@@ -76,42 +76,22 @@
                         <rmx-icon name="home-5-line"></rmx-icon>
                         <span>Home</span>
                     </a>
-                    <ng-container *ngIf="auth.checkPseudonym(profile._id); else notThisUserLinks">
-                        <a
-                            class="link"
-                            [routerLink]="['works-list']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="quill-pen-line"></rmx-icon>
-                            <span>Works</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['blogs-list']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="cup-line"></rmx-icon>
-                            <span>Blogs</span>
-                        </a>
-                    </ng-container>
-                    <ng-template #notThisUserLinks>
-                        <a
-                            class="link"
-                            [routerLink]="['works']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="quill-pen-line"></rmx-icon>
-                            <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
-                        </a>
-                        <a
-                            class="link"
-                            [routerLink]="['blogs']"
-                            [routerLinkActive]="'active'"
-                        >
-                            <rmx-icon name="cup-line"></rmx-icon>
-                            <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
-                        </a>
-                    </ng-template>
+                    <a
+                        class="link"
+                        [routerLink]="['works']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <rmx-icon name="quill-pen-line"></rmx-icon>
+                        <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
+                    </a>
+                    <a
+                        class="link"
+                        [routerLink]="['blogs']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <rmx-icon name="cup-line"></rmx-icon>
+                        <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
+                    </a>
                 </div>
             </div>
         </div>
