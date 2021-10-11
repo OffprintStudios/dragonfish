@@ -60,33 +60,33 @@ export class ContentService {
     }
 
     public async createOne(user: string, kind: ContentKind, formInfo: FormType): Promise<ContentModel> {
-        return await this.content.createOne(user, kind, formInfo);
+        const createdContent = await this.content.createOne(user, kind, formInfo);
+
+        await this.updateCounts(user);
+
+        return createdContent;
     }
 
     public async saveOne(user: string, contentId: string, formInfo: FormType): Promise<ContentModel> {
-        return await this.content.saveChanges(user, contentId, formInfo);
+        const savedContent = await this.content.saveChanges(user, contentId, formInfo);
+
+        await this.updateCounts(user);
+
+        return savedContent;
     }
 
     public async deleteOne(user: string, contentId: string): Promise<void> {
-        return await this.content.deleteOne(user, contentId);
+        const deletedContent = await this.content.deleteOne(user, contentId);
+
+        await this.updateCounts(user);
+
+        return deletedContent;
     }
 
     public async publishOne(user: string, contentId: string, pubChange?: PubChange): Promise<ContentModel> {
         const publishedContent = await this.content.publishOne(user, contentId, pubChange);
 
-        if (pubChange.newStatus === PubStatus.Published) {
-            if (publishedContent.kind === ContentKind.BlogContent) {
-                await this.pseudonyms.updateBlogCount(
-                    user,
-                    await this.content.countContent(user, [ContentKind.BlogContent]),
-                );
-            } else {
-                await this.pseudonyms.updateWorkCount(
-                    user,
-                    await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),
-                );
-            }
-        }
+        await this.updateCounts(user);
 
         return publishedContent;
     }
@@ -108,5 +108,20 @@ export class ContentService {
 
     public async removeTagReferences(tagId: string): Promise<void> {
         await this.content.removeTagReferences(tagId);
+    }
+
+    /**
+     * Updates user's counts of both blogs and works
+     * @param user 
+     */
+    private async updateCounts(user: string) {
+        await this.pseudonyms.updateBlogCount(
+            user,
+            await this.content.countContent(user, [ContentKind.BlogContent]),
+        );
+        await this.pseudonyms.updateWorkCount(
+            user,
+            await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),
+        );
     }
 }
