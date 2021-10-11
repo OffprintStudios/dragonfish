@@ -3,6 +3,7 @@ import { CommentKind } from '@dragonfish/shared/models/comments';
 import { CommentsQuery, CommentsService } from '@dragonfish/client/repository/comments';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-content-comments',
@@ -16,6 +17,7 @@ export class ContentCommentsComponent {
         private commentsService: CommentsService,
         public commentsQuery: CommentsQuery,
         public workQuery: WorkPageQuery,
+        public session: SessionQuery,
         private router: Router,
         private route: ActivatedRoute,
     ) {}
