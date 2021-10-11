@@ -19,6 +19,7 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 export class BlogPageComponent implements OnInit {
     pageNum = 1;
     editMode = false;
+    moreMenuOpened = false;
     kind = CommentKind.ContentComment; // Sets the item kind for comments
 
     blogForm = new FormGroup({
@@ -48,6 +49,10 @@ export class BlogPageComponent implements OnInit {
 
     toggleEdits() {
         this.editMode = !this.editMode;
+    }
+
+    toggleMoreMenu() {
+        this.moreMenuOpened = !this.moreMenuOpened;
     }
 
     submitForm(blog: BlogsContentModel) {

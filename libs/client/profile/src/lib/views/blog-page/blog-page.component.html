@@ -74,74 +74,134 @@
 <ng-container *ngIf="blogQuery.blog$ | async as blog">
     <div class="w-full overflow-y-auto h-screen">
         <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
-            <div class="my-6 p-1.5 rounded-md" style="background: var(--accent); box-shadow: var(--dropshadow);">
-                <div class="flex items-center">
-                    <div class="p-2 border-r border-white mr-2">
-                        <img class="w-16 h-16 border-4 border-white rounded-md" [src]="blogQuery.author.profile.avatar" [alt]="'avatar'">
-                    </div>
-                    <div class="flex-1">
-                        <h1 class="text-3xl font-medium text-white">{{ blog.title }}</h1>
-                        <div class="flex items-center text-white">
+            <div class="flex items-center my-6 p-1.5 rounded-md" style="background: var(--accent); box-shadow: var(--dropshadow);">
+                <div class="p-2 border-r border-white mr-2">
+                    <img class="w-24 h-24 border-4 border-white rounded-md" [src]="blogQuery.author.profile.avatar" [alt]="'avatar'">
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <h1 class="text-3xl font-medium text-white">{{ blog.title }}</h1>
+                            <div class="flex items-center text-white">
                             <span class="text-white text-xs">
                                 by <a class="text-white" [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag]">{{ blogQuery.author.screenName }}</a>
                             </span>
-                            <span class="text-xs mx-1">|</span>
-                            <span class="text-xs">{{ blog.stats.views | abbreviate }} view{{ blog.stats.views | pluralize  }}</span>
-                            <span class="text-xs mx-1">|</span>
-                            <ng-container *ngIf="blog.audit.publishedOn; else showCreated">
-                                <span class="text-xs">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</span>
+                                <span class="text-xs mx-1">|</span>
+                                <span class="text-xs">{{ blog.stats.views | abbreviate }} view{{ blog.stats.views | pluralize  }}</span>
+                                <span class="text-xs mx-1">|</span>
+                                <ng-container *ngIf="blog.audit.publishedOn; else showCreated">
+                                    <span class="text-xs">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</span>
+                                </ng-container>
+                                <ng-template #showCreated>
+                                    <span class="text-xs">{{ blog.createdAt | localedate: 'fullDate' }}</span>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="session.checkPseudonym(blogQuery.author._id); else noAuthorButtons">
+                            <ng-container *ngIf="editMode; else viewModeButtons">
+                                <button class="header" (click)="submitForm(blog)">
+                                    <rmx-icon name="save-3-line"></rmx-icon>
+                                    <span>Save</span>
+                                </button>
+                                <div class="mx-0.5"></div>
+                                <button class="header" (click)="toggleEdits()" [matTooltip]="'Cancel'" [matTooltipClass]="'offprint-tooltip'">
+                                    <rmx-icon name="close-line" class="mr-0"></rmx-icon>
+                                </button>
                             </ng-container>
-                            <ng-template #showCreated>
-                                <span class="text-xs">{{ blog.createdAt | localedate: 'fullDate' }}</span>
+                            <ng-template #viewModeButtons>
+                                <button class="header" (click)="toggleEdits()">
+                                    <rmx-icon name="edit-line"></rmx-icon>
+                                    <span>Edit</span>
+                                </button>
+                                <div class="mx-0.5"></div>
+                                <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreEditing" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                </button>
                             </ng-template>
+                        </ng-container>
+                        <ng-template #noAuthorButtons>
+                            <button class="header">
+                                <rmx-icon name="heart-add-line"></rmx-icon>
+                                <span>Favorite</span>
+                            </button>
+                            <div class="mx-0.5"></div>
+                            <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreMenu" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                            </button>
+                        </ng-template>
+                        <div class="mx-1"></div>
+                    </div>
+                    <div class="my-2 w-full"></div>
+                    <div class="flex">
+                        <div
+                            class="nav-link px-7"
+                            [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag, 'post', blog._id, blog.title | slugify]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <rmx-icon name="pages-line"></rmx-icon>
+                            <span>Read</span>
+                        </div>
+                        <div class="mx-0.5"></div>
+                        <div class="nav-link px-6">
+                            <rmx-icon name="discuss-line"></rmx-icon>
+                            <span>{{ blog.stats.comments | abbreviate }} Comment{{ blog.stats.comments | pluralize }}</span>
                         </div>
                     </div>
-                    <ng-container *ngIf="session.checkPseudonym(blogQuery.author._id); else noAuthorButtons">
-                        <button class="header">
-                            <rmx-icon name="heart-add-line"></rmx-icon>
-                            <span>Favorite</span>
-                        </button>
-                        <div class="mx-0.5"></div>
-                        <button class="header">
-                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                        </button>
-                        <!--<button class="header">
-                            <rmx-icon name="edit-line"></rmx-icon>
-                            <span>Edit</span>
-                        </button>-->
-                    </ng-container>
-                    <ng-template #noAuthorButtons>
-                        <button class="header">
-                            <rmx-icon name="heart-add-line"></rmx-icon>
-                            <span>Favorite</span>
-                        </button>
-                        <div class="mx-0.5"></div>
-                        <button class="header">
-                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                        </button>
-                    </ng-template>
-                    <div class="mx-1"></div>
-                </div>
-                <div class="flex justify-center border-b-2 border-white">
-                    <div
-                        class="nav-link px-7"
-                        [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag, 'post', blog._id, blog.title | slugify]"
-                        [routerLinkActive]="'active'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                    >
-                        <rmx-icon name="pages-line"></rmx-icon>
-                        <span>Read</span>
-                    </div>
-                    <div class="mx-0.5"></div>
-                    <div class="nav-link px-6">
-                        <rmx-icon name="discuss-line"></rmx-icon>
-                        <span>{{ blog.stats.comments | abbreviate }} Comment{{ blog.stats.comments | pluralize }}</span>
-                    </div>
                 </div>
             </div>
-            <div class="mx-auto p-4 pt-0 rounded-md" style="max-width: 50rem;">
-                <div class="blog-body" [innerHtml]="blog.body | safeHtml"></div>
-            </div>
+            <ng-container *ngIf="editMode; else viewMode">
+                <form [formGroup]="blogForm" class="mx-auto mb-6">
+                    <div class="flex items-center p-2.5 border border-gray-600 dark:border-white rounded-t-md">
+                        <div class="flex-1">
+                            <input
+                                type="text"
+                                [formControlName]="'title'"
+                                class="w-full text-2xl font-medium border-0 p-0 focus:ring-0 relative top-0.5"
+                                placeholder="Title"
+                                style="background: var(--background); font-family: 'Josefin Sans', sans-serif; color: var(--accent);"
+                            >
+                        </div>
+                    </div>
+                    <dragonfish-editor-lite [formControlName]="'body'" [attachedToTop]="true"></dragonfish-editor-lite>
+                </form>
+            </ng-container>
+            <ng-template #viewMode>
+                <div class="mx-auto p-4 pt-0 rounded-md" style="max-width: 50rem;">
+                    <div class="blog-body" [innerHtml]="blog.body | safeHtml"></div>
+                </div>
+            </ng-template>
         </div>
     </div>
+
+    <mat-menu #moreMenu='matMenu' xPosition="before">
+        <button mat-menu-item class="hover:scale-100">
+            <rmx-icon name="share-box-line"></rmx-icon>
+            <span>Share this</span>
+        </button>
+        <div class="my-0.5 w-full border-b border-gray-600 dark:border-white"></div>
+        <button mat-menu-item class="hover:scale-100">
+            <rmx-icon name="alert-line"></rmx-icon>
+            <span>Report this</span>
+        </button>
+    </mat-menu>
+
+    <mat-menu #moreEditing='matMenu' xPosition="before">
+        <ng-container *ngIf="blog.audit.published === 'Published'; else draftPost">
+            <button mat-menu-item class="hover:scale-100">
+                <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                <span>Published</span>
+            </button>
+        </ng-container>
+        <ng-template #draftPost>
+            <button mat-menu-item class="hover:scale-100">
+                <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                <span>Publish</span>
+            </button>
+        </ng-template>
+        <button mat-menu-item class="hover:scale-100">
+            <rmx-icon name="share-box-line"></rmx-icon>
+            <span>Share this</span>
+        </button>
+    </mat-menu>
 </ng-container>

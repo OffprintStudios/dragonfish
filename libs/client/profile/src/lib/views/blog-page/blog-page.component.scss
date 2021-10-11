@@ -5,7 +5,7 @@ button.header {
     }
 }
 div.nav-link {
-    @apply flex items-center py-2 text-white rounded-t-md cursor-pointer;
+    @apply flex items-center py-2 text-white rounded-md cursor-pointer;
     rmx-icon {
         @apply mr-2;
     }
