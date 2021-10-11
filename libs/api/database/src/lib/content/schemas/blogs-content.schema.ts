@@ -22,19 +22,23 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
     @Prop(
         raw({
             releaseOn: { type: Date, default: null },
+            isNewsPost: { type: Boolean, default: false },
+            isFeatured: { type: Boolean, default: false },
         }),
     )
     audit: {
         published: PubStatus;
         publishedOn: Date;
         releaseOn: Date;
+        isNewsPost: boolean;
+        isFeatured: boolean;
         hasComments: boolean;
         isDeleted: boolean;
     };
 
     readonly kind: ContentKind;
 
-    @Prop({type: [{type: String, ref: 'Tags'}] })
+    @Prop({ type: [{ type: String, ref: 'Tags' }] })
     tags: TagsModel[];
 
     readonly createdAt: Date;

@@ -21,6 +21,7 @@ import {
     ContentKind,
     CreateProse,
     FormType,
+    NewsChange,
     PubChange,
     PubContent,
 } from '@dragonfish/shared/models/content';
@@ -33,6 +34,7 @@ import { IImages } from '../../shared/images';
 import { MAX_FANDOM_TAGS } from '@dragonfish/shared/constants/content-constants';
 import { ContentService } from '../../services/content/content.service';
 import { RatingsService } from '../../services/content/ratings.service';
+import { BlogsStore } from '@dragonfish/api/database/content/stores';
 
 @Controller('content')
 export class ContentController {
@@ -40,6 +42,7 @@ export class ContentController {
         private readonly content: ContentService,
         @Inject('IImages') private readonly images: IImages,
         private readonly ratings: RatingsService,
+        private readonly blogs: BlogsStore,
     ) {}
 
     @ApiTags(DragonfishTags.Content)
@@ -220,5 +223,12 @@ export class ContentController {
             coverArtUrl.lastIndexOf('/') + 1,
         )}`;
         return await this.content.updateCoverArt(pseudId, poetryId, ContentKind.PoetryContent, coverArt);
+    }
+
+    @ApiTags(DragonfishTags.Content)
+    @UseGuards(IdentityGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
+    @Patch('toggle-news-post')
+    async toggleNewsPost(@Query('pseudId') pseudId: string, @Body() newsChange: NewsChange) {
+        return await this.blogs.toggleNewsPost(pseudId, newsChange);
     }
 }

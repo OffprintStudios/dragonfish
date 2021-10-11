@@ -7,11 +7,13 @@ import {
     ContentModel,
     FormType,
     Genres,
+    NewsChange,
     NewsContentModel,
     PubChange,
     PubContent,
     SetRating,
     WorkKind,
+    BlogsContentModel,
 } from '@dragonfish/shared/models/content';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
@@ -815,6 +817,25 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+    /**
+     * Toggles a blog's news post option.
+     *
+     * @param pseudId
+     * @param newsChange
+     */
+    public toggleNewsPost(pseudId: string, newsChange: NewsChange) {
+        return handleResponse(
+            this.http.patch<BlogsContentModel>(
+                `${this.baseUrl}/content/toggle-news-post?pseudId=${pseudId}`,
+                newsChange,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 

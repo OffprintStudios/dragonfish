@@ -80,6 +80,8 @@
                                 (toPublish)="publishBlog($event, pubStatus.Published)"
                                 (toUnpublish)="publishBlog($event, pubStatus.Unpublished)"
                                 (toDelete)="deleteBlog($event)"
+                                (addToFeed)="convertToNewsPost($event, true)"
+                                (removeFromFeed)="convertToNewsPost($event, false)"
                             ></dragonfish-blog-card>
                         </ng-container>
                     </div>
@@ -101,6 +103,8 @@
                                 (toPublish)="publishBlog($event, pubStatus.Published)"
                                 (toUnpublish)="publishBlog($event, pubStatus.Unpublished)"
                                 (toDelete)="deleteBlog($event)"
+                                (addToFeed)="convertToNewsPost($event, true)"
+                                (removeFromFeed)="convertToNewsPost($event, false)"
                             ></dragonfish-blog-card>
                         </ng-container>
                     </div>

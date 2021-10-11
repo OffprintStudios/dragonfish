@@ -4,7 +4,7 @@ import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 import { UserBlogsQuery, UserBlogsService } from '@dragonfish/client/repository/profile/user-blogs';
 import { ListPages } from '../../models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BlogForm, BlogsContentModel, ContentRating, PubStatus } from '@dragonfish/shared/models/content';
+import { BlogForm, BlogsContentModel, ContentRating, NewsChange, PubStatus } from '@dragonfish/shared/models/content';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
@@ -106,5 +106,14 @@ export class BlogsComponent implements OnInit {
                     this.userBlogs.delete(id).subscribe();
                 }
             });
+    }
+
+    convertToNewsPost(blogId: string, toPost: boolean) {
+        const newsChange: NewsChange = {
+            blogId: blogId,
+            postAsNews: toPost,
+        };
+
+        this.userBlogs.convertToNewsPost(newsChange).subscribe();
     }
 }

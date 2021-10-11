@@ -3,7 +3,7 @@ import { UserBlogsQuery } from './user-blogs.query';
 import { UserBlogsStore } from './user-blogs.store';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { BlogForm, BlogsContentModel, ContentKind, PubChange } from '@dragonfish/shared/models/content';
+import { BlogForm, BlogsContentModel, ContentKind, NewsChange, PubChange } from '@dragonfish/shared/models/content';
 import { AppQuery } from '../../app';
 import { ProfileQuery } from '../profile.query';
 import { tap } from 'rxjs/operators';
@@ -81,6 +81,19 @@ export class UserBlogsService {
         return this.network.deleteOne(this.profileQuery.profileId, blogId).pipe(
             tap(() => {
                 this.userBlogsStore.remove(blogId);
+            }),
+        );
+    }
+
+    public convertToNewsPost(newsChange: NewsChange) {
+        return this.network.toggleNewsPost(this.profileQuery.profileId, newsChange).pipe(
+            tap((blog) => {
+                this.userBlogsStore.update(blog._id, blog);
+                if (blog.audit.isNewsPost) {
+                    this.alerts.success(`This post is now viewable from the news feed.`);
+                } else {
+                    this.alerts.success(`This post has been removed from the news feed.`);
+                }
             }),
         );
     }

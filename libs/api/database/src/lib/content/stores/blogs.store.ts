@@ -6,7 +6,7 @@ import { stripTags, countWords } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { UsersStore } from '../../users/users.store';
 import { BlogsContentDocument } from '../schemas';
-import { BlogForm, PubChange } from '@dragonfish/shared/models/content';
+import { BlogForm, NewsChange, PubChange } from '@dragonfish/shared/models/content';
 import { NotificationsService } from '../../notifications/notifications.service';
 import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
@@ -80,6 +80,22 @@ export class BlogsStore {
             {
                 'audit.published': pubChange.newStatus,
                 'audit.publishedOn': new Date(),
+            },
+            { new: true },
+        );
+    }
+
+    /**
+     * Toggles a blog post to be fetched as a news post.
+     *
+     * @param userId
+     * @param newsChange
+     */
+    async toggleNewsPost(userId: string, newsChange: NewsChange): Promise<BlogsContentDocument> {
+        return this.blogsModel.findOneAndUpdate(
+            { _id: newsChange.blogId, author: userId },
+            {
+                'audit.isNewsPost': newsChange.postAsNews,
             },
             { new: true },
         );
