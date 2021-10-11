@@ -5,12 +5,9 @@ import { ContentViewQuery, ContentViewService } from '@dragonfish/client/reposit
 import { combineLatest } from 'rxjs';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
-import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { PopupModel } from '@dragonfish/shared/models/util';
-import { PopupComponent } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
-import { ProfileService } from '../../repo';
+import { BlogPageService } from '@dragonfish/client/repository/profile/blog-page';
 import { BlogForm, BlogsContentModel } from '@dragonfish/shared/models/content';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -39,7 +36,7 @@ export class BlogPageComponent implements OnInit {
         public pseudQuery: PseudonymsQuery,
         private viewService: ContentViewService,
         private dialog: MatDialog,
-        private profile: ProfileService,
+        private blog: BlogPageService,
         private alerts: AlertsService,
     ) {}
 
@@ -99,21 +96,8 @@ export class BlogPageComponent implements OnInit {
             rating: blog.meta.rating,
         };
 
-        this.profile.editBlog(blog._id, formInfo).subscribe(() => {
+        this.blog.edit(blog._id, formInfo).subscribe(() => {
             this.toggleEdits();
-        });
-    }
-
-    deleteBlog(id: string) {
-        const alertData: PopupModel = {
-            message: 'Are you sure you want to delete this? This action is irreversible.',
-            confirm: true,
-        };
-        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
-        dialogRef.afterClosed().subscribe((wantsToDelete: boolean) => {
-            if (wantsToDelete) {
-                this.profile.deleteBlog(id).subscribe();
-            }
         });
     }
 }

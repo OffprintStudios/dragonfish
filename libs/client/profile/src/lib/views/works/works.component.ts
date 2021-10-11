@@ -7,7 +7,7 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { AppQuery } from '@dragonfish/client/repository/app';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { ProfileQuery } from '../../repo';
+import { ProfileQuery } from '@dragonfish/client/repository/profile';
 
 @Component({
     selector: 'dragonfish-profile-works',

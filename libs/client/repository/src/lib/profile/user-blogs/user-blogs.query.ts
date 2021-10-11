@@ -15,6 +15,18 @@ export class UserBlogsQuery extends QueryEntity<UserBlogsState> {
         return this.getValue().currPage;
     }
 
+    public get pubBlogs() {
+        return this.getAll().filter((item) => {
+            return item.audit.published === 'Published';
+        });
+    }
+
+    public get draftBlogs() {
+        return this.getAll().filter((item) => {
+            return item.audit.published === 'Unpublished';
+        });
+    }
+
     public get totalBlogs() {
         return this.getValue().totalBlogs;
     }

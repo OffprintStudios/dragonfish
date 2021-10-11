@@ -17,9 +17,6 @@ import { Views } from './views';
 /* Components */
 import { Components } from './components';
 
-/* Repository */
-import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './repo';
-
 @NgModule({
     declarations: [...Views, ...Components],
     imports: [
@@ -40,6 +37,6 @@ import { ProfileStore, ProfileQuery, ProfileService, ContentService } from './re
             visibility: 'native',
         }),
     ],
-    providers: [ProfileStore, ProfileQuery, ProfileService, ContentService],
+    providers: [],
 })
 export class ProfileModule {}

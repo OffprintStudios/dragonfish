@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { ProfileQuery } from '../../repo';
 import { UserBlogsQuery, UserBlogsService } from '@dragonfish/client/repository/profile/user-blogs';
 import { ListPages } from '../../models';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -12,10 +11,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { take } from 'rxjs/operators';
 import { AuthService } from '@dragonfish/client/repository/session/services';
+import { ProfileQuery } from '@dragonfish/client/repository/profile';
 
 @Component({
     selector: 'dragonfish-profile-blogs',
     templateUrl: './blogs.component.html',
+    styleUrls: ['./blogs.component.scss'],
 })
 export class BlogsComponent implements OnInit {
     collapsed = true;
