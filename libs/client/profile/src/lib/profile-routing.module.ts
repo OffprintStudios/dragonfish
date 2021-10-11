@@ -7,11 +7,13 @@ import { ProfileInfoComponent } from './views/profile-info/profile-info.componen
 import { WorksComponent } from './views/works/works.component';
 import { BlogsComponent } from './views/blogs/blogs.component';
 import { BlogPageComponent } from './views/blog-page/blog-page.component';
+import { BlogCommentsComponent } from './views/blog-comments/blog-comments.component';
 
 /* Misc */
 import { ProfileResolver } from './profile.resolver';
 import { BlogResolver } from './blog.resolver';
 import { UserBlogsResolver } from './user-blogs.resolver';
+import { BlogCommentsResolver } from './blog-comments.resolver';
 
 const routes: Routes = [
     {
@@ -50,6 +52,16 @@ const routes: Routes = [
                     contentData: BlogResolver,
                 },
                 runGuardsAndResolvers: 'paramsChange',
+                children: [
+                    {
+                        path: 'comments',
+                        component: BlogCommentsComponent,
+                        resolve: {
+                            commentsData: BlogCommentsResolver,
+                        },
+                        runGuardsAndResolvers: 'always',
+                    },
+                ],
             },
         ],
     },
@@ -58,6 +70,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver, UserBlogsResolver],
+    providers: [ProfileResolver, BlogResolver, UserBlogsResolver, BlogCommentsResolver],
 })
 export class ProfileRoutingModule {}

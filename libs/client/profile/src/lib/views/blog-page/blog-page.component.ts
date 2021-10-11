@@ -9,6 +9,7 @@ import { BlogForm, BlogsContentModel, PubStatus } from '@dragonfish/shared/model
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
+import { ActivatedRoute } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +33,7 @@ export class BlogPageComponent implements OnInit {
         public session: AuthService,
         public pseudQuery: PseudonymsQuery,
         public blogQuery: BlogPageQuery,
+        public route: ActivatedRoute,
         private blogService: BlogPageService,
         private dialog: MatDialog,
         private blog: BlogPageService,

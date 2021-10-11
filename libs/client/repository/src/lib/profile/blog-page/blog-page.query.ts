@@ -12,6 +12,10 @@ export class BlogPageQuery extends Query<BlogPageState> {
         super(store);
     }
 
+    public get blogId() {
+        return this.getValue().blog._id;
+    }
+
     public get author() {
         return this.getValue().blog.author as Pseudonym;
     }
