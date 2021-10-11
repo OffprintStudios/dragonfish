@@ -73,7 +73,7 @@ export class ContentDocument extends Document implements ContentModel {
     readonly kind: ContentKind;
 
     @Prop({type: [{
-        type: String, 
+        type: String,
         ref: 'Tags',
         autopopulate: {
             select: '_id name desc parent kind createdAt updatedAt',
