@@ -128,6 +128,9 @@ import {
     RiVipDiamondLine,
     RiCopperCoinLine,
     RiReplyLine,
+    RiHeartAddLine,
+    RiHeartAddFill,
+    RiPagesLine,
 } from 'angular-remix-icon';
 
 import {
@@ -473,6 +476,9 @@ const remixIcons = {
     RiVipDiamondLine,
     RiCopperCoinLine,
     RiReplyLine,
+    RiHeartAddLine,
+    RiHeartAddFill,
+    RiPagesLine,
 };
 
 @NgModule({

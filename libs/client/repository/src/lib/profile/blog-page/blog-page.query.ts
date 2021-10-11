@@ -6,7 +6,7 @@ import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Injectable({ providedIn: 'root' })
 export class BlogPageQuery extends Query<BlogPageState> {
-    public state$ = this.select();
+    public blog$ = this.select('blog');
 
     constructor(protected store: BlogPageStore) {
         super(store);

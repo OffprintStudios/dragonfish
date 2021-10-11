@@ -1,39 +1,18 @@
-div.post-container {
-    border: 1px solid var(--borders);
-    box-shadow: var(--dropshadow);
-
-    @media (max-width: 1000px) {
-        width: 95%;
+button.header {
+    @apply text-white border border-white;
+    &:hover, &.active {
+        background: var(--accent-light);
     }
-
-    @media (max-width: 700px) {
-        width: 100%;
-        border: none;
+}
+div.nav-link {
+    @apply flex items-center py-2 text-white rounded-t-md cursor-pointer;
+    rmx-icon {
+        @apply mr-2;
     }
-
-    div.post-header {
-        border-bottom: 1px solid var(--borders);
-        h1 {
-            margin-bottom: 0;
-            font-weight: 500;
-        }
-
-        h2 {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 28px;
-            font-style: italic;
-        }
+    span {
+        @apply uppercase text-sm;
     }
-
-    div.tag {
-        @apply flex items-center uppercase text-sm;
-        rmx-icon {
-            @apply w-4 relative mr-1 top-1;
-        }
-    }
-
-    div.separator {
-        @apply mx-1 relative -top-0.5;
+    &:hover, &.active {
+        background: var(--accent-light);
     }
 }
