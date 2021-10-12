@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
@@ -51,6 +51,7 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     @Input() showBorders = true;
     alignmentMenuOpened = false;
     headingMenuOpened = false;
+    linkMenuOpened = false;
 
     editor = new Editor({
         extensions: [
@@ -84,6 +85,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
         ],
     });
 
+    addLink = new FormGroup({
+        link: new FormControl('', [Validators.required]),
+    });
+
     value: string;
     onChange: (value: string) => void;
     onTouch: (value: boolean) => void;
@@ -103,14 +108,23 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     }
 
     openInsertLink() {
-        const ref = this.dialog.open(InsertLinkComponent);
+        this.linkMenuOpened = !this.linkMenuOpened;
+        /*const ref = this.dialog.open(InsertLinkComponent);
         ref.afterClosed()
             .pipe(take(1))
             .subscribe((val: string) => {
                 if (val) {
                     this.editor.chain().focus().setLink({ href: val }).run();
                 }
-            });
+            });*/
+    }
+
+    insertLink() {
+        if (this.addLink.controls.link.value) {
+            this.editor.chain().focus().setLink({ href: this.addLink.controls.link.value }).run();
+            this.addLink.reset();
+            this.linkMenuOpened = false;
+        }
     }
 
     openInsertMedia(title: string) {

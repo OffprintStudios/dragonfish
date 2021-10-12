@@ -100,7 +100,7 @@ button.active {
 }
 
 div.floating-menu {
-    @apply flex items-center p-0.5 rounded-md shadow-2xl;
+    @apply flex items-center p-0.5 shadow-2xl z-40 relative;
     background: var(--background);
     border: 1px solid var(--borders);
 }

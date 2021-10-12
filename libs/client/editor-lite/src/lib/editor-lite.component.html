@@ -137,7 +137,7 @@
         (ngModelChange)="onChange($event)"
     ></div>
     <tiptap-bubble-menu [editor]="editor">
-        <div class="floating-menu">
+        <div class="floating-menu rounded-t-md" [ngClass]="{'rounded-b-md': !linkMenuOpened}">
             <button
                 class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleBold().run()"
@@ -177,6 +177,7 @@
             <div class="mx-0.5">|</div>
             <button
                 class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
+                [ngClass]="{'active': linkMenuOpened}"
                 (click)="openInsertLink()"
                 *ngIf="!editor.isActive('link')"
                 [matTooltip]="'Link'"
@@ -193,6 +194,20 @@
             >
                 <rmx-icon name="link-unlink" class="mr-0"></rmx-icon>
             </button>
+        </div>
+        <div class="rounded-b-md border-l border-b border-r border-gray-600 dark:border-white" style="background: var(--background);" *ngIf="linkMenuOpened">
+            <form [formGroup]="addLink" class="flex items-center" (ngSubmit)="insertLink()">
+                <input
+                    [type]="'text'"
+                    [formControlName]="'link'"
+                    [placeholder]="'Paste or type your link'"
+                    class="border-0 rounded-l-md border-r border-gray-600 dark:border-white ring-0"
+                    style="background: var(--background);"
+                >
+                <button type="submit" class="hover:scale-100 rounded-l-none rounded-tr-none">
+                    <rmx-icon name="add-box-line" class="mr-0"></rmx-icon>
+                </button>
+            </form>
         </div>
     </tiptap-bubble-menu>
 </div>
