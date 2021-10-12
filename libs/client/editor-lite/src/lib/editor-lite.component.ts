@@ -52,6 +52,7 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     alignmentMenuOpened = false;
     headingMenuOpened = false;
     linkMenuOpened = false;
+    imageMenuOpened = false;
 
     editor = new Editor({
         extensions: [
@@ -71,12 +72,14 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
             History.configure({ levels: [2, 3, 4] } as any),
             HorizontalRule,
             Typography,
-            Image,
+            Image.configure({
+                inline: true,
+            }),
             Link.configure({ openOnClick: false }),
             Blockquote,
             Code,
             TextAlign.configure({
-                types: ['paragraph', 'heading'],
+                types: ['paragraph', 'heading', 'image'],
             }),
             Placeholder,
             Dropcursor,
@@ -87,6 +90,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
 
     addLink = new FormGroup({
         link: new FormControl('', [Validators.required]),
+    });
+
+    addImage = new FormGroup({
+        imageUrl: new FormControl('', [Validators.required]),
     });
 
     value: string;
@@ -109,14 +116,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
 
     openInsertLink() {
         this.linkMenuOpened = !this.linkMenuOpened;
-        /*const ref = this.dialog.open(InsertLinkComponent);
-        ref.afterClosed()
-            .pipe(take(1))
-            .subscribe((val: string) => {
-                if (val) {
-                    this.editor.chain().focus().setLink({ href: val }).run();
-                }
-            });*/
+    }
+
+    openImageMenu() {
+        this.imageMenuOpened = !this.imageMenuOpened;
     }
 
     insertLink() {
@@ -124,6 +127,14 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
             this.editor.chain().focus().setLink({ href: this.addLink.controls.link.value }).run();
             this.addLink.reset();
             this.linkMenuOpened = false;
+        }
+    }
+
+    insertImage() {
+        if (this.addImage.controls.imageUrl.value) {
+            this.editor.chain().focus().setImage({ src: this.addImage.controls.imageUrl.value }).run();
+            this.addImage.reset();
+            this.imageMenuOpened = false;
         }
     }
 

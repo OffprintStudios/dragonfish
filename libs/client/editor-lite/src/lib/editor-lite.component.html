@@ -62,7 +62,10 @@
         <div class="mx-0.5">|</div>
         <button
             class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
-            (click)="openInsertMedia('Insert Image')"
+            [ngClass]="{'active': imageMenuOpened}"
+            [matMenuTriggerFor]="insertImageMenu"
+            (menuOpened)="openImageMenu()"
+            (menuClosed)="openImageMenu()"
             [matTooltip]="'Insert Image'"
             [matTooltipClass]="'offprint-tooltip'"
         >
@@ -279,4 +282,23 @@
     >
         <rmx-icon name="h-3"></rmx-icon>Heading 3
     </button>
+</mat-menu>
+
+<mat-menu #insertImageMenu="matMenu">
+    <form [formGroup]="addImage" (ngSubmit)="insertImage()">
+        <input
+            [formControlName]="'imageUrl'"
+            [type]="'text'"
+            [placeholder]="'Paste image URL'"
+            class="border-t-0 border-l-0 border-r-0 border-gray-600 dark:border-white"
+            style="background: var(--background);"
+            (click)="$event.stopPropagation()"
+        >
+        <div class="flex justify-center items-center mt-1">
+            <button type="submit">
+                <rmx-icon name="add-box-line"></rmx-icon>
+                <span>Insert</span>
+            </button>
+        </div>
+    </form>
 </mat-menu>
