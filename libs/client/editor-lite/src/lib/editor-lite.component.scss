@@ -26,7 +26,7 @@ div.editor-window {
         h4 { font-size: 1.25em; }
         h5 { font-size: 1em; font-weight: bold; text-transform: uppercase; }
         h6 { font-size: 1em; text-transform: uppercase; }
-        img { max-width: 100% }
+        img { max-width: 100%; display: inline; }
 
         quote, blockquote {
             margin-left: 0.75rem;
@@ -100,7 +100,7 @@ button.active {
 }
 
 div.floating-menu {
-    @apply flex items-center p-0.5 rounded-md shadow-2xl;
+    @apply flex items-center p-0.5 shadow-2xl z-40 relative;
     background: var(--background);
     border: 1px solid var(--borders);
 }

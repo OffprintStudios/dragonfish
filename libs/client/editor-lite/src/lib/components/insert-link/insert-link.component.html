@@ -6,13 +6,12 @@
 </div>
 <div>
     <form [formGroup]="insertLink" (ngSubmit)="submit()">
-        <!--<dragonfish-text-field
+        <input
+            class="rounded-md"
+            type="text"
             [formControlName]="'link'"
-            [name]="'link'"
-            [type]="'text'"
-            [label]="'Link'"
             [placeholder]="'Paste or type link here'"
-        ></dragonfish-text-field>-->
+        >
 
         <div class="flex items-center justify-end">
             <button type="submit" class="px-2.5 py-1.5">

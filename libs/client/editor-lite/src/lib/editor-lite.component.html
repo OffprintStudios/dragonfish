@@ -62,7 +62,10 @@
         <div class="mx-0.5">|</div>
         <button
             class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
-            (click)="openInsertMedia('Insert Image')"
+            [ngClass]="{'active': imageMenuOpened}"
+            [matMenuTriggerFor]="insertImageMenu"
+            (menuOpened)="openImageMenu()"
+            (menuClosed)="openImageMenu()"
             [matTooltip]="'Insert Image'"
             [matTooltipClass]="'offprint-tooltip'"
         >
@@ -70,7 +73,12 @@
         </button>
         <button
             class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
-            (click)="openInsertMedia('Insert Media')"
+            [ngClass]="{'active': mediaMenuOpened}"
+            [matMenuTriggerFor]="insertMediaMenu"
+            (menuOpened)="openMediaMenu()"
+            (menuClosed)="openImageMenu()"
+            [matTooltip]="'Insert Media'"
+            [matTooltipClass]="'offprint-tooltip'"
         >
             <rmx-icon name="film-line" class="mr-0"></rmx-icon>
         </button>
@@ -137,7 +145,7 @@
         (ngModelChange)="onChange($event)"
     ></div>
     <tiptap-bubble-menu [editor]="editor">
-        <div class="floating-menu">
+        <div class="floating-menu rounded-t-md" [ngClass]="{'rounded-b-md': !linkMenuOpened}">
             <button
                 class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
                 (click)="chainCommand().toggleBold().run()"
@@ -177,6 +185,7 @@
             <div class="mx-0.5">|</div>
             <button
                 class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
+                [ngClass]="{'active': linkMenuOpened}"
                 (click)="openInsertLink()"
                 *ngIf="!editor.isActive('link')"
                 [matTooltip]="'Link'"
@@ -194,13 +203,27 @@
                 <rmx-icon name="link-unlink" class="mr-0"></rmx-icon>
             </button>
         </div>
+        <div class="rounded-b-md border-l border-b border-r border-gray-600 dark:border-white" style="background: var(--background);" *ngIf="linkMenuOpened">
+            <form [formGroup]="addLink" class="flex items-center" (ngSubmit)="insertLink()">
+                <input
+                    [type]="'text'"
+                    [formControlName]="'link'"
+                    [placeholder]="'Paste or type your link'"
+                    class="border-0 rounded-l-md border-r border-gray-600 dark:border-white ring-0"
+                    style="background: var(--background);"
+                >
+                <button type="submit" class="hover:scale-100 rounded-l-none rounded-tr-none">
+                    <rmx-icon name="add-box-line" class="mr-0"></rmx-icon>
+                </button>
+            </form>
+        </div>
     </tiptap-bubble-menu>
 </div>
 
 <mat-menu #alignments="matMenu">
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('left').run()"
+        (click)="editor.commands.setTextAlign('left')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'left' }) }"
     >
@@ -208,7 +231,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('center').run()"
+        (click)="editor.commands.setTextAlign('center')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'center' }) }"
     >
@@ -216,7 +239,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('right').run()"
+        (click)="editor.commands.setTextAlign('right')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'right' }) }"
     >
@@ -224,7 +247,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('justify').run()"
+        (click)="editor.commands.setTextAlign('justify')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'justify' }) }"
     >
@@ -264,4 +287,42 @@
     >
         <rmx-icon name="h-3"></rmx-icon>Heading 3
     </button>
+</mat-menu>
+
+<mat-menu #insertImageMenu="matMenu">
+    <form [formGroup]="addImage" (ngSubmit)="insertImage()">
+        <input
+            [formControlName]="'imageUrl'"
+            [type]="'text'"
+            [placeholder]="'Paste image URL'"
+            class="border-t-0 border-l-0 border-r-0 border-gray-600 dark:border-white"
+            style="background: var(--background);"
+            (click)="$event.stopPropagation()"
+        >
+        <div class="flex justify-center items-center mt-1">
+            <button type="submit">
+                <rmx-icon name="add-box-line"></rmx-icon>
+                <span>Insert</span>
+            </button>
+        </div>
+    </form>
+</mat-menu>
+
+<mat-menu #insertMediaMenu="matMenu">
+    <form [formGroup]="addMedia" (ngSubmit)="insertMedia()">
+        <input
+            [formControlName]="'mediaUrl'"
+            [type]="'text'"
+            [placeholder]="'Paste media URL'"
+            class="border-t-0 border-l-0 border-r-0 border-gray-600 dark:border-white"
+            style="background: var(--background);"
+            (click)="$event.stopPropagation()"
+        >
+        <div class="flex justify-center items-center mt-1">
+            <button type="submit">
+                <rmx-icon name="add-box-line"></rmx-icon>
+                <span>Insert</span>
+            </button>
+        </div>
+    </form>
 </mat-menu>

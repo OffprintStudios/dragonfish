@@ -1,7 +1,10 @@
-import { Node, mergeAttributes, nodeInputRule } from '@tiptap/core';
+import { Node } from '@tiptap/core';
 
 export interface IframeOptions {
-    HTMLAttributes: Record<string, any>;
+    allowFullscreen: boolean;
+    HTMLAttributes: {
+        [key: string]: any;
+    };
 }
 
 declare module '@tiptap/core' {
@@ -10,57 +13,66 @@ declare module '@tiptap/core' {
             /**
              * Add an iframe
              */
-            setIframe: (options: { src: string; title?: string }) => ReturnType;
+            setIframe: (options: { src: string }) => ReturnType;
         };
     }
 }
 
-export const inputRegex = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-
-export const Iframe = Node.create<IframeOptions>({
+export default Node.create({
     name: 'iframe',
-    defaultOptions: {
-        HTMLAttributes: {},
+
+    group: 'block',
+
+    atom: true,
+
+    defaultOptions: <IframeOptions>{
+        allowFullscreen: true,
+        HTMLAttributes: {
+            class: 'iframe-wrapper',
+        },
     },
-    draggable: true,
+
     addAttributes() {
         return {
             src: {
                 default: null,
             },
-            title: {
-                default: null,
+            frameborder: {
+                default: 0,
+            },
+            allowfullscreen: {
+                default: this.options.allowFullscreen,
+                parseHTML: () => this.options.allowFullscreen,
             },
         };
     },
+
     parseHTML() {
         return [
             {
-                tag: 'iframe[src]',
+                tag: 'iframe',
             },
         ];
     },
+
     renderHTML({ HTMLAttributes }) {
-        return ['iframe', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
+        return ['div', this.options.HTMLAttributes, ['iframe', HTMLAttributes]];
     },
+
     addCommands() {
         return {
             setIframe:
-                (options) =>
-                ({ commands }) => {
-                    return commands.insertContent({
-                        type: this.name,
-                        attrs: options,
-                    });
+                (options: { src: string }) =>
+                ({ tr, dispatch }) => {
+                    const { selection } = tr;
+                    const node = this.type.create(options);
+
+                    if (dispatch) {
+                        tr.replaceRangeWith(selection.from, selection.to, node);
+                    }
+
+                    return true;
                 },
         };
     },
-    /*addInputRules() {
-        return [
-            nodeInputRule(inputRegex, this.type, (match) => {
-                const [, src, title] = match;
-                return { src, title };
-            }),
-        ];
-    },*/
 });
