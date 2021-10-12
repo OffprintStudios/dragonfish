@@ -12,7 +12,6 @@ import { RegistrationRoutes } from './pages/registration';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
-import { Resolvers } from './resolvers';
 
 /* Util */
 import { Roles } from '@dragonfish/shared/models/users';
@@ -70,6 +69,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [...DocsResolvers, ...Resolvers],
+    providers: [...DocsResolvers],
 })
 export class AppRoutingModule {}

@@ -34,8 +34,6 @@ import { RegistrationPages } from './pages/registration';
 
 /* Components */
 import { AppComponent } from './app.component';
-import { ContentComponents } from './components/content';
-import { CollectionsComponents } from './components/content/collections';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -54,8 +52,6 @@ import { TagPages } from './pages/tags';
 @NgModule({
     declarations: [
         AppComponent,
-        ...ContentComponents,
-        ...CollectionsComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
