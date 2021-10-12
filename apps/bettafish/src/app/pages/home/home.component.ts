@@ -3,8 +3,9 @@ import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { slogans } from '../../models/site';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { ActivatedRoute } from '@angular/router';
-import { NewsContentModel } from '@dragonfish/shared/models/content';
-import { delay } from 'rxjs/operators';
+import { BlogsContentModel } from '@dragonfish/shared/models/content';
+import { catchError, delay, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
     selector: 'dragonfish-home',
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit {
     rotatingSlogan = slogans[Math.floor(Math.random() * slogans.length)];
     siteVersion = Constants.SITE_VERSION;
     loadingLatest = false;
-    latestPosts: NewsContentModel[];
+    latestPosts: BlogsContentModel[];
 
     constructor(private network: DragonfishNetworkService, public route: ActivatedRoute) {}
 
@@ -26,15 +27,17 @@ export class HomeComponent implements OnInit {
         this.loadingLatest = true;
         this.network
             .fetchInitialNewsPosts()
-            .pipe(delay(500))
-            .subscribe(
-                (data) => {
+            .pipe(
+                delay(500),
+                tap((data) => {
                     this.latestPosts = data;
                     this.loadingLatest = false;
-                },
-                () => {
+                }),
+                catchError((err) => {
                     this.loadingLatest = false;
-                },
-            );
+                    return throwError(err);
+                }),
+            )
+            .subscribe();
     }
 }

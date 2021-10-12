@@ -1,10 +1,6 @@
 div.post {
     border: 1px solid var(--borders);
-    min-height: 9rem;
-    max-height: 17rem;
-    div.post-byline {
-        border-bottom: 1px solid var(--borders);
-    }
+    max-height: 9rem;
     div.stat {
         display: flex;
         flex-direction: row;

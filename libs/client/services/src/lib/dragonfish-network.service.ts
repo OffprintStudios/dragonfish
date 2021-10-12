@@ -7,11 +7,13 @@ import {
     ContentModel,
     FormType,
     Genres,
+    NewsChange,
     NewsContentModel,
     PubChange,
     PubContent,
     SetRating,
     WorkKind,
+    BlogsContentModel,
 } from '@dragonfish/shared/models/content';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
@@ -818,6 +820,25 @@ export class DragonfishNetworkService {
         );
     }
 
+    /**
+     * Toggles a blog's news post option.
+     *
+     * @param pseudId
+     * @param newsChange
+     */
+    public toggleNewsPost(pseudId: string, newsChange: NewsChange) {
+        return handleResponse(
+            this.http.patch<BlogsContentModel>(
+                `${this.baseUrl}/content/toggle-news-post?pseudId=${pseudId}`,
+                newsChange,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
     //#endregion
 
     //#region ---COVER ART & AVATARS---
@@ -1244,9 +1265,9 @@ export class DragonfishNetworkService {
     /**
      * Gets the inital posts for the home page.
      */
-    public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
+    public fetchInitialNewsPosts(): Observable<BlogsContentModel[]> {
         return handleResponse(
-            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
+            this.http.get<BlogsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1258,9 +1279,9 @@ export class DragonfishNetworkService {
      *
      * @param pageNum The current page
      */
-    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
+    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<BlogsContentModel>> {
         return handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
+            this.http.get<PaginateResult<BlogsContentModel>>(`${this.baseUrl}/news/news-feed?page=${pageNum}`, {
                 observe: 'response',
                 withCredentials: true,
             }),

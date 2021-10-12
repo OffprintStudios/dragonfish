@@ -1,11 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel, PaginateResult, PaginateOptions, Model } from 'mongoose';
-import { ContentDocument, RatingsDocument, ReadingHistoryDocument, SectionsDocument } from '../schemas';
+import {
+    BlogsContentDocument,
+    ContentDocument,
+    RatingsDocument,
+    ReadingHistoryDocument,
+    SectionsDocument,
+} from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentRating, Genres, PubStatus, WorkKind } from '@dragonfish/shared/models/content';
+import {
+    ContentFilter,
+    ContentKind,
+    ContentRating,
+    Genres,
+    PubStatus,
+    WorkKind,
+} from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 /**
@@ -18,6 +31,7 @@ export class ContentGroupStore {
     readonly NEWEST_FIRST = -1;
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
+        @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
@@ -52,13 +66,28 @@ export class ContentGroupStore {
     /**
      * Fetches news content for the home page.
      */
-    async fetchForHome(): Promise<ContentDocument[]> {
+    async fetchForHome(): Promise<BlogsContentDocument[]> {
         const query = {
-            kind: ContentKind.NewsContent,
             'audit.isDeleted': false,
+            'audit.isNewsPost': true,
             'audit.published': PubStatus.Published,
         };
-        return this.content.find(query).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(6);
+        return this.blogsModel.find(query).sort({ 'audit.publishedOn': this.NEWEST_FIRST }).limit(6);
+    }
+
+    /**
+     * Fetches the whole news feed.
+     *
+     * @param page
+     */
+    async fetchNewsFeed(page: number): Promise<PaginateResult<BlogsContentDocument>> {
+        const query = {
+            'audit.isDeleted': false,
+            'audit.isNewsPost': true,
+            'audit.published': PubStatus.Published,
+        };
+        const paginateOptions = { sort: { 'audit.publishedOn': this.NEWEST_FIRST }, page: page, limit: 15 };
+        return this.blogsModel.paginate(query, paginateOptions);
     }
 
     /**

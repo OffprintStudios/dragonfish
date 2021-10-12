@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginateResult } from '@dragonfish/shared/models/util';
-import { NewsContentModel, NewsCategory, ContentKind } from '@dragonfish/shared/models/content';
-import { setTwoPartTitle, Constants} from '@dragonfish/shared/constants';
+import { NewsCategory, BlogsContentModel } from '@dragonfish/shared/models/content';
+import { setTwoPartTitle, Constants } from '@dragonfish/shared/constants';
 import { untilDestroyed, UntilDestroy } from '@ngneat/until-destroy';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { delay } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { AppQuery } from '@dragonfish/client/repository/app';
     styleUrls: ['./news-feed.component.scss'],
 })
 export class NewsFeedComponent implements OnInit {
-    posts: PaginateResult<NewsContentModel>;
+    posts: PaginateResult<BlogsContentModel>;
     pageNum = 1;
     category = NewsCategory;
     loading = false;
@@ -28,7 +28,7 @@ export class NewsFeedComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe(params => {
+        this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe((params) => {
             if (params.has('page')) {
                 this.pageNum = +params.get('page');
             }
@@ -46,14 +46,18 @@ export class NewsFeedComponent implements OnInit {
      */
     private fetchData(pageNum: number) {
         this.loading = true;
-        this.network.fetchAllNew(pageNum, [ContentKind.NewsContent], this.appQuery.filter)
+        this.network
+            .fetchNewsFeed(pageNum)
             .pipe(delay(500))
-            .subscribe(result => {
-                this.posts = result as PaginateResult<NewsContentModel>;
-                this.loading = false;
-            }, () => {
-                this.loading = false;
-            });
+            .subscribe(
+                (result) => {
+                    this.posts = result as PaginateResult<BlogsContentModel>;
+                    this.loading = false;
+                },
+                () => {
+                    this.loading = false;
+                },
+            );
     }
 
     /**

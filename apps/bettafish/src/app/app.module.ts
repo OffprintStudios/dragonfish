@@ -29,14 +29,11 @@ import { BrowsePages } from './pages/browse';
 import { SocialPages } from './pages/social';
 import { DocsPages } from './pages/docs';
 import { MessagesPages } from './pages/messages';
-import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
 import { RegistrationPages } from './pages/registration';
 
 /* Components */
 import { AppComponent } from './app.component';
-import { ContentComponents } from './components/content';
-import { CollectionsComponents } from './components/content/collections';
 
 /* Modules */
 import { AppRoutingModule } from './app-routing.module';
@@ -55,14 +52,11 @@ import { TagPages } from './pages/tags';
 @NgModule({
     declarations: [
         AppComponent,
-        ...ContentComponents,
-        ...CollectionsComponents,
         ...HomePages,
         ...BrowsePages,
         ...SocialPages,
         ...DocsPages,
         ...MessagesPages,
-        ...ContentViewPages,
         ...ErrorPages,
         ...RegistrationPages,
         ...TagPages,

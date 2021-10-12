@@ -91,6 +91,16 @@
         <rmx-icon name="check-line"></rmx-icon>
         <span>Publish</span>
     </button>
+    <ng-container *ngIf="canSeeNewsPostButton()">
+        <button mat-menu-item class="hover:scale-100" (click)="emitRemoveFromFeed()" *ngIf="blog.audit.isNewsPost">
+            <rmx-icon name="pages-fill"></rmx-icon>
+            <span>Remove from news feed</span>
+        </button>
+        <button mat-menu-item class="hover:scale-100" (click)="emitAddToFeed()" *ngIf="!blog.audit.isNewsPost">
+            <rmx-icon name="pages-line"></rmx-icon>
+            <span>Add to news feed</span>
+        </button>
+    </ng-container>
     <button mat-menu-item class="hover:scale-100" (click)="unpublishBlog()" *ngIf="blog.audit.published === 'Published'">
         <rmx-icon name="draft-line"></rmx-icon>
         <span>Convert to Draft</span>
