@@ -20,5 +20,6 @@ module.exports = {
         '<rootDir>/libs/client/settings',
         '<rootDir>/libs/client/profile',
         '<rootDir>/libs/client/work-page',
+        '<rootDir>/libs/api/notifications',
     ],
 };
