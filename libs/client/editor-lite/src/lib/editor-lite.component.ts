@@ -74,7 +74,9 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
             Link.configure({ openOnClick: false }),
             Blockquote,
             Code,
-            TextAlign,
+            TextAlign.configure({
+                types: ['paragraph', 'heading'],
+            }),
             Placeholder,
             Dropcursor,
             BubbleMenu.configure({ element: document.querySelector('.menu') }),

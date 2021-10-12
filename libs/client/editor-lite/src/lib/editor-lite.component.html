@@ -200,7 +200,7 @@
 <mat-menu #alignments="matMenu">
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('left').run()"
+        (click)="editor.commands.setTextAlign('left')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'left' }) }"
     >
@@ -208,7 +208,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('center').run()"
+        (click)="editor.commands.setTextAlign('center')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'center' }) }"
     >
@@ -216,7 +216,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('right').run()"
+        (click)="editor.commands.setTextAlign('right')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'right' }) }"
     >
@@ -224,7 +224,7 @@
     </button>
     <button
         mat-menu-item
-        (click)="chainCommand().setTextAlign('justify').run()"
+        (click)="editor.commands.setTextAlign('justify')"
         class="hover:scale-100"
         [ngClass]="{ 'active': editor.isActive({ textAlign: 'justify' }) }"
     >
