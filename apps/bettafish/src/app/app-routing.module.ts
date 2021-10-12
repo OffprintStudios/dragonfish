@@ -13,7 +13,6 @@ import { RegistrationRoutes } from './pages/registration';
 
 /* Resolvers */
 import { DocsResolvers } from './resolvers/docs';
-import { HomeResolvers } from './resolvers/home';
 import { Resolvers } from './resolvers';
 
 /* Util */
@@ -35,7 +34,8 @@ const routes: Routes = [
         loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),
     },
     {
-        path: 'portfolio', redirectTo: 'profile',
+        path: 'portfolio',
+        redirectTo: 'profile',
     },
     {
         path: 'prose',
@@ -72,6 +72,6 @@ const routes: Routes = [
         }),
     ],
     exports: [RouterModule],
-    providers: [...DocsResolvers, ...HomeResolvers, ...Resolvers],
+    providers: [...DocsResolvers, ...Resolvers],
 })
 export class AppRoutingModule {}

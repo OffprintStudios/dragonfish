@@ -1,40 +1,36 @@
-<div class="post flex flex-col p-2 shadow-lg rounded-md">
-    <div>
-        <h4 class="text-xl font-medium">
-            <a [routerLink]="['/news', post._id, post.title | slugify]">{{ post.title }}</a>
-        </h4>
-    </div>
-    <div class="post-byline flex flex-row py-1 text-sm">
-        <div>
-            by <a [routerLink]="['/portfolio', $any(post.author)._id, $any(post.author).username | slugify]">
-                {{ $any(post.author).username }}
-            </a>
+<div class="post p-2 shadow-lg rounded-md">
+    <div class="flex items-center">
+        <div class="mr-1.5">
+            <img class="w-14 h-14 border border-gray-600 dark:border-white rounded-md" [src]="post.author.profile.avatar" [alt]="'avatar'">
         </div>
-        <div class="mx-1">//</div>
-        <div>
-            {{ post.audit.publishedOn | localedate: 'longDate' }}
+        <div class="flex-1 flex flex-col">
+            <div class="relative top-1">
+                <h4 class="text-xl font-medium">
+                    <a [routerLink]="['/profile', post.author._id, post.author.userTag, 'post', post._id, post.title | slugify]">{{ post.title }}</a>
+                </h4>
+            </div>
+            <div class="post-byline flex flex-row py-1 text-xs relative -top-1">
+                <div>
+                    by <a [routerLink]="['/profile', post.author._id, post.author.userTag]">
+                    {{ $any(post.author).screenName }}
+                </a>
+                </div>
+                <div class="mx-1">//</div>
+                <div>
+                    {{ post.audit.publishedOn | localedate: 'longDate' }}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="post-body" [line-truncation]="6" [innerHTML]="post.body | safeHtml"></div>
     <div class="flex flex-row items-center">
-        <div class="stat text-sm">
-            <rmx-icon name="eye-line"></rmx-icon>
+        <div class="stat text-sm" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
+            <rmx-icon name="bar-chart-box-line"></rmx-icon>
             {{ post.stats.views }}
         </div>
         <div class="mx-1">|</div>
-        <div class="stat text-sm">
-            <rmx-icon name="chat-3-line"></rmx-icon>
+        <div class="stat text-sm" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'">
+            <rmx-icon name="discuss-line"></rmx-icon>
             {{ post.stats.comments }}
-        </div>
-        <div class="mx-1">|</div>
-        <div class="stat" title="Likes">
-            <rmx-icon name="heart-line"></rmx-icon>
-            {{ post.stats.likes | abbreviate }}
-        </div>
-        <div class="mx-1">|</div>
-        <div class="stat" title="Dislikes">
-            <rmx-icon name="dislike-line"></rmx-icon>
-            {{ post.stats.dislikes | abbreviate }}
         </div>
         <div class="flex-1"><!--spacer--></div>
         <div>

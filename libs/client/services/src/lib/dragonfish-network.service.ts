@@ -1265,9 +1265,9 @@ export class DragonfishNetworkService {
     /**
      * Gets the inital posts for the home page.
      */
-    public fetchInitialNewsPosts(): Observable<NewsContentModel[]> {
+    public fetchInitialNewsPosts(): Observable<BlogsContentModel[]> {
         return handleResponse(
-            this.http.get<NewsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
+            this.http.get<BlogsContentModel[]>(`${this.baseUrl}/news/initial-posts`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1279,9 +1279,9 @@ export class DragonfishNetworkService {
      *
      * @param pageNum The current page
      */
-    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<NewsContentModel>> {
+    public fetchNewsFeed(pageNum: number): Observable<PaginateResult<BlogsContentModel>> {
         return handleResponse(
-            this.http.get<PaginateResult<NewsContentModel>>(`${this.baseUrl}/news/news-feed/${pageNum}`, {
+            this.http.get<PaginateResult<BlogsContentModel>>(`${this.baseUrl}/news/news-feed?page=${pageNum}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
