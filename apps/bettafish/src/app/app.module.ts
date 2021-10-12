@@ -29,7 +29,6 @@ import { BrowsePages } from './pages/browse';
 import { SocialPages } from './pages/social';
 import { DocsPages } from './pages/docs';
 import { MessagesPages } from './pages/messages';
-import { ContentViewPages } from './pages/content-views';
 import { ErrorPages } from './pages/errors';
 import { RegistrationPages } from './pages/registration';
 
@@ -62,7 +61,6 @@ import { TagPages } from './pages/tags';
         ...SocialPages,
         ...DocsPages,
         ...MessagesPages,
-        ...ContentViewPages,
         ...ErrorPages,
         ...RegistrationPages,
         ...TagPages,

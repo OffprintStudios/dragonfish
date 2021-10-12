@@ -7,7 +7,6 @@ import { BrowseRoutes } from './pages/browse';
 import { SocialRoutes } from './pages/social';
 import { DocsRoutes } from './pages/docs';
 import { MessagesRoutes } from './pages/messages';
-import { ContentViewRoutes } from './pages/content-views';
 import { ErrorRoutes } from './pages/errors';
 import { RegistrationRoutes } from './pages/registration';
 
@@ -26,7 +25,6 @@ const routes: Routes = [
     ...SocialRoutes,
     ...DocsRoutes,
     ...MessagesRoutes,
-    ...ContentViewRoutes,
     ...RegistrationRoutes,
     ...TagRoutes,
     {
