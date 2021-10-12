@@ -76,7 +76,7 @@ export class CommentStore {
      */
     public async updateCount(itemId: string) {
         // Get total number of comments
-        const totalComments = await this.comments.countDocuments({ contentId: itemId });
+        const totalComments = await this.comments.find({ contentId: itemId }, {}, { strict: false }).countDocuments();
 
         // Update content's comment count
         await this.contents.findOneAndUpdate(
