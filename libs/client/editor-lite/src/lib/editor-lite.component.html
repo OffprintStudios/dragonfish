@@ -73,7 +73,12 @@
         </button>
         <button
             class="shadow-none border-none px-2.5 py-1.5 hover:scale-100"
-            (click)="openInsertMedia('Insert Media')"
+            [ngClass]="{'active': mediaMenuOpened}"
+            [matMenuTriggerFor]="insertMediaMenu"
+            (menuOpened)="openMediaMenu()"
+            (menuClosed)="openImageMenu()"
+            [matTooltip]="'Insert Media'"
+            [matTooltipClass]="'offprint-tooltip'"
         >
             <rmx-icon name="film-line" class="mr-0"></rmx-icon>
         </button>
@@ -290,6 +295,25 @@
             [formControlName]="'imageUrl'"
             [type]="'text'"
             [placeholder]="'Paste image URL'"
+            class="border-t-0 border-l-0 border-r-0 border-gray-600 dark:border-white"
+            style="background: var(--background);"
+            (click)="$event.stopPropagation()"
+        >
+        <div class="flex justify-center items-center mt-1">
+            <button type="submit">
+                <rmx-icon name="add-box-line"></rmx-icon>
+                <span>Insert</span>
+            </button>
+        </div>
+    </form>
+</mat-menu>
+
+<mat-menu #insertMediaMenu="matMenu">
+    <form [formGroup]="addMedia" (ngSubmit)="insertMedia()">
+        <input
+            [formControlName]="'mediaUrl'"
+            [type]="'text'"
+            [placeholder]="'Paste media URL'"
             class="border-t-0 border-l-0 border-r-0 border-gray-600 dark:border-white"
             style="background: var(--background);"
             (click)="$event.stopPropagation()"

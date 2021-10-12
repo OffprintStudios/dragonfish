@@ -2,9 +2,6 @@ import { Component, Input, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs/operators';
-import { InsertLinkComponent } from './components/insert-link/insert-link.component';
-import { InsertMediaComponent } from './components/insert-media/insert-media.component';
 import { Editor } from '@tiptap/core';
 import Underline from '@tiptap/extension-underline';
 import Typography from '@tiptap/extension-typography';
@@ -31,6 +28,7 @@ import OrderedList from '@tiptap/extension-ordered-list';
 import Paragraph from '@tiptap/extension-paragraph';
 import Strike from '@tiptap/extension-strike';
 import Text from '@tiptap/extension-text';
+import Iframe from './extensions/iframe';
 
 @Component({
     selector: 'dragonfish-editor-lite',
@@ -53,6 +51,7 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     headingMenuOpened = false;
     linkMenuOpened = false;
     imageMenuOpened = false;
+    mediaMenuOpened = false;
 
     editor = new Editor({
         extensions: [
@@ -76,6 +75,7 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
                 inline: true,
             }),
             Link.configure({ openOnClick: false }),
+            Iframe,
             Blockquote,
             Code,
             TextAlign.configure({
@@ -94,6 +94,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
 
     addImage = new FormGroup({
         imageUrl: new FormControl('', [Validators.required]),
+    });
+
+    addMedia = new FormGroup({
+        mediaUrl: new FormControl('', [Validators.required]),
     });
 
     value: string;
@@ -122,6 +126,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
         this.imageMenuOpened = !this.imageMenuOpened;
     }
 
+    openMediaMenu() {
+        this.mediaMenuOpened = !this.mediaMenuOpened;
+    }
+
     insertLink() {
         if (this.addLink.controls.link.value) {
             this.editor.chain().focus().setLink({ href: this.addLink.controls.link.value }).run();
@@ -138,16 +146,12 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
         }
     }
 
-    openInsertMedia(title: string) {
-        if (title === 'Insert Image') {
-            const ref = this.dialog.open(InsertMediaComponent, { data: { title: title } });
-            ref.afterClosed()
-                .pipe(take(1))
-                .subscribe((val: string) => {
-                    this.editor.chain().focus().setImage({ src: val }).run();
-                });
-        } else {
-            this.alerts.info(`This feature is not yet supported!`);
+    insertMedia() {
+        if (this.addMedia.controls.mediaUrl.value) {
+            const link = `https://www.youtube.com/embed/${this.parseMediaLink(this.addMedia.controls.mediaUrl.value)}`;
+            this.editor.chain().focus().setIframe({ src: link }).run();
+            this.addMedia.reset();
+            this.mediaMenuOpened = false;
         }
     }
 
@@ -162,5 +166,10 @@ export class EditorLiteComponent implements ControlValueAccessor, OnDestroy {
     }
     setDisabledState?(isDisabled: boolean): void {
         this.disabled = isDisabled;
+    }
+
+    private parseMediaLink(url: string) {
+        const arr = url.split(/(vi\/|v%3D|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+        return undefined !== arr[2] ? arr[2].split(/[^\w-]/i)[0] : arr[0];
     }
 }
