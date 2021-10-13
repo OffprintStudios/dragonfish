@@ -4,6 +4,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { SendGridModule } from '@anchan828/nest-sendgrid';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { BullModule } from '@nestjs/bull';
 
 /* Controllers */
 import { AdminRoutes } from './controllers/admin';
@@ -22,7 +24,7 @@ import { SearchServices } from './services/search';
 
 /* Database Modules */
 import { ContentModule } from '@dragonfish/api/database/content';
-import { NotificationsModule } from '@dragonfish/api/database/notifications';
+import { NotificationsModule as DBNotifications } from '@dragonfish/api/database/notifications';
 import { UsersModule } from '@dragonfish/api/database/users';
 import { CollectionsModule } from '@dragonfish/api/database/collections';
 import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
@@ -32,11 +34,13 @@ import { ContentLibraryModule } from '@dragonfish/api/database/content-library';
 import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 /* Utilities */
+import { NotificationsModule } from '@dragonfish/api/notifications';
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 
 @Module({
     imports: [
         ContentModule,
+        DBNotifications,
         NotificationsModule,
         UsersModule,
         CollectionsModule,
@@ -45,6 +49,17 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         CommentsModule,
         ContentLibraryModule,
         AccountsModule,
+        BullModule.forRootAsync({
+            useFactory: () => ({
+                redis: {
+                    host: process.env.REDIS_HOST,
+                    port: +process.env.REDIS_PORT,
+                    username: process.env.REDIS_USER,
+                    password: process.env.REDIS_PASSWORD,
+                },
+            }),
+        }),
+        EventEmitterModule.forRoot(),
         ServeStaticModule.forRoot({ rootPath: join(__dirname, './static') }),
         MongooseModule.forRootAsync({
             useFactory: () => ({
