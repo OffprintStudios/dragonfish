@@ -1,9 +1,10 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
+import { Notification, NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Schema({ timestamps: true, autoIndex: true, discriminatorKey: 'kind' })
-export class NotificationsDocument extends Document {
+export class NotificationDocument extends Document implements Notification {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
@@ -13,8 +14,8 @@ export class NotificationsDocument extends Document {
     @Prop({ type: Boolean, default: false })
     markedAsRead: boolean;
 
-    @Prop()
-    readonly kind: string;
+    @Prop({ type: String, enum: Object.keys(NotificationKind), required: true, index: true })
+    readonly kind: NotificationKind;
 
     @Prop()
     readonly createdAt: Date;
@@ -23,4 +24,4 @@ export class NotificationsDocument extends Document {
     readonly updatedAt: Date;
 }
 
-export const NotificationsSchema = SchemaFactory.createForClass(NotificationsDocument);
+export const NotificationSchema = SchemaFactory.createForClass(NotificationDocument);
