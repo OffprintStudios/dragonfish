@@ -8,3 +8,4 @@ export { LoginModel } from './login.model';
 export { ChangeBio } from './change-bio';
 export { ChangeTagline } from './change-tagline';
 export { ChangePronouns } from './change-pronouns';
+export { ResetPassword } from './reset-password';

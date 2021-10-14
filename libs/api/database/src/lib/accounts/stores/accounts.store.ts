@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AccountDocument } from '../schemas';
@@ -9,6 +9,7 @@ import {
     FrontendAccount,
     Account,
     Roles,
+    ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import * as sanitizeHtml from 'sanitize-html';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
@@ -16,6 +17,7 @@ import { argon2id, hash } from 'argon2';
 import { DeviceInfo } from '@dragonfish/api/utilities/models';
 import { createHash } from 'crypto';
 import { PseudonymDocument } from '../schemas';
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class AccountsStore {
@@ -58,9 +60,8 @@ export class AccountsStore {
 
     public async updatePassword(accountId: string, formInfo: ChangePassword) {
         const account = await this.retrieveAccount(accountId);
-        const hashedPw = await hash(sanitizeHtml(formInfo.newPassword), { type: argon2id });
 
-        account.password = sanitizeHtml(hashedPw);
+        account.password = sanitizeHtml(formInfo.newPassword);
         return await account.save();
     }
 
@@ -104,6 +105,34 @@ export class AccountsStore {
     public async checkSession(accountId: string, sessionId: string): Promise<boolean> {
         const validAccount = await this.accountModel.findOne({ _id: accountId, 'sessions._id': sessionId });
         return !!validAccount;
+    }
+
+    public async createRecoveryCode(accountId: string) {
+        const account = await this.retrieveAccount(accountId);
+        const resetCode = createHash('sha256').update(nanoid()).digest('base64');
+        account.recovery.resetCode = resetCode;
+        account.recovery.expires = new Date(Date.now() + 1800);
+        await account.save();
+        return resetCode;
+    }
+
+    public async verifyResetAndUpdatePassword(resetForm: ResetPassword) {
+        const account = await this.retrieveAccount(resetForm.accountId);
+        if (account.recovery.resetCode) {
+            if (account.recovery.resetCode === resetForm.resetCode && account.recovery.expires >= new Date()) {
+                account.password = sanitizeHtml(resetForm.newPassword);
+                account.recovery.resetCode = null;
+                account.recovery.expires = null;
+                await account.save();
+                return true;
+            } else {
+                account.recovery.resetCode = null;
+                account.recovery.expires = null;
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     //#endregion

@@ -1,4 +1,4 @@
-import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { Roles } from '@dragonfish/shared/models/accounts/audit';
@@ -31,6 +31,17 @@ export class AccountDocument extends Document implements Account {
 
     @Prop({ default: false })
     emailConfirmed: boolean;
+
+    @Prop(
+        raw({
+            resetCode: { type: String, trim: true },
+            expires: { type: Date },
+        }),
+    )
+    recovery: {
+        resetCode: string;
+        expires: Date;
+    };
 
     @Prop()
     readonly createdAt: Date;

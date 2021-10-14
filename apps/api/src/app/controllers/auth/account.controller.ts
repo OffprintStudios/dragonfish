@@ -1,14 +1,15 @@
-import { Controller, UseGuards, Patch, Body } from '@nestjs/common';
+import { Controller, UseGuards, Patch, Body, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from '../../guards';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
-import { ChangeEmail, ChangePassword, Roles } from '@dragonfish/shared/models/accounts';
+import { ChangeEmail, ChangePassword, ResetPassword, Roles } from '@dragonfish/shared/models/accounts';
 import { User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
+import { AccountService } from '../../services/auth/account.service';
 
 @Controller('account')
 export class AccountController {
-    constructor() {}
+    constructor(private readonly accounts: AccountService) {}
 
     @ApiTags(DragonfishTags.Users)
     @UseGuards(RolesGuard([Roles.User]))
@@ -22,5 +23,17 @@ export class AccountController {
     @Patch('change-password')
     async changePassword(@User() user: JwtPayload, @Body() newPassword: ChangePassword) {
         // TODO: handle password changes
+    }
+
+    @ApiTags(DragonfishTags.Users)
+    @Post('send-reset-email')
+    async sendResetEmail(@Query('email') email: string) {
+        return await this.accounts.sendResetPasswordCode(email);
+    }
+
+    @ApiTags(DragonfishTags.Users)
+    @Patch('reset-password')
+    async resetPassword(@Body() resetForm: ResetPassword) {
+        return await this.accounts.resetPassword(resetForm);
     }
 }
