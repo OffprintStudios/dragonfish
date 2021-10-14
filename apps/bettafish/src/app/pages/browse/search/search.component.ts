@@ -26,7 +26,8 @@ export class SearchComponent implements OnInit {
     currentSearchKind = SearchKind.ProseAndPoetry;
     currentAuthor = '';
     currentCategory: WorkKind = null;
-    currentGenre: Genres = null;
+    currentGenres: Genres[] = [];
+    currentGenreSearchAny = false;
     pageNum = 1;
 
     searchResultWorks: PaginateResult<ContentModel>;
@@ -38,7 +39,8 @@ export class SearchComponent implements OnInit {
         kind: new FormControl(null),
         author: new FormControl(''),
         category: new FormControl(null),
-        genre: new FormControl(null),
+        genres: new FormControl([]),
+        genreSearchAny: new FormControl(false),
     });
     mobileMode = false;
     showAdvancedOptions = false;
@@ -59,7 +61,9 @@ export class SearchComponent implements OnInit {
         this.currentSearchKind = this.parseKind(queryParams.get('kind'));
         this.currentAuthor = queryParams.get('author');
         this.currentCategory = this.parseCategory(queryParams.get('category'));
-        this.currentGenre = this.parseGenre(queryParams.get('genre'));
+        let genreListString = queryParams.get('genres');
+        this.currentGenres = genreListString ? this.parseGenres(genreListString.split(',')) : [];
+        this.currentGenreSearchAny = queryParams.get('genreSearchAny') === 'true';
         if (queryParams.has('page')) {
             this.pageNum = +queryParams.get('page');
         }
@@ -72,19 +76,22 @@ export class SearchComponent implements OnInit {
             kind: this.currentSearchKind,
             author: this.currentAuthor,
             category: this.currentCategory,
-            genre: this.currentGenre,
+            genres: this.currentGenres,
+            genreSearchAny: this.currentGenreSearchAny,
         });
 
-        if (this.currentQuery) {
+        if (queryParams.has('query')) {
             this.fetchData(
                 this.currentQuery,
                 this.currentSearchKind,
                 this.currentAuthor,
                 this.currentCategory,
-                this.currentGenre,
+                this.currentGenres,
+                this.currentGenreSearchAny,
                 this.pageNum);
         }
-        if (this.currentAuthor || this.currentCategory != null || this.currentGenre != null) {
+        if (this.currentAuthor || this.currentCategory != null ||
+            (this.currentGenres != null && this.currentGenres.length > 0)) {
             this.showAdvancedOptions = true;
         }
         this.onResize();
@@ -102,7 +109,8 @@ export class SearchComponent implements OnInit {
         this.currentSearchKind = this.parseKind(this.searchForm.controls.kind.value);
         this.currentAuthor = this.searchForm.controls.author.value;
         this.currentCategory = this.parseCategory(this.searchForm.controls.category.value);
-        this.currentGenre = this.parseGenre(this.searchForm.controls.genre.value);
+        this.currentGenres = this.parseGenres(this.searchForm.controls.genres.value);
+        this.currentGenreSearchAny = this.searchForm.controls.genreSearchAny.value;
         this.pageNum = 1;
 
         this.navigate();
@@ -132,18 +140,39 @@ export class SearchComponent implements OnInit {
         return Object.values(SearchKind).indexOf(kind) >= 0 ? kind : SearchKind.ProseAndPoetry;
     }
 
+    /**
+     * Categories are stored for works via their keys, so we want to return the key instead of the value
+     * Since no category names have spaces, there is no difference, but this is future proofing
+     * @param categoryString 
+     * @returns 
+     */
     private parseCategory(categoryString: string): WorkKind {
-        const category: WorkKind = categoryString as WorkKind;
-        return Object.values(WorkKind).indexOf(category) >= 0 ? category : null;
+        const category: WorkKind = WorkKind[categoryString];
+        return Object.values(WorkKind).indexOf(category) >= 0 ? categoryString as WorkKind : null;
     }
 
-    private parseGenre(genreString: string): Genres {
-        const genre: Genres = genreString as Genres;
-        return Object.values(Genres).indexOf(genre) >= 0 ? genre : null;
+    /**
+     * Genres are stored for works via their keys, so we want to return the key instead of the value
+     * (i.e. ScienceFiction instead of Science Fiction)
+     * @param genreStrings
+     * @returns 
+     */
+    private parseGenres(genreStrings: string[]): Genres[] {
+        const genreList: Genres[] = [];
+        if (genreStrings) {
+            for (let genreString of genreStrings) {
+                if (Object.values(Genres).indexOf(Genres[genreString]) >= 0) {
+                    genreList.push(genreString as Genres);
+                }
+            }
+        }
+
+        return genreList;
     }
 
     private navigate() {
         let notUserSearch = this.currentSearchKind != SearchKind.User;
+        let genresSearch = this.currentGenres != null && this.currentGenres.length > 0;
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { 
@@ -151,10 +180,10 @@ export class SearchComponent implements OnInit {
                 kind: this.currentSearchKind != SearchKind.ProseAndPoetry ? this.currentSearchKind : null,
                 author: (this.currentAuthor && notUserSearch) ? this.currentAuthor : null,
                 category: (this.currentCategory != null && notUserSearch) ? this.currentCategory : null,
-                genre: (this.currentGenre != null && notUserSearch) ? this.currentGenre : null,
+                genres: (genresSearch && notUserSearch) ? this.currentGenres.toString() : null,
+                genreSearchAny: (genresSearch && notUserSearch && this.currentGenreSearchAny) ? true : null,
                 page: this.pageNum != 1 ? this.pageNum : null,
             },
-            queryParamsHandling: 'merge',
         }).catch(() => {
             this.alerts.error(`Something went wrong! Try again in a little bit.`);
         }).then(() => {
@@ -163,7 +192,8 @@ export class SearchComponent implements OnInit {
                 this.currentSearchKind,
                 this.currentAuthor,
                 this.currentCategory,
-                this.currentGenre,
+                this.currentGenres,
+                this.currentGenreSearchAny,
                 this.pageNum
             );
         });
@@ -174,7 +204,8 @@ export class SearchComponent implements OnInit {
         searchKind: SearchKind,
         author: string | null,
         searchCategory: WorkKind | null,
-        genre: Genres | null,
+        genres: Genres[] | null,
+        genreSearchAny: boolean,
         pageNum: number
         ) {
         this.loading = true;
@@ -186,7 +217,8 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genre,
+                    genres,
+                    genreSearchAny,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -200,7 +232,8 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genre,
+                    genres,
+                    genreSearchAny,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -223,7 +256,8 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genre,
+                    genres,
+                    genreSearchAny,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {

@@ -34,16 +34,21 @@ export class SearchController {
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
         @Query('category') category: WorkKind | null,
-        @Query('genre') genre: Genres | null,
+        @Query('genres') genres: string,
+        @Query('genreSearchAny') genreSearchAny: string,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
+        const genresList = genres.split(',') as Genres[];
+        const genreSearchAnyBool = genreSearchAny === 'true';
+
         return await this.searchService.findRelatedContent(
             query,
             kind,
             author,
             category,
-            genre,
+            genresList,
+            genreSearchAnyBool,
             pageNum,
             filter
         );

@@ -296,6 +296,8 @@ export class DragonfishNetworkService {
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category of content that searching for
+     * @param genres (Optional) The genres of content that searching for.
+     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
@@ -304,14 +306,16 @@ export class DragonfishNetworkService {
         kind: SearchKind,
         author: string | null,
         category: WorkKind | null,
-        genre: Genres | null,
+        genres: Genres[] | null,
+        genreSearchAny: boolean,
         pageNum: number,
         contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
-                    `query=${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}` +
+                    `query=${query}&kind=${kind}&author=${author}&category=${category}` +
+                    `&genres=${genres}&genreSearchAny=${genreSearchAny}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),
