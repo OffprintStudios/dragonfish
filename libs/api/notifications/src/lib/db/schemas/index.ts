@@ -3,6 +3,7 @@ import { NotificationSchema } from './notification.schema';
 //#region ---EXPORTS---
 
 export { NotificationDocument, NotificationSchema } from './notification.schema';
+export * from './content';
 
 //#endregion
 

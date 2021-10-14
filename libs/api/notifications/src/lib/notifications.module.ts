@@ -13,7 +13,11 @@ import * as Stores from './db/stores';
             {
                 name: 'Notification',
                 useFactory: Schemas.setupNotificationsCollection,
-                discriminators: [],
+                discriminators: [
+                    { name: 'ContentCommentNotification', schema: Schemas.ContentCommentSchema },
+                    { name: 'ContentNewNotification', schema: Schemas.ContentNewSchema },
+                    { name: 'ContentUpdatedNotification', schema: Schemas.ContentUpdatedSchema },
+                ],
             },
         ]),
         BullModule.registerQueue({
