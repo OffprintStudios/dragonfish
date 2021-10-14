@@ -8,7 +8,7 @@ export class NotificationDocument extends Document implements Notification {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ type: String, ref: 'Pseudonym', required: true })
+    @Prop({ type: String, ref: 'Pseudonym', required: true, index: true })
     readonly recipientId: string;
 
     @Prop({ type: Boolean, default: false })

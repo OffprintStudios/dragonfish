@@ -21,16 +21,13 @@ import {
     NotificationSubscription,
 } from '@dragonfish/shared/models/notifications';
 import { Roles } from '@dragonfish/shared/models/users';
-import { NotificationsService, UnsubscribeResult } from '@dragonfish/api/database/notifications';
 import { RolesGuard } from '../../guards';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @UseGuards(RolesGuard([Roles.User]))
 @Controller('notifications')
 export class NotificationsController {
-    constructor(private readonly notificationsService: NotificationsService) {}
-
-    @Get('all-notifications')
+    /*@Get('all-notifications')
     async getAllNotifications(@Request() req: any): Promise<NotificationBase[]> {
         const userId: string = req.user.sub;
         return await this.notificationsService.getAllNotifications(userId);
@@ -95,5 +92,5 @@ export class NotificationsController {
         } else if (result === UnsubscribeResult.Failure) {
             throw new InternalServerErrorException();
         }
-    }
+    }*/
 }

@@ -5,11 +5,13 @@ import { IdentityGuard } from '../../guards';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { CommentStore } from '@dragonfish/api/database/comments/stores';
 import { CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @ApiTags(DragonfishTags.Comments)
 @Controller('comments')
 export class CommentsController {
-    constructor(private readonly comments: CommentStore) {}
+    constructor(private readonly comments: CommentStore, private readonly events: EventEmitter2) {}
 
     @Get('fetch-comments')
     async fetchComments(
@@ -28,7 +30,9 @@ export class CommentsController {
         @Query('kind') kind: CommentKind,
         @Body() form: CommentForm,
     ) {
-        return await this.comments.create(pseudId, itemId, kind, form);
+        const newComment = await this.comments.create(pseudId, itemId, kind, form);
+        this.events.emit(NotificationKind.ContentComment, { thisWorks: 'yes it does' });
+        return newComment;
     }
 
     @UseGuards(IdentityGuard([Roles.User]))

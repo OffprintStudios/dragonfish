@@ -11,7 +11,6 @@ import {
     PubChange,
     PubStatus,
 } from '@dragonfish/shared/models/content';
-import { NotificationsService } from '@dragonfish/api/database/notifications';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 
@@ -22,7 +21,6 @@ export class ContentService {
         private readonly contentGroup: ContentGroupStore,
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
-        private readonly notifications: NotificationsService,
         private readonly pseudonyms: PseudonymsStore,
     ) {}
 
@@ -112,13 +110,10 @@ export class ContentService {
 
     /**
      * Updates user's counts of both blogs and works
-     * @param user 
+     * @param user
      */
     private async updateCounts(user: string) {
-        await this.pseudonyms.updateBlogCount(
-            user,
-            await this.content.countContent(user, [ContentKind.BlogContent]),
-        );
+        await this.pseudonyms.updateBlogCount(user, await this.content.countContent(user, [ContentKind.BlogContent]));
         await this.pseudonyms.updateWorkCount(
             user,
             await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),

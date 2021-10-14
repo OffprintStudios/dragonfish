@@ -5,16 +5,13 @@ import * as sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { CreatePoetry } from '@dragonfish/shared/models/content';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { PoetryContentDocument } from '../schemas';
-import { NotificationsService } from '../../notifications/notifications.service';
 
 @Injectable()
 export class PoetryStore {
     constructor(
         @InjectModel('PoetryContent')
         private readonly poetryModel: PaginateModel<PoetryContentDocument>,
-        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -40,12 +37,7 @@ export class PoetryStore {
             'meta.status': poetryInfo.status,
         });
 
-        const savedPoetry: PoetryContentDocument = await newPoetry.save();
-
-        // Subscribe author to comments on their new poetry
-        await this.notificationsService.subscribe(user, savedPoetry._id, NotificationKind.CommentNotification);
-
-        return savedPoetry;
+        return await newPoetry.save();
     }
 
     /**

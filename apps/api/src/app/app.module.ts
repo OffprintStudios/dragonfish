@@ -24,7 +24,6 @@ import { SearchServices } from './services/search';
 
 /* Database Modules */
 import { ContentModule } from '@dragonfish/api/database/content';
-import { NotificationsModule as DBNotifications } from '@dragonfish/api/database/notifications';
 import { UsersModule } from '@dragonfish/api/database/users';
 import { CollectionsModule } from '@dragonfish/api/database/collections';
 import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
@@ -40,7 +39,6 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
 @Module({
     imports: [
         ContentModule,
-        DBNotifications,
         NotificationsModule,
         UsersModule,
         CollectionsModule,

@@ -2,14 +2,12 @@ import { Module } from '@nestjs/common';
 import * as Schemas from './schemas';
 import * as Stores from './stores';
 import { MongooseModule } from '@nestjs/mongoose';
-import { NotificationsModule } from '../notifications';
 import { UsersModule } from '../users';
 import { ApprovalQueueModule } from '../approval-queue';
 
 @Module({
     imports: [
         UsersModule,
-        NotificationsModule,
         ApprovalQueueModule,
         MongooseModule.forFeatureAsync([
             {
@@ -37,7 +35,7 @@ import { ApprovalQueueModule } from '../approval-queue';
             {
                 name: 'Tags',
                 useFactory: Schemas.setupTagsCollection,
-            }
+            },
         ]),
     ],
     providers: [

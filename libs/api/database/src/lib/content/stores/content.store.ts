@@ -20,7 +20,6 @@ import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { UsersStore } from '../../users';
-import { NotificationsService, UnsubscribeResult } from '../../notifications';
 import { ApprovalQueueStore } from '../../approval-queue';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
@@ -43,7 +42,6 @@ export class ContentStore {
         private readonly proseContent: ProseStore,
         private readonly poetryContent: PoetryStore,
         private readonly sectionsStore: SectionsStore,
-        private readonly notifications: NotificationsService,
         private readonly queue: ApprovalQueueStore,
     ) {}
 
@@ -241,21 +239,6 @@ export class ContentStore {
      */
     async deleteOne(user: string, contentId: string): Promise<void> {
         await this.content.updateOne({ _id: contentId, author: user }, { 'audit.isDeleted': true });
-
-        // Unsubscribe the user from comments on the now-deleted work
-        const unsubResult: UnsubscribeResult = await this.notifications.unsubscribe(
-            user,
-            contentId,
-            NotificationKind.CommentNotification,
-        );
-        if (unsubResult !== UnsubscribeResult.Success) {
-            console.error(
-                `Failed to unsubscribe user '${user}' from notifications on content with ID: '${contentId}'. Reason: ${unsubResult}`,
-            );
-        }
-
-        // TODO: Once users have the ability to subscribe to things, we need to unsubscribe _all_ subscribers to this piece of content.
-        // ...maybe work for another background queue processor
     }
 
     /**
