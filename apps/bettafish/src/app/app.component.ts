@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
                 this.showNav =
                     this.router.url !== '/registration' &&
                     this.router.url !== '/registration/select-pseud' &&
-                    this.router.url !== '/registration/setup-pseud';
+                    this.router.url !== '/registration/setup-pseud' &&
+                    this.router.url !== '/registration/reset-password';
             }
         });
     }
