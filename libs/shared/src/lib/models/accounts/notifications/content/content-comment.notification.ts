@@ -10,9 +10,4 @@ export interface ContentCommentNotification extends Notification {
         readonly page: number;
         readonly commentId: string;
     };
-
-    readonly posterInfo: {
-        readonly posterId: string;
-        readonly posterName: string;
-    };
 }

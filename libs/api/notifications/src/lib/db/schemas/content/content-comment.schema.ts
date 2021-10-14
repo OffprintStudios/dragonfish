@@ -30,17 +30,6 @@ export class ContentCommentDocument extends Document implements ContentCommentNo
         readonly contentTitle: string;
     };
 
-    @Prop(
-        raw({
-            posterId: { type: String, ref: 'Pseudonym', required: true },
-            posterName: { type: String, trim: true, required: true },
-        }),
-    )
-    readonly posterInfo: {
-        readonly posterId: string;
-        readonly posterName: string;
-    };
-
     markedAsRead: boolean;
     readonly kind: NotificationKind;
     readonly createdAt: Date;
