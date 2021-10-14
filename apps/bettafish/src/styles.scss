@@ -116,19 +116,16 @@ a.button {
         background: var(--accent-dark);
     }
     rmx-icon {
-        width: 16px !important;
-        position: relative;
-        top: 0.25rem;
-        margin-right: 0.275rem;
+        @apply mr-1.5 relative top-1;
+        width: 1rem !important;
         &.no-text {
-            margin-right: 0;
+            @apply mr-0;
         }
-    }
-    i-feather {
-        width: 16px !important;
-        position: relative;
-        top: 0.25rem;
-        margin-right: 0.275rem;
+        &.loading {
+            svg {
+                @apply animate-spin;
+            }
+        }
     }
 }
 h1,
