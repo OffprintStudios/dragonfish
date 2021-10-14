@@ -27,8 +27,9 @@ export class AccountController {
 
     @ApiTags(DragonfishTags.Users)
     @Post('send-reset-email')
-    async sendResetEmail(@Query('email') email: string) {
-        return await this.accounts.sendResetPasswordCode(email);
+    async sendResetEmail(@Body() data: { email: string }) {
+        console.log(data.email);
+        return await this.accounts.sendResetPasswordCode(data.email);
     }
 
     @ApiTags(DragonfishTags.Users)

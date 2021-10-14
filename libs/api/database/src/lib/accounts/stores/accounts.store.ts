@@ -109,7 +109,7 @@ export class AccountsStore {
 
     public async createRecoveryCode(accountId: string) {
         const account = await this.retrieveAccount(accountId);
-        const resetCode = createHash('sha256').update(nanoid()).digest('base64');
+        const resetCode = nanoid();
         account.recovery.resetCode = resetCode;
         account.recovery.expires = new Date(Date.now() + 1800);
         await account.save();
@@ -118,16 +118,24 @@ export class AccountsStore {
 
     public async verifyResetAndUpdatePassword(resetForm: ResetPassword) {
         const account = await this.retrieveAccount(resetForm.accountId);
-        if (account.recovery.resetCode) {
-            if (account.recovery.resetCode === resetForm.resetCode && account.recovery.expires >= new Date()) {
-                account.password = sanitizeHtml(resetForm.newPassword);
-                account.recovery.resetCode = null;
-                account.recovery.expires = null;
-                await account.save();
-                return true;
+        if (account.recovery) {
+            if (account.recovery.resetCode && account.recovery.expires) {
+                if (
+                    account.recovery.resetCode === resetForm.resetCode &&
+                    account.recovery.expires.valueOf() < Date.now()
+                ) {
+                    account.password = sanitizeHtml(resetForm.newPassword);
+                    account.recovery.resetCode = null;
+                    account.recovery.expires = null;
+                    await account.save();
+                    return true;
+                } else {
+                    account.recovery.resetCode = null;
+                    account.recovery.expires = null;
+                    await account.save();
+                    return false;
+                }
             } else {
-                account.recovery.resetCode = null;
-                account.recovery.expires = null;
                 return false;
             }
         } else {

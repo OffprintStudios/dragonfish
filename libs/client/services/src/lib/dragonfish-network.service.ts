@@ -45,6 +45,7 @@ import {
     PseudonymForm,
     ChangeBio,
     ChangeTagline,
+    ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
 
@@ -242,6 +243,36 @@ export class DragonfishNetworkService {
                 }),
             );
     }
+
+    /**
+     * Sends a reset password request given the provided email.
+     *
+     * @param email
+     */
+    public sendResetPasswordRequest(email: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/account/send-reset-email`,
+                { email },
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Reset a user's password.
+     *
+     * @param resetForm
+     */
+    public resetPassword(resetForm: ResetPassword) {
+        return handleResponse(
+            this.http.patch<void>(`${this.baseUrl}/account/reset-password`, resetForm, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
     //#endregion
 
     //#region ---BROWSE---
@@ -296,6 +327,7 @@ export class DragonfishNetworkService {
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category of content that searching for
+     * @param genre (Optional) The genre of content that you're searching for
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */

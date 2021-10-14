@@ -13,7 +13,7 @@ export class MailService {
             to: user.email,
             templateId: process.env.RESET_PASSWORD_TEMPLATE,
             dynamicTemplateData: {
-                url: `https://offprint.net/account/reset-password?userId=${user._id}&token=${token}`,
+                url: `https://offprint.net/registration/reset-password?userId=${user._id}&token=${token}`,
             },
         });
     }
