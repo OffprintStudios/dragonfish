@@ -45,6 +45,7 @@ import {
     PseudonymForm,
     ChangeBio,
     ChangeTagline,
+    ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
 
@@ -242,6 +243,36 @@ export class DragonfishNetworkService {
                 }),
             );
     }
+
+    /**
+     * Sends a reset password request given the provided email.
+     *
+     * @param email
+     */
+    public sendResetPasswordRequest(email: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/account/send-reset-email`,
+                { email },
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Reset a user's password.
+     *
+     * @param resetForm
+     */
+    public resetPassword(resetForm: ResetPassword) {
+        return handleResponse(
+            this.http.patch<void>(`${this.baseUrl}/account/reset-password`, resetForm, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
     //#endregion
 
     //#region ---BROWSE---
@@ -296,6 +327,8 @@ export class DragonfishNetworkService {
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category of content that searching for
+     * @param genres (Optional) The genres of content that searching for.
+     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
@@ -304,14 +337,16 @@ export class DragonfishNetworkService {
         kind: SearchKind,
         author: string | null,
         category: WorkKind | null,
-        genre: Genres | null,
+        genres: Genres[] | null,
+        genreSearchAny: boolean,
         pageNum: number,
         contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
-                    `query=${query}&kind=${kind}&author=${author}&category=${category}&genre=${genre}` +
+                    `query=${query}&kind=${kind}&author=${author}&category=${category}` +
+                    `&genres=${genres}&genreSearchAny=${genreSearchAny}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),

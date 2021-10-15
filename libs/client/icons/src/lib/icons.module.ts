@@ -132,6 +132,7 @@ import {
     RiHeartAddFill,
     RiPagesLine,
     RiPagesFill,
+    RiLoaderLine,
 } from 'angular-remix-icon';
 
 import {
@@ -481,6 +482,7 @@ const remixIcons = {
     RiHeartAddFill,
     RiPagesLine,
     RiPagesFill,
+    RiLoaderLine,
 };
 
 @NgModule({
