@@ -36,7 +36,7 @@
         <div>
             <a
                 class="continue-reading"
-                [routerLink]="['/news', post._id, post.title | slugify]"
+                [routerLink]="['/profile', post.author._id, post.author.userTag, 'post', post._id, post.title | slugify]"
             >
                 Continue Reading
                 <rmx-icon name="arrow-right-s-line"></rmx-icon>
