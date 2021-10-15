@@ -45,6 +45,7 @@ import {
     PseudonymForm,
     ChangeBio,
     ChangeTagline,
+    ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
 
@@ -242,6 +243,36 @@ export class DragonfishNetworkService {
                 }),
             );
     }
+
+    /**
+     * Sends a reset password request given the provided email.
+     *
+     * @param email
+     */
+    public sendResetPasswordRequest(email: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/account/send-reset-email`,
+                { email },
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    /**
+     * Reset a user's password.
+     *
+     * @param resetForm
+     */
+    public resetPassword(resetForm: ResetPassword) {
+        return handleResponse(
+            this.http.patch<void>(`${this.baseUrl}/account/reset-password`, resetForm, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
     //#endregion
 
     //#region ---BROWSE---

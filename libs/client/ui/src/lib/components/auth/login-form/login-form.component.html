@@ -15,9 +15,7 @@
         [placeholder]="'••••••••••'"
     ></dragonfish-text-field>
 
-    <hr />
-
-    <div class="flex flex-row items-center mt-5">
+    <div class="flex flex-row items-center">
         <div class="flex-1">
             <dragonfish-toggle [formControlName]="'rememberMe'">
                 Remember Me For 30 Days
@@ -26,5 +24,9 @@
         <div>
             <button type="submit"><rmx-icon name="login-circle-line"></rmx-icon>Log In</button>
         </div>
+    </div>
+
+    <div class="mt-2.5 flex items-center justify-center w-full">
+        <a [routerLink]="['/registration/reset-password']">Forgot your password?</a>
     </div>
 </form>
