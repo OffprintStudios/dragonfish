@@ -21,6 +21,8 @@ export interface ISearch {
      * @param searchKind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category of content that searching for
+     * @param genres (Optional) The genres of content that searching for.
+     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
@@ -29,7 +31,8 @@ export interface ISearch {
         searchKind: SearchKind,
         author: string | null,
         category: WorkKind | null,
-        genre: Genres | null,
+        genres: Genres[] | null,
+        genreSearchAny: boolean,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;
