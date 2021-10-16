@@ -7,9 +7,11 @@ import { isMobile } from '@dragonfish/shared/functions';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { SearchKind } from '@dragonfish/shared/models/search';
-import { ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentModel, Genres, TagKind, WorkKind } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 import { AppQuery } from '@dragonfish/client/repository/app';
+import { TagsQuery, TagsService } from '@dragonfish/client/repository/tags';
+import { TAGS_ENABLED } from '@dragonfish/shared/constants/content-constants';
 
 @Component({
     selector: 'dragonfish-search',
@@ -20,6 +22,7 @@ export class SearchComponent implements OnInit {
     kindOptions = SearchKind;
     categoryOptions = WorkKind;
     genreOptions = Genres;
+    tagsEnabled = TAGS_ENABLED;
     loading = false;
 
     currentQuery = '';
@@ -51,10 +54,15 @@ export class SearchComponent implements OnInit {
         private router: Router,
         private alerts: AlertsService,
         private appQuery: AppQuery,
+        public tagsQuery: TagsQuery,
+        private tagsService: TagsService,
     ) {}
 
     ngOnInit(): void {
         setTwoPartTitle(Constants.SEARCH);
+
+        this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
+
         const queryParams = this.route.snapshot.queryParamMap;
 
         this.currentQuery = queryParams.get('query');
