@@ -371,6 +371,7 @@ div.offprint-select {
     .ng-select.custom.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
         background-color: var(--accent);
         color: whitesmoke;
+        white-space: normal!important;
     }
     .ng-select.custom.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
         background-color: var(--accent-dark);
@@ -381,6 +382,7 @@ div.offprint-select {
     .ng-select.custom .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
         background-color: var(--background);
         color: var(--text-color);
+        white-space: normal!important;
     }
 }
 /* Style changes for prose */
