@@ -1,12 +1,13 @@
 import { Controller, UseGuards, Body, Put, Patch, Query, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Roles } from '@dragonfish/shared/models/accounts';
+import { Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
 import { IdentityGuard } from '../../guards';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { CommentStore } from '@dragonfish/api/database/comments/stores';
 import { CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
+import { ContentCommentPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
 
 @ApiTags(DragonfishTags.Comments)
 @Controller('comments')
@@ -31,7 +32,14 @@ export class CommentsController {
         @Body() form: CommentForm,
     ) {
         const newComment = await this.comments.create(pseudId, itemId, kind, form);
-        this.events.emit(NotificationKind.ContentComment, { thisWorks: 'yes it does' });
+        if (kind === CommentKind.ContentComment) {
+            const commentEvent: ContentCommentPayload = {
+                contentId: itemId,
+                commentId: newComment._id,
+                poster: newComment.user as Pseudonym,
+            };
+            this.events.emit(NotificationKind.ContentComment, commentEvent);
+        }
         return newComment;
     }
 

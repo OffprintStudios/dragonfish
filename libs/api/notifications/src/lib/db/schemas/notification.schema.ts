@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
 import { Notification, NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 
-@Schema({ timestamps: true, autoIndex: true, discriminatorKey: 'kind' })
+@Schema({ timestamps: true, autoIndex: true, collection: 'notifications', discriminatorKey: 'kind' })
 export class NotificationDocument extends Document implements Notification {
     @Prop({ default: () => nanoid() })
     readonly _id: string;

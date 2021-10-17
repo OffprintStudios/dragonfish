@@ -51,15 +51,16 @@ export class ContentStore {
      * Fetches one item from the content collection via ID.
      * @param contentId A content's ID
      * @param user The user making this request
+     * @param doNotPopulate Whether or not to autopopulate the request
      */
-    async fetchOne(contentId: string, user?: string): Promise<ContentDocument> {
+    async fetchOne(contentId: string, user?: string, doNotPopulate?: boolean): Promise<ContentDocument> {
         const query = { _id: contentId, 'audit.isDeleted': false };
 
         if (user) {
             query['author'] = user;
         }
 
-        return this.content.findOne(query);
+        return this.content.findOne(query).setOptions({ autopopulate: !doNotPopulate });
     }
 
     /**
