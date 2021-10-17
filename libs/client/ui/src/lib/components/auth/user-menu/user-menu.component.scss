@@ -1,20 +1,20 @@
 div.menu-box {
-    @apply border rounded-md w-64 flex flex-col;
-    border-color: var(--borders);
+    @apply w-96 border-r h-screen flex flex-col relative;
     background: var(--background);
     div.cover-pic {
-        -webkit-mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
         mask-image: linear-gradient(to bottom, #000, #000 calc(100% - 305px), rgba(0,0,0,0) calc(100% - 5px), rgba(0,0,0,0));
-    }
-    div.has-accent {
-        background: var(--accent);
+        &.has-accent {
+            background: var(--accent);
+        }
     }
     div.user-header {
+        @apply w-full relative z-20 mt-16 px-4;
         div.user-avatar {
+            @apply py-4;
             align-self: center;
             img {
-                width: 50px;
-                height: 50px;
+                width: 75px;
+                height: 75px;
                 border-radius: 0.375rem;
                 border: 1px solid var(--borders);
                 box-shadow: var(--dropshadow);
@@ -24,25 +24,30 @@ div.menu-box {
             color: var(--text-color);
         }
     }
-    div.badge {
-        border-color: var(--borders);
-    }
-    div.stats {
+    div.button {
+        @apply p-2.5 flex items-center my-2 border rounded-md transition transform cursor-pointer;
         rmx-icon {
-            width: 1.15rem;
-            position: relative;
-            top: 0.175rem;
-            margin-right: 0.25rem;
+            @apply mr-1;
+        }
+        &:hover {
+            @apply scale-105 text-white;
+            background: var(--accent);
         }
     }
-    a.button {
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        padding: 10px 15px;
-        @apply transition-none transform-none;
-        &.bottom {
-            @apply rounded-b-md;
+    div.tool-buttons {
+        @apply flex items-center justify-center my-4;
+        div.button {
+            @apply p-4 flex items-center text-xs rounded-md;
+            rmx-icon {
+                @apply mr-2;
+            }
+            span {
+                @apply text-sm uppercase font-medium tracking-wider;
+            }
         }
     }
+}
+
+div.blurred-background {
+    @apply flex-1 w-full h-screen bg-black opacity-70 backdrop-filter backdrop-blur-2xl;
 }
