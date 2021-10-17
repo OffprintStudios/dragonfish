@@ -16,7 +16,7 @@ import { NotificationStore } from '../db/stores';
 
 @Processor('notifications')
 export class NotificationConsumer {
-    private logger = new Logger(`Notification Queue`);
+    private logger = new Logger(`NotificationQueue`);
 
     constructor(private readonly notifications: NotificationStore) {}
 

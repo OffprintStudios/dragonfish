@@ -34,6 +34,10 @@ import { ContentModule } from '@dragonfish/api/database/content';
         ]),
         BullModule.registerQueue({
             name: 'notifications',
+            limiter: {
+                max: 1000,
+                duration: 5000,
+            },
         }),
     ],
     exports: [],
