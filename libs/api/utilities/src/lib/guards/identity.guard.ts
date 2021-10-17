@@ -15,7 +15,7 @@ import { isAllowed } from '@dragonfish/shared/functions';
 import { Reflector } from '@nestjs/core';
 
 /**
- * This guard mixin checks to see if a pseudonym belongs to the user making the request.
+ * This guard checks to see if a pseudonym belongs to the user making the request.
  *
  * @param roles The roles required to activate the associated route
  * @param optional Checks to see if this guard is optional
@@ -27,7 +27,7 @@ export class IdentityGuard implements CanActivate {
     constructor(private reflector: Reflector, private jwtService: JwtService, private accountStore: AccountsStore) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const roles = this.reflector.get<Roles[]>('roles', context.getHandler());
+        const roles = this.reflector.get<Roles[]>('identity', context.getHandler());
         const optional = this.reflector.get<boolean>('optional', context.getHandler());
 
         if (!roles) {
