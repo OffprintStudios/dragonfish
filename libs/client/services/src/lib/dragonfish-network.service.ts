@@ -45,7 +45,7 @@ import {
     ChangeTagline,
     ResetPassword,
 } from '@dragonfish/shared/models/accounts';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 
 /**
  * ## DragonfishNetworkService
@@ -326,7 +326,7 @@ export class DragonfishNetworkService {
      * @param author (Optional) The author of content that searching for
      * @param category (Optional) The category key of content that searching for
      * @param genres (Optional) The genre keys of content that searching for.
-     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
+     * @param genreSearchMatch When searching genre, how the genres should match.
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
@@ -336,7 +336,7 @@ export class DragonfishNetworkService {
         author: string | null,
         category: string | null,
         genres: string[] | null,
-        genreSearchAny: boolean,
+        genreSearchMatch: SearchMatch,
         pageNum: number,
         contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
@@ -344,7 +344,7 @@ export class DragonfishNetworkService {
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
                     `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
-                    `&genreKeys=${genres}&genreSearchAny=${genreSearchAny}` +
+                    `&genreKeys=${genres}&genreSearchMatch=${genreSearchMatch}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),

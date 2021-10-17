@@ -2,7 +2,7 @@ import { PaginateResult } from 'mongoose';
 
 import { ContentFilter, ContentModel } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface ISearch {
@@ -22,7 +22,7 @@ export interface ISearch {
      * @param author (Optional) The author of content that searching for
      * @param categoryKey (Optional) The category key of content that searching for
      * @param genreKeys (Optional) The genre keys of content that searching for.
-     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
+     * @param genreSearchMatch When searching genre, how the genres should match.
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
@@ -32,7 +32,7 @@ export interface ISearch {
         author: string | null,
         categoryKey: string | null,
         genreKeys: string[] | null,
-        genreSearchAny: boolean,
+        genreSearchMatch: SearchMatch,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;

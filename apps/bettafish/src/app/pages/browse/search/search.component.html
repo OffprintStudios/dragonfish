@@ -49,46 +49,18 @@
                                         {{ genre.value }}
                                     </ng-option>
                                 </ng-select>
+                                <ng-select class="custom" [formControlName]="'genreSearchMatch'" [searchable]="false" [placeholder]="'Match Type'">
+                                    <ng-option [value]="matchOptions.All">
+                                        Match All
+                                    </ng-option>
+                                    <ng-option [value]="matchOptions.OneOrMore">
+                                        Match One or More
+                                    </ng-option>
+                                    <ng-option [value]="matchOptions.Exactly">
+                                        Match Exactly
+                                    </ng-option>
+                                </ng-select>
                             </div>
-                            <div>
-                               <input id="allGenre" type="radio" [value]="false" [formControlName]="'genreSearchAny'">
-                               <label for="allGenre">&nbsp;Match all</label>
-                            </div>
-                         
-                            <div>
-                               <input id="anyGenre" type="radio" [value]="true" [formControlName]="'genreSearchAny'">
-                               <label for="anyGenre">&nbsp;Match one or more</label>
-                            </div>
-
-                            <ng-container *ngIf="tagsEnabled">
-                                <ng-container *ngIf="tagsQuery.all$ | async as tags">
-                                    <div class="offprint-select">
-                                        <label>Fandom Tags</label>
-                                        <!-- <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Fandom(s)'"> -->
-                                        <ng-select class="custom" [searchable]="true" [multiple]="false" dropdownPosition="bottom" [placeholder]="'Select Fandom(s)'">
-                                            <div *ngFor="let tag of tags">
-                                                <ng-option
-                                                    [value]="tag._id"
-                                                    [title]="'Selected'"
-                                                    [matTooltip]="'{{tag.name}}'"
-                                                    [matTooltipPosition]="'top'"
-                                                    [matTooltipClass]="'offprint-tooltip'"
-                                                >
-                                                    <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
-                                                </ng-option>
-                                                <div *ngFor="let child of tag.children">
-                                                    <ng-option
-                                                        [value]="child._id"
-                                                        [title]="'Selected child'"
-                                                    >
-                                                        <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
-                                                    </ng-option>
-                                                </div>
-                                            </div>
-                                        </ng-select>
-                                    </div>
-                                </ng-container>
-                            </ng-container>
                         </ng-container>
                     </div>
                 </ng-container>

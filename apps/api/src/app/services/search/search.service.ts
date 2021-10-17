@@ -5,7 +5,7 @@ import * as sanitizeHtml from 'sanitize-html';
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { InitialResults } from '@dragonfish/shared/models/util';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { ContentKind, ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
@@ -61,7 +61,7 @@ export class SearchService implements ISearch {
         author: string | null,
         categoryKey: string | null,
         genreKeys: string[] | null,
-        genreSearchAny: boolean,
+        genreSearchMatch: SearchMatch,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -114,7 +114,7 @@ export class SearchService implements ISearch {
             authorId,
             category,
             genreList.length > 0 ? genreList : null,
-            genreSearchAny,
+            genreSearchMatch,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -141,7 +141,7 @@ export class SearchService implements ISearch {
             null,
             null,
             null,
-            true,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter
@@ -163,7 +163,7 @@ export class SearchService implements ISearch {
             null,
             null,
             null,
-            true,
+            null,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter

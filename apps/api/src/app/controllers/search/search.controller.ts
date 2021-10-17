@@ -8,7 +8,7 @@ import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { ISearch } from '../../shared/search';
-import { SearchKind } from '@dragonfish/shared/models/search';
+import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 @Controller('search')
@@ -35,12 +35,11 @@ export class SearchController {
         @Query('author') author: string | null,
         @Query('categoryKey') categoryKey: string | null,
         @Query('genreKeys') genreKeys: string,
-        @Query('genreSearchAny') genreSearchAny: string,
+        @Query('genreSearchMatch') genreSearchMatch: SearchMatch,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         const genresList = genreKeys.split(',');
-        const genreSearchAnyBool = genreSearchAny === 'true';
 
         return await this.searchService.findRelatedContent(
             query,
@@ -48,7 +47,7 @@ export class SearchController {
             author,
             categoryKey,
             genresList,
-            genreSearchAnyBool,
+            genreSearchMatch,
             pageNum,
             filter
         );
