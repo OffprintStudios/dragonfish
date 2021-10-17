@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
 import { ContentModule } from '@dragonfish/api/database/content';
+import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Module({
     controllers: [],
@@ -22,9 +23,9 @@ import { ContentModule } from '@dragonfish/api/database/content';
                 name: 'Notification',
                 useFactory: Schemas.setupNotificationsCollection,
                 discriminators: [
-                    { name: 'ContentCommentNotification', schema: Schemas.ContentCommentSchema },
-                    { name: 'ContentNewNotification', schema: Schemas.ContentNewSchema },
-                    { name: 'ContentUpdatedNotification', schema: Schemas.ContentUpdatedSchema },
+                    { name: NotificationKind.ContentComment, schema: Schemas.ContentCommentSchema },
+                    { name: NotificationKind.ContentNew, schema: Schemas.ContentNewSchema },
+                    { name: NotificationKind.ContentUpdate, schema: Schemas.ContentUpdatedSchema },
                 ],
             },
             {

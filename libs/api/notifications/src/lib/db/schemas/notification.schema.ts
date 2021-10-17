@@ -11,7 +11,7 @@ export class NotificationDocument extends Document implements Notification {
     @Prop({ type: String, ref: 'Pseudonym', required: true, index: true })
     readonly recipientId: string;
 
-    @Prop({ type: Boolean, default: false })
+    @Prop({ type: Boolean, default: false, index: true })
     markedAsRead: boolean;
 
     @Prop({ type: String, enum: Object.keys(NotificationKind), required: true, index: true })

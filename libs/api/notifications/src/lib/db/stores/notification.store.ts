@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { NotificationDocument } from '../schemas';
 import { JobType } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
@@ -9,13 +9,14 @@ import { ContentCommentStore } from './content-comment.store';
 @Injectable()
 export class NotificationStore {
     constructor(
-        @InjectModel('Notification') private readonly notifications: Model<NotificationDocument>,
+        @InjectModel('Notification') private readonly notifications: PaginateModel<NotificationDocument>,
         private readonly contentComment: ContentCommentStore,
     ) {}
 
     /**
      * Takes the incoming notification info and routes it to the correct creation function,
      * based on the notification's `NotificationKind`.
+     *
      * @param job
      * @param kind
      */
@@ -26,6 +27,24 @@ export class NotificationStore {
             default:
                 return;
         }
+    }
+
+    /**
+     * Fetches all unread notifications for a user.
+     *
+     * @param userId
+     */
+    public async fetchAllUnread(userId: string) {
+        return this.notifications.find({ recipientId: userId }).where({ markedAsRead: false });
+    }
+
+    /**
+     * Fetches all read notifications for a user.
+     *
+     * @param userId
+     */
+    public async fetchAllRead(userId: string) {
+        return this.notifications.find({ recipient: userId }).where({ markedAsRead: true });
     }
 
     /**
