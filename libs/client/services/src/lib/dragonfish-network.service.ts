@@ -48,6 +48,7 @@ import {
     ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
+import { MarkAsRead } from '@dragonfish/shared/models/accounts/notifications';
 
 /**
  * ## DragonfishNetworkService
@@ -1323,30 +1324,17 @@ export class DragonfishNetworkService {
         );
     }
 
-    /**
-     * Grabs one newspost from the database.
-     *
-     * @param postId The post to fetch
-     */
-    public fetchNewsPost(postId: string) {
-        return handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
     //#endregion
 
     //#region ---NOTIFICATIONS---
 
     /**
-     * Gets all of the current user's notifications.
+     * Gets all of the current user's unread notifications.
+     * @param profileId
      */
-    public fetchAllNotifications(): Observable<NotificationBase[]> {
+    public fetchAllUnread(profileId: string): Observable<NotificationBase[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-notifications`, {
+            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-unread?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1354,11 +1342,12 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Gets all of the current user's _unread_ notifications.
+     * Gets all of the current user's read notifications.
+     * @param profileId
      */
-    public fetchUnreadNotifications(): Observable<NotificationBase[]> {
+    public fetchAllRead(profileId: string): Observable<NotificationBase[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/unread-notifications`, {
+            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-read?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1369,7 +1358,7 @@ export class DragonfishNetworkService {
      * Marks the given notifications as read.
      * @param toMark A list of notification IDs to mark as read.
      */
-    public markNotificationsAsRead(toMark: MarkReadRequest): Observable<void> {
+    public markNotificationsAsRead(toMark: MarkAsRead): Observable<void> {
         return handleResponse(
             this.http.post<void>(`${this.baseUrl}/notifications/mark-as-read`, toMark, {
                 observe: 'response',
