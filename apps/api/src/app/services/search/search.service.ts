@@ -4,7 +4,6 @@ import * as sanitizeHtml from 'sanitize-html';
 
 import { ISearch } from '../../shared/search';
 import { ContentFilter } from '@dragonfish/shared/models/works';
-import { InitialResults } from '@dragonfish/shared/models/util';
 import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { ContentGroupStore } from '@dragonfish/api/database/content/stores';
 import { ContentKind, ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
@@ -18,42 +17,6 @@ export class SearchService implements ISearch {
     readonly MAX_PER_PAGE = 15;
 
     constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
-
-    /** 
-     * @deprecated No longer used
-     */
-    async fetchInitialResults(query: string, contentFilter: ContentFilter): Promise<InitialResults> {
-        // const parsedQuery = `"${sanitizeHtml(query)}"`;
-
-        // const [initialUsers, initialBlogs, initialContent] = await Promise.all([
-        //     this.usersStore.findRelatedUsers(parsedQuery, this.INITIAL_PAGE, this.INITIAL_MAX_PER_PAGE),
-        //     this.contentGroupStore.findRelatedContent(parsedQuery,
-        //         [ContentKind.BlogContent],
-        //         null,
-        //         null,
-        //         this.INITIAL_PAGE,
-        //         this.INITIAL_MAX_PER_PAGE,
-        //         contentFilter
-        //     ),
-        //     this.contentGroupStore.findRelatedContent(
-        //         parsedQuery,
-        //         [ContentKind.PoetryContent, ContentKind.ProseContent],
-        //         null,
-        //         null,
-        //         this.INITIAL_PAGE,
-        //         this.INITIAL_MAX_PER_PAGE,
-        //         contentFilter
-        //     ),
-        // ]);
-
-        // const result: InitialResults = {
-        //     users: initialUsers.docs,
-        //     blogs: initialBlogs.docs,
-        //     works: initialContent.docs,
-        // };
-        // return result;
-        return null;
-    }
 
     async findRelatedContent(
         query: string,
@@ -124,50 +87,6 @@ export class SearchService implements ISearch {
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
         const parsedQuery = sanitizeHtml(query);
         return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
-    }
-
-    /** 
-     * @deprecated No longer used
-     */
-    async searchBlogs(
-        query: string,
-        pageNum: number,
-        contentFilter: ContentFilter
-    ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentGroupStore.findRelatedContent(
-            parsedQuery,
-            [ContentKind.BlogContent],
-            null,
-            null,
-            null,
-            null,
-            pageNum,
-            this.MAX_PER_PAGE,
-            contentFilter
-        );
-    }
-
-    /** 
-     * @deprecated No longer used
-     */
-    async searchContent(
-        query: string,
-        pageNum: number,
-        contentFilter: ContentFilter
-    ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = `"${sanitizeHtml(query)}"`;
-        return await this.contentGroupStore.findRelatedContent(
-            parsedQuery,
-            [ContentKind.PoetryContent, ContentKind.ProseContent],
-            null,
-            null,
-            null,
-            null,
-            pageNum,
-            this.MAX_PER_PAGE,
-            contentFilter
-        );
     }
 
     async getContentByFandomTag(

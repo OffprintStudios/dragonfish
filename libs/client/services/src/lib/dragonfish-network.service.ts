@@ -17,7 +17,7 @@ import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/
 import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish/shared/models/messages';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
-import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
+import { PaginateResult } from '@dragonfish/shared/models/util';
 import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -305,20 +305,6 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * @deprecated No longer used
-     * Search for the given query, and return the top 3 results in Works, Blogs, and Users.
-     * @param query The user's search string.
-     */
-    public searchInitialResults(query: string): Observable<InitialResults> {
-        return handleResponse(
-            this.http.get<InitialResults>(`${this.baseUrl}/search/get-initial-results?query=${query}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
      * Fetches search results given query for the specified kids
      *
      * @param query The user's query
@@ -346,30 +332,6 @@ export class DragonfishNetworkService {
                     `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
                     `&genreKeys=${genres}&genreSearchMatch=${genreSearchMatch}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * @deprecated No longer used
-     */
-    public searchWorks(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-work-results?query=${query}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * @deprecated No longer used
-     */
-    public searchBlogs(query: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-blog-results?query=${query}&pageNum=${pageNum}`,
                 { observe: 'response', withCredentials: true },
             ),
         );
