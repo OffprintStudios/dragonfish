@@ -6,9 +6,10 @@ import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
 import { ContentModule } from '@dragonfish/api/database/content';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
+import { NotificationsController } from './controllers';
 
 @Module({
-    controllers: [],
+    controllers: [NotificationsController],
     providers: [
         NotificationService,
         NotificationConsumer,
