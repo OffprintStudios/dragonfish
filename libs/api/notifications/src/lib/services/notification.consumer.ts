@@ -1,15 +1,6 @@
 import { Logger } from '@nestjs/common';
-import {
-    OnQueueActive,
-    OnQueueCompleted,
-    OnQueueError,
-    OnQueueFailed,
-    OnQueuePaused,
-    OnQueueWaiting,
-    Process,
-    Processor,
-} from '@nestjs/bull';
-import { Job } from 'bull';
+import { OnQueueActive, OnQueueCompleted, OnQueueError, OnQueueFailed, Process, Processor } from '@nestjs/bull';
+import { DoneCallback, Job } from 'bull';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 import { ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationStore } from '../db/stores';
@@ -27,18 +18,8 @@ export class NotificationConsumer {
         this.logger.log(`Processing job ${job.id}...`);
     }
 
-    @OnQueuePaused()
-    onQueuePaused() {
-        this.logger.log(`Queue has paused.`);
-    }
-
-    @OnQueueWaiting()
-    onQueueWaiting(jobId: number) {
-        this.logger.log(`Job ${jobId} is waiting for a worker...`);
-    }
-
     @OnQueueCompleted()
-    onQueueCompleted(job: Job) {
+    onQueueCompleted(job: Job, result) {
         this.logger.log(`Job ${job.id} completed!`);
     }
 
@@ -55,12 +36,13 @@ export class NotificationConsumer {
     //#endregion
 
     @Process(NotificationKind.ContentComment)
-    async addedContentComment(job: Job<ContentCommentJob>) {
+    async addedContentComment(job: Job<ContentCommentJob>, done: DoneCallback) {
         this.logger.log(`Job ${job.id} (ContentComment) received!`);
         if (job.data.poster._id !== job.data.recipientId) {
-            return await this.notifications.createNotification(job.data, NotificationKind.ContentComment);
+            const notification = await this.notifications.createNotification(job.data, NotificationKind.ContentComment);
+            done(null, notification);
         } else {
-            return {};
+            done();
         }
     }
 }
