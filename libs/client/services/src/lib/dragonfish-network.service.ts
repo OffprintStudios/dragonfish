@@ -8,7 +8,6 @@ import {
     FormType,
     Genres,
     NewsChange,
-    NewsContentModel,
     PubChange,
     PubContent,
     SetRating,
@@ -20,7 +19,6 @@ import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
-import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
@@ -48,7 +46,7 @@ import {
     ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
-import { MarkAsRead } from '@dragonfish/shared/models/accounts/notifications';
+import { MarkAsRead, Notification } from '@dragonfish/shared/models/accounts/notifications';
 
 /**
  * ## DragonfishNetworkService
@@ -1332,9 +1330,9 @@ export class DragonfishNetworkService {
      * Gets all of the current user's unread notifications.
      * @param profileId
      */
-    public fetchAllUnread(profileId: string): Observable<NotificationBase[]> {
+    public fetchAllUnread(profileId: string): Observable<Notification[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-unread?pseudId=${profileId}`, {
+            this.http.get<Notification[]>(`${this.baseUrl}/notifications/all-unread?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1345,9 +1343,9 @@ export class DragonfishNetworkService {
      * Gets all of the current user's read notifications.
      * @param profileId
      */
-    public fetchAllRead(profileId: string): Observable<NotificationBase[]> {
+    public fetchAllRead(profileId: string): Observable<Notification[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-read?pseudId=${profileId}`, {
+            this.http.get<Notification[]>(`${this.baseUrl}/notifications/all-read?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1364,46 +1362,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    /**
-     * Gets a list of all the things the current user is subscribed to notifications for.
-     */
-    public fetchNotificationSubscriptions(): Observable<NotificationSubscription[]> {
-        return handleResponse(
-            this.http.get<NotificationSubscription[]>(`${this.baseUrl}/notifications/unread-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Subscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to subscribe to notifications for.
-     */
-    public subscribeToNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/subscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Unsubscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to unsubscribe from.
-     */
-    public unsubscribeFromNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/unsubscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
         );
     }
 
