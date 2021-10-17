@@ -59,8 +59,8 @@ export class SearchService implements ISearch {
         query: string,
         searchKind: SearchKind,
         author: string | null,
-        category: WorkKind | null,
-        genres: Genres[] | null,
+        categoryKey: string | null,
+        genreKeys: string[] | null,
         genreSearchAny: boolean,
         pageNum: number,
         contentFilter: ContentFilter
@@ -96,12 +96,13 @@ export class SearchService implements ISearch {
             }
         }
         // Category and genre values are the keys, not the values
-        if (Object.values(WorkKind).indexOf(WorkKind[category]) < 0) {
-            category = null;
+        let category: WorkKind = null
+        if (Object.values(WorkKind).indexOf(WorkKind[categoryKey]) >= 0) {
+            category = WorkKind[categoryKey];
         }
         
         const genreList: Genres[] = [];
-        for (let genre of genres) {
+        for (let genre of genreKeys) {
             if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
                 genreList.push(genre as Genres);
             }

@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
-import { ContentModel, Genres, WorkKind } from '@dragonfish/shared/models/content';
+import { ContentModel } from '@dragonfish/shared/models/content';
 import { InitialResults } from '@dragonfish/shared/models/util';
 import { ContentFilter } from '@dragonfish/shared/models/works';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
@@ -33,20 +33,20 @@ export class SearchController {
         @Query('query') query: string,
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
-        @Query('category') category: WorkKind | null,
-        @Query('genres') genres: string,
+        @Query('categoryKey') categoryKey: string | null,
+        @Query('genreKeys') genreKeys: string,
         @Query('genreSearchAny') genreSearchAny: string,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const genresList = genres.split(',') as Genres[];
+        const genresList = genreKeys.split(',');
         const genreSearchAnyBool = genreSearchAny === 'true';
 
         return await this.searchService.findRelatedContent(
             query,
             kind,
             author,
-            category,
+            categoryKey,
             genresList,
             genreSearchAnyBool,
             pageNum,

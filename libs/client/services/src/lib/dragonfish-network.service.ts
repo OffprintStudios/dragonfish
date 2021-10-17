@@ -6,13 +6,11 @@ import {
     ContentKind,
     ContentModel,
     FormType,
-    Genres,
     NewsChange,
     NewsContentModel,
     PubChange,
     PubContent,
     SetRating,
-    WorkKind,
     BlogsContentModel,
 } from '@dragonfish/shared/models/content';
 import { TagKind, TagsForm, TagsModel } from '@dragonfish/shared/models/content/tags';
@@ -326,8 +324,8 @@ export class DragonfishNetworkService {
      * @param query The user's query
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
-     * @param category (Optional) The category of content that searching for
-     * @param genres (Optional) The genres of content that searching for.
+     * @param category (Optional) The category key of content that searching for
+     * @param genres (Optional) The genre keys of content that searching for.
      * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
@@ -336,8 +334,8 @@ export class DragonfishNetworkService {
         query: string,
         kind: SearchKind,
         author: string | null,
-        category: WorkKind | null,
-        genres: Genres[] | null,
+        category: string | null,
+        genres: string[] | null,
         genreSearchAny: boolean,
         pageNum: number,
         contentFilter: ContentFilter,
@@ -345,8 +343,8 @@ export class DragonfishNetworkService {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
-                    `query=${query}&kind=${kind}&author=${author}&category=${category}` +
-                    `&genres=${genres}&genreSearchAny=${genreSearchAny}` +
+                    `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
+                    `&genreKeys=${genres}&genreSearchAny=${genreSearchAny}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),
