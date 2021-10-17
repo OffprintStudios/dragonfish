@@ -7,6 +7,9 @@ import * as Stores from './db/stores';
 import { ContentModule } from '@dragonfish/api/database/content';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 import { NotificationsController } from './controllers';
+import { JwtModule } from '@nestjs/jwt';
+import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
+import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 @Module({
     controllers: [NotificationsController],
@@ -19,6 +22,7 @@ import { NotificationsController } from './controllers';
     ],
     imports: [
         ContentModule,
+        AccountsModule,
         MongooseModule.forFeatureAsync([
             {
                 name: 'Notification',
@@ -47,6 +51,12 @@ import { NotificationsController } from './controllers';
                 max: 1000,
                 duration: 5000,
             },
+        }),
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
         }),
     ],
     exports: [],
