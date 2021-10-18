@@ -26,6 +26,10 @@ export class NotificationsQuery extends QueryEntity<NotificationsState> {
     }
 
     public get numSelected() {
-        return this.getActive().length;
+        if (this.getActive()) {
+            return this.getActive().length;
+        } else {
+            return 0;
+        }
     }
 }

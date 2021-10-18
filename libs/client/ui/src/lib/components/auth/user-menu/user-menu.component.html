@@ -5,13 +5,14 @@
                 <img
                     class="object-cover object-center w-full h-full"
                     [src]="user.profile.coverPic"
+                    [alt]="'avatar'"
                     *ngIf="user.profile.coverPic"
                 />
             </div>
             <div class="user-header">
                 <div class="flex flex-row items-center">
                     <div class="user-avatar">
-                        <img [src]="user.profile.avatar" />
+                        <img [src]="user.profile.avatar" [alt]="'avatar'" />
                     </div>
                     <div class="ml-2">
                         <div class="flex items-center">
@@ -31,14 +32,16 @@
                     </div>
                 </div>
             </div>
-            <div class="px-4">
-                <div class="button border border-gray-600 dark:border-white justify-center" [routerLink]="['/profile', user._id, user.userTag]">
-                    <rmx-icon name="user-line"></rmx-icon>
-                    <span>View Profile</span>
-                </div>
-            </div>
             <div class="my-2"></div>
             <div class="tab-buttons border-gray-600 dark:border-white">
+                <div
+                    class="button border-gray-600 dark:border-white"
+                    [ngClass]="{'active': currTab === tabs.QuickOptionsTab}"
+                    (click)="switchTab(tabs.QuickOptionsTab)"
+                >
+                    <rmx-icon name="user-settings-line"></rmx-icon>
+                    <span class="label">Options</span>
+                </div>
                 <div
                     class="button border-gray-600 dark:border-white"
                     [ngClass]="{'active': currTab === tabs.FriendsTab}"
@@ -77,18 +80,10 @@
                     <ng-container *ngSwitchCase="tabs.NotificationsTab">
                         <dragonfish-notifications-list></dragonfish-notifications-list>
                     </ng-container>
+                    <ng-container *ngSwitchCase="tabs.QuickOptionsTab">
+                        <dragonfish-quick-options></dragonfish-quick-options>
+                    </ng-container>
                 </ng-container>
-            </div>
-            <div class="tool-buttons border-gray-600 dark:border-white">
-                <button class="border border-gray-600 dark:border-white" [routerLink]="['/registration/select-pseud']">
-                    <rmx-icon name="group-2-line"></rmx-icon>
-                    <span>Profiles</span>
-                </button>
-                <div class="mx-1"></div>
-                <button class="border border-gray-600 dark:border-white" (click)="logout()">
-                    <rmx-icon name="logout-circle-line"></rmx-icon>
-                    <span>Log out</span>
-                </button>
             </div>
         </div>
         <div class="blurred-background"></div>
