@@ -10,7 +10,6 @@ div.menu-box {
     div.user-header {
         @apply w-full relative z-20 mt-16 px-4;
         div.user-avatar {
-            @apply py-4;
             align-self: center;
             img {
                 width: 75px;
@@ -25,7 +24,7 @@ div.menu-box {
         }
     }
     div.button {
-        @apply p-2.5 flex items-center my-2 border rounded-md transition transform cursor-pointer;
+        @apply p-2.5 flex items-center my-2 rounded-md transition transform cursor-pointer;
         rmx-icon {
             @apply mr-1;
         }
@@ -34,8 +33,32 @@ div.menu-box {
             background: var(--accent);
         }
     }
+    div.tab-buttons {
+        @apply flex items-center justify-center px-4 border-b mx-2;
+        div.button {
+            @apply mx-0.5 my-0 rounded-b-none;
+            &:hover, &.active {
+                @apply scale-100 text-white;
+                background: var(--accent);
+                span.label {
+                    max-width: 7rem;
+                }
+                rmx-icon {
+                    @apply mr-1;
+                }
+            }
+            span.label {
+                @apply text-sm whitespace-nowrap overflow-hidden;
+                max-width: 0;
+                transition: max-width 350ms;
+            }
+            rmx-icon {
+                @apply mr-0;
+            }
+        }
+    }
     div.tool-buttons {
-        @apply flex items-center justify-center my-4;
+        @apply flex items-center justify-center py-4 border-t mx-2;
         div.button {
             @apply p-4 flex items-center text-xs rounded-md;
             rmx-icon {

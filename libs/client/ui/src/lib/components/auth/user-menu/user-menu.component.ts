@@ -8,6 +8,13 @@ import { Router } from '@angular/router';
 import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
+import { NotificationsQuery } from '@dragonfish/client/repository/notifications';
+
+enum MenuTabs {
+    FriendsTab,
+    MessagesTab,
+    NotificationsTab,
+}
 
 @Component({
     selector: 'dragonfish-user-menu',
@@ -15,13 +22,21 @@ import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
     styleUrls: ['./user-menu.component.scss'],
 })
 export class UserMenuComponent {
+    tabs = MenuTabs;
+    currTab = MenuTabs.FriendsTab;
+
     constructor(
         public pseudQuery: PseudonymsQuery,
         public sessionQuery: SessionQuery,
+        public notifications: NotificationsQuery,
         private dialog: MatDialog,
         private auth: AuthService,
         private router: Router,
     ) {}
+
+    switchTab(tab: MenuTabs) {
+        this.currTab = tab;
+    }
 
     logout() {
         const alertData: PopupModel = {

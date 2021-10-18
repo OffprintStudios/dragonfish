@@ -21,6 +21,10 @@ export class NotificationsQuery extends QueryEntity<NotificationsState> {
         return ids;
     }
 
+    public get numNotifications() {
+        return this.getCount();
+    }
+
     public get numSelected() {
         return this.getActive().length;
     }

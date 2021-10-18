@@ -36,7 +36,6 @@ import { TopbarComponent } from './components/nav/topbar/topbar.component';
 import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
 import { LoginFormComponent } from './components/auth/login-form/login-form.component';
 import { RegisterFormComponent } from './components/auth/register-form/register-form.component';
-import { UserMenuComponent } from './components/auth/user-menu/user-menu.component';
 import { InboxComponent } from './components/inbox/inbox.component';
 import { MessagesTabComponent } from './components/inbox/messages-tab/messages-tab.component';
 import { NotificationsTabComponent } from './components/inbox/notifications-tab/notifications-tab.component';
@@ -46,6 +45,7 @@ import { WorkFormComponent } from './components/work-form/work-form.component';
 import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { CommentBlockComponent } from './components/comment-block/comment-block.component';
+import { UserMenuComponents } from './components/auth/user-menu';
 
 @NgModule({
     declarations: [
@@ -67,7 +67,7 @@ import { CommentBlockComponent } from './components/comment-block/comment-block.
         AuthModalComponent,
         LoginFormComponent,
         RegisterFormComponent,
-        UserMenuComponent,
+        ...UserMenuComponents,
         InboxComponent,
         MessagesTabComponent,
         NotificationsTabComponent,
