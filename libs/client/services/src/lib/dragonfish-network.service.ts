@@ -1355,10 +1355,11 @@ export class DragonfishNetworkService {
     /**
      * Marks the given notifications as read.
      * @param toMark A list of notification IDs to mark as read.
+     * @param profileId
      */
-    public markNotificationsAsRead(toMark: MarkAsRead): Observable<void> {
+    public markNotificationsAsRead(profileId: string, toMark: MarkAsRead): Observable<void> {
         return handleResponse(
-            this.http.post<void>(`${this.baseUrl}/notifications/mark-as-read`, toMark, {
+            this.http.patch<void>(`${this.baseUrl}/notifications/mark-as-read?pseudId=${profileId}`, toMark, {
                 observe: 'response',
                 withCredentials: true,
             }),

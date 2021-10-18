@@ -26,17 +26,26 @@ export class NotificationsService {
     }
 
     public addToActive(id: string) {
-        this.store.addActive(id);
+        if (this.query.getActive()) {
+            this.store.addActive(id);
+        } else {
+            this.store.setActive([id]);
+        }
+    }
+
+    public removeFromActive(id: string) {
+        this.store.removeActive(id);
     }
 
     public isActive(id: string) {
-        return this.query.activeIds.includes(id);
+        return this.query.hasActive(id);
     }
 
     public markAsRead() {
-        return this.network.markNotificationsAsRead({ ids: this.query.activeIds }).pipe(
+        return this.network.markNotificationsAsRead(this.pseuds.currentId, { ids: this.query.activeIds }).pipe(
             tap(() => {
                 this.store.removeActive(this.query.activeIds);
+                this.store.remove(this.query.activeIds);
             }),
             catchError((err) => {
                 this.alerts.error(`Something went wrong! Try again in a little bit.`);

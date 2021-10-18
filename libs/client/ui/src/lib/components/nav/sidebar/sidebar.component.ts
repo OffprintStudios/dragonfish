@@ -8,6 +8,7 @@ import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
 import { NavigationStart, Router } from '@angular/router';
 import { untilDestroyed } from '@ngneat/until-destroy';
+import { NotificationsQuery } from '@dragonfish/client/repository/notifications';
 
 @Component({
     selector: 'dragonfish-sidebar',
@@ -24,6 +25,7 @@ export class SidebarComponent implements OnInit {
         public electron: DragonfishElectronService,
         private router: Router,
         private viewService: ViewService,
+        public notifications: NotificationsQuery,
     ) {}
 
     ngOnInit(): void {

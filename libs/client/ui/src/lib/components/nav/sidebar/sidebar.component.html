@@ -12,6 +12,9 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="openUserMenu()"
                 [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
+                [matBadge]="notifications.numNotifications"
+                [matBadgePosition]="'below after'"
+                [matBadgeHidden]="activeUserMenu || notifications.numNotifications < 1"
             >
                 <span class="link-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">

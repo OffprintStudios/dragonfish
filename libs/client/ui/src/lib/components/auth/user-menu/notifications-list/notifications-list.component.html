@@ -3,12 +3,33 @@
         <div class="flex-1">
             {{ notifications.numSelected }} selected
         </div>
-        <button>
+        <button *ngIf="notifications.numSelected > 0" (click)="markAsRead()">
             <rmx-icon name="check-double-line"></rmx-icon>
             <span>Mark as read</span>
         </button>
     </div>
-    <div>
-
+    <div *ngIf="notifications.all$ | async as notes">
+        <div class="notification-item border-gray-600 dark:border-white" *ngFor="let note of notes">
+            <div class="flex-1 flex items-center">
+                <ng-container [ngSwitch]="note.kind">
+                    <ng-container *ngSwitchCase="kind.ContentComment">
+                        <rmx-icon name="discuss-line" class="relative top-0.5 mx-2"></rmx-icon>
+                        <span>
+                            <a>{{ $any(note).commentInfo.posterName }}</a> posted a comment on <a>{{ $any(note).contentInfo.contentTitle }}</a>
+                        </span>
+                    </ng-container>
+                </ng-container>
+            </div>
+            <ng-container *ngIf="notificationsService.isActive(note._id); else isNotActive">
+                <div class="button active border-gray-600 dark:border-white" (click)="removeFromActive(note._id)">
+                    <rmx-icon name="checkbox-circle-line" class="w-6"></rmx-icon>
+                </div>
+            </ng-container>
+            <ng-template #isNotActive>
+                <div class="button border-gray-600 dark:border-white" (click)="addToActive(note._id)">
+                    <rmx-icon name="checkbox-blank-circle-line" class="w-6"></rmx-icon>
+                </div>
+            </ng-template>
+        </div>
     </div>
 </div>

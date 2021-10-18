@@ -14,11 +14,13 @@ export class NotificationsQuery extends QueryEntity<NotificationsState> {
 
     public get activeIds() {
         const active = this.getActive();
-        const ids: string[] = [];
-        for (const notif of active) {
-            ids.push(notif._id);
+        if (active) {
+            const ids: string[] = [];
+            for (const notif of active) {
+                ids.push(notif._id);
+            }
+            return ids;
         }
-        return ids;
     }
 
     public get numNotifications() {
