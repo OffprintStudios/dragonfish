@@ -16,6 +16,8 @@
                         <rmx-icon name="discuss-line" class="relative top-0.5 mx-2"></rmx-icon>
                         <span>
                             <a [routerLink]="createProfileLink($any(note).commentInfo)">{{ $any(note).commentInfo.posterName }}</a> commented on <a [routerLink]="createContentLink($any(note).contentInfo, $any(note).commentInfo)">{{ $any(note).contentInfo.contentTitle }}</a>
+                            <span class="mx-1">•</span>
+                            <span class="italic">{{ note.createdAt | localedate: 'shortDate' }}</span>
                         </span>
                     </ng-container>
                 </ng-container>
