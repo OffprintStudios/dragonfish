@@ -15,7 +15,7 @@
                     <ng-container *ngSwitchCase="kind.ContentComment">
                         <rmx-icon name="discuss-line" class="relative top-0.5 mx-2"></rmx-icon>
                         <span>
-                            <a>{{ $any(note).commentInfo.posterName }}</a> posted a comment on <a>{{ $any(note).contentInfo.contentTitle }}</a>
+                            <a [routerLink]="createProfileLink($any(note).commentInfo)">{{ $any(note).commentInfo.posterName }}</a> posted a comment on <a [routerLink]="createContentLink($any(note).contentInfo, $any(note).commentInfo)">{{ $any(note).contentInfo.contentTitle }}</a>
                         </span>
                     </ng-container>
                 </ng-container>
