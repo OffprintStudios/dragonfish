@@ -1044,31 +1044,34 @@ export class DragonfishNetworkService {
 
     //#region ---MY LIBRARY---
 
-    public fetchLibrary() {
+    public fetchLibrary(profileId: string) {
         return handleResponse(
-            this.http.get<ContentLibrary[]>(`${this.baseUrl}/content-library/fetch`, {
+            this.http.get<ContentLibrary[]>(`${this.baseUrl}/content-library/fetch?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
         );
     }
 
-    public addToLibrary(contentId: string) {
+    public addToLibrary(profileId: string, contentId: string) {
         return handleResponse(
             this.http.put<void>(
-                `${this.baseUrl}/content-library/add-to?contentId=${contentId}`,
+                `${this.baseUrl}/content-library/add-to?pseudId=${profileId}&contentId=${contentId}`,
                 {},
                 { observe: 'response', withCredentials: true },
             ),
         );
     }
 
-    public removeFromLibrary(contentId: string) {
+    public removeFromLibrary(profileId: string, contentId: string) {
         return handleResponse(
-            this.http.delete<void>(`${this.baseUrl}/content-library/remove?contentId=${contentId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
+            this.http.delete<void>(
+                `${this.baseUrl}/content-library/remove?pseudId=${profileId}&contentId=${contentId}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
         );
     }
 
