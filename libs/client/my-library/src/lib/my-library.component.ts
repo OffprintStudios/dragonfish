@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ContentLibraryQuery, ContentLibraryService } from '@dragonfish/client/repository/content-library';
+import { ContentLibraryQuery } from '@dragonfish/client/repository/content-library';
 
 @Component({
     selector: 'dragonfish-my-library',
@@ -7,5 +7,5 @@ import { ContentLibraryQuery, ContentLibraryService } from '@dragonfish/client/r
     styleUrls: ['./my-library.component.scss'],
 })
 export class MyLibraryComponent {
-    constructor(public libraryQuery: ContentLibraryQuery, private libraryService: ContentLibraryService) {}
+    constructor(public libraryQuery: ContentLibraryQuery) {}
 }
