@@ -1,29 +1,29 @@
 import { Controller, UseGuards, Get, Put, Query, Delete } from '@nestjs/common';
 import { Roles } from '@dragonfish/shared/models/accounts';
-import { ContentLibraryStore } from '@dragonfish/api/database/content-library/stores';
-import { Identity, User } from '@dragonfish/api/utilities/decorators';
+import { Identity } from '@dragonfish/api/utilities/decorators';
 import { IdentityGuard } from '@dragonfish/api/utilities/guards';
+import { LibraryService } from '../../services/content/library.service';
 
 @UseGuards(IdentityGuard)
 @Controller('content-library')
 export class ContentLibraryController {
-    constructor(private readonly libraryStore: ContentLibraryStore) {}
+    constructor(private readonly library: LibraryService) {}
 
     @Identity(Roles.User)
     @Get('fetch')
     public async fetchLibrary(@Query('pseudId') pseudId: string) {
-        return await this.libraryStore.fetchLibrary(pseudId);
+        return await this.library.fetchLibrary(pseudId);
     }
 
     @Identity(Roles.User)
     @Put('add-to')
     public async addToLibrary(@Query('pseudId') pseudId: string, @Query('contentId') contentId: string) {
-        return await this.libraryStore.addToLibrary(pseudId, contentId);
+        return await this.library.addToLibrary(pseudId, contentId);
     }
 
     @Identity(Roles.User)
     @Delete('remove')
     public async removeFromLibrary(@Query('pseudId') pseudId: string, @Query('contentId') contentId: string) {
-        return await this.libraryStore.removeFromLibrary(pseudId, contentId);
+        return await this.library.removeFromLibrary(pseudId, contentId);
     }
 }

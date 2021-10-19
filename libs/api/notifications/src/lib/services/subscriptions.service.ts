@@ -23,5 +23,11 @@ export class SubscriptionsService {
         });
     }
 
+    @OnEvent('subscription.delete', { async: true })
+    private async handleDeleteSub(payload: { userId: string; itemId: string }) {
+        this.logger.log(`Deleting subscription for item ${payload.itemId}...`);
+        await this.subscriptions.delete(payload.userId, payload.itemId);
+    }
+
     //#endregion
 }
