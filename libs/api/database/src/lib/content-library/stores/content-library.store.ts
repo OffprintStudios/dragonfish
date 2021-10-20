@@ -40,4 +40,14 @@ export class ContentLibraryStore {
     public async fetchLibrary(userId: string) {
         return this.library.find({ userId: userId }).sort({ createdAt: -1 });
     }
+
+    /**
+     * Fetches one library doc from the database. As per mongoose defaults, this returns `null` if
+     * no doc is found.
+     * @param userId
+     * @param contentId
+     */
+    public async fetchOne(userId: string, contentId: string) {
+        return this.library.findOne({ userId: userId, content: contentId });
+    }
 }
