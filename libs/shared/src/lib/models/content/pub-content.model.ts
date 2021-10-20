@@ -1,6 +1,6 @@
 import { RatingsModel } from '../ratings';
 import { ContentModel } from './content.model';
-import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
+import { ContentLibrary } from '../users/content-library';
 
 export interface PubContent {
     content: ContentModel;
