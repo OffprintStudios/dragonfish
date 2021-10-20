@@ -28,7 +28,7 @@ export class WorkPageService {
     //#region ---FETCHING---
 
     public fetchContent(id: string) {
-        return this.network.fetchOne(id).pipe(
+        return this.network.fetchOne(id, this.pseudQuery.currentId).pipe(
             tap((result) => {
                 this.workStore.update({
                     content: result.content,
