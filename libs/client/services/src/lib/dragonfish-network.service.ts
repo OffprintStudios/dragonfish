@@ -1055,7 +1055,7 @@ export class DragonfishNetworkService {
 
     public addToLibrary(profileId: string, contentId: string) {
         return handleResponse(
-            this.http.put<void>(
+            this.http.put<ContentLibrary>(
                 `${this.baseUrl}/content-library/add-to?pseudId=${profileId}&contentId=${contentId}`,
                 {},
                 { observe: 'response', withCredentials: true },

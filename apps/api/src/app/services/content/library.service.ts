@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ContentLibraryStore } from '@dragonfish/api/database/content-library/stores';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
-import { SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
+import { SubscriptionEvent, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Injectable()
 export class LibraryService {
@@ -13,13 +13,14 @@ export class LibraryService {
     }
 
     public async addToLibrary(pseudId: string, contentId: string) {
-        await this.libraryStore.addToLibrary(pseudId, contentId).then(() => {
+        return await this.libraryStore.addToLibrary(pseudId, contentId).then((item) => {
             const subPayload: SubscriptionPayload = {
                 itemId: contentId,
                 subscriberId: pseudId,
                 kind: SubscriptionKind.ContentLibrary,
             };
-            this.events.emit(SubscriptionKind.ContentLibrary, subPayload);
+            this.events.emit(SubscriptionEvent.ContentLibrary, subPayload);
+            return item;
         });
     }
 

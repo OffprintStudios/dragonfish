@@ -1,17 +1,26 @@
 <div class="header">
     <div class="flex w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
         <ng-container *ngIf="content.meta.coverArt; else uploadArt">
-            <div
-                class="edit-cover-art rounded-md"
-                [matTooltip]="'Edit Cover Art'"
-                [matTooltipClass]="'offprint-tooltip'"
-                (mouseenter)="addEditIcon = true"
-                (mouseleave)="addEditIcon = false"
-                (click)="uploadCoverArt(content._id, content.kind)"
-            >
-                <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
-                <img class="rounded-md" [src]="content.meta.coverArt" />
-            </div>
+            <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+                <div
+                    class="edit-cover-art rounded-md"
+                    [matTooltip]="'Edit Cover Art'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (mouseenter)="addEditIcon = true"
+                    (mouseleave)="addEditIcon = false"
+                    (click)="uploadCoverArt(content._id, content.kind)"
+                >
+                    <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
+                    <img class="rounded-md" [src]="content.meta.coverArt" />
+                </div>
+            </ng-container>
+            <ng-template #notThisAuthorArt>
+                <div
+                    class="edit-cover-art rounded-md"
+                >
+                    <img class="rounded-md" [src]="content.meta.coverArt" />
+                </div>
+            </ng-template>
         </ng-container>
         <ng-template #uploadArt>
             <div
@@ -61,10 +70,20 @@
                     </button>
                 </ng-container>
                 <ng-template #otherButtons>
-                    <button class="header-button" (click)="addToLibrary()">
-                        <rmx-icon name="add-box-line"></rmx-icon>
-                        <span>Library</span>
-                    </button>
+                    <ng-container *ngIf="sessionQuery.currAccount$ | async">
+                        <button class="header-button" (click)="addToLibrary()" *ngIf="!workQuery.isInLibrary && !loadingLibrary">
+                            <rmx-icon name="add-box-line"></rmx-icon>
+                            <span>Library</span>
+                        </button>
+                        <button class="header-button active" (click)="removeFromLibrary()" *ngIf="workQuery.isInLibrary && !loadingLibrary">
+                            <rmx-icon name="check-line"></rmx-icon>
+                            <span>Library</span>
+                        </button>
+                        <button class="header-button" *ngIf="loadingLibrary">
+                            <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                            <span>Adding...</span>
+                        </button>
+                    </ng-container>
                     <div class="mx-1"></div>
                     <button
                         class="header-button"

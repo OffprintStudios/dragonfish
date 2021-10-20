@@ -2,7 +2,6 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ContentLibraryDocument } from '../schemas';
-import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
 @Injectable()
 export class ContentLibraryStore {
@@ -13,12 +12,12 @@ export class ContentLibraryStore {
      * @param userId
      * @param contentId
      */
-    public async addToLibrary(userId: string, contentId: string): Promise<void> {
-        const existingEntry = await this.library.find({ userId: userId, content: contentId });
+    public async addToLibrary(userId: string, contentId: string): Promise<ContentLibraryDocument> {
+        const existingEntry = await this.library.findOne({ userId: userId, content: contentId });
 
-        if (isNullOrUndefined(existingEntry)) {
+        if (existingEntry === null || existingEntry === undefined) {
             const newEntry = new this.library({ userId: userId, content: contentId });
-            await newEntry.save();
+            return await newEntry.save();
         } else {
             throw new ConflictException(`You've already added this to your library!`);
         }

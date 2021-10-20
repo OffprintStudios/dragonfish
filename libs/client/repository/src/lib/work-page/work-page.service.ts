@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { SectionsService } from './sections';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
+import { ContentLibraryService } from '../content-library';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -23,6 +24,7 @@ export class WorkPageService {
         private alerts: AlertsService,
         private router: Router,
         private sections: SectionsService,
+        private library: ContentLibraryService,
     ) {}
 
     //#region ---FETCHING---
@@ -226,6 +228,26 @@ export class WorkPageService {
         });
     }
 
+    public addToLibrary(contentId: string) {
+        return this.library.addToLibrary(contentId).pipe(
+            tap((val) => {
+                this.workStore.update({
+                    libraryDoc: val,
+                });
+            }),
+        );
+    }
+
+    public removeFromLibrary(contentId: string) {
+        return this.library.removeFromLibrary(contentId).pipe(
+            tap(() => {
+                this.workStore.update({
+                    libraryDoc: null,
+                });
+            }),
+        );
+    }
+
     //#endregion
 
     //#region ---PRIVATE---
@@ -235,6 +257,7 @@ export class WorkPageService {
             content: result.content,
             ratings: result.ratings,
             selectedRating: result.ratings !== null ? result.ratings.rating : null,
+            libraryDoc: result.libraryDoc !== null ? result.libraryDoc : null,
             wordCount: result.content.stats.words,
         });
         this.sections.setSections((result.content as any).sections);
