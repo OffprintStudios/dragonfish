@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SubscriptionDocument } from '../schemas';
@@ -19,17 +19,27 @@ export class SubscriptionsStore {
     //#region ---CRUD OPERATIONS---
 
     public async create(payload: SubscriptionPayload): Promise<SubscriptionDocument> {
-        const newSub = new this.subscription({
-            itemId: payload.itemId,
+        const existingSub = await this.subscription.findOne({
             subscriberId: payload.subscriberId,
+            itemId: payload.itemId,
             kind: payload.kind,
         });
 
-        return await newSub.save();
+        if (existingSub === null || existingSub === undefined) {
+            const newSub = new this.subscription({
+                itemId: payload.itemId,
+                subscriberId: payload.subscriberId,
+                kind: payload.kind,
+            });
+
+            return await newSub.save();
+        } else {
+            throw new ConflictException(`This user already has an active subscription to this item!`);
+        }
     }
 
-    public async delete(pseudId: string, subId: string): Promise<void> {
-        await this.subscription.deleteOne({ _id: subId, subscriberId: pseudId });
+    public async delete(pseudId: string, itemId: string): Promise<void> {
+        await this.subscription.deleteOne({ itemId: itemId, subscriberId: pseudId });
     }
 
     //#endregion
