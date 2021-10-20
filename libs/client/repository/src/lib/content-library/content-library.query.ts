@@ -5,7 +5,7 @@ import { ContentLibraryStore } from './content-library.store';
 
 @Injectable({ providedIn: 'root' })
 export class ContentLibraryQuery extends QueryEntity<ContentLibraryState> {
-    public all$ = this.getAll();
+    public all$ = this.selectAll();
 
     constructor(protected store: ContentLibraryStore) {
         super(store);
