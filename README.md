@@ -21,6 +21,7 @@ You must have the following tools installed on your system or in a docker contai
 - Yarn 1.22.10 (don't use 2.x)
 - MongoDB Community Server 4.2.1
   - MongoDB Compass is recommended
+- Redis server 6.2.6
 
 For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
 
@@ -35,8 +36,10 @@ Once you've installed and verified that these dependencies are working as expect
 - Create a file named `.env` at the root of the repository
 - Copy the contents of `sample.env` to your new `.env`
 - Edit `.env` to set `MONGO_URL=mongodb://localhost:27017`
+- Edit `.env` to set your `REDIS_*` values
 - Edit `.env` to set `JWT_SECRET` to an _actual_ secret, such as a plain random string
 - If you intend to test out image functionality, fill in the `DIGITALOCEAN_SPACES` variables with your information
+- If you intend to test out email functionality, fill in the appropriate SendGrid API information
 - Run `yarn install` in the repository root to install all the dependencies.
 
 When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
