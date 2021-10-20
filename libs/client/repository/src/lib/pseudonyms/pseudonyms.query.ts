@@ -19,14 +19,16 @@ export class PseudonymsQuery extends QueryEntity<PseudonymsState> {
     }
 
     public get currentId() {
-        return this.getActive()._id;
+        if (this.getActive()) {
+            return this.getActive()._id;
+        }
     }
 
     public get currentCover() {
         if (this.getActive()) {
             return this.getActive().profile.coverPic;
         } else {
-            return null;
+            return undefined;
         }
     }
 

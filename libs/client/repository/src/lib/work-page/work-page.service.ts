@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PseudonymsQuery } from '../pseudonyms';
-import { ContentKind, ContentModel, FormType } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, FormType, PubContent } from '@dragonfish/shared/models/content';
 import { WorkPageQuery } from './work-page.query';
 import { WorkPageStore } from './work-page.store';
 import { catchError, take, tap } from 'rxjs/operators';
@@ -28,21 +28,27 @@ export class WorkPageService {
     //#region ---FETCHING---
 
     public fetchContent(id: string) {
-        return this.network.fetchOne(id, this.pseudQuery.currentId).pipe(
-            tap((result) => {
-                this.workStore.update({
-                    content: result.content,
-                    ratings: result.ratings,
-                    selectedRating: result.ratings !== null ? result.ratings.rating : null,
-                    wordCount: result.content.stats.words,
-                });
-                this.sections.setSections((result.content as any).sections);
-            }),
-            catchError((err) => {
-                this.alerts.error(`Something went wrong!`);
-                return throwError(err);
-            }),
-        );
+        if (this.pseudQuery.currentId) {
+            return this.network.fetchOne(id, this.pseudQuery.currentId).pipe(
+                tap((result) => {
+                    this.setContent(result);
+                }),
+                catchError((err) => {
+                    this.alerts.error(`Something went wrong!`);
+                    return throwError(err);
+                }),
+            );
+        } else {
+            return this.network.fetchOne(id).pipe(
+                tap((result) => {
+                    this.setContent(result);
+                }),
+                catchError((err) => {
+                    this.alerts.error(`Something went wrong!`);
+                    return throwError(err);
+                }),
+            );
+        }
     }
 
     //#endregion
@@ -218,6 +224,20 @@ export class WorkPageService {
                 selectedRating: val.rating,
             });
         });
+    }
+
+    //#endregion
+
+    //#region ---PRIVATE---
+
+    private setContent(result: PubContent) {
+        this.workStore.update({
+            content: result.content,
+            ratings: result.ratings,
+            selectedRating: result.ratings !== null ? result.ratings.rating : null,
+            wordCount: result.content.stats.words,
+        });
+        this.sections.setSections((result.content as any).sections);
     }
 
     //#endregion
