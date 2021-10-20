@@ -264,6 +264,10 @@ export class ContentGroupStore {
                 case SearchMatch.OneOrMore:
                     paginateQuery['meta.genres'] = { $in: genres };
                     break;
+                case SearchMatch.NoOthers:
+                    paginateQuery['meta.genres'] = { $not: { $elemMatch: { $nin: genres }}, $exists: true };
+                    paginateQuery['meta.genres.0'] = { $exists: true };
+                    break;
                 case SearchMatch.Exactly:
                     paginateQuery['meta.genres'] = genres;
                     break;
