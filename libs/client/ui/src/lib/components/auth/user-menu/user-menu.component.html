@@ -1,118 +1,91 @@
 <ng-container *ngIf="pseudQuery.current$ | async as user">
-    <div class="absolute top-2 z-50 rounded-md" style="box-shadow: var(--dropshadow); left: 4.5rem;">
-        <div class="menu-box">
-            <div
-                class="cover-pic absolute blur z-10 w-full h-20 rounded-t-md left-0 pointer-events-none overflow-hidden"
-                [ngClass]="user.profile.coverPic ? '' : 'has-accent'"
-            >
+    <div class="absolute top-0 z-50 flex w-full" style="box-shadow: var(--dropshadow); left: 4.125rem;">
+        <div class="menu-box border-gray-600 dark:border-white">
+            <div class="cover-pic absolute z-10 w-full h-36 left-0 pointer-events-none" [ngClass]="user.profile.coverPic ? '' : 'has-accent'">
                 <img
-                    class="object-cover object-top object-center w-full h-full"
+                    class="object-cover object-center w-full h-full"
                     [src]="user.profile.coverPic"
+                    [alt]="'avatar'"
                     *ngIf="user.profile.coverPic"
                 />
             </div>
-            <div class="user-header p-1.5 relative z-20 mt-8">
+            <div class="user-header">
                 <div class="flex flex-row items-center">
                     <div class="user-avatar">
-                        <img [src]="user.profile.avatar" />
+                        <img [src]="user.profile.avatar" [alt]="'avatar'" />
                     </div>
                     <div class="ml-2">
                         <div class="flex items-center">
                             <dragonfish-role-badge [roles]="user.roles" [size]="'small'"></dragonfish-role-badge>
-                            <h2 class="text-xl font-medium relative top-0.5">
+                            <h2 class="text-2xl font-medium relative top-0.5">
                                 {{ user.screenName }}
                             </h2>
                         </div>
-                        <h3 class="text-xs font-medium">
-                            {{ user.profile.tagline }}
+                        <h3 class="text-sm font-medium">
+                            @{{ user.userTag }}
                         </h3>
+                        <div class="flex items-center text-xs">
+                            <span>{{ user.stats.followers | abbreviate }} follower{{ user.stats.followers | pluralize }}</span>
+                            <span class="mx-1">|</span>
+                            <span>{{ user.stats.following | abbreviate }} following</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="stats flex flex-row items-center justify-center">
+            <div class="my-2"></div>
+            <div class="tab-buttons border-gray-600 dark:border-white">
                 <div
-                    class="flex flex-row items-center select-none cursor-default"
-                    [matTooltip]="'Works'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    [matTooltipShowDelay]="600"
+                    class="button border-gray-600 dark:border-white"
+                    [ngClass]="{'active': currTab === tabs.QuickOptionsTab}"
+                    (click)="switchTab(tabs.QuickOptionsTab)"
                 >
-                    <rmx-icon name="quill-pen-line"></rmx-icon>
-                    <span class="select-none">{{ user.stats.works | abbreviate }}</span>
+                    <rmx-icon name="user-settings-line"></rmx-icon>
+                    <span class="label">Account</span>
                 </div>
-                <div class="mx-1 select-none cursor-default">|</div>
                 <div
-                    class="flex flex-row items-center select-none cursor-default"
-                    [matTooltip]="'Blogs'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    [matTooltipShowDelay]="600"
+                    class="button border-gray-600 dark:border-white"
+                    [ngClass]="{'active': currTab === tabs.FriendsTab}"
+                    (click)="switchTab(tabs.FriendsTab)"
                 >
-                    <rmx-icon name="cup-line"></rmx-icon>
-                    <span class="select-none">{{ user.stats.blogs | abbreviate }}</span>
-                </div>
-                <div class="mx-1 select-none cursor-default">|</div>
-                <div
-                    class="flex flex-row items-center select-none cursor-default"
-                    [matTooltip]="'Followers'"
-                    [matTooltipClass]="'offprint-tooltip'"
-                    [matTooltipShowDelay]="600"
-                >
-                    <rmx-icon name="eye-line"></rmx-icon>
-                    <span class="select-none">{{ user.stats.followers | abbreviate }}</span>
-                </div>
-            </div>
-            <div class="my-2 border-b border-gray-600 dark:border-white w-11/12 mx-auto"><!--spacer--></div>
-            <h4 class="font-medium uppercase mx-4 text-sm">Profile</h4>
-            <div>
-                <a
-                    class="button w-full"
-                    [routerLink]="['/profile', user._id, user.userTag]"
-                >
-                    <rmx-icon name="user-line"></rmx-icon>
-                    View Profile
-                </a>
-                <a class="button w-full">
                     <rmx-icon name="group-line"></rmx-icon>
-                    Friends
-                </a>
-                <a class="button w-full">
-                    <rmx-icon name="chat-smile-3-line"></rmx-icon>
-                    Messages
-                </a>
-                <a class="button w-full">
-                    <rmx-icon name="notification-3-line"></rmx-icon>
-                    Notifications
-                </a>
-            </div>
-            <h4 class="font-medium uppercase mx-4 text-sm mt-2 mb-1">Account</h4>
-            <div>
-                <a class="button w-full" [routerLink]="['/registration/select-pseud']">
-                    <rmx-icon name="group-2-line"></rmx-icon>
-                    Switch Profile
-                </a>
-                <a
-                    class="button w-full"
-                    [routerLink]="['/reading-history']"
+                    <span class="label">Friends</span>
+                </div>
+                <div
+                    class="button border-gray-600 dark:border-white"
+                    [ngClass]="{'active': currTab === tabs.MessagesTab}"
+                    (click)="switchTab(tabs.MessagesTab)"
                 >
-                    <rmx-icon name="history-line"></rmx-icon>
-                    Reading History
-                </a>
-                <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
-                    <ng-container *ngIf="canSeeDash(account.roles)">
-                        <a
-                            class="button w-full"
-                            [routerLink]="['/dashboard/overview']"
-                        >
-                            <rmx-icon name="dashboard-line"></rmx-icon>
-                            Dashboard
-                        </a>
-                        <div class="badge border-b w-9/12 mx-auto"><!--spacer--></div>
+                    <rmx-icon name="chat-smile-3-line"></rmx-icon>
+                    <span class="label">Messages</span>
+                </div>
+                <div
+                    class="button border-gray-600 dark:border-white active"
+                    [ngClass]="{'active': currTab === tabs.NotificationsTab}"
+                    (click)="switchTab(tabs.NotificationsTab)"
+                    [matBadge]="notifications.numNotifications"
+                    [matBadgeHidden]="notifications.numNotifications === 0"
+                >
+                    <rmx-icon name="notification-3-line"></rmx-icon>
+                    <span class="label">Notifications</span>
+                </div>
+            </div>
+            <div class="flex-1 w-full h-full overflow-y-auto">
+                <ng-container [ngSwitch]="currTab">
+                    <ng-container *ngSwitchCase="tabs.FriendsTab">
+                        <dragonfish-friends-list></dragonfish-friends-list>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="tabs.MessagesTab">
+                        <dragonfish-messages-feed></dragonfish-messages-feed>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="tabs.NotificationsTab">
+                        <dragonfish-notifications-list></dragonfish-notifications-list>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="tabs.QuickOptionsTab">
+                        <dragonfish-quick-options></dragonfish-quick-options>
                     </ng-container>
                 </ng-container>
-                <a class="button bottom w-full cursor-pointer" (click)="logout()">
-                    <rmx-icon name="logout-circle-line"></rmx-icon>
-                    Log Out
-                </a>
             </div>
         </div>
+        <div class="blurred-background"></div>
     </div>
 </ng-container>

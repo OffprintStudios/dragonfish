@@ -13,7 +13,7 @@ export class ContentDocument extends Document implements ContentModel {
         type: String,
         ref: 'Pseudonym',
         required: true,
-        autopopulate: true,
+        autopopulate: { select: '-accountId' },
     })
     readonly author: string | Pseudonym;
 
@@ -72,13 +72,17 @@ export class ContentDocument extends Document implements ContentModel {
     @Prop({ type: String, enum: Object.keys(ContentKind), index: true })
     readonly kind: ContentKind;
 
-    @Prop({type: [{
-        type: String, 
-        ref: 'Tags',
-        autopopulate: {
-            select: '_id name desc parent kind createdAt updatedAt',
-        },
-    }] })
+    @Prop({
+        type: [
+            {
+                type: String,
+                ref: 'Tags',
+                autopopulate: {
+                    select: '_id name desc parent kind createdAt updatedAt',
+                },
+            },
+        ],
+    })
     tags?: string[] | TagsModel[];
 
     @Prop()

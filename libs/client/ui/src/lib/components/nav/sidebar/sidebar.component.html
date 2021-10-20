@@ -12,6 +12,9 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="openUserMenu()"
                 [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
+                [matBadge]="notifications.numNotifications"
+                [matBadgePosition]="'below after'"
+                [matBadgeHidden]="activeUserMenu || notifications.numNotifications < 1"
             >
                 <span class="link-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">
@@ -82,7 +85,7 @@
         >
             <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
-        <ng-container *ngIf="sessionQuery.currAccount$ | async">
+        <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
             <a
                 class="link"
                 [routerLink]="['/my-library']"
@@ -93,6 +96,18 @@
             >
                 <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
             </a>
+            <ng-container *ngIf="canSeeDash(account.roles)">
+                <a
+                    class="link"
+                    [routerLink]="['/dashboard']"
+                    [routerLinkActive]="'active'"
+                    [matTooltip]="'Dashboard'"
+                    [matTooltipPosition]="'right'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                >
+                    <span class="link-icon"><rmx-icon name="dashboard-2-line"></rmx-icon></span>
+                </a>
+            </ng-container>
         </ng-container>
         <a
             class="link"

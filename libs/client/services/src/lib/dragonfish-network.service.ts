@@ -8,7 +8,6 @@ import {
     FormType,
     Genres,
     NewsChange,
-    NewsContentModel,
     PubChange,
     PubContent,
     SetRating,
@@ -20,7 +19,6 @@ import { CreateInitialMessage, CreateResponse, MessageThread } from '@dragonfish
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 import { HttpClient } from '@angular/common/http';
 import { InitialResults, PaginateResult } from '@dragonfish/shared/models/util';
-import { MarkReadRequest, NotificationBase, NotificationSubscription } from '@dragonfish/shared/models/notifications';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
@@ -48,6 +46,7 @@ import {
     ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind } from '@dragonfish/shared/models/search';
+import { MarkAsRead, Notification } from '@dragonfish/shared/models/accounts/notifications';
 
 /**
  * ## DragonfishNetworkService
@@ -1323,30 +1322,17 @@ export class DragonfishNetworkService {
         );
     }
 
-    /**
-     * Grabs one newspost from the database.
-     *
-     * @param postId The post to fetch
-     */
-    public fetchNewsPost(postId: string) {
-        return handleResponse(
-            this.http.get<NewsContentModel>(`${this.baseUrl}/news/news-post/${postId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
     //#endregion
 
     //#region ---NOTIFICATIONS---
 
     /**
-     * Gets all of the current user's notifications.
+     * Gets all of the current user's unread notifications.
+     * @param profileId
      */
-    public fetchAllNotifications(): Observable<NotificationBase[]> {
+    public fetchAllUnread(profileId: string): Observable<Notification[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/all-notifications`, {
+            this.http.get<Notification[]>(`${this.baseUrl}/notifications/all-unread?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1354,11 +1340,12 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Gets all of the current user's _unread_ notifications.
+     * Gets all of the current user's read notifications.
+     * @param profileId
      */
-    public fetchUnreadNotifications(): Observable<NotificationBase[]> {
+    public fetchAllRead(profileId: string): Observable<Notification[]> {
         return handleResponse(
-            this.http.get<NotificationBase[]>(`${this.baseUrl}/notifications/unread-notifications`, {
+            this.http.get<Notification[]>(`${this.baseUrl}/notifications/all-read?pseudId=${profileId}`, {
                 observe: 'response',
                 withCredentials: true,
             }),
@@ -1368,53 +1355,14 @@ export class DragonfishNetworkService {
     /**
      * Marks the given notifications as read.
      * @param toMark A list of notification IDs to mark as read.
+     * @param profileId
      */
-    public markNotificationsAsRead(toMark: MarkReadRequest): Observable<void> {
+    public markNotificationsAsRead(profileId: string, toMark: MarkAsRead): Observable<void> {
         return handleResponse(
-            this.http.post<void>(`${this.baseUrl}/notifications/mark-as-read`, toMark, {
+            this.http.patch<void>(`${this.baseUrl}/notifications/mark-as-read?pseudId=${profileId}`, toMark, {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    /**
-     * Gets a list of all the things the current user is subscribed to notifications for.
-     */
-    public fetchNotificationSubscriptions(): Observable<NotificationSubscription[]> {
-        return handleResponse(
-            this.http.get<NotificationSubscription[]>(`${this.baseUrl}/notifications/unread-notifications`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Subscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to subscribe to notifications for.
-     */
-    public subscribeToNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/subscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Unsubscribe to notifications on the source with the given ID.
-     * @param sourceId ID of the thing to unsubscribe from.
-     */
-    public unsubscribeFromNotifications(sourceId: string): Observable<void> {
-        return handleResponse(
-            this.http.post<void>(
-                `${this.baseUrl}/notifications/unsubscribe?sourceId=${sourceId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
         );
     }
 

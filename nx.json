@@ -29,6 +29,9 @@
         "api-database": {
             "tags": []
         },
+        "api-notifications": {
+            "tags": []
+        },
         "api-utilities": {
             "tags": []
         },

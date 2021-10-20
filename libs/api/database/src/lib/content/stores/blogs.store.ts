@@ -2,20 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import * as sanitizeHtml from 'sanitize-html';
-import { stripTags, countWords } from 'voca';
+import { countWords, stripTags } from 'voca';
 import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { UsersStore } from '../../users/users.store';
 import { BlogsContentDocument } from '../schemas';
 import { BlogForm, NewsChange, PubChange } from '@dragonfish/shared/models/content';
-import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
 @Injectable()
 export class BlogsStore {
     constructor(
         @InjectModel('BlogContent') private readonly blogsModel: PaginateModel<BlogsContentDocument>,
         private readonly usersService: UsersStore,
-        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -34,12 +31,7 @@ export class BlogsStore {
             'stats.words': countWords(stripTags(sanitizeHtml(blogInfo.body, sanitizeOptions))),
         });
 
-        const savedBlog = await newBlog.save();
-
-        // Subscribe the author to comments on their new blog
-        await this.notificationsService.subscribe(user, savedBlog._id, NotificationKind.CommentNotification);
-
-        return savedBlog;
+        return await newBlog.save();
     }
 
     /**

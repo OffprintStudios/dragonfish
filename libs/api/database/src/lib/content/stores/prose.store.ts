@@ -6,15 +6,12 @@ import { sanitizeOptions } from '@dragonfish/shared/models/util';
 import { ContentKind, CreateProse } from '@dragonfish/shared/models/content';
 import { ProseContentDocument } from '../schemas';
 import { MigrationForm } from '@dragonfish/shared/models/migration';
-import { NotificationsService } from '../../notifications/notifications.service';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 
 @Injectable()
 export class ProseStore {
     constructor(
         @InjectModel('ProseContent')
         private readonly proseModel: PaginateModel<ProseContentDocument>,
-        private readonly notificationsService: NotificationsService,
     ) {}
 
     /**
@@ -36,12 +33,7 @@ export class ProseStore {
             tags: proseInfo.tags,
         });
 
-        const savedProse: ProseContentDocument = await newProse.save();
-
-        // Subscribe author to comments on their new prose document
-        await this.notificationsService.subscribe(user, savedProse._id, NotificationKind.CommentNotification);
-
-        return savedProse;
+        return await newProse.save();
     }
 
     /**
