@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { OptionalAuthGuard, IdentityGuard } from '../../guards';
+import { OptionalAuthGuard } from '../../guards';
 import {
     ContentFilter,
     ContentKind,
@@ -27,7 +27,7 @@ import {
 } from '@dragonfish/shared/models/content';
 import { Roles } from '@dragonfish/shared/models/users';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
-import { User } from '@dragonfish/api/utilities/decorators';
+import { Identity, Optional, User } from '@dragonfish/api/utilities/decorators';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { DragonfishTags } from '@dragonfish/shared/models/util';
 import { IImages } from '../../shared/images';
@@ -35,6 +35,8 @@ import { MAX_FANDOM_TAGS } from '@dragonfish/shared/constants/content-constants'
 import { ContentService } from '../../services/content/content.service';
 import { RatingsService } from '../../services/content/ratings.service';
 import { BlogsStore } from '@dragonfish/api/database/content/stores';
+import { ContentLibraryStore } from '@dragonfish/api/database/content-library/stores';
+import { IdentityGuard } from '@dragonfish/api/utilities/guards';
 
 @Controller('content')
 export class ContentController {
@@ -42,29 +44,36 @@ export class ContentController {
         private readonly content: ContentService,
         @Inject('IImages') private readonly images: IImages,
         private readonly ratings: RatingsService,
+        private readonly library: ContentLibraryStore,
         private readonly blogs: BlogsStore,
     ) {}
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(OptionalAuthGuard)
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
+    @Optional(true)
     @Get('fetch-one')
-    async fetchOne(@Query('contentId') contentId: string, @User() account?: JwtPayload): Promise<PubContent> {
+    async fetchOne(
+        @Query('pseudId') pseudId: string,
+        @Query('contentId') contentId: string,
+        @User() account?: JwtPayload,
+    ): Promise<PubContent> {
         if (isNullOrUndefined(contentId)) {
             throw new BadRequestException(`You must include the content ID and the content kind in your request.`);
         }
 
         if (account) {
-            const ratings = await this.ratings.fetchRatingsDoc(account.sub, contentId);
-            const content = await this.content.fetchOne(contentId);
             return {
-                content: content,
-                ratings: ratings,
+                content: await this.content.fetchOne(contentId),
+                ratings: await this.ratings.fetchRatingsDoc(account.sub, contentId),
+                libraryDoc: await this.library.fetchOne(pseudId, contentId),
             };
         } else {
             const content = await this.content.fetchOne(contentId);
             return {
                 content: content,
                 ratings: null,
+                libraryDoc: null,
             };
         }
     }
@@ -85,18 +94,21 @@ export class ContentController {
         return {
             content: content,
             ratings: ratings,
+            libraryDoc: null,
         };
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Get('fetch-all')
     async fetchAll(@User() user: JwtPayload, @Query('pseudId') pseudId: string) {
         return await this.content.fetchAll(pseudId);
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Get('fetch-all-by-kind')
     async fetchAllByKind(@Query('pseudId') pseudId: string, @Query('kinds') kinds: ContentKind[]) {
         return await this.content.fetchAllByKind(pseudId, kinds);
@@ -118,7 +130,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Put('create-one')
     async createOne(
         @User() user: JwtPayload,
@@ -139,7 +152,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Patch('save-changes')
     async saveChanges(
         @User() user: JwtPayload,
@@ -161,7 +175,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Patch('delete-one')
     async deleteOne(
         @User() user: JwtPayload,
@@ -176,7 +191,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Patch('publish-one')
     async publishOne(
         @User() user: JwtPayload,
@@ -192,7 +208,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('prose/upload-coverart/:proseId')
     async uploadProseCoverArt(
@@ -209,7 +226,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.User]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @UseInterceptors(FileInterceptor('coverart'))
     @Post('poetry/upload-coverart/:poetryId')
     async uploadPoetryCoverArt(
@@ -226,7 +244,8 @@ export class ContentController {
     }
 
     @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard([Roles.Admin, Roles.Moderator, Roles.Contributor]))
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.Admin, Roles.Moderator, Roles.Contributor)
     @Patch('toggle-news-post')
     async toggleNewsPost(@Query('pseudId') pseudId: string, @Body() newsChange: NewsChange) {
         return await this.blogs.toggleNewsPost(pseudId, newsChange);

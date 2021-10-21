@@ -31,6 +31,10 @@ export class WorkPageQuery extends Query<WorkPageState> {
         return this.getValue().selectedRating;
     }
 
+    public get isInLibrary() {
+        return this.getValue().libraryDoc !== null;
+    }
+
     public get authorId() {
         const author = this.getValue().content.author as Pseudonym;
         return author._id;

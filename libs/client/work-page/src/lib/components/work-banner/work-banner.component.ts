@@ -7,6 +7,8 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { slugify } from 'voca';
 import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
 import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
+import { ContentLibraryQuery, ContentLibraryService } from '@dragonfish/client/repository/content-library';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -21,6 +23,7 @@ export class WorkBannerComponent implements OnInit {
     tagKind = TagKind;
     genres = Genres;
     pubStatus = PubStatus;
+    loadingLibrary = false;
 
     constructor(
         private alerts: AlertsService,
@@ -28,6 +31,7 @@ export class WorkBannerComponent implements OnInit {
         public auth: AuthService,
         private workService: WorkPageService,
         public workQuery: WorkPageQuery,
+        public sessionQuery: SessionQuery,
     ) {}
 
     ngOnInit(): void {
@@ -56,7 +60,17 @@ export class WorkBannerComponent implements OnInit {
     }
 
     addToLibrary() {
-        this.alerts.info(`This feature is not yet available!`);
+        this.loadingLibrary = true;
+        this.workService.addToLibrary(this.content._id).subscribe(() => {
+            this.loadingLibrary = false;
+        });
+    }
+
+    removeFromLibrary() {
+        this.loadingLibrary = true;
+        this.workService.removeFromLibrary(this.content._id).subscribe(() => {
+            this.loadingLibrary = false;
+        });
     }
 
     shareContent() {

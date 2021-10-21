@@ -13,7 +13,6 @@ import {
     PubStatus,
 } from '@dragonfish/shared/models/content';
 import { BlogsContentDocument, NewsContentDocument } from '../schemas';
-import { NotificationKind } from '@dragonfish/shared/models/notifications';
 import { BlogsStore } from './blogs.store';
 import { NewsStore } from './news.store';
 import { ProseStore } from './prose.store';
