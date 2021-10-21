@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BookshelfDocument, ShelfItemDocument } from '../schemas';
-import { JwtPayload } from '@dragonfish/shared/models/auth';
 import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 
@@ -17,22 +16,22 @@ export class BookshelfStore {
 
     /**
      * Creates a new bookshelf.
-     * @param user
+     * @param userId
      * @param formData
      */
-    public async createBookshelf(user: JwtPayload, formData: BookshelfForm): Promise<BookshelfDocument> {
-        const newShelf = new this.bookshelf({ userId: user.sub, name: formData.name, desc: formData.desc });
+    public async createBookshelf(userId: string, formData: BookshelfForm): Promise<BookshelfDocument> {
+        const newShelf = new this.bookshelf({ userId: userId, name: formData.name, desc: formData.desc });
         return newShelf.save();
     }
 
     /**
      * Edits an existing bookshelf.
-     * @param user
+     * @param userId
      * @param shelfId
      * @param formData
      */
-    public async editBookshelf(user: JwtPayload, shelfId: string, formData: BookshelfForm): Promise<BookshelfDocument> {
-        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: user.sub });
+    public async editBookshelf(userId: string, shelfId: string, formData: BookshelfForm): Promise<BookshelfDocument> {
+        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: userId });
         shelf.name = formData.name;
         shelf.desc = formData.desc;
         return shelf.save();
@@ -40,37 +39,36 @@ export class BookshelfStore {
 
     /**
      * Change a shelf's cover pic.
-     * @param user
+     * @param userId
      * @param shelfId
      * @param coverPic
      */
-    public async changeCoverPic(user: JwtPayload, shelfId: string, coverPic: string): Promise<BookshelfDocument> {
-        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: user.sub });
+    public async changeCoverPic(userId: string, shelfId: string, coverPic: string): Promise<BookshelfDocument> {
+        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: userId });
         shelf.coverPic = coverPic;
         return shelf.save();
     }
 
     /**
      * Toggles public/private visibility for shelf.
-     * @param user
+     * @param userId
      * @param shelfId
      */
-    public async toggleVisibility(user: JwtPayload, shelfId: string): Promise<BookshelfDocument> {
-        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: user.sub });
+    public async toggleVisibility(userId: string, shelfId: string): Promise<BookshelfDocument> {
+        const shelf = await this.bookshelf.findOne({ _id: shelfId, userId: userId });
         shelf.public = !shelf.public;
         return shelf.save();
     }
 
     /**
      * Deletes a shelf and all associated shelf items.
-     * @param user
+     * @param userId
      * @param shelfId
      */
-    public async deleteShelf(user: JwtPayload, shelfId: string): Promise<void> {
-        if (await this.shelfExists(user.sub, shelfId)) {
-            await this.bookshelf.remove({ _id: shelfId, userId: user.sub }).then(async () => {
-                await this.shelfItem.remove({ shelfId: shelfId });
-            });
+    public async deleteShelf(userId: string, shelfId: string): Promise<void> {
+        if (await this.shelfExists(userId, shelfId)) {
+            await this.bookshelf.deleteOne({ _id: shelfId, userId: userId });
+            await this.removeAllItems(shelfId);
         } else {
             throw new NotFoundException(`The shelf you're trying to add to doesn't exist.`);
         }
@@ -78,10 +76,10 @@ export class BookshelfStore {
 
     /**
      * Fetches all public and private shelves.
-     * @param user
+     * @param userId
      */
-    public async fetchShelves(user: JwtPayload) {
-        return this.bookshelf.find({ userId: user.sub });
+    public async fetchShelves(userId: string) {
+        return this.bookshelf.find({ userId: userId });
     }
 
     /**
@@ -94,11 +92,11 @@ export class BookshelfStore {
 
     /**
      * Fetches one shelf.
-     * @param user
+     * @param userId
      * @param shelfId
      */
-    public async fetchOneShelf(user: JwtPayload, shelfId: string) {
-        return this.bookshelf.find({ _id: shelfId, userId: user.sub });
+    public async fetchOneShelf(userId: string, shelfId: string) {
+        return this.bookshelf.find({ _id: shelfId, userId: userId });
     }
 
     /**
@@ -116,12 +114,12 @@ export class BookshelfStore {
 
     /**
      * Adds an item to a bookshelf.
-     * @param user
+     * @param userId
      * @param shelfId
      * @param contentId
      */
-    public async addItem(user: JwtPayload, shelfId: string, contentId: string): Promise<ShelfItemDocument> {
-        if (await this.shelfExists(user.sub, shelfId)) {
+    public async addItem(userId: string, shelfId: string, contentId: string): Promise<ShelfItemDocument> {
+        if (await this.shelfExists(userId, shelfId)) {
             const newItem = new this.shelfItem({ shelfId: shelfId, content: contentId });
             return newItem.save();
         } else {
@@ -131,12 +129,12 @@ export class BookshelfStore {
 
     /**
      * Removes an item from a bookshelf.
-     * @param user
+     * @param userId
      * @param shelfId
      * @param contentId
      */
-    public async removeItem(user: JwtPayload, shelfId: string, contentId: string): Promise<void> {
-        if (await this.shelfExists(user.sub, shelfId)) {
+    public async removeItem(userId: string, shelfId: string, contentId: string): Promise<void> {
+        if (await this.shelfExists(userId, shelfId)) {
             await this.shelfItem.remove({ shelfId: shelfId, content: contentId });
         } else {
             throw new NotFoundException(`The shelf you're trying to modify doesn't exist.`);
@@ -174,16 +172,11 @@ export class BookshelfStore {
 
     /**
      * Removes all items from a bookshelf.
-     * @param user
      * @param shelfId
      * @private
      */
-    private async removeAllItems(user: JwtPayload, shelfId: string) {
-        if (await this.shelfExists(user.sub, shelfId)) {
-            await this.shelfItem.remove({ shelfId: shelfId });
-        } else {
-            throw new NotFoundException(`The shelf you're trying to add to doesn't exist.`);
-        }
+    private async removeAllItems(shelfId: string) {
+        await this.shelfItem.deleteMany({ shelfId: shelfId });
     }
 
     //#endregion
