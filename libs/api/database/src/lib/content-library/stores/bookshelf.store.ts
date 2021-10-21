@@ -99,15 +99,6 @@ export class BookshelfStore {
         return this.bookshelf.find({ _id: shelfId, userId: userId });
     }
 
-    /**
-     * Fetches one public shelf.
-     * @param userId
-     * @param shelfId
-     */
-    public async fetchOnePublicShelf(userId: string, shelfId: string) {
-        return this.bookshelf.find({ _id: shelfId, userId: userId, public: true });
-    }
-
     //#endregion
 
     //#region ---SHELF ITEM OPERATIONS---
