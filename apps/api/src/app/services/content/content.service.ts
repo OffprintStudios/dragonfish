@@ -3,14 +3,7 @@ import { PaginateResult } from 'mongoose';
 
 import { ContentGroupStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import {
-    ContentFilter,
-    ContentKind,
-    ContentModel,
-    FormType,
-    PubChange,
-    PubStatus,
-} from '@dragonfish/shared/models/content';
+import { ContentFilter, ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 

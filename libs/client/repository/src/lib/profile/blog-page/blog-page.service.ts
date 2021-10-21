@@ -23,7 +23,7 @@ export class BlogPageService {
     ) {}
 
     public fetchContent(id: string) {
-        return this.network.fetchOne(id).pipe(
+        return this.network.fetchOne(id, this.pseudQuery.currentId).pipe(
             tap((result) => {
                 this.blogPageStore.update({
                     blog: result.content as BlogsContentModel,

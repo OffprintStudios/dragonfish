@@ -1,7 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
-import { Subscription } from '@dragonfish/shared/models/accounts/notifications';
+import { Subscription, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'subscriptions' })
 export class SubscriptionDocument extends Document implements Subscription {
@@ -13,6 +13,9 @@ export class SubscriptionDocument extends Document implements Subscription {
 
     @Prop({ type: String, ref: 'Pseudonym', required: true, index: true })
     readonly subscriberId: string;
+
+    @Prop({ type: String, enum: Object.keys(SubscriptionKind), required: true, index: true })
+    readonly kind: SubscriptionKind;
 
     @Prop()
     readonly createdAt: Date;

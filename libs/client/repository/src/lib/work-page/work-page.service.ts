@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { PseudonymsQuery } from '../pseudonyms';
-import { ContentKind, ContentModel, FormType } from '@dragonfish/shared/models/content';
+import { ContentKind, ContentModel, FormType, PubContent } from '@dragonfish/shared/models/content';
 import { WorkPageQuery } from './work-page.query';
 import { WorkPageStore } from './work-page.store';
 import { catchError, take, tap } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { SectionsService } from './sections';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
+import { ContentLibraryService } from '../content-library';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -23,26 +24,33 @@ export class WorkPageService {
         private alerts: AlertsService,
         private router: Router,
         private sections: SectionsService,
+        private library: ContentLibraryService,
     ) {}
 
     //#region ---FETCHING---
 
     public fetchContent(id: string) {
-        return this.network.fetchOne(id).pipe(
-            tap((result) => {
-                this.workStore.update({
-                    content: result.content,
-                    ratings: result.ratings,
-                    selectedRating: result.ratings !== null ? result.ratings.rating : null,
-                    wordCount: result.content.stats.words,
-                });
-                this.sections.setSections((result.content as any).sections);
-            }),
-            catchError((err) => {
-                this.alerts.error(`Something went wrong!`);
-                return throwError(err);
-            }),
-        );
+        if (this.pseudQuery.currentId) {
+            return this.network.fetchOne(id, this.pseudQuery.currentId).pipe(
+                tap((result) => {
+                    this.setContent(result);
+                }),
+                catchError((err) => {
+                    this.alerts.error(`Something went wrong!`);
+                    return throwError(err);
+                }),
+            );
+        } else {
+            return this.network.fetchOne(id).pipe(
+                tap((result) => {
+                    this.setContent(result);
+                }),
+                catchError((err) => {
+                    this.alerts.error(`Something went wrong!`);
+                    return throwError(err);
+                }),
+            );
+        }
     }
 
     //#endregion
@@ -218,6 +226,41 @@ export class WorkPageService {
                 selectedRating: val.rating,
             });
         });
+    }
+
+    public addToLibrary(contentId: string) {
+        return this.library.addToLibrary(contentId).pipe(
+            tap((val) => {
+                this.workStore.update({
+                    libraryDoc: val,
+                });
+            }),
+        );
+    }
+
+    public removeFromLibrary(contentId: string) {
+        return this.library.removeFromLibrary(contentId).pipe(
+            tap(() => {
+                this.workStore.update({
+                    libraryDoc: null,
+                });
+            }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---PRIVATE---
+
+    private setContent(result: PubContent) {
+        this.workStore.update({
+            content: result.content,
+            ratings: result.ratings,
+            selectedRating: result.ratings !== null ? result.ratings.rating : null,
+            libraryDoc: result.libraryDoc !== null ? result.libraryDoc : null,
+            wordCount: result.content.stats.words,
+        });
+        this.sections.setSections((result.content as any).sections);
     }
 
     //#endregion

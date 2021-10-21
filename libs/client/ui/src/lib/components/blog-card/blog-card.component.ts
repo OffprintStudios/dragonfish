@@ -50,6 +50,10 @@ export class BlogCardComponent {
     }
 
     canSeeNewsPostButton() {
-        return isAllowed(this.session.currAccount.roles, [Roles.Admin, Roles.Moderator, Roles.Contributor]);
+        if (this.session.currAccount) {
+            return isAllowed(this.session.currAccount.roles, [Roles.Admin, Roles.Moderator, Roles.Contributor]);
+        } else {
+            return false;
+        }
     }
 }

@@ -37,7 +37,8 @@ export class IdentityGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
 
         if (optional) {
-            if (request.headers['authorization']) {
+            const jwtToken: string = request.headers['authorization'];
+            if (jwtToken) {
                 return await this.verifyToken(request, roles);
             } else {
                 return true;
@@ -61,7 +62,7 @@ export class IdentityGuard implements CanActivate {
         // If it does, then grab the token. If not, throw an
         // Unauthorized exception.
         let bearerToken: string;
-        if (jwtToken.startsWith('Bearer ')) {
+        if (jwtToken && jwtToken.startsWith('Bearer ')) {
             bearerToken = jwtToken.substring(7, jwtToken.length);
         } else {
             throw new UnauthorizedException(`You don't have permission to do that.`);
