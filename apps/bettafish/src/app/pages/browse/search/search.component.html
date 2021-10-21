@@ -24,7 +24,9 @@
                     <span (click)="toggleShowAdvancedOptions()">Hide Advanced</span>
                     <div class="advanced-options">
                         <ng-container *ngIf="searchForm.controls.kind.value !== kindOptions.User">
-                            <div>Author</div>
+                            <div class="offprint-select">
+                                <label>Author</label>
+                            </div>
                             <dragonfish-text-field
                                 [formControlName]="'author'"
                                 [name]="'author'"
@@ -32,30 +34,35 @@
                                 [placeholder]="''"
                                 [searchBox]="true"
                             ></dragonfish-text-field>
-                            <div>Category</div>
                             <div class="offprint-select">
+                                <label>Category</label>
                                 <ng-select class="custom" [formControlName]="'category'" [searchable]="false" [placeholder]="'Select Category'">
                                     <ng-option *ngFor="let category of categoryOptions | keyvalue" [value]="category.key">
                                         {{ category.value }}
                                     </ng-option>
                                 </ng-select>
                             </div>
-                            <div>Genre(s)</div>
                             <div class="offprint-select">
+                                <label>Genre(s)</label>
                                 <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
                                     <ng-option *ngFor="let genre of genreOptions | keyvalue" [value]="genre.key">
                                         {{ genre.value }}
                                     </ng-option>
                                 </ng-select>
-                            </div>
-                            <div>
-                               <input id="allGenre" type="radio" [value]="false" [formControlName]="'genreSearchAny'">
-                               <label for="allGenre">&nbsp;Match all</label>
-                            </div>
-                         
-                            <div>
-                               <input id="anyGenre" type="radio" [value]="true" [formControlName]="'genreSearchAny'">
-                               <label for="anyGenre">&nbsp;Match one or more</label>
+                                <ng-select class="custom" [formControlName]="'genreSearchMatch'" [searchable]="false" [placeholder]="'Match Type'">
+                                    <ng-option [value]="matchOptions.All">
+                                        Match All
+                                    </ng-option>
+                                    <ng-option [value]="matchOptions.OneOrMore">
+                                        Match One or More
+                                    </ng-option>
+                                    <ng-option [value]="matchOptions.NoOthers">
+                                        Match No Other Genres
+                                    </ng-option>
+                                    <ng-option [value]="matchOptions.Exactly">
+                                        Match Exactly
+                                    </ng-option>
+                                </ng-select>
                             </div>
                         </ng-container>
                     </div>

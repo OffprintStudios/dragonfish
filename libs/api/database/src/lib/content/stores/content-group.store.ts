@@ -20,6 +20,7 @@ import {
     WorkKind,
 } from '@dragonfish/shared/models/content';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { SearchMatch } from '@dragonfish/shared/models/search';
 
 /**
  * ## Content Group Store
@@ -217,7 +218,7 @@ export class ContentGroupStore {
      * @param authorId (Optional) ID of author of work that searching for.
      * @param category (Optional) The category of content that searching for.
      * @param genres (Optional) The genres of content that searching for.
-     * @param genreSearchAny When searching genre, whether all genres should match or just one or more.
+     * @param genreSearchMatch When searching genre, how the genres should match.
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
@@ -228,7 +229,7 @@ export class ContentGroupStore {
         authorId: string | null,
         category: WorkKind | null,
         genres: Genres[] | null,
-        genreSearchAny: boolean,
+        genreSearchMatch: SearchMatch,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -256,11 +257,23 @@ export class ContentGroupStore {
             paginateQuery['meta.category'] = category;
         }
         if (genres && genres.length > 0) {
-            if (genreSearchAny) {
-                paginateQuery['meta.genres'] = { $in: genres };
-            }
-            else {
-                paginateQuery['meta.genres'] = { $all: genres };
+            switch(genreSearchMatch) {
+                case SearchMatch.All:
+                    paginateQuery['meta.genres'] = { $all: genres };
+                    break;
+                case SearchMatch.OneOrMore:
+                    paginateQuery['meta.genres'] = { $in: genres };
+                    break;
+                case SearchMatch.NoOthers:
+                    paginateQuery['meta.genres'] = { $not: { $elemMatch: { $nin: genres }}, $exists: true };
+                    paginateQuery['meta.genres.0'] = { $exists: true };
+                    break;
+                case SearchMatch.Exactly:
+                    paginateQuery['meta.genres'] = genres;
+                    break;
+                default:
+                    paginateQuery['meta.genres'] = { $all: genres };
+                    break;
             }
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
