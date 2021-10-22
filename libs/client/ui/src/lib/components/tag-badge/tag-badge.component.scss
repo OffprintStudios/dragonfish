@@ -3,16 +3,33 @@ div.tag-pill {
     rmx-icon {
         @apply w-4 relative mr-1 top-1;
     }
-    span {
+    span.tag-label {
         @apply text-sm;
+    }
+    span.rating-label-small {
+        @apply hidden text-sm font-medium;
     }
     &.no-text {
         @apply px-1.5;
         rmx-icon {
             @apply mr-0;
         }
-        span {
+        span.tag-label {
             @apply hidden;
+        }
+        &.no-icon {
+            @apply px-2 py-0.5;
+            span.rating-label-small {
+                @apply block;
+            }
+        }
+    }
+    &.big-text {
+        rmx-icon {
+            @apply w-6;
+        }
+        span.tag-label {
+            @apply text-base;
         }
     }
     &:hover {
@@ -38,6 +55,22 @@ div.tag-pill {
     }
 
     &.user {}
+
+    &.everyone {
+        @apply bg-green-700 hover:bg-green-900;
+    }
+
+    &.teen {
+        @apply bg-yellow-400 hover:bg-yellow-600;
+    }
+
+    &.mature {
+        @apply bg-yellow-700 hover:bg-yellow-900;
+    }
+
+    &.explicit {
+        @apply bg-red-700 hover:bg-red-900;
+    }
 
     &.no-icon {
         @apply py-1;

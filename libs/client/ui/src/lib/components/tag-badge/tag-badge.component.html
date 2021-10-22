@@ -7,10 +7,16 @@
         'genre': kind === kinds.Genre,
         'type': kind === kinds.Type,
         'user': kind === kinds.User,
-        'no-text': size === 'small'
+        'no-text': size === 'small',
+        'big-text': size === 'large',
+        'no-icon': !hasIcon,
+        'everyone': isEveryone,
+        'teen': isTeen,
+        'mature': isMature,
+        'explicit': isExplicit
     }"
     [matTooltip]="generateTooltip()"
-    [matTooltipDisabled]="size === 'large'"
+    [matTooltipDisabled]="size === 'large' || size === 'medium'"
     [matTooltipClass]="'offprint-tooltip'"
     [matTooltipShowDelay]="300"
 >
@@ -18,11 +24,11 @@
         <ng-container [ngSwitch]="type">
             <ng-container *ngSwitchCase="types.ProseContent">
                 <rmx-icon name="book-open-line"></rmx-icon>
-                <span>Prose</span>
+                <span class="tag-label">Prose</span>
             </ng-container>
             <ng-container *ngSwitchCase="types.PoetryContent">
                 <rmx-icon name="quill-pen-line"></rmx-icon>
-                <span>Poetry</span>
+                <span class="tag-label">Poetry</span>
             </ng-container>
         </ng-container>
     </ng-container>
@@ -30,11 +36,11 @@
         <ng-container [ngSwitch]="category">
             <ng-container *ngSwitchCase="categories.Original">
                 <rmx-icon name="loader-2-line"></rmx-icon>
-                <span>Original</span>
+                <span class="tag-label">Original</span>
             </ng-container>
             <ng-container *ngSwitchCase="categories.Fanwork">
                 <rmx-icon name="empathize-line"></rmx-icon>
-                <span>Fanwork</span>
+                <span class="tag-label">Fanwork</span>
             </ng-container>
         </ng-container>
     </ng-container>
@@ -42,55 +48,75 @@
         <ng-container [ngSwitch]="genres[genre]">
             <ng-container *ngSwitchCase="genres.Comedy">
                 <rmx-icon name="emotion-laugh-line"></rmx-icon>
-                <span>Comedy</span>
+                <span class="tag-label">Comedy</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Drama">
                 <rmx-icon name="file-paper-2-line"></rmx-icon>
-                <span>Drama</span>
+                <span class="tag-label">Drama</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Erotica">
                 <rmx-icon name="door-closed-line"></rmx-icon>
-                <span>Erotica</span>
+                <span class="tag-label">Erotica</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Fantasy">
                 <rmx-icon name="magic-line"></rmx-icon>
-                <span>Fantasy</span>
+                <span class="tag-label">Fantasy</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Horror">
                 <rmx-icon name="ghost-2-line"></rmx-icon>
-                <span>Horror</span>
+                <span class="tag-label">Horror</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Mystery">
                 <rmx-icon name="search-eye-line"></rmx-icon>
-                <span>Mystery</span>
+                <span class="tag-label">Mystery</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Romance">
                 <rmx-icon name="hearts-line"></rmx-icon>
-                <span>Romance</span>
+                <span class="tag-label">Romance</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.ScienceFiction">
                 <rmx-icon name="aliens-line"></rmx-icon>
-                <span>Science Fiction</span>
+                <span class="tag-label">Science Fiction</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.SliceOfLife">
                 <rmx-icon name="home-3-line"></rmx-icon>
-                <span>Slice of Life</span>
+                <span class="tag-label">Slice of Life</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.SpeculativeFiction">
                 <rmx-icon name="meteor-line"></rmx-icon>
-                <span>Speculative Fiction</span>
+                <span class="tag-label">Speculative Fiction</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Thriller">
                 <rmx-icon name="spy-line"></rmx-icon>
-                <span>Thriller</span>
+                <span class="tag-label">Thriller</span>
             </ng-container>
             <ng-container *ngSwitchCase="genres.Tragedy">
                 <rmx-icon name="skull-line"></rmx-icon>
-                <span>Tragedy</span>
+                <span class="tag-label">Tragedy</span>
             </ng-container>
             <ng-container *ngSwitchDefault>
                 <rmx-icon name="sword-line"></rmx-icon>
-                <span>Action/Adventure</span>
+                <span class="tag-label">Action/Adventure</span>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="kind === kinds.Rating">
+        <ng-container [ngSwitch]="rating">
+            <ng-container *ngSwitchCase="ratings.Everyone">
+                <span class="tag-label">Everyone</span>
+                <span class="rating-label-small">E</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="ratings.Teen">
+                <span class="tag-label">Teen</span>
+                <span class="rating-label-small">T</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="ratings.Mature">
+                <span class="tag-label">Mature</span>
+                <span class="rating-label-small">M</span>
+            </ng-container>
+            <ng-container *ngSwitchCase="ratings.Explicit">
+                <span class="tag-label">Explicit</span>
+                <span class="rating-label-small">X</span>
             </ng-container>
         </ng-container>
     </ng-container>

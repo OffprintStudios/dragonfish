@@ -96,7 +96,18 @@
 </div>
 
 <div class="work-card border border-gray-600 dark:border-white rounded-md" *ngIf="size === 'small'" [routerLink]="createContentUrl(content.kind, content._id, content.title)">
-    <h4 class="text-lg font-medium">{{ content.title }}</h4>
+    <div class="flex">
+        <h4
+            class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center"
+            style="line-height: 1.15rem;"
+            [matTooltip]="content.title"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipShowDelay]="300"
+        >
+            {{ content.title }}
+        </h4>
+        <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [size]="'small'" [hasIcon]="false"></dragonfish-tag-badge>
+    </div>
     <div class="work-body" [ngClass]="{'flex': $any(content.meta).coverArt, 'items-center': $any(content.meta).coverArt}">
         <div class="cover" *ngIf="$any(content.meta).coverArt">
             <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
