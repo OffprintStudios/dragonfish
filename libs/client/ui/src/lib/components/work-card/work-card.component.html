@@ -1,4 +1,4 @@
-<div class="card shadow-md rounded-md">
+<div class="card shadow-md rounded-md" *ngIf="size === 'large'">
     <dragonfish-rating-icon [rating]="content.meta.rating" [size]="'small'"></dragonfish-rating-icon>
     <div class="card-content flex flex-col p-3">
         <div>
@@ -91,6 +91,34 @@
                 >{{ content.audit.publishedOn | localedate: 'shortDate' }}<span>//</span>
                 {{ content.meta.status }}
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="work-card border border-gray-600 dark:border-white rounded-md" *ngIf="size === 'small'" [routerLink]="createContentUrl(content.kind, content._id, content.title)">
+    <h4 class="text-lg font-medium">{{ content.title }}</h4>
+    <div class="work-body">
+        <div class="cover" *ngIf="$any(content.meta).coverArt">
+            <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
+        </div>
+        <div class="desc">
+            {{ content.desc }}
+        </div>
+    </div>
+    <div class="work-meta bg-gray-200 dark:bg-gray-400">
+        <div>
+            by {{ $any(content.author).screenName }}
+        </div>
+        <div class="text-sm mx-0.5">
+            •
+        </div>
+        <div>
+            {{ $any(content.meta).category }}
+        </div>
+        <div class="flex-1"></div>
+        <div class="flex items-center">
+            <rmx-icon name="heart-line" class="relative top-1" style="width: 1rem;"></rmx-icon>
+            <span>0%</span>
         </div>
     </div>
 </div>

@@ -21,7 +21,7 @@
         <ng-container *ngIf="libraryQuery.all$ | async as library">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 mx-auto gap-4 mb-6">
                 <ng-container *ngFor="let item of library">
-                    <dragonfish-work-card [content]="item.content" [showAuthor]="true"></dragonfish-work-card>
+                    <dragonfish-work-card [content]="item.content" [size]="'small'"></dragonfish-work-card>
                 </ng-container>
             </div>
         </ng-container>

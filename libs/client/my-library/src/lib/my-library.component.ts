@@ -8,4 +8,8 @@ import { ContentLibraryQuery } from '@dragonfish/client/repository/content-libra
 })
 export class MyLibraryComponent {
     constructor(public libraryQuery: ContentLibraryQuery) {}
+
+    genUrl(url: string) {
+        return `url("${url}")`;
+    }
 }
