@@ -6,8 +6,13 @@
         'category': kind === kinds.Category,
         'genre': kind === kinds.Genre,
         'type': kind === kinds.Type,
-        'user': kind === kinds.User
+        'user': kind === kinds.User,
+        'no-text': size === 'small'
     }"
+    [matTooltip]="generateTooltip()"
+    [matTooltipDisabled]="size === 'large'"
+    [matTooltipClass]="'offprint-tooltip'"
+    [matTooltipShowDelay]="300"
 >
     <ng-container *ngIf="kind === kinds.Type">
         <ng-container [ngSwitch]="type">

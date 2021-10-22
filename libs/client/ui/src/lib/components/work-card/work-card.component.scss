@@ -118,9 +118,9 @@ div.card {
 }
 
 div.work-card {
-    @apply flex flex-col p-2 transition transform select-none cursor-pointer;
+    @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full;
     div.work-body {
-        @apply flex-1 flex items-center mb-2;
+        @apply flex-1 mb-2;
         div.cover {
             @apply mr-2;
             img {

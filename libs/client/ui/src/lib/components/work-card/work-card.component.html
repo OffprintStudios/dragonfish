@@ -97,11 +97,18 @@
 
 <div class="work-card border border-gray-600 dark:border-white rounded-md" *ngIf="size === 'small'" [routerLink]="createContentUrl(content.kind, content._id, content.title)">
     <h4 class="text-lg font-medium">{{ content.title }}</h4>
-    <div class="work-body">
+    <div class="work-body" [ngClass]="{'flex': $any(content.meta).coverArt, 'items-center': $any(content.meta).coverArt}">
         <div class="cover" *ngIf="$any(content.meta).coverArt">
             <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
         </div>
         <div class="desc">
+            <div class="flex items-center flex-wrap">
+                <dragonfish-tag-badge [kind]="tagKind.Type" [type]="content.kind" [size]="size"></dragonfish-tag-badge>
+                <dragonfish-tag-badge [kind]="tagKind.Category" [category]="content.meta.category" [size]="size"></dragonfish-tag-badge>
+                <ng-container *ngFor="let genre of content.meta.genres">
+                    <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre" [size]="size"></dragonfish-tag-badge>
+                </ng-container>
+            </div>
             {{ content.desc }}
         </div>
     </div>
@@ -109,16 +116,16 @@
         <div>
             by {{ $any(content.author).screenName }}
         </div>
-        <div class="text-sm mx-0.5">
+        <div class="text-sm mx-0.5 relative -top-0.5">
             •
         </div>
         <div>
-            {{ $any(content.meta).category }}
+            {{ content.stats.words | abbreviate }} word{{ content.stats.words | pluralize }}
         </div>
         <div class="flex-1"></div>
         <div class="flex items-center">
             <rmx-icon name="heart-line" class="relative top-1" style="width: 1rem;"></rmx-icon>
-            <span>0%</span>
+            <span>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
         </div>
     </div>
 </div>

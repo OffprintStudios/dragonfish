@@ -6,6 +6,15 @@ div.tag-pill {
     span {
         @apply text-sm;
     }
+    &.no-text {
+        @apply px-1.5;
+        rmx-icon {
+            @apply mr-0;
+        }
+        span {
+            @apply hidden;
+        }
+    }
     &:hover {
         @apply scale-105;
     }

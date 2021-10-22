@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ContentKind, Genres } from '@dragonfish/shared/models/content';
+import { ContentKind, Genres, TagKind } from '@dragonfish/shared/models/content';
 
 import { calculateApprovalRating } from '@dragonfish/shared/functions';
 import { slugify } from 'voca';
@@ -12,10 +12,11 @@ import { slugify } from 'voca';
 export class WorkCardComponent {
     @Input() content;
     @Input() showAuthor: boolean;
-    @Input() size: 'small' | 'large';
+    @Input() size: 'small' | 'large' = 'large';
 
     contentKind = ContentKind;
     contentGenres = Genres;
+    tagKind = TagKind;
 
     showAllTags = false;
 
