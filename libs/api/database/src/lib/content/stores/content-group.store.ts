@@ -7,6 +7,7 @@ import {
     RatingsDocument,
     ReadingHistoryDocument,
     SectionsDocument,
+    TagsDocument,
 } from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
@@ -36,6 +37,7 @@ export class ContentGroupStore {
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
+        @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
     ) {}
 
     //#region ---FETCHING---
@@ -279,7 +281,16 @@ export class ContentGroupStore {
             }
         }
         if (tagIds && tagIds.length > 0) {
-            paginateQuery['tags'] = { $all: tagIds };
+            // paginateQuery['tags'] = { $all: tagIds };
+            // each parent and child inside an "or", gathering in an "and"
+
+            // Match All, include children
+            let tagConditions = [];
+            for (let tag of tagIds) {
+                const tagArray = await this.getAllTagIds(tag);
+                tagConditions.push( { tags: { $in: tagArray } });
+            }
+            paginateQuery['$and'] = tagConditions;
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
@@ -412,6 +423,21 @@ export class ContentGroupStore {
                 break;
         }
         return query;
+    }
+
+    /**
+     * Given a tagId, constructs an array of that tagId and the IDs of that tag's children
+     * @param tagId ID of tag that searching for children for
+     * @returns string[] of the given tagId and the IDs of that tag's children (just tagId if it has no children)
+     */
+    private async getAllTagIds(tagId: string) {
+        const childTags = await this.tags.find({ parent: tagId });
+        if (childTags) {
+            const childTagIds = childTags.map((tag) => tag._id);
+            childTagIds.push(tagId);
+            return childTagIds;
+        }
+        return [tagId];
     }
 
     //#endregion
