@@ -21,20 +21,23 @@ export class SearchController {
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
         @Query('categoryKey') categoryKey: string | null,
-        @Query('genreKeys') genreKeys: string,
         @Query('genreSearchMatch') genreSearchMatch: SearchMatch,
+        @Query('genreKeys') genreKeys: string,
+        @Query('tagIds') tagIds: string,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const genresList = genreKeys.split(',');
+        const genresList = genreKeys && genreKeys !== 'null' ? genreKeys.split(',') : null;
+        const tagsList = tagIds && tagIds !== 'null' ? tagIds.split(',') : null;
 
         return await this.searchService.findRelatedContent(
             query,
             kind,
             author,
             categoryKey,
-            genresList,
             genreSearchMatch,
+            genresList,
+            tagsList,
             pageNum,
             filter
         );

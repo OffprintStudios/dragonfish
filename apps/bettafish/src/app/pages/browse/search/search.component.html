@@ -44,11 +44,6 @@
                             </div>
                             <div class="offprint-select">
                                 <label>Genre(s)</label>
-                                <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
-                                    <ng-option *ngFor="let genre of genreOptions | keyvalue" [value]="genre.key">
-                                        {{ genre.value }}
-                                    </ng-option>
-                                </ng-select>
                                 <ng-select class="custom" [formControlName]="'genreSearchMatch'" [searchable]="false" [placeholder]="'Match Type'">
                                     <ng-option [value]="matchOptions.All">
                                         Match All
@@ -63,7 +58,34 @@
                                         Match Exactly
                                     </ng-option>
                                 </ng-select>
+                                <ng-select class="custom" [formControlName]="'genres'" [searchable]="false" [multiple]="true" [placeholder]="'Select Genre(s)'">
+                                    <ng-option *ngFor="let genre of genreOptions | keyvalue" [value]="genre.key">
+                                        {{ genre.value }}
+                                    </ng-option>
+                                </ng-select>
                             </div>
+                            
+
+                            <ng-container *ngIf="tagsEnabled">
+                                <ng-container *ngIf="tagsQuery.all$ | async as tags">
+                                    <div class="offprint-select">
+                                        <label>Fandom Tag(s)</label>
+                                        <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Fandom(s)'">
+                                            <div *ngFor="let tag of tags">
+                                                <ng-option [value]="tag._id">
+                                                    <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
+                                                </ng-option>
+                                                <div *ngFor="let child of tag.children">
+                                                    <ng-option [value]="child._id">
+                                                        <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
+                                                    </ng-option>
+                                                </div>
+                                            </div>
+                                        </ng-select>
+                                        <!--Include Child Tags checkbox-->
+                                    </div>
+                                </ng-container>
+                            </ng-container>
                         </ng-container>
                     </div>
                 </ng-container>

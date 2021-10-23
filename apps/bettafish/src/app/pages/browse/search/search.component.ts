@@ -30,8 +30,9 @@ export class SearchComponent implements OnInit {
     currentSearchKind: SearchKind = null;
     currentAuthor = '';
     currentCategoryKey: string = null;
-    currentGenreKeys: string[] = [];
     currentGenreSearchMatch: SearchMatch = null;
+    currentGenreKeys: string[] = [];
+    currentTagIds: string[] = [];
     pageNum = 1;
 
     searchResultWorks: PaginateResult<ContentModel>;
@@ -43,8 +44,9 @@ export class SearchComponent implements OnInit {
         kind: new FormControl(null),
         author: new FormControl(''),
         category: new FormControl(null),
-        genres: new FormControl([]),
         genreSearchMatch: new FormControl(null),
+        genres: new FormControl([]),
+        tags: new FormControl([]),
     });
     mobileMode = false;
     showAdvancedOptions = false;
@@ -70,9 +72,14 @@ export class SearchComponent implements OnInit {
         this.currentSearchKind = this.parseKind(queryParams.get('kind'));
         this.currentAuthor = queryParams.get('author');
         this.currentCategoryKey = this.parseCategoryKey(queryParams.get('category'));
+
+        this.currentGenreSearchMatch = this.parseMatch(queryParams.get('genreSearchMatch'));
         let genreListString = queryParams.get('genres');
         this.currentGenreKeys = genreListString ? this.parseGenreKeys(genreListString.split(',')) : [];
-        this.currentGenreSearchMatch = this.parseMatch(queryParams.get('genreSearchMatch'));
+
+        let tagIdListString = queryParams.get('tags');
+        this.currentTagIds = tagIdListString ? tagIdListString.split(',') : [];
+
         if (queryParams.has('page')) {
             this.pageNum = +queryParams.get('page');
         }
@@ -85,8 +92,9 @@ export class SearchComponent implements OnInit {
             kind: this.currentSearchKind,
             author: this.currentAuthor,
             category: this.currentCategoryKey,
-            genres: this.currentGenreKeys,
             genreSearchMatch: this.currentGenreSearchMatch,
+            genres: this.currentGenreKeys,
+            tags: this.currentTagIds,
         });
 
         if (queryParams.has('query')) {
@@ -95,12 +103,14 @@ export class SearchComponent implements OnInit {
                 this.currentSearchKind,
                 this.currentAuthor,
                 this.currentCategoryKey,
-                this.currentGenreKeys,
                 this.currentGenreSearchMatch,
+                this.currentGenreKeys,
+                this.currentTagIds,
                 this.pageNum);
         }
         if (this.currentAuthor || this.currentCategoryKey != null ||
-            (this.currentGenreKeys != null && this.currentGenreKeys.length > 0)) {
+            (this.currentGenreKeys != null && this.currentGenreKeys.length > 0) ||
+            (this.currentTagIds != null && this.currentTagIds.length > 0)) {
             this.showAdvancedOptions = true;
         }
         this.onResize();
@@ -118,8 +128,9 @@ export class SearchComponent implements OnInit {
         this.currentSearchKind = this.parseKind(this.searchForm.controls.kind.value);
         this.currentAuthor = this.searchForm.controls.author.value;
         this.currentCategoryKey = this.parseCategoryKey(this.searchForm.controls.category.value);
-        this.currentGenreKeys = this.parseGenreKeys(this.searchForm.controls.genres.value);
         this.currentGenreSearchMatch = this.parseMatch(this.searchForm.controls.genreSearchMatch.value);
+        this.currentGenreKeys = this.parseGenreKeys(this.searchForm.controls.genres.value);
+        this.currentTagIds = this.searchForm.controls.tags.value;
         this.pageNum = 1;
 
         this.navigate();
@@ -180,13 +191,13 @@ export class SearchComponent implements OnInit {
 
     private parseMatch(matchString: string): SearchMatch {
         const match: SearchMatch = SearchMatch[matchString];
-        console.log("parseMatch " + matchString + " parsed as " + match);
         return Object.values(SearchMatch).indexOf(match) >= 0 ? match : SearchMatch.All;
     }
 
     private navigate() {
         let notUserSearch = this.currentSearchKind != SearchKind.User;
         let genresSearch = this.currentGenreKeys != null && this.currentGenreKeys.length > 0;
+        let tagsSearch = this.currentTagIds != null && this.currentTagIds.length > 0;
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { 
@@ -194,9 +205,10 @@ export class SearchComponent implements OnInit {
                 kind: this.currentSearchKind != SearchKind.ProseAndPoetry ? this.currentSearchKind : null,
                 author: (this.currentAuthor && notUserSearch) ? this.currentAuthor : null,
                 category: (this.currentCategoryKey != null && notUserSearch) ? this.currentCategoryKey : null,
-                genres: (genresSearch && notUserSearch) ? this.currentGenreKeys.toString() : null,
                 genreSearchMatch: (genresSearch && notUserSearch && this.currentGenreSearchMatch != SearchMatch.All) ?
                     this.currentGenreSearchMatch : null,
+                genres: (genresSearch && notUserSearch) ? this.currentGenreKeys.toString() : null,
+                tags: (tagsSearch && notUserSearch) ? this.currentTagIds.toString() : null,
                 page: this.pageNum != 1 ? this.pageNum : null,
             },
         }).catch(() => {
@@ -207,8 +219,9 @@ export class SearchComponent implements OnInit {
                 this.currentSearchKind,
                 this.currentAuthor,
                 this.currentCategoryKey,
-                this.currentGenreKeys,
                 this.currentGenreSearchMatch,
+                this.currentGenreKeys,
+                this.currentTagIds,
                 this.pageNum
             );
         });
@@ -219,8 +232,9 @@ export class SearchComponent implements OnInit {
         searchKind: SearchKind,
         author: string | null,
         searchCategory: string | null,
-        genres: string[] | null,
         genreSearchMatch: SearchMatch,
+        genres: string[] | null,
+        tagIds: string[] | null,
         pageNum: number
         ) {
         this.loading = true;
@@ -232,8 +246,9 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genres,
                     genreSearchMatch,
+                    genres,
+                    tagIds,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -247,8 +262,9 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genres,
                     genreSearchMatch,
+                    genres,
+                    tagIds,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -271,8 +287,9 @@ export class SearchComponent implements OnInit {
                     searchKind,
                     author,
                     searchCategory,
-                    genres,
                     genreSearchMatch,
+                    genres,
+                    tagIds,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {

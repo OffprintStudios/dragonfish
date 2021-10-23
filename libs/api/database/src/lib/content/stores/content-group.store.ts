@@ -217,8 +217,9 @@ export class ContentGroupStore {
      * @param kinds The kind of document to fetch.
      * @param authorId (Optional) ID of author of work that searching for.
      * @param category (Optional) The category of content that searching for.
-     * @param genres (Optional) The genres of content that searching for.
      * @param genreSearchMatch When searching genre, how the genres should match.
+     * @param genres (Optional) The genres of content that searching for.
+     * @param tagIds (Optional) The fandom tags that searching for in content
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
@@ -228,8 +229,9 @@ export class ContentGroupStore {
         kinds: ContentKind[],
         authorId: string | null,
         category: WorkKind | null,
-        genres: Genres[] | null,
         genreSearchMatch: SearchMatch,
+        genres: Genres[] | null,
+        tagIds: string[] | null,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -275,6 +277,9 @@ export class ContentGroupStore {
                     paginateQuery['meta.genres'] = { $all: genres };
                     break;
             }
+        }
+        if (tagIds && tagIds.length > 0) {
+            paginateQuery['tags'] = { $all: tagIds };
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);

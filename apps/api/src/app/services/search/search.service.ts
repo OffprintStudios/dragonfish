@@ -23,8 +23,9 @@ export class SearchService implements ISearch {
         searchKind: SearchKind,
         author: string | null,
         categoryKey: string | null,
-        genreKeys: string[] | null,
         genreSearchMatch: SearchMatch,
+        genreKeys: string[] | null,
+        tagIds: string[] | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>> {
@@ -65,9 +66,11 @@ export class SearchService implements ISearch {
         }
         
         const genreList: Genres[] = [];
-        for (let genre of genreKeys) {
-            if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
-                genreList.push(genre as Genres);
+        if (genreKeys) {
+            for (let genre of genreKeys) {
+                if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
+                    genreList.push(genre as Genres);
+                }
             }
         }
 
@@ -76,8 +79,9 @@ export class SearchService implements ISearch {
             kinds,
             authorId,
             category,
-            genreList.length > 0 ? genreList : null,
             genreSearchMatch,
+            genreList.length > 0 ? genreList : null,
+            tagIds,
             pageNum,
             this.MAX_PER_PAGE,
             contentFilter

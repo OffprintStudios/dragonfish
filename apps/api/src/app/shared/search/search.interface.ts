@@ -13,8 +13,9 @@ export interface ISearch {
      * @param searchKind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
      * @param categoryKey (Optional) The category key of content that searching for
-     * @param genreKeys (Optional) The genre keys of content that searching for.
-     * @param genreSearchMatch When searching genre, how the genres should match.
+     * @param genreSearchMatch When searching genre, how the genres should match
+     * @param genreKeys (Optional) The genre keys of content that searching for
+     * @param tagIds (Optional) The fandom tags that searching for in content
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
@@ -23,8 +24,9 @@ export interface ISearch {
         searchKind: SearchKind,
         author: string | null,
         categoryKey: string | null,
-        genreKeys: string[] | null,
         genreSearchMatch: SearchMatch,
+        genreKeys: string[] | null,
+        tagIds: string[] | null,
         pageNum: number,
         contentFilter: ContentFilter
     ): Promise<PaginateResult<ContentModel>>;
