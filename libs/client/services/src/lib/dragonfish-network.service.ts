@@ -1,5 +1,4 @@
 import { InviteCodes } from '@dragonfish/shared/models/users';
-import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
@@ -29,7 +28,7 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
-import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
+import { BookshelfForm, ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
 import {
@@ -44,6 +43,7 @@ import {
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { MarkAsRead, Notification } from '@dragonfish/shared/models/accounts/notifications';
+import { Bookshelf, ShelfItem } from '@dragonfish/shared/models/users/content-library';
 
 /**
  * ## DragonfishNetworkService
@@ -266,6 +266,116 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---BOOKSHELVES---
+
+    public fetchShelves(profileId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf[]>(`${this.baseUrl}/bookshelves/fetch-bookshelves?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public fetchPublicShelves(profileId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf[]>(`${this.baseUrl}/bookshelves/fetch-public-bookshelves?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public fetchOneShelf(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf>(
+                `${this.baseUrl}/bookshelves/fetch-one-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public createShelf(profileId: string, formInfo: BookshelfForm) {
+        return handleResponse(
+            this.http.post<Bookshelf>(`${this.baseUrl}/bookshelves/create-bookshelf?pseudId=${profileId}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public editShelf(profileId: string, shelfId: string, formInfo: BookshelfForm) {
+        return handleResponse(
+            this.http.patch<Bookshelf>(
+                `${this.baseUrl}/bookshelves/edit-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                formInfo,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public deleteShelf(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.delete<void>(
+                `${this.baseUrl}/bookshelves/delete-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public toggleShelfVisibility(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.patch<Bookshelf>(
+                `${this.baseUrl}/bookshelves/toggle-visibility?pseudId=${profileId}&shelfId=${shelfId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---BOOKSHELF ITEMS---
+
+    public fetchShelfItems(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.get<ShelfItem[]>(
+                `${this.baseUrl}/bookshelves/fetch-items?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public addShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/bookshelves/add-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public removeShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.delete<void>(
+                `${this.baseUrl}/bookshelves/remove-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public checkShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.get<{ isPresent: boolean }>(
+                `${this.baseUrl}/bookshelves/check-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                { observe: 'response', withCredentials: true },
+            ),
         );
     }
 

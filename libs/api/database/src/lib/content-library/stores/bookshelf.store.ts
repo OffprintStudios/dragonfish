@@ -78,7 +78,7 @@ export class BookshelfStore {
      * Fetches all public and private shelves.
      * @param userId
      */
-    public async fetchShelves(userId: string) {
+    public async fetchShelves(userId: string): Promise<BookshelfDocument[]> {
         return this.bookshelf.find({ userId: userId });
     }
 
@@ -86,7 +86,7 @@ export class BookshelfStore {
      * Fetches all public shelves only.
      * @param userId
      */
-    public async fetchPublicShelves(userId: string) {
+    public async fetchPublicShelves(userId: string): Promise<BookshelfDocument[]> {
         return this.bookshelf.find({ userId: userId, public: true });
     }
 
@@ -95,8 +95,8 @@ export class BookshelfStore {
      * @param userId
      * @param shelfId
      */
-    public async fetchOneShelf(userId: string, shelfId: string) {
-        return this.bookshelf.find({ _id: shelfId, userId: userId });
+    public async fetchOneShelf(userId: string, shelfId: string): Promise<BookshelfDocument> {
+        return this.bookshelf.findOne({ _id: shelfId, userId: userId });
     }
 
     //#endregion
@@ -142,6 +142,20 @@ export class BookshelfStore {
             return this.shelfItem.find({ shelfId: shelfId });
         } else {
             throw new NotFoundException(`The shelf you're trying to fetch does not exist.`);
+        }
+    }
+
+    /**
+     * Checks to see if an item exists in a bookshelf.
+     * @param userId
+     * @param shelfId
+     * @param contentId
+     */
+    public async checkItem(userId: string, shelfId: string, contentId: string): Promise<boolean> {
+        if (await this.shelfExists(userId, shelfId)) {
+            return !!(await this.shelfItem.findOne({ shelfId: shelfId, contentId: contentId }));
+        } else {
+            return false;
         }
     }
 

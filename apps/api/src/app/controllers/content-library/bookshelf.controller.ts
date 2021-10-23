@@ -89,6 +89,17 @@ export class BookshelfController {
 
     @UseGuards(IdentityGuard)
     @Identity(Roles.User)
+    @Get('check-item')
+    public async checkItem(
+        @Query('pseudId') pseudId: string,
+        @Query('shelfId') shelfId: string,
+        @Query('contentId') contentId: string,
+    ) {
+        return { isPresent: await this.library.checkItem(pseudId, shelfId, contentId) };
+    }
+
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
     @Post('add-item')
     public async addItem(
         @Query('pseudId') pseudId: string,

@@ -93,5 +93,9 @@ export class LibraryService {
         return await this.shelfStore.removeItem(pseudId, shelfId, contentId);
     }
 
+    public async checkItem(pseudId: string, shelfId: string, contentId: string) {
+        return await this.shelfStore.checkItem(pseudId, shelfId, contentId);
+    }
+
     //#endregion
 }
