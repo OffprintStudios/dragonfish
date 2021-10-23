@@ -54,7 +54,9 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
                     port: +process.env.REDIS_PORT,
                     username: process.env.REDIS_USER,
                     password: process.env.REDIS_PASSWORD,
-                    tls: { rejectUnauthorized: false },
+                    tls: process.env.NODE_ENV === "development" 
+                    ? undefined 
+                    : { },
                 },
             }),
         }),
