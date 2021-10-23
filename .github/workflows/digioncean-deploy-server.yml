@@ -76,8 +76,8 @@ jobs:
           echo "INVITE_CODE_TEMPLATE=${{ secrets.INVITE_CODE_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           echo "RESET_PASSWORD_TEMPLATE=${{ secrets.RESET_PASSWORD_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           echo "CONFIRM_EMAIL_TEMPLATE=${{ secrets.CONFIRM_EMAIL_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_HOST"=${{ secrets.REDIS_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_PORT"=${{ secrets.REDIS_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
@@ -233,10 +233,10 @@ jobs:
           echo "INVITE_CODE_TEMPLATE=${{ secrets.INVITE_CODE_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           echo "RESET_PASSWORD_TEMPLATE=${{ secrets.RESET_PASSWORD_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
           echo "CONFIRM_EMAIL_TEMPLATE=${{ secrets.CONFIRM_EMAIL_TEMPLATE }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_HOST"=${{ secrets.REDIS_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_PORT"=${{ secrets.REDIS_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_USER"=${{ secrets.REDIS_USER }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
-          echo "REDIS_PASSWORD"=${{ secrets.REDIS_PASSWORD }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_USER=${{ secrets.REDIS_USER }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> /opt/dragonfish/backend-deploy-cache/dist/apps/api/.env
 
     - name: 'Remote: Copy files to new release directory'
       uses: garygrossgarten/github-action-ssh@release
