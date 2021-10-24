@@ -8,13 +8,15 @@
 <div class="flex" style="height: calc(100vh - 52px);">
     <ng-container *ngIf="!mobileMode">
         <dragonfish-pagebar>
-            <div class="my-2 border-b w-full border-white"><!--spacer--></div>
-            <a class="link" [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
-                <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
-            </a>
-            <a class="link" [routerLink]="['newest-works']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>What's new
-            </a>
+            <div class="pages">
+                <div class="my-2 border-b w-full border-white"><!--spacer--></div>
+                <a class="link" [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
+                </a>
+                <a class="link" [routerLink]="['newest-works']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>What's new
+                </a>
+            </div>
         </dragonfish-pagebar>
     </ng-container>
     <div class="w-full">

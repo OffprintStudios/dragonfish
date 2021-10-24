@@ -232,14 +232,30 @@ div.topbar-tools {
 
 /* Offprint Pagebar */
 div.pagebar {
+    div.page-header {
+        @apply border-b border-white mb-4;
+        h3 {
+            @apply text-white font-medium text-3xl;
+        }
+        button {
+            background: var(--accent-light);
+        }
+        div.button-row {
+            @apply flex items-center w-full justify-center;
+        }
+    }
     div.pages {
         @apply text-white w-full flex flex-col;
         a.link {
-            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none;
+            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none transition transform;
             &:hover, &.active {
+                @apply transition-all;
                 background: var(--accent-light);
                 text-decoration: none;
                 color: white;
+            }
+            &:hover {
+                @apply scale-105;
             }
             span.text {
                 @apply flex-1;

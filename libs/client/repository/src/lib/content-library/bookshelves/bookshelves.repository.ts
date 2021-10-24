@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, createState, withProps, select } from '@ngneat/elf';
 import { Bookshelf, BookshelfForm, ShelfItem } from '@dragonfish/shared/models/users/content-library';
-import { withEntities, selectAll, setEntities, addEntities } from '@ngneat/elf-entities';
+import { withEntities, selectAll, setEntities, addEntities, selectEntitiesCount } from '@ngneat/elf-entities';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
@@ -23,9 +23,9 @@ const store = new Store({ state, name: 'bookshelves', config });
 
 @Injectable({ providedIn: 'root' })
 export class BookshelvesRepository {
-    public current$ = store.pipe(select((state) => state.current));
-    public items$ = store.pipe(select((state) => state.items));
-    public shelves$ = store.pipe(selectAll());
+    public current$: Observable<Bookshelf> = store.pipe(select((state) => state.current));
+    public items$: Observable<ShelfItem[]> = store.pipe(select((state) => state.items));
+    public shelves$: Observable<Bookshelf[]> = store.pipe(selectAll());
 
     constructor(
         private network: DragonfishNetworkService,
@@ -164,6 +164,18 @@ export class BookshelvesRepository {
                 return res.isPresent;
             }),
         );
+    }
+
+    //#endregion
+
+    //#region ---GETTERS---
+
+    public get count() {
+        if (store.getValue().entities) {
+            return Object.keys(store.getValue().entities).length;
+        } else {
+            return 0;
+        }
     }
 
     //#endregion

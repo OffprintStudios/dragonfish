@@ -1,29 +1,60 @@
-<div class="flex flex-col w-full h-screen overflow-y-auto">
-    <div class="flex items-center mb-4 my-12 w-11/12 mx-auto border-b border-gray-600 dark:border-white pb-2.5">
-        <h1 class="text-4xl font-bold flex-1">My Library</h1>
-        <button>
-            <rmx-icon name="add-box-line"></rmx-icon>
-            Bookshelf
-        </button>
-        <div class="mx-0.5"></div>
-        <button>
-            <rmx-icon name="filter-line"></rmx-icon>
-            Filter
-        </button>
-    </div>
-    <ng-container *ngIf="libraryQuery.numLibrary === 0; else hasItems">
-        <div class="empty">
-            <h3>You haven't added anything yet.</h3>
-            <p>Head on over to any work and click the Add to Library button to start tracking your favorites!</p>
+<div class="flex h-screen w-full">
+    <dragonfish-pagebar>
+        <div class="page-header">
+            <h3>My Library</h3>
         </div>
-    </ng-container>
-    <ng-template #hasItems>
-        <ng-container *ngIf="libraryQuery.all$ | async as library">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 mx-auto gap-4 mb-6">
-                <ng-container *ngFor="let item of library">
-                    <dragonfish-work-card [content]="item.content" [size]="'small'"></dragonfish-work-card>
+        <div class="pages">
+            <a class="link" [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
+                Prose & Poetry
+            </a>
+            <a class="link">
+                <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
+                Favorite Blogs
+            </a>
+            <a class="link">
+                <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
+                Read It Later
+            </a>
+            <a class="link">
+                <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                Finished
+            </a>
+            <div class="w-full mb-4 mt-2"></div>
+            <h5 class="flex items-center text-white text-lg font-medium mb-2">
+                <rmx-icon name="bar-chart-2-fill" class="mr-1"></rmx-icon>
+                <span class="relative top-1">Bookshelves</span>
+            </h5>
+            <ng-container *ngIf="shelves.shelves$ | async as bookshelves">
+                <ng-container *ngFor="let shelf of bookshelves">
+                    <a class="link overflow-ellipsis overflow-hidden whitespace-nowrap">
+                        <span class="link-icon"><rmx-icon name="play-list-2-line"></rmx-icon></span>
+                        {{ shelf.name }}
+                    </a>
                 </ng-container>
+            </ng-container>
+            <a class="link">
+                <span class="link-icon"><rmx-icon name="add-box-line"></rmx-icon></span>
+                New Bookshelf
+            </a>
+        </div>
+    </dragonfish-pagebar>
+
+    <div class="w-full h-screen overflow-y-auto">
+        <ng-container *ngIf="libraryQuery.numLibrary === 0; else hasItems">
+            <div class="empty">
+                <h3>You haven't added anything yet.</h3>
+                <p>Head on over to any work and click the Add to Library button to start tracking your favorites!</p>
             </div>
         </ng-container>
-    </ng-template>
+        <ng-template #hasItems>
+            <ng-container *ngIf="libraryQuery.all$ | async as library">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 mx-auto gap-4 my-6">
+                    <ng-container *ngFor="let item of library">
+                        <dragonfish-work-card [content]="item.content" [size]="'small'"></dragonfish-work-card>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
 </div>
