@@ -1,19 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store, createState, withProps, select } from '@ngneat/elf';
 import { Bookshelf, BookshelfForm, ShelfItem } from '@dragonfish/shared/models/users/content-library';
-import {
-    withEntities,
-    selectAll,
-    setEntities,
-    addEntities,
-    updateEntities,
-    deleteEntities,
-} from '@ngneat/elf-entities';
+import { withEntities, selectAll, setEntities, addEntities } from '@ngneat/elf-entities';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { map, Observable, of, zip } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ContentModel } from '@dragonfish/shared/models/content';
 
 interface BookshelvesProps {
     current: Bookshelf;
@@ -107,7 +101,10 @@ export class BookshelvesRepository {
     public editShelf(profileId: string, shelfId: string, formInfo: BookshelfForm): Observable<void> {
         return this.network.editShelf(profileId, shelfId, formInfo).pipe(
             tap((shelf) => {
-                store.update(updateEntities(shelfId, shelf));
+                store.update((state) => ({
+                    ...state,
+                    current: shelf,
+                }));
             }),
             map(() => {
                 return;
@@ -118,7 +115,10 @@ export class BookshelvesRepository {
     public deleteShelf(profileId: string, shelfId: string): Observable<void> {
         return this.network.deleteShelf(profileId, shelfId).pipe(
             tap(() => {
-                store.update(deleteEntities(shelfId));
+                store.update((store) => ({
+                    ...store,
+                    current: null,
+                }));
             }),
         );
     }
@@ -126,10 +126,42 @@ export class BookshelvesRepository {
     public toggleVisibility(profileId: string, shelfId: string): Observable<void> {
         return this.network.toggleShelfVisibility(profileId, shelfId).pipe(
             tap((shelf) => {
-                store.update(updateEntities(shelfId, shelf));
+                store.update((state) => ({
+                    ...state,
+                    current: shelf,
+                }));
             }),
             map(() => {
                 return;
+            }),
+        );
+    }
+
+    //#endregion
+
+    //#region ---SHELF ITEMS---
+
+    public addItem(profileId: string, shelfId: string, contentId: string): Observable<void> {
+        return this.network.addShelfItem(profileId, shelfId, contentId);
+    }
+
+    public removeItem(profileId: string, shelfId: string, contentId: string): Observable<void> {
+        return this.network.removeShelfItem(profileId, shelfId, contentId).pipe(
+            tap(() => {
+                store.update((state) => ({
+                    ...state,
+                    items: state.items.filter((x) => {
+                        return (x.content as ContentModel)._id !== contentId;
+                    }),
+                }));
+            }),
+        );
+    }
+
+    public checkItem(profileId: string, shelfId: string, contentId: string): Observable<boolean> {
+        return this.network.checkShelfItem(profileId, shelfId, contentId).pipe(
+            map((res) => {
+                return res.isPresent;
             }),
         );
     }
