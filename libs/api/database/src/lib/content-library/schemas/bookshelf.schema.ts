@@ -23,6 +23,9 @@ export class BookshelfDocument extends Document implements Bookshelf {
     @Prop({ default: false })
     public: boolean;
 
+    @Prop({ default: 0 })
+    works: number;
+
     @Prop()
     readonly createdAt: Date;
 

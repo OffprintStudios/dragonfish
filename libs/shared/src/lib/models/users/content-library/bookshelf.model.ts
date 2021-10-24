@@ -5,6 +5,7 @@ export interface Bookshelf {
     desc: string;
     coverPic: string;
     public: boolean;
+    works: number;
     readonly createdAt: Date;
     readonly updatedAt: Date;
 }

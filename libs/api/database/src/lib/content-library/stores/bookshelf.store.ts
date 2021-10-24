@@ -109,10 +109,11 @@ export class BookshelfStore {
      * @param shelfId
      * @param contentId
      */
-    public async addItem(userId: string, shelfId: string, contentId: string): Promise<ShelfItemDocument> {
+    public async addItem(userId: string, shelfId: string, contentId: string): Promise<void> {
         if (await this.shelfExists(userId, shelfId)) {
             const newItem = new this.shelfItem({ shelfId: shelfId, content: contentId });
-            return newItem.save();
+            await newItem.save();
+            await this.updateWorkCount(shelfId);
         } else {
             throw new NotFoundException(`The shelf you're trying to modify doesn't exist.`);
         }
@@ -127,6 +128,7 @@ export class BookshelfStore {
     public async removeItem(userId: string, shelfId: string, contentId: string): Promise<void> {
         if (await this.shelfExists(userId, shelfId)) {
             await this.shelfItem.remove({ shelfId: shelfId, content: contentId });
+            await this.updateWorkCount(shelfId);
         } else {
             throw new NotFoundException(`The shelf you're trying to modify doesn't exist.`);
         }
@@ -153,7 +155,7 @@ export class BookshelfStore {
      */
     public async checkItem(userId: string, shelfId: string, contentId: string): Promise<boolean> {
         if (await this.shelfExists(userId, shelfId)) {
-            return !!(await this.shelfItem.findOne({ shelfId: shelfId, contentId: contentId }));
+            return !!(await this.shelfItem.findOne({ shelfId: shelfId, content: contentId }));
         } else {
             return false;
         }
@@ -182,6 +184,16 @@ export class BookshelfStore {
      */
     private async removeAllItems(shelfId: string) {
         await this.shelfItem.deleteMany({ shelfId: shelfId });
+    }
+
+    /**
+     * updates the count of works on a bookshelf
+     * @param shelfId
+     * @private
+     */
+    private async updateWorkCount(shelfId: string) {
+        const count = await this.shelfItem.countDocuments({ shelfId: shelfId });
+        await this.bookshelf.updateOne({ _id: shelfId }, { works: count });
     }
 
     //#endregion
