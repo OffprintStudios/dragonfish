@@ -45,6 +45,7 @@ import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { CommentBlockComponent } from './components/comment-block/comment-block.component';
 import { UserMenuComponents } from './components/auth/user-menu';
+import { ShelfCardComponent } from './components/shelf-card/shelf-card.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import { UserMenuComponents } from './components/auth/user-menu';
         TagBadgeComponent,
         SectionsListComponent,
         CommentBlockComponent,
+        ShelfCardComponent,
     ],
     imports: [
         CommonModule,
@@ -119,6 +121,7 @@ import { UserMenuComponents } from './components/auth/user-menu';
         TagBadgeComponent,
         SectionsListComponent,
         CommentBlockComponent,
+        ShelfCardComponent,
     ],
 })
 export class UiModule {}
