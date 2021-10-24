@@ -8,17 +8,21 @@
                 <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
                 Prose & Poetry
             </a>
-            <a class="link">
+            <a class="link" [routerLink]="['favorite-blogs']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
                 Favorite Blogs
             </a>
-            <a class="link">
+            <a class="link" [routerLink]="['read-it-later']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
                 Read It Later
             </a>
-            <a class="link">
+            <a class="link" [routerLink]="['finished-works']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
-                Finished
+                Finished Works
+            </a>
+            <a class="link" [routerLink]="['reading-history']" [routerLinkActive]="'active'">
+                <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
+                Reading History
             </a>
             <div class="w-full mb-4 mt-2"></div>
             <h5 class="flex items-center text-white text-lg font-medium mb-2">
@@ -41,20 +45,6 @@
     </dragonfish-pagebar>
 
     <div class="w-full h-screen overflow-y-auto">
-        <ng-container *ngIf="libraryQuery.numLibrary === 0; else hasItems">
-            <div class="empty">
-                <h3>You haven't added anything yet.</h3>
-                <p>Head on over to any work and click the Add to Library button to start tracking your favorites!</p>
-            </div>
-        </ng-container>
-        <ng-template #hasItems>
-            <ng-container *ngIf="libraryQuery.all$ | async as library">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 mx-auto gap-4 my-6">
-                    <ng-container *ngFor="let item of library">
-                        <dragonfish-work-card [content]="item.content" [size]="'small'"></dragonfish-work-card>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </ng-template>
+        <router-outlet></router-outlet>
     </div>
 </div>
