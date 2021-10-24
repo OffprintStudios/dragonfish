@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MyLibraryRoutingModule } from './my-library-routing.module';
 import { UiModule } from '@dragonfish/client/ui';
 import { IconsModule } from '@dragonfish/client/icons';
 import { MaterialModule } from '@dragonfish/client/material';
 import { PipesModule } from '@dragonfish/client/pipes';
+import { AlertsModule } from '@dragonfish/client/alerts';
 
 /* Pages */
 import { MyLibraryComponent } from './my-library.component';
@@ -23,6 +25,16 @@ import { ReadingHistoryComponent } from './views/reading-history/reading-history
         FinishedWorksComponent,
         ReadingHistoryComponent,
     ],
-    imports: [CommonModule, MyLibraryRoutingModule, UiModule, IconsModule, MaterialModule, PipesModule],
+    imports: [
+        CommonModule,
+        MyLibraryRoutingModule,
+        UiModule,
+        IconsModule,
+        MaterialModule,
+        PipesModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AlertsModule,
+    ],
 })
 export class MyLibraryModule {}

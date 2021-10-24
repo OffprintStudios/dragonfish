@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { ContentLibraryQuery } from '@dragonfish/client/repository/content-library';
 import { BookshelvesRepository } from '@dragonfish/client/repository/content-library/bookshelves';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
+import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
 
 @Component({
     selector: 'dragonfish-my-library',
@@ -8,5 +11,46 @@ import { BookshelvesRepository } from '@dragonfish/client/repository/content-lib
     styleUrls: ['./my-library.component.scss'],
 })
 export class MyLibraryComponent {
-    constructor(public libraryQuery: ContentLibraryQuery, public shelves: BookshelvesRepository) {}
+    formIsOpen = false;
+
+    bookshelfForm = new FormGroup({
+        name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
+    });
+
+    constructor(
+        public shelves: BookshelvesRepository,
+        private alerts: AlertsService,
+        private profiles: PseudonymsQuery,
+    ) {}
+
+    toggleForm() {
+        this.formIsOpen = !this.formIsOpen;
+        this.bookshelfForm.reset();
+    }
+
+    submitForm() {
+        if (this.fields.name.invalid) {
+            this.alerts.error(`Names must be at least 3 characters but no more than 32.`);
+            return;
+        }
+
+        const formInfo: BookshelfForm = {
+            name: this.fields.name.value,
+        };
+
+        if (this.profiles.currentId) {
+            this.shelves.createShelf(this.profiles.currentId, formInfo).subscribe(() => {
+                this.bookshelfForm.reset();
+                this.formIsOpen = false;
+            });
+        } else {
+            this.alerts.error(`Please select a profile before creating a bookshelf.`);
+            this.bookshelfForm.reset();
+            this.formIsOpen = false;
+        }
+    }
+
+    private get fields() {
+        return this.bookshelfForm.controls;
+    }
 }
