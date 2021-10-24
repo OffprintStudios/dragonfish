@@ -182,7 +182,7 @@ export class BookshelfStore {
      * @param shelfId
      * @private
      */
-    private async removeAllItems(shelfId: string) {
+    private async removeAllItems(shelfId: string): Promise<void> {
         await this.shelfItem.deleteMany({ shelfId: shelfId });
     }
 
@@ -191,7 +191,7 @@ export class BookshelfStore {
      * @param shelfId
      * @private
      */
-    private async updateWorkCount(shelfId: string) {
+    private async updateWorkCount(shelfId: string): Promise<void> {
         const count = await this.shelfItem.countDocuments({ shelfId: shelfId });
         await this.bookshelf.updateOne({ _id: shelfId }, { works: count });
     }
