@@ -12,6 +12,7 @@ import { ReadingHistoryComponent } from './views/reading-history/reading-history
 /* Misc */
 import { MyLibraryResolver } from './my-library.resolver';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.component';
 
 const routes: Routes = [
     {
@@ -44,6 +45,11 @@ const routes: Routes = [
             {
                 path: 'reading-history',
                 component: ReadingHistoryComponent,
+                canActivate: [AuthGuard],
+            },
+            {
+                path: 'bookshelf/:id',
+                component: BookshelfViewComponent,
                 canActivate: [AuthGuard],
             },
         ],

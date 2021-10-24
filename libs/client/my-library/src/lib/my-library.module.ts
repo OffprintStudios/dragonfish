@@ -15,6 +15,7 @@ import { FavoriteBlogsComponent } from './views/favorite-blogs/favorite-blogs.co
 import { ReadItLaterComponent } from './views/read-it-later/read-it-later.component';
 import { FinishedWorksComponent } from './views/finished-works/finished-works.component';
 import { ReadingHistoryComponent } from './views/reading-history/reading-history.component';
+import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.component';
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import { ReadingHistoryComponent } from './views/reading-history/reading-history
         ReadItLaterComponent,
         FinishedWorksComponent,
         ReadingHistoryComponent,
+        BookshelfViewComponent,
     ],
     imports: [
         CommonModule,
