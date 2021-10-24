@@ -68,8 +68,6 @@
         "@nestjsplus/cookies": "^1.1.1",
         "@ng-select/ng-select": "^6.1.0",
         "@ngneat/content-loader": "^6.0.0",
-        "@ngneat/effects": "^1.0.0-beta.3",
-        "@ngneat/effects-ng": "^1.0.0-beta.0",
         "@ngneat/elf": "^1.0.0-beta.5",
         "@ngneat/elf-cli-ng": "^1.0.0-beta.1",
         "@ngneat/elf-devtools": "^1.0.0-beta.4",
