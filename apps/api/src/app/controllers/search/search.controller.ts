@@ -24,6 +24,7 @@ export class SearchController {
         @Query('genreSearchMatch') genreSearchMatch: SearchMatch,
         @Query('genreKeys') genreKeys: string,
         @Query('tagIds') tagIds: string,
+        @Query('includeChildTags') includeChildTags: string,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
@@ -38,8 +39,9 @@ export class SearchController {
             genreSearchMatch,
             genresList,
             tagsList,
+            includeChildTags === 'true',
             pageNum,
-            filter
+            filter,
         );
     }
 
@@ -47,7 +49,7 @@ export class SearchController {
     @Get('get-user-results')
     async getUserResults(
         @Query('query') query: string,
-        @Query('pageNum') pageNum: number
+        @Query('pageNum') pageNum: number,
     ): Promise<PaginateResult<Pseudonym>> {
         return await this.searchService.searchUsers(query, pageNum);
     }
@@ -57,7 +59,7 @@ export class SearchController {
     async getContentByFandomTag(
         @Query('tagId') tagId: string,
         @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter
+        @Cookies('contentFilter') contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.searchService.getContentByFandomTag(tagId, pageNum, contentFilter);
     }

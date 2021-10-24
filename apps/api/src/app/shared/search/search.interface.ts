@@ -5,10 +5,9 @@ import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 
 export interface ISearch {
-
     /**
      * Fetches search results given query for the specified kids
-     * 
+     *
      * @param query The user's query
      * @param searchKind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
@@ -16,6 +15,7 @@ export interface ISearch {
      * @param genreSearchMatch When searching genre, how the genres should match
      * @param genreKeys (Optional) The genre keys of content that searching for
      * @param tagIds (Optional) The fandom tags that searching for in content
+     * @param includeChildTags When searching tags, if child tags should be searched too
      * @param pageNum The current results page
      * @param contentFilter Any available content filter
      */
@@ -27,8 +27,9 @@ export interface ISearch {
         genreSearchMatch: SearchMatch,
         genreKeys: string[] | null,
         tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
-        contentFilter: ContentFilter
+        contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>>;
 
     /**
@@ -45,5 +46,9 @@ export interface ISearch {
      * @param pageNum The current results page
      * @param contentFilter The content filter to apply to returned results.
      */
-    getContentByFandomTag(tagId: string, pageNum: number, contentFilter: ContentFilter): Promise<PaginateResult<ContentModel>>;
+    getContentByFandomTag(
+        tagId: string,
+        pageNum: number,
+        contentFilter: ContentFilter,
+    ): Promise<PaginateResult<ContentModel>>;
 }

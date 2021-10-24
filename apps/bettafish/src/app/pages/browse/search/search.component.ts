@@ -33,6 +33,7 @@ export class SearchComponent implements OnInit {
     currentGenreSearchMatch: SearchMatch = null;
     currentGenreKeys: string[] = [];
     currentTagIds: string[] = [];
+    currentIncludeChildTags = true;
     pageNum = 1;
 
     searchResultWorks: PaginateResult<ContentModel>;
@@ -47,9 +48,11 @@ export class SearchComponent implements OnInit {
         genreSearchMatch: new FormControl(null),
         genres: new FormControl([]),
         tags: new FormControl([]),
+        includeChildTags: new FormControl(true),
     });
     mobileMode = false;
     showAdvancedOptions = false;
+    showIncludeChildTags = false;
 
     constructor(
         private network: DragonfishNetworkService,
@@ -74,11 +77,13 @@ export class SearchComponent implements OnInit {
         this.currentCategoryKey = this.parseCategoryKey(queryParams.get('category'));
 
         this.currentGenreSearchMatch = this.parseMatch(queryParams.get('genreSearchMatch'));
-        let genreListString = queryParams.get('genres');
+        const genreListString = queryParams.get('genres');
         this.currentGenreKeys = genreListString ? this.parseGenreKeys(genreListString.split(',')) : [];
 
-        let tagIdListString = queryParams.get('tags');
+        const tagIdListString = queryParams.get('tags');
         this.currentTagIds = tagIdListString ? tagIdListString.split(',') : [];
+        this.currentIncludeChildTags = queryParams.get('includeChildTags') !== 'false';
+        this.showIncludeChildTags = queryParams.get('includeChildTags') !== null;
 
         if (queryParams.has('page')) {
             this.pageNum = +queryParams.get('page');
@@ -95,6 +100,7 @@ export class SearchComponent implements OnInit {
             genreSearchMatch: this.currentGenreSearchMatch,
             genres: this.currentGenreKeys,
             tags: this.currentTagIds,
+            includeChildTags: this.currentIncludeChildTags,
         });
 
         if (queryParams.has('query')) {
@@ -106,6 +112,7 @@ export class SearchComponent implements OnInit {
                 this.currentGenreSearchMatch,
                 this.currentGenreKeys,
                 this.currentTagIds,
+                this.currentIncludeChildTags && this.showIncludeChildTags,
                 this.pageNum);
         }
         if (this.currentAuthor || this.currentCategoryKey != null ||
@@ -131,6 +138,7 @@ export class SearchComponent implements OnInit {
         this.currentGenreSearchMatch = this.parseMatch(this.searchForm.controls.genreSearchMatch.value);
         this.currentGenreKeys = this.parseGenreKeys(this.searchForm.controls.genres.value);
         this.currentTagIds = this.searchForm.controls.tags.value;
+        this.currentIncludeChildTags = this.searchForm.controls.includeChildTags.value;
         this.pageNum = 1;
 
         this.navigate();
@@ -153,6 +161,22 @@ export class SearchComponent implements OnInit {
 
     toggleShowAdvancedOptions() {
         this.showAdvancedOptions = !this.showAdvancedOptions;
+    }
+
+    /**
+     * Determines if should display "Include Child Tags" setting
+     */
+    onTagSelected() {
+        let parentTagSelected = false;
+        this.tagsQuery.all$;
+        for (const tagId of this.searchForm.controls.tags.value) {
+            this.tagsQuery.selectEntity(e => e._id === tagId).subscribe((result) => {
+                if (result && result.children && result.children.length > 0) {
+                    parentTagSelected = true;
+                }
+            })
+        }
+        this.showIncludeChildTags = parentTagSelected;
     }
 
     private parseKind(kindString: string): SearchKind {
@@ -179,7 +203,7 @@ export class SearchComponent implements OnInit {
     private parseGenreKeys(genreStrings: string[]): string[] {
         const genreList: string[] = [];
         if (genreStrings) {
-            for (let genreString of genreStrings) {
+            for (const genreString of genreStrings) {
                 if (Object.values(Genres).indexOf(Genres[genreString]) >= 0) {
                     genreList.push(genreString);
                 }
@@ -195,9 +219,9 @@ export class SearchComponent implements OnInit {
     }
 
     private navigate() {
-        let notUserSearch = this.currentSearchKind != SearchKind.User;
-        let genresSearch = this.currentGenreKeys != null && this.currentGenreKeys.length > 0;
-        let tagsSearch = this.currentTagIds != null && this.currentTagIds.length > 0;
+        const notUserSearch = this.currentSearchKind != SearchKind.User;
+        const genresSearch = this.currentGenreKeys != null && this.currentGenreKeys.length > 0;
+        const tagsSearch = this.currentTagIds != null && this.currentTagIds.length > 0;
         this.router.navigate([], {
             relativeTo: this.route,
             queryParams: { 
@@ -209,6 +233,8 @@ export class SearchComponent implements OnInit {
                     this.currentGenreSearchMatch : null,
                 genres: (genresSearch && notUserSearch) ? this.currentGenreKeys.toString() : null,
                 tags: (tagsSearch && notUserSearch) ? this.currentTagIds.toString() : null,
+                includeChildTags: (tagsSearch && notUserSearch && this.showIncludeChildTags) ?
+                    this.currentIncludeChildTags : null,
                 page: this.pageNum != 1 ? this.pageNum : null,
             },
         }).catch(() => {
@@ -222,6 +248,7 @@ export class SearchComponent implements OnInit {
                 this.currentGenreSearchMatch,
                 this.currentGenreKeys,
                 this.currentTagIds,
+                this.currentIncludeChildTags && this.showIncludeChildTags,
                 this.pageNum
             );
         });
@@ -235,6 +262,7 @@ export class SearchComponent implements OnInit {
         genreSearchMatch: SearchMatch,
         genres: string[] | null,
         tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number
         ) {
         this.loading = true;
@@ -249,6 +277,7 @@ export class SearchComponent implements OnInit {
                     genreSearchMatch,
                     genres,
                     tagIds,
+                    includeChildTags,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -265,6 +294,7 @@ export class SearchComponent implements OnInit {
                     genreSearchMatch,
                     genres,
                     tagIds,
+                    includeChildTags,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {
@@ -290,6 +320,7 @@ export class SearchComponent implements OnInit {
                     genreSearchMatch,
                     genres,
                     tagIds,
+                    includeChildTags,
                     pageNum,
                     this.appQuery.filter,
                 ).subscribe((results) => {

@@ -26,8 +26,9 @@ export class SearchService implements ISearch {
         genreSearchMatch: SearchMatch,
         genreKeys: string[] | null,
         tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
-        contentFilter: ContentFilter
+        contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         const parsedQuery = sanitizeHtml(query);
         const kinds: ContentKind[] = [];
@@ -54,20 +55,20 @@ export class SearchService implements ISearch {
         }
         let authorId: string = null;
         if (author) {
-            let users = await this.searchUsers(author, 1);
+            const users = await this.searchUsers(author, 1);
             if (users.totalDocs > 0) {
                 authorId = users.docs[0]._id;
             }
         }
         // Category and genre values are the keys, not the values
-        let category: WorkKind = null
+        let category: WorkKind = null;
         if (Object.values(WorkKind).indexOf(WorkKind[categoryKey]) >= 0) {
             category = WorkKind[categoryKey];
         }
-        
+
         const genreList: Genres[] = [];
         if (genreKeys) {
-            for (let genre of genreKeys) {
+            for (const genre of genreKeys) {
                 if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
                     genreList.push(genre as Genres);
                 }
@@ -82,9 +83,10 @@ export class SearchService implements ISearch {
             genreSearchMatch,
             genreList.length > 0 ? genreList : null,
             tagIds,
+            includeChildTags,
             pageNum,
             this.MAX_PER_PAGE,
-            contentFilter
+            contentFilter,
         );
     }
 
@@ -96,14 +98,14 @@ export class SearchService implements ISearch {
     async getContentByFandomTag(
         tagId: string,
         pageNum: number,
-        contentFilter: ContentFilter
+        contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
         return await this.contentGroupStore.getContentByFandomTag(
             tagId,
             [ContentKind.PoetryContent, ContentKind.ProseContent],
             pageNum,
             this.MAX_PER_PAGE,
-            contentFilter
-        )
+            contentFilter,
+        );
     }
 }

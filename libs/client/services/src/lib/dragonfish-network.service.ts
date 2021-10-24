@@ -323,6 +323,7 @@ export class DragonfishNetworkService {
         genreSearchMatch: SearchMatch,
         genres: string[] | null,
         tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
         contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
@@ -331,7 +332,7 @@ export class DragonfishNetworkService {
                 `${this.baseUrl}/search/find-related-content?` +
                     `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
                     `&genreSearchMatch=${genreSearchMatch}&genreKeys=${genres}` +
-                    `&tagIds=${tagIds}` +
+                    `&tagIds=${tagIds}&includeChildTags=${includeChildTags}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),

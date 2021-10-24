@@ -64,13 +64,19 @@
                                     </ng-option>
                                 </ng-select>
                             </div>
-                            
-
                             <ng-container *ngIf="tagsEnabled">
                                 <ng-container *ngIf="tagsQuery.all$ | async as tags">
                                     <div class="offprint-select">
                                         <label>Fandom Tag(s)</label>
-                                        <ng-select class="custom" [formControlName]="'tags'" [searchable]="true" [multiple]="true" dropdownPosition="bottom" [placeholder]="'Select Fandom(s)'">
+                                        <ng-select
+                                            class="custom"
+                                            [formControlName]="'tags'"
+                                            [searchable]="true"
+                                            [multiple]="true"
+                                            dropdownPosition="bottom"
+                                            [placeholder]="'Select Fandom(s)'"
+                                            (change)="onTagSelected()"
+                                        >
                                             <div *ngFor="let tag of tags">
                                                 <ng-option [value]="tag._id">
                                                     <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
@@ -82,7 +88,11 @@
                                                 </div>
                                             </div>
                                         </ng-select>
-                                        <!--Include Child Tags checkbox-->
+                                        <ng-container *ngIf="showIncludeChildTags">
+                                            <dragonfish-toggle [formControlName]="'includeChildTags'">
+                                                Include child tags
+                                            </dragonfish-toggle>
+                                        </ng-container>
                                     </div>
                                 </ng-container>
                             </ng-container>

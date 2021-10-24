@@ -234,6 +234,7 @@ export class ContentGroupStore {
         genreSearchMatch: SearchMatch,
         genres: Genres[] | null,
         tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -281,16 +282,17 @@ export class ContentGroupStore {
             }
         }
         if (tagIds && tagIds.length > 0) {
-            // paginateQuery['tags'] = { $all: tagIds };
-            // each parent and child inside an "or", gathering in an "and"
-
-            // Match All, include children
-            let tagConditions = [];
-            for (let tag of tagIds) {
-                const tagArray = await this.getAllTagIds(tag);
-                tagConditions.push( { tags: { $in: tagArray } });
+            // Match All
+            if (includeChildTags) {
+                const tagConditions = [];
+                for (const tag of tagIds) {
+                    const tagArray = await this.getAllTagIds(tag);
+                    tagConditions.push( { tags: { $in: tagArray } });
+                }
+                paginateQuery['$and'] = tagConditions;
+            } else {
+                paginateQuery['tags'] = { $all: tagIds };
             }
-            paginateQuery['$and'] = tagConditions;
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
