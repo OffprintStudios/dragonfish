@@ -21,7 +21,7 @@ export interface ISearch {
      * @param contentFilter Any available content filter
      */
     findRelatedContent(
-        query: string,
+        query: string | null,
         searchKind: SearchKind,
         author: string | null,
         categoryKey: string | null,
@@ -41,16 +41,4 @@ export interface ISearch {
      * @param pageNum The current results page
      */
     searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>>;
-
-    /**
-     * Finds content tagged with the given fandom tag.
-     * @param tagId Tag that searching for in content.
-     * @param pageNum The current results page
-     * @param contentFilter The content filter to apply to returned results.
-     */
-    getContentByFandomTag(
-        tagId: string,
-        pageNum: number,
-        contentFilter: ContentFilter,
-    ): Promise<PaginateResult<ContentModel>>;
 }

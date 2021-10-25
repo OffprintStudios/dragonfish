@@ -352,13 +352,26 @@ export class DragonfishNetworkService {
         );
     }
 
-    public getContentByFandomTag(tagId: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-content-by-fandom-tag?tagId=${tagId}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
+    /**
+     * Fetches content for a fandom tag, including that tag's children
+     * @param tagId The fandom tag that searching for in content
+     * @param pageNum The current results page
+     * @param contentFilter The mature/explicit/etc. content filter to apply
+     */
+    public getContentByFandomTag(tagId: string, pageNum: number, contentFilter: ContentFilter): Observable<PaginateResult<ContentModel>> {
+        return this.findRelatedContent(
+            null,
+            SearchKind.ProseAndPoetry,
+            null,
+            null,
+            null,
+            null,
+            SearchMatch.All,
+            [tagId],
+            true,
+            pageNum,
+            contentFilter
+        )
     }
 
     //#endregion

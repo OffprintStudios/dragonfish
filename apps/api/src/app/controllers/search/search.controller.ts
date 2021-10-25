@@ -17,7 +17,7 @@ export class SearchController {
     @ApiTags(DragonfishTags.Search)
     @Get('find-related-content')
     async findRelatedContent(
-        @Query('query') query: string,
+        @Query('query') query: string | null,
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
         @Query('categoryKey') categoryKey: string | null,
@@ -29,6 +29,7 @@ export class SearchController {
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
+        if (query === 'null') query = null;
         const genresList = genreKeys && genreKeys !== 'null' ? genreKeys.split(',') : null;
         const tagsList = tagIds && tagIds !== 'null' ? tagIds.split(',') : null;
 
@@ -54,15 +55,5 @@ export class SearchController {
         @Query('pageNum') pageNum: number,
     ): Promise<PaginateResult<Pseudonym>> {
         return await this.searchService.searchUsers(query, pageNum);
-    }
-
-    @ApiTags(DragonfishTags.Search)
-    @Get('get-content-by-fandom-tag')
-    async getContentByFandomTag(
-        @Query('tagId') tagId: string,
-        @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter,
-    ): Promise<PaginateResult<ContentModel>> {
-        return await this.searchService.getContentByFandomTag(tagId, pageNum, contentFilter);
     }
 }

@@ -228,7 +228,7 @@ export class ContentGroupStore {
      * @param filter The content filter to apply to returned results.
      */
     public async findRelatedContent(
-        query: string,
+        query: string | null,
         kinds: ContentKind[],
         authorId: string | null,
         category: WorkKind | null,
@@ -331,37 +331,6 @@ export class ContentGroupStore {
                     break;
             }
         }
-        await ContentGroupStore.determineContentFilter(paginateQuery, filter);
-        return await this.content.paginate(paginateQuery, paginateOptions);
-    }
-
-    /**
-     * Finds content tagged with the given fandom tag.
-     * @param tagId Tag that searching for in content.
-     * @param kinds The kind of document to fetch.
-     * @param pageNum The page of results to retrieve.
-     * @param maxPerPage The maximum number of results per page.
-     * @param filter The content filter to apply to returned results.
-     * @returns
-     */
-    public async getContentByFandomTag(
-        tagId: string,
-        kinds: ContentKind[],
-        pageNum: number,
-        maxPerPage: number,
-        filter: ContentFilter,
-    ): Promise<PaginateResult<ContentDocument>> {
-        const paginateOptions: PaginateOptions = {
-            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
-            page: pageNum,
-            limit: maxPerPage,
-        };
-        const paginateQuery = {
-            'audit.published': PubStatus.Published,
-            'audit.isDeleted': false,
-            kind: { $in: kinds },
-            tags: tagId,
-        };
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }

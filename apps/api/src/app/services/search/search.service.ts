@@ -19,7 +19,7 @@ export class SearchService implements ISearch {
     constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
     async findRelatedContent(
-        query: string,
+        query: string | null,
         searchKind: SearchKind,
         author: string | null,
         categoryKey: string | null,
@@ -31,7 +31,7 @@ export class SearchService implements ISearch {
         pageNum: number,
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = sanitizeHtml(query);
+        const parsedQuery = query ? sanitizeHtml(query) : null;
         const kinds: ContentKind[] = [];
         switch (searchKind) {
             case SearchKind.Blog:
@@ -95,19 +95,5 @@ export class SearchService implements ISearch {
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
         const parsedQuery = sanitizeHtml(query);
         return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
-    }
-
-    async getContentByFandomTag(
-        tagId: string,
-        pageNum: number,
-        contentFilter: ContentFilter,
-    ): Promise<PaginateResult<ContentModel>> {
-        return await this.contentGroupStore.getContentByFandomTag(
-            tagId,
-            [ContentKind.PoetryContent, ContentKind.ProseContent],
-            pageNum,
-            this.MAX_PER_PAGE,
-            contentFilter,
-        );
     }
 }
