@@ -2,7 +2,7 @@ import { Controller, UseGuards, Get, Put, Query, Delete } from '@nestjs/common';
 import { Roles } from '@dragonfish/shared/models/accounts';
 import { Identity } from '@dragonfish/api/utilities/decorators';
 import { IdentityGuard } from '@dragonfish/api/utilities/guards';
-import { LibraryService } from '../../services/content/library.service';
+import { LibraryService } from '../services';
 
 @UseGuards(IdentityGuard)
 @Controller('content-library')

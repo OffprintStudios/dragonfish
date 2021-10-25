@@ -35,7 +35,7 @@ import { MAX_FANDOM_TAGS } from '@dragonfish/shared/constants/content-constants'
 import { ContentService } from '../../services/content/content.service';
 import { RatingsService } from '../../services/content/ratings.service';
 import { BlogsStore } from '@dragonfish/api/database/content/stores';
-import { ContentLibraryStore } from '@dragonfish/api/database/content-library/stores';
+import { ContentLibraryStore } from '@dragonfish/api/content-library';
 import { IdentityGuard } from '@dragonfish/api/utilities/guards';
 
 @Controller('content')

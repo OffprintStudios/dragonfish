@@ -1,14 +1,13 @@
-import { Body, Controller, Get, Patch, Post, Delete, Query, UseGuards, UploadedFile, Inject } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Delete, Query, UseGuards, UploadedFile } from '@nestjs/common';
 import { IdentityGuard } from '@dragonfish/api/utilities/guards';
 import { Identity } from '@dragonfish/api/utilities/decorators';
 import { Roles } from '@dragonfish/shared/models/accounts';
 import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
-import { IImages } from '../../shared/images';
-import { LibraryService } from '../../services/content/library.service';
+import { LibraryService } from '../services';
 
 @Controller('bookshelves')
 export class BookshelfController {
-    constructor(@Inject('IImages') private readonly images: IImages, private readonly library: LibraryService) {}
+    constructor(private readonly library: LibraryService) {}
 
     //#region ---BOOKSHELF ROUTES---
 
@@ -71,11 +70,12 @@ export class BookshelfController {
         @Query('shelfId') shelfId: string,
         @UploadedFile() coverPic: any,
     ) {
-        const coverUrl = await this.images.upload(coverPic, pseudId, 'cover-pics');
+        // this route is temporarily disabled
+        /*const coverUrl = await this.images.upload(coverPic, pseudId, 'cover-pics');
         const cover = `${process.env.IMAGES_HOSTNAME}/bookshelf-covers/${coverUrl.substr(
             coverUrl.lastIndexOf('/') + 1,
         )}`;
-        return await this.library.changeCover(pseudId, shelfId, cover);
+        return await this.library.changeCover(pseudId, shelfId, cover);*/
     }
 
     //#endregion

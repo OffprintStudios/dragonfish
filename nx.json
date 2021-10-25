@@ -26,6 +26,9 @@
         "api": {
             "tags": []
         },
+        "api-content-library": {
+            "tags": []
+        },
         "api-database": {
             "tags": []
         },

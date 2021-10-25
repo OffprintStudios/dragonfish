@@ -1,13 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { BookshelfStore, ContentLibraryStore } from '@dragonfish/api/database/content-library/stores';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { BookshelfStore, ContentLibraryStore } from '../db/stores';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
 import { SubscriptionEvent, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
-import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
+import { BookshelfForm, ContentRemovalJob } from '@dragonfish/shared/models/users/content-library';
+import { Queue } from 'bull';
 
 @Injectable()
 export class LibraryService {
+    private logger = new Logger('LibraryService');
+
     constructor(
+        @InjectQueue('content-library') private readonly libraryQueue: Queue,
         private readonly libraryStore: ContentLibraryStore,
         private readonly shelfStore: BookshelfStore,
         private readonly events: EventEmitter2,
@@ -32,13 +37,19 @@ export class LibraryService {
     }
 
     public async removeFromLibrary(pseudId: string, contentId: string) {
-        await this.libraryStore.removeFromLibrary(pseudId, contentId).then(() => {
-            const payload = {
-                userId: pseudId,
-                itemId: contentId,
-            };
-            this.events.emit('subscription.delete', payload);
-        });
+        const eventPayload = {
+            userId: pseudId,
+            itemId: contentId,
+        };
+
+        const jobPayload: ContentRemovalJob = {
+            pseudId: pseudId,
+            contentId: contentId,
+        };
+
+        this.logger.log(`Adding job to queue...`);
+        await this.libraryQueue.add('remove-content', jobPayload);
+        this.events.emit('subscription.delete', eventPayload);
     }
 
     //#endregion

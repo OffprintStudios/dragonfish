@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@dragonfish/api/content-library": ["libs/api/content-library/src/index.ts"],
             "@dragonfish/api/database/*": ["libs/api/database/src/lib/*"],
             "@dragonfish/api/notifications": ["libs/api/notifications/src/index.ts"],
             "@dragonfish/api/utilities/*": ["libs/api/utilities/src/lib/*"],
