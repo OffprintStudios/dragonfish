@@ -309,9 +309,12 @@ export class DragonfishNetworkService {
      * @param query The user's query
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
-     * @param category (Optional) The category key of content that searching for
-     * @param genreSearchMatch When searching genre, how the genres should match.
-     * @param genres (Optional) The genre keys of content that searching for.
+     * @param categoryKey (Optional) The category key of content that searching for
+     * @param genreSearchMatch When searching genre, how the genres should match
+     * @param genreKeys (Optional) The genre keys of content that searching for
+     * @param tagSearchMatch When searching tags, how the tags should match
+     * @param tagIds (Optional) The fandom tags that searching for in content
+     * @param includeChildTags When searching tags, if child tags should be searched too
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
@@ -319,9 +322,10 @@ export class DragonfishNetworkService {
         query: string,
         kind: SearchKind,
         author: string | null,
-        category: string | null,
+        categoryKey: string | null,
         genreSearchMatch: SearchMatch,
-        genres: string[] | null,
+        genreKeys: string[] | null,
+        tagSearchMatch: SearchMatch,
         tagIds: string[] | null,
         includeChildTags: boolean,
         pageNum: number,
@@ -330,9 +334,9 @@ export class DragonfishNetworkService {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
-                    `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
-                    `&genreSearchMatch=${genreSearchMatch}&genreKeys=${genres}` +
-                    `&tagIds=${tagIds}&includeChildTags=${includeChildTags}` +
+                    `query=${query}&kind=${kind}&author=${author}&categoryKey=${categoryKey}` +
+                    `&genreSearchMatch=${genreSearchMatch}&genreKeys=${genreKeys}` +
+                    `&tagSearchMatch=${tagSearchMatch}&tagIds=${tagIds}&includeChildTags=${includeChildTags}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),

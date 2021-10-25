@@ -44,7 +44,12 @@
                             </div>
                             <div class="offprint-select">
                                 <label>Genre(s)</label>
-                                <ng-select class="custom" [formControlName]="'genreSearchMatch'" [searchable]="false" [placeholder]="'Match Type'">
+                                <ng-select
+                                    class="custom"
+                                    [formControlName]="'genreSearchMatch'"
+                                    [searchable]="false"
+                                    [placeholder]="'Match Type'"
+                                >
                                     <ng-option [value]="matchOptions.All">
                                         Match All
                                     </ng-option>
@@ -68,6 +73,26 @@
                                 <ng-container *ngIf="tagsQuery.all$ | async as tags">
                                     <div class="offprint-select">
                                         <label>Fandom Tag(s)</label>
+                                        <ng-select
+                                            class="custom"
+                                            [formControlName]="'tagSearchMatch'"
+                                            [searchable]="false"
+                                            [placeholder]="'Match Type'"
+                                            (change)="onTagSelected()"
+                                        >
+                                            <ng-option [value]="matchOptions.All">
+                                                Match All
+                                            </ng-option>
+                                            <ng-option [value]="matchOptions.OneOrMore">
+                                                Match One or More
+                                            </ng-option>
+                                            <ng-option [value]="matchOptions.NoOthers">
+                                                Match No Other Tags
+                                            </ng-option>
+                                            <ng-option [value]="matchOptions.Exactly">
+                                                Match Exactly
+                                            </ng-option>
+                                        </ng-select>
                                         <ng-select
                                             class="custom"
                                             [formControlName]="'tags'"

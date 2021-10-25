@@ -32,6 +32,7 @@ export class SearchComponent implements OnInit {
     currentCategoryKey: string = null;
     currentGenreSearchMatch: SearchMatch = null;
     currentGenreKeys: string[] = [];
+    currentTagSearchMatch: SearchMatch = null;
     currentTagIds: string[] = [];
     currentIncludeChildTags = true;
     pageNum = 1;
@@ -47,6 +48,7 @@ export class SearchComponent implements OnInit {
         category: new FormControl(null),
         genreSearchMatch: new FormControl(null),
         genres: new FormControl([]),
+        tagSearchMatch: new FormControl(null),
         tags: new FormControl([]),
         includeChildTags: new FormControl(true),
     });
@@ -80,6 +82,7 @@ export class SearchComponent implements OnInit {
         const genreListString = queryParams.get('genres');
         this.currentGenreKeys = genreListString ? this.parseGenreKeys(genreListString.split(',')) : [];
 
+        this.currentTagSearchMatch = this.parseMatch(queryParams.get('tagSearchMatch'));
         const tagIdListString = queryParams.get('tags');
         this.currentTagIds = tagIdListString ? tagIdListString.split(',') : [];
         this.currentIncludeChildTags = queryParams.get('includeChildTags') !== 'false';
@@ -99,6 +102,7 @@ export class SearchComponent implements OnInit {
             category: this.currentCategoryKey,
             genreSearchMatch: this.currentGenreSearchMatch,
             genres: this.currentGenreKeys,
+            tagSearchMatch: this.currentTagSearchMatch,
             tags: this.currentTagIds,
             includeChildTags: this.currentIncludeChildTags,
         });
@@ -111,6 +115,7 @@ export class SearchComponent implements OnInit {
                 this.currentCategoryKey,
                 this.currentGenreSearchMatch,
                 this.currentGenreKeys,
+                this.currentTagSearchMatch,
                 this.currentTagIds,
                 this.currentIncludeChildTags && this.showIncludeChildTags,
                 this.pageNum);
@@ -137,6 +142,7 @@ export class SearchComponent implements OnInit {
         this.currentCategoryKey = this.parseCategoryKey(this.searchForm.controls.category.value);
         this.currentGenreSearchMatch = this.parseMatch(this.searchForm.controls.genreSearchMatch.value);
         this.currentGenreKeys = this.parseGenreKeys(this.searchForm.controls.genres.value);
+        this.currentTagSearchMatch = this.parseMatch(this.searchForm.controls.tagSearchMatch.value);
         this.currentTagIds = this.searchForm.controls.tags.value;
         this.currentIncludeChildTags = this.searchForm.controls.includeChildTags.value;
         this.pageNum = 1;
@@ -168,13 +174,14 @@ export class SearchComponent implements OnInit {
      */
     onTagSelected() {
         let parentTagSelected = false;
-        this.tagsQuery.all$;
-        for (const tagId of this.searchForm.controls.tags.value) {
-            this.tagsQuery.selectEntity(e => e._id === tagId).subscribe((result) => {
-                if (result && result.children && result.children.length > 0) {
-                    parentTagSelected = true;
-                }
-            })
+        if (this.searchForm.controls.tagSearchMatch.value !== SearchMatch.Exactly) {
+            for (const tagId of this.searchForm.controls.tags.value) {
+                this.tagsQuery.selectEntity(e => e._id === tagId).subscribe((result) => {
+                    if (result && result.children && result.children.length > 0) {
+                        parentTagSelected = true;
+                    }
+                })
+            }
         }
         this.showIncludeChildTags = parentTagSelected;
     }
@@ -229,9 +236,11 @@ export class SearchComponent implements OnInit {
                 kind: this.currentSearchKind != SearchKind.ProseAndPoetry ? this.currentSearchKind : null,
                 author: (this.currentAuthor && notUserSearch) ? this.currentAuthor : null,
                 category: (this.currentCategoryKey != null && notUserSearch) ? this.currentCategoryKey : null,
-                genreSearchMatch: (genresSearch && notUserSearch && this.currentGenreSearchMatch != SearchMatch.All) ?
+                genreSearchMatch: (genresSearch && notUserSearch && this.currentGenreSearchMatch !== SearchMatch.All) ?
                     this.currentGenreSearchMatch : null,
                 genres: (genresSearch && notUserSearch) ? this.currentGenreKeys.toString() : null,
+                tagSearchMatch: (tagsSearch && notUserSearch && this.currentTagSearchMatch !== SearchMatch.All) ?
+                    this.currentTagSearchMatch : null,
                 tags: (tagsSearch && notUserSearch) ? this.currentTagIds.toString() : null,
                 includeChildTags: (tagsSearch && notUserSearch && this.showIncludeChildTags) ?
                     this.currentIncludeChildTags : null,
@@ -247,6 +256,7 @@ export class SearchComponent implements OnInit {
                 this.currentCategoryKey,
                 this.currentGenreSearchMatch,
                 this.currentGenreKeys,
+                this.currentTagSearchMatch,
                 this.currentTagIds,
                 this.currentIncludeChildTags && this.showIncludeChildTags,
                 this.pageNum
@@ -261,6 +271,7 @@ export class SearchComponent implements OnInit {
         searchCategory: string | null,
         genreSearchMatch: SearchMatch,
         genres: string[] | null,
+        tagSearchMatch: SearchMatch,
         tagIds: string[] | null,
         includeChildTags: boolean,
         pageNum: number
@@ -276,6 +287,7 @@ export class SearchComponent implements OnInit {
                     searchCategory,
                     genreSearchMatch,
                     genres,
+                    tagSearchMatch,
                     tagIds,
                     includeChildTags,
                     pageNum,
@@ -293,6 +305,7 @@ export class SearchComponent implements OnInit {
                     searchCategory,
                     genreSearchMatch,
                     genres,
+                    tagSearchMatch,
                     tagIds,
                     includeChildTags,
                     pageNum,
@@ -319,6 +332,7 @@ export class SearchComponent implements OnInit {
                     searchCategory,
                     genreSearchMatch,
                     genres,
+                    tagSearchMatch,
                     tagIds,
                     includeChildTags,
                     pageNum,

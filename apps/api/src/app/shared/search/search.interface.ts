@@ -14,6 +14,7 @@ export interface ISearch {
      * @param categoryKey (Optional) The category key of content that searching for
      * @param genreSearchMatch When searching genre, how the genres should match
      * @param genreKeys (Optional) The genre keys of content that searching for
+     * @param tagSearchMatch When searching tags, how the tags should match
      * @param tagIds (Optional) The fandom tags that searching for in content
      * @param includeChildTags When searching tags, if child tags should be searched too
      * @param pageNum The current results page
@@ -26,6 +27,7 @@ export interface ISearch {
         categoryKey: string | null,
         genreSearchMatch: SearchMatch,
         genreKeys: string[] | null,
+        tagSearchMatch: SearchMatch,
         tagIds: string[] | null,
         includeChildTags: boolean,
         pageNum: number,

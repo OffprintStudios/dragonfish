@@ -221,6 +221,7 @@ export class ContentGroupStore {
      * @param category (Optional) The category of content that searching for.
      * @param genreSearchMatch When searching genre, how the genres should match.
      * @param genres (Optional) The genres of content that searching for.
+     * @param tagSearchMatch When searching tags, how the tags should match
      * @param tagIds (Optional) The fandom tags that searching for in content
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
@@ -233,6 +234,7 @@ export class ContentGroupStore {
         category: WorkKind | null,
         genreSearchMatch: SearchMatch,
         genres: Genres[] | null,
+        tagSearchMatch: SearchMatch,
         tagIds: string[] | null,
         includeChildTags: boolean,
         pageNum: number,
@@ -282,16 +284,51 @@ export class ContentGroupStore {
             }
         }
         if (tagIds && tagIds.length > 0) {
-            // Match All
-            if (includeChildTags) {
-                const tagConditions = [];
-                for (const tag of tagIds) {
-                    const tagArray = await this.getAllTagIds(tag);
-                    tagConditions.push( { tags: { $in: tagArray } });
-                }
-                paginateQuery['$and'] = tagConditions;
-            } else {
-                paginateQuery['tags'] = { $all: tagIds };
+            switch(tagSearchMatch) {
+                case SearchMatch.All:
+                    if (includeChildTags) {
+                        const tagConditions = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            tagConditions.push( { tags: { $in: tagArray } });
+                        }
+                        paginateQuery['$and'] = tagConditions;
+                    } else {
+                        paginateQuery['tags'] = { $all: tagIds };
+                    }
+                    break;
+                case SearchMatch.OneOrMore:
+                    if (includeChildTags) {
+                        const allTags: string[] = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            allTags.push(...tagArray);
+                        }
+                        paginateQuery['tags'] = { $in: allTags };
+                    } else {
+                        paginateQuery['tags'] = { $in: tagIds };
+                    }
+                    break;
+                case SearchMatch.NoOthers:
+                    if (includeChildTags) {
+                        const allTags: string[] = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            allTags.push(...tagArray);
+                        }
+                        paginateQuery['tags'] = { $not: { $elemMatch: { $nin: allTags }}, $exists: true };
+                        paginateQuery['tags.0'] = { $exists: true };
+                    } else {
+                        paginateQuery['tags'] = { $not: { $elemMatch: { $nin: tagIds }}, $exists: true };
+                        paginateQuery['tags.0'] = { $exists: true };
+                    }
+                    break;
+                case SearchMatch.Exactly:
+                    paginateQuery['tags'] = tagIds;
+                    break;
+                default:
+                    paginateQuery['tags'] = { $all: tagIds };
+                    break;
             }
         }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
