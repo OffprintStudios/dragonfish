@@ -1,7 +1,81 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BookshelvesRepository } from '@dragonfish/client/repository/content-library/bookshelves';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { untilDestroyed } from '@ngneat/until-destroy';
+import { AlertsService } from '@dragonfish/client/alerts';
+import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
+import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
 @Component({
     selector: 'dragonfish-bookshelf-view',
     templateUrl: './bookshelf-view.component.html',
+    styleUrls: ['./bookshelf-view.component.scss'],
 })
-export class BookshelfViewComponent {}
+export class BookshelfViewComponent implements OnInit {
+    formIsOpen = false;
+    moreMenuOpened = false;
+    saving = false;
+
+    shelfForm = new FormGroup({
+        name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
+        desc: new FormControl('', [Validators.minLength(3), Validators.maxLength(120)]),
+    });
+
+    constructor(
+        public shelves: BookshelvesRepository,
+        private alerts: AlertsService,
+        public pseudQuery: PseudonymsQuery,
+    ) {}
+
+    ngOnInit(): void {
+        this.shelves.current$.pipe(untilDestroyed(this)).subscribe((shelf) => {
+            this.shelfForm.setValue({
+                name: shelf.name,
+                desc: shelf.desc,
+            });
+        });
+    }
+
+    toggleForm() {
+        this.formIsOpen = !this.formIsOpen;
+    }
+
+    toggleMenu() {
+        this.moreMenuOpened = !this.moreMenuOpened;
+    }
+
+    toggleVisibility() {
+        this.shelves.toggleVisibility(this.pseudQuery.currentId as string, this.shelves.currentId).subscribe();
+    }
+
+    submitForm() {
+        if (this.fields.name.invalid) {
+            this.alerts.error(`Bookshelf names must be between 3 and 32 characters long.`);
+            return;
+        }
+
+        if (this.fields.desc.invalid) {
+            this.alerts.error(`Descriptions must be between 3 and 120 characters long.`);
+            return;
+        }
+
+        const formInfo: BookshelfForm = {
+            name: this.fields.name.value,
+            desc: this.fields.desc.value,
+        };
+
+        if (this.pseudQuery.currentId) {
+            this.saving = true;
+            this.shelves.editShelf(this.pseudQuery.currentId, this.shelves.currentId, formInfo).subscribe(() => {
+                this.formIsOpen = false;
+                this.saving = false;
+            });
+        } else {
+            this.alerts.error(`You need to select a profile before you save any changes.`);
+        }
+    }
+
+    private get fields() {
+        return this.shelfForm.controls;
+    }
+}

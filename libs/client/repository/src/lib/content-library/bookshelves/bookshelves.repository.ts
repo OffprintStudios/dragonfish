@@ -178,5 +178,9 @@ export class BookshelvesRepository {
         }
     }
 
+    public get currentId() {
+        return store.getValue().current._id;
+    }
+
     //#endregion
 }

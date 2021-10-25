@@ -138,6 +138,8 @@ import {
     RiArrowRightCircleLine,
     RiBarChart2Fill,
     RiPlayList2Line,
+    RiLockLine,
+    RiLockUnlockLine,
 } from 'angular-remix-icon';
 
 import {
@@ -493,6 +495,8 @@ const remixIcons = {
     RiArrowRightCircleLine,
     RiBarChart2Fill,
     RiPlayList2Line,
+    RiLockLine,
+    RiLockUnlockLine,
 };
 
 @NgModule({

@@ -8,11 +8,12 @@ import { FavoriteBlogsComponent } from './views/favorite-blogs/favorite-blogs.co
 import { ReadItLaterComponent } from './views/read-it-later/read-it-later.component';
 import { FinishedWorksComponent } from './views/finished-works/finished-works.component';
 import { ReadingHistoryComponent } from './views/reading-history/reading-history.component';
+import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.component';
 
 /* Misc */
 import { MyLibraryResolver } from './my-library.resolver';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
-import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.component';
+import { BookshelfResolver } from './bookshelf.resolver';
 
 const routes: Routes = [
     {
@@ -51,6 +52,8 @@ const routes: Routes = [
                 path: 'bookshelf/:id',
                 component: BookshelfViewComponent,
                 canActivate: [AuthGuard],
+                resolve: { shelfData: BookshelfResolver },
+                runGuardsAndResolvers: 'always',
             },
         ],
     },
@@ -59,6 +62,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [MyLibraryResolver],
+    providers: [MyLibraryResolver, BookshelfResolver],
 })
 export class MyLibraryRoutingModule {}
