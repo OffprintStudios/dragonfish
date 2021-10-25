@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
 import { TagsModel, TagKind } from '@dragonfish/shared/models/content/tags';
 import { nanoid } from 'nanoid';
 

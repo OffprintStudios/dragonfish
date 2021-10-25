@@ -122,6 +122,7 @@ jobs:
   deploy_to_prod:
     name: "Deploy to Production environment"
     environment: dragonfish-prod
+    needs: deploy_to_test
     runs-on: ubuntu-latest
     env:
       SSH_USER: 'dragonfish-cd'

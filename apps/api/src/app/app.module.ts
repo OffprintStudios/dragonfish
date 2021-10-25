@@ -55,6 +55,11 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
                     port: +process.env.REDIS_PORT,
                     username: process.env.REDIS_USER,
                     password: process.env.REDIS_PASSWORD,
+                    tls: process.env.NODE_ENV === "development" 
+                        ? undefined 
+                        // An empty `tls` config object instructs Bull to try to connect via TLS
+                        // (i.e.) rediss:// and is intentional here. 
+                        : { }, 
                 },
             }),
         }),

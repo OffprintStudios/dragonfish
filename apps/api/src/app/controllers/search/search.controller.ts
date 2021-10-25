@@ -17,26 +17,34 @@ export class SearchController {
     @ApiTags(DragonfishTags.Search)
     @Get('find-related-content')
     async findRelatedContent(
-        @Query('query') query: string,
+        @Query('query') query: string | null,
         @Query('kind') kind: SearchKind,
         @Query('author') author: string | null,
         @Query('categoryKey') categoryKey: string | null,
-        @Query('genreKeys') genreKeys: string,
         @Query('genreSearchMatch') genreSearchMatch: SearchMatch,
+        @Query('genreKeys') genreKeys: string,
+        @Query('tagSearchMatch') tagSearchMatch: SearchMatch,
+        @Query('tagIds') tagIds: string,
+        @Query('includeChildTags') includeChildTags: string,
         @Query('pageNum') pageNum: number,
         @Query('filter') filter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const genresList = genreKeys.split(',');
+        if (query === 'null') query = null;
+        const genresList = genreKeys && genreKeys !== 'null' ? genreKeys.split(',') : null;
+        const tagsList = tagIds && tagIds !== 'null' ? tagIds.split(',') : null;
 
         return await this.searchService.findRelatedContent(
             query,
             kind,
             author,
             categoryKey,
-            genresList,
             genreSearchMatch,
+            genresList,
+            tagSearchMatch,
+            tagsList,
+            includeChildTags === 'true',
             pageNum,
-            filter
+            filter,
         );
     }
 
@@ -44,18 +52,8 @@ export class SearchController {
     @Get('get-user-results')
     async getUserResults(
         @Query('query') query: string,
-        @Query('pageNum') pageNum: number
+        @Query('pageNum') pageNum: number,
     ): Promise<PaginateResult<Pseudonym>> {
         return await this.searchService.searchUsers(query, pageNum);
-    }
-
-    @ApiTags(DragonfishTags.Search)
-    @Get('get-content-by-fandom-tag')
-    async getContentByFandomTag(
-        @Query('tagId') tagId: string,
-        @Query('pageNum') pageNum: number,
-        @Cookies('contentFilter') contentFilter: ContentFilter
-    ): Promise<PaginateResult<ContentModel>> {
-        return await this.searchService.getContentByFandomTag(tagId, pageNum, contentFilter);
     }
 }
