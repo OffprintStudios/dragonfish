@@ -19,16 +19,19 @@ export class SearchService implements ISearch {
     constructor(private readonly pseudStore: PseudonymsStore, private readonly contentGroupStore: ContentGroupStore) {}
 
     async findRelatedContent(
-        query: string,
+        query: string | null,
         searchKind: SearchKind,
         author: string | null,
         categoryKey: string | null,
-        genreKeys: string[] | null,
         genreSearchMatch: SearchMatch,
+        genreKeys: string[] | null,
+        tagSearchMatch: SearchMatch,
+        tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
-        contentFilter: ContentFilter
+        contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = sanitizeHtml(query);
+        const parsedQuery = query ? sanitizeHtml(query) : null;
         const kinds: ContentKind[] = [];
         switch (searchKind) {
             case SearchKind.Blog:
@@ -53,21 +56,23 @@ export class SearchService implements ISearch {
         }
         let authorId: string = null;
         if (author) {
-            let users = await this.searchUsers(author, 1);
+            const users = await this.searchUsers(author, 1);
             if (users.totalDocs > 0) {
                 authorId = users.docs[0]._id;
             }
         }
         // Category and genre values are the keys, not the values
-        let category: WorkKind = null
+        let category: WorkKind = null;
         if (Object.values(WorkKind).indexOf(WorkKind[categoryKey]) >= 0) {
             category = WorkKind[categoryKey];
         }
-        
+
         const genreList: Genres[] = [];
-        for (let genre of genreKeys) {
-            if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
-                genreList.push(genre as Genres);
+        if (genreKeys) {
+            for (const genre of genreKeys) {
+                if (Object.values(Genres).indexOf(Genres[genre]) >= 0) {
+                    genreList.push(genre as Genres);
+                }
             }
         }
 
@@ -76,30 +81,19 @@ export class SearchService implements ISearch {
             kinds,
             authorId,
             category,
-            genreList.length > 0 ? genreList : null,
             genreSearchMatch,
+            genreList.length > 0 ? genreList : null,
+            tagSearchMatch,
+            tagIds,
+            includeChildTags,
             pageNum,
             this.MAX_PER_PAGE,
-            contentFilter
+            contentFilter,
         );
     }
 
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
         const parsedQuery = sanitizeHtml(query);
         return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
-    }
-
-    async getContentByFandomTag(
-        tagId: string,
-        pageNum: number,
-        contentFilter: ContentFilter
-    ): Promise<PaginateResult<ContentModel>> {
-        return await this.contentGroupStore.getContentByFandomTag(
-            tagId,
-            [ContentKind.PoetryContent, ContentKind.ProseContent],
-            pageNum,
-            this.MAX_PER_PAGE,
-            contentFilter
-        )
     }
 }

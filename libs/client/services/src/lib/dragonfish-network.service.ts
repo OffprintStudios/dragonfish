@@ -309,9 +309,12 @@ export class DragonfishNetworkService {
      * @param query The user's query
      * @param kind The kind of content that searching for
      * @param author (Optional) The author of content that searching for
-     * @param category (Optional) The category key of content that searching for
-     * @param genres (Optional) The genre keys of content that searching for.
-     * @param genreSearchMatch When searching genre, how the genres should match.
+     * @param categoryKey (Optional) The category key of content that searching for
+     * @param genreSearchMatch When searching genre, how the genres should match
+     * @param genreKeys (Optional) The genre keys of content that searching for
+     * @param tagSearchMatch When searching tags, how the tags should match
+     * @param tagIds (Optional) The fandom tags that searching for in content
+     * @param includeChildTags When searching tags, if child tags should be searched too
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
@@ -319,17 +322,21 @@ export class DragonfishNetworkService {
         query: string,
         kind: SearchKind,
         author: string | null,
-        category: string | null,
-        genres: string[] | null,
+        categoryKey: string | null,
         genreSearchMatch: SearchMatch,
+        genreKeys: string[] | null,
+        tagSearchMatch: SearchMatch,
+        tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
         contentFilter: ContentFilter,
     ): Observable<PaginateResult<ContentModel>> {
         return handleResponse(
             this.http.get<PaginateResult<ContentModel>>(
                 `${this.baseUrl}/search/find-related-content?` +
-                    `query=${query}&kind=${kind}&author=${author}&categoryKey=${category}` +
-                    `&genreKeys=${genres}&genreSearchMatch=${genreSearchMatch}` +
+                    `query=${query}&kind=${kind}&author=${author}&categoryKey=${categoryKey}` +
+                    `&genreSearchMatch=${genreSearchMatch}&genreKeys=${genreKeys}` +
+                    `&tagSearchMatch=${tagSearchMatch}&tagIds=${tagIds}&includeChildTags=${includeChildTags}` +
                     `&pageNum=${pageNum}&filter=${contentFilter}`,
                 { observe: 'response', withCredentials: true },
             ),
@@ -345,13 +352,26 @@ export class DragonfishNetworkService {
         );
     }
 
-    public getContentByFandomTag(tagId: string, pageNum: number): Observable<PaginateResult<ContentModel>> {
-        return handleResponse(
-            this.http.get<PaginateResult<ContentModel>>(
-                `${this.baseUrl}/search/get-content-by-fandom-tag?tagId=${tagId}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
+    /**
+     * Fetches content for a fandom tag, including that tag's children
+     * @param tagId The fandom tag that searching for in content
+     * @param pageNum The current results page
+     * @param contentFilter The mature/explicit/etc. content filter to apply
+     */
+    public getContentByFandomTag(tagId: string, pageNum: number, contentFilter: ContentFilter): Observable<PaginateResult<ContentModel>> {
+        return this.findRelatedContent(
+            null,
+            SearchKind.ProseAndPoetry,
+            null,
+            null,
+            null,
+            null,
+            SearchMatch.All,
+            [tagId],
+            true,
+            pageNum,
+            contentFilter
+        )
     }
 
     //#endregion

@@ -7,6 +7,7 @@ import {
     RatingsDocument,
     ReadingHistoryDocument,
     SectionsDocument,
+    TagsDocument,
 } from '../schemas';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
@@ -36,6 +37,7 @@ export class ContentGroupStore {
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
         @InjectModel('Ratings') private readonly ratings: Model<RatingsDocument>,
         @InjectModel('ReadingHistory') private readonly history: Model<ReadingHistoryDocument>,
+        @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
     ) {}
 
     //#region ---FETCHING---
@@ -217,19 +219,24 @@ export class ContentGroupStore {
      * @param kinds The kind of document to fetch.
      * @param authorId (Optional) ID of author of work that searching for.
      * @param category (Optional) The category of content that searching for.
-     * @param genres (Optional) The genres of content that searching for.
      * @param genreSearchMatch When searching genre, how the genres should match.
+     * @param genres (Optional) The genres of content that searching for.
+     * @param tagSearchMatch When searching tags, how the tags should match
+     * @param tagIds (Optional) The fandom tags that searching for in content
      * @param pageNum The page of results to retrieve.
      * @param maxPerPage The maximum number of results per page.
      * @param filter The content filter to apply to returned results.
      */
     public async findRelatedContent(
-        query: string,
+        query: string | null,
         kinds: ContentKind[],
         authorId: string | null,
         category: WorkKind | null,
-        genres: Genres[] | null,
         genreSearchMatch: SearchMatch,
+        genres: Genres[] | null,
+        tagSearchMatch: SearchMatch,
+        tagIds: string[] | null,
+        includeChildTags: boolean,
         pageNum: number,
         maxPerPage: number,
         filter: ContentFilter,
@@ -276,37 +283,54 @@ export class ContentGroupStore {
                     break;
             }
         }
-        await ContentGroupStore.determineContentFilter(paginateQuery, filter);
-        return await this.content.paginate(paginateQuery, paginateOptions);
-    }
-
-    /**
-     * Finds content tagged with the given fandom tag.
-     * @param tagId Tag that searching for in content.
-     * @param kinds The kind of document to fetch.
-     * @param pageNum The page of results to retrieve.
-     * @param maxPerPage The maximum number of results per page.
-     * @param filter The content filter to apply to returned results.
-     * @returns
-     */
-    public async getContentByFandomTag(
-        tagId: string,
-        kinds: ContentKind[],
-        pageNum: number,
-        maxPerPage: number,
-        filter: ContentFilter,
-    ): Promise<PaginateResult<ContentDocument>> {
-        const paginateOptions: PaginateOptions = {
-            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
-            page: pageNum,
-            limit: maxPerPage,
-        };
-        const paginateQuery = {
-            'audit.published': PubStatus.Published,
-            'audit.isDeleted': false,
-            kind: { $in: kinds },
-            tags: tagId,
-        };
+        if (tagIds && tagIds.length > 0) {
+            switch(tagSearchMatch) {
+                case SearchMatch.All:
+                    if (includeChildTags) {
+                        const tagConditions = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            tagConditions.push( { tags: { $in: tagArray } });
+                        }
+                        paginateQuery['$and'] = tagConditions;
+                    } else {
+                        paginateQuery['tags'] = { $all: tagIds };
+                    }
+                    break;
+                case SearchMatch.OneOrMore:
+                    if (includeChildTags) {
+                        const allTags: string[] = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            allTags.push(...tagArray);
+                        }
+                        paginateQuery['tags'] = { $in: allTags };
+                    } else {
+                        paginateQuery['tags'] = { $in: tagIds };
+                    }
+                    break;
+                case SearchMatch.NoOthers:
+                    if (includeChildTags) {
+                        const allTags: string[] = [];
+                        for (const tag of tagIds) {
+                            const tagArray = await this.getAllTagIds(tag);
+                            allTags.push(...tagArray);
+                        }
+                        paginateQuery['tags'] = { $not: { $elemMatch: { $nin: allTags }}, $exists: true };
+                        paginateQuery['tags.0'] = { $exists: true };
+                    } else {
+                        paginateQuery['tags'] = { $not: { $elemMatch: { $nin: tagIds }}, $exists: true };
+                        paginateQuery['tags.0'] = { $exists: true };
+                    }
+                    break;
+                case SearchMatch.Exactly:
+                    paginateQuery['tags'] = tagIds;
+                    break;
+                default:
+                    paginateQuery['tags'] = { $all: tagIds };
+                    break;
+            }
+        }
         await ContentGroupStore.determineContentFilter(paginateQuery, filter);
         return await this.content.paginate(paginateQuery, paginateOptions);
     }
@@ -407,6 +431,21 @@ export class ContentGroupStore {
                 break;
         }
         return query;
+    }
+
+    /**
+     * Given a tagId, constructs an array of that tagId and the IDs of that tag's children
+     * @param tagId ID of tag that searching for children for
+     * @returns string[] of the given tagId and the IDs of that tag's children (just tagId if it has no children)
+     */
+    private async getAllTagIds(tagId: string) {
+        const childTags = await this.tags.find({ parent: tagId });
+        if (childTags) {
+            const childTagIds = childTags.map((tag) => tag._id);
+            childTagIds.push(tagId);
+            return childTagIds;
+        }
+        return [tagId];
     }
 
     //#endregion

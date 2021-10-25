@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
+import { AppQuery } from "@dragonfish/client/repository/app";
 import { TagsQuery, TagsService } from "@dragonfish/client/repository/tags";
 import { DragonfishNetworkService } from "@dragonfish/client/services";
 import { setTwoPartTitle } from "@dragonfish/shared/constants";
@@ -27,6 +28,7 @@ export class TagPageComponent implements OnInit {
         public tagsQuery: TagsQuery,
         private tagsService: TagsService,
         private network: DragonfishNetworkService,
+        private appQuery: AppQuery,
     ) {}
 
     ngOnInit(): void {
@@ -57,7 +59,7 @@ export class TagPageComponent implements OnInit {
             });
         }
         
-        this.network.getContentByFandomTag(tagId, pageNum).subscribe((results) => {
+        this.network.getContentByFandomTag(tagId, pageNum, this.appQuery.filter).subscribe((results) => {
             this.searchResults = results;
         })
     }
