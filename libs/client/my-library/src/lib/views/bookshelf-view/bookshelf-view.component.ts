@@ -5,6 +5,11 @@ import { untilDestroyed } from '@ngneat/until-destroy';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
+import { PopupModel } from '@dragonfish/shared/models/util';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'dragonfish-bookshelf-view',
@@ -25,6 +30,8 @@ export class BookshelfViewComponent implements OnInit {
         public shelves: BookshelvesRepository,
         private alerts: AlertsService,
         public pseudQuery: PseudonymsQuery,
+        private dialog: MatDialog,
+        private router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -46,6 +53,26 @@ export class BookshelfViewComponent implements OnInit {
 
     toggleVisibility() {
         this.shelves.toggleVisibility(this.pseudQuery.currentId as string, this.shelves.currentId).subscribe();
+    }
+
+    deleteShelf() {
+        const alertData: PopupModel = {
+            message: 'Are you sure you want to delete this? This action is irreversible.',
+            confirm: true,
+        };
+        const dialogRef = this.dialog.open(PopupComponent, { data: alertData });
+        dialogRef
+            .afterClosed()
+            .pipe(take(1))
+            .subscribe((wantsToDelete: boolean) => {
+                if (wantsToDelete) {
+                    this.shelves
+                        .deleteShelf(this.pseudQuery.currentId as string, this.shelves.currentId)
+                        .subscribe(() => {
+                            this.router.navigate(['/my-library']).catch((err) => console.log(err));
+                        });
+                }
+            });
     }
 
     submitForm() {

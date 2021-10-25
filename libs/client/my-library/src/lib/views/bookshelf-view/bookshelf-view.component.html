@@ -99,7 +99,11 @@
     </ng-container>
     <mat-menu #moreOptions='matMenu' xPosition="before">
         <ng-container *ngIf="shelf.public; else notPublic">
-            <button class="hover:scale-100" mat-menu-item>
+            <button
+                class="hover:scale-100"
+                mat-menu-item
+                [routerLink]="['/profile', pseudQuery.current._id, pseudQuery.current.userTag | slugify, 'bookshelf', shelf._id]"
+            >
                 <rmx-icon name="share-box-line"></rmx-icon>
                 Share this
             </button>
@@ -115,7 +119,7 @@
             </button>
         </ng-template>
         <div class="my-1 w-full border-b border-gray-600 dark:border-white"></div>
-        <button class="hover:scale-100" mat-menu-item>
+        <button class="hover:scale-100" mat-menu-item (click)="deleteShelf()">
             <rmx-icon name="delete-bin-line"></rmx-icon>
             Delete this
         </button>
