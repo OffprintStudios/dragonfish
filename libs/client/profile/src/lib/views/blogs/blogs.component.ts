@@ -12,6 +12,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { take } from 'rxjs/operators';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { MIN_TEXT_LENGTH, MAX_TITLE_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @Component({
     selector: 'dragonfish-profile-blogs',
@@ -26,8 +27,12 @@ export class BlogsComponent implements OnInit {
     pubStatus = PubStatus;
 
     blogForm = new FormGroup({
-        title: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(64)]),
-        body: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        title: new FormControl('', [
+            Validators.required,
+            Validators.minLength(MIN_TEXT_LENGTH),
+            Validators.maxLength(MAX_TITLE_LENGTH)
+        ]),
+        body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
     });
 
     constructor(
@@ -63,8 +68,12 @@ export class BlogsComponent implements OnInit {
     }
 
     submitForm(asDraft: boolean) {
-        if (this.blogForm.invalid) {
-            this.alerts.error(`Check the info you entered and try again.`);
+        if (this.blogForm.controls.title.invalid) {
+            this.alerts.warn('Title field has an invalid length. Maximum is '+ MAX_TITLE_LENGTH + ' characters.');
+            return;
+        }
+        if (this.blogForm.controls.body.invalid) {
+            this.alerts.warn('Body text is too short.');
             return;
         }
 
