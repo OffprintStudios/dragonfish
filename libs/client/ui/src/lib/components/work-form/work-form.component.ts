@@ -109,7 +109,7 @@ export class WorkFormComponent implements OnInit {
 
     submitForm() {
         if (this.fields.title.invalid) {
-            this.alerts.warn('Title field has an invalid length.');
+            this.alerts.warn('Title field has an invalid length. Maximum is '+ MAX_TITLE_LENGTH + ' characters.');
             return;
         }
         if (this.fields.desc.invalid) {
