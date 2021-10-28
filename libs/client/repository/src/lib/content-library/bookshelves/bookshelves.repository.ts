@@ -16,8 +16,8 @@ import {
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PseudonymsQuery } from '../../pseudonyms';
-import { map, Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, Observable, of, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { ContentModel } from '@dragonfish/shared/models/content';
 
 interface BookshelvesProps {
@@ -147,7 +147,13 @@ export class BookshelvesRepository {
     //#region ---SHELF ITEMS---
 
     public addItem(profileId: string, shelfId: string, contentId: string): Observable<void> {
-        return this.network.addShelfItem(profileId, shelfId, contentId);
+        return this.network.addShelfItem(profileId, shelfId, contentId).pipe(
+            catchError((err) => {
+                console.log(err);
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
     }
 
     public removeItem(profileId: string, shelfId: string, contentId: string): Observable<void> {

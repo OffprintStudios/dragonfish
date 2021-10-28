@@ -84,9 +84,7 @@ export class ContentLibraryRepository {
     //#region ---GETTERS---
 
     public get currentId() {
-        const id = store.query(getActiveId);
-        console.log(id);
-        return id;
+        return store.query<string>(getActiveId);
     }
 
     public get count() {

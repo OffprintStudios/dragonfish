@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BookshelfDocument, ShelfItemDocument } from '../schemas';
@@ -111,9 +111,13 @@ export class BookshelfStore {
      */
     public async addItem(userId: string, shelfId: string, contentId: string): Promise<void> {
         if (await this.shelfExists(userId, shelfId)) {
-            const newItem = new this.shelfItem({ shelfId: shelfId, content: contentId });
-            await newItem.save();
-            await this.updateWorkCount(shelfId);
+            if (await this.checkItem(userId, shelfId, contentId)) {
+                throw new ConflictException(`You've already added this!`);
+            } else {
+                const newItem = new this.shelfItem({ shelfId: shelfId, content: contentId });
+                await newItem.save();
+                await this.updateWorkCount(shelfId);
+            }
         } else {
             throw new NotFoundException(`The shelf you're trying to modify doesn't exist.`);
         }

@@ -37,11 +37,16 @@ export class LibrarySubMenuComponent extends MenuComponent {
         // IMPORTANT: tells the menu how to close, and anything passed in here is given to (menuAction)
     }
 
-    checkIfIn(shelfId: string) {
-        if (this.content) {
-            return this.shelves.checkItem(this.profiles.currentId as string, shelfId, this.content._id);
-        } else {
-            return of(false);
+    addToShelf(shelfId: string) {
+        if (this.profiles.currentId && this.content) {
+            this.shelves.addItem(this.profiles.currentId, shelfId, this.content._id).subscribe(
+                () => {
+                    this.contextMenu.closeAll();
+                },
+                () => {
+                    this.contextMenu.closeAll();
+                },
+            );
         }
     }
 }
