@@ -7,7 +7,6 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { slugify } from 'voca';
 import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
 import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
-import { ContentLibraryQuery, ContentLibraryService } from '@dragonfish/client/repository/content-library';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({

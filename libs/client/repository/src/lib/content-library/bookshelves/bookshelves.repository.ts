@@ -1,29 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Store, createState, withProps, select } from '@ngneat/elf';
 import { Bookshelf, BookshelfForm, ShelfItem } from '@dragonfish/shared/models/users/content-library';
-import { withEntities, selectAll, setEntities, addEntities, selectEntitiesCount } from '@ngneat/elf-entities';
+import {
+    withEntities,
+    selectAll,
+    setEntities,
+    addEntities,
+    withActiveId,
+    selectActiveEntity,
+    getActiveId,
+    updateEntities,
+    deleteEntities,
+    setActiveId,
+} from '@ngneat/elf-entities';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
-import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { map, Observable, of, zip } from 'rxjs';
+import { PseudonymsQuery } from '../../pseudonyms';
+import { map, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ContentModel } from '@dragonfish/shared/models/content';
 
 interface BookshelvesProps {
-    current: Bookshelf;
     items: ShelfItem[];
 }
 
 const { state, config } = createState(
-    withProps<BookshelvesProps>({ current: null, items: [] }),
+    withProps<BookshelvesProps>({ items: [] }),
     withEntities<Bookshelf, '_id'>({ idKey: '_id' }),
+    withActiveId(),
 );
 
 const store = new Store({ state, name: 'bookshelves', config });
 
 @Injectable({ providedIn: 'root' })
 export class BookshelvesRepository {
-    public current$: Observable<Bookshelf> = store.pipe(select((state) => state.current));
+    public current$: Observable<Bookshelf> = store.pipe(selectActiveEntity());
     public items$: Observable<ShelfItem[]> = store.pipe(select((state) => state.items));
     public shelves$: Observable<Bookshelf[]> = store.pipe(selectAll());
 
@@ -68,16 +79,11 @@ export class BookshelvesRepository {
         );
     }
 
-    public fetchOneShelf(profileId: string, shelfId: string): Observable<void> {
-        return zip(
-            this.network.fetchOneShelf(profileId, shelfId),
-            this.network.fetchShelfItems(profileId, shelfId),
-        ).pipe(
-            tap((results) => {
-                const [shelf, items] = results;
+    public fetchShelfItems(profileId: string, shelfId: string): Observable<void> {
+        return this.network.fetchShelfItems(profileId, shelfId).pipe(
+            tap((items) => {
                 store.update((state) => ({
                     ...state,
-                    current: shelf,
                     items: items,
                 }));
             }),
@@ -85,6 +91,10 @@ export class BookshelvesRepository {
                 return;
             }),
         );
+    }
+
+    public setCurrent(shelfId: string) {
+        store.update(setActiveId(shelfId));
     }
 
     public createShelf(profileId: string, formInfo: BookshelfForm): Observable<void> {
@@ -101,10 +111,7 @@ export class BookshelvesRepository {
     public editShelf(profileId: string, shelfId: string, formInfo: BookshelfForm): Observable<void> {
         return this.network.editShelf(profileId, shelfId, formInfo).pipe(
             tap((shelf) => {
-                store.update((state) => ({
-                    ...state,
-                    current: shelf,
-                }));
+                store.update(updateEntities(shelfId, shelf));
             }),
             map(() => {
                 return;
@@ -115,9 +122,10 @@ export class BookshelvesRepository {
     public deleteShelf(profileId: string, shelfId: string): Observable<void> {
         return this.network.deleteShelf(profileId, shelfId).pipe(
             tap(() => {
+                store.update(deleteEntities(shelfId));
                 store.update((store) => ({
                     ...store,
-                    current: null,
+                    items: null,
                 }));
             }),
         );
@@ -126,10 +134,7 @@ export class BookshelvesRepository {
     public toggleVisibility(profileId: string, shelfId: string): Observable<void> {
         return this.network.toggleShelfVisibility(profileId, shelfId).pipe(
             tap((shelf) => {
-                store.update((state) => ({
-                    ...state,
-                    current: shelf,
-                }));
+                store.update(updateEntities(shelfId, shelf));
             }),
             map(() => {
                 return;
@@ -179,7 +184,7 @@ export class BookshelvesRepository {
     }
 
     public get currentId() {
-        return store.getValue().current._id;
+        return store.query(getActiveId);
     }
 
     //#endregion

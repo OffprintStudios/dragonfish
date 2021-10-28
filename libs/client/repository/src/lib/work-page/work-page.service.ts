@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { SectionsService } from './sections';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
-import { ContentLibraryService } from '../content-library';
+import { ContentLibraryRepository } from '../content-library';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -24,7 +24,7 @@ export class WorkPageService {
         private alerts: AlertsService,
         private router: Router,
         private sections: SectionsService,
-        private library: ContentLibraryService,
+        private library: ContentLibraryRepository,
     ) {}
 
     //#region ---FETCHING---

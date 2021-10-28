@@ -7,6 +7,7 @@ import { IconsModule } from '@dragonfish/client/icons';
 import { MaterialModule } from '@dragonfish/client/material';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { AlertsModule } from '@dragonfish/client/alerts';
+import { ContextMenuModule } from '@ctrl/ngx-rightclick';
 
 /* Pages */
 import { MyLibraryComponent } from './my-library.component';
@@ -17,6 +18,11 @@ import { FinishedWorksComponent } from './views/finished-works/finished-works.co
 import { ReadingHistoryComponent } from './views/reading-history/reading-history.component';
 import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.component';
 
+/* Components */
+import { LibraryMenuComponent } from './components/library-menu/library-menu.component';
+import { LibrarySubMenuComponent } from './components/library-menu/library-sub-menu/library-sub-menu.component';
+import { ShelfMenuComponent } from './components/shelf-menu/shelf-menu.component';
+
 @NgModule({
     declarations: [
         MyLibraryComponent,
@@ -26,6 +32,9 @@ import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.co
         FinishedWorksComponent,
         ReadingHistoryComponent,
         BookshelfViewComponent,
+        LibraryMenuComponent,
+        LibrarySubMenuComponent,
+        ShelfMenuComponent,
     ],
     imports: [
         CommonModule,
@@ -37,6 +46,7 @@ import { BookshelfViewComponent } from './views/bookshelf-view/bookshelf-view.co
         FormsModule,
         ReactiveFormsModule,
         AlertsModule,
+        ContextMenuModule,
     ],
 })
 export class MyLibraryModule {}

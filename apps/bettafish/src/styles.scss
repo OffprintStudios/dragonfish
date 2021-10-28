@@ -444,11 +444,9 @@ div.context-menu {
         width: 100%;
         @apply flex flex-row items-center py-1 px-1.5;
         span.link-icon {
-            position: relative;
-            margin-right: 0.5rem;
-            top: 0.3rem;
-            i-feather {
-                width: 1.25rem;
+            @apply relative mr-2 top-0.5;
+            rmx-icon {
+                @apply w-5;
             }
         }
         &:hover {

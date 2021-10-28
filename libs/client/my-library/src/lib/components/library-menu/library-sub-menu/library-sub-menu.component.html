@@ -1,0 +1,13 @@
+<div
+    class="context-menu"
+    [@menu]="_state"
+    (@menu.done)="_onAnimationDone($event)"
+>
+    <ng-container *ngIf="shelves.shelves$ | async as bookshelves">
+        <a *ngFor="let shelf of bookshelves">
+            <span class="link-icon"><rmx-icon name="bar-chart-fill"></rmx-icon></span>
+            <span class="flex-1 overflow-ellipsis overflow-hidden whitespace-nowrap">{{ shelf.name }}</span>
+            <span class="link-icon mr-0 ml-2"><rmx-icon name="checkbox-blank-circle-line"></rmx-icon></span>
+        </a>
+    </ng-container>
+</div>

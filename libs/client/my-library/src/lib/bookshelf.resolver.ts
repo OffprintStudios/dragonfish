@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { BookshelvesRepository } from '@dragonfish/client/repository/content-library/bookshelves';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 
@@ -10,6 +10,11 @@ export class BookshelfResolver implements Resolve<void> {
 
     resolve(route: ActivatedRouteSnapshot): Observable<void> {
         const id = route.paramMap.get('id');
-        return this.shelves.fetchOneShelf(this.pseudQuery.currentId as string, id as string);
+
+        return this.shelves.fetchShelfItems(this.pseudQuery.currentId as string, id as string).pipe(
+            tap(() => {
+                this.shelves.setCurrent(id as string);
+            }),
+        );
     }
 }
