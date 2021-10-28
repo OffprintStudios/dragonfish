@@ -8,6 +8,8 @@ import { WorksComponent } from './views/works/works.component';
 import { BlogsComponent } from './views/blogs/blogs.component';
 import { BlogPageComponent } from './views/blog-page/blog-page.component';
 import { BlogCommentsComponent } from './views/blog-comments/blog-comments.component';
+import { BookshelvesComponent } from './views/bookshelves/bookshelves.component';
+import { BookshelfPageComponent } from './views/bookshelf-page/bookshelf-page.component';
 
 /* Misc */
 import { ProfileResolver } from './profile.resolver';
@@ -41,6 +43,14 @@ const routes: Routes = [
                         component: BlogsComponent,
                         resolve: { data: UserBlogsResolver },
                         runGuardsAndResolvers: 'always',
+                    },
+                    {
+                        path: 'bookshelves',
+                        component: BookshelvesComponent,
+                    },
+                    {
+                        path: 'bookshelf/:id',
+                        component: BookshelfPageComponent,
                     },
                     {
                         path: 'home',

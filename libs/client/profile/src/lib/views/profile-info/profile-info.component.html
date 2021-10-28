@@ -51,7 +51,7 @@
             </ng-container>
             <ng-template #hasWorks>
                 <ng-container *ngFor="let work of works">
-                    <dragonfish-work-card [content]="work" [showAuthor]="false"></dragonfish-work-card>
+                    <dragonfish-work-card [content]="work" [showAuthor]="false" [size]="'small'"></dragonfish-work-card>
                     <div class="my-3.5"><!--spacer--></div>
                 </ng-container>
             </ng-template>
