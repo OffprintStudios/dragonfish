@@ -163,4 +163,18 @@ div.work-card {
             background: var(--accent-dark);
         }
     }
+    &.active {
+        @apply scale-105 text-white;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+        img {
+            @apply border border-white;
+        }
+        h4 {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-light);
+        }
+    }
 }

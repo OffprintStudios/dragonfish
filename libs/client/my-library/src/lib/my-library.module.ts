@@ -8,6 +8,7 @@ import { MaterialModule } from '@dragonfish/client/material';
 import { PipesModule } from '@dragonfish/client/pipes';
 import { AlertsModule } from '@dragonfish/client/alerts';
 import { ContextMenuModule } from '@ctrl/ngx-rightclick';
+import { ClickOutsideModule } from 'ng-click-outside';
 
 /* Pages */
 import { MyLibraryComponent } from './my-library.component';
@@ -47,6 +48,7 @@ import { ShelfMenuComponent } from './components/shelf-menu/shelf-menu.component
         ReactiveFormsModule,
         AlertsModule,
         ContextMenuModule,
+        ClickOutsideModule,
     ],
 })
 export class MyLibraryModule {}

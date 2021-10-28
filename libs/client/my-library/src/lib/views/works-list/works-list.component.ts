@@ -12,7 +12,11 @@ export class WorksListComponent {
 
     constructor(public library: ContentLibraryRepository, private shelves: BookshelvesRepository) {}
 
-    setCurrent(shelfId: string) {
-        this.shelves.setCurrent(shelfId);
+    setCurrent(itemId: string) {
+        this.library.setCurrent(itemId);
+    }
+
+    deselect() {
+        this.library.deselect();
     }
 }

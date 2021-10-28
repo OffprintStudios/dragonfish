@@ -11,8 +11,9 @@ import { slugify } from 'voca';
 })
 export class WorkCardComponent {
     @Input() content;
-    @Input() showAuthor: boolean;
+    @Input() showAuthor = true;
     @Input() size: 'small' | 'large' = 'large';
+    @Input() isActive = false;
 
     contentKind = ContentKind;
     contentGenres = Genres;

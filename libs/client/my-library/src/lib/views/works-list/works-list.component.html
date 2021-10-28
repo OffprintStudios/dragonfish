@@ -5,14 +5,17 @@
     </div>
 </ng-container>
 <ng-template #hasItems>
-    <ng-container *ngIf="library.all$ | async as library">
+    <ng-container *ngIf="library.all$ | async as libraryItems">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-11/12 mx-auto gap-4 my-6">
-            <ng-container *ngFor="let item of library">
+            <ng-container *ngFor="let item of libraryItems">
                 <dragonfish-work-card
                     [content]="item.content"
                     [size]="'small'"
                     [contextMenuTrigger]="menu"
                     [menuContext]="item.content"
+                    [isActive]="library.currentId === item._id"
+                    (contextmenu)="setCurrent(item._id)"
+                    (clickOutside)="deselect()"
                 ></dragonfish-work-card>
             </ng-container>
         </div>

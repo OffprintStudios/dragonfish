@@ -95,7 +95,12 @@
     </div>
 </div>
 
-<div class="work-card border border-gray-600 dark:border-white rounded-md" *ngIf="size === 'small'" [routerLink]="createContentUrl(content.kind, content._id, content.title)">
+<div
+    class="work-card border border-gray-600 dark:border-white rounded-md"
+    *ngIf="size === 'small'"
+    [routerLink]="createContentUrl(content.kind, content._id, content.title)"
+    [ngClass]="{'active': isActive}"
+>
     <div class="flex">
         <h4
             class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center"

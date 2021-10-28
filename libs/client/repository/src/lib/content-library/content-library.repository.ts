@@ -5,6 +5,7 @@ import {
     getActiveId,
     selectActiveEntity,
     selectAll,
+    setActiveId,
     setEntities,
     withActiveId,
     withEntities,
@@ -46,6 +47,14 @@ export class ContentLibraryRepository {
         );
     }
 
+    public setCurrent(itemId: string) {
+        store.update(setActiveId(itemId));
+    }
+
+    public deselect() {
+        store.update(setActiveId(null));
+    }
+
     public addToLibrary(contentId: string) {
         return this.network.addToLibrary(this.pseudQuery.currentId, contentId).pipe(
             delay(300),
@@ -75,7 +84,9 @@ export class ContentLibraryRepository {
     //#region ---GETTERS---
 
     public get currentId() {
-        return store.query<string>(getActiveId);
+        const id = store.query(getActiveId);
+        console.log(id);
+        return id;
     }
 
     public get count() {
