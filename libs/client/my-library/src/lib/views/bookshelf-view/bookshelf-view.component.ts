@@ -10,6 +10,7 @@ import { PopupComponent } from '@dragonfish/client/ui';
 import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ShelfMenuComponent } from '../../components/shelf-menu/shelf-menu.component';
 
 @Component({
     selector: 'dragonfish-bookshelf-view',
@@ -20,6 +21,8 @@ export class BookshelfViewComponent implements OnInit {
     formIsOpen = false;
     moreMenuOpened = false;
     saving = false;
+
+    contextMenu = ShelfMenuComponent;
 
     shelfForm = new FormGroup({
         name: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
