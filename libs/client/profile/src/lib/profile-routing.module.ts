@@ -17,6 +17,8 @@ import { BlogResolver } from './blog.resolver';
 import { UserBlogsResolver } from './user-blogs.resolver';
 import { BlogCommentsResolver } from './blog-comments.resolver';
 import { UserWorksResolver } from './user-works.resolver';
+import { BookshelvesResolver } from './bookshelves.resolver';
+import { BookshelfResolver } from './bookshelf.resolver';
 
 const routes: Routes = [
     {
@@ -47,10 +49,14 @@ const routes: Routes = [
                     {
                         path: 'bookshelves',
                         component: BookshelvesComponent,
+                        resolve: { data: BookshelvesResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                     {
                         path: 'bookshelf/:id',
                         component: BookshelfPageComponent,
+                        resolve: { data: BookshelfResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                     {
                         path: 'home',
@@ -83,6 +89,14 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver, UserBlogsResolver, UserWorksResolver, BlogCommentsResolver],
+    providers: [
+        ProfileResolver,
+        BlogResolver,
+        UserBlogsResolver,
+        UserWorksResolver,
+        BlogCommentsResolver,
+        BookshelvesResolver,
+        BookshelfResolver,
+    ],
 })
 export class ProfileRoutingModule {}
