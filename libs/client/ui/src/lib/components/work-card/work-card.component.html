@@ -1,4 +1,4 @@
-<div class="card shadow-md rounded-md" *ngIf="size === 'large'">
+<div class="big-card shadow-md rounded-md" *ngIf="size === 'large'">
     <dragonfish-rating-icon [rating]="content.meta.rating" [size]="'small'"></dragonfish-rating-icon>
     <div class="card-content flex flex-col p-3">
         <div>
@@ -96,7 +96,7 @@
 </div>
 
 <div
-    class="work-card border border-gray-600 dark:border-white rounded-md"
+    class="small-card border border-gray-600 dark:border-white rounded-md"
     *ngIf="size === 'small'"
     [routerLink]="createContentUrl(content.kind, content._id, content.title)"
     [ngClass]="{'active': isActive}"

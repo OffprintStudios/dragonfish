@@ -1,4 +1,5 @@
-div.card {
+div.big-card {
+    @apply relative;
     border: 1px solid var(--borders);
     background: var(--accent);
     color: whitesmoke;
@@ -117,7 +118,7 @@ div.card {
     }
 }
 
-div.work-card {
+div.small-card {
     @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full;
     div.work-body {
         @apply flex-1 mb-2;
