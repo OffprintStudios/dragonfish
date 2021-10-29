@@ -7,7 +7,7 @@ import { ContentKind, ContentRating, Genres, TagKind, WorkKind } from '@dragonfi
     styleUrls: ['./tag-badge.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class TagBadgeComponent implements OnInit {
+export class TagBadgeComponent {
     @Input() kind: TagKind;
     @Input() type: ContentKind;
     @Input() category: WorkKind;
@@ -20,49 +20,7 @@ export class TagBadgeComponent implements OnInit {
     categories = WorkKind;
     kinds = TagKind;
     genres = Genres;
-
-    /* Ratings */
     ratings = ContentRating;
-    isEveryone = false;
-    isTeen = false;
-    isMature = false;
-    isExplicit = false;
-
-    ngOnInit(): void {
-        if (this.kind === TagKind.Rating) {
-            if (this.rating === ContentRating.Everyone) {
-                this.isEveryone = true;
-                this.isTeen = false;
-                this.isMature = false;
-                this.isExplicit = false;
-            } else if (this.rating === ContentRating.Teen) {
-                this.isEveryone = false;
-                this.isTeen = true;
-                this.isMature = false;
-                this.isExplicit = false;
-            } else if (this.rating === ContentRating.Mature) {
-                this.isEveryone = false;
-                this.isTeen = false;
-                this.isMature = true;
-                this.isExplicit = false;
-            } else if (this.rating === ContentRating.Explicit) {
-                this.isEveryone = false;
-                this.isTeen = false;
-                this.isMature = false;
-                this.isExplicit = true;
-            } else {
-                this.isEveryone = false;
-                this.isTeen = false;
-                this.isMature = false;
-                this.isExplicit = false;
-            }
-        } else {
-            this.isEveryone = false;
-            this.isTeen = false;
-            this.isMature = false;
-            this.isExplicit = false;
-        }
-    }
 
     generateTooltip() {
         switch (this.kind) {

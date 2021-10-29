@@ -1,97 +1,116 @@
-<div class="big-card shadow-md rounded-md" *ngIf="size === 'large'">
-    <dragonfish-rating-icon [rating]="content.meta.rating" [size]="'small'"></dragonfish-rating-icon>
-    <div class="card-content flex flex-col p-3">
-        <div>
-            <h3 class="text-xl font-medium">
-                <ng-container *ngIf="content.kind === contentKind.PoetryContent">
-                    <a [routerLink]="['/poetry', content._id, content.title | slugify]">{{ content.title }}</a>
-                </ng-container>
-                <ng-container *ngIf="content.kind === contentKind.ProseContent">
-                    <a [routerLink]="['/prose', content._id, content.title | slugify]">{{ content.title }}</a>
-                </ng-container>
-                <span class="font-light text-xs italic inline-block ml-1" *ngIf="showAuthor">
-                    by
-                    <a [routerLink]="['/profile', content.author._id, content.author.userTag | slugify]">
-                        {{ content.author.screenName }}
-                    </a>
-                </span>
-            </h3>
+<div class="big-card border border-gray-600 dark:border-white" [routerLink]="createContentUrl(content.kind, content._id, content.title)" *ngIf="size === 'large'">
+    <div class="flex items-center">
+        <h3
+            class="title"
+            [matTooltip]="content.title"
+            [matTooltipClass]="'offprint-tooltip'"
+            [matTooltipShowDelay]="600"
+        >
+            {{ content.title }}
+        </h3>
+        <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [hasIcon]="false"></dragonfish-tag-badge>
+    </div>
+    <div class="flex items-center pb-0.5 mb-2 text-xs border-b border-gray-600 dark:border-white">
+        <div class="flex-1">
+            by {{ $any(content.author).screenName }}
         </div>
-        <div class="card-info flex flex-row items-center">
-            <ng-container *ngIf="content.kind === contentKind.PoetryContent">
-                <span class="tag" [matTooltip]="'Poetry'" [matTooltipClass]="'offprint-tooltip'">
-                    <rmx-icon name="quill-pen-line" class="kind"></rmx-icon>
-                </span>
-            </ng-container>
-            <ng-container *ngIf="content.kind === contentKind.ProseContent">
-                <span class="tag" [matTooltip]="'Prose'" [matTooltipClass]="'offprint-tooltip'">
-                    <rmx-icon name="book-open-line" class="kind"></rmx-icon>
-                </span>
-            </ng-container>
-            <span class="tag">{{ content.meta.category }}</span>
-            <span class="divider">//</span>
-            <span class="tag genres">{{ content.meta.genres | separateGenres }}</span>
-            <span class="tag genres-mobile">Genres <rmx-icon name="arrow-down-s-line"></rmx-icon></span>
-            <span class="tag end">
-                <rmx-icon name="thumb-up-line"></rmx-icon>
-                <span class="relative -top-1.5">{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
-            </span>
+        <div class="flex items-center">
+            <rmx-icon name="heart-line" class="relative top-1" style="width: 1rem;"></rmx-icon>
+            <span>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
         </div>
-        <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
-            <div class="card-tags flex flex-row items-center">
-                <ng-container *ngIf="content.tags.length === 1; else multipleTags">
+    </div>
+    <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
+        <div class="card-tags flex flex-row items-center">
+            <ng-container *ngIf="content.tags.length === 1; else multipleTags">
                     <span class="tag tags">
                         <a
-                           [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
-                           [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                            [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                            [innerHtml]="content.tags[0] | displayTags | safeHtml"
                         ></a>
                     </span>
-                </ng-container>
-                <ng-template #multipleTags>
-                    <ng-container *ngIf="showAllTags; else showOneTag">
+            </ng-container>
+            <ng-template #multipleTags>
+                <ng-container *ngIf="showAllTags; else showOneTag">
                         <span class="tag tags">
                             <ng-container *ngFor="let tag of content.tags; let i = index">
                                 <a
-                                   [routerLink]="['/tag', tag._id, tag.name | slugify]"
-                                   [innerHtml]="tag | displayTags | safeHtml"
+                                    [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                    [innerHtml]="tag | displayTags | safeHtml"
                                 ></a>
                                 <ng-container *ngIf="i < content.tags.length - 1">
                                     ,
                                 </ng-container>
                             </ng-container>
                         </span>
-                        <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
-                    </ng-container>
-                    <ng-template #showOneTag>
+                    <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
+                </ng-container>
+                <ng-template #showOneTag>
                         <span class="tag tags">
                             <a
-                               [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
-                               [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                                [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                                [innerHtml]="content.tags[0] | displayTags | safeHtml"
                             ></a>
                         </span>
-                        <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
-                    </ng-template>
+                    <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                 </ng-template>
+            </ng-template>
+        </div>
+    </ng-container>
+    <div class="work-body">
+        <div class="cover" *ngIf="$any(content.meta).coverArt">
+            <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
+        </div>
+        <div class="flex flex-col">
+            <div class="flex items-center flex-wrap mb-2">
+                <dragonfish-tag-badge [kind]="tagKind.Type" [type]="content.kind" [size]="'medium'"></dragonfish-tag-badge>
+                <dragonfish-tag-badge [kind]="tagKind.Category" [category]="content.meta.category" [size]="'medium'"></dragonfish-tag-badge>
+                <ng-container *ngFor="let genre of content.meta.genres">
+                    <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre" [size]="'medium'"></dragonfish-tag-badge>
+                </ng-container>
             </div>
-        </ng-container>
-        <div class="card-body">
-            <div *ngIf="content.meta.coverArt">
-                <img class="cover-art" [alt]="'Cover Art'" [src]="content.meta.coverArt" />
-            </div>
-            <div>
+            <div class="desc">
                 {{ content.desc }}
             </div>
         </div>
-        <div>
-            <div class="card-footer">
-                <rmx-icon name="bar-chart-line" title="Views"></rmx-icon>{{ content.stats.views | abbreviate }}<span>//</span>
-                <rmx-icon name="chat-3-line" title="Comments"></rmx-icon>{{ content.stats.comments | abbreviate
-                }}<span>//</span> <rmx-icon name="pen-nib-line" title="Words"></rmx-icon>{{ content.stats.words | abbreviate
-                }}<span>//</span> <rmx-icon name="calendar-2-line" title="Published On"></rmx-icon
-                >{{ content.audit.publishedOn | localedate: 'shortDate' }}<span>//</span>
-                {{ content.meta.status }}
-            </div>
+    </div>
+    <div class="work-meta bg-gray-200 dark:bg-gray-600">
+        <div class="flex items-center" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+            <rmx-icon name="rhythm-fill" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+            <span>{{ content.stats.views | abbreviate }}</span>
         </div>
+        <div class="text-sm mx-0.5 relative -top-0.5">
+            •
+        </div>
+        <div class="flex items-center" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+            <rmx-icon name="pen-nib-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+            <span>{{ content.stats.words | abbreviate }}</span>
+        </div>
+        <div class="text-sm mx-0.5 relative -top-0.5">
+            •
+        </div>
+        <div class="flex items-center" [matTooltip]="'Comments'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+            <rmx-icon name="discuss-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+            <span>{{ content.stats.comments | abbreviate }}</span>
+        </div>
+        <div class="text-sm mx-0.5 relative -top-0.5">
+            •
+        </div>
+        <div>
+            {{ content.meta.status }}
+        </div>
+        <div class="flex-1"></div>
+        <ng-container *ngIf="content.audit.publishedOn; else creationDate">
+            <div class="flex items-center" [matTooltip]="'Published on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                <span>{{ content.audit.publishedOn | localedate: 'shortDate' }}</span>
+            </div>
+        </ng-container>
+        <ng-template #creationDate>
+            <div class="flex items-center" [matTooltip]="'Created on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                <span>{{ content.createdAt | localedate: 'shortDate' }}</span>
+            </div>
+        </ng-template>
     </div>
 </div>
 

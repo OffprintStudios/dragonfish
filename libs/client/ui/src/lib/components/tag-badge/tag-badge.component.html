@@ -10,10 +10,10 @@
         'no-text': size === 'small',
         'big-text': size === 'large',
         'no-icon': !hasIcon,
-        'everyone': isEveryone,
-        'teen': isTeen,
-        'mature': isMature,
-        'explicit': isExplicit
+        'everyone': rating === ratings.Everyone,
+        'teen': rating === ratings.Teen,
+        'mature': rating === ratings.Mature,
+        'explicit': rating === ratings.Explicit
     }"
     [matTooltip]="generateTooltip()"
     [matTooltipDisabled]="size === 'large' || size === 'medium'"
