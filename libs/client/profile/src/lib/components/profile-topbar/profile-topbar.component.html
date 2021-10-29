@@ -92,6 +92,14 @@
                         <rmx-icon name="cup-line"></rmx-icon>
                         <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
                     </a>
+                    <a
+                        class="link"
+                        [routerLink]="['bookshelves']"
+                        [routerLinkActive]="'active'"
+                    >
+                        <rmx-icon name="bar-chart-fill"></rmx-icon>
+                        <span>Bookshelves</span>
+                    </a>
                 </div>
             </div>
         </div>

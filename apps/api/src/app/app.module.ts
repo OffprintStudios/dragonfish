@@ -12,7 +12,6 @@ import { AdminRoutes } from './controllers/admin';
 import { AuthRoutes } from './controllers/auth';
 import { ContentRoutes } from './controllers/content';
 import { SearchRoutes } from './controllers/search';
-import { ContentLibraryRoutes } from './controllers/content-library';
 
 /* Services */
 import { InterfaceProviders } from './services';
@@ -22,6 +21,10 @@ import { ImagesServices } from './services/images';
 import { ContentServices } from './services/content';
 import { SearchServices } from './services/search';
 
+/* Modules */
+import { NotificationsModule } from '@dragonfish/api/notifications';
+import { ContentLibraryModule } from '@dragonfish/api/content-library';
+
 /* Database Modules */
 import { ContentModule } from '@dragonfish/api/database/content';
 import { UsersModule } from '@dragonfish/api/database/users';
@@ -29,11 +32,9 @@ import { CollectionsModule } from '@dragonfish/api/database/collections';
 import { ApprovalQueueModule } from '@dragonfish/api/database/approval-queue';
 import { AdminModule } from '@dragonfish/api/database/admin/admin.module';
 import { CommentsModule } from '@dragonfish/api/database/comments';
-import { ContentLibraryModule } from '@dragonfish/api/database/content-library';
 import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 /* Utilities */
-import { NotificationsModule } from '@dragonfish/api/notifications';
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 
 @Module({
@@ -45,8 +46,8 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
         ApprovalQueueModule,
         AdminModule,
         CommentsModule,
-        ContentLibraryModule,
         AccountsModule,
+        ContentLibraryModule,
         BullModule.forRootAsync({
             useFactory: () => ({
                 redis: {
@@ -86,7 +87,7 @@ import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secre
             }),
         }),
     ],
-    controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...SearchRoutes, ...ContentLibraryRoutes],
+    controllers: [...AdminRoutes, ...AuthRoutes, ...ContentRoutes, ...SearchRoutes],
     providers: [
         ...AdminServices,
         ...AuthServices,

@@ -1,5 +1,4 @@
 import { InviteCodes } from '@dragonfish/shared/models/users';
-import { Collection, CollectionForm } from '@dragonfish/shared/models/collections';
 import { Comment, CommentForm, CommentKind } from '@dragonfish/shared/models/comments';
 import {
     ContentFilter,
@@ -22,7 +21,6 @@ import { catchError, map } from 'rxjs/operators';
 import { handleResponse, tryParseJsonHttpError } from '@dragonfish/shared/functions';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { Decision } from '@dragonfish/shared/models/contrib';
-import { FrontPageStats } from '@dragonfish/shared/models/stats';
 import { HttpError } from '@dragonfish/shared/models/util';
 import { Injectable, NgZone } from '@angular/core';
 import { ReadingHistory } from '@dragonfish/shared/models/reading-history';
@@ -30,7 +28,7 @@ import { PublishSection, Section, SectionForm } from '@dragonfish/shared/models/
 import { CookieService } from 'ngx-cookie';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { CaseFile, CaseKind, Note, NoteForm, ReportForm } from '@dragonfish/shared/models/case-files';
-import { ContentLibrary } from '@dragonfish/shared/models/users/content-library';
+import { BookshelfForm, ContentLibrary } from '@dragonfish/shared/models/users/content-library';
 import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
 import {
@@ -45,6 +43,7 @@ import {
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
 import { MarkAsRead, Notification } from '@dragonfish/shared/models/accounts/notifications';
+import { Bookshelf, ShelfItem } from '@dragonfish/shared/models/users/content-library';
 
 /**
  * ## DragonfishNetworkService
@@ -272,6 +271,116 @@ export class DragonfishNetworkService {
 
     //#endregion
 
+    //#region ---BOOKSHELVES---
+
+    public fetchShelves(profileId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf[]>(`${this.baseUrl}/bookshelves/fetch-bookshelves?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public fetchPublicShelves(profileId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf[]>(`${this.baseUrl}/bookshelves/fetch-public-bookshelves?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public fetchOneShelf(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.get<Bookshelf>(
+                `${this.baseUrl}/bookshelves/fetch-one-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public createShelf(profileId: string, formInfo: BookshelfForm) {
+        return handleResponse(
+            this.http.post<Bookshelf>(`${this.baseUrl}/bookshelves/create-bookshelf?pseudId=${profileId}`, formInfo, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public editShelf(profileId: string, shelfId: string, formInfo: BookshelfForm) {
+        return handleResponse(
+            this.http.patch<Bookshelf>(
+                `${this.baseUrl}/bookshelves/edit-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                formInfo,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public deleteShelf(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.delete<void>(
+                `${this.baseUrl}/bookshelves/delete-bookshelf?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public toggleShelfVisibility(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.patch<Bookshelf>(
+                `${this.baseUrl}/bookshelves/toggle-visibility?pseudId=${profileId}&shelfId=${shelfId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    //#endregion
+
+    //#region ---BOOKSHELF ITEMS---
+
+    public fetchShelfItems(profileId: string, shelfId: string) {
+        return handleResponse(
+            this.http.get<ShelfItem[]>(
+                `${this.baseUrl}/bookshelves/fetch-items?pseudId=${profileId}&shelfId=${shelfId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public addShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.post<void>(
+                `${this.baseUrl}/bookshelves/add-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public removeShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.delete<void>(
+                `${this.baseUrl}/bookshelves/remove-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public checkShelfItem(profileId: string, shelfId: string, contentId: string) {
+        return handleResponse(
+            this.http.get<{ isPresent: boolean }>(
+                `${this.baseUrl}/bookshelves/check-item?pseudId=${profileId}&shelfId=${shelfId}&contentId=${contentId}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    //#endregion
+
     //#region ---BROWSE---
 
     /**
@@ -457,181 +566,6 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
-        );
-    }
-
-    //#endregion
-
-    //#region ---COLLECTIONS---
-
-    /**
-     * Creates a collection in the database.
-     *
-     * @param collInfo A collection's info
-     */
-    public createCollection(collInfo: CollectionForm) {
-        return handleResponse(
-            this.http.put<Collection>(`${this.baseUrl}/collections/create-collection`, collInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches a user's collections.
-     */
-    public fetchAllCollections(pageNum: number) {
-        return handleResponse(
-            this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/collections/get-all-collections?pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Fetches one collection for the logged-in user. Can retrieve both public and private collections.
-     * @param collId The ID of the collection to fetch.
-     */
-    public fetchOneCollection(collId: string): Observable<Collection> {
-        return handleResponse(
-            this.http.get<Collection>(`${this.baseUrl}/collections/get-one-collection?collId=${collId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Fetches one collection for a user. Will only look for private collections.
-     * @param userId The ID of the user that owns the collection.
-     * @param collId The collection's ID.
-     */
-    public fetchOnePublicCollection(userId: string, collId: string): Observable<Collection> {
-        return handleResponse(
-            this.http.get<Collection>(
-                `${this.baseUrl}/collections/get-one-public-collection?userId=${userId}&collId=${collId}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Fetches all the collections that are public for a given user.
-     * @param userId The ID of the user whose collections will be fetched.
-     * @param pageNum The page number to fetch.
-     */
-    public fetchPublicCollections(userId: string, pageNum: number) {
-        return handleResponse(
-            this.http.get<PaginateResult<Collection>>(
-                `${this.baseUrl}/collections/get-public-collections?userId=${userId}&pageNum=${pageNum}`,
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Fetches a user's collections without pagination.
-     */
-    public fetchAllCollectionsNoPaginate() {
-        return handleResponse(
-            this.http.get<Collection[]>(`${this.baseUrl}/collections/get-all-collections-no-paginate`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Sends edits for a collection to the database.
-     *
-     * @param collId A collection's ID
-     * @param collInfo The new collection info
-     */
-    public editCollection(collId: string, collInfo: CollectionForm) {
-        return handleResponse(
-            this.http.patch<Collection>(`${this.baseUrl}/collections/edit-collection?collId=${collId}`, collInfo, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
-     * Deletes a collection belonging to this user.
-     *
-     * @param collId The collection ID
-     */
-    public deleteCollection(collId: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/collections/delete-collection?collId=${collId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Adds a work to a collection.
-     *
-     * @param collId The collection
-     * @param workId The work
-     */
-    public addWorkToCollection(collId: string, workId: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/collections/add-content?collId=${collId}&contentId=${workId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Removes a work from a collection.
-     *
-     * @param collId The collection
-     * @param workId The work
-     */
-    public removeWorkFromCollection(collId: string, workId: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/collections/remove-content?collId=${collId}&contentId=${workId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to set a collection to public to the backend.
-     *
-     * @param collId The collection's ID
-     */
-    public setCollectionToPublic(collId: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/collections/set-public?collId=${collId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
-        );
-    }
-
-    /**
-     * Sends a request to set a collection to private to the backend.
-     *
-     * @param collId The collection's ID
-     */
-    public setCollectionToPrivate(collId: string) {
-        return handleResponse(
-            this.http.patch<void>(
-                `${this.baseUrl}/collections/set-private?collId=${collId}`,
-                {},
-                { observe: 'response', withCredentials: true },
-            ),
         );
     }
 
@@ -1508,47 +1442,6 @@ export class DragonfishNetworkService {
                     withCredentials: true,
                 },
             ),
-        );
-    }
-
-    //#endregion
-
-    //#region ---SERVER-SENT EVENTS---
-
-    /**
-     * Gets the server-sent events given a URl.
-     * @param url
-     * @returns
-     */
-    public getServerSentEvent<T>(url: string): Observable<MessageEvent<T>> {
-        return new Observable<MessageEvent<T>>((observer) => {
-            const eventSource = new EventSource(url);
-            eventSource.onmessage = (event: MessageEvent<T>) => {
-                this._zone.run(() => {
-                    observer.next(event);
-                });
-            };
-            eventSource.onerror = (error) => {
-                this._zone.run(() => {
-                    observer.error(error);
-                });
-            };
-        });
-    }
-
-    //#endregion
-
-    //#region ---STATS---
-
-    /**
-     * Fetches the stats for the footer.
-     */
-    public fetchFrontPageStats() {
-        return handleResponse(
-            this.http.get<FrontPageStats>(`${this.baseUrl}/meta/public-stats`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
         );
     }
 

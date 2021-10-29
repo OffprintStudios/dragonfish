@@ -92,6 +92,31 @@
         }
       }
     },
+    "api-content-library": {
+      "root": "libs/api/content-library",
+      "sourceRoot": "libs/api/content-library/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/api/content-library/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/api/content-library"
+          ],
+          "options": {
+            "jestConfig": "libs/api/content-library/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "api-database": {
       "root": "libs/api/database",
       "sourceRoot": "libs/api/database/src",

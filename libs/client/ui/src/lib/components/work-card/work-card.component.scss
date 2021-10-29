@@ -1,118 +1,117 @@
-div.card {
-    border: 1px solid var(--borders);
-    background: var(--accent);
-    color: whitesmoke;
-
-    div.card-content {
-        min-height: 20rem;
+div.big-card {
+    @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full rounded-md;
+    h3.title {
+        @apply relative top-0.5 font-medium flex-1 text-xl overflow-hidden overflow-ellipsis whitespace-nowrap;
     }
-
-    h3 {
-        color: whitesmoke;
-        a {
-            cursor: pointer;
-            color: whitesmoke;
-            &:hover {
-                background: var(--accent-dark);
+    &:hover {
+        @apply text-white scale-105;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+        h3.title {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-light);
+        }
+    }
+    div.work-body {
+        @apply flex flex-1 mb-2;
+        div.cover {
+            @apply mr-2;
+            img {
+                @apply object-contain rounded-lg;
+                box-shadow: var(--dropshadow);
+                max-width: 6.5rem;
             }
         }
-    }
-    div.card-info {
-        border-top: 1px solid whitesmoke;
-        border-bottom: 1px solid whitesmoke;
-    }
-    div.card-tags {
-        border-bottom: 1px solid whitesmoke;
-        a {
-            cursor: pointer;
-            color: whitesmoke;
-            &:hover {
-                background: var(--accent-dark);
-            }
+        div.desc {
+            @apply text-sm;
         }
     }
-    span.divider {
-        font-size: 14px;
-        margin: 0 0.25rem 0 0.5rem;
+    div.work-meta {
+        @apply rounded-md px-1 text-xs flex items-center;
     }
-    span.tag {
-        font-size: 14px;
-        text-transform: lowercase;
-        font-variant: small-caps;
-        rmx-icon {
-            position: relative;
-            width: 14px;
-            margin-right: 0.25rem;
-            top: 0.5rem;
-            display: inline-block;
-            &.kind {
-                width: 16px;
-                top: 0.4rem;
-            }
+    &:active {
+        @apply scale-100 text-white;
+        background: var(--accent-dark);
+        h3.title {
+            @apply text-white;
         }
-        &.end {
-            flex: 1;
-            text-align: right;
+        div.work-meta {
+            background: var(--accent-dark);
         }
     }
-    span.genres {
-        @media (max-width: 700px) {
-            display: none;
+    &.active {
+        @apply scale-105 text-white;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+        h3.title {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-light);
         }
     }
-    span.genres-mobile {
-        display: none;
-        cursor: pointer;
-        @media (max-width: 700px) {
-            display: block;
-        }
-    }
-    img.cover-art {
-        float: left;
-        max-height: 150px;
-        max-width: 100px;
-        margin-right: 1.5rem;
-        border-radius: 0.375rem;
-    }
-    div.card-footer {
-        padding-top: 5px;
-        border-top: 1px solid whitesmoke;
-        text-align: right;
-        font-size: 11px;
-        color: whitesmoke;
-        a.work-stat-button {
-            color: whitesmoke;
-            text-decoration: none;
-            padding: 2px;
-            &:hover {
-                background-color: var(--accent-dark);
-            }
-        }
-        span {
-            margin: 0 0.25rem 0 0.25rem;
-        }
-        rmx-icon {
-            position: relative;
-            width: 13px;
-            height: 13px;
-            stroke-width: 1;
-            top: 0.25rem;
-            margin-right: 0.25rem;
-            display: inline-block;
-        }
-    }
+}
 
-    div.card-body {
-        flex-grow: 1;
-        color: whitesmoke;
-        font-size: 14px;
-        margin-top: 1rem;
-
-        img.cover-art {
-            float: left;
-            max-height: 150px;
-            max-width: 100px;
-            margin-right: 1.5rem;
+div.small-card {
+    @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full;
+    div.work-body {
+        @apply flex-1 mb-2;
+        div.cover {
+            @apply mr-2;
+            img {
+                @apply object-contain rounded-lg;
+                box-shadow: var(--dropshadow);
+                max-width: 5rem;
+            }
+        }
+        div.desc {
+            @apply text-sm;
+        }
+    }
+    div.work-meta {
+        @apply rounded-md px-1 text-xs flex items-center;
+    }
+    &:hover {
+        @apply scale-105 text-white;
+        box-shadow: var(--dropshadow);
+        background: var(--accent);
+        img {
+            @apply border border-white;
+        }
+        h4 {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-light);
+        }
+    }
+    &:active {
+        @apply scale-100 text-white;
+        background: var(--accent-dark);
+        img {
+            @apply border border-white;
+        }
+        h4 {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-dark);
+        }
+    }
+    &.active {
+        @apply scale-105 text-white;
+        background: var(--accent);
+        box-shadow: var(--dropshadow);
+        img {
+            @apply border border-white;
+        }
+        h4 {
+            @apply text-white;
+        }
+        div.work-meta {
+            background: var(--accent-light);
         }
     }
 }

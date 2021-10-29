@@ -8,6 +8,8 @@ import { WorksComponent } from './views/works/works.component';
 import { BlogsComponent } from './views/blogs/blogs.component';
 import { BlogPageComponent } from './views/blog-page/blog-page.component';
 import { BlogCommentsComponent } from './views/blog-comments/blog-comments.component';
+import { BookshelvesComponent } from './views/bookshelves/bookshelves.component';
+import { BookshelfPageComponent } from './views/bookshelf-page/bookshelf-page.component';
 
 /* Misc */
 import { ProfileResolver } from './profile.resolver';
@@ -15,6 +17,8 @@ import { BlogResolver } from './blog.resolver';
 import { UserBlogsResolver } from './user-blogs.resolver';
 import { BlogCommentsResolver } from './blog-comments.resolver';
 import { UserWorksResolver } from './user-works.resolver';
+import { BookshelvesResolver } from './bookshelves.resolver';
+import { BookshelfResolver } from './bookshelf.resolver';
 
 const routes: Routes = [
     {
@@ -40,6 +44,18 @@ const routes: Routes = [
                         path: 'blogs',
                         component: BlogsComponent,
                         resolve: { data: UserBlogsResolver },
+                        runGuardsAndResolvers: 'always',
+                    },
+                    {
+                        path: 'bookshelves',
+                        component: BookshelvesComponent,
+                        resolve: { data: BookshelvesResolver },
+                        runGuardsAndResolvers: 'always',
+                    },
+                    {
+                        path: 'bookshelf/:id',
+                        component: BookshelfPageComponent,
+                        resolve: { data: BookshelfResolver },
                         runGuardsAndResolvers: 'always',
                     },
                     {
@@ -73,6 +89,14 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [ProfileResolver, BlogResolver, UserBlogsResolver, UserWorksResolver, BlogCommentsResolver],
+    providers: [
+        ProfileResolver,
+        BlogResolver,
+        UserBlogsResolver,
+        UserWorksResolver,
+        BlogCommentsResolver,
+        BookshelvesResolver,
+        BookshelfResolver,
+    ],
 })
 export class ProfileRoutingModule {}

@@ -16,75 +16,77 @@
 
 <div class="flex" style="height: calc(100vh - 52px);">
     <dragonfish-pagebar>
-        <a
-            class="link"
-            [routerLink]="['overview']"
-            [routerLinkActive]="'active'"
-        >
-            <span class="link-icon"><rmx-icon name="bar-chart-line"></rmx-icon></span>
-            Overview
-        </a>
-        <a
-            class="link"
-            [routerLink]="['approval-queue']"
-            [routerLinkActive]="'active'"
-        >
-            <span class="link-icon"><rmx-icon name="list-unordered"></rmx-icon></span>
-            Approval Queue
-        </a>
-        <a
-            class="link"
-            [ngClass]="{ 'active': showModTools }"
-            (click)="showModTools = !showModTools"
-        >
-            <span class="link-icon"><rmx-icon name="briefcase-2-line"></rmx-icon></span>
-            <span class="text">Moderation</span>
-            <span class="link-icon" *ngIf="!showModTools; else openedDropdown"><rmx-icon name="arrow-down-s-line"></rmx-icon></span>
-            <ng-template #openedDropdown>
-                <span class="link-icon"><rmx-icon name="arrow-up-s-line"></rmx-icon></span>
-            </ng-template>
-        </a>
-        <div class="dropdown-nav" [@inOutAnimation] *ngIf="showModTools">
+        <div class="pages">
             <a
-                class="link dropdown-item"
-                [routerLink]="['case-files']"
+                class="link"
+                [routerLink]="['overview']"
                 [routerLinkActive]="'active'"
             >
-                <span class="link-icon"><rmx-icon name="clipboard-line"></rmx-icon></span>
-                Case Files
+                <span class="link-icon"><rmx-icon name="bar-chart-line"></rmx-icon></span>
+                Overview
             </a>
             <a
-                class="link dropdown-item"
-                [routerLink]="['tags']"
+                class="link"
+                [routerLink]="['approval-queue']"
                 [routerLinkActive]="'active'"
             >
-                <span class="link-icon"><i-feather name="hash"></i-feather></span>
-                Tags
+                <span class="link-icon"><rmx-icon name="list-unordered"></rmx-icon></span>
+                Approval Queue
             </a>
             <a
-                class="link dropdown-item"
-                [routerLink]="['audit-log']"
-                [routerLinkActive]="'active'"
+                class="link"
+                [ngClass]="{ 'active': showModTools }"
+                (click)="showModTools = !showModTools"
             >
-                <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
-                Audit Log
+                <span class="link-icon"><rmx-icon name="briefcase-2-line"></rmx-icon></span>
+                <span class="text">Moderation</span>
+                <span class="link-icon" *ngIf="!showModTools; else openedDropdown"><rmx-icon name="arrow-down-s-line"></rmx-icon></span>
+                <ng-template #openedDropdown>
+                    <span class="link-icon"><rmx-icon name="arrow-up-s-line"></rmx-icon></span>
+                </ng-template>
             </a>
-            <a
-                class="link dropdown-item"
-                [routerLink]="['users-management']"
-                [routerLinkActive]="'active'"
-            >
-                <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
-                Users
-            </a>
-            <a
-                class="link dropdown-item"
-                [routerLink]="['group-queue']"
-                [routerLinkActive]="'active'"
-            >
-                <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
-                Groups
-            </a>
+            <div class="dropdown-nav" [@inOutAnimation] *ngIf="showModTools">
+                <a
+                    class="link dropdown-item"
+                    [routerLink]="['case-files']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><rmx-icon name="clipboard-line"></rmx-icon></span>
+                    Case Files
+                </a>
+                <a
+                    class="link dropdown-item"
+                    [routerLink]="['tags']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><i-feather name="hash"></i-feather></span>
+                    Tags
+                </a>
+                <a
+                    class="link dropdown-item"
+                    [routerLink]="['audit-log']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
+                    Audit Log
+                </a>
+                <a
+                    class="link dropdown-item"
+                    [routerLink]="['users-management']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+                    Users
+                </a>
+                <a
+                    class="link dropdown-item"
+                    [routerLink]="['group-queue']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+                    Groups
+                </a>
+            </div>
         </div>
     </dragonfish-pagebar>
     <div class="w-full">

@@ -232,14 +232,30 @@ div.topbar-tools {
 
 /* Offprint Pagebar */
 div.pagebar {
+    div.page-header {
+        @apply border-b border-white mb-4;
+        h3 {
+            @apply text-white font-medium text-3xl;
+        }
+        button {
+            background: var(--accent-light);
+        }
+        div.button-row {
+            @apply flex items-center w-full justify-center;
+        }
+    }
     div.pages {
         @apply text-white w-full flex flex-col;
         a.link {
-            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none;
+            @apply w-full p-1.5 rounded-md text-sm mb-0.5 text-white flex items-center cursor-pointer select-none transition transform;
             &:hover, &.active {
+                @apply transition-all;
                 background: var(--accent-light);
                 text-decoration: none;
                 color: white;
+            }
+            &:hover {
+                @apply scale-105;
             }
             span.text {
                 @apply flex-1;
@@ -428,11 +444,9 @@ div.context-menu {
         width: 100%;
         @apply flex flex-row items-center py-1 px-1.5;
         span.link-icon {
-            position: relative;
-            margin-right: 0.5rem;
-            top: 0.3rem;
-            i-feather {
-                width: 1.25rem;
+            @apply relative mr-2 top-0.5;
+            rmx-icon {
+                @apply w-5;
             }
         }
         &:hover {

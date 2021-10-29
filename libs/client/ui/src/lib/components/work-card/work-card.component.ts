@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
-import { ContentKind, Genres } from '@dragonfish/shared/models/content';
+import { ContentKind, Genres, TagKind } from '@dragonfish/shared/models/content';
 
 import { calculateApprovalRating } from '@dragonfish/shared/functions';
+import { slugify } from 'voca';
 
 @Component({
     selector: 'dragonfish-work-card',
@@ -10,10 +11,13 @@ import { calculateApprovalRating } from '@dragonfish/shared/functions';
 })
 export class WorkCardComponent {
     @Input() content;
-    @Input() showAuthor: boolean;
+    @Input() showAuthor = true;
+    @Input() size: 'small' | 'large' = 'large';
+    @Input() isActive = false;
 
     contentKind = ContentKind;
     contentGenres = Genres;
+    tagKind = TagKind;
 
     showAllTags = false;
 
@@ -23,5 +27,13 @@ export class WorkCardComponent {
 
     toggleShowAllTags() {
         this.showAllTags = !this.showAllTags;
+    }
+
+    createContentUrl(kind: ContentKind, id: string, title: string) {
+        if (kind === ContentKind.ProseContent) {
+            return ['/prose', id, slugify(title)];
+        } else if (kind === ContentKind.PoetryContent) {
+            return ['/poetry', id, slugify(title)];
+        }
     }
 }

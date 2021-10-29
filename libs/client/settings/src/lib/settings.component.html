@@ -7,23 +7,25 @@
     </dragonfish-topbar>
     <div class="flex" style="height: calc(100vh - 52px);">
         <dragonfish-pagebar>
-            <a class="link" [routerLink]="['/settings']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
-                <span class="link-icon"><rmx-icon name="apps-2-line"></rmx-icon></span>General
-            </a>
-            <ng-container *ngIf="sessionQuery.currAccount$ | async">
-                <a class="link" [routerLink]="['account']" [routerLinkActive]="'active'">
-                    <span class="link-icon"><rmx-icon name="shield-user-line"></rmx-icon></span>Account
+            <div class="pages">
+                <a class="link" [routerLink]="['/settings']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="link-icon"><rmx-icon name="apps-2-line"></rmx-icon></span>General
                 </a>
-                <a class="link" [routerLink]="['profile']" [routerLinkActive]="'active'">
-                    <span class="link-icon"><rmx-icon name="user-settings-line"></rmx-icon></span>Profile
-                </a>
-                <a class="link" [routerLink]="['social']" [routerLinkActive]="'active'">
-                    <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>Social
-                </a>
-                <a class="link" [routerLink]="['notifications']" [routerLinkActive]="'active'">
-                    <span class="link-icon"><rmx-icon name="notification-badge-line"></rmx-icon></span>Notifications
-                </a>
-            </ng-container>
+                <ng-container *ngIf="sessionQuery.currAccount$ | async">
+                    <a class="link" [routerLink]="['account']" [routerLinkActive]="'active'">
+                        <span class="link-icon"><rmx-icon name="shield-user-line"></rmx-icon></span>Account
+                    </a>
+                    <a class="link" [routerLink]="['profile']" [routerLinkActive]="'active'">
+                        <span class="link-icon"><rmx-icon name="user-settings-line"></rmx-icon></span>Profile
+                    </a>
+                    <a class="link" [routerLink]="['social']" [routerLinkActive]="'active'">
+                        <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>Social
+                    </a>
+                    <a class="link" [routerLink]="['notifications']" [routerLinkActive]="'active'">
+                        <span class="link-icon"><rmx-icon name="notification-badge-line"></rmx-icon></span>Notifications
+                    </a>
+                </ng-container>
+            </div>
         </dragonfish-pagebar>
         <div class="w-full h-full">
             <ng-scrollbar>

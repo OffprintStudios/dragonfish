@@ -30,7 +30,6 @@ import { ContentListItemComponent } from './components/content-list-item/content
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { PopupComponent } from './components/popup/popup.component';
 import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
-import { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
 import { SidebarComponent } from './components/nav/sidebar/sidebar.component';
 import { TopbarComponent } from './components/nav/topbar/topbar.component';
 import { AuthModalComponent } from './components/auth/auth-modal/auth-modal.component';
@@ -46,6 +45,7 @@ import { TagBadgeComponent } from './components/tag-badge/tag-badge.component';
 import { SectionsListComponent } from './components/sections-list/sections-list.component';
 import { CommentBlockComponent } from './components/comment-block/comment-block.component';
 import { UserMenuComponents } from './components/auth/user-menu';
+import { ShelfCardComponent } from './components/shelf-card/shelf-card.component';
 
 @NgModule({
     declarations: [
@@ -61,7 +61,6 @@ import { UserMenuComponents } from './components/auth/user-menu';
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
-        AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
         AuthModalComponent,
@@ -77,6 +76,7 @@ import { UserMenuComponents } from './components/auth/user-menu';
         TagBadgeComponent,
         SectionsListComponent,
         CommentBlockComponent,
+        ShelfCardComponent,
     ],
     imports: [
         CommonModule,
@@ -111,7 +111,6 @@ import { UserMenuComponents } from './components/auth/user-menu';
         NewsCardComponent,
         PopupComponent,
         ReportDialogComponent,
-        AddToCollectionComponent,
         SidebarComponent,
         TopbarComponent,
         PagebarComponent,
@@ -122,12 +121,12 @@ import { UserMenuComponents } from './components/auth/user-menu';
         TagBadgeComponent,
         SectionsListComponent,
         CommentBlockComponent,
+        ShelfCardComponent,
     ],
 })
 export class UiModule {}
 
 export { PopupComponent } from './components/popup/popup.component';
 export { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
-export { AddToCollectionComponent } from './components/add-to-collection/add-to-collection.component';
 export { WorkFormComponent } from './components/work-form/work-form.component';
 export { WorkFormData } from './components/work-form/work-form-data';
