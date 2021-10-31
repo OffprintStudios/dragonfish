@@ -1,5 +1,5 @@
-<div class="post p-2 shadow-lg rounded-md">
-    <div class="flex items-center">
+<div class="post p-2 shadow-lg rounded-md h-full">
+    <div class="flex flex-1 items-center">
         <div class="mr-1.5">
             <img class="w-14 h-14 border border-gray-600 dark:border-white rounded-md" [src]="post.author.profile.avatar" [alt]="'avatar'">
         </div>
@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-row items-center">
+    <div class="flex items-center">
         <div class="stat text-sm" [matTooltip]="'Views'" [matTooltipClass]="'offprint-tooltip'">
             <rmx-icon name="bar-chart-box-line"></rmx-icon>
             {{ post.stats.views }}
