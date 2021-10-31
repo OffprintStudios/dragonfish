@@ -62,8 +62,7 @@ a.small-card {
         div.cover {
             @apply mr-2;
             img {
-                @apply object-contain rounded-lg;
-                box-shadow: var(--dropshadow);
+                @apply object-contain rounded-lg float-left mr-2 mb-0.5;
                 max-width: 5rem;
             }
         }
@@ -78,9 +77,6 @@ a.small-card {
         @apply scale-105 text-white no-underline;
         box-shadow: var(--dropshadow);
         background: var(--accent);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }
@@ -91,9 +87,6 @@ a.small-card {
     &:active {
         @apply scale-100 text-white;
         background: var(--accent-dark);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }
@@ -105,9 +98,6 @@ a.small-card {
         @apply scale-105 text-white;
         background: var(--accent);
         box-shadow: var(--dropshadow);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }

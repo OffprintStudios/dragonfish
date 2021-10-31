@@ -130,7 +130,7 @@
         </h4>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [size]="'small'" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
-    <div class="work-body" [ngClass]="{'flex': $any(content.meta).coverArt, 'items-center': $any(content.meta).coverArt}">
+    <div class="work-body">
         <div class="cover" *ngIf="$any(content.meta).coverArt">
             <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
         </div>
