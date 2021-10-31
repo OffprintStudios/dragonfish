@@ -23,6 +23,7 @@ const { state, config } = createState(
 );
 
 const store = new Store({ state, name: 'app', config });
+export const persist = persistState(store, { key: 'app', storage: localStorageStrategy });
 
 @Injectable({ providedIn: 'root' })
 export class AppRepository {
@@ -100,5 +101,3 @@ export class AppRepository {
 
     //#endregion
 }
-
-export const persist = persistState(store, { key: 'app', storage: localStorageStrategy });
