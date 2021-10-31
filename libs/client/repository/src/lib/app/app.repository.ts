@@ -10,6 +10,7 @@ interface AppState {
     isOfAge: boolean;
     filter: ContentFilter;
     theme: ThemePref;
+    darkMode: boolean;
     workCardSize: CardSize;
 }
 
@@ -18,6 +19,7 @@ const { state, config } = createState(
         isOfAge: false,
         filter: ContentFilter.Default,
         theme: ThemePref.Crimson,
+        darkMode: false,
         workCardSize: CardSize.Small,
     }),
 );
@@ -29,6 +31,7 @@ export const persist = persistState(store, { key: 'app', storage: localStorageSt
 export class AppRepository {
     public workCardSize$ = store.pipe(select((state) => state.workCardSize));
     public theme$ = store.pipe(select((state) => state.theme));
+    public darkMode$ = store.pipe(select((state) => state.darkMode));
     public filter$ = store.pipe(select((state) => state.filter));
 
     constructor(private alerts: AlertsService) {}
@@ -49,10 +52,17 @@ export class AppRepository {
         this.alerts.success(`Content filters have been updated.`);
     }
 
-    public updateThemePref(newPref: ThemePref) {
+    public setTheme(newPref: ThemePref) {
         store.update((state) => ({
             ...state,
             theme: newPref,
+        }));
+    }
+
+    public setDarkMode(pref: boolean) {
+        store.update((state) => ({
+            ...state,
+            darkMode: pref,
         }));
     }
 
