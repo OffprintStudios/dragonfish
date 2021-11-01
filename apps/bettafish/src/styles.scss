@@ -233,7 +233,11 @@ div.topbar-tools {
 /* Offprint Pagebar */
 div.pagebar {
     div.page-header {
-        @apply mb-4;
+        @apply flex items-center mb-4;
+        rmx-icon {
+            width: 1.75rem !important;
+            @apply mr-2 text-white relative -top-1.5;
+        }
         h3 {
             @apply text-white font-medium text-3xl;
         }
