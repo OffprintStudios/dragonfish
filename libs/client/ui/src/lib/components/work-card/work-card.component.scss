@@ -55,31 +55,10 @@ a.medium-card {
 }
 
 a.small-card {
-    @apply block group flex flex-col p-2 transition transform select-none cursor-pointer;
     color: var(--text-color);
-    div.work-body {
-        @apply flex-1 mb-2;
-        div.cover {
-            @apply mr-2;
-            img {
-                @apply object-contain rounded-lg float-left mr-2 mb-0.5;
-                max-width: 5rem;
-            }
-        }
-        div.desc {
-            @apply text-sm;
-        }
-    }
-    div.work-meta {
-        @apply rounded-md px-1 text-xs flex items-center;
-    }
     &:hover {
-        @apply scale-105 text-white no-underline z-30;
         box-shadow: var(--dropshadow);
         background: var(--accent);
-        h4 {
-            @apply text-white;
-        }
         div.work-meta {
             background: var(--accent-light);
         }

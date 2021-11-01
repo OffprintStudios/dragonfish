@@ -113,14 +113,14 @@
 </a>
 
 <a
-    class="small-card border border-gray-600 dark:border-white rounded-md"
+    class="small-card block group flex flex-col p-2 transition transform select-none cursor-pointer border border-gray-600 dark:border-white rounded-md hover:scale-105 hover:text-white hover:no-underline hover:z-30"
     *ngIf="size === 'small'"
     [routerLink]="createContentUrl(content.kind, content._id, content.title)"
     [ngClass]="{'active': isActive, 'h-full': fullHeight}"
 >
     <div class="flex">
         <h4
-            class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center"
+            class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center group-hover:text-white"
             style="line-height: 1.15rem;"
             [matTooltip]="content.title"
             [matTooltipClass]="'offprint-tooltip'"
@@ -137,15 +137,15 @@
             <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre" [size]="size"></dragonfish-tag-badge>
         </ng-container>
     </div>
-    <div class="work-body">
-        <div class="cover" *ngIf="$any(content.meta).coverArt">
-            <img [src]="$any(content.meta).coverArt" [alt]="'cover'">
+    <div class="flex-1 mb-2">
+        <div class="mr-2" *ngIf="$any(content.meta).coverArt">
+            <img [src]="$any(content.meta).coverArt" [alt]="'cover'" class="object-contain rounded-lg float-left mr-2 mb-0.5" style="max-width: 5rem;">
         </div>
-        <div class="desc line-clamp-4">
+        <div class="text-sm line-clamp-4">
             {{ content.desc }}
         </div>
     </div>
-    <div class="work-meta bg-gray-200 dark:bg-gray-600">
+    <div class="rounded-md px-1 text-xs flex items-center bg-gray-200 dark:bg-gray-600">
         <div>
             by {{ $any(content.author).screenName }}
         </div>
