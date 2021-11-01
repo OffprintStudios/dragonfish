@@ -1,10 +1,10 @@
-Addresses ticket #
-
 ## Description
 
+(Describe your changes here)
 
 ## Changes
 
+(List specific changes here)
 
 ## Areas Affected
 - [ ] Site Navigation
@@ -15,7 +15,8 @@ Addresses ticket #
 
 .
 - [ ] Profile
-- [ ] My Stuff (main page)
+- [ ] My Library
+- [ ] Bookshelves
 - [ ] Editor
 - [ ] Browse
 - [ ] Work Card
@@ -23,7 +24,6 @@ Addresses ticket #
 .
 - [ ] Work Page
 - [ ] Blog Page
-- [ ] Collections
 - [ ] Comments
 - [ ] Search
 - [ ] Other Pages
