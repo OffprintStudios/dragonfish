@@ -5,7 +5,7 @@ a.medium-card {
         @apply relative top-0.5 font-medium flex-1 text-xl overflow-hidden overflow-ellipsis whitespace-nowrap;
     }
     &:hover {
-        @apply text-white scale-105 no-underline;
+        @apply text-white scale-105 no-underline z-30;
         background: var(--accent);
         box-shadow: var(--dropshadow);
         h3.title {
@@ -55,7 +55,7 @@ a.medium-card {
 }
 
 a.small-card {
-    @apply block group flex flex-col p-2 transition transform select-none cursor-pointer h-full;
+    @apply block group flex flex-col p-2 transition transform select-none cursor-pointer;
     color: var(--text-color);
     div.work-body {
         @apply flex-1 mb-2;
@@ -74,7 +74,7 @@ a.small-card {
         @apply rounded-md px-1 text-xs flex items-center;
     }
     &:hover {
-        @apply scale-105 text-white no-underline;
+        @apply scale-105 text-white no-underline z-30;
         box-shadow: var(--dropshadow);
         background: var(--accent);
         h4 {

@@ -116,7 +116,7 @@
     class="small-card border border-gray-600 dark:border-white rounded-md"
     *ngIf="size === 'small'"
     [routerLink]="createContentUrl(content.kind, content._id, content.title)"
-    [ngClass]="{'active': isActive}"
+    [ngClass]="{'active': isActive, 'h-full': fullHeight}"
 >
     <div class="flex">
         <h4
