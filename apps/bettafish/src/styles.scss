@@ -236,10 +236,10 @@ div.pagebar {
         @apply flex items-center mb-4;
         rmx-icon {
             width: 1.75rem !important;
-            @apply mr-2 text-white relative -top-1.5;
+            @apply ml-2 text-white relative -top-1.5;
         }
         h3 {
-            @apply text-white font-medium text-3xl;
+            @apply text-white font-medium text-3xl flex-1;
         }
         button {
             background: var(--accent-light);
