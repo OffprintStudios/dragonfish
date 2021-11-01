@@ -233,7 +233,7 @@ div.topbar-tools {
 /* Offprint Pagebar */
 div.pagebar {
     div.page-header {
-        @apply border-b border-white mb-4;
+        @apply mb-4;
         h3 {
             @apply text-white font-medium text-3xl;
         }

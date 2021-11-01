@@ -33,9 +33,9 @@
                         </div>
                     </ng-container>
                     <ng-template #notLoadingNew>
-                        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
                             <ng-container *ngFor="let work of newWorks">
-                                <dragonfish-work-card [content]="work" [showAuthor]="true"></dragonfish-work-card>
+                                <dragonfish-work-card [content]="work" [showAuthor]="true" [size]="'small'" [fullHeight]="true"></dragonfish-work-card>
                             </ng-container>
                         </div>
                     </ng-template>
