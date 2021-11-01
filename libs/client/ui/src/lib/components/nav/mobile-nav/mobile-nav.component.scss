@@ -1,5 +1,5 @@
 a.link {
-    @apply p-2.5 mb-1 border-2 border-transparent rounded-md text-white;
+    @apply p-2.5 m-1 border-2 border-transparent rounded-md text-white;
     &:hover, &.active {
         @apply no-underline shadow-xl transition-all;
         background: var(--accent);
@@ -12,4 +12,9 @@ a.link {
             stroke-width: 1;
         }
     }
+}
+
+img.offprint-logo {
+    @apply mx-auto block flex-1 self-center px-4 w-full;
+    max-width: 10rem;
 }

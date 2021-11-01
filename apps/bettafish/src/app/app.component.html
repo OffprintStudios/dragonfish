@@ -15,11 +15,9 @@
 
 <ng-template #mobile>
     <ng-container *ngIf="showNav; else onRegistrationMobile">
-        <main class="flex flex-col h-screen">
+        <main class="w-full">
             <dragonfish-mobile-nav></dragonfish-mobile-nav>
-            <div class="flex-auto w-full h-screen">
-                <router-outlet></router-outlet>
-            </div>
+            <router-outlet></router-outlet>
         </main>
     </ng-container>
     <ng-template #onRegistrationMobile>
