@@ -1,10 +1,11 @@
-div.big-card {
-    @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full rounded-md;
+a.medium-card {
+    @apply block flex flex-col p-2 transition transform select-none cursor-pointer h-full rounded-md;
+    color: var(--text-color);
     h3.title {
         @apply relative top-0.5 font-medium flex-1 text-xl overflow-hidden overflow-ellipsis whitespace-nowrap;
     }
     &:hover {
-        @apply text-white scale-105;
+        @apply text-white scale-105 no-underline z-30;
         background: var(--accent);
         box-shadow: var(--dropshadow);
         h3.title {
@@ -15,12 +16,11 @@ div.big-card {
         }
     }
     div.work-body {
-        @apply flex flex-1 mb-2;
+        @apply flex-1 mb-2;
         div.cover {
             @apply mr-2;
             img {
-                @apply object-contain rounded-lg;
-                box-shadow: var(--dropshadow);
+                @apply object-contain rounded-lg float-left mr-2 mb-0.5;
                 max-width: 6.5rem;
             }
         }
@@ -54,15 +54,15 @@ div.big-card {
     }
 }
 
-div.small-card {
-    @apply flex flex-col p-2 transition transform select-none cursor-pointer h-full;
+a.small-card {
+    @apply block group flex flex-col p-2 transition transform select-none cursor-pointer;
+    color: var(--text-color);
     div.work-body {
         @apply flex-1 mb-2;
         div.cover {
             @apply mr-2;
             img {
-                @apply object-contain rounded-lg;
-                box-shadow: var(--dropshadow);
+                @apply object-contain rounded-lg float-left mr-2 mb-0.5;
                 max-width: 5rem;
             }
         }
@@ -74,12 +74,9 @@ div.small-card {
         @apply rounded-md px-1 text-xs flex items-center;
     }
     &:hover {
-        @apply scale-105 text-white;
+        @apply scale-105 text-white no-underline z-30;
         box-shadow: var(--dropshadow);
         background: var(--accent);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }
@@ -90,9 +87,6 @@ div.small-card {
     &:active {
         @apply scale-100 text-white;
         background: var(--accent-dark);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }
@@ -104,9 +98,6 @@ div.small-card {
         @apply scale-105 text-white;
         background: var(--accent);
         box-shadow: var(--dropshadow);
-        img {
-            @apply border border-white;
-        }
         h4 {
             @apply text-white;
         }

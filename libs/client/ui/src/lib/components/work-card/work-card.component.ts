@@ -14,6 +14,7 @@ export class WorkCardComponent {
     @Input() showAuthor = true;
     @Input() size: 'small' | 'large' = 'large';
     @Input() isActive = false;
+    @Input() fullHeight = false;
 
     contentKind = ContentKind;
     contentGenres = Genres;

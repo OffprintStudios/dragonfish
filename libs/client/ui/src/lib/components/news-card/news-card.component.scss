@@ -1,6 +1,7 @@
 div.post {
     border: 1px solid var(--borders);
     max-height: 9rem;
+    @apply flex flex-col;
     div.stat {
         display: flex;
         flex-direction: row;
