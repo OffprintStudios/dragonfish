@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ContentCommentDocument } from '../schemas';
+import { ContentCommentDocument } from '../../schemas';
 import { ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 

@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { OnQueueActive, OnQueueCompleted, OnQueueError, OnQueueFailed, Process, Processor } from '@nestjs/bull';
 import { DoneCallback, Job } from 'bull';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
-import { ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
+import { AddedToLibraryJob, ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationStore } from '../db/stores';
 
 @Processor('notifications')
@@ -45,4 +45,7 @@ export class NotificationConsumer {
             done();
         }
     }
+
+    @Process(NotificationKind.AddedToLibrary)
+    async addedToLibrary(job: Job<AddedToLibraryJob>, done: DoneCallback) {}
 }

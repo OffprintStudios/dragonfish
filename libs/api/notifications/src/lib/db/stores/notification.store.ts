@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { NotificationDocument } from '../schemas';
-import { JobType } from '@dragonfish/shared/models/accounts/notifications/jobs';
+import { AddedToLibraryJob, ContentCommentJob, JobType } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
-import { ContentCommentStore } from './content-comment.store';
+import { AddedToLibraryStore, ContentCommentStore } from './content';
 
 @Injectable()
 export class NotificationStore {
     constructor(
         @InjectModel('Notification') private readonly notifications: PaginateModel<NotificationDocument>,
         private readonly contentComment: ContentCommentStore,
+        private readonly addedToLibrary: AddedToLibraryStore,
     ) {}
 
     /**
@@ -23,7 +24,9 @@ export class NotificationStore {
     public async createNotification(job: JobType, kind: NotificationKind): Promise<NotificationDocument> {
         switch (kind) {
             case NotificationKind.ContentComment:
-                return await this.contentComment.create(job);
+                return await this.contentComment.create(job as ContentCommentJob);
+            case NotificationKind.AddedToLibrary:
+                return await this.addedToLibrary.create(job as AddedToLibraryJob);
             default:
                 return;
         }

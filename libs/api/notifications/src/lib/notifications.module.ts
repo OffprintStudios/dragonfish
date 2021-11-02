@@ -33,6 +33,7 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
                     { name: NotificationKind.ContentComment, schema: Schemas.ContentCommentSchema },
                     { name: NotificationKind.ContentNew, schema: Schemas.ContentNewSchema },
                     { name: NotificationKind.ContentUpdate, schema: Schemas.ContentUpdatedSchema },
+                    { name: NotificationKind.AddedToLibrary, schema: Schemas.AddedToLibrarySchema },
                 ],
             },
             {
