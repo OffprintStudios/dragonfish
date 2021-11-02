@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { FrontendAccount, Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { DragonfishElectronService } from '@dragonfish/client/services';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
@@ -9,7 +9,7 @@ import { ViewRef, ViewService } from '@ngneat/overview';
 import { NavigationStart, Router } from '@angular/router';
 import { untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationsQuery, NotificationsService } from '@dragonfish/client/repository/notifications';
-import { combineLatestWith, interval, switchMap, tap, zip } from 'rxjs';
+import { combineLatestWith, interval, switchMap } from 'rxjs';
 
 @Component({
     selector: 'dragonfish-sidebar',

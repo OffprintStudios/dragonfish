@@ -12,6 +12,9 @@ a.link {
             stroke-width: 1;
         }
     }
+    &.no-padding {
+        @apply cursor-pointer p-0;
+    }
 }
 
 img.offprint-logo {

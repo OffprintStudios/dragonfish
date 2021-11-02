@@ -1,15 +1,47 @@
 <div class="flex items-center justify-center z-50 w-full" style="background: var(--accent-dark);">
-    <a
-        class="link"
-        [routerLink]="['/registration']"
-        [routerLinkActive]="'active'"
-        [routerLinkActiveOptions]="{ exact: true }"
-        [matTooltip]="'Home'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
-    </a>
+    <ng-container *ngIf="session.currAccount$ | async; else login">
+        <ng-container *ngIf="profiles.current$ | async as profile; else selectProfile">
+            <a
+                class="link cursor-pointer no-padding"
+                [matTooltip]="'My Profile'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+                (click)="openUserMenu()"
+                [matBadge]="notifications.numNotifications"
+                [matBadgePosition]="'below after'"
+                [matBadgeHidden]="notifications.numNotifications < 1"
+            >
+                <span class="link-icon">
+                    <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;">
+                </span>
+            </a>
+        </ng-container>
+        <ng-template #selectProfile>
+            <a
+                class="link"
+                [routerLink]="['/registration/select-pseud']"
+                [routerLinkActive]="'active'"
+                [matTooltip]="'Select Profile'"
+                [matTooltipPosition]="'right'"
+                [matTooltipClass]="'offprint-tooltip'"
+            >
+                <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+            </a>
+        </ng-template>
+    </ng-container>
+    <ng-template #login>
+        <a
+            class="link"
+            [routerLink]="['/registration']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+            [matTooltip]="'Home'"
+            [matTooltipPosition]="'right'"
+            [matTooltipClass]="'offprint-tooltip'"
+        >
+            <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
+        </a>
+    </ng-template>
     <img class="offprint-logo" src="assets/images/logo.png" alt="offprint" [routerLink]="['/']" [routerLinkActive]="'active'" />
     <a
         class="link"
