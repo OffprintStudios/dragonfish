@@ -2,8 +2,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { BookshelfStore, ContentLibraryStore } from '../db/stores';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
-import { SubscriptionEvent, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
+import { AddedToLibraryPayload, SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
+import {
+    NotificationKind,
+    SubscriptionEvent,
+    SubscriptionKind,
+} from '@dragonfish/shared/models/accounts/notifications';
 import { BookshelfForm, ContentRemovalJob } from '@dragonfish/shared/models/users/content-library';
 import { Queue } from 'bull';
 
@@ -32,6 +36,13 @@ export class LibraryService {
                 kind: SubscriptionKind.ContentLibrary,
             };
             this.events.emit(SubscriptionEvent.ContentLibrary, subPayload);
+
+            const notificationPayload: AddedToLibraryPayload = {
+                contentId: contentId,
+                addedById: pseudId,
+            };
+            this.events.emit(NotificationKind.AddedToLibrary, notificationPayload);
+
             return item;
         });
     }

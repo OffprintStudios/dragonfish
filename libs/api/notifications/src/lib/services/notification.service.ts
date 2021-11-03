@@ -10,12 +10,17 @@ import {
 } from '@dragonfish/shared/models/accounts/notifications/payloads';
 import { AddedToLibraryJob, ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 
 @Injectable()
 export class NotificationService {
     private logger = new Logger('Notifications');
 
-    constructor(@InjectQueue('notifications') private readonly queue: Queue, private readonly content: ContentStore) {}
+    constructor(
+        @InjectQueue('notifications') private readonly queue: Queue,
+        private readonly content: ContentStore,
+        private readonly pseudonyms: PseudonymsStore,
+    ) {}
 
     //#region ---EVENT HANDLERS---
 
@@ -47,7 +52,7 @@ export class NotificationService {
             contentId: content._id,
             contentTitle: content.title,
             contentKind: content.kind,
-            addedBy: payload.addedBy,
+            addedBy: await this.pseudonyms.fetchPseud(payload.addedById),
         };
 
         this.logger.log(`Adding new job to queue...`);
