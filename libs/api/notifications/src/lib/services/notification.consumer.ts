@@ -47,5 +47,13 @@ export class NotificationConsumer {
     }
 
     @Process(NotificationKind.AddedToLibrary)
-    async addedToLibrary(job: Job<AddedToLibraryJob>, done: DoneCallback) {}
+    async addedToLibrary(job: Job<AddedToLibraryJob>, done: DoneCallback) {
+        this.logger.log(`Job ${job.id} (AddedToLibrary) received!`);
+        if (job.data.addedBy._id !== job.data.recipientId) {
+            const notification = await this.notifications.createNotification(job.data, NotificationKind.AddedToLibrary);
+            done(null, notification);
+        } else {
+            done();
+        }
+    }
 }
