@@ -3,14 +3,20 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { ContentStore } from '@dragonfish/api/database/content/stores';
-import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
+import { NotificationKind, Subscription, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 import {
-    ContentCommentPayload,
     AddedToLibraryPayload,
+    ContentCommentPayload,
+    ContentUpdatedPayload,
 } from '@dragonfish/shared/models/accounts/notifications/payloads';
-import { AddedToLibraryJob, ContentCommentJob } from '@dragonfish/shared/models/accounts/notifications/jobs';
+import {
+    AddedToLibraryJob,
+    ContentCommentJob,
+    ContentUpdatedJob,
+} from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import { SubscriptionsStore } from '../db/stores';
 
 @Injectable()
 export class NotificationService {
@@ -20,6 +26,7 @@ export class NotificationService {
         @InjectQueue('notifications') private readonly queue: Queue,
         private readonly content: ContentStore,
         private readonly pseudonyms: PseudonymsStore,
+        private readonly subscriptions: SubscriptionsStore,
     ) {}
 
     //#region ---EVENT HANDLERS---
@@ -57,6 +64,19 @@ export class NotificationService {
 
         this.logger.log(`Adding new job to queue...`);
         await this.queue.add(NotificationKind.AddedToLibrary, job);
+    }
+
+    @OnEvent(NotificationKind.ContentUpdate, { async: true })
+    private async handleContentUpdate(payload: ContentUpdatedPayload) {
+        this.logger.log(`Received payload for type ${NotificationKind.ContentUpdate}`);
+
+        const job: ContentUpdatedJob = {
+            contentId: payload.contentId,
+            subscribers: await this.subscriptions.fetchSubscribers(payload.contentId, SubscriptionKind.ContentLibrary),
+        };
+
+        this.logger.log(`Adding new job to queue...`);
+        await this.queue.add(NotificationKind.ContentUpdate, job);
     }
 
     //#endregion

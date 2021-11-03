@@ -4,7 +4,7 @@ import { PaginateModel } from 'mongoose';
 import { NotificationDocument } from '../schemas';
 import { AddedToLibraryJob, ContentCommentJob, JobType } from '@dragonfish/shared/models/accounts/notifications/jobs';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
-import { AddedToLibraryStore, ContentCommentStore } from './content';
+import { AddedToLibraryStore, ContentCommentStore, ContentUpdatedStore } from './content';
 
 @Injectable()
 export class NotificationStore {
@@ -12,6 +12,7 @@ export class NotificationStore {
         @InjectModel('Notification') private readonly notifications: PaginateModel<NotificationDocument>,
         private readonly contentComment: ContentCommentStore,
         private readonly addedToLibrary: AddedToLibraryStore,
+        private readonly contentUpdated: ContentUpdatedStore,
     ) {}
 
     /**
@@ -21,12 +22,21 @@ export class NotificationStore {
      * @param job
      * @param kind
      */
-    public async createNotification(job: JobType, kind: NotificationKind): Promise<NotificationDocument> {
+    public async notifyOne(job: JobType, kind: NotificationKind): Promise<NotificationDocument> {
         switch (kind) {
             case NotificationKind.ContentComment:
                 return await this.contentComment.create(job as ContentCommentJob);
             case NotificationKind.AddedToLibrary:
                 return await this.addedToLibrary.create(job as AddedToLibraryJob);
+            default:
+                return;
+        }
+    }
+
+    public async notifySubscriber(recipientId: string, itemId: string, kind: NotificationKind) {
+        switch (kind) {
+            case NotificationKind.ContentUpdate:
+                return await this.contentUpdated.create(recipientId, itemId);
             default:
                 return;
         }
