@@ -21,6 +21,8 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
         Stores.NotificationStore,
         Stores.ContentCommentStore,
         Stores.SubscriptionsStore,
+        Stores.AddedToLibraryStore,
+        Stores.ContentUpdatedStore,
     ],
     imports: [
         ContentModule,
