@@ -80,7 +80,7 @@ export class NotificationsRepository {
 
     public markAsRead() {
         const ids = this.activeIds;
-        this.removeFromActive(...this.activeIds);
+        this.removeFromActive(...ids);
         return this.network.markNotificationsAsRead(this.pseuds.currentId, { ids: ids }).pipe(
             catchError((err) => {
                 this.alerts.error(`Something went wrong! Try again in a little bit.`);
@@ -101,6 +101,10 @@ export class NotificationsRepository {
 
     public get selected() {
         return this.activeIds.length;
+    }
+
+    public get countContentUpdates() {
+        return store.getValue().contentUpdates.length;
     }
 
     //#endregion
