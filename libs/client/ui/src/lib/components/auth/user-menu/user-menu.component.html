@@ -62,8 +62,8 @@
                     class="button border-gray-600 dark:border-white active"
                     [ngClass]="{'active': currTab === tabs.NotificationsTab}"
                     (click)="switchTab(tabs.NotificationsTab)"
-                    [matBadge]="notifications.numNotifications"
-                    [matBadgeHidden]="notifications.numNotifications === 0"
+                    [matBadge]="notifications.count"
+                    [matBadgeHidden]="notifications.count === 0"
                 >
                     <rmx-icon name="notification-3-line"></rmx-icon>
                     <span class="label">Notifications</span>

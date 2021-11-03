@@ -30,13 +30,13 @@ export class NotificationsListComponent {
         return ['/profile', commentInfo.posterId, commentInfo.posterTag];
     }
 
-    createContentLink(contentInfo, commentInfo) {
+    createContentLink(contentInfo, profileId?: string, profileTag?: string) {
         switch (contentInfo.contentKind as ContentKind) {
             case ContentKind.BlogContent:
                 return [
                     '/profile',
-                    commentInfo.posterId,
-                    commentInfo.posterTag,
+                    profileId,
+                    profileTag,
                     'post',
                     contentInfo.contentId,
                     slugify(contentInfo.contentTitle),

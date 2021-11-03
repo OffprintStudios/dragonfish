@@ -53,6 +53,8 @@ export class NotificationsRepository {
                     return notification.kind === NotificationKind.ContentUpdate;
                 });
 
+                console.log(contentUpdates.length);
+
                 store.update(setEntities(generalNotifications));
                 store.update((state) => ({
                     ...state,
@@ -87,6 +89,30 @@ export class NotificationsRepository {
                 return throwError(err);
             }),
         );
+    }
+
+    public markUpdatedAsRead(contentId: string) {
+        return this.network.markUpdatedAsRead(this.pseuds.currentId, contentId).pipe(
+            tap(() => {
+                store.update((state) => ({
+                    ...state,
+                    contentUpdates: state.contentUpdates.filter((item) => {
+                        return item.contentId !== contentId;
+                    }),
+                }));
+            }),
+            catchError((err) => {
+                this.alerts.error(`Something went wrong trying to mark this update as read!`);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public checkIfUpdated(id: string) {
+        const isUpdated = store.getValue().contentUpdates.filter((item) => {
+            return item.contentId === id;
+        });
+        return isUpdated.length !== 0;
     }
 
     //#region ---GETTERS---

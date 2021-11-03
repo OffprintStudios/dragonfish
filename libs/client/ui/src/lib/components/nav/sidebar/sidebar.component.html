@@ -13,7 +13,6 @@
                 (click)="openUserMenu()"
                 [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
                 [matBadge]="notifications.count"
-                [matBadgePosition]="'below after'"
                 [matBadgeHidden]="activeUserMenu || notifications.count < 1"
             >
                 <span class="link-icon">
@@ -86,19 +85,20 @@
             <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
-            <a
-                class="link"
-                [routerLink]="['/my-library']"
-                [routerLinkActive]="'active'"
-                [matTooltip]="'My Library'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
-                [matBadge]="null"
-                [matBadgePosition]="'below after'"
-                [matBadgeHidden]="notifications.countContentUpdates < 1"
-            >
-                <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
-            </a>
+            <ng-container *ngIf="notifications.contentUpdates$ | async as contentUpdates">
+                <a
+                    class="link"
+                    [routerLink]="['/my-library']"
+                    [routerLinkActive]="'active'"
+                    [matTooltip]="'My Library'"
+                    [matTooltipPosition]="'right'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matBadge]="contentUpdates.length"
+                    [matBadgeHidden]="contentUpdates.length === 0"
+                >
+                    <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                </a>
+            </ng-container>
             <ng-container *ngIf="canSeeDash(account.roles)">
                 <a
                     class="link"

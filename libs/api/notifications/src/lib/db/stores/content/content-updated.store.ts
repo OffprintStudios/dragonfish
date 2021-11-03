@@ -18,4 +18,8 @@ export class ContentUpdatedStore {
 
         return await newNotification.save();
     }
+
+    public async markAsRead(recipientId: string, contentId: string) {
+        return this.contentUpdated.updateMany({ recipientId, contentId }, { markedAsRead: true });
+    }
 }
