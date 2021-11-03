@@ -12,13 +12,13 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="openUserMenu()"
                 [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
-                [matBadge]="notifications.numNotifications"
+                [matBadge]="notifications.count"
                 [matBadgePosition]="'below after'"
-                [matBadgeHidden]="activeUserMenu || notifications.numNotifications < 1"
+                [matBadgeHidden]="activeUserMenu || notifications.count < 1"
             >
                 <span class="link-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">
-                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;">
+                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;" [alt]="'avatar'">
                     </ng-container>
                     <ng-template #userMenuOpened>
                         <rmx-icon name="close-line"></rmx-icon>

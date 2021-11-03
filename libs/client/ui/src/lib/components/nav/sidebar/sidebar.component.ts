@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { FrontendAccount, Pseudonym, Roles } from '@dragonfish/shared/models/accounts';
+import { Roles } from '@dragonfish/shared/models/accounts';
 import { isAllowed } from '@dragonfish/shared/functions';
 import { DragonfishElectronService } from '@dragonfish/client/services';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
 import { NavigationStart, Router } from '@angular/router';
 import { untilDestroyed } from '@ngneat/until-destroy';
-import { NotificationsQuery, NotificationsService } from '@dragonfish/client/repository/notifications';
 import { combineLatestWith, interval, switchMap, tap, zip } from 'rxjs';
+import { NotificationsRepository } from '@dragonfish/client/repository/notifications';
 
 @Component({
     selector: 'dragonfish-sidebar',
@@ -26,8 +26,7 @@ export class SidebarComponent implements OnInit {
         public electron: DragonfishElectronService,
         private router: Router,
         private viewService: ViewService,
-        public notifications: NotificationsQuery,
-        private notificationsService: NotificationsService,
+        public notifications: NotificationsRepository,
     ) {}
 
     ngOnInit(): void {
@@ -46,13 +45,13 @@ export class SidebarComponent implements OnInit {
             .subscribe((values) => {
                 const [account, profile] = values;
                 if (account && profile) {
-                    this.notificationsService
+                    this.notifications
                         .getAllUnread()
                         .pipe(untilDestroyed(this))
                         .subscribe(() => {
                             interval(15000)
                                 .pipe(
-                                    switchMap(() => this.notificationsService.getAllUnread()),
+                                    switchMap(() => this.notifications.getAllUnread()),
                                     untilDestroyed(this),
                                 )
                                 .subscribe();

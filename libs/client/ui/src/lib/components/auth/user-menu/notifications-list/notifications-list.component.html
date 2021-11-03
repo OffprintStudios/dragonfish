@@ -1,9 +1,9 @@
 <div class="m-2">
     <div class="flex items-center">
         <div class="flex-1">
-            {{ notifications.numSelected }} selected
+            {{ notifications.selected }} selected
         </div>
-        <button *ngIf="notifications.numSelected > 0" (click)="markAsRead()">
+        <button *ngIf="notifications.selected > 0" (click)="markAsRead()">
             <rmx-icon name="check-double-line"></rmx-icon>
             <span>Mark as read</span>
         </button>
@@ -22,7 +22,7 @@
                     </ng-container>
                 </ng-container>
             </div>
-            <ng-container *ngIf="notificationsService.isActive(note._id); else isNotActive">
+            <ng-container *ngIf="notifications.isActive(note._id); else isNotActive">
                 <div class="button active border-gray-600 dark:border-white" (click)="removeFromActive(note._id)">
                     <rmx-icon name="checkbox-circle-line" class="w-6"></rmx-icon>
                 </div>
