@@ -53,8 +53,6 @@ export class NotificationsRepository {
                     return notification.kind === NotificationKind.ContentUpdate;
                 });
 
-                console.log(contentUpdates.length);
-
                 store.update(setEntities(generalNotifications));
                 store.update((state) => ({
                     ...state,
