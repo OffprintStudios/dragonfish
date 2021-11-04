@@ -16,7 +16,7 @@
                     [menuContext]="item.content"
                     [isActive]="library.currentId === item._id"
                     [matBadge]="'N'"
-                    [matBadgeHidden]="notifications.checkIfUpdated(item._id)"
+                    [matBadgeHidden]="!(notifications.checkIfUpdated(item._id))"
                     (contextmenu)="setCurrent(item._id)"
                     (clickOutside)="deselect()"
                 ></dragonfish-work-card>

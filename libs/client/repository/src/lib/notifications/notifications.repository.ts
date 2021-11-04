@@ -110,7 +110,7 @@ export class NotificationsRepository {
         const isUpdated = store.getValue().contentUpdates.filter((item) => {
             return item.contentId === id;
         });
-        return isUpdated.length !== 0;
+        return isUpdated.length > 0;
     }
 
     //#region ---GETTERS---
