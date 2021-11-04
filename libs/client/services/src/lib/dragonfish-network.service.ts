@@ -467,7 +467,11 @@ export class DragonfishNetworkService {
      * @param pageNum The current results page
      * @param contentFilter The mature/explicit/etc. content filter to apply
      */
-    public getContentByFandomTag(tagId: string, pageNum: number, contentFilter: ContentFilter): Observable<PaginateResult<ContentModel>> {
+    public getContentByFandomTag(
+        tagId: string,
+        pageNum: number,
+        contentFilter: ContentFilter,
+    ): Observable<PaginateResult<ContentModel>> {
         return this.findRelatedContent(
             null,
             SearchKind.ProseAndPoetry,
@@ -479,8 +483,8 @@ export class DragonfishNetworkService {
             [tagId],
             true,
             pageNum,
-            contentFilter
-        )
+            contentFilter,
+        );
     }
 
     //#endregion
@@ -1293,6 +1297,21 @@ export class DragonfishNetworkService {
                 observe: 'response',
                 withCredentials: true,
             }),
+        );
+    }
+
+    /**
+     * Marks an updated content as read for the given user
+     * @param profileId
+     * @param contentId
+     */
+    public markUpdatedAsRead(profileId: string, contentId: string): Observable<void> {
+        return handleResponse(
+            this.http.patch<void>(
+                `${this.baseUrl}/notifications/mark-updated-as-read?pseudId=${profileId}&contentId=${contentId}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
         );
     }
 

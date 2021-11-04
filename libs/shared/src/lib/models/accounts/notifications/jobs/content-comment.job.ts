@@ -1,5 +1,5 @@
-import { ContentKind } from '@dragonfish/shared/models/content';
-import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { ContentKind } from '../../../content';
+import { Pseudonym } from '../../psuedonyms';
 
 export interface ContentCommentJob {
     recipientId: string;

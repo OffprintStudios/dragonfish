@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NotificationsQuery, NotificationsService } from '@dragonfish/client/repository/notifications';
+import { NotificationsRepository } from '@dragonfish/client/repository/notifications';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { slugify } from 'voca';
@@ -12,31 +12,31 @@ import { slugify } from 'voca';
 export class NotificationsListComponent {
     kind = NotificationKind;
 
-    constructor(public notifications: NotificationsQuery, public notificationsService: NotificationsService) {}
+    constructor(public notifications: NotificationsRepository) {}
 
     markAsRead() {
-        this.notificationsService.markAsRead().subscribe();
+        this.notifications.markAsRead().subscribe();
     }
 
     addToActive(id: string) {
-        this.notificationsService.addToActive(id);
+        this.notifications.addToActive(id);
     }
 
     removeFromActive(id: string) {
-        this.notificationsService.removeFromActive(id);
+        this.notifications.removeFromActive(id);
     }
 
     createProfileLink(commentInfo) {
         return ['/profile', commentInfo.posterId, commentInfo.posterTag];
     }
 
-    createContentLink(contentInfo, commentInfo) {
+    createContentLink(contentInfo, profileId?: string, profileTag?: string) {
         switch (contentInfo.contentKind as ContentKind) {
             case ContentKind.BlogContent:
                 return [
                     '/profile',
-                    commentInfo.posterId,
-                    commentInfo.posterTag,
+                    profileId,
+                    profileTag,
                     'post',
                     contentInfo.contentId,
                     slugify(contentInfo.contentTitle),

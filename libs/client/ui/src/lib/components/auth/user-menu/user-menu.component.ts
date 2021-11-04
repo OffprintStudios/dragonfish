@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { NotificationsQuery } from '@dragonfish/client/repository/notifications';
+import { NotificationsRepository } from '@dragonfish/client/repository/notifications';
 
 enum MenuTabs {
     FriendsTab,
@@ -22,7 +22,7 @@ export class UserMenuComponent {
     constructor(
         public pseudQuery: PseudonymsQuery,
         public sessionQuery: SessionQuery,
-        public notifications: NotificationsQuery,
+        public notifications: NotificationsRepository,
     ) {}
 
     switchTab(tab: MenuTabs) {

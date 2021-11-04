@@ -1,4 +1,4 @@
-import { Schema, Prop, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
 import { ContentUpdatedNotification } from '@dragonfish/shared/models/accounts/notifications/content';
@@ -8,25 +8,8 @@ export class ContentUpdatedDocument extends Document implements ContentUpdatedNo
     readonly _id: string;
     readonly recipientId: string;
 
-    @Prop(
-        raw({
-            contentId: { type: String, ref: 'Content', required: true },
-            contentTitle: { type: String, trim: true, required: true },
-        }),
-    )
-    readonly contentInfo: {
-        readonly contentId: string;
-        readonly contentTitle: string;
-    };
-
-    @Prop(
-        raw({
-            sectionTitle: { type: String, trim: true, required: true },
-        }),
-    )
-    readonly sectionInfo: {
-        readonly sectionTitle: string;
-    };
+    @Prop({ type: String, ref: 'Content', required: true })
+    readonly contentId: string;
 
     markedAsRead: boolean;
     readonly kind: NotificationKind;

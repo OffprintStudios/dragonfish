@@ -1,9 +1,9 @@
 <div class="m-2">
     <div class="flex items-center">
         <div class="flex-1">
-            {{ notifications.numSelected }} selected
+            {{ notifications.selected }} selected
         </div>
-        <button *ngIf="notifications.numSelected > 0" (click)="markAsRead()">
+        <button *ngIf="notifications.selected > 0" (click)="markAsRead()">
             <rmx-icon name="check-double-line"></rmx-icon>
             <span>Mark as read</span>
         </button>
@@ -15,14 +15,33 @@
                     <ng-container *ngSwitchCase="kind.ContentComment">
                         <rmx-icon name="discuss-line" class="relative top-0.5 mx-2"></rmx-icon>
                         <span>
-                            <a [routerLink]="createProfileLink($any(note).commentInfo)">{{ $any(note).commentInfo.posterName }}</a> commented on <a [routerLink]="createContentLink($any(note).contentInfo, $any(note).commentInfo)">{{ $any(note).contentInfo.contentTitle }}</a>
+                            <a [routerLink]="createProfileLink($any(note).commentInfo)">{{ $any(note).commentInfo.posterName }}</a> commented on <a [routerLink]="createContentLink($any(note).contentInfo, $any(note).commentInfo.posterId, $any(note).commentInfo.posterTag)">{{ $any(note).contentInfo.contentTitle }}</a>
+                            <span class="mx-1">•</span>
+                            <span class="italic">{{ note.createdAt | localedate: 'shortDate' }}</span>
+                        </span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="kind.AddedToLibrary">
+                        <rmx-icon name="book-mark-line" class="relative top-1 mx-2"></rmx-icon>
+                        <span>
+                            <a
+                                [routerLink]="['/profile', $any(note).addedByInfo.userId, $any(note).addedByInfo.userTag]"
+                            >
+                                {{ $any(note).addedByInfo.userName }}
+                            </a>
+                            added
+                            <a
+                                [routerLink]="createContentLink($any(note).contentInfo)"
+                            >
+                                {{ $any(note).contentInfo.contentTitle }}
+                            </a>
+                            to their library
                             <span class="mx-1">•</span>
                             <span class="italic">{{ note.createdAt | localedate: 'shortDate' }}</span>
                         </span>
                     </ng-container>
                 </ng-container>
             </div>
-            <ng-container *ngIf="notificationsService.isActive(note._id); else isNotActive">
+            <ng-container *ngIf="notifications.isActive(note._id); else isNotActive">
                 <div class="button active border-gray-600 dark:border-white" (click)="removeFromActive(note._id)">
                     <rmx-icon name="checkbox-circle-line" class="w-6"></rmx-icon>
                 </div>

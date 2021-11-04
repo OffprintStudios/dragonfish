@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContentLibraryRepository } from '@dragonfish/client/repository/content-library';
 import { LibraryMenuComponent } from '../../components/library-menu/library-menu.component';
-import { BookshelvesRepository } from '@dragonfish/client/repository/content-library/bookshelves';
+import { NotificationsRepository } from '@dragonfish/client/repository/notifications';
 
 @Component({
     selector: 'dragonfish-works-list',
@@ -10,7 +10,7 @@ import { BookshelvesRepository } from '@dragonfish/client/repository/content-lib
 export class WorksListComponent {
     menu = LibraryMenuComponent;
 
-    constructor(public library: ContentLibraryRepository, private shelves: BookshelvesRepository) {}
+    constructor(public library: ContentLibraryRepository, public notifications: NotificationsRepository) {}
 
     setCurrent(itemId: string) {
         this.library.setCurrent(itemId);

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SubscriptionDocument } from '../schemas';
 import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
+import { SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Injectable()
 export class SubscriptionsStore {
@@ -10,8 +11,12 @@ export class SubscriptionsStore {
 
     //#region ---FETCHING---
 
-    public async fetchAll(pseudId: string) {
+    public async fetchAllForUser(pseudId: string) {
         return this.subscription.find({ subscriberId: pseudId });
+    }
+
+    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind) {
+        return this.subscription.find({ itemId, kind: subKind });
     }
 
     //#endregion

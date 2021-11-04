@@ -6,6 +6,20 @@
         <rmx-icon name="user-line"></rmx-icon>
         <span>View Profile</span>
     </div>
+    <div
+        class="button border-gray-600 dark:border-white"
+        [routerLink]="['/profile', pseudQuery.currentId, pseudQuery.current.userTag, 'works']"
+    >
+        <rmx-icon name="book-open-line"></rmx-icon>
+        <span>View Works</span>
+    </div>
+    <div
+        class="button border-gray-600 dark:border-white"
+        [routerLink]="['/profile', pseudQuery.currentId, pseudQuery.current.userTag, 'blogs']"
+    >
+        <rmx-icon name="cup-line"></rmx-icon>
+        <span>View Blogs</span>
+    </div>
     <div class="w-full border-b border-gray-600 dark:border-white my-4"></div>
     <div
         class="button border-gray-600 dark:border-white"

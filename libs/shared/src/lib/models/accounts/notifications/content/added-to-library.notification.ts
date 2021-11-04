@@ -1,17 +1,16 @@
 import { Notification } from '../notification';
 import { ContentKind } from '../../../content';
 
-export interface ContentCommentNotification extends Notification {
+export interface AddedToLibraryNotification extends Notification {
     readonly contentInfo: {
         readonly contentId: string;
         readonly contentTitle: string;
         readonly contentKind: ContentKind;
     };
 
-    readonly commentInfo: {
-        readonly commentId: string;
-        readonly posterName: string;
-        readonly posterId: string;
-        readonly posterTag: string;
+    readonly addedByInfo: {
+        readonly userId: string;
+        readonly userTag: string;
+        readonly userName: string;
     };
 }

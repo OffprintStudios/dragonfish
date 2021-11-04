@@ -53,7 +53,7 @@ export class SectionsStore {
         if (pubStatus.newPub === true) {
             return this.sectionModel.findOneAndUpdate(
                 { _id: sectionId },
-                { published: pubStatus.newPub, 'audit.publishedOn': new Date() },
+                { published: pubStatus.newPub },
                 { new: true },
             );
         } else {
@@ -63,6 +63,19 @@ export class SectionsStore {
                 { new: true },
             );
         }
+    }
+
+    /**
+     * Updates the `publishedOn` date of the specified section.
+     * @param sectionId
+     * @param date
+     */
+    async updatePublishedOnDate(sectionId: string, date: Date): Promise<SectionsDocument> {
+        return this.sectionModel.findOneAndUpdate(
+            { _id: sectionId, published: true },
+            { 'audit.publishedOn': date },
+            { new: true },
+        );
     }
 
     /**

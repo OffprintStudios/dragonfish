@@ -12,13 +12,12 @@
                 [matTooltipClass]="'offprint-tooltip'"
                 (click)="openUserMenu()"
                 [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
-                [matBadge]="notifications.numNotifications"
-                [matBadgePosition]="'below after'"
-                [matBadgeHidden]="activeUserMenu || notifications.numNotifications < 1"
+                [matBadge]="notifications.count"
+                [matBadgeHidden]="activeUserMenu || notifications.count < 1"
             >
                 <span class="link-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">
-                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;">
+                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;" [alt]="'avatar'">
                     </ng-container>
                     <ng-template #userMenuOpened>
                         <rmx-icon name="close-line"></rmx-icon>
@@ -86,16 +85,20 @@
             <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
         </a>
         <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
-            <a
-                class="link"
-                [routerLink]="['/my-library']"
-                [routerLinkActive]="'active'"
-                [matTooltip]="'My Library'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
-            >
-                <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
-            </a>
+            <ng-container *ngIf="notifications.contentUpdates$ | async as contentUpdates">
+                <a
+                    class="link"
+                    [routerLink]="['/my-library']"
+                    [routerLinkActive]="'active'"
+                    [matTooltip]="'My Library'"
+                    [matTooltipPosition]="'right'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matBadge]="contentUpdates.length"
+                    [matBadgeHidden]="contentUpdates.length === 0"
+                >
+                    <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                </a>
+            </ng-container>
             <ng-container *ngIf="canSeeDash(account.roles)">
                 <a
                     class="link"

@@ -1,4 +1,4 @@
-import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { Pseudonym } from '../../psuedonyms';
 
 export interface ContentCommentPayload {
     readonly contentId: string;
