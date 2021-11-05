@@ -184,6 +184,7 @@ export class WorkFormComponent implements OnInit {
             collection: true,
             form: this.fields.form.value,
             genres: this.fields.genres.value,
+            tags: this.fields.tags.value,
             rating: this.fields.rating.value,
             status: this.fields.status.value,
         };
