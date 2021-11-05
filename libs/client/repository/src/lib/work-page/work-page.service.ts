@@ -13,6 +13,7 @@ import { SectionsService } from './sections';
 import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { RatingOption } from '@dragonfish/shared/models/reading-history';
 import { ContentLibraryRepository } from '../content-library';
+import { MIN_PROSE_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @Injectable({ providedIn: 'root' })
 export class WorkPageService {
@@ -94,8 +95,8 @@ export class WorkPageService {
     }
 
     public publish(contentId: string) {
-        if (this.workQuery.wordCount < 750) {
-            this.alerts.error(`Works need a minimum of 750 words before you can submit.`);
+        if (this.workQuery.contentKind !== ContentKind.PoetryContent && this.workQuery.wordCount < MIN_PROSE_LENGTH) {
+            this.alerts.error(`Works other than poetry need a minimum of ${MIN_PROSE_LENGTH} words before you can submit.`);
             return of(null).pipe(take(1));
         }
 

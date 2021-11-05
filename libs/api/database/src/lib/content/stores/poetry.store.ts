@@ -35,6 +35,7 @@ export class PoetryStore {
             'meta.genres': poetryInfo.genres,
             'meta.rating': poetryInfo.rating,
             'meta.status': poetryInfo.status,
+            tags: poetryInfo.tags,
         });
 
         return await newPoetry.save();
@@ -60,6 +61,7 @@ export class PoetryStore {
                     'meta.genres': poetryInfo.genres,
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
+                    tags: poetryInfo.tags,
                 },
                 { new: true },
             );
@@ -76,6 +78,7 @@ export class PoetryStore {
                     'meta.genres': poetryInfo.genres,
                     'meta.rating': poetryInfo.rating,
                     'meta.status': poetryInfo.status,
+                    tags: poetryInfo.tags,
                 },
                 { new: true },
             );

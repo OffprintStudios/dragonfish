@@ -12,6 +12,7 @@ export interface CreatePoetry {
     readonly collection: boolean;
     readonly form: PoetryForm;
     readonly genres: Genres[];
+    readonly tags: string[];
     readonly rating: ContentRating;
     readonly status: WorkStatus;
 }

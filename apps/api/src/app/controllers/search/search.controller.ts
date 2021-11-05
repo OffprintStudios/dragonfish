@@ -1,6 +1,5 @@
 import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Cookies } from '@nestjsplus/cookies';
 import { PaginateResult } from 'mongoose';
 
 import { ContentModel } from '@dragonfish/shared/models/content';

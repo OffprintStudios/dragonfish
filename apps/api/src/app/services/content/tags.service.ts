@@ -1,14 +1,12 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { TagsStore } from "@dragonfish/api/database/content/stores";
-import { TagKind, TagsModel, TagsForm } from "@dragonfish/shared/models/content/tags";
-import { TagsTree } from "@dragonfish/shared/models/content/tags/tags.model";
-import { IContent, ITagsService } from "../../shared/content";
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { TagsStore } from '@dragonfish/api/database/content/stores';
+import { TagKind, TagsModel, TagsForm } from '@dragonfish/shared/models/content/tags';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
+import { IContent, ITagsService } from '../../shared/content';
 
 @Injectable()
 export class TagsService implements ITagsService {
-    constructor(
-        private readonly tagsStore: TagsStore,
-        @Inject('IContent') private readonly contentService: IContent) { }
+    constructor(private readonly tagsStore: TagsStore, @Inject('IContent') private readonly contentService: IContent) {}
 
     async fetchTagsTrees(kind: TagKind): Promise<TagsTree[]> {
         return await this.tagsStore.fetchTagsTrees(kind);
@@ -37,7 +35,7 @@ export class TagsService implements ITagsService {
 
         // Clear parent for its children
         const tagTree = await this.tagsStore.fetchDescendants(id);
-        for (let child of tagTree.children) {
+        for (const child of tagTree.children) {
             const form: TagsForm = {
                 name: child.name,
                 desc: child.desc,
