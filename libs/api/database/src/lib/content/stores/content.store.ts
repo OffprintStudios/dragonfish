@@ -22,6 +22,7 @@ import { UsersStore } from '../../users';
 import { ApprovalQueueStore } from '../../approval-queue';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
+import { MIN_PROSE_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 /**
  * ## Content Store
@@ -275,8 +276,8 @@ export class ContentStore {
             'audit.isDeleted': false,
         });
 
-        if (thisContent.kind !== ContentKind.PoetryContent && thisContent.stats.words < 750) {
-            throw new BadRequestException(`Content that isn't poetry needs to have a minimum word-count of 750. `);
+        if (thisContent.kind !== ContentKind.PoetryContent && thisContent.stats.words < MIN_PROSE_LENGTH) {
+            throw new BadRequestException(`Content that isn't poetry needs to have a minimum word-count of ${MIN_PROSE_LENGTH}. `);
         }
 
         await this.queue.addOneWork(contentId);
