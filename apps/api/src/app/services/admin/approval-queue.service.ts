@@ -4,7 +4,7 @@ import { PaginateResult } from 'mongoose';
 
 import { ContentKind, ContentModel } from '@dragonfish/shared/models/content';
 import { ApprovalQueueStore } from '@dragonfish/api/database/approval-queue';
-import { ContentStore } from '@dragonfish/api/database/content/stores';
+import { ContentStore, TagsStore } from '@dragonfish/api/database/content/stores';
 import { IApprovalQueue } from '../../shared/admin';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
 
@@ -16,6 +16,7 @@ export class ApprovalQueueService implements IApprovalQueue {
         private approvalQueueStore: ApprovalQueueStore,
         private content: ContentStore,
         private pseudonyms: PseudonymsStore,
+        private readonly tagsStore: TagsStore,
     ) {}
 
     async getQueue(pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
@@ -36,6 +37,16 @@ export class ApprovalQueueService implements IApprovalQueue {
             user,
             await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),
         );
+
+        // Get the works tags and update the counts for each
+        const work = await this.content.fetchOne(workId);
+        for (const tag of work.tags) {
+            if (typeof tag === 'object') {
+                await this.tagsStore.updateTaggedWorks(tag._id);
+            } else {
+                await this.tagsStore.updateTaggedWorks(tag);
+            }
+        }
     }
 
     async rejectContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {

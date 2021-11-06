@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TagsDocument } from '../schemas';
+import { ContentDocument, TagsDocument } from '../schemas';
 import { TagKind, TagsForm } from '@dragonfish/shared/models/content/tags';
 import * as sanitize from 'sanitize-html';
-import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
+import { TagsModel, TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
+import { ContentKind, PubStatus } from '@dragonfish/shared/models/content';
 
 @Injectable()
 export class TagsStore {
@@ -12,6 +13,7 @@ export class TagsStore {
 
     constructor(
         @InjectModel('Tags') private readonly tags: Model<TagsDocument>,
+        @InjectModel('Content') private readonly content: Model<ContentDocument>,
     ) {}
 
     /**
@@ -145,6 +147,21 @@ export class TagsStore {
     }
 
     /**
+     * Given a tagId, constructs an array of that tagId and the IDs of that tag's children
+     * @param tagId ID of tag that searching for children for
+     * @returns string[] of the given tagId and the IDs of that tag's children (just tagId if it has no children)
+     */
+     private async getAllTagIds(tagId: string): Promise<string[]> {
+        const childTags = await this.tags.find({ parent: tagId });
+        if (childTags) {
+            const childTagIds = childTags.map((tag) => tag._id);
+            childTagIds.push(tagId);
+            return childTagIds;
+        }
+        return [tagId];
+    }
+
+    /**
      * Creates a new tag.
      * @param form
      * @param tagKind
@@ -242,7 +259,57 @@ export class TagsStore {
             }
         }
 
+        const numTaggedWorks = await this.getNumberOfTaggedWorks(tagId);
+        tag.taggedWorks = numTaggedWorks;
+
         return tag.save();
+    }
+
+    /**
+     * Checks how many published works are tagged with this tag, and updates the taggedWorks value to that
+     * Includes children
+     * @param tagId The ID of the tag to update.
+     */
+    async updateTaggedWorks(tagId: string): Promise<void> {
+        const numTaggedWorks = await this.getNumberOfTaggedWorks(tagId);
+        const tagDocument = await this.tags.findById(tagId);
+        tagDocument.taggedWorks = numTaggedWorks;
+
+        tagDocument.save();
+
+        // Updates parent if available
+        const parent = tagDocument.parent;
+        if (parent) {
+            let parentId: string;
+            if (typeof parent === 'object') {
+                parentId = parent._id;
+            } else {
+                parentId = parent;
+            }
+            const parentNumTaggedWorks = await this.getNumberOfTaggedWorks(parentId);
+            const parentTagDocument = await this.tags.findById(parentId);
+            parentTagDocument.taggedWorks = parentNumTaggedWorks;
+
+            parentTagDocument.save();
+        }
+    }
+
+    /**
+     * Checks how many published works are tagged with this tag.
+     * @param tagId The ID of the tag that checking
+     * @returns The number of published works tagged with this tag. Includes children.
+     */
+    private async getNumberOfTaggedWorks(tagId: string): Promise<number> {
+        const tagArray = await this.getAllTagIds(tagId);
+        const query = {
+            'audit.published': PubStatus.Published,
+            'audit.isDeleted': false,
+            kind: { $in: [ContentKind.ProseContent, ContentKind.PoetryContent] },
+            tags: { $in: tagArray },
+        };
+
+        // Find number of works with those tags
+        return this.content.count(query);
     }
 
     /**
