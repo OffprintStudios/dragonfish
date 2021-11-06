@@ -12,6 +12,11 @@
                 <a class="link" [routerLink]="['newest-works']" [routerLinkActive]="'active'">
                     <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>What's new
                 </a>
+                <ng-container *ngIf="tagsEnabled">
+                    <a class="link" [routerLink]="['fandom-tags']" [routerLinkActive]="'active'">
+                        <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>Fandom tags
+                    </a>
+                </ng-container>
             </div>
         </dragonfish-pagebar>
     </ng-container>

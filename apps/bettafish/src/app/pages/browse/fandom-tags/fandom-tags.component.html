@@ -1,0 +1,8 @@
+<ng-container *ngIf="tagsQuery.all$ | async as tags">
+    <div *ngFor="let tag of tags">
+        <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
+        <div *ngFor="let child of tag.children">
+            <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
+        </div>
+    </div>
+</ng-container>
