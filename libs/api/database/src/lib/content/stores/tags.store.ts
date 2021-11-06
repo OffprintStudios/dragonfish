@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { ContentDocument, TagsDocument } from '../schemas';
 import { TagKind, TagsForm } from '@dragonfish/shared/models/content/tags';
 import * as sanitize from 'sanitize-html';
-import { TagsModel, TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
+import { TagsTree } from '@dragonfish/shared/models/content/tags/tags.model';
 import { ContentKind, PubStatus } from '@dragonfish/shared/models/content';
 
 @Injectable()
