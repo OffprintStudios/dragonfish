@@ -1,8 +1,21 @@
 <ng-container *ngIf="tagsQuery.all$ | async as tags">
     <div *ngFor="let tag of tags">
-        <span class="tag-name" [innerHtml]="tag.name | safeHtml"></span>
+        <a
+            [routerLink]="['/tag', tag._id, tag.name | slugify]"
+            [innerHtml]="tag.name | safeHtml"
+        ></a>
+        ({{tag.taggedWorks ? tag.taggedWorks : 0}})
         <div *ngFor="let child of tag.children">
-            <span class="parent-name" [innerHtml]="tag.name | safeHtml"></span>  —  <span class="tag-name" [innerHtml]="child.name | safeHtml"></span>
+            <a
+                [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                [innerHtml]="tag.name | safeHtml"
+            ></a>
+            —
+            <a
+                [routerLink]="['/tag', child._id, child.name | slugify]"
+                [innerHtml]="child.name | safeHtml"
+            ></a>
+            ({{child.taggedWorks ? child.taggedWorks : 0}})
         </div>
     </div>
 </ng-container>

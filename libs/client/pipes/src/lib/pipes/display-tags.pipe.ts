@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Genres, TagsModel } from '@dragonfish/shared/models/content';
+import { TagsModel } from '@dragonfish/shared/models/content';
 
 @Pipe({ name: 'displayTags' })
 export class DisplayTagsPipe implements PipeTransform {
