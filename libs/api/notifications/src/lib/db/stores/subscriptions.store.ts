@@ -15,8 +15,20 @@ export class SubscriptionsStore {
         return this.subscription.find({ subscriberId: pseudId });
     }
 
-    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind) {
-        return this.subscription.find({ itemId, kind: subKind });
+    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {
+        if (populate) {
+            return this.subscription.find({ itemId, kind: subKind }).populate('itemId');
+        } else {
+            return this.subscription.find({ itemId, kind: subKind });
+        }
+    }
+
+    public async fetchSubscriptions(subscriberId: string, subKind: SubscriptionKind, populate?: boolean) {
+        if (populate) {
+            return this.subscription.find({ subscriberId, kind: subKind }).populate('subscriberId');
+        } else {
+            return this.subscription.find({ subscriberId, kind: subKind });
+        }
     }
 
     //#endregion

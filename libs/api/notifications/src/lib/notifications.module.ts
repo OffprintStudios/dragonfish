@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
 import { ContentModule } from '@dragonfish/api/database/content';
-import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
+import { NotificationKind, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 import { NotificationsController } from './controllers';
 import { JwtModule } from '@nestjs/jwt';
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
@@ -41,6 +41,7 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
             {
                 name: 'Subscription',
                 useFactory: Schemas.setupSubscriptionsCollection,
+                discriminators: [{ name: SubscriptionKind.FollowingUser, schema: Schemas.FollowersSchema }],
             },
         ]),
         BullModule.registerQueue({

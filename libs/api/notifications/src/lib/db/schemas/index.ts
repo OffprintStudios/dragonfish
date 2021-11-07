@@ -6,6 +6,7 @@ import { SubscriptionSchema } from './subscription.schema';
 export { NotificationDocument, NotificationSchema } from './notification.schema';
 export { SubscriptionDocument, SubscriptionSchema } from './subscription.schema';
 export * from './content';
+export * from './subscriptions';
 
 //#endregion
 
