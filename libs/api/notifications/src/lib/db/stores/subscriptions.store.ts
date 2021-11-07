@@ -1,13 +1,16 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SubscriptionDocument } from '../schemas';
+import { FollowersDocument, SubscriptionDocument } from '../schemas';
 import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
 import { SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Injectable()
 export class SubscriptionsStore {
-    constructor(@InjectModel('Subscription') private readonly subscription: Model<SubscriptionDocument>) {}
+    constructor(
+        @InjectModel('Subscription') private readonly subscription: Model<SubscriptionDocument>,
+        @InjectModel(SubscriptionKind.FollowingUser) private readonly followingUser: Model<FollowersDocument>,
+    ) {}
 
     //#region ---FETCHING---
 

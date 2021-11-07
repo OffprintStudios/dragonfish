@@ -23,6 +23,16 @@ export class SubscriptionsService {
         });
     }
 
+    @OnEvent(SubscriptionEvent.FollowingUser, { async: true })
+    private async handleFollowingUser(payload: SubscriptionPayload) {
+        this.logger.log(
+            `Creating subscription for ${payload.subscriberId} on item ${payload.itemId} of type '${payload.kind}'...`,
+        );
+        await this.subscriptions.create(payload).then(() => {
+            this.logger.log(`Subscription created!`);
+        });
+    }
+
     @OnEvent(SubscriptionEvent.Delete, { async: true })
     private async handleDeleteSub(payload: { userId: string; itemId: string }) {
         this.logger.log(`Deleting subscription for item ${payload.itemId}...`);
@@ -33,12 +43,12 @@ export class SubscriptionsService {
 
     //#region ---GENERAL FUNCTIONS---
 
-    public async fetchSubscriptions(subscriberId: string, subKind: SubscriptionKind) {
-        return await this.subscriptions.fetchSubscriptions(subscriberId, subKind);
+    public async fetchSubscriptions(subscriberId: string, subKind: SubscriptionKind, populate?: boolean) {
+        return await this.subscriptions.fetchSubscriptions(subscriberId, subKind, populate);
     }
 
-    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind) {
-        return await this.subscriptions.fetchSubscribers(itemId, subKind);
+    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {
+        return await this.subscriptions.fetchSubscribers(itemId, subKind, populate);
     }
 
     //#endregion
