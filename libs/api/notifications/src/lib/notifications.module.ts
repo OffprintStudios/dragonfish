@@ -1,6 +1,12 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
-import { NotificationService, NotificationConsumer, PushNotificationsConsumer, SubscriptionsService } from './services';
+import {
+    NotificationService,
+    NotificationConsumer,
+    PushNotificationsConsumer,
+    SubscriptionsService,
+    FollowersService,
+} from './services';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
@@ -18,6 +24,7 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
         NotificationConsumer,
         PushNotificationsConsumer,
         SubscriptionsService,
+        FollowersService,
         Stores.NotificationStore,
         Stores.ContentCommentStore,
         Stores.SubscriptionsStore,

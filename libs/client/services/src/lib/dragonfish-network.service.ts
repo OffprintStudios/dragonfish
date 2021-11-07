@@ -42,7 +42,7 @@ import {
     ResetPassword,
 } from '@dragonfish/shared/models/accounts';
 import { SearchKind, SearchMatch } from '@dragonfish/shared/models/search';
-import { MarkAsRead, Notification } from '@dragonfish/shared/models/accounts/notifications';
+import { MarkAsRead, Notification, Subscription } from '@dragonfish/shared/models/accounts/notifications';
 import { Bookshelf, ShelfItem } from '@dragonfish/shared/models/users/content-library';
 
 /**
@@ -842,6 +842,47 @@ export class DragonfishNetworkService {
 
             uploader.uploadAll();
         });
+    }
+
+    //#endregion
+
+    //#region ---FOLLOWERS---
+
+    public fetchFollowers(profileId: string) {
+        return handleResponse(
+            this.http.get<Subscription[]>(`${this.baseUrl}/followers/fetch-followers?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public fetchFollowing(profileId: string) {
+        return handleResponse(
+            this.http.get<Subscription[]>(`${this.baseUrl}/followers/fetch-following?pseudId=${profileId}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    public followUser(profileId: string, toFollow: string) {
+        return handleResponse(
+            this.http.post<Subscription>(
+                `${this.baseUrl}/followers/follow-user?pseudId=${profileId}&toFollow=${toFollow}`,
+                {},
+                { observe: 'response', withCredentials: true },
+            ),
+        );
+    }
+
+    public unfollowUser(profileId: string, toUnfollow: string) {
+        return handleResponse(
+            this.http.delete<void>(
+                `${this.baseUrl}/followers/unfollow-user?pseudId=${profileId}&toUnfollow=${toUnfollow}`,
+                { observe: 'response', withCredentials: true },
+            ),
+        );
     }
 
     //#endregion
