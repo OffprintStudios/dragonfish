@@ -1,9 +1,17 @@
-|&nbsp;
-<span *ngFor="let section of alphabeticalTags">
-    <a href="/browse/fandom-tags#{{section.letter}}">
-        {{section.letter}}
-    </a>
-    &nbsp;|
+<span *ngFor="let section of alphabeticalTags; let i = index">
+    <ng-container *ngIf="i === 0; else notStart">
+        |&nbsp;
+        <a href="/browse/fandom-tags#{{section.letter}}">
+            {{section.letter}}
+        </a>
+        &nbsp;|&nbsp;
+    </ng-container>
+    <ng-template #notStart>
+        <a href="/browse/fandom-tags#{{section.letter}}">
+            {{section.letter}}
+        </a>
+        &nbsp;|&nbsp;
+    </ng-template>
 </span>
 <p>
 <div *ngFor="let section of alphabeticalTags">
