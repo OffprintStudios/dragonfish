@@ -1,4 +1,4 @@
-<ng-container *ngIf="profileQuery.profile$ | async as profile">
+<ng-container *ngIf="profile.profile$ | async as profile">
     <div class="profile-header">
         <div>
             <ng-container *ngIf="profile.profile.coverPic; else noCoverPic">

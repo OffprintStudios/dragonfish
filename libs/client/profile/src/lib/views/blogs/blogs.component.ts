@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { take } from 'rxjs/operators';
 import { AuthService } from '@dragonfish/client/repository/session/services';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 import { MIN_TEXT_LENGTH, MAX_TITLE_LENGTH } from '@dragonfish/shared/constants/content-constants';
 
 @Component({
@@ -30,7 +30,7 @@ export class BlogsComponent implements OnInit {
         title: new FormControl('', [
             Validators.required,
             Validators.minLength(MIN_TEXT_LENGTH),
-            Validators.maxLength(MAX_TITLE_LENGTH)
+            Validators.maxLength(MAX_TITLE_LENGTH),
         ]),
         body: new FormControl('', [Validators.required, Validators.minLength(MIN_TEXT_LENGTH)]),
     });
@@ -42,12 +42,12 @@ export class BlogsComponent implements OnInit {
         private dialog: MatDialog,
         private alerts: AlertsService,
         public auth: AuthService,
-        public profileQuery: ProfileQuery,
+        public profile: ProfileRepository,
         public userBlogsQuery: UserBlogsQuery,
     ) {}
 
     ngOnInit(): void {
-        setThreePartTitle(this.profileQuery.userTag, Constants.BLOGS);
+        setThreePartTitle(this.profile.userTag, Constants.BLOGS);
     }
 
     toggleForm() {
@@ -69,7 +69,7 @@ export class BlogsComponent implements OnInit {
 
     submitForm(asDraft: boolean) {
         if (this.blogForm.controls.title.invalid) {
-            this.alerts.warn('Title field has an invalid length. Maximum is '+ MAX_TITLE_LENGTH + ' characters.');
+            this.alerts.warn('Title field has an invalid length. Maximum is ' + MAX_TITLE_LENGTH + ' characters.');
             return;
         }
         if (this.blogForm.controls.body.invalid) {

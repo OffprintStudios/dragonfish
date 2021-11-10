@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@dragonfish/client/repository/session/services';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 import { ShelvesPageRepository } from '@dragonfish/client/repository/profile/shelves-page';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class BookshelvesComponent {
     constructor(
         public auth: AuthService,
-        public profile: ProfileQuery,
+        public profile: ProfileRepository,
         public profileShelves: ShelvesPageRepository,
         private route: ActivatedRoute,
         private router: Router,

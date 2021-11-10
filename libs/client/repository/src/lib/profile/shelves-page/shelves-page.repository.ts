@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store, createState, withProps, select } from '@ngneat/elf';
 import { Bookshelf, ShelfItem } from '@dragonfish/shared/models/users/content-library';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '../profile.repository';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { catchError, tap } from 'rxjs/operators';
 import { map, throwError, zip } from 'rxjs';
@@ -25,12 +25,12 @@ export class ShelvesPageRepository {
 
     constructor(
         private network: DragonfishNetworkService,
-        private profileQuery: ProfileQuery,
+        private profile: ProfileRepository,
         private alerts: AlertsService,
     ) {}
 
     public fetchShelves() {
-        return this.network.fetchPublicShelves(this.profileQuery.profileId).pipe(
+        return this.network.fetchPublicShelves(this.profile.profileId).pipe(
             tap((shelves) => {
                 store.update((state) => ({
                     ...state,
@@ -49,8 +49,8 @@ export class ShelvesPageRepository {
 
     public fetchOneShelf(id: string) {
         return zip(
-            this.network.fetchOneShelf(this.profileQuery.profileId, id),
-            this.network.fetchShelfItems(this.profileQuery.profileId, id),
+            this.network.fetchOneShelf(this.profile.profileId, id),
+            this.network.fetchShelfItems(this.profile.profileId, id),
         ).pipe(
             tap((results) => {
                 const [shelf, items] = results;

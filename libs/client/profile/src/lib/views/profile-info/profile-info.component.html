@@ -1,5 +1,5 @@
 <div class="flex flex-row justify-center w-11/12 mx-auto my-6">
-    <ng-container *ngIf="profileQuery.profile$ | async as portUser">
+    <ng-container *ngIf="profile.profile$ | async as portUser">
         <div class="p-4 w-52">
             <h5 class="text-2xl font-medium text-center">About Me</h5>
             <ng-container *ngIf="portUser.profile.bio">
@@ -14,7 +14,7 @@
         </div>
     </ng-container>
     <div class="mx-4"><!--spacer--></div>
-    <ng-container *ngIf="profileQuery.blogs$ | async as blogs">
+    <ng-container *ngIf="profile.blogs$ | async as blogs">
         <div class="flex-1 max-w-lg">
             <div class="border-b mb-4" style="border-color: var(--borders)">
                 <h3 class="text-3xl font-medium">Latest Blogs</h3>
@@ -36,7 +36,7 @@
         </div>
     </ng-container>
     <div class="mx-4"><!--spacer--></div>
-    <ng-container *ngIf="profileQuery.works$ | async as works">
+    <ng-container *ngIf="profile.works$ | async as works">
         <div class="max-w-sm">
             <div class="border-b mb-4" style="border-color: var(--borders)">
                 <h3 class="text-3xl font-medium">Latest Works</h3>

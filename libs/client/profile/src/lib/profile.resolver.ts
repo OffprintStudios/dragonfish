@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ProfileService } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 
 @Injectable()
-export class ProfileResolver implements Resolve<any> {
-    constructor(private profileService: ProfileService) {}
+export class ProfileResolver implements Resolve<void> {
+    constructor(private profile: ProfileRepository) {}
 
-    resolve(route: ActivatedRouteSnapshot, routerState: RouterStateSnapshot): Observable<any> {
+    resolve(route: ActivatedRouteSnapshot): Observable<void> {
         const pseudId = route.paramMap.get('pseudId');
-        return this.profileService.setProfile(pseudId);
+        return this.profile.setProfile(pseudId);
     }
 }
