@@ -4,11 +4,11 @@ export class Constants {
     public static FIVE_MINUTES = 300000;
 
     public static ABOUT = 'About';
+    public static ALL_FANDOMS = "All Fandoms";
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
     public static CODE_OF_CONDUCT = 'Code of Conduct';
     public static COLLECTIONS = 'Collections';
-    public static FANDOM_TAGS = "Fandom Tags";
 
     public static GLOBAL_SETTINGS = "Global Settings";
     public static GROUPS = 'Groups';

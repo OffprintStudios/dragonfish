@@ -2,13 +2,13 @@ import { Routes } from '@angular/router';
 import { BrowseComponent } from './browse.component';
 import { SearchComponent } from './search/search.component';
 import { NewestWorksComponent } from './newest-works/newest-works.component';
-import { FandomTagsComponent } from './fandom-tags/fandom-tags.component';
+import { AllFandomsComponent } from './all-fandoms/all-fandoms.component';
 
 export const BrowsePages = [
     BrowseComponent,
     SearchComponent,
     NewestWorksComponent,
-    FandomTagsComponent,
+    AllFandomsComponent,
 ];
 
 export const BrowseRoutes: Routes = [
@@ -21,8 +21,8 @@ export const BrowseRoutes: Routes = [
                 component: NewestWorksComponent,
             },
             {
-                path: 'fandom-tags',
-                component: FandomTagsComponent,
+                path: 'all-fandoms',
+                component: AllFandomsComponent,
             },
         ],
     },

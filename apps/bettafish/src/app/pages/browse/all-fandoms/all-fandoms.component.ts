@@ -7,11 +7,11 @@ import { AlphabeticalTags } from './alphabetical-tags.component';
 
 @UntilDestroy()
 @Component({
-    selector: 'dragonfish-fandom-tags',
-    templateUrl: './fandom-tags.component.html',
-    styleUrls: ['./fandom-tags.component.scss'],
+    selector: 'dragonfish-all-fandoms',
+    templateUrl: './all-fandoms.component.html',
+    styleUrls: ['./all-fandoms.component.scss'],
 })
-export class FandomTagsComponent implements OnInit {
+export class AllFandomsComponent implements OnInit {
     alphabeticalTags: AlphabeticalTags[] = [];
     constructor(
         public tagsQuery: TagsQuery,
@@ -19,7 +19,7 @@ export class FandomTagsComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        setTwoPartTitle(Constants.FANDOM_TAGS);
+        setTwoPartTitle(Constants.ALL_FANDOMS);
 
         // Assumes alphabetical sorting for tags
         this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe((tags) => {

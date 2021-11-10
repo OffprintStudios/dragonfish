@@ -1,13 +1,13 @@
 <span *ngFor="let section of alphabeticalTags; let i = index">
     <ng-container *ngIf="i === 0; else notStart">
         |&nbsp;
-        <a href="/browse/fandom-tags#{{section.letter}}">
+        <a href="browse/all-fandoms#{{section.letter}}">
             {{section.letter}}
         </a>
         &nbsp;|&nbsp;
     </ng-container>
     <ng-template #notStart>
-        <a href="/browse/fandom-tags#{{section.letter}}">
+        <a href="browse/all-fandoms#{{section.letter}}">
             {{section.letter}}
         </a>
         &nbsp;|&nbsp;
@@ -24,18 +24,17 @@
             [innerHtml]="tag.name | safeHtml"
         ></a>
         ({{tag.taggedWorks ? tag.taggedWorks : 0}})
-        <div *ngFor="let child of tag.children">
-            <a
-                [routerLink]="['/tag', tag._id, tag.name | slugify]"
-                [innerHtml]="tag.name | safeHtml"
-            ></a>
-            —
-            <a
-                [routerLink]="['/tag', child._id, child.name | slugify]"
-                [innerHtml]="child.name | safeHtml"
-            ></a>
-            ({{child.taggedWorks ? child.taggedWorks : 0}})
-        </div>
+        <ul>
+            <div *ngFor="let child of tag.children">
+                <li>
+                    <a
+                        [routerLink]="['/tag', child._id, child.name | slugify]"
+                        [innerHtml]="child.name | safeHtml"
+                    ></a>
+                    ({{child.taggedWorks ? child.taggedWorks : 0}})
+                </li>
+            </div>
+        </ul>
     </div>
     <p>
 </div>
