@@ -9,6 +9,10 @@ export class FollowersService {
 
     constructor(private readonly subscriptions: SubscriptionsStore) {}
 
+    public async checkIfFollowing(pseudId: string, isFollowing: string) {
+        return await this.subscriptions.fetchOne(pseudId, isFollowing);
+    }
+
     public async fetchFollowers(pseudId: string): Promise<Subscription[]> {
         return await this.subscriptions.fetchSubscribers(pseudId, SubscriptionKind.FollowingUser, true);
     }

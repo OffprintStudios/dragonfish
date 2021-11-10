@@ -18,6 +18,10 @@ export class SubscriptionsStore {
         return this.subscription.find({ subscriberId: pseudId });
     }
 
+    public async fetchOne(subscriberId: string, itemId: string) {
+        return this.subscription.find({ subscriberId, itemId });
+    }
+
     public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {
         if (populate) {
             return this.subscription.find({ itemId, kind: subKind }).populate('itemId');

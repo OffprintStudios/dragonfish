@@ -1,10 +1,8 @@
 import { Controller, Delete, Get, Post, Query, UseGuards } from '@nestjs/common';
-import { SubscriptionEvent, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 import { IdentityGuard } from '@dragonfish/api/utilities/guards';
 import { Identity } from '@dragonfish/api/utilities/decorators';
 import { Roles } from '@dragonfish/shared/models/accounts';
-import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
-import { FollowersService } from '../services/followers.service';
+import { FollowersService } from '../services';
 
 @Controller('followers')
 export class FollowersController {
@@ -18,6 +16,13 @@ export class FollowersController {
     @Get('fetch-following')
     async fetchFollowing(@Query('pseudId') pseudId: string) {
         return await this.followers.fetchFollowing(pseudId);
+    }
+
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
+    @Get('check-if-following')
+    async checkIfFollowing(@Query('pseudId') pseudId: string, @Query('isFollowing') isFollowing: string) {
+        return await this.followers.checkIfFollowing(pseudId, isFollowing);
     }
 
     @UseGuards(IdentityGuard)

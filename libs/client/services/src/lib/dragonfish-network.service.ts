@@ -866,6 +866,18 @@ export class DragonfishNetworkService {
         );
     }
 
+    public checkIfFollowing(profileId: string, isFollowing: string) {
+        return handleResponse(
+            this.http.get<Subscription>(
+                `${this.baseUrl}/followers/check-if-following?pseudId=${profileId}&isFollowing=${isFollowing}`,
+                {
+                    observe: 'response',
+                    withCredentials: true,
+                },
+            ),
+        );
+    }
+
     public followUser(profileId: string, toFollow: string) {
         return handleResponse(
             this.http.post<Subscription>(
