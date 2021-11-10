@@ -27,9 +27,9 @@ const store = new Store({ state, name: 'profile', config });
 @Injectable({ providedIn: 'root' })
 export class ProfileRepository {
     public profile$: Observable<Pseudonym> = store.pipe(select((state) => state.currProfile));
-    public works$ = store.pipe(select((state) => state.homeWorks));
-    public blogs$ = store.pipe(select((state) => state.homeBlogs));
-    public isFollowing$ = store.pipe(select((state) => state.isFollowing));
+    public works$: Observable<ContentModel[]> = store.pipe(select((state) => state.homeWorks));
+    public blogs$: Observable<ContentModel[]> = store.pipe(select((state) => state.homeBlogs));
+    public isFollowing$: Observable<boolean> = store.pipe(select((state) => !!state.isFollowing));
 
     constructor(
         private network: DragonfishNetworkService,
@@ -87,6 +87,46 @@ export class ProfileRepository {
         }
     }
 
+    //#region ---FOLLOWERS---
+
+    public followUser() {
+        return this.network.followUser(this.pseud.currentId, this.profileId).pipe(
+            tap((result) => {
+                store.update((state) => ({
+                    ...state,
+                    isFollowing: result,
+                }));
+            }),
+            map(() => {
+                return;
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    public unfollowUser() {
+        return this.network.unfollowUser(this.pseud.currentId, this.profileId).pipe(
+            tap(() => {
+                store.update((state) => ({
+                    ...state,
+                    isFollowing: null,
+                }));
+            }),
+            map(() => {
+                return;
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(err);
+            }),
+        );
+    }
+
+    //#endregion
+
     //#region ---GETTERS---
 
     public get screenName() {
@@ -99,6 +139,10 @@ export class ProfileRepository {
 
     public get profileId() {
         return store.getValue().currProfile._id;
+    }
+
+    public get isFollowing() {
+        return !!store.getValue().isFollowing;
     }
 
     //#endregion

@@ -19,7 +19,7 @@ export class SubscriptionsStore {
     }
 
     public async fetchOne(subscriberId: string, itemId: string) {
-        return this.subscription.find({ subscriberId, itemId });
+        return this.subscription.findOne({ subscriberId, itemId });
     }
 
     public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {

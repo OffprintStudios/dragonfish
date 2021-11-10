@@ -1,30 +1,30 @@
-<ng-container *ngIf="profile.profile$ | async as profile">
+<ng-container *ngIf="profile.profile$ | async as currProfile">
     <div class="profile-header">
         <div>
-            <ng-container *ngIf="profile.profile.coverPic; else noCoverPic">
-                <img class="cover" [src]="profile.profile.coverPic" [alt]="'cover pic'">
+            <ng-container *ngIf="currProfile.profile.coverPic; else noCoverPic">
+                <img class="cover" [src]="currProfile.profile.coverPic" [alt]="'cover pic'">
             </ng-container>
             <ng-template #noCoverPic>
                 <div class="cover"></div>
             </ng-template>
             <div class="header-bar">
                 <div class="header-items">
-                    <img class="avatar" [src]="profile.profile.avatar" [alt]="'avatar'">
+                    <img class="avatar" [src]="currProfile.profile.avatar" [alt]="'avatar'">
                     <div class="flex-1">
                         <div class="flex items-center relative mb-0.5">
-                            <dragonfish-role-badge [roles]="profile.roles" [size]="'normal'"></dragonfish-role-badge>
+                            <dragonfish-role-badge [roles]="currProfile.roles" [size]="'normal'"></dragonfish-role-badge>
                             <h3 class="text-3xl font-medium text-white relative top-1 ml-1.5">
-                                {{ profile.screenName }}
+                                {{ currProfile.screenName }}
                             </h3>
                         </div>
-                        <h4 class="italic text-white">@{{ profile.userTag }}</h4>
+                        <h4 class="italic text-white">@{{ currProfile.userTag }}</h4>
                         <div class="flex items-center text-white text-xs">
-                            <span>{{ profile.stats.followers | abbreviate }} Followers</span>
+                            <span>{{ currProfile.stats.followers | abbreviate }} Followers</span>
                             <span class="text-xl mx-1.5">·</span>
-                            <span>{{ profile.stats.following | abbreviate }} Following</span>
+                            <span>{{ currProfile.stats.following | abbreviate }} Following</span>
                         </div>
                     </div>
-                    <ng-container *ngIf="auth.checkPseudonym(profile._id); else notThisUser">
+                    <ng-container *ngIf="auth.checkPseudonym(currProfile._id); else notThisUser">
                         <button
                             class="px-2.5"
                             [matTooltip]="'Change Cover'"
@@ -40,6 +40,34 @@
                     </ng-container>
                     <ng-template #notThisUser>
                         <ng-container *ngIf="session.currAccount">
+                            <ng-container *ngIf="loadingFollowing; else notLoadingFollowing">
+                                <button>
+                                    <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                                    <span>Saving...</span>
+                                </button>
+                            </ng-container>
+                            <ng-template #notLoadingFollowing>
+                                <ng-container *ngIf="profile.isFollowing; else notFollowing">
+                                    <button (click)="unfollow()">
+                                        <rmx-icon name="user-unfollow-line"></rmx-icon>
+                                        <span>Unfollow</span>
+                                    </button>
+                                </ng-container>
+                                <ng-template #notFollowing>
+                                    <button (click)="follow()">
+                                        <rmx-icon name="user-follow-line"></rmx-icon>
+                                        <span>Follow</span>
+                                    </button>
+                                </ng-template>
+                            </ng-template>
+                            <button
+                                class="px-2.5"
+                                [matTooltip]="'Send Friend Request'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                                (click)="friendRequest()"
+                            >
+                                <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                            </button>
                             <button
                                 class="px-2.5"
                                 [ngClass]="{'active': isMoreOpened}"
@@ -51,25 +79,13 @@
                             >
                                 <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
                             </button>
-                            <button
-                                class="px-2.5"
-                                [matTooltip]="'Send Friend Request'"
-                                [matTooltipClass]="'offprint-tooltip'"
-                                (click)="friendRequest()"
-                            >
-                                <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
-                            </button>
-                            <button (click)="follow()">
-                                <rmx-icon name="user-add-line"></rmx-icon>
-                                <span>Follow</span>
-                            </button>
                         </ng-container>
                     </ng-template>
                 </div>
                 <div class="nav-items">
                     <a
                         class="link"
-                        [routerLink]="['/profile', profile._id, profile.userTag]"
+                        [routerLink]="['/profile', currProfile._id, currProfile.userTag]"
                         [routerLinkActive]="'active'"
                         [routerLinkActiveOptions]="{ exact: true }"
                     >
@@ -82,7 +98,7 @@
                         [routerLinkActive]="'active'"
                     >
                         <rmx-icon name="quill-pen-line"></rmx-icon>
-                        <span>{{ profile.stats.works | abbreviate }} Work{{ profile.stats.works | pluralize }}</span>
+                        <span>{{ currProfile.stats.works | abbreviate }} Work{{ currProfile.stats.works | pluralize }}</span>
                     </a>
                     <a
                         class="link"
@@ -90,7 +106,7 @@
                         [routerLinkActive]="'active'"
                     >
                         <rmx-icon name="cup-line"></rmx-icon>
-                        <span>{{ profile.stats.blogs | abbreviate }} Blog{{ profile.stats.blogs | pluralize }}</span>
+                        <span>{{ currProfile.stats.blogs | abbreviate }} Blog{{ currProfile.stats.blogs | pluralize }}</span>
                     </a>
                     <a
                         class="link"

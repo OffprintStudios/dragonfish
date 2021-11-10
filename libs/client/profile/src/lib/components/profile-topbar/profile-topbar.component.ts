@@ -13,6 +13,7 @@ import { CoverPicUploadComponent } from '@dragonfish/client/settings';
 })
 export class ProfileTopbarComponent {
     isMoreOpened = false;
+    loadingFollowing = false;
 
     constructor(
         public profile: ProfileRepository,
@@ -27,7 +28,17 @@ export class ProfileTopbarComponent {
     }
 
     follow() {
-        this.alerts.info(`This feature isn't available just yet.`);
+        this.loadingFollowing = true;
+        this.profile.followUser().subscribe(() => {
+            this.loadingFollowing = false;
+        });
+    }
+
+    unfollow() {
+        this.loadingFollowing = true;
+        this.profile.unfollowUser().subscribe(() => {
+            this.loadingFollowing = false;
+        });
     }
 
     friendRequest() {
