@@ -7,6 +7,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 import { AppQuery } from '@dragonfish/client/repository/app';
 import { isMobile } from '@dragonfish/shared/functions';
+import { TAGS_ENABLED } from '@dragonfish/shared/constants/content-constants';
 
 @Component({
     selector: 'dragonfish-browse',
@@ -14,6 +15,8 @@ import { isMobile } from '@dragonfish/shared/functions';
     styleUrls: ['./browse.component.scss']
 })
 export class BrowseComponent implements OnInit {
+    tagsEnabled = TAGS_ENABLED;
+
     loadingNew = false;
     newWorks: ContentModel[];
     searchForm = new FormGroup({

@@ -1,11 +1,27 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 
-import { ContentGroupStore, ContentStore, PoetryStore, ProseStore } from '@dragonfish/api/database/content/stores';
+import {
+    ContentGroupStore,
+    ContentStore,
+    PoetryStore,
+    ProseStore,
+    TagsStore,
+} from '@dragonfish/api/database/content/stores';
 import { JwtPayload } from '@dragonfish/shared/models/auth';
-import { ContentFilter, ContentKind, ContentModel, FormType, PubChange } from '@dragonfish/shared/models/content';
+import {
+    ContentFilter,
+    ContentKind,
+    ContentModel,
+    CreateProse,
+    FormType,
+    PubChange,
+    PubStatus,
+    TagsModel,
+} from '@dragonfish/shared/models/content';
 import { RatingsModel } from '@dragonfish/shared/models/ratings';
 import { PseudonymsStore } from '@dragonfish/api/database/accounts/stores';
+import * as lodash from 'lodash';
 
 @Injectable()
 export class ContentService {
@@ -15,11 +31,12 @@ export class ContentService {
         private readonly poetry: PoetryStore,
         private readonly prose: ProseStore,
         private readonly pseudonyms: PseudonymsStore,
+        private readonly tagsStore: TagsStore,
     ) {}
 
     public async fetchOne(contentId: string, pseudId?: string): Promise<ContentModel> {
         const content = await this.content.fetchOne(contentId, pseudId);
-        if (content.audit.published === 'Published') {
+        if (content.audit.published === PubStatus.Published) {
             await this.contentGroup.incrementViewCount(content._id);
         }
         return content;
@@ -59,17 +76,54 @@ export class ContentService {
     }
 
     public async saveOne(user: string, contentId: string, formInfo: FormType): Promise<ContentModel> {
+        // Gets the old works tags
+        const work = await this.content.fetchOne(contentId);
+        const oldTags = work.tags;
+        let oldTagIds: string[] = [];
+        if (work.audit.published === PubStatus.Published && oldTags.length > 0) {
+            if (typeof oldTags[0] === 'object') {
+                oldTagIds = oldTags.map((tag) => (tag as TagsModel)._id);
+            } else {
+                oldTagIds = oldTags as string[];
+            }
+        }
+
         const savedContent = await this.content.saveChanges(user, contentId, formInfo);
 
         await this.updateCounts(user);
+
+        // If this work is published, updates number of published works tagged with each tag
+        if (work.audit.published === PubStatus.Published) {
+            // Gets all tags that aren't shared between the old tag list and the new one
+            // Which is to say, the ones removed and the ones added, but not the ones kept the same
+            const changedTags = lodash.xor(oldTagIds, (formInfo as CreateProse)?.tags);
+
+            // Updates number of published works tagged with each tag
+            for (const tag of changedTags) {
+                await this.tagsStore.updateTaggedWorks(tag);
+            }
+        }
 
         return savedContent;
     }
 
     public async deleteOne(user: string, contentId: string): Promise<void> {
+        // Gets the works tags to update the counts for each after deletion
+        const work = await this.content.fetchOne(contentId);
+        const tags = work.tags;
+
         const deletedContent = await this.content.deleteOne(user, contentId);
 
         await this.updateCounts(user);
+
+        // Updates number of published works tagged with each tag
+        for (const tag of tags) {
+            if (typeof tag === 'object') {
+                await this.tagsStore.updateTaggedWorks(tag._id);
+            } else {
+                await this.tagsStore.updateTaggedWorks(tag);
+            }
+        }
 
         return deletedContent;
     }
@@ -105,7 +159,7 @@ export class ContentService {
      * Updates user's counts of both blogs and works
      * @param user
      */
-    private async updateCounts(user: string) {
+    private async updateCounts(user: string): Promise<void> {
         await this.pseudonyms.updateBlogCount(user, await this.content.countContent(user, [ContentKind.BlogContent]));
         await this.pseudonyms.updateWorkCount(
             user,
