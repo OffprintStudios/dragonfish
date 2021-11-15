@@ -5,7 +5,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { BlogForm, BlogsContentModel, ContentKind, NewsChange, PubChange } from '@dragonfish/shared/models/content';
 import { AppQuery } from '../../app';
-import { ProfileQuery } from '../profile.query';
+import { ProfileRepository } from '../profile.repository';
 import { tap } from 'rxjs/operators';
 import { PseudonymsQuery } from '../../pseudonyms';
 
@@ -15,7 +15,7 @@ export class UserBlogsService {
         private userBlogsStore: UserBlogsStore,
         private userBlogsQuery: UserBlogsQuery,
         private appQuery: AppQuery,
-        private profileQuery: ProfileQuery,
+        private profile: ProfileRepository,
         private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
@@ -24,7 +24,7 @@ export class UserBlogsService {
     public getPage(page: number, publishedOnly: boolean) {
         if (publishedOnly) {
             return this.network
-                .fetchAllContent(page, [ContentKind.BlogContent], this.appQuery.filter, this.profileQuery.profileId)
+                .fetchAllContent(page, [ContentKind.BlogContent], this.appQuery.filter, this.profile.profileId)
                 .pipe(
                     tap((content) => {
                         this.userBlogsStore.set(content.docs as BlogsContentModel[]);
@@ -70,7 +70,7 @@ export class UserBlogsService {
     }
 
     public publish(blogId: string, pubChange: PubChange) {
-        return this.network.publishOne(this.profileQuery.profileId, blogId, pubChange).pipe(
+        return this.network.publishOne(this.profile.profileId, blogId, pubChange).pipe(
             tap((content) => {
                 this.userBlogsStore.update(blogId, content as BlogsContentModel);
             }),
@@ -78,7 +78,7 @@ export class UserBlogsService {
     }
 
     public delete(blogId: string) {
-        return this.network.deleteOne(this.profileQuery.profileId, blogId).pipe(
+        return this.network.deleteOne(this.profile.profileId, blogId).pipe(
             tap(() => {
                 this.userBlogsStore.remove(blogId);
             }),
@@ -86,7 +86,7 @@ export class UserBlogsService {
     }
 
     public convertToNewsPost(newsChange: NewsChange) {
-        return this.network.toggleNewsPost(this.profileQuery.profileId, newsChange).pipe(
+        return this.network.toggleNewsPost(this.profile.profileId, newsChange).pipe(
             tap((blog) => {
                 this.userBlogsStore.update(blog._id, blog);
                 if (blog.audit.isNewsPost) {

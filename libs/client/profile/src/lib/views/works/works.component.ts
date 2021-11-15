@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContentKind } from '@dragonfish/shared/models/content';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 import { ListPages } from '../../models';
 import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,7 +22,7 @@ export class WorksComponent implements OnInit {
 
     constructor(
         public sessionQuery: SessionQuery,
-        public profileQuery: ProfileQuery,
+        public profile: ProfileRepository,
         public userWorks: UserWorksQuery,
         public auth: AuthService,
         private dialog: MatDialog,
@@ -31,7 +31,7 @@ export class WorksComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        setThreePartTitle(this.profileQuery.userTag, Constants.WORKS);
+        setThreePartTitle(this.profile.userTag, Constants.WORKS);
     }
 
     changeTab(newTab: ListPages): void {

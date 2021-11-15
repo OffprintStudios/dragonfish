@@ -144,7 +144,8 @@ import {
     RiBarChartFill,
     RiRhythmFill,
     RiInputMethodLine,
-    RiMapLine,
+    RiUserUnfollowLine,
+    RiMapLine
 } from 'angular-remix-icon';
 
 import {
@@ -506,7 +507,8 @@ const remixIcons = {
     RiBarChartFill,
     RiRhythmFill,
     RiInputMethodLine,
-    RiMapLine,
+    RiUserUnfollowLine,
+    RiMapLine
 };
 
 @NgModule({

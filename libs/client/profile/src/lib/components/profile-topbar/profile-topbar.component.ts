@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { SessionQuery } from '@dragonfish/client/repository/session';
@@ -13,9 +13,10 @@ import { CoverPicUploadComponent } from '@dragonfish/client/settings';
 })
 export class ProfileTopbarComponent {
     isMoreOpened = false;
+    loadingFollowing = false;
 
     constructor(
-        public profileQuery: ProfileQuery,
+        public profile: ProfileRepository,
         public auth: AuthService,
         public session: SessionQuery,
         private alerts: AlertsService,
@@ -27,7 +28,17 @@ export class ProfileTopbarComponent {
     }
 
     follow() {
-        this.alerts.info(`This feature isn't available just yet.`);
+        this.loadingFollowing = true;
+        this.profile.followUser().subscribe(() => {
+            this.loadingFollowing = false;
+        });
+    }
+
+    unfollow() {
+        this.loadingFollowing = true;
+        this.profile.unfollowUser().subscribe(() => {
+            this.loadingFollowing = false;
+        });
     }
 
     friendRequest() {

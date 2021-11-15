@@ -1,8 +1,8 @@
 <div class="w-11/12 mx-auto mt-6 mb-10">
-    <ng-container *ngIf="auth.checkPseudonym(profileQuery.profileId); else notThisUser">
+    <ng-container *ngIf="auth.checkPseudonym(profile.profileId); else notThisUser">
         <ng-container *ngIf="collapsed; else showForm">
             <div class="expandable-bar" (click)="toggleForm()">
-                <div class="avatar-block" *ngIf="profileQuery.profile$ | async as profile">
+                <div class="avatar-block" *ngIf="profile.profile$ | async as profile">
                     <img [src]="profile.profile.avatar" [alt]="'avatar'">
                 </div>
                 <div class="title">
@@ -14,7 +14,7 @@
         <ng-template #showForm>
             <form [formGroup]="blogForm" class="w-7/12 mx-auto">
                 <div class="flex items-center p-2.5 border border-gray-600 dark:border-white rounded-t-md">
-                    <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="profileQuery.profile$ | async as profile">
+                    <div class="pr-2.5 border-r border-gray-600 dark:border-white" *ngIf="profile.profile$ | async as profile">
                         <img class="w-10 rounded-md border" [src]="profile.profile.avatar" [alt]="'avatar'">
                     </div>
                     <div class="flex-1 pl-2.5">
@@ -119,7 +119,7 @@
         </ng-container>
     </ng-container>
     <ng-template #notThisUser>
-        <ng-container *ngIf="profileQuery.profile$ | async as portUser">
+        <ng-container *ngIf="profile.profile$ | async as portUser">
             <div class="my-6 w-7/12 mx-auto" *ngIf="userBlogsQuery.totalBlogs !== 0; else noGalleryBlogs">
                 <ng-container *ngFor="let blog of userBlogsQuery.pubBlogs | paginate: {itemsPerPage: userBlogsQuery.perPage, currentPage: userBlogsQuery.currPage, totalItems: userBlogsQuery.totalBlogs}">
                     <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>

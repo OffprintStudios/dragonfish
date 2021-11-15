@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { ContentStore } from '@dragonfish/api/database/content/stores';
-import { NotificationKind, Subscription, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
+import { NotificationKind, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 import {
     AddedToLibraryPayload,
     ContentCommentPayload,

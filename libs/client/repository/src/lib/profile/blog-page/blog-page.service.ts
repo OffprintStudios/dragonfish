@@ -5,7 +5,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { BlogForm, BlogsContentModel, ContentKind, PubChange } from '@dragonfish/shared/models/content';
 import { AppQuery } from '../../app';
-import { ProfileQuery } from '../profile.query';
+import { ProfileRepository } from '../profile.repository';
 import { catchError, tap } from 'rxjs/operators';
 import { PseudonymsQuery } from '../../pseudonyms';
 import { throwError } from 'rxjs';
@@ -16,7 +16,7 @@ export class BlogPageService {
         private blogPageStore: BlogPageStore,
         private blogPageQuery: BlogPageQuery,
         private appQuery: AppQuery,
-        private profileQuery: ProfileQuery,
+        private profile: ProfileRepository,
         private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
@@ -39,7 +39,7 @@ export class BlogPageService {
     //#region ---CRUD OPERATIONS--
 
     public edit(blogId: string, formInfo: BlogForm) {
-        return this.network.saveContent(this.profileQuery.profileId, blogId, ContentKind.BlogContent, formInfo).pipe(
+        return this.network.saveContent(this.profile.profileId, blogId, ContentKind.BlogContent, formInfo).pipe(
             tap((content) => {
                 this.blogPageStore.update({
                     blog: content as BlogsContentModel,
@@ -50,7 +50,7 @@ export class BlogPageService {
     }
 
     public publish(blogId: string, pubChange: PubChange) {
-        return this.network.publishOne(this.profileQuery.profileId, blogId, pubChange).pipe(
+        return this.network.publishOne(this.profile.profileId, blogId, pubChange).pipe(
             tap((content) => {
                 this.blogPageStore.update({
                     blog: content as BlogsContentModel,

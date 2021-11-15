@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProfileQuery } from '@dragonfish/client/repository/profile';
+import { ProfileRepository } from '@dragonfish/client/repository/profile';
 
 @Component({
     selector: 'dragonfish-profile-home',
@@ -7,5 +7,5 @@ import { ProfileQuery } from '@dragonfish/client/repository/profile';
     styleUrls: ['./profile-info.component.scss'],
 })
 export class ProfileInfoComponent {
-    constructor(public profileQuery: ProfileQuery) {}
+    constructor(public profile: ProfileRepository) {}
 }

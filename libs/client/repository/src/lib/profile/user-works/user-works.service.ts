@@ -3,7 +3,7 @@ import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind, FormType } from '@dragonfish/shared/models/content';
 import { AppQuery } from '../../app';
-import { ProfileQuery } from '../profile.query';
+import { ProfileRepository } from '../profile.repository';
 import { tap } from 'rxjs/operators';
 import { PseudonymsQuery } from '../../pseudonyms';
 import { UserWorksStore } from './user-works.store';
@@ -15,7 +15,7 @@ export class UserWorksService {
         private userWorksStore: UserWorksStore,
         private userWorksQuery: UserWorksQuery,
         private appQuery: AppQuery,
-        private profileQuery: ProfileQuery,
+        private profile: ProfileRepository,
         private pseudQuery: PseudonymsQuery,
         private network: DragonfishNetworkService,
         private alerts: AlertsService,
@@ -28,7 +28,7 @@ export class UserWorksService {
                     page,
                     [ContentKind.ProseContent, ContentKind.PoetryContent],
                     this.appQuery.filter,
-                    this.profileQuery.profileId,
+                    this.profile.profileId,
                 )
                 .pipe(
                     tap((content) => {

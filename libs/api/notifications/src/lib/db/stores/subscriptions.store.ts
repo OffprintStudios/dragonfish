@@ -1,13 +1,16 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { SubscriptionDocument } from '../schemas';
+import { FollowersDocument, SubscriptionDocument } from '../schemas';
 import { SubscriptionPayload } from '@dragonfish/shared/models/accounts/notifications/payloads';
 import { SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
 
 @Injectable()
 export class SubscriptionsStore {
-    constructor(@InjectModel('Subscription') private readonly subscription: Model<SubscriptionDocument>) {}
+    constructor(
+        @InjectModel('Subscription') private readonly subscription: Model<SubscriptionDocument>,
+        @InjectModel(SubscriptionKind.FollowingUser) private readonly followingUser: Model<FollowersDocument>,
+    ) {}
 
     //#region ---FETCHING---
 
@@ -15,8 +18,24 @@ export class SubscriptionsStore {
         return this.subscription.find({ subscriberId: pseudId });
     }
 
-    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind) {
-        return this.subscription.find({ itemId, kind: subKind });
+    public async fetchOne(subscriberId: string, itemId: string) {
+        return this.subscription.findOne({ subscriberId, itemId });
+    }
+
+    public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {
+        if (populate) {
+            return this.subscription.find({ itemId, kind: subKind }).populate('itemId');
+        } else {
+            return this.subscription.find({ itemId, kind: subKind });
+        }
+    }
+
+    public async fetchSubscriptions(subscriberId: string, subKind: SubscriptionKind, populate?: boolean) {
+        if (populate) {
+            return this.subscription.find({ subscriberId, kind: subKind }).populate('subscriberId');
+        } else {
+            return this.subscription.find({ subscriberId, kind: subKind });
+        }
     }
 
     //#endregion

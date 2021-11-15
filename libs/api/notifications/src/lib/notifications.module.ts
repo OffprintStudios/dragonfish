@@ -1,23 +1,30 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
-import { NotificationService, NotificationConsumer, PushNotificationsConsumer, SubscriptionsService } from './services';
+import {
+    NotificationService,
+    NotificationConsumer,
+    PushNotificationsConsumer,
+    SubscriptionsService,
+    FollowersService,
+} from './services';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
 import { ContentModule } from '@dragonfish/api/database/content';
-import { NotificationKind } from '@dragonfish/shared/models/accounts/notifications';
-import { NotificationsController } from './controllers';
+import { NotificationKind, SubscriptionKind } from '@dragonfish/shared/models/accounts/notifications';
+import { FollowersController, NotificationsController } from './controllers';
 import { JwtModule } from '@nestjs/jwt';
 import { getJwtSecretKey, JWT_EXPIRATION } from '@dragonfish/api/utilities/secrets';
 import { AccountsModule } from '@dragonfish/api/database/accounts';
 
 @Module({
-    controllers: [NotificationsController],
+    controllers: [NotificationsController, FollowersController],
     providers: [
         NotificationService,
         NotificationConsumer,
         PushNotificationsConsumer,
         SubscriptionsService,
+        FollowersService,
         Stores.NotificationStore,
         Stores.ContentCommentStore,
         Stores.SubscriptionsStore,
@@ -41,6 +48,7 @@ import { AccountsModule } from '@dragonfish/api/database/accounts';
             {
                 name: 'Subscription',
                 useFactory: Schemas.setupSubscriptionsCollection,
+                discriminators: [{ name: SubscriptionKind.FollowingUser, schema: Schemas.FollowersSchema }],
             },
         ]),
         BullModule.registerQueue({
