@@ -4,7 +4,8 @@ export interface TagsModel {
     readonly _id: string;
     name: string;
     desc?: string;
-    parent?: string | TagsModel,
+    parent?: string | TagsModel;
+    taggedWorks?: number;
     readonly kind: TagKind;
     readonly createdAt: Date;
     readonly updatedAt: Date;

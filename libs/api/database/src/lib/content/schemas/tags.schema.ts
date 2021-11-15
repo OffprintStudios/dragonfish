@@ -27,6 +27,9 @@ export class TagsDocument extends Document implements TagsModel {
     })
     parent?: string | TagsModel;
 
+    @Prop({ type: Number, default: 0 })
+    taggedWorks?: number;
+
     @Prop({ type: String, enum: Object.keys(TagKind), required: true })
     readonly kind: TagKind;
 
