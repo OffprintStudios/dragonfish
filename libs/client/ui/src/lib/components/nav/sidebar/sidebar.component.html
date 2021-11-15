@@ -1,88 +1,74 @@
-<div class="flex flex-col items-center py-2 h-screen z-50 relative" style="background: var(--accent-dark);">
+<div class="navbar">
     <ng-container *ngIf="electron.isMacOS">
-        <div class="my-3"><!--spacer--></div>
+        <div class="py-3"></div>
     </ng-container>
-
-    <ng-container *ngIf="sessionQuery.currAccount$ | async; else login">
-        <ng-container *ngIf="pseudQuery.current$ | async as profile; else selectProfile">
-            <a
-                class="link cursor-pointer"
-                [matTooltip]="'My Profile'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
-                (click)="openUserMenu()"
-                [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
-                [matBadge]="notifications.count"
-                [matBadgeHidden]="activeUserMenu || notifications.count < 1"
-            >
-                <span class="link-icon">
-                    <ng-container *ngIf="!userMenu; else userMenuOpened">
-                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;" [alt]="'avatar'">
-                    </ng-container>
-                    <ng-template #userMenuOpened>
-                        <rmx-icon name="close-line"></rmx-icon>
-                    </ng-template>
-                </span>
-            </a>
+    <div class="py-2 flex flex-col items-center h-full">
+        <ng-container *ngIf="sessionQuery.currAccount$ | async; else login">
+            <ng-container *ngIf="pseudQuery.current$ | async as profile; else selectProfile">
+                <a
+                    class="link cursor-pointer"
+                    (click)="openUserMenu()"
+                    [ngClass]="{'active': userMenu, 'no-padding': !userMenu}"
+                    [matBadge]="notifications.count"
+                    [matBadgeHidden]="activeUserMenu || notifications.count < 1"
+                >
+                    <span class="link-icon">
+                        <ng-container *ngIf="!userMenu; else userMenuOpened">
+                            <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 54px;" [alt]="'avatar'">
+                        </ng-container>
+                        <ng-template #userMenuOpened>
+                            <rmx-icon name="close-line"></rmx-icon>
+                        </ng-template>
+                    </span>
+                    <span class="link-name" *ngIf="userMenu">Menu</span>
+                </a>
+            </ng-container>
+            <ng-template #selectProfile>
+                <a
+                    class="link"
+                    [routerLink]="['/registration/select-pseud']"
+                    [routerLinkActive]="'active'"
+                >
+                    <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+                    <span class="link-name">Profiles</span>
+                </a>
+            </ng-template>
         </ng-container>
-        <ng-template #selectProfile>
+        <ng-template #login>
             <a
                 class="link"
-                [routerLink]="['/registration/select-pseud']"
+                [routerLink]="['/registration']"
                 [routerLinkActive]="'active'"
-                [matTooltip]="'Select Profile'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
             >
-                <span class="link-icon"><rmx-icon name="user-line"></rmx-icon></span>
+                <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
+                <span class="link-name">Login</span>
             </a>
         </ng-template>
-    </ng-container>
-
-    <ng-template #login>
-        <a
-            class="link"
-            [routerLink]="['/registration']"
-            [routerLinkActive]="'active'"
-            [matTooltip]="'Login/Register'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
-        >
-            <span class="link-icon"><rmx-icon name="login-circle-line"></rmx-icon></span>
-        </a>
-    </ng-template>
-
-    <div class="flex flex-col items-center justify-center flex-1">
+        <div class="w-10/12 mx-auto border-b border-white my-2"></div>
         <a
             class="link"
             [routerLink]="['/']"
             [routerLinkActive]="'active'"
             [routerLinkActiveOptions]="{ exact: true }"
-            [matTooltip]="'Home'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
         >
             <span class="link-icon"><rmx-icon name="home-5-line"></rmx-icon></span>
+            <span class="link-name">Home</span>
         </a>
         <a
             class="link"
             [routerLink]="['/search']"
             [routerLinkActive]="'active'"
-            [matTooltip]="'Search'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
         >
             <span class="link-icon"><rmx-icon name="search-line"></rmx-icon></span>
+            <span class="link-name">Search</span>
         </a>
         <a
             class="link"
             [routerLink]="['/browse']"
             [routerLinkActive]="'active'"
-            [matTooltip]="'Browse'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
         >
             <span class="link-icon"><rmx-icon name="compass-3-line"></rmx-icon></span>
+            <span class="link-name">Browse</span>
         </a>
         <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
             <ng-container *ngIf="notifications.contentUpdates$ | async as contentUpdates">
@@ -90,13 +76,11 @@
                     class="link"
                     [routerLink]="['/my-library']"
                     [routerLinkActive]="'active'"
-                    [matTooltip]="'My Library'"
-                    [matTooltipPosition]="'right'"
-                    [matTooltipClass]="'offprint-tooltip'"
                     [matBadge]="contentUpdates.length"
                     [matBadgeHidden]="contentUpdates.length === 0"
                 >
                     <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                    <span class="link-name">Library</span>
                 </a>
             </ng-container>
             <ng-container *ngIf="canSeeDash(account.roles)">
@@ -104,11 +88,9 @@
                     class="link"
                     [routerLink]="['/dashboard']"
                     [routerLinkActive]="'active'"
-                    [matTooltip]="'Dashboard'"
-                    [matTooltipPosition]="'right'"
-                    [matTooltipClass]="'offprint-tooltip'"
                 >
                     <span class="link-icon"><rmx-icon name="dashboard-2-line"></rmx-icon></span>
+                    <span class="link-name">Dash</span>
                 </a>
             </ng-container>
         </ng-container>
@@ -116,22 +98,18 @@
             class="link"
             [routerLink]="['/social']"
             [routerLinkActive]="'active'"
-            [matTooltip]="'Social'"
-            [matTooltipPosition]="'right'"
-            [matTooltipClass]="'offprint-tooltip'"
         >
             <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
+            <span class="link-name">Social</span>
+        </a>
+
+        <a
+            class="link"
+            [routerLink]="['/settings']"
+            [routerLinkActive]="'active'"
+        >
+            <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
+            <span class="link-name">Settings</span>
         </a>
     </div>
-
-    <a
-        class="link"
-        [routerLink]="['/settings']"
-        [routerLinkActive]="'active'"
-        [matTooltip]="'Settings'"
-        [matTooltipPosition]="'right'"
-        [matTooltipClass]="'offprint-tooltip'"
-    >
-        <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
-    </a>
 </div>

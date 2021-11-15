@@ -70,7 +70,7 @@ export default class App {
             minHeight: minHeight,
             show: false,
             titleBarStyle: 'hidden',
-            trafficLightPosition: { x: 6, y: 10 },
+            trafficLightPosition: { x: 11, y: 10 },
             icon: join(__dirname, './assets/icons/mac/icon.icns'),
             webPreferences: {
                 enableRemoteModule: true,

@@ -8,7 +8,7 @@ import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
 import { NavigationStart, Router } from '@angular/router';
 import { untilDestroyed } from '@ngneat/until-destroy';
-import { combineLatestWith, interval, switchMap, tap, zip } from 'rxjs';
+import { combineLatestWith, interval, switchMap } from 'rxjs';
 import { NotificationsRepository } from '@dragonfish/client/repository/notifications';
 
 @Component({
