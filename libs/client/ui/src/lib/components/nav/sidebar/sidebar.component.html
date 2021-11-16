@@ -1,8 +1,8 @@
 <div class="navbar">
-    <ng-container *ngIf="electron.isMacOS">
-        <div class="py-3"></div>
-    </ng-container>
     <div class="py-2 flex flex-col items-center h-full">
+        <ng-container *ngIf="electron.isMacOS">
+            <div class="py-3"></div>
+        </ng-container>
         <ng-container *ngIf="sessionQuery.currAccount$ | async; else login">
             <ng-container *ngIf="pseudQuery.current$ | async as profile; else selectProfile">
                 <a
@@ -102,7 +102,7 @@
             <span class="link-icon"><rmx-icon name="group-line"></rmx-icon></span>
             <span class="link-name">Social</span>
         </a>
-
+        <div class="flex-1"></div>
         <a
             class="link"
             [routerLink]="['/settings']"
