@@ -13,6 +13,13 @@ import {
     RecommendationsPageComponent,
     SpecialEventsComponent,
 } from './views/content-browsing';
+import {
+    AllWorksComponent,
+    FavoriteBlogsComponent,
+    ReadItLaterComponent,
+    FinishedReadingComponent,
+    ReadingHistoryComponent,
+} from './views/content-library';
 
 @NgModule({
     imports: [CommonModule, BrowseRoutingModule, UiModule, IconsModule, MaterialModule],
@@ -24,6 +31,11 @@ import {
         PopularTodayComponent,
         RecommendationsPageComponent,
         SpecialEventsComponent,
+        AllWorksComponent,
+        FavoriteBlogsComponent,
+        ReadItLaterComponent,
+        FinishedReadingComponent,
+        ReadingHistoryComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -6,19 +6,19 @@
         </div>
         <div class="pages">
             <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
-                <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>
+                <span class="link-icon"><rmx-icon name="mist-line"></rmx-icon></span>
                 <span class="text">Overview</span>
             </a>
-            <a [routerLink]="['recommendations']" [routerLinkActive]="'active'">
+            <a [routerLink]="['recommendations']" [routerLinkActive]="'active'" *ngIf="session.isLoggedIn && profiles.hasSelectedPseud">
                 <span class="link-icon"><rmx-icon name="gift-2-line"></rmx-icon></span>
                 <span class="text">Recommendations</span>
             </a>
             <a [routerLink]="['popular-this-week']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="question-answer-line"></rmx-icon></span>
+                <span class="link-icon"><rmx-icon name="calendar-line"></rmx-icon></span>
                 <span class="text">Popular this week</span>
             </a>
             <a [routerLink]="['popular-today']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="chat-4-line"></rmx-icon></span>
+                <span class="link-icon"><rmx-icon name="calendar-event-line"></rmx-icon></span>
                 <span class="text">Popular today</span>
             </a>
             <a [routerLink]="['new-works']" [routerLinkActive]="'active'">
@@ -26,46 +26,48 @@
                 <span class="text">New works</span>
             </a>
             <a [routerLink]="['special-events']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="hearts-line"></rmx-icon></span>
+                <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>
                 <span class="text">Special events</span>
             </a>
-            <h5>Following</h5>
-            <a>
-                <span class="text">A random followed person</span>
-            </a>
-            <a>
-                <span class="text">A random followed person with a long name</span>
-            </a>
-            <h5>Library</h5>
-            <a [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
-                <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
-                <span class="text">All works</span>
-            </a>
-            <a [routerLink]="['favorite-blogs']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
-                <span class="text">Favorite blogs</span>
-            </a>
-            <a [routerLink]="['read-it-later']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
-                <span class="text">Read it later</span>
-            </a>
-            <a [routerLink]="['finished-works']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
-                <span class="text">Finished reading</span>
-            </a>
-            <a [routerLink]="['reading-history']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
-                <span class="text">Reading history</span>
-            </a>
-            <h5>Bookshelves</h5>
-            <a>
-                <span class="link-icon"><rmx-icon name="bar-chart-fill"></rmx-icon></span>
-                <span class="text">My new favorite things</span>
-            </a>
-            <a>
-                <span class="link-icon"><rmx-icon name="add-box-line"></rmx-icon></span>
-                <span class="text">Add bookshelf</span>
-            </a>
+            <ng-container *ngIf="session.isLoggedIn && profiles.hasSelectedPseud">
+                <h5>Following</h5>
+                <a>
+                    <span class="text">A random followed person</span>
+                </a>
+                <a>
+                    <span class="text">A random followed person with a long name</span>
+                </a>
+                <h5>Library</h5>
+                <a [routerLink]="['library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
+                    <span class="text">All works</span>
+                </a>
+                <a [routerLink]="['library/favorite-blogs']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
+                    <span class="text">Favorite blogs</span>
+                </a>
+                <a [routerLink]="['library/read-it-later']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
+                    <span class="text">Read it later</span>
+                </a>
+                <a [routerLink]="['library/finished-works']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                    <span class="text">Finished reading</span>
+                </a>
+                <a [routerLink]="['library/reading-history']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
+                    <span class="text">Reading history</span>
+                </a>
+                <h5>Bookshelves</h5>
+                <a>
+                    <span class="link-icon"><rmx-icon name="bar-chart-fill"></rmx-icon></span>
+                    <span class="text">My new favorite things</span>
+                </a>
+                <a>
+                    <span class="link-icon"><rmx-icon name="add-box-line"></rmx-icon></span>
+                    <span class="text">Add bookshelf</span>
+                </a>
+            </ng-container>
         </div>
     </dragonfish-pagebar>
     <div class="w-full">

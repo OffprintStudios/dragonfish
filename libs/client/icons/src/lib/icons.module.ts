@@ -147,6 +147,9 @@ import {
     RiUserUnfollowLine,
     RiQuestionAnswerLine,
     RiChat4Line,
+    RiCalendarEventLine,
+    RiCalendarLine,
+    RiMistLine,
 } from 'angular-remix-icon';
 
 import {
@@ -511,6 +514,9 @@ const remixIcons = {
     RiUserUnfollowLine,
     RiQuestionAnswerLine,
     RiChat4Line,
+    RiCalendarEventLine,
+    RiCalendarLine,
+    RiMistLine,
 };
 
 @NgModule({

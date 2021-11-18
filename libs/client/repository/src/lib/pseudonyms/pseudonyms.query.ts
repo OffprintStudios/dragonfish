@@ -35,4 +35,8 @@ export class PseudonymsQuery extends QueryEntity<PseudonymsState> {
     public get numPseuds() {
         return this.getValue().ids.length;
     }
+
+    public get hasSelectedPseud() {
+        return !!this.getActive();
+    }
 }
