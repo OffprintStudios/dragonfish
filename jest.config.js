@@ -22,5 +22,6 @@ module.exports = {
         '<rootDir>/libs/client/work-page',
         '<rootDir>/libs/api/notifications',
         '<rootDir>/libs/api/content-library',
+        '<rootDir>/libs/client/browse',
     ],
 };

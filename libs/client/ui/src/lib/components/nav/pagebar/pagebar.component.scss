@@ -1,5 +1,59 @@
 div.pagebar {
-    @apply flex flex-col p-4 h-full w-64 overflow-y-auto;
-    background: var(--accent);
-    border-right: 1px solid var(--accent-light);
+    @apply flex flex-col h-full w-64 border-r;
+    header {
+        @apply flex items-center px-4 py-5;
+        background: var(--accent);
+        rmx-icon {
+            width: 1.75rem !important;
+            @apply ml-2 text-white relative -top-1.5;
+        }
+        h3 {
+            @apply text-white font-medium text-3xl flex-1;
+        }
+        button {
+            background: var(--accent-light);
+        }
+        div.button-row {
+            @apply flex items-center w-full justify-center;
+        }
+    }
+    pages {
+        @apply text-white w-full flex flex-col overflow-y-auto px-4 py-6;
+        h5 {
+            @apply flex items-center text-lg font-medium mb-1 mt-2;
+            color: var(--text-color);
+        }
+        a {
+            @apply w-full p-1.5 rounded-md text-sm mb-0.5 flex items-center cursor-pointer select-none transition transform;
+            color: var(--text-color);
+            &:hover, &.active {
+                @apply transition-all;
+                background: var(--accent);
+                text-decoration: none;
+                color: white;
+            }
+            &:hover {
+                @apply scale-105;
+            }
+            span.text {
+                @apply flex-1 truncate;
+            }
+            span.link-icon {
+                @apply mr-1 relative top-0.5;
+                rmx-icon {
+                    width: 18px;
+                    stroke-width: 1;
+                }
+            }
+            &.dropdown-item {
+                &:hover, &.active {
+                    background: var(--accent-dark);
+                }
+            }
+        }
+        div.dropdown-nav {
+            @apply mb-0.5 rounded-md p-1;
+            background: var(--accent-light);
+        }
+    }
 }

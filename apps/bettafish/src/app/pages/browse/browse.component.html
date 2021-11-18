@@ -1,18 +1,69 @@
 <div class="flex w-full h-screen">
     <ng-container *ngIf="!mobileMode">
         <dragonfish-pagebar>
-            <div class="page-header">
+            <header>
                 <h3>Browse</h3>
                 <rmx-icon name="compass-3-line"></rmx-icon>
-            </div>
-            <div class="pages">
-                <a class="link" [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
-                    <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>A taste of today
+            </header>
+            <pages>
+                <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>
+                    <span class="text">A taste of today</span>
                 </a>
-                <a class="link" [routerLink]="['newest-works']" [routerLinkActive]="'active'">
-                    <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>What's new
+                <a>
+                    <span class="link-icon"><rmx-icon name="gift-2-line"></rmx-icon></span>
+                    <span class="text">Recommendations</span>
                 </a>
-            </div>
+                <a [routerLink]="['newest-works']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>
+                    <span class="text">What's new</span>
+                </a>
+                <a>
+                    <span class="link-icon"><rmx-icon name="question-answer-line"></rmx-icon></span>
+                    <span class="text">Popular this week</span>
+                </a>
+                <a>
+                    <span class="link-icon"><rmx-icon name="hearts-line"></rmx-icon></span>
+                    <span class="text">Special event category</span>
+                </a>
+                <h5>Following</h5>
+                <a>
+                    <span class="text">A random followed person</span>
+                </a>
+                <a>
+                    <span class="text">A random followed person with a long name</span>
+                </a>
+                <h5>Library</h5>
+                <a [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+                    <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
+                    <span class="text">Prose & Poetry</span>
+                </a>
+                <a [routerLink]="['favorite-blogs']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
+                    <span class="text">Favorite Blogs</span>
+                </a>
+                <a [routerLink]="['read-it-later']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
+                    <span class="text">Read It Later</span>
+                </a>
+                <a [routerLink]="['finished-works']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
+                    <span class="text">Finished Works</span>
+                </a>
+                <a [routerLink]="['reading-history']" [routerLinkActive]="'active'">
+                    <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
+                    <span class="text">Reading History</span>
+                </a>
+                <h5>Bookshelves</h5>
+                <a>
+                    <span class="link-icon"><rmx-icon name="bar-chart-fill"></rmx-icon></span>
+                    <span class="text">My new favorite things</span>
+                </a>
+                <a>
+                    <span class="link-icon"><rmx-icon name="add-box-line"></rmx-icon></span>
+                    <span class="text">Add bookshelf</span>
+                </a>
+            </pages>
         </dragonfish-pagebar>
     </ng-container>
     <div class="w-full overflow-y-auto">
