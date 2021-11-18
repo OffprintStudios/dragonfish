@@ -9,6 +9,7 @@ import { SafeHtmlPipe } from './safe-html.pipe';
 import { TruncatePipe } from './truncate-text.pipe';
 import { LocaleDatePipe } from './locale-date.pipe';
 import { DisplayTagsPipe } from './display-tags.pipe';
+import { SectionIndexPipe } from './section-index.pipe';
 
 export const Pipes = [
     SlugifyPipe,
@@ -21,5 +22,6 @@ export const Pipes = [
     SafeHtmlPipe,
     TruncatePipe,
     LocaleDatePipe,
-    DisplayTagsPipe
+    DisplayTagsPipe,
+    SectionIndexPipe,
 ];

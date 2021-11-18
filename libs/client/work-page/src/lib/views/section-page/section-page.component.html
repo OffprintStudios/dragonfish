@@ -176,17 +176,29 @@
 
 <mat-menu #sectionList="matMenu">
     <ng-container *ngIf="auth.checkPseudonym(workPageQuery.authorId); else notThisAuthor">
-        <ng-container *ngIf="sectionsQuery.all$ | async as sections">
-            <button
-                mat-menu-item
-                class="hover:scale-100 tracking-normal"
-                *ngFor="let section of sections"
-                [routerLink]="goToSectionAuthor(section._id)"
-            >
-                <rmx-icon name="checkbox-blank-circle-line" *ngIf="!section.published"></rmx-icon>
-                <rmx-icon name="checkbox-circle-line" *ngIf="section.published"></rmx-icon>
-                {{ section.title }}
-            </button>
+        <ng-container *ngIf="sectionsQuery.all$ | async | sectionIndex as indexedSections">
+            <ng-container *ngFor="let indexedSection of indexedSections">
+                <ng-container *ngIf="indexedSection.section.published; else notPublished">
+                    <button
+                        mat-menu-item
+                        class="hover:scale-100 tracking-normal"
+                        [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
+                    >
+                        <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                        {{ indexedSection.section.title }}
+                    </button>
+                </ng-container>
+                <ng-template #notPublished>
+                    <button
+                        mat-menu-item
+                        class="hover:scale-100 tracking-normal"
+                        [routerLink]="goToSectionAuthor(indexedSection.section._id)"
+                    >
+                        <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                        {{ indexedSection.section.title }}
+                    </button>
+                </ng-template>
+            </ng-container>
         </ng-container>
     </ng-container>
     <ng-template #notThisAuthor>
