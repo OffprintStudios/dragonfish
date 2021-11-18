@@ -1,5 +1,5 @@
 <ng-container *ngIf="sectionsQuery.all$ | async | sectionIndex as indexedSections">
-    <ng-container *ngIf="sectionsQuery.numSections === 0; else hasSections">
+    <ng-container *ngIf="sectionsQuery.numSections === 0 && auth.checkPseudonym(this.workPageQuery.authorId); else hasSections">
         <div class="empty">
             <h3>You haven't added anything yet!</h3>
             <p>
