@@ -1,0 +1,18 @@
+<div class="w-11/12 my-6 mx-auto">
+    <div class="flex flex-row items-center p-2 mb-4 border-b border-gray-600 dark:border-white">
+        <h3 class="text-3xl font-medium flex-1">What's new</h3>
+        <a [routerLink]="['newest-works']" class="text-sm">See More >></a>
+    </div>
+    <ng-container *ngIf="loadingNew; else notLoadingNew">
+        <div class="flex flex-row items-center justify-center h-72">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-container>
+    <ng-template #notLoadingNew>
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4">
+            <ng-container *ngFor="let work of newWorks">
+                <dragonfish-work-card [content]="work" [showAuthor]="true" [size]="'small'" [fullHeight]="true"></dragonfish-work-card>
+            </ng-container>
+        </div>
+    </ng-template>
+</div>

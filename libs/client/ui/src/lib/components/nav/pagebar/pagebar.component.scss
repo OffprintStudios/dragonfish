@@ -1,14 +1,14 @@
 div.pagebar {
     @apply flex flex-col h-full w-64 border-r;
-    header {
+    div.header {
         @apply flex items-center px-4 py-5;
         background: var(--accent);
         rmx-icon {
             width: 1.75rem !important;
-            @apply ml-2 text-white relative -top-1.5;
+            @apply ml-2 text-white relative -top-1;
         }
         h3 {
-            @apply text-white font-medium text-3xl flex-1;
+            @apply text-white font-medium text-3xl flex-1 leading-normal;
         }
         button {
             background: var(--accent-light);
@@ -17,7 +17,7 @@ div.pagebar {
             @apply flex items-center w-full justify-center;
         }
     }
-    pages {
+    div.pages {
         @apply text-white w-full flex flex-col overflow-y-auto px-4 py-6;
         h5 {
             @apply flex items-center text-lg font-medium mb-1 mt-2;
