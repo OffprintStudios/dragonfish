@@ -10,11 +10,21 @@ import {
     SpecialEventsComponent,
 } from './views/content-browsing';
 import { AuthGuard } from '@dragonfish/client/repository/session/services';
+import { BookshelfResolver, BrowseResolver } from './services';
+import {
+    AllWorksComponent,
+    FavoriteBlogsComponent,
+    FinishedReadingComponent,
+    ReadingHistoryComponent,
+    ReadItLaterComponent,
+} from './views/content-library';
 
 const routes: Routes = [
     {
         path: '',
         component: BrowseComponent,
+        resolve: { data: BrowseResolver },
+        runGuardsAndResolvers: 'always',
         children: [
             {
                 path: '',
@@ -41,6 +51,31 @@ const routes: Routes = [
                 path: 'special-events',
                 component: SpecialEventsComponent,
             },
+            {
+                path: 'library',
+                children: [
+                    {
+                        path: '',
+                        component: AllWorksComponent,
+                    },
+                    {
+                        path: 'favorite-blogs',
+                        component: FavoriteBlogsComponent,
+                    },
+                    {
+                        path: 'read-it-later',
+                        component: ReadItLaterComponent,
+                    },
+                    {
+                        path: 'finished-reading',
+                        component: FinishedReadingComponent,
+                    },
+                    {
+                        path: 'reading-history',
+                        component: ReadingHistoryComponent,
+                    },
+                ],
+            },
         ],
     },
 ];
@@ -48,6 +83,6 @@ const routes: Routes = [
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
-    providers: [],
+    providers: [BrowseResolver, BookshelfResolver],
 })
 export class BrowseRoutingModule {}

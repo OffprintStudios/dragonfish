@@ -5,6 +5,8 @@ import { BrowseComponent } from './browse.component';
 import { UiModule } from '@dragonfish/client/ui';
 import { IconsModule } from '@dragonfish/client/icons';
 import { MaterialModule } from '@dragonfish/client/material';
+import { ContextMenuModule } from '@ctrl/ngx-rightclick';
+import { ClickOutsideModule } from 'ng-click-outside';
 import {
     BrowseHomeComponent,
     NewWorksPageComponent,
@@ -20,9 +22,18 @@ import {
     FinishedReadingComponent,
     ReadingHistoryComponent,
 } from './views/content-library';
+import { LibraryMenuComponent, ShelfMenuComponent } from './components';
 
 @NgModule({
-    imports: [CommonModule, BrowseRoutingModule, UiModule, IconsModule, MaterialModule],
+    imports: [
+        CommonModule,
+        BrowseRoutingModule,
+        UiModule,
+        IconsModule,
+        MaterialModule,
+        ContextMenuModule,
+        ClickOutsideModule,
+    ],
     declarations: [
         BrowseComponent,
         BrowseHomeComponent,
@@ -36,6 +47,8 @@ import {
         ReadItLaterComponent,
         FinishedReadingComponent,
         ReadingHistoryComponent,
+        LibraryMenuComponent,
+        ShelfMenuComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

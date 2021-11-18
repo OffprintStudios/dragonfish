@@ -1,0 +1,14 @@
+<div
+    class="context-menu"
+    [@menu]="_state"
+    (@menu.done)="_onAnimationDone($event)"
+>
+    <a (click)="removeFromShelf()">
+        <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
+        Remove from this shelf
+    </a>
+    <a (click)="removeFromLibrary()">
+        <span class="link-icon"><rmx-icon name="close-line"></rmx-icon></span>
+        Remove from library
+    </a>
+</div>
