@@ -6,6 +6,7 @@ import { PublishSection, Section } from '@dragonfish/shared/models/sections';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
+import { slugify } from 'voca';
 
 @Component({
     selector: 'dragonfish-sections-list',
@@ -41,5 +42,46 @@ export class SectionsListComponent {
                 this.sectionsService.delete(this.workPageQuery.contentId, sectionId).subscribe();
             }
         });
+    }
+    goToSectionAuthor(sectionId: string) {
+        if (this.workPageQuery.contentKind === 'PoetryContent') {
+            return [
+                '/poetry',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'view-section',
+                sectionId,
+            ];
+        } else if (this.workPageQuery.contentKind === 'ProseContent') {
+            return [
+                '/prose',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'view-section',
+                sectionId,
+            ];
+        }
+    }
+
+    goToSectionReader(index: number, title: string) {
+        if (this.workPageQuery.contentKind === 'PoetryContent') {
+            return [
+                '/poetry',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'section',
+                index + 1,
+                slugify(title),
+            ];
+        } else if (this.workPageQuery.contentKind === 'ProseContent') {
+            return [
+                '/prose',
+                this.workPageQuery.contentId,
+                slugify(this.workPageQuery.contentTitle),
+                'section',
+                index + 1,
+                slugify(title),
+            ];
+        }
     }
 }
