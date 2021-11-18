@@ -25,7 +25,6 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 
 /* Pages */
 import { HomePages } from './pages/home';
-import { BrowsePages } from './pages/browse';
 import { SocialPages } from './pages/social';
 import { DocsPages } from './pages/docs';
 import { MessagesPages } from './pages/messages';
@@ -53,7 +52,6 @@ import { TagPages } from './pages/tags';
     declarations: [
         AppComponent,
         ...HomePages,
-        ...BrowsePages,
         ...SocialPages,
         ...DocsPages,
         ...MessagesPages,

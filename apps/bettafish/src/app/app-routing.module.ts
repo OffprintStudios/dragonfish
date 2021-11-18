@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 /* Routes */
 import { HomeRoutes } from './pages/home';
-import { BrowseRoutes } from './pages/browse';
 import { SocialRoutes } from './pages/social';
 import { DocsRoutes } from './pages/docs';
 import { MessagesRoutes } from './pages/messages';
@@ -20,12 +19,15 @@ import { TagRoutes } from './pages/tags';
 
 const routes: Routes = [
     ...HomeRoutes,
-    ...BrowseRoutes,
     ...SocialRoutes,
     ...DocsRoutes,
     ...MessagesRoutes,
     ...RegistrationRoutes,
     ...TagRoutes,
+    {
+        path: 'browse',
+        loadChildren: () => import('@dragonfish/client/browse').then((m) => m.BrowseModule),
+    },
     {
         path: 'profile',
         loadChildren: () => import('@dragonfish/client/profile').then((m) => m.ProfileModule),

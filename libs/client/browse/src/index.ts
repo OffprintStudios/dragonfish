@@ -1,1 +1,1 @@
-export * from './lib/client-browse.module';
+export * from './lib/browse.module';
