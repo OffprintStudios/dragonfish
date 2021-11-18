@@ -146,6 +146,7 @@ import {
     RiInputMethodLine,
     RiUserUnfollowLine,
     RiQuestionAnswerLine,
+    RiChat4Line,
 } from 'angular-remix-icon';
 
 import {
@@ -509,6 +510,7 @@ const remixIcons = {
     RiInputMethodLine,
     RiUserUnfollowLine,
     RiQuestionAnswerLine,
+    RiChat4Line,
 };
 
 @NgModule({

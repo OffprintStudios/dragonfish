@@ -5,11 +5,26 @@ import { BrowseComponent } from './browse.component';
 import { UiModule } from '@dragonfish/client/ui';
 import { IconsModule } from '@dragonfish/client/icons';
 import { MaterialModule } from '@dragonfish/client/material';
-import { BrowseHomeComponent } from './views/content-browsing';
+import {
+    BrowseHomeComponent,
+    NewWorksPageComponent,
+    PopularThisWeekComponent,
+    PopularTodayComponent,
+    RecommendationsPageComponent,
+    SpecialEventsComponent,
+} from './views/content-browsing';
 
 @NgModule({
     imports: [CommonModule, BrowseRoutingModule, UiModule, IconsModule, MaterialModule],
-    declarations: [BrowseComponent, BrowseHomeComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    declarations: [
+        BrowseComponent,
+        BrowseHomeComponent,
+        NewWorksPageComponent,
+        PopularThisWeekComponent,
+        PopularTodayComponent,
+        RecommendationsPageComponent,
+        SpecialEventsComponent,
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class BrowseModule {}

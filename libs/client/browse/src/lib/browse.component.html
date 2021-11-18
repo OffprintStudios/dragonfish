@@ -7,23 +7,27 @@
         <div class="pages">
             <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
                 <span class="link-icon"><rmx-icon name="sun-line"></rmx-icon></span>
-                <span class="text">A taste of today</span>
+                <span class="text">Overview</span>
             </a>
-            <a>
+            <a [routerLink]="['recommendations']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="gift-2-line"></rmx-icon></span>
                 <span class="text">Recommendations</span>
             </a>
-            <a [routerLink]="['newest-works']" [routerLinkActive]="'active'">
-                <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>
-                <span class="text">What's new</span>
-            </a>
-            <a>
+            <a [routerLink]="['popular-this-week']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="question-answer-line"></rmx-icon></span>
                 <span class="text">Popular this week</span>
             </a>
-            <a>
+            <a [routerLink]="['popular-today']" [routerLinkActive]="'active'">
+                <span class="link-icon"><rmx-icon name="chat-4-line"></rmx-icon></span>
+                <span class="text">Popular today</span>
+            </a>
+            <a [routerLink]="['new-works']" [routerLinkActive]="'active'">
+                <span class="link-icon"><rmx-icon name="newspaper-line"></rmx-icon></span>
+                <span class="text">New works</span>
+            </a>
+            <a [routerLink]="['special-events']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="hearts-line"></rmx-icon></span>
-                <span class="text">Special event category</span>
+                <span class="text">Special events</span>
             </a>
             <h5>Following</h5>
             <a>
@@ -35,23 +39,23 @@
             <h5>Library</h5>
             <a [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
                 <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
-                <span class="text">Prose & Poetry</span>
+                <span class="text">All works</span>
             </a>
             <a [routerLink]="['favorite-blogs']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="heart-line"></rmx-icon></span>
-                <span class="text">Favorite Blogs</span>
+                <span class="text">Favorite blogs</span>
             </a>
             <a [routerLink]="['read-it-later']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
-                <span class="text">Read It Later</span>
+                <span class="text">Read it later</span>
             </a>
             <a [routerLink]="['finished-works']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
-                <span class="text">Finished Works</span>
+                <span class="text">Finished reading</span>
             </a>
             <a [routerLink]="['reading-history']" [routerLinkActive]="'active'">
                 <span class="link-icon"><rmx-icon name="history-line"></rmx-icon></span>
-                <span class="text">Reading History</span>
+                <span class="text">Reading history</span>
             </a>
             <h5>Bookshelves</h5>
             <a>
