@@ -1,5 +1,5 @@
-<ng-container *ngIf="sectionsQuery.all$ | async as sections">
-    <ng-container *ngIf="sectionsQuery.numSections === 0; else hasSections">
+<ng-container *ngIf="sectionsQuery.all$ | async | sectionIndex as indexedSections">
+    <ng-container *ngIf="sectionsQuery.numSections === 0 && auth.checkPseudonym(this.workPageQuery.authorId); else hasSections">
         <div class="empty">
             <h3>You haven't added anything yet!</h3>
             <p>
@@ -10,37 +10,48 @@
     <ng-template #hasSections>
         <ng-container *ngIf="auth.checkPseudonym(this.workPageQuery.authorId); else notThisUser">
             <ul class="mt-3 mb-6 list-none">
-                <ng-container *ngFor="let section of sections">
+                <ng-container *ngFor="let indexedSection of indexedSections">
                     <li
                         class="section-item border-gray-600 dark:border-white"
                     >
-                        <div
-                            class="pub-button border-gray-600 dark:border-white"
-                            [matTooltip]="'Publish'"
-                            [matTooltipClass]="'offprint-tooltip'"
-                            *ngIf="section.published === false"
-                            (click)="pubUnPub(section)"
-                        >
-                            <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
-                        </div>
-                        <div
-                            class="pub-button published border-gray-600 dark:border-white"
-                            [matTooltip]="'Convert to Draft'"
-                            [matTooltipClass]="'offprint-tooltip'"
-                            *ngIf="section.published === true"
-                            (click)="pubUnPub(section)"
-                        >
-                            <rmx-icon name="checkbox-circle-line"></rmx-icon>
-                        </div>
-                        <div class="section-button mid" [routerLink]="['view-section', section._id]">
-                            <div class="flex-1">{{ section.title }}</div>
-                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
-                        </div>
+                        <ng-container *ngIf="indexedSection.section.published; else notPublished">
+                            <div
+                                class="pub-button published border-gray-600 dark:border-white"
+                                [matTooltip]="'Convert to Draft'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                                (click)="pubUnPub(indexedSection.section)"
+                            >
+                                <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                            </div>
+                            <div class="section-button mid" 
+                                [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
+                            >
+                                <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                            </div>
+                        </ng-container>
+                        <ng-template #notPublished>
+                            <div
+                                class="pub-button border-gray-600 dark:border-white"
+                                [matTooltip]="'Publish'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                                *ngIf="indexedSection.section.published === false"
+                                (click)="pubUnPub(indexedSection.section)"
+                            >
+                                <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                            </div>
+                            <div class="section-button mid"
+                                [routerLink]="goToSectionAuthor(indexedSection.section._id)"
+                            >
+                                <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                            </div>
+                        </ng-template>
                         <div
                             class="pub-button end border-gray-600 dark:border-white"
                             [matTooltip]="'Delete'"
                             [matTooltipClass]="'offprint-tooltip'"
-                            (click)="delete(section._id)"
+                            (click)="delete(indexedSection.section._id)"
                         >
                             <rmx-icon name="delete-bin-line"></rmx-icon>
                         </div>
