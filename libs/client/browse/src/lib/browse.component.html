@@ -3,6 +3,9 @@
         <div class="header">
             <h3>Browse</h3>
             <rmx-icon name="compass-3-line"></rmx-icon>
+            <form>
+                <input type="text" placeholder="Search Offprint">
+            </form>
         </div>
         <div class="pages">
             <a [routerLink]="['/browse']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
@@ -50,7 +53,7 @@
                     <span class="link-icon"><rmx-icon name="arrow-right-circle-line"></rmx-icon></span>
                     <span class="text">Read it later</span>
                 </a>
-                <a [routerLink]="['library/finished-works']" [routerLinkActive]="'active'">
+                <a [routerLink]="['library/finished-reading']" [routerLinkActive]="'active'">
                     <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
                     <span class="text">Finished reading</span>
                 </a>

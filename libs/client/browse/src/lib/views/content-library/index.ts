@@ -3,3 +3,4 @@ export { FavoriteBlogsComponent } from './favorite-blogs/favorite-blogs.componen
 export { ReadItLaterComponent } from './read-it-later/read-it-later.component';
 export { FinishedReadingComponent } from './finished-reading/finished-reading.component';
 export { ReadingHistoryComponent } from './reading-history/reading-history.component';
+export { BookshelfViewComponent } from './bookshelf-view/bookshelf-view.component';

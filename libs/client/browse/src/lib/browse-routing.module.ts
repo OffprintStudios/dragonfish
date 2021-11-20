@@ -18,6 +18,7 @@ import {
     ReadingHistoryComponent,
     ReadItLaterComponent,
 } from './views/content-library';
+import { BookshelfViewComponent } from './views/content-library';
 
 const routes: Routes = [
     {
@@ -53,6 +54,8 @@ const routes: Routes = [
             },
             {
                 path: 'library',
+                canActivate: [AuthGuard],
+                canActivateChild: [AuthGuard],
                 children: [
                     {
                         path: '',
@@ -73,6 +76,12 @@ const routes: Routes = [
                     {
                         path: 'reading-history',
                         component: ReadingHistoryComponent,
+                    },
+                    {
+                        path: 'bookshelf/:id',
+                        component: BookshelfViewComponent,
+                        resolve: { shelfData: BookshelfResolver },
+                        runGuardsAndResolvers: 'always',
                     },
                 ],
             },

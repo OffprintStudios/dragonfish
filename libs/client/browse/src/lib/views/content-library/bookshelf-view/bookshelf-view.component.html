@@ -1,0 +1,134 @@
+<div class="flex flex-col w-11/12 my-6 mx-auto" *ngIf="shelves.current$ | async as shelf">
+    <div
+        class="flex items-center my-6 w-9/12 mx-auto p-4 rounded-md border border-gray-600 dark:border-white"
+        style="box-shadow: var(--dropshadow); background: var(--accent);"
+    >
+        <div class="h-36 w-36 flex flex-col items-center justify-center border-4 rounded-md mr-4 text-white">
+            <rmx-icon name="bar-chart-2-fill"></rmx-icon>
+        </div>
+        <div class="flex-1 mr-2">
+            <ng-container *ngIf="formIsOpen; else fieldsClosed">
+                <form [formGroup]="shelfForm" (ngSubmit)="submitForm()">
+                    <input
+                        type="text"
+                        placeholder="Bookshelf Name"
+                        class="text-3xl font-medium text-white border-white rounded-md placeholder-white pb-0.5 w-full"
+                        style="font-family: 'Josefin Sans', sans-serif; background: var(--accent-light);"
+                        [formControlName]="'name'"
+                    >
+                    <div class="my-2"></div>
+                    <input
+                        type="text"
+                        placeholder="Add a description"
+                        class="text-white border-white rounded-md placeholder-white w-full"
+                        style="background: var(--accent-light);"
+                        [formControlName]="'desc'"
+                    >
+                </form>
+            </ng-container>
+            <ng-template #fieldsClosed>
+                <h3 class="text-3xl font-medium text-white">{{ shelf.name }}</h3>
+                <div class="text-white">
+                    {{ shelf.desc }}
+                </div>
+            </ng-template>
+            <div class="flex items-center text-white">
+                <span class="italic">{{ shelf.createdAt | localedate:'mediumDate' }}</span>
+                <span class="text-lg mr-1 ml-1.5">•</span>
+                <span class="italic">{{ shelf.works | abbreviate }} work{{ shelf.works | pluralize }}</span>
+            </div>
+        </div>
+        <div class="flex items-center">
+            <ng-container *ngIf="formIsOpen; else notOpen">
+                <ng-container *ngIf="saving; else notSaving">
+                    <button class="header-button border border-gray-600 dark:border-white">
+                        <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                        Saving...
+                    </button>
+                </ng-container>
+                <ng-template #notSaving>
+                    <button class="header-button border border-gray-600 dark:border-white" (click)="submitForm()">
+                        <rmx-icon name="save-3-line"></rmx-icon>
+                        Save
+                    </button>
+                </ng-template>
+                <div class="mx-1"></div>
+                <button
+                    class="header-button border border-gray-600 dark:border-white"
+                    [matTooltip]="'Cancel'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (click)="toggleForm()"
+                >
+                    <rmx-icon name="close-line" class="mr-0"></rmx-icon>
+                </button>
+            </ng-container>
+            <ng-template #notOpen>
+                <button class="header-button border border-gray-600 dark:border-white" (click)="toggleForm()">
+                    <rmx-icon name="edit-line"></rmx-icon>
+                    Edit
+                </button>
+                <div class="mx-1"></div>
+                <button
+                    class="header-button border border-gray-600 dark:border-white"
+                    [matTooltip]="'More options'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    [matMenuTriggerFor]="moreOptions"
+                    (menuOpened)="toggleMenu()"
+                    (menuClosed)="toggleMenu()"
+                    [ngClass]="{'active': moreMenuOpened}"
+                >
+                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                </button>
+            </ng-template>
+        </div>
+    </div>
+    <ng-container *ngIf="shelves.items$ | async as items">
+        <ng-container *ngIf="items.length === 0; else hasItems">
+            <div class="empty">
+                <h3>You haven't added anything yet!</h3>
+                <p>Head over to the main library page and right click on something to add it to a bookshelf.</p>
+            </div>
+        </ng-container>
+        <ng-template #hasItems>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-6">
+                <ng-container *ngFor="let item of items">
+                    <dragonfish-work-card
+                        [content]="item.content"
+                        [size]="'small'"
+                        [contextMenuTrigger]="contextMenu"
+                        [menuContext]="item.content"
+                        [fullHeight]="true"
+                    ></dragonfish-work-card>
+                </ng-container>
+            </div>
+        </ng-template>
+    </ng-container>
+    <mat-menu #moreOptions='matMenu' xPosition="before">
+        <ng-container *ngIf="shelf.public; else notPublic">
+            <button
+                class="hover:scale-100"
+                mat-menu-item
+                [routerLink]="['/profile', pseudQuery.current._id, pseudQuery.current.userTag | slugify, 'bookshelf', shelf._id]"
+            >
+                <rmx-icon name="share-box-line"></rmx-icon>
+                Share this
+            </button>
+            <button class="hover:scale-100" mat-menu-item (click)="toggleVisibility()">
+                <rmx-icon name="lock-line"></rmx-icon>
+                Make this private
+            </button>
+        </ng-container>
+        <ng-template #notPublic>
+            <button class="hover:scale-100" mat-menu-item (click)="toggleVisibility()">
+                <rmx-icon name="lock-unlock-line"></rmx-icon>
+                Make this public
+            </button>
+        </ng-template>
+        <div class="my-1 w-full border-b border-gray-600 dark:border-white"></div>
+        <button class="hover:scale-100" mat-menu-item (click)="deleteShelf()">
+            <rmx-icon name="delete-bin-line"></rmx-icon>
+            Delete this
+        </button>
+    </mat-menu>
+</div>
+

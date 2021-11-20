@@ -1,8 +1,9 @@
 div.pagebar {
     @apply flex flex-col h-full w-64 border-r;
     div.header {
-        @apply flex items-center px-4 py-5;
+        @apply flex items-center flex-wrap px-4 py-5;
         background: var(--accent);
+        box-shadow: var(--dropshadow);
         rmx-icon {
             width: 1.75rem !important;
             @apply ml-2 text-white relative -top-1;
@@ -15,6 +16,14 @@ div.pagebar {
         }
         div.button-row {
             @apply flex items-center w-full justify-center;
+        }
+        form {
+            @apply w-full border-t border-white pt-2;
+            flex-basis: 100%;
+            input {
+                @apply max-w-full rounded-md text-sm px-2 border-transparent placeholder-gray-50 focus:ring-gray-50 text-white;
+                background: var(--accent-light);
+            }
         }
     }
     div.pages {

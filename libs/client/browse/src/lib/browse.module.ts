@@ -21,6 +21,7 @@ import {
     ReadItLaterComponent,
     FinishedReadingComponent,
     ReadingHistoryComponent,
+    BookshelfViewComponent,
 } from './views/content-library';
 import { LibraryMenuComponent, ShelfMenuComponent } from './components';
 
@@ -49,6 +50,7 @@ import { LibraryMenuComponent, ShelfMenuComponent } from './components';
         ReadingHistoryComponent,
         LibraryMenuComponent,
         ShelfMenuComponent,
+        BookshelfViewComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

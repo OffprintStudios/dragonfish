@@ -1,0 +1,7 @@
+button.header-button {
+    @apply border border-white text-white;
+    background: var(--accent);
+    &:hover, &.active {
+        background: var(--accent-light);
+    }
+}
