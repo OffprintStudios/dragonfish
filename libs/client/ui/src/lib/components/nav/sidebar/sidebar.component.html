@@ -17,7 +17,7 @@
             >
                 <span class="link-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">
-                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="max-width: 44px;" [alt]="'avatar'">
+                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="width: 44px;" [alt]="'avatar'">
                     </ng-container>
                     <ng-template #userMenuOpened>
                         <rmx-icon name="close-line"></rmx-icon>
