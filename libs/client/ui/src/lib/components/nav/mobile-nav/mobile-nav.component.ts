@@ -59,6 +59,10 @@ export class MobileNavComponent implements OnInit {
             });
     }
 
+    canSeeDash(userRoles: Roles[]) {
+        return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
+    }
+
     openUserMenu() {
         if (!this.userMenu) {
             this.userMenu = this.viewService.createView(UserMenuComponent);
