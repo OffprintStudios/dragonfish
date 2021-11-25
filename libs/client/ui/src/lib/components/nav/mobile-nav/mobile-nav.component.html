@@ -2,7 +2,7 @@
     <ng-container *ngIf="sessionQuery.currAccount$ | async; else login">
         <ng-container *ngIf="pseudQuery.current$ | async as profile; else selectProfile">
             <a
-                class="link cursor-pointer"
+                class="profile cursor-pointer"
                 [matTooltip]="'My Profile'"
                 [matTooltipPosition]="'right'"
                 [matTooltipClass]="'offprint-tooltip'"
@@ -11,9 +11,9 @@
                 [matBadge]="notifications.count"
                 [matBadgeHidden]="activeUserMenu || notifications.count < 1"
             >
-                <span class="link-icon">
+                <span class="profile-icon">
                     <ng-container *ngIf="!userMenu; else userMenuOpened">
-                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md" style="width: 44px;" [alt]="'avatar'">
+                        <img [src]="profile.profile.avatar" class="block object-cover rounded-md link-icon" [alt]="'avatar'">
                     </ng-container>
                     <ng-template #userMenuOpened>
                         <rmx-icon name="close-line"></rmx-icon>
