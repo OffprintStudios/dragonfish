@@ -18,7 +18,6 @@ export class WorkBannerComponent implements OnInit {
     @Input() content;
     contentUrl = [];
     moreMenuOpened = false;
-    addEditIcon = false;
     tagKind = TagKind;
     genres = Genres;
     pubStatus = PubStatus;
