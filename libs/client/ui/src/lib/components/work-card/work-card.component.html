@@ -38,7 +38,7 @@
         </ng-container>
     </div>
     <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
-        <div class="card-tags flex flex-row items-center">
+        <div class="card-tags flex flex-wrap items-center">
             <ng-container *ngIf="content.tags.length === 1; else multipleTags">
                     <a
                         class="tags"
@@ -55,7 +55,7 @@
                                 [innerHtml]="tag | displayTags | safeHtml"
                             ></a>
                             <ng-container *ngIf="i < content.tags.length - 1">
-                                ,
+                                ,&nbsp;
                             </ng-container>
                         </ng-container>
                     <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
