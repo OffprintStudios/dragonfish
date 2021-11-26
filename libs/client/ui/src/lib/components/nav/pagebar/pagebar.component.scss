@@ -18,10 +18,10 @@ div.pagebar {
             @apply flex items-center w-full justify-center;
         }
         form {
-            @apply w-full border-t border-white pt-2;
+            @apply w-full;
             flex-basis: 100%;
             input {
-                @apply max-w-full rounded-md text-sm px-2 border-transparent placeholder-gray-50 focus:ring-gray-50 text-white;
+                @apply w-full rounded-md text-sm px-2 border-transparent placeholder-gray-50 focus:ring-gray-50 text-white;
                 background: var(--accent-light);
             }
         }
