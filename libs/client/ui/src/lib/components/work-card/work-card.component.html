@@ -1,4 +1,4 @@
-<a class="medium-card border border-gray-600 dark:border-white group" [routerLink]="createContentUrl(content.kind, content._id, content.title)" *ngIf="size === 'large'">
+<span class="medium-card border border-gray-600 dark:border-white group" *ngIf="size === 'large'">
     <div class="flex items-center">
         <h3
             class="title"
@@ -6,7 +6,12 @@
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="600"
         >
-            {{ content.title }}
+            <a
+                class="title-link"
+                [routerLink]="createContentUrl(content.kind, content._id, content.title)"
+            >
+                {{ content.title }}
+            </a>
         </h3>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
@@ -107,23 +112,28 @@
             {{ content.meta.status }}
         </div>
     </div>
-</a>
+</span>
 
-<a
+<span
     class="small-card block group flex flex-col p-2 transition transform select-none cursor-pointer border border-gray-600 dark:border-white rounded-md hover:scale-105 hover:text-white hover:no-underline hover:z-30"
     *ngIf="size === 'small'"
-    [routerLink]="createContentUrl(content.kind, content._id, content.title)"
     [ngClass]="{'active': isActive, 'h-full': fullHeight}"
 >
     <div class="flex">
         <h4
             class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center group-hover:text-white"
-            style="line-height: 1.15rem;"
+            style="line-height: 2rem;"
             [matTooltip]="content.title"
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="300"
+            [routerLink]="createContentUrl(content.kind, content._id, content.title)"
         >
-            {{ content.title }}
+            <a
+                class="title-link"
+                [routerLink]="createContentUrl(content.kind, content._id, content.title)"
+            >
+                {{ content.title }}
+            </a>
         </h4>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [size]="'small'" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
@@ -158,4 +168,4 @@
             <span>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
         </div>
     </div>
-</a>
+</span>

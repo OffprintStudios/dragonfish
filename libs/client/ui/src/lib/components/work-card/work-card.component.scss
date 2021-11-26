@@ -1,4 +1,4 @@
-a.medium-card {
+span.medium-card {
     @apply block flex flex-col p-2 transition transform select-none cursor-pointer h-full rounded-md;
     color: var(--text-color);
     h3.title {
@@ -9,6 +9,9 @@ a.medium-card {
         background: var(--accent);
         box-shadow: var(--dropshadow);
         h3.title {
+            @apply text-white;
+        }
+        a.title-link {
             @apply text-white;
         }
         div.work-meta {
@@ -57,13 +60,16 @@ a.medium-card {
     }
 }
 
-a.small-card {
+span.small-card {
     color: var(--text-color);
     &:hover {
         box-shadow: var(--dropshadow);
         background: var(--accent);
         div.work-meta {
             background: var(--accent-light);
+        }
+        a.title-link {
+            @apply text-white;
         }
     }
     &:active {
