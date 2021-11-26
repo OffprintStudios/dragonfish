@@ -29,6 +29,19 @@ export class FollowersService {
             kind: SubscriptionKind.FollowingUser,
         };
 
+        return await this.subscriptions.create(payload).then(async (item) => {
+            await this.updateCounts(pseudId, toFollow);
+            return item;
+        });
+    }
+
+    public async unfollowUser(pseudId: string, toUnfollow: string): Promise<void> {
+        return await this.subscriptions.delete(pseudId, toUnfollow).then(async () => {
+            await this.updateCounts(pseudId, toUnfollow);
+        });
+    }
+
+    private async updateCounts(pseudId: string, toFollow: string) {
         const countFollowersPayload = {
             pseudId: toFollow,
             numFollowers: await this.subscriptions.countSubscribers(toFollow, SubscriptionKind.FollowingUser),
@@ -41,10 +54,5 @@ export class FollowersService {
 
         this.events.emit('pseudonyms.update-follower-count', countFollowersPayload);
         this.events.emit('pseudonyms.update-following-count', countFollowingPayload);
-        return await this.subscriptions.create(payload);
-    }
-
-    public async unfollowUser(pseudId: string, toUnfollow: string): Promise<void> {
-        return await this.subscriptions.delete(pseudId, toUnfollow);
     }
 }
