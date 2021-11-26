@@ -14,6 +14,9 @@ span.medium-card {
         a.title-link {
             @apply text-white;
         }
+        a.author-link {
+            @apply text-white;
+        }
         div.work-meta {
             background: var(--accent-light);
         }
@@ -69,6 +72,9 @@ span.small-card {
             background: var(--accent-light);
         }
         a.title-link {
+            @apply text-white;
+        }
+        a.author-link {
             @apply text-white;
         }
     }
