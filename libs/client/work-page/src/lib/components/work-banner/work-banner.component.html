@@ -6,11 +6,8 @@
                     class="edit-cover-art rounded-md"
                     [matTooltip]="'Edit Cover Art'"
                     [matTooltipClass]="'offprint-tooltip'"
-                    (mouseenter)="addEditIcon = true"
-                    (mouseleave)="addEditIcon = false"
                     (click)="uploadCoverArt(content._id, content.kind)"
                 >
-                    <span class="edit-icon" *ngIf="addEditIcon"><rmx-icon name="image-edit-line"></rmx-icon></span>
                     <img class="rounded-md" [src]="content.meta.coverArt" />
                 </div>
             </ng-container>

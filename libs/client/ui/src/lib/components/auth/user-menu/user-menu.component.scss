@@ -23,6 +23,22 @@ div.menu-box {
             color: var(--text-color);
         }
     }
+    div.mobile-user-header {
+        @apply w-full relative z-20 mt-4 px-4;
+        div.user-avatar {
+            align-self: center;
+            img {
+                width: 75px;
+                height: 75px;
+                border-radius: 0.375rem;
+                border: 1px solid var(--borders);
+                box-shadow: var(--dropshadow);
+            }
+        }
+        h2, h3 {
+            color: var(--text-color);
+        }
+    }
     div.button {
         @apply p-2.5 flex items-center my-2 rounded-md transition transform cursor-pointer;
         rmx-icon {

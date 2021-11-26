@@ -13,3 +13,35 @@ a.link {
         }
     }
 }
+
+a.profile {
+    @apply p-2.5 mx-2 mb-1 border-2 border-transparent rounded-md text-white transition transform;
+    border-color: gray;
+    &.no-padding {
+        @apply cursor-pointer p-0;
+    }
+    &:hover {
+        @apply no-underline scale-110;
+        box-shadow: var(--dropshadow);
+        background: var(--accent);
+        color: white;
+        border-color: white;
+    }
+    &.active {
+        @apply no-underline shadow-xl;
+        background: var(--accent);
+        color: white;
+        border-color: white;
+    }
+    span.profile-icon {
+        img {
+            width: 44px;
+            height: 44px;
+            stroke-width: 1;
+        }
+        rmx-icon {
+            width: 26px;
+            stroke-width: 1;
+        }
+    }
+}
