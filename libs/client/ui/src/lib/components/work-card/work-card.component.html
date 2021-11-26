@@ -1,5 +1,5 @@
 <span class="medium-card border border-gray-600 dark:border-white group" *ngIf="size === 'large'">
-    <div class="flex items-center">
+    <div class="flex flex-wrap items-center">
         <h3
             class="title"
             [matTooltip]="content.title"
@@ -15,7 +15,7 @@
         </h3>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
-    <div class="flex items-center pb-0.5 text-xs border-b border-gray-600 dark:border-white group-hover:border-white">
+    <div class="flex flex-wrap items-center pb-0.5 text-xs border-b border-gray-600 dark:border-white group-hover:border-white">
         <div class="flex-1">
             by 
             <a
@@ -125,7 +125,7 @@
     *ngIf="size === 'small'"
     [ngClass]="{'active': isActive, 'h-full': fullHeight}"
 >
-    <div class="flex">
+    <div class="flex flex-wrap">
         <h4
             class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center group-hover:text-white"
             style="line-height: 2rem;"
