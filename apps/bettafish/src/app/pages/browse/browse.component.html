@@ -46,5 +46,8 @@
                 <router-outlet></router-outlet>
             </div>
         </ng-template>
+        <ng-container *ngIf="mobileMode">
+            <div class="mb-16"></div>
+        </ng-container>
     </div>
 </div>
