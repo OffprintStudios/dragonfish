@@ -13,6 +13,7 @@ import {
     ChangePronouns,
 } from '@dragonfish/shared/models/accounts';
 import { chain } from 'voca';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
 export class PseudonymsStore {
@@ -148,6 +149,20 @@ export class PseudonymsStore {
     //#endregion
 
     //#region ---PRIVATE---
+
+    @OnEvent('pseudonyms.update-follower-count', { async: true })
+    private async updateFollowerCount(payload: { pseudId: string; numFollowers: number }) {
+        const pseud = await this.retrievePseud(payload.pseudId);
+        pseud.stats.followers = payload.numFollowers;
+        await pseud.save();
+    }
+
+    @OnEvent('pseudonyms.update-following-count', { async: true })
+    private async updateFollowingCount(payload: { pseudId: string; numFollowing: number }) {
+        const pseud = await this.retrievePseud(payload.pseudId);
+        pseud.stats.following = payload.numFollowing;
+        await pseud.save();
+    }
 
     private async retrievePseud(id: string): Promise<PseudonymDocument> {
         const pseud = await this.pseudModel.findById(id).select('-accountId');

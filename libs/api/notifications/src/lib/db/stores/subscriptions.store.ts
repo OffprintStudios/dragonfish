@@ -67,4 +67,16 @@ export class SubscriptionsStore {
     }
 
     //#endregion
+
+    //#region ---COUNTS---
+
+    public async countSubscribers(itemId: string, kind: SubscriptionKind) {
+        return this.subscription.countDocuments({ itemId, kind });
+    }
+
+    public async countSubscriptions(pseudId: string, kind: SubscriptionKind) {
+        return this.subscription.countDocuments({ subscriberId: pseudId, kind });
+    }
+
+    //#endregion
 }
