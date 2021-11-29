@@ -1,18 +1,29 @@
-<a class="medium-card border border-gray-600 dark:border-white group" [routerLink]="createContentUrl(content.kind, content._id, content.title)" *ngIf="size === 'large'">
-    <div class="flex items-center">
+<span class="medium-card border border-gray-600 dark:border-white group" *ngIf="size === 'large'">
+    <div class="flex flex-wrap items-center">
         <h3
             class="title"
             [matTooltip]="content.title"
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="600"
         >
-            {{ content.title }}
+            <a
+                class="title-link"
+                [routerLink]="createContentUrl(content.kind, content._id, content.title)"
+            >
+                {{ content.title }}
+            </a>
         </h3>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
-    <div class="flex items-center pb-0.5 text-xs border-b border-gray-600 dark:border-white group-hover:border-white">
+    <div class="flex flex-wrap items-center pb-0.5 text-xs border-b border-gray-600 dark:border-white group-hover:border-white">
         <div class="flex-1">
-            by {{ $any(content.author).screenName }}
+            by 
+            <a
+                class="author-link"
+                [routerLink]="['/profile', content.author._id, content.author.userTag]"
+            >
+                {{ $any(content.author).screenName }}
+            </a>
         </div>
         <div class="flex items-center">
             <rmx-icon name="heart-line" class="relative top-1" style="width: 1rem;"></rmx-icon>
@@ -27,37 +38,34 @@
         </ng-container>
     </div>
     <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
-        <div class="card-tags flex flex-row items-center">
+        <div class="card-tags flex flex-wrap items-center">
             <ng-container *ngIf="content.tags.length === 1; else multipleTags">
-                    <span class="tag tags">
-                        <a
-                            [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
-                            [innerHtml]="content.tags[0] | displayTags | safeHtml"
-                        ></a>
-                    </span>
+                    <a
+                        class="tags"
+                        [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                        [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                    ></a>
             </ng-container>
             <ng-template #multipleTags>
                 <ng-container *ngIf="showAllTags; else showOneTag">
-                        <span class="tag tags">
-                            <ng-container *ngFor="let tag of content.tags; let i = index">
-                                <a
-                                    [routerLink]="['/tag', tag._id, tag.name | slugify]"
-                                    [innerHtml]="tag | displayTags | safeHtml"
-                                ></a>
-                                <ng-container *ngIf="i < content.tags.length - 1">
-                                    ,
-                                </ng-container>
+                        <ng-container *ngFor="let tag of content.tags; let i = index">
+                            <a
+                                class="tags"
+                                [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                [innerHtml]="tag | displayTags | safeHtml"
+                            ></a>
+                            <ng-container *ngIf="i < content.tags.length - 1">
+                                ,&nbsp;
                             </ng-container>
-                        </span>
+                        </ng-container>
                     <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                 </ng-container>
                 <ng-template #showOneTag>
-                        <span class="tag tags">
-                            <a
-                                [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
-                                [innerHtml]="content.tags[0] | displayTags | safeHtml"
-                            ></a>
-                        </span>
+                        <a
+                            class="tags"
+                            [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                            [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                        ></a>
                     <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                 </ng-template>
             </ng-template>
@@ -110,23 +118,28 @@
             {{ content.meta.status }}
         </div>
     </div>
-</a>
+</span>
 
-<a
+<span
     class="small-card block group flex flex-col p-2 transition transform select-none cursor-pointer border border-gray-600 dark:border-white rounded-md hover:scale-105 hover:text-white hover:no-underline hover:z-30"
     *ngIf="size === 'small'"
-    [routerLink]="createContentUrl(content.kind, content._id, content.title)"
     [ngClass]="{'active': isActive, 'h-full': fullHeight}"
 >
-    <div class="flex">
+    <div class="flex flex-wrap">
         <h4
             class="block align-top text-lg font-medium overflow-ellipsis overflow-hidden whitespace-nowrap flex-1 self-center group-hover:text-white"
-            style="line-height: 1.15rem;"
+            style="line-height: 2rem;"
             [matTooltip]="content.title"
             [matTooltipClass]="'offprint-tooltip'"
             [matTooltipShowDelay]="300"
+            [routerLink]="createContentUrl(content.kind, content._id, content.title)"
         >
-            {{ content.title }}
+            <a
+                class="title-link"
+                [routerLink]="createContentUrl(content.kind, content._id, content.title)"
+            >
+                {{ content.title }}
+            </a>
         </h4>
         <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="content.meta.rating" [size]="'small'" [hasIcon]="false"></dragonfish-tag-badge>
     </div>
@@ -147,7 +160,13 @@
     </div>
     <div class="rounded-md px-1 text-xs flex items-center bg-gray-200 dark:bg-gray-600">
         <div>
-            by {{ $any(content.author).screenName }}
+            by 
+            <a
+                class="author-link"
+                [routerLink]="['/profile', content.author._id, content.author.userTag]"
+            >
+                {{ $any(content.author).screenName }}
+            </a>
         </div>
         <div class="text-sm mx-0.5 relative -top-0.5">
             •
@@ -161,4 +180,4 @@
             <span>{{ calcApprovalRating(content.stats.likes, content.stats.dislikes) }}%</span>
         </div>
     </div>
-</a>
+</span>
