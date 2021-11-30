@@ -64,16 +64,16 @@ export class ProfileSettingsComponent implements OnInit {
 
     changeAvatar() {
         this.dialog.open(UploadAvatarComponent, {
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }
 
     changeCover() {
         this.dialog.open(CoverPicUploadComponent, {
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }

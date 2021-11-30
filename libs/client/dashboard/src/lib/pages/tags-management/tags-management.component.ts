@@ -26,8 +26,8 @@ export class TagsManagementComponent implements OnInit {
 
     createTag() {
         this.dialog.open(TagFormComponent, {
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }
@@ -39,8 +39,8 @@ export class TagsManagementComponent implements OnInit {
     addChild(parentId: string) {
         this.dialog.open(TagFormComponent, {
             data: { parentId: parentId },
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }
@@ -48,8 +48,8 @@ export class TagsManagementComponent implements OnInit {
     editTag(tag: TagsModel) {
         this.dialog.open(TagFormComponent, {
             data: { tag: tag },
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }

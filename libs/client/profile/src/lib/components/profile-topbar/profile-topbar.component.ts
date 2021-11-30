@@ -63,8 +63,8 @@ export class ProfileTopbarComponent {
 
     changeCover() {
         this.dialog.open(CoverPicUploadComponent, {
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }

@@ -45,8 +45,8 @@ export class WorksComponent implements OnInit {
 
         this.dialog.open(WorkFormComponent, {
             data: formData,
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }

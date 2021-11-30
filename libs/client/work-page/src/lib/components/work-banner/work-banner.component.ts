@@ -52,8 +52,8 @@ export class WorkBannerComponent implements OnInit {
         console.log(this.content);
         this.dialog.open(WorkFormComponent, {
             data: formData,
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }
@@ -87,8 +87,8 @@ export class WorkBannerComponent implements OnInit {
     uploadCoverArt(id: string, kind: ContentKind) {
         this.dialog.open(UploadCoverArtComponent, {
             data: { kind: kind, contentId: id },
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }

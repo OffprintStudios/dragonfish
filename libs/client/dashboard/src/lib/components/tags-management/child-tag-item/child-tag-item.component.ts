@@ -24,8 +24,8 @@ export class ChildTagItemComponent {
     editTag() {
         this.dialog.open(TagFormComponent, {
             data: { tag: this.tag },
-            width: '100%',
-            height: 'calc(100vh - 50px)',
+            width: '100vw',
+            height: '100vh',
             disableClose: true
         });
     }
