@@ -62,6 +62,10 @@ export class ProfileTopbarComponent {
     }
 
     changeCover() {
-        this.dialog.open(CoverPicUploadComponent);
+        this.dialog.open(CoverPicUploadComponent, {
+            width: '100%',
+            height: 'calc(100vh - 50px)',
+            disableClose: true
+        });
     }
 }

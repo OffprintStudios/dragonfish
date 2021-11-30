@@ -22,7 +22,12 @@ export class ChildTagItemComponent {
     ) {}
 
     editTag() {
-        this.dialog.open(TagFormComponent, { data: { tag: this.tag } });
+        this.dialog.open(TagFormComponent, {
+            data: { tag: this.tag },
+            width: '100%',
+            height: 'calc(100vh - 50px)',
+            disableClose: true
+        });
     }
 
     removeTag() {

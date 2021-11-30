@@ -43,7 +43,12 @@ export class WorksComponent implements OnInit {
             kind: kind,
         };
 
-        this.dialog.open(WorkFormComponent, { data: formData });
+        this.dialog.open(WorkFormComponent, {
+            data: formData,
+            width: '100%',
+            height: 'calc(100vh - 50px)',
+            disableClose: true
+        });
     }
 
     onPageChange(event: number) {
