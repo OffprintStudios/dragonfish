@@ -25,7 +25,11 @@ export class TagsManagementComponent implements OnInit {
     }
 
     createTag() {
-        this.dialog.open(TagFormComponent);
+        this.dialog.open(TagFormComponent, {
+            width: '100vw',
+            height: '100vh',
+            disableClose: true
+        });
     }
 
     onOpen(id: string) {
@@ -33,11 +37,21 @@ export class TagsManagementComponent implements OnInit {
     }
 
     addChild(parentId: string) {
-        this.dialog.open(TagFormComponent, { data: { parentId: parentId }});
+        this.dialog.open(TagFormComponent, {
+            data: { parentId: parentId },
+            width: '100vw',
+            height: '100vh',
+            disableClose: true
+        });
     }
 
     editTag(tag: TagsModel) {
-        this.dialog.open(TagFormComponent, { data: { tag: tag } });
+        this.dialog.open(TagFormComponent, {
+            data: { tag: tag },
+            width: '100vw',
+            height: '100vh',
+            disableClose: true
+        });
     }
 
     deleteTag(id: string) {

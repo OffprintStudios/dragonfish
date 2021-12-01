@@ -63,11 +63,19 @@ export class ProfileSettingsComponent implements OnInit {
     }
 
     changeAvatar() {
-        this.dialog.open(UploadAvatarComponent);
+        this.dialog.open(UploadAvatarComponent, {
+            width: '100vw',
+            height: '100vh',
+            disableClose: true
+        });
     }
 
     changeCover() {
-        this.dialog.open(CoverPicUploadComponent);
+        this.dialog.open(CoverPicUploadComponent, {
+            width: '100vw',
+            height: '100vh',
+            disableClose: true
+        });
     }
 
     canSeeTaglineForm(roles: Roles[]) {
