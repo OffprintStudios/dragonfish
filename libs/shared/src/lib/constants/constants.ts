@@ -4,31 +4,37 @@ export class Constants {
     public static FIVE_MINUTES = 300000;
 
     public static ABOUT = 'About';
-    public static ADD_PROFILE = "Add Profile";
-    public static ALL_FANDOMS = "All Fandoms";
+    public static ADD_PROFILE = 'Add Profile';
+    public static ALL_FANDOMS = 'All Fandoms';
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
     public static CODE_OF_CONDUCT = 'Code of Conduct';
     public static COLLECTIONS = 'Collections';
+    public static FAVORITE_BLOGS = 'Favorite Blogs';
+    public static FINISHED_WORKS = 'Finished Works';
 
-    public static GLOBAL_SETTINGS = "Global Settings";
+    public static GLOBAL_SETTINGS = 'Global Settings';
     public static GROUPS = 'Groups';
     public static HISTORY = 'History';
     public static HOME = 'Home';
     public static INBOX = 'Inbox';
     public static MESSAGES = 'Messages';
+    public static MY_LIBRARY = 'My Library';
 
     public static NEWS = 'News';
     public static NEW_SECTION = 'New section';
     public static NEWEST_WORKS = 'Newest Works';
     public static NOTIFICATIONS = 'Notifications';
     public static OFFPRINT = 'Offprint';
-
     public static OMNIBUS = 'Omnibus';
+    public static PROSE_AND_POETRY = 'Prose & Poetry';
+
+    public static READING_HISTORY = "Reading History";
+    public static READ_IT_LATER = 'Read It Later';
     public static REGISTER = 'Log In / Register';
     public static RESET_PASSWORD = "Reset Password";
     public static SEARCH = 'Search';
-    public static SELECT_PROFILE = "Select Profile";
+    public static SELECT_PROFILE = 'Select Profile';
     public static SETTINGS = 'Settings';
     public static SITE_STAFF = 'Site Staff';
     public static SOCIAL = 'Social';
