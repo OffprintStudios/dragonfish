@@ -44,11 +44,14 @@ export class NewestWorksComponent implements OnInit {
     private fetchData(pageNum: number): void {
         this.loading = true;
         this.network.fetchAllNew(pageNum, [ContentKind.PoetryContent, ContentKind.ProseContent], this.appQuery.filter)
-            .subscribe(result => {
-                this.works = result;
-                this.loading = false;
-            }, () => {
-                this.loading = false;
+            .subscribe({
+                next: (result) => {
+                    this.works = result;
+                    this.loading = false;
+                },
+                error: () => {
+                    this.loading = false;
+                }
             });
     }
 
