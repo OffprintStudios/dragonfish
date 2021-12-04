@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { LoginModel } from '@dragonfish/shared/models/accounts';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-login-form',
     templateUrl: './login-form.component.html',
 })
-export class LoginFormComponent {
+export class LoginFormComponent implements OnInit {
     @Output() isSuccess = new EventEmitter<LoginModel>();
 
     loginForm = new FormGroup({
@@ -18,6 +19,10 @@ export class LoginFormComponent {
     });
 
     constructor(private auth: AuthService, private alerts: AlertsService) {}
+
+    ngOnInit(): void {
+        setTwoPartTitle(Constants.REGISTER);
+    }
 
     get fields() {
         return this.loginForm.controls;

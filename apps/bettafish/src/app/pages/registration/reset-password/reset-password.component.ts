@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ResetPassword } from '@dragonfish/shared/models/accounts';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -34,6 +35,7 @@ export class ResetPasswordComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        setTwoPartTitle(Constants.RESET_PASSWORD);
         this.route.queryParamMap.pipe(untilDestroyed(this)).subscribe((params) => {
             if (params.has('userId') && params.has('token')) {
                 this.creatingNewPassword = true;

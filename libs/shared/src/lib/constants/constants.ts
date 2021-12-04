@@ -4,6 +4,7 @@ export class Constants {
     public static FIVE_MINUTES = 300000;
 
     public static ABOUT = 'About';
+    public static ADD_PROFILE = "Add Profile";
     public static ALL_FANDOMS = "All Fandoms";
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
@@ -17,7 +18,6 @@ export class Constants {
     public static INBOX = 'Inbox';
     public static MESSAGES = 'Messages';
 
-    public static MY_STUFF = 'My Stuff';
     public static NEWS = 'News';
     public static NEW_SECTION = 'New section';
     public static NEWEST_WORKS = 'Newest Works';
@@ -25,8 +25,10 @@ export class Constants {
     public static OFFPRINT = 'Offprint';
 
     public static OMNIBUS = 'Omnibus';
-    public static REGISTER = 'Register';
+    public static REGISTER = 'Log In / Register';
+    public static RESET_PASSWORD = "Reset Password";
     public static SEARCH = 'Search';
+    public static SELECT_PROFILE = "Select Profile";
     public static SETTINGS = 'Settings';
     public static SITE_STAFF = 'Site Staff';
     public static SOCIAL = 'Social';
