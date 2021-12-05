@@ -6,13 +6,18 @@ export class Constants {
     public static ABOUT = 'About';
     public static ADD_PROFILE = 'Add Profile';
     public static ALL_FANDOMS = 'All Fandoms';
+    public static APPROVAL_QUEUE = 'Approval Queue';
+    public static AUDIT_LOG = 'Audit Log';
+
     public static BLOGS = 'Blogs';
     public static BROWSE = 'Browse';
+    public static CASE_FILES = 'Case Files';
     public static CODE_OF_CONDUCT = 'Code of Conduct';
     public static COLLECTIONS = 'Collections';
+    public static DASHBOARD = 'Dashboard';
+
     public static FAVORITE_BLOGS = 'Favorite Blogs';
     public static FINISHED_WORKS = 'Finished Works';
-
     public static GLOBAL_SETTINGS = 'Global Settings';
     public static GROUPS = 'Groups';
     public static HISTORY = 'History';
@@ -27,12 +32,13 @@ export class Constants {
     public static NOTIFICATIONS = 'Notifications';
     public static OFFPRINT = 'Offprint';
     public static OMNIBUS = 'Omnibus';
+    public static OVERVIEW = 'Overview';
     public static PROSE_AND_POETRY = 'Prose & Poetry';
 
-    public static READING_HISTORY = "Reading History";
+    public static READING_HISTORY = 'Reading History';
     public static READ_IT_LATER = 'Read It Later';
     public static REGISTER = 'Log In / Register';
-    public static RESET_PASSWORD = "Reset Password";
+    public static RESET_PASSWORD = 'Reset Password';
     public static SEARCH = 'Search';
     public static SELECT_PROFILE = 'Select Profile';
     public static SETTINGS = 'Settings';
@@ -40,7 +46,9 @@ export class Constants {
     public static SOCIAL = 'Social';
 
     public static SUPPORTERS = 'Supporters';
+    public static TAGS = 'Tags';
     public static TOS = 'Terms of Service';
+    public static USERS = 'Users';
     public static WATCHING = 'Watching';
     public static WORKS = 'Works';
 }

@@ -8,6 +8,7 @@ import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/ap
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-approval-queue',
@@ -33,6 +34,7 @@ export class ApprovalQueueComponent implements OnInit {
         this.route.data.subscribe((data) => {
             this.queue = data.queueData as PaginateResult<ApprovalQueue>;
         });
+        setThreePartTitle(Constants.DASHBOARD, Constants.APPROVAL_QUEUE);
     }
 
     /**
