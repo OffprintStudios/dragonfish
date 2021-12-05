@@ -1,8 +1,7 @@
 <ng-container *ngIf="queueQuery.selected$ | async as currDoc">
     <div class="content-box rounded-md w-11/12 mx-auto my-6">
-        <dragonfish-rating-icon [rating]="currDoc.workToApprove.meta.rating" [size]="'large'"></dragonfish-rating-icon>
         <div class="flex flex-col p-4">
-            <div class="flex flex-row items-center">
+            <div class="flex flex-wrap items-center">
                 <h2 class='text-4xl font-medium'>
                     <a class="hover:no-underline">
                         {{ currDoc.workToApprove.title }}
@@ -10,10 +9,11 @@
                     <span class='ml-0.5 font-normal text-base'>
                         by
                         <a class="hover:no-underline">
-                            {{ currDoc.workToApprove.author.username }}
+                            {{ currDoc.workToApprove.author.screenName }}
                         </a>
                     </span>
                 </h2>
+                <dragonfish-tag-badge [kind]="tagKind.Rating" [rating]="currDoc.workToApprove.meta.rating" [hasIcon]="false"></dragonfish-tag-badge>
             </div>
             <div class="tags flex flex-row items-center">
                 <ng-container [ngSwitch]="currDoc.workToApprove.kind">
