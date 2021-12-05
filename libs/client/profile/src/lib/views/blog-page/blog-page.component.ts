@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommentKind } from '@dragonfish/shared/models/comments';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { setThreePartTitle } from '@dragonfish/shared/constants';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { MatDialog } from '@angular/material/dialog';
 import { BlogPageQuery, BlogPageService } from '@dragonfish/client/repository/profile/blog-page';
@@ -47,7 +47,7 @@ export class BlogPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.blogQuery.blog$.pipe(untilDestroyed(this)).subscribe((blog) => {
-            setTwoPartTitle(blog.title);
+            setThreePartTitle(blog.title, this.blogQuery.author.screenName);
             this.blogForm.setValue({
                 title: blog.title,
                 body: blog.body,

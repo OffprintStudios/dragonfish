@@ -85,6 +85,7 @@
                 <div class="nav-items">
                     <a
                         class="link"
+                        (click)="setTitle()"
                         [routerLink]="['/profile', currProfile._id, currProfile.userTag]"
                         [routerLinkActive]="'active'"
                         [routerLinkActiveOptions]="{ exact: true }"

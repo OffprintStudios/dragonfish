@@ -47,7 +47,7 @@ export class BlogsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        setThreePartTitle(this.profile.userTag, Constants.BLOGS);
+        setThreePartTitle(this.profile.screenName, Constants.BLOGS);
     }
 
     toggleForm() {

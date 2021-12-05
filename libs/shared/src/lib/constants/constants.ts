@@ -10,10 +10,10 @@ export class Constants {
     public static AUDIT_LOG = 'Audit Log';
 
     public static BLOGS = 'Blogs';
+    public static BOOKSHELVES = 'Bookshelves';
     public static BROWSE = 'Browse';
     public static CASE_FILES = 'Case Files';
     public static CODE_OF_CONDUCT = 'Code of Conduct';
-    public static COLLECTIONS = 'Collections';
     public static DASHBOARD = 'Dashboard';
 
     public static FAVORITE_BLOGS = 'Favorite Blogs';
@@ -33,6 +33,7 @@ export class Constants {
     public static OFFPRINT = 'Offprint';
     public static OMNIBUS = 'Omnibus';
     public static OVERVIEW = 'Overview';
+    public static PROFILE = 'Profile';
     public static PROSE_AND_POETRY = 'Prose & Poetry';
 
     public static READING_HISTORY = 'Reading History';
