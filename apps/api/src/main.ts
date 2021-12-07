@@ -36,6 +36,11 @@ async function bootstrap() {
         });
     }
     app.use(prerenderNode.set('prerenderToken', process.env.PRERENDER_TOKEN));
+    app.enableCors({
+        origin: ['http://localhost:*', 'http://127.0.0.1:*', 'https://offprint.net', /\.offprint\.net$/],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    });
     app.setGlobalPrefix('api');
 
     // Set up Swagger

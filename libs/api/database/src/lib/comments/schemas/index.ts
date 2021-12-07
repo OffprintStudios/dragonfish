@@ -18,7 +18,7 @@ export { ContentCommentDocument, ContentCommentSchema } from './content-comment.
  * Sets up the comment collection.
  * @returns
  */
-export async function setupCommentCollection(): Promise<Schema<CommentDocument>> {
+export async function setupCommentCollection() {
     const schema = CommentSchema;
 
     schema.pre<CommentDocument>('save', async function (next) {
