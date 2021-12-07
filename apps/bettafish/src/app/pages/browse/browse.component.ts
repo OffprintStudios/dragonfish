@@ -33,19 +33,26 @@ export class BrowseComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        setTwoPartTitle(Constants.BROWSE);
+        this.setTitle();
         this.loadFirstNew();
         this.onResize();
     }
 
     loadFirstNew() {
         this.loadingNew = true;
-        this.network.fetchFirstNew(this.appQuery.filter).subscribe(result => {
-            this.newWorks = result;
-            this.loadingNew = false;
-        }, () => {
-            this.loadingNew = false;
+        this.network.fetchFirstNew(this.appQuery.filter).subscribe({
+            next: (result) => {
+                this.newWorks = result;
+                this.loadingNew = false;
+            },
+            error: () => {
+                this.loadingNew = false;
+            }
         });
+    }
+
+    setTitle() {
+        setTwoPartTitle(Constants.BROWSE);
     }
     
     @HostListener('window:resize', ['$event'])

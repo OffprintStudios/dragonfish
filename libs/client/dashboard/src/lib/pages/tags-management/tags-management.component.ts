@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TagFormComponent } from '../../components/tags-management';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-tags-management',
@@ -22,6 +23,8 @@ export class TagsManagementComponent implements OnInit {
 
     ngOnInit(): void {
         this.tagsService.fetchTagsTrees(TagKind.Fandom).subscribe();
+        
+        setThreePartTitle(Constants.DASHBOARD, Constants.TAGS);
     }
 
     createTag() {

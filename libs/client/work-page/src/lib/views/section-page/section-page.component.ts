@@ -10,6 +10,7 @@ import { isNullOrUndefined } from '@dragonfish/shared/functions';
 import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
 import { Location } from '@angular/common';
+import { setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
 
 @UntilDestroy()
 @Component({
@@ -53,6 +54,8 @@ export class SectionPageComponent implements OnInit {
                     authorsNote: x.authorsNote,
                     authorsNotePos: x.authorsNotePos,
                 });
+
+                setThreePartTitle(this.workPageQuery.contentTitle, x.title);
             } else {
                 this.sectionForm.setValue({
                     title: '',
@@ -60,6 +63,8 @@ export class SectionPageComponent implements OnInit {
                     authorsNote: '',
                     authorsNotePos: AuthorsNotePos.Bottom,
                 });
+
+                setTwoPartTitle(this.workPageQuery.contentTitle);
             }
         });
     }

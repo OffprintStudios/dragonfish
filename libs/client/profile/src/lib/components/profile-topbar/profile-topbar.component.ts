@@ -5,6 +5,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { MatDialog } from '@angular/material/dialog';
 import { CoverPicUploadComponent } from '@dragonfish/client/settings';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-profile-topbar',
@@ -59,6 +60,10 @@ export class ProfileTopbarComponent {
 
     report() {
         this.alerts.info(`This feature isn't available just yet.`);
+    }
+
+    setTitle() {
+        setThreePartTitle(this.profile.screenName, Constants.PROFILE);
     }
 
     changeCover() {

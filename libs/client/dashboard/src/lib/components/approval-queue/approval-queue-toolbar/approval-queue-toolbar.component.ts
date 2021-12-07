@@ -6,6 +6,7 @@ import { Decision } from '@dragonfish/shared/models/contrib';
 import { Router } from '@angular/router';
 import { ApprovalQueueService, ApprovalQueueQuery } from '@dragonfish/client/repository/dashboard/approval-queue';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-approval-queue-toolbar',
@@ -22,6 +23,7 @@ export class ApprovalQueueToolbarComponent {
 
     goBack() {
         this.location.back();
+        setThreePartTitle(Constants.DASHBOARD, Constants.APPROVAL_QUEUE);
     }
 
     approveWork(doc: ApprovalQueue) {
@@ -34,6 +36,7 @@ export class ApprovalQueueToolbarComponent {
         };
         this.queueService.approveWork(decision).subscribe(() => {
             this.router.navigate(['/dashboard/approval-queue']);
+            setThreePartTitle(Constants.DASHBOARD, Constants.APPROVAL_QUEUE);
         });
     }
 
@@ -47,6 +50,7 @@ export class ApprovalQueueToolbarComponent {
         };
         this.queueService.rejectWork(decision).subscribe(() => {
             this.router.navigate(['/dashboard/approval-queue']);
+            setThreePartTitle(Constants.DASHBOARD, Constants.APPROVAL_QUEUE);
         });
     }
 }

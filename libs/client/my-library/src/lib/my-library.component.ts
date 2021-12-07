@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookshelvesRepository } from '@dragonfish/client/repository/content-library/bookshelves';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 import { BookshelfForm } from '@dragonfish/shared/models/users/content-library';
+import { Constants, setThreePartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-my-library',
     templateUrl: './my-library.component.html',
     styleUrls: ['./my-library.component.scss'],
 })
-export class MyLibraryComponent {
+export class MyLibraryComponent implements OnInit {
     formIsOpen = false;
 
     bookshelfForm = new FormGroup({
@@ -26,6 +27,10 @@ export class MyLibraryComponent {
     toggleForm() {
         this.formIsOpen = !this.formIsOpen;
         this.bookshelfForm.reset();
+    }
+    
+    ngOnInit(): void {
+        this.setTitle();
     }
 
     submitForm() {
@@ -48,6 +53,10 @@ export class MyLibraryComponent {
             this.bookshelfForm.reset();
             this.formIsOpen = false;
         }
+    }
+
+    setTitle() {
+        setThreePartTitle(Constants.MY_LIBRARY, Constants.PROSE_AND_POETRY);
     }
 
     private get fields() {

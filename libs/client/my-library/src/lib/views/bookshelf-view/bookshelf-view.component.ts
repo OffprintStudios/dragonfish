@@ -11,6 +11,7 @@ import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ShelfMenuComponent } from '../../components/shelf-menu/shelf-menu.component';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-bookshelf-view',
@@ -44,6 +45,7 @@ export class BookshelfViewComponent implements OnInit {
                 desc: shelf.desc,
             });
         });
+        setThreePartTitle(Constants.MY_LIBRARY, this.fields.name.value);
     }
 
     toggleForm() {
@@ -73,6 +75,7 @@ export class BookshelfViewComponent implements OnInit {
                         .deleteShelf(this.pseudQuery.currentId as string, this.shelves.currentId)
                         .subscribe(() => {
                             this.router.navigate(['/my-library']).catch((err) => console.log(err));
+                            setThreePartTitle(Constants.MY_LIBRARY, Constants.PROSE_AND_POETRY);
                         });
                 }
             });
@@ -99,6 +102,7 @@ export class BookshelfViewComponent implements OnInit {
             this.shelves.editShelf(this.pseudQuery.currentId, this.shelves.currentId, formInfo).subscribe(() => {
                 this.formIsOpen = false;
                 this.saving = false;
+                setThreePartTitle(Constants.MY_LIBRARY, formInfo.name);
             });
         } else {
             this.alerts.error(`You need to select a profile before you save any changes.`);

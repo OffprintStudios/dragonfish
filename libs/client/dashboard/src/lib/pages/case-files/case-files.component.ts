@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CaseKind, ActionType } from '@dragonfish/shared/models/case-files';
 import { CaseFilesQuery, CaseFilesService } from '@dragonfish/client/repository/dashboard/case-files';
 import { ActivatedRoute, Router } from '@angular/router';
+import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-case-files',
@@ -21,6 +22,7 @@ export class CaseFilesComponent implements OnInit {
 
     ngOnInit() {
         this.caseService.fetchAllActive().subscribe();
+        setThreePartTitle(Constants.DASHBOARD, Constants.CASE_FILES);
     }
 
     viewCase(id: number) {

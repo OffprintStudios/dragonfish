@@ -31,7 +31,7 @@ export class WorksComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        setThreePartTitle(this.profile.userTag, Constants.WORKS);
+        setThreePartTitle(this.profile.screenName, Constants.WORKS);
     }
 
     changeTab(newTab: ListPages): void {

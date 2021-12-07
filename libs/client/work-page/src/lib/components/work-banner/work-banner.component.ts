@@ -8,6 +8,7 @@ import { slugify } from 'voca';
 import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/work-page';
 import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
 import { SessionQuery } from '@dragonfish/client/repository/session';
+import { setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -38,6 +39,8 @@ export class WorkBannerComponent implements OnInit {
         } else if (this.content.kind === 'PoetryContent') {
             this.contentUrl = ['/poetry', this.content._id, slugify(this.content.title)];
         }
+        
+        setTwoPartTitle(this.content.title);
     }
 
     toggleMoreMenu() {
@@ -93,3 +96,4 @@ export class WorkBannerComponent implements OnInit {
         });
     }
 }
+

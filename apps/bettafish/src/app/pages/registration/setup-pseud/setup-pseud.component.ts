@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pronouns, PseudonymForm } from '@dragonfish/shared/models/accounts';
 import { fadeInOut } from '@dragonfish/client/ui';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Router } from '@angular/router';
+import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
 
 @Component({
     selector: 'dragonfish-setup-pseud',
     templateUrl: './setup-pseud.component.html',
     animations: [fadeInOut],
 })
-export class SetupPseudComponent {
+export class SetupPseudComponent implements OnInit {
     pronouns = Pronouns;
     loading = false;
 
@@ -22,6 +23,10 @@ export class SetupPseudComponent {
     });
 
     constructor(private auth: AuthService, private alerts: AlertsService, private router: Router) {}
+    
+    ngOnInit(): void {
+        setTwoPartTitle(Constants.ADD_PROFILE);
+    }
 
     submitForm() {
         this.loading = true;

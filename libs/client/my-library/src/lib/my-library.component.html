@@ -4,7 +4,7 @@
             <h3>My Library</h3>
         </div>
         <div class="pages">
-            <a class="link" [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="link" (click)='setTitle()' [routerLink]="['/my-library']" [routerLinkActive]="'active'" [routerLinkActiveOptions]="{ exact: true }">
                 <span class="link-icon"><rmx-icon name="book-open-line"></rmx-icon></span>
                 Prose & Poetry
             </a>
