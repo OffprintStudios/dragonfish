@@ -8,14 +8,12 @@ import { ITagsService } from '../../shared/content';
 @Controller('tags')
 export class TagsController {
     constructor(@Inject('ITagsService') private readonly tagsService: ITagsService) {}
-    
-    @UseGuards(RolesGuard([Roles.User]))
+
     @Get('fetch-tags-trees')
     async fetchTagsTrees(@Query('kind') kind: TagKind): Promise<TagsTree[]> {
         return await this.tagsService.fetchTagsTrees(kind);
     }
 
-    @UseGuards(RolesGuard([Roles.User]))
     @Get('fetch-descendants')
     async fetchDescendants(@Query('id') id: string): Promise<TagsTree> {
         return await this.tagsService.fetchDescendants(id);
