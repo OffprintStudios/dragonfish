@@ -34,6 +34,21 @@
                 <div class="tag">{{ $any(currDoc.workToApprove.meta).genres | separateGenres }}</div>
                 <div class="flex-1"><!--push content rating to the right--></div>
             </div>
+            <ng-container *ngIf="currDoc.workToApprove.tags !== null && currDoc.workToApprove.tags.length > 0">
+                <div class="content-tags flex flex-row items-center uppercase text-sm">
+                    <span class="tag tags">
+                        <ng-container *ngFor="let tag of currDoc.workToApprove.tags; let i = index">
+                            <a
+                                [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                [innerHtml]="tag | displayTags | safeHtml"
+                            ></a>
+                            <ng-container *ngIf="i < content.tags.length - 1">
+                                ,
+                            </ng-container>
+                        </ng-container>
+                    </span>
+                </div>
+            </ng-container>
             <div class="flex-1 p-4">
                 <ng-container *ngIf="$any(currDoc.workToApprove.meta).coverArt">
                     <div

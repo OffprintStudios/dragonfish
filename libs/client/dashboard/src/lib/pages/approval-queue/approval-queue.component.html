@@ -14,6 +14,7 @@
                 <th>Title</th>
                 <th>Author</th>
                 <th>Tags</th>
+                <th>Fandom Tags</th>
                 <th>Rating</th>
                 <th>Submitted</th>
             </tr>
@@ -52,6 +53,17 @@
                     <dragonfish-tag-badge [kind]="tagKinds.Category" [category]="entry.workToApprove.meta.category"></dragonfish-tag-badge>
                     <ng-container *ngFor="let genre of entry.workToApprove.meta.genres">
                         <dragonfish-tag-badge [kind]="tagKinds.Genre" [genre]="genre"></dragonfish-tag-badge>
+                    </ng-container>
+                </td>
+                <td class="p-2 flex-wrap border-r border-gray-600 dark:border-white">
+                    <ng-container *ngFor="let tag of entry.workToApprove.tags; let i = index">
+                        <a
+                            [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                            [innerHtml]="tag | displayTags | safeHtml"
+                        ></a>
+                        <ng-container *ngIf="i < entry.workToApprove.tags.length - 1">
+                            ,
+                        </ng-container>
                     </ng-container>
                 </td>
                 <td class="p-2 border-r border-gray-600 dark:border-white">
