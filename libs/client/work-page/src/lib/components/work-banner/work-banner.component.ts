@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { ContentKind, Genres, PubStatus, TagKind } from '@dragonfish/shared/models/content';
 import { UploadCoverArtComponent } from '../upload-cover-art/upload-cover-art.component';
@@ -9,6 +9,7 @@ import { WorkPageQuery, WorkPageService } from '@dragonfish/client/repository/wo
 import { WorkFormComponent, WorkFormData } from '@dragonfish/client/ui';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { setTwoPartTitle } from '@dragonfish/shared/constants';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-work-banner',
@@ -23,6 +24,7 @@ export class WorkBannerComponent implements OnInit {
     genres = Genres;
     pubStatus = PubStatus;
     loadingLibrary = false;
+    mobileMode = false;
 
     constructor(
         private alerts: AlertsService,
@@ -41,6 +43,7 @@ export class WorkBannerComponent implements OnInit {
         }
         
         setTwoPartTitle(this.content.title);
+        this.onResize();
     }
 
     toggleMoreMenu() {
@@ -94,6 +97,11 @@ export class WorkBannerComponent implements OnInit {
             height: '100vh',
             disableClose: true
         });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 }
 
