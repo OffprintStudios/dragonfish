@@ -153,9 +153,9 @@
             <div class="flex flex-col">
                 <div class="mb-6">
                     <ng-container *ngIf="mobileShowInfo; else noInfo">
-                        <h3 class="text-2xl font-medium flex">
+                        <h3 class="text-2xl font-medium flex" (click)="toggleShowInfo()">
                             Information
-                            <rmx-icon class="mt-1" name="arrow-up-s-line" (click)="toggleShowInfo()"></rmx-icon>
+                            <rmx-icon class="mt-1" name="arrow-up-s-line"></rmx-icon>
                         </h3>
                         <div class="text-center py-2 w-full">
                             <ng-container *ngIf="content.audit.published === 'Published'">
@@ -181,9 +181,9 @@
                         </div>
                     </ng-container>
                     <ng-template #noInfo>
-                        <h3 class="text-2xl font-medium flex">
+                        <h3 class="text-2xl font-medium flex" (click)="toggleShowInfo()">
                             Information
-                            <rmx-icon class="mt-1" name="arrow-down-s-line" (click)="toggleShowInfo()"></rmx-icon>
+                            <rmx-icon class="mt-1" name="arrow-down-s-line"></rmx-icon>
                         </h3>
                     </ng-template>
                 </div>
@@ -192,18 +192,18 @@
             <div class="flex flex-col flex-1 mr-6">
                 <div class="mb-6">
                     <ng-container *ngIf="mobileShowDescription; else noDescription">
-                        <h3 class="text-2xl font-medium flex">
+                        <h3 class="text-2xl font-medium flex" (click)="toggleShowDescription()">
                             Description
-                            <rmx-icon class="mt-1" name="arrow-up-s-line" (click)="toggleShowDescription()"></rmx-icon>
+                            <rmx-icon class="mt-1" name="arrow-up-s-line"></rmx-icon>
                         </h3>
                         <div class="rounded-md py-2 px-8 flex-1 border border-gray-600 dark:border-white" style="box-shadow: var(--dropshadow);">
                             <div class="html-description" [innerHtml]="content.body | safeHtml"></div>
                         </div>
                     </ng-container>
                     <ng-template #noDescription>
-                        <h3 class="text-2xl font-medium flex">
+                        <h3 class="text-2xl font-medium flex" (click)="toggleShowDescription()">
                             Description
-                            <rmx-icon class="mt-1" name="arrow-down-s-line" (click)="toggleShowDescription()"></rmx-icon>
+                            <rmx-icon class="mt-1" name="arrow-down-s-line"></rmx-icon>
                         </h3>
                     </ng-template>
                 </div>
