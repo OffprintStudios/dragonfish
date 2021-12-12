@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SectionsQuery, SectionsService } from '@dragonfish/client/repository/work-page/sections';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { WorkPageQuery } from '@dragonfish/client/repository/work-page';
@@ -7,13 +7,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopupModel } from '@dragonfish/shared/models/util';
 import { PopupComponent } from '@dragonfish/client/ui';
 import { slugify } from 'voca';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-sections-list',
     templateUrl: './sections-list.component.html',
     styleUrls: ['./sections-list.component.scss'],
 })
-export class SectionsListComponent {
+export class SectionsListComponent implements OnInit {
+    mobileMode = false;
     constructor(
         public sectionsQuery: SectionsQuery,
         public auth: AuthService,
@@ -21,6 +23,10 @@ export class SectionsListComponent {
         private sectionsService: SectionsService,
         private dialog: MatDialog,
     ) {}
+
+    ngOnInit(): void {
+        this.onResize();
+    }
 
     pubUnPub(section: Section) {
         const pubStatus: PublishSection = {
@@ -83,5 +89,10 @@ export class SectionsListComponent {
                 slugify(title),
             ];
         }
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 }
