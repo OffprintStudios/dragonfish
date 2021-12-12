@@ -7,6 +7,9 @@ import { Section } from '@dragonfish/shared/models/sections';
     styleUrls: ['./sections-list.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
+/**
+ * @deprecated No longer used
+ */
 export class SectionsListComponent implements OnChanges {
     @Input() sections: Section[];
     @Input() contentBox = false;
