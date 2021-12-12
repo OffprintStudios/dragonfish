@@ -97,9 +97,9 @@
     </ng-container>
 
     <ng-template #mobile>
-        <div class="w-11/12 md:w-9/12 lg:7/12 mx-auto my-6">
+        <div class="w-11/12 md:w-9/12 lg:7/12 mx-auto my-4">
             <!--Likes/Dislikes-->
-            <div class="flex items-center pb-2">
+            <div class="flex justify-center items-center mb-3" style="width: 100%;">
                 <ng-container *ngIf="session.isLoggedIn; else noRatings">
                     <ng-container [ngSwitch]="workQuery.currRating">
                         <ng-container *ngSwitchCase="ratingOption.NoVote">
@@ -149,6 +149,45 @@
                     </button>
                 </ng-template>
             </div>
+            <!--Dropdown for Information-->
+            <div class="flex flex-col">
+                <div class="mb-6">
+                    <ng-container *ngIf="mobileShowInfo; else noInfo">
+                        <h3 class="text-2xl font-medium flex">
+                            Information
+                            <rmx-icon class="mt-1" name="arrow-up-s-line" (click)="toggleShowInfo()"></rmx-icon>
+                        </h3>
+                        <div class="text-center py-2 w-full">
+                            <ng-container *ngIf="content.audit.published === 'Published'">
+                                <h4 class="text-xl font-medium">Published on</h4>
+                                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.audit.publishedOn | localedate:'mediumDate' }}</span>
+                            </ng-container>
+                            <ng-container *ngIf="content.audit.published === 'Unpublished'">
+                                <h4 class="text-xl font-medium">Created on</h4>
+                                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.createdAt | localedate:'mediumDate' }}</span>
+                            </ng-container>
+                        </div>
+                        <div class="text-center py-2 w-full">
+                            <h4 class="text-xl font-medium">Words</h4>
+                            <span class="uppercase font-semibold font-serif text-lg tracking-wider" *ngIf="workQuery.wordCount$ | async as wordCount">{{ wordCount }}</span>
+                        </div>
+                        <div class="text-center py-2 w-full">
+                            <h4 class="text-xl font-medium">Views</h4>
+                            <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.stats.views }}</span>
+                        </div>
+                        <div class="text-center py-2 w-full">
+                            <h4 class="text-xl font-medium">Status</h4>
+                            <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ $any(content.meta).status }}</span>
+                        </div>
+                    </ng-container>
+                    <ng-template #noInfo>
+                        <h3 class="text-2xl font-medium flex">
+                            Information
+                            <rmx-icon class="mt-1" name="arrow-down-s-line" (click)="toggleShowInfo()"></rmx-icon>
+                        </h3>
+                    </ng-template>
+                </div>
+            </div>
             <!--Dropdown for Description-->
             <div class="flex flex-col flex-1 mr-6">
                 <div class="mb-6">
@@ -169,47 +208,8 @@
                     </ng-template>
                 </div>
             </div>
-            <!--Dropdown for Stats-->
-            <div class="flex flex-col">
-                <div class="mb-6">
-                    <ng-container *ngIf="mobileShowInfo; else noInfo">
-                        <h3 class="text-2xl font-medium flex">
-                            Information
-                            <rmx-icon class="mt-1" name="arrow-up-s-line" (click)="toggleShowInfo()"></rmx-icon>
-                        </h3>
-                        <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
-                            <ng-container *ngIf="content.audit.published === 'Published'">
-                                <h4 class="text-xl font-medium">Published on</h4>
-                                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.audit.publishedOn | localedate:'mediumDate' }}</span>
-                            </ng-container>
-                            <ng-container *ngIf="content.audit.published === 'Unpublished'">
-                                <h4 class="text-xl font-medium">Created on</h4>
-                                <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.createdAt | localedate:'mediumDate' }}</span>
-                            </ng-container>
-                        </div>
-                        <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
-                            <h4 class="text-xl font-medium">Words</h4>
-                            <span class="uppercase font-semibold font-serif text-lg tracking-wider" *ngIf="workQuery.wordCount$ | async as wordCount">{{ wordCount }}</span>
-                        </div>
-                        <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
-                            <h4 class="text-xl font-medium">Views</h4>
-                            <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.stats.views }}</span>
-                        </div>
-                        <div class="text-center py-2 w-full">
-                            <h4 class="text-xl font-medium">Status</h4>
-                            <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ $any(content.meta).status }}</span>
-                        </div>
-                    </ng-container>
-                    <ng-template #noInfo>
-                        <h3 class="text-2xl font-medium flex">
-                            Information
-                            <rmx-icon class="mt-1" name="arrow-down-s-line" (click)="toggleShowInfo()"></rmx-icon>
-                        </h3>
-                    </ng-template>
-                </div>
-            </div>
             <!--Chapter List-->
-            <div>
+            <div class="mb-14">
                 <div class="flex items-center">
                     <h3 class="text-2xl font-medium flex-1">Chapters</h3>
                     <button class="border border-gray-600 dark:border-white" [routerLink]="['create-section']" *ngIf="auth.checkPseudonym(workQuery.authorId)">
