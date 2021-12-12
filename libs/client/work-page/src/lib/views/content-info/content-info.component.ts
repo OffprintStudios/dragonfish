@@ -14,6 +14,7 @@ export class ContentInfoComponent implements OnInit {
     ratingOption = RatingOption;
     mobileMode = false;
     mobileShowDescription = false;
+    mobileShowInfo = false;
 
     constructor(
         public workQuery: WorkPageQuery,
@@ -28,6 +29,10 @@ export class ContentInfoComponent implements OnInit {
 
     toggleShowDescription() {
         this.mobileShowDescription = !this.mobileShowDescription;
+    }
+
+    toggleShowInfo() {
+        this.mobileShowInfo = !this.mobileShowInfo;
     }
 
     @HostListener('window:resize', ['$event'])
