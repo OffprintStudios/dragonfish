@@ -1,43 +1,159 @@
 <div class="header">
-    <div class="flex w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
-        <ng-container *ngIf="content.meta.coverArt; else uploadArt">
-            <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+    <ng-container *ngIf="!mobileMode; else mobile">
+        <div class="flex w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
+            <ng-container *ngIf="content.meta.coverArt; else uploadArt">
+                <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+                    <div
+                        class="edit-cover-art rounded-md"
+                        [matTooltip]="'Edit Cover Art'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                        (click)="uploadCoverArt(content._id, content.kind)"
+                    >
+                        <img class="rounded-md" [src]="content.meta.coverArt" />
+                    </div>
+                </ng-container>
+                <ng-template #notThisAuthorArt>
+                    <div
+                        class="edit-cover-art rounded-md"
+                    >
+                        <img class="rounded-md" [src]="content.meta.coverArt" />
+                    </div>
+                </ng-template>
+            </ng-container>
+            <ng-template #uploadArt>
                 <div
-                    class="edit-cover-art rounded-md"
-                    [matTooltip]="'Edit Cover Art'"
+                    class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-col items-center justify-center"
+                    [matTooltip]="'Add Cover Art'"
                     [matTooltipClass]="'offprint-tooltip'"
                     (click)="uploadCoverArt(content._id, content.kind)"
+                    *ngIf="auth.checkPseudonym(content.author._id)"
                 >
-                    <img class="rounded-md" [src]="content.meta.coverArt" />
-                </div>
-            </ng-container>
-            <ng-template #notThisAuthorArt>
-                <div
-                    class="edit-cover-art rounded-md"
-                >
-                    <img class="rounded-md" [src]="content.meta.coverArt" />
+                    <rmx-icon name="add-box-line"></rmx-icon>
                 </div>
             </ng-template>
-        </ng-container>
-        <ng-template #uploadArt>
-            <div
-                class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-col items-center justify-center"
-                [matTooltip]="'Add Cover Art'"
-                [matTooltipClass]="'offprint-tooltip'"
-                (click)="uploadCoverArt(content._id, content.kind)"
-                *ngIf="auth.checkPseudonym(content.author._id)"
-            >
-                <rmx-icon name="add-box-line"></rmx-icon>
+            <div class="flex-1 flex flex-col justify-end">
+                <div class="flex items-center">
+                    <div class="flex-1">
+                        <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
+                        <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
+                            by {{ content.author.screenName }}
+                        </h2>
+                    </div>
+                    <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
+                        <ng-container [ngSwitch]="content.audit.published">
+                            <button class="header-button" *ngSwitchCase="pubStatus.Unpublished" (click)="submitToQueue()">
+                                <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                                <span>Publish</span>
+                            </button>
+                            <button class="header-button" *ngSwitchCase="pubStatus.Published">
+                                <rmx-icon name="checkbox-circle-line"></rmx-icon>
+                                <span>Published</span>
+                            </button>
+                            <button class="header-button" *ngSwitchCase="pubStatus.Rejected">
+                                <rmx-icon name="close-circle-line"></rmx-icon>
+                                <span>Rejected</span>
+                            </button>
+                            <button class="header-button" *ngSwitchCase="pubStatus.ApprovedUnpublished">
+                                <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
+                                <span>Approved</span>
+                            </button>
+                            <button class="header-button" *ngSwitchCase="pubStatus.Pending">
+                                <rmx-icon name="time-line"></rmx-icon>
+                                <span>Pending</span>
+                            </button>
+                        </ng-container>
+                        <div class="mx-1"></div>
+                        <button class="header-button" [matTooltip]="'Edit info'" [matTooltipClass]="'offprint-tooltip'" (click)="openEditModal()">
+                            <rmx-icon name="edit-line" class="mr-0"></rmx-icon>
+                        </button>
+                    </ng-container>
+                    <ng-template #otherButtons>
+                        <ng-container *ngIf="sessionQuery.currAccount$ | async">
+                            <button class="header-button" (click)="addToLibrary()" *ngIf="!workQuery.isInLibrary && !loadingLibrary">
+                                <rmx-icon name="add-box-line"></rmx-icon>
+                                <span>Library</span>
+                            </button>
+                            <button class="header-button active" (click)="removeFromLibrary()" *ngIf="workQuery.isInLibrary && !loadingLibrary">
+                                <rmx-icon name="check-line"></rmx-icon>
+                                <span>Library</span>
+                            </button>
+                            <button class="header-button" *ngIf="loadingLibrary">
+                                <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                                <span>Adding...</span>
+                            </button>
+                        </ng-container>
+                        <div class="mx-1"></div>
+                        <button
+                            class="header-button"
+                            [matMenuTriggerFor]="moreMenu"
+                            [ngClass]="{'active': moreMenuOpened}"
+                            (menuOpened)="toggleMoreMenu()"
+                            (menuClosed)="toggleMoreMenu()"
+                        >
+                            <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                        </button>
+                    </ng-template>
+                </div>
+                <div class="flex items-center w-full">
+                    <dragonfish-tag-badge [kind]="tagKind.Type" [type]="content.kind"></dragonfish-tag-badge>
+                    <dragonfish-tag-badge [kind]="tagKind.Category" [category]="content.meta.category"></dragonfish-tag-badge>
+                    <ng-container *ngFor="let genre of content.meta.genres">
+                        <dragonfish-tag-badge [kind]="tagKind.Genre" [genre]="genre"></dragonfish-tag-badge>
+                    </ng-container>
+                </div>
+                <ng-container *ngIf="content.tags !== null && content.tags.length > 0">
+                    <div class="content-tags flex flex-row items-center uppercase text-sm">
+                        <span class="tag tags">
+                            <ng-container *ngFor="let tag of content.tags; let i = index">
+                                <a
+                                    [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                                    [innerHtml]="tag | displayTags | safeHtml"
+                                ></a>
+                                <ng-container *ngIf="i < content.tags.length - 1">
+                                    ,
+                                </ng-container>
+                            </ng-container>
+                        </span>
+                    </div>
+                </ng-container>
+                <div class="flex items-center w-full mt-6 border-b-2 border-white">
+                    <div
+                        class="nav-link px-10"
+                        [routerLink]="contentUrl"
+                        [routerLinkActive]="'active'"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                    >
+                        <rmx-icon name="information-line"></rmx-icon>
+                        <span>Info</span>
+                    </div>
+                    <div class="mx-0.5"></div>
+                    <div class="nav-link px-7" [routerLink]="['comments']" [routerLinkActive]="'active'">
+                        <rmx-icon name="discuss-line"></rmx-icon>
+                        <span>{{ content.stats.comments | abbreviate }} Comment{{ content.stats.comments | pluralize }}</span>
+                    </div>
+                    <div class="mx-0.5"></div>
+                    <div class="nav-link px-6" [routerLink]="['related']" [routerLinkActive]="'active'">
+                        <rmx-icon name="collage-line"></rmx-icon>
+                        <span>Related</span>
+                    </div>
+                </div>
             </div>
-        </ng-template>
-        <div class="flex-1 flex flex-col justify-end">
-            <div class="flex items-center">
+        </div>
+    </ng-container>
+
+    <ng-template #mobile>
+        <div class="w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
+            <!--Title-->
+            <div class="flex flex-row items-center">
                 <div class="flex-1">
                     <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
                     <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
                         by {{ content.author.screenName }}
                     </h2>
                 </div>
+            </div>
+            <!--Controls-->
+            <div class="flex items-center">
                 <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
                     <ng-container [ngSwitch]="content.audit.published">
                         <button class="header-button" *ngSwitchCase="pubStatus.Unpublished" (click)="submitToQueue()">
@@ -93,7 +209,39 @@
                     </button>
                 </ng-template>
             </div>
-            <div class="flex items-center w-full">
+            <!--Cover Art-->
+            <ng-container *ngIf="content.meta.coverArt; else uploadArt">
+                <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+                    <div
+                        class="edit-cover-art rounded-md"
+                        [matTooltip]="'Edit Cover Art'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                        (click)="uploadCoverArt(content._id, content.kind)"
+                    >
+                        <img class="rounded-md" [src]="content.meta.coverArt" />
+                    </div>
+                </ng-container>
+                <ng-template #notThisAuthorArt>
+                    <div
+                        class="edit-cover-art rounded-md"
+                    >
+                        <img class="rounded-md" [src]="content.meta.coverArt" />
+                    </div>
+                </ng-template>
+            </ng-container>
+            <ng-template #uploadArt>
+                <div
+                    class="add-cover-art h-72 w-48 rounded-md cursor-pointer flex flex-col items-center justify-center"
+                    [matTooltip]="'Add Cover Art'"
+                    [matTooltipClass]="'offprint-tooltip'"
+                    (click)="uploadCoverArt(content._id, content.kind)"
+                    *ngIf="auth.checkPseudonym(content.author._id)"
+                >
+                    <rmx-icon name="add-box-line"></rmx-icon>
+                </div>
+            </ng-template>
+            <!--Tags-->
+            <div class="flex flex-row items-center flex-wrap">
                 <dragonfish-tag-badge [kind]="tagKind.Type" [type]="content.kind"></dragonfish-tag-badge>
                 <dragonfish-tag-badge [kind]="tagKind.Category" [category]="content.meta.category"></dragonfish-tag-badge>
                 <ng-container *ngFor="let genre of content.meta.genres">
@@ -115,9 +263,10 @@
                     </span>
                 </div>
             </ng-container>
-            <div class="flex items-center w-full mt-6 border-b-2 border-white">
+            <!--Tabs-->
+            <div class="grid grid-cols-3 flex items-center w-full mt-6 border-b-2 border-white">
                 <div
-                    class="nav-link px-10"
+                    class="nav-link"
                     [routerLink]="contentUrl"
                     [routerLinkActive]="'active'"
                     [routerLinkActiveOptions]="{ exact: true }"
@@ -125,19 +274,17 @@
                     <rmx-icon name="information-line"></rmx-icon>
                     <span>Info</span>
                 </div>
-                <div class="mx-0.5"></div>
-                <div class="nav-link px-7" [routerLink]="['comments']" [routerLinkActive]="'active'">
+                <div class="nav-link" [routerLink]="['comments']" [routerLinkActive]="'active'">
                     <rmx-icon name="discuss-line"></rmx-icon>
-                    <span>{{ content.stats.comments | abbreviate }} Comment{{ content.stats.comments | pluralize }}</span>
+                    <span>{{ content.stats.comments | abbreviate }}</span>
                 </div>
-                <div class="mx-0.5"></div>
-                <div class="nav-link px-6" [routerLink]="['related']" [routerLinkActive]="'active'">
+                <div class="nav-link" [routerLink]="['related']" [routerLinkActive]="'active'">
                     <rmx-icon name="collage-line"></rmx-icon>
-                    <span>Related Stuff</span>
+                    <span>Related</span>
                 </div>
             </div>
         </div>
-    </div>
+    </ng-template>
 </div>
 
 <mat-menu #moreMenu='matMenu' xPosition="before">

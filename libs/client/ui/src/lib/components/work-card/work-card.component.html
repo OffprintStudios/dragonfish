@@ -48,24 +48,24 @@
             </ng-container>
             <ng-template #multipleTags>
                 <ng-container *ngIf="showAllTags; else showOneTag">
-                        <ng-container *ngFor="let tag of content.tags; let i = index">
-                            <a
-                                class="tags"
-                                [routerLink]="['/tag', tag._id, tag.name | slugify]"
-                                [innerHtml]="tag | displayTags | safeHtml"
-                            ></a>
-                            <ng-container *ngIf="i < content.tags.length - 1">
-                                ,&nbsp;
-                            </ng-container>
+                    <ng-container *ngFor="let tag of content.tags; let i = index">
+                        <a
+                            class="tags"
+                            [routerLink]="['/tag', tag._id, tag.name | slugify]"
+                            [innerHtml]="tag | displayTags | safeHtml"
+                        ></a>
+                        <ng-container *ngIf="i < content.tags.length - 1">
+                            ,&nbsp;
                         </ng-container>
+                    </ng-container>
                     <rmx-icon name="arrow-up-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                 </ng-container>
                 <ng-template #showOneTag>
-                        <a
-                            class="tags"
-                            [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
-                            [innerHtml]="content.tags[0] | displayTags | safeHtml"
-                        ></a>
+                    <a
+                        class="tags"
+                        [routerLink]="['/tag', content.tags[0]._id, content.tags[0].name | slugify]"
+                        [innerHtml]="content.tags[0] | displayTags | safeHtml"
+                    ></a>
                     <rmx-icon name="arrow-down-s-line" (click)="toggleShowAllTags()"></rmx-icon>
                 </ng-template>
             </ng-template>

@@ -23,12 +23,22 @@
                             >
                                 <rmx-icon name="checkbox-circle-line"></rmx-icon>
                             </div>
-                            <div class="section-button mid" 
-                                [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
-                            >
-                                <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
-                            </div>
+                            <ng-container *ngIf="!mobileMode; else mobilePublished">
+                                <div class="section-button mid"
+                                    [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
+                                >
+                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                    <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                                </div>
+                            </ng-container>
+                            <ng-template #mobilePublished>
+                                <div class="mobile-section-button mid"
+                                    [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
+                                >
+                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                    <div class="text-xs">{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                                </div>
+                            </ng-template>
                         </ng-container>
                         <ng-template #notPublished>
                             <div
@@ -40,12 +50,22 @@
                             >
                                 <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
                             </div>
-                            <div class="section-button mid"
-                                [routerLink]="goToSectionAuthor(indexedSection.section._id)"
-                            >
-                                <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
-                            </div>
+                            <ng-container *ngIf="!mobileMode; else mobileNotPublished">
+                                <div class="section-button mid"
+                                    [routerLink]="goToSectionAuthor(indexedSection.section._id)"
+                                >
+                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                    <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                                </div>
+                            </ng-container>
+                            <ng-template #mobileNotPublished>
+                                <div class="mobile-section-button mid"
+                                    [routerLink]="goToSectionAuthor(indexedSection.section._id)"
+                                >
+                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                    <div class="text-xs">{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                                </div>
+                            </ng-template>
                         </ng-template>
                         <div
                             class="pub-button end border-gray-600 dark:border-white"
@@ -65,10 +85,18 @@
                     <li
                         class="section-item border-gray-600 dark:border-white"
                     >
-                        <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
-                            <div class="flex-1">{{ section.title }}</div>
-                            <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
-                        </div>
+                        <ng-container *ngIf="!mobileMode; else mobileNotThisUser">
+                            <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
+                                <div class="flex-1">{{ section.title }}</div>
+                                <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                            </div>
+                        </ng-container>
+                        <ng-template #mobileNotThisUser>
+                            <div class="mobile-section-button" [routerLink]="['section', i + 1, section.title | slugify]">
+                                <div class="flex-1">{{ section.title }}</div>
+                                <div class="text-xs">{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                            </div>
+                        </ng-template>
                     </li>
                 </ng-container>
             </ul>
