@@ -77,7 +77,7 @@
 
     <!--Creation Mode-->
     <ng-container *ngIf="createMode; else editModePage">
-        <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+        <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto mb-14">
             <form [formGroup]="sectionForm">
                 <dragonfish-text-field
                     [formControlName]="'title'"
@@ -111,7 +111,7 @@
     <!--View/Edit Modes-->
     <ng-template #editModePage>
         <ng-container *ngIf="sectionsQuery.current$ | async as section">
-            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto mb-14">
                 <ng-container *ngIf="previewMode; else editMode">
                     <div class="w-full border-b border-gray-600 dark:border-white p-2 mb-6">
                         <h2 class="text-4xl">{{ section.title }}</h2>
