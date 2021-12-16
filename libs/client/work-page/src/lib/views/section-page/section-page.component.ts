@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SectionsQuery, SectionsService } from '@dragonfish/client/repository/work-page/sections';
 import { AuthService } from '@dragonfish/client/repository/session/services';
@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { slugify } from 'voca';
 import { Location } from '@angular/common';
 import { setTwoPartTitle, setThreePartTitle } from '@dragonfish/shared/constants';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +23,7 @@ export class SectionPageComponent implements OnInit {
     createMode = false;
     previewMode = true;
     sectionListOpened = false;
+    mobileMode = false;
     authorsNotePosOptions = AuthorsNotePos;
 
     sectionForm = new FormGroup({
@@ -67,6 +69,7 @@ export class SectionPageComponent implements OnInit {
                 setTwoPartTitle(this.workPageQuery.contentTitle);
             }
         });
+        this.onResize();
     }
 
     switchView() {
@@ -179,6 +182,11 @@ export class SectionPageComponent implements OnInit {
         };
 
         this.sectionsService.publish(this.workPageQuery.contentId, section._id, pubStatus).subscribe();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 
     private get fields() {

@@ -1,83 +1,167 @@
 <div class="w-full h-screen overflow-y-auto">
-    <div class="section-topbar">
-        <button [routerLink]="goBackToWork()">
-            <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
-        </button>
-        <div class="mx-0.5"></div>
-        <button>
-            <rmx-icon name="font-size"></rmx-icon>
-            <span>Formatting</span>
-        </button>
-        <div class="flex-1 flex items-center justify-center">
-            <h5 class="text-lg font-medium text-white mr-1 relative top-0.5">{{ workPageQuery.contentTitle }}</h5>
-            <div class="text-white italic text-sm relative top-0.5">
-                &mdash; by <a class="text-white underline hover:no-underline" [routerLink]="['/profile', workPageQuery.author._id, workPageQuery.author.userTag]">{{ workPageQuery.author.screenName }}</a>
-            </div>
-        </div>
-        <ng-container *ngIf="createMode; else viewMode">
-            <button (click)="saveChanges()">
-                <rmx-icon name="save-3-line"></rmx-icon>
-                <span>Save</span>
+    <ng-container *ngIf="!mobileMode; else mobile">
+        <div class="section-topbar">
+            <button [routerLink]="goBackToWork()">
+                <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
             </button>
-        </ng-container>
-        <ng-template #viewMode>
-            <ng-container *ngIf="!previewMode; else viewButtons">
-                <ng-container *ngIf="sectionsQuery.current$ | async as section">
-                    <button (click)="saveChanges(section)">
-                        <rmx-icon name="save-3-line"></rmx-icon>
-                        <span>Save</span>
-                    </button>
-                </ng-container>
-                <div class="mx-0.5"></div>
-                <button (click)="switchView()">
-                    <rmx-icon name="close-line"></rmx-icon>
-                    <span>Cancel</span>
+            <div class="mx-0.5"></div>
+            <button>
+                <rmx-icon name="font-size"></rmx-icon>
+                <span>Formatting</span>
+            </button>
+            <div class="flex-1 flex items-center justify-center">
+                <h5 class="text-lg font-medium text-white mr-1 relative top-0.5">
+                    <a class="text-white underline hover:no-underline" [routerLink]="goBackToWork()">
+                        {{ workPageQuery.contentTitle }}
+                    </a>
+                </h5>
+                <div class="text-white italic text-sm relative top-0.5">
+                    &mdash; by <a class="text-white underline hover:no-underline" [routerLink]="['/profile', workPageQuery.author._id, workPageQuery.author.userTag]">{{ workPageQuery.author.screenName }}</a>
+                </div>
+            </div>
+            <ng-container *ngIf="createMode; else viewMode">
+                <button (click)="saveChanges()">
+                    <rmx-icon name="save-3-line"></rmx-icon>
+                    <span>Save</span>
                 </button>
             </ng-container>
-            <ng-template #viewButtons>
-                <button
-                    class="page-turn left"
-                    *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
-                    (click)="goToPrev()"
-                >
-                    <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
-                </button>
-                <button
-                    *ngIf="!createMode"
-                    [matMenuTriggerFor]="sectionList"
-                    (menuOpened)="toggleSectionList()"
-                    (menuClosed)="toggleSectionList()"
-                    [ngClass]="{'active': sectionListOpened, 'not-rounded': !auth.checkPseudonym(workPageQuery.authorId)}"
-                >
-                    <rmx-icon name="list-unordered"></rmx-icon>
-                    <span>Chapters</span>
-                </button>
-                <button
-                    class="page-turn right"
-                    *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
-                    (click)="goToNext()"
-                >
-                    <rmx-icon name="arrow-right-s-line" class="mr-0"></rmx-icon>
-                </button>
-                <div class="mx-0.5"></div>
-                <ng-container *ngIf="!auth.checkPseudonym(workPageQuery.authorId); else editButton">
-                    <button>
-                        <rmx-icon name="bookmark-line" class="mr-0"></rmx-icon>
+            <ng-template #viewMode>
+                <ng-container *ngIf="!previewMode; else viewButtons">
+                    <ng-container *ngIf="sectionsQuery.current$ | async as section">
+                        <button (click)="saveChanges(section)">
+                            <rmx-icon name="save-3-line"></rmx-icon>
+                            <span>Save</span>
+                        </button>
+                    </ng-container>
+                    <div class="mx-0.5"></div>
+                    <button (click)="switchView()">
+                        <rmx-icon name="close-line"></rmx-icon>
+                        <span>Cancel</span>
                     </button>
                 </ng-container>
-                <ng-template #editButton>
-                    <button (click)="switchView()">
-                        <rmx-icon name="edit-line"></rmx-icon>
-                        <span>Edit</span>
+                <ng-template #viewButtons>
+                    <button
+                        class="page-turn left"
+                        *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
+                        (click)="goToPrev()"
+                    >
+                        <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
                     </button>
+                    <button
+                        *ngIf="!createMode"
+                        [matMenuTriggerFor]="sectionList"
+                        (menuOpened)="toggleSectionList()"
+                        (menuClosed)="toggleSectionList()"
+                        [ngClass]="{'active': sectionListOpened, 'not-rounded': !auth.checkPseudonym(workPageQuery.authorId)}"
+                    >
+                        <rmx-icon name="list-unordered"></rmx-icon>
+                        <span>Chapters</span>
+                    </button>
+                    <button
+                        class="page-turn right"
+                        *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
+                        (click)="goToNext()"
+                    >
+                        <rmx-icon name="arrow-right-s-line" class="mr-0"></rmx-icon>
+                    </button>
+                    <div class="mx-0.5"></div>
+                    <ng-container *ngIf="!auth.checkPseudonym(workPageQuery.authorId); else editButton">
+                        <button>
+                            <rmx-icon name="bookmark-line" class="mr-0"></rmx-icon>
+                        </button>
+                    </ng-container>
+                    <ng-template #editButton>
+                        <button (click)="switchView()">
+                            <rmx-icon name="edit-line"></rmx-icon>
+                            <span>Edit</span>
+                        </button>
+                    </ng-template>
                 </ng-template>
             </ng-template>
-        </ng-template>
-    </div>
+        </div>
+    </ng-container>
+    <ng-template #mobile>
+        <div class="mobile-section-topbar">
+            <div class="items-center justify-center mb-1">
+                <h5 class="flex items-center justify-center text-lg font-medium text-white top-0.5">
+                    <a class="text-white underline hover:no-underline" [routerLink]="goBackToWork()">
+                        {{ workPageQuery.contentTitle }}
+                    </a>
+                </h5>
+                <div class="flex items-center justify-center text-white italic text-sm top-0.5">
+                    by&nbsp;<a class="text-white underline hover:no-underline" [routerLink]="['/profile', workPageQuery.author._id, workPageQuery.author.userTag]">{{ workPageQuery.author.screenName }}</a>
+                </div>
+            </div>
+            <div class="flex justify-center w-full">
+                <button>
+                    <rmx-icon name="font-size"></rmx-icon>
+                </button>
+                <ng-container *ngIf="createMode; else viewMode">
+                    <button (click)="saveChanges()">
+                        <rmx-icon name="save-3-line"></rmx-icon>
+                    </button>
+                </ng-container>
+                <ng-template #viewMode>
+                    <ng-container *ngIf="!previewMode; else viewButtons">
+                        <ng-container *ngIf="sectionsQuery.current$ | async as section">
+                            <button (click)="saveChanges(section)">
+                                <rmx-icon name="save-3-line"></rmx-icon>
+                            </button>
+                        </ng-container>
+                        <div class="mx-0.5"></div>
+                        <button (click)="switchView()">
+                            <rmx-icon name="close-line"></rmx-icon>
+                        </button>
+                    </ng-container>
+                    <ng-template #viewButtons>
+                        <ng-container>
+                            <ng-container *ngIf="!auth.checkPseudonym(workPageQuery.authorId); else editButton">
+                                <button>
+                                    <rmx-icon name="bookmark-line" class="mr-0"></rmx-icon>
+                                </button>
+                            </ng-container>
+                            <ng-template #editButton>
+                                <button (click)="switchView()">
+                                    <rmx-icon name="edit-line"></rmx-icon>
+                                </button>
+                            </ng-template>
+                            <div class="mx-5"></div>
+                        </ng-container>
+                        <ng-container>
+                            <button
+                                class="page-turn left"
+                                *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
+                                (click)="goToPrev()"
+                            >
+                                <rmx-icon name="arrow-left-s-line" class="mr-0"></rmx-icon>
+                            </button>
+                            <button
+                                *ngIf="!createMode"
+                                [matMenuTriggerFor]="sectionList"
+                                (menuOpened)="toggleSectionList()"
+                                (menuClosed)="toggleSectionList()"
+                                [ngClass]="{'active': sectionListOpened, 'not-rounded': !auth.checkPseudonym(workPageQuery.authorId)}"
+                            >
+                                <rmx-icon name="list-unordered"></rmx-icon>
+                                <span>Chapters</span>
+                            </button>
+                            <button
+                                class="page-turn right"
+                                *ngIf="!createMode && !auth.checkPseudonym(workPageQuery.authorId)"
+                                (click)="goToNext()"
+                            >
+                                <rmx-icon name="arrow-right-s-line" class="mr-0"></rmx-icon>
+                            </button>
+                        </ng-container>
+                    </ng-template>
+                </ng-template>
+            </div>
+        </div>
+    </ng-template>
 
     <!--Creation Mode-->
     <ng-container *ngIf="createMode; else editModePage">
-        <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+        <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto mb-14">
             <form [formGroup]="sectionForm">
                 <dragonfish-text-field
                     [formControlName]="'title'"
@@ -111,7 +195,7 @@
     <!--View/Edit Modes-->
     <ng-template #editModePage>
         <ng-container *ngIf="sectionsQuery.current$ | async as section">
-            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
+            <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto mb-14">
                 <ng-container *ngIf="previewMode; else editMode">
                     <div class="w-full border-b border-gray-600 dark:border-white p-2 mb-6">
                         <h2 class="text-4xl">{{ section.title }}</h2>

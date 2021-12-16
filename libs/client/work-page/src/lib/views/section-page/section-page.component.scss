@@ -10,6 +10,18 @@ div.section-topbar {
     }
 }
 
+div.mobile-section-topbar {
+    @apply w-full px-4 py-2 items-center relative z-50 mb-6 top-0;
+    background: var(--accent);
+    box-shadow: var(--dropshadow);
+    button {
+        @apply border border-white text-white;
+        &:hover, &.active {
+            background: var(--accent-light);
+        }
+    }
+}
+
 div.authors-note {
     margin-top: 2rem;
 
