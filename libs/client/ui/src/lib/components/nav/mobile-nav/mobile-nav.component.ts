@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
-import { Roles } from '@dragonfish/shared/models/accounts';
-import { isAllowed } from '@dragonfish/shared/functions';
 import { DragonfishElectronService } from '@dragonfish/client/services';
 import { UserMenuComponent } from '../../auth/user-menu/user-menu.component';
 import { ViewRef, ViewService } from '@ngneat/overview';
@@ -57,10 +55,6 @@ export class MobileNavComponent implements OnInit {
                         });
                 }
             });
-    }
-
-    canSeeDash(userRoles: Roles[]) {
-        return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
     }
 
     openUserMenu() {
