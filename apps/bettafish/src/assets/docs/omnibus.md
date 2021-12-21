@@ -37,7 +37,7 @@ The following rules regard adult themes.
     - Explicit sexual or fetishized situations involving characters who are stated to be above the age of 18 that are written excessively as childlike, up to staff discretion, shall be considered an attempt to circumvent these restrictions. The same applies to non-human characters.
     - Simply stating that two teenage characters had sex is allowed. You may depict the events immediately before and after teenage characters have sex, but not the sex itself.
 - Incest
-    - Depictions of incest between consenting adults and exporations of incest as a form of abuse are allowed only at ratings Teen and above.
+    - Depictions of incest between consenting adults and explorations of incest as a form of abuse are allowed only at ratings Teen and above.
     - Depictions of parent-child incest are prohibited except in works that aim to explore it as a form of abuse.
     - Positive depictions of incest involving minors are prohibited.
 - Rape and non-con
