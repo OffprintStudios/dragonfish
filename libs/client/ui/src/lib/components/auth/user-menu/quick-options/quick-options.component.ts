@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { Router } from '@angular/router';
 import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
+import { isAllowed } from '@dragonfish/shared/functions';
+import { Roles } from '@dragonfish/shared/models/accounts';
+import { SessionQuery } from '@dragonfish/client/repository/session';
 
 @Component({
     selector: 'dragonfish-quick-options',
@@ -13,6 +16,7 @@ import { PseudonymsQuery } from '@dragonfish/client/repository/pseudonyms';
 })
 export class QuickOptionsComponent {
     constructor(
+        public sessionQuery: SessionQuery,
         public pseudQuery: PseudonymsQuery,
         private dialog: MatDialog,
         private auth: AuthService,
@@ -32,5 +36,9 @@ export class QuickOptionsComponent {
                 });
             }
         });
+    }
+
+    canSeeDash(userRoles: Roles[]) {
+        return isAllowed(userRoles, [Roles.Admin, Roles.Moderator, Roles.WorkApprover]);
     }
 }

@@ -20,6 +20,17 @@
         <rmx-icon name="cup-line"></rmx-icon>
         <span>View Blogs</span>
     </div>
+    <ng-container *ngIf="sessionQuery.currAccount$ | async as account">
+        <ng-container *ngIf="canSeeDash(account.roles)">
+            <div
+                class="button border-gray-600 dark:border-white"
+                [routerLink]="['/dashboard']"
+            >
+                <rmx-icon name="dashboard-2-line"></rmx-icon>
+                <span>Dashboard</span>
+            </div>
+        </ng-container>
+    </ng-container>
     <div class="w-full border-b border-gray-600 dark:border-white my-4"></div>
     <div
         class="button border-gray-600 dark:border-white"

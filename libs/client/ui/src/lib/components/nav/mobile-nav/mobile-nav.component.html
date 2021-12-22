@@ -83,19 +83,17 @@
                 <span class="link-icon"><rmx-icon name="book-mark-line"></rmx-icon></span>
             </a>
         </ng-container>
-        <ng-container *ngIf="canSeeDash(account.roles)">
-            <a
-                class="link"
-                [routerLink]="['/dashboard']"
-                [routerLinkActive]="'active'"
-                [matTooltip]="'Dashboard'"
-                [matTooltipPosition]="'right'"
-                [matTooltipClass]="'offprint-tooltip'"
-            >
-                <span class="link-icon"><rmx-icon name="dashboard-2-line"></rmx-icon></span>
-            </a>
-        </ng-container>
     </ng-container>
+    <a
+        class="link"
+        [routerLink]="['/settings']"
+        [routerLinkActive]="'active'"
+        [matTooltip]="'Settings'"
+        [matTooltipPosition]="'right'"
+        [matTooltipClass]="'offprint-tooltip'"
+    >
+        <span class="link-icon"><rmx-icon name="settings-5-line"></rmx-icon></span>
+    </a>
     <a
         class="link"
         [routerLink]="['/search']"
