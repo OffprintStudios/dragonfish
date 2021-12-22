@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommentKind } from '@dragonfish/shared/models/comments';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { setThreePartTitle } from '@dragonfish/shared/constants';
@@ -11,6 +11,7 @@ import { AlertsService } from '@dragonfish/client/alerts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { ActivatedRoute } from '@angular/router';
 import { MAX_TITLE_LENGTH, MIN_TEXT_LENGTH } from '@dragonfish/shared/constants/content-constants';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @UntilDestroy()
 @Component({
@@ -22,6 +23,7 @@ export class BlogPageComponent implements OnInit {
     pageNum = 1;
     editMode = false;
     moreMenuOpened = false;
+    mobileMode = false;
     kind = CommentKind.ContentComment; // Sets the item kind for comments
     pubStatus = PubStatus;
 
@@ -53,6 +55,7 @@ export class BlogPageComponent implements OnInit {
                 body: blog.body,
             });
         });
+        this.onResize();
     }
 
     toggleEdits() {
@@ -91,5 +94,10 @@ export class BlogPageComponent implements OnInit {
                 newStatus: pubStatus,
             })
             .subscribe();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 }

@@ -1,18 +1,93 @@
 <ng-container *ngIf="blogQuery.blog$ | async as blog">
     <div class="w-full overflow-y-auto h-screen">
         <div class="w-11/12 md:w-9/12 lg:w-7/12 mx-auto">
-            <div class="flex items-center my-6 p-1.5 rounded-md" style="background: var(--accent); box-shadow: var(--dropshadow);">
-                <div class="p-2 border-r border-white mr-2">
-                    <img class="w-24 h-24 border-4 border-white rounded-md" [src]="blogQuery.author.profile.avatar" [alt]="'avatar'">
+            <ng-container *ngIf="!mobileMode; else mobile">
+                <div class="flex items-center my-6 p-1.5 rounded-md" style="background: var(--accent); box-shadow: var(--dropshadow);">
+                    <div class="p-2 border-r border-white mr-2">
+                        <img class="w-24 h-24 border-4 border-white rounded-md" [src]="blogQuery.author.profile.avatar" [alt]="'avatar'">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center">
+                            <div class="flex-1">
+                                <h1 class="text-3xl font-medium text-white">{{ blog.title }}</h1>
+                                <div class="flex items-center text-white">
+                                <span class="text-white text-xs">
+                                    by <a class="text-white" [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag]">{{ blogQuery.author.screenName }}</a>
+                                </span>
+                                    <span class="text-xs mx-1">|</span>
+                                    <span class="text-xs">{{ blog.stats.views | abbreviate }} view{{ blog.stats.views | pluralize  }}</span>
+                                    <span class="text-xs mx-1">|</span>
+                                    <ng-container *ngIf="blog.audit.publishedOn; else showCreated">
+                                        <span class="text-xs">{{ blog.audit.publishedOn | localedate: 'fullDate' }}</span>
+                                    </ng-container>
+                                    <ng-template #showCreated>
+                                        <span class="text-xs">{{ blog.createdAt | localedate: 'fullDate' }}</span>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="session.checkPseudonym(blogQuery.author._id); else noAuthorButtons">
+                                <ng-container *ngIf="editMode; else viewModeButtons">
+                                    <button class="header" (click)="submitForm(blog)">
+                                        <rmx-icon name="save-3-line"></rmx-icon>
+                                        <span>Save</span>
+                                    </button>
+                                    <div class="mx-0.5"></div>
+                                    <button class="header" (click)="toggleEdits()" [matTooltip]="'Cancel'" [matTooltipClass]="'offprint-tooltip'">
+                                        <rmx-icon name="close-line" class="mr-0"></rmx-icon>
+                                    </button>
+                                </ng-container>
+                                <ng-template #viewModeButtons>
+                                    <button class="header" (click)="toggleEdits()">
+                                        <rmx-icon name="edit-line"></rmx-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <div class="mx-0.5"></div>
+                                    <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreEditing" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                    </button>
+                                </ng-template>
+                            </ng-container>
+                            <ng-template #noAuthorButtons>
+                                <button class="header">
+                                    <rmx-icon name="heart-add-line"></rmx-icon>
+                                    <span>Favorite</span>
+                                </button>
+                                <div class="mx-0.5"></div>
+                                <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreMenu" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                </button>
+                            </ng-template>
+                            <div class="mx-1"></div>
+                        </div>
+                        <div class="my-2 w-full"></div>
+                        <div class="flex">
+                            <div
+                                class="nav-link px-7"
+                                [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag, 'post', blog._id, blog.title | slugify]"
+                                [routerLinkActive]="'active'"
+                                [routerLinkActiveOptions]="{ exact: true }"
+                            >
+                                <rmx-icon name="pages-line"></rmx-icon>
+                                <span>Read</span>
+                            </div>
+                            <div class="mx-0.5"></div>
+                            <div class="nav-link px-6" [routerLink]="'comments'" [routerLinkActive]="'active'">
+                                <rmx-icon name="discuss-line"></rmx-icon>
+                                <span>{{ blog.stats.comments | abbreviate }} Comment{{ blog.stats.comments | pluralize }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-1">
-                    <div class="flex items-center">
+            </ng-container>
+            <ng-template #mobile>
+                <div class="flex my-6 p-1.5 rounded-md" style="background: var(--accent); box-shadow: var(--dropshadow);">
+                    <div class="flex-1">
                         <div class="flex-1">
                             <h1 class="text-3xl font-medium text-white">{{ blog.title }}</h1>
                             <div class="flex items-center text-white">
-                            <span class="text-white text-xs">
-                                by <a class="text-white" [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag]">{{ blogQuery.author.screenName }}</a>
-                            </span>
+                                <span class="text-white text-xs">
+                                    by <a class="text-white" [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag]">{{ blogQuery.author.screenName }}</a>
+                                </span>
                                 <span class="text-xs mx-1">|</span>
                                 <span class="text-xs">{{ blog.stats.views | abbreviate }} view{{ blog.stats.views | pluralize  }}</span>
                                 <span class="text-xs mx-1">|</span>
@@ -26,57 +101,63 @@
                         </div>
                         <ng-container *ngIf="session.checkPseudonym(blogQuery.author._id); else noAuthorButtons">
                             <ng-container *ngIf="editMode; else viewModeButtons">
-                                <button class="header" (click)="submitForm(blog)">
-                                    <rmx-icon name="save-3-line"></rmx-icon>
-                                    <span>Save</span>
-                                </button>
-                                <div class="mx-0.5"></div>
-                                <button class="header" (click)="toggleEdits()" [matTooltip]="'Cancel'" [matTooltipClass]="'offprint-tooltip'">
-                                    <rmx-icon name="close-line" class="mr-0"></rmx-icon>
-                                </button>
+                                <div class="flex justify-end">
+                                    <button class="header" (click)="submitForm(blog)">
+                                        <rmx-icon name="save-3-line"></rmx-icon>
+                                        <span>Save</span>
+                                    </button>
+                                    <div class="mx-0.5"></div>
+                                    <button class="header" (click)="toggleEdits()" [matTooltip]="'Cancel'" [matTooltipClass]="'offprint-tooltip'">
+                                        <rmx-icon name="close-line" class="mr-0"></rmx-icon>
+                                    </button>
+                                </div>
                             </ng-container>
                             <ng-template #viewModeButtons>
-                                <button class="header" (click)="toggleEdits()">
-                                    <rmx-icon name="edit-line"></rmx-icon>
-                                    <span>Edit</span>
-                                </button>
-                                <div class="mx-0.5"></div>
-                                <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreEditing" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
-                                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                                </button>
+                                <div class="flex justify-end">
+                                    <button class="header" (click)="toggleEdits()">
+                                        <rmx-icon name="edit-line"></rmx-icon>
+                                        <span>Edit</span>
+                                    </button>
+                                    <div class="mx-0.5"></div>
+                                    <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreEditing" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                    </button>
+                                </div>
                             </ng-template>
                         </ng-container>
                         <ng-template #noAuthorButtons>
-                            <button class="header">
-                                <rmx-icon name="heart-add-line"></rmx-icon>
-                                <span>Favorite</span>
-                            </button>
-                            <div class="mx-0.5"></div>
-                            <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreMenu" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
-                                <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
-                            </button>
+                            <div class="flex justify-end">
+                                <button class="header">
+                                    <rmx-icon name="heart-add-line"></rmx-icon>
+                                    <span>Favorite</span>
+                                </button>
+                                <div class="mx-0.5"></div>
+                                <button class="header" [ngClass]="{'active': moreMenuOpened}" [matMenuTriggerFor]="moreMenu" (menuOpened)="toggleMoreMenu()" (menuClosed)="toggleMoreMenu()">
+                                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                </button>
+                            </div>
                         </ng-template>
                         <div class="mx-1"></div>
-                    </div>
-                    <div class="my-2 w-full"></div>
-                    <div class="flex">
-                        <div
-                            class="nav-link px-7"
-                            [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag, 'post', blog._id, blog.title | slugify]"
-                            [routerLinkActive]="'active'"
-                            [routerLinkActiveOptions]="{ exact: true }"
-                        >
-                            <rmx-icon name="pages-line"></rmx-icon>
-                            <span>Read</span>
-                        </div>
-                        <div class="mx-0.5"></div>
-                        <div class="nav-link px-6" [routerLink]="'comments'" [routerLinkActive]="'active'">
-                            <rmx-icon name="discuss-line"></rmx-icon>
-                            <span>{{ blog.stats.comments | abbreviate }} Comment{{ blog.stats.comments | pluralize }}</span>
+                        <div class="my-2 w-full"></div>
+                        <div class="flex">
+                            <div
+                                class="nav-link px-7"
+                                [routerLink]="['/profile', blogQuery.author._id, blogQuery.author.userTag, 'post', blog._id, blog.title | slugify]"
+                                [routerLinkActive]="'active'"
+                                [routerLinkActiveOptions]="{ exact: true }"
+                            >
+                                <rmx-icon name="pages-line"></rmx-icon>
+                                <span>Read</span>
+                            </div>
+                            <div class="mx-0.5"></div>
+                            <div class="nav-link px-6" [routerLink]="'comments'" [routerLinkActive]="'active'">
+                                <rmx-icon name="discuss-line"></rmx-icon>
+                                <span>{{ blog.stats.comments | abbreviate }} Comment{{ blog.stats.comments | pluralize }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </ng-template>
             <ng-container *ngIf="route.children.length === 0; else hasChildren">
                 <ng-container *ngIf="editMode; else viewMode">
                     <form [formGroup]="blogForm" class="mx-auto mb-6">
