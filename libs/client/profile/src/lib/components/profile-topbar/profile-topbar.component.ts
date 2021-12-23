@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ProfileRepository } from '@dragonfish/client/repository/profile';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
@@ -6,15 +6,17 @@ import { SessionQuery } from '@dragonfish/client/repository/session';
 import { MatDialog } from '@angular/material/dialog';
 import { CoverPicUploadComponent } from '@dragonfish/client/settings';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
+import { isMobile } from '@dragonfish/shared/functions';
 
 @Component({
     selector: 'dragonfish-profile-topbar',
     templateUrl: './profile-topbar.component.html',
     styleUrls: ['./profile-topbar.component.scss'],
 })
-export class ProfileTopbarComponent {
+export class ProfileTopbarComponent implements OnInit {
     isMoreOpened = false;
     loadingFollowing = false;
+    mobileMode = false;
 
     constructor(
         public profile: ProfileRepository,
@@ -23,6 +25,10 @@ export class ProfileTopbarComponent {
         private alerts: AlertsService,
         private dialog: MatDialog,
     ) {}
+
+    ngOnInit(): void {
+        this.onResize();
+    }
 
     toggleMore() {
         this.isMoreOpened = !this.isMoreOpened;
@@ -72,5 +78,10 @@ export class ProfileTopbarComponent {
             height: '100vh',
             disableClose: true
         });
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+        this.mobileMode = isMobile();
     }
 }
