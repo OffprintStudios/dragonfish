@@ -7,4 +7,4 @@ export const MIN_GENRES = 1;
 export const MAX_GENRES = 3;
 export const MAX_FANDOM_TAGS = 5;
 
-export const TAGS_ENABLED = false;
+export const TAGS_ENABLED = true;

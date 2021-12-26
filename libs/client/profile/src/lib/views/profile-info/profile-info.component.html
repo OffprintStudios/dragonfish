@@ -1,60 +1,125 @@
-<div class="flex flex-row justify-center w-11/12 mx-auto my-6">
-    <ng-container *ngIf="profile.profile$ | async as portUser">
-        <div class="p-4 w-52">
-            <h5 class="text-2xl font-medium text-center">About Me</h5>
-            <ng-container *ngIf="portUser.profile.bio">
-                <p class="text-sm text-center">{{ portUser.profile.bio }}</p>
-                <div class="my-2.5 border-b" style="border-color: var(--borders)"><!--spacer--></div>
-            </ng-container>
-            <div class="flex flex-col items-center">
-                <div class="flex flex-row items-center text-sm">
-                    <rmx-icon name="gift-2-line" class="mr-1"></rmx-icon>Joined {{ portUser.createdAt | localedate: 'mediumDate' }}
-                </div>
-            </div>
-        </div>
-    </ng-container>
-    <div class="mx-4"><!--spacer--></div>
-    <ng-container *ngIf="profile.blogs$ | async as blogs">
-        <div class="flex-1 max-w-lg">
-            <div class="border-b mb-4" style="border-color: var(--borders)">
-                <h3 class="text-3xl font-medium">Latest Blogs</h3>
-            </div>
-            <ng-container *ngIf="blogs.length === 0; else hasBlogs">
-                <div class="empty">
-                    <h3>Nothing to see here...</h3>
-                    <p>
-                        Check back when this user has posted something!
-                    </p>
-                </div>
-            </ng-container>
-            <ng-template #hasBlogs>
-                <ng-container *ngFor="let blog of blogs">
-                    <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
-                    <div class="my-3.5"><!--spacer--></div>
+<ng-container *ngIf="!mobileMode; else mobile">
+    <div class="flex flex-row justify-center w-11/12 mx-auto my-6">
+        <ng-container *ngIf="profile.profile$ | async as portUser">
+            <div class="p-4 w-52">
+                <h5 class="text-2xl font-medium text-center">About Me</h5>
+                <ng-container *ngIf="portUser.profile.bio">
+                    <p class="text-sm text-center">{{ portUser.profile.bio }}</p>
+                    <div class="my-2.5 border-b" style="border-color: var(--borders)"><!--spacer--></div>
                 </ng-container>
-            </ng-template>
-        </div>
-    </ng-container>
-    <div class="mx-4"><!--spacer--></div>
-    <ng-container *ngIf="profile.works$ | async as works">
-        <div class="max-w-sm">
-            <div class="border-b mb-4" style="border-color: var(--borders)">
-                <h3 class="text-3xl font-medium">Latest Works</h3>
-            </div>
-            <ng-container *ngIf="works.length === 0; else hasWorks">
-                <div class="empty">
-                    <h3>Nothing to see here...</h3>
-                    <p>
-                        Check back when this user has posted something!
-                    </p>
+                <div class="flex flex-col items-center">
+                    <div class="flex flex-row items-center text-sm">
+                        <rmx-icon name="gift-2-line" class="mr-1"></rmx-icon>Joined {{ portUser.createdAt | localedate: 'mediumDate' }}
+                    </div>
                 </div>
-            </ng-container>
-            <ng-template #hasWorks>
-                <ng-container *ngFor="let work of works">
-                    <dragonfish-work-card [content]="work" [showAuthor]="false" [size]="'small'"></dragonfish-work-card>
-                    <div class="my-3.5"><!--spacer--></div>
+            </div>
+        </ng-container>
+        <div class="mx-4"><!--spacer--></div>
+        <ng-container *ngIf="profile.blogs$ | async as blogs">
+            <div class="flex-1 max-w-lg">
+                <div class="border-b mb-4" style="border-color: var(--borders)">
+                    <h3 class="text-3xl font-medium">Latest Blogs</h3>
+                </div>
+                <ng-container *ngIf="blogs.length === 0; else hasBlogs">
+                    <div class="empty">
+                        <h3>Nothing to see here...</h3>
+                        <p>
+                            Check back when this user has posted something!
+                        </p>
+                    </div>
                 </ng-container>
-            </ng-template>
-        </div>
-    </ng-container>
-</div>
+                <ng-template #hasBlogs>
+                    <ng-container *ngFor="let blog of blogs">
+                        <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
+                        <div class="my-3.5"><!--spacer--></div>
+                    </ng-container>
+                </ng-template>
+            </div>
+        </ng-container>
+        <div class="mx-4"><!--spacer--></div>
+        <ng-container *ngIf="profile.works$ | async as works">
+            <div class="max-w-sm">
+                <div class="border-b mb-4" style="border-color: var(--borders)">
+                    <h3 class="text-3xl font-medium">Latest Works</h3>
+                </div>
+                <ng-container *ngIf="works.length === 0; else hasWorks">
+                    <div class="empty">
+                        <h3>Nothing to see here...</h3>
+                        <p>
+                            Check back when this user has posted something!
+                        </p>
+                    </div>
+                </ng-container>
+                <ng-template #hasWorks>
+                    <ng-container *ngFor="let work of works">
+                        <dragonfish-work-card [content]="work" [showAuthor]="false" [size]="'small'"></dragonfish-work-card>
+                        <div class="my-3.5"><!--spacer--></div>
+                    </ng-container>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
+</ng-container>
+<ng-template #mobile>
+    <div class="justify-center w-11/12 mx-auto my-6 mb-16">
+        <ng-container *ngIf="profile.profile$ | async as portUser">
+            <div class="max-w-sm">
+                <div class="border-b mb-4" style="border-color: var(--borders)">
+                    <h3 class="text-3xl font-medium">About Me</h3>
+                </div>
+                <ng-container *ngIf="portUser.profile.bio">
+                    <p class="text-sm">{{ portUser.profile.bio }}</p>
+                </ng-container>
+                <div class="flex flex-col">
+                    <div class="flex flex-row text-sm">
+                        <rmx-icon name="gift-2-line" class="mr-1"></rmx-icon>Joined {{ portUser.createdAt | localedate: 'mediumDate' }}
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+        <div class="my-4"><!--spacer--></div>
+        <ng-container *ngIf="profile.works$ | async as works">
+            <div class="max-w-sm">
+                <div class="border-b mb-4" style="border-color: var(--borders)">
+                    <h3 class="text-3xl font-medium">Latest Works</h3>
+                </div>
+                <ng-container *ngIf="works.length === 0; else hasWorks">
+                    <div class="empty">
+                        <h3>Nothing to see here...</h3>
+                        <p>
+                            Check back when this user has posted something!
+                        </p>
+                    </div>
+                </ng-container>
+                <ng-template #hasWorks>
+                    <ng-container *ngFor="let work of works">
+                        <dragonfish-work-card [content]="work" [showAuthor]="false" [size]="'small'"></dragonfish-work-card>
+                        <div class="my-3.5"><!--spacer--></div>
+                    </ng-container>
+                </ng-template>
+            </div>
+        </ng-container>
+        <div class="my-4"><!--spacer--></div>
+        <ng-container *ngIf="profile.blogs$ | async as blogs">
+            <div class="flex-1 max-w-lg">
+                <div class="border-b mb-4" style="border-color: var(--borders)">
+                    <h3 class="text-3xl font-medium">Latest Blogs</h3>
+                </div>
+                <ng-container *ngIf="blogs.length === 0; else hasBlogs">
+                    <div class="empty">
+                        <h3>Nothing to see here...</h3>
+                        <p>
+                            Check back when this user has posted something!
+                        </p>
+                    </div>
+                </ng-container>
+                <ng-template #hasBlogs>
+                    <ng-container *ngFor="let blog of blogs">
+                        <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
+                        <div class="my-3.5"><!--spacer--></div>
+                    </ng-container>
+                </ng-template>
+            </div>
+        </ng-container>
+    </div>
+</ng-template>

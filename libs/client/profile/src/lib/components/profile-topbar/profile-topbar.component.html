@@ -1,126 +1,248 @@
 <ng-container *ngIf="profile.profile$ | async as currProfile">
-    <div class="profile-header">
-        <div>
-            <ng-container *ngIf="currProfile.profile.coverPic; else noCoverPic">
-                <img class="cover" [src]="currProfile.profile.coverPic" [alt]="'cover pic'">
-            </ng-container>
-            <ng-template #noCoverPic>
-                <div class="cover"></div>
-            </ng-template>
-            <div class="header-bar">
-                <div class="header-items">
-                    <img class="avatar" [src]="currProfile.profile.avatar" [alt]="'avatar'">
-                    <div class="flex-1">
-                        <div class="flex items-center relative mb-0.5">
-                            <dragonfish-role-badge [roles]="currProfile.roles" [size]="'normal'"></dragonfish-role-badge>
-                            <h3 class="text-3xl font-medium text-white relative top-1 ml-1.5">
-                                {{ currProfile.screenName }}
-                            </h3>
+    <ng-container *ngIf="!mobileMode; else mobile">
+        <div class="profile-header">
+            <div>
+                <ng-container *ngIf="currProfile.profile.coverPic; else noCoverPic">
+                    <img class="cover" [src]="currProfile.profile.coverPic" [alt]="'cover pic'">
+                </ng-container>
+                <ng-template #noCoverPic>
+                    <div class="cover"></div>
+                </ng-template>
+                <div class="header-bar">
+                    <div class="header-items">
+                        <img class="avatar" [src]="currProfile.profile.avatar" [alt]="'avatar'">
+                        <div class="flex-1">
+                            <div class="flex items-center relative mb-0.5">
+                                <dragonfish-role-badge [roles]="currProfile.roles" [size]="'normal'"></dragonfish-role-badge>
+                                <h3 class="text-3xl font-medium text-white relative top-1 ml-1.5">
+                                    {{ currProfile.screenName }}
+                                </h3>
+                            </div>
+                            <h4 class="italic text-white">@{{ currProfile.userTag }}</h4>
+                            <div class="flex items-center text-white text-xs">
+                                <span>{{ currProfile.stats.followers | abbreviate }} Followers</span>
+                                <span class="text-xl mx-1.5">·</span>
+                                <span>{{ currProfile.stats.following | abbreviate }} Following</span>
+                            </div>
                         </div>
-                        <h4 class="italic text-white">@{{ currProfile.userTag }}</h4>
-                        <div class="flex items-center text-white text-xs">
-                            <span>{{ currProfile.stats.followers | abbreviate }} Followers</span>
-                            <span class="text-xl mx-1.5">·</span>
-                            <span>{{ currProfile.stats.following | abbreviate }} Following</span>
-                        </div>
-                    </div>
-                    <ng-container *ngIf="auth.checkPseudonym(currProfile._id); else notThisUser">
-                        <button
-                            class="px-2.5"
-                            [matTooltip]="'Change Cover'"
-                            [matTooltipClass]="'offprint-tooltip'"
-                            (click)="changeCover()"
-                        >
-                            <rmx-icon name="image-add-line" class="mr-0"></rmx-icon>
-                        </button>
-                        <button [routerLink]="['/settings/profile']">
-                            <rmx-icon name="edit-line"></rmx-icon>
-                            <span>Edit</span>
-                        </button>
-                    </ng-container>
-                    <ng-template #notThisUser>
-                        <ng-container *ngIf="session.currAccount">
-                            <ng-container *ngIf="loadingFollowing; else notLoadingFollowing">
-                                <button>
-                                    <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
-                                    <span>Saving...</span>
-                                </button>
-                            </ng-container>
-                            <ng-template #notLoadingFollowing>
-                                <ng-container *ngIf="profile.isFollowing; else notFollowing">
-                                    <button (click)="unfollow()">
-                                        <rmx-icon name="user-unfollow-line"></rmx-icon>
-                                        <span>Unfollow</span>
-                                    </button>
-                                </ng-container>
-                                <ng-template #notFollowing>
-                                    <button (click)="follow()">
-                                        <rmx-icon name="user-follow-line"></rmx-icon>
-                                        <span>Follow</span>
-                                    </button>
-                                </ng-template>
-                            </ng-template>
+                        <ng-container *ngIf="auth.checkPseudonym(currProfile._id); else notThisUser">
                             <button
                                 class="px-2.5"
-                                [matTooltip]="'Send Friend Request'"
+                                [matTooltip]="'Change Cover'"
                                 [matTooltipClass]="'offprint-tooltip'"
-                                (click)="friendRequest()"
+                                (click)="changeCover()"
                             >
-                                <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                                <rmx-icon name="image-add-line" class="mr-0"></rmx-icon>
                             </button>
-                            <button
-                                class="px-2.5"
-                                [ngClass]="{'active': isMoreOpened}"
-                                [matTooltip]="'More'"
-                                [matTooltipClass]="'offprint-tooltip'"
-                                [matMenuTriggerFor]="moreOptions"
-                                (menuOpened)="toggleMore()"
-                                (menuClosed)="toggleMore()"
-                            >
-                                <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                            <button [routerLink]="['/settings/profile']">
+                                <rmx-icon name="edit-line"></rmx-icon>
+                                <span>Edit</span>
                             </button>
                         </ng-container>
-                    </ng-template>
-                </div>
-                <div class="nav-items">
-                    <a
-                        class="link"
-                        (click)="setTitle()"
-                        [routerLink]="['/profile', currProfile._id, currProfile.userTag]"
-                        [routerLinkActive]="'active'"
-                        [routerLinkActiveOptions]="{ exact: true }"
-                    >
-                        <rmx-icon name="home-5-line"></rmx-icon>
-                        <span>Home</span>
-                    </a>
-                    <a
-                        class="link"
-                        [routerLink]="['works']"
-                        [routerLinkActive]="'active'"
-                    >
-                        <rmx-icon name="quill-pen-line"></rmx-icon>
-                        <span>{{ currProfile.stats.works | abbreviate }} Work{{ currProfile.stats.works | pluralize }}</span>
-                    </a>
-                    <a
-                        class="link"
-                        [routerLink]="['blogs']"
-                        [routerLinkActive]="'active'"
-                    >
-                        <rmx-icon name="cup-line"></rmx-icon>
-                        <span>{{ currProfile.stats.blogs | abbreviate }} Blog{{ currProfile.stats.blogs | pluralize }}</span>
-                    </a>
-                    <a
-                        class="link"
-                        [routerLink]="['bookshelves']"
-                        [routerLinkActive]="'active'"
-                    >
-                        <rmx-icon name="bar-chart-fill"></rmx-icon>
-                        <span>Bookshelves</span>
-                    </a>
+                        <ng-template #notThisUser>
+                            <ng-container *ngIf="session.currAccount">
+                                <ng-container *ngIf="loadingFollowing; else notLoadingFollowing">
+                                    <button>
+                                        <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                                        <span>Saving...</span>
+                                    </button>
+                                </ng-container>
+                                <ng-template #notLoadingFollowing>
+                                    <ng-container *ngIf="profile.isFollowing; else notFollowing">
+                                        <button (click)="unfollow()">
+                                            <rmx-icon name="user-unfollow-line"></rmx-icon>
+                                            <span>Unfollow</span>
+                                        </button>
+                                    </ng-container>
+                                    <ng-template #notFollowing>
+                                        <button (click)="follow()">
+                                            <rmx-icon name="user-follow-line"></rmx-icon>
+                                            <span>Follow</span>
+                                        </button>
+                                    </ng-template>
+                                </ng-template>
+                                <button
+                                    class="px-2.5"
+                                    [matTooltip]="'Send Friend Request'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                    (click)="friendRequest()"
+                                >
+                                    <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                                </button>
+                                <button
+                                    class="px-2.5"
+                                    [ngClass]="{'active': isMoreOpened}"
+                                    [matTooltip]="'More'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                    [matMenuTriggerFor]="moreOptions"
+                                    (menuOpened)="toggleMore()"
+                                    (menuClosed)="toggleMore()"
+                                >
+                                    <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                </button>
+                            </ng-container>
+                        </ng-template>
+                    </div>
+                    <div class="nav-items">
+                        <a
+                            class="link"
+                            (click)="setTitle()"
+                            [routerLink]="['/profile', currProfile._id, currProfile.userTag]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <rmx-icon name="home-5-line"></rmx-icon>
+                            <span>Home</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['works']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="quill-pen-line"></rmx-icon>
+                            <span>{{ currProfile.stats.works | abbreviate }} Work{{ currProfile.stats.works | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['blogs']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="cup-line"></rmx-icon>
+                            <span>{{ currProfile.stats.blogs | abbreviate }} Blog{{ currProfile.stats.blogs | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['bookshelves']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="bar-chart-fill"></rmx-icon>
+                            <span>Bookshelves</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </ng-container>
+    <ng-template #mobile>
+        <div class="mobile-profile-header">
+            <div>
+                <div class="header-bar">
+                    <div class="header-items">
+                        <div class="flex items-center relative mb-0.5">
+                            <img class="avatar" [src]="currProfile.profile.avatar" [alt]="'avatar'">
+                            <dragonfish-role-badge [roles]="currProfile.roles" [size]="'normal'"></dragonfish-role-badge>
+                            <div class="flex-1">
+                                <h3 class="text-2xl font-medium text-white relative top-1 ml-1.5">
+                                    {{ currProfile.screenName }}
+                                </h3>
+                                <h4 class="italic text-white ml-1.5">@{{ currProfile.userTag }}</h4>
+                                <div class="flex items-center text-white text-xs ml-1.5">
+                                    <span>{{ currProfile.stats.followers | abbreviate }} Followers</span>
+                                    <span class="text-xl mx-1.5">·</span>
+                                    <span>{{ currProfile.stats.following | abbreviate }} Following</span>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="auth.checkPseudonym(currProfile._id); else notThisUser">
+                            <div class="flex justify-center">
+                                <button
+                                    class="px-2.5"
+                                    [matTooltip]="'Change Cover'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                    (click)="changeCover()"
+                                >
+                                    <rmx-icon name="image-add-line" class="mr-0"></rmx-icon>
+                                </button>
+                                <button [routerLink]="['/settings/profile']">
+                                    <rmx-icon name="edit-line"></rmx-icon>
+                                    <span>Edit</span>
+                                </button>
+                            </div>
+                        </ng-container>
+                        <ng-template #notThisUser>
+                            <ng-container *ngIf="session.currAccount">
+                                <div class="flex justify-center">
+                                    <ng-container *ngIf="loadingFollowing; else notLoadingFollowing">
+                                        <button>
+                                            <rmx-icon name="loader-4-line" class="loading"></rmx-icon>
+                                            <span>Saving...</span>
+                                        </button>
+                                    </ng-container>
+                                    <ng-template #notLoadingFollowing>
+                                        <ng-container *ngIf="profile.isFollowing; else notFollowing">
+                                            <button (click)="unfollow()">
+                                                <rmx-icon name="user-unfollow-line"></rmx-icon>
+                                                <span>Unfollow</span>
+                                            </button>
+                                        </ng-container>
+                                        <ng-template #notFollowing>
+                                            <button (click)="follow()">
+                                                <rmx-icon name="user-follow-line"></rmx-icon>
+                                                <span>Follow</span>
+                                            </button>
+                                        </ng-template>
+                                    </ng-template>
+                                    <button
+                                        class="px-2.5"
+                                        [matTooltip]="'Send Friend Request'"
+                                        [matTooltipClass]="'offprint-tooltip'"
+                                        (click)="friendRequest()"
+                                    >
+                                        <rmx-icon name="user-smile-line" class="mr-0"></rmx-icon>
+                                    </button>
+                                    <button
+                                        class="px-2.5"
+                                        [ngClass]="{'active': isMoreOpened}"
+                                        [matTooltip]="'More'"
+                                        [matTooltipClass]="'offprint-tooltip'"
+                                        [matMenuTriggerFor]="moreOptions"
+                                        (menuOpened)="toggleMore()"
+                                        (menuClosed)="toggleMore()"
+                                    >
+                                        <rmx-icon name="more-2-fill" class="mr-0"></rmx-icon>
+                                    </button>
+                                </div>
+                            </ng-container>
+                        </ng-template>
+                    </div>
+                    <div class="nav-items">
+                        <a
+                            class="link"
+                            (click)="setTitle()"
+                            [routerLink]="['/profile', currProfile._id, currProfile.userTag]"
+                            [routerLinkActive]="'active'"
+                            [routerLinkActiveOptions]="{ exact: true }"
+                        >
+                            <rmx-icon name="home-5-line"></rmx-icon>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['works']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="quill-pen-line"></rmx-icon>
+                            <span class="label">{{ currProfile.stats.works | abbreviate }} Work{{ currProfile.stats.works | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['blogs']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="cup-line"></rmx-icon>
+                            <span class="label">{{ currProfile.stats.blogs | abbreviate }} Blog{{ currProfile.stats.blogs | pluralize }}</span>
+                        </a>
+                        <a
+                            class="link"
+                            [routerLink]="['bookshelves']"
+                            [routerLinkActive]="'active'"
+                        >
+                            <rmx-icon name="bar-chart-fill"></rmx-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 
     <mat-menu #moreOptions='matMenu'>
         <button mat-menu-item class="hover:scale-100 tracking-normal" (click)="sendMessage()">
