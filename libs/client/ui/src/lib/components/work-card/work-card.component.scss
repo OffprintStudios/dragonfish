@@ -3,6 +3,7 @@ span.medium-card {
     color: var(--text-color);
     h3.title {
         @apply relative top-0.5 font-medium flex-1 text-xl overflow-hidden overflow-ellipsis whitespace-nowrap;
+        width: 1rem;
     }
     &:hover {
         @apply text-white scale-105 no-underline z-30;
