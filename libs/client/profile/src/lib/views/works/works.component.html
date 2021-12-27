@@ -98,7 +98,5 @@
             <p>Check back later to see if {{ profile.screenName }} adds anything!</p>
         </div>
     </ng-template>
-    <ng-container *ngIf="userWorks.currPage > 1">
-        <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-    </ng-container>
+    <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
 </ng-template>

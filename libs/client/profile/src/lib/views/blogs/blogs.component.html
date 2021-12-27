@@ -131,9 +131,7 @@
                     <p>Check back later to see if {{ portUser.screenName }} adds anything!</p>
                 </div>
             </ng-template>
-            <ng-container *ngIf="userBlogsQuery.totalPages > 1">
-                <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-            </ng-container>
+            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
         </ng-container>
     </ng-template>
 </div>
