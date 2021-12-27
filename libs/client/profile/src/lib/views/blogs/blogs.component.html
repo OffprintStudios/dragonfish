@@ -119,19 +119,21 @@
         </ng-container>
     </ng-container>
     <ng-template #notThisUser>
-        <ng-container *ngIf="profile.profile$ | async as portUser">
-            <div class="my-6 w-7/12 mx-auto" *ngIf="userBlogsQuery.totalBlogs !== 0; else noGalleryBlogs">
-                <ng-container *ngFor="let blog of userBlogsQuery.pubBlogs | paginate: {itemsPerPage: userBlogsQuery.perPage, currentPage: userBlogsQuery.currPage, totalItems: userBlogsQuery.totalBlogs}">
-                    <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
-                </ng-container>
-            </div>
-            <ng-template #noGalleryBlogs>
-                <div class="empty">
-                    <h3>There's nothing here...</h3>
-                    <p>Check back later to see if {{ portUser.screenName }} adds anything!</p>
+        <div class="mb-16">
+            <ng-container *ngIf="profile.profile$ | async as portUser">
+                <div class="my-6 w-7/12 mx-auto" *ngIf="userBlogsQuery.totalBlogs !== 0; else noGalleryBlogs">
+                    <ng-container *ngFor="let blog of userBlogsQuery.pubBlogs | paginate: {itemsPerPage: userBlogsQuery.perPage, currentPage: userBlogsQuery.currPage, totalItems: userBlogsQuery.totalBlogs}">
+                        <dragonfish-blog-card [blog]="blog" [showAuthor]="false"></dragonfish-blog-card>
+                    </ng-container>
                 </div>
-            </ng-template>
-            <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-        </ng-container>
+                <ng-template #noGalleryBlogs>
+                    <div class="empty">
+                        <h3>There's nothing here...</h3>
+                        <p>Check back later to see if {{ portUser.screenName }} adds anything!</p>
+                    </div>
+                </ng-template>
+                <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
+            </ng-container>
+        </div>
     </ng-template>
 </div>
