@@ -77,28 +77,28 @@
 </ng-container>
 
 <ng-template #nonUserWorksList>
-    <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8 mb-16" *ngIf="userWorks.totalWorks !== 0; else noGalleryWorks">
-        <ng-container
-            *ngFor="
-                let work of userWorks.pubWorks
-                    | paginate
-                        : {
-                              itemsPerPage: userWorks.perPage,
-                              currentPage: userWorks.currPage,
-                              totalItems: userWorks.totalWorks
-                          }
-            "
-        >
-            <dragonfish-work-card [content]="work" [showAuthor]="false"></dragonfish-work-card>
-        </ng-container>
-    </div>
-    <ng-template #noGalleryWorks>
-        <div class="empty">
-            <h3>There's nothing here...</h3>
-            <p>Check back later to see if {{ profile.screenName }} adds anything!</p>
+    <div class="mb-16">
+        <div class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8" *ngIf="userWorks.totalWorks !== 0; else noGalleryWorks">
+            <ng-container
+                *ngFor="
+                    let work of userWorks.pubWorks
+                        | paginate
+                            : {
+                                itemsPerPage: userWorks.perPage,
+                                currentPage: userWorks.currPage,
+                                totalItems: userWorks.totalWorks
+                            }
+                "
+            >
+                <dragonfish-work-card [content]="work" [showAuthor]="false"></dragonfish-work-card>
+            </ng-container>
         </div>
-    </ng-template>
-    <ng-container *ngIf="userWorks.currPage > 1">
+        <ng-template #noGalleryWorks>
+            <div class="empty">
+                <h3>There's nothing here...</h3>
+                <p>Check back later to see if {{ profile.screenName }} adds anything!</p>
+            </div>
+        </ng-template>
         <pagination-controls (pageChange)="onPageChange($event)" previousLabel="" nextLabel=""></pagination-controls>
-    </ng-container>
+    </div>
 </ng-template>
