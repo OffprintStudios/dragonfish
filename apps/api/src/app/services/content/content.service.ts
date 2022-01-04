@@ -50,10 +50,6 @@ export class ContentService {
         return await this.contentGroup.fetchOnePublished(contentId, kind, user);
     }
 
-    public async fetchAll(userId: string): Promise<ContentModel[]> {
-        return await this.content.fetchAll(userId);
-    }
-
     public async fetchAllByKind(userId: string, kinds: ContentKind[]): Promise<PaginateResult<ContentModel>> {
         return await this.content.fetchAllByKind(userId, kinds);
     }
