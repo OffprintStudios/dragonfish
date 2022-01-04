@@ -22,7 +22,6 @@ import { ApprovalQueueStore } from '../../approval-queue';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
 import { MIN_PROSE_LENGTH } from '@dragonfish/shared/constants/content-constants';
-import { TagsStore } from '.';
 
 /**
  * ## Content Store
