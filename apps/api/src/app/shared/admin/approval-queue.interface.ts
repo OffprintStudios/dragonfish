@@ -13,7 +13,7 @@ export interface IApprovalQueue {
 
     /**
      * Fetches a single piece of content associated with the provided content ID and
-     * user ID.
+     * approver ID.
      *
      * @param contentId The content to view
      * @param kind The content's kind
@@ -24,28 +24,28 @@ export interface IApprovalQueue {
     /**
      * Claims a piece of content from the queue.
      *
-     * @param user The staff user claiming the content
+     * @param approverId The staff user claiming the content
      * @param docId The approval queue document
      */
-    claimContent(user: string, docId: string): Promise<ApprovalQueue>;
+    claimContent(approverId: string, docId: string): Promise<ApprovalQueue>;
 
     /**
      * Approves a piece of content for publishing.
      *
-     * @param user The staff user making this decision
+     * @param approverId The staff user making this decision
      * @param docId The approval queue document
      * @param contentId The content ID
      * @param authorId The author ID
      */
-    approveContent(user: string, docId: string, contentId: string, authorId: string): Promise<void>;
+    approveContent(approverId: string, docId: string, contentId: string, authorId: string): Promise<void>;
 
     /**
      * Rejects a piece of content for publishing.
      *
-     * @param user The staff user making this decision
+     * @param approverId The staff user making this decision
      * @param docId The approval queue document
      * @param contentId The content ID
      * @param authorId The author ID
      */
-    rejectContent(user: string, docId: string, contentId: string, authorId: string): Promise<void>;
+    rejectContent(approverId: string, docId: string, contentId: string, authorId: string): Promise<void>;
 }

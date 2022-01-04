@@ -27,18 +27,18 @@ export class ApprovalQueueService implements IApprovalQueue {
         return await this.content.fetchOnePending(contentId, kind, userId);
     }
 
-    async claimContent(user: any, docId: string): Promise<ApprovalQueue> {
-        return await this.approvalQueueStore.claimWork(user, docId);
+    async claimContent(approverId: string, docId: string): Promise<ApprovalQueue> {
+        return await this.approvalQueueStore.claimWork(approverId, docId);
     }
 
-    async approveContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        await this.content.approveWork(docId, user, workId, authorId);
+    async approveContent(approverId: string, docId: string, workId: string, authorId: string): Promise<void> {
+        await this.content.approveWork(approverId, docId, workId, authorId);
         await this.pseudonyms.updateWorkCount(
-            user,
-            await this.content.countContent(user, [ContentKind.ProseContent, ContentKind.PoetryContent]),
+            approverId,
+            await this.content.countContent(authorId, [ContentKind.ProseContent, ContentKind.PoetryContent]),
         );
 
-        // Get the works tags and update the counts for each
+        // Get the work's tags and update the counts for each
         const work = await this.content.fetchOne(workId);
         for (const tag of work.tags) {
             if (typeof tag === 'object') {
@@ -49,7 +49,7 @@ export class ApprovalQueueService implements IApprovalQueue {
         }
     }
 
-    async rejectContent(user: any, docId: string, workId: string, authorId: string): Promise<void> {
-        return await this.content.rejectWork(docId, user, workId, authorId);
+    async rejectContent(approverId: string, docId: string, workId: string, authorId: string): Promise<void> {
+        return await this.content.rejectWork(approverId, docId, workId, authorId);
     }
 }
