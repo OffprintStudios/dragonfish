@@ -81,21 +81,6 @@ export class ContentStore {
     }
 
     /**
-     * Finds a bunch of content documents belonging to a user, per that user's
-     * request.
-     *
-     * @param userId The user making the request
-     */
-    async fetchAll(userId: string): Promise<ContentDocument[]> {
-        return this.content
-            .find({
-                author: userId,
-                'audit.isDeleted': false,
-            })
-            .sort({ createdAt: 1 });
-    }
-
-    /**
      * Finds a bunch of content documents belonging to a user, per that user's request, filtered by ContentKind.
      *
      * @param userId
@@ -107,7 +92,10 @@ export class ContentStore {
             kind: { $in: kinds },
             'audit.isDeleted': false,
         };
-        const paginateOptions: PaginateOptions = { sort: { createdAt: this.NEWEST_FIRST }, pagination: false };
+        const paginateOptions: PaginateOptions = {
+            sort: { 'audit.publishedOn': this.NEWEST_FIRST, createdAt: this.NEWEST_FIRST },
+            pagination: false
+        };
 
         return await this.content.paginate(query, paginateOptions);
     }

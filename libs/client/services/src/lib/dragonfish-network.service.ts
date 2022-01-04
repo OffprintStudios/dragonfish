@@ -1079,20 +1079,6 @@ export class DragonfishNetworkService {
     }
 
     /**
-     * Fetches all files related to the current user from the backend.
-     *
-     * @returns Observable
-     */
-    public fetchAll(pseudId: string): Observable<ContentModel[]> {
-        return handleResponse(
-            this.http.get<ContentModel[]>(`${this.baseUrl}/content/fetch-all?pseudId=${pseudId}`, {
-                observe: 'response',
-                withCredentials: true,
-            }),
-        );
-    }
-
-    /**
      * Sends a request to create a piece of content to the backend, with the route determined by its
      * `ContentKind`.
      *

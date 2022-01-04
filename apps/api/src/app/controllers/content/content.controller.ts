@@ -101,14 +101,6 @@ export class ContentController {
     @ApiTags(DragonfishTags.Content)
     @UseGuards(IdentityGuard)
     @Identity(Roles.User)
-    @Get('fetch-all')
-    async fetchAll(@User() user: JwtPayload, @Query('pseudId') pseudId: string) {
-        return await this.content.fetchAll(pseudId);
-    }
-
-    @ApiTags(DragonfishTags.Content)
-    @UseGuards(IdentityGuard)
-    @Identity(Roles.User)
     @Get('fetch-all-by-kind')
     async fetchAllByKind(@Query('pseudId') pseudId: string, @Query('kinds') kinds: ContentKind[]) {
         return await this.content.fetchAllByKind(pseudId, kinds);
