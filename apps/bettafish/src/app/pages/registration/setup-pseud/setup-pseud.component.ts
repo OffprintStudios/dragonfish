@@ -49,10 +49,17 @@ export class SetupPseudComponent implements OnInit {
             pronouns: this.pseudForm.controls.pronouns.value,
         };
 
-        this.auth.createPseudonym(formData).subscribe(() => {
-            this.loading = false;
-            this.pseudForm.reset();
-            this.router.navigate(['/registration/select-pseud']).catch((err) => console.log(err));
+        this.auth.createPseudonym(formData).subscribe({
+            next: () => {
+                this.loading = false;
+                this.pseudForm.reset();
+                this.router.navigate(['/registration/select-pseud']).catch((err) => console.log(err));
+            },
+            error: () => {
+                this.auth.logout().subscribe(() => {
+                    this.router.navigate(['/']).catch((err) => console.log(err));
+                });
+            }
         });
     }
 }
