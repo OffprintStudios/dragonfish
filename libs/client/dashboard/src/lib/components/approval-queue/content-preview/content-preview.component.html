@@ -42,7 +42,7 @@
                                 [routerLink]="['/tag', tag._id, tag.name | slugify]"
                                 [innerHtml]="tag | displayTags | safeHtml"
                             ></a>
-                            <ng-container *ngIf="i < content.tags.length - 1">
+                            <ng-container *ngIf="i < currDoc.workToApprove.tags.length - 1">
                                 ,
                             </ng-container>
                         </ng-container>

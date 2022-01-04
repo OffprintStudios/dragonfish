@@ -18,7 +18,6 @@ import { NewsStore } from './news.store';
 import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
 import { isNullOrUndefined } from '@dragonfish/shared/functions';
-import { UsersStore } from '../../users';
 import { ApprovalQueueStore } from '../../approval-queue';
 import { PublishSection, SectionForm } from '@dragonfish/shared/models/sections';
 import { SectionsStore } from './sections.store';
@@ -36,7 +35,6 @@ export class ContentStore {
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('Sections') private readonly sections: Model<SectionsDocument>,
-        private readonly users: UsersStore,
         private readonly blogContent: BlogsStore,
         private readonly newsContent: NewsStore,
         private readonly proseContent: ProseStore,
@@ -275,12 +273,12 @@ export class ContentStore {
     /**
      * Sets the approval status of a work to Approved.
      *
-     * @param docId
-     * @param modId
+     * @param approverId The user approving this work
+     * @param docId The ID of the work while in the queue
      * @param contentId The work to approve
      * @param authorId The author of the work
      */
-    async approveWork(docId: string, modId: string, contentId: string, authorId: string): Promise<void> {
+    async approveWork(approverId: string, docId: string, contentId: string, authorId: string): Promise<void> {
         await this.content.updateOne(
             { _id: contentId, author: authorId, 'audit.isDeleted': false },
             {
@@ -288,24 +286,23 @@ export class ContentStore {
                 'audit.publishedOn': new Date(),
             },
         );
-        await this.queue.removeFromQueue(docId, modId);
-        await this.users.changeWorkCount(authorId, true);
+        await this.queue.removeFromQueue(docId, approverId);
     }
 
     /**
      * Sets the approval status of a work to Rejected.
      *
-     * @param docId
-     * @param modId
+     * @param approverId The user rejecting this work
+     * @param docId The ID of the work while in the queue
      * @param contentId The work to reject
      * @param authorId The author of the work
      */
-    async rejectWork(docId: string, modId: string, contentId: string, authorId: string): Promise<void> {
+    async rejectWork(approverId: string, docId: string, contentId: string, authorId: string): Promise<void> {
         await this.content.updateOne(
             { _id: contentId, author: authorId, 'audit.isDeleted': false },
             { 'audit.published': PubStatus.Rejected },
         );
-        await this.queue.removeFromQueue(docId, modId);
+        await this.queue.removeFromQueue(docId, approverId);
     }
 
     /**
