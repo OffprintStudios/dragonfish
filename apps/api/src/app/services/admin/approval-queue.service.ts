@@ -15,8 +15,8 @@ export class ApprovalQueueService implements IApprovalQueue {
     constructor(
         private approvalQueueStore: ApprovalQueueStore,
         private content: ContentStore,
-        private pseudonymsStore: PseudonymsStore,
-        private tagsStore: TagsStore,
+        private pseudonyms: PseudonymsStore,
+        private readonly tagsStore: TagsStore,
     ) {}
 
     async getQueue(pageNum: number): Promise<PaginateResult<ApprovalQueue>> {
@@ -33,7 +33,7 @@ export class ApprovalQueueService implements IApprovalQueue {
 
     async approveContent(approverId: string, docId: string, workId: string, authorId: string): Promise<void> {
         await this.content.approveWork(approverId, docId, workId, authorId);
-        await this.pseudonymsStore.updateWorkCount(
+        await this.pseudonyms.updateWorkCount(
             approverId,
             await this.content.countContent(authorId, [ContentKind.ProseContent, ContentKind.PoetryContent]),
         );
