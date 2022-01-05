@@ -23,22 +23,32 @@
                             >
                                 <rmx-icon name="checkbox-circle-line"></rmx-icon>
                             </div>
-                            <ng-container *ngIf="!mobileMode; else mobilePublished">
-                                <div class="section-button mid"
-                                    [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
-                                >
-                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                    <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                            <div class="section-button mid"
+                                [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
+                            >
+                                <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                <div class="flex text-xs">
+                                    <div class="flex items-center" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                        <rmx-icon name="pen-nib-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                        <span>{{ indexedSection.section.stats.words | abbreviate }}</span>
+                                    </div>
+                                    <div class="text-sm mx-0.5 relative">
+                                        •
+                                    </div>
+                                    <ng-container *ngIf="indexedSection.section.audit.publishedOn; else creationDate">
+                                        <div class="flex items-center" [matTooltip]="'Published on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                            <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                            <span>{{ indexedSection.section.audit.publishedOn | localedate: 'mediumDate' }}</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #creationDate>
+                                        <div class="flex items-center" [matTooltip]="'Created on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                            <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                            <span>{{ indexedSection.section.createdAt | localedate: 'mediumDate' }}</span>
+                                        </div>
+                                    </ng-template>
                                 </div>
-                            </ng-container>
-                            <ng-template #mobilePublished>
-                                <div class="mobile-section-button mid"
-                                    [routerLink]="goToSectionReader(indexedSection.index, indexedSection.section.title)"
-                                >
-                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                    <div class="text-xs">{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
-                                </div>
-                            </ng-template>
+                            </div>
                         </ng-container>
                         <ng-template #notPublished>
                             <div
@@ -50,22 +60,32 @@
                             >
                                 <rmx-icon name="checkbox-blank-circle-line"></rmx-icon>
                             </div>
-                            <ng-container *ngIf="!mobileMode; else mobileNotPublished">
-                                <div class="section-button mid"
-                                    [routerLink]="goToSectionAuthor(indexedSection.section._id)"
-                                >
-                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                    <div>{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
+                            <div class="section-button mid"
+                                [routerLink]="goToSectionAuthor(indexedSection.section._id)"
+                            >
+                                <div class="flex-1">{{ indexedSection.section.title }}</div>
+                                <div class="flex text-xs">
+                                    <div class="flex items-center" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                        <rmx-icon name="pen-nib-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                        <span>{{ indexedSection.section.stats.words | abbreviate }}</span>
+                                    </div>
+                                    <div class="text-sm mx-0.5 relative">
+                                        •
+                                    </div>
+                                    <ng-container *ngIf="indexedSection.section.audit.publishedOn; else creationDate">
+                                        <div class="flex items-center" [matTooltip]="'Published on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                            <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                            <span>{{ indexedSection.section.audit.publishedOn | localedate: 'mediumDate' }}</span>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #creationDate>
+                                        <div class="flex items-center" [matTooltip]="'Created on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                            <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                            <span>{{ indexedSection.section.createdAt | localedate: 'mediumDate' }}</span>
+                                        </div>
+                                    </ng-template>
                                 </div>
-                            </ng-container>
-                            <ng-template #mobileNotPublished>
-                                <div class="mobile-section-button mid"
-                                    [routerLink]="goToSectionAuthor(indexedSection.section._id)"
-                                >
-                                    <div class="flex-1">{{ indexedSection.section.title }}</div>
-                                    <div class="text-xs">{{ indexedSection.section.stats.words | abbreviate }} word{{ indexedSection.section.stats.words | pluralize }}</div>
-                                </div>
-                            </ng-template>
+                            </div>
                         </ng-template>
                         <div
                             class="pub-button end border-gray-600 dark:border-white"
@@ -85,18 +105,30 @@
                     <li
                         class="section-item border-gray-600 dark:border-white"
                     >
-                        <ng-container *ngIf="!mobileMode; else mobileNotThisUser">
-                            <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
-                                <div class="flex-1">{{ section.title }}</div>
-                                <div>{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
+                        <div class="section-button" [routerLink]="['section', i + 1, section.title | slugify]">
+                            <div class="flex-1">{{ section.title }}</div>
+                            <div class="flex text-xs">
+                                <div class="flex items-center" [matTooltip]="'Words'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                    <rmx-icon name="pen-nib-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                    <span>{{ section.stats.words | abbreviate }}</span>
+                                </div>
+                                <div class="text-sm mx-0.5 relative">
+                                    •
+                                </div>
+                                <ng-container *ngIf="section.audit.publishedOn; else creationDate">
+                                    <div class="flex items-center" [matTooltip]="'Published on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                        <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                        <span>{{ section.audit.publishedOn | localedate: 'mediumDate' }}</span>
+                                    </div>
+                                </ng-container>
+                                <ng-template #creationDate>
+                                    <div class="flex items-center" [matTooltip]="'Created on'" [matTooltipClass]="'offprint-tooltip'" [matTooltipShowDelay]="300">
+                                        <rmx-icon name="calendar-2-line" class="relative top-1 mr-0.5" style="width: 1rem;"></rmx-icon>
+                                        <span>{{ section.createdAt | localedate: 'mediumDate' }}</span>
+                                    </div>
+                                </ng-template>
                             </div>
-                        </ng-container>
-                        <ng-template #mobileNotThisUser>
-                            <div class="mobile-section-button" [routerLink]="['section', i + 1, section.title | slugify]">
-                                <div class="flex-1">{{ section.title }}</div>
-                                <div class="text-xs">{{ section.stats.words | abbreviate }} word{{ section.stats.words | pluralize }}</div>
-                            </div>
-                        </ng-template>
+                        </div>
                     </li>
                 </ng-container>
             </ul>
