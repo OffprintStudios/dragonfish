@@ -20,57 +20,95 @@
                 </div>
             </div>
             <div class="flex flex-col items-center" style="width: 10.83625rem;">
-                <div class="flex items-center border-b border-gray-600 dark:border-white pb-2">
+                <div class="flex items-center pb-2">
                     <ng-container *ngIf="session.isLoggedIn; else noRatings">
                         <ng-container [ngSwitch]="workQuery.currRating">
                             <ng-container *ngSwitchCase="ratingOption.NoVote">
-                                <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white"
+                                    (click)="addLike(content._id)"
+                                    [matTooltip]="'Like'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="heart-line"></rmx-icon>
-                                    <span>Like</span>
+                                    <span>{{ likes }}</span>
                                 </button>
                                 <div class="mx-0.5"></div>
-                                <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white"
+                                    (click)="addDislike(content._id)"
+                                    [matTooltip]="'Dislike'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="dislike-line"></rmx-icon>
-                                    <span>Dislike</span>
+                                    <span>{{ dislikes }}</span>
                                 </button>
                             </ng-container>
                             <ng-container *ngSwitchCase="ratingOption.Liked">
-                                <button class="border border-gray-600 dark:border-white px-3.5 active" (click)="workPage.setNoVote(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white active"
+                                    (click)="setNoVote(content._id)"
+                                    [matTooltip]="'Liked'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="heart-fill"></rmx-icon>
-                                    <span>Liked</span>
+                                    <span>{{ likes }}</span>
                                 </button>
                                 <div class="mx-0.5"></div>
-                                <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white"
+                                    (click)="addDislike(content._id)"
+                                    [matTooltip]="'Dislike'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="dislike-line"></rmx-icon>
-                                    <span>Dislike</span>
+                                    <span>{{ dislikes }}</span>
                                 </button>
                             </ng-container>
                             <ng-container *ngSwitchCase="ratingOption.Disliked">
-                                <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white"
+                                    (click)="addLike(content._id)"
+                                    [matTooltip]="'Like'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="heart-line"></rmx-icon>
-                                    <span>Like</span>
+                                    <span>{{ likes }}</span>
                                 </button>
                                 <div class="mx-0.5"></div>
-                                <button class="border border-gray-600 dark:border-white active" (click)="workPage.setNoVote(content._id)">
+                                <button
+                                    class="border border-gray-600 dark:border-white active"
+                                    (click)="setNoVote(content._id)"
+                                    [matTooltip]="'Disliked'"
+                                    [matTooltipClass]="'offprint-tooltip'"
+                                >
                                     <rmx-icon name="dislike-fill"></rmx-icon>
-                                    <span>Disliked</span>
+                                    <span>{{ dislikes }}</span>
                                 </button>
                             </ng-container>
                         </ng-container>
                     </ng-container>
                     <ng-template #noRatings>
-                        <button class="border border-gray-600 dark:border-white px-4">
+                        <button
+                            class="border border-gray-600 dark:border-white"
+                            [matTooltip]="'Like'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                        >
                             <rmx-icon name="heart-line"></rmx-icon>
-                            <span>Like</span>
+                            <span>{{ likes }}</span>
                         </button>
                         <div class="mx-0.5"></div>
-                        <button class="border border-gray-600 dark:border-white">
+                        <button
+                            class="border border-gray-600 dark:border-white"
+                            [matTooltip]="'Dislike'"
+                            [matTooltipClass]="'offprint-tooltip'"
+                        >
                             <rmx-icon name="dislike-line"></rmx-icon>
-                            <span>Dislike</span>
+                            <span>{{ dislikes }}</span>
                         </button>
                     </ng-template>
                 </div>
-                <div class="text-center py-2 border-b border-gray-600 dark:border-white w-full">
+                <div class="text-center py-2 border-b border-t border-gray-600 dark:border-white w-full">
                     <ng-container *ngIf="content.audit.published === 'Published'">
                         <h4 class="text-xl font-medium">Published on</h4>
                         <span class="uppercase font-semibold font-serif text-lg tracking-wider">{{ content.audit.publishedOn | localedate:'mediumDate' }}</span>
@@ -103,49 +141,87 @@
                 <ng-container *ngIf="session.isLoggedIn; else noRatings">
                     <ng-container [ngSwitch]="workQuery.currRating">
                         <ng-container *ngSwitchCase="ratingOption.NoVote">
-                            <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white"
+                                (click)="addLike(content._id)"
+                                [matTooltip]="'Like'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="heart-line"></rmx-icon>
-                                <span>Like</span>
+                                <span>{{ likes }}</span>
                             </button>
                             <div class="mx-0.5"></div>
-                            <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white"
+                                (click)="addDislike(content._id)"
+                                [matTooltip]="'Dislike'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="dislike-line"></rmx-icon>
-                                <span>Dislike</span>
+                                <span>{{ dislikes }}</span>
                             </button>
                         </ng-container>
                         <ng-container *ngSwitchCase="ratingOption.Liked">
-                            <button class="border border-gray-600 dark:border-white px-3.5 active" (click)="workPage.setNoVote(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white active"
+                                (click)="setNoVote(content._id)"
+                                [matTooltip]="'Liked'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="heart-fill"></rmx-icon>
-                                <span>Liked</span>
+                                <span>{{ likes }}</span>
                             </button>
                             <div class="mx-0.5"></div>
-                            <button class="border border-gray-600 dark:border-white" (click)="workPage.addDislike(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white"
+                                (click)="addDislike(content._id)"
+                                [matTooltip]="'Dislike'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="dislike-line"></rmx-icon>
-                                <span>Dislike</span>
+                                <span>{{ dislikes }}</span>
                             </button>
                         </ng-container>
                         <ng-container *ngSwitchCase="ratingOption.Disliked">
-                            <button class="border border-gray-600 dark:border-white px-4" (click)="workPage.addLike(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white"
+                                (click)="addLike(content._id)"
+                                [matTooltip]="'Like'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="heart-line"></rmx-icon>
-                                <span>Like</span>
+                                <span>{{ likes }}</span>
                             </button>
                             <div class="mx-0.5"></div>
-                            <button class="border border-gray-600 dark:border-white active" (click)="workPage.setNoVote(content._id)">
+                            <button
+                                class="border border-gray-600 dark:border-white active"
+                                (click)="setNoVote(content._id)"
+                                [matTooltip]="'Disliked'"
+                                [matTooltipClass]="'offprint-tooltip'"
+                            >
                                 <rmx-icon name="dislike-fill"></rmx-icon>
-                                <span>Disliked</span>
+                                <span>{{ dislikes }}</span>
                             </button>
                         </ng-container>
                     </ng-container>
                 </ng-container>
                 <ng-template #noRatings>
-                    <button class="border border-gray-600 dark:border-white px-4">
+                    <button
+                        class="border border-gray-600 dark:border-white"
+                        [matTooltip]="'Like'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                    >
                         <rmx-icon name="heart-line"></rmx-icon>
-                        <span>Like</span>
+                        <span>{{ likes }}</span>
                     </button>
                     <div class="mx-0.5"></div>
-                    <button class="border border-gray-600 dark:border-white">
+                    <button
+                        class="border border-gray-600 dark:border-white"
+                        [matTooltip]="'Dislike'"
+                        [matTooltipClass]="'offprint-tooltip'"
+                    >
                         <rmx-icon name="dislike-line"></rmx-icon>
-                        <span>Dislike</span>
+                        <span>{{ dislikes }}</span>
                     </button>
                 </ng-template>
             </div>
