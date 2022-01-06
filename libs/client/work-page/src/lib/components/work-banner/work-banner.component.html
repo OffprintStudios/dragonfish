@@ -2,7 +2,7 @@
     <ng-container *ngIf="!mobileMode; else mobile">
         <div class="flex w-11/12 md:w-9/12 lg:7/12 mx-auto px-4 py-6">
             <ng-container *ngIf="content.meta.coverArt; else uploadArt">
-                <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+                <ng-container *ngIf="content.author !== null && auth.checkPseudonym(content.author._id); else notThisAuthorArt">
                     <div
                         class="edit-cover-art rounded-md"
                         [matTooltip]="'Edit Cover Art'"
@@ -26,7 +26,7 @@
                     [matTooltip]="'Add Cover Art'"
                     [matTooltipClass]="'offprint-tooltip'"
                     (click)="uploadCoverArt(content._id, content.kind)"
-                    *ngIf="auth.checkPseudonym(content.author._id)"
+                    *ngIf="content.author !== null && auth.checkPseudonym(content.author._id)"
                 >
                     <rmx-icon name="add-box-line"></rmx-icon>
                 </div>
@@ -35,9 +35,16 @@
                 <div class="flex items-center">
                     <div class="flex-1">
                         <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
-                        <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
-                            by {{ content.author.screenName }}
-                        </h2>
+                        <ng-container *ngIf="content.author !== null; else unknown">
+                            <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
+                                by {{ content.author.screenName }}
+                            </h2>
+                        </ng-container>
+                        <ng-template #unknown>
+                            <h2 class="text-white text-xl italic cursor-pointer">
+                                by unknown
+                            </h2>
+                        </ng-template>
                     </div>
                     <ng-container *ngIf="auth.checkPseudonym(workQuery.authorId); else otherButtons">
                         <ng-container [ngSwitch]="content.audit.published">
@@ -147,9 +154,16 @@
             <div class="flex flex-row items-center">
                 <div class="flex-1">
                     <h1 class="text-white text-4xl font-medium">{{ content.title }}</h1>
-                    <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
-                        by {{ content.author.screenName }}
-                    </h2>
+                    <ng-container *ngIf="content.author !== null; else unknown">
+                        <h2 class="text-white text-xl italic hover:underline cursor-pointer" [routerLink]="['/profile', content.author._id, content.author.userTag]">
+                            by {{ content.author.screenName }}
+                        </h2>
+                    </ng-container>
+                    <ng-template #unknown>
+                        <h2 class="text-white text-xl italic cursor-pointer">
+                            by unknown
+                        </h2>
+                    </ng-template>
                 </div>
             </div>
             <!--Controls-->
@@ -211,7 +225,7 @@
             </div>
             <!--Cover Art-->
             <ng-container *ngIf="content.meta.coverArt; else uploadArt">
-                <ng-container *ngIf="auth.checkPseudonym(content.author._id); else notThisAuthorArt">
+                <ng-container *ngIf="content.author !== null && auth.checkPseudonym(content.author._id); else notThisAuthorArt">
                     <div
                         class="edit-cover-art rounded-md"
                         [matTooltip]="'Edit Cover Art'"
@@ -235,7 +249,7 @@
                     [matTooltip]="'Add Cover Art'"
                     [matTooltipClass]="'offprint-tooltip'"
                     (click)="uploadCoverArt(content._id, content.kind)"
-                    *ngIf="auth.checkPseudonym(content.author._id)"
+                    *ngIf="content.author !== null && auth.checkPseudonym(content.author._id)"
                 >
                     <rmx-icon name="add-box-line"></rmx-icon>
                 </div>
