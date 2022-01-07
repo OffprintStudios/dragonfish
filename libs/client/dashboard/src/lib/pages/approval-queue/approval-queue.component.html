@@ -16,6 +16,7 @@
                 <th>Tags</th>
                 <th>Fandom Tags</th>
                 <th>Rating</th>
+                <th>Words</th>
                 <th>Submitted</th>
             </tr>
             </thead>
@@ -68,6 +69,9 @@
                 </td>
                 <td class="p-2 border-r border-gray-600 dark:border-white">
                     {{ entry.workToApprove.meta.rating }}
+                </td>
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    {{ entry.workToApprove.stats.words | abbreviate }}
                 </td>
                 <td class="p-2">
                     {{ entry.createdAt | localedate: 'shortDate' }}

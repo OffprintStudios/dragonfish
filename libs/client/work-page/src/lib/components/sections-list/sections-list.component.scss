@@ -25,16 +25,6 @@ li.section-item {
         }
     }
     div.section-button {
-        @apply flex items-center px-4 py-2 flex-1 cursor-pointer;
-        &:hover {
-            @apply text-white;
-            background: var(--accent);
-        }
-        &.mid {
-            @apply rounded-none;
-        }
-    }
-    div.mobile-section-button {
         @apply items-center px-4 py-2 w-full cursor-pointer;
         &:hover {
             @apply text-white;

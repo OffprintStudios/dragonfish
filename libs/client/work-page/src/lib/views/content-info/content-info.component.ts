@@ -12,6 +12,8 @@ import { isMobile } from '@dragonfish/shared/functions';
 })
 export class ContentInfoComponent implements OnInit {
     ratingOption = RatingOption;
+    likes = 0;
+    dislikes = 0;
     mobileMode = false;
     mobileShowDescription = false;
     mobileShowInfo = false;
@@ -25,6 +27,53 @@ export class ContentInfoComponent implements OnInit {
 
     ngOnInit(): void {
         this.onResize();
+        this.likes = this.workQuery.likes;
+        this.dislikes = this.workQuery.dislikes;
+    }
+    
+    addLike(contentId: string): void {
+        switch (this.workQuery.currRating) {
+            case RatingOption.Liked:
+                return;
+            case RatingOption.Disliked:
+                this.likes = this.likes + 1;
+                this.dislikes = this.dislikes - 1;
+                break;
+            case RatingOption.NoVote:
+                this.likes = this.likes + 1;
+                break;
+        }
+
+        this.workPage.addLike(contentId);
+    }
+
+    addDislike(contentId: string): void {
+        switch (this.workQuery.currRating) {
+            case RatingOption.Disliked:
+                return;
+            case RatingOption.Liked:
+                this.likes = this.likes - 1;
+                this.dislikes = this.dislikes + 1;
+                break;
+            case RatingOption.NoVote:
+                this.dislikes = this.dislikes + 1;
+                break;
+        }
+
+        this.workPage.addDislike(contentId);
+    }
+
+    setNoVote(contentId: string): void {
+        switch (this.workQuery.currRating) {
+            case RatingOption.Liked:
+                this.likes = this.likes - 1;
+                break;
+            case RatingOption.Disliked:
+                this.dislikes = this.dislikes - 1;
+                break;
+        }
+        
+        this.workPage.setNoVote(contentId);
     }
 
     toggleShowDescription() {
