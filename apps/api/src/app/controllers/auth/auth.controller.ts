@@ -1,4 +1,14 @@
-import { Body, Controller, ForbiddenException, Get, NotFoundException, Post, Request, UseGuards } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    ForbiddenException,
+    Get,
+    NotFoundException,
+    Post,
+    Query,
+    Request,
+    UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Cookies, SetCookies } from '@nestjsplus/cookies';
 import { RefreshGuard, RolesGuard } from '../../guards';
@@ -79,5 +89,12 @@ export class AuthController {
     @Post('add-pseudonym')
     async addPseudonym(@User() user: JwtPayload, @Body() formData: PseudonymForm): Promise<Pseudonym> {
         return await this.auth.createPseudonym(user, formData);
+    }
+
+    @ApiTags(DragonfishTags.Auth)
+    @UseGuards(RolesGuard([Roles.User]))
+    @Get('user-tag-exists')
+    async userTagExists(@Query('userTag') userTag: string): Promise<boolean> {
+        return await this.auth.userTagExists(userTag);
     }
 }

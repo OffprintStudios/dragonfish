@@ -105,6 +105,10 @@ export class AuthService {
     //#region ---PSEUDONYMS---
 
     public async createPseudonym(user: JwtPayload, formInfo: PseudonymForm): Promise<Pseudonym> {
+        if (isNullOrUndefined(user)) {
+            throw new NotFoundException(`Your user information was not available.`);
+        }
+
         const thisAccount = await this.accountStore.fetchAccountById(user.sub);
 
         if (isNullOrUndefined(thisAccount)) {
@@ -114,6 +118,15 @@ export class AuthService {
         const newPseud = await this.pseudStore.createPseud(user, formInfo);
         await this.accountStore.addPseudonym(thisAccount._id, newPseud._id);
         return newPseud;
+    }
+
+    /**
+     * Determines if the given userTag is already in use
+     * @param userTag
+     * @returns
+     */
+    public async userTagExists(userTag: string): Promise<boolean> {
+        return await this.pseudStore.userTagExists(userTag);
     }
 
     //#endregion

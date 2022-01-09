@@ -55,7 +55,7 @@ export class PseudonymsStore {
         }
         if (query.charAt(0) === '@') {
             return await this.pseudModel.paginate(
-                { userTag: query.substr(1) },
+                { userTag: query.substring(1) },
                 {
                     page: pageNum,
                     limit: maxPerPage,
@@ -69,6 +69,17 @@ export class PseudonymsStore {
                 page: pageNum,
                 limit: maxPerPage,
             },
+        );
+    }
+
+    /**
+     * Determines if the given userTag is already in use
+     * @param userTag
+     * @returns
+     */
+    public async userTagExists(userTag: string): Promise<boolean> {
+        return this.pseudModel.exists(
+            { userTag: userTag }
         );
     }
 
