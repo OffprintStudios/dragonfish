@@ -121,7 +121,11 @@ export class AuthService {
             tap((result: Pseudonym) => {
                 this.sessionStore.update(({ currAccount }) => {
                     if (currAccount && currAccount.pseudonyms) {
-                        currAccount.pseudonyms = [...currAccount.pseudonyms, result];
+                        const newPseudonyms = [...currAccount.pseudonyms, result];
+                        currAccount = {
+                            ...currAccount,
+                            pseudonyms: newPseudonyms
+                        }
                     }
                 });
                 this.pseudService.addOne(result);
