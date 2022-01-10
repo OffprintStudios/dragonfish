@@ -1372,6 +1372,20 @@ export class DragonfishNetworkService {
     }
 
     /**
+     * Determines if the given userTag is already in use
+     * @param userTag
+     * @returns
+     */
+    public userTagExists(userTag: string): Observable<boolean> {
+        return handleResponse(
+            this.http.get<boolean>(`${this.baseUrl}/auth/user-tag-exists?userTag=${userTag}`, {
+                observe: 'response',
+                withCredentials: true,
+            }),
+        );
+    }
+
+    /**
      * Fetches a pseudonym from the backend.
      *
      * @param pseudId

@@ -6,6 +6,7 @@ import { AuthService } from '@dragonfish/client/repository/session/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Router } from '@angular/router';
 import { Constants, setTwoPartTitle } from '@dragonfish/shared/constants';
+import { delay, firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'dragonfish-setup-pseud',
@@ -28,18 +29,21 @@ export class SetupPseudComponent implements OnInit {
         setTwoPartTitle(Constants.ADD_PROFILE);
     }
 
-    submitForm() {
+    async submitForm() {
         this.loading = true;
 
-        if (this.pseudForm.controls.userTag.invalid) {
+        const letters = /^[0-9a-zA-Z]+$/;
+        if (this.pseudForm.controls.userTag.invalid || !this.pseudForm.controls.userTag.value.match(letters)) {
             this.alerts.error(
                 `Make sure your user tag has no special characters or spaces, and is between 3 and 16 characters.`,
             );
+            this.loading = false;
             return;
         }
 
         if (this.pseudForm.controls.screenName.invalid) {
-            this.alerts.error(`Screen names must be between 3 and 32 characters.`);
+            this.alerts.error(`Display names must be between 3 and 32 characters.`);
+            this.loading = false;
             return;
         }
 
@@ -49,16 +53,33 @@ export class SetupPseudComponent implements OnInit {
             pronouns: this.pseudForm.controls.pronouns.value,
         };
 
+        // Validate that user tag is unique
+        if (await firstValueFrom(this.auth.userTagExists(formData.userTag))) {
+            this.alerts.error(
+                `Username is already in use. Display names can be repeated, but usernames must be unique.`
+            );
+            this.loading = false;
+            return;
+        }
+
         this.auth.createPseudonym(formData).subscribe({
             next: () => {
                 this.loading = false;
                 this.pseudForm.reset();
                 this.router.navigate(['/registration/select-pseud']).catch((err) => console.log(err));
             },
-            error: () => {
-                this.auth.logout().subscribe(() => {
-                    this.router.navigate(['/']).catch((err) => console.log(err));
-                });
+            error: (err) => {
+                this.auth.forceLogout()
+                    .pipe(delay(1500))
+                    .subscribe(() => {
+                        if (err.error) {
+                            console.log("Got error creating profile: " + err.error.message);
+                            this.alerts.error(err.error.message);
+                        } else {
+                            console.log("Got error creating profile: " + err);
+                            this.alerts.error(err);
+                        }
+                    });
             }
         });
     }

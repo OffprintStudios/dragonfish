@@ -4,7 +4,7 @@ import { SessionQuery } from '../session.query';
 import { DragonfishNetworkService } from '@dragonfish/client/services';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { LoginModel, AccountForm, PseudonymForm, Pseudonym } from '@dragonfish/shared/models/accounts';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoginPackage } from '@dragonfish/shared/models/auth';
 import { PseudonymsService } from '../../pseudonyms/services';
@@ -36,7 +36,7 @@ export class AuthService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -56,7 +56,7 @@ export class AuthService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -67,17 +67,25 @@ export class AuthService {
     public logout() {
         return this.network.logout().pipe(
             tap(() => {
-                this.sessionStore.update({
-                    token: null,
-                    currAccount: null,
-                });
-                this.pseudService.clearAll();
-                this.router.navigate(['/']).catch((err) => console.log(err));
+                this.postLogout();
                 this.alerts.success(`See you next time!`);
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
+            }),
+        );
+    }
+
+    public forceLogout() {
+        return this.network.logout().pipe(
+            tap(() => {
+                this.postLogout();
+                this.alerts.error("Forcing logout to resolve error");
+            }),
+            catchError((err) => {
+                this.alerts.error(err.error.message);
+                return throwError(() => err);
             }),
         );
     }
@@ -89,12 +97,7 @@ export class AuthService {
         return this.network.refreshToken().pipe(
             tap((result: string | null) => {
                 if (result === null) {
-                    this.sessionStore.update({
-                        token: null,
-                        currAccount: null,
-                    });
-                    this.pseudService.clearAll();
-                    this.router.navigate(['/']).catch((err) => console.log(err));
+                    this.postLogout();
                     this.alerts.info(`Your token has expired, and you've been logged out.`);
                 } else {
                     this.sessionStore.update({
@@ -104,7 +107,7 @@ export class AuthService {
             }),
             catchError((err) => {
                 this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -117,13 +120,18 @@ export class AuthService {
         return this.network.addPseudonym(formData).pipe(
             tap((result: Pseudonym) => {
                 this.sessionStore.update(({ currAccount }) => {
-                    currAccount.pseudonyms = [...currAccount.pseudonyms, result];
+                    if (currAccount && currAccount.pseudonyms) {
+                        const newPseudonyms = [...currAccount.pseudonyms, result];
+                        currAccount = {
+                            ...currAccount,
+                            pseudonyms: newPseudonyms
+                        }
+                    }
                 });
                 this.pseudService.addOne(result);
             }),
             catchError((err) => {
-                this.alerts.error(err.error.message);
-                return throwError(err);
+                return throwError(() => err);
             }),
         );
     }
@@ -138,5 +146,26 @@ export class AuthService {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Determines if the given userTag is already in use
+     * @param userTag
+     * @returns
+     */
+    public userTagExists(userTag: string): Observable<boolean> {
+        return this.network.userTagExists(userTag);
+    }
+
+    /**
+     * Actions taken client-side after logout, both in user requested and forced logout cases
+     */
+    private postLogout() {
+        this.sessionStore.update({
+            token: null,
+            currAccount: null,
+        });
+        this.pseudService.clearAll();
+        this.router.navigate(['/']).catch((err) => console.log(err));
     }
 }
