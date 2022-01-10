@@ -1,5 +1,5 @@
-import { Pseudonym } from '@dragonfish/shared/models/accounts/psuedonyms';
-import { Roles } from '@dragonfish/shared/models/accounts/audit';
+import { Pseudonym } from './psuedonyms';
+import { Roles } from './audit';
 
 export interface FrontendAccount {
     readonly _id: string;
