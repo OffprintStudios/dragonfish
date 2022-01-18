@@ -3,12 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SessionQuery } from '@dragonfish/client/repository/session';
 import { ApprovalQueue } from '@dragonfish/shared/models/approval-queue';
 import { ContentKind, ContentModel, TagKind } from '@dragonfish/shared/models/content';
-import { PaginateResult } from '@dragonfish/shared/models/util';
+import { PaginateResult, PopupModel } from '@dragonfish/shared/models/util';
 import { ApprovalQueueService } from '@dragonfish/client/repository/dashboard/approval-queue';
 import { AlertsService } from '@dragonfish/client/alerts';
 import { Pseudonym } from '@dragonfish/shared/models/accounts';
 import { AuthService } from '@dragonfish/client/repository/session/services';
 import { setThreePartTitle, Constants } from '@dragonfish/shared/constants';
+import { PopupComponent } from '@dragonfish/client/ui';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'dragonfish-approval-queue',
@@ -28,6 +30,7 @@ export class ApprovalQueueComponent implements OnInit {
         public sessionQuery: SessionQuery,
         private queueService: ApprovalQueueService,
         private auth: AuthService,
+        private dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -119,5 +122,13 @@ export class ApprovalQueueComponent implements OnInit {
         this.queueService.claimWork(entry).subscribe(() => {
             this.forceRefresh();
         });
+    }
+
+    viewDescription(description: string) {
+        const descriptionData: PopupModel = {
+            message: description,
+            confirm: false,
+        };
+        this.dialog.open(PopupComponent, { data: descriptionData });
     }
 }
