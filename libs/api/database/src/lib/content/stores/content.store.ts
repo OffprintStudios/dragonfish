@@ -298,9 +298,10 @@ export class ContentStore {
      * @param authorId The author of the work
      */
     async rejectWork(approverId: string, docId: string, contentId: string, authorId: string): Promise<void> {
+        // TODO: Until we have a better process, instead of setting status to Rejected, sets to Unpublished
         await this.content.updateOne(
             { _id: contentId, author: authorId, 'audit.isDeleted': false },
-            { 'audit.published': PubStatus.Rejected },
+            { 'audit.published': PubStatus.Unpublished },
         );
         await this.queue.removeFromQueue(docId, approverId);
     }

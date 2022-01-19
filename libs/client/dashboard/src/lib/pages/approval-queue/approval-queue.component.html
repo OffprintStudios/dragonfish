@@ -13,6 +13,7 @@
                 <th>Claims</th>
                 <th>Title</th>
                 <th>Author</th>
+                <th>Desc</th>
                 <th>Tags</th>
                 <th>Fandom Tags</th>
                 <th>Rating</th>
@@ -48,6 +49,9 @@
                     <a [routerLink]="['/profile', entry.workToApprove.author._id, entry.workToApprove.author.userTag]">
                         {{ entry.workToApprove.author.screenName }}
                     </a>
+                </td>
+                <td class="p-2 border-r border-gray-600 dark:border-white">
+                    <a class="cursor-pointer" (click)="viewDescription(entry.workToApprove.body)">View >></a>
                 </td>
                 <td class="p-2 flex items-center flex-wrap border-r border-gray-600 dark:border-white">
                     <dragonfish-tag-badge [kind]="tagKinds.Type" [type]="entry.workToApprove.kind"></dragonfish-tag-badge>
