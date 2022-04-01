@@ -97,7 +97,7 @@
             <div class="section">
                 <div class="section-header border-zinc-600 dark:border-white">
                     <h3>New works</h3>
-                    <a href="/explore/new-works">See more >></a>
+                    <a href="/explore">See more >></a>
                 </div>
                 {#if $newWorks.isLoading}
                     <div class="section-loading">

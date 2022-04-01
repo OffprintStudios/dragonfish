@@ -90,7 +90,9 @@
                     on:click={() => switchActiveSlide(index)}
                 >
                     <div class="flex-1 truncate">
-                        <h3>{post.title}</h3>
+                        <h3>
+                            <a href="/blog/{post._id}">{post.title}</a>
+                        </h3>
                         <span class="hidden text-sm md:text-base md:block">
                             by {post.author.screenName}
                         </span>
@@ -111,7 +113,7 @@
         div.big-box {
             @apply w-full md:w-2/3 relative overflow-hidden;
             img {
-                @apply object-cover h-full w-full;
+                @apply object-cover h-[18rem] md:h-[32rem] h-full w-full;
             }
             div.box-info {
                 @apply absolute bottom-6 left-0 p-4 pl-6 rounded-r-lg hidden md:block;
