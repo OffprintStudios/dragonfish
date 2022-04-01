@@ -1,0 +1,33 @@
+name: Build API
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'turbo.json'
+      - 'package.json'
+      - 'apps/api/**'
+      - '.github/workflows/build-api.yml'
+      - '.github/workflows/deploy-api.yml'
+
+jobs:
+  build_server:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.17.0
+
+      - name: Install global dependencies
+        run: yarn global add @nestjs/cli typescript
+
+      - name: Install local dependencies
+        run: yarn install
+
+      - name: Build server
+        run: yarn workspace @dragonfish/api build

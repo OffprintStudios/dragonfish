@@ -1,0 +1,38 @@
+name: Build Client (main)
+
+on:
+  # WARNING ABOUT USAGE: Do not attempt to re-run this workflow, as the 'workflow_run' trigger
+  # used by the deployment step implicitly has a ${{ github.sha }} of the SHA of the latest commit
+  # on the HEAD.
+  # The "dawidd6/action-download-artifact@v2" action used in the deploy step looks for a workflow
+  # run triggered by that commit.
+  # If you attempt to re-run this step after the HEAD has moved forward, it will complete successfully,
+  # but then deployment will look for a workflow with the newest commit SHA, which _this_ run did not use.
+  push:
+    branches: [ main ]
+    paths:
+      - 'turbo.json'
+      - 'package.json'
+      - 'apps/client/**'
+      - '.github/workflows/build-client.yml'
+
+jobs:
+  build_client:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.17.0
+
+      - name: Install global dependencies
+        run: yarn global add typescript
+
+      - name: Install local dependencies
+        run: yarn install
+
+      - name: Build client
+        run: yarn workspace @dragonfish/client build
