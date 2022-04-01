@@ -1,5 +1,0 @@
-# Run a reverse proxy over to localhost:3333
-# Caddy will automatically run its HTTPS provisioning because it isn't explicitly disabled.
-replaceme {
-    reverse_proxy localhost:3333
-}

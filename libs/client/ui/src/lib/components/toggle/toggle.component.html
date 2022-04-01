@@ -1,9 +1,0 @@
-<div class="flex flex-row items-center mt-3 mb-3">
-    <div class="switch-container w-12 h-6 flex items-center rounded-full" (click)="toggleValue()">
-        <div
-            class="switch w-4 h-4 rounded-full shadow-md transform duration-300 ease-in-out"
-            [ngClass]="{ 'switch-activated': value }"
-        ></div>
-    </div>
-    <label class="switch-label ml-3" for="toggle"><ng-content></ng-content></label>
-</div>
