@@ -31,16 +31,6 @@
         }
     };
 
-    if (content) {
-        switch (content.kind) {
-            case ContentKind.ProseContent:
-                contentUrl = `/prose/${content._id}`;
-                break;
-            case ContentKind.PoetryContent:
-                contentUrl = `/poetry/${content._id}`;
-        }
-    }
-
     function toggle() {
         showAllTags = !showAllTags;
     }
@@ -51,7 +41,7 @@
 >
     <div class="flex flex-wrap items-center">
         <h3 class="title" title={content.title}>
-            <a href={contentUrl}>
+            <a href={content.kind === ContentKind.ProseContent ? `/prose/${content._id}` : contentUrl = `/poetry/${content._id}`}>
                 {content.title}
             </a>
         </h3>
