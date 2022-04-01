@@ -1,7 +1,0 @@
-button.active {
-    @apply text-white;
-    background: var(--accent);
-    &:hover {
-        background: var(--accent-dark);
-    }
-}

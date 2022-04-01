@@ -20,20 +20,14 @@ You must have the following tools installed on your system or in a docker contai
 - NodeJS 14.17.0
 - Yarn 1.22.10 (don't use 2.x)
 - MongoDB Community Server 4.2.1
-  - MongoDB Compass is recommended
+    - MongoDB Compass is recommended
 - Redis server 6.2.6
-
-For these, use the command `yarn global add @angular/cli @nestjs/cli nx`:
-
-- The Angular CLI 12.1.1 or higher (globally, via Yarn)
-- The NestJS CLI 8.0.1 or higher (globally, via Yarn)
-- The `nx` CLI (globally, via Yarn)
 
 ## Building the application
 
 Once you've installed and verified that these dependencies are working as expected...
 
-- Create a file named `.env` at the root of the repository
+- Create a file named `.env` at the root of the project
 - Copy the contents of `sample.env` to your new `.env`
 - Edit `.env` to set `MONGO_URL=mongodb://localhost:27017`
 - Edit `.env` to set your `REDIS_*` values
@@ -42,35 +36,27 @@ Once you've installed and verified that these dependencies are working as expect
 - If you intend to test out email functionality, fill in the appropriate SendGrid API information
 - Run `yarn install` in the repository root to install all the dependencies.
 
-When you're starting the development server with `nx serve client`, make sure to include a `.env` file in the root project directory. A `sample.env` file can be found in the root of this repository.
-
-VS Code is the recommended editor.
+VS Code and WebStorm are our recommended IDEs.
 
 ## Running the application
 
 Installing MongoDB should have resulted in a persistent MongoDB service running, which is necessary for the site.
 
-Note that by default, the backend serves up the frontend, so in order to test the website, both of them must be running.
+Note that by default, the API and client are hosted separated. Thus, you must spin up both in order to test any features which require database access.
 
-To run the backend:
-
-```bash
-nx serve api
-```
-
-To run the frontend:
+To run the API:
 
 ```bash
-nx serve bettafish
+yarn start:api
 ```
 
-On some machines, the frontend won't automatically pick up changes and rebuild. In that case, you can try this:
+To run the client:
 
 ```bash
-nx build bettafish --watch --poll=2000
+yarn dev:client
 ```
 
-Then you should find the website at <http://localhost:3333>
+Then you should find the website at <http://localhost:3000>
 
 ## Contributing
 
