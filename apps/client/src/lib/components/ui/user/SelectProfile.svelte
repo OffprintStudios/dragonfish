@@ -53,7 +53,7 @@
     {#each $session.profiles as profile}
         <div
             class="profile-box border-zinc-600 dark:border-white"
-            on:click={() => setCurrProfile(profile._id)}
+            on:click={() => setCurrProfile(profile)}
         >
             <div
                 class="avatar-container border-4 border-zinc-600 dark:border-white bg-zinc-800 dark:bg-white"
