@@ -91,17 +91,14 @@
                 >
                     <div class="flex-1 truncate">
                         <h3>{post.title}</h3>
-                        <div class="flex items-center">
-                            <span class="hidden text-sm md:text-base md:block"
-                                >by {post.author.screenName}</span
-                            >
-                            <span class="hidden md:block mx-1">•</span>
-                            <span class="text-sm md:text-base"
-                                >{localeDate(post.audit.publishedOn, 'fullDate')}</span
-                            >
-                        </div>
+                        <span class="hidden text-sm md:text-base md:block">
+                            by {post.author.screenName}
+                        </span>
+                        <span class="text-sm md:text-base">
+                            {localeDate(post.audit.publishedOn, 'fullDate')}
+                        </span>
                     </div>
-                    <img src={$featuredPosts.data[0].author.profile.avatar} alt="demo avatar" />
+                    <img src={post.author.profile.avatar} alt="demo avatar" />
                 </div>
             {/each}
         </div>
