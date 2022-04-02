@@ -5,7 +5,7 @@ import type { HttpOptions } from './http-options';
 import { token, refreshToken, session } from '$lib/repo/session.repo';
 
 const http: AxiosInstance = Axios.create({
-    timeout: 1000,
+    timeout: 1000 * 60,
     timeoutErrorMessage: 'Request timed out!',
     withCredentials: true,
 });
