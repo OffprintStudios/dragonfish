@@ -1,7 +1,8 @@
 <script lang="ts">
-    import { ArrowLeftSLine, ArrowRightSLine } from 'svelte-remixicon';
+    import { ArrowLeftSLine, ArrowRightSLine, MoreLine } from 'svelte-remixicon';
     import { createEventDispatcher } from 'svelte';
 
+    const PAGE_BUFFER = 2;
     export let currPage: number;
     export let totalPages: number;
 
@@ -27,13 +28,81 @@
                 <ArrowLeftSLine size="28px" />
             </button>
         </li>
-        {#each range(totalPages, 1) as page}
-            <li class:active={page === currPage} class="hidden md:block">
-                <button on:click={() => changePage(page)}>
-                    {page}
-                </button>
-            </li>
-        {/each}
+        {#if totalPages <= 10}
+            {#each range(totalPages, 1) as page}
+                <li class:active={page === currPage} class="hidden md:block">
+                    <button on:click={() => changePage(page)}>
+                        {page}
+                    </button>
+                </li>
+            {/each}
+        {:else}
+            <!--If current page is close enough to first page to display everything before and including it-->
+            <!--1234(5) with buffer of 2 displays 1, the selected 5, the two before it, and also 2 because "..." takes up the same space-->
+            {#if currPage <= PAGE_BUFFER + 3}
+                {#each range(currPage, 1) as page}
+                    <li class:active={page === currPage} class="hidden md:block">
+                        <button on:click={() => changePage(page)}>
+                            {page}
+                        </button>
+                    </li>
+                {/each}
+            <!--Otherwise, display 1 then "..." then the buffer before the current page, and current page-->
+            {:else}
+                <li class:active={false} class="hidden md:block">
+                    <button on:click={() => changePage(1)}>
+                        1
+                    </button>
+                </li>
+                <li class:active={false} class="hidden md:block">
+                    <button>
+                        <MoreLine/>
+                    </button>
+                </li>
+                {#each range(PAGE_BUFFER, currPage - PAGE_BUFFER) as page}
+                    <li class:active={false} class="hidden md:block">
+                        <button on:click={() => changePage(page)}>
+                            {page}
+                        </button>
+                    </li>
+                {/each}
+                <li class:active={true} class="hidden md:block">
+                    <button on:click={() => changePage(currPage)}>
+                        {currPage}
+                    </button>
+                </li>
+            {/if}
+            <!--If current page is close enough to last page, then display everything after it-->
+            <!--(5)6789 with buffer of 2 displays the two after the selected, the last, and also 8 because "..." takes up the same space-->
+            {#if totalPages - currPage <= PAGE_BUFFER + 2}
+                {#each range(totalPages - currPage, currPage + 1) as page}
+                    <li class:active={false} class="hidden md:block">
+                        <button on:click={() => changePage(page)}>
+                            {page}
+                        </button>
+                    </li>
+                {/each}
+            <!--Otherwise displays buffer after current page, then "..." then last page-->
+            {:else}
+                {#each range(PAGE_BUFFER, currPage + 1) as page}
+                    <li class:active={false} class="hidden md:block">
+                        <button on:click={() => changePage(page)}>
+                            {page}
+                        </button>
+                    </li>
+                {/each}
+                <li class:active={false} class="hidden md:block">
+                    <button>
+                        <MoreLine/>
+                    </button>
+                </li>
+                <li class:active={false} class="hidden md:block">
+                    <button on:click={() => changePage(totalPages)}>
+                        {totalPages}
+                    </button>
+                </li>
+            {/if}
+        {/if}
         <li class="mr-0" class:disabled={currPage === totalPages}>
             <button on:click={() => changePage(currPage + 1)} disabled={currPage === totalPages}>
                 <ArrowRightSLine size="28px" />
