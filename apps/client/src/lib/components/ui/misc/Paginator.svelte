@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { ArrowLeftSLine, ArrowRightSLine } from 'svelte-remixicon';
+    import { ArrowLeftSLine, ArrowRightSLine, MoreLine } from 'svelte-remixicon';
     import { createEventDispatcher } from 'svelte';
 
     const PAGE_BUFFER = 2;
@@ -56,7 +56,7 @@
                 </li>
                 <li class:active={false} class="hidden md:block">
                     <button>
-                        ...
+                        <MoreLine/>
                     </button>
                 </li>
                 {#each range(PAGE_BUFFER, currPage - PAGE_BUFFER) as page}
@@ -93,7 +93,7 @@
                 {/each}
                 <li class:active={false} class="hidden md:block">
                     <button>
-                        ...
+                        <MoreLine/>
                     </button>
                 </li>
                 <li class:active={false} class="hidden md:block">
