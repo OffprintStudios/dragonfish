@@ -24,13 +24,17 @@ export class AccountService {
         const account = await this.accountStore.fetchAccountByEmail(email);
         if (account) {
             const resetCode = await this.accountStore.createRecoveryCode(account._id);
-            await this.mail.send({
-                to: account.email,
-                templateId: process.env.RESET_PASSWORD_TEMPLATE,
-                dynamicTemplateData: {
-                    url: `https://offprint.net/registration/reset-password?userId=${account._id}&token=${resetCode}`,
-                },
-            });
+            await this.mail
+                .send({
+                    to: account.email,
+                    templateId: process.env.RESET_PASSWORD_TEMPLATE,
+                    dynamicTemplateData: {
+                        url: `https://offprint.net/registration/reset-password?userId=${account._id}&token=${resetCode}`,
+                    },
+                })
+                .catch((err) => {
+                    this.logger.error(err);
+                });
         } else {
             this.logger.warn(
                 `Someone has attempted to reset the password of a non-existent account.`,

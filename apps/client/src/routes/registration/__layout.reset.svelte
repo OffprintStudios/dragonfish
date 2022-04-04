@@ -1,6 +1,7 @@
 <script lang="ts">
     import { CloseLine } from 'svelte-remixicon';
     import { app } from '$lib/repo/app.repo';
+    import { SvelteToast } from '@zerodevx/svelte-toast';
 </script>
 
 <svelte:head>
@@ -18,6 +19,7 @@
     <div class="content-box">
         <slot />
     </div>
+    <SvelteToast />
 </main>
 
 <style lang="scss">

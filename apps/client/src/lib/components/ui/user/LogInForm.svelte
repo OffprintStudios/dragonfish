@@ -61,7 +61,7 @@
         errorMessage={$errors.password}
     />
     <div class="my-1">
-        <a href="/" class="text-sm">Forgot your password?</a>
+        <a href="/registration/request-password-reset" class="text-sm">Forgot your password?</a>
     </div>
     <div class="flex items-center">
         <Toggle bind:value={$data.rememberMe}>Remember me</Toggle>

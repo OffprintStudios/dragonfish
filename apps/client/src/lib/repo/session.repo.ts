@@ -1,9 +1,16 @@
 import { browser } from '$app/env';
 import { writable, get } from 'svelte/store';
 import type { Account, Profile } from '$lib/models/accounts';
-import type { LoginForm, ProfileForm, RegisterForm } from '$lib/models/accounts/forms';
+import type {
+    LoginForm,
+    ProfileForm,
+    RegisterForm,
+    ResetPassword,
+} from '$lib/models/accounts/forms';
 import * as auth from '$lib/services/auth.service';
 import * as lodash from 'lodash';
+import { http } from '../services/http';
+import { baseUrl } from '$lib/util';
 
 //#region ---SESSION---
 
@@ -79,6 +86,22 @@ export async function logout(): Promise<void> {
             }));
         });
 }
+
+export async function initiatePasswordReset(email: string): Promise<void> {
+    return http.post<void>(`${baseUrl}/account/send-reset-email`, { email }).then(() => {
+        return;
+    });
+}
+
+export async function resetPassword(resetInfo: ResetPassword): Promise<void> {
+    return http.patch<void>(`${baseUrl}/account/reset-password`, resetInfo).then(() => {
+        return;
+    });
+}
+
+//#endregion
+
+//#region ---PROFILES---
 
 export async function createProfile(formInfo: ProfileForm): Promise<void> {
     return auth.addProfile(formInfo).then((res) => {
