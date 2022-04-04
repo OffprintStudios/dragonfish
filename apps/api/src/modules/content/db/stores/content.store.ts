@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import { ContentDocument, SectionsDocument } from '../schemas';
@@ -8,11 +8,9 @@ import {
     CreatePoetry,
     CreateProse,
     FormType,
-    PubChange,
     PubStatus,
 } from '$shared/models/content';
 import { PublishSection, SectionForm } from '$shared/models/sections';
-import { BlogsContentDocument } from '../schemas';
 import { BlogsStore } from './blogs.store';
 import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
@@ -42,20 +40,18 @@ export class ContentStore {
      * Fetches one item from the content collection via ID.
      * @param contentId A content's ID
      * @param user The user making this request
-     * @param doNotPopulate Whether or not to autopopulate the request
+     * @param populate Whether or not to autopopulate the request
      */
-    async fetchOne(
-        contentId: string,
-        user?: string,
-        doNotPopulate?: boolean,
-    ): Promise<ContentDocument> {
+    async fetchOne(contentId: string, user?: string, populate = true): Promise<ContentDocument> {
         const query = { _id: contentId, 'audit.isDeleted': false };
 
         if (user) {
             query['author'] = user;
         }
 
-        return this.content.findOne(query).setOptions({ autopopulate: !doNotPopulate });
+        return this.content
+            .findOne(query)
+            .populate({ path: 'author', options: { autopopulate: populate } });
     }
 
     /**

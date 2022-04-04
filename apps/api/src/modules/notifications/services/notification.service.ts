@@ -37,20 +37,16 @@ export class NotificationService {
     private async handleContentComment(payload: ContentCommentPayload) {
         this.logger.log(`Received payload for type ${NotificationKind.ContentComment}`);
 
-        const content = await this.content.fetchOne(payload.contentId, undefined, true);
         const job: ContentCommentJob = {
-            recipientId: (content.author as Pseudonym)._id,
             commentId: payload.commentId,
-            poster: payload.poster,
-            contentId: content._id,
-            contentTitle: content.title,
-            contentKind: content.kind,
+            posterId: payload.posterId,
+            contentId: payload.contentId,
         };
 
         this.logger.log(`Adding new job to queue...`);
         await this.queue.add(NotificationKind.ContentComment, job);
 
-        this.logger.log(`Checking if comment replies to others...`);
+        /*this.logger.log(`Checking if comment replies to others...`);
         if (payload.repliesTo.length === 0) {
             this.logger.log(`No replies detected! Skipping...`);
         } else {
@@ -65,7 +61,7 @@ export class NotificationService {
             };
 
             await this.handleCommentReplies(replyPayload);
-        }
+        }*/
     }
 
     @OnEvent(NotificationKind.AddedToLibrary, { async: true })

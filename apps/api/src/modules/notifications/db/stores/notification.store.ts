@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import { NotificationDocument } from '../schemas';
-import {
-    AddedToLibraryJob,
-    CommentReplyDBJob,
-    ContentCommentJob,
-    JobType,
-} from '$shared/models/notifications/jobs';
 import { NotificationKind } from '$shared/models/notifications';
 import { AddedToLibraryStore, ContentUpdatedStore } from './content';
 import { ContentCommentStore, CommentReplyStore } from './comments';
+import {
+    AddedToLibraryPackage,
+    CommentReplyPackage,
+    ContentCommentPackage,
+    PackageType,
+} from '$shared/models/notifications/packages';
 
 @Injectable()
 export class NotificationStore {
@@ -27,17 +27,20 @@ export class NotificationStore {
      * Takes the incoming notification info and routes it to the correct creation function,
      * based on the notification's `NotificationKind`.
      *
-     * @param job
+     * @param _package
      * @param kind
      */
-    public async notifyOne(job: JobType, kind: NotificationKind): Promise<NotificationDocument> {
+    public async notifyOne(
+        _package: PackageType,
+        kind: NotificationKind,
+    ): Promise<NotificationDocument> {
         switch (kind) {
             case NotificationKind.ContentComment:
-                return await this.contentComment.create(job as ContentCommentJob);
+                return await this.contentComment.create(_package as ContentCommentPackage);
             case NotificationKind.CommentReply:
-                return await this.commentReply.create(job as CommentReplyDBJob);
+                return await this.commentReply.create(_package as CommentReplyPackage);
             case NotificationKind.AddedToLibrary:
-                return await this.addedToLibrary.create(job as AddedToLibraryJob);
+                return await this.addedToLibrary.create(_package as AddedToLibraryPackage);
             default:
                 return;
         }

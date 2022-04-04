@@ -17,12 +17,19 @@ import {
     ContentUpdatedJob,
 } from '$shared/models/notifications/jobs';
 import { NotificationStore } from '../db/stores';
+import { ContentStore } from '$modules/content';
+import { PseudonymsStore } from '$modules/accounts';
+import { Pseudonym } from '$shared/models/accounts';
 
 @Processor('notifications')
 export class NotificationConsumer {
     private logger = new Logger(`NotificationQueue`);
 
-    constructor(private readonly notifications: NotificationStore) {}
+    constructor(
+        private readonly notifications: NotificationStore,
+        private readonly content: ContentStore,
+        private readonly pseudonyms: PseudonymsStore,
+    ) {}
 
     //#region ---LIFECYCLE HOOKS---
 
@@ -51,7 +58,10 @@ export class NotificationConsumer {
     @Process(NotificationKind.ContentComment)
     async addedContentComment(job: Job<ContentCommentJob>, done: DoneCallback) {
         this.logger.log(`Job ${job.id} (ContentComment) received!`);
-        if (job.data.poster._id !== job.data.recipientId) {
+        const content = await this.content.fetchOne(job.data.contentId, null, false);
+        console.log(content);
+        const poster = await this.pseudonyms.fetchPseud(job.data.posterId);
+        /*if (poster._id !== (content.author as Pseudonym)._id) {
             const notification = await this.notifications.notifyOne(
                 job.data,
                 NotificationKind.ContentComment,
@@ -59,7 +69,8 @@ export class NotificationConsumer {
             done(null, notification);
         } else {
             done();
-        }
+        }*/
+        done();
     }
 
     @Process(NotificationKind.CommentReply)
