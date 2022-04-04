@@ -41,7 +41,11 @@
 >
     <div class="flex flex-wrap items-center">
         <h3 class="title" title={content.title}>
-            <a href={content.kind === ContentKind.ProseContent ? `/prose/${content._id}` : contentUrl = `/poetry/${content._id}`}>
+            <a
+                href={content.kind === ContentKind.ProseContent
+                    ? `/prose/${content._id}`
+                    : (contentUrl = `/poetry/${content._id}`)}
+            >
                 {content.title}
             </a>
         </h3>
@@ -66,15 +70,13 @@
         {#each content.meta.genres as genre}
             <TagBadge kind={TagKind.Genre} {genre} size={'medium'} />
         {/each}
-    </div>
-    <div class="flex items-center flex-wrap mb-2">
         {#if showAllTags}
             {#each content.tags as tag}
                 <TagBadge kind={TagKind.Fandom} {tag} size={'medium'} />
             {/each}
             {#if content.tags.length > 1}
                 <div class="flex mx-0.5 mt-1" on:click={toggle} title="Less">
-                    <ArrowUpSLine/>
+                    <ArrowUpSLine />
                 </div>
             {/if}
         {:else}
@@ -83,8 +85,8 @@
             {/if}
             {#if content.tags.length > 1}
                 <div class="flex mx-0.5 mt-1" on:click={toggle} title="More">
-                    <MoreLine/>
-                    <ArrowDownSLine/>
+                    <MoreLine />
+                    <ArrowDownSLine />
                 </div>
             {/if}
         {/if}
@@ -166,7 +168,7 @@
             }
         }
         div.work-meta {
-            @apply rounded-md px-1 text-xs flex items-center;
+            @apply rounded-md px-1 text-xs flex items-center flex-wrap;
             :global(svg) {
                 @apply mr-0.5;
             }

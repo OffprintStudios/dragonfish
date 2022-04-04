@@ -37,9 +37,10 @@ export class NotificationService {
     private async handleContentComment(payload: ContentCommentPayload) {
         this.logger.log(`Received payload for type ${NotificationKind.ContentComment}`);
 
-        const content = await this.content.fetchOne(payload.contentId, undefined, true);
+        const content = await this.content.fetchOne(payload.contentId, undefined, false);
+        console.log(content);
         const job: ContentCommentJob = {
-            recipientId: (content.author as Pseudonym)._id,
+            recipientId: content.author as string,
             commentId: payload.commentId,
             poster: payload.poster,
             contentId: content._id,
@@ -74,7 +75,7 @@ export class NotificationService {
 
         const content = await this.content.fetchOne(payload.contentId, undefined, true);
         const job: AddedToLibraryJob = {
-            recipientId: (content.author as Pseudonym)._id,
+            recipientId: content.author as string,
             contentId: content._id,
             contentTitle: content.title,
             contentKind: content.kind,

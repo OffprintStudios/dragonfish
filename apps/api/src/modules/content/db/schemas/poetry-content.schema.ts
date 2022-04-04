@@ -58,9 +58,6 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         type: [String],
         ref: 'Sections',
         default: null,
-        autopopulate: {
-            match: { 'audit.isDeleted': false },
-        },
     })
     sections?: string[] | SectionInfo[];
 
