@@ -70,6 +70,7 @@
         {#each content.meta.genres as genre}
             <TagBadge kind={TagKind.Genre} {genre} size={'medium'} />
         {/each}
+        <!--fandom tags should now flow correctly-->
         {#if showAllTags}
             {#each content.tags as tag}
                 <TagBadge kind={TagKind.Fandom} {tag} size={'medium'} />
