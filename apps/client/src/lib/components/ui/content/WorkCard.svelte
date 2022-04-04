@@ -36,7 +36,7 @@
     }
 </script>
 
-<span
+<div
     class="card border border-gray-600 dark:border-white group hover:bg-gray-100 hover:dark:bg-zinc-700"
 >
     <div class="flex flex-wrap items-center">
@@ -133,10 +133,10 @@
             </span>
         </div>
     </div>
-</span>
+</div>
 
 <style lang="scss">
-    span.card {
+    div.card {
         @apply block flex flex-col p-2 transition transform select-none cursor-pointer h-full rounded-md;
         color: var(--text-color);
         h3.title {
