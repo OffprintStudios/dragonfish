@@ -11,7 +11,7 @@ export class ApprovalQueueDocument extends Document implements ApprovalQueue {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
-    @Prop({ type: String, ref: 'Content', required: true, autopopulate: true })
+    @Prop({ type: String, ref: 'Content', required: true })
     readonly workToApprove: string | ContentModel;
 
     @Prop({

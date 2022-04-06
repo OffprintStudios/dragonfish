@@ -59,7 +59,7 @@ export class ProseStore {
                 'meta.status': proseInfo.status,
                 tags: proseInfo.tags,
             },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 
@@ -78,7 +78,7 @@ export class ProseStore {
         return this.proseModel.findOneAndUpdate(
             { _id: proseId, author: user, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 }

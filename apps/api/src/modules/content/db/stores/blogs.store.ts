@@ -58,7 +58,7 @@ export class BlogsStore {
                 'meta.rating': blogInfo.rating,
                 'stats.words': wordCount,
             },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 
@@ -82,7 +82,7 @@ export class BlogsStore {
                 'audit.published': pubChange.newStatus,
                 'audit.publishedOn': new Date(),
             },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 
@@ -98,7 +98,7 @@ export class BlogsStore {
             {
                 'audit.isNewsPost': newsChange.postAsNews,
             },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 
@@ -117,7 +117,7 @@ export class BlogsStore {
             {
                 'audit.isFeatured': featuredChange.postAsNews,
             },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 
@@ -135,7 +135,7 @@ export class BlogsStore {
         return this.blogsModel.findOneAndUpdate(
             { _id: blogId, author: authorId },
             { 'meta.banner': bannerUrl },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 }

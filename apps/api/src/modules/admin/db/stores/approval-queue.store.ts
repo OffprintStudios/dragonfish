@@ -27,7 +27,10 @@ export class ApprovalQueueStore {
      * Fetches the entire queue.
      */
     async fetchAll(): Promise<ApprovalQueueDocument[]> {
-        return await this.approvalQueue.find().sort({ createdAt: -1 });
+        return await this.approvalQueue
+            .find()
+            .sort({ createdAt: -1 })
+            .populate({ path: 'workToApprove', populate: 'author' });
     }
 
     /**
@@ -46,6 +49,7 @@ export class ApprovalQueueStore {
                 sort: { createdAt: -1 },
                 page: pageNum,
                 limit: 15,
+                populate: { path: 'workToApprove', populate: 'author' },
             },
         );
     }
