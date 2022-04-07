@@ -6,12 +6,12 @@ import {
     WorkStatus,
     Genres,
     ContentRating,
-    SectionInfo,
     ContentKind,
     PubStatus,
     TagsModel,
 } from '$shared/models/content';
 import { Pseudonym } from '$shared/models/accounts';
+import { Section } from '$shared/models/sections';
 
 @Schema()
 export class ProseContentDocument extends Document implements ProseContent {
@@ -54,7 +54,7 @@ export class ProseContentDocument extends Document implements ProseContent {
         ref: 'Sections',
         default: null,
     })
-    sections: string[] | SectionInfo[];
+    sections: string[] | Section[];
 
     @Prop({ type: [{ type: String, ref: 'Tags' }] })
     tags?: string[] | TagsModel[];

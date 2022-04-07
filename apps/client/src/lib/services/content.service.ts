@@ -1,12 +1,13 @@
 import { http } from './http';
 import type { Content, ContentFilter, ContentKind } from '$lib/models/content';
 import type { Blog, PubChange } from '$lib/models/content/blogs';
-import type { PaginateResult, PubContent } from '$lib/models/util';
+import type { PaginateResult } from '$lib/models/util';
 import { baseUrl } from '$lib/util';
 import type { AxiosResponse } from 'axios';
 import type { FormType } from '$lib/models/content/works/forms';
 import type { Section, SectionForm, PublishSection } from '$lib/models/content/works';
 import type { Ratings, RatingOption } from '$lib/models/content/ratings';
+import type { ContentLibrary } from '$lib/models/content/library';
 
 //#region ---BROWSING---
 
@@ -43,14 +44,32 @@ export async function fetchFeaturedPosts(): Promise<Blog[]> {
 
 //#region ---CONTENT---
 
-export async function fetchOne(contentId: string, profileId?: string): Promise<PubContent> {
+export async function fetchOne(contentId: string, profileId?: string): Promise<Content> {
     const route = profileId
         ? `${baseUrl}/content/fetch-one?pseudId=${profileId}&contentId=${contentId}`
         : `${baseUrl}/content/fetch-one?contentId=${contentId}`;
 
-    return http.get<PubContent>(route).then((res) => {
+    return http.get<Content>(route).then((res) => {
         return res.data;
     });
+}
+
+export async function fetchRatings(contentId: string): Promise<Ratings> {
+    return http
+        .get<Ratings>(`${baseUrl}/content/fetch-ratings?contentId=${contentId}`)
+        .then((res) => {
+            return res.data;
+        });
+}
+
+export async function fetchLibraryDoc(contentId: string, pseudId: string): Promise<ContentLibrary> {
+    return http
+        .get<ContentLibrary>(
+            `${baseUrl}/content/fetch-library-doc?pseudId=${pseudId}&contentId=${contentId}`,
+        )
+        .then((res) => {
+            return res.data;
+        });
 }
 
 export async function fetchAllByKind(

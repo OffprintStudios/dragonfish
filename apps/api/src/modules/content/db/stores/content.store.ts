@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
-import { ContentDocument, SectionsDocument } from '../schemas';
+import { ContentDocument, ProseContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
     ContentKind,
@@ -10,7 +10,7 @@ import {
     FormType,
     PubStatus,
 } from '$shared/models/content';
-import { PublishSection, SectionForm } from '$shared/models/sections';
+import { PublishSection, Section, SectionForm } from '$shared/models/sections';
 import { BlogsStore } from './blogs.store';
 import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
@@ -50,7 +50,7 @@ export class ContentStore {
         }
 
         if (populate) {
-            return this.content.findOne(query).populate('author').populate('sections');
+            return this.content.findOne(query).populate('author');
         } else {
             return this.content.findOne(query);
         }
@@ -93,6 +93,26 @@ export class ContentStore {
         };
 
         return await this.content.paginate(query, paginateOptions);
+    }
+
+    /**
+     * Fetches all sections of a work, depending on whether or not you want them published.
+     *
+     * @param contentId
+     * @param published
+     * @param userId
+     */
+    async fetchSections(contentId: string, published = false, userId?: string) {
+        if (published) {
+            const content = await this.content.findOne({ _id: contentId }).populate('sections');
+            const sections = (content as ProseContentDocument).sections as Section[];
+            return sections.filter((item) => item.published === true);
+        } else {
+            const content = await this.content
+                .findOne({ _id: contentId, author: userId })
+                .populate('sections');
+            return (content as ProseContentDocument).sections as Section[];
+        }
     }
 
     /**

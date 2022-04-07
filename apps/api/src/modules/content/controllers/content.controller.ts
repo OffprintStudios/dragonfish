@@ -20,13 +20,12 @@ import {
     FormType,
     NewsChange,
     PubChange,
-    PubContent,
 } from '$shared/models/content';
 import { Roles } from '$shared/models/accounts';
 import { isNullOrUndefined } from '$shared/util';
-import { Identity, Optional, User, JwtPayload } from '$shared/auth';
+import { Identity, User, JwtPayload } from '$shared/auth';
 import { ContentService, RatingsService } from '../services';
-import { IdentityGuard } from '$shared/guards';
+import { IdentityGuard, RolesGuard } from '$shared/guards';
 import { ContentLibraryService } from '../services';
 import { ImagesService } from '$modules/utilities';
 
@@ -39,35 +38,26 @@ export class ContentController {
         private readonly images: ImagesService,
     ) {}
 
+    @Get('fetch-one')
+    async fetchOne(@Query('contentId') contentId: string) {
+        return await this.content.fetchOne(contentId);
+    }
+
+    @UseGuards(RolesGuard)
+    @Identity(Roles.User)
+    @Get('fetch-ratings')
+    async fetchRatings(@User() account: JwtPayload, @Query('contentId') contentId: string) {
+        return await this.ratings.fetchRatingsDoc(account.sub, contentId);
+    }
+
     @UseGuards(IdentityGuard)
     @Identity(Roles.User)
-    @Optional(true)
-    @Get('fetch-one')
-    async fetchOne(
+    @Get('fetch-library-doc')
+    async fetchLibraryDoc(
         @Query('pseudId') pseudId: string,
         @Query('contentId') contentId: string,
-        @User() account?: JwtPayload,
-    ): Promise<PubContent> {
-        if (isNullOrUndefined(contentId)) {
-            throw new BadRequestException(
-                `You must include the content ID and the content kind in your request.`,
-            );
-        }
-
-        if (account) {
-            return {
-                content: await this.content.fetchOne(contentId),
-                ratings: await this.ratings.fetchRatingsDoc(account.sub, contentId),
-                libraryDoc: await this.library.fetchOne(pseudId, contentId),
-            };
-        } else {
-            const content = await this.content.fetchOne(contentId);
-            return {
-                content: content,
-                ratings: null,
-                libraryDoc: null,
-            };
-        }
+    ) {
+        return await this.library.fetchOne(pseudId, contentId);
     }
 
     @UseGuards(IdentityGuard)
