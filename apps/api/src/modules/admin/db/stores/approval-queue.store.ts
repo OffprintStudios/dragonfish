@@ -79,7 +79,7 @@ export class ApprovalQueueStore {
             return this.approvalQueue.findOneAndUpdate(
                 { _id: docId },
                 { claimedBy: pseudId },
-                { new: true },
+                { new: true, populate: { path: 'workToApprove', populate: 'author' } },
             );
         } else {
             throw new ConflictException(`Someone has already claimed this work!`);
