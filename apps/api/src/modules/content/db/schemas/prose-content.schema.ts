@@ -53,9 +53,6 @@ export class ProseContentDocument extends Document implements ProseContent {
         type: [String],
         ref: 'Sections',
         default: null,
-        autopopulate: {
-            match: { 'audit.isDeleted': false },
-        },
     })
     sections: string[] | SectionInfo[];
 

@@ -12,7 +12,7 @@ export class ReadingHistoryDocument extends Document implements ReadingHistory {
     @Prop({ ref: 'Account', required: true, index: true })
     readonly owner: string;
 
-    @Prop({ type: String, ref: 'Content', required: true, autopopulate: true })
+    @Prop({ type: String, ref: 'Content', required: true })
     readonly content: string | ContentModel;
 
     @Prop({ required: true })

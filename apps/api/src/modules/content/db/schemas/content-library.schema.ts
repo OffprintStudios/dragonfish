@@ -12,7 +12,7 @@ export class ContentLibraryDocument extends Document implements ContentLibrary {
     @Prop({ type: String, ref: 'Pseudonym', index: true, required: true })
     readonly userId: string;
 
-    @Prop({ type: String, ref: 'Content', autopopulate: true, index: true, required: true })
+    @Prop({ type: String, ref: 'Content', index: true, required: true })
     readonly content: string | ContentModel;
 
     @Prop()

@@ -57,6 +57,7 @@ export class ContentGroupStore {
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
         return this.content
             .find(filteredQuery)
+            .populate('author')
             .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
             .limit(6);
     }
@@ -80,6 +81,7 @@ export class ContentGroupStore {
         };
         return this.blogsModel
             .find(query)
+            .populate('author')
             .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
             .limit(6);
     }
@@ -93,6 +95,7 @@ export class ContentGroupStore {
         };
         return this.blogsModel
             .find(query)
+            .populate('author')
             .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
             .limit(4);
     }
@@ -116,10 +119,11 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        const paginateOptions = {
+        const paginateOptions: PaginateOptions = {
             sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: 15,
+            populate: 'author',
         };
 
         if (userId) {
@@ -140,12 +144,14 @@ export class ContentGroupStore {
         kind: ContentKind,
         user?: JwtPayload,
     ): Promise<[ContentDocument, RatingsDocument]> {
-        const doc = await this.content.findOne({
-            _id: contentId,
-            kind: kind,
-            'audit.isDeleted': false,
-            'audit.published': PubStatus.Published,
-        });
+        const doc = await this.content
+            .findOne({
+                _id: contentId,
+                kind: kind,
+                'audit.isDeleted': false,
+                'audit.published': PubStatus.Published,
+            })
+            .populate('author');
         if (user === null || user === undefined) {
             await this.incrementViewCount(contentId);
             return [doc, null];
@@ -181,6 +187,7 @@ export class ContentGroupStore {
         );
         const works = await this.content
             .find(filteredWorksQuery)
+            .populate('author')
             .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
             .limit(3);
 
@@ -196,6 +203,7 @@ export class ContentGroupStore {
         );
         const blogs = await this.content
             .find(filteredBlogsQuery)
+            .populate('author')
             .sort({ 'audit.publishedOn': this.NEWEST_FIRST })
             .limit(3);
 
@@ -226,6 +234,7 @@ export class ContentGroupStore {
             sort: { 'audit.publishedOn': this.NEWEST_FIRST },
             page: pageNum,
             limit: 15,
+            populate: 'author',
         };
 
         if (userId) {
@@ -280,6 +289,7 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
             'audit.isDeleted': false,
             kind: { $in: kinds },
+            populate: 'author',
         };
         if (query) {
             paginateQuery['$text'] = { $search: query };

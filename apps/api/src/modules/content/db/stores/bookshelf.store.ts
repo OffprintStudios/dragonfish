@@ -160,7 +160,9 @@ export class BookshelfStore {
      */
     public async fetchItems(userId: string, shelfId: string) {
         if (await this.shelfExists(userId, shelfId)) {
-            return this.shelfItem.find({ shelfId: shelfId });
+            return this.shelfItem
+                .find({ shelfId: shelfId })
+                .populate({ path: 'content', populate: 'author' });
         } else {
             throw new NotFoundException(`The shelf you're trying to fetch does not exist.`);
         }

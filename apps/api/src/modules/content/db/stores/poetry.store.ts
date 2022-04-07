@@ -67,7 +67,7 @@ export class PoetryStore {
                     'meta.status': poetryInfo.status,
                     tags: poetryInfo.tags,
                 },
-                { new: true },
+                { new: true, populate: 'author' },
             );
         } else {
             return this.poetryModel.findOneAndUpdate(
@@ -86,7 +86,7 @@ export class PoetryStore {
                     'meta.status': poetryInfo.status,
                     tags: poetryInfo.tags,
                 },
-                { new: true },
+                { new: true, populate: 'author' },
             );
         }
     }
@@ -106,7 +106,7 @@ export class PoetryStore {
         return this.poetryModel.findOneAndUpdate(
             { _id: poetryId, author: user, 'audit.isDeleted': false },
             { 'meta.coverArt': coverArt },
-            { new: true },
+            { new: true, populate: 'author' },
         );
     }
 }

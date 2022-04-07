@@ -12,7 +12,7 @@ export class ShelfItemDocument extends Document implements ShelfItem {
     @Prop({ type: String, ref: 'Bookshelf', index: true, required: true })
     readonly shelfId: string;
 
-    @Prop({ type: String, ref: 'Content', index: true, autopopulate: true, required: true })
+    @Prop({ type: String, ref: 'Content', index: true, required: true })
     readonly content: string | ContentModel;
 
     @Prop()

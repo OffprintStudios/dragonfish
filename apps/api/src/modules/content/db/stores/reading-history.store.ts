@@ -21,7 +21,10 @@ export class ReadingHistoryStore {
      * @param user The owner of these documents
      */
     async fetchUserHistory(user: JwtPayload): Promise<ReadingHistoryDocument[]> {
-        return this.histModel.find({ owner: user.sub, visible: true }).sort({ viewedOn: -1 });
+        return this.histModel
+            .find({ owner: user.sub, visible: true })
+            .sort({ viewedOn: -1 })
+            .populate({ path: 'content', populate: 'author' });
     }
 
     /**
@@ -31,10 +34,9 @@ export class ReadingHistoryStore {
      * @param contentId The content associated with it
      */
     async fetchOneHistoryDoc(user: JwtPayload, contentId: string): Promise<ReadingHistoryDocument> {
-        return this.histModel.findOne(
-            { owner: user.sub, content: contentId },
-            { autopopulate: false },
-        );
+        return this.histModel
+            .findOne({ owner: user.sub, content: contentId })
+            .populate({ path: 'content', populate: 'author' });
     }
 
     /**

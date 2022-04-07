@@ -19,7 +19,6 @@ export class ContentDocument extends Document implements ContentModel {
         type: String,
         ref: 'Pseudonym',
         required: true,
-        autopopulate: { select: '-accountId' },
     })
     readonly author: string | Pseudonym;
 

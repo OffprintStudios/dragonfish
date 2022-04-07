@@ -39,7 +39,10 @@ export class ContentLibraryStore {
      * @param userId
      */
     public async fetchLibrary(userId: string) {
-        return this.library.find({ userId: userId }).sort({ createdAt: -1 });
+        return this.library
+            .find({ userId: userId })
+            .sort({ createdAt: -1 })
+            .populate({ path: 'content', populate: 'author' });
     }
 
     /**
