@@ -159,6 +159,17 @@ export async function publishOne(
 
 //#region ---SECTIONS---
 
+export async function fetchSections(contentId: string, pseudId?: string): Promise<Section[]> {
+    let url: string;
+    if (pseudId !== null && pseudId !== undefined) {
+        url = `${baseUrl}/sections/fetch-sections?contentId=${contentId}&pseudId=${pseudId}`;
+    } else {
+        url = `${baseUrl}/sections/fetch-sections?contentId=${contentId}`;
+    }
+
+    return http.get<Section[]>(url).then((res) => res.data);
+}
+
 export async function createSection(
     profileId: string,
     contentId: string,

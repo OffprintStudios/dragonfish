@@ -19,7 +19,7 @@ export class SectionsService {
     ) {}
 
     async fetchSections(contentId: string, published = false, userId?: string) {
-        return await this.content.fetchSections(contentId, published);
+        return await this.content.fetchSections(contentId, published, userId);
     }
 
     async fetchOneById(sectionId: string, published?: boolean): Promise<Section> {

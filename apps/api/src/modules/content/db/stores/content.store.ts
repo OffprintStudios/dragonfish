@@ -104,22 +104,33 @@ export class ContentStore {
      */
     async fetchSections(contentId: string, published = false, userId?: string) {
         if (published) {
-            const content = await this.content.findOne({ _id: contentId }).populate({
-                path: 'sections',
-                match: { 'audit.isDeleted': false },
-                select: '_id title published audit.publishedOn',
-            });
-            const sections = (content as ProseContentDocument).sections as Section[];
-            return sections.filter((item) => item.published === true);
-        } else {
             const content = await this.content
-                .findOne({ _id: contentId, author: userId })
+                .findOne({ _id: contentId, 'audit.isDeleted': false })
                 .populate({
                     path: 'sections',
-                    match: { 'audit.isDeleted': false },
-                    select: '_id title published audit.publishedOn',
+                    match: { 'audit.isDeleted': { $eq: false } },
+                    select: '_id title published stats.words audit.publishedOn createdAt',
                 });
-            return (content as ProseContentDocument).sections as Section[];
+            const sections = (content as ProseContentDocument).sections as Section[];
+            if (sections) {
+                return sections.filter((item) => item.published === true);
+            } else {
+                return [];
+            }
+        } else {
+            const content = await this.content
+                .findOne({ _id: contentId, author: userId, 'audit.isDeleted': false })
+                .populate({
+                    path: 'sections',
+                    match: { 'audit.isDeleted': { $eq: false } },
+                    select: '_id title published stats.words audit.publishedOn createdAt',
+                });
+            const sections = (content as ProseContentDocument).sections;
+            if (sections) {
+                return (content as ProseContentDocument).sections as Section[];
+            } else {
+                return [];
+            }
         }
     }
 
