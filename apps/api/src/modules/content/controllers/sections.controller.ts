@@ -30,7 +30,7 @@ export class SectionsController {
     @Get('fetch-one-by-id')
     async fetchOneById(
         @Query('sectionId') sectionId: string,
-        @Query('published') published: boolean,
+        @Query('published') published = false,
     ) {
         return await this.sections.fetchOneById(sectionId, published);
     }

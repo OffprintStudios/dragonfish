@@ -22,7 +22,7 @@ export class SectionsService {
         return await this.content.fetchSections(contentId, published, userId);
     }
 
-    async fetchOneById(sectionId: string, published?: boolean): Promise<Section> {
+    async fetchOneById(sectionId: string, published = false): Promise<Section> {
         return await this.content.fetchSectionById(sectionId, published);
     }
 

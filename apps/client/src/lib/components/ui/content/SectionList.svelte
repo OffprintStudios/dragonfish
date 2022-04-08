@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { useQuery } from '@sveltestack/svelte-query';
+    import { useMutation, useQuery } from '@sveltestack/svelte-query';
     import { goto } from '$app/navigation';
-    import { content, togglePubStatus } from '$lib/repo/content.repo';
+    import { content } from '$lib/repo/content.repo';
     import { session } from '$lib/repo/session.repo';
     import { auth } from '$lib/services';
     import Button from '$lib/components/ui/misc/Button.svelte';
@@ -13,8 +13,9 @@
         DeleteBinLine,
         Loader5Line,
     } from 'svelte-remixicon';
-    import { fetchSections } from '$lib/services/content.service';
-    import { localeDate } from '$lib/util';
+    import { fetchSections, publishSection } from '$lib/services/content.service';
+    import { localeDate, queryClient } from '$lib/util';
+    import type { PublishSection, Section } from '$lib/models/content/works';
 
     export let baseUrl = `/prose`;
 
@@ -27,13 +28,35 @@
         ),
     );
 
-    async function toggleStatus(sectionId: string, currStatus: boolean) {
-        await togglePubStatus(
+    const toggleStatus = useMutation((section: Section) => requestSectionPublish(section), {
+        onSuccess: (data) => {
+            queryClient.setQueryData('contentSections', (oldData: Section[]) => {
+                const index = oldData.findIndex((item) => item._id === data._id);
+                oldData[index] = data;
+                return oldData;
+            });
+        },
+    });
+
+    async function requestSectionPublish(section: Section) {
+        const newStatus: PublishSection = {
+            oldPub: section.published,
+            newPub: !section.published,
+        };
+
+        return await publishSection(
             $session.currProfile._id,
             $content.content._id,
-            sectionId,
-            currStatus,
-        );
+            section._id,
+            newStatus,
+        ).then((data) => {
+            if (newStatus.oldPub === false && newStatus.newPub === true) {
+                $content.content.stats.words += data.stats.words;
+            } else if (newStatus.oldPub === true && newStatus.newPub === false) {
+                $content.content.stats.words -= data.stats.words;
+            }
+            return data;
+        });
     }
 </script>
 
@@ -77,17 +100,11 @@
                     <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
                         {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
                             {#if section.published}
-                                <button
-                                    on:click={async () =>
-                                        await toggleStatus(section._id, section.published)}
-                                >
+                                <button on:click={() => $toggleStatus.mutate(section)}>
                                     <CheckboxCircleLine class="button-icon no-text" />
                                 </button>
                             {:else}
-                                <button
-                                    on:click={async () =>
-                                        await toggleStatus(section._id, section.published)}
-                                >
+                                <button on:click={() => $toggleStatus.mutate(section)}>
                                     <CheckboxBlankCircleLine class="button-icon no-text" />
                                 </button>
                             {/if}

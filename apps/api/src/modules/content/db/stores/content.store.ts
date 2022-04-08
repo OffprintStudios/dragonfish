@@ -140,8 +140,8 @@ export class ContentStore {
      * @param sectionId The section ID
      * @param published (optional)
      */
-    async fetchSectionById(sectionId: string, published?: boolean): Promise<SectionsDocument> {
-        if (published) {
+    async fetchSectionById(sectionId: string, published = false): Promise<SectionsDocument> {
+        if (published === true) {
             return this.sections.findOne({
                 _id: sectionId,
                 published: true,
