@@ -170,6 +170,14 @@ export async function fetchSections(contentId: string, pseudId?: string): Promis
     return http.get<Section[]>(url).then((res) => res.data);
 }
 
+export async function fetchOneSection(sectionId: string, published = false): Promise<Section> {
+    return http
+        .get<Section>(
+            `${baseUrl}/sections/fetch-one-by-id?sectionId=${sectionId}&published=${published}`,
+        )
+        .then((res) => res.data);
+}
+
 export async function createSection(
     profileId: string,
     contentId: string,

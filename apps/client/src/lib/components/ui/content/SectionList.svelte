@@ -14,6 +14,7 @@
         Loader5Line,
     } from 'svelte-remixicon';
     import { fetchSections } from '$lib/services/content.service';
+    import { localeDate } from '$lib/util';
 
     export let baseUrl = `/prose`;
 
@@ -94,6 +95,12 @@
                         <a href="{baseUrl}/section/{section._id}">
                             <span class="title">{section.title}</span>
                             <span class="words">{section.stats.words} words</span>
+                            <span class="mx-1">•</span>
+                            {#if section.audit.publishedOn}
+                                <span>{localeDate(section.audit.publishedOn, 'shortDate')}</span>
+                            {:else}
+                                <span>{localeDate(section.createdAt, 'shortDate')}</span>
+                            {/if}
                         </a>
                         {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
                             <button>
