@@ -283,13 +283,13 @@ export class ContentGroupStore {
             limit: maxPerPage,
             options: {
                 strictQuery: false,
+                populate: 'author',
             },
         };
         const paginateQuery = {
             'audit.published': PubStatus.Published,
             'audit.isDeleted': false,
             kind: { $in: kinds },
-            populate: 'author',
         };
         if (query) {
             paginateQuery['$text'] = { $search: query };
