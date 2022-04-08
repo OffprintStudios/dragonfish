@@ -27,6 +27,9 @@
     } from '$lib/util';
     import { tags } from '$lib/services';
     import { TextField, SelectMenu, Editor } from '$lib/components/forms';
+    import Button from '$lib/components/ui/misc/Button.svelte';
+    import { Save2Line } from 'svelte-remixicon';
+    import { success } from '$lib/services/alerts.service';
 
     const dispatch = createEventDispatcher();
     var tagOptions = [];
@@ -101,29 +104,7 @@
         return tagsList;
     }
 
-    const { form, data, createSubmitHandler, errors } = createForm({
-        onSubmit: () => {
-            console.log(`Primary submit handler triggered!`);
-        },
-        initialValues: {
-            title: $content.content.title,
-            shortDesc: $content.content.desc,
-            longDesc: $content.content.body,
-            category: categories.find(
-                (item) => item.value === WorkKind[($content.content as Prose).meta.category],
-            ),
-            rating: ratings.find(
-                (item) => item.value === ContentRating[($content.content as Prose).meta.rating],
-            ),
-            genres: mapGenres(($content.content as Prose).meta.genres),
-            tags: [], // tags are loaded after this code is run
-            status: statuses.find(
-                (item) => item.value === WorkStatus[($content.content as Prose).meta.status],
-            ),
-        },
-    });
-
-    const saveProse = createSubmitHandler({
+    const { form, data, errors, isSubmitting } = createForm({
         onSubmit: async (values) => {
             const formInfo: CreateProse = {
                 title: values.title,
@@ -149,7 +130,8 @@
                 formInfo,
             ).then((res) => {
                 updateContent(res);
-                dispatch('edit');
+                success(`Changes saved!`);
+                dispatch('saved');
             });
         },
         validate: (values) => {
@@ -215,10 +197,35 @@
 
             return errors;
         },
+        initialValues: {
+            title: $content.content.title,
+            shortDesc: $content.content.desc,
+            longDesc: $content.content.body,
+            category: categories.find(
+                (item) => item.value === WorkKind[($content.content as Prose).meta.category],
+            ),
+            rating: ratings.find(
+                (item) => item.value === ContentRating[($content.content as Prose).meta.rating],
+            ),
+            genres: mapGenres(($content.content as Prose).meta.genres),
+            tags: [], // tags are loaded after this code is run
+            status: statuses.find(
+                (item) => item.value === WorkStatus[($content.content as Prose).meta.status],
+            ),
+        },
     });
 </script>
 
 <form use:form in:fade={{ delay: 0, duration: 150 }}>
+    <div class="flex items-center border-b border-zinc-700 dark:border-white pb-1">
+        <div class="flex-1">
+            <h3 class="text-2xl font-medium">Editing Info</h3>
+        </div>
+        <Button type="submit" loading={$isSubmitting} loadingText="Saving...">
+            <Save2Line class="button-icon" />
+            <span class="button-text">Save</span>
+        </Button>
+    </div>
     <TextField
         name="title"
         type="text"

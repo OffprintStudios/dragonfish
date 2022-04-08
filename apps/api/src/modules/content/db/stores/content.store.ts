@@ -104,13 +104,21 @@ export class ContentStore {
      */
     async fetchSections(contentId: string, published = false, userId?: string) {
         if (published) {
-            const content = await this.content.findOne({ _id: contentId }).populate('sections');
+            const content = await this.content.findOne({ _id: contentId }).populate({
+                path: 'sections',
+                match: { 'audit.isDeleted': false },
+                select: '_id title published audit.publishedOn',
+            });
             const sections = (content as ProseContentDocument).sections as Section[];
             return sections.filter((item) => item.published === true);
         } else {
             const content = await this.content
                 .findOne({ _id: contentId, author: userId })
-                .populate('sections');
+                .populate({
+                    path: 'sections',
+                    match: { 'audit.isDeleted': false },
+                    select: '_id title published audit.publishedOn',
+                });
             return (content as ProseContentDocument).sections as Section[];
         }
     }

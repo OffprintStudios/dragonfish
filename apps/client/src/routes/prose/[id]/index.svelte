@@ -30,7 +30,6 @@
     import { fly, fade } from 'svelte/transition';
     import { slugify } from '$lib/util';
     import { content } from '$lib/repo/content.repo';
-    import Button from '$lib/components/ui/misc/Button.svelte';
     import WorkBanner from '$lib/components/ui/content/WorkBanner.svelte';
     import { ArrowDownSLine, ArrowUpSLine } from 'svelte-remixicon';
     import SectionList from '$lib/components/ui/content/SectionList.svelte';
@@ -38,7 +37,7 @@
     import ApprovalOptions from '$lib/components/ui/content/ApprovalOptions.svelte';
     import WorkStats from '$lib/components/ui/content/WorkStats.svelte';
     import EditForm from './_forms/EditForm.svelte';
-    import NotifyBanner from '$lib/components/ui/misc/NotifyBanner.svelte';
+    import { NotifyBanner, Button } from '$lib/components/ui/misc';
     import { PubStatus } from '$lib/models/content';
 
     let showDesc = true;
@@ -89,7 +88,7 @@
 </svelte:head>
 
 <div class="w-full h-screen overflow-y-auto">
-    <WorkBanner content={$content.content} ratings={$content.ratings} />
+    <WorkBanner />
     {#if $content.content.audit.published === PubStatus.Unpublished}
         <NotifyBanner
             message="<b>This work is a draft.</b> No views will be counted when navigating to
@@ -106,7 +105,7 @@
         />
         <div class="w-full">
             {#if editMode}
-                <EditForm />
+                <EditForm on:saved={() => (editMode = false)} />
             {:else}
                 <div in:fade={{ delay: 0, duration: 150 }}>
                     <div class="mb-6">

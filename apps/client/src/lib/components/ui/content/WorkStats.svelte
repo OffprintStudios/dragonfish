@@ -1,9 +1,7 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
     import { session } from '$lib/repo/session.repo';
     import type { Content } from '$lib/models/content';
     import {
-        Save2Line,
         CloseLine,
         Edit2Line,
         CheckboxCircleLine,
@@ -17,7 +15,7 @@
         FlagLine,
     } from 'svelte-remixicon';
     import { pluralize, localeDate, abbreviate } from '$lib/util';
-    import Button from '$lib/components/ui/misc/Button.svelte';
+    import { Button } from '$lib/components/ui/misc';
     import type { ContentLibrary } from '$lib/models/content/library';
     import { ContentKind } from '$lib/models/content';
     import { submitToQueue, updateLibraryDoc } from '$lib/repo/content.repo';
@@ -26,8 +24,6 @@
     export let content: Content;
     export let libraryDoc: ContentLibrary = null;
     export let editMode = false;
-
-    const dispatch = createEventDispatcher();
 
     async function processSubmission() {
         if (content.stats.words < 750 && content.kind === ContentKind.ProseContent) {
@@ -59,11 +55,6 @@
     <div class="flex items-center md:flex-col p-2 border-b-2 border-zinc-500">
         {#if $session.currProfile && $session.currProfile._id === content.author._id}
             {#if editMode}
-                <Button classes="md:w-full md:justify-center" on:click={() => dispatch('save')}>
-                    <Save2Line class="button-icon" />
-                    <span class="button-text">Save</span>
-                </Button>
-                <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
                 <Button
                     classes="md:w-full md:justify-center"
                     on:click={() => (editMode = !editMode)}
@@ -79,34 +70,34 @@
                     <Edit2Line class="button-icon" />
                     <span class="button-text">Edit</span>
                 </Button>
-                <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
-                {#if content.audit.published === 'Published'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <CheckboxCircleLine class="button-icon" />
-                        <span class="button-text">Published</span>
-                    </Button>
-                {:else if content.audit.published === 'Unpublished'}
-                    <Button
-                        classes="md:w-full md:justify-center"
-                        disabled={editMode}
-                        on:click={processSubmission}
-                    >
-                        <CheckboxBlankCircleLine class="button-icon" />
-                        <span class="button-text">Draft</span>
-                    </Button>
-                {:else if content.audit.published === 'Pending'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <TimeLine class="button-icon" />
-                        <span class="button-text">Pending</span>
-                    </Button>
-                {:else if content.audit.published === 'Rejected'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <CloseCircleLine class="button-icon" />
-                        <span class="button-text">Rejected</span>
-                    </Button>
-                {/if}
             {/if}
-            <div class="flex-1 md:flex-auto md:my-0.5"><!--separator--></div>
+            <div class="mx-0.5 md:mx-0 md:my-0.5" />
+            {#if content.audit.published === 'Published'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <CheckboxCircleLine class="button-icon" />
+                    <span class="button-text">Published</span>
+                </Button>
+            {:else if content.audit.published === 'Unpublished'}
+                <Button
+                    classes="md:w-full md:justify-center"
+                    disabled={editMode}
+                    on:click={processSubmission}
+                >
+                    <CheckboxBlankCircleLine class="button-icon" />
+                    <span class="button-text">Draft</span>
+                </Button>
+            {:else if content.audit.published === 'Pending'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <TimeLine class="button-icon" />
+                    <span class="button-text">Pending</span>
+                </Button>
+            {:else if content.audit.published === 'Rejected'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <CloseCircleLine class="button-icon" />
+                    <span class="button-text">Rejected</span>
+                </Button>
+            {/if}
+            <div class="flex-1 md:flex-auto md:my-0.5" />
             <Button
                 classes="md:w-full md:justify-center"
                 disabled={editMode}
@@ -127,12 +118,12 @@
                     <span class="button-text">Library</span>
                 </Button>
             {/if}
-            <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
+            <div class="mx-0.5 md:mx-0 md:my-0.5" />
             <Button classes="md:w-full md:justify-center">
                 <ShareBoxLine class="button-icon" />
                 <span class="button-text">Share</span>
             </Button>
-            <div class="flex-1 md:flex-auto md:my-0.5"><!--separator--></div>
+            <div class="flex-1 md:flex-auto md:my-0.5" />
             <Button classes="md:w-full md:justify-center">
                 <FlagLine class="button-icon" />
                 <span class="button-text">Report</span>
