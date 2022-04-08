@@ -1,33 +1,30 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
-    import { setCurrSection } from '$lib/repo/content.repo';
+    import { fetchOneSection } from '$lib/services/content.service';
 
-    export const load: Load = ({ params }) => {
+    export const load: Load = async ({ params }) => {
         const sectionId = params.sectionId;
-        setCurrSection(sectionId);
-        console.log(`route hit!`);
         return {
             props: {
-                sectionId,
+                section: await fetchOneSection(sectionId),
             },
         };
     };
 </script>
 
 <script lang="ts">
+    import { useQuery } from '@sveltestack/svelte-query';
     import { fly } from 'svelte/transition';
     import { createForm } from 'felte';
     import { goto } from '$app/navigation';
     import { session } from '$lib/repo/session.repo';
     import { auth } from '$lib/services';
-    import { updateSection, content } from '$lib/repo/content.repo';
-    import { MAX_TITLE_LENGTH, MIN_LONG_DESC_LENGTH, MIN_TITLE_LENGTH, slugify } from '$lib/util';
+    import { content } from '$lib/repo/content.repo';
+    import { MAX_TITLE_LENGTH, MIN_LONG_DESC_LENGTH, MIN_TITLE_LENGTH } from '$lib/util';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import {
         ArrowLeftSLine,
         BookmarkLine,
-        CheckboxBlankCircleLine,
-        CheckboxCircleLine,
         CloseLine,
         Edit2Line,
         FontSize,
@@ -35,33 +32,34 @@
         Save2Line,
         ArrowUpLine,
         ArrowDownLine,
+        Loader5Line,
     } from 'svelte-remixicon';
-    import { SectionForm } from '$lib/models/content/works';
+    import { Section, SectionForm } from '$lib/models/content/works';
     import { AuthorsNotePos } from '$lib/models/content';
-    import { editSection } from '$lib/services/content.service';
-    import TextField from '$lib/components/forms/TextField.svelte';
-    import Editor from '$lib/components/forms/Editor.svelte';
+    import { editSection, fetchSections } from '$lib/services/content.service';
+    import { TextField, Editor } from '$lib/components/forms';
 
-    let chapterListShown = false;
+    export let section: Section;
+
+    let sectionsListShown = false;
     let editMode = false;
     let baseUrl: string;
-    let selectedPos = $content.currSection.authorsNotePos
-        ? $content.currSection.authorsNotePos
-        : AuthorsNotePos.Bottom;
+    let selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
 
     if ($content.content.kind === 'ProseContent') {
-        baseUrl = `/prose/${$content.content._id}/${slugify($content.content.title)}`;
+        baseUrl = `/prose/${$content.content._id}`;
     } else {
-        baseUrl = `/poetry/${$content.content._id}/${slugify($content.content.title)}`;
+        baseUrl = `/poetry/${$content.content._id}`;
     }
 
-    function hasAuthorsNote() {
-        return (
-            $content.currSection.authorsNote &&
-            $content.currSection.authorsNotePos &&
-            $content.currSection.authorsNotePos === AuthorsNotePos.Bottom
-        );
-    }
+    const sectionsList = useQuery('contentSections', () =>
+        fetchSections(
+            $content.content._id,
+            $session.currProfile && $content.content.author._id === $session.currProfile._id
+                ? $session.currProfile._id
+                : null,
+        ),
+    );
 
     const { form, data, errors, createSubmitHandler } = createForm({
         onSubmit: (values) => {
@@ -89,9 +87,9 @@
             return errors;
         },
         initialValues: {
-            title: $content.currSection.title,
-            body: $content.currSection.body,
-            authorsNote: $content.currSection.authorsNote,
+            title: section.title,
+            body: section.body,
+            authorsNote: section.authorsNote,
         },
     });
 
@@ -105,16 +103,16 @@
                         ? values.authorsNote
                         : undefined,
                 authorsNotePos: selectedPos,
-                oldWords: $content.currSection.stats.words,
+                oldWords: section.stats.words,
             };
 
             await editSection(
                 $session.currProfile._id,
                 $content.content._id,
-                $content.currSection._id,
+                section._id,
                 formData,
-            ).then((section) => {
-                updateSection(section);
+            ).then((data) => {
+                section = data;
                 editMode = false;
             });
         },
@@ -130,12 +128,7 @@
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
-        <meta
-            property="og:url"
-            content="https://offprint.net/prose/{$content.content._id}/{slugify(
-                $content.content.title,
-            )}"
-        />
+        <meta property="og:url" content="https://offprint.net/prose/{$content.content._id}" />
         <meta property="og:title" content={$content.content.title} />
         <meta property="og:description" content={$content.content.desc} />
         <meta
@@ -147,12 +140,7 @@
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
-        <meta
-            property="twitter:url"
-            content="https://offprint.net/prose/{$content.content._id}/{slugify(
-                $content.content.title,
-            )}"
-        />
+        <meta property="twitter:url" content="https://offprint.net/prose/{$content.content._id}" />
         <meta property="twitter:title" content={$content.content.title} />
         <meta property="twitter:description" content={$content.content.desc} />
         <meta
@@ -180,7 +168,7 @@
                 <span class="button-text">Formatting</span>
             </Button>
             <div
-                class="flex-1 flex items-center justify-center uppercase text-sm relative top-0.5 font-bold tracking-widest"
+                class="flex-1 flex items-center justify-center uppercase text-sm relative top-0.5 font-bold tracking-widest text-white"
             >
                 {$content.content.title}
             </div>
@@ -197,8 +185,8 @@
             {:else}
                 <Button
                     kind="primary"
-                    on:click={() => (chapterListShown = !chapterListShown)}
-                    isActive={chapterListShown}
+                    on:click={() => (sectionsListShown = !sectionsListShown)}
+                    isActive={sectionsListShown}
                 >
                     <ListUnordered class="button-icon" />
                     <span class="button-text">Chapters</span>
@@ -253,67 +241,67 @@
                             <Editor label="Author's Note" bind:value={$data.authorsNote} />
                         </form>
                     {:else}
-                        {#if $content.currSection.authorsNote && $content.currSection.authorsNotePos && $content.currSection.authorsNotePos === AuthorsNotePos.Top}
+                        {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Top}
                             <div
                                 class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
                             >
                                 <h3 class="font-medium text-2xl mb-6">
                                     A note from the author&mdash;
                                 </h3>
-                                {@html $content.currSection.authorsNote}
+                                {@html section.authorsNote}
                             </div>
                         {/if}
                         <h1
                             class="border-b border-zinc-700 dark:border-white w-full text-4xl font-medium mb-8"
                         >
-                            {$content.currSection.title}
+                            {section.title}
                         </h1>
-                        {@html $content.currSection.body}
-                        {#if $content.currSection.authorsNote && $content.currSection.authorsNotePos && $content.currSection.authorsNotePos === AuthorsNotePos.Bottom}
+                        {@html section.body}
+                        {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Bottom}
                             <div
                                 class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
                             >
                                 <h3 class="font-medium text-2xl mb-6">
                                     A note from the author&mdash;
                                 </h3>
-                                {@html $content.currSection.authorsNote}
+                                {@html section.authorsNote}
                             </div>
                         {/if}
                     {/if}
                 </div>
             </div>
-            {#if chapterListShown}
+            {#if sectionsListShown}
                 <div
                     class="chapter-list bg-zinc-300 dark:bg-zinc-700"
                     transition:fly={{ delay: 0, duration: 150, x: 100 }}
                 >
-                    <ul>
-                        {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
-                            {#each $content.sections as section}
-                                <li class:active={section._id === $content.currSection._id}>
-                                    <a
-                                        class="w-full px-2.5 flex items-center"
-                                        href="{baseUrl}/section/{section._id}"
-                                    >
-                                        {#if section.published}
-                                            <CheckboxCircleLine class="mr-2" />
-                                        {:else}
-                                            <CheckboxBlankCircleLine class="mr-2" />
-                                        {/if}
-                                        {section.title}
+                    {#if $sectionsList.isLoading}
+                        <div class="flex flex-col h-full w-full items-center justify-center">
+                            <div class="flex items-center">
+                                <Loader5Line class="animate-spin mr-2" size="24px" />
+                                <span class="uppercase font-bold tracking-widest">Loading...</span>
+                            </div>
+                        </div>
+                    {:else if $sectionsList.isError}
+                        <div class="flex flex-col h-full w-full items-center justify-center">
+                            <div class="flex items-center">
+                                <CloseLine class="mr-2" size="24px" />
+                                <span class="uppercase font-bold tracking-widest"
+                                    >Error fetching sections!</span
+                                >
+                            </div>
+                        </div>
+                    {:else}
+                        <ul class="mt-4">
+                            {#each $sectionsList.data as section}
+                                <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
+                                    <a href="{baseUrl}/section/{section._id}">
+                                        <span class="title">{section.title}</span>
                                     </a>
                                 </li>
                             {/each}
-                        {:else}
-                            {#each $content.sections.filter((value) => value.published === true) as section}
-                                <li class:active={section._id === $content.currSection._id}>
-                                    <a class="w-full px-2.5" href="{baseUrl}/section/{section._id}"
-                                        >{section.title}</a
-                                    >
-                                </li>
-                            {/each}
-                        {/if}
-                    </ul>
+                        </ul>
+                    {/if}
                 </div>
             {/if}
         </div>
@@ -328,11 +316,17 @@
     div.chapter-list {
         @apply w-96 p-4;
         height: calc(100vh - 56px);
-        li {
+        li.section-item {
             @apply flex items-center h-10 odd:bg-zinc-400 odd:dark:bg-zinc-600 w-full truncate text-sm transition transform;
             a {
-                @apply no-underline;
+                @apply no-underline flex items-center text-center w-full h-full;
                 color: var(--text-color);
+                span.title {
+                    @apply flex-1;
+                }
+                &:hover {
+                    @apply text-white;
+                }
             }
             &.active {
                 @apply text-white;
