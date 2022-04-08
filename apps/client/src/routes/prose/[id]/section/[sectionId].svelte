@@ -38,7 +38,6 @@
     import { AuthorsNotePos } from '$lib/models/content';
     import { editSection, fetchSections } from '$lib/services/content.service';
     import { TextField, Editor } from '$lib/components/forms';
-    import { localeDate } from '$lib/util';
 
     export let section: Section;
 
