@@ -10,12 +10,12 @@
         const content = await fetchOne(blogId);
         const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
 
-        setContent(content.content);
+        setContent(content);
 
         return {
             props: {
                 content,
-                comments: await getPage(content.content._id, CommentKind.ContentComment, page),
+                comments: await getPage(content._id, CommentKind.ContentComment, page),
             },
         };
     };

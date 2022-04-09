@@ -1,4 +1,6 @@
-<script lang="ts" context="module">
+<script context="module" lang="ts">
+    /// This layout file is required so that works are fetched before anything else gets touched.
+
     import { get } from 'svelte/store';
     import type { Load } from '@sveltejs/kit';
     import { CommentKind } from '$lib/models/comments';
@@ -15,12 +17,12 @@
             get(session).currProfile ? get(session).currProfile._id : undefined,
         );
 
-        setContent(prose.content, prose.content.sections, prose.ratings, prose.libraryDoc);
+        setContent(prose);
 
         return {
             props: {
-                content: prose.content,
-                comments: await getPage(prose.content._id, CommentKind.ContentComment, page),
+                content: prose,
+                comments: await getPage(prose._id, CommentKind.ContentComment, page),
             },
         };
     };

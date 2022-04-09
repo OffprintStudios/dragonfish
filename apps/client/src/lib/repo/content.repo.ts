@@ -4,8 +4,7 @@ import { PubStatus } from '$lib/models/content';
 import type { Ratings } from '$lib/models/content/ratings';
 import type { ContentLibrary } from '$lib/models/content/library';
 import type { PublishSection, Section } from '$lib/models/content/works';
-import { publishOne, publishSection, changeVote } from '$lib/services/content.service';
-import type { RatingOption } from '$lib/models/content/ratings';
+import { publishOne, publishSection } from '$lib/services/content.service';
 
 interface ContentState {
     content: Content;
@@ -129,14 +128,5 @@ export async function submitToQueue(profileId: string, contentId: string): Promi
             state.content.audit.published = PubStatus.Pending;
             return state;
         });
-    });
-}
-
-export async function setVote(contentId: string, rating: RatingOption): Promise<void> {
-    return changeVote(contentId, rating).then((res) => {
-        content.update((state) => ({
-            ...state,
-            ratings: res,
-        }));
     });
 }

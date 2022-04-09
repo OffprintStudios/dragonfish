@@ -1,16 +1,23 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
     import { createForm } from 'felte';
-    import { content, addSection } from '$lib/repo/content.repo';
+    import { content } from '$lib/repo/content.repo';
     import { session } from '$lib/repo/session.repo';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { ArrowLeftSLine, Save2Line, ArrowDownLine, ArrowUpLine } from 'svelte-remixicon';
     import TextField from '$lib/components/forms/TextField.svelte';
     import Editor from '$lib/components/forms/Editor.svelte';
     import { AuthorsNotePos } from '$lib/models/content';
-    import { MAX_TITLE_LENGTH, MIN_LONG_DESC_LENGTH, MIN_TITLE_LENGTH } from '$lib/util';
+    import {
+        MAX_TITLE_LENGTH,
+        MIN_LONG_DESC_LENGTH,
+        MIN_TITLE_LENGTH,
+        queryClient,
+    } from '$lib/util';
     import type { SectionForm } from '$lib/models/content/works';
-    import { createSection } from '$lib/services/content.service';
+    import { createSection, fetchSections } from '$lib/services/content.service';
+    import { useMutation, useQuery } from '@sveltestack/svelte-query';
+    import { success } from '$lib/services/alerts.service';
 
     let selectedPos = AuthorsNotePos.Bottom;
     let baseUrl: string;
@@ -20,6 +27,40 @@
     } else {
         baseUrl = `/poetry/${$content.content._id}`;
     }
+
+    if (
+        $session.currProfile &&
+        $session.account &&
+        $session.currProfile._id !== $content.content.author._id
+    ) {
+        goto(`${baseUrl}`);
+    }
+
+    if (!$session.currProfile && !$session.account) {
+        goto(`${baseUrl}`);
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const sectionsList = useQuery(
+        'contentSections',
+        () => fetchSections($content.content._id, $session.currProfile._id),
+        {
+            enabled:
+                !!$session.currProfile && $session.currProfile._id === $content.content.author._id,
+        },
+    );
+
+    const addSection = useMutation(
+        (formData: SectionForm) =>
+            createSection($session.currProfile._id, $content.content._id, formData),
+        {
+            onSuccess: (data) => {
+                queryClient.setQueryData('contentSections', (oldData) => [...oldData, data]);
+                success(`Section created!`);
+                goto(baseUrl);
+            },
+        },
+    );
 
     const { form, data, errors, createSubmitHandler } = createForm({
         onSubmit: (values) => {
@@ -65,12 +106,7 @@
                 authorsNotePos: selectedPos,
             };
 
-            await createSection($session.currProfile._id, $content.content._id, formData).then(
-                (section) => {
-                    addSection(section);
-                    goto(baseUrl);
-                },
-            );
+            await $addSection.mutateAsync(formData);
         },
     });
 </script>
@@ -83,9 +119,9 @@
                 <span class="button-text">Back</span>
             </Button>
             <div
-                class="flex-1 text-center uppercase text-sm relative top-0.5 font-bold tracking-widest"
+                class="flex-1 text-center uppercase text-sm relative top-0.5 font-bold tracking-widest text-white"
             >
-                Create a New Section
+                Create a New Chapter
             </div>
             <Button kind="primary" on:click={saveSection}>
                 <Save2Line class="button-icon" />

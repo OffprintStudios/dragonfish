@@ -1,7 +1,8 @@
 <script lang="ts">
+    import { useMutation, useQuery } from '@sveltestack/svelte-query';
     import { session } from '$lib/repo/session.repo';
-    import { setVote, content } from '$lib/repo/content.repo';
-    import { abbreviate } from '$lib/util';
+    import { content } from '$lib/repo/content.repo';
+    import { abbreviate, queryClient } from '$lib/util';
     import { TagKind } from '$lib/models/content/works';
     import TagBadge from '$lib/components/ui/content/TagBadge.svelte';
     import Button from '$lib/components/ui/misc/Button.svelte';
@@ -16,18 +17,22 @@
     import { RatingOption } from '$lib/models/content/ratings';
     import { openPopup } from '$lib/components/nav/popup';
     import UploadCoverArt from './UploadCoverArt.svelte';
+    import { changeVote, fetchRatings } from '$lib/services/content.service';
+    import { PubStatus } from '$lib/models/content';
 
-    async function setLike() {
-        await setVote($content.content._id, RatingOption.Liked);
-    }
+    const rating = useQuery('contentRatings', () => fetchRatings($content.content._id), {
+        enabled: !!$session.account && $content.content.audit.published === PubStatus.Published,
+        cacheTime: 1500,
+    });
 
-    async function setDislike() {
-        await setVote($content.content._id, RatingOption.Disliked);
-    }
-
-    async function setNoVote() {
-        await setVote($content.content._id, RatingOption.NoVote);
-    }
+    const updateVote = useMutation(
+        (ratingOption: RatingOption) => changeVote($content.content._id, ratingOption),
+        {
+            onSuccess: (data) => {
+                queryClient.setQueryData('contentRatings', data);
+            },
+        },
+    );
 </script>
 
 <div class="work-banner">
@@ -91,44 +96,82 @@
                 </div>
             </div>
             <div class="flex items-center justify-center md:justify-start">
-                {#if $session.account}
-                    {#if $content.ratings.rating === RatingOption.Liked}
-                        <Button kind="primary" isActive on:click={setNoVote} title="Like">
+                {#if $session.account && $rating.data}
+                    {#if $rating.data.rating === RatingOption.Liked}
+                        <Button
+                            kind="primary"
+                            isActive
+                            on:click={() => $updateVote.mutate(RatingOption.NoVote)}
+                            title="Like"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.likes}
+                        >
                             <HeartFill class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.likes)}
                             </span>
                         </Button>
                         <div class="mx-0.5"><!--separator--></div>
-                        <Button kind="primary" on:click={setDislike} title="Dislike">
+                        <Button
+                            kind="primary"
+                            on:click={() => $updateVote.mutate(RatingOption.Disliked)}
+                            title="Dislike"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.dislikes}
+                        >
                             <DislikeLine class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.dislikes)}
                             </span>
                         </Button>
-                    {:else if $content.ratings.rating === RatingOption.Disliked}
-                        <Button kind="primary" on:click={setLike} title="Like">
+                    {:else if $rating.data.rating === RatingOption.Disliked}
+                        <Button
+                            kind="primary"
+                            on:click={() => $updateVote.mutate(RatingOption.Liked)}
+                            title="Like"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.likes}
+                        >
                             <HeartLine class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.likes)}
                             </span>
                         </Button>
                         <div class="mx-0.5"><!--separator--></div>
-                        <Button kind="primary" isActive on:click={setNoVote} title="Dislike">
+                        <Button
+                            kind="primary"
+                            isActive
+                            on:click={() => $updateVote.mutate(RatingOption.NoVote)}
+                            title="Dislike"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.dislikes}
+                        >
                             <DislikeFill class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.dislikes)}
                             </span>
                         </Button>
                     {:else}
-                        <Button kind="primary" on:click={setLike} title="Like">
+                        <Button
+                            kind="primary"
+                            on:click={() => $updateVote.mutate(RatingOption.Liked)}
+                            title="Like"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.likes}
+                        >
                             <HeartLine class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.likes)}
                             </span>
                         </Button>
                         <div class="mx-0.5"><!--separator--></div>
-                        <Button kind="primary" on:click={setDislike} title="Dislike">
+                        <Button
+                            kind="primary"
+                            on:click={() => $updateVote.mutate(RatingOption.Disliked)}
+                            title="Dislike"
+                            loading={$updateVote.isLoading}
+                            loadingText={$content.content.stats.dislikes}
+                        >
                             <DislikeLine class="button-icon" size="20px" />
                             <span class="button-text relative top-[0.02rem]">
                                 {abbreviate($content.content.stats.dislikes)}

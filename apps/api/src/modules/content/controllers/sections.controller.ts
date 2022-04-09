@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { IdentityGuard } from '$shared/guards';
 import { isNullOrUndefined } from '$shared/util';
-import { User, JwtPayload, Identity } from '$shared/auth';
+import { User, JwtPayload, Identity, Optional } from '$shared/auth';
 import { Roles } from '$shared/models/accounts';
 import { SectionForm, PublishSection } from '$shared/models/sections';
 import { SectionsService } from '../services';
@@ -19,10 +19,18 @@ import { SectionsService } from '../services';
 export class SectionsController {
     constructor(private readonly sections: SectionsService) {}
 
+    @UseGuards(IdentityGuard)
+    @Identity(Roles.User)
+    @Optional(true)
+    @Get('fetch-sections')
+    async fetchSections(@Query('contentId') contentId: string, @Query('pseudId') pseudId: string) {
+        return await this.sections.fetchSections(contentId, !pseudId, pseudId);
+    }
+
     @Get('fetch-one-by-id')
     async fetchOneById(
         @Query('sectionId') sectionId: string,
-        @Query('published') published: boolean,
+        @Query('published') published = false,
     ) {
         return await this.sections.fetchOneById(sectionId, published);
     }

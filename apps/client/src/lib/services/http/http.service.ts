@@ -11,7 +11,6 @@ const http: AxiosInstance = Axios.create({
 });
 
 http.interceptors.request.use((request) => {
-    console.log(`Request interceptor hit! Request: ${request.url}`);
     if (token()) {
         request.headers.authorization = `Bearer ${token()}`;
     }

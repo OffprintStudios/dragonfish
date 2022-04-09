@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
+    import { useQuery, useMutation } from '@sveltestack/svelte-query';
     import { session } from '$lib/repo/session.repo';
+    import { content } from '$lib/repo/content.repo';
     import type { Content } from '$lib/models/content';
     import {
-        Save2Line,
         CloseLine,
         Edit2Line,
         CheckboxCircleLine,
@@ -16,40 +16,57 @@
         ShareBoxLine,
         FlagLine,
     } from 'svelte-remixicon';
-    import { pluralize, localeDate, abbreviate } from '$lib/util';
-    import Button from '$lib/components/ui/misc/Button.svelte';
-    import type { ContentLibrary } from '$lib/models/content/library';
+    import { pluralize, localeDate, abbreviate, queryClient } from '$lib/util';
+    import { Button } from '$lib/components/ui/misc';
     import { ContentKind } from '$lib/models/content';
     import { submitToQueue, updateLibraryDoc } from '$lib/repo/content.repo';
-    import { addToLibrary } from '$lib/services/content-library.service';
+    import { addToLibrary, removeFromLibrary } from '$lib/services/content-library.service';
+    import { fetchLibraryDoc } from '$lib/services/content.service';
+    import type { ContentLibrary } from '$lib/models/content/library';
 
-    export let content: Content;
-    export let libraryDoc: ContentLibrary = null;
     export let editMode = false;
 
-    const dispatch = createEventDispatcher();
+    const libraryDoc = useQuery(
+        'libraryDoc',
+        () =>
+            fetchLibraryDoc(
+                $content.content._id,
+                $session.currProfile ? $session.currProfile._id : undefined,
+            ),
+        {
+            enabled: !!$session.currProfile,
+            refetchOnWindowFocus: false,
+        },
+    );
+
+    const addToLibraryMutation = useMutation(
+        () => addToLibrary($session.currProfile._id, $content.content._id),
+        {
+            onSuccess: (data: ContentLibrary) => {
+                queryClient.setQueryData('libraryDoc', data);
+            },
+        },
+    );
+
+    const removeFromLibraryMutation = useMutation(
+        () => removeFromLibrary($session.currProfile._id, $content.content._id),
+        {
+            onSuccess: () => {
+                queryClient.setQueryData('libraryDoc', null);
+            },
+        },
+    );
 
     async function processSubmission() {
-        if (content.stats.words < 750 && content.kind === ContentKind.ProseContent) {
+        if (
+            $content.content.stats.words < 750 &&
+            $content.content.kind === ContentKind.ProseContent
+        ) {
             alert(`You must have at least 750 words in your work in order to submit to the queue`);
             return;
         }
 
-        await submitToQueue($session.currProfile._id, content._id);
-    }
-
-    async function addContentToLibrary() {
-        if ($session.currProfile) {
-            const newDoc = await addToLibrary($session.currProfile._id, content._id);
-            updateLibraryDoc(newDoc);
-        }
-    }
-
-    async function removeContentFromLibrary() {
-        if ($session.currProfile) {
-            await addToLibrary($session.currProfile._id, content._id);
-            updateLibraryDoc(null);
-        }
+        await submitToQueue($session.currProfile._id, $content.content._id);
     }
 </script>
 
@@ -57,13 +74,8 @@
     class="flex flex-col w-full md:mr-6 md:max-w-[128px] md:max-h-[35.875rem] md:mb-0 rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed mb-6"
 >
     <div class="flex items-center md:flex-col p-2 border-b-2 border-zinc-500">
-        {#if $session.currProfile && $session.currProfile._id === content.author._id}
+        {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
             {#if editMode}
-                <Button classes="md:w-full md:justify-center" on:click={() => dispatch('save')}>
-                    <Save2Line class="button-icon" />
-                    <span class="button-text">Save</span>
-                </Button>
-                <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
                 <Button
                     classes="md:w-full md:justify-center"
                     on:click={() => (editMode = !editMode)}
@@ -79,34 +91,34 @@
                     <Edit2Line class="button-icon" />
                     <span class="button-text">Edit</span>
                 </Button>
-                <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
-                {#if content.audit.published === 'Published'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <CheckboxCircleLine class="button-icon" />
-                        <span class="button-text">Published</span>
-                    </Button>
-                {:else if content.audit.published === 'Unpublished'}
-                    <Button
-                        classes="md:w-full md:justify-center"
-                        disabled={editMode}
-                        on:click={processSubmission}
-                    >
-                        <CheckboxBlankCircleLine class="button-icon" />
-                        <span class="button-text">Draft</span>
-                    </Button>
-                {:else if content.audit.published === 'Pending'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <TimeLine class="button-icon" />
-                        <span class="button-text">Pending</span>
-                    </Button>
-                {:else if content.audit.published === 'Rejected'}
-                    <Button classes="md:w-full md:justify-center" disabled={editMode}>
-                        <CloseCircleLine class="button-icon" />
-                        <span class="button-text">Rejected</span>
-                    </Button>
-                {/if}
             {/if}
-            <div class="flex-1 md:flex-auto md:my-0.5"><!--separator--></div>
+            <div class="mx-0.5 md:mx-0 md:my-0.5" />
+            {#if $content.content.audit.published === 'Published'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <CheckboxCircleLine class="button-icon" />
+                    <span class="button-text">Published</span>
+                </Button>
+            {:else if $content.content.audit.published === 'Unpublished'}
+                <Button
+                    classes="md:w-full md:justify-center"
+                    disabled={editMode}
+                    on:click={processSubmission}
+                >
+                    <CheckboxBlankCircleLine class="button-icon" />
+                    <span class="button-text">Draft</span>
+                </Button>
+            {:else if $content.content.audit.published === 'Pending'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <TimeLine class="button-icon" />
+                    <span class="button-text">Pending</span>
+                </Button>
+            {:else if $content.content.audit.published === 'Rejected'}
+                <Button classes="md:w-full md:justify-center" disabled={editMode}>
+                    <CloseCircleLine class="button-icon" />
+                    <span class="button-text">Rejected</span>
+                </Button>
+            {/if}
+            <div class="flex-1 md:flex-auto md:my-0.5" />
             <Button
                 classes="md:w-full md:justify-center"
                 disabled={editMode}
@@ -116,23 +128,32 @@
                 <span class="button-text">Delete</span>
             </Button>
         {:else}
-            {#if libraryDoc && $session.currProfile}
-                <Button classes="md:w-full md:justify-center" on:click={removeContentFromLibrary}>
+            {#if $libraryDoc.data && $session.currProfile}
+                <Button
+                    classes="md:w-full md:justify-center"
+                    on:click={$removeFromLibraryMutation.mutate}
+                    loading={$removeFromLibraryMutation.isLoading}
+                >
                     <CheckboxLine class="button-icon" />
                     <span class="button-text">Added</span>
                 </Button>
-            {:else if $session.currProfile}
-                <Button classes="md:w-full md:justify-center" on:click={addContentToLibrary}>
+            {:else}
+                <Button
+                    classes="md:w-full md:justify-center"
+                    disabled={!$session.currProfile && !$session.account}
+                    on:click={$addToLibraryMutation.mutate}
+                    loading={$libraryDoc.isLoading || $addToLibraryMutation.isLoading}
+                >
                     <AddBoxLine class="button-icon" />
                     <span class="button-text">Library</span>
                 </Button>
             {/if}
-            <div class="mx-0.5 md:mx-0 md:my-0.5"><!--separator--></div>
+            <div class="mx-0.5 md:mx-0 md:my-0.5" />
             <Button classes="md:w-full md:justify-center">
                 <ShareBoxLine class="button-icon" />
                 <span class="button-text">Share</span>
             </Button>
-            <div class="flex-1 md:flex-auto md:my-0.5"><!--separator--></div>
+            <div class="flex-1 md:flex-auto md:my-0.5" />
             <Button classes="md:w-full md:justify-center">
                 <FlagLine class="button-icon" />
                 <span class="button-text">Report</span>
@@ -141,39 +162,39 @@
     </div>
     <div class="flex items-center justify-center overflow-y-auto md:overflow-y-hidden md:flex-col">
         <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
-            {#if content.audit.publishedOn}
+            {#if $content.content.audit.publishedOn}
                 <span class="text text-zinc-500 dark:text-zinc-400">Published</span>
                 <span class="stat">
-                    {localeDate(content.audit.publishedOn, 'mediumDate')}
+                    {localeDate($content.content.audit.publishedOn, 'mediumDate')}
                 </span>
             {:else}
                 <span class="text text-zinc-500 dark:text-zinc-400">Created</span>
                 <span class="stat">
-                    {localeDate(content.createdAt, 'mediumDate')}
+                    {localeDate($content.content.createdAt, 'mediumDate')}
                 </span>
             {/if}
         </div>
         <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
             <span class="text text-zinc-500 dark:text-zinc-400">
-                View{pluralize(content.stats.views)}
+                View{pluralize($content.content.stats.views)}
             </span>
-            <span class="stat">{abbreviate(content.stats.views)}</span>
+            <span class="stat">{abbreviate($content.content.stats.views)}</span>
         </div>
         <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
             <span class="text text-zinc-500 dark:text-zinc-400">
-                Word{pluralize(content.stats.words)}
+                Word{pluralize($content.content.stats.words)}
             </span>
-            <span class="stat">{abbreviate(content.stats.words)}</span>
+            <span class="stat">{abbreviate($content.content.stats.words)}</span>
         </div>
         <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
             <span class="text text-zinc-500 dark:text-zinc-400">
-                Comment{pluralize(content.stats.comments)}
+                Comment{pluralize($content.content.stats.comments)}
             </span>
-            <span class="stat">{abbreviate(content.stats.comments)}</span>
+            <span class="stat">{abbreviate($content.content.stats.comments)}</span>
         </div>
         <div class="stat-box">
             <span class="text text-zinc-500 dark:text-zinc-400">Status</span>
-            <span class="stat">{content.meta.status}</span>
+            <span class="stat">{$content.content.meta.status}</span>
         </div>
     </div>
 </div>

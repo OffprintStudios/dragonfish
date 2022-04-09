@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
-import { ContentDocument, SectionsDocument } from '../schemas';
+import { ContentDocument, ProseContentDocument, SectionsDocument } from '../schemas';
 import {
     BlogForm,
     ContentKind,
@@ -10,7 +10,7 @@ import {
     FormType,
     PubStatus,
 } from '$shared/models/content';
-import { PublishSection, SectionForm } from '$shared/models/sections';
+import { PublishSection, Section, SectionForm } from '$shared/models/sections';
 import { BlogsStore } from './blogs.store';
 import { ProseStore } from './prose.store';
 import { PoetryStore } from './poetry.store';
@@ -50,7 +50,7 @@ export class ContentStore {
         }
 
         if (populate) {
-            return this.content.findOne(query).populate('author').populate('sections');
+            return this.content.findOne(query).populate('author');
         } else {
             return this.content.findOne(query);
         }
@@ -96,16 +96,59 @@ export class ContentStore {
     }
 
     /**
+     * Fetches all sections of a work, depending on whether or not you want them published.
+     *
+     * @param contentId
+     * @param published
+     * @param userId
+     */
+    async fetchSections(contentId: string, published = false, userId?: string) {
+        if (published) {
+            const content = await this.content
+                .findOne({ _id: contentId, 'audit.isDeleted': false })
+                .populate({
+                    path: 'sections',
+                    match: { 'audit.isDeleted': { $eq: false } },
+                    select: '_id title published stats.words audit.publishedOn createdAt',
+                });
+            const sections = (content as ProseContentDocument).sections as Section[];
+            if (sections) {
+                return sections.filter((item) => item.published === true);
+            } else {
+                return [];
+            }
+        } else {
+            const content = await this.content
+                .findOne({ _id: contentId, author: userId, 'audit.isDeleted': false })
+                .populate({
+                    path: 'sections',
+                    match: { 'audit.isDeleted': { $eq: false } },
+                    select: '_id title published stats.words audit.publishedOn createdAt',
+                });
+            const sections = (content as ProseContentDocument).sections;
+            if (sections) {
+                return (content as ProseContentDocument).sections as Section[];
+            } else {
+                return [];
+            }
+        }
+    }
+
+    /**
      * Fetches a section by ID. Optionally performs an extra check to only fetch a published section.
      *
      * @param sectionId The section ID
      * @param published (optional)
      */
-    async fetchSectionById(sectionId: string, published?: boolean): Promise<SectionsDocument> {
-        if (published) {
-            return this.sections.findOne({ _id: sectionId, published: true });
+    async fetchSectionById(sectionId: string, published = false): Promise<SectionsDocument> {
+        if (published === true) {
+            return this.sections.findOne({
+                _id: sectionId,
+                published: true,
+                'audit.isDeleted': false,
+            });
         } else {
-            return this.sections.findOne({ _id: sectionId });
+            return this.sections.findOne({ _id: sectionId, 'audit.isDeleted': false });
         }
     }
 
