@@ -14,14 +14,14 @@ export class ContentCommentStore {
 
     public async create(job: ContentCommentJob): Promise<ContentCommentDocument> {
         const newNotification = new this.contentComment({
-            recipientId: job.recipientId,
+            recipientId: job.content.author as string,
             'commentInfo.commentId': job.commentId,
             'commentInfo.posterName': job.poster.screenName,
             'commentInfo.posterId': job.poster._id,
             'commentInfo.posterTag': job.poster.userTag,
-            'contentInfo.contentId': job.contentId,
-            'contentInfo.contentTitle': job.contentTitle,
-            'contentInfo.contentKind': job.contentKind,
+            'contentInfo.contentId': job.content._id,
+            'contentInfo.contentTitle': job.content.title,
+            'contentInfo.contentKind': job.content.kind,
         });
 
         return await newNotification.save();

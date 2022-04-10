@@ -39,14 +39,14 @@ import * as Controllers from './controllers';
             name: 'notifications',
             limiter: {
                 max: 1000,
-                duration: 5000,
+                duration: 1000 * 30,
             },
         }),
         BullModule.registerQueue({
             name: 'push-notifications',
             limiter: {
                 max: 1000,
-                duration: 5000,
+                duration: 1000 * 30,
             },
         }),
         JwtModule.registerAsync({

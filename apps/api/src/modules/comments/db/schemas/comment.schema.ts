@@ -16,7 +16,6 @@ export class CommentDocument extends Document implements Comment {
         ref: 'Pseudonym',
         required: true,
         index: true,
-        autopopulate: true,
     })
     readonly user: string | Pseudonym;
 
@@ -39,7 +38,6 @@ export class CommentDocument extends Document implements Comment {
                 type: String,
                 ref: 'Pseudonym',
                 default: null,
-                autopopulate: true,
             },
         }),
     )

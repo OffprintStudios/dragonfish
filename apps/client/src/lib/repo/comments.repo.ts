@@ -1,8 +1,9 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { comments as commentsService } from '$lib/services';
 import type { Comment, CommentForm } from '$lib/models/comments';
 import { CommentKind } from '$lib/models/comments';
 import type { PaginateResult } from '$lib/models/util';
+import { session } from '$lib/repo/session.repo';
 
 interface CommentsState {
     threadId: string;
@@ -54,10 +55,11 @@ export async function addComment(
     formData: CommentForm,
 ): Promise<void> {
     return await commentsService.addComment(profileId, itemId, kind, formData).then((res) => {
-        comments.update((state) => ({
-            ...state,
-            comments: [...state.comments, res],
-        }));
+        comments.update((state) => {
+            res.user = get(session).currProfile ?? null;
+            state.comments = [...state.comments, res];
+            return state;
+        });
     });
 }
 

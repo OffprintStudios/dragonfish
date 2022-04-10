@@ -4,7 +4,7 @@ import type { Profile } from '../accounts';
 
 export interface Comment {
     readonly _id: string;
-    readonly user: Profile;
+    user: Profile;
     body: string;
     repliesTo: string[];
     history: CommentHistory[];

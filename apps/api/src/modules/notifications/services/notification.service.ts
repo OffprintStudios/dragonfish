@@ -16,7 +16,6 @@ import {
     ContentCommentJob,
     ContentUpdatedJob,
 } from '$shared/models/notifications/jobs';
-import { Pseudonym } from '$shared/models/accounts';
 import { UserService } from '$modules/accounts';
 import { SubscriptionsStore } from '../db/stores';
 
@@ -38,14 +37,11 @@ export class NotificationService {
         this.logger.log(`Received payload for type ${NotificationKind.ContentComment}`);
 
         const content = await this.content.fetchOne(payload.contentId, undefined, false);
-        console.log(content);
+        const poster = await this.users.getOneUser(payload.posterId);
         const job: ContentCommentJob = {
-            recipientId: content.author as string,
             commentId: payload.commentId,
-            poster: payload.poster,
-            contentId: content._id,
-            contentTitle: content.title,
-            contentKind: content.kind,
+            poster: poster,
+            content: content,
         };
 
         this.logger.log(`Adding new job to queue...`);
@@ -62,7 +58,7 @@ export class NotificationService {
                 threadTitle: content.title,
                 repliesTo: payload.repliesTo,
                 commentId: payload.commentId,
-                poster: payload.poster,
+                poster: poster,
             };
 
             await this.handleCommentReplies(replyPayload);
