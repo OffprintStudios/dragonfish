@@ -25,7 +25,12 @@ export class CommentStore {
         kind: CommentKind,
         pageNum: number,
     ): Promise<PaginateResult<CommentDocument>> {
-        const options: PaginateOptions = { sort: { createdAt: 1 }, limit: 25, page: pageNum };
+        const options: PaginateOptions = {
+            sort: { createdAt: 1 },
+            limit: 25,
+            page: pageNum,
+            populate: 'user',
+        };
         switch (kind) {
             case CommentKind.ContentComment:
                 return await this.contentComments.paginate({ contentId: itemId }, options);
@@ -49,10 +54,11 @@ export class CommentStore {
         form: CommentForm,
     ): Promise<CommentDocument> {
         const newComment = await this.createDocument(user, itemId, kind, form);
-        await newComment.save();
-        await this.updateCount(itemId);
 
-        return await this.comments.findById(newComment._id);
+        return await newComment.save().then(async (comment) => {
+            await this.updateCount(itemId);
+            return comment;
+        });
     }
 
     /**

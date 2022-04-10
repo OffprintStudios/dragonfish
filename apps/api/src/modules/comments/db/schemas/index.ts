@@ -23,9 +23,6 @@ export async function setupCommentCollection() {
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
         return next();
     });
-
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-autopopulate'));
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-paginate-v2'));
 

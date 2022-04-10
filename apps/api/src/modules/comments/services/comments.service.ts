@@ -26,7 +26,7 @@ export class CommentsService {
                 contentId: itemId,
                 commentId: newComment._id,
                 repliesTo: newComment.repliesTo,
-                poster: newComment.user as Pseudonym,
+                posterId: newComment.user as string,
             };
             this.events.emit(NotificationKind.ContentComment, commentEvent);
         }
