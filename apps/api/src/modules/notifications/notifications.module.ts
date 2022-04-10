@@ -41,6 +41,13 @@ import * as Controllers from './controllers';
                 max: 1000,
                 duration: 1000 * 30,
             },
+            defaultJobOptions: {
+                removeOnComplete: true,
+                removeOnFail: true,
+                stackTraceLimit: 2,
+                attempts: 3,
+                delay: 0,
+            },
         }),
         BullModule.registerQueue({
             name: 'push-notifications',
