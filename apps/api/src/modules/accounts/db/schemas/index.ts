@@ -4,6 +4,7 @@ import sanitizeHtml from 'sanitize-html';
 import { argon2id, hash } from 'argon2';
 import { sanitizeOptions } from '$shared/util';
 import { InviteCodesSchema } from './invite-codes.schema';
+import paginate from 'mongoose-paginate-v2';
 
 /**
  * NOTE: MongooseUniqueValidator has been commented out because a current bug
@@ -44,8 +45,7 @@ export async function setupAccountCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
     //schema.plugin(MongooseUniqueValidator);
     return schema;
 }
@@ -75,8 +75,7 @@ export async function setupPseudonymCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
     //schema.plugin(MongooseUniqueValidator);
     return schema;
 }

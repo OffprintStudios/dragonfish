@@ -9,6 +9,7 @@ import { ContentLibrarySchema } from './content-library.schema';
 import { BookshelfDocument, BookshelfSchema } from './bookshelf.schema';
 import { ShelfItemSchema } from './shelf-item.schema';
 import { countWords, stripTags } from 'voca';
+import paginate from 'mongoose-paginate-v2';
 
 //#region ---EXPORTS---
 
@@ -52,8 +53,7 @@ export async function setupContentCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }
@@ -99,8 +99,7 @@ export async function setupReadingHistoryCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }
@@ -127,8 +126,7 @@ export async function setupContentLibraryCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }
@@ -139,8 +137,7 @@ export async function setupContentLibraryCollection() {
 export async function setupBookshelvesCollection() {
     const schema = BookshelfSchema;
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     schema.pre<BookshelfDocument>('save', async function (next) {
         this.set('name', sanitizeHtml(this.name, sanitizeOptions));
@@ -161,8 +158,7 @@ export async function setupShelfItemsCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }

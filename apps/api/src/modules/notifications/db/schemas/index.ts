@@ -1,5 +1,6 @@
 import { NotificationSchema } from './notification.schema';
 import { SubscriptionSchema } from './subscription.schema';
+import paginate from 'mongoose-paginate-v2';
 
 //#region ---EXPORTS---
 
@@ -21,8 +22,7 @@ export async function setupNotificationsCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }

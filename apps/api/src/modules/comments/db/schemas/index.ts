@@ -1,6 +1,7 @@
 import { CommentDocument, CommentSchema } from './comment.schema';
 import sanitizeHtml from 'sanitize-html';
 import { sanitizeOptions } from '$shared/util';
+import paginate from 'mongoose-paginate-v2';
 
 //#region ---EXPORTS---
 
@@ -23,8 +24,7 @@ export async function setupCommentCollection() {
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
         return next();
     });
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }

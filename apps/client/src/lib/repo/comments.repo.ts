@@ -57,7 +57,13 @@ export async function addComment(
     return await commentsService.addComment(profileId, itemId, kind, formData).then((res) => {
         comments.update((state) => {
             res.user = get(session).currProfile ?? null;
-            state.comments = [...state.comments, res];
+            if (state.comments.length === 0) {
+                state.comments = [res];
+            } else {
+                const currComments = state.comments;
+                state.comments = [...currComments, res];
+            }
+            state.totalComments += 1;
             return state;
         });
     });

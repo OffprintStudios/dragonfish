@@ -17,12 +17,19 @@ import {
     ContentUpdatedJob,
 } from '$shared/models/notifications/jobs';
 import { NotificationStore } from '../db/stores';
+import { ContentStore } from '$modules/content';
+import { UserService } from '$modules/accounts';
+import { ContentCommentDbPayload } from '$shared/models/notifications/db-payloads';
 
 @Processor('notifications')
 export class NotificationConsumer {
     private logger = new Logger(`NotificationQueue`);
 
-    constructor(private readonly notifications: NotificationStore) {}
+    constructor(
+        private readonly notifications: NotificationStore,
+        private readonly content: ContentStore,
+        private readonly users: UserService,
+    ) {}
 
     //#region ---LIFECYCLE HOOKS---
 
@@ -51,9 +58,26 @@ export class NotificationConsumer {
     @Process(NotificationKind.ContentComment)
     async addedContentComment(job: Job<ContentCommentJob>, done: DoneCallback) {
         this.logger.log(`Job ${job.id} (ContentComment) received!`);
-        if (job.data.poster._id !== (job.data.content.author as string)) {
+        console.log(job.data);
+        const content = await this.content.fetchOne(job.data.contentId, undefined, false);
+        const poster = await this.users.getOneUser(job.data.posterId);
+        if (poster._id !== (content.author as string)) {
+            const dbPayload: ContentCommentDbPayload = {
+                recipientId: content.author as string,
+                commentId: job.data.commentId,
+                content: {
+                    id: content._id,
+                    title: content.title,
+                    kind: content.kind,
+                },
+                poster: {
+                    id: poster._id,
+                    name: poster.screenName,
+                    tag: poster.userTag,
+                },
+            };
             const notification = await this.notifications.notifyOne(
-                job.data,
+                dbPayload,
                 NotificationKind.ContentComment,
             );
             done(null, notification);

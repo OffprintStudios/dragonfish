@@ -44,7 +44,6 @@ import * as Controllers from './controllers';
             defaultJobOptions: {
                 removeOnComplete: true,
                 removeOnFail: true,
-                stackTraceLimit: 2,
                 attempts: 3,
                 delay: 0,
             },

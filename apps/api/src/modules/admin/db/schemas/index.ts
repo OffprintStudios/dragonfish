@@ -1,4 +1,5 @@
 import { ApprovalQueueSchema } from './approval-queue';
+import paginate from 'mongoose-paginate-v2';
 
 //#region ---EXPORTS---
 
@@ -13,8 +14,7 @@ export async function setupApprovalQueueCollection() {
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     schema.plugin(require('mongoose-autopopulate'));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    schema.plugin(require('mongoose-paginate-v2'));
+    schema.plugin(paginate);
 
     return schema;
 }

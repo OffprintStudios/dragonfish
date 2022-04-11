@@ -22,7 +22,6 @@
                 $comments.kind,
                 formData,
             ).then(() => {
-                console.log(`attempting to reset`);
                 resetForm();
             });
         },
