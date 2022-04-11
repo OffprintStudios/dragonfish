@@ -58,7 +58,6 @@ export class NotificationConsumer {
     @Process(NotificationKind.ContentComment)
     async addedContentComment(job: Job<ContentCommentJob>, done: DoneCallback) {
         this.logger.log(`Job ${job.id} (ContentComment) received!`);
-        console.log(job.data);
         const content = await this.content.fetchOne(job.data.contentId, undefined, false);
         const poster = await this.users.getOneUser(job.data.posterId);
         if (poster._id !== (content.author as string)) {
