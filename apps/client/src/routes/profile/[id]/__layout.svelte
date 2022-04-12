@@ -1,16 +1,11 @@
 <script context="module" lang="ts">
-    /*
-     * Fetching profile prior to loading the page.
-     * */
     import type { Load } from '@sveltejs/kit';
     import { profile } from '$lib/repo/profile.repo';
     import { getProfile } from '$lib/services/profile.service';
 
     export const load: Load = async ({ params }) => {
         const profileId: string = params.id;
-        const profileModel = await getProfile(profileId).then((res) => {
-            return res.data;
-        });
+        const profileModel = await getProfile(profileId);
 
         profile.set(profileModel);
 
@@ -23,10 +18,12 @@
 </script>
 
 <script lang="ts">
+    import { useQuery, useMutation } from '@sveltestack/svelte-query';
     import { page } from '$app/stores';
-    import { pluralize } from '$lib/util';
+    import { pluralize, queryClient } from '$lib/util';
     import {
         UserFollowLine,
+        UserFollowFill,
         MenuLine,
         Home5Line,
         QuillPenLine,
@@ -34,11 +31,42 @@
         BarChart2Fill,
         ImageEditLine,
         ImageAddLine,
+        UserSettingsLine,
     } from 'svelte-remixicon';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { session } from '$lib/repo/session.repo';
     import { openPopup } from '$lib/components/nav/popup';
     import UploadCover from './_forms/UploadCover.svelte';
+    import { checkIfFollowing, followUser, unfollowUser } from '$lib/services/profile.service';
+    import { goto } from '$app/navigation';
+
+    const followingUser = useQuery(
+        'followUser',
+        () => checkIfFollowing($session.currProfile._id, $profile._id),
+        {
+            enabled: !!$session.account && !!$session.currProfile,
+            refetchOnWindowFocus: false,
+            cacheTime: 1000 * 15,
+        },
+    );
+
+    const followUserMutation = useMutation(
+        () => followUser($session.currProfile._id, $profile._id),
+        {
+            onSuccess: (data) => {
+                queryClient.setQueryData('followUser', data);
+            },
+        },
+    );
+
+    const unfollowUserMutation = useMutation(
+        () => unfollowUser($session.currProfile._id, $profile._id),
+        {
+            onSuccess: () => {
+                queryClient.setQueryData('followUser', null);
+            },
+        },
+    );
 </script>
 
 <div class="flex flex-col w-full h-screen overflow-y-auto">
@@ -91,14 +119,45 @@
                     <div class="my-5" />
                 </div>
                 <div class="flex items-center">
-                    <Button kind="primary">
-                        <UserFollowLine class="button-icon" />
-                        <span class="button-text">Follow</span>
-                    </Button>
-                    <div class="mx-1" />
-                    <Button kind="primary">
-                        <MenuLine class="button-icon no-text" size="20px" />
-                    </Button>
+                    {#if $session.account && $session.currProfile}
+                        {#if $session.currProfile._id === $profile._id}
+                            <Button kind="primary" on:click={() => goto(`/settings/profile`)}>
+                                <UserSettingsLine class="button-icon" />
+                                <span class="button-text">Settings</span>
+                            </Button>
+                        {:else if $followingUser.data}
+                            <Button
+                                kind="primary"
+                                loading={$unfollowUserMutation.isLoading}
+                                on:click={$unfollowUserMutation.mutateAsync}
+                            >
+                                <UserFollowFill class="button-icon" />
+                                <span class="button-text">Following</span>
+                            </Button>
+                        {:else}
+                            <Button
+                                kind="primary"
+                                loading={$followingUser.isLoading || $followUserMutation.isLoading}
+                                on:click={$followUserMutation.mutateAsync}
+                            >
+                                <UserFollowLine class="button-icon" />
+                                <span class="button-text">Follow</span>
+                            </Button>
+                        {/if}
+                        <div class="mx-1" />
+                        <Button kind="primary">
+                            <MenuLine class="button-icon no-text" size="20px" />
+                        </Button>
+                    {:else}
+                        <Button kind="primary" disabled>
+                            <UserFollowLine class="button-icon" />
+                            <span class="button-text">Follow</span>
+                        </Button>
+                        <div class="mx-1" />
+                        <Button kind="primary" disabled>
+                            <MenuLine class="button-icon no-text" size="20px" />
+                        </Button>
+                    {/if}
                 </div>
             </div>
             <div class="user-nav">

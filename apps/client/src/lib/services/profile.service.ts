@@ -6,10 +6,14 @@ import { baseUrl } from '$lib/util';
 import { from, take } from 'rxjs';
 import { map } from 'rxjs/operators';
 import type { ContentFilter, Content } from '$lib/models/content';
-import type { AxiosResponse } from 'axios';
+import type { FollowingUser } from '$lib/models/activity';
 
-export async function getProfile(profileId: string): Promise<AxiosResponse<Profile>> {
-    return http.get<Profile>(`${baseUrl}/user/get-profile?pseudId=${profileId}`);
+//#region ---PROFILE PAGE---
+
+export async function getProfile(profileId: string): Promise<Profile> {
+    return http.get<Profile>(`${baseUrl}/user/get-profile?pseudId=${profileId}`).then((res) => {
+        return res.data;
+    });
 }
 
 export function getProfileContent(
@@ -27,6 +31,64 @@ export function getProfileContent(
         }),
     );
 }
+
+//#endregion
+
+//#region ---FOLLOWERS---
+
+export async function fetchFollowers(profileId: string): Promise<FollowingUser[]> {
+    return http
+        .get<FollowingUser[]>(`${baseUrl}/followers/fetch-followers?pseudId=${profileId}`)
+        .then((res) => {
+            return res.data;
+        });
+}
+
+export async function fetchingFollowing(profileId: string): Promise<FollowingUser[]> {
+    return http
+        .get<FollowingUser[]>(`${baseUrl}/followers/fetch-following?pseudId=${profileId}`)
+        .then((res) => {
+            return res.data;
+        });
+}
+
+export async function checkIfFollowing(
+    profileId: string,
+    isFollowing: string,
+): Promise<FollowingUser> {
+    return http
+        .get<FollowingUser>(
+            `${baseUrl}/followers/check-if-following?pseudId=${profileId}&isFollowing=${isFollowing}`,
+        )
+        .then((res) => {
+            return res.data;
+        });
+}
+
+export async function followUser(profileId: string, toFollow: string): Promise<FollowingUser> {
+    return http
+        .post<FollowingUser>(
+            `${baseUrl}/followers/follow-user?pseudId=${profileId}&toFollow=${toFollow}`,
+            {},
+        )
+        .then((res) => {
+            return res.data;
+        });
+}
+
+export async function unfollowUser(profileId: string, toUnfollow: string): Promise<void> {
+    return http
+        .deleteReq<void>(
+            `${baseUrl}/followers/unfollow-user?pseudId=${profileId}&toUnfollow=${toUnfollow}`,
+        )
+        .then(() => {
+            return;
+        });
+}
+
+//#endregion
+
+//#region ---PROFILE SETTINGS---
 
 export function changeScreenName(profileId: string, formInfo: ChangeScreenName): Promise<Profile> {
     return http
@@ -51,3 +113,5 @@ export function changeTagline(profileId: string, formInfo: ChangeTagline): Promi
             return res.data;
         });
 }
+
+//#endregion
