@@ -44,7 +44,7 @@ export async function fetchFollowers(profileId: string): Promise<FollowingUser[]
         });
 }
 
-export async function fetchingFollowing(profileId: string): Promise<FollowingUser[]> {
+export async function fetchFollowing(profileId: string): Promise<FollowingUser[]> {
     return http
         .get<FollowingUser[]>(`${baseUrl}/followers/fetch-following?pseudId=${profileId}`)
         .then((res) => {

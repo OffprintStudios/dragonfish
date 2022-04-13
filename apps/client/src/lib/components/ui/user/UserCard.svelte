@@ -6,7 +6,6 @@
         EyeLine,
         UserLine,
         Chat3Line,
-        UserAddLine,
         Flag2Line,
     } from 'svelte-remixicon';
     import { abbreviate } from '$lib/util';
@@ -85,10 +84,6 @@
                 <Chat3Line class="mr-1.5" />
                 <span class="uppercase font-bold text-xs tracking-wider"> Send Message </span>
             </a>
-            <button class="w-full">
-                <UserAddLine class="mr-1.5" />
-                <span class="uppercase font-bold text-xs tracking-wider"> Follow User </span>
-            </button>
             <button class="bottom w-full">
                 <Flag2Line class="mr-1.5" />
                 <span class="uppercase font-bold text-xs tracking-wider"> File Report </span>
@@ -102,6 +97,7 @@
         border: 1px solid var(--borders);
         box-shadow: var(--dropshadow);
         background: var(--background);
+        @apply overflow-hidden;
         div.has-accent {
             background: var(--accent);
         }
@@ -137,11 +133,9 @@
         button {
             @apply flex items-center py-3.5 px-4 no-underline;
             color: var(--text-color);
-            &.bottom {
-                @apply rounded-b-lg border-b-0;
-            }
             &:hover {
-                @apply bg-zinc-700;
+                @apply text-white;
+                background: var(--accent);
             }
         }
     }

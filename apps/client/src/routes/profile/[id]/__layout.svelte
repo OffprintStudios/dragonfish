@@ -160,7 +160,7 @@
                     {/if}
                 </div>
             </div>
-            <div class="user-nav">
+            <div class="user-nav w-full md:w-7/12 mx-auto">
                 <a
                     href="/profile/{$profile._id}"
                     class:active={$page.url.pathname === `/profile/${$profile._id}`}
@@ -214,7 +214,7 @@
             }
 
             div.user-nav {
-                @apply w-7/12 mx-auto flex items-center justify-center mb-2 mt-2;
+                @apply flex items-center overflow-x-auto justify-center mb-2 mt-2;
                 a {
                     @apply text-white lg:text-base text-sm flex items-center py-2 px-4 rounded-lg transition transform mx-0.5;
                     &:hover {
