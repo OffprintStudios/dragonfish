@@ -16,6 +16,7 @@ import {
     Genres,
     PubStatus,
     WorkKind,
+    ContentSorting,
 } from '$shared/models/content';
 import { RatingOption } from '$shared/models/ratings';
 import { Pseudonym } from '$shared/models/accounts';
@@ -216,12 +217,14 @@ export class ContentGroupStore {
      * @param pageNum The current page
      * @param kinds The kind of document to fetch
      * @param filter
+     * @param sorting
      * @param userId (Optional)
      */
     async fetchAllPublished(
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
+        sorting: ContentSorting,
         userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = {
@@ -236,6 +239,10 @@ export class ContentGroupStore {
             limit: 15,
             populate: 'author',
         };
+
+        if (sorting !== ContentSorting.UpdatedFirst) {
+            paginateOptions.sort = { 'audit.publishedOn': sorting };
+        }
 
         if (userId) {
             filteredQuery['author'] = userId;

@@ -319,6 +319,44 @@
                                 >
                             </div>
                         </div>
+                        {#if showNewShelfForm}
+                            <form in:fade={{ delay: 0, duration: 150 }} use:form>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="My new favorite things"
+                                    class="rounded-lg bg-zinc-400 dark:bg-zinc-600 ring-0 w-full"
+                                />
+                                <div class="flex items-center justify-center mt-2">
+                                    <Button
+                                        type="button"
+                                        on:click={() => (showNewShelfForm = !showNewShelfForm)}
+                                    >
+                                        <CloseLine class="button-icon" />
+                                        <span class="button-text">Cancel</span>
+                                    </Button>
+                                    <div class="mx-1"><!--separator--></div>
+                                    <Button
+                                        type="submit"
+                                        kind="primary"
+                                        loading={$makeShelf.isLoading}
+                                        loadingText="Saving..."
+                                    >
+                                        <CheckLine class="button-icon" />
+                                        <span class="button-text">Submit</span>
+                                    </Button>
+                                </div>
+                            </form>
+                        {:else}
+                            <button
+                                class="wide-button hide"
+                                in:fade={{ delay: 0, duration: 150 }}
+                                on:click={() => (showNewShelfForm = !showNewShelfForm)}
+                            >
+                                <span class="link-icon"><AddBoxLine /></span>
+                                <span class="text">Add Bookshelf</span>
+                            </button>
+                        {/if}
                     {:else if showShelves}
                         <div transition:slide|local>
                             {#each $shelfList.data as shelf}
@@ -327,45 +365,45 @@
                                     <span class="text">{shelf.name}</span>
                                 </a>
                             {/each}
-                        </div>
-                    {/if}
-                    {#if showNewShelfForm}
-                        <form in:fade={{ delay: 0, duration: 150 }} use:form>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="My new favorite things"
-                                class="rounded-lg bg-zinc-400 dark:bg-zinc-600 ring-0 w-full"
-                            />
-                            <div class="flex items-center justify-center mt-2">
-                                <Button
-                                    type="button"
+                            {#if showNewShelfForm}
+                                <form in:fade={{ delay: 0, duration: 150 }} use:form>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="My new favorite things"
+                                        class="rounded-lg bg-zinc-400 dark:bg-zinc-600 ring-0 w-full"
+                                    />
+                                    <div class="flex items-center justify-center mt-2">
+                                        <Button
+                                            type="button"
+                                            on:click={() => (showNewShelfForm = !showNewShelfForm)}
+                                        >
+                                            <CloseLine class="button-icon" />
+                                            <span class="button-text">Cancel</span>
+                                        </Button>
+                                        <div class="mx-1"><!--separator--></div>
+                                        <Button
+                                            type="submit"
+                                            kind="primary"
+                                            loading={$makeShelf.isLoading}
+                                            loadingText="Saving..."
+                                        >
+                                            <CheckLine class="button-icon" />
+                                            <span class="button-text">Submit</span>
+                                        </Button>
+                                    </div>
+                                </form>
+                            {:else}
+                                <button
+                                    class="wide-button hide"
+                                    in:fade={{ delay: 0, duration: 150 }}
                                     on:click={() => (showNewShelfForm = !showNewShelfForm)}
                                 >
-                                    <CloseLine class="button-icon" />
-                                    <span class="button-text">Cancel</span>
-                                </Button>
-                                <div class="mx-1"><!--separator--></div>
-                                <Button
-                                    type="submit"
-                                    kind="primary"
-                                    loading={$makeShelf.isLoading}
-                                    loadingText="Saving..."
-                                >
-                                    <CheckLine class="button-icon" />
-                                    <span class="button-text">Submit</span>
-                                </Button>
-                            </div>
-                        </form>
-                    {:else}
-                        <button
-                            class="wide-button hide"
-                            in:fade={{ delay: 0, duration: 150 }}
-                            on:click={() => (showNewShelfForm = !showNewShelfForm)}
-                        >
-                            <span class="link-icon"><AddBoxLine /></span>
-                            <span class="text">Add Bookshelf</span>
-                        </button>
+                                    <span class="link-icon"><AddBoxLine /></span>
+                                    <span class="text">Add Bookshelf</span>
+                                </button>
+                            {/if}
+                        </div>
                     {/if}
                 </div>
             {/if}
