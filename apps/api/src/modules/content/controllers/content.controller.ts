@@ -89,7 +89,13 @@ export class ContentController {
             );
         }
 
-        return await this.content.fetchAllPublished(pageNum, kind, filter, userId);
+        return await this.content.fetchAllPublished(
+            pageNum,
+            kind,
+            filter,
+            sort ?? ContentSorting.NewestFirst,
+            userId,
+        );
     }
 
     @UseGuards(IdentityGuard)
