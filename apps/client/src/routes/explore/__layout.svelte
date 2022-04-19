@@ -31,8 +31,8 @@
     import { fetchShelves, createShelf } from '$lib/services/content-library.service';
     import type { Bookshelf, BookshelfForm } from '$lib/models/content/library';
     import { queryClient } from '$lib/util';
-    import { fetchFollowing } from '$lib/services/profile.service';
     import Avatar from '$lib/components/ui/user/Avatar.svelte';
+    import { fetchFollowing } from '$lib/services/profile.service';
 
     let showFollows = true;
     let showShelves = true;
