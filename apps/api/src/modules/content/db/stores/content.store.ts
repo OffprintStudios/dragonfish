@@ -397,8 +397,6 @@ export class ContentStore {
 
             if (pubStatus.newPub === true) {
                 sec.audit.publishedOn = new Date();
-            } else {
-                sec.audit.publishedOn = new Date();
             }
 
             return await sec.save().then(async (section) => {
