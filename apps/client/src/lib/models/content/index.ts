@@ -6,3 +6,4 @@ export { ContentFilter } from './content-filter';
 export { AuthorsNotePos } from './authors-note-pos';
 export { SearchKind } from './search-kind.enum';
 export { SearchMatch } from './search-match.enum';
+export { ContentSorting } from './content-sorting';

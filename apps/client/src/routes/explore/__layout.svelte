@@ -24,7 +24,7 @@
         Loader5Line,
         InformationLine,
         ArrowDownSLine,
-        ArrowUpSLine,
+        ArrowUpSLine, Apps2Line,
     } from 'svelte-remixicon';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { useQuery, useMutation } from '@sveltestack/svelte-query';
@@ -188,7 +188,7 @@
                         </div>
                     {:else if showFollows}
                         <div transition:slide|local>
-                            {#each $followsList.data as follow}
+                            {#each $followsList.data.slice(0, 4) as follow}
                                 <a
                                     class="hide"
                                     href="/explore/following/{follow.itemId._id}"
@@ -205,6 +205,18 @@
                                     <span class="text">{follow.itemId.screenName}</span>
                                 </a>
                             {/each}
+                            {#if $followsList.data.length > 5}
+                                <a
+                                    class="hide"
+                                    href="/explore/following"
+                                    class:active={$page.url.pathname === `/explore/following`}
+                                >
+                                    <span class="link-icon">
+                                        <Apps2Line />
+                                    </span>
+                                    <span class="text">All Subscriptions</span>
+                                </a>
+                            {/if}
                         </div>
                     {/if}
                 </div>

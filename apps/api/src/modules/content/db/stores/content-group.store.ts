@@ -233,8 +233,7 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        const paginateOptions = {
-            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
+        const paginateOptions: PaginateOptions = {
             page: pageNum,
             limit: 15,
             populate: 'author',
@@ -242,6 +241,8 @@ export class ContentGroupStore {
 
         if (sorting !== ContentSorting.UpdatedFirst) {
             paginateOptions.sort = { 'audit.publishedOn': sorting };
+        } else {
+            paginateOptions.sort = { 'audit.lastContentUpdate': this.NEWEST_FIRST };
         }
 
         if (userId) {

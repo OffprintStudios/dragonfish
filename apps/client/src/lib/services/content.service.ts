@@ -8,6 +8,7 @@ import type { FormType } from '$lib/models/content/works/forms';
 import type { Section, SectionForm, PublishSection } from '$lib/models/content/works';
 import type { Ratings, RatingOption } from '$lib/models/content/ratings';
 import type { ContentLibrary } from '$lib/models/content/library';
+import { ContentSorting } from '$lib/models/content';
 
 //#region ---BROWSING---
 
@@ -91,11 +92,12 @@ export async function fetchUserContent(
     filter: ContentFilter,
     kinds: ContentKind[],
     pageNum: number,
+    sorting = ContentSorting.NewestFirst,
 ): Promise<PaginateResult<Content>> {
     const kindFragment = kinds.map((k) => `&kind=${k}`).join('');
     return http
         .get<PaginateResult<Content>>(
-            `${baseUrl}/content/fetch-all-published?filter=${filter}&userId=${profileId}&pageNum=${pageNum}${kindFragment}`,
+            `${baseUrl}/content/fetch-all-published?filter=${filter}&userId=${profileId}&sorting=${sorting}&pageNum=${pageNum}${kindFragment}`,
         )
         .then((res) => {
             return res.data;
