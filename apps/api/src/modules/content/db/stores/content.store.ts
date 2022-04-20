@@ -357,31 +357,54 @@ export class ContentStore {
         sectionId: string,
         pubStatus: PublishSection,
     ): Promise<SectionsDocument> {
-        const work = await this.content.findOne(
-            { _id: contentId, author: user, 'audit.isDeleted': false },
-            { autopopulate: false },
-        );
+        const work: ProseContentDocument = await this.content
+            .findOne({
+                _id: contentId,
+                author: user,
+                'audit.isDeleted': false,
+            })
+            .populate('sections');
 
         if (work === null || work === undefined) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
-            const sec = await this.sectionsStore.publishSection(sectionId, pubStatus);
-            if (sec.published === true && pubStatus.oldPub === false) {
-                // if newly published
-                await this.content.updateOne(
-                    { _id: contentId, author: user, 'audit.isDeleted': false },
-                    { $inc: { 'stats.words': sec.stats.words } },
-                    { strict: false },
-                );
-            } else if (sec.published === false && pubStatus.oldPub === true) {
-                // if unpublished
-                await this.content.updateOne(
-                    { _id: contentId, author: user, 'audit.isDeleted': false },
-                    { $inc: { 'stats.words': -sec.stats.words } },
-                    { strict: false },
-                );
+            const sec = await this.sections.findOne({
+                _id: sectionId,
+                'audit.isDeleted': false,
+            });
+
+            // if a section is getting published for the very first time, we need to make sure the parent work's
+            // `lastContentUpdate` field gets set.
+            if (work.audit.published === PubStatus.Published) {
+                if (
+                    (sec.audit.publishedOn === null || sec.audit.publishedOn === undefined) &&
+                    pubStatus.newPub === true
+                ) {
+                    work.audit.lastContentUpdate = new Date();
+                }
             }
-            return sec;
+
+            sec.published = pubStatus.newPub;
+
+            if (pubStatus.newPub === true) {
+                sec.audit.publishedOn = new Date();
+            } else {
+                sec.audit.publishedOn = new Date();
+            }
+
+            return await sec.save().then(async (section) => {
+                const publishedSections = (work.sections as Section[]).filter(
+                    (item) => item.published === true,
+                );
+                if (publishedSections.length !== 0) {
+                    work.stats.words = publishedSections.reduce(
+                        (previousValue, currentValue) => previousValue + currentValue.stats.words,
+                        0,
+                    );
+                    await work.save();
+                }
+                return section;
+            });
         }
     }
 

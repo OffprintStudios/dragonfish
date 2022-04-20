@@ -24,6 +24,7 @@ export interface ContentModel {
     audit: {
         published: PubStatus;
         publishedOn: Date;
+        lastContentUpdate: Date;
         hasComments: boolean;
         isDeleted: boolean;
     };

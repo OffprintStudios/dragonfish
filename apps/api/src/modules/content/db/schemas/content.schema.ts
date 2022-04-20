@@ -63,6 +63,7 @@ export class ContentDocument extends Document implements ContentModel {
         raw({
             published: { type: String, enum: Object.keys(PubStatus), default: 'Unpublished' },
             publishedOn: { type: Date, default: null },
+            lastContentUpdate: { type: Date, default: null },
             hasComments: { type: Boolean, default: true },
             isDeleted: { type: Boolean, default: false },
         }),
@@ -70,6 +71,7 @@ export class ContentDocument extends Document implements ContentModel {
     audit: {
         published: PubStatus;
         publishedOn: Date;
+        lastContentUpdate: Date;
         hasComments: boolean;
         isDeleted: boolean;
     };

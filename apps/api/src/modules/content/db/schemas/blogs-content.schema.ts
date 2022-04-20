@@ -47,6 +47,7 @@ export class BlogsContentDocument extends Document implements BlogsContentModel 
     audit: {
         published: PubStatus;
         publishedOn: Date;
+        lastContentUpdate: Date;
         releaseOn: Date;
         isNewsPost: boolean;
         isFeatured: boolean;
