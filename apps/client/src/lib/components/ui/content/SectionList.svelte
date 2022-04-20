@@ -13,9 +13,12 @@
         DeleteBinLine,
         Loader5Line,
     } from 'svelte-remixicon';
-    import { fetchSections, publishSection } from '$lib/services/content.service';
+    import { deleteSection, fetchSections, publishSection } from '$lib/services/content.service';
     import { localeDate, queryClient } from '$lib/util';
     import type { PublishSection, Section } from '$lib/models/content/works';
+    import { openPopup, PopupOnConfirm } from '$lib/components/nav/popup';
+    import ConfirmDeleteSection from './ConfirmDeleteSection.svelte';
+    import { success } from '$lib/services/alerts.service';
 
     export let baseUrl = `/prose`;
 
@@ -50,13 +53,41 @@
             section._id,
             newStatus,
         ).then((data) => {
-            if (newStatus.oldPub === false && newStatus.newPub === true) {
+            if (newStatus.oldPub === false && data.published === true) {
                 $content.content.stats.words += data.stats.words;
-            } else if (newStatus.oldPub === true && newStatus.newPub === false) {
+            } else if (newStatus.oldPub === true && data.published === false) {
                 $content.content.stats.words -= data.stats.words;
             }
             return data;
         });
+    }
+
+    class OnConfirmDelete implements PopupOnConfirm {
+        section: Section;
+
+        constructor(section: Section) {
+            this.section = section;
+        }
+
+        async onConfirm(): Promise<void> {
+            const wasPublished = this.section.published;
+            const words = this.section.stats.words;
+            const id = this.section._id;
+
+            await deleteSection(
+                $session.currProfile._id,
+                $content.content._id,
+                this.section._id,
+            ).then(() => {
+                if (wasPublished) {
+                    $content.content.stats.words -= words;
+                }
+                queryClient.setQueryData('contentSections', (oldData: Section[]) => {
+                    return oldData.filter((item) => item._id !== id)
+                });
+                success(`Section deleted!`);
+            });
+        }
     }
 </script>
 
@@ -120,7 +151,7 @@
                             {/if}
                         </a>
                         {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
-                            <button>
+                            <button on:click={() => openPopup(ConfirmDeleteSection, new OnConfirmDelete(section))}>
                                 <DeleteBinLine class="button-icon no-text" />
                             </button>
                         {/if}

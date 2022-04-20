@@ -135,6 +135,20 @@ export class ContentStore {
     }
 
     /**
+     * Fetches the total word count of all published sections for content
+     * @param contentId The content's ID
+     * @returns Total word count
+     */
+    async getTotalWordCount(contentId: string): Promise<number> {
+        const publishedSections = await this.fetchSections(contentId, true);
+        let totalWordCount = 0;
+        for (const publishedSection of publishedSections) {
+            totalWordCount += publishedSection.stats.words;
+        }
+        return totalWordCount;
+    }
+
+    /**
      * Fetches a section by ID. Optionally performs an extra check to only fetch a published section.
      *
      * @param sectionId The section ID
@@ -327,16 +341,11 @@ export class ContentStore {
                 sectionId,
                 sectionInfo,
             );
-            if (sec.published === true) {
-                await this.content.updateOne(
-                    { _id: contentId, author: user, 'audit.isDeleted': false },
-                    { $inc: { 'stats.words': -sectionInfo.oldWords } },
-                );
-                await this.content.updateOne(
-                    { _id: contentId, author: user, 'audit.isDeleted': false },
-                    { $inc: { 'stats.words': sec.stats.words } },
-                );
-            }
+            const totalWordCount = await this.getTotalWordCount(contentId);
+            await this.content.updateOne(
+                { _id: contentId, author: user, 'audit.isDeleted': false },
+                { $set: { 'stats.words': totalWordCount } },
+            );
 
             return sec;
         }
@@ -425,16 +434,15 @@ export class ContentStore {
             throw new UnauthorizedException(`You don't have permission to do that.`);
         } else {
             const sec = await this.sectionsStore.deleteSection(sectionId);
-            if (sec.published === true) {
-                await this.content.updateOne(
-                    { _id: contentId, author: user, 'audit.isDeleted': false },
-                    {
-                        $inc: { 'stats.totWords': -sec.stats.words },
-                        $pull: { sections: sec._id },
-                    },
-                    { strict: false },
-                );
-            }
+            const totalWordCount = await this.getTotalWordCount(contentId);
+            await this.content.updateOne(
+                { _id: contentId, author: user, 'audit.isDeleted': false },
+                {
+                    $set: { 'stats.words': totalWordCount },
+                    $pull: { sections: sec._id },
+                },
+                { strict: false },
+            );
         }
     }
 

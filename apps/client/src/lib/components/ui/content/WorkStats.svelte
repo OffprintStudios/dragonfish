@@ -2,7 +2,6 @@
     import { useQuery, useMutation } from '@sveltestack/svelte-query';
     import { session } from '$lib/repo/session.repo';
     import { content } from '$lib/repo/content.repo';
-    import type { Content } from '$lib/models/content';
     import {
         CloseLine,
         Edit2Line,
@@ -19,7 +18,7 @@
     import { pluralize, localeDate, abbreviate, queryClient } from '$lib/util';
     import { Button } from '$lib/components/ui/misc';
     import { ContentKind } from '$lib/models/content';
-    import { submitToQueue, updateLibraryDoc } from '$lib/repo/content.repo';
+    import { submitToQueue } from '$lib/repo/content.repo';
     import { addToLibrary, removeFromLibrary } from '$lib/services/content-library.service';
     import { fetchLibraryDoc } from '$lib/services/content.service';
     import type { ContentLibrary } from '$lib/models/content/library';
