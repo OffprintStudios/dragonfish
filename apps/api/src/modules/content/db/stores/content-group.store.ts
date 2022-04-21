@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, PaginateOptions, Model } from 'mongoose';
+import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import {
     BlogsContentDocument,
     ContentDocument,
@@ -10,13 +10,13 @@ import {
     TagsDocument,
 } from '../schemas';
 import {
-    ContentRating,
-    ContentKind,
     ContentFilter,
+    ContentKind,
+    ContentRating,
+    ContentSorting,
     Genres,
     PubStatus,
     WorkKind,
-    ContentSorting,
 } from '$shared/models/content';
 import { RatingOption } from '$shared/models/ratings';
 import { Pseudonym } from '$shared/models/accounts';
@@ -31,6 +31,7 @@ import { JwtPayload } from '$shared/auth';
 @Injectable()
 export class ContentGroupStore {
     readonly NEWEST_FIRST = -1;
+
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('BlogContent')
@@ -242,7 +243,10 @@ export class ContentGroupStore {
         if (sorting !== ContentSorting.UpdatedFirst) {
             paginateOptions.sort = { 'audit.publishedOn': sorting };
         } else {
-            paginateOptions.sort = { 'audit.lastContentUpdate': this.NEWEST_FIRST };
+            paginateOptions.sort = {
+                'audit.lastContentUpdate': this.NEWEST_FIRST,
+                'audit.publishedOn': this.NEWEST_FIRST,
+            };
         }
 
         if (userId) {
