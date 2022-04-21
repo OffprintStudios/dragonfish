@@ -13,6 +13,7 @@ export { WorkKind } from './work-kind.enum';
 export { WorkStatus } from './work-status.enum';
 export { ContentFilter } from './content-filter.enum';
 export type { PubContent } from './pub-content.model';
+export { ContentSorting } from './content-sorting';
 
 export * from './blogs';
 export * from './prose';

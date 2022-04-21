@@ -166,7 +166,11 @@
             <span class="link-icon"><Home5Line size="24px" /></span>
             <span class="link-name">Home</span>
         </a>
-        <a class="link" href="/search" class:active={$page.url.pathname.startsWith('/search')}>
+        <a
+            class="link"
+            href="/search"
+            class:active={$page.url.pathname.startsWith('/search') && currentMenu === MenuOptions.NoMenu}
+        >
             <span class="link-icon"><SearchEyeLine size="24px" /></span>
             <span class="link-name">Search</span>
         </a>

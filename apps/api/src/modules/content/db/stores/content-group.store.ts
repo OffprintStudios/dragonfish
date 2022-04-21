@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, PaginateOptions, Model } from 'mongoose';
+import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import {
     BlogsContentDocument,
     ContentDocument,
@@ -10,9 +10,10 @@ import {
     TagsDocument,
 } from '../schemas';
 import {
-    ContentRating,
-    ContentKind,
     ContentFilter,
+    ContentKind,
+    ContentRating,
+    ContentSorting,
     Genres,
     PubStatus,
     WorkKind,
@@ -30,6 +31,7 @@ import { JwtPayload } from '$shared/auth';
 @Injectable()
 export class ContentGroupStore {
     readonly NEWEST_FIRST = -1;
+
     constructor(
         @InjectModel('Content') private readonly content: PaginateModel<ContentDocument>,
         @InjectModel('BlogContent')
@@ -216,12 +218,14 @@ export class ContentGroupStore {
      * @param pageNum The current page
      * @param kinds The kind of document to fetch
      * @param filter
+     * @param sorting
      * @param userId (Optional)
      */
     async fetchAllPublished(
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
+        sorting: ContentSorting,
         userId?: string,
     ): Promise<PaginateResult<ContentDocument>> {
         const query = {
@@ -230,12 +234,20 @@ export class ContentGroupStore {
             'audit.published': PubStatus.Published,
         };
         const filteredQuery = await ContentGroupStore.determineContentFilter(query, filter);
-        const paginateOptions = {
-            sort: { 'audit.publishedOn': this.NEWEST_FIRST },
+        const paginateOptions: PaginateOptions = {
             page: pageNum,
             limit: 15,
             populate: 'author',
         };
+
+        if (sorting !== ContentSorting.UpdatedFirst) {
+            paginateOptions.sort = { 'audit.publishedOn': sorting };
+        } else {
+            paginateOptions.sort = {
+                'audit.lastContentUpdate': this.NEWEST_FIRST,
+                'audit.publishedOn': this.NEWEST_FIRST,
+            };
+        }
 
         if (userId) {
             filteredQuery['author'] = userId;

@@ -28,7 +28,13 @@ export class PoetryContentDocument extends Document implements PoetryContent {
         dislikes: number;
         readonly comments: number;
     };
-    audit: { published: PubStatus; publishedOn: Date; hasComments: boolean; isDeleted: boolean };
+    audit: {
+        published: PubStatus;
+        publishedOn: Date;
+        lastContentUpdate: Date;
+        hasComments: boolean;
+        isDeleted: boolean;
+    };
     readonly kind: ContentKind;
     readonly createdAt: Date;
     readonly updatedAt: Date;

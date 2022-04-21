@@ -11,6 +11,7 @@ export interface BlogsContentModel extends ContentModel {
     audit: {
         published: PubStatus;
         publishedOn: Date;
+        lastContentUpdate: Date;
         releaseOn: Date;
         isNewsPost: boolean;
         isFeatured: boolean;

@@ -53,7 +53,7 @@ export class SectionsStore {
         if (pubStatus.newPub === true) {
             return this.sectionModel.findOneAndUpdate(
                 { _id: sectionId },
-                { published: pubStatus.newPub },
+                { published: pubStatus.newPub, 'audit.publishedOn': new Date() },
                 { new: true },
             );
         } else {

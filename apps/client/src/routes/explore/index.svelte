@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { Query } from '@sveltestack/svelte-query';
     import { page } from '$app/stores';
     import { fetchAllNew } from '$lib/services/content.service';
     import { Content, ContentKind } from '$lib/models/content';
@@ -16,7 +15,7 @@
     let loading = false;
 
     onMount(async () => {
-        fetchPage(currPage);
+        await fetchPage(currPage);
     })
 
     async function fetchPage(page: number) {

@@ -12,7 +12,7 @@ import { JwtPayload } from '$shared/auth';
 import {
     ContentFilter,
     ContentKind,
-    ContentModel,
+    ContentModel, ContentSorting,
     CreateProse,
     FormType,
     NewsChange,
@@ -70,9 +70,10 @@ export class ContentService {
         pageNum: number,
         kinds: ContentKind[],
         filter: ContentFilter,
+        sorting: ContentSorting,
         userId?: string,
     ): Promise<PaginateResult<ContentModel>> {
-        return await this.contentGroup.fetchAllPublished(pageNum, kinds, filter, userId);
+        return await this.contentGroup.fetchAllPublished(pageNum, kinds, filter, sorting, userId);
     }
 
     async getUserProfile(

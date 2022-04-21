@@ -14,7 +14,6 @@ export class SubscriptionsStore {
     ) {}
 
     //#region ---FETCHING---
-
     public async fetchAllForUser(pseudId: string) {
         return this.subscription.find({ subscriberId: pseudId });
     }
@@ -25,7 +24,7 @@ export class SubscriptionsStore {
 
     public async fetchSubscribers(itemId: string, subKind: SubscriptionKind, populate?: boolean) {
         if (populate) {
-            return this.subscription.find({ itemId, kind: subKind }).populate('itemId');
+            return this.subscription.find({ itemId, kind: subKind }).populate('subscriberId');
         } else {
             return this.subscription.find({ itemId, kind: subKind });
         }
@@ -37,10 +36,26 @@ export class SubscriptionsStore {
         populate?: boolean,
     ) {
         if (populate) {
-            return this.subscription.find({ subscriberId, kind: subKind }).populate('subscriberId');
+            return this.subscription.find({ subscriberId, kind: subKind }).populate('itemId');
         } else {
             return this.subscription.find({ subscriberId, kind: subKind });
         }
+    }
+
+    //#endregion
+
+    //#region ---FOLLOWERS---
+
+    public async fetchFollowers(subscriberId: string) {
+        return this.followingUser
+            .find({ subscriberId, kind: SubscriptionKind.FollowingUser })
+            .populate('subscriberId');
+    }
+
+    public async fetchFollowing(itemId: string) {
+        return this.followingUser
+            .find({ itemId, kind: SubscriptionKind.FollowingUser })
+            .populate('itemId');
     }
 
     //#endregion

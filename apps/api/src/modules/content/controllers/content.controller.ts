@@ -16,6 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
     ContentFilter,
     ContentKind,
+    ContentSorting,
     CreateProse,
     FormType,
     NewsChange,
@@ -80,6 +81,7 @@ export class ContentController {
         @Query('pageNum') pageNum: number,
         @Query('userId') userId: string,
         @Query('kind') kind: ContentKind[],
+        @Query('sort') sort: ContentSorting,
     ) {
         if (isNullOrUndefined(pageNum) && isNullOrUndefined(kind)) {
             throw new BadRequestException(
@@ -87,7 +89,13 @@ export class ContentController {
             );
         }
 
-        return await this.content.fetchAllPublished(pageNum, kind, filter, userId);
+        return await this.content.fetchAllPublished(
+            pageNum,
+            kind,
+            filter,
+            sort ?? ContentSorting.NewestFirst,
+            userId,
+        );
     }
 
     @UseGuards(IdentityGuard)
