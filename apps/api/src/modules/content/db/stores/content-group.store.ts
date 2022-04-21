@@ -291,11 +291,11 @@ export class ContentGroupStore {
     ): Promise<PaginateResult<ContentDocument>> {
         const paginateOptions: PaginateOptions = {
             sort: { 'audit.publishedOn': this.NEWEST_FIRST },
+            populate: 'author',
             page: pageNum,
             limit: maxPerPage,
             options: {
                 strictQuery: false,
-                populate: 'author',
             },
         };
         const paginateQuery = {
