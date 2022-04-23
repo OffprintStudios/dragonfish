@@ -1,9 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { nanoid } from 'nanoid';
+import { Message } from '$shared/models/messages';
 
 @Schema({ timestamps: true, autoIndex: true, collection: 'messages' })
-export class MessagesDocument extends Document {
+export class MessagesDocument extends Document implements Message {
     @Prop({ default: () => nanoid() })
     readonly _id: string;
 
