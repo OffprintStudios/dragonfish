@@ -21,7 +21,12 @@ import { AccountsModule } from '$modules/accounts';
         ]),
     ],
     exports: [],
-    providers: [Services.MessagesService, Stores.MessagesStore, Stores.MessageThreadsStore],
+    providers: [
+        Services.MessagesService,
+        Stores.MessagesStore,
+        Stores.MessageThreadsStore,
+        Controllers.MessagesGateway,
+    ],
     controllers: [Controllers.MessagesController],
 })
 export class MessagesModule {}

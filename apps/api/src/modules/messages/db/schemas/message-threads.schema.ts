@@ -26,7 +26,7 @@ export class MessageThreadsDocument extends Document implements MessageThread {
     @Prop()
     readonly updatedAt: Date;
 
-    @Prop()
+    @Prop({ default: null })
     readonly deletedAt: Date;
 }
 

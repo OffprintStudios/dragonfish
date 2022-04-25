@@ -12,9 +12,22 @@ export class MessageThreadsStore {
     ) {}
 
     async fetchThreads(pseudId: string): Promise<PaginateResult<MessageThreadsDocument>> {
-        return await this.threads.paginate({
+        return await this.threads.paginate(
+            {
+                participants: { $in: pseudId },
+                deletedAt: null,
+            },
+            {
+                sort: { createdAt: -1 },
+            },
+        );
+    }
+
+    async fetchOneThread(threadId: string, pseudId: string): Promise<MessageThreadsDocument> {
+        return await this.threads.findOne({
+            _id: threadId,
             participants: { $in: pseudId },
-            deletedAt: undefined,
+            deletedAt: null,
         });
     }
 
