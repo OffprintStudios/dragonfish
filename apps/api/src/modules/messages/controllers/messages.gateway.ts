@@ -1,5 +1,4 @@
 import {
-    ConnectedSocket,
     MessageBody,
     OnGatewayConnection,
     SubscribeMessage,
@@ -7,6 +6,12 @@ import {
     WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { SendMessageForm } from '$shared/models/messages';
+import { MessagesService } from '$modules/messages/services';
+import { UseGuards } from '@nestjs/common';
+import { MessagesSocketGuard } from '$modules/messages/services/messages-socket.guard';
+import { Identity } from '$shared/auth';
+import { Roles } from '$shared/models/accounts';
 
 @WebSocketGateway({
     cors: {
@@ -20,21 +25,25 @@ import { Server, Socket } from 'socket.io';
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         credentials: true,
     },
-    path: 'messages',
+    path: '/messages',
 })
 export class MessagesGateway implements OnGatewayConnection {
     @WebSocketServer()
     private server: Server;
 
-    handleConnection(client: Socket, data: string) {
-        if (!client.rooms.has(`messages-${data}`)) {
-            client.rooms.add(`messages-${data}`);
-        }
-        client.join(`messages-${data}`);
+    constructor(private readonly messages: MessagesService) {}
+
+    handleConnection(client: Socket, threadId: string): any {
+        client.on('join-room', () => {
+            client.join(threadId);
+        });
     }
 
-    @SubscribeMessage('connectToThread')
-    messagesConnect(@ConnectedSocket() client: Socket, @MessageBody('threadId') threadId: string) {
-        client.join(`messages-${threadId}`);
+    @UseGuards(MessagesSocketGuard)
+    @Identity(Roles.User)
+    @SubscribeMessage('send-message')
+    async messagesConnect(@MessageBody('data`') newMessage: SendMessageForm): Promise<void> {
+        const savedMessage = await this.messages.sendMessage(newMessage);
+        this.server.in(newMessage.threadId).emit('message', savedMessage);
     }
 }

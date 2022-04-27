@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { MessagesDocument } from '$modules/messages/db/schemas';
 import { PaginateModel } from 'mongoose';
-import { NewMessageForm } from '$shared/models/messages';
+import { NewMessageForm, SendMessageForm } from '$shared/models/messages';
 
 @Injectable()
 export class MessagesStore {
@@ -11,16 +11,24 @@ export class MessagesStore {
     ) {}
 
     async fetchMessages(threadId: string) {
-        return await this.messages.paginate({ threadId: threadId }, { sort: { createdAt: -1 } });
+        return await this.messages.paginate(
+            { threadId: threadId },
+            { sort: { createdAt: -1 }, pagination: false, populate: 'user' },
+        );
     }
 
-    async createMessage(threadId: string, newMessage: NewMessageForm): Promise<MessagesDocument> {
+    async createMessage(
+        threadId: string,
+        newMessage: NewMessageForm | SendMessageForm,
+    ): Promise<MessagesDocument> {
         const message = new this.messages({
             threadId: threadId,
             user: newMessage.senderId,
             message: newMessage.message,
         });
 
-        return await message.save();
+        return await message.save().then(async (data) => {
+            return await this.messages.findOne({ _id: data._id }).populate('user');
+        });
     }
 }

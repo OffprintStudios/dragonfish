@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+    CanActivate,
+    ExecutionContext,
+    Injectable,
+    Logger,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { Roles } from '$shared/models/accounts';
@@ -8,6 +14,8 @@ import { AuthService } from '$modules/accounts/services/auth.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
+    private logger = new Logger(`RolesGuard`);
+
     constructor(
         private readonly reflector: Reflector,
         private readonly auth: AuthService,
@@ -25,9 +33,10 @@ export class RolesGuard implements CanActivate {
         // If it does, then grab the token. If not, throw an
         // Unauthorized exception.
         let bearerToken: string;
-        if (jwtToken.startsWith('Bearer ')) {
+        try {
             bearerToken = jwtToken.substring(7, jwtToken.length);
-        } else {
+        } catch {
+            this.logger.warn('Someone attempted to utilize an invalid token!');
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
 

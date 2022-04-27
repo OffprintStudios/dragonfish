@@ -5,10 +5,18 @@ import * as Services from './services';
 import * as Schemas from './db/schemas';
 import * as Stores from './db/stores';
 import { AccountsModule } from '$modules/accounts';
+import { JwtModule } from '@nestjs/jwt';
+import { getJwtSecretKey, JWT_EXPIRATION } from '$shared/util';
 
 @Module({
     imports: [
         AccountsModule,
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: getJwtSecretKey(),
+                signOptions: { expiresIn: JWT_EXPIRATION },
+            }),
+        }),
         MongooseModule.forFeatureAsync([
             {
                 name: 'MessageThread',
