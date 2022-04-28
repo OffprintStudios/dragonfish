@@ -11,6 +11,7 @@ import { NotificationsModule } from '$modules/notifications';
 import { AdminModule } from '$modules/admin';
 import { CommentsModule } from '$modules/comments';
 import { UtilitiesModule } from '$modules/utilities';
+import { MessagesModule } from '$modules/messages';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import { UtilitiesModule } from '$modules/utilities';
         NotificationsModule,
         CommentsModule,
         UtilitiesModule,
+        MessagesModule,
         EventEmitterModule.forRoot(),
         BullModule.forRootAsync({
             useFactory: () => ({

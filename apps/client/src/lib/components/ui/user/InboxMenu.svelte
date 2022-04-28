@@ -6,6 +6,7 @@
     import { CheckLine, CloseLine, Loader5Line } from 'svelte-remixicon';
     import type { Notification as NotificationModel } from '$lib/models/activity';
     import Notification from '$lib/components/ui/user/Notification.svelte';
+    import MessagesMenu from '$lib/components/ui/user/MessagesMenu.svelte';
 
     enum InboxTabs {
         Messages,
@@ -68,10 +69,7 @@
     </div>
     <div class="p-4 h-full overflow-y-auto">
         {#if selectedTab === InboxTabs.Messages}
-            <div class="empty">
-                <h3>Pardon our dust—</h3>
-                <p>Check back later!</p>
-            </div>
+            <MessagesMenu />
         {:else if selectedTab === InboxTabs.Activity}
             {#if $activity.isLoading}
                 <div class="w-full h-96 flex flex-col items-center justify-center">

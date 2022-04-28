@@ -1,11 +1,11 @@
 import { Reflector } from '@nestjs/core';
 import {
+    BadRequestException,
     CanActivate,
     ExecutionContext,
     Injectable,
     Logger,
     UnauthorizedException,
-    BadRequestException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
@@ -30,14 +30,13 @@ export class IdentityGuard implements CanActivate {
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        const request = context.switchToHttp().getRequest();
         const roles = this.reflector.get<Roles[]>('identity', context.getHandler());
         const optional = this.reflector.get<boolean>('optional', context.getHandler());
 
         if (!roles) {
             return false;
         }
-
-        const request = context.switchToHttp().getRequest();
 
         if (optional) {
             const jwtToken: string = request.headers['authorization'];
@@ -67,9 +66,10 @@ export class IdentityGuard implements CanActivate {
         // If it does, then grab the token. If not, throw an
         // Unauthorized exception.
         let bearerToken: string;
-        if (jwtToken && jwtToken.startsWith('Bearer ')) {
+        try {
             bearerToken = jwtToken.substring(7, jwtToken.length);
-        } else {
+        } catch {
+            this.logger.warn('Someone attempted to utilize an invalid token!');
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
 
@@ -107,9 +107,10 @@ export class IdentityGuard implements CanActivate {
         // If it does, then grab the token. If not, throw an
         // Unauthorized exception.
         let bearerToken: string;
-        if (jwtToken.startsWith('Bearer ')) {
+        try {
             bearerToken = jwtToken.substring(7, jwtToken.length);
-        } else {
+        } catch {
+            this.logger.warn('Someone attempted to utilize an invalid token!');
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
 
