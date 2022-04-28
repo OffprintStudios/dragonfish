@@ -8,3 +8,4 @@ export * as alerts from './alerts.service';
 export * as activity from './activity.service';
 export * as search from './search.service';
 export * as image from './image.service';
+export * as messages from './messages.service';

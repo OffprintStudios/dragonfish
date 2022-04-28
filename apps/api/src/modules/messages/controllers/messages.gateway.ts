@@ -25,7 +25,7 @@ import { Roles } from '$shared/models/accounts';
         methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         credentials: true,
     },
-    path: '/messages',
+    namespace: '/messages',
 })
 export class MessagesGateway implements OnGatewayConnection {
     @WebSocketServer()
