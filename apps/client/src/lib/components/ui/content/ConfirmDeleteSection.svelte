@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { CloseLine, DeleteBinLine, Loader5Line } from 'svelte-remixicon';
-    import { http } from '$lib/services/http';
+    import { CloseLine, DeleteBinLine } from 'svelte-remixicon';
     import { closePopup, closePopupAndConfirm } from '$lib/components/nav/popup';
     import Button from '$lib/components/ui/misc/Button.svelte';
 </script>

@@ -12,7 +12,7 @@
     import { fade } from 'svelte/transition';
     import { content, updateContent } from '$lib/repo/content.repo';
     import { createForm } from 'felte';
-    import { CreateProse } from '$lib/models/content/works/forms';
+    import type { CreateProse } from '$lib/models/content/works/forms';
     import { saveChanges } from '$lib/services/content.service';
     import { session } from '$lib/repo/session.repo';
     import {

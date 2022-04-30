@@ -1,10 +1,10 @@
 <script lang="ts">
-import { TagKind, TagsModel, TagsTree } from "$lib/models/content/works";
+    import { TagKind, TagsModel, TagsTree } from "$lib/models/content/works";
 
-import { tags } from "$lib/services";
-import { formatTagName, slugify } from "$lib/util";
+    import { tags } from "$lib/services";
+    import { formatTagName, slugify } from "$lib/util";
 
-import { onMount } from "svelte";
+    import { onMount } from "svelte";
     class AlphabeticalTags {
         tags: TagsTree[] = [];
         constructor(public letter: string) {
