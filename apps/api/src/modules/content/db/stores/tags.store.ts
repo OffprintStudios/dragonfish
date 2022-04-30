@@ -2,7 +2,14 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ContentDocument, TagsDocument } from '../schemas';
-import { TagKind, TagsForm, TagsTree, ContentKind, PubStatus } from '$shared/models/content';
+import {
+    TagKind,
+    TagsForm,
+    TagsTree,
+    ContentKind,
+    PubStatus,
+    TagsModel,
+} from '$shared/models/content';
 import sanitizeHtml from 'sanitize-html';
 
 @Injectable()
@@ -228,7 +235,7 @@ export class TagsStore {
      * @param tagId The ID of the tag to update.
      * @param form The details of the update operation.
      */
-    async updateTag(tagId: string, form: TagsForm): Promise<TagsDocument> {
+    async updateTag(tagId: string, form: TagsForm): Promise<void> {
         const tag = await this.tags.findById(tagId);
         if (!tag) {
             throw new NotFoundException(`The tag you're trying to update does not exist.`);
@@ -244,17 +251,34 @@ export class TagsStore {
             if (tagWithChildren.children && tagWithChildren.children.length > 0) {
                 throw new BadRequestException("Don't assign a parent to a tag with children.");
             }
+
+            // Ensure the parent exists and its kind matches
+            const parentTag = await this.tags.findById(form.parent);
+            if (!parentTag) {
+                throw new NotFoundException('Could not find any parent tag with that ID.');
+            }
+            if (parentTag.kind !== tag.kind) {
+                throw new BadRequestException(
+                    "The new parent tag's kind must match the tag's kind.",
+                );
+            }
         }
 
         tag.name = sanitizeHtml(form.name);
         tag.desc = sanitizeHtml(form.desc);
 
-        if (form.parent) {
-            tag.parent = form.parent;
+        const parentsToUpdate: string[] = [];
+
+        if (tag.parent) {
+            parentsToUpdate.push((tag.parent as TagsModel)._id);
         }
 
+        if (form.parent) {
+            parentsToUpdate.push(form.parent);
+            tag.parent = form.parent;
+        }
         // Allows to set parent as null
-        if (form.parent === null) {
+        else {
             tag.parent = null;
         }
 
@@ -281,7 +305,12 @@ export class TagsStore {
         const numTaggedWorks = await this.getNumberOfTaggedWorks(tagId);
         tag.taggedWorks = numTaggedWorks;
 
-        return tag.save();
+        await tag.save();
+
+        // Updates work counts for old parent and new parent
+        for (const parent of parentsToUpdate) {
+            await this.updateTaggedWorks(parent);
+        }
     }
 
     /**

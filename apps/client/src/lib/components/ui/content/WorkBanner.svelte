@@ -90,9 +90,11 @@
                     {#each $content.content.meta.genres as genre}
                         <TagBadge kind={TagKind.Genre} {genre} size={'large'} />
                     {/each}
-                    {#each $content.content.tags as tag}
-                        <TagBadge kind={TagKind.Fandom} {tag} size={'large'} />
-                    {/each}
+                    {#if $content.content.tags}
+                        {#each $content.content.tags as tag}
+                            <TagBadge kind={TagKind.Fandom} {tag} size={'large'} />
+                        {/each}
+                    {/if}
                 </div>
             </div>
             <div class="flex items-center justify-center md:justify-start">

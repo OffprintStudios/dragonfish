@@ -57,9 +57,9 @@ export function createTag(kind: TagKind, form: TagsForm): Observable<TagsModel> 
  * @param id The ID of the tag to update.
  * @param form The new attributes to apply to the given tag.
  */
-export function updateTag(id: string, form: TagsForm): Observable<TagsModel> {
+export function updateTag(id: string, form: TagsForm): Observable<void> {
     return pipeData(
-        http.patch<TagsModel>(`${baseUrl}/tags/update-tag?id=${id}`, form, {
+        http.patch<void>(`${baseUrl}/tags/update-tag?id=${id}`, form, {
             observe: 'response',
             withCredentials: true,
         }),

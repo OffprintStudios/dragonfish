@@ -54,40 +54,44 @@ export class PoetryStore {
         poetryInfo: CreatePoetry,
     ): Promise<PoetryContentDocument> {
         if (poetryInfo.collection === true) {
-            return this.poetryModel.findOneAndUpdate(
-                { _id: poetryId, author: user },
-                {
-                    title: sanitizeHtml(poetryInfo.title),
-                    desc: sanitizeHtml(poetryInfo.desc),
-                    body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
-                    'meta.category': poetryInfo.category,
-                    'meta.form': poetryInfo.form,
-                    'meta.genres': poetryInfo.genres,
-                    'meta.rating': poetryInfo.rating,
-                    'meta.status': poetryInfo.status,
-                    tags: poetryInfo.tags,
-                },
-                { new: true, populate: 'author' },
-            );
+            return this.poetryModel
+                .findOneAndUpdate(
+                    { _id: poetryId, author: user },
+                    {
+                        title: sanitizeHtml(poetryInfo.title),
+                        desc: sanitizeHtml(poetryInfo.desc),
+                        body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
+                        'meta.category': poetryInfo.category,
+                        'meta.form': poetryInfo.form,
+                        'meta.genres': poetryInfo.genres,
+                        'meta.rating': poetryInfo.rating,
+                        'meta.status': poetryInfo.status,
+                        tags: poetryInfo.tags,
+                    },
+                    { new: true },
+                )
+                .populate('author');
         } else {
-            return this.poetryModel.findOneAndUpdate(
-                { _id: poetryId, author: user },
-                {
-                    title: sanitizeHtml(poetryInfo.title),
-                    desc: sanitizeHtml(poetryInfo.desc),
-                    body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
-                    'stats.words': countWords(
-                        stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions)),
-                    ),
-                    'meta.category': poetryInfo.category,
-                    'meta.form': poetryInfo.form,
-                    'meta.genres': poetryInfo.genres,
-                    'meta.rating': poetryInfo.rating,
-                    'meta.status': poetryInfo.status,
-                    tags: poetryInfo.tags,
-                },
-                { new: true, populate: 'author' },
-            );
+            return this.poetryModel
+                .findOneAndUpdate(
+                    { _id: poetryId, author: user },
+                    {
+                        title: sanitizeHtml(poetryInfo.title),
+                        desc: sanitizeHtml(poetryInfo.desc),
+                        body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
+                        'stats.words': countWords(
+                            stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions)),
+                        ),
+                        'meta.category': poetryInfo.category,
+                        'meta.form': poetryInfo.form,
+                        'meta.genres': poetryInfo.genres,
+                        'meta.rating': poetryInfo.rating,
+                        'meta.status': poetryInfo.status,
+                        tags: poetryInfo.tags,
+                    },
+                    { new: true },
+                )
+                .populate('author');
         }
     }
 
@@ -103,10 +107,12 @@ export class PoetryStore {
         poetryId: string,
         coverArt: string,
     ): Promise<PoetryContentDocument> {
-        return this.poetryModel.findOneAndUpdate(
-            { _id: poetryId, author: user, 'audit.isDeleted': false },
-            { 'meta.coverArt': coverArt },
-            { new: true, populate: 'author' },
-        );
+        return this.poetryModel
+            .findOneAndUpdate(
+                { _id: poetryId, author: user, 'audit.isDeleted': false },
+                { 'meta.coverArt': coverArt },
+                { new: true },
+            )
+            .populate('author');
     }
 }

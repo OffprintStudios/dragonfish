@@ -29,7 +29,7 @@ export class TagsController {
     @UseGuards(RolesGuard)
     @Identity(Roles.Admin, Roles.Moderator)
     @Patch('update-tag')
-    async updateTag(@Query('id') id: string, @Body() form: TagsForm): Promise<TagsModel> {
+    async updateTag(@Query('id') id: string, @Body() form: TagsForm): Promise<void> {
         return await this.tagsService.updateTag(id, form);
     }
 

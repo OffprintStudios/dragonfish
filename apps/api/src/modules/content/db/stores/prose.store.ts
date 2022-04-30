@@ -47,20 +47,22 @@ export class ProseStore {
         proseId: string,
         proseInfo: CreateProse,
     ): Promise<ProseContentDocument> {
-        return this.proseModel.findOneAndUpdate(
-            { _id: proseId, author: user },
-            {
-                title: sanitizeHtml(proseInfo.title),
-                desc: sanitizeHtml(proseInfo.desc),
-                body: sanitizeHtml(proseInfo.body, sanitizeOptions),
-                'meta.category': proseInfo.category,
-                'meta.genres': proseInfo.genres,
-                'meta.rating': proseInfo.rating,
-                'meta.status': proseInfo.status,
-                tags: proseInfo.tags,
-            },
-            { new: true, populate: 'author' },
-        );
+        return this.proseModel
+            .findOneAndUpdate(
+                { _id: proseId, author: user },
+                {
+                    title: sanitizeHtml(proseInfo.title),
+                    desc: sanitizeHtml(proseInfo.desc),
+                    body: sanitizeHtml(proseInfo.body, sanitizeOptions),
+                    'meta.category': proseInfo.category,
+                    'meta.genres': proseInfo.genres,
+                    'meta.rating': proseInfo.rating,
+                    'meta.status': proseInfo.status,
+                    tags: proseInfo.tags,
+                },
+                { new: true },
+            )
+            .populate('author');
     }
 
     /**
@@ -75,10 +77,12 @@ export class ProseStore {
         proseId: string,
         coverArt: string,
     ): Promise<ProseContentDocument> {
-        return this.proseModel.findOneAndUpdate(
-            { _id: proseId, author: user, 'audit.isDeleted': false },
-            { 'meta.coverArt': coverArt },
-            { new: true, populate: 'author' },
-        );
+        return this.proseModel
+            .findOneAndUpdate(
+                { _id: proseId, author: user, 'audit.isDeleted': false },
+                { 'meta.coverArt': coverArt },
+                { new: true },
+            )
+            .populate('author');
     }
 }

@@ -6,6 +6,7 @@ interface PopupState {
     showBackdrop: boolean;
     component: SvelteComponent;
     onConfirm: PopupOnConfirm;
+    data: any;
 }
 
 export interface PopupOnConfirm {
@@ -17,23 +18,17 @@ export const popup = writable<PopupState>({
     showBackdrop: true,
     component: null,
     onConfirm: null,
+    data: null,
 });
 
-export function openPopup(component: SvelteComponent, onConfirm: PopupOnConfirm = null): void {
-    if (onConfirm) {
-        popup.update((state) => ({
-            ...state,
-            isOpen: true,
-            component,
-            onConfirm,
-        }));
-    } else {
-        popup.update((state) => ({
-            ...state,
-            isOpen: true,
-            component,
-        }));
-    }
+export function openPopup(component: SvelteComponent, onConfirm: PopupOnConfirm = null, data: any = null): void {
+    popup.update((state) => ({
+        ...state,
+        isOpen: true,
+        component,
+        onConfirm,
+        data,
+    }));
 }
 
 export function closePopup(): void {
@@ -57,4 +52,11 @@ export function togglePopup(component: SvelteComponent): void {
         isOpen: !state.isOpen,
         component: state.isOpen ? null : component,
     }));
+}
+
+export function getData(): any {
+    if (get(popup).data) {
+        return get(popup).data;
+    }
+    return null;
 }

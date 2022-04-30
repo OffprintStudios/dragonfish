@@ -19,7 +19,7 @@ export class TagsService {
         return await this.tagsStore.createTag(form, kind);
     }
 
-    async updateTag(id: string, form: TagsForm): Promise<TagsModel> {
+    async updateTag(id: string, form: TagsForm): Promise<void> {
         return await this.tagsStore.updateTag(id, form);
     }
 
