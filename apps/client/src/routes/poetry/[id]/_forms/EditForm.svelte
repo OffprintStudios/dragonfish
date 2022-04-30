@@ -13,7 +13,7 @@
     import { fade } from 'svelte/transition';
     import { content, updateContent } from '$lib/repo/content.repo';
     import { createForm } from 'felte';
-    import { CreatePoetry } from '$lib/models/content/works/forms';
+    import type { CreatePoetry } from '$lib/models/content/works/forms';
     import { saveChanges } from '$lib/services/content.service';
     import { session } from '$lib/repo/session.repo';
     import {
@@ -69,7 +69,7 @@
         }))
         .sort((a, b) => (a.value < b.value ? -1 : 1));
 
-    let tagValues: unknown[];
+    let tagValues: any[];
 
     onMount(() => {
         tags.fetchTagsTrees(TagKind.Fandom).subscribe((tagTrees) => {
@@ -101,12 +101,14 @@
 
     function mapTags(theseTags: TagsModel[]) {
         const tagsList = [];
-        for (let i = 0; i < theseTags.length; i++) {
-            const thisTag = tagOptions.find((item) => {
-                return item.value === theseTags[i]._id;
-            });
-            if (thisTag) {
-                tagsList.push(thisTag);
+        if (theseTags) {
+            for (let i = 0; i < theseTags.length; i++) {
+                const thisTag = tagOptions.find((item) => {
+                    return item.value === theseTags[i]._id;
+                });
+                if (thisTag) {
+                    tagsList.push(thisTag);
+                }
             }
         }
         return tagsList;
@@ -127,7 +129,7 @@
                     ? tagValues.map((val) => {
                           return val.value;
                       })
-                    : null,
+                    : [],
                 rating: values.rating.value,
                 status: values.status.value,
             };

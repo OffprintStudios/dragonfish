@@ -104,7 +104,7 @@ export class ContentService {
         const work = await this.content.fetchOne(contentId);
         const oldTags = work.tags;
         let oldTagIds: string[] = [];
-        if (work.audit.published === PubStatus.Published && oldTags.length > 0) {
+        if (work.audit.published === PubStatus.Published && oldTags && oldTags.length > 0) {
             if (typeof oldTags[0] === 'object') {
                 oldTagIds = oldTags.map((tag) => (tag as TagsModel)._id);
             } else {
@@ -141,11 +141,13 @@ export class ContentService {
         await this.updateCounts(user);
 
         // Updates number of published works tagged with each tag
-        for (const tag of tags) {
-            if (typeof tag === 'object') {
-                await this.tagsStore.updateTaggedWorks(tag._id);
-            } else {
-                await this.tagsStore.updateTaggedWorks(tag);
+        if (tags) {
+            for (const tag of tags) {
+                if (typeof tag === 'object') {
+                    await this.tagsStore.updateTaggedWorks(tag._id);
+                } else {
+                    await this.tagsStore.updateTaggedWorks(tag);
+                }
             }
         }
 

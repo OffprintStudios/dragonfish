@@ -81,14 +81,16 @@
                 </div>
             {/if}
         {:else}
-            {#if content.tags.length > 0}
-                <TagBadge kind={TagKind.Fandom} tag={content.tags[0]} size={'medium'} />
-            {/if}
-            {#if content.tags.length > 1}
-                <div class="flex mx-0.5 mt-1" on:click={toggle} title="More">
-                    <MoreLine />
-                    <ArrowDownSLine />
-                </div>
+            {#if content.tags}
+                {#if content.tags.length > 0}
+                    <TagBadge kind={TagKind.Fandom} tag={content.tags[0]} size={'medium'} />
+                {/if}
+                {#if content.tags.length > 1}
+                    <div class="flex mx-0.5 mt-1" on:click={toggle} title="More">
+                        <MoreLine />
+                        <ArrowDownSLine />
+                    </div>
+                {/if}
             {/if}
         {/if}
     </div>

@@ -6,7 +6,7 @@
     import { createForm } from 'felte';
     import type { TagsModel } from '$lib/models/content/works';
     import { tags } from '$lib/services';
-import { pluralize } from '$lib/util';
+    import { pluralize } from '$lib/util';
 
     const { form, data, errors, isSubmitting } = createForm({
         onSubmit: async () => {

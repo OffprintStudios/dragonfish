@@ -61,7 +61,7 @@
         label: value,
     }));
 
-    let tagValues: unknown[];
+    let tagValues: any[];
 
     onMount(() => {
         tags.fetchTagsTrees(TagKind.Fandom).subscribe((tagTrees) => {
@@ -91,14 +91,16 @@
         return genresList;
     }
 
-    function mapTags(theseTags: TagsModel[]) {
+    function mapTags(theseTags: TagsModel[] | null) {
         const tagsList = [];
-        for (let i = 0; i < theseTags.length; i++) {
-            const thisTag = tagOptions.find((item) => {
-                return item.value === theseTags[i]._id;
-            });
-            if (thisTag) {
-                tagsList.push(thisTag);
+        if (theseTags) {
+            for (let i = 0; i < theseTags.length; i++) {
+                const thisTag = tagOptions.find((item) => {
+                    return item.value === theseTags[i]._id;
+                });
+                if (thisTag) {
+                    tagsList.push(thisTag);
+                }
             }
         }
         return tagsList;
@@ -118,7 +120,7 @@
                     ? tagValues.map((val) => {
                           return val.value;
                       })
-                    : null,
+                    : [],
                 rating: values.rating.value,
                 status: values.status.value,
             };
