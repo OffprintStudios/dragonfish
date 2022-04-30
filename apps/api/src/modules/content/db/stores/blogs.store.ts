@@ -49,17 +49,19 @@ export class BlogsStore {
     ): Promise<BlogsContentDocument> {
         const wordCount = countWords(stripTags(sanitizeHtml(blogInfo.body, sanitizeOptions)));
 
-        return this.blogsModel.findOneAndUpdate(
-            { _id: blogId, author: user },
-            {
-                title: sanitizeHtml(blogInfo.title),
-                desc: blogInfo.desc ? sanitizeHtml(blogInfo.desc) : null,
-                body: sanitizeHtml(blogInfo.body, sanitizeOptions),
-                'meta.rating': blogInfo.rating,
-                'stats.words': wordCount,
-            },
-            { new: true, populate: 'author' },
-        );
+        return this.blogsModel
+            .findOneAndUpdate(
+                { _id: blogId, author: user },
+                {
+                    title: sanitizeHtml(blogInfo.title),
+                    desc: blogInfo.desc ? sanitizeHtml(blogInfo.desc) : null,
+                    body: sanitizeHtml(blogInfo.body, sanitizeOptions),
+                    'meta.rating': blogInfo.rating,
+                    'stats.words': wordCount,
+                },
+                { new: true },
+            )
+            .populate('author');
     }
 
     /**
@@ -76,14 +78,16 @@ export class BlogsStore {
         blogId: string,
         pubChange: PubChange,
     ): Promise<BlogsContentDocument> {
-        return this.blogsModel.findOneAndUpdate(
-            { _id: blogId, author: user },
-            {
-                'audit.published': pubChange.newStatus,
-                'audit.publishedOn': new Date(),
-            },
-            { new: true, populate: 'author' },
-        );
+        return this.blogsModel
+            .findOneAndUpdate(
+                { _id: blogId, author: user },
+                {
+                    'audit.published': pubChange.newStatus,
+                    'audit.publishedOn': new Date(),
+                },
+                { new: true },
+            )
+            .populate('author');
     }
 
     /**
@@ -93,13 +97,15 @@ export class BlogsStore {
      * @param newsChange
      */
     async toggleNewsPost(userId: string, newsChange: NewsChange): Promise<BlogsContentDocument> {
-        return this.blogsModel.findOneAndUpdate(
-            { _id: newsChange.blogId, author: userId },
-            {
-                'audit.isNewsPost': newsChange.postAsNews,
-            },
-            { new: true, populate: 'author' },
-        );
+        return this.blogsModel
+            .findOneAndUpdate(
+                { _id: newsChange.blogId, author: userId },
+                {
+                    'audit.isNewsPost': newsChange.postAsNews,
+                },
+                { new: true },
+            )
+            .populate('author');
     }
 
     /**
@@ -112,13 +118,15 @@ export class BlogsStore {
         userId: string,
         featuredChange: NewsChange,
     ): Promise<BlogsContentDocument> {
-        return this.blogsModel.findOneAndUpdate(
-            { _id: featuredChange.blogId, author: userId },
-            {
-                'audit.isFeatured': featuredChange.postAsNews,
-            },
-            { new: true, populate: 'author' },
-        );
+        return this.blogsModel
+            .findOneAndUpdate(
+                { _id: featuredChange.blogId, author: userId },
+                {
+                    'audit.isFeatured': featuredChange.postAsNews,
+                },
+                { new: true },
+            )
+            .populate('author');
     }
 
     /**
@@ -132,10 +140,12 @@ export class BlogsStore {
         authorId: string,
         bannerUrl: string,
     ): Promise<BlogsContentDocument> {
-        return this.blogsModel.findOneAndUpdate(
-            { _id: blogId, author: authorId },
-            { 'meta.banner': bannerUrl },
-            { new: true, populate: 'author' },
-        );
+        return this.blogsModel
+            .findOneAndUpdate(
+                { _id: blogId, author: authorId },
+                { 'meta.banner': bannerUrl },
+                { new: true },
+            )
+            .populate('author');
     }
 }
