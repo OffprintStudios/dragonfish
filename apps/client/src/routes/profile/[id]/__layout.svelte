@@ -41,6 +41,9 @@
     import UploadCover from './_forms/UploadCover.svelte';
     import { checkIfFollowing, followUser, unfollowUser } from '$lib/services/profile.service';
     import { goto } from '$app/navigation';
+    import SendMessage from '$lib/components/ui/user/SendMessage.svelte';
+
+    let dropdownOpen = false;
 
     const followingUser = useQuery(
         'followUser',
@@ -147,17 +150,22 @@
                             </Button>
                         {/if}
                         <div class="mx-1"></div>
-                        <Dropdown kind={'primary'} position={'bottom-end'}>
+                        <Dropdown kind={'primary'} position={'bottom-end'} bind:open={dropdownOpen}>
                             <svelte:fragment slot="button">
                                 <MenuLine class="button-icon no-text" size="20px" />
                             </svelte:fragment>
                             <svelte:fragment slot="items">
-                                <button>
+                                <button on:click={() => {
+                                            openPopup(SendMessage, null, { profileId: $profile._id })
+                                            dropdownOpen = false;
+                                        }
+                                    }
+                                >
                                     <ChatSmile3Line class="mr-2" />
                                     <span>Send Message</span>
                                 </button>
                                 <div class="divider"><!--spacer--></div>
-                                <button>
+                                <button on:click={() => dropdownOpen = false}>
                                     <Flag2Line class="mr-2" />
                                     <span>Report User</span>
                                 </button>

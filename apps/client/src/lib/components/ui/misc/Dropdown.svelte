@@ -6,7 +6,7 @@
 
     export let kind: 'primary' | 'normal' = 'normal';
     export let position: Placement = 'bottom-start';
-    let open = false;
+    export let open = false;
 
     function determineOpenState() {
         open = !open;
