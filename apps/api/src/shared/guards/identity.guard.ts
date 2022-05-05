@@ -124,7 +124,8 @@ export class IdentityGuard implements CanActivate {
             if (err instanceof TokenExpiredError) {
                 throw new UnauthorizedException('Your token has expired.');
             } else {
-                throw err;
+                this.logger.error('JWT malformed, error unknown');
+                return false;
             }
         }
 

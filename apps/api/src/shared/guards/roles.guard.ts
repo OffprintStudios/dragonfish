@@ -1,10 +1,4 @@
-import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    Logger,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { Roles } from '$shared/models/accounts';
@@ -50,7 +44,8 @@ export class RolesGuard implements CanActivate {
             if (err instanceof TokenExpiredError) {
                 throw new UnauthorizedException('Your token has expired.');
             } else {
-                throw err;
+                this.logger.error('JWT malformed, error unknown');
+                return false;
             }
         }
 

@@ -32,8 +32,10 @@
         ImageEditLine,
         ImageAddLine,
         UserSettingsLine,
+        Flag2Line,
+        ChatSmile3Line,
     } from 'svelte-remixicon';
-    import Button from '$lib/components/ui/misc/Button.svelte';
+    import { Button, Dropdown } from '$lib/components/ui/misc';
     import { session } from '$lib/repo/session.repo';
     import { openPopup } from '$lib/components/nav/popup';
     import UploadCover from './_forms/UploadCover.svelte';
@@ -116,7 +118,7 @@
                             {$profile.stats.following} following
                         </a>
                     </span>
-                    <div class="my-5" />
+                    <div class="my-5"></div>
                 </div>
                 <div class="flex items-center">
                     {#if $session.account && $session.currProfile}
@@ -144,16 +146,29 @@
                                 <span class="button-text">Follow</span>
                             </Button>
                         {/if}
-                        <div class="mx-1" />
-                        <Button kind="primary">
-                            <MenuLine class="button-icon no-text" size="20px" />
-                        </Button>
+                        <div class="mx-1"></div>
+                        <Dropdown kind={'primary'} position={'bottom-end'}>
+                            <svelte:fragment slot="button">
+                                <MenuLine class="button-icon no-text" size="20px" />
+                            </svelte:fragment>
+                            <svelte:fragment slot="items">
+                                <button>
+                                    <ChatSmile3Line class="mr-2" />
+                                    <span>Send Message</span>
+                                </button>
+                                <div class="divider"><!--spacer--></div>
+                                <button>
+                                    <Flag2Line class="mr-2" />
+                                    <span>Report User</span>
+                                </button>
+                            </svelte:fragment>
+                        </Dropdown>
                     {:else}
                         <Button kind="primary" disabled>
                             <UserFollowLine class="button-icon" />
                             <span class="button-text">Follow</span>
                         </Button>
-                        <div class="mx-1" />
+                        <div class="mx-1"></div>
                         <Button kind="primary" disabled>
                             <MenuLine class="button-icon no-text" size="20px" />
                         </Button>

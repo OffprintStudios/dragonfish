@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ContentDocument, TagsDocument } from '../schemas';
-import { TagKind, TagsForm, TagsTree, ContentKind, PubStatus } from '$shared/models/content';
+import { ContentKind, PubStatus, TagKind, TagsForm, TagsTree } from '$shared/models/content';
 import sanitizeHtml from 'sanitize-html';
 
 @Injectable()
@@ -96,7 +96,7 @@ export class TagsStore {
         }
 
         const root: TagsTree = {
-            ...parentTag.toObject(),
+            ...parentTag,
             children: [],
         };
         const tree = await this.buildDescendantTree(root);

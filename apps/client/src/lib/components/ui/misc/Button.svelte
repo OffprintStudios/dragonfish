@@ -9,6 +9,7 @@
     export let type = 'button';
     export let kind: 'primary' | 'normal' = 'normal';
     export let title = '';
+    export let thisButton = null;
 
     let isDisabled: boolean;
     $: isDisabled = disabled || loading;
@@ -24,6 +25,7 @@
     disabled={isDisabled}
     tabindex="0"
     on:click
+    bind:this={thisButton}
 >
     {#if loading}
         <Loader5Line class="button-icon animate-spin" />

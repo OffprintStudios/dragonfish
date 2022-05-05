@@ -1,10 +1,12 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { JwtPayload } from '../auth';
 
 @Injectable()
 export class RefreshGuard implements CanActivate {
+    private logger = new Logger(`RefreshGuard`);
+
     constructor(private readonly jwtService: JwtService) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -18,9 +20,10 @@ export class RefreshGuard implements CanActivate {
         // If it does, then grab the token. If not, throw an
         // Unauthorized exception.
         let bearerToken: string;
-        if (jwtToken.startsWith('Bearer ')) {
+        try {
             bearerToken = jwtToken.substring(7, jwtToken.length);
-        } else {
+        } catch {
+            this.logger.warn('Someone attempted to utilize an invalid token!');
             throw new UnauthorizedException(`You don't have permission to do that.`);
         }
 
@@ -34,7 +37,8 @@ export class RefreshGuard implements CanActivate {
             if (err instanceof TokenExpiredError) {
                 throw new UnauthorizedException('Your token has expired.');
             } else {
-                throw err;
+                this.logger.error('JWT malformed, error unknown');
+                return false;
             }
         }
 
