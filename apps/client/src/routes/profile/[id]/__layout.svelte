@@ -139,6 +139,28 @@
                                 <UserFollowFill class="button-icon" />
                                 <span class="button-text">Following</span>
                             </Button>
+                            <div class="mx-1"></div>
+                            <Dropdown kind={'primary'} position={'bottom-end'} bind:open={dropdownOpen}>
+                                <svelte:fragment slot="button">
+                                    <MenuLine class="button-icon no-text" size="20px" />
+                                </svelte:fragment>
+                                <svelte:fragment slot="items">
+                                    <button on:click={() => {
+                                            openPopup(SendMessage, null, { profileId: $profile._id })
+                                            dropdownOpen = false;
+                                        }
+                                    }
+                                    >
+                                        <ChatSmile3Line class="mr-2" />
+                                        <span>Send Message</span>
+                                    </button>
+                                    <div class="divider"><!--spacer--></div>
+                                    <button on:click={() => dropdownOpen = false}>
+                                        <Flag2Line class="mr-2" />
+                                        <span>Report User</span>
+                                    </button>
+                                </svelte:fragment>
+                            </Dropdown>
                         {:else}
                             <Button
                                 kind="primary"
@@ -148,29 +170,29 @@
                                 <UserFollowLine class="button-icon" />
                                 <span class="button-text">Follow</span>
                             </Button>
-                        {/if}
-                        <div class="mx-1"></div>
-                        <Dropdown kind={'primary'} position={'bottom-end'} bind:open={dropdownOpen}>
-                            <svelte:fragment slot="button">
-                                <MenuLine class="button-icon no-text" size="20px" />
-                            </svelte:fragment>
-                            <svelte:fragment slot="items">
-                                <button on:click={() => {
+                            <div class="mx-1"></div>
+                            <Dropdown kind={'primary'} position={'bottom-end'} bind:open={dropdownOpen}>
+                                <svelte:fragment slot="button">
+                                    <MenuLine class="button-icon no-text" size="20px" />
+                                </svelte:fragment>
+                                <svelte:fragment slot="items">
+                                    <button on:click={() => {
                                             openPopup(SendMessage, null, { profileId: $profile._id })
                                             dropdownOpen = false;
                                         }
                                     }
-                                >
-                                    <ChatSmile3Line class="mr-2" />
-                                    <span>Send Message</span>
-                                </button>
-                                <div class="divider"><!--spacer--></div>
-                                <button on:click={() => dropdownOpen = false}>
-                                    <Flag2Line class="mr-2" />
-                                    <span>Report User</span>
-                                </button>
-                            </svelte:fragment>
-                        </Dropdown>
+                                    >
+                                        <ChatSmile3Line class="mr-2" />
+                                        <span>Send Message</span>
+                                    </button>
+                                    <div class="divider"><!--spacer--></div>
+                                    <button on:click={() => dropdownOpen = false}>
+                                        <Flag2Line class="mr-2" />
+                                        <span>Report User</span>
+                                    </button>
+                                </svelte:fragment>
+                            </Dropdown>
+                        {/if}
                     {:else}
                         <Button kind="primary" disabled>
                             <UserFollowLine class="button-icon" />

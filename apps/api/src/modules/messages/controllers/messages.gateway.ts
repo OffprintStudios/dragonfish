@@ -4,6 +4,7 @@ import {
     SubscribeMessage,
     WebSocketGateway,
     WebSocketServer,
+    WsException,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { SendMessageForm } from '$shared/models/messages';
@@ -33,10 +34,16 @@ export class MessagesGateway implements OnGatewayConnection {
 
     constructor(private readonly messages: MessagesService) {}
 
-    handleConnection(client: Socket, threadId: string): any {
-        client.on('join-room', () => {
-            client.join(threadId);
-        });
+    async handleConnection(client: Socket, threadId: string, pseudId: string): Promise<any> {
+        const threadData = await this.messages.fetchThread(threadId, pseudId);
+        if (threadData) {
+            client.on('join-room', () => {
+                client.join(threadId);
+                this.server.in(threadId).emit('thread', threadData);
+            });
+        } else {
+            throw new WsException(`You aren't allowed to view this thread.`);
+        }
     }
 
     @UseGuards(MessagesSocketGuard)
