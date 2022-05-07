@@ -4,6 +4,7 @@ import { config, DotenvConfigOutput } from 'dotenv';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'body-parser';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import { AppModule } from './app.module';
 
 /**
@@ -24,6 +25,7 @@ async function bootstrap() {
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
+    app.useWebSocketAdapter(new IoAdapter(app));
     app.enableCors({
         origin: [
             'http://localhost:3000',

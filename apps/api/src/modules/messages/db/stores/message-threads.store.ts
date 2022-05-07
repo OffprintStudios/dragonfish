@@ -43,7 +43,7 @@ export class MessageThreadsStore {
         recipientId: string,
     ): Promise<MessageThreadsDocument> {
         return await this.threads.findOne({
-            participants: { $in: [pseudId, recipientId], $size: 2 },
+            participants: { $all: [pseudId, recipientId], $size: 2 },
             deletedAt: null,
         });
     }

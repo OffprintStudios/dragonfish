@@ -33,6 +33,7 @@ export async function setupMessagesCollection() {
         return next();
     });
 
+    schema.plugin(paginate);
     return schema;
 }
 

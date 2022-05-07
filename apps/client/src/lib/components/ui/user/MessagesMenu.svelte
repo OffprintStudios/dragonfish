@@ -26,12 +26,15 @@
     </div>
 {:else}
     {#each $messageThreads.data.docs as thread}
-        <a class="thread-card border-zinc-700 dark:border-white hover:bg-zinc-300 dark:hover:bg-zinc-700 group">
+        <a
+            class="thread-card border-zinc-700 dark:border-white hover:bg-zinc-300 dark:hover:bg-zinc-700 group"
+            href="/messages/{thread._id}"
+        >
             <div class="chat-picture bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed group-hover:bg-zinc-400 dark:group-hover:bg-zinc-600">
                 <ChatSmile3Line size="24px" />
             </div>
-            <div>
-                <h5 class="text-2xl font-medium">{thread.name}</h5>
+            <div class="overflow-hidden w-full">
+                <h5 class="text-2xl font-medium whitespace-nowrap text-ellipsis">{thread.name}</h5>
                 <div class="flex items-center">
                     {#each thread.participants as participant}
                         <Avatar borderWidth="1px" size="24px" src={participant.profile.avatar} title={participant.screenName} />
@@ -55,7 +58,7 @@
         @apply flex items-center h-20 w-full border-b last:border-0 p-2 rounded-lg block no-underline;
         color: var(--text-color);
         div.chat-picture {
-            @apply rounded-full h-16 w-16 flex flex-col items-center justify-center overflow-hidden mr-2;
+            @apply rounded-full min-h-[4rem] min-w-[4rem] max-w-[4rem] max-h-[4rem] flex flex-col items-center justify-center overflow-hidden mr-2;
         }
     }
 </style>
