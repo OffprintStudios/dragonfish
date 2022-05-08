@@ -2,6 +2,7 @@ import { PseudonymsStore } from '$modules/accounts/db/stores';
 import { Pseudonym } from '$shared/models/accounts';
 import { ContentFilter, ContentModel, ContentKind, WorkKind, Genres } from '$shared/models/content';
 import { SearchKind, SearchMatch } from '$shared/models/search';
+import { htmlReplace } from '$shared/util';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PaginateResult } from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
@@ -31,7 +32,7 @@ export class SearchService {
         pageNum: number,
         contentFilter: ContentFilter,
     ): Promise<PaginateResult<ContentModel>> {
-        const parsedQuery = query ? sanitizeHtml(query) : null;
+        const parsedQuery = query ? htmlReplace(sanitizeHtml(query)) : null;
         const kinds: ContentKind[] = [];
         switch (searchKind) {
             case SearchKind.Blog:
@@ -100,7 +101,7 @@ export class SearchService {
     }
 
     async searchUsers(query: string, pageNum: number): Promise<PaginateResult<Pseudonym>> {
-        const parsedQuery = sanitizeHtml(query);
+        const parsedQuery = htmlReplace(sanitizeHtml(query));
         return await this.pseudStore.findRelatedUsers(parsedQuery, pageNum, this.MAX_PER_PAGE);
     }
 }

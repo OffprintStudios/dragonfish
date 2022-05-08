@@ -1,5 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
-import { sanitizeOptions } from '$shared/util';
+import { htmlReplace, sanitizeOptions } from '$shared/util';
 import { ContentDocument, ContentSchema } from './content.schema';
 import { RatingsSchema } from './ratings.schema';
 import { ReadingHistorySchema } from './reading-history.schema';
@@ -39,13 +39,13 @@ export async function setupContentCollection() {
     schema.index({ title: 'text' });
 
     schema.pre<ContentDocument>('save', async function (next) {
-        this.set('title', sanitizeHtml(this.title, sanitizeOptions));
+        this.set('title', htmlReplace(sanitizeHtml(this.title, sanitizeOptions)));
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
 
         // this will only trigger if any creation or editing functions has modified the `desc` field,
         // otherwise we'll leave it alone
         if (this.isModified('desc')) {
-            this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
+            this.set('desc', htmlReplace(sanitizeHtml(this.desc, sanitizeOptions)));
         }
 
         return next();
@@ -64,7 +64,7 @@ export async function setupContentCollection() {
 export async function setupSectionsCollection() {
     const schema = SectionsSchema;
     schema.pre<SectionsDocument>('save', async function (next) {
-        this.set('title', sanitizeHtml(this.title, sanitizeOptions));
+        this.set('title', htmlReplace(sanitizeHtml(this.title, sanitizeOptions)));
         this.set('body', sanitizeHtml(this.body, sanitizeOptions));
         if (this.authorsNote) {
             this.set('authorsNote', sanitizeHtml(this.authorsNote, sanitizeOptions));
@@ -140,9 +140,9 @@ export async function setupBookshelvesCollection() {
     schema.plugin(paginate);
 
     schema.pre<BookshelfDocument>('save', async function (next) {
-        this.set('name', sanitizeHtml(this.name, sanitizeOptions));
+        this.set('name', htmlReplace(sanitizeHtml(this.name, sanitizeOptions)));
         if (this.isModified('desc')) {
-            this.set('desc', sanitizeHtml(this.desc, sanitizeOptions));
+            this.set('desc', htmlReplace(sanitizeHtml(this.desc, sanitizeOptions)));
         }
         return next();
     });

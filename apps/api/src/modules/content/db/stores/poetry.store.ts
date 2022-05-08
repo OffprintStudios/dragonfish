@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
-import { sanitizeOptions } from '$shared/util';
+import { htmlReplace, sanitizeOptions } from '$shared/util';
 import { CreatePoetry } from '$shared/models/content';
 import { PoetryContentDocument } from '../schemas';
 
@@ -23,8 +23,8 @@ export class PoetryStore {
     async createPoetry(user: string, poetryInfo: CreatePoetry): Promise<PoetryContentDocument> {
         const newPoetry = new this.poetryModel({
             author: user,
-            title: sanitizeHtml(poetryInfo.title),
-            desc: sanitizeHtml(poetryInfo.desc),
+            title: htmlReplace(sanitizeHtml(poetryInfo.title)),
+            desc: htmlReplace(sanitizeHtml(poetryInfo.desc)),
             body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
             'stats.words': poetryInfo.collection
                 ? 0
@@ -58,8 +58,8 @@ export class PoetryStore {
                 .findOneAndUpdate(
                     { _id: poetryId, author: user },
                     {
-                        title: sanitizeHtml(poetryInfo.title),
-                        desc: sanitizeHtml(poetryInfo.desc),
+                        title: htmlReplace(sanitizeHtml(poetryInfo.title)),
+                        desc: htmlReplace(sanitizeHtml(poetryInfo.desc)),
                         body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
                         'meta.category': poetryInfo.category,
                         'meta.form': poetryInfo.form,
@@ -76,8 +76,8 @@ export class PoetryStore {
                 .findOneAndUpdate(
                     { _id: poetryId, author: user },
                     {
-                        title: sanitizeHtml(poetryInfo.title),
-                        desc: sanitizeHtml(poetryInfo.desc),
+                        title: htmlReplace(sanitizeHtml(poetryInfo.title)),
+                        desc: htmlReplace(sanitizeHtml(poetryInfo.desc)),
                         body: sanitizeHtml(poetryInfo.body, sanitizeOptions),
                         'stats.words': countWords(
                             stripTags(sanitizeHtml(poetryInfo.body, sanitizeOptions)),

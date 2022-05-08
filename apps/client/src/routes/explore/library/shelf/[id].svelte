@@ -61,7 +61,7 @@
 {:else}
     <div class="flex-1 h-screen overflow-y-auto">
         <div class="w-11/12 mx-auto md:max-w-4xl my-6">
-            <BookshelfHeader shelf={$thisShelf.data} showTools="true" />
+            <BookshelfHeader shelf={$thisShelf.data} showTools={true} />
             {#if $shelfItems.isLoading}
                 <div class="h-96 w-full flex flex-col items-center justify-center">
                     <div class="flex items-center">
@@ -83,7 +83,7 @@
                     class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8"
                 >
                     {#each $shelfItems.data as work}
-                        <WorkCard content={work} />
+                        <WorkCard content={work.content} />
                     {/each}
                 </div>
             {:else}

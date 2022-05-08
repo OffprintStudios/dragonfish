@@ -11,6 +11,7 @@ import {
     TagsModel,
 } from '$shared/models/content';
 import sanitizeHtml from 'sanitize-html';
+import { htmlReplace } from '$shared/util';
 
 @Injectable()
 export class TagsStore {
@@ -200,8 +201,8 @@ export class TagsStore {
         }
 
         const newTag = new this.tags({
-            name: sanitizeHtml(form.name),
-            desc: sanitizeHtml(form.desc),
+            name: htmlReplace(sanitizeHtml(form.name)),
+            desc: htmlReplace(sanitizeHtml(form.desc)),
             kind: tagKind,
             parent: form.parent,
         });
@@ -264,8 +265,8 @@ export class TagsStore {
             }
         }
 
-        tag.name = sanitizeHtml(form.name);
-        tag.desc = sanitizeHtml(form.desc);
+        tag.name = htmlReplace(sanitizeHtml(form.name));
+        tag.desc = htmlReplace(sanitizeHtml(form.desc));
 
         const parentsToUpdate: string[] = [];
 

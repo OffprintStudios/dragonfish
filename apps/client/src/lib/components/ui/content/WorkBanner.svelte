@@ -21,7 +21,7 @@
     import { PubStatus } from '$lib/models/content';
 
     const rating = useQuery('contentRatings', () => fetchRatings($content.content._id), {
-        enabled: !!$session.account && $content.content.audit.published === PubStatus.Published,
+        enabled: !!$session.account && !!$content.content && $content.content.audit.published === PubStatus.Published,
         cacheTime: 1500,
     });
 
