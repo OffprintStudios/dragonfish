@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
-import { sanitizeOptions } from '$shared/util';
+import { htmlReplace, sanitizeOptions } from '$shared/util';
 import { CreateProse } from '$shared/models/content';
 import { ProseContentDocument } from '../schemas';
 
@@ -22,8 +22,8 @@ export class ProseStore {
     async createProse(user: string, proseInfo: CreateProse): Promise<ProseContentDocument> {
         const newProse = new this.proseModel({
             author: user,
-            title: sanitizeHtml(proseInfo.title),
-            desc: sanitizeHtml(proseInfo.desc),
+            title: htmlReplace(sanitizeHtml(proseInfo.title)),
+            desc: htmlReplace(sanitizeHtml(proseInfo.desc)),
             body: sanitizeHtml(proseInfo.body, sanitizeOptions),
             'meta.category': proseInfo.category,
             'meta.genres': proseInfo.genres,
@@ -51,8 +51,8 @@ export class ProseStore {
             .findOneAndUpdate(
                 { _id: proseId, author: user },
                 {
-                    title: sanitizeHtml(proseInfo.title),
-                    desc: sanitizeHtml(proseInfo.desc),
+                    title: htmlReplace(sanitizeHtml(proseInfo.title)),
+                    desc: htmlReplace(sanitizeHtml(proseInfo.desc)),
                     body: sanitizeHtml(proseInfo.body, sanitizeOptions),
                     'meta.category': proseInfo.category,
                     'meta.genres': proseInfo.genres,

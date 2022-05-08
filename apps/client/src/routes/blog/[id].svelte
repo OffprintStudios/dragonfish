@@ -106,9 +106,9 @@
             return errors;
         },
         initialValues: {
-            title: $content.content.title,
-            desc: $content.content.desc,
-            body: $content.content.body,
+            title: $content.content ? $content.content.title : null,
+            desc: $content.content ? $content.content.desc : null,
+            body: $content.content ? $content.content.body : null,
         },
     });
 
@@ -201,6 +201,7 @@
     function canMakeNewsPost() {
         return (
             $session.currProfile &&
+            $content.content &&
             $session.currProfile._id === $content.content.author._id &&
             isAllowed($session.currProfile.roles, [Roles.Admin, Roles.Moderator, Roles.Contributor])
         );

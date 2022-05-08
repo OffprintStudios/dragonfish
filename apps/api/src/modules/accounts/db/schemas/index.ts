@@ -2,7 +2,7 @@ import { AccountDocument, AccountSchema } from './account.schema';
 import { PseudonymDocument, PseudonymSchema } from './pseudonym.schema';
 import sanitizeHtml from 'sanitize-html';
 import { argon2id, hash } from 'argon2';
-import { sanitizeOptions } from '$shared/util';
+import { htmlReplace, sanitizeOptions } from '$shared/util';
 import { InviteCodesSchema } from './invite-codes.schema';
 import paginate from 'mongoose-paginate-v2';
 
@@ -55,19 +55,19 @@ export async function setupPseudonymCollection() {
 
     schema.pre<PseudonymDocument>('save', async function (next) {
         if (this.isModified('userTag')) {
-            this.set('userTag', sanitizeHtml(this.userTag));
+            this.set('userTag', htmlReplace(sanitizeHtml(this.userTag)));
         }
 
         if (this.isModified('screenName')) {
-            this.set('screenName', sanitizeHtml(this.screenName));
+            this.set('screenName', htmlReplace(sanitizeHtml(this.screenName)));
         }
 
         if (this.isModified('profile.bio')) {
-            this.set('profile.bio', sanitizeHtml(this.profile.bio, sanitizeOptions));
+            this.set('profile.bio', htmlReplace(sanitizeHtml(this.profile.bio, sanitizeOptions)));
         }
 
         if (this.isModified('profile.tagline')) {
-            this.set('profile.tagline', sanitizeHtml(this.profile.tagline));
+            this.set('profile.tagline', htmlReplace(sanitizeHtml(this.profile.tagline)));
         }
 
         return next();

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { PaginateModel } from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 import { countWords, stripTags } from 'voca';
-import { sanitizeOptions } from '$shared/util';
+import { htmlReplace, sanitizeOptions } from '$shared/util';
 import { BlogsContentDocument } from '../schemas';
 import { BlogForm, NewsChange, PubChange } from '$shared/models/content';
 
@@ -24,8 +24,8 @@ export class BlogsStore {
     async createNewBlog(user: string, blogInfo: BlogForm): Promise<BlogsContentDocument> {
         const newBlog = new this.blogsModel({
             author: user,
-            title: sanitizeHtml(blogInfo.title),
-            desc: blogInfo.desc ? sanitizeHtml(blogInfo.desc) : null,
+            title: htmlReplace(sanitizeHtml(blogInfo.title)),
+            desc: blogInfo.desc ? htmlReplace(sanitizeHtml(blogInfo.desc)) : null,
             body: sanitizeHtml(blogInfo.body, sanitizeOptions),
             'meta.rating': blogInfo.rating,
             'stats.words': countWords(stripTags(sanitizeHtml(blogInfo.body, sanitizeOptions))),
@@ -53,8 +53,8 @@ export class BlogsStore {
             .findOneAndUpdate(
                 { _id: blogId, author: user },
                 {
-                    title: sanitizeHtml(blogInfo.title),
-                    desc: blogInfo.desc ? sanitizeHtml(blogInfo.desc) : null,
+                    title: htmlReplace(sanitizeHtml(blogInfo.title)),
+                    desc: blogInfo.desc ? htmlReplace(sanitizeHtml(blogInfo.desc)) : null,
                     body: sanitizeHtml(blogInfo.body, sanitizeOptions),
                     'meta.rating': blogInfo.rating,
                     'stats.words': wordCount,
