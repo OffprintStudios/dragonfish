@@ -66,7 +66,7 @@ export async function claimItem(profileId: string, docId: string): Promise<void>
     return claimContent(profileId, docId).then((res) => {
         approvalQueue.update((state) => {
             const itemIndex = state.queue.findIndex((item) => item._id === res._id);
-            state.queue[itemIndex] = res;
+            state.queue[itemIndex].claimedBy = res.claimedBy;
             return state;
         });
     });
