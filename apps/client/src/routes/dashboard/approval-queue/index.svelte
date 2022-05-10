@@ -8,6 +8,7 @@
     import type { Content } from '$lib/models/content';
     import { ContentKind } from '$lib/models/content';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
+    import { Button } from '$lib/components/ui/misc';
 
     function openItem(docId: string, content: Content) {
         setCurrItem(docId);
@@ -49,9 +50,9 @@
                             <tr class="border-b border-zinc-700 dark:border-white">
                                 <td class="p-2 border-r border-zinc-700 dark:border-white">
                                     {#if item.claimedBy && item.claimedBy._id === $session.currProfile._id}
-                                        <button
+                                        <Button
                                             on:click={() => openItem(item._id, item.workToApprove)}
-                                            >View >></button
+                                            >View >></Button
                                         >
                                     {:else if item.claimedBy && item.claimedBy._id !== $session.currProfile._id}
                                         <img
@@ -60,10 +61,10 @@
                                             alt="avatar"
                                         />
                                     {:else}
-                                        <button
+                                        <Button
                                             on:click={() =>
                                                 claimItem($session.currProfile._id, item._id)}
-                                            >Claim</button
+                                            >Claim</Button
                                         >
                                     {/if}
                                 </td>
