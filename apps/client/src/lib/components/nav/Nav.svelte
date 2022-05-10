@@ -1,90 +1,42 @@
 <script lang="ts">
-    import { page, navigating } from '$app/stores';
+    import { navigating, page } from '$app/stores';
     import {
-        LoginCircleLine,
-        Home5Line,
-        Compass3Line,
-        TeamLine,
-        Settings5Line,
-        CloseLine,
-        InboxLine,
         AddBoxLine,
+        CloseLine,
+        Compass3Line,
         Dashboard2Line,
-        SearchEyeLine,
-        MenuLine,
         GroupLine,
+        Home5Line,
+        InboxLine,
+        LoginCircleLine,
+        MenuLine,
+        SearchEyeLine,
+        Settings5Line,
+        TeamLine,
     } from 'svelte-remixicon';
-    import { open, close, sidenav } from '$lib/components/nav/sidenav/sidenav.state';
-    import UserMenu from '$lib/components/ui/user/UserMenu.svelte';
+    import { close, guide, refresh } from '$lib/ui/guide';
     import { session } from '$lib/repo/session.repo';
-    import InboxMenu from '$lib/components/ui/user/InboxMenu.svelte';
-    import ContentMenu from '../ui/user/ContentMenu.svelte';
     import { isAllowed } from '$lib/services/auth.service';
     import { Roles } from '$lib/models/accounts';
-    import { useQuery } from '@sveltestack/svelte-query';
-    import { fetchAllUnread } from '$lib/services/activity.service';
-    import Badge from '$lib/components/ui/misc/Badge.svelte';
-    import { abbreviate } from '$lib/util';
-    import MobileMenu from '$lib/components/nav/MobileMenu.svelte';
-
-    enum MenuOptions {
-        NoMenu,
-        UserMenu,
-        CreateMenu,
-        MobileMenu,
-        InboxMenu,
-    }
-
-    let currentMenu = MenuOptions.NoMenu;
-    $: {
-        if (!$sidenav.isOpen) {
-            currentMenu = MenuOptions.NoMenu;
-        }
-    }
-
-    function toggleMenu(menuOption: MenuOptions) {
-        currentMenu = menuOption;
-        switch (currentMenu) {
-            case MenuOptions.UserMenu:
-                open(UserMenu);
-                break;
-            case MenuOptions.CreateMenu:
-                open(ContentMenu);
-                break;
-            case MenuOptions.InboxMenu:
-                open(InboxMenu);
-                break;
-            case MenuOptions.MobileMenu:
-                open(MobileMenu);
-                break;
-            default:
-                close();
-                break;
-        }
-    }
+    import { CreatePanel } from '$lib/ui/guide/create-panel';
+    import { AccountPanel, ProfilePanel } from '$lib/ui/guide/account-panel';
+    import { MessagesPanel } from '$lib/ui/guide/messages-panel';
 
     navigating.subscribe((val) => {
         if (val !== null) {
-            currentMenu = MenuOptions.NoMenu;
             close();
         }
-    });
-
-    const activity = useQuery('unreadActivity', () => fetchAllUnread($session.currProfile._id), {
-        enabled: !!$session.currProfile,
-        cacheTime: 1000 * 60 * 0.25,
     });
 </script>
 
 <div class="navbar">
     <div class="py-2 flex-col items-center h-full hidden md:flex">
         {#if $session.currProfile}
-            {#if currentMenu === MenuOptions.UserMenu}
+            {#if $guide.routing[0] === AccountPanel}
                 <div
-                    class="link select-none cursor-pointer group"
-                    on:click={() => toggleMenu(MenuOptions.NoMenu)}
-                    class:active={currentMenu === MenuOptions.UserMenu}
-                    class:no-padding={currentMenu !== MenuOptions.UserMenu}
+                    class="link select-none cursor-pointer group active"
+                    on:click={close}
+                    class:no-padding={$guide.routing[0] !== AccountPanel}
                 >
                     <span class="link-icon"><CloseLine size="24px" /></span>
                     <span class="link-name">Close</span>
@@ -92,9 +44,8 @@
             {:else}
                 <div
                     class="link select-none cursor-pointer group"
-                    on:click={() => toggleMenu(MenuOptions.UserMenu)}
-                    class:active={currentMenu === MenuOptions.UserMenu}
-                    class:no-padding={currentMenu !== MenuOptions.UserMenu}
+                    on:click={() => refresh(AccountPanel)}
+                    class:no-padding={$guide.routing[0] !== AccountPanel}
                 >
                     <img
                         src={$session.currProfile.profile.avatar}
@@ -103,11 +54,10 @@
                     />
                 </div>
             {/if}
-            {#if currentMenu === MenuOptions.CreateMenu}
+            {#if $guide.routing[0] === MessagesPanel}
                 <div
-                    class="link select-none cursor-pointer group"
-                    on:click={() => toggleMenu(MenuOptions.NoMenu)}
-                    class:active={currentMenu === MenuOptions.CreateMenu}
+                    class="link select-none cursor-pointer group active"
+                    on:click={close}
                 >
                     <span class="link-icon"><CloseLine size="24px" /></span>
                     <span class="link-name">Close</span>
@@ -115,42 +65,44 @@
             {:else}
                 <div
                     class="link select-none cursor-pointer group"
-                    on:click={() => toggleMenu(MenuOptions.CreateMenu)}
-                    class:active={currentMenu === MenuOptions.CreateMenu}
+                    on:click={() => refresh(MessagesPanel)}
+                >
+                    <span class="link-icon"><InboxLine size="24px" /></span>
+                    <span class="link-name">Inbox</span>
+                </div>
+            {/if}
+            {#if $guide.routing[0] === CreatePanel}
+                <div
+                    class="link select-none cursor-pointer group active"
+                    on:click={close}
+                >
+                    <span class="link-icon"><CloseLine size="24px" /></span>
+                    <span class="link-name">Close</span>
+                </div>
+            {:else}
+                <div
+                    class="link select-none cursor-pointer group"
+                    on:click={() => refresh(CreatePanel)}
                 >
                     <span class="link-icon"><AddBoxLine size="24px" /></span>
                     <span class="link-name">Create</span>
                 </div>
             {/if}
-            {#if currentMenu === MenuOptions.InboxMenu}
+        {:else if $session.account}
+            {#if $guide.routing[0] === ProfilePanel}
                 <div
-                    class="link select-none cursor-pointer"
-                    on:click={() => toggleMenu(MenuOptions.NoMenu)}
-                    class:active={currentMenu === MenuOptions.InboxMenu}
+                    class="link select-none cursor-pointer group active"
+                    on:click={close}
                 >
                     <span class="link-icon"><CloseLine size="24px" /></span>
                     <span class="link-name">Close</span>
                 </div>
             {:else}
-                <div
-                    class="link select-none cursor-pointer"
-                    on:click={() => toggleMenu(MenuOptions.InboxMenu)}
-                    class:active={currentMenu === MenuOptions.InboxMenu}
-                >
-                    {#if $activity.data && $activity.data.length > 0}
-                        <Badge positioning="top-right">
-                            {abbreviate($activity.data.length)}
-                        </Badge>
-                    {/if}
-                    <span class="link-icon"><InboxLine size="24px" /></span>
-                    <span class="link-name">Inbox</span>
+                <div class="link select-none cursor-pointer group" on:click={() => refresh(ProfilePanel)}>
+                    <span class="link-icon"><GroupLine size="24px" /></span>
+                    <span class="link-name">Profiles</span>
                 </div>
             {/if}
-        {:else if $session.account}
-            <a class="link" href="/registration/select-profile">
-                <span class="link-icon"><GroupLine size="24px" /></span>
-                <span class="link-name">Profiles</span>
-            </a>
         {:else}
             <a class="link" href="/registration">
                 <span class="link-icon"><LoginCircleLine size="24px" /></span>
@@ -161,7 +113,7 @@
         <a
             class="link"
             href="/"
-            class:active={$page.url.pathname === '/' && currentMenu === MenuOptions.NoMenu}
+            class:active={$page.url.pathname === '/' && $guide.routing.length === 0}
         >
             <span class="link-icon"><Home5Line size="24px" /></span>
             <span class="link-name">Home</span>
@@ -169,7 +121,7 @@
         <a
             class="link"
             href="/search"
-            class:active={$page.url.pathname.startsWith('/search') && currentMenu === MenuOptions.NoMenu}
+            class:active={$page.url.pathname.startsWith('/search') && $guide.routing.length === 0}
         >
             <span class="link-icon"><SearchEyeLine size="24px" /></span>
             <span class="link-name">Search</span>
@@ -178,7 +130,7 @@
             class="link"
             href="/explore"
             class:active={$page.url.pathname.startsWith('/explore') &&
-                currentMenu === MenuOptions.NoMenu}
+                $guide.routing.length === 0}
         >
             <span class="link-icon"><Compass3Line size="24px" /></span>
             <span class="link-name">Explore</span>
@@ -187,7 +139,7 @@
             class="link"
             href="/social"
             class:active={$page.url.pathname.startsWith('/social') &&
-                currentMenu === MenuOptions.NoMenu}
+                $guide.routing.length === 0}
         >
             <span class="link-icon"><TeamLine size="24px" /></span>
             <span class="link-name">Social</span>
@@ -197,7 +149,7 @@
                 class="link"
                 href="/dashboard"
                 class:active={$page.url.pathname.startsWith('/dashboard') &&
-                    currentMenu === MenuOptions.NoMenu}
+                    $guide.routing.length === 0}
             >
                 <span class="link-icon"><Dashboard2Line size="24px" /></span>
                 <span class="link-name">Dash</span>
@@ -209,26 +161,24 @@
             class="link"
             href="/settings"
             class:active={$page.url.pathname.startsWith('/settings') &&
-                currentMenu === MenuOptions.NoMenu}
+                $guide.routing.length === 0}
         >
             <span class="link-icon"><Settings5Line size="24px" /></span>
             <span class="link-name">Settings</span>
         </a>
     </div>
     <div class="p-1 flex items-center block md:hidden">
-        {#if currentMenu === MenuOptions.MobileMenu}
+        {#if $guide.routing.length === 0}
             <div
                 class="link-mobile select-none cursor-pointer group"
-                class:active={currentMenu === MenuOptions.MobileMenu}
-                on:click={() => toggleMenu(MenuOptions.NoMenu)}
+                class:active={$guide.routing.length === 0}
             >
                 <span class="link-icon"><CloseLine size="24px" /></span>
             </div>
         {:else}
             <div
                 class="link-mobile select-none cursor-pointer group"
-                class:active={currentMenu === MenuOptions.MobileMenu}
-                on:click={() => toggleMenu(MenuOptions.MobileMenu)}
+                class:active={$guide.routing.length === 0}
             >
                 <span class="link-icon"><MenuLine size="24px" /></span>
             </div>

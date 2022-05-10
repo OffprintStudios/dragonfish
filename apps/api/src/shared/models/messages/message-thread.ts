@@ -6,6 +6,7 @@ export interface MessageThread {
     name: string;
     threadIcon: string;
     numMessages: number;
+    lastMessageOn: Date;
     readonly createdAt: Date;
     readonly updatedAt: Date;
     readonly deletedAt: Date;

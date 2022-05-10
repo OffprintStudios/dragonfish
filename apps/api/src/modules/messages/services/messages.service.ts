@@ -35,7 +35,12 @@ export class MessagesService {
         );
 
         if (existingThread) {
-            return await this.messages.createMessage(newMessage.threadId, newMessage);
+            return await this.messages
+                .createMessage(newMessage.threadId, newMessage)
+                .then(async (res) => {
+                    await this.threads.updateLastMessageOn(newMessage.threadId);
+                    return res;
+                });
         } else {
             throw new WsException(`You don't have permission to do that.`);
         }

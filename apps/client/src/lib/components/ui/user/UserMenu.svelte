@@ -1,14 +1,7 @@
 <script lang="ts">
-    import {
-        LogoutCircleRLine,
-        ArrowLeftRightLine,
-        ArrowLeftSLine,
-        CheckLine,
-        CloseLine,
-    } from 'svelte-remixicon';
-    import { session, logout } from '$lib/repo/session.repo';
+    import { ArrowLeftRightLine, ArrowLeftSLine, LogoutCircleRLine } from 'svelte-remixicon';
+    import { session } from '$lib/repo/session.repo';
     import { abbreviate, pluralize } from '$lib/util';
-    import { close } from '$lib/components/nav/sidenav/sidenav.state';
     import RoleBadge from './RoleBadge.svelte';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import SelectProfile from '$lib/components/ui/user/SelectProfile.svelte';
@@ -21,11 +14,7 @@
 
     let currPage = MenuPages.Main;
 
-    async function logOut() {
-        await logout().then(() => {
-            close();
-        });
-    }
+
 </script>
 
 <div class="w-full h-screen">
@@ -106,23 +95,7 @@
         {:else if currPage === MenuPages.SwitchProfile}
             <SelectProfile on:profilesel={() => (currPage = MenuPages.Main)} />
         {:else if currPage === MenuPages.LogOut}
-            <div class="mt-16">
-                <div class="empty">
-                    <h3 class="text-2xl">Going so soon?</h3>
-                    <p class="text-sm">Are you sure you want to log out?</p>
-                </div>
-                <div class="flex items-center w-full justify-center mt-8">
-                    <Button on:click={() => logOut()}>
-                        <CheckLine class="button-icon" />
-                        <span class="button-text">Yes</span>
-                    </Button>
-                    <div class="mx-2"><!--spacer--></div>
-                    <Button on:click={() => (currPage = MenuPages.Main)}>
-                        <CloseLine class="button-icon" />
-                        <span class="button-text">No</span>
-                    </Button>
-                </div>
-            </div>
+
         {/if}
     </div>
 </div>

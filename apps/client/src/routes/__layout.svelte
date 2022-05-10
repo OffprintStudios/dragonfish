@@ -1,13 +1,13 @@
 <script lang="ts">
     import '../app.scss';
-    import { QueryClientProvider, broadcastQueryClient } from '@sveltestack/svelte-query';
+    import { broadcastQueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
     import { SvelteToast } from '@zerodevx/svelte-toast';
     import Nav from '$lib/components/nav/Nav.svelte';
     import { app } from '$lib/repo/app.repo';
     import { onMount } from 'svelte';
     import { queryClient } from '$lib/util';
-    import { Sidenav } from '$lib/components/nav/sidenav';
     import { Popup } from '$lib/components/nav/popup';
+    import { Guide } from '$lib/ui/guide';
 
     onMount(async () => {
         await broadcastQueryClient({
@@ -26,9 +26,9 @@
         on:dragover|preventDefault
     >
         <Nav />
-        <Sidenav>
+        <Guide>
             <slot />
-        </Sidenav>
+        </Guide>
     </main>
     <SvelteToast />
 </QueryClientProvider>

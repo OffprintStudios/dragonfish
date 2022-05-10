@@ -21,6 +21,9 @@ export class MessageThreadsDocument extends Document implements MessageThread {
     numMessages: number;
 
     @Prop()
+    lastMessageOn: Date;
+
+    @Prop()
     readonly createdAt: Date;
 
     @Prop()

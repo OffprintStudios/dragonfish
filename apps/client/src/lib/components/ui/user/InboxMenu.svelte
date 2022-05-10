@@ -5,7 +5,7 @@
     import { abbreviate, queryClient } from '$lib/util';
     import { CheckLine, CloseLine, Loader5Line } from 'svelte-remixicon';
     import type { Notification as NotificationModel } from '$lib/models/activity';
-    import Notification from '$lib/components/ui/user/Notification.svelte';
+    import Notification from '$lib/ui/guide/account-panel/Notification.svelte';
     import MessagesMenu from '$lib/components/ui/user/MessagesMenu.svelte';
 
     enum InboxTabs {

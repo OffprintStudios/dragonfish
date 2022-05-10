@@ -1,4 +1,5 @@
 import {
+    ConnectedSocket,
     MessageBody,
     OnGatewayConnection,
     OnGatewayDisconnect,
@@ -27,7 +28,6 @@ import { Roles } from '$shared/models/accounts';
         credentials: true,
     },
     namespace: '/messages',
-    transports: ['websocket'],
 })
 export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private logger = new Logger('MessagesGateway');
@@ -38,19 +38,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
     constructor(private readonly messages: MessagesService) {}
 
     async handleConnection(client: Socket): Promise<any> {
-        this.logger.log(`Client ${client.id} is attempting to connect to the messages service...`);
-        client.on('join-room', async (data) => {
-            const messages = await this.messages.fetchMessages(data.threadId, data.pseudId);
-            if (messages) {
-                this.logger.log(`Client ${client.id} has connected to Room ${data.threadId}!`);
-                client.join(data.threadId);
-                this.server.in(data.threadId).emit('thread', messages);
-            } else {
-                this.logger.warn(
-                    `Client ${client.id} tried to join a room it had no permission to join!`,
-                );
-            }
-        });
+        this.logger.log(`Client ${client.id} has connected to the messages service!`);
     }
 
     async handleDisconnect(client: Socket) {
@@ -59,8 +47,38 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     @UseGuards(MessagesSocketGuard)
     @Identity(Roles.User)
+    @SubscribeMessage('join-room')
+    async joinRoom(
+        @ConnectedSocket() client: Socket,
+        @MessageBody('data') data: { threadId: string; pseudId: string },
+    ) {
+        const messages = await this.messages.fetchMessages(data.threadId, data.pseudId);
+        if (messages) {
+            this.logger.log(`Client ${client.id} has connected to Room ${data.threadId}.`);
+            client.join(data.threadId);
+            this.server.in(data.threadId).emit('thread', messages);
+        } else {
+            this.logger.warn(
+                `Client ${client.id} tried to join a room it had no permission to join!`,
+            );
+        }
+    }
+
+    @UseGuards(MessagesSocketGuard)
+    @Identity(Roles.User)
+    @SubscribeMessage('leave-room')
+    async leaveRoom(
+        @ConnectedSocket() client: Socket,
+        @MessageBody('data') data: { threadId: string },
+    ) {
+        client.leave(data.threadId);
+        this.logger.log(`Client ${client.id} has left Room ${data.threadId}.`);
+    }
+
+    @UseGuards(MessagesSocketGuard)
+    @Identity(Roles.User)
     @SubscribeMessage('send-message')
-    async messagesConnect(@MessageBody('data') newMessage: SendMessageForm): Promise<void> {
+    async sendMessage(@MessageBody('data') newMessage: SendMessageForm): Promise<void> {
         const savedMessage = await this.messages.sendMessage(newMessage);
         this.server.in(newMessage.threadId).emit('message', savedMessage);
     }

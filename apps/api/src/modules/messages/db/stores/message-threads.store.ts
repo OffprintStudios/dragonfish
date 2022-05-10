@@ -18,7 +18,7 @@ export class MessageThreadsStore {
                 deletedAt: null,
             },
             {
-                sort: { createdAt: -1 },
+                sort: { lastMessageOn: -1 },
                 pagination: false,
                 populate: 'participants',
             },
@@ -65,6 +65,7 @@ export class MessageThreadsStore {
         const newThread = new this.threads({
             participants: [newMessage.senderId, newMessage.recipientId],
             name: newMessage.name,
+            lastMessageOn: new Date(),
         });
 
         return await newThread.save();
@@ -79,5 +80,12 @@ export class MessageThreadsStore {
         thread.name = threadInfo.name;
 
         return await thread.save();
+    }
+
+    async updateLastMessageOn(threadId: string) {
+        return await this.threads.findOneAndUpdate(
+            { _id: threadId },
+            { lastMessageOn: new Date() },
+        );
     }
 }

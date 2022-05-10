@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { page } from '$app/stores';
+    import { navigating, page } from '$app/stores';
     import { io } from 'socket.io-client';
     import { createForm } from 'felte';
     import { session } from '$lib/repo/session.repo';
@@ -10,21 +10,33 @@
     import Avatar from '$lib/components/ui/user/Avatar.svelte';
     import Time from '$lib/components/ui/misc/Time.svelte';
 
-    const threadId = $page.params.threadId;
     let messages: PaginateResult<Message> = null;
     const socket = io(`${baseUrl}/messages`, {
         auth: {
             token: $session.token,
             pseudId: $session.currProfile._id,
         },
-        transports: ['websocket'],
     });
 
-    socket.emit('join-room', { threadId, pseudId: $session.currProfile._id});
-    socket.on('thread', (data) => {
+    $: {
+        if ($navigating) {
+            if ($navigating.from.pathname.includes('/messages')) {
+                const oldThreadId = $navigating.from.pathname.substring($navigating.from.pathname.lastIndexOf('/') + 1);
+                socket.volatile.emit('leave-room', { data: { threadId: oldThreadId } });
+                socket.volatile.emit('join-room', { data: { threadId: $page.params.threadId, pseudId: $session.currProfile._id }});
+            } else if (!$navigating.to.pathname.includes('/messages')) {
+                const oldThreadId = $navigating.from.pathname.substring($navigating.from.pathname.lastIndexOf('/') + 1);
+                socket.volatile.emit('leave-room', { data: { threadId: oldThreadId } });
+            }
+        } else {
+            socket.volatile.emit('join-room', { data: { threadId: $page.params.threadId, pseudId: $session.currProfile._id }});
+        }
+    }
+
+    socket.volatile.on('thread', (data) => {
         messages = data;
     });
-    socket.on('message', (data) => {
+    socket.volatile.on('message', (data) => {
         if (messages !== null) {
             messages.docs = [...messages.docs, data];
         }
@@ -35,9 +47,9 @@
             const newMessage: SendMessageForm = {
                 message: values.message,
                 senderId: $session.currProfile._id,
-                threadId: threadId
+                threadId: $page.params.threadId,
             };
-            socket.emit('send-message', { data: newMessage });
+            socket.volatile.emit('send-message', { data: newMessage });
             resetForm();
         },
         validate: (values) => {
@@ -65,7 +77,7 @@
     <div class="flex-1"></div>
     <div class="messages-feed">
         {#if messages !== null}
-            {#each messages.docs.reverse() as message}
+            {#each messages.docs as message}
                 <div class="message" class:end={message.user._id === $session.currProfile._id}>
                     <Avatar src={message.user.profile.avatar} size="42px" borderWidth="1px" />
                     <div class="flex flex-col mx-2">
@@ -100,7 +112,7 @@
 
 <style lang="scss">
     div.messages-feed {
-        @apply overflow-y-auto p-4;
+        @apply overflow-y-auto flex flex-col-reverse p-4;
         div.message {
             @apply flex justify-start w-full my-4;
             /*&.end {
