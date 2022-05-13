@@ -2,14 +2,14 @@
     import { goto } from '$app/navigation';
     import { createForm } from 'felte';
     import TextField from '$lib/components/forms/TextField.svelte';
-    import Editor from '$lib/components/forms/Editor.svelte';
     import { ContentKind, ContentRating } from '$lib/models/content';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { CloseLine, Save2Line } from 'svelte-remixicon';
-    import { MAX_TITLE_LENGTH, MIN_TITLE_LENGTH, MIN_LONG_DESC_LENGTH } from '$lib/util';
+    import { MAX_TITLE_LENGTH, MIN_LONG_DESC_LENGTH, MIN_TITLE_LENGTH } from '$lib/util';
     import type { BlogForm } from '$lib/models/content/works/forms';
     import { createOne } from '$lib/services/content.service';
     import { session } from '$lib/repo/session.repo';
+    import { Editor } from '$lib/ui/forms';
 
     const { form, data, errors } = createForm({
         onSubmit: async (values) => {

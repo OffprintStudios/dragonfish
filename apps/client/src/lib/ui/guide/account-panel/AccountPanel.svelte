@@ -97,7 +97,7 @@
             <div class="stat-label">Blogs</div>
         </a>
         <a
-            class="stat-box border-r border-zinc-700 dark:border-white hover:bg-zinc-200 dark:hover:bg-zinc-600"
+            class="stat-box hover:bg-zinc-200 dark:hover:bg-zinc-600"
             href="/profile/{$session.currProfile._id}/following"
         >
             <div class="stat">

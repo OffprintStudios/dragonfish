@@ -1,6 +1,12 @@
 <script lang="ts">
     import { fade, fly } from 'svelte/transition';
     import { close, guide } from '$lib/ui/guide/guide.state';
+
+    function closeGuide() {
+        if ($guide.canClose) {
+            close();
+        }
+    }
 </script>
 
 <div class="flex-1 relative">
@@ -9,7 +15,7 @@
             <div
                 class="absolute z-30 bg-black w-full h-screen bg-opacity-50"
                 transition:fade|local={{ delay: 0, duration: 100 }}
-                on:click={close}
+                on:click={closeGuide}
             ><!--backdrop--></div>
             <div class="guide" transition:fly|local={{ delay: 0, duration: 200, x: -200 }}>
                 {#key $guide.currPage}

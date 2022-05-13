@@ -3,26 +3,26 @@
     import { createForm } from 'felte';
     import TextField from '$lib/components/forms/TextField.svelte';
     import SelectMenu from '$lib/components/forms/SelectMenu.svelte';
-    import Editor from '$lib/components/forms/Editor.svelte';
-    import { Genres, WorkKind, WorkStatus, PoetryFormKind, TagKind } from '$lib/models/content/works';
+    import { Genres, PoetryFormKind, TagKind, WorkKind, WorkStatus } from '$lib/models/content/works';
     import { ContentKind, ContentRating } from '$lib/models/content';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { CloseLine, Save2Line } from 'svelte-remixicon';
     import {
-        MAX_TITLE_LENGTH,
-        MIN_TITLE_LENGTH,
-        MIN_GENRE,
-        MAX_GENRES,
-        MIN_SHORT_DESC_LENGTH,
-        MAX_SHORT_DESC_LENGTH,
-        MIN_LONG_DESC_LENGTH,
         MAX_FANDOM_TAGS,
+        MAX_GENRES,
+        MAX_SHORT_DESC_LENGTH,
+        MAX_TITLE_LENGTH,
+        MIN_GENRE,
+        MIN_LONG_DESC_LENGTH,
+        MIN_SHORT_DESC_LENGTH,
+        MIN_TITLE_LENGTH,
     } from '$lib/util';
     import type { CreatePoetry } from '$lib/models/content/works/forms';
     import { createOne } from '$lib/services/content.service';
     import { session } from '$lib/repo/session.repo';
     import { onMount } from 'svelte';
     import { tags } from '$lib/services';
+    import { Editor } from '$lib/ui/forms';
 
     var tagOptions = [];
 

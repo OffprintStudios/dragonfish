@@ -98,7 +98,7 @@
                             errorMessage={$errors.screenName}
                         />
                         <div class="flex items-center justify-center">
-                            <Button type="submit" loading={isSubmitting} loadingText="Saving...">
+                            <Button type="submit" loading={$isSubmitting} loadingText="Saving...">
                                 <CheckLine class="button-icon" />
                                 <span class="button-text">Submit</span>
                             </Button>
