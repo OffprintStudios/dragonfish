@@ -55,7 +55,13 @@
             createSection($session.currProfile._id, $content.content._id, formData),
         {
             onSuccess: (data) => {
-                queryClient.setQueryData('contentSections', (oldData) => [...oldData, data]);
+                queryClient.setQueryData('contentSections', (oldData) => {
+                    if (oldData) {
+                        return [...oldData, data];
+                    } else {
+                        return [data];
+                    }
+                });
                 success(`Section created!`);
                 goto(baseUrl);
             },
