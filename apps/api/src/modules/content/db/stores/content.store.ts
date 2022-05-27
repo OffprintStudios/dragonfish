@@ -366,13 +366,10 @@ export class ContentStore {
         sectionId: string,
         pubStatus: PublishSection,
     ): Promise<SectionsDocument> {
-        const work: ProseContentDocument = await this.content
-            .findOne({
-                _id: contentId,
-                author: user,
-                'audit.isDeleted': false,
-            })
-            .populate('sections');
+        const work = await this.content.findOne(
+            { _id: contentId, author: user, 'audit.isDeleted': false },
+            { autopopulate: false },
+        );
 
         if (work === null || work === undefined) {
             throw new UnauthorizedException(`You don't have permission to do that.`);
@@ -381,7 +378,6 @@ export class ContentStore {
                 _id: sectionId,
                 'audit.isDeleted': false,
             });
-
             // if a section is getting published for the very first time, we need to make sure the parent work's
             // `lastContentUpdate` field gets set.
             if (work.audit.published === PubStatus.Published) {
@@ -389,29 +385,22 @@ export class ContentStore {
                     (sec.audit.publishedOn === null || sec.audit.publishedOn === undefined) &&
                     pubStatus.newPub === true
                 ) {
-                    work.audit.lastContentUpdate = new Date();
-                }
-            }
-
-            sec.published = pubStatus.newPub;
-
-            if (pubStatus.newPub === true) {
-                sec.audit.publishedOn = new Date();
-            }
-
-            return await sec.save().then(async (section) => {
-                const publishedSections = (work.sections as Section[]).filter(
-                    (item) => item.published === true,
-                );
-                if (publishedSections.length !== 0) {
-                    work.stats.words = publishedSections.reduce(
-                        (previousValue, currentValue) => previousValue + currentValue.stats.words,
-                        0,
+                    await this.content.updateOne(
+                        { _id: contentId, author: user, 'audit.isDeleted': false },
+                        { $set: { 'audit.lastContentUpdate': new Date() } },
                     );
-                    await work.save();
                 }
-                return section;
-            });
+            }
+            const publishedSection: SectionsDocument = await this.sectionsStore.publishSection(
+                sectionId,
+                pubStatus,
+            );
+            const totalWordCount = await this.getTotalWordCount(contentId);
+            await this.content.updateOne(
+                { _id: contentId, author: user, 'audit.isDeleted': false },
+                { $set: { 'stats.words': totalWordCount } },
+            );
+            return publishedSection;
         }
     }
 
