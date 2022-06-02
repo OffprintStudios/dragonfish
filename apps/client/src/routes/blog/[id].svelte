@@ -209,239 +209,243 @@
 </script>
 
 <svelte:head>
-    <title>{$content.content.title} &mdash; Offprint</title>
-    <!-- Primary Meta Tags -->
-    <meta name="title" content={$content.content.title} />
-    <meta name="description" content="From the blog of {$content.content.author.screenName}" />
+    {#if $content && $content.content}
+        <title>{$content.content.title} &mdash; Offprint</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content={$content.content.title} />
+        <meta name="description" content="From the blog of {$content.content.author.screenName}" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://offprint.net/blog/{$content.content._id}" />
-    <meta property="og:title" content={$content.content.title} />
-    <meta
-        property="og:description"
-        content="From the blog of {$content.content.author.screenName}"
-    />
-    <meta property="og:image" content={$content.content.author.profile.avatar} />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://offprint.net/blog/{$content.content._id}" />
+        <meta property="og:title" content={$content.content.title} />
+        <meta
+            property="og:description"
+            content="From the blog of {$content.content.author.screenName}"
+        />
+        <meta property="og:image" content={$content.content.author.profile.avatar} />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://offprint.net/blog/{$content.content._id}" />
-    <meta property="twitter:title" content={$content.content.title} />
-    <meta
-        property="twitter:description"
-        content="From the blog of {$content.content.author.screenName}"
-    />
-    <meta property="twitter:image" content={$content.content.author.profile.avatar} />
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://offprint.net/blog/{$content.content._id}" />
+        <meta property="twitter:title" content={$content.content.title} />
+        <meta
+            property="twitter:description"
+            content="From the blog of {$content.content.author.screenName}"
+        />
+        <meta property="twitter:image" content={$content.content.author.profile.avatar} />
+    {/if}
 </svelte:head>
 
-<div class="w-full h-screen overflow-y-auto">
-    <div class="mx-auto max-w-4xl my-6">
-        {#if $content.content.meta.banner}
-            <div class="mx-auto w-11/12 md:w-full rounded-t-lg overflow-hidden">
-                <img
-                    src={$content.content.meta.banner}
-                    alt="banner"
-                    class="object-cover h-48 md:h-64 w-full block"
-                />
-            </div>
-        {/if}
-        <div
-            class="mx-auto w-11/12 md:w-full md:rounded-b-lg rounded-t-lg flex items-center z-20 relative md:shadow-2xl relative"
-            class:rounded-t-lg={!$content.content.meta.banner}
-            style="background: var(--accent);"
-        >
-            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
-                <div class="absolute top-1 right-1.5 z-20">
-                    <Button kind="primary" on:click={() => openPopup(UploadBanner)}>
-                        <ImageEditLine class="button-icon" />
-                        <span class="button-text">Edit Cover</span>
-                    </Button>
+{#if $session && $content && $content.content}
+    <div class="w-full h-screen overflow-y-auto">
+        <div class="mx-auto max-w-4xl my-6">
+            {#if $content.content.meta.banner}
+                <div class="mx-auto w-11/12 md:w-full rounded-t-lg overflow-hidden">
+                    <img
+                        src={$content.content.meta.banner}
+                        alt="banner"
+                        class="object-cover h-48 md:h-64 w-full block"
+                    />
                 </div>
             {/if}
             <div
-                class="m-4 rounded-full overflow-hidden w-20 h-20 md:w-28 md:h-28 border-4 border-white bg-white"
-            >
-                <img
-                    src={$content.content.author.profile.avatar}
-                    alt="{$content.content.author.screenName}'s avatar"
-                    class="w-full h-full"
-                />
-            </div>
-            <div class="relative -top-1">
-                <h1 class="text-white font-medium text-3xl">{$content.content.title}</h1>
-                <div class="flex items-center text-xs text-white">
-                    <span
-                        >by <a
-                            class="text-white underline hover:no-underline"
-                            href="/profile/{$content.content.author._id}"
-                            >{$content.content.author.screenName}</a
-                        ></span
-                    >
-                    <span class="mx-2">|</span>
-                    <span
-                        >{$content.content.stats.views} view{pluralize(
-                            $content.content.stats.views,
-                        )}</span
-                    >
-                    <span class="mx-2">|</span>
-                    {#if $content.content.audit.publishedOn}
-                        <span>{localeDate($content.content.audit.publishedOn, 'fullDate')}</span>
-                    {:else}
-                        <span>{localeDate($content.content.createdAt, 'fullDate')}</span>
-                    {/if}
-                </div>
-            </div>
-        </div>
-        {#if $session.currProfile}
-            <div
-                class="w-11/12 md:w-full max-w-3xl mx-auto flex items-center rounded-b-lg z-10 p-2 relative"
+                class="mx-auto w-11/12 md:w-full md:rounded-b-lg rounded-t-lg flex items-center z-20 relative md:shadow-2xl relative"
+                class:rounded-t-lg={!$content.content.meta.banner}
                 style="background: var(--accent);"
             >
-                {#if $session.currProfile._id === $content.content.author._id}
-                    {#if isEditing}
-                        <Button kind="primary" on:click={saveBlog}>
-                            <Save2Line class="button-icon" />
-                            <span class="button-text">Save</span>
+                {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
+                    <div class="absolute top-1 right-1.5 z-20">
+                        <Button kind="primary" on:click={() => openPopup(UploadBanner)}>
+                            <ImageEditLine class="button-icon" />
+                            <span class="button-text">Edit Cover</span>
                         </Button>
-                        <div class="mx-0.5" />
-                        <Button kind="primary" on:click={() => (isEditing = !isEditing)}>
-                            <CloseLine class="button-icon" />
-                            <span class="button-text">Cancel</span>
-                        </Button>
-                    {:else}
-                        <Button kind="primary" on:click={() => (isEditing = !isEditing)}>
-                            <Edit2Line class="button-icon" />
-                            <span class="button-text">Edit</span>
-                        </Button>
-                        <div class="mx-0.5" />
-                        {#if $content.content.audit.published === 'Published'}
-                            <Button
-                                kind="primary"
-                                on:click={() => togglePublishStatus(PubStatus.Unpublished)}
-                            >
-                                <CheckboxCircleLine class="button-icon" />
-                                <span class="button-text">Published</span>
-                            </Button>
-                            <div class="mx-0.5" />
-                            <Button kind="primary">
-                                <ShareBoxLine class="button-icon" />
-                                <span class="button-text">Share</span>
-                            </Button>
-                        {:else}
-                            <Button
-                                kind="primary"
-                                on:click={() => togglePublishStatus(PubStatus.Published)}
-                            >
-                                <CheckboxBlankCircleLine class="button-icon" />
-                                <span class="button-text">Unpublished</span>
-                            </Button>
-                        {/if}
-                        <div class="mx-0.5" />
-                        {#if canMakeNewsPost()}
-                            {#if $content.content.audit.isNewsPost}
-                                <Button kind="primary" on:click={toggleNewsPost}>
-                                    <NewspaperFill class="button-icon" />
-                                    <span class="button-text">On Feed</span>
-                                </Button>
-                                <div class="mx-0.5" />
-                                {#if $content.content.audit.isFeatured}
-                                    <Button kind="primary" on:click={toggleFeatured}>
-                                        <Medal2Fill class="button-icon" />
-                                        <span class="button-text">Featured</span>
-                                    </Button>
-                                {:else}
-                                    <Button kind="primary" on:click={toggleFeatured}>
-                                        <Medal2Line class="button-icon" />
-                                        <span class="button-text">Feature</span>
-                                    </Button>
-                                {/if}
-                            {:else}
-                                <Button kind="primary" on:click={toggleNewsPost}>
-                                    <NewspaperLine class="button-icon" />
-                                    <span class="button-text">Off Feed</span>
-                                </Button>
-                            {/if}
-                        {/if}
-                    {/if}
-                    <div class="flex-1"><!--separator--></div>
-                    <Button kind="primary" disabled={isEditing}>
-                        <DeleteBinLine class="button-icon" />
-                        <span class="button-text">Delete</span>
-                    </Button>
-                {:else}
-                    <Button kind="primary">
-                        <DiscussLine class="button-icon" />
-                        <span class="button-text">Comment</span>
-                    </Button>
-                    <div class="mx-0.5" />
-                    <Button kind="primary">
-                        <ShareBoxLine class="button-icon" />
-                        <span class="button-text">Share</span>
-                    </Button>
-                    <div class="flex-1"><!--separator--></div>
-                    <Button kind="primary">
-                        <FlagLine class="button-icon" />
-                        <span class="button-text">Report</span>
-                    </Button>
-                {/if}
-            </div>
-        {/if}
-        <div class="max-w-3xl mx-auto">
-            {#if isEditing}
-                <form use:form>
-                    <TextField
-                        name="title"
-                        type="text"
-                        title="Title"
-                        placeholder="A Brand New World"
-                        errorMessage={$errors.title}
-                    />
-                    {#if canMakeNewsPost()}
-                        <TextField
-                            name="desc"
-                            type="text"
-                            title="Blurb"
-                            placeholder="The one about my favorite thing"
-                            errorMessage={$errors.desc}
-                        />
-                    {/if}
-                    <div class="my-4" />
-                    <Editor label="Blog" bind:value={$data.body} />
-                </form>
-            {:else}
-                {#if $content.content.audit.published === 'Unpublished'}
-                    <div
-                        class="p-4 w-full rounded-lg border border-gray-700 dark:border-white flex items-center my-6"
-                    >
-                        <InformationLine size="24px" class="mr-2" />
-                        <span>
-                            <b>This blog is a draft.</b> No views will be counted when navigating to
-                            this page, and comments and reactions are disabled.
-                        </span>
                     </div>
                 {/if}
-
                 <div
-                    class="blog-body w-11/12 md:w-full mx-auto"
-                    class:mt-6={$content.content.audit.published === 'Published'}
+                    class="m-4 rounded-full overflow-hidden w-20 h-20 md:w-28 md:h-28 border-4 border-white bg-white"
                 >
-                    {@html $content.content.body}
+                    <img
+                        src={$content.content.author.profile.avatar}
+                        alt="{$content.content.author.screenName}'s avatar"
+                        class="w-full h-full"
+                    />
                 </div>
+                <div class="relative -top-1">
+                    <h1 class="text-white font-medium text-3xl">{$content.content.title}</h1>
+                    <div class="flex items-center text-xs text-white">
+                        <span
+                            >by <a
+                                class="text-white underline hover:no-underline"
+                                href="/profile/{$content.content.author._id}"
+                                >{$content.content.author.screenName}</a
+                            ></span
+                        >
+                        <span class="mx-2">|</span>
+                        <span
+                            >{$content.content.stats.views} view{pluralize(
+                                $content.content.stats.views,
+                            )}</span
+                        >
+                        <span class="mx-2">|</span>
+                        {#if $content.content.audit.publishedOn}
+                            <span>{localeDate($content.content.audit.publishedOn, 'fullDate')}</span>
+                        {:else}
+                            <span>{localeDate($content.content.createdAt, 'fullDate')}</span>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            {#if $session.currProfile}
                 <div
-                    class="p-2 border-t border-b border-zinc-700 dark:border-white w-11/12 md:w-full mx-auto"
+                    class="w-11/12 md:w-full max-w-3xl mx-auto flex items-center rounded-b-lg z-10 p-2 relative"
+                    style="background: var(--accent);"
                 >
-                    <Button>
-                        <EmotionLaughLine class="button-icon" />
-                        <span class="button-text">Add Reaction</span>
-                    </Button>
+                    {#if $session.currProfile._id === $content.content.author._id}
+                        {#if isEditing}
+                            <Button kind="primary" on:click={saveBlog}>
+                                <Save2Line class="button-icon" />
+                                <span class="button-text">Save</span>
+                            </Button>
+                            <div class="mx-0.5" />
+                            <Button kind="primary" on:click={() => (isEditing = !isEditing)}>
+                                <CloseLine class="button-icon" />
+                                <span class="button-text">Cancel</span>
+                            </Button>
+                        {:else}
+                            <Button kind="primary" on:click={() => (isEditing = !isEditing)}>
+                                <Edit2Line class="button-icon" />
+                                <span class="button-text">Edit</span>
+                            </Button>
+                            <div class="mx-0.5" />
+                            {#if $content.content.audit.published === 'Published'}
+                                <Button
+                                    kind="primary"
+                                    on:click={() => togglePublishStatus(PubStatus.Unpublished)}
+                                >
+                                    <CheckboxCircleLine class="button-icon" />
+                                    <span class="button-text">Published</span>
+                                </Button>
+                                <div class="mx-0.5" />
+                                <Button kind="primary">
+                                    <ShareBoxLine class="button-icon" />
+                                    <span class="button-text">Share</span>
+                                </Button>
+                            {:else}
+                                <Button
+                                    kind="primary"
+                                    on:click={() => togglePublishStatus(PubStatus.Published)}
+                                >
+                                    <CheckboxBlankCircleLine class="button-icon" />
+                                    <span class="button-text">Unpublished</span>
+                                </Button>
+                            {/if}
+                            <div class="mx-0.5" />
+                            {#if canMakeNewsPost()}
+                                {#if $content.content.audit.isNewsPost}
+                                    <Button kind="primary" on:click={toggleNewsPost}>
+                                        <NewspaperFill class="button-icon" />
+                                        <span class="button-text">On Feed</span>
+                                    </Button>
+                                    <div class="mx-0.5" />
+                                    {#if $content.content.audit.isFeatured}
+                                        <Button kind="primary" on:click={toggleFeatured}>
+                                            <Medal2Fill class="button-icon" />
+                                            <span class="button-text">Featured</span>
+                                        </Button>
+                                    {:else}
+                                        <Button kind="primary" on:click={toggleFeatured}>
+                                            <Medal2Line class="button-icon" />
+                                            <span class="button-text">Feature</span>
+                                        </Button>
+                                    {/if}
+                                {:else}
+                                    <Button kind="primary" on:click={toggleNewsPost}>
+                                        <NewspaperLine class="button-icon" />
+                                        <span class="button-text">Off Feed</span>
+                                    </Button>
+                                {/if}
+                            {/if}
+                        {/if}
+                        <div class="flex-1"><!--separator--></div>
+                        <Button kind="primary" disabled={isEditing}>
+                            <DeleteBinLine class="button-icon" />
+                            <span class="button-text">Delete</span>
+                        </Button>
+                    {:else}
+                        <Button kind="primary">
+                            <DiscussLine class="button-icon" />
+                            <span class="button-text">Comment</span>
+                        </Button>
+                        <div class="mx-0.5" />
+                        <Button kind="primary">
+                            <ShareBoxLine class="button-icon" />
+                            <span class="button-text">Share</span>
+                        </Button>
+                        <div class="flex-1"><!--separator--></div>
+                        <Button kind="primary">
+                            <FlagLine class="button-icon" />
+                            <span class="button-text">Report</span>
+                        </Button>
+                    {/if}
+                </div>
+            {/if}
+            <div class="max-w-3xl mx-auto">
+                {#if isEditing}
+                    <form use:form>
+                        <TextField
+                            name="title"
+                            type="text"
+                            title="Title"
+                            placeholder="A Brand New World"
+                            errorMessage={$errors.title}
+                        />
+                        {#if canMakeNewsPost()}
+                            <TextField
+                                name="desc"
+                                type="text"
+                                title="Blurb"
+                                placeholder="The one about my favorite thing"
+                                errorMessage={$errors.desc}
+                            />
+                        {/if}
+                        <div class="my-4" />
+                        <Editor label="Blog" bind:value={$data.body} />
+                    </form>
+                {:else}
+                    {#if $content.content.audit.published === 'Unpublished'}
+                        <div
+                            class="p-4 w-full rounded-lg border border-gray-700 dark:border-white flex items-center my-6"
+                        >
+                            <InformationLine size="24px" class="mr-2" />
+                            <span>
+                                <b>This blog is a draft.</b> No views will be counted when navigating to
+                                this page, and comments and reactions are disabled.
+                            </span>
+                        </div>
+                    {/if}
+
+                    <div
+                        class="blog-body w-11/12 md:w-full mx-auto"
+                        class:mt-6={$content.content.audit.published === 'Published'}
+                    >
+                        {@html $content.content.body}
+                    </div>
+                    <div
+                        class="p-2 border-t border-b border-zinc-700 dark:border-white w-11/12 md:w-full mx-auto"
+                    >
+                        <Button>
+                            <EmotionLaughLine class="button-icon" />
+                            <span class="button-text">Add Reaction</span>
+                        </Button>
+                    </div>
+                {/if}
+            </div>
+            {#if $content.content.audit.published === 'Published'}
+                <div class="w-11/12 md:w-full max-w-3xl mx-auto mt-6">
+                    <Comments />
                 </div>
             {/if}
         </div>
-        {#if $content.content.audit.published === 'Published'}
-            <div class="w-11/12 md:w-full max-w-3xl mx-auto mt-6">
-                <Comments />
-            </div>
-        {/if}
     </div>
-</div>
+{/if}

@@ -29,7 +29,9 @@
                 ? $session.currProfile._id
                 : null,
         ),
-    );
+        {
+            enabled: !!$session && !!$content && !!$content.content,
+        });
 
     const toggleStatus = useMutation((section: Section) => requestSectionPublish(section), {
         onSuccess: (data) => {
@@ -91,76 +93,78 @@
     }
 </script>
 
-<div>
-    <div class="flex items-center border-b border-zinc-700 dark:border-white pb-1">
-        <h3 class="text-2xl font-medium flex-1">Chapters</h3>
-        {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
-            <Button on:click={() => goto(`${baseUrl}/create-section`)}>
-                <AddBoxLine class="button-icon" />
-                <span class="button-text">Chapter</span>
-            </Button>
-        {/if}
-    </div>
-    <div class="w-full max-h-96 overflow-y-auto mb-6">
-        {#if $sections.isLoading}
-            <div class="flex flex-col h-full w-full items-center justify-center">
-                <div class="flex items-center">
-                    <Loader5Line class="animate-spin mr-2" size="24px" />
-                    <span class="uppercase font-bold tracking-widest">Loading...</span>
+{#if $session && $content && $content.content}
+    <div>
+        <div class="flex items-center border-b border-zinc-700 dark:border-white pb-1">
+            <h3 class="text-2xl font-medium flex-1">Chapters</h3>
+            {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
+                <Button on:click={() => goto(`${baseUrl}/create-section`)}>
+                    <AddBoxLine class="button-icon" />
+                    <span class="button-text">Chapter</span>
+                </Button>
+            {/if}
+        </div>
+        <div class="w-full max-h-96 overflow-y-auto mb-6">
+            {#if !$sections || $sections.isLoading}
+                <div class="flex flex-col h-full w-full items-center justify-center">
+                    <div class="flex items-center">
+                        <Loader5Line class="animate-spin mr-2" size="24px" />
+                        <span class="uppercase font-bold tracking-widest">Loading...</span>
+                    </div>
                 </div>
-            </div>
-        {:else if $sections.isError}
-            <div class="flex flex-col h-full w-full items-center justify-center">
-                <div class="flex items-center">
-                    <CloseLine class="mr-2" size="24px" />
-                    <span class="uppercase font-bold tracking-widest">Error fetching sections!</span
-                    >
+            {:else if $sections.isError}
+                <div class="flex flex-col h-full w-full items-center justify-center">
+                    <div class="flex items-center">
+                        <CloseLine class="mr-2" size="24px" />
+                        <span class="uppercase font-bold tracking-widest">Error fetching sections!</span
+                        >
+                    </div>
                 </div>
-            </div>
-        {:else if $sections.data.length === 0}
-            <div class="empty">
-                <h3>Nothing's been added yet!</h3>
-                <p>
-                    If you're the author, hit the Add Chapter button in this section to hit the
-                    ground running!
-                </p>
-            </div>
-        {:else}
-            <ul class="mt-4">
-                {#each $sections.data as section}
-                    <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                        {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
-                            {#if section.published}
-                                <button on:click={() => $toggleStatus.mutate(section)}>
-                                    <CheckboxCircleLine class="button-icon no-text" />
-                                </button>
-                            {:else}
-                                <button on:click={() => $toggleStatus.mutate(section)}>
-                                    <CheckboxBlankCircleLine class="button-icon no-text" />
+            {:else if $sections.data.length === 0}
+                <div class="empty">
+                    <h3>Nothing's been added yet!</h3>
+                    <p>
+                        If you're the author, hit the Add Chapter button in this section to hit the
+                        ground running!
+                    </p>
+                </div>
+            {:else}
+                <ul class="mt-4">
+                    {#each $sections.data as section}
+                        <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
+                            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
+                                {#if section.published}
+                                    <button on:click={() => $toggleStatus.mutate(section)}>
+                                        <CheckboxCircleLine class="button-icon no-text" />
+                                    </button>
+                                {:else}
+                                    <button on:click={() => $toggleStatus.mutate(section)}>
+                                        <CheckboxBlankCircleLine class="button-icon no-text" />
+                                    </button>
+                                {/if}
+                            {/if}
+                            <a href="{baseUrl}/section/{section._id}">
+                                <span class="title">{section.title}</span>
+                                <span class="words">{section.stats.words} words</span>
+                                <span class="mx-1">•</span>
+                                {#if section.audit.publishedOn}
+                                    <span>{localeDate(section.audit.publishedOn, 'shortDate')}</span>
+                                {:else}
+                                    <span>{localeDate(section.createdAt, 'shortDate')}</span>
+                                {/if}
+                            </a>
+                            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
+                                <button on:click={() => openPopup(ConfirmDeleteSection, new OnConfirmDelete(section))}>
+                                    <DeleteBinLine class="button-icon no-text" />
                                 </button>
                             {/if}
-                        {/if}
-                        <a href="{baseUrl}/section/{section._id}">
-                            <span class="title">{section.title}</span>
-                            <span class="words">{section.stats.words} words</span>
-                            <span class="mx-1">•</span>
-                            {#if section.audit.publishedOn}
-                                <span>{localeDate(section.audit.publishedOn, 'shortDate')}</span>
-                            {:else}
-                                <span>{localeDate(section.createdAt, 'shortDate')}</span>
-                            {/if}
-                        </a>
-                        {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
-                            <button on:click={() => openPopup(ConfirmDeleteSection, new OnConfirmDelete(section))}>
-                                <DeleteBinLine class="button-icon no-text" />
-                            </button>
-                        {/if}
-                    </li>
-                {/each}
-            </ul>
-        {/if}
+                        </li>
+                    {/each}
+                </ul>
+            {/if}
+        </div>
     </div>
-</div>
+{/if}
 
 <style lang="scss">
     li.section-item {
