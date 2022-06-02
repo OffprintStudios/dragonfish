@@ -11,6 +11,9 @@
         </div>
     </div>
     <div class="w-11/12 mx-auto my-6">
-
+        <div class="empty">
+            <h3>Pardon the dust</h3>
+            <p>This feature will be implemented soon.</p>
+        </div>
     </div>
 </div>

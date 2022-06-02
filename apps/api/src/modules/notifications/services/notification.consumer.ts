@@ -1,14 +1,7 @@
 import { Logger } from '@nestjs/common';
-import {
-    OnQueueActive,
-    OnQueueCompleted,
-    OnQueueError,
-    OnQueueFailed,
-    Process,
-    Processor,
-} from '@nestjs/bull';
+import { OnQueueActive, OnQueueCompleted, OnQueueError, OnQueueFailed, Process, Processor } from '@nestjs/bull';
 import { DoneCallback, Job } from 'bull';
-import { NotificationKind } from '$shared/models/notifications';
+import { Notification, NotificationKind } from '$shared/models/notifications';
 import {
     AddedToLibraryJob,
     CommentReplyDBJob,
@@ -20,6 +13,7 @@ import { NotificationStore } from '../db/stores';
 import { ContentStore } from '$modules/content';
 import { UserService } from '$modules/accounts';
 import { ContentCommentDbPayload } from '$shared/models/notifications/db-payloads';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Processor('notifications')
 export class NotificationConsumer {
@@ -29,6 +23,7 @@ export class NotificationConsumer {
         private readonly notifications: NotificationStore,
         private readonly content: ContentStore,
         private readonly users: UserService,
+        private readonly events: EventEmitter2,
     ) {}
 
     //#region ---LIFECYCLE HOOKS---
@@ -39,8 +34,9 @@ export class NotificationConsumer {
     }
 
     @OnQueueCompleted()
-    onQueueCompleted(job: Job) {
-        this.logger.log(`Job ${job.id} completed!`);
+    onQueueCompleted(job: Job, result: Notification) {
+        this.logger.log(`Job ${job.id} completed! Pushing notification...`);
+        this.events.emit('activity:push-notification', result);
     }
 
     @OnQueueFailed()

@@ -1,21 +1,15 @@
-import {
-    BadRequestException,
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    Logger,
-} from '@nestjs/common';
+import { BadRequestException, CanActivate, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { AuthService } from '$modules/accounts';
+import { AuthService } from '$modules/accounts/services/auth.service';
 import { Roles } from '$shared/models/accounts';
 import { JwtPayload } from '$shared/auth';
 import { TokenExpiredError } from 'jsonwebtoken';
 import { WsException } from '@nestjs/websockets';
 
 @Injectable()
-export class MessagesSocketGuard implements CanActivate {
-    private logger = new Logger(`MessagesSocketGuard`);
+export class SocketGuard implements CanActivate {
+    private logger = new Logger(`SocketGuard`);
 
     constructor(
         private readonly reflector: Reflector,

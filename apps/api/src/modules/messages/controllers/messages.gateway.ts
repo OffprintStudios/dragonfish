@@ -11,22 +11,13 @@ import { Server, Socket } from 'socket.io';
 import { SendMessageForm } from '$shared/models/messages';
 import { MessagesService } from '$modules/messages/services';
 import { Logger, UseGuards } from '@nestjs/common';
-import { MessagesSocketGuard } from '$modules/messages/services/messages-socket.guard';
 import { Identity } from '$shared/auth';
 import { Roles } from '$shared/models/accounts';
+import { corsConfig } from '$shared/util';
+import { SocketGuard } from '$shared/guards';
 
 @WebSocketGateway({
-    cors: {
-        origin: [
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
-            'https://offprint.net',
-            /\.offprint\.net$/,
-        ],
-        allowedHeaders: ['Content-Type', 'Authorization'],
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        credentials: true,
-    },
+    cors: corsConfig,
     namespace: '/messages',
 })
 export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -45,7 +36,17 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
         this.logger.log(`Client ${client.id} has disconnected from the messages service!`);
     }
 
-    @UseGuards(MessagesSocketGuard)
+    @UseGuards(SocketGuard)
+    @Identity(Roles.User)
+    @SubscribeMessage('messages:get-feed')
+    async getFeed(
+        @ConnectedSocket() client: Socket,
+        @MessageBody('data') data: { pseudId: string },
+    ) {
+        
+    }
+
+    @UseGuards(SocketGuard)
     @Identity(Roles.User)
     @SubscribeMessage('join-room')
     async joinRoom(
@@ -64,7 +65,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
         }
     }
 
-    @UseGuards(MessagesSocketGuard)
+    @UseGuards(SocketGuard)
     @Identity(Roles.User)
     @SubscribeMessage('leave-room')
     async leaveRoom(
@@ -75,7 +76,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
         this.logger.log(`Client ${client.id} has left Room ${data.threadId}.`);
     }
 
-    @UseGuards(MessagesSocketGuard)
+    @UseGuards(SocketGuard)
     @Identity(Roles.User)
     @SubscribeMessage('send-message')
     async sendMessage(@MessageBody('data') newMessage: SendMessageForm): Promise<void> {

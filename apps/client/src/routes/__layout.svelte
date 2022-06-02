@@ -2,12 +2,12 @@
     import '../app.scss';
     import { broadcastQueryClient, QueryClientProvider } from '@sveltestack/svelte-query';
     import { SvelteToast } from '@zerodevx/svelte-toast';
-    import Nav from '$lib/components/nav/Nav.svelte';
     import { app } from '$lib/repo/app.repo';
     import { onMount } from 'svelte';
     import { queryClient } from '$lib/util';
     import { Popup } from '$lib/components/nav/popup';
     import { Guide } from '$lib/ui/guide';
+    import { Nav } from '$lib/ui/nav';
 
     onMount(async () => {
         await broadcastQueryClient({

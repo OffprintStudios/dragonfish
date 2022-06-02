@@ -4,8 +4,9 @@ import { config, DotenvConfigOutput } from 'dotenv';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'body-parser';
-import { IoAdapter } from '@nestjs/platform-socket.io';
 import { AppModule } from './app.module';
+import { corsConfig } from '$shared/util';
+import { SocketRedisAdapter } from './socket-redis.adapter';
 
 /**
  * Determines the location of the required .env file.
@@ -25,18 +26,8 @@ async function bootstrap() {
     app.use(cookieParser(process.env.COOKIE_SECRET));
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ limit: '50mb', extended: true }));
-    app.useWebSocketAdapter(new IoAdapter(app));
-    app.enableCors({
-        origin: [
-            'http://localhost:3000',
-            'http://127.0.0.1:3000',
-            'https://offprint.net',
-            /\.offprint\.net$/,
-        ],
-        allowedHeaders: ['Content-Type', 'Authorization'],
-        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-        credentials: true,
-    });
+    app.useWebSocketAdapter(new SocketRedisAdapter(app));
+    app.enableCors(corsConfig);
     await app.listen(3333);
 }
 bootstrap();

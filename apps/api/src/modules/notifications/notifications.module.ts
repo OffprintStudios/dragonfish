@@ -75,6 +75,7 @@ import * as Controllers from './controllers';
         Services.NotificationConsumer,
         Services.PushNotificationsConsumer,
         Services.SubscriptionsService,
+        Controllers.NotificationsGateway,
     ],
 })
 export class NotificationsModule {}

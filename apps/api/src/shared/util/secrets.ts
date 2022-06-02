@@ -8,9 +8,9 @@ export const getJwtSecretKey = () => {
 
 /**
  * The amount of time, in seconds, before a JWT expires.
- * Set to 3,600 seconds, or 1 hour.
+ * Formatted as [MILLISECONDS] * [SECONDS] * [MINUTES] * [HOURS]
  */
-export const JWT_EXPIRATION = 3600;
+export const JWT_EXPIRATION = 1000 * 60 * 60 * 24;
 
 /**
  * The amount of time, in seconds, before a JWT expires.

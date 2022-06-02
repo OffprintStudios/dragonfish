@@ -1,4 +1,7 @@
 <script lang="ts">
+    import { flip } from 'svelte/animate';
+    import { crossfade } from 'svelte/transition';
+    import { quintOut } from 'svelte/easing';
     import { session } from '$lib/repo/session.repo';
     import Avatar from '$lib/components/ui/user/Avatar.svelte';
     import RoleBadge from '$lib/components/ui/user/RoleBadge.svelte';
@@ -6,45 +9,24 @@
     import {
         ArrowLeftRightLine,
         CheckLine,
-        CloseLine,
         CupLine,
         EyeLine,
-        Loader5Line,
         LogoutCircleRLine,
         QuillPenLine,
     } from 'svelte-remixicon';
     import { nextPage } from '$lib/ui/guide';
     import { LogOutPanel, Notification, ProfilePanel } from '$lib/ui/guide/account-panel';
-    import { abbreviate, queryClient } from '$lib/util';
-    import { useMutation, useQuery } from '@sveltestack/svelte-query';
-    import { fetchAllUnread, markAsRead } from '$lib/services/activity.service';
-    import { Notification as NotificationModel } from '$lib/models/activity';
+    import { abbreviate } from '$lib/util';
+    import { activity, removeAsRead } from '$lib/repo/activity.repo';
 
-    const activity = useQuery('unreadActivity', () => fetchAllUnread($session.currProfile._id), {
-        enabled: !!$session.currProfile,
-        cacheTime: 1000 * 60 * 0.25,
+    async function markAsRead(id: string) {
+        await removeAsRead($session.currProfile._id, { ids: [id] });
+    }
+
+    const [send, receive] = crossfade({
+        duration: 1500,
+        easing: quintOut,
     });
-
-    const markItemAsRead = useMutation(
-        (id: string) => markAsRead($session.currProfile._id, { ids: [id] }),
-        {
-            onMutate: async (id: string) => {
-                await queryClient.cancelQueries('unreadActivity');
-                const previousNotifications =
-                    queryClient.getQueryData<NotificationModel[]>('unreadActivity');
-                queryClient.setQueryData<NotificationModel[]>('unreadActivity', (oldData) =>
-                    oldData.filter((item) => item._id !== id),
-                );
-                return { previousNotifications };
-            },
-            onError: (err, id, context) => {
-                queryClient.setQueryData('unreadActivity', context.previousNotifications);
-            },
-            onSettled: () => {
-                queryClient.invalidateQueries('unreadActivity');
-            },
-        },
-    );
 </script>
 
 <div class="h-screen max-w-[24rem] flex flex-col overflow-y-auto">
@@ -108,39 +90,23 @@
         </a>
     </div>
     <div class="w-11/12 my-4 mx-auto flex flex-col-reverse">
-        {#if $activity.isLoading}
-            <div class="w-full h-96 flex flex-col items-center justify-center">
-                <div class="flex items-center">
-                    <Loader5Line class="animate-spin mr-2" size="24px" />
-                    <span class="uppercase font-bold tracking-widest text-sm">Loading...</span>
-                </div>
+        {#each $activity as notification (notification._id)}
+            <div in:receive={{ key: notification._id }} out:send={{ key: notification._id }} animate:flip={{ duration: 250 }}>
+                <Notification
+                    {notification}
+                    on:markAsRead={(e) => markAsRead(e.detail.itemId)}
+                />
             </div>
-        {:else if $activity.error}
+        {:else}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">
-                    <CloseLine class="mr-2" size="24px" />
+                    <CheckLine class="mr-2" size="24px" />
                     <span class="uppercase font-bold tracking-widest text-sm"
-                    >An Error Has Occurred</span
+                    >You're all caught up</span
                     >
                 </div>
             </div>
-        {:else}
-            {#each $activity.data as notification}
-                <Notification
-                    {notification}
-                    on:markAsRead={(e) => $markItemAsRead.mutate(e.detail.itemId)}
-                />
-            {:else}
-                <div class="w-full h-96 flex flex-col items-center justify-center">
-                    <div class="flex items-center">
-                        <CheckLine class="mr-2" size="24px" />
-                        <span class="uppercase font-bold tracking-widest text-sm"
-                        >You're all caught up</span
-                        >
-                    </div>
-                </div>
-            {/each}
-        {/if}
+        {/each}
     </div>
 </div>
 
