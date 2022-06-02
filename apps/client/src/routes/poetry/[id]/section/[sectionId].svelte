@@ -34,7 +34,7 @@
         ArrowDownLine,
         Loader5Line,
     } from 'svelte-remixicon';
-    import { Section, SectionForm } from '$lib/models/content/works';
+    import type { Section, SectionForm } from '$lib/models/content/works';
     import { AuthorsNotePos } from '$lib/models/content';
     import { editSection, fetchSections } from '$lib/services/content.service';
     import { TextField, Editor } from '$lib/components/forms';
@@ -120,7 +120,7 @@
 </script>
 
 <svelte:head>
-    {#if $content.content}
+    {#if $content && $content.content}
         <title>{$content.content.title} &mdash; Offprint</title>
         <!-- Primary Meta Tags -->
         <meta name="title" content={$content.content.title} />
@@ -152,161 +152,163 @@
     {/if}
 </svelte:head>
 
-<div class="w-full h-screen overflow-y-auto">
-    <div class="flex flex-col w-full">
-        <div
-            class="sticky top-0 flex items-center w-full p-2.5 shadow-2xl z-10 h-[56px]"
-            style="background: var(--accent)"
-        >
-            <Button kind="primary" on:click={() => goto(baseUrl)}>
-                <ArrowLeftSLine class="button-icon" />
-                <span class="button-text">Back</span>
-            </Button>
-            <div class="mx-1"><!--separator--></div>
-            <Button kind="primary">
-                <FontSize class="button-icon" />
-                <span class="button-text">Formatting</span>
-            </Button>
+{#if $session && $content && $content.content}
+    <div class="w-full h-screen overflow-y-auto">
+        <div class="flex flex-col w-full">
             <div
-                class="flex-1 flex items-center justify-center uppercase text-sm relative top-0.5 font-bold tracking-widest text-white"
+                class="sticky top-0 flex items-center w-full p-2.5 shadow-2xl z-10 h-[56px]"
+                style="background: var(--accent)"
             >
-                {$content.content.title}
-            </div>
-            {#if editMode}
-                <Button kind="primary" on:click={() => (editMode = !editMode)}>
-                    <CloseLine class="button-icon" />
-                    <span class="button-text">Cancel</span>
+                <Button kind="primary" on:click={() => goto(baseUrl)}>
+                    <ArrowLeftSLine class="button-icon" />
+                    <span class="button-text">Back</span>
                 </Button>
                 <div class="mx-1"><!--separator--></div>
-                <Button kind="primary" on:click={saveSection}>
-                    <Save2Line class="button-icon" />
-                    <span class="button-text">Save</span>
+                <Button kind="primary">
+                    <FontSize class="button-icon" />
+                    <span class="button-text">Formatting</span>
                 </Button>
-            {:else}
-                <Button
-                    kind="primary"
-                    on:click={() => (sectionsListShown = !sectionsListShown)}
-                    isActive={sectionsListShown}
+                <div
+                    class="flex-1 flex items-center justify-center uppercase text-sm relative top-0.5 font-bold tracking-widest text-white"
                 >
-                    <ListUnordered class="button-icon" />
-                    <span class="button-text">Chapters</span>
-                </Button>
-                <div class="mx-1"><!--separator--></div>
-                {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
+                    {$content.content.title}
+                </div>
+                {#if editMode}
                     <Button kind="primary" on:click={() => (editMode = !editMode)}>
-                        <Edit2Line class="button-icon" />
-                        <span class="button-text">Edit</span>
+                        <CloseLine class="button-icon" />
+                        <span class="button-text">Cancel</span>
+                    </Button>
+                    <div class="mx-1"><!--separator--></div>
+                    <Button kind="primary" on:click={saveSection}>
+                        <Save2Line class="button-icon" />
+                        <span class="button-text">Save</span>
                     </Button>
                 {:else}
-                    <Button kind="primary">
-                        <BookmarkLine class="button-icon" />
-                        <span class="button-text">Mark</span>
+                    <Button
+                        kind="primary"
+                        on:click={() => (sectionsListShown = !sectionsListShown)}
+                        isActive={sectionsListShown}
+                    >
+                        <ListUnordered class="button-icon" />
+                        <span class="button-text">Chapters</span>
                     </Button>
+                    <div class="mx-1"><!--separator--></div>
+                    {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
+                        <Button kind="primary" on:click={() => (editMode = !editMode)}>
+                            <Edit2Line class="button-icon" />
+                            <span class="button-text">Edit</span>
+                        </Button>
+                    {:else}
+                        <Button kind="primary">
+                            <BookmarkLine class="button-icon" />
+                            <span class="button-text">Mark</span>
+                        </Button>
+                    {/if}
                 {/if}
-            {/if}
-        </div>
-        <div class="flex w-full">
-            <div class="section-container">
-                <div class="w-11/12 mx-auto md:max-w-3xl my-6 flex-1">
-                    {#if editMode}
-                        <form use:form>
-                            <TextField
-                                name="title"
-                                type="text"
-                                title="Title"
-                                placeholder="A Start To A Wonderful Adventure"
-                                errorMessage={$errors.title}
-                            />
-                            <Editor label="Body" bind:value={$data.body} />
-                            <div
-                                class="flex items-center mt-6 mb-4 pb-1 border-b border-zinc-700 dark:border-white"
-                            >
-                                <h3 class="text-2xl font-medium flex-1">Author's Note Position</h3>
-                                <Button
-                                    isActive={selectedPos === AuthorsNotePos.Top}
-                                    on:click={() => (selectedPos = AuthorsNotePos.Top)}
-                                >
-                                    <ArrowUpLine class="button-icon" />
-                                    <span class="button-text">Above</span>
-                                </Button>
-                                <div class="mx-1"><!--separator--></div>
-                                <Button
-                                    isActive={selectedPos === AuthorsNotePos.Bottom}
-                                    on:click={() => (selectedPos = AuthorsNotePos.Bottom)}
-                                >
-                                    <ArrowDownLine class="button-icon" />
-                                    <span class="button-text">Below</span>
-                                </Button>
-                            </div>
-                            <Editor label="Author's Note" bind:value={$data.authorsNote} />
-                        </form>
-                    {:else}
-                        {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Top}
-                            <div
-                                class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
-                            >
-                                <h3 class="font-medium text-2xl mb-6">
-                                    A note from the author&mdash;
-                                </h3>
-                                {@html section.authorsNote}
-                            </div>
-                        {/if}
-                        <h1
-                            class="border-b border-zinc-700 dark:border-white w-full text-4xl font-medium mb-8"
-                        >
-                            {section.title}
-                        </h1>
-                        {@html section.body}
-                        {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Bottom}
-                            <div
-                                class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
-                            >
-                                <h3 class="font-medium text-2xl mb-6">
-                                    A note from the author&mdash;
-                                </h3>
-                                {@html section.authorsNote}
-                            </div>
-                        {/if}
-                    {/if}
-                </div>
             </div>
-            {#if sectionsListShown}
-                <div
-                    class="chapter-list bg-zinc-300 dark:bg-zinc-700"
-                    transition:fly={{ delay: 0, duration: 150, x: 100 }}
-                >
-                    {#if $sectionsList.isLoading}
-                        <div class="flex flex-col h-full w-full items-center justify-center">
-                            <div class="flex items-center">
-                                <Loader5Line class="animate-spin mr-2" size="24px" />
-                                <span class="uppercase font-bold tracking-widest">Loading...</span>
-                            </div>
-                        </div>
-                    {:else if $sectionsList.isError}
-                        <div class="flex flex-col h-full w-full items-center justify-center">
-                            <div class="flex items-center">
-                                <CloseLine class="mr-2" size="24px" />
-                                <span class="uppercase font-bold tracking-widest"
-                                    >Error fetching sections!</span
+            <div class="flex w-full">
+                <div class="section-container">
+                    <div class="w-11/12 mx-auto md:max-w-3xl my-6 flex-1">
+                        {#if editMode}
+                            <form use:form>
+                                <TextField
+                                    name="title"
+                                    type="text"
+                                    title="Title"
+                                    placeholder="A Start To A Wonderful Adventure"
+                                    errorMessage={$errors.title}
+                                />
+                                <Editor label="Body" bind:value={$data.body} />
+                                <div
+                                    class="flex items-center mt-6 mb-4 pb-1 border-b border-zinc-700 dark:border-white"
                                 >
-                            </div>
-                        </div>
-                    {:else}
-                        <ul class="mt-4">
-                            {#each $sectionsList.data as section}
-                                <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                                    <a href="{baseUrl}/section/{section._id}">
-                                        <span class="title">{section.title}</span>
-                                    </a>
-                                </li>
-                            {/each}
-                        </ul>
-                    {/if}
+                                    <h3 class="text-2xl font-medium flex-1">Author's Note Position</h3>
+                                    <Button
+                                        isActive={selectedPos === AuthorsNotePos.Top}
+                                        on:click={() => (selectedPos = AuthorsNotePos.Top)}
+                                    >
+                                        <ArrowUpLine class="button-icon" />
+                                        <span class="button-text">Above</span>
+                                    </Button>
+                                    <div class="mx-1"><!--separator--></div>
+                                    <Button
+                                        isActive={selectedPos === AuthorsNotePos.Bottom}
+                                        on:click={() => (selectedPos = AuthorsNotePos.Bottom)}
+                                    >
+                                        <ArrowDownLine class="button-icon" />
+                                        <span class="button-text">Below</span>
+                                    </Button>
+                                </div>
+                                <Editor label="Author's Note" bind:value={$data.authorsNote} />
+                            </form>
+                        {:else}
+                            {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Top}
+                                <div
+                                    class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
+                                >
+                                    <h3 class="font-medium text-2xl mb-6">
+                                        A note from the author&mdash;
+                                    </h3>
+                                    {@html section.authorsNote}
+                                </div>
+                            {/if}
+                            <h1
+                                class="border-b border-zinc-700 dark:border-white w-full text-4xl font-medium mb-8"
+                            >
+                                {section.title}
+                            </h1>
+                            {@html section.body}
+                            {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Bottom}
+                                <div
+                                    class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
+                                >
+                                    <h3 class="font-medium text-2xl mb-6">
+                                        A note from the author&mdash;
+                                    </h3>
+                                    {@html section.authorsNote}
+                                </div>
+                            {/if}
+                        {/if}
+                    </div>
                 </div>
-            {/if}
+                {#if sectionsListShown}
+                    <div
+                        class="chapter-list bg-zinc-300 dark:bg-zinc-700"
+                        transition:fly={{ delay: 0, duration: 150, x: 100 }}
+                    >
+                        {#if $sectionsList.isLoading}
+                            <div class="flex flex-col h-full w-full items-center justify-center">
+                                <div class="flex items-center">
+                                    <Loader5Line class="animate-spin mr-2" size="24px" />
+                                    <span class="uppercase font-bold tracking-widest">Loading...</span>
+                                </div>
+                            </div>
+                        {:else if $sectionsList.isError}
+                            <div class="flex flex-col h-full w-full items-center justify-center">
+                                <div class="flex items-center">
+                                    <CloseLine class="mr-2" size="24px" />
+                                    <span class="uppercase font-bold tracking-widest"
+                                        >Error fetching sections!</span
+                                    >
+                                </div>
+                            </div>
+                        {:else}
+                            <ul class="mt-4">
+                                {#each $sectionsList.data as section}
+                                    <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
+                                        <a href="{baseUrl}/section/{section._id}">
+                                            <span class="title">{section.title}</span>
+                                        </a>
+                                    </li>
+                                {/each}
+                            </ul>
+                        {/if}
+                    </div>
+                {/if}
+            </div>
         </div>
     </div>
-</div>
+{/if}
 
 <style lang="scss">
     div.section-container {

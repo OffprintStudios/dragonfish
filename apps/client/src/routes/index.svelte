@@ -99,7 +99,7 @@
                     <h3>New works</h3>
                     <a href="/explore">See more >></a>
                 </div>
-                {#if $newWorks.isLoading}
+                {#if !$newWorks || $newWorks.isLoading}
                     <div class="section-loading">
                         <div class="inner-loader">
                             <Loader5Line class="animate-spin mr-2" size="32px" />
@@ -136,7 +136,7 @@
             <h3 class="text-2xl font-medium w-full border-b border-zinc-600 dark:border-white mb-4">
                 News & Updates
             </h3>
-            {#if $firstSixNews.isLoading}
+            {#if !$firstSixNews || $firstSixNews.isLoading}
                 <div class="w-full h-48 flex flex-col items-center justify-center">
                     <div class="flex items-center">
                         <Loader5Line class="animate-spin mr-2" />

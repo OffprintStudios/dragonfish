@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-    {#if $content.content}
+    {#if $content && $content.content}
         <title>{$content.content.title} &mdash; Offprint</title>
         <!-- Primary Meta Tags -->
         <meta name="title" content={$content.content.title} />
@@ -59,57 +59,59 @@
     {/if}
 </svelte:head>
 
-<div class="w-full h-screen overflow-y-auto">
-    <WorkBanner />
-    {#if $content.content.audit.published === PubStatus.Unpublished}
-        <NotifyBanner
-            message="<b>This work is a draft.</b> No views will be counted when navigating to
-                            this page, and comments and upvotes/downvotes are disabled."
-        />
-    {/if}
-    <ApprovalOptions />
-    <div class="w-11/12 mx-auto md:max-w-4xl my-6 flex flex-col md:flex-row">
-        <WorkStats
-            content={$content.content}
-            libraryDoc={$content.libraryDoc}
-            bind:editMode
-            on:save={() => console.log('save hit!')}
-        />
-        <div class="w-full">
-            {#if editMode}
-                <EditForm on:saved={() => (editMode = false)} />
-            {:else}
-                <div in:fade={{ delay: 0, duration: 150 }}>
-                    <div class="mb-6">
-                        <div
-                            class="w-full border-b border-zinc-700 dark:border-white flex items-center pb-1"
-                        >
-                            <h3 class="text-2xl font-medium flex-1">Description</h3>
-                            <Button on:click={() => (showDesc = !showDesc)}>
-                                {#if showDesc}
-                                    <ArrowUpSLine class="button-icon no-text" />
-                                {:else}
-                                    <ArrowDownSLine class="button-icon no-text" />
-                                {/if}
-                            </Button>
-                        </div>
-                        {#if showDesc}
+{#if $content && $content.content}
+    <div class="w-full h-screen overflow-y-auto">
+        <WorkBanner />
+        {#if $content.content.audit.published === PubStatus.Unpublished}
+            <NotifyBanner
+                message="<b>This work is a draft.</b> No views will be counted when navigating to
+                                this page, and comments and upvotes/downvotes are disabled."
+            />
+        {/if}
+        <ApprovalOptions />
+        <div class="w-11/12 mx-auto md:max-w-4xl my-6 flex flex-col md:flex-row">
+            <WorkStats
+                content={$content.content}
+                libraryDoc={$content.libraryDoc}
+                bind:editMode
+                on:save={() => console.log('save hit!')}
+            />
+            <div class="w-full">
+                {#if editMode}
+                    <EditForm on:saved={() => (editMode = false)} />
+                {:else}
+                    <div in:fade={{ delay: 0, duration: 150 }}>
+                        <div class="mb-6">
                             <div
-                                class="html-description"
-                                transition:fly|local={{ delay: 0, duration: 150, y: -25 }}
+                                class="w-full border-b border-zinc-700 dark:border-white flex items-center pb-1"
                             >
-                                {@html $content.content.body}
+                                <h3 class="text-2xl font-medium flex-1">Description</h3>
+                                <Button on:click={() => (showDesc = !showDesc)}>
+                                    {#if showDesc}
+                                        <ArrowUpSLine class="button-icon no-text" />
+                                    {:else}
+                                        <ArrowDownSLine class="button-icon no-text" />
+                                    {/if}
+                                </Button>
                             </div>
-                        {/if}
+                            {#if showDesc}
+                                <div
+                                    class="html-description"
+                                    transition:fly|local={{ delay: 0, duration: 150, y: -25 }}
+                                >
+                                    {@html $content.content.body}
+                                </div>
+                            {/if}
+                        </div>
+                        <SectionList baseUrl="/prose/{$content.content._id}" />
                     </div>
-                    <SectionList baseUrl="/prose/{$content.content._id}" />
-                </div>
-            {/if}
+                {/if}
+            </div>
         </div>
+        {#if $content.content.audit.published === 'Published'}
+            <div class="w-11/12 md:w-full max-w-3xl mx-auto mt-6">
+                <Comments />
+            </div>
+        {/if}
     </div>
-    {#if $content.content.audit.published === 'Published'}
-        <div class="w-11/12 md:w-full max-w-3xl mx-auto mt-6">
-            <Comments />
-        </div>
-    {/if}
-</div>
+{/if}
