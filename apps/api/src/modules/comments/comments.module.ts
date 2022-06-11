@@ -7,10 +7,12 @@ import * as Controllers from './controllers';
 import * as Services from './services';
 import { getJwtSecretKey, JWT_EXPIRATION } from '$shared/util';
 import { AccountsModule } from '$modules/accounts';
+import { ContentModule } from '$modules/content';
 
 @Module({
     imports: [
         AccountsModule,
+        ContentModule,
         MongooseModule.forFeatureAsync([
             {
                 name: 'Comment',

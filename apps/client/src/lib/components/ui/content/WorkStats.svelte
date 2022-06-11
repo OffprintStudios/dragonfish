@@ -2,6 +2,7 @@
     import { useQuery, useMutation } from '@sveltestack/svelte-query';
     import { session } from '$lib/repo/session.repo';
     import { content } from '$lib/repo/content.repo';
+    import { comments } from '$lib/repo/comments.repo';
     import {
         CloseLine,
         Edit2Line,
@@ -188,12 +189,14 @@
                 </span>
                 <span class="stat">{abbreviate($content.content.stats.words)}</span>
             </div>
-            <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
-                <span class="text text-zinc-500 dark:text-zinc-400">
-                    Comment{pluralize($content.content.stats.comments)}
-                </span>
-                <span class="stat">{abbreviate($content.content.stats.comments)}</span>
-            </div>
+            {#if $comments}
+                <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
+                    <span class="text text-zinc-500 dark:text-zinc-400">
+                        Comment{pluralize($comments.totalComments)}
+                    </span>
+                    <span class="stat">{abbreviate($comments.totalComments)}</span>
+                </div>
+            {/if}
             <div class="stat-box">
                 <span class="text text-zinc-500 dark:text-zinc-400">Status</span>
                 <span class="stat">{$content.content.meta.status}</span>
