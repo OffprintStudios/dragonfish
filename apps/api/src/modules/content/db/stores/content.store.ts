@@ -438,15 +438,16 @@ export class ContentStore {
     //#region ---COMMENTS---
 
     /**
-     * Adds a comment to some content.
+     * Updates number of comments for given work
      *
      * @param contentId The content's ID
+     * @param totalComments Number of comments to set
      */
-    async addComment(contentId: string): Promise<void> {
-        await this.content.updateOne(
-            { _id: contentId },
+    public async updateCommentCount(contentId: string, totalComments: number): Promise<void> {
+        await this.content.findOneAndUpdate(
+            { _id: contentId, 'audit.isDeleted': false },
             {
-                $inc: { 'stats.comments': 1 },
+                'stats.comments': totalComments,
             },
         );
     }

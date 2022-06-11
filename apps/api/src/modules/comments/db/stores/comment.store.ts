@@ -4,6 +4,7 @@ import { PaginateModel, PaginateResult, PaginateOptions } from 'mongoose';
 import { CommentDocument, ContentCommentDocument } from '../schemas';
 import { CommentForm, CommentKind } from '$shared/models/comments';
 import { isNullOrUndefined } from '$shared/util';
+import { ContentService } from '$modules/content/services';
 
 @Injectable()
 export class CommentStore {
@@ -11,6 +12,7 @@ export class CommentStore {
         @InjectModel('Comment') private readonly comments: PaginateModel<CommentDocument>,
         @InjectModel('ContentComment')
         private readonly contentComments: PaginateModel<ContentCommentDocument>,
+        private readonly content: ContentService,
     ) {}
 
     /**
@@ -82,6 +84,9 @@ export class CommentStore {
             comment.body = form.body;
             comment.repliesTo = form.repliesTo;
 
+            if (comment.kind === CommentKind.ContentComment) {
+                await this.updateCount((comment as ContentCommentDocument).contentId);
+            }
             return await comment.save();
         }
     }
@@ -91,19 +96,13 @@ export class CommentStore {
      * @param itemId ID of the work being updated
      */
     public async updateCount(itemId: string) {
-        // TODO: Update comment count
         // Get total number of comments
-        /*const totalComments = await this.comments
-        .find({ contentId: itemId }, {}, { strict: false })
-        .countDocuments();
+        const totalComments = await this.comments
+            .find({ contentId: itemId }, {}, { strict: false })
+            .countDocuments();
 
-    // Update content's comment count
-    await this.contents.findOneAndUpdate(
-        { _id: itemId, 'audit.isDeleted': false },
-        {
-            'stats.comments': totalComments,
-        },
-    );*/
+        // Update content's comment count
+        await this.content.updateCommentCount(itemId, totalComments);
     }
 
     //#region ---PRIVATE---

@@ -124,9 +124,7 @@ export class ContentService {
             const changedTags = xor(oldTagIds, (formInfo as CreateProse)?.tags);
 
             // Updates number of published works tagged with each tag
-            for (const tag of changedTags) {
-                await this.tagsStore.updateTaggedWorks(tag);
-            }
+            await this.updateTagCounts(changedTags);
         }
 
         return savedContent;
@@ -140,17 +138,7 @@ export class ContentService {
         const deletedContent = await this.content.deleteOne(user, contentId);
 
         await this.updateCounts(user);
-
-        // Updates number of published works tagged with each tag
-        if (tags) {
-            for (const tag of tags) {
-                if (typeof tag === 'object') {
-                    await this.tagsStore.updateTaggedWorks(tag._id);
-                } else {
-                    await this.tagsStore.updateTaggedWorks(tag);
-                }
-            }
-        }
+        await this.updateTagCounts(tags);
 
         return deletedContent;
     }
@@ -180,7 +168,16 @@ export class ContentService {
         contentId: string,
         pubStatus: PubStatus,
     ): Promise<ContentModel> {
-        return this.content.updatePublishStatus(user, contentId, pubStatus);
+        // Gets the works tags to update the counts for each
+        const work = await this.content.fetchOne(contentId);
+        const tags = work.tags;
+
+        const updatedContent = await this.content.updatePublishStatus(user, contentId, pubStatus);
+
+        await this.updateCounts(user);
+        await this.updateTagCounts(tags);
+
+        return updatedContent;
     }
 
     public async updateCoverArt(
@@ -189,6 +186,13 @@ export class ContentService {
         kind: ContentKind,
         coverArt: string,
     ): Promise<ContentModel> {
+        // Gets the works tags to update the counts for each
+        const work = await this.content.fetchOne(contentId);
+        const tags = work.tags;
+
+        await this.updateCounts(user);
+        await this.updateTagCounts(tags);
+
         if (kind === ContentKind.PoetryContent) {
             return await this.poetry.updateCoverArt(user, contentId, coverArt);
         } else if (kind === ContentKind.ProseContent) {
@@ -222,6 +226,10 @@ export class ContentService {
         return await this.contentGroup.fetchFeaturedPosts();
     }
 
+    public async updateCommentCount(contentId: string, totalComments: number): Promise<void> {
+        return await this.content.updateCommentCount(contentId, totalComments);
+    }
+
     /**
      * Updates user's counts of both blogs and works
      * @param user
@@ -235,5 +243,17 @@ export class ContentService {
                 ContentKind.PoetryContent,
             ]),
         );
+    }
+
+    private async updateTagCounts(tags: string[] | TagsModel[]): Promise<void> {
+        if (tags) {
+            for (const tag of tags) {
+                if (typeof tag === 'object') {
+                    await this.tagsStore.updateTaggedWorks(tag._id);
+                } else {
+                    await this.tagsStore.updateTaggedWorks(tag);
+                }
+            }
+        }
     }
 }
