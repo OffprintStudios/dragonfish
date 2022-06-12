@@ -2,13 +2,14 @@
     import { page } from '$app/stores';
     import { profile } from '$lib/repo/profile.repo';
     import { session } from '$lib/repo/session.repo';
-    import { slugify } from '$lib/util';
+    import { updateUrlParams } from '$lib/util';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { CheckLine, DraftLine, Loader5Line, TimeLine } from 'svelte-remixicon';
     import { fetchAllByKind, fetchUserContent } from '$lib/services/content.service';
     import { ContentKind } from '$lib/models/content';
     import BlogCard from '$lib/components/ui/content/BlogCard.svelte';
     import { app } from '$lib/repo/app.repo';
+    import { Paginator } from '$lib/components/ui/misc';
 
     enum BlogTabs {
         Published,
@@ -17,8 +18,22 @@
     }
 
     let currentTab = BlogTabs.Published;
+    let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
 
-    const pageNum = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
+    function changeTab(tab: BlogTabs) {
+        currentTab = tab;
+        currPage = 1;
+        updateUrlParams({
+            page: null,
+        })
+    }
+
+    function changePage(page: number) {
+        currPage = page;
+        updateUrlParams({
+            page: currPage > 1 ? currPage.toString() : null,
+        })
+    }
 </script>
 
 <svelte:head>
@@ -48,7 +63,7 @@
             class="flex items-center justify-center border-t border-b border-zinc-700 dark:border-white py-1 w-full mb-6"
         >
             <Button
-                on:click={() => (currentTab = BlogTabs.Published)}
+                on:click={() => changeTab(BlogTabs.Published)}
                 isActive={currentTab === BlogTabs.Published}
             >
                 <CheckLine class="button-icon" />
@@ -56,7 +71,7 @@
             </Button>
             <div class="mx-0.5"><!--separator--></div>
             <Button
-                on:click={() => (currentTab = BlogTabs.Drafts)}
+                on:click={() => changeTab(BlogTabs.Drafts)}
                 isActive={currentTab === BlogTabs.Drafts}
             >
                 <DraftLine class="button-icon" />
@@ -64,7 +79,7 @@
             </Button>
             <div class="mx-0.5"><!--separator--></div>
             <Button
-                on:click={() => (currentTab = BlogTabs.Scheduled)}
+                on:click={() => changeTab(BlogTabs.Scheduled)}
                 isActive={currentTab === BlogTabs.Scheduled}
             >
                 <TimeLine class="button-icon" />
@@ -134,7 +149,7 @@
     </div>
 {:else}
     <div class="w-11/12 lg:max-w-3xl mx-auto flex flex-col mb-6">
-        {#await fetchUserContent($profile._id, $app.filter, [ContentKind.BlogContent], pageNum)}
+        {#await fetchUserContent($profile._id, $app.filter, [ContentKind.BlogContent], currPage)}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">
                     <Loader5Line size="24px" class="animate-spin" />
@@ -153,6 +168,11 @@
                         <BlogCard {blog} />
                     </div>
                 {/each}
+                <Paginator
+                    {currPage}
+                    totalPages={blogs.totalPages}
+                    on:change={(e) => changePage(e.detail)}
+                />
             {/if}
         {:catch error}
             <div class="empty">
