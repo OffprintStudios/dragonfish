@@ -150,7 +150,8 @@ export class ContentService {
     ): Promise<ContentModel> {
         const content = await this.content.fetchOne(contentId, user);
         switch (content.kind) {
-            case ContentKind.ProseContent || ContentKind.PoetryContent:
+            case ContentKind.ProseContent:
+            case ContentKind.PoetryContent:
                 const payload: SubmitToQueuePayload = {
                     content,
                 };
