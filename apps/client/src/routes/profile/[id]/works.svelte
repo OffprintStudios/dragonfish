@@ -8,6 +8,8 @@
     import { ContentKind } from '$lib/models/content';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
+    import { Paginator } from '$lib/components/ui/misc';
+    import { updateUrlParams } from '$lib/util';
 
     enum WorkTabs {
         Published,
@@ -17,8 +19,22 @@
     }
 
     let currentTab = WorkTabs.Published;
+    let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
 
-    const pageNum = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('name') : 1;
+    function changeTab(tab: WorkTabs) {
+        currentTab = tab;
+        currPage = 1;
+        updateUrlParams({
+            page: null,
+        })
+    }
+
+    function changePage(page: number) {
+        currPage = page;
+        updateUrlParams({
+            page: currPage > 1 ? currPage.toString() : null,
+        })
+    }
 </script>
 
 <svelte:head>
@@ -42,13 +58,13 @@
     <meta property="twitter:image" content={$profile.profile.avatar} />
 </svelte:head>
 
-{#if $session.currProfile && $session.currProfile._id === $profile._id}
+{#if $session && $session.currProfile && $session.currProfile._id === $profile._id}
     <div class="w-11/12 mx-auto lg:max-w-7xl mb-6">
         <div
             class="flex items-center justify-center border-t border-b border-zinc-700 dark:border-white py-1 w-full mb-6 max-w-3xl mx-auto"
         >
             <Button
-                on:click={() => (currentTab = WorkTabs.Published)}
+                on:click={() => (changeTab(WorkTabs.Published))}
                 isActive={currentTab === WorkTabs.Published}
             >
                 <CheckLine class="button-icon" />
@@ -56,7 +72,7 @@
             </Button>
             <div class="mx-0.5"><!--separator--></div>
             <Button
-                on:click={() => (currentTab = WorkTabs.Drafts)}
+                on:click={() => (changeTab(WorkTabs.Drafts))}
                 isActive={currentTab === WorkTabs.Drafts}
             >
                 <DraftLine class="button-icon" />
@@ -64,7 +80,7 @@
             </Button>
             <div class="mx-0.5"><!--separator--></div>
             <Button
-                on:click={() => (currentTab = WorkTabs.Pending)}
+                on:click={() => (changeTab(WorkTabs.Pending))}
                 isActive={currentTab === WorkTabs.Pending}
             >
                 <TimeLine class="button-icon" />
@@ -72,7 +88,7 @@
             </Button>
             <div class="mx-0.5"><!--separator--></div>
             <Button
-                on:click={() => (currentTab = WorkTabs.Rejected)}
+                on:click={() => (changeTab(WorkTabs.Rejected))}
                 isActive={currentTab === WorkTabs.Rejected}
             >
                 <CloseLine class="button-icon" />
@@ -199,7 +215,7 @@
     </div>
 {:else}
     <div class="w-11/12 mx-auto lg:max-w-7xl mb-6">
-        {#await fetchUserContent($profile._id, $app.filter, [ContentKind.ProseContent, ContentKind.PoetryContent], pageNum)}
+        {#await fetchUserContent($profile._id, $app.filter, [ContentKind.ProseContent, ContentKind.PoetryContent], currPage)}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">
                     <Loader5Line size="24px" class="animate-spin" />
@@ -213,12 +229,21 @@
                     <p>Check back when this user has published a work!</p>
                 </div>
             {:else}
-                <div
-                    class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2 w-11/12 mx-auto my-8"
-                >
-                    {#each works.docs as work}
-                        <WorkCard content={work} />
-                    {/each}
+                <div class="w-full overflow-y-auto">
+                    <div class="w-11/12 mx-auto my-8 max-w-7xl">
+                        <div
+                            class="grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2"
+                        >
+                            {#each works.docs as work}
+                                <WorkCard content={work} />
+                            {/each}
+                        </div>
+                        <Paginator
+                            {currPage}
+                            totalPages={works.totalPages}
+                            on:change={(e) => changePage(e.detail)}
+                        />
+                    </div>
                 </div>
             {/if}
         {:catch error}
