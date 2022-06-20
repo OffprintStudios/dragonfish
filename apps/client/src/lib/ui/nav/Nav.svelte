@@ -21,34 +21,19 @@
     import { CreatePanel } from '$lib/ui/guide/create-panel';
     import { AccountPanel, ProfilePanel } from '$lib/ui/guide/account-panel';
     import { MessagesPanel } from '$lib/ui/guide/messages-panel';
-    import { io } from 'socket.io-client';
-    import { baseUrl } from '$lib/util';
     import { activity, setActivity } from '$lib/repo/activity.repo';
     import { Badge } from '$lib/components/ui/misc';
+    import { socket } from '$lib/socket';
 
     $: {
-        if ($session.account) {
-            console.log(`creating socket`);
-            const socket = io(`${baseUrl}/notifications`, {
-                auth: {
-                    token: $session.token ? $session.token : null,
-                    pseudId: $session.currProfile ? $session.currProfile._id : null,
-                }
-            });
-
-            console.log(`checking for profile`);
-            if ($session.currProfile) {
-                console.log(`emitting subscription event`);
-                socket.emit('activity:subscribe', { data: { pseudId: $session.currProfile._id }});
-            }
-
-            socket.on('activity:feed', (data) => {
+        if ($socket !== null) {
+            // Notifications
+            $socket.emit('activity:subscribe', { data: { pseudId: $session.currProfile._id }});
+            $socket.on('activity:feed', (data) => {
                 setActivity(data);
             });
         }
     }
-
-    $: console.log($activity);
 
     navigating.subscribe((val) => {
         if (val !== null) {

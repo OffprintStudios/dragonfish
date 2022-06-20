@@ -9,6 +9,7 @@ export { SubscriptionDocument, SubscriptionSchema } from './subscription.schema'
 export * from './content';
 export * from './comments';
 export * from './subscriptions';
+export * from './messages';
 
 //#endregion
 

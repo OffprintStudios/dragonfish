@@ -25,6 +25,7 @@ import * as Controllers from './controllers';
                     { name: NotificationKind.ContentNew, schema: Schemas.ContentNewSchema },
                     { name: NotificationKind.ContentUpdate, schema: Schemas.ContentUpdatedSchema },
                     { name: NotificationKind.AddedToLibrary, schema: Schemas.AddedToLibrarySchema },
+                    { name: NotificationKind.MessageReceived, schema: Schemas.NewMessageSchema },
                 ],
             },
             {
@@ -70,6 +71,7 @@ import * as Controllers from './controllers';
         Stores.CommentReplyStore,
         Stores.AddedToLibraryStore,
         Stores.ContentUpdatedStore,
+        Stores.MessageReceivedStore,
         Services.FollowersService,
         Services.NotificationService,
         Services.NotificationConsumer,

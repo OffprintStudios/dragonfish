@@ -9,12 +9,14 @@ import {
     CommentReplyPayload,
     ContentCommentPayload,
     ContentUpdatedPayload,
+    NewMessagePayload,
 } from '$shared/models/notifications/payloads';
 import {
     AddedToLibraryJob,
     CommentReplyJob,
     ContentCommentJob,
     ContentUpdatedJob,
+    NewMessageJob,
 } from '$shared/models/notifications/jobs';
 import { UserService } from '$modules/accounts';
 import { SubscriptionsStore } from '../db/stores';
@@ -94,6 +96,24 @@ export class NotificationService {
 
         this.logger.log(`Adding new job to queue...`);
         await this.queue.add(NotificationKind.ContentUpdate, job);
+    }
+
+    @OnEvent(NotificationKind.MessageReceived, { async: true })
+    private async handleMessageReceived(payload: NewMessagePayload) {
+        this.logger.log(`Received payload for type ${NotificationKind.MessageReceived}`);
+
+        const sender = await this.users.getOneUser(payload.senderId);
+
+        const job: NewMessageJob = {
+            recipients: payload.recipients,
+            threadId: payload.threadId,
+            senderId: sender._id,
+            senderScreenName: sender.screenName,
+            senderAvatar: sender.profile.avatar,
+        };
+
+        this.logger.log(`Adding new job to queue...`);
+        await this.queue.add(NotificationKind.MessageReceived, job);
     }
 
     private async handleCommentReplies(payload: CommentReplyPayload) {

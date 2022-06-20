@@ -4,13 +4,15 @@ import { PaginateModel } from 'mongoose';
 import { NotificationDocument } from '../schemas';
 import { NotificationKind } from '$shared/models/notifications';
 import { AddedToLibraryStore, ContentUpdatedStore } from './content';
-import { ContentCommentStore, CommentReplyStore } from './comments';
+import { CommentReplyStore, ContentCommentStore } from './comments';
 import {
     AddedToLibraryDbPayload,
     CommentReplyDbPayload,
     ContentCommentDbPayload,
     DbPayloads,
+    NewMessageDbPayload,
 } from '$shared/models/notifications/db-payloads';
+import { MessageReceivedStore } from './messages';
 
 @Injectable()
 export class NotificationStore {
@@ -21,6 +23,7 @@ export class NotificationStore {
         private readonly commentReply: CommentReplyStore,
         private readonly addedToLibrary: AddedToLibraryStore,
         private readonly contentUpdated: ContentUpdatedStore,
+        private readonly messageReceived: MessageReceivedStore,
     ) {}
 
     /**
@@ -41,6 +44,8 @@ export class NotificationStore {
                 return await this.commentReply.create(payload as CommentReplyDbPayload);
             case NotificationKind.AddedToLibrary:
                 return await this.addedToLibrary.create(payload as AddedToLibraryDbPayload);
+            case NotificationKind.MessageReceived:
+                return await this.messageReceived.create(payload as NewMessageDbPayload);
             default:
                 return;
         }

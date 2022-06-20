@@ -8,6 +8,7 @@ import {
     CommentReplyJob,
     ContentCommentJob,
     ContentUpdatedJob,
+    NewMessageJob,
 } from '$shared/models/notifications/jobs';
 import { NotificationStore } from '../db/stores';
 import { ContentStore } from '$modules/content';
@@ -36,7 +37,9 @@ export class NotificationConsumer {
     @OnQueueCompleted()
     onQueueCompleted(job: Job, result: Notification) {
         this.logger.log(`Job ${job.id} completed! Pushing notification...`);
-        this.events.emit('activity:push-notification', result);
+        if (result) {
+            this.events.emit('activity:push-notification', result);
+        }
     }
 
     @OnQueueFailed()
@@ -129,6 +132,29 @@ export class NotificationConsumer {
                 job.data.contentId,
                 NotificationKind.ContentUpdate,
             );
+        }
+
+        done();
+    }
+
+    @Process(NotificationKind.MessageReceived)
+    async messageReceived(job: Job<NewMessageJob>, done: DoneCallback) {
+        this.logger.log(`Job ${job.id} (MessageReceived) received!`);
+
+        for (const recipient in job.data.recipients) {
+            if (recipient !== job.data.senderId) {
+                const notification = await this.notifications.notifyOne(
+                    {
+                        recipientId: recipient,
+                        threadId: job.data.threadId,
+                        senderId: job.data.senderId,
+                        senderScreenName: job.data.senderScreenName,
+                        senderAvatar: job.data.senderAvatar,
+                    },
+                    NotificationKind.MessageReceived,
+                );
+                this.events.emit('messages:update-feed', notification);
+            }
         }
 
         done();

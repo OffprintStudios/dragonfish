@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult } from 'mongoose';
+import { PaginateModel } from 'mongoose';
 import { MessageThreadsDocument } from '$modules/messages/db/schemas';
 import { EditThreadForm, NewMessageForm } from '$shared/models/messages';
 
@@ -11,18 +11,11 @@ export class MessageThreadsStore {
         private readonly threads: PaginateModel<MessageThreadsDocument>,
     ) {}
 
-    async fetchThreads(pseudId: string): Promise<PaginateResult<MessageThreadsDocument>> {
-        return await this.threads.paginate(
-            {
-                participants: { $in: [pseudId] },
-                deletedAt: null,
-            },
-            {
-                sort: { lastMessageOn: -1 },
-                pagination: false,
-                populate: 'participants',
-            },
-        );
+    async fetchThreads(pseudId: string): Promise<MessageThreadsDocument[]> {
+        return await this.threads
+            .find({ participants: { $in: [pseudId] }, deletedAt: null })
+            .sort({ lastMessageOn: -1 })
+            .populate('participants');
     }
 
     async fetchOneThread(threadId: string, pseudId: string): Promise<MessageThreadsDocument> {

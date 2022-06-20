@@ -19,7 +19,6 @@ import { Notification } from '$shared/models/notifications';
 
 @WebSocketGateway({
     cors: corsConfig,
-    namespace: '/notifications',
 })
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private logger = new Logger('NotificationsGateway');
