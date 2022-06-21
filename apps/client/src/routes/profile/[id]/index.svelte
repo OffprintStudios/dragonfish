@@ -1,12 +1,14 @@
 <script lang="ts">
     import { app } from '$lib/repo/app.repo';
     import { profile } from '$lib/repo/profile.repo';
-    import { localeDate } from '$lib/util';
+    import { ALPHA_MESSAGE, localeDate } from '$lib/util';
     import { Gift2Line } from 'svelte-remixicon';
     import { getProfileContent } from '$lib/services/profile.service';
     import type { Content } from '$lib/models/content';
     import BlogCard from '$lib/components/ui/content/BlogCard.svelte';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
+    import { NotifyBanner } from '$lib/components/ui/misc';
+    import { session } from '$lib/repo/session.repo';
 
     let works: Content[] = [];
     let blogs: Content[] = [];
@@ -39,6 +41,11 @@
 </svelte:head>
 
 <div class="w-full mx-auto">
+    {#if !$session || !$session.account }
+        <NotifyBanner
+            message={ALPHA_MESSAGE}
+        />
+    {/if}
     <div class="max-w-[90rem] mx-auto">
         <div class="flex flex-col md:flex-row md:max-w-7xl mx-auto">
             <div class="p-4 w-52">

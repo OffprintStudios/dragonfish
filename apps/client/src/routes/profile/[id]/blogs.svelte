@@ -2,14 +2,14 @@
     import { page } from '$app/stores';
     import { profile } from '$lib/repo/profile.repo';
     import { session } from '$lib/repo/session.repo';
-    import { updateUrlParams } from '$lib/util';
+    import { updateUrlParams, ALPHA_MESSAGE } from '$lib/util';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { CheckLine, DraftLine, Loader5Line, TimeLine } from 'svelte-remixicon';
     import { fetchAllByKind, fetchUserContent } from '$lib/services/content.service';
     import { ContentKind } from '$lib/models/content';
     import BlogCard from '$lib/components/ui/content/BlogCard.svelte';
     import { app } from '$lib/repo/app.repo';
-    import { Paginator } from '$lib/components/ui/misc';
+    import { NotifyBanner, Paginator } from '$lib/components/ui/misc';
 
     enum BlogTabs {
         Published,
@@ -149,6 +149,11 @@
     </div>
 {:else}
     <div class="w-11/12 lg:max-w-3xl mx-auto flex flex-col mb-6">
+        {#if !$session || !$session.account }
+            <NotifyBanner
+                message={ALPHA_MESSAGE}
+            />
+        {/if}
         {#await fetchUserContent($profile._id, $app.filter, [ContentKind.BlogContent], currPage)}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">

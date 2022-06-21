@@ -7,6 +7,9 @@
     import { app } from '$lib/repo/app.repo';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
     import NewsCard from '$lib/components/ui/content/NewsCard.svelte';
+    import { ALPHA_MESSAGE } from '$lib/util';
+    import { session } from '$lib/repo/session.repo';
+    import { NotifyBanner } from '$lib/components/ui/misc';
 
     const currSlogan = slogans[Math.floor(Math.random() * slogans.length)];
     const newWorks = useQuery('newWorks', () => fetchFirstNew($app.filter));
@@ -54,6 +57,11 @@
         <div class="jumbo-carousel">
             <Jumbotron />
         </div>
+        {#if !$session || !$session.account }
+            <NotifyBanner
+                message={ALPHA_MESSAGE}
+            />
+        {/if}
     </div>
     <div class="w-11/12 mx-auto max-w-7xl my-6 flex flex-col md:flex-row">
         <div class="flex-1">

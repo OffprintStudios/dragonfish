@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fly, fade } from 'svelte/transition';
-    import { slugify } from '$lib/util';
+    import { ALPHA_MESSAGE, slugify } from '$lib/util';
     import { content } from '$lib/repo/content.repo';
     import WorkBanner from '$lib/components/ui/content/WorkBanner.svelte';
     import { ArrowDownSLine, ArrowUpSLine } from 'svelte-remixicon';
@@ -11,6 +11,7 @@
     import EditForm from './_forms/EditForm.svelte';
     import { NotifyBanner, Button } from '$lib/components/ui/misc';
     import { PubStatus } from '$lib/models/content';
+    import { session } from '$lib/repo/session.repo';
 
     let showDesc = true;
     let editMode = false;
@@ -62,6 +63,11 @@
 {#if $content && $content.content}
     <div class="w-full h-screen overflow-y-auto">
         <WorkBanner />
+        {#if !$session || !$session.account }
+            <NotifyBanner
+                message={ALPHA_MESSAGE}
+            />
+        {/if}
         {#if $content.content.audit.published === PubStatus.Unpublished}
             <NotifyBanner
                 message="<b>This work is a draft.</b> No views will be counted when navigating to

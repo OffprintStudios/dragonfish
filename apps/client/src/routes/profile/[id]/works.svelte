@@ -8,8 +8,8 @@
     import { ContentKind } from '$lib/models/content';
     import Button from '$lib/components/ui/misc/Button.svelte';
     import WorkCard from '$lib/components/ui/content/WorkCard.svelte';
-    import { Paginator } from '$lib/components/ui/misc';
-    import { updateUrlParams } from '$lib/util';
+    import { NotifyBanner, Paginator } from '$lib/components/ui/misc';
+    import { updateUrlParams, ALPHA_MESSAGE } from '$lib/util';
 
     enum WorkTabs {
         Published,
@@ -215,6 +215,11 @@
     </div>
 {:else}
     <div class="w-11/12 mx-auto lg:max-w-7xl mb-6">
+        {#if !$session || !$session.account }
+            <NotifyBanner
+                message={ALPHA_MESSAGE}
+            />
+        {/if}
         {#await fetchUserContent($profile._id, $app.filter, [ContentKind.ProseContent, ContentKind.PoetryContent], currPage)}
             <div class="w-full h-96 flex flex-col items-center justify-center">
                 <div class="flex items-center">
