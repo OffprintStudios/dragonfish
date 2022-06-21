@@ -13,7 +13,8 @@ session.subscribe((state) => {
             auth: {
                 token: state.token,
                 pseudId: state.currProfile?._id,
-            }
+            },
+            transports: ['websocket'],
         }));
     }
 });

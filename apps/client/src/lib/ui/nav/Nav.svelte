@@ -26,10 +26,10 @@
     import { socket } from '$lib/socket';
 
     $: {
-        if ($socket !== null) {
+        if ($socket !== null && $session.currProfile !== null) {
             // Notifications
-            $socket.emit('activity:subscribe', { data: { pseudId: $session.currProfile._id }});
-            $socket.on('activity:feed', (data) => {
+            $socket.volatile.emit('activity:subscribe', { data: { pseudId: $session.currProfile._id }});
+            $socket.volatile.on('activity:feed', (data) => {
                 setActivity(data);
             });
         }

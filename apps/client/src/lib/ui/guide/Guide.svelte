@@ -32,7 +32,7 @@
 
 <style lang="scss">
     div.guide {
-        @apply h-screen z-40 relative min-w-full max-w-full md:min-w-[24rem] rounded-r-2xl overflow-hidden;
+        @apply h-screen z-40 relative min-w-full max-w-full md:min-w-[24rem] md:max-w-[24rem] rounded-r-2xl overflow-hidden;
         box-shadow: var(--dropshadow);
         background: var(--background);
     }

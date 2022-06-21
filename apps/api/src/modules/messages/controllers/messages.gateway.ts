@@ -71,7 +71,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
                 `Client ${client.id} has connected to Room messages:thread:${data.threadId}.`,
             );
             client.join(`messages:thread:${data.threadId}`);
-            this.server.in(`messages:thread:${data.threadId}`).emit('thread', messages);
+            this.server.in(`messages:thread:${data.threadId}`).emit('messages:thread-messages', messages);
         } else {
             this.logger.warn(
                 `Client ${client.id} tried to join a room it had no permission to join!`,
@@ -95,6 +95,6 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
     @SubscribeMessage('messages:send-message')
     async sendMessage(@MessageBody('data') newMessage: SendMessageForm): Promise<void> {
         const savedMessage = await this.messages.sendMessage(newMessage);
-        this.server.in(`messages:thread:${newMessage.threadId}`).emit('message', savedMessage);
+        this.server.in(`messages:thread:${newMessage.threadId}`).emit('messages:new-message', savedMessage);
     }
 }

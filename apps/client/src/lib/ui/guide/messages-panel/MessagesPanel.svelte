@@ -3,20 +3,26 @@
     import { session } from '$lib/repo/session.repo';
     import type { Notification } from '$lib/models/activity';
     import type { MessageThread } from '$lib/models/messages';
-    import ThreadBox from '$lib/ui/guide/messages-panel/ThreadBox.svelte';
-
-    let threads = [];
+    import { messages, setCurrent } from './messages.state';
+    import { nextPage } from '$lib/ui/guide';
+    import ThreadPanel from './ThreadPanel.svelte';
+    import ThreadBox from './ThreadBox.svelte';
 
     $: {
-        if ($socket !== null) {
-            $socket.emit('messages:get-feed', { data: { pseudId: $session.currProfile._id }});
-            $socket.on(`messages:feed`, (data: MessageThread[]) => {
-                threads = data;
+        if ($socket !== null && $session.currProfile !== null) {
+            $socket.volatile.emit('messages:get-feed', { data: { pseudId: $session.currProfile._id }});
+            $socket.volatile.on(`messages:feed`, (data: MessageThread[]) => {
+                $messages.threads = data;
             });
-            $socket.on(`messages:update-feed`, (data: { threads: MessageThread[], activity: Notification }) => {
-                threads = data.threads;
+            $socket.volatile.on(`messages:update-feed`, (data: { threads: MessageThread[], activity: Notification }) => {
+                $messages.threads = data.threads;
             });
         }
+    }
+
+    function switchToThread(threadId: string) {
+        setCurrent(threadId);
+        nextPage(ThreadPanel);
     }
 </script>
 
@@ -32,9 +38,9 @@
             <!--spacer-->
         </div>
     </div>
-    <div class="w-11/12 mx-auto my-6">
-        {#each threads as thread}
-            <ThreadBox {thread} />
+    <div class="w-11/12 mx-auto my-2">
+        {#each $messages.threads as thread}
+            <ThreadBox {thread} on:click={() => switchToThread(thread._id)} />
             <div class="my-0.5 border-b border-zinc-700 dark:border-white w-full last:border-0"></div>
         {:else}
             <div class="empty">
