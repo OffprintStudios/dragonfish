@@ -9,6 +9,9 @@
     import { updateUrlParams } from '$lib/util';
     import { onMount } from 'svelte';
     import type { PaginateResult } from '$lib/models/util';
+    import { ALPHA_MESSAGE } from '$lib/util';
+    import { session } from '$lib/repo/session.repo';
+    import { NotifyBanner } from '$lib/components/ui/misc';
 
     let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
     let contentResults: PaginateResult<Content> = null;
@@ -41,6 +44,11 @@
 </svelte:head>
 
 <div class="w-full h-[calc(100vh-51px)] md:h-screen overflow-y-auto">
+    {#if !$session || !$session.account }
+        <NotifyBanner
+            message={ALPHA_MESSAGE}
+        />
+    {/if}
     {#if loading}
         <div class="w-full flex flex-col items-center justify-center h-48 md:h-96">
             <div class="flex items-center">

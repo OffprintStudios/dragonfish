@@ -1,9 +1,11 @@
 <script lang="ts">
     import { useQuery } from '@sveltestack/svelte-query';
-    import { localeDate, abbreviate, pluralize } from '$lib/util';
+    import { localeDate, abbreviate, pluralize, ALPHA_MESSAGE } from '$lib/util';
     import { profile } from '$lib/repo/profile.repo';
     import { fetchPublicShelves } from '$lib/services/content-library.service';
     import { Loader5Line, CloseLine, InformationLine, BarChart2Fill } from 'svelte-remixicon';
+    import { NotifyBanner } from '$lib/components/ui/misc';
+    import { session } from '$lib/repo/session.repo';
 
     const profileShelves = useQuery('profileShelves', () => fetchPublicShelves($profile._id), {
         enabled: !!$profile,
@@ -35,15 +37,17 @@
 </svelte:head>
 
 <div class="w-11/12 mx-auto">
-    <div
-        class="w-full mx-auto md:max-w-4xl rounded-lg border border-zinc-600 dark:border-white flex items-center p-4"
-    >
-        <InformationLine class="mr-4" size="24px" />
-        <span>
-            This page only shows <strong>public</strong> bookshelves. To see all your bookshelves, and
-            make any changes, head over to the Explore page!
-        </span>
-    </div>
+    {#if !$session || !$session.account }
+        <NotifyBanner
+            message={ALPHA_MESSAGE}
+        />
+    {/if}
+    {#if $session && $session.currProfile && $session.currProfile._id === $profile._id }
+        <NotifyBanner
+            message="This page only shows <b>public</b> bookshelves. To see all your bookshelves and
+                        make any changes, head over to the Explore page!"
+        />
+    {/if}
     {#if $profileShelves.isLoading}
         <div class="h-96 w-full flex flex-col items-center justify-center">
             <div class="flex items-center">

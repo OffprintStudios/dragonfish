@@ -36,6 +36,7 @@
         MIN_SHORT_DESC_LENGTH,
         MAX_SHORT_DESC_LENGTH,
         baseUrl,
+        ALPHA_MESSAGE,
     } from '$lib/util';
     import {
         InformationLine,
@@ -67,6 +68,7 @@
     import { openPopup } from '$lib/components/nav/popup';
     import UploadBanner from './_forms/UploadBanner.svelte';
     import { failure } from '$lib/services/alerts.service';
+    import { NotifyBanner } from '$lib/components/ui/misc';
 
     let isEditing = false;
 
@@ -413,16 +415,16 @@
                         <Editor label="Blog" bind:value={$data.body} />
                     </form>
                 {:else}
+                    {#if !$session || !$session.account }
+                        <NotifyBanner
+                            message={ALPHA_MESSAGE}
+                        />
+                    {/if}
                     {#if $content.content.audit.published === 'Unpublished'}
-                        <div
-                            class="p-4 w-full rounded-lg border border-gray-700 dark:border-white flex items-center my-6"
-                        >
-                            <InformationLine size="24px" class="mr-2" />
-                            <span>
-                                <b>This blog is a draft.</b> No views will be counted when navigating to
-                                this page, and comments and reactions are disabled.
-                            </span>
-                        </div>
+                        <NotifyBanner
+                            message="<b>This blog is a draft.</b> No views will be counted when navigating to
+                                        this page, and comments and reactions are disabled."
+                        />
                     {/if}
 
                     <div
