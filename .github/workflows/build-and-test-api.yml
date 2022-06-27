@@ -26,7 +26,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
         with:
-          node-version: 14.17.0
+          node-version: 16.10.0
 
       - name: Install global dependencies
         run: yarn global add @nestjs/cli typescript
