@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { PaginateModel, PaginateResult, PaginateOptions } from 'mongoose';
+import { PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import { CommentDocument, ContentCommentDocument } from '../schemas';
 import { CommentForm, CommentKind } from '$shared/models/comments';
 import { isNullOrUndefined } from '$shared/util';
@@ -85,7 +85,7 @@ export class CommentStore {
             comment.repliesTo = form.repliesTo;
 
             if (comment.kind === CommentKind.ContentComment) {
-                await this.updateCount((comment as ContentCommentDocument).contentId);
+                await this.updateCount((comment as unknown as ContentCommentDocument).contentId);
             }
             return await comment.save();
         }

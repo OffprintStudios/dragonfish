@@ -2,14 +2,7 @@ import { BadRequestException, Injectable, Logger, NotFoundException } from '@nes
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ContentDocument, TagsDocument } from '../schemas';
-import {
-    TagKind,
-    TagsForm,
-    TagsTree,
-    ContentKind,
-    PubStatus,
-    TagsModel,
-} from '$shared/models/content';
+import { ContentKind, PubStatus, TagKind, TagsForm, TagsModel, TagsTree } from '$shared/models/content';
 import sanitizeHtml from 'sanitize-html';
 import { htmlReplace } from '$shared/util';
 
@@ -168,7 +161,7 @@ export class TagsStore {
      * @returns string[] of the given tagId and the IDs of that tag's children (just tagId if it has no children)
      */
     private async getAllTagIds(tagId: string): Promise<string[]> {
-        const childTags = await this.tags.find({ parent: tagId });
+        const childTags: TagsDocument[] = await this.tags.find({ parent: tagId });
         if (childTags) {
             const childTagIds = childTags.map((tag) => tag._id);
             childTagIds.push(tagId);

@@ -2,14 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, PaginateModel, PaginateOptions, PaginateResult } from 'mongoose';
 import { ContentDocument, ProseContentDocument, SectionsDocument } from '../schemas';
-import {
-    BlogForm,
-    ContentKind,
-    CreatePoetry,
-    CreateProse,
-    FormType,
-    PubStatus,
-} from '$shared/models/content';
+import { BlogForm, ContentKind, CreatePoetry, CreateProse, FormType, PubStatus } from '$shared/models/content';
 import { PublishSection, Section, SectionForm } from '$shared/models/sections';
 import { BlogsStore } from './blogs.store';
 import { ProseStore } from './prose.store';
@@ -111,7 +104,7 @@ export class ContentStore {
                     match: { 'audit.isDeleted': { $eq: false } },
                     select: '_id title published stats.words audit.publishedOn createdAt',
                 });
-            const sections = (content as ProseContentDocument).sections as Section[];
+            const sections = (content as unknown as ProseContentDocument).sections as Section[];
             if (sections) {
                 return sections.filter((item) => item.published === true);
             } else {
@@ -125,9 +118,9 @@ export class ContentStore {
                     match: { 'audit.isDeleted': { $eq: false } },
                     select: '_id title published stats.words audit.publishedOn createdAt',
                 });
-            const sections = (content as ProseContentDocument).sections;
+            const sections = (content as unknown as ProseContentDocument).sections;
             if (sections) {
-                return (content as ProseContentDocument).sections as Section[];
+                return (content as unknown as ProseContentDocument).sections as Section[];
             } else {
                 return [];
             }
