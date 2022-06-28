@@ -1,21 +1,21 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
-    import { setContent } from '$lib/repo/content.repo';
     import { getPage } from '$lib/repo/comments.repo';
     import { CommentKind } from '$lib/models/comments';
     import { fetchOne } from '$lib/services/content.service';
 
     export const load: Load = async ({ params, url }) => {
         const blogId: string = params.id;
-        const content = await fetchOne(blogId);
-        const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
+        // const content = await fetchOne(blogId);
+        // const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
 
-        setContent(content);
+        // setContent(content);
 
         return {
             props: {
-                content,
-                comments: await getPage(content._id, CommentKind.ContentComment, page),
+                // content,
+                // comments: await getPage(content._id, CommentKind.ContentComment, page),
+                blogId,
             },
         };
     };
@@ -69,8 +69,19 @@
     import UploadBanner from './_forms/UploadBanner.svelte';
     import { failure } from '$lib/services/alerts.service';
     import { NotifyBanner } from '$lib/components/ui/misc';
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { setContent } from '$lib/repo/content.repo';
 
     let isEditing = false;
+    export let blogId;
+    let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
+
+    onMount(async () => {
+        const content = await fetchOne(blogId);
+        setContent(content);
+        // fetch comments
+    })
 
     const { form, data, errors, createSubmitHandler } = createForm({
         onSubmit: () => console.log(`Default handler hit!`),
