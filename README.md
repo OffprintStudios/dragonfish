@@ -17,7 +17,7 @@ It's still very much a work in progress.
 
 You must have the following tools installed on your system or in a docker container (use listed versions or latest):
 
-- NodeJS 14.17.0
+- NodeJS 16.10.0
 - Yarn 1.22.10 (don't use 2.x)
 - MongoDB Community Server 4.2.1
     - MongoDB Compass is recommended

@@ -503,7 +503,7 @@ export class ContentGroupStore {
      * @returns string[] of the given tagId and the IDs of that tag's children (just tagId if it has no children)
      */
     private async getAllTagIds(tagId: string) {
-        const childTags = await this.tags.find({ parent: tagId });
+        const childTags: TagsDocument[] = await this.tags.find({ parent: tagId });
         if (childTags) {
             const childTagIds = childTags.map((tag) => tag._id);
             childTagIds.push(tagId);
