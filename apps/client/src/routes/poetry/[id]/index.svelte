@@ -1,3 +1,19 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit';
+    import { setContent } from '$lib/repo/content.repo';
+
+    export const load: Load = async ({ params }) => {
+        const poetryId: string = params.id;
+
+        setContent(null);
+        return {
+            props: {
+                poetryId,
+            },
+        };
+    };
+</script>
+
 <script lang="ts">
     import { fly, fade } from 'svelte/transition';
     import { ALPHA_MESSAGE, slugify } from '$lib/util';
@@ -10,11 +26,31 @@
     import WorkStats from '$lib/components/ui/content/WorkStats.svelte';
     import EditForm from './_forms/EditForm.svelte';
     import { NotifyBanner, Button } from '$lib/components/ui/misc';
-    import { PubStatus } from '$lib/models/content';
+    import { Content, PubStatus } from '$lib/models/content';
     import { session } from '$lib/repo/session.repo';
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { fetchOne } from '$lib/services/content.service';
+    import { Comment, CommentKind } from '$lib/models/comments';
+    import { getPage } from '$lib/repo/comments.repo';
+    import type { PaginateResult } from '$lib/models/util';
+
+    export let poetryId: string;
 
     let showDesc = true;
     let editMode = false;
+    let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
+    let poetry: Content;
+    let comments: PaginateResult<Comment>;
+
+    onMount(async () => {
+        poetry = await fetchOne(
+            poetryId,
+            $session.currProfile ? $session.currProfile._id : undefined,
+        );
+        setContent(poetry);
+        comments = await getPage(poetryId, CommentKind.ContentComment, currPage);
+    })
 </script>
 
 <svelte:head>

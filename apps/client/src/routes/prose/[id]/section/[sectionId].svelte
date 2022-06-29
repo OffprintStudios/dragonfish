@@ -6,7 +6,7 @@
         const sectionId = params.sectionId;
         return {
             props: {
-                section: await fetchOneSection(sectionId),
+                sectionId,
             },
         };
     };
@@ -38,18 +38,34 @@
     import { AuthorsNotePos } from '$lib/models/content';
     import { editSection, fetchSections } from '$lib/services/content.service';
     import { TextField, Editor } from '$lib/components/forms';
+    import { onMount } from 'svelte';
 
-    export let section: Section;
+    export let sectionId: string;
 
+    let section: Section;
     let sectionsListShown = false;
     let editMode = false;
     let baseUrl: string;
-    let selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
+    let selectedPos: AuthorsNotePos;
 
     if ($content.content.kind === 'ProseContent') {
         baseUrl = `/prose/${$content.content._id}`;
     } else {
         baseUrl = `/poetry/${$content.content._id}`;
+    }
+
+    onMount(async () => {
+        fetchSection(sectionId);
+    })
+
+    async function fetchSection(id: string) {
+        section = await fetchOneSection(id).then((res) => {
+            selectedPos = res.authorsNotePos ? res.authorsNotePos : AuthorsNotePos.Bottom;
+            $data.title = res.title;
+            $data.body = res.body;
+            $data.authorsNote = res.authorsNote;
+            return res;
+        });
     }
 
     const sectionsList = useQuery('contentSections', () =>
@@ -87,9 +103,9 @@
             return errors;
         },
         initialValues: {
-            title: section.title,
-            body: section.body,
-            authorsNote: section.authorsNote,
+            title: "",
+            body: "",
+            authorsNote: "",
         },
     });
 
@@ -241,7 +257,7 @@
                                 </div>
                                 <Editor label="Author's Note" bind:value={$data.authorsNote} />
                             </form>
-                        {:else}
+                        {:else if section}
                             {#if section.authorsNote && section.authorsNotePos && section.authorsNotePos === AuthorsNotePos.Top}
                                 <div
                                     class="rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed p-4"
@@ -296,7 +312,7 @@
                             <ul class="mt-4">
                                 {#each $sectionsList.data as section}
                                     <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                                        <a href="{baseUrl}/section/{section._id}">
+                                        <a href="{baseUrl}/section/{section._id}" on:click={() => fetchSection(section._id)}>
                                             <span class="title">{section.title}</span>
                                         </a>
                                     </li>

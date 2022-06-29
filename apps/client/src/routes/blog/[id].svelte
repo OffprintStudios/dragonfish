@@ -1,20 +1,13 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
-    import { getPage } from '$lib/repo/comments.repo';
-    import { CommentKind } from '$lib/models/comments';
-    import { fetchOne } from '$lib/services/content.service';
+    import { setContent } from '$lib/repo/content.repo';
 
-    export const load: Load = async ({ params, url }) => {
+    export const load: Load = async ({ params }) => {
         const blogId: string = params.id;
-        // const content = await fetchOne(blogId);
-        // const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
 
-        // setContent(content);
-
+        setContent(null);
         return {
             props: {
-                // content,
-                // comments: await getPage(content._id, CommentKind.ContentComment, page),
                 blogId,
             },
         };
@@ -39,7 +32,6 @@
         ALPHA_MESSAGE,
     } from '$lib/util';
     import {
-        InformationLine,
         Edit2Line,
         DeleteBinLine,
         ShareBoxLine,
@@ -71,16 +63,20 @@
     import { NotifyBanner } from '$lib/components/ui/misc';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
-    import { setContent } from '$lib/repo/content.repo';
+    import { Comment, CommentKind } from '$lib/models/comments';
+    import { getPage } from '$lib/repo/comments.repo';
+    import { fetchOne } from '$lib/services/content.service';
+    import type { PaginateResult } from '$lib/models/util';
 
+    export let blogId: string;
     let isEditing = false;
-    export let blogId;
     let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
+    let comments: PaginateResult<Comment>;
 
     onMount(async () => {
         const content = await fetchOne(blogId);
         setContent(content);
-        // fetch comments
+        comments = await getPage(content._id, CommentKind.ContentComment, currPage);
     })
 
     const { form, data, errors, createSubmitHandler } = createForm({
