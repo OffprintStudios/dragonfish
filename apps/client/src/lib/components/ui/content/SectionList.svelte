@@ -1,7 +1,6 @@
 <script lang="ts">
     import { useMutation, useQuery } from '@sveltestack/svelte-query';
     import { goto } from '$app/navigation';
-    import { content } from '$lib/repo/content.repo';
     import { session } from '$lib/repo/session.repo';
     import { auth } from '$lib/services';
     import Button from '$lib/components/ui/misc/Button.svelte';
@@ -19,18 +18,20 @@
     import { openPopup, PopupOnConfirm } from '$lib/components/nav/popup';
     import ConfirmDeleteSection from './ConfirmDeleteSection.svelte';
     import { success } from '$lib/services/alerts.service';
+    import type { Content } from '$lib/models/content';
 
     export let baseUrl = `/prose`;
+    export let content: Content;
 
     const sections = useQuery('contentSections', () =>
         fetchSections(
-            $content.content._id,
-            $session.currProfile && $content.content.author._id === $session.currProfile._id
+            content._id,
+            $session.currProfile && content.author._id === $session.currProfile._id
                 ? $session.currProfile._id
                 : null,
         ),
         {
-            enabled: !!$session && !!$content && !!$content.content,
+            enabled: !!$session && !!content,
         });
 
     const toggleStatus = useMutation((section: Section) => requestSectionPublish(section), {
@@ -51,14 +52,14 @@
 
         return await publishSection(
             $session.currProfile._id,
-            $content.content._id,
+            content._id,
             section._id,
             newStatus,
         ).then((data) => {
             if (newStatus.oldPub === false && data.published === true) {
-                $content.content.stats.words += data.stats.words;
+                content.stats.words += data.stats.words;
             } else if (newStatus.oldPub === true && data.published === false) {
-                $content.content.stats.words -= data.stats.words;
+                content.stats.words -= data.stats.words;
             }
             return data;
         });
@@ -78,11 +79,11 @@
 
             await deleteSection(
                 $session.currProfile._id,
-                $content.content._id,
+                content._id,
                 this.section._id,
             ).then(() => {
                 if (wasPublished) {
-                    $content.content.stats.words -= words;
+                    content.stats.words -= words;
                 }
                 queryClient.setQueryData('contentSections', (oldData: Section[]) => {
                     return oldData.filter((item) => item._id !== id)
@@ -93,11 +94,11 @@
     }
 </script>
 
-{#if $session && $content && $content.content}
+{#if $session && content}
     <div>
         <div class="flex items-center border-b border-zinc-700 dark:border-white pb-1">
             <h3 class="text-2xl font-medium flex-1">Chapters</h3>
-            {#if $session.account && auth.checkProfile($content.content.author, $session.account)}
+            {#if $session.account && auth.checkProfile(content.author, $session.account)}
                 <Button on:click={() => goto(`${baseUrl}/create-section`)}>
                     <AddBoxLine class="button-icon" />
                     <span class="button-text">Chapter</span>
@@ -132,7 +133,7 @@
                 <ul class="mt-4">
                     {#each $sections.data as section}
                         <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
+                            {#if $session.currProfile && $session.currProfile._id === content.author._id}
                                 {#if section.published}
                                     <button on:click={() => $toggleStatus.mutate(section)}>
                                         <CheckboxCircleLine class="button-icon no-text" />
@@ -153,7 +154,7 @@
                                     <span>{localeDate(section.createdAt, 'shortDate')}</span>
                                 {/if}
                             </a>
-                            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
+                            {#if $session.currProfile && $session.currProfile._id === content.author._id}
                                 <button on:click={() => openPopup(ConfirmDeleteSection, new OnConfirmDelete(section))}>
                                     <DeleteBinLine class="button-icon no-text" />
                                 </button>

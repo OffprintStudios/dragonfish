@@ -1,7 +1,20 @@
+<script context="module" lang="ts">
+    import type { Load } from '@sveltejs/kit';
+
+    export const load: Load = async ({ params }) => {
+        const proseId: string = params.id;
+
+        return {
+            props: {
+                proseId,
+            },
+        };
+    };
+</script>
+
 <script lang="ts">
     import { fly, fade } from 'svelte/transition';
     import { ALPHA_MESSAGE, slugify } from '$lib/util';
-    import { content } from '$lib/repo/content.repo';
     import WorkBanner from '$lib/components/ui/content/WorkBanner.svelte';
     import { ArrowDownSLine, ArrowUpSLine } from 'svelte-remixicon';
     import SectionList from '$lib/components/ui/content/SectionList.svelte';
@@ -10,65 +23,76 @@
     import WorkStats from '$lib/components/ui/content/WorkStats.svelte';
     import EditForm from './_forms/EditForm.svelte';
     import { NotifyBanner, Button } from '$lib/components/ui/misc';
-    import { PubStatus } from '$lib/models/content';
+    import { Content, PubStatus } from '$lib/models/content';
     import { session } from '$lib/repo/session.repo';
+    import { onMount } from 'svelte';
+    import { fetchOne } from '$lib/services/content.service';
 
+    export let proseId: string;
     let showDesc = true;
     let editMode = false;
+    let content: Content;
+
+    onMount(async () => {
+        content = await fetchOne(
+            proseId,
+            $session.currProfile ? $session.currProfile._id : undefined,
+        );
+    })
 </script>
 
 <svelte:head>
-    {#if $content && $content.content}
-        <title>{$content.content.title} &mdash; Offprint</title>
+    {#if content}
+        <title>{content.title} &mdash; Offprint</title>
         <!-- Primary Meta Tags -->
-        <meta name="title" content={$content.content.title} />
-        <meta name="description" content={$content.content.desc} />
+        <meta name="title" content={content.title} />
+        <meta name="description" content={content.desc} />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
         <meta
             property="og:url"
-            content="https://offprint.net/prose/{$content.content._id}/{slugify(
-                $content.content.title,
+            content="https://offprint.net/prose/{content._id}/{slugify(
+                content.title,
             )}"
         />
-        <meta property="og:title" content={$content.content.title} />
-        <meta property="og:description" content={$content.content.desc} />
+        <meta property="og:title" content={content.title} />
+        <meta property="og:description" content={content.desc} />
         <meta
             property="og:image"
-            content={$content.content.meta.coverArt
-                ? $content.content.meta.coverArt
-                : $content.content.author.profile.avatar}
+            content={content.meta.coverArt
+                ? content.meta.coverArt
+                : content.author.profile.avatar}
         />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta
             property="twitter:url"
-            content="https://offprint.net/prose/{$content.content._id}/{slugify(
-                $content.content.title,
+            content="https://offprint.net/prose/{content._id}/{slugify(
+                content.title,
             )}"
         />
-        <meta property="twitter:title" content={$content.content.title} />
-        <meta property="twitter:description" content={$content.content.desc} />
+        <meta property="twitter:title" content={content.title} />
+        <meta property="twitter:description" content={content.desc} />
         <meta
             property="twitter:image"
-            content={$content.content.meta.coverArt
-                ? $content.content.meta.coverArt
-                : $content.content.author.profile.avatar}
+            content={content.meta.coverArt
+                ? content.meta.coverArt
+                : content.author.profile.avatar}
         />
     {/if}
 </svelte:head>
 
-{#if $content && $content.content}
+{#if content}
     <div class="w-full h-screen overflow-y-auto">
-        <WorkBanner />
+        <WorkBanner {content}/>
         {#if !$session || !$session.account }
             <NotifyBanner
                 message={ALPHA_MESSAGE}
             />
         {/if}
-        {#if $content.content.audit.published === PubStatus.Unpublished}
+        {#if content.audit.published === PubStatus.Unpublished}
             <NotifyBanner
                 message="<b>This work is a draft.</b> No views will be counted when navigating to
                                 this page, and comments and upvotes/downvotes are disabled."
@@ -77,14 +101,13 @@
         <ApprovalOptions />
         <div class="w-11/12 mx-auto md:max-w-4xl my-6 flex flex-col md:flex-row">
             <WorkStats
-                content={$content.content}
-                libraryDoc={$content.libraryDoc}
+                {content}
                 bind:editMode
                 on:save={() => console.log('save hit!')}
             />
             <div class="w-full">
                 {#if editMode}
-                    <EditForm on:saved={() => (editMode = false)} />
+                    <EditForm {content} on:saved={() => (editMode = false)} />
                 {:else}
                     <div in:fade={{ delay: 0, duration: 150 }}>
                         <div class="mb-6">
@@ -105,16 +128,16 @@
                                     class="html-description"
                                     transition:fly|local={{ delay: 0, duration: 150, y: -25 }}
                                 >
-                                    {@html $content.content.body}
+                                    {@html content.body}
                                 </div>
                             {/if}
                         </div>
-                        <SectionList baseUrl="/prose/{$content.content._id}" />
+                        <SectionList {content} baseUrl="/prose/{content._id}" />
                     </div>
                 {/if}
             </div>
         </div>
-        {#if $content.content.audit.published === 'Published'}
+        {#if content.audit.published === 'Published'}
             <div class="w-11/12 md:w-full max-w-3xl mx-auto mt-6">
                 <Comments />
             </div>

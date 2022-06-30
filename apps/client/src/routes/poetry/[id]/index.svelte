@@ -62,7 +62,7 @@
 
 {#if $content && $content.content}
     <div class="w-full h-screen overflow-y-auto">
-        <WorkBanner />
+        <WorkBanner content={$content.content} />
         {#if !$session || !$session.account }
             <NotifyBanner
                 message={ALPHA_MESSAGE}
@@ -109,7 +109,7 @@
                                 </div>
                             {/if}
                         </div>
-                        <SectionList baseUrl="/prose/{$content.content._id}" />
+                        <SectionList content={$content.content} baseUrl="/poetry/{$content.content._id}" />
                     </div>
                 {/if}
             </div>
