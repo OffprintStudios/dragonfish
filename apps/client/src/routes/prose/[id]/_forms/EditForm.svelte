@@ -7,10 +7,10 @@
         WorkKind,
         WorkStatus,
     } from '$lib/models/content/works';
-    import { Content, ContentKind, ContentRating } from '$lib/models/content';
+    import { ContentKind, ContentRating } from '$lib/models/content';
     import { onMount, createEventDispatcher } from 'svelte';
     import { fade } from 'svelte/transition';
-    import { updateContent } from '$lib/repo/content.repo';
+    import { content, updateContent } from '$lib/repo/content.repo';
     import { createForm } from 'felte';
     import type { CreateProse } from '$lib/models/content/works/forms';
     import { saveChanges } from '$lib/services/content.service';
@@ -30,8 +30,6 @@
     import Button from '$lib/components/ui/misc/Button.svelte';
     import { Save2Line } from 'svelte-remixicon';
     import { success } from '$lib/services/alerts.service';
-
-    export let content: Content;
 
     const dispatch = createEventDispatcher();
     var tagOptions = [];
@@ -76,7 +74,7 @@
                     ];
                 }
             }
-            tagValues = mapTags((content as Prose).tags);
+            tagValues = mapTags(($content.content as Prose).tags);
             $data.tags = tagValues;
         });
     });
@@ -129,7 +127,7 @@
 
             await saveChanges(
                 $session.currProfile._id,
-                content._id,
+                $content.content._id,
                 ContentKind.ProseContent,
                 formInfo,
             ).then((res) => {
@@ -202,19 +200,19 @@
             return errors;
         },
         initialValues: {
-            title: content.title,
-            shortDesc: content.desc,
-            longDesc: content.body,
+            title: $content.content.title,
+            shortDesc: $content.content.desc,
+            longDesc: $content.content.body,
             category: categories.find(
-                (item) => item.value === WorkKind[(content as Prose).meta.category],
+                (item) => item.value === WorkKind[($content.content as Prose).meta.category],
             ),
             rating: ratings.find(
-                (item) => item.value === ContentRating[(content as Prose).meta.rating],
+                (item) => item.value === ContentRating[($content.content as Prose).meta.rating],
             ),
-            genres: mapGenres((content as Prose).meta.genres),
+            genres: mapGenres(($content.content as Prose).meta.genres),
             tags: [], // tags are loaded after this code is run
             status: statuses.find(
-                (item) => item.value === WorkStatus[(content as Prose).meta.status],
+                (item) => item.value === WorkStatus[($content.content as Prose).meta.status],
             ),
         },
     });

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { useQuery, useMutation } from '@sveltestack/svelte-query';
     import { session } from '$lib/repo/session.repo';
+    import { content } from '$lib/repo/content.repo';
     import { comments } from '$lib/repo/comments.repo';
     import {
         CloseLine,
@@ -17,30 +18,29 @@
     } from 'svelte-remixicon';
     import { pluralize, localeDate, abbreviate, queryClient } from '$lib/util';
     import { Button } from '$lib/components/ui/misc';
-    import { Content, ContentKind } from '$lib/models/content';
+    import { ContentKind } from '$lib/models/content';
     import { submitToQueue } from '$lib/repo/content.repo';
     import { addToLibrary, removeFromLibrary } from '$lib/services/content-library.service';
     import { fetchLibraryDoc } from '$lib/services/content.service';
     import type { ContentLibrary } from '$lib/models/content/library';
 
-    export let content: Content;
     export let editMode = false;
 
     const libraryDoc = useQuery(
         'libraryDoc',
         () =>
             fetchLibraryDoc(
-                content._id,
+                $content.content._id,
                 $session.currProfile ? $session.currProfile._id : undefined,
             ),
         {
-            enabled: !!$session && !!$session.currProfile && !!content,
+            enabled: !!$session && !!$session.currProfile && !!$content && !!$content.content,
             refetchOnWindowFocus: false,
         },
     );
 
     const addToLibraryMutation = useMutation(
-        () => addToLibrary($session.currProfile._id, content._id),
+        () => addToLibrary($session.currProfile._id, $content.content._id),
         {
             onSuccess: (data: ContentLibrary) => {
                 queryClient.setQueryData('libraryDoc', data);
@@ -49,7 +49,7 @@
     );
 
     const removeFromLibraryMutation = useMutation(
-        () => removeFromLibrary($session.currProfile._id, content._id),
+        () => removeFromLibrary($session.currProfile._id, $content.content._id),
         {
             onSuccess: () => {
                 queryClient.setQueryData('libraryDoc', null);
@@ -59,23 +59,23 @@
 
     async function processSubmission() {
         if (
-            content.stats.words < 750 &&
-            content.kind === ContentKind.ProseContent
+            $content.content.stats.words < 750 &&
+            $content.content.kind === ContentKind.ProseContent
         ) {
             alert(`You must have at least 750 words in your work in order to submit to the queue`);
             return;
         }
 
-        await submitToQueue($session.currProfile._id, content._id);
+        await submitToQueue($session.currProfile._id, $content.content._id);
     }
 </script>
 
-{#if $session && content}
+{#if $session && $content && $content.content}
     <div
         class="flex flex-col w-full md:mr-6 md:max-w-[128px] md:max-h-[35.875rem] md:mb-0 rounded-lg bg-zinc-300 dark:bg-zinc-700 dark:highlight-shadowed mb-6"
     >
         <div class="flex items-center md:flex-col p-2 border-b-2 border-zinc-500">
-            {#if $session.currProfile && $session.currProfile._id === content.author._id}
+            {#if $session.currProfile && $session.currProfile._id === $content.content.author._id}
                 {#if editMode}
                     <Button
                         classes="md:w-full md:justify-center"
@@ -94,12 +94,12 @@
                     </Button>
                 {/if}
                 <div class="mx-0.5 md:mx-0 md:my-0.5" />
-                {#if content.audit.published === 'Published'}
+                {#if $content.content.audit.published === 'Published'}
                     <Button classes="md:w-full md:justify-center" disabled={editMode}>
                         <CheckboxCircleLine class="button-icon" />
                         <span class="button-text">Published</span>
                     </Button>
-                {:else if content.audit.published === 'Unpublished'}
+                {:else if $content.content.audit.published === 'Unpublished'}
                     <Button
                         classes="md:w-full md:justify-center"
                         disabled={editMode}
@@ -108,12 +108,12 @@
                         <CheckboxBlankCircleLine class="button-icon" />
                         <span class="button-text">Draft</span>
                     </Button>
-                {:else if content.audit.published === 'Pending'}
+                {:else if $content.content.audit.published === 'Pending'}
                     <Button classes="md:w-full md:justify-center" disabled={editMode}>
                         <TimeLine class="button-icon" />
                         <span class="button-text">Pending</span>
                     </Button>
-                {:else if content.audit.published === 'Rejected'}
+                {:else if $content.content.audit.published === 'Rejected'}
                     <Button classes="md:w-full md:justify-center" disabled={editMode}>
                         <CloseCircleLine class="button-icon" />
                         <span class="button-text">Rejected</span>
@@ -165,29 +165,29 @@
         </div>
         <div class="flex items-center justify-center overflow-y-auto md:overflow-y-hidden md:flex-col">
             <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
-                {#if content.audit.publishedOn}
+                {#if $content.content.audit.publishedOn}
                     <span class="text text-zinc-500 dark:text-zinc-400">Published</span>
                     <span class="stat">
-                        {localeDate(content.audit.publishedOn, 'mediumDate')}
+                        {localeDate($content.content.audit.publishedOn, 'mediumDate')}
                     </span>
                 {:else}
                     <span class="text text-zinc-500 dark:text-zinc-400">Created</span>
                     <span class="stat">
-                        {localeDate(content.createdAt, 'mediumDate')}
+                        {localeDate($content.content.createdAt, 'mediumDate')}
                     </span>
                 {/if}
             </div>
             <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
                 <span class="text text-zinc-500 dark:text-zinc-400">
-                    View{pluralize(content.stats.views)}
+                    View{pluralize($content.content.stats.views)}
                 </span>
-                <span class="stat">{abbreviate(content.stats.views)}</span>
+                <span class="stat">{abbreviate($content.content.stats.views)}</span>
             </div>
             <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
                 <span class="text text-zinc-500 dark:text-zinc-400">
-                    Word{pluralize(content.stats.words)}
+                    Word{pluralize($content.content.stats.words)}
                 </span>
-                <span class="stat">{abbreviate(content.stats.words)}</span>
+                <span class="stat">{abbreviate($content.content.stats.words)}</span>
             </div>
             {#if $comments}
                 <div class="stat-box border-r-2 md:border-r-0 md:border-b-2 border-zinc-500">
@@ -199,7 +199,7 @@
             {/if}
             <div class="stat-box">
                 <span class="text text-zinc-500 dark:text-zinc-400">Status</span>
-                <span class="stat">{content.meta.status}</span>
+                <span class="stat">{$content.content.meta.status}</span>
             </div>
         </div>
     </div>
