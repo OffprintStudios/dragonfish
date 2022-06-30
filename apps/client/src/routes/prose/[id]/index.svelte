@@ -27,6 +27,7 @@
     import { session } from '$lib/repo/session.repo';
     import { onMount } from 'svelte';
     import { fetchOne } from '$lib/services/content.service';
+    import { setContent } from '$lib/repo/content.repo';
 
     export let proseId: string;
     let showDesc = true;
@@ -38,6 +39,8 @@
             proseId,
             $session.currProfile ? $session.currProfile._id : undefined,
         );
+        // TODO: Remove once sections no longer use $content
+        setContent(content);
     })
 </script>
 
