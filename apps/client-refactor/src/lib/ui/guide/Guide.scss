@@ -1,0 +1,54 @@
+div.panel-container {
+  @apply h-screen overflow-y-auto max-w-[24rem];
+  h1.title {
+    @apply text-4xl mt-12 mb-6;
+  }
+  div.topbar {
+    @apply min-h-[4rem] max-h-[4rem] px-2.5 flex items-center drop-shadow-xl relative z-40 text-white sticky;
+    background: var(--accent);
+    div.header {
+      @apply w-2/4 text-center all-small-caps font-bold tracking-widest relative -top-0.5;
+    }
+    div.left-button, div.right-button {
+      @apply w-1/4;
+    }
+  }
+  div.content-container {
+    @apply px-3;
+  }
+}
+
+div.panel-section {
+  @apply mb-4 last:mb-0;
+  h3 {
+    @apply text-xl mb-1 ml-2 all-small-caps font-semibold;
+    color: var(--text-color);
+  }
+  div.panel-box {
+    @apply bg-zinc-200 rounded-lg p-4 flex flex-col items-center text-center relative;
+  }
+}
+
+button.nav-button {
+  @apply flex items-center p-4 border-b border-zinc-300 w-full last:border-0 first:rounded-t-lg last:rounded-b-lg bg-zinc-200;
+  &:hover {
+    @apply bg-zinc-300;
+  }
+  span {
+    @apply ml-2 flex-1 text-left;
+  }
+}
+
+:global(.dark) {
+  button.nav-button, a.nav-button {
+    @apply border-zinc-500 bg-zinc-700;
+    &:hover {
+      @apply bg-zinc-600;
+    }
+  }
+  div.panel-section {
+    div.panel-box {
+      @apply bg-zinc-700;
+    }
+  }
+}

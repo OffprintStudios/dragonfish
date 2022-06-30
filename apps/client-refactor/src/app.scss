@@ -1,0 +1,233 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './themes';
+@import './variables';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+@layer utilities {
+  .highlight-white {
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.05);
+  }
+  .highlight-black {
+    box-shadow: inset 0 1px 0 0 rgb(0 0 0/0.5);
+  }
+  .highlight-shadowed {
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+    0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255/0.05),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+  }
+  .highlight-shadowed-black {
+    --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+    0 4px 6px -4px var(--tw-shadow-color);
+    box-shadow: inset 0 -1px 0 0 rgb(0 0 0/0.05),
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow);
+  }
+}
+
+:root {
+  /* Text */
+  --body-text: 'Inter', sans-serif;
+  --header-text: 'Josefin Sans', sans-serif;
+}
+
+html,
+body {
+  @apply relative w-full h-full overflow-x-hidden overflow-y-hidden;
+}
+body {
+  color: var(--text-color);
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--body-text);
+  background: var(--background);
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--accent);
+  font-family: var(--header-text);
+  @apply leading-normal relative top-0.5 font-medium;
+}
+p {
+  margin: 1rem 0 1rem 0;
+}
+a {
+  color: var(--accent);
+  text-decoration: none;
+  &:hover {
+    color: var(--accent-dark);
+    text-decoration: underline;
+  }
+}
+div.empty {
+  @apply w-full flex-1;
+  margin-top: 2.5rem;
+  text-align: center;
+  h3 {
+    font-family: var(--header-text);
+    font-weight: 300;
+    font-size: 36px;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+/* Editor */
+
+.dark div.ProseMirror {
+  @apply border-zinc-500;
+}
+
+div.ProseMirror {
+  @apply py-0.5 px-3 bg-transparent mb-0 focus:outline-none border-t-2 border-transparent transition transform origin-center;
+  min-height: 10rem !important;
+  max-height: 85vh !important;
+  overflow-y: scroll;
+
+  &:focus {
+    border-color: var(--borders);
+  }
+
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    color: rgb(97, 103, 116);
+    pointer-events: none;
+    height: 0;
+  }
+
+  // Headers and default image style
+  h1 {
+    font-size: 3em;
+  }
+  h2 {
+    font-size: 2em;
+  }
+  h3 {
+    font-size: 1.5em;
+  }
+  h4 {
+    font-size: 1.25em;
+  }
+  h5 {
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  h6 {
+    font-size: 1em;
+    text-transform: uppercase;
+  }
+  img {
+    max-width: 100%;
+    display: inline;
+  }
+
+  blockquote {
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid var(--borders);
+  }
+
+  // CKEditor-generated image styles
+  .image {
+    display: table;
+    clear: both;
+    text-align: center;
+    margin: 1em auto;
+  }
+
+  .image-style-align- {
+    &left {
+      float: left;
+      margin-right: 1.5em;
+    }
+    &center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    &right {
+      float: right;
+      margin-left: 1.5em;
+    }
+  }
+
+  // A little CSS hack to force images at the bottom of content bodies to not break out of their containers.
+  // More details here: http://bonrouge.com/br.php?page=floats
+  > :last-child:after {
+    content: '.';
+    display: block;
+    height: 0;
+    overflow: hidden;
+    clear: both;
+    visibility: hidden;
+  }
+
+  // CKEditor-generated font sizes
+  span.text- {
+    &tiny {
+      font-size: 0.7em;
+    }
+    &small {
+      font-size: 0.85em;
+    }
+    &big {
+      font-size: 1.4em;
+    }
+    &huge {
+      font-size: 1.85em;
+    }
+  }
+  ul,
+  ol {
+    margin-left: 2.5rem;
+  }
+  ul {
+    list-style-type: disc;
+  }
+  ol {
+    list-style-type: decimal;
+  }
+  li {
+    @apply my-1;
+  }
+
+  p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    @apply text-zinc-400;
+    pointer-events: none;
+    height: 0;
+  }
+}
+
+/* Sections, blog bodies, authors notes, and long descriptions.
+ * These go in the main stylesheet because section bodies have
+ * no view encapsulation, and can be (and are) affected by global
+ * styles. Therefore, these must also be global styles.
+ * If we can find a way to have an element with directly-set
+ * innerHtml AND view encapsulation, we can move all this back down to the
+ * component level.
+*/
+div.comment-body,
+div.section-body,
+div.blog-body,
+div.authors-note,
+div.html-description {
+  @include content-body();
+}
