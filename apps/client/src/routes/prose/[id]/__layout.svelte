@@ -1,6 +1,4 @@
 <script context="module" lang="ts">
-    /// This layout file is required so that works are fetched before anything else gets touched.
-
     import type { Load } from '@sveltejs/kit';
     import { setContent } from '$lib/repo/content.repo';
 

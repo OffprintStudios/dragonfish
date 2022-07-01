@@ -1,20 +1,11 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
-    import { getPage } from '$lib/repo/comments.repo';
-    import { CommentKind } from '$lib/models/comments';
-    import { fetchOne } from '$lib/services/content.service';
 
     export const load: Load = async ({ params, url }) => {
         const blogId: string = params.id;
-        // const content = await fetchOne(blogId);
-        // const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
-
-        // setContent(content);
 
         return {
             props: {
-                // content,
-                // comments: await getPage(content._id, CommentKind.ContentComment, page),
                 blogId,
             },
         };
@@ -39,7 +30,6 @@
         ALPHA_MESSAGE,
     } from '$lib/util';
     import {
-        InformationLine,
         Edit2Line,
         DeleteBinLine,
         ShareBoxLine,
@@ -72,6 +62,9 @@
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
     import { setContent } from '$lib/repo/content.repo';
+    import { fetchOne } from '$lib/services/content.service';
+    import { CommentKind } from '$lib/models/comments';
+    import { getPage } from '$lib/repo/comments.repo';
 
     let isEditing = false;
     export let blogId;
@@ -80,7 +73,8 @@
     onMount(async () => {
         const content = await fetchOne(blogId);
         setContent(content);
-        // fetch comments
+        // Sets comments in store
+        await getPage(content._id, CommentKind.ContentComment, currPage)
     })
 
     const { form, data, errors, createSubmitHandler } = createForm({
