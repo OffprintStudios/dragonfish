@@ -24,29 +24,33 @@
         const page =  url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
         setCurrentTag(tagId, page);
 
-        const contentResults = await findRelatedContent(get(search));
-        const tagsTree = await fetchDescendants(tagId);
-        const parent = tagsTree.parent as TagsModel;
-        const pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
         return {
             props: {
-                contentResults: contentResults,
-                tagsTree: tagsTree,
-                parent: parent,
-                pageTitle: pageTitle,
+                tagId,
             },
         };
     }
 </script>
 <script lang="ts">
-    export let contentResults: PaginateResult<Content>;
-    export let tagsTree: TagsTree;
-    export let parent: TagsModel;
-    export let pageTitle: string;
+    import { onMount } from 'svelte';
+
+    export let tagId: string;
+
+    let contentResults: PaginateResult<Content>;
+    let tagsTree: TagsTree;
+    let parent: TagsModel;
+    let pageTitle: string;
 
     let showDesc = true;
 
     $: setFilter($app.filter);
+
+    onMount(async () => {
+        contentResults = await findRelatedContent($search);
+        tagsTree = await fetchDescendants(tagId);
+        parent = tagsTree.parent as TagsModel;
+        pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
+    })
 
     async function setNewPage(currPage: number) {
         $search.page = currPage;

@@ -38,27 +38,29 @@
 </script>
 
 <svelte:head>
-    <title>{$profile.screenName}'s Works &mdash; Offprint</title>
-    <!-- Primary Meta Tags -->
-    <meta name="title" content="{$profile.screenName}'s Works on Offprint" />
-    <meta name="description" content="Taking a look at {$profile.screenName}'s works" />
+    {#if $profile}
+        <title>{$profile.screenName}'s Works &mdash; Offprint</title>
+        <!-- Primary Meta Tags -->
+        <meta name="title" content="{$profile.screenName}'s Works on Offprint" />
+        <meta name="description" content="Taking a look at {$profile.screenName}'s works" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://offprint.net/profile/{$profile._id}" />
-    <meta property="og:title" content="{$profile.screenName}'s Works on Offprint" />
-    <meta property="og:description" content="Taking a look at {$profile.screenName}'s works" />
-    <meta property="og:image" content={$profile.profile.avatar} />
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://offprint.net/profile/{$profile._id}" />
+        <meta property="og:title" content="{$profile.screenName}'s Works on Offprint" />
+        <meta property="og:description" content="Taking a look at {$profile.screenName}'s works" />
+        <meta property="og:image" content={$profile.profile.avatar} />
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://offprint.net/profile/{$profile._id}" />
-    <meta property="twitter:title" content="{$profile.screenName}'s Works on Offprint" />
-    <meta property="twitter:description" content="Taking a look at {$profile.screenName}'s works" />
-    <meta property="twitter:image" content={$profile.profile.avatar} />
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://offprint.net/profile/{$profile._id}" />
+        <meta property="twitter:title" content="{$profile.screenName}'s Works on Offprint" />
+        <meta property="twitter:description" content="Taking a look at {$profile.screenName}'s works" />
+        <meta property="twitter:image" content={$profile.profile.avatar} />
+    {/if}
 </svelte:head>
 
-{#if $session && $session.currProfile && $session.currProfile._id === $profile._id}
+{#if $session && $session.currProfile && $profile && $session.currProfile._id === $profile._id}
     <div class="w-11/12 mx-auto lg:max-w-7xl mb-6">
         <div
             class="flex items-center justify-center border-t border-b border-zinc-700 dark:border-white py-1 w-full mb-6 max-w-3xl mx-auto"
