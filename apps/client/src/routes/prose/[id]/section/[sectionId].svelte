@@ -1,12 +1,13 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
-    import { fetchOneSection } from '$lib/services/content.service';
 
     export const load: Load = async ({ params }) => {
-        const sectionId = params.sectionId;
+        const proseId: string = params.id;
+        const sectionId: string = params.sectionId;
         return {
             props: {
-                section: await fetchOneSection(sectionId),
+                proseId,
+                sectionId,
             },
         };
     };
@@ -38,27 +39,40 @@
     import { AuthorsNotePos } from '$lib/models/content';
     import { editSection, fetchSections } from '$lib/services/content.service';
     import { TextField, Editor } from '$lib/components/forms';
+    import { onMount } from 'svelte';
+    import { fetchOneSection } from '$lib/services/content.service';
 
-    export let section: Section;
+    export let proseId: string;
+    export let sectionId: string;
 
+    let section: Section;
     let sectionsListShown = false;
     let editMode = false;
-    let baseUrl: string;
-    let selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
+    let baseUrl: string = ($content && $content.content) ? `/prose/${$content.content._id}` : `/prose/${proseId}`;
+    let selectedPos: AuthorsNotePos = AuthorsNotePos.Bottom;
 
-    if ($content.content.kind === 'ProseContent') {
-        baseUrl = `/prose/${$content.content._id}`;
-    } else {
-        baseUrl = `/poetry/${$content.content._id}`;
+    onMount(async () => {
+        await fetchSection(sectionId);
+    })
+
+    async function fetchSection(id: string) {
+        section = await fetchOneSection(id);
+        selectedPos = section.authorsNotePos ? section.authorsNotePos : AuthorsNotePos.Bottom;
+        $data.title = section.title;
+        $data.body = section.body;
+        $data.authorsNote = section.authorsNote;
     }
 
-    const sectionsList = useQuery('contentSections', () =>
+    let sectionsList = useQuery('contentSections', () =>
         fetchSections(
             $content.content._id,
             $session.currProfile && $content.content.author._id === $session.currProfile._id
                 ? $session.currProfile._id
                 : null,
         ),
+        {
+            enabled: !!$session && !!$content && !!$content.content,
+        },
     );
 
     const { form, data, errors, createSubmitHandler } = createForm({
@@ -87,9 +101,9 @@
             return errors;
         },
         initialValues: {
-            title: section.title,
-            body: section.body,
-            authorsNote: section.authorsNote,
+            title: "",
+            body: "",
+            authorsNote: "",
         },
     });
 
@@ -152,7 +166,7 @@
     {/if}
 </svelte:head>
 
-{#if $session && $content && $content.content}
+{#if $session && $content && $content.content && section}
     <div class="w-full h-screen overflow-y-auto">
         <div class="flex flex-col w-full">
             <div
@@ -296,7 +310,7 @@
                             <ul class="mt-4">
                                 {#each $sectionsList.data as section}
                                     <li class="section-item odd:bg-zinc-300 odd:dark:bg-zinc-700">
-                                        <a href="{baseUrl}/section/{section._id}">
+                                        <a href="{baseUrl}/section/{section._id}" on:click={() => fetchSection(section._id)}>
                                             <span class="title">{section.title}</span>
                                         </a>
                                     </li>
