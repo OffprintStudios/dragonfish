@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
     import type { Load } from '@sveltejs/kit';
 
-    export const load: Load = async ({ params, url }) => {
+    export const load: Load = async ({ params }) => {
         const blogId: string = params.id;
 
         return {
