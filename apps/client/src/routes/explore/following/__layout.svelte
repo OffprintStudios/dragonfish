@@ -2,7 +2,6 @@
     import type { Load } from '@sveltejs/kit';
     import { get } from 'svelte/store';
     import { page } from '$app/stores';
-    import { fetchFollowing } from '$lib/services/profile.service';
     import { session } from '$lib/repo/session.repo';
 
     export const load: Load = async () => {
@@ -14,11 +13,7 @@
                 redirect: '/explore'
             }
         } else {
-            return {
-                props: {
-                    following: await fetchFollowing(currProfile._id),
-                }
-            }
+            return;
         }
     }
 </script>
@@ -27,8 +22,14 @@
     import type { FollowingUser } from '$lib/models/activity';
     import { useQuery } from '@sveltestack/svelte-query';
     import { Loader5Line, CloseLine, Apps2Line, InformationLine } from 'svelte-remixicon';
+    import { onMount } from 'svelte';
+    import { fetchFollowing } from '$lib/services/profile.service';
 
-    export let following: FollowingUser[] = [];
+    let following: FollowingUser[] = [];
+
+    onMount(async () => {
+        following = await fetchFollowing($session.currProfile._id);
+    })
 
     const followsList = useQuery('followsList', () => fetchFollowing($session.currProfile?._id), {
         enabled: !!$session.currProfile && !!$session.account,

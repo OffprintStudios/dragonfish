@@ -1,31 +1,39 @@
 <script context="module" lang="ts">
-    /// This layout file is required so that works are fetched before anything else gets touched.
-
-    import { get } from 'svelte/store';
     import type { Load } from '@sveltejs/kit';
-    import { CommentKind } from '$lib/models/comments';
-    import { fetchOne } from '$lib/services/content.service';
     import { setContent } from '$lib/repo/content.repo';
-    import { getPage } from '$lib/repo/comments.repo';
-    import { session } from '$lib/repo/session.repo';
 
-    export const load: Load = async ({ params, url }) => {
+    export const load: Load = async ({ params }) => {
         const proseId: string = params.id;
-        const page: number = url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
-        const prose = await fetchOne(
-            proseId,
-            get(session).currProfile ? get(session).currProfile._id : undefined,
-        );
 
-        setContent(prose);
-
+        setContent(null);
         return {
             props: {
-                content: prose,
-                comments: await getPage(prose._id, CommentKind.ContentComment, page),
+                proseId,
             },
         };
     };
+</script>
+<script lang="ts">
+    import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { CommentKind } from '$lib/models/comments';
+    import { fetchOne } from '$lib/services/content.service';
+    import { getPage } from '$lib/repo/comments.repo';
+    import { session } from '$lib/repo/session.repo';
+
+    export let proseId: string;
+    let currPage = $page.url.searchParams.has('page') ? +$page.url.searchParams.get('page') : 1;
+
+    onMount(async () => {
+        const prose = await fetchOne(
+            proseId,
+            $session.currProfile ? $session.currProfile._id : undefined,
+        );
+
+        setContent(prose);
+        // Sets comments in store
+        await getPage(prose._id, CommentKind.ContentComment, currPage)
+    })
 </script>
 
 <slot />

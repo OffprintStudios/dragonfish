@@ -9,7 +9,7 @@
     import type { PaginateResult } from "$lib/models/util";
     import { app } from "$lib/repo/app.repo";
     import { search, setCurrentTag, setFilter } from "$lib/repo/search.repo";
-    import { findRelatedContent } from "$lib/services/search.service";
+    import { findRelatedContent, SearchOptions } from "$lib/services/search.service";
     import { fetchDescendants } from "$lib/services/tags.service";
     import { updateUrlParams } from "$lib/util";
     import type { Load } from "@sveltejs/kit";
@@ -24,29 +24,43 @@
         const page =  url.searchParams.has('page') ? +url.searchParams.get('page') : 1;
         setCurrentTag(tagId, page);
 
-        const contentResults = await findRelatedContent(get(search));
-        const tagsTree = await fetchDescendants(tagId);
-        const parent = tagsTree.parent as TagsModel;
-        const pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
         return {
             props: {
-                contentResults: contentResults,
-                tagsTree: tagsTree,
-                parent: parent,
-                pageTitle: pageTitle,
+                tagId,
             },
         };
     }
 </script>
 <script lang="ts">
-    export let contentResults: PaginateResult<Content>;
-    export let tagsTree: TagsTree;
-    export let parent: TagsModel;
-    export let pageTitle: string;
+    export let tagId: string;
+
+    let contentResults: PaginateResult<Content>;
+    let tagsTree: TagsTree;
+    let parent: TagsModel;
+    let pageTitle: string;
 
     let showDesc = true;
 
+    // Calls whenever $app.filter changes
     $: setFilter($app.filter);
+    // Calls whenever $search changes
+    $: {
+        updateContentResults($search);
+    }
+    // Calls whenever tagId changes
+    $: {
+        updateTagsTree(tagId);
+    }
+
+    async function updateContentResults(options: SearchOptions) {
+        contentResults = await findRelatedContent(options);
+    }
+
+    async function updateTagsTree(id: string) {
+        tagsTree = await fetchDescendants(id);
+        parent = tagsTree.parent as TagsModel;
+        pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
+    }
 
     async function setNewPage(currPage: number) {
         $search.page = currPage;
