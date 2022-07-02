@@ -44,13 +44,35 @@
     let showDesc = true;
 
     $: setFilter($app.filter);
+    $: {
+        findRelatedContent($search).then((res) => {
+            updateContentResults(res);
+        });
+    }
+    $: {
+        fetchDescendants(tagId).then((tree) => {
+            updateTagsTree(tree);
+        });
+    }
 
-    onMount(async () => {
-        contentResults = await findRelatedContent($search);
-        tagsTree = await fetchDescendants(tagId);
+    function updateContentResults(res: PaginateResult<Content>) {
+        console.log("updateContentResults()");
+        contentResults = res;
+    }
+
+    function updateTagsTree(tree: TagsTree) {
+        console.log("updateTagsTree()");
+        tagsTree = tree;
         parent = tagsTree.parent as TagsModel;
         pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
-    })
+    }
+
+    // onMount(async () => {
+    //     contentResults = await findRelatedContent($search);
+    //     tagsTree = await fetchDescendants(tagId);
+    //     parent = tagsTree.parent as TagsModel;
+    //     pageTitle = parent? parent.name + " — " + tagsTree.name : tagsTree.name;
+    // })
 
     async function setNewPage(currPage: number) {
         $search.page = currPage;
